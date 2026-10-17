@@ -178,7 +178,7 @@
         assert(text(m.name,200) && text(m.format,100) && ratio(m.ratio) && id(m.tpl), '物料文本或比例无效');
         unique(m.batches,'no',x=>integer(x,10000,1),'批次'); const candidateIds=new Set(), numbers=new Set();
         m.batches.forEach(b=>{
-          assert(date(b.at) && id(b.tpl) && ['done',...TASK_STATES].includes(b.state) && optional(b.requestId,id) && optional(b.title,x=>text(x,300)), '批次元数据无效');
+          assert(date(b.at) && id(b.tpl) && ['done',...TASK_STATES].includes(b.state) && optional(b.requestId,id) && optional(b.sourceRequestId,id) && (!b.sourceRequestId || !b.requestId && integer(b.attempt,10000,1)) && optional(b.attempt,x=>integer(x,10000,1)) && optional(b.title,x=>text(x,300)), '批次元数据无效');
           unique(b.cands,'id',id,'候选');
           b.cands.forEach(c=>{candidate(c);assert(!candidateIds.has(c.id)&&!numbers.has(c.no),'同一物料候选 ID 或编号重复');candidateIds.add(c.id);numbers.add(c.no);});
           if(b.ref!==undefined) assert(list(b.ref)&&b.ref.every(r=>object(r)&&id(r.m)&&text(r.no,6)&&/^\d{2,6}$/.test(r.no)), '优先参考格式无效');
@@ -453,7 +453,7 @@
       assert(task && transitions[task.state]?.includes(next), '不允许的任务状态转换');
       if (['success', 'partial'].includes(next)) assert(task.resultCount > 0, '没有真实产物，不能标成功');
       task.state = next;
-      if (task.pid && task.mid) { const m = D.matOf(D.byId(task.pid), task.mid); const b = m?.batches.find(x => x.requestId === task.request?.requestId); if (b) b.state = next; }
+      if (task.pid && task.mid) { const m = D.matOf(D.byId(task.pid), task.mid); const b = m?.batches.find(x => x.requestId === task.request?.requestId); if (b && !(next==='running' && b.cands.length)) b.state = next; }
     }
     function addProject(name, kind = '内容', channels = [], members = []) {
       assert(text(name, 200) && name.trim(), '名称不能为空');

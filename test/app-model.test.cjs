@@ -577,6 +577,46 @@ test('task review only shows its own request batch and requires that actual batc
  ui.A['task-open']({dataset:{id:task.id}});const m=nodes.get('#layer').children.at(-1),current=D.TASKS.find(t=>t.id===task.id);assert.deepEqual(Array.from(m.taskResultReview.candidateIds),Array.from(current.result.candidates,c=>c.id));assert.ok(!m.taskResultReview.candidateIds.includes(old.result.candidates[0].id));ui.A['task-success']({dataset:{id:task.id}});assert.equal(D.TASKS.find(t=>t.id===task.id).state,'success');
 });
 
+function retryCover(app,count=1,expectedPixels=null) {
+ const {ui,W,D,ctx}=app,p=D.PROJECTS.find(p=>p.kind==='内容'),t=D.TEMPLATES.find(W.isBuiltinTemplate),h=imageUploads(app),pixels=new Map();let picker;
+ const create=ctx.document.createElement;ctx.document.createElement=tag=>{const el=create(tag);if(tag==='input')picker=el;return el;};
+ ctx.Image=class {set src(value){Promise.resolve().then(()=>{[this.naturalWidth,this.naturalHeight]=pixels.get(value)||[1,1];this.onload();});}};
+ if(expectedPixels){ui.openCoverSetup(p);ui.getCover().pixels=expectedPixels;}
+ ui.startCover(p,t,['方图'],count,'重试导入',[]);const id=D.TASKS.at(-1).id;
+ const task=()=>D.TASKS.find(t=>t.id===id),material=()=>D.matOf(D.byId(p.id),task().mid),current=()=>material().batches.find(b=>b.requestId===task().request.requestId);
+ return {id,pid:p.id,task,material,current,file(name,px=[1,1]){const data=Buffer.concat([photoPng,Buffer.from(name)]);pixels.set('data:image/png;base64,'+data.toString('base64'),px);return h.file(name+'.png',data);},async import(files){ui.A['task-import']({dataset:{id}});picker.files=files;await picker.onchange();},act(name){ui.A['task-'+name]({dataset:{id}});}};
+}
+
+test('retry replaces bad-ratio candidates in a new attempt and preserves selected and published history across reload',async()=>{
+ const app=load(),{ui,W,D,nodes}=app,r=retryCover(app);r.act('accept');assert.match(nodes.get('#layer').children.at(-1).innerHTML,/本次导入作为新一轮结果/);await r.import([r.file('错误比例',[2,1])]);r.act('success');assert.equal(r.task().state,'review');
+ const original=r.current(),oldNo=original.no,oldId=original.cands[0].id;r.material().batches.forEach(b=>b.cands.forEach(c=>c.use=false));original.cands[0].use=true;original.cands[0].fav=true;const p=D.byId(r.pid),post=p.posts[0];post.mat=r.material().id;delete post.pub;W.publish(p,post,'2026-10-17','https://example.com/old');W.commit();assert.equal(post.pub.snapshot.candidateId,oldId);assert.equal(post.pub.snapshot.batch,oldNo);const published=JSON.stringify(post.pub);
+ r.act('failed');r.act('accept');assert.equal(r.current().state,'failed');await r.import([r.file('正确比例')]);assert.equal(r.current().attempt,2);assert.equal(r.task().result.attempt,2);assert.equal(r.task().resultCount,1);assert.equal(r.task().result.candidates.length,1);assert.ok(!r.task().result.candidates.some(c=>c.id===oldId));r.act('success');assert.equal(r.task().state,'success');
+ const old=r.material().batches.find(b=>b.no===oldNo);assert.equal(old.sourceRequestId,r.task().request.requestId);assert.equal(old.requestId,undefined);assert.equal(old.state,'failed');assert.equal(old.attempt,1);assert.equal(old.cands[0].id,oldId);assert.equal(old.cands[0].use,true);assert.equal(old.cands[0].fav,true);assert.equal(JSON.stringify(D.byId(r.pid).posts[0].pub),published);
+ ui.A['versions']({dataset:{p:r.pid,id:r.material().id}});assert.match(nodes.get('#layer').children.at(-1).innerHTML,/历史导入（已被重试替换）/);ui.S.page='project';ui.S.pid=r.pid;ui.S.old[r.material().id]=true;ui.render();assert.match(nodes.get('#body').innerHTML,/历史导入 · 第 1 轮 · 原状态：失败/);
+ const before=app.ctx.localStorage.getItem(W.key);for(const mutate of [b=>b.sourceRequestId='../bad',b=>b.attempt=0,b=>delete b.attempt,b=>b.requestId=b.sourceRequestId]){const backup=W.snapshot(),batch=backup.data.PROJECTS.find(p=>p.id===r.pid).materials.find(m=>m.id===r.material().id).batches.find(b=>b.no===oldNo);mutate(batch);assert.throws(()=>W.importBackup(JSON.stringify(backup)),/批次元数据/);assert.equal(app.ctx.localStorage.getItem(W.key),before);}
+ const reloaded=load('disabled',app.storage),restored=reloaded.D.byId(r.pid);assert.equal(JSON.stringify(restored.posts[0].pub),published);assert.equal(restored.materials.find(m=>m.id===r.material().id).batches.find(b=>b.no===oldNo).cands[0].id,oldId);assert.equal(reloaded.D.TASKS.find(t=>t.id===r.id).state,'success');
+});
+
+test('repeated failed or interrupted imports isolate duplicate hashes and enforce each attempt count',async()=>{
+ const app=load(),{ctx,W}=app,r=retryCover(app,2),a=r.file('同一文件'),b=r.file('第二文件');r.act('accept');await r.import([a]);const firstHash=r.current().cands[0].sha256;r.act('failed');r.act('accept');
+ let before=JSON.stringify(W.snapshot().data);await r.import([a,a]);assert.equal(JSON.stringify(W.snapshot().data),before);assert.equal(r.current().attempt,1);assert.equal(r.task().state,'running');
+ await r.import([a]);assert.equal(r.current().attempt,2);assert.equal(r.current().cands.length,1);assert.equal(r.current().cands[0].sha256,firstHash);assert.equal(r.task().resultCount,1);assert.equal(r.task().result.candidates.length,1);
+ r.act('stop');r.act('accept');before=JSON.stringify(W.snapshot().data);await r.import([a,b,r.file('超量')]);assert.equal(JSON.stringify(W.snapshot().data),before);assert.equal(r.current().attempt,2);
+ await r.import([a,b]);assert.equal(r.current().attempt,3);assert.equal(r.current().cands.length,2);assert.equal(r.task().resultCount,2);assert.equal(r.material().batches.filter(b=>b.sourceRequestId===r.task().request.requestId).length,2);r.act('success');assert.equal(r.task().state,'success');
+ const partial=retryCover(load(),2);partial.act('accept');await partial.import([partial.file('仅第一轮一张')]);partial.act('failed');partial.act('accept');await partial.import([partial.file('第二轮也一张')]);partial.act('success');assert.equal(partial.task().state,'partial');assert.equal(partial.task().resultCount,1);assert.equal(partial.task().result.candidates.length,1);
+});
+
+test('retry import storage failure rolls back history creation and remains retryable without bypassing authorization',async()=>{
+ const app=load('required'),{W,ctx}=app;W.setAuth('active');const r=retryCover(app),old=r.file('保留旧图');r.act('accept');await r.import([old]);r.act('failed');r.act('accept');const before=ctx.localStorage.getItem(W.key),saved=JSON.stringify(W.snapshot().data),set=ctx.localStorage.setItem;
+ ctx.localStorage.setItem=()=>{throw Error('quota');};await r.import([r.file('配额失败')]);ctx.localStorage.setItem=set;assert.equal(ctx.localStorage.getItem(W.key),before);assert.equal(JSON.stringify(W.snapshot().data),saved);assert.equal(r.task().state,'running');assert.equal(r.current().attempt,1);
+ W.setAuth('expired');r.act('import');assert.equal(ctx.localStorage.getItem(W.key),before);W.setAuth('active');await r.import([r.file('恢复后成功')]);assert.equal(r.current().attempt,2);r.act('success');assert.equal(r.task().state,'success');assert.equal(r.material().batches.find(b=>b.sourceRequestId===r.task().request.requestId).cands[0].sha256,require('node:crypto').createHash('sha256').update(old.data).digest('hex'));
+});
+
+test('retry recovers after repeated ratio and exact-pixel failures while earlier attempts remain historical',async()=>{
+ const r=retryCover(load(),1,[100,100]);r.act('accept');await r.import([r.file('比例错误',[100,200])]);r.act('success');assert.equal(r.task().state,'review');r.act('failed');r.act('accept');
+ await r.import([r.file('像素错误',[200,200])]);r.act('success');assert.equal(r.task().state,'review');r.act('stop');r.act('accept');await r.import([r.file('终于正确',[100,100])]);r.act('success');assert.equal(r.task().state,'success');assert.equal(r.task().result.attempt,3);assert.deepEqual(Array.from(r.material().batches.filter(b=>b.sourceRequestId===r.task().request.requestId),b=>b.state),['failed','interrupted']);
+});
+
 test('template current step does not advance old requests and keeps historical tasks readable',()=>{
  const app=load(),{ui,W,D,nodes}=app,t=D.TEMPLATES[0];ui.A['analyze-template']({dataset:{id:t.id}});const old=D.TASKS.at(-1);W.transact(()=>W.rules(t,{fixed:['新版规则'],varies:[],evidence:[{sourceIndex:0,rule:'新版依据'}]}));const frozen=JSON.stringify(old);ui.A['tpl-task']({dataset:{id:t.id}});let m=nodes.get('#layer').children.at(-1);assert.match(m.innerHTML,/当前 v2 与历史任务/);assert.equal(m.querySelectorAll('[data-act="task-pick"]').length,0);assert.ok(m.innerHTML.includes(old.id));ui.A['task-open']({dataset:{id:old.id}});assert.ok(!nodes.get('#layer').children.at(-1).innerHTML.includes('data-act="task-bridge"'));
  ui.A['template-step']({dataset:{id:t.id}});assert.equal(D.TASKS.at(-1).request.kind,'restore');assert.equal(D.TASKS.at(-1).request.templateVersion,t.version);assert.equal(JSON.stringify(old),frozen);ui.S.page='template';ui.S.tid=t.id;ui.render();const flow=nodes.get('#body').querySelector('.stack').innerHTML;assert.equal((flow.match(/class="btn p"/g)||[]).length,1);assert.match(flow,/其他操作/);assert.match(flow,/data-act="rules-import"/);assert.match(flow,/data-act="restore-import"/);

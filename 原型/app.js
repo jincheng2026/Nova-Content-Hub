@@ -497,9 +497,10 @@
     const refs = D.refOf(p, b);
     return `<div class="batch">
       ${m.batches.length > 1 ? `<div class="batch-h"><b>${TAG.batch(b.no)}</b><span class="muted small">${esc(D.cnShort(b.at))} · ${esc((D.tplOf(b.tpl) || {}).name || '')}</span>
+        ${b.sourceRequestId ? `<span class="tag mute">历史导入 · 第 ${b.attempt} 轮 · 原状态：${esc(TASK_LABEL[b.state] || b.state)}</span>` : ''}
         ${refs.length ? `<span class="tag mute" data-tip="这批出图时把这几张当参考图喂进去了：${esc(refs.map(r => r.m.format + ' ' + r.c.no + ' 号').join('、'))}">${TAG.prio} ${refs.length}</span>` : ''}
-        ${b.state === 'running' ? '<span class="steps">已手动接单 · 等待导入结果</span>' : ''}</div>` : ''}
-      <div class="cands">${b.cands.map(c => candCard(p, m, b, c)).join('')}${b.state === 'running' ? '<p class="small muted">等待导入真实候选图。</p>' : ''}</div>
+        ${b.state === 'running' && !b.sourceRequestId ? '<span class="steps">已手动接单 · 等待导入结果</span>' : ''}</div>` : ''}
+      <div class="cands">${b.cands.map(c => candCard(p, m, b, c)).join('')}${b.state === 'running' && !b.sourceRequestId ? '<p class="small muted">等待导入真实候选图。</p>' : ''}</div>
     </div>`;
   }
   /* 候选卡：操作摊在图下面，不靠悬停和右键才看得见 */
@@ -1331,7 +1332,7 @@
   A['use-batch'] = el => { const m = D.matOf(D.byId(el.dataset.p), el.dataset.m), b = m.batches.find(x => x.no === +el.dataset.no); m.batches.forEach(x => x.cands.forEach(c => c.use = false)); if (b.cands[0]) b.cands[0].use = true; closeModal(); render(); toast(`改用第 ${esc(b.no)} 批，原来那版进了旧版本`, 'ok'); };
   A['versions'] = el => {
     const p = D.byId(el.dataset.p), m = D.matOf(p, el.dataset.id);
-    modal({ title: `「${m.name}」的版本`, sub: '一批是一版，正在用的、发出去过的不能删', body: `<div class="lines">${m.batches.slice().reverse().map(b => { const u = b.cands.find(c => c.use); return `<div class="line"><span class="k">${TAG.batch(b.no)}</span><span class="v"><span class="small muted">${esc(D.cnShort(b.at))} · ${b.cands.length} 张</span>${u ? '<span class="tag ok">使用中</span>' : `<button class="btn xs p" data-act="use-batch" data-p="${esc(p.id)}" data-m="${esc(m.id)}" data-no="${esc(b.no)}">${BTN.setUse}</button>`}</span></div>`; }).join('')}</div>`, actions: '<button class="btn" data-close>关闭</button>' });
+    modal({ title: `「${m.name}」的版本`, sub: '一批是一版，正在用的、发出去过的不能删', body: `<div class="lines">${m.batches.slice().reverse().map(b => { const u = b.cands.find(c => c.use); return `<div class="line"><span class="k">${TAG.batch(b.no)}</span><span class="v"><span class="small muted">${esc(D.cnShort(b.at))} · ${b.cands.length} 张${b.sourceRequestId ? ' · 历史导入（已被重试替换）' : ''}</span>${u ? '<span class="tag ok">使用中</span>' : `<button class="btn xs p" data-act="use-batch" data-p="${esc(p.id)}" data-m="${esc(m.id)}" data-no="${esc(b.no)}">${BTN.setUse}</button>`}</span></div>`; }).join('')}</div>`, actions: '<button class="btn" data-close>关闭</button>' });
   };
 
   /* 一条内容就三样：标题 · 渠道 · 模板。渠道是全局登记表的引用，这里加的就是登记表里的 */
@@ -2066,7 +2067,7 @@
     const restoration=t.result?.type==='restore'?(restore?`<div class="task-restore">${imgBox({src:restore,ratio:'3/4',auto:true,cap:'本任务还原结果'})}</div>`:'<p class="small muted">此任务的还原图或模板版本已被替换；当前还原图不能作为旧任务的产物。</p>'):'';
     const management=real&&!historical&&!isCompletedTask(t)?`<details class="task-secondary"><summary>接单与异常处理</summary><p class="small muted">状态由用户手动登记，不表示浏览器确认了外部执行。</p><div class="ops wrap-actions">${['handoff','interrupted','failed'].includes(t.state)?`<button class="btn s" data-act="task-accept" data-id="${esc(t.id)}">我已在助手手动接单</button>`:''}${['handoff','running','review'].includes(t.state)?`<button class="btn s" data-act="task-failed" data-id="${esc(t.id)}">记失败</button><button class="btn s" data-act="task-stop" data-id="${esc(t.id)}">记中断</button>`:''}</div></details>`:'';
     const technical=`<details class="task-secondary"><summary>请求与返回详情</summary><p>原助手：${esc(H(t.host))} · 原会话：${esc(t.conv || '未记录')}</p><div class="ops wrap-actions"><button class="btn s" data-act="host-copy">复制请求</button>${t.request?`<button class="btn s" data-act="request-download" data-id="${esc(t.id)}">下载请求 JSON</button>`:''}</div><textarea class="inp code" id="host-text" readonly>${esc(JSON.stringify(t.request||{note:'旧示例任务，不能作为执行证据'},null,2))}</textarea><pre class="code">${esc(JSON.stringify(t.result||{note:'还没有真实返回结果'},null,2))}</pre></details>`;
-    modal({title:t.name+' · '+(real?TASK_LABEL[t.state]:'历史演示'),wide:true,body:`<p>${esc(taskSummary(t))}</p>${historical?'<p class="small muted">这是历史版本或已移交任务，记录只供查看；当前步骤不会推进这条旧记录。</p>':''}${!real?'<p class="small muted">旧演示记录没有真实请求，不代表已交接或执行。</p>':''}${previews}${restoration}${t.result?.type==='rules'?`<p>本任务已导入 ${t.result.evidenceCount || 0} 条规则证据 · 结果版本 v${t.result.templateVersion}</p>`:''}${real&&!historical&&t.state==='running'?`<p class="small muted">仍需在助手中操作时，<button class="btn xs g" data-act="task-bridge" data-id="${esc(t.id)}">在当前${esc(HOST())}继续会话</button></p>`:''}${management}${technical}`,actions:primary+'<button class="btn" data-close>关闭</button>',after(mm){if(candidates.length)mm.taskResultReview={taskId:t.id,requestId:t.request.requestId,candidateIds:candidates.map(c=>c.id)};}});
+    modal({title:t.name+' · '+(real?TASK_LABEL[t.state]:'历史演示'),wide:true,body:`<p>${esc(taskSummary(t))}</p>${historical?'<p class="small muted">这是历史版本或已移交任务，记录只供查看；当前步骤不会推进这条旧记录。</p>':''}${!real?'<p class="small muted">旧演示记录没有真实请求，不代表已交接或执行。</p>':''}${previews}${restoration}${t.result?.type==='rules'?`<p>本任务已导入 ${t.result.evidenceCount || 0} 条规则证据 · 结果版本 v${t.result.templateVersion}</p>`:''}${real&&!historical&&t.state==='running'?`${t.request?.kind==='generate'?'<p class="small muted">本次导入作为新一轮结果，之前图片保留历史；不会累计到本轮验收。</p>':''}<p class="small muted">仍需在助手中操作时，<button class="btn xs g" data-act="task-bridge" data-id="${esc(t.id)}">在当前${esc(HOST())}继续会话</button></p>`:''}${management}${technical}`,actions:primary+'<button class="btn" data-close>关闭</button>',after(mm){if(candidates.length)mm.taskResultReview={taskId:t.id,requestId:t.request.requestId,candidateIds:candidates.map(c=>c.id)};}});
   }
   A['task-open'] = el=>{const t=D.TASKS.find(x=>x.id===el.dataset.id);if(!t)throw Error('任务不存在');openTask(t);};
   A['fix-go'] = A['task-fix'] = A['task-bridge'];
@@ -2076,7 +2077,19 @@
   A['task-failed'] = el=>{const t=D.TASKS.find(x=>x.id===el.dataset.id);W.taskState(t,'failed');render();openTask(t);};
   A['task-import'] = el=>chooseFiles('image/png,image/jpeg,image/webp,image/gif',true,async fs=>{
     if(!fs.length)return;const files=await Promise.all(fs.map(f=>readFile(f,true)));W.authorize('write');
-    W.transact(()=>{const t=D.TASKS.find(x=>x.id===el.dataset.id);if(t.state!=='running')throw Error('请先在宿主手动接单；同一任务结果不能重复导入');const p=D.byId(t.pid),m=D.matOf(p,t.mid),b=m.batches.find(x=>x.requestId===t.request.requestId);if(files.length>t.request.options.count)throw Error('导入数量超过请求数量');const seen=new Set();files.forEach(f=>{if(f.sha256&&seen.has(f.sha256))throw Error('同一批次包含重复图片');seen.add(f.sha256);const no=String(D.candsOf(m).length+1).padStart(2,'0');b.cands.push({id:f.id,no,img:f.img,px:f.px,bytes:f.bytes,sha256:f.sha256||'',srcPath:`内容/${esc(p.id)}/封面/${esc(m.id)}/${esc(f.id)}`,store:'browser',use:false,fav:false,from:'人工导入真实文件'});});t.resultCount=files.length;t.result={requestId:t.request.requestId,candidates:b.cands.map(c=>({id:c.id,px:c.px,bytes:c.bytes,sha256:c.sha256})),importedAt:new Date().toISOString()};W.taskState(t,'review');});render();openTask(D.TASKS.find(x=>x.id===el.dataset.id));
+    W.transact(()=>{
+      const t=D.TASKS.find(x=>x.id===el.dataset.id);if(t?.state!=='running'||t.request?.kind!=='generate')throw Error('请先在宿主手动接单；同一任务结果不能重复导入');
+      const p=D.byId(t.pid),m=p&&D.matOf(p,t.mid);let b=m?.batches.find(x=>x.requestId===t.request.requestId);if(!b)throw Error('本任务批次不存在，请先恢复目标内容');
+      if(files.length>t.request.options.count)throw Error('导入数量超过请求数量');
+      const seen=new Set();files.forEach(f=>{const key=f.sha256||f.img;if(seen.has(key))throw Error('同一批次包含重复图片');seen.add(key);});
+      b.attempt ||= 1;
+      if(b.cands.length){
+        b.sourceRequestId=b.requestId;delete b.requestId;
+        b={no:Math.max(...m.batches.map(x=>x.no))+1,at:D.TODAY,tpl:b.tpl,title:b.title,cands:[],state:'running',requestId:t.request.requestId,attempt:b.attempt+1,ref:(b.ref||[]).slice()};m.batches.push(b);
+      }
+      files.forEach(f=>{const no=String(D.candsOf(m).length+1).padStart(2,'0');b.cands.push({id:f.id,no,img:f.img,px:f.px,bytes:f.bytes,sha256:f.sha256||'',srcPath:`内容/${esc(p.id)}/封面/${esc(m.id)}/${esc(f.id)}`,store:'browser',use:false,fav:false,from:'人工导入真实文件'});});
+      t.resultCount=b.cands.length;t.result={requestId:t.request.requestId,attempt:b.attempt,candidates:b.cands.map(c=>({id:c.id,px:c.px,bytes:c.bytes,sha256:c.sha256})),importedAt:new Date().toISOString()};W.taskState(t,'review');
+    });render();openTask(D.TASKS.find(x=>x.id===el.dataset.id));
   });
   A['task-success'] = el=>{const t=D.TASKS.find(x=>x.id===el.dataset.id);if(t.tid){const template=D.tplOf(t.tid);if(!t.result||t.result.templateVersion!==template.version)throw Error('模板版本已变化，不能验收旧结果');if(t.result.type==='restore'){if(t.state!=='review'||t.request?.templateVersion!==template.version||!t.result.restoreId||t.result.restoreId!==template.validation?.restoreId)throw Error('当前还原图已更换或任务版本已过期，不能验收旧结果');return templateReview(template,false,t.id);}W.taskState(t,'success');render();return openTask(t);}const viewed=$('#m-live')?.taskResultReview,current=taskCandidates(t);if(!viewed||viewed.taskId!==t.id||viewed.requestId!==t.request.requestId||!current.length||JSON.stringify(viewed.candidateIds)!==JSON.stringify(current.map(c=>c.id)))throw Error('请先打开本任务的真实候选图，再完成验收');const p=D.byId(t.pid),m=p&&D.matOf(p,t.mid),b=m?.batches.find(x=>x.requestId===t.request.requestId);if(!b?.cands.length)throw Error('无真实产物，不能验收通过');const expected=t.request.options.pixels, mismatches=b.cands.filter(c=>{const a=c.px[0]/c.px[1],rr=t.request.options.ratio.split(':').map(Number);return Math.abs(a-rr[0]/rr[1])>0.01||expected&&c.px.some((x,i)=>x!==expected[i]);});if(mismatches.length)throw Error('有候选实际比例或像素不符请求，请记失败/中断后重新提交；原图已保留');W.taskState(t,t.resultCount<t.request.options.count?'partial':'success');render();openTask(t);};
   const readActions = new Set([
