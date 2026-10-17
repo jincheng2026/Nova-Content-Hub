@@ -1,0 +1,212 @@
+[
+  {
+    "file": "agent-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1851479,
+    "sha256": "da2af3996ec8a20744112064b410cb8286c4ea4d229317c5f00f47357ce462d5"
+  },
+  {
+    "file": "agent-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1813384,
+    "sha256": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+  },
+  {
+    "file": "ai-tool-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1702773,
+    "sha256": "d1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1"
+  },
+  {
+    "file": "ai-tool-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1504474,
+    "sha256": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb"
+  },
+  {
+    "file": "big-head-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1815292,
+    "sha256": "c6bd1f84f9c23abec61d6cd3fabdf4097571203e54fa3a2bc6aea563ae7f438c"
+  },
+  {
+    "file": "big-head-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2069113,
+    "sha256": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70"
+  },
+  {
+    "file": "comparison-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2355465,
+    "sha256": "845ce661844459baf8a82573fd2edad85cdd9d7b7769999196de1ef376a8e124"
+  },
+  {
+    "file": "comparison-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2349287,
+    "sha256": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b"
+  },
+  {
+    "file": "geometry-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1882022,
+    "sha256": "8dcf82de5d74b83d32d92a04942400be26321716db010f6d6f261743bd4e8100"
+  },
+  {
+    "file": "geometry-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 1930317,
+    "sha256": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00"
+  },
+  {
+    "file": "interview-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2167062,
+    "sha256": "e8208112cad532292d910f9c977122a9f7ad99e56443c882d076975a87c1ddf6"
+  },
+  {
+    "file": "interview-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2154609,
+    "sha256": "eb0858494089b5f9e6df8a880883831ea79a243117c2efbccb5ef48f18c3b66e"
+  },
+  {
+    "file": "life-story-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2484021,
+    "sha256": "8310a04611c0d9c8fee47ad2786383799df178873c9a31607f6db4054057fab5"
+  },
+  {
+    "file": "life-story-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2305658,
+    "sha256": "a86b9b970b7653c8ac0c1d8f8910ca33d2f98e52c87794e842bb34ab6156f7f1"
+  },
+  {
+    "file": "lifestyle-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2180601,
+    "sha256": "bfa11d302a33d21fd440576e8fb541aa9fb7bed88f97135641c5e34acb989551"
+  },
+  {
+    "file": "lifestyle-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2228845,
+    "sha256": "c801a7554a3fd22a7dbeadaccd07b4d25a14067eb477659768754e03b53faf97"
+  },
+  {
+    "file": "magazine-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2751220,
+    "sha256": "c910bab287382824461253abfbc69f0a920f471afea2e6b9b67c24a4384f44cf"
+  },
+  {
+    "file": "magazine-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2520387,
+    "sha256": "c441f9b13de938dfa7e316432013f303005e6f90faaf71f00ce4ecc06eedbbee"
+  },
+  {
+    "file": "neon-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2298873,
+    "sha256": "e71dfcf9f6129c7fbaeda38091532aeaf506585e972aeda5337d6299d90942f0"
+  },
+  {
+    "file": "neon-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2154232,
+    "sha256": "e93143665c1db169404e47e837a92b8ea20091a02f09a3a83d5cbc587e6b3a6e"
+  },
+  {
+    "file": "news-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2478390,
+    "sha256": "5c406b07be7c8ee05edcce87849432a3861b7a77f441250707b7ac2dbc79363c"
+  },
+  {
+    "file": "news-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2194037,
+    "sha256": "32b30a18e5cc198f2632a795207dc7e240abd95abc0a45bc6e252af960870502"
+  },
+  {
+    "file": "notes-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2508057,
+    "sha256": "4fb6db11d503807c351f74f5004d3918481bb70b4bfb027763c4dc119d893315"
+  },
+  {
+    "file": "notes-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2561297,
+    "sha256": "42b42e93ce5be581ec865cf43bb4a2bd8d3467386a82fe2e71bdc5c49d4cba75"
+  },
+  {
+    "file": "paper-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2885236,
+    "sha256": "e390d57e1d9231727229b79b54b1c9823fed461b0acff899b8f6269baae7e97c"
+  },
+  {
+    "file": "paper-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2894533,
+    "sha256": "a5b67cfb16fe35092f0713c3517d2dbc6547610aa0751a80e60174cbfe9fb8dc"
+  },
+  {
+    "file": "product-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2002921,
+    "sha256": "4e38e89d3aaace9e8131a989466cc017a6c16298b44bdc0232f485c58a601486"
+  },
+  {
+    "file": "product-v2.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2046739,
+    "sha256": "3fe7215f52c0cecf41b1c7a03025561f820dd4531eaea8398779aac8f8313982"
+  },
+  {
+    "file": "tech-collage-group-v4.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2153941,
+    "sha256": "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd"
+  },
+  {
+    "file": "tech-collage-v3.png",
+    "width": 1086,
+    "height": 1448,
+    "bytes": 2267168,
+    "sha256": "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739"
+  }
+]

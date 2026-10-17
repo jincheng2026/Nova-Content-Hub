@@ -1,0 +1,3318 @@
+{
+  "schema": 1,
+  "version": 2,
+  "templates": [
+    {
+      "id": "builtin-geometry",
+      "name": "观点金句",
+      "desc": "上半部双行白字，先读观点。；右下环形与左下三角，避开文字。",
+      "style": "观点封面 · 观点金句",
+      "fit": "观点文章、创作心得、短句封面",
+      "unfit": "多段说明、密集清单、依赖真人照片的故事",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多6字。",
+        "仅使用抽象几何，不添加人物、产品或品牌。",
+        "1:1时圆环缩小放右下；16:9时标题居左、几何居右，保留大字主次。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上半部双行白字，先读观点。"
+        ],
+        [
+          "图形",
+          "右下环形与左下三角，避开文字。"
+        ]
+      ],
+      "recipe": "geometry",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#203a92"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#ffffff"
+        },
+        {
+          "k": "强调色",
+          "v": "#f5ed78"
+        },
+        {
+          "k": "辅助色",
+          "v": "#b8cbf5"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "先想清楚",
+            "再动手"
+          ],
+          "subtitle": "把一个想法，变成一篇内容",
+          "points": []
+        },
+        {
+          "titleLines": [
+            "把复杂问题",
+            "讲得更清楚"
+          ],
+          "subtitle": "从主题出发，给表达留出空间",
+          "points": []
+        }
+      ],
+      "sourceTitle": "先想清楚再动手",
+      "referenceTitle": "把复杂问题讲得更清楚",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/geometry-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "先想清楚再动手",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/geometry-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把复杂问题讲得更清楚",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/geometry-v2-source.svg",
+      "shots": [
+        "图库/内置模板/geometry-v2-source.svg",
+        "图库/内置模板/geometry-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 320,
+          "fontSize": 112,
+          "lineHeight": 130,
+          "color": "#ffffff",
+          "weight": 800,
+          "maxLines": 2,
+          "maxCharsPerLine": 6
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多6个汉字，字号112px，行高130px。",
+        "背景固定钴蓝、标题白色，黄色只用于角标与右下圆环。",
+        "装饰图形限于y≥640，不得覆盖标题与副标题。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/geometry-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-geometry@2"
+        }
+      },
+      "scenario": "用一句判断表达观点",
+      "contentType": "观点封面",
+      "useCases": [
+        "观点文章",
+        "创作心得",
+        "短句封面"
+      ],
+      "audience": "general",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "第一视觉",
+          "rule": "上半部双行白字，先读观点。",
+          "editable": true
+        },
+        {
+          "region": "图形",
+          "role": "节奏",
+          "rule": "右下环形与左下三角，避开文字。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为用一句判断表达观点制作观点封面，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "仅使用抽象几何，不添加人物、产品或品牌。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多6字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的观点金句观点封面，主题是{topic}。背景采用#203a92，文字采用#ffffff，强调色#f5ed78。上半部双行白字，先读观点。右下环形与左下三角，避开文字。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。仅使用抽象几何，不添加人物、产品或品牌。保持文字与主体分区。1:1时圆环缩小放右下；16:9时标题居左、几何居右，保留大字主次。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "用一句判断表达观点"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "先想清楚再动手"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "把一个想法，变成一篇内容"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "仅使用抽象几何，不添加人物、产品或品牌。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-paper",
+      "name": "清单盘点",
+      "desc": "纸页上方双行短标题。；纸页中段三行空方框，逐行扫描。；胶带只在页首，纸纹留在边缘。",
+      "style": "清单图文 · 清单盘点",
+      "fit": "发布前检查、阅读清单、旅行准备",
+      "unfit": "纯情绪金句、复杂对照表、需要大幅实拍的内容",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多7字。",
+        "以纸页和空勾选框为主体，不虚构完成状态。",
+        "1:1缩短页眉，三行清单不删；16:9将标题置左、清单置右。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "纸页上方双行短标题。"
+        ],
+        [
+          "清单",
+          "纸页中段三行空方框，逐行扫描。"
+        ],
+        [
+          "纸页",
+          "胶带只在页首，纸纹留在边缘。"
+        ]
+      ],
+      "recipe": "paper",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#eee7d9"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#2b463c"
+        },
+        {
+          "k": "强调色",
+          "v": "#b2c7a8"
+        },
+        {
+          "k": "辅助色",
+          "v": "#d4c8b2"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "发布前",
+            "检查这三件事"
+          ],
+          "subtitle": "一张小清单，少一点遗漏",
+          "points": [
+            "主题说清楚",
+            "事实有出处",
+            "下一步明确"
+          ]
+        },
+        {
+          "titleLines": [
+            "把一周灵感",
+            "整理成小清单"
+          ],
+          "subtitle": "先收集，再选出值得写的那条",
+          "points": [
+            "记下原想法",
+            "选一个主题",
+            "写一句开头"
+          ]
+        }
+      ],
+      "sourceTitle": "发布前检查这三件事",
+      "referenceTitle": "把一周灵感整理成小清单",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/paper-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "发布前检查这三件事",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/paper-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把一周灵感整理成小清单",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/paper-v2-source.svg",
+      "shots": [
+        "图库/内置模板/paper-v2-source.svg",
+        "图库/内置模板/paper-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 100,
+          "y": 275,
+          "fontSize": 84,
+          "lineHeight": 104,
+          "color": "#2b463c",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 7
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=100，最多2行，每行最多7个汉字，字号84px，行高104px。",
+        "内页x=58,y=52,w=784,h=1084，圆角8px；纸纹只在内页外。",
+        "固定三行清单，每行一个空方框和最多8字的动作，行距126px。",
+        "胶带只在顶部，虚线分开标题区与清单区。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/paper-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-paper@2"
+        }
+      },
+      "scenario": "把准备事项逐项列明",
+      "contentType": "清单图文",
+      "useCases": [
+        "发布前检查",
+        "阅读清单",
+        "旅行准备"
+      ],
+      "audience": "general",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "任务",
+          "rule": "纸页上方双行短标题。",
+          "editable": true
+        },
+        {
+          "region": "清单",
+          "role": "内容",
+          "rule": "纸页中段三行空方框，逐行扫描。",
+          "editable": true
+        },
+        {
+          "region": "纸页",
+          "role": "风格",
+          "rule": "胶带只在页首，纸纹留在边缘。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为把准备事项逐项列明制作清单图文，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "以纸页和空勾选框为主体，不虚构完成状态。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多7字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的清单盘点清单图文，主题是{topic}。背景采用#eee7d9，文字采用#2b463c，强调色#b2c7a8。纸页上方双行短标题。纸页中段三行空方框，逐行扫描。胶带只在页首，纸纹留在边缘。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。以纸页和空勾选框为主体，不虚构完成状态。保持文字与主体分区。1:1缩短页眉，三行清单不删；16:9将标题置左、清单置右。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "把准备事项逐项列明"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "发布前检查这三件事"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "一张小清单，少一点遗漏"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "以纸页和空勾选框为主体，不虚构完成状态。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-notes",
+      "name": "知识教程",
+      "desc": "上方两行短标题，荧光线只划首行。；中段一张问题卡连接两个结果卡。；底部两卡各一条简短应用。",
+      "style": "教程图解 · 知识教程",
+      "fit": "概念科普、读书笔记、学习方法",
+      "unfit": "复杂导图、需要精确数据图表的内容",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "采用问题卡与连线示意，不伪造软件界面和实验结果。",
+        "1:1把两张结果卡靠近中心卡；16:9改为左问题右两步。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方两行短标题，荧光线只划首行。"
+        ],
+        [
+          "中心卡",
+          "中段一张问题卡连接两个结果卡。"
+        ],
+        [
+          "分支卡",
+          "底部两卡各一条简短应用。"
+        ]
+      ],
+      "recipe": "notes",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#fbf9f0"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#254a65"
+        },
+        {
+          "k": "强调色",
+          "v": "#f6df7d"
+        },
+        {
+          "k": "辅助色",
+          "v": "#d8e8e9"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "学会一个概念",
+            "先画一张小图"
+          ],
+          "subtitle": "把知识整理成能复述的结构",
+          "points": [
+            "它在回答什么",
+            "换个说法",
+            "举个例子"
+          ]
+        },
+        {
+          "titleLines": [
+            "读完一本书后",
+            "留下两条线索"
+          ],
+          "subtitle": "一条线索解释，一条线索行动",
+          "points": [
+            "我真正读懂了吗",
+            "讲清核心",
+            "做次练习"
+          ]
+        }
+      ],
+      "sourceTitle": "学会一个概念先画一张小图",
+      "referenceTitle": "读完一本书后留下两条线索",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/notes-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "学会一个概念先画一张小图",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/notes-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "读完一本书后留下两条线索",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/notes-v2-source.svg",
+      "shots": [
+        "图库/内置模板/notes-v2-source.svg",
+        "图库/内置模板/notes-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 120,
+          "y": 271,
+          "fontSize": 76,
+          "lineHeight": 100,
+          "color": "#254a65",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=120，最多2行，每行最多8个汉字，字号76px，行高100px。",
+        "点阵每30px一个1.4px圆点，笔记线固定x=86。",
+        "问题卡位于y=510–650，两条分支连接y=792的两张结果卡。",
+        "荧光条只划标题第一行，所有线条用蓝墨，线宽2–3px。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/notes-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-notes@2"
+        }
+      },
+      "scenario": "解释一个问题和两步应用",
+      "contentType": "教程图解",
+      "useCases": [
+        "概念科普",
+        "读书笔记",
+        "学习方法"
+      ],
+      "audience": "general",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "问题入口",
+          "rule": "上方两行短标题，荧光线只划首行。",
+          "editable": true
+        },
+        {
+          "region": "中心卡",
+          "role": "核心概念",
+          "rule": "中段一张问题卡连接两个结果卡。",
+          "editable": true
+        },
+        {
+          "region": "分支卡",
+          "role": "步骤",
+          "rule": "底部两卡各一条简短应用。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "一张中心卡向下连接两张等宽结果卡，连接关系保持不变。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为解释一个问题和两步应用制作教程图解，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "采用问题卡与连线示意，不伪造软件界面和实验结果。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的知识教程教程图解，主题是{topic}。背景采用#fbf9f0，文字采用#254a65，强调色#f6df7d。上方两行短标题，荧光线只划首行。中段一张问题卡连接两个结果卡。底部两卡各一条简短应用。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。采用问题卡与连线示意，不伪造软件界面和实验结果。保持文字与主体分区。1:1把两张结果卡靠近中心卡；16:9改为左问题右两步。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "解释一个问题和两步应用"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "学会一个概念先画一张小图"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "把知识整理成能复述的结构"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "采用问题卡与连线示意，不伪造软件界面和实验结果。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-comparison",
+      "name": "对比评测",
+      "desc": "上方交代同一个问题。；浅底三行，与右栏同行对齐。；深底三行，不以颜色暗示实测结论。",
+      "style": "对比图文 · 对比评测",
+      "fit": "方法比较、方案选择、习惯调整",
+      "unfit": "没有可比维度、三项以上横向比较的内容",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "只有用户提供的比较依据，不添加评分、获奖或性能数字。",
+        "1:1压缩页眉保留双栏；16:9加宽双栏，三组维度仍同行。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方交代同一个问题。"
+        ],
+        [
+          "左栏",
+          "浅底三行，与右栏同行对齐。"
+        ],
+        [
+          "右栏",
+          "深底三行，不以颜色暗示实测结论。"
+        ]
+      ],
+      "recipe": "comparison",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f6f6ed"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#183a36"
+        },
+        {
+          "k": "强调色",
+          "v": "#d5f978"
+        },
+        {
+          "k": "辅助色",
+          "v": "#dbe9d4"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "同一件小事",
+            "换一种做法"
+          ],
+          "subtitle": "先看差异，再决定下一步",
+          "points": [
+            [
+              "想到哪写到哪",
+              "先列一个结构"
+            ],
+            [
+              "收集太多资料",
+              "先确认一个问题"
+            ],
+            [
+              "等灵感来",
+              "先写一小段"
+            ]
+          ]
+        },
+        {
+          "titleLines": [
+            "内容越写越乱",
+            "试试这组对照"
+          ],
+          "subtitle": "把三个习惯，改成三个动作",
+          "points": [
+            [
+              "开头铺太长",
+              "先说核心结论"
+            ],
+            [
+              "例子堆一起",
+              "一段只举一例"
+            ],
+            [
+              "结尾没行动",
+              "留一个小练习"
+            ]
+          ]
+        }
+      ],
+      "sourceTitle": "同一件小事换一种做法",
+      "referenceTitle": "内容越写越乱试试这组对照",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/comparison-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "同一件小事换一种做法",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/comparison-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "内容越写越乱试试这组对照",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/comparison-v2-source.svg",
+      "shots": [
+        "图库/内置模板/comparison-v2-source.svg",
+        "图库/内置模板/comparison-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 254,
+          "fontSize": 82,
+          "lineHeight": 105,
+          "color": "#183a36",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号82px，行高105px。",
+        "两张卡x=56/474、宽370px、高518px，内部文字左对齐。",
+        "固定三组同维条目，同组文字同一y坐标，行距94px，每格最多9字。",
+        "左卡白底深墨，右卡深墨白字，绿色只用于角标与方向箭头。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/comparison-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-comparison@2"
+        }
+      },
+      "scenario": "在相同维度呈现两种选择",
+      "contentType": "对比图文",
+      "useCases": [
+        "方法比较",
+        "方案选择",
+        "习惯调整"
+      ],
+      "audience": "general",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "比较对象",
+          "rule": "上方交代同一个问题。",
+          "editable": true
+        },
+        {
+          "region": "左栏",
+          "role": "选项一",
+          "rule": "浅底三行，与右栏同行对齐。",
+          "editable": true
+        },
+        {
+          "region": "右栏",
+          "role": "选项二",
+          "rule": "深底三行，不以颜色暗示实测结论。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "左右双栏等宽，三组同维条目同行对齐，不合并两栏。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为在相同维度呈现两种选择制作对比图文，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "只有用户提供的比较依据，不添加评分、获奖或性能数字。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的对比评测对比图文，主题是{topic}。背景采用#f6f6ed，文字采用#183a36，强调色#d5f978。上方交代同一个问题。浅底三行，与右栏同行对齐。深底三行，不以颜色暗示实测结论。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。只有用户提供的比较依据，不添加评分、获奖或性能数字。保持文字与主体分区。1:1压缩页眉保留双栏；16:9加宽双栏，三组维度仍同行。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "在相同维度呈现两种选择"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "同一件小事换一种做法"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "先看差异，再决定下一步"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "只有用户提供的比较依据，不添加评分、获奖或性能数字。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-neon",
+      "name": "AI概念解读",
+      "desc": "上方双行概念标题。；中段围绕AI中心的两条轨道，仅为概念示意。；底部一行解释路径，无性能断言。",
+      "style": "AI科普封面 · AI概念解读",
+      "fit": "模型概念、提示词原理、AI入门",
+      "unfit": "温情人物故事、长段科普、未经验证的性能宣传",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "轨道是AI概念插画，不表现真实模型内部结构或实测效果。",
+        "1:1缩小轨道；16:9标题在左、轨道在右、提纲横贯底部。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方双行概念标题。"
+        ],
+        [
+          "轨道",
+          "中段围绕AI中心的两条轨道，仅为概念示意。"
+        ],
+        [
+          "流程条",
+          "底部一行解释路径，无性能断言。"
+        ]
+      ],
+      "recipe": "neon",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#091526"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#b69bff"
+        },
+        {
+          "k": "强调色",
+          "v": "#64edd7"
+        },
+        {
+          "k": "辅助色",
+          "v": "#203b55"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "AI怎样理解",
+            "一句话的意思"
+          ],
+          "subtitle": "用一个视觉隐喻，进入概念的第一层",
+          "points": [
+            "输入文字 → 处理信息 → 生成回答"
+          ]
+        },
+        {
+          "titleLines": [
+            "先认识概念",
+            "再判断能做什么"
+          ],
+          "subtitle": "概念示意，不代表模型真实内部结构",
+          "points": [
+            "提出问题 → 理解概念 → 核对边界"
+          ]
+        }
+      ],
+      "sourceTitle": "AI怎样理解一句话的意思",
+      "referenceTitle": "先认识概念再判断能做什么",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/neon-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "AI怎样理解一句话的意思",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/neon-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "先认识概念再判断能做什么",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/neon-v2-source.svg",
+      "shots": [
+        "图库/内置模板/neon-v2-source.svg",
+        "图库/内置模板/neon-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 299,
+          "fontSize": 90,
+          "lineHeight": 116,
+          "color": "#f3f8ff",
+          "weight": 800,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号90px，行高116px。",
+        "背景固定#091526，网格间距60px，不使用照片。",
+        "主轨道中心(450,770)，两条椭圆分别旋转正负32°，轨道不进入标题区。",
+        "流程条位于x=64,y=1030,w=772,h=72，最多24个字符。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/neon-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-neon@2"
+        }
+      },
+      "scenario": "用单个视觉隐喻解释AI概念",
+      "contentType": "AI科普封面",
+      "useCases": [
+        "模型概念",
+        "提示词原理",
+        "AI入门"
+      ],
+      "audience": "ai",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "概念",
+          "rule": "上方双行概念标题。",
+          "editable": true
+        },
+        {
+          "region": "轨道",
+          "role": "隐喻",
+          "rule": "中段围绕AI中心的两条轨道，仅为概念示意。",
+          "editable": false
+        },
+        {
+          "region": "流程条",
+          "role": "提纲",
+          "rule": "底部一行解释路径，无性能断言。",
+          "editable": true
+        }
+      ],
+      "generation": {
+        "intent": "为用单个视觉隐喻解释AI概念制作AI科普封面，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "轨道是AI概念插画，不表现真实模型内部结构或实测效果。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的AI概念解读AI科普封面，主题是{topic}。背景采用#091526，文字采用#b69bff，强调色#64edd7。上方双行概念标题。中段围绕AI中心的两条轨道，仅为概念示意。底部一行解释路径，无性能断言。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。轨道是AI概念插画，不表现真实模型内部结构或实测效果。保持文字与主体分区。1:1缩小轨道；16:9标题在左、轨道在右、提纲横贯底部。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "用单个视觉隐喻解释AI概念"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "AI怎样理解一句话的意思"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "用一个视觉隐喻，进入概念的第一层"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "轨道是AI概念插画，不表现真实模型内部结构或实测效果。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-magazine",
+      "name": "生活方式",
+      "desc": "顶部小刊名与细线，字号小于标题。；左上宋体双行，正文不叠图。；右下抽象拱门，左侧竖排短句。",
+      "style": "生活方式封面 · 生活方式",
+      "fit": "日常随笔、阅读生活、审美观察",
+      "unfit": "密集参数比较、紧急通知、大量标题文字",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "仅用建筑抽象插画；若换照片，必须是用户授权照片并保持独立图片区。",
+        "1:1减少上部空白；16:9标题在左、拱门在右，保留留白。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "刊头",
+          "顶部小刊名与细线，字号小于标题。"
+        ],
+        [
+          "标题",
+          "左上宋体双行，正文不叠图。"
+        ],
+        [
+          "插画",
+          "右下抽象拱门，左侧竖排短句。"
+        ]
+      ],
+      "recipe": "magazine",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f5f2e9"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#262923"
+        },
+        {
+          "k": "强调色",
+          "v": "#b76345"
+        },
+        {
+          "k": "辅助色",
+          "v": "#ded9ca"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "给日常",
+            "留一点空白"
+          ],
+          "subtitle": "不必把每一分钟都填满",
+          "points": [
+            "慢一点，也可以看得更清楚。"
+          ]
+        },
+        {
+          "titleLines": [
+            "把普通一天",
+            "过成新的发现"
+          ],
+          "subtitle": "从一个细节，重新认识生活",
+          "points": [
+            "写下一件今天才注意到的小事。"
+          ]
+        }
+      ],
+      "sourceTitle": "给日常留一点空白",
+      "referenceTitle": "把普通一天过成新的发现",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/magazine-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "给日常留一点空白",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/magazine-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把普通一天过成新的发现",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/magazine-v2-source.svg",
+      "shots": [
+        "图库/内置模板/magazine-v2-source.svg",
+        "图库/内置模板/magazine-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 300,
+          "fontSize": 86,
+          "lineHeight": 108,
+          "color": "#262923",
+          "weight": 500,
+          "maxLines": 2,
+          "maxCharsPerLine": 8,
+          "fontFamily": "Songti SC,SimSun,serif"
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号86px，行高108px。",
+        "顶部刊名与分隔线固定y=96/124，副标题固定y=474。",
+        "插画区域x=310,y=566,w=524,h=410，只用原创矩形、拱门与圆形。",
+        "标题与插画至少相隔60px，正文不叠图，不使用纹理和阴影。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/magazine-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-magazine@2"
+        }
+      },
+      "scenario": "用一段留白表达生活观察",
+      "contentType": "生活方式封面",
+      "useCases": [
+        "日常随笔",
+        "阅读生活",
+        "审美观察"
+      ],
+      "audience": "general",
+      "generatedReferences": [],
+      "anatomy": [
+        {
+          "region": "刊头",
+          "role": "栏目",
+          "rule": "顶部小刊名与细线，字号小于标题。",
+          "editable": true
+        },
+        {
+          "region": "标题",
+          "role": "主题",
+          "rule": "左上宋体双行，正文不叠图。",
+          "editable": true
+        },
+        {
+          "region": "插画",
+          "role": "氛围",
+          "rule": "右下抽象拱门，左侧竖排短句。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为用一段留白表达生活观察制作生活方式封面，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "仅用建筑抽象插画；若换照片，必须是用户授权照片并保持独立图片区。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的生活方式生活方式封面，主题是{topic}。背景采用#f5f2e9，文字采用#262923，强调色#b76345。顶部小刊名与细线，字号小于标题。左上宋体双行，正文不叠图。右下抽象拱门，左侧竖排短句。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。仅用建筑抽象插画；若换照片，必须是用户授权照片并保持独立图片区。保持文字与主体分区。1:1减少上部空白；16:9标题在左、拱门在右，保留留白。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "用一段留白表达生活观察"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "给日常留一点空白"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "不必把每一分钟都填满"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "仅用建筑抽象插画；若换照片，必须是用户授权照片并保持独立图片区。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-interview",
+      "name": "人物访谈",
+      "desc": "上方双行大字，右侧竖条提问标记。；左下半身剪影，右下引用卡。；单句引语与受访者角色，不杜撰姓名。",
+      "style": "访谈封面 · 人物访谈",
+      "fit": "人物访谈、创作者故事、观点问答",
+      "unfit": "没有肖像授权的真人复刻、未核实引语",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "默认虚构无身份剪影；使用真人时仅用用户有权提供的肖像和已核对引语。",
+        "1:1将人物与引语并排紧凑；16:9左人物右标题与引语，勿裁面部。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方双行大字，右侧竖条提问标记。"
+        ],
+        [
+          "人物区",
+          "左下半身剪影，右下引用卡。"
+        ],
+        [
+          "引语",
+          "单句引语与受访者角色，不杜撰姓名。"
+        ]
+      ],
+      "recipe": "interview",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#efeee8"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#242b32"
+        },
+        {
+          "k": "强调色",
+          "v": "#e66a45"
+        },
+        {
+          "k": "辅助色",
+          "v": "#b9c8c4"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "创作这件事",
+            "先问一个人"
+          ],
+          "subtitle": "关于开始、选择和坚持的访谈提纲",
+          "points": [
+            "“先留下自己的观察”",
+            "受访者角色 / 虚构示例"
+          ]
+        },
+        {
+          "titleLines": [
+            "听见经验",
+            "也听见疑问"
+          ],
+          "subtitle": "把一个答案，变成下一个问题",
+          "points": [
+            "“把为什么再问一遍”",
+            "对话栏目 / 虚构示例"
+          ]
+        }
+      ],
+      "sourceTitle": "创作这件事先问一个人",
+      "referenceTitle": "听见经验也听见疑问",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/interview-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "创作这件事先问一个人",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/interview-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "听见经验也听见疑问",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/interview-v2-source.svg",
+      "shots": [
+        "图库/内置模板/interview-v2-source.svg",
+        "图库/内置模板/interview-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 240,
+          "fontSize": 84,
+          "lineHeight": 104,
+          "color": "#242b32",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号84px，行高104px。",
+        "上方双行大字，右侧竖条提问标记。",
+        "左下半身剪影，右下引用卡。",
+        "单句引语与受访者角色，不杜撰姓名。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/interview-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-interview@2"
+        }
+      },
+      "scenario": "围绕一个人的经验提出问题",
+      "contentType": "访谈封面",
+      "useCases": [
+        "人物访谈",
+        "创作者故事",
+        "观点问答"
+      ],
+      "audience": "general",
+      "generatedReferences": [
+        {
+          "id": "builtin-interview-ai-reference-v2",
+          "path": "图库/AI参考/interview-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/interview-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "访谈话题",
+          "rule": "上方双行大字，右侧竖条提问标记。",
+          "editable": true
+        },
+        {
+          "region": "人物区",
+          "role": "主体",
+          "rule": "左下半身剪影，右下引用卡。",
+          "editable": true
+        },
+        {
+          "region": "引语",
+          "role": "内容",
+          "rule": "单句引语与受访者角色，不杜撰姓名。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "人物区在左下，引语卡在右下，二者与上方标题分区。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为围绕一个人的经验提出问题制作访谈封面，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "默认虚构无身份剪影；使用真人时仅用用户有权提供的肖像和已核对引语。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的人物访谈访谈封面，主题是{topic}。背景采用#efeee8，文字采用#242b32，强调色#e66a45。上方双行大字，右侧竖条提问标记。左下半身剪影，右下引用卡。单句引语与受访者角色，不杜撰姓名。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。默认虚构无身份剪影；使用真人时仅用用户有权提供的肖像和已核对引语。保持文字与主体分区。1:1将人物与引语并排紧凑；16:9左人物右标题与引语，勿裁面部。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "围绕一个人的经验提出问题"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "创作这件事先问一个人"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "关于开始、选择和坚持的访谈提纲"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "默认虚构无身份剪影；使用真人时仅用用户有权提供的肖像和已核对引语。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-lifestyle",
+      "name": "生活场景",
+      "desc": "左上短标题置于奶油纸底。；中下部斜放大幅窗边桌面画框。；右下小便笺仅一条感受。",
+      "style": "场景图文 · 生活场景",
+      "fit": "居家记录、周末日记、桌面分享",
+      "unfit": "冒充真实探店或现场实拍",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "默认原创窗边桌面插画；AI摄影需标明生成，真实记录只用本人授权实拍。",
+        "1:1收窄标题与画框间距；16:9左文字右场景，保持主体完整。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "左上短标题置于奶油纸底。"
+        ],
+        [
+          "主场景",
+          "中下部斜放大幅窗边桌面画框。"
+        ],
+        [
+          "便笺",
+          "右下小便笺仅一条感受。"
+        ]
+      ],
+      "recipe": "lifestyle",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f4eadc"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#3b453f"
+        },
+        {
+          "k": "强调色",
+          "v": "#b96c4f"
+        },
+        {
+          "k": "辅助色",
+          "v": "#bbc9ad"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "周末的光",
+            "落在书页上"
+          ],
+          "subtitle": "从窗边桌面，记录一个小片刻",
+          "points": [
+            "今天先读一页"
+          ]
+        },
+        {
+          "titleLines": [
+            "慢慢收拾",
+            "一张小桌子"
+          ],
+          "subtitle": "为日常留出一块能安静坐下的地方",
+          "points": [
+            "留一个喜欢的角落"
+          ]
+        }
+      ],
+      "sourceTitle": "周末的光落在书页上",
+      "referenceTitle": "慢慢收拾一张小桌子",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/lifestyle-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "周末的光落在书页上",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/lifestyle-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "慢慢收拾一张小桌子",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/lifestyle-v2-source.svg",
+      "shots": [
+        "图库/内置模板/lifestyle-v2-source.svg",
+        "图库/内置模板/lifestyle-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 240,
+          "fontSize": 84,
+          "lineHeight": 104,
+          "color": "#3b453f",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号84px，行高104px。",
+        "左上短标题置于奶油纸底。",
+        "中下部斜放大幅窗边桌面画框。",
+        "右下小便笺仅一条感受。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/lifestyle-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-lifestyle@2"
+        }
+      },
+      "scenario": "让场景承接一条日常观察",
+      "contentType": "场景图文",
+      "useCases": [
+        "居家记录",
+        "周末日记",
+        "桌面分享"
+      ],
+      "audience": "general",
+      "generatedReferences": [
+        {
+          "id": "builtin-lifestyle-ai-reference-v2",
+          "path": "图库/AI参考/lifestyle-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/lifestyle-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "故事",
+          "rule": "左上短标题置于奶油纸底。",
+          "editable": true
+        },
+        {
+          "region": "主场景",
+          "role": "主体",
+          "rule": "中下部斜放大幅窗边桌面画框。",
+          "editable": true
+        },
+        {
+          "region": "便笺",
+          "role": "观察",
+          "rule": "右下小便笺仅一条感受。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "主场景占据中下部斜放画框，便笺只压画框边缘。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为让场景承接一条日常观察制作场景图文，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "默认原创窗边桌面插画；AI摄影需标明生成，真实记录只用本人授权实拍。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的生活场景场景图文，主题是{topic}。背景采用#f4eadc，文字采用#3b453f，强调色#b96c4f。左上短标题置于奶油纸底。中下部斜放大幅窗边桌面画框。右下小便笺仅一条感受。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。默认原创窗边桌面插画；AI摄影需标明生成，真实记录只用本人授权实拍。保持文字与主体分区。1:1收窄标题与画框间距；16:9左文字右场景，保持主体完整。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "让场景承接一条日常观察"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "周末的光落在书页上"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "从窗边桌面，记录一个小片刻"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "默认原创窗边桌面插画；AI摄影需标明生成，真实记录只用本人授权实拍。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-product",
+      "name": "产品测评",
+      "desc": "左上双行标题，下方一行说明。；中央大幅无品牌产品轮廓与细线标注。；底部三个维度，只填有依据内容。",
+      "style": "测评推荐 · 产品测评",
+      "fit": "产品体验、选购要点、单品推荐",
+      "unfit": "没有实际依据的排名、分数和性能背书",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "无品牌耳机为原创示意；用户指定产品需授权参考，不捏造结构、测量数值和推荐排名。",
+        "1:1缩小产品，三个维度保留；16:9产品居左、维度居右。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "左上双行标题，下方一行说明。"
+        ],
+        [
+          "产品",
+          "中央大幅无品牌产品轮廓与细线标注。"
+        ],
+        [
+          "维度条",
+          "底部三个维度，只填有依据内容。"
+        ]
+      ],
+      "recipe": "product",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#edf1f2"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#173544"
+        },
+        {
+          "k": "强调色",
+          "v": "#ef9f49"
+        },
+        {
+          "k": "辅助色",
+          "v": "#b6c9cf"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "选耳机之前",
+            "先看这三点"
+          ],
+          "subtitle": "一份不带品牌的选购维度示意",
+          "points": [
+            "佩戴感受",
+            "日常连接",
+            "收纳方式"
+          ]
+        },
+        {
+          "titleLines": [
+            "日常听歌",
+            "怎样选耳机"
+          ],
+          "subtitle": "先明确场景，再记录自己的使用感受",
+          "points": [
+            "通勤场景",
+            "操作习惯",
+            "携带需求"
+          ]
+        }
+      ],
+      "sourceTitle": "选耳机之前先看这三点",
+      "referenceTitle": "日常听歌怎样选耳机",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/product-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "选耳机之前先看这三点",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/product-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "日常听歌怎样选耳机",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/product-v2-source.svg",
+      "shots": [
+        "图库/内置模板/product-v2-source.svg",
+        "图库/内置模板/product-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 240,
+          "fontSize": 82,
+          "lineHeight": 104,
+          "color": "#173544",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号82px，行高104px。",
+        "左上双行标题，下方一行说明。",
+        "中央大幅无品牌产品轮廓与细线标注。",
+        "底部三个维度，只填有依据内容。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/product-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-product@2"
+        }
+      },
+      "scenario": "围绕一个产品呈现使用维度",
+      "contentType": "测评推荐",
+      "useCases": [
+        "产品体验",
+        "选购要点",
+        "单品推荐"
+      ],
+      "audience": "general",
+      "generatedReferences": [
+        {
+          "id": "builtin-product-ai-reference-v2",
+          "path": "图库/AI参考/product-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/product-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "测评对象",
+          "rule": "左上双行标题，下方一行说明。",
+          "editable": true
+        },
+        {
+          "region": "产品",
+          "role": "主体",
+          "rule": "中央大幅无品牌产品轮廓与细线标注。",
+          "editable": true
+        },
+        {
+          "region": "维度条",
+          "role": "依据",
+          "rule": "底部三个维度，只填有依据内容。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "单个产品居中，底部横向并列三张维度卡，标注不越过产品。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为围绕一个产品呈现使用维度制作测评推荐，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "无品牌耳机为原创示意；用户指定产品需授权参考，不捏造结构、测量数值和推荐排名。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的产品测评测评推荐，主题是{topic}。背景采用#edf1f2，文字采用#173544，强调色#ef9f49。左上双行标题，下方一行说明。中央大幅无品牌产品轮廓与细线标注。底部三个维度，只填有依据内容。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。无品牌耳机为原创示意；用户指定产品需授权参考，不捏造结构、测量数值和推荐排名。保持文字与主体分区。1:1缩小产品，三个维度保留；16:9产品居左、维度居右。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "围绕一个产品呈现使用维度"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "选耳机之前先看这三点"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "一份不带品牌的选购维度示意"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "无品牌耳机为原创示意；用户指定产品需授权参考，不捏造结构、测量数值和推荐排名。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-news",
+      "name": "资讯速读",
+      "desc": "顶部简报栏明确内容示例。；左上双行短标题，不用虚构突发标签。；中下三行编号事实与左侧时间线。",
+      "style": "资讯卡片 · 资讯速读",
+      "fit": "行业资讯、事件梳理、新闻背景",
+      "unfit": "未经核实的新闻、虚构时效或机构背书",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "采用排版与时间线，不伪造新闻照片、发布机构、引述和时效。",
+        "1:1减小报头，三条信息保留；16:9左标题右三条信息。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "报头",
+          "顶部简报栏明确内容示例。"
+        ],
+        [
+          "标题",
+          "左上双行短标题，不用虚构突发标签。"
+        ],
+        [
+          "信息条",
+          "中下三行编号事实与左侧时间线。"
+        ]
+      ],
+      "recipe": "news",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f6f3eb"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#252b2b"
+        },
+        {
+          "k": "强调色",
+          "v": "#b94734"
+        },
+        {
+          "k": "辅助色",
+          "v": "#d9ded5"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "一条新消息",
+            "先读懂背景"
+          ],
+          "subtitle": "这是资讯排版示例，不对应真实事件",
+          "points": [
+            "发生了什么",
+            "依据在哪里",
+            "后续看什么"
+          ]
+        },
+        {
+          "titleLines": [
+            "信息很多时",
+            "抓住三条线"
+          ],
+          "subtitle": "把已知事实和未确认问题分别记录",
+          "points": [
+            "核对原始出处",
+            "注明发生时间",
+            "列出待核问题"
+          ]
+        }
+      ],
+      "sourceTitle": "一条新消息先读懂背景",
+      "referenceTitle": "信息很多时抓住三条线",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/news-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "一条新消息先读懂背景",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/news-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "信息很多时抓住三条线",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/news-v2-source.svg",
+      "shots": [
+        "图库/内置模板/news-v2-source.svg",
+        "图库/内置模板/news-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 292,
+          "fontSize": 82,
+          "lineHeight": 104,
+          "color": "#252b2b",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号82px，行高104px。",
+        "顶部简报栏明确内容示例。",
+        "左上双行短标题，不用虚构突发标签。",
+        "中下三行编号事实与左侧时间线。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/news-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-news@2"
+        }
+      },
+      "scenario": "把一件已核实事件拆成三条信息",
+      "contentType": "资讯卡片",
+      "useCases": [
+        "行业资讯",
+        "事件梳理",
+        "新闻背景"
+      ],
+      "audience": "general",
+      "generatedReferences": [
+        {
+          "id": "builtin-news-ai-reference-v2",
+          "path": "图库/AI参考/news-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/news-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "报头",
+          "role": "身份",
+          "rule": "顶部简报栏明确内容示例。",
+          "editable": true
+        },
+        {
+          "region": "标题",
+          "role": "事件",
+          "rule": "左上双行短标题，不用虚构突发标签。",
+          "editable": true
+        },
+        {
+          "region": "信息条",
+          "role": "事实",
+          "rule": "中下三行编号事实与左侧时间线。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "报头在上，三条编号沿左侧时间线纵向排列。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为把一件已核实事件拆成三条信息制作资讯卡片，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "采用排版与时间线，不伪造新闻照片、发布机构、引述和时效。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的资讯速读资讯卡片，主题是{topic}。背景采用#f6f3eb，文字采用#252b2b，强调色#b94734。顶部简报栏明确内容示例。左上双行短标题，不用虚构突发标签。中下三行编号事实与左侧时间线。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。采用排版与时间线，不伪造新闻照片、发布机构、引述和时效。保持文字与主体分区。1:1减小报头，三条信息保留；16:9左标题右三条信息。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "把一件已核实事件拆成三条信息"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "一条新消息先读懂背景"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "这是资讯排版示例，不对应真实事件"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "采用排版与时间线，不伪造新闻照片、发布机构、引述和时效。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-ai-tool",
+      "name": "AI工具实测",
+      "desc": "上方双行任务，不声称测试结论。；中段深色试验台，一侧输入一侧输出。；底部记录观察位置，示例不是真实测试。",
+      "style": "AI实测图文 · AI工具实测",
+      "fit": "AI工具体验、提示词试用、输出复盘",
+      "unfit": "没有原始输入输出的实测结论",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "默认无品牌示意界面；真实实测仅使用实际输入输出与模型版本，不编造跑分或成功率。",
+        "1:1压缩页眉保留输入输出；16:9左右铺开试验台与观察区。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方双行任务，不声称测试结论。"
+        ],
+        [
+          "输入输出",
+          "中段深色试验台，一侧输入一侧输出。"
+        ],
+        [
+          "观察",
+          "底部记录观察位置，示例不是真实测试。"
+        ]
+      ],
+      "recipe": "ai-tool",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#e5eef0"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#183b4d"
+        },
+        {
+          "k": "强调色",
+          "v": "#df7e4b"
+        },
+        {
+          "k": "辅助色",
+          "v": "#a5bfc8"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "同一个任务",
+            "试试AI工具"
+          ],
+          "subtitle": "试验台排版示意 · 不代表真实实测",
+          "points": [
+            "给出原始材料",
+            "保留完整输出",
+            "逐项人工核对"
+          ]
+        },
+        {
+          "titleLines": [
+            "先写清输入",
+            "再检查输出"
+          ],
+          "subtitle": "用可复核的记录，说明工具做到了哪一步",
+          "points": [
+            "写下任务条件",
+            "记录模型版本",
+            "核对输出事实"
+          ]
+        }
+      ],
+      "sourceTitle": "同一个任务试试AI工具",
+      "referenceTitle": "先写清输入再检查输出",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/ai-tool-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "同一个任务试试AI工具",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/ai-tool-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "先写清输入再检查输出",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/ai-tool-v2-source.svg",
+      "shots": [
+        "图库/内置模板/ai-tool-v2-source.svg",
+        "图库/内置模板/ai-tool-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 238,
+          "fontSize": 82,
+          "lineHeight": 104,
+          "color": "#183b4d",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号82px，行高104px。",
+        "上方双行任务，不声称测试结论。",
+        "中段深色试验台，一侧输入一侧输出。",
+        "底部记录观察位置，示例不是真实测试。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/ai-tool-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-ai-tool@2"
+        }
+      },
+      "scenario": "围绕同一输入呈现工具试用过程",
+      "contentType": "AI实测图文",
+      "useCases": [
+        "AI工具体验",
+        "提示词试用",
+        "输出复盘"
+      ],
+      "audience": "ai",
+      "generatedReferences": [
+        {
+          "id": "builtin-ai-tool-ai-reference-v2",
+          "path": "图库/AI参考/ai-tool-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/ai-tool-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "任务",
+          "rule": "上方双行任务，不声称测试结论。",
+          "editable": true
+        },
+        {
+          "region": "输入输出",
+          "role": "过程",
+          "rule": "中段深色试验台，一侧输入一侧输出。",
+          "editable": true
+        },
+        {
+          "region": "观察",
+          "role": "证据",
+          "rule": "底部记录观察位置，示例不是真实测试。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "深色试验台分为输入、输出两区，下方独立放观察记录。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为围绕同一输入呈现工具试用过程制作AI实测图文，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "默认无品牌示意界面；真实实测仅使用实际输入输出与模型版本，不编造跑分或成功率。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的AI工具实测AI实测图文，主题是{topic}。背景采用#e5eef0，文字采用#183b4d，强调色#df7e4b。上方双行任务，不声称测试结论。中段深色试验台，一侧输入一侧输出。底部记录观察位置，示例不是真实测试。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。默认无品牌示意界面；真实实测仅使用实际输入输出与模型版本，不编造跑分或成功率。保持文字与主体分区。1:1压缩页眉保留输入输出；16:9左右铺开试验台与观察区。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "围绕同一输入呈现工具试用过程"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "同一个任务试试AI工具"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "试验台排版示意 · 不代表真实实测"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "默认无品牌示意界面；真实实测仅使用实际输入输出与模型版本，不编造跑分或成功率。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    },
+    {
+      "id": "builtin-agent",
+      "name": "Agent工作流",
+      "desc": "上方两行说明工作流目标。；中段四节点沿折线路径串联。；检查节点带暖色描边，出口标明产物。",
+      "style": "AI流程图解 · Agent工作流",
+      "fit": "Agent流程、自动化教学、任务拆解",
+      "unfit": "声称自动化已经联通或已经执行",
+      "varies": [
+        "可替换标题、副标题与已核实内容；标题最多2行，每行最多8字。",
+        "流程为设计示意，不表示工具已联通、任务已执行或全自动安全。",
+        "1:1节点靠拢成两行；16:9四节点水平展开，人工检查点保留。 这是重排建议，尚未经AI跨比例验证。"
+      ],
+      "why": [
+        [
+          "标题",
+          "上方两行说明工作流目标。"
+        ],
+        [
+          "节点",
+          "中段四节点沿折线路径串联。"
+        ],
+        [
+          "人工检查",
+          "检查节点带暖色描边，出口标明产物。"
+        ]
+      ],
+      "recipe": "agent",
+      "version": 2,
+      "definitionVersion": 2,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f1f1e7"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#23453f"
+        },
+        {
+          "k": "强调色",
+          "v": "#da8a51"
+        },
+        {
+          "k": "辅助色",
+          "v": "#c6d6bd"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "一个小任务",
+            "交给Agent"
+          ],
+          "subtitle": "从输入到交付，保留人工检查点",
+          "points": [
+            "收集材料",
+            "整理草稿",
+            "人工检查",
+            "形成交付"
+          ]
+        },
+        {
+          "titleLines": [
+            "先看每一步",
+            "再连成工作流"
+          ],
+          "subtitle": "流程示意 · 未连接实际工具或执行任务",
+          "points": [
+            "明确输入",
+            "分步处理",
+            "确认依据",
+            "输出结果"
+          ]
+        }
+      ],
+      "sourceTitle": "一个小任务交给Agent",
+      "referenceTitle": "先看每一步再连成工作流",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/agent-v2-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "一个小任务交给Agent",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/agent-v2-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "先看每一步再连成工作流",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/agent-v2-source.svg",
+      "shots": [
+        "图库/内置模板/agent-v2-source.svg",
+        "图库/内置模板/agent-v2-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 238,
+          "fontSize": 82,
+          "lineHeight": 104,
+          "color": "#23453f",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，内容安全边距至少60px，页脚y=1160。",
+        "标题x=66，最多2行，每行最多8字，字号82px，行高104px。",
+        "上方两行说明工作流目标。",
+        "中段四节点沿折线路径串联。",
+        "检查节点带暖色描边，出口标明产物。",
+        "文字与主体分区；主体不得遮挡标题，未提供的事实与身份不添加。",
+        "主参考仅3:4；1:1与16:9需按变化项重排后逐张验收，不直接裁切。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/agent-v2-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-agent@2"
+        }
+      },
+      "scenario": "把任务交接和人工检查点画清楚",
+      "contentType": "AI流程图解",
+      "useCases": [
+        "Agent流程",
+        "自动化教学",
+        "任务拆解"
+      ],
+      "audience": "ai",
+      "generatedReferences": [
+        {
+          "id": "builtin-agent-ai-reference-v2",
+          "path": "图库/AI参考/agent-v2.png",
+          "role": "style",
+          "origin": "ai-generated",
+          "templateVersion": 2,
+          "accepted": false,
+          "promptFile": "assets/ai-reference-prompts/agent-v2.md",
+          "tool": "imagegen",
+          "generatedAt": "2026-10-17",
+          "width": 1086,
+          "height": 1448
+        }
+      ],
+      "anatomy": [
+        {
+          "region": "标题",
+          "role": "目标",
+          "rule": "上方两行说明工作流目标。",
+          "editable": true
+        },
+        {
+          "region": "节点",
+          "role": "步骤",
+          "rule": "中段四节点沿折线路径串联。",
+          "editable": true
+        },
+        {
+          "region": "人工检查",
+          "role": "边界",
+          "rule": "检查节点带暖色描边，出口标明产物。",
+          "editable": true
+        },
+        {
+          "region": "版式结构",
+          "role": "固定关系",
+          "rule": "四节点按左上、右上、右下、左下折线串联，第三步保留人工检查。",
+          "editable": false
+        }
+      ],
+      "generation": {
+        "intent": "为把任务交接和人工检查点画清楚制作AI流程图解，优先帮助生图模型保持版式和内容边界。",
+        "subjectPolicy": "流程为设计示意，不表示工具已联通、任务已执行或全自动安全。",
+        "textPolicy": "仅呈现用户确认的标题和文字；标题最多2行，每行最多8字。文字不能稳定生成时先生成留白底图，再排真实文字；不画假字、假Logo或二维码。",
+        "referencePolicy": "选定本模板的source或reference资产作为构图参考；只借用分区、层级与配色。用户素材只按其授权用途使用；AI概念参考不作为还原通过或事实证明。",
+        "promptTemplate": "这是一张{ratio}的Agent工作流AI流程图解，主题是{topic}。背景采用#f1f1e7，文字采用#23453f，强调色#da8a51。上方两行说明工作流目标。中段四节点沿折线路径串联。检查节点带暖色描边，出口标明产物。大标题逐字写着“{title}”，辅助文字仅为“{supportingText}”。画面主体是{subject}。流程为设计示意，不表示工具已联通、任务已执行或全自动安全。保持文字与主体分区。1:1节点靠拢成两行；16:9四节点水平展开，人工检查点保留。 内容依据为{facts}；缺少依据时省略相应断言。",
+        "negative": [
+          "不复制第三方人物身份、商标、水印",
+          "不制造排名、粉丝量、性能分数、平台认证和未核实的新闻事实",
+          "不放二维码、乱码或额外文字",
+          "不裁断标题，不以装饰遮字。"
+        ],
+        "variables": [
+          {
+            "key": "ratio",
+            "label": "比例",
+            "required": true,
+            "example": "3:4"
+          },
+          {
+            "key": "topic",
+            "label": "主题",
+            "required": false,
+            "example": "把任务交接和人工检查点画清楚"
+          },
+          {
+            "key": "title",
+            "label": "标题",
+            "required": true,
+            "example": "一个小任务交给Agent"
+          },
+          {
+            "key": "supportingText",
+            "label": "辅助文字",
+            "required": false,
+            "example": "从输入到交付，保留人工检查点"
+          },
+          {
+            "key": "subject",
+            "label": "主体",
+            "required": false,
+            "example": "流程为设计示意，不表示工具已联通、任务已执行或全自动安全。"
+          },
+          {
+            "key": "facts",
+            "label": "事实依据",
+            "required": false,
+            "example": "由用户提供的材料与来源；无依据不写事实断言"
+          }
+        ],
+        "qualityChecks": [
+          "大标题逐字正确且在安全边界内。",
+          "主视觉和标题层级与所选参考一致。",
+          "主体不压字，辅助内容不抢标题。",
+          "人物、商标和照片素材有授权或明确为生成示意。",
+          "没有新增未提供的事实、数字、排名或效果背书。",
+          "比例变化经过重排，没有直接裁切关键内容。",
+          "生成参考只标为概念样图，不标为还原验收。"
+        ]
+      },
+      "supportedRatios": [
+        "3:4",
+        "1:1",
+        "16:9"
+      ],
+      "ratioValidation": {
+        "3:4": "原创SVG已排版，AI还原未验收",
+        "1:1": "仅重排建议，未生成验证",
+        "16:9": "仅重排建议，未生成验证"
+      }
+    }
+  ]
+}

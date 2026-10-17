@@ -1,0 +1,992 @@
+{
+  "schema": 1,
+  "version": 1,
+  "templates": [
+    {
+      "id": "builtin-geometry",
+      "name": "大字几何",
+      "desc": "钴蓝底与柠檬黄圆环，左上两行大字，下半部是三角与圆环",
+      "style": "几何海报 · 大字先行",
+      "fit": "明确观点、创作方法、短标题知识封面",
+      "unfit": "多段说明、密集清单、依赖真人照片的故事",
+      "varies": [
+        "替换标题与一句副标题，保留两行标题区。",
+        "角标编号可变，不添加未经证实的数字或卖点。"
+      ],
+      "why": [
+        [
+          "一眼读标题",
+          "白字与深蓝底拉开明暗，标题独占上半部。"
+        ],
+        [
+          "装饰让出路",
+          "圆环放在右下，几何形状不挡住字。"
+        ],
+        [
+          "同色串起来",
+          "角标和圆环共用黄色，视线从上到下。"
+        ]
+      ],
+      "recipe": "geometry",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#203a92"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#ffffff"
+        },
+        {
+          "k": "强调色",
+          "v": "#f5ed78"
+        },
+        {
+          "k": "辅助色",
+          "v": "#b8cbf5"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "先想清楚",
+            "再动手"
+          ],
+          "subtitle": "把一个想法，变成一篇内容",
+          "points": []
+        },
+        {
+          "titleLines": [
+            "把复杂问题",
+            "讲得更清楚"
+          ],
+          "subtitle": "从主题出发，给表达留出空间",
+          "points": []
+        }
+      ],
+      "sourceTitle": "先想清楚再动手",
+      "referenceTitle": "把复杂问题讲得更清楚",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/geometry-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "先想清楚再动手",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/geometry-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把复杂问题讲得更清楚",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/geometry-source.svg",
+      "shots": [
+        "图库/内置模板/geometry-source.svg",
+        "图库/内置模板/geometry-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 320,
+          "fontSize": 112,
+          "lineHeight": 130,
+          "color": "#ffffff",
+          "weight": 800,
+          "maxLines": 2,
+          "maxCharsPerLine": 6
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多6个汉字，字号112px，行高130px。",
+        "背景固定钴蓝、标题白色，黄色只用于角标与右下圆环。",
+        "装饰图形限于y≥640，不得覆盖标题与副标题。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/geometry-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-geometry@1"
+        }
+      }
+    },
+    {
+      "id": "builtin-paper",
+      "name": "纸感清单",
+      "desc": "暖纸底上是一张带胶带的清单，三行空勾选框与短动作逐行对齐",
+      "style": "纸张手账 · 行动清单",
+      "fit": "准备清单、行动步骤、阅读与整理方法",
+      "unfit": "纯情绪金句、复杂对照表、需要大幅实拍的内容",
+      "varies": [
+        "替换两行标题、一句副标题和三条真实动作。",
+        "没有三条事实时先补内容，不为版面编造。"
+      ],
+      "why": [
+        [
+          "像一张便笺",
+          "纸张、胶带与空方框表达可执行的小清单。"
+        ],
+        [
+          "逐行能扫描",
+          "每条动作固定同一左边界，阅读顺序明确。"
+        ],
+        [
+          "细节在边缘",
+          "纸纹只露在四边，文字背后保持干净。"
+        ]
+      ],
+      "recipe": "paper",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#eee7d9"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#2b463c"
+        },
+        {
+          "k": "强调色",
+          "v": "#b2c7a8"
+        },
+        {
+          "k": "辅助色",
+          "v": "#d4c8b2"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "发布前",
+            "检查这三件事"
+          ],
+          "subtitle": "一张小清单，少一点遗漏",
+          "points": [
+            "主题说清楚",
+            "事实有出处",
+            "下一步明确"
+          ]
+        },
+        {
+          "titleLines": [
+            "把一周灵感",
+            "整理成小清单"
+          ],
+          "subtitle": "先收集，再选出值得写的那条",
+          "points": [
+            "记下原想法",
+            "选一个主题",
+            "写一句开头"
+          ]
+        }
+      ],
+      "sourceTitle": "发布前检查这三件事",
+      "referenceTitle": "把一周灵感整理成小清单",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/paper-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "发布前检查这三件事",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/paper-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把一周灵感整理成小清单",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/paper-source.svg",
+      "shots": [
+        "图库/内置模板/paper-source.svg",
+        "图库/内置模板/paper-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 100,
+          "y": 275,
+          "fontSize": 84,
+          "lineHeight": 104,
+          "color": "#2b463c",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 7
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=100，最多2行，每行最多7个汉字，字号84px，行高104px。",
+        "内页x=58,y=52,w=784,h=1084，圆角8px；纸纹只在内页外。",
+        "固定三行清单，每行一个空方框和最多8字的动作，行距126px。",
+        "胶带只在顶部，虚线分开标题区与清单区。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/paper-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-paper@1"
+        }
+      }
+    },
+    {
+      "id": "builtin-notes",
+      "name": "知识笔记",
+      "desc": "点阵笔记纸、黄色荧光条与一分为二的知识结构，强调理解后再应用",
+      "style": "点阵笔记 · 知识结构",
+      "fit": "概念讲解、学习方法、一个问题的两个步骤",
+      "unfit": "复杂导图、需要精确数据图表的内容",
+      "varies": [
+        "替换标题、副标题、一个问题与两个应用短语。",
+        "结果短语各不超过5字，分支意义可变，数量固定两个。"
+      ],
+      "why": [
+        [
+          "结构在说话",
+          "中心问题到两张小卡的连线直接展示知识关系。"
+        ],
+        [
+          "只标一个重点",
+          "黄色只划过第一行，避免满页都是重点。"
+        ],
+        [
+          "笔记有秩序",
+          "点阵和左边线建立笔记感，文字水平排列。"
+        ]
+      ],
+      "recipe": "notes",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#fbf9f0"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#254a65"
+        },
+        {
+          "k": "强调色",
+          "v": "#f6df7d"
+        },
+        {
+          "k": "辅助色",
+          "v": "#d8e8e9"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "学会一个概念",
+            "先画一张小图"
+          ],
+          "subtitle": "把知识整理成能复述的结构",
+          "points": [
+            "它在回答什么",
+            "换个说法",
+            "举个例子"
+          ]
+        },
+        {
+          "titleLines": [
+            "读完一本书后",
+            "留下两条线索"
+          ],
+          "subtitle": "一条线索解释，一条线索行动",
+          "points": [
+            "我真正读懂了吗",
+            "讲清核心",
+            "做次练习"
+          ]
+        }
+      ],
+      "sourceTitle": "学会一个概念先画一张小图",
+      "referenceTitle": "读完一本书后留下两条线索",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/notes-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "学会一个概念先画一张小图",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/notes-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "读完一本书后留下两条线索",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/notes-source.svg",
+      "shots": [
+        "图库/内置模板/notes-source.svg",
+        "图库/内置模板/notes-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 120,
+          "y": 271,
+          "fontSize": 76,
+          "lineHeight": 100,
+          "color": "#254a65",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=120，最多2行，每行最多8个汉字，字号76px，行高100px。",
+        "点阵每30px一个1.4px圆点，笔记线固定x=86。",
+        "问题卡位于y=510–650，两条分支连接y=792的两张结果卡。",
+        "荧光条只划标题第一行，所有线条用蓝墨，线宽2–3px。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/notes-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-notes@1"
+        }
+      }
+    },
+    {
+      "id": "builtin-comparison",
+      "name": "双栏对比",
+      "desc": "左白右墨的双列卡片，把习惯做法和可尝试动作按行配对",
+      "style": "双栏编辑 · 同维对照",
+      "fit": "方法对比、前后变化、同维度流程选择",
+      "unfit": "没有可比维度、三项以上横向比较的内容",
+      "varies": [
+        "替换总标题、副标题与三组同一维度的对照。",
+        "左右名可改为方案A/B，不默认右边必然更好。"
+      ],
+      "why": [
+        [
+          "按行配对",
+          "同一高度放同一维度，避免来回寻找对应项。"
+        ],
+        [
+          "两列有边界",
+          "明暗卡片分开两个方案，装饰只保留一个箭头。"
+        ],
+        [
+          "选择有前提",
+          "副标题提醒先比较再选择，不暗示普遍最优。"
+        ]
+      ],
+      "recipe": "comparison",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f6f6ed"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#183a36"
+        },
+        {
+          "k": "强调色",
+          "v": "#d5f978"
+        },
+        {
+          "k": "辅助色",
+          "v": "#dbe9d4"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "同一件小事",
+            "换一种做法"
+          ],
+          "subtitle": "先看差异，再决定下一步",
+          "points": [
+            [
+              "想到哪写到哪",
+              "先列一个结构"
+            ],
+            [
+              "收集太多资料",
+              "先确认一个问题"
+            ],
+            [
+              "等灵感来",
+              "先写一小段"
+            ]
+          ]
+        },
+        {
+          "titleLines": [
+            "内容越写越乱",
+            "试试这组对照"
+          ],
+          "subtitle": "把三个习惯，改成三个动作",
+          "points": [
+            [
+              "开头铺太长",
+              "先说核心结论"
+            ],
+            [
+              "例子堆一起",
+              "一段只举一例"
+            ],
+            [
+              "结尾没行动",
+              "留一个小练习"
+            ]
+          ]
+        }
+      ],
+      "sourceTitle": "同一件小事换一种做法",
+      "referenceTitle": "内容越写越乱试试这组对照",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/comparison-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "同一件小事换一种做法",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/comparison-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "内容越写越乱试试这组对照",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/comparison-source.svg",
+      "shots": [
+        "图库/内置模板/comparison-source.svg",
+        "图库/内置模板/comparison-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 254,
+          "fontSize": 82,
+          "lineHeight": 105,
+          "color": "#183a36",
+          "weight": 750,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号82px，行高105px。",
+        "两张卡x=56/474、宽370px、高518px，内部文字左对齐。",
+        "固定三组同维条目，同组文字同一y坐标，行距94px，每格最多9字。",
+        "左卡白底深墨，右卡深墨白字，绿色只用于角标与方向箭头。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/comparison-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-comparison@1"
+        }
+      }
+    },
+    {
+      "id": "builtin-neon",
+      "name": "霓虹科技",
+      "desc": "深夜网格底，青色与紫色轨道围绕中心核心，上半部保持大字清晰",
+      "style": "数字实验室 · 轨道网格",
+      "fit": "AI工具方法、技术入门、数字工作流概念",
+      "unfit": "温情人物故事、长段科普、未经验证的性能宣传",
+      "varies": [
+        "替换两行标题、副标题和四步以内的流程文案。",
+        "中心AI可替换为最多两个拉丁字母，不添加虚构性能数字。"
+      ],
+      "why": [
+        [
+          "图形提供氛围",
+          "网格与轨道承担科技感，文字保持直接。"
+        ],
+        [
+          "不用发光读字",
+          "标题采用纯色，缩略图也有清晰边缘。"
+        ],
+        [
+          "流程有起点",
+          "底部步骤从左向右，便于理解方法顺序。"
+        ]
+      ],
+      "recipe": "neon",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#091526"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#b69bff"
+        },
+        {
+          "k": "强调色",
+          "v": "#64edd7"
+        },
+        {
+          "k": "辅助色",
+          "v": "#203b55"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "把工具串起来",
+            "让流程走下去"
+          ],
+          "subtitle": "一个入口，看清每一步的输入输出",
+          "points": [
+            "输入 → 整理 → 检查 → 输出"
+          ]
+        },
+        {
+          "titleLines": [
+            "从一个问题",
+            "开始用好工具"
+          ],
+          "subtitle": "先定义任务，再挑选合适的能力",
+          "points": [
+            "问题 → 拆解 → 试做 → 验证"
+          ]
+        }
+      ],
+      "sourceTitle": "把工具串起来让流程走下去",
+      "referenceTitle": "从一个问题开始用好工具",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/neon-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把工具串起来让流程走下去",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/neon-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "从一个问题开始用好工具",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/neon-source.svg",
+      "shots": [
+        "图库/内置模板/neon-source.svg",
+        "图库/内置模板/neon-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 299,
+          "fontSize": 90,
+          "lineHeight": 116,
+          "color": "#f3f8ff",
+          "weight": 800,
+          "maxLines": 2,
+          "maxCharsPerLine": 8
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号90px，行高116px。",
+        "背景固定#091526，网格间距60px，不使用照片。",
+        "主轨道中心(450,770)，两条椭圆分别旋转正负32°，轨道不进入标题区。",
+        "流程条位于x=64,y=1030,w=772,h=72，最多24个字符。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/neon-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-neon@1"
+        }
+      }
+    },
+    {
+      "id": "builtin-magazine",
+      "name": "杂志留白",
+      "desc": "暖白页面、宋体标题与右下陶土拱门插画，用留白形成生活专栏",
+      "style": "生活杂志 · 宋体留白",
+      "fit": "日常观察、阅读分享、生活方式与慢节奏观点",
+      "unfit": "密集参数比较、紧急通知、大量标题文字",
+      "varies": [
+        "替换标题、副标题和底部最多16字的一句观察。",
+        "期号可更新，保持两种中性色与一种陶土色。"
+      ],
+      "why": [
+        [
+          "留白有位置",
+          "标题与插画分占页面两块区域，空处让阅读停下来。"
+        ],
+        [
+          "字形定语气",
+          "宋体搭配细分隔线，建立杂志专栏感。"
+        ],
+        [
+          "插画不抢话",
+          "拱门没有具体人物与商品，可用于不同生活主题。"
+        ]
+      ],
+      "recipe": "magazine",
+      "version": 1,
+      "definitionVersion": 1,
+      "ratio": "3:4",
+      "builtin": true,
+      "owner": "自家的",
+      "source": "Nova Content Hub 原创设计",
+      "from": "内置原创 · 公开方法参考见来源",
+      "madeAt": "2026-10-17",
+      "used": 0,
+      "colors": [
+        {
+          "k": "底色",
+          "v": "#f5f2e9"
+        },
+        {
+          "k": "文字与线条",
+          "v": "#262923"
+        },
+        {
+          "k": "强调色",
+          "v": "#b76345"
+        },
+        {
+          "k": "辅助色",
+          "v": "#ded9ca"
+        }
+      ],
+      "samples": [
+        {
+          "titleLines": [
+            "给日常",
+            "留一点空白"
+          ],
+          "subtitle": "不必把每一分钟都填满",
+          "points": [
+            "慢一点，也可以看得更清楚。"
+          ]
+        },
+        {
+          "titleLines": [
+            "把普通一天",
+            "过成新的发现"
+          ],
+          "subtitle": "从一个细节，重新认识生活",
+          "points": [
+            "写下一件今天才注意到的小事。"
+          ]
+        }
+      ],
+      "sourceTitle": "给日常留一点空白",
+      "referenceTitle": "把普通一天过成新的发现",
+      "assets": [
+        {
+          "role": "source",
+          "path": "图库/内置模板/magazine-source.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "给日常留一点空白",
+          "origin": "original",
+          "aiTested": false
+        },
+        {
+          "role": "reference",
+          "path": "图库/内置模板/magazine-reference.svg",
+          "width": 900,
+          "height": 1200,
+          "title": "把普通一天过成新的发现",
+          "origin": "original",
+          "aiTested": false
+        }
+      ],
+      "img": "图库/内置模板/magazine-source.svg",
+      "shots": [
+        "图库/内置模板/magazine-source.svg",
+        "图库/内置模板/magazine-reference.svg"
+      ],
+      "spec": {
+        "canvas": {
+          "width": 900,
+          "height": 1200,
+          "safeMargin": 60
+        },
+        "title": {
+          "x": 66,
+          "y": 300,
+          "fontSize": 86,
+          "lineHeight": 108,
+          "color": "#262923",
+          "weight": 500,
+          "maxLines": 2,
+          "maxCharsPerLine": 8,
+          "fontFamily": "Songti SC,SimSun,serif"
+        },
+        "systemFontsOnly": true,
+        "externalAssetsAllowed": false
+      },
+      "fixed": [
+        "画布900×1200，安全边距至少60px，页脚位于y=1160。",
+        "标题x=66，最多2行，每行最多8个汉字，字号86px，行高108px。",
+        "顶部刊名与分隔线固定y=96/124，副标题固定y=474。",
+        "插画区域x=310,y=566,w=524,h=410，只用原创矩形、拱门与圆形。",
+        "标题与插画至少相隔60px，正文不叠图，不使用纹理和阴影。"
+      ],
+      "provenance": {
+        "origin": "original",
+        "creator": "Nova Content Hub",
+        "privacy": "fictional",
+        "aiTested": false,
+        "license": "project-original",
+        "inspiredBy": [
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-xhs-images/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "独立记录风格、布局和配色；不复制成品图或提示词。"
+          },
+          {
+            "url": "https://github.com/JimLiu/baoyu-skills/blob/1567581c26ec29f4216c6e6835415bf30343b0e3/skills/baoyu-cover-image/SKILL.md",
+            "license": "MIT",
+            "commit": "1567581c26ec29f4216c6e6835415bf30343b0e3",
+            "method": "分别说明封面类型、配色、渲染、文本密度、情绪和字体。"
+          }
+        ]
+      },
+      "validation": {
+        "kind": "authored-design",
+        "aiTested": false,
+        "referenceImage": "图库/内置模板/magazine-reference.svg",
+        "provenance": {
+          "author": "Nova Content Hub",
+          "license": "project-original",
+          "source": "builtin:builtin-magazine@1"
+        }
+      }
+    }
+  ]
+}

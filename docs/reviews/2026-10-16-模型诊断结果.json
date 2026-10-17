@@ -1,0 +1,33 @@
+{
+  "scope": "源码模型隔离诊断，非DOM/浏览器/真实宿主/生产数据测试；断言确认当前缺陷表现，非修复后通过",
+  "sourceSha256": {
+    "原型/data.js": "18a0302c68193459c89e88c20671f326130815bb22dc2df6c762cc9d1f8f5168",
+    "原型/app.js": "0f5f6a40b5fdc3f2e34b4655b06eefa153ab9ec325e853ffb8dfcd7ab2499d0e"
+  },
+  "observations": [
+    {
+      "case": "business-state-reload",
+      "observed": "内存新增内容在重新初始化后消失"
+    },
+    {
+      "case": "builtin-channel-reload",
+      "observed": "内置渠道修改规格后重新初始化恢复默认值"
+    },
+    {
+      "case": "custom-channel-control",
+      "observed": "对照组：自定义渠道规格可以跨初始化保存"
+    },
+    {
+      "case": "equivalent-ratios",
+      "observed": "3:4识别为竖版，1080:1440识别为另一自定义规格"
+    },
+    {
+      "case": "invalid-calendar-dates",
+      "observed": "2026-99-99和2026-02-30通过日期规范化；有效日期对照也通过"
+    },
+    {
+      "case": "planned-vs-actual-calendar",
+      "observed": "计划17日实际19日发布，postsOn仍归17日；需明确日历展示口径"
+    }
+  ]
+}

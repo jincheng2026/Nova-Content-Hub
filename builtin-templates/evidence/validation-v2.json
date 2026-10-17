@@ -1,0 +1,173 @@
+{
+  "date": "2026-10-17",
+  "catalogVersion": 2,
+  "counts": {
+    "templates": 12,
+    "general": 9,
+    "ai": 3,
+    "v2Svg": 24,
+    "preservedV1Svg": 12,
+    "aiConceptReferences": 6,
+    "legacyDefinitions": 18
+  },
+  "checks": {
+    "json": true,
+    "xmlDimensions": true,
+    "svgNoScriptsOrExternalAssets": true,
+    "distinctRecipeCount": 12,
+    "generatorCheck": "passed",
+    "nativeContactSheets": "24 complete frames viewed; temporary square viewport prevents Quick Look cropping",
+    "aiRestoreTested": false,
+    "otherRatiosTested": false,
+    "crossPlatformFontsTested": false,
+    "v2DraftDiff": "only generatedReferences changed",
+    "aiReferenceFiles": "6 PNG signatures, dimensions 1086x1448, bytes and SHA256 match generated-files.json; prompts exist",
+    "svgBytesUnchangedAfterReferenceBatch": true
+  },
+  "assets": [
+    {
+      "path": "原型/图库/内置模板/geometry-v2-source.svg",
+      "sha256": "d80ccbc72bd69153c5af090268b2ce9fd58d37df3da539fc6f34a69a4057a2d0"
+    },
+    {
+      "path": "原型/图库/内置模板/geometry-v2-reference.svg",
+      "sha256": "dd25eefa6df1b1af43fad6b7dffa1dbcbb8b53ae400ea440651adcf8e8486805"
+    },
+    {
+      "path": "原型/图库/内置模板/paper-v2-source.svg",
+      "sha256": "5a62db2f7eca08260c67a8c9a93e07b3ee92c8774c4bcf19b8ad52f67f20e2d2"
+    },
+    {
+      "path": "原型/图库/内置模板/paper-v2-reference.svg",
+      "sha256": "b08c57d07c0b504a4defc3792fe2464bc018212440ce4eded0012f29758c3b49"
+    },
+    {
+      "path": "原型/图库/内置模板/notes-v2-source.svg",
+      "sha256": "9adc55f159db9039d42c7426a047a83aa5d2f5af9621ad89e8c2dd01dda3f225"
+    },
+    {
+      "path": "原型/图库/内置模板/notes-v2-reference.svg",
+      "sha256": "32b78826163aef60bac0b6016cc3882498edf7635b095ced2717ce30718d5bdf"
+    },
+    {
+      "path": "原型/图库/内置模板/comparison-v2-source.svg",
+      "sha256": "410868e87fb10eaf4f421153eb80ef77202bd791831a2c589b2e0c532835798a"
+    },
+    {
+      "path": "原型/图库/内置模板/comparison-v2-reference.svg",
+      "sha256": "c2b3a32719a37bc7a51b4b6bd287ab4f0638898ec89ea1dd1f43bae444e7fb91"
+    },
+    {
+      "path": "原型/图库/内置模板/neon-v2-source.svg",
+      "sha256": "95cf1787d0daab1ebdd40a5e90d9d9cdc11eeb7b8b6260000c0e2a19326b1353"
+    },
+    {
+      "path": "原型/图库/内置模板/neon-v2-reference.svg",
+      "sha256": "12d7d466eba214c3ce370f8c784dac7222654cfdfdc6a417e7774ad069d93f74"
+    },
+    {
+      "path": "原型/图库/内置模板/magazine-v2-source.svg",
+      "sha256": "77c44855f4e7915610a3eb3bff1717bb21a2a653fc67a1a1a5316a261c5f0de4"
+    },
+    {
+      "path": "原型/图库/内置模板/magazine-v2-reference.svg",
+      "sha256": "9219e1128b9e856dc0bbeba35514915e727cd1d7714bdac26a035cfbd0e8870a"
+    },
+    {
+      "path": "原型/图库/内置模板/interview-v2-source.svg",
+      "sha256": "ab2b93baf76607a4c85ba127631dacfa9cdc342667f5ff2dcab0f06062f8f9e0"
+    },
+    {
+      "path": "原型/图库/内置模板/interview-v2-reference.svg",
+      "sha256": "93da57f4ff6eefea69ff31de5f469514eb0bd8106900e74d48f91d45481872f1"
+    },
+    {
+      "path": "原型/图库/内置模板/lifestyle-v2-source.svg",
+      "sha256": "48422f2674731270632e1a13986cdf6424e5e1c175eed5a69cadf85191c458b4"
+    },
+    {
+      "path": "原型/图库/内置模板/lifestyle-v2-reference.svg",
+      "sha256": "45c49f21ca668e958ccc1077fd275bb41a88b589cc517158375e0d9e989f780c"
+    },
+    {
+      "path": "原型/图库/内置模板/product-v2-source.svg",
+      "sha256": "18d19445a2c595fa00b58acb971c2a61c0d0a39016e00f85c151a4593948b4ed"
+    },
+    {
+      "path": "原型/图库/内置模板/product-v2-reference.svg",
+      "sha256": "29d7a6363cae1b4996ff94c1d229790c9583f9426b8acce8bc513d8b47367545"
+    },
+    {
+      "path": "原型/图库/内置模板/news-v2-source.svg",
+      "sha256": "20125909f8fc7e3e8ab8b6d5b6a8951c7c88109b6dae7400ac73086b11a81502"
+    },
+    {
+      "path": "原型/图库/内置模板/news-v2-reference.svg",
+      "sha256": "90203c51317e7ef5e5668d8f7e00d617b1855ff2c33531cc5f315bd6e542b2eb"
+    },
+    {
+      "path": "原型/图库/内置模板/ai-tool-v2-source.svg",
+      "sha256": "04d530311db586cd0b7368d6c6fd355e6de4049ef415e8dc089ad6725f732206"
+    },
+    {
+      "path": "原型/图库/内置模板/ai-tool-v2-reference.svg",
+      "sha256": "dd7ef95f1bba41350d8d62341f8bd8ce646e65295d419d03fbb65ab3dd95e144"
+    },
+    {
+      "path": "原型/图库/内置模板/agent-v2-source.svg",
+      "sha256": "303488c850ff164cd2e6c5ce6a2b0b4583e52b95159a972c25460e8589c945e3"
+    },
+    {
+      "path": "原型/图库/内置模板/agent-v2-reference.svg",
+      "sha256": "746bdbfe3e575a143f3539c445a4b17e94d7d15b17bbdaec97825798e08e86e8"
+    },
+    {
+      "path": "原型/图库/内置模板/geometry-source.svg",
+      "sha256": "15ad3f119ff62017f4a110888a2c09deaadf567b3f1aa37cbbf667aa7e701de1"
+    },
+    {
+      "path": "原型/图库/内置模板/geometry-reference.svg",
+      "sha256": "245eb6b40dd30b2270981ae58b0a0ad0e7e21cb9400cf98fa60dd043cb57e8fb"
+    },
+    {
+      "path": "原型/图库/内置模板/paper-source.svg",
+      "sha256": "74ab281da797e0c355a98024ba339222466957d6edc0dc3c0ab7b888b8d8ff28"
+    },
+    {
+      "path": "原型/图库/内置模板/paper-reference.svg",
+      "sha256": "5191c9cb7e79ef1237b30ffc5aca8f53e3011847956bb2ea588318d616ed1fdf"
+    },
+    {
+      "path": "原型/图库/内置模板/notes-source.svg",
+      "sha256": "c03c23ac7232cf907b9418ed379408077bf6015aa841dce3f09808835d062424"
+    },
+    {
+      "path": "原型/图库/内置模板/notes-reference.svg",
+      "sha256": "6d5a6215ebfc212be92f5e3b8a672b5e088410af65b60851f06978fe7802e01a"
+    },
+    {
+      "path": "原型/图库/内置模板/comparison-source.svg",
+      "sha256": "24f570a49ed473f85e6ace5dbad537554296ad89f5c214e153f2e9106f0beccb"
+    },
+    {
+      "path": "原型/图库/内置模板/comparison-reference.svg",
+      "sha256": "e5ed371bb9392ab4e495957b49c9e90cee8c9e312c582002978322ef6e19b80a"
+    },
+    {
+      "path": "原型/图库/内置模板/neon-source.svg",
+      "sha256": "2fa0d92ee69e6a9bf0ee5a0b1b70b4caf0def85d748ba5d21a448256bc4dc908"
+    },
+    {
+      "path": "原型/图库/内置模板/neon-reference.svg",
+      "sha256": "1bc19cac7c9ba7523b6e25eceae6db9a81f12bffed9fb095bd8ec1830e453150"
+    },
+    {
+      "path": "原型/图库/内置模板/magazine-source.svg",
+      "sha256": "327b89275d575b6ad8d1b35af6c7a247198808ad6954f02e764fc11db0cd488d"
+    },
+    {
+      "path": "原型/图库/内置模板/magazine-reference.svg",
+      "sha256": "4c06a7626acd0c86d0a41af5e51c9cb2a91755aea40c1736a614ff514d860cb3"
+    }
+  ]
+}

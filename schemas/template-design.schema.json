@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nova-content-hub.local/schemas/template-design.schema.json",
+  "title": "Self-media template design extensions",
+  "type": "object",
+  "properties": {
+    "audience": {
+      "enum": [
+        "general",
+        "ai"
+      ]
+    },
+    "scenario": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "contentType": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "useCases": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "string",
+        "maxLength": 500
+      }
+    },
+    "anatomy": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "region",
+          "role",
+          "rule",
+          "editable"
+        ],
+        "properties": {
+          "region": {
+            "type": "string",
+            "maxLength": 300
+          },
+          "role": {
+            "type": "string",
+            "maxLength": 500
+          },
+          "rule": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "editable": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "intent",
+        "subjectPolicy",
+        "textPolicy",
+        "referencePolicy",
+        "promptTemplate",
+        "negative",
+        "variables",
+        "qualityChecks"
+      ],
+      "properties": {
+        "intent": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "subjectPolicy": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "textPolicy": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "referencePolicy": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "promptTemplate": {
+          "type": "string",
+          "maxLength": 10000
+        },
+        "negative": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "qualityChecks": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "variables": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "key",
+              "label",
+              "required",
+              "example"
+            ],
+            "properties": {
+              "key": {
+                "type": "string",
+                "pattern": "^[a-zA-Z][a-zA-Z0-9_]{0,63}$"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 100
+              },
+              "required": {
+                "type": "boolean"
+              },
+              "example": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            }
+          }
+        }
+      }
+    },
+    "generatedReferences": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "path",
+          "role",
+          "origin",
+          "templateVersion",
+          "accepted",
+          "promptFile",
+          "tool",
+          "generatedAt",
+          "width",
+          "height"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "request.schema.json#/$defs/id"
+          },
+          "path": {
+            "allOf": [
+              {
+                "$ref": "request.schema.json#/$defs/path"
+              },
+              {
+                "type": "string",
+                "pattern": "\\.png$"
+              }
+            ]
+          },
+          "role": {
+            "const": "style"
+          },
+          "origin": {
+            "const": "ai-generated"
+          },
+          "templateVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "accepted": {
+            "const": false
+          },
+          "promptFile": {
+            "allOf": [
+              {
+                "$ref": "request.schema.json#/$defs/path"
+              },
+              {
+                "type": "string",
+                "pattern": "\\.md$"
+              }
+            ]
+          },
+          "tool": {
+            "const": "imagegen"
+          },
+          "generatedAt": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20000
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20000
+          }
+        }
+      }
+    },
+    "review": {
+      "$ref": "#/$defs/review"
+    }
+  },
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "templateVersion",
+        "checks",
+        "reason",
+        "reviewedAt"
+      ],
+      "properties": {
+        "templateVersion": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 2000
+        },
+        "reviewedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "title",
+            "readability",
+            "boundary",
+            "rules",
+            "identity"
+          ],
+          "properties": {
+            "title": {
+              "$ref": "#/$defs/verdict"
+            },
+            "readability": {
+              "$ref": "#/$defs/verdict"
+            },
+            "boundary": {
+              "$ref": "#/$defs/verdict"
+            },
+            "rules": {
+              "$ref": "#/$defs/verdict"
+            },
+            "identity": {
+              "$ref": "#/$defs/verdict"
+            }
+          }
+        }
+      }
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "fail",
+        "unclear"
+      ]
+    }
+  }
+}

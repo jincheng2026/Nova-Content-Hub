@@ -1,0 +1,5 @@
+# 产品评测 · AI 风格参考
+
+Create one finished vertical 3:4 Chinese self-media product-review cover with premium product photography and editorial comparison graphics. Use a pair of completely unbranded matte-black wireless headphones and a compact off-white portable speaker, arranged diagonally on a pale cool-gray studio surface, with precise realistic shadows. The top half is typography-led, the lower half showcases products with a subtle cobalt grid and small numbered geometric markers. Exact bold near-black Chinese headline split into two lines: "选之前" then "先看这三点". Secondary text: "体验 · 场景 · 取舍". Tiny footer: "虚构产品评测示例". Strong cobalt blue accent, one small lime accent, restrained and credible design, great material rendering, readable phone-scale text and safe margins. Do not claim real tests, scores, rankings, savings or brand comparisons. No brand logos, no specification numbers, no watermark, no extra labels, no border or device mockup. Deliver one complete cover image.
+
+用途：参考产品主体、结论区和评价维度的组织，不充当实测证据。

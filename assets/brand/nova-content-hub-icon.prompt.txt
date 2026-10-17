@@ -1,0 +1,10 @@
+Generated with built-in image_gen. Transparent PNG master retained without creative retouching; 128px and 64px exports resized with macOS sips.
+
+Use case: logo-brand.
+Create ONE finished, original premium desktop app icon for Nova Content Hub, a commercial creator/content studio application. This is an actual app asset, NOT a presentation, NOT a contact sheet, NOT a screenshot, NOT a logo mockup.
+
+Art direction: disciplined modern editorial software brand, expensive and quietly confident. A large squircle tile in very deep midnight navy/ink blue, subtly lighter at the top left. Center one brilliantly clear custom geometric monogram N built from a continuous folded editorial ribbon / interlocking pages. The monogram must have the unmistakable topology of a capital N (two vertical stems with a single rising diagonal connection), be bold with generous negative space, simple enough to read at 32 pixels. Three broad facets only: pearly icy white on the left, vivid sapphire/cobalt on the diagonal, soft pale blue on the right. Precisely aligned folds, slight bevel at the joins, very restrained physical depth and soft ambient shading. A tiny tasteful edge highlight gives precision, not a neon glow. The N is large, occupying about 60% of tile width and height, optically centered. Navy tile occupies 94% of the square canvas with smooth rounded corners, transparent corners and very small equal external margin. Frontal orthographic composition. No perspective tilt. No separate drop shadow outside the tile.
+
+Palette must harmonize with an existing restrained blue UI (#315bd6 brand blue, white and light cool-gray surfaces). Finish: smooth satin, crisp silhouette, careful proportions, no noisy texture. The logo should feel like a durable commercial software identity rather than a generic AI sparkle.
+
+No infinity symbol. Do not imitate colleague's infinity app. No extra symbols, no stars, no sparkles, no rocket, no pen nib, no play button, no Chinese text, no wordmark, no captions, no border/frame outside the actual squircle tile, no surrounding objects. Single isolated icon, square high-resolution output.

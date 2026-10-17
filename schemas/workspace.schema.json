@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nova-content-hub.local/schemas/workspace.schema.json",
+  "title": "Browser workspace schema 1 structural contract",
+  "description": "Core additionally checks references, dates, template provenance, bytes, safe paths and capacity. This schema preserves optional legacy record fields.",
+  "type": "object",
+  "required": [
+    "format",
+    "schema",
+    "appScope",
+    "libraryId",
+    "data",
+    "trash",
+    "updatedAt"
+  ],
+  "properties": {
+    "format": {
+      "const": "nova-content-hub-browser"
+    },
+    "schema": {
+      "const": 1
+    },
+    "appScope": {
+      "const": "nova-content-hub"
+    },
+    "libraryId": {
+      "$ref": "request.schema.json#/$defs/id"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "data": {
+      "type": "object",
+      "required": [
+        "ACCOUNT",
+        "SETTINGS",
+        "CHANNELS",
+        "PROJECTS",
+        "TEMPLATES",
+        "TASKS",
+        "PROMPTS",
+        "CUSTOM_SIZES",
+        "PCATS"
+      ],
+      "properties": {
+        "ACCOUNT": {
+          "type": "object",
+          "required": [
+            "name",
+            "intro",
+            "photos",
+            "marks"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "intro": {
+              "type": "string",
+              "maxLength": 2000
+            },
+            "photos": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "name",
+                  "img"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "request.schema.json#/$defs/id"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 300
+                  },
+                  "img": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              }
+            },
+            "marks": {
+              "type": "array"
+            }
+          }
+        },
+        "SETTINGS": {
+          "type": "object",
+          "required": [
+            "host",
+            "hostConfig"
+          ],
+          "properties": {
+            "host": {
+              "enum": [
+                "codex",
+                "workbuddy"
+              ]
+            },
+            "hostConfig": {
+              "type": "object"
+            }
+          }
+        },
+        "CHANNELS": {
+          "type": "object"
+        },
+        "PROJECTS": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/project"
+          }
+        },
+        "TEMPLATES": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/template"
+          }
+        },
+        "TASKS": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/task"
+          }
+        },
+        "PROMPTS": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "title",
+              "body"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "request.schema.json#/$defs/id"
+              },
+              "title": {
+                "type": "string"
+              },
+              "body": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "CUSTOM_SIZES": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "PCATS": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "trash": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind",
+          "value"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "request.schema.json#/$defs/id"
+          },
+          "kind": {
+            "enum": [
+              "file",
+              "project",
+              "prompt",
+              "shot"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "project": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "kind",
+        "files",
+        "materials",
+        "posts"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "request.schema.json#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "kind": {
+          "enum": [
+            "内容",
+            "合集"
+          ]
+        },
+        "members": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "request.schema.json#/$defs/id"
+          }
+        },
+        "files": {
+          "type": "array"
+        },
+        "materials": {
+          "type": "array"
+        },
+        "posts": {
+          "type": "array"
+        }
+      }
+    },
+    "template": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "version",
+        "state",
+        "shots",
+        "fixed",
+        "varies",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "request.schema.json#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "state": {
+          "enum": [
+            "待拆解",
+            "待还原",
+            "待验收",
+            "可用",
+            "失败",
+            "已停用"
+          ]
+        },
+        "shots": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fixed": {
+          "$ref": "request.schema.json#/$defs/ruleList"
+        },
+        "varies": {
+          "$ref": "request.schema.json#/$defs/ruleList"
+        },
+        "evidence": {
+          "type": "array"
+        },
+        "validation": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "required": [
+                "restoreImage",
+                "accepted"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "restoration"
+                },
+                "restoreImage": {
+                  "type": "string"
+                },
+                "accepted": {
+                  "type": "boolean"
+                }
+              }
+            },
+            {
+              "type": "object",
+              "required": [
+                "kind",
+                "aiTested",
+                "referenceImage",
+                "provenance"
+              ],
+              "properties": {
+                "kind": {
+                  "const": "authored-design"
+                },
+                "aiTested": {
+                  "const": false
+                },
+                "referenceImage": {
+                  "type": "string"
+                },
+                "provenance": {
+                  "type": "object"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "$ref": "template-design.schema.json"
+        }
+      ]
+    },
+    "task": {
+      "type": "object",
+      "required": [
+        "id",
+        "host",
+        "state",
+        "conv"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "request.schema.json#/$defs/id"
+        },
+        "host": {
+          "enum": [
+            "codex",
+            "workbuddy"
+          ]
+        },
+        "state": {
+          "enum": [
+            "handoff",
+            "running",
+            "review",
+            "success",
+            "partial",
+            "failed",
+            "interrupted"
+          ]
+        },
+        "conv": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "request": {
+          "$ref": "request.schema.json"
+        },
+        "handoff": {
+          "$ref": "handoff.schema.json"
+        },
+        "sourceTaskId": {
+          "$ref": "request.schema.json#/$defs/id"
+        }
+      }
+    }
+  }
+}
