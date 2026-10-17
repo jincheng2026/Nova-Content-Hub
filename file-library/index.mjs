@@ -2,14 +2,22 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
 
 const FORMAT = 'nova-content-library';
-const CONTENT_FORMAT = 'nova-content';
 const VERSION = 1;
-const LIBRARY_VERSION = 2;
+const LIBRARY_VERSION = 3;
+const KINDS = Object.freeze({
+  content: { directory: '内容', files: ['内容.json', '正文.md'], format: 'nova-content' },
+  prompt: { directory: '提示词', files: ['提示词.json', '正文.md'], format: 'nova-prompt' },
+  photo: { directory: '我的照片', files: ['照片.json'], format: 'nova-photo' },
+  template: { directory: '模板', files: ['模板.json'], format: 'nova-template' },
+});
+const HASH = /^[0-9a-f]{64}$/;
+const BUILTIN = /^builtin-[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const BARRIER = '升级到3';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const STAGING = /^\.staging-[0-9a-f-]{36}-[0-9a-f-]{36}$/;
-const FILES = ['内容.json', '正文.md'];
 const SYSTEM = '系统（别动）';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const jsonBytes = value => Buffer.from(`${JSON.stringify(value, null, 2)}\n`);
@@ -54,15 +62,21 @@ function format(record, expected, label, version = VERSION) {
   }
 }
 
-function metadata(bytes, contentId) {
-  const meta = parse(bytes, '内容.json');
-  format(meta, CONTENT_FORMAT, '内容.json');
+function objectId(kind, value) {
+  if (!Object.hasOwn(KINDS, kind)) fail('CORRUPT', 'Unknown object kind');
+  if (kind === 'template' && typeof value === 'string' && BUILTIN.test(value)) return value;
+  return id(value);
+}
+
+function metadata(bytes, objectIdValue, kind = 'content') {
+  const meta = parse(bytes, KINDS[kind].files[0]);
+  const supported = kind === 'content' && meta?.schemaVersion === 2 ? 2 : 1;
+  format(meta, KINDS[kind].format, KINDS[kind].files[0], supported);
   let validDates = false;
   try { validDates = date(meta.createdAt) && date(meta.updatedAt) && (meta.deletedAt === null || date(meta.deletedAt)); } catch {}
-  if (meta.id !== contentId || typeof meta.title !== 'string' || !meta.title.trim() || meta.title.length > 500 ||
-      !Number.isSafeInteger(meta.revision) || meta.revision < 1 || !validDates) {
-    fail('CORRUPT', `Invalid metadata or duplicate ID: ${contentId}`);
-  }
+  if (meta.id !== objectIdValue || typeof meta.title !== 'string' || !meta.title.trim() || meta.title.length > 500 ||
+      !Number.isSafeInteger(meta.revision) || meta.revision < 1 || !validDates) fail('CORRUPT', `Invalid metadata or duplicate ID: ${objectIdValue}`);
+  validateBusinessMetadata(meta,kind);
   return meta;
 }
 
@@ -138,15 +152,23 @@ function acquire(root) {
     try { fs.mkdirSync(lock, { mode: 0o700 }); }
     catch (error) {
       if (error.code !== 'EEXIST') throw error;
-      directory(lock);
-      const names = fs.readdirSync(lock);
-      if (names.length !== 1 || !UUID.test(names[0].slice(0, -5)) || !names[0].endsWith('.json')) {
-        fail('LOCK_UNCERTAIN', 'Empty or malformed lock; inspect it manually, never reclaim by age');
-      }
-      const ownerPath = path.join(lock, names[0]);
-      const owner = parse(read(ownerPath), 'lock owner');
-      if (owner.token !== names[0].slice(0, -5) || !Number.isSafeInteger(owner.pid) || owner.pid <= 0 || typeof owner.host !== 'string') {
-        fail('LOCK_UNCERTAIN', 'Malformed lock owner');
+      let ownerPath;
+      let owner;
+      try {
+        directory(lock);
+        const names = fs.readdirSync(lock);
+        if (names.length !== 1 || !UUID.test(names[0].slice(0, -5)) || !names[0].endsWith('.json')) {
+          fail('LOCK_UNCERTAIN', 'Empty or malformed lock; inspect it manually, never reclaim by age');
+        }
+        ownerPath = path.join(lock, names[0]);
+        owner = parse(read(ownerPath), 'lock owner');
+        if (!object(owner) || owner.token !== names[0].slice(0, -5) || !Number.isSafeInteger(owner.pid) || owner.pid <= 0 || typeof owner.host !== 'string') {
+          fail('LOCK_UNCERTAIN', 'Malformed lock owner');
+        }
+      } catch (inspectionError) {
+        if (inspectionError.code === 'ENOENT') fail('BUSY', 'Lock changed while inspecting its owner; retry');
+        if (inspectionError.code === 'CORRUPT') fail('LOCK_UNCERTAIN', 'Malformed or incomplete lock owner; never reclaim by age');
+        throw inspectionError;
       }
       if (owner.host !== os.hostname()) fail('BUSY', 'Library locked by another host');
       try { process.kill(owner.pid, 0); fail('BUSY', 'Library locked by a live process (including reused PIDs)'); }
@@ -196,42 +218,46 @@ function acquire(root) {
 function descriptor(root, upgrading = false) {
   directory(root);
   const info = parse(read(path.join(root, '内容库.json')), '内容库.json');
-  if (info?.format === FORMAT && info.schemaVersion === 1 && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1 requires explicit upgradeLibrary(root)');
-  format(info, FORMAT, '内容库.json', upgrading && info?.schemaVersion === 1 ? 1 : LIBRARY_VERSION);
+  if (info?.format === FORMAT && [1, 2].includes(info.schemaVersion) && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1 or 2 requires explicit upgradeLibrary(root)');
+  format(info, FORMAT, '内容库.json', upgrading && [1, 2].includes(info?.schemaVersion) ? info.schemaVersion : LIBRARY_VERSION);
   let validDate = false;
   try { validDate = date(info.createdAt); } catch {}
   if (!UUID.test(info.libraryId) || !validDate) fail('CORRUPT', 'Invalid library identity');
   directory(path.join(root, '内容'));
   directory(path.join(root, SYSTEM));
   directory(path.join(root, SYSTEM, '事务'));
-  if (info.schemaVersion === LIBRARY_VERSION) {
+  if (info.schemaVersion >= 2) {
     directory(path.join(root, SYSTEM, '事务', '待恢复'));
     directory(path.join(root, SYSTEM, '事务', '已提交'));
+  }
+  if (info.schemaVersion === 3) {
+    for (const name of ['提示词', '我的照片', '模板', '资产']) directory(path.join(root, name));
+    directory(path.join(root, '资产', 'sha256'));
   }
   return info;
 }
 
-function contentPaths(root, contentId) {
-  const dir = path.join(root, '内容', id(contentId));
+function contentPaths(root, contentId, kind = 'content') {
+  const dir = path.join(root, KINDS[kind].directory, objectId(kind, contentId));
   directory(dir);
-  return FILES.map(file => path.join(dir, file));
+  return KINDS[kind].files.map(file => path.join(dir, file));
 }
 
-function snapshot(root, contentId) {
+function snapshot(root, contentId, kind = 'content') {
   let files;
-  try { files = contentPaths(root, contentId).map(file => read(file)); }
+  try { files = contentPaths(root, contentId, kind).map(file => read(file)); }
   catch (error) {
     if (error.code === 'ENOENT') fail('CORRUPT', `Missing content directory or authoritative file: ${contentId}`);
     throw error;
   }
-  metadata(files[0], contentId);
+  metadata(files[0], contentId, kind);
   return files;
 }
 
-function result(files, contentId, mutationId) {
-  const meta = metadata(files[0], contentId);
-  const editToken = hash(Buffer.concat([Buffer.from(hash(files[0]), 'hex'), Buffer.from(hash(files[1]), 'hex')]));
-  return { ...meta, body: files[1].toString('utf8'), editToken, ...(mutationId ? { mutationId } : {}) };
+function result(files, contentId, mutationId, kind = 'content') {
+  const meta = metadata(files[0], contentId, kind);
+  const editToken = hash(Buffer.concat(files.map(bytes => Buffer.from(hash(bytes), 'hex'))));
+  return { ...meta, ...(files[1] ? { body: files[1].toString('utf8') } : {}), editToken, ...(mutationId ? { mutationId } : {}) };
 }
 
 function pack(bytes) { return bytes === null ? null : { bytes: bytes.toString('base64'), sha256: hash(bytes) }; }
@@ -260,22 +286,29 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   directory(dir);
   const raw = read(path.join(dir, 'intent.json'));
   const intent = parse(raw, 'intent.json');
-  if (!object(intent) || intent.schemaVersion !== VERSION || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
-      !UUID.test(intent.contentId) || !['create', 'update', 'trash', 'restore'].includes(intent.operation) ||
-      !/^[0-9a-f]{64}$/.test(intent.requestDigest) || !Array.isArray(intent.before) || intent.before.length !== 2 ||
-      !Array.isArray(intent.after) || intent.after.length !== 2 || Object.keys(intent).some(key => !['schemaVersion', 'libraryId', 'mutationId', 'contentId', 'operation', 'requestDigest', 'before', 'after'].includes(key))) {
-    fail('CORRUPT', 'Invalid transaction plan');
-  }
+  const legacy = intent?.schemaVersion === 1;
+  const kind = legacy ? 'content' : intent?.objectKind;
+  const targetId = legacy ? intent.contentId : intent?.objectId;
+  if (!object(intent) || ![1, 2].includes(intent.schemaVersion) || !Object.hasOwn(KINDS, kind) || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
+      !['create', 'update', 'trash', 'restore'].includes(intent.operation) ||
+      !HASH.test(intent.requestDigest) || !Array.isArray(intent.before) || intent.before.length !== KINDS[kind].files.length ||
+      !Array.isArray(intent.after) || intent.after.length !== KINDS[kind].files.length || Object.keys(intent).some(key => !['schemaVersion', 'libraryId', 'mutationId', ...(legacy ? ['contentId'] : ['objectKind', 'objectId']), 'operation', 'requestDigest', 'before', 'after'].includes(key))) fail('CORRUPT', 'Invalid transaction plan');
+  try { objectId(kind, targetId); } catch { fail('CORRUPT', 'Invalid transaction object ID'); }
   const before = intent.before.map(unpack);
   const after = intent.after.map(unpack);
   if (after.some(bytes => bytes === null) || (intent.operation === 'create' ? before.some(bytes => bytes !== null) : before.some(bytes => bytes === null))) fail('CORRUPT', 'Invalid transaction file set');
-  const next = metadata(after[0], intent.contentId);
+  const next = metadata(after[0], targetId, kind);
   if (intent.operation === 'create') {
     if (next.revision !== 1 || next.deletedAt !== null) fail('CORRUPT', 'Invalid create plan');
   } else {
-    const old = metadata(before[0], intent.contentId);
+    const old = metadata(before[0], targetId, kind);
+    if (kind==='content' && old.schemaVersion===2 && next.schemaVersion!==2) fail('CORRUPT','Content schema cannot regress');
     if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
-    if (intent.operation !== 'update' && (!before[1].equals(after[1]) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
+    if (intent.operation !== 'update') {
+      const business=record=>Object.fromEntries(Object.entries(record).filter(([key])=>!['revision','updatedAt','deletedAt'].includes(key)));
+      if (!isDeepStrictEqual(business(old),business(next))) fail('CORRUPT','Trash/restore cannot change business fields');
+    }
+    if (intent.operation !== 'update' && ((before[1] && !before[1].equals(after[1])) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
     if ((intent.operation === 'trash' && (old.deletedAt !== null || next.deletedAt === null)) ||
         (intent.operation === 'restore' && (old.deletedAt === null || next.deletedAt !== null)) ||
         (intent.operation === 'update' && (old.deletedAt !== null || next.deletedAt !== null))) fail('CORRUPT', 'Invalid state transition');
@@ -283,13 +316,13 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   const marker = read(path.join(dir, 'COMMITTED'), true);
   if (marker && marker.toString() !== `${hash(raw)}\n`) fail('CORRUPT', 'Invalid completion marker');
   if (dir === path.join(root, SYSTEM, '事务', '已提交', mutationId) && marker === null) fail('CORRUPT', 'Committed history is missing its completion marker');
-  return { dir, intent, raw, before, after, committed: marker !== null };
+  return { dir, intent, raw, before, after, kind, objectId: targetId, committed: marker !== null };
 }
 
 function equal(a, b) { return a === null || b === null ? a === b : a.equals(b); }
 
 function committedFailure(error, tx) {
-  return Object.assign(ioError(error), { mutationId: tx.intent.mutationId, contentId: tx.intent.contentId, outcome: 'committed', pendingRecovery: true });
+  return Object.assign(ioError(error), { mutationId: tx.intent.mutationId, contentId: tx.objectId, objectId: tx.objectId, objectKind: tx.kind, outcome: 'committed', pendingRecovery: true });
 }
 
 function archiveTransaction(root, tx) {
@@ -306,6 +339,9 @@ function archiveTransaction(root, tx) {
     hook('afterArchiveSourceSync', { mutationId: tx.intent.mutationId });
     syncDirectory(history);
     hook('afterArchiveTargetSync', { mutationId: tx.intent.mutationId });
+    if (tx.kind === 'template' && tx.intent.operation === 'create') {
+      try { fs.unlinkSync(path.join(root, '模板', tx.objectId, '未登记.json')); syncDirectory(path.join(root, '模板', tx.objectId)); } catch {}
+    }
   } catch (error) { throw committedFailure(error, tx); }
 }
 
@@ -323,13 +359,13 @@ function currentState(tx, targets) {
 }
 
 function applyTransaction(root, tx) {
-  const contentDir = path.join(root, '内容', tx.intent.contentId);
+  const contentDir = path.join(root, KINDS[tx.kind].directory, tx.objectId);
   if (!safePath(contentDir, true)) {
     if (tx.intent.operation !== 'create') fail('RECOVERY_CONFLICT', 'Existing content directory disappeared');
     mkdir(contentDir);
   }
-  const targets = contentPaths(root, tx.intent.contentId);
-  // Inspect BOTH files before changing either one; third-state data stops recovery.
+  const targets = contentPaths(root, tx.objectId, tx.kind);
+  // Inspect every file in the fixed kind before changing any; third-state data stops recovery.
   const states = currentState(tx, targets);
   for (let index = 0; index < targets.length; index++) {
     const target = targets[index];
@@ -379,7 +415,7 @@ function applyTransaction(root, tx) {
 
 function recover(root, libraryId) {
   const base = path.join(root, SYSTEM, '事务');
-  if (fs.readdirSync(base).some(name => !['待恢复', '已提交'].includes(name))) fail('CORRUPT', 'Unexpected schema 2 transaction layout');
+  if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
   const dir = path.join(root, SYSTEM, '事务', '待恢复');
   // A prior rename may have succeeded before either parent-directory sync failed.
   syncDirectory(dir);
@@ -438,46 +474,68 @@ function library(root, initialInfo) {
     }
   }
 
-  function list(deleted) {
-    return locked(() => fs.readdirSync(path.join(root, '内容')).sort().map(name => {
-      if (!UUID.test(name)) fail('CORRUPT', `Unexpected content directory: ${name}`);
-      return result(snapshot(root, name), name);
+  function list(deleted, kind = 'content') {
+    return locked(() => fs.readdirSync(path.join(root, KINDS[kind].directory)).sort().filter(name => {
+      if (kind==='template' && STAGING.test(name)) { directory(path.join(root,'模板',name)); return false; }
+      try { objectId(kind,name); } catch { fail('CORRUPT', 'Invalid object directory ID'); }
+      if (kind !== 'template') return true;
+      const dir = path.join(root, '模板', name);
+      if (safePath(path.join(dir, '模板.json'), true)) return true;
+      const marker = read(path.join(dir, '未登记.json'), true);
+      if (!marker) fail('CORRUPT', 'Template metadata missing without an orphan marker');
+      unregisteredTemplate(marker, name);
+      return false;
+    }).map(name => {
+      try { objectId(kind, name); } catch { fail('CORRUPT', `Unexpected object directory: ${name}`); }
+      return result(snapshot(root, name, kind), name, undefined, kind);
     }).filter(item => (item.deletedAt !== null) === deleted));
   }
 
-  function mutate(operation, contentId, input, expectedToken, options = {}) {
+  function mutate(operation, contentId, input, expectedToken, options = {}, kind = 'content', edit, forcedId) {
     if (!object(options) || Object.keys(options).some(key => key !== 'mutationId')) fail('INVALID_INPUT', 'Only mutationId is accepted as an option');
     const mutationId = options.mutationId === undefined ? randomUUID() : id(options.mutationId);
     if (operation !== 'create') {
-      id(contentId);
+      objectId(kind, contentId);
       if (typeof expectedToken !== 'string' || !/^[0-9a-f]{64}$/.test(expectedToken)) fail('INVALID_INPUT', 'A read editToken is required');
     }
-    const requestDigest = hash(jsonBytes({ operation, contentId, input, expectedToken }));
+    const requestDigest = hash(jsonBytes(kind === 'content' ? { operation, contentId, input, expectedToken } : { objectKind: kind, operation, objectId: contentId, input, expectedToken }));
     return locked(() => {
       const txDir = path.join(root, SYSTEM, '事务', '待恢复', mutationId);
       if (transactionDir(root, mutationId)) {
         const tx = transaction(root, mutationId, initialInfo.libraryId);
         if (tx.intent.requestDigest !== requestDigest) fail('INVALID_INPUT', 'mutationId was used with a different request');
-        return result(tx.after, tx.intent.contentId, mutationId);
+        return result(tx.after, tx.objectId, mutationId, tx.kind);
       }
-      const before = operation === 'create' ? [null, null] : snapshot(root, contentId);
+      const before = operation === 'create' ? KINDS[kind].files.map(() => null) : snapshot(root, contentId, kind);
       let meta;
       const now = new Date().toISOString();
       if (operation === 'create') {
-        contentId = randomUUID();
-        if (safePath(path.join(root, '内容', contentId), true)) fail('CONFLICT', 'Content ID already exists');
-        meta = { format: CONTENT_FORMAT, schemaVersion: VERSION, id: contentId, title: input.title, revision: 1, createdAt: now, updatedAt: now, deletedAt: null };
+        contentId = forcedId || randomUUID();
+        objectId(kind, contentId);
+        const existingDir=path.join(root,KINDS[kind].directory,contentId);
+        if (safePath(existingDir,true)) {
+          if (kind!=='template' || safePath(path.join(existingDir,'模板.json'),true)) fail('CONFLICT','Object ID already exists');
+          const marker=read(path.join(existingDir,'未登记.json'),true);
+          if (!marker) fail('CORRUPT','Cannot take over an unmarked template directory');
+          unregisteredTemplate(marker,contentId);
+        }
+        meta = { format: KINDS[kind].format, schemaVersion: VERSION, id: contentId, title: input.title, revision: 1, createdAt: now, updatedAt: now, deletedAt: null };
       } else {
-        const current = result(before, contentId);
+        const current = result(before, contentId, undefined, kind);
         if (current.editToken !== expectedToken) fail('CONFLICT', 'Content changed; read again before retrying');
         if ((operation === 'restore') !== (current.deletedAt !== null)) fail('INVALID_STATE', 'Content is already in the requested state or is trashed');
-        meta = { ...metadata(before[0], contentId), revision: current.revision + 1, updatedAt: now };
+        meta = { ...metadata(before[0], contentId, kind), revision: current.revision + 1, updatedAt: now };
         if (operation === 'trash') meta.deletedAt = now;
         if (operation === 'restore') meta.deletedAt = null;
         if (operation === 'update' && Object.hasOwn(input, 'title')) meta.title = input.title;
       }
-      const after = [jsonBytes(meta), operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]];
-      const intent = { schemaVersion: VERSION, libraryId: initialInfo.libraryId, mutationId, contentId, operation, requestDigest, before: before.map(pack), after: after.map(pack) };
+      if (edit) {
+        try { meta=edit(meta,before,{mutationId}); }
+        catch(error) { throw Object.assign(ioError(error),{mutationId,pendingRecovery:false}); }
+      }
+      const after = [jsonBytes(meta), ...(KINDS[kind].files.length === 2 ? [operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]] : [])];
+      metadata(after[0], contentId, kind);
+      const intent = { schemaVersion: 2, libraryId: initialInfo.libraryId, mutationId, objectKind: kind, objectId: contentId, operation, requestDigest, before: before.map(pack), after: after.map(pack) };
       const stagingDir = path.join(root, SYSTEM, '事务', '待恢复', `.staging-${mutationId}-${randomUUID()}`);
       mkdir(stagingDir);
       let published = false;
@@ -493,7 +551,7 @@ function library(root, initialInfo) {
         const tx = transaction(root, mutationId, initialInfo.libraryId);
         applyTransaction(root, tx);
         archiveTransaction(root, tx);
-        return result(after, contentId, mutationId);
+        return result(after, contentId, mutationId, kind);
       } catch (error) {
         let completed;
         if (published) {
@@ -506,6 +564,7 @@ function library(root, initialInfo) {
   }
 
   return Object.freeze({
+    ...businessMethods(root, locked, mutate, list),
     info: Object.freeze({ ...initialInfo, root, durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync' }),
     listContents: () => list(false),
     listTrash: () => list(true),
@@ -517,7 +576,7 @@ function library(root, initialInfo) {
     queryMutation: mutationId => locked(() => {
       if (!transactionDir(root, id(mutationId))) return null;
       const tx = transaction(root, mutationId, initialInfo.libraryId);
-      return { mutationId, status: 'committed', content: result(tx.after, tx.intent.contentId, mutationId) };
+      return { mutationId, status: 'committed', objectKind: tx.kind, objectId: tx.objectId, content: result(tx.after, tx.objectId, mutationId, tx.kind) };
     }),
   });
 }
@@ -543,14 +602,14 @@ function upgradeMove(source, target, mutationId) {
   syncDirectory(path.dirname(target));
 }
 
-/** Explicit, resumable schema-1 -> schema-2 transaction layout upgrade. */
+/** Explicit, resumable schema-1 -> schema-2 -> schema-3 upgrades. */
 export function upgradeLibrary(root) {
   let release;
   let primaryError;
   try {
     root = canonicalRoot(root);
     const initial = descriptor(root, true);
-    if (initial.schemaVersion === LIBRARY_VERSION) return openLibrary(root);
+    if (initial.schemaVersion >= 2) return upgradeTo3(root);
     release = acquire(root);
     const info = descriptor(root, true);
     if (info.libraryId !== initial.libraryId) fail('CORRUPT', 'Library identity changed during upgrade');
@@ -604,10 +663,10 @@ export function upgradeLibrary(root) {
         if (dir === history && !tx.committed) fail('CORRUPT', 'Uncommitted transaction in committed history');
         if (!tx.committed) {
           unfinished++;
-          const contentDir = path.join(root, '内容', tx.intent.contentId);
+          const contentDir = path.join(root, KINDS[tx.kind].directory, tx.objectId);
           if (!safePath(contentDir, true)) {
             if (tx.intent.operation !== 'create') fail('RECOVERY_CONFLICT', 'Pending content directory disappeared');
-          } else currentState(tx, contentPaths(root, tx.intent.contentId));
+          } else currentState(tx, contentPaths(root, tx.objectId, tx.kind));
         }
         plans.push({ tx, target: path.join(tx.committed ? history : pending, name) });
       }
@@ -622,7 +681,7 @@ export function upgradeLibrary(root) {
         fs.readdirSync(pending).some(name => !STAGING.test(name))) fail('RECOVERY_CONFLICT', 'Upgrade still has unresolved transactions');
     if (!read(descriptorPath).equals(original)) fail('CONFLICT', 'Library descriptor changed during upgrade');
     const descriptorStage = path.join(root, `.内容库.schema2-${randomUUID()}`);
-    writeNew(descriptorStage, jsonBytes({ ...parse(original, '内容库.json'), schemaVersion: LIBRARY_VERSION }));
+    writeNew(descriptorStage, jsonBytes({ ...parse(original, '内容库.json'), schemaVersion: 2 }));
     hook('upgradeBeforeDescriptorPublish');
     safePath(descriptorPath);
     fs.renameSync(descriptorStage, descriptorPath);
@@ -634,7 +693,7 @@ export function upgradeLibrary(root) {
       try { release(); } catch (error) { if (!primaryError) throw ioError(error); }
     }
   }
-  return openLibrary(root);
+  return upgradeTo3(root);
 }
 
 export function createLibrary(root) {
@@ -650,6 +709,8 @@ export function createLibrary(root) {
     mkdir(path.join(root, SYSTEM, '事务', '待恢复'));
     mkdir(path.join(root, SYSTEM, '事务', '已提交'));
     mkdir(path.join(root, '内容'));
+    for (const name of ['提示词','我的照片','模板','资产']) mkdir(path.join(root,name));
+    mkdir(path.join(root,'资产','sha256'));
     writeNew(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: LIBRARY_VERSION, libraryId: randomUUID(), createdAt: new Date().toISOString() }));
     return openLibrary(root);
   } catch (error) { throw ioError(error); }
@@ -663,4 +724,579 @@ export function openLibrary(root) {
     handle.listContents();
     return handle;
   } catch (error) { throw ioError(error); }
+}
+
+function ensureDirectory(target) {
+  if (!safePath(target, true)) mkdir(target);
+  else directory(target);
+}
+
+function checkedHash(value) {
+  if (typeof value !== 'string' || !HASH.test(value)) fail('INVALID_INPUT', 'Expected SHA256');
+  return value;
+}
+
+function serializable(value) {
+  if (value === null || typeof value === 'string' || typeof value === 'boolean') return value;
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (Array.isArray(value)) return value.map(serializable);
+  if (object(value) && [Object.prototype, null].includes(Object.getPrototypeOf(value))) {
+    return Object.fromEntries(Object.entries(value).map(([key, item]) => [key, serializable(item)]));
+  }
+  fail('INVALID_INPUT', 'Expected finite JSON data');
+}
+
+function inputFields(input, allowed, required = []) {
+  if (!object(input) || Object.keys(input).some(key => !allowed.includes(key)) || required.some(key => !Object.hasOwn(input, key))) fail('INVALID_INPUT', `Expected fields: ${allowed.join(', ')}`);
+  return serializable(input);
+}
+
+function text(value, label, empty = false) {
+  if (typeof value !== 'string' || (!empty && !value.trim()) || value.length > 10000) fail('INVALID_INPUT', `Invalid ${label}`);
+  return value;
+}
+
+function immutableFile(target, bytes) {
+  const existing = read(target, true);
+  if (existing !== null) {
+    if (!existing.equals(bytes)) fail('CONFLICT', 'Immutable package differs from installed bytes');
+    return;
+  }
+  const temporary = path.join(path.dirname(target), `.immutable-${randomUUID()}`);
+  writeNew(temporary, bytes);
+  safePath(target, true);
+  try { fs.linkSync(temporary, target); }
+  catch (error) { if (error.code !== 'EEXIST') throw error; }
+  syncDirectory(path.dirname(target));
+  if (!read(target).equals(bytes)) fail('CONFLICT', 'Immutable publication collided with different bytes');
+  fs.unlinkSync(temporary);
+  syncDirectory(path.dirname(target));
+}
+
+function detectedType(bytes) {
+  if (bytes.subarray(0, 8).equals(Buffer.from([137,80,78,71,13,10,26,10]))) return 'image/png';
+  if (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return 'image/jpeg';
+  if (['GIF87a', 'GIF89a'].includes(bytes.subarray(0,6).toString())) return 'image/gif';
+  if (bytes.subarray(0,4).toString() === 'RIFF' && bytes.subarray(8,12).toString() === 'WEBP') return 'image/webp';
+  if (bytes.subarray(0,5).toString() === '%PDF-') return 'application/pdf';
+  let decoded;
+  try { decoded = new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch { fail('INVALID_INPUT', 'Unsupported binary asset'); }
+  if (decoded.includes('\0')) fail('INVALID_INPUT', 'Binary data is not a supported document');
+  if (/^\s*(?:<\?xml[^>]*>\s*)?<svg\b/i.test(decoded)) return 'image/svg+xml';
+  if (/^\s*[\[{]/.test(decoded)) { try { JSON.parse(decoded); return 'application/json'; } catch {} }
+  return 'text/plain';
+}
+
+function assetPath(root, assetHash) {
+  checkedHash(assetHash);
+  return path.join(root, '资产', 'sha256', assetHash.slice(0, 2), assetHash);
+}
+
+function readAssetInternal(root, assetHash) {
+  let bytes;
+  try {
+    const target=assetPath(root,assetHash);
+    const stat=safePath(target);
+    if (stat.size>64*1024*1024) fail('CORRUPT','Stored asset exceeds the import limit');
+    bytes=read(target);
+  } catch(error) { if(error.code==='ENOENT')fail('CORRUPT','Referenced immutable asset is missing'); throw error; }
+  if (hash(bytes) !== assetHash) fail('CORRUPT', 'Immutable asset checksum mismatch');
+  let type;
+  try { type=detectedType(bytes); } catch(error) { throw new LibraryError('CORRUPT','Stored asset type is invalid',{cause:error}); }
+  return { assetHash, bytes: bytes.length, detectedType: type, decoded: false, data: bytes };
+}
+
+function importAssetInternal(root, sourcePath, options) {
+  const { purpose } = inputFields(options, ['purpose'], ['purpose']);
+  if (!['photo', 'material', 'template-reference', 'template-structure', 'generated-cover'].includes(purpose)) fail('INVALID_INPUT', 'Unknown asset purpose');
+  if (typeof sourcePath !== 'string' || !path.isAbsolute(sourcePath)) fail('INVALID_INPUT', 'Select an absolute regular source file');
+  const source = canonicalRoot(sourcePath);
+  const stat = safePath(source);
+  if (!stat.isFile() || stat.size > 64 * 1024 * 1024) fail('INVALID_INPUT', 'Asset must be a regular file of at most 64 MiB');
+  const staging = path.join(root, '资产', `.staging-${randomUUID()}`);
+  const input = fs.openSync(source, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
+  let output;
+  let total = 0;
+  const digest = createHash('sha256');
+  try {
+    const before = fs.fstatSync(input, { bigint: true });
+    output = fs.openSync(staging, fs.constants.O_WRONLY | fs.constants.O_CREAT | fs.constants.O_EXCL | fs.constants.O_NOFOLLOW, 0o600);
+    const chunk = Buffer.alloc(64 * 1024);
+    for (;;) {
+      const count = fs.readSync(input, chunk, 0, chunk.length, null);
+      if (!count) break;
+      total += count;
+      if (total > 64 * 1024 * 1024) fail('INVALID_INPUT', 'Asset exceeds 64 MiB');
+      digest.update(chunk.subarray(0, count));
+      let offset = 0;
+      while (offset < count) offset += fs.writeSync(output, chunk, offset, count - offset);
+    }
+    const after = fs.fstatSync(input, { bigint: true });
+    if (['dev','ino','size','mtimeNs','ctimeNs'].some(key => before[key] !== after[key])) fail('CONFLICT', 'Source changed while importing');
+    fs.fsyncSync(output);
+  } finally { fs.closeSync(input); if (output !== undefined) fs.closeSync(output); }
+  syncDirectory(path.join(root, '资产'));
+  const assetHash = digest.digest('hex');
+  const data = read(staging);
+  if (hash(data) !== assetHash || data.length !== total) fail('CORRUPT', 'Imported asset staging changed');
+  const type = detectedType(data);
+  if (purpose==='template-structure' && !['image/png','image/jpeg','image/gif','image/webp','image/svg+xml','text/plain','application/json'].includes(type)) fail('INVALID_INPUT','Unsupported template structure type');
+  if (type === 'image/svg+xml' && purpose !== 'template-structure') fail('INVALID_INPUT', 'SVG is accepted only as a structure reference');
+  if (['photo','template-reference','generated-cover'].includes(purpose) && !['image/png','image/jpeg','image/gif','image/webp'].includes(type)) fail('INVALID_INPUT', 'This purpose requires a raster image');
+  const prefix = path.dirname(assetPath(root, assetHash));
+  ensureDirectory(prefix);
+  hook('beforeAssetInstall', { assetHash });
+  const target = assetPath(root, assetHash);
+  safePath(target, true);
+  try { fs.linkSync(staging, target); } catch (error) { if (error.code !== 'EEXIST') throw error; }
+  syncDirectory(prefix);
+  if (!read(target).equals(data)) fail('CORRUPT', 'Existing immutable asset has different bytes');
+  hook('afterAssetInstall', { assetHash });
+  fs.unlinkSync(staging);
+  syncDirectory(path.join(root, '资产'));
+  return { assetHash, bytes: total, detectedType: type, decoded: false, purpose, originalName: path.basename(sourcePath) };
+}
+
+function versionNumber(version) {
+  if (!Number.isSafeInteger(version) || version < 1) fail('INVALID_INPUT', 'Version must be a positive integer');
+  return version;
+}
+
+function templatePackage(root, templateId, version, expectedHash) {
+  const bytes = read(path.join(root, '模板', objectId('template', templateId), '版本', String(versionNumber(version)), '定义.json'));
+  if (expectedHash && hash(bytes) !== expectedHash) fail('CORRUPT', 'Template package checksum mismatch');
+  const pkg = parse(bytes, '定义.json');
+  if (!object(pkg) || Object.keys(pkg).some(key => !['definition','resources'].includes(key)) || !object(pkg.definition) || !object(pkg.resources)) fail('CORRUPT', 'Invalid template package');
+  try { normalizePackage(root,pkg.definition,pkg.resources); }
+  catch (error) { if (error.code==='UNSAFE_PATH') throw error; throw new LibraryError('CORRUPT','Template resource bytes do not match the immutable package',{cause:error}); }
+  return { version, packageHash: hash(bytes), ...pkg };
+}
+
+function normalizePackage(root, definition, resources) {
+  if (!object(definition) || !object(resources)) fail('INVALID_INPUT', 'Template definition and resources must be objects');
+  const normalized = {};
+  for (const [key, raw] of Object.entries(resources)) {
+    text(key, 'resource source identifier');
+    const resource = inputFields(raw, ['assetHash','bytes','detectedType','role'], ['assetHash','bytes','detectedType','role']);
+    const actual = readAssetInternal(root, resource.assetHash);
+    if (actual.bytes !== resource.bytes || actual.detectedType !== resource.detectedType || typeof resource.role !== 'string') fail('INVALID_INPUT', 'Resource descriptor does not match imported asset');
+    if (!['style','structure'].includes(resource.role)) fail('INVALID_INPUT','Template resource role must be style or structure');
+    const raster=['image/png','image/jpeg','image/gif','image/webp'];
+    const allowed=resource.role==='style'?raster:[...raster,'image/svg+xml','text/plain','application/json'];
+    if (!allowed.includes(actual.detectedType)) fail('INVALID_INPUT','Template resource type is not allowed for its role');
+    Object.defineProperty(normalized, key, { value: resource, enumerable: true, writable: true });
+  }
+  return { definition: serializable(definition), resources: normalized };
+}
+
+function installTemplatePackage(root, templateId, version, pkg, mutationId, creating) {
+  const dir = path.join(root, '模板', templateId);
+  const packageBytes = jsonBytes(pkg);
+  const packageHash = hash(packageBytes);
+  const marker = { format: 'nova-unregistered-template', schemaVersion: 1, id: templateId, version, mutationId, packageHash };
+  if (!safePath(dir,true)) {
+    if (!creating) fail('CORRUPT','Existing template directory disappeared');
+    const staging=path.join(root,'模板',`.staging-${randomUUID()}-${randomUUID()}`);
+    mkdir(staging);
+    immutableFile(path.join(staging,'未登记.json'),jsonBytes(marker));
+    hook('beforeTemplateRootPublish',{templateId,version,mutationId});
+    fs.renameSync(staging,dir);
+    syncDirectory(path.join(root,'模板'));
+    hook('afterTemplateRootPublish',{templateId,version,mutationId});
+  } else directory(dir);
+  if (creating) {
+    const old = read(path.join(dir,'未登记.json'));
+    const existing = unregisteredTemplate(old, templateId);
+    if (existing.version !== version || existing.packageHash !== packageHash) fail('CONFLICT', 'Unregistered template package differs');
+  }
+  ensureDirectory(path.join(dir, '版本'));
+  const versionDir = path.join(dir, '版本', String(version));
+  ensureDirectory(versionDir);
+  immutableFile(path.join(versionDir, '定义.json'), packageBytes);
+  hook('afterTemplatePackage', { templateId, version, mutationId });
+  return { version, packageHash };
+}
+
+function unregisteredTemplate(bytes, templateId) {
+  const marker = parse(bytes, '未登记.json');
+  if (!object(marker) || marker.format !== 'nova-unregistered-template' || marker.schemaVersion !== 1 || marker.id !== templateId || !UUID.test(marker.mutationId) || !HASH.test(marker.packageHash) || !Number.isSafeInteger(marker.version) || marker.version < 1 || Object.keys(marker).some(key => !['format','schemaVersion','id','version','mutationId','packageHash'].includes(key))) fail('CORRUPT', 'Invalid unregistered template marker');
+  return marker;
+}
+
+function businessMethods(root, locked, mutate, list) {
+  const readObject = (kind, objectIdValue) => locked(() => result(snapshot(root, objectId(kind, objectIdValue), kind), objectIdValue, undefined, kind));
+  const changeState = (kind, operation, objectIdValue, token, options) => mutate(operation, objectIdValue, {}, token, options, kind);
+  function promptInput(raw, patch) {
+    const input = inputFields(raw, ['title','body','category','when','summary','tags','provenance','builtinKey'], patch ? [] : ['title','body']);
+    if (!Object.keys(input).length) fail('INVALID_INPUT', 'Prompt patch cannot be empty');
+    if (Object.hasOwn(input,'title')) fields({ title: input.title }, true);
+    if (Object.hasOwn(input,'body') && typeof input.body !== 'string') fail('INVALID_INPUT', 'Prompt body must be a string');
+    for (const field of ['category','when','summary']) if (Object.hasOwn(input,field)) text(input[field], field, true);
+    if (input.tags !== undefined && (!Array.isArray(input.tags) || input.tags.some(tag => typeof tag !== 'string' || !tag.trim()) || new Set(input.tags).size!==input.tags.length)) fail('INVALID_INPUT', 'Prompt tags must be strings');
+    if (input.provenance!==undefined && input.provenance!==null && !object(input.provenance)) fail('INVALID_INPUT','Prompt provenance must be an object or null');
+    if (input.builtinKey !== undefined && input.builtinKey !== null) text(input.builtinKey, 'builtinKey');
+    return input;
+  }
+  function promptEdit(input, creating) {
+    return meta => {
+      if (input.builtinKey) {
+        for (const name of fs.readdirSync(path.join(root,'提示词'))) {
+          const old = metadata(snapshot(root,name,'prompt')[0],name,'prompt');
+          if (old.id !== meta.id && old.builtinKey === input.builtinKey) fail('CONFLICT', 'Prompt builtinKey already exists, including trash');
+        }
+      }
+      const { body, ...fields } = input;
+      return { ...(creating ? { category:'', when:'', summary:'', tags:[], provenance:null, builtinKey:null } : {}), ...meta, ...fields };
+    };
+  }
+  function photoInput(raw, patch) {
+    const input = inputFields(raw, ['title','assetHash','isOwnPhoto','originalName'], patch ? [] : ['title','assetHash','isOwnPhoto']);
+    if (!Object.keys(input).length) fail('INVALID_INPUT', 'Photo patch cannot be empty');
+    if (input.title !== undefined) fields({ title: input.title }, true);
+    if (input.assetHash !== undefined) checkedHash(input.assetHash);
+    if (input.isOwnPhoto !== undefined && typeof input.isOwnPhoto !== 'boolean') fail('INVALID_INPUT', 'Explicit isOwnPhoto declaration is required');
+    if (input.originalName !== undefined) text(input.originalName,'originalName',true);
+    return input;
+  }
+  function photoEdit(input, creating) {
+    return meta => {
+      const next = { ...(creating ? { originalName:'' } : {}), ...meta, ...input };
+      const asset = readAssetInternal(root,next.assetHash);
+      if (!['image/png','image/jpeg','image/gif','image/webp'].includes(asset.detectedType)) fail('INVALID_INPUT', 'Photo must reference a raster image');
+      return next;
+    };
+  }
+  function readTemplate(templateId, version) {
+    return locked(() => {
+      const record = result(snapshot(root,objectId('template',templateId),'template'),templateId,undefined,'template');
+      const selected = version === undefined ? record.currentVersion : versionNumber(version);
+      const entry = record.versions.find(item => item.version === selected);
+      if (!entry) fail('INVALID_INPUT','Template version does not exist');
+      return { ...record, name:record.title, ...templatePackage(root,templateId,selected,entry.packageHash) };
+    });
+  }
+  function createTemplate(raw, options, builtin = false) {
+    const input = inputFields(raw, builtin ? ['id','name','version','definition','resources'] : ['name','definition','resources','derivedFrom'], ['name','definition','resources']);
+    fields({title:input.name},true);
+    const version = builtin ? versionNumber(input.version) : 1;
+    if (builtin && !BUILTIN.test(input.id)) fail('INVALID_INPUT','Builtin template ID must start with builtin-');
+    return mutate('create', null, { ...input, title:input.name }, null, options, 'template', (meta,before,context) => {
+      const pkg = normalizePackage(root,input.definition,input.resources);
+      if (input.derivedFrom) {
+        const ref = inputFields(input.derivedFrom,['id','version'],['id','version']);
+        const source = metadata(snapshot(root,objectId('template',ref.id),'template')[0],ref.id,'template');
+        const entry = source.versions.find(item => item.version === versionNumber(ref.version));
+        if (!entry) fail('INVALID_INPUT','Unknown source template version');
+        templatePackage(root,ref.id,ref.version,entry.packageHash);
+      }
+      const entry = installTemplatePackage(root,meta.id,version,pkg,context.mutationId,true);
+      return { ...meta, builtin, currentVersion:version, versions:[entry], derivedFrom:input.derivedFrom || null };
+    }, builtin ? input.id : undefined);
+  }
+  function addVersion(templateId, raw, token, options, builtin = false) {
+    const input = inputFields(raw,['version','definition','resources'],['version','definition','resources']);
+    versionNumber(input.version);
+    return mutate('update',templateId,input,token,options,'template',(meta,before,context) => {
+      if (meta.builtin && !builtin) fail('INVALID_STATE','Builtin templates cannot be edited; create a derived template');
+      const pkg = normalizePackage(root,input.definition,input.resources);
+      const existing = meta.versions.find(item => item.version === input.version);
+      if (existing) fail('CONFLICT','Template version already exists');
+      const entry = installTemplatePackage(root,templateId,input.version,pkg,context.mutationId,false);
+      return { ...meta, currentVersion:input.version, versions:[...meta.versions,entry] };
+    });
+  }
+  function installBuiltin(raw, options) {
+    const input = inputFields(raw,['id','name','version','definition','resources'],['id','name','version','definition','resources']);
+    if (!BUILTIN.test(input.id)) fail('INVALID_INPUT','Expected stable builtin-* ID');
+    versionNumber(input.version);
+    const existing = locked(() => {
+      const metaPath = path.join(root,'模板',input.id,'模板.json');
+      if (!safePath(path.dirname(metaPath),true) || !safePath(metaPath,true)) return null;
+      const record = result(snapshot(root,input.id,'template'),input.id,undefined,'template');
+      if (!record.builtin || record.title !== input.name) fail('CONFLICT','Builtin identity/name conflicts');
+      const entry = record.versions.find(item => item.version === input.version);
+      if (entry) {
+        const pkg = normalizePackage(root,input.definition,input.resources);
+        if (hash(jsonBytes(pkg)) !== entry.packageHash) fail('CONFLICT','Builtin version has a different package hash');
+        templatePackage(root,input.id,input.version,entry.packageHash);
+        return { record, installed:true };
+      }
+      return { record, installed:false };
+    });
+    if (existing?.installed) return existing.record;
+    if (existing) return addVersion(input.id,{version:input.version,definition:input.definition,resources:input.resources},existing.record.editToken,options,true);
+    return createTemplate(input,options,true);
+  }
+  const api = {
+    importAsset: (sourcePath, options) => locked(() => importAssetInternal(root,sourcePath,options)),
+    readAsset: assetHash => locked(() => readAssetInternal(root,checkedHash(assetHash))),
+    createPrompt: (raw,options) => { const input=promptInput(raw,false); return mutate('create',null,input,null,options,'prompt',promptEdit(input,true)); },
+    updatePrompt: (promptId,raw,token,options) => { const input=promptInput(raw,true); return mutate('update',promptId,input,token,options,'prompt',promptEdit(input,false)); },
+    readPrompt: promptId => readObject('prompt',promptId),
+    listPrompts: () => list(false,'prompt'),
+    listPromptTrash: () => list(true,'prompt'),
+    trashPrompt: (promptId,token,options) => changeState('prompt','trash',promptId,token,options),
+    restorePrompt: (promptId,token,options) => changeState('prompt','restore',promptId,token,options),
+    createPhoto: (raw,options) => { const input=photoInput(raw,false); return mutate('create',null,input,null,options,'photo',photoEdit(input,true)); },
+    updatePhoto: (photoId,raw,token,options) => { const input=photoInput(raw,true); return mutate('update',photoId,input,token,options,'photo',photoEdit(input,false)); },
+    readPhoto: photoId => readObject('photo',photoId),
+    listPhotos: () => list(false,'photo'),
+    listPhotoTrash: () => list(true,'photo'),
+    trashPhoto: (photoId,token,options) => changeState('photo','trash',photoId,token,options),
+    restorePhoto: (photoId,token,options) => changeState('photo','restore',photoId,token,options),
+    createTemplate: (raw,options) => createTemplate(raw,options),
+    installBuiltinTemplate: installBuiltin,
+    addTemplateVersion: (templateId,raw,token,options) => addVersion(templateId,raw,token,options),
+    selectTemplateVersion: (templateId,version,token,options) => mutate('update',templateId,{version:versionNumber(version)},token,options,'template',meta => {
+      const entry=meta.versions.find(item=>item.version===version);
+      if (!entry) fail('INVALID_INPUT','Template version does not exist');
+      templatePackage(root,templateId,version,entry.packageHash);
+      return {...meta,currentVersion:version};
+    }),
+    readTemplate,
+    listTemplates: () => list(false,'template'),
+    listTemplateTrash: () => list(true,'template'),
+    trashTemplate: (templateId,token,options) => changeState('template','trash',templateId,token,options),
+    restoreTemplate: (templateId,token,options) => changeState('template','restore',templateId,token,options),
+  };
+  return { ...api, ...contentBusinessMethods(root,locked,mutate) };
+}
+
+function utcTime(value, label) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(value) || !Number.isFinite(Date.parse(value)) || !new Date(value).toISOString().startsWith(value.slice(0,19))) fail('INVALID_INPUT', `Expected UTC ISO ${label}`);
+  return new Date(value).toISOString();
+}
+
+function timezone(value) {
+  text(value,'IANA timezone');
+  if (value!=='UTC' && !/^[A-Za-z_]+(?:\/[A-Za-z0-9_+-]+)+$/.test(value)) fail('INVALID_INPUT','Expected an IANA timezone name');
+  try { new Intl.DateTimeFormat('en',{timeZone:value}); } catch { fail('INVALID_INPUT','Invalid IANA timezone'); }
+  return value;
+}
+
+function contentBusinessMethods(root, locked, mutate) {
+  function extended(meta) {
+    return { ...meta, schemaVersion:2, materials:meta.materials || [], candidates:meta.candidates || [], selectedCover:meta.selectedCover || null, plans:meta.plans || [], publications:meta.publications || [] };
+  }
+  function change(contentId, action, input, token, options, update) {
+    return mutate('update',contentId,{action,...input},token,options,'content',(meta,before) => update(extended(meta),before));
+  }
+  function imageAsset(assetHash) {
+    const asset=readAssetInternal(root,checkedHash(assetHash));
+    if (!['image/png','image/jpeg','image/gif','image/webp'].includes(asset.detectedType)) fail('INVALID_INPUT','Cover candidate requires a raster image');
+    return asset;
+  }
+  function resolveTemplate(raw) {
+    if (!raw) return null;
+    const ref=inputFields(raw,['id','version'],['id','version']);
+    const meta=metadata(snapshot(root,objectId('template',ref.id),'template')[0],ref.id,'template');
+    const entry=meta.versions.find(item=>item.version===versionNumber(ref.version));
+    if (!entry) fail('INVALID_INPUT','Unknown candidate template version');
+    templatePackage(root,ref.id,ref.version,entry.packageHash);
+    return {id:ref.id,version:ref.version,packageHash:entry.packageHash};
+  }
+  function publicationSnapshot(contentId, publicationId, entry) {
+    const dir=path.join(root,'内容',contentId,'发布快照',publicationId);
+    directory(dir);
+    const raw=read(path.join(dir,'快照.json'));
+    const bodyBytes=read(path.join(dir,'正文.md'));
+    const snapshot=parse(raw,'快照.json');
+    if (!object(snapshot) || snapshot.format!=='nova-publication-snapshot' || snapshot.schemaVersion!==1 || snapshot.publicationId!==publicationId || !object(snapshot.content) || snapshot.content.id!==contentId || hash(bodyBytes)!==snapshot.bodyHash || hash(raw)!==entry.snapshotHash) fail('CORRUPT','Publication snapshot checksum or identity mismatch');
+    if (snapshot.cover) imageAsset(snapshot.cover.assetHash);
+    if (snapshot.template) templatePackage(root,snapshot.template.id,snapshot.template.version,snapshot.template.packageHash);
+    return {snapshot,body:bodyBytes.toString('utf8'),bodyBytes,cover:snapshot.cover,template:snapshot.template};
+  }
+  return {
+    attachContentMaterial: (contentId,raw,token,options) => {
+      const input=inputFields(raw,['assetHash','originalName','role'],['assetHash','originalName']);
+      checkedHash(input.assetHash);text(input.originalName,'originalName',true);
+      if (input.role!==undefined) text(input.role,'material role');
+      return change(contentId,'attachMaterial',input,token,options,meta=>{
+        readAssetInternal(root,input.assetHash);
+        return {...meta,materials:[...meta.materials,{id:randomUUID(),assetHash:input.assetHash,originalName:input.originalName,role:input.role || 'material',createdAt:new Date().toISOString()}]};
+      });
+    },
+    removeContentMaterial: (contentId,materialId,token,options) => {
+      id(materialId);
+      return change(contentId,'removeMaterial',{materialId},token,options,meta=>{
+        if (!meta.materials.some(item=>item.id===materialId)) fail('INVALID_INPUT','Unknown material ID');
+        return {...meta,materials:meta.materials.filter(item=>item.id!==materialId)};
+      });
+    },
+    registerContentCandidate: (contentId,raw,token,options) => {
+      const input=inputFields(raw,['assetHash','requestId','attemptId','template','source','originalName'],['assetHash','requestId','attemptId']);
+      checkedHash(input.assetHash);text(input.requestId,'requestId');text(input.attemptId,'attemptId');
+      if (input.source!==undefined) text(input.source,'candidate source');
+      if (input.originalName!==undefined) text(input.originalName,'originalName',true);
+      return change(contentId,'registerCandidate',input,token,options,meta=>{
+        imageAsset(input.assetHash);
+        const template=resolveTemplate(input.template);
+        return {...meta,candidates:[...meta.candidates,{id:randomUUID(),...input,template,accepted:false,createdAt:new Date().toISOString()}]};
+      });
+    },
+    selectContentCover: (contentId,candidateId,token,options) => {
+      id(candidateId);
+      return change(contentId,'selectCover',{candidateId},token,options,meta=>{
+        const candidate=meta.candidates.find(item=>item.id===candidateId);
+        if (!candidate) fail('INVALID_INPUT','Unknown candidate');
+        imageAsset(candidate.assetHash);
+        if (candidate.template) templatePackage(root,candidate.template.id,candidate.template.version,candidate.template.packageHash);
+        const selectedAt=new Date().toISOString();
+        return {...meta,candidates:meta.candidates.map(item=>item.id===candidateId?{...item,accepted:true,acceptedAt:selectedAt}:item),selectedCover:{candidateId,assetHash:candidate.assetHash,requestId:candidate.requestId,attemptId:candidate.attemptId,template:candidate.template,selectedAt}};
+      });
+    },
+    savePublicationPlan: (contentId,raw,token,options) => {
+      const input=inputFields(raw,['id','channelId','scheduledAt','timezone'],['channelId','scheduledAt','timezone']);
+      if (input.id!==undefined) id(input.id);
+      if (typeof input.channelId!=='string' || !/^[a-z][a-z0-9._-]{0,63}$/.test(input.channelId)) fail('INVALID_INPUT','Invalid channel ID');
+      input.scheduledAt=utcTime(input.scheduledAt,'scheduledAt');input.timezone=timezone(input.timezone);
+      return change(contentId,'savePlan',input,token,options,meta=>{
+        const old=input.id?meta.plans.find(plan=>plan.id===input.id):null;
+        if (input.id && !old) fail('INVALID_INPUT','Unknown plan ID');
+        if (old?.status==='published') fail('INVALID_STATE','Published plans cannot be changed');
+        const now=new Date().toISOString();
+        const plan={id:old?.id || randomUUID(),channelId:input.channelId,scheduledAt:input.scheduledAt,timezone:input.timezone,status:'planned',createdAt:old?.createdAt || now,updatedAt:now};
+        return {...meta,plans:old?meta.plans.map(item=>item.id===plan.id?plan:item):[...meta.plans,plan]};
+      });
+    },
+    cancelPublicationPlan: (contentId,planId,token,options) => {
+      id(planId);
+      return change(contentId,'cancelPlan',{planId},token,options,meta=>{
+        const plan=meta.plans.find(item=>item.id===planId);
+        if (!plan) fail('INVALID_INPUT','Unknown publication plan');
+        if (plan.status!=='planned') fail('INVALID_STATE','Only planned publications can be cancelled');
+        return {...meta,plans:meta.plans.map(item=>item.id===planId?{...item,status:'cancelled',updatedAt:new Date().toISOString()}:item)};
+      });
+    },
+    recordPublication: (contentId,raw,token,options) => {
+      const input=inputFields(raw,['planId','publishedAt','timezone','url'],['planId','publishedAt','timezone']);
+      id(input.planId);input.publishedAt=utcTime(input.publishedAt,'publishedAt');input.timezone=timezone(input.timezone);
+      if (input.url!==undefined) { try { const url=new URL(input.url);if(!['https:','http:'].includes(url.protocol)||url.username||url.password)throw new Error(); } catch { fail('INVALID_INPUT','Publication URL must be HTTP(S)'); } }
+      return change(contentId,'recordPublication',input,token,options,(meta,before)=>{
+        const plan=meta.plans.find(item=>item.id===input.planId);
+        if (!plan || plan.status!=='planned') fail('INVALID_STATE','Publication requires an active plan');
+        const publicationId=randomUUID();
+        const parent=path.join(root,'内容',contentId,'发布快照');
+        ensureDirectory(parent);
+        const stage=path.join(parent,`.staging-${randomUUID()}`);
+        mkdir(stage);
+        const cover=meta.selectedCover?serializable(meta.selectedCover):null;
+        if (cover) imageAsset(cover.assetHash);
+        const template=cover?.template || null;
+        if (template) templatePackage(root,template.id,template.version,template.packageHash);
+        const snapshot={format:'nova-publication-snapshot',schemaVersion:1,publicationId,content:{id:contentId,title:meta.title,revision:metadata(before[0],contentId).revision,createdAt:meta.createdAt,updatedAt:metadata(before[0],contentId).updatedAt},plan:serializable(plan),publishedAt:input.publishedAt,timezone:input.timezone,url:input.url || null,bodyHash:hash(before[1]),cover,template};
+        const rawSnapshot=jsonBytes(snapshot);
+        writeNew(path.join(stage,'快照.json'),rawSnapshot);
+        writeNew(path.join(stage,'正文.md'),before[1]);
+        hook('beforePublicationSnapshot',{contentId,publicationId});
+        const target=path.join(parent,publicationId);
+        if (safePath(target,true)) fail('CONFLICT','Snapshot ID collision');
+        fs.renameSync(stage,target);syncDirectory(parent);
+        hook('afterPublicationSnapshot',{contentId,publicationId});
+        const entry={id:publicationId,publicationId,snapshotId:publicationId,planId:plan.id,channelId:plan.channelId,publishedAt:input.publishedAt,timezone:input.timezone,url:input.url || null,snapshotHash:hash(rawSnapshot)};
+        return {...meta,plans:meta.plans.map(item=>item.id===plan.id?{...item,status:'published',publicationId,updatedAt:new Date().toISOString()}:item),publications:[...meta.publications,entry]};
+      });
+    },
+    readPublication: (contentId,publicationId) => locked(()=>{
+      id(contentId);id(publicationId);
+      const meta=metadata(snapshot(root,contentId)[0],contentId);
+      const entry=(meta.publications || []).find(item=>item.id===publicationId);
+      if (!entry) fail('INVALID_INPUT','Unknown publication ID');
+      return publicationSnapshot(contentId,publicationId,entry);
+    }),
+  };
+}
+
+function upgradeTo3(root) {
+  const initial=descriptor(root,true);
+  const release=acquire(root);
+  let primaryError;
+  try {
+    const info=descriptor(root,true);
+    if (info.libraryId!==initial.libraryId || ![2,3].includes(info.schemaVersion)) fail('CONFLICT','Unexpected library schema during upgrade to 3');
+    const descriptorPath=path.join(root,'内容库.json');
+    const barrier=path.join(root,SYSTEM,'事务',BARRIER);
+    if (info.schemaVersion===2) {
+      recover(root,info.libraryId);
+      const original=read(descriptorPath);
+      const backup=path.join(root,SYSTEM,'内容库.schema2.bak.json');
+      immutableFile(backup,original);
+      hook('upgrade3AfterBackup');
+      ensureDirectory(barrier);
+      hook('upgrade3AfterBarrier');
+      for (const name of ['提示词','我的照片','模板','资产']) ensureDirectory(path.join(root,name));
+      ensureDirectory(path.join(root,'资产','sha256'));
+      hook('upgrade3AfterDirectories');
+      if (!read(descriptorPath).equals(original)) fail('CONFLICT','Library descriptor changed while upgrading to 3');
+      const stage=path.join(root,`.内容库.schema3-${randomUUID()}`);
+      writeNew(stage,jsonBytes({...parse(original,'内容库.json'),schemaVersion:3}));
+      hook('upgrade3BeforeDescriptorPublish');
+      safePath(descriptorPath);
+      fs.renameSync(stage,descriptorPath);
+      hook('upgrade3AfterDescriptorPublish');
+      syncDirectory(root);
+    }
+    if (safePath(barrier,true)) {
+      immutableFile(path.join(barrier,'完成.json'),jsonBytes({schemaVersion:3,libraryId:info.libraryId}));
+      hook('upgrade3AfterFinalMarker');
+    }
+  } catch(error) {primaryError=ioError(error);throw primaryError;}
+  finally {try{release();}catch(error){if(!primaryError)throw ioError(error);}}
+  return openLibrary(root);
+}
+
+function validateBusinessMetadata(meta,kind) {
+  const check=(condition,label)=>{if(!condition)fail('CORRUPT',`Invalid ${kind} ${label}`)};
+  const string=(value,empty=false)=>typeof value==='string'&&(empty||!!value.trim())&&value.length<=10000;
+  const iso=value=>{try{return date(value)}catch{return false}};
+  const zone=value=>{try{return timezone(value)===value}catch{return false}};
+  const plain=value=>object(value)&&[Object.prototype,null].includes(Object.getPrototypeOf(value));
+  const keys=(value,allowed)=>plain(value)&&Object.keys(value).every(key=>allowed.includes(key));
+  const same=isDeepStrictEqual;
+  const templateRef=ref=>{
+    if(!keys(ref,['id','version','packageHash'])||!HASH.test(ref.packageHash)||!Number.isSafeInteger(ref.version)||ref.version<1)return false;
+    try{return objectId('template',ref.id)===ref.id}catch{return false}
+  };
+  const unique=(items,label)=>{
+    check(Array.isArray(items),label);
+    const ids=new Set();
+    for(const item of items){check(plain(item)&&UUID.test(item.id)&&!ids.has(item.id),`${label} IDs`);ids.add(item.id);}
+  };
+  if(kind==='content') {
+    if(meta.schemaVersion===1){check(!['materials','candidates','selectedCover','plans','publications'].some(key=>Object.hasOwn(meta,key)),'schema-1 extension fields');return;}
+    for(const field of ['materials','candidates','plans','publications'])unique(meta[field],field);
+    for(const item of meta.materials)check(keys(item,['id','assetHash','originalName','role','createdAt'])&&HASH.test(item.assetHash)&&string(item.originalName,true)&&string(item.role)&&iso(item.createdAt),'material');
+    for(const item of meta.candidates)check(keys(item,['id','assetHash','requestId','attemptId','template','source','originalName','accepted','createdAt','acceptedAt'])&&HASH.test(item.assetHash)&&string(item.requestId)&&string(item.attemptId)&&(item.template===null||templateRef(item.template))&&typeof item.accepted==='boolean'&&iso(item.createdAt)&&(item.source===undefined||string(item.source))&&(item.originalName===undefined||string(item.originalName,true))&&(item.accepted?iso(item.acceptedAt):item.acceptedAt===undefined),'candidate');
+    check(meta.selectedCover===null||keys(meta.selectedCover,['candidateId','assetHash','requestId','attemptId','template','selectedAt']),'selected cover shape');
+    if(meta.selectedCover!==null){
+      const selected=meta.selectedCover;
+      const candidate=meta.candidates.find(item=>item.id===selected.candidateId);
+      check(candidate&&candidate.accepted&&selected.assetHash===candidate.assetHash&&selected.requestId===candidate.requestId&&selected.attemptId===candidate.attemptId&&same(selected.template,candidate.template)&&iso(selected.selectedAt),'selected cover ownership');
+    }
+    for(const plan of meta.plans){
+      check(keys(plan,['id','channelId','scheduledAt','timezone','status','createdAt','updatedAt','publicationId'])&&/^[a-z][a-z0-9._-]{0,63}$/.test(plan.channelId)&&iso(plan.scheduledAt)&&zone(plan.timezone)&&['planned','cancelled','published'].includes(plan.status)&&iso(plan.createdAt)&&iso(plan.updatedAt),'plan');
+      check(plan.status==='published'?UUID.test(plan.publicationId):plan.publicationId===undefined,'plan publication status');
+    }
+    const usedPlans=new Set();
+    for(const publication of meta.publications){
+      check(keys(publication,['id','publicationId','snapshotId','planId','channelId','publishedAt','timezone','url','snapshotHash'])&&publication.id===publication.publicationId&&publication.id===publication.snapshotId&&UUID.test(publication.planId)&&iso(publication.publishedAt)&&zone(publication.timezone)&&HASH.test(publication.snapshotHash),'publication');
+      const plan=meta.plans.find(item=>item.id===publication.planId);
+      check(plan&&plan.status==='published'&&plan.publicationId===publication.id&&plan.channelId===publication.channelId&&!usedPlans.has(plan.id),'publication plan ownership');
+      usedPlans.add(plan.id);
+      if(publication.url!==null){let url;try{url=new URL(publication.url)}catch{}check(url&&['https:','http:'].includes(url.protocol)&&!url.username&&!url.password,'publication URL');}
+    }
+    for(const plan of meta.plans)if(plan.status==='published')check(meta.publications.some(item=>item.id===plan.publicationId&&item.planId===plan.id),'published plan receipt');
+  }
+  if(kind==='prompt'){
+    check(string(meta.category,true)&&string(meta.when,true)&&string(meta.summary,true)&&Array.isArray(meta.tags)&&meta.tags.every(tag=>string(tag))&&new Set(meta.tags).size===meta.tags.length,'prompt fields');
+    check(meta.builtinKey===null||string(meta.builtinKey),'builtin key');check(meta.provenance===null||plain(meta.provenance),'provenance');
+  }
+  if(kind==='photo')check(HASH.test(meta.assetHash)&&typeof meta.isOwnPhoto==='boolean'&&string(meta.originalName,true),'photo fields');
+  if(kind==='template'){
+    check(typeof meta.builtin==='boolean'&&meta.builtin===BUILTIN.test(meta.id)&&Array.isArray(meta.versions)&&meta.versions.length>0,'template identity');
+    const versions=new Set();
+    for(const entry of meta.versions){check(keys(entry,['version','packageHash'])&&Number.isSafeInteger(entry.version)&&entry.version>0&&HASH.test(entry.packageHash)&&!versions.has(entry.version),'template versions');versions.add(entry.version);}
+    check(versions.has(meta.currentVersion),'current version');
+    if(meta.derivedFrom!==null){const ref=meta.derivedFrom;check(keys(ref,['id','version'])&&Number.isSafeInteger(ref.version)&&ref.version>0,'derived source');try{objectId('template',ref.id)}catch{fail('CORRUPT','Invalid derived template ID')}}
+  }
 }

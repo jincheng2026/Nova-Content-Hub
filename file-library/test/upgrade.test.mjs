@@ -163,7 +163,7 @@ test('v1 open requires explicit upgrade without changing a byte; upgrade preserv
   reject('UPGRADE_REQUIRED', () => openLibrary(root));
   assert.deepEqual(fileSnapshot(root), beforeOpen);
   const upgraded = upgradeLibrary(root);
-  assert.equal(upgraded.info.schemaVersion, 2);
+  assert.equal(upgraded.info.schemaVersion, 3);
   assert.equal(upgraded.info.customNote, 'preserve me');
   assert.equal(upgraded.info.libraryId, library.info.libraryId);
   assert.deepEqual(fs.readFileSync(path.join(root, system, '内容库.schema1.bak.json')), original);
@@ -180,7 +180,7 @@ for (const phase of ['upgradeBeforeBackupPublish', 'upgradeAfterBackup', 'upgrad
     const original = flattenToV1(root);
     killAt(root, phase);
     const reopened = upgradeLibrary(root);
-    assert.equal(reopened.info.schemaVersion, 2);
+    assert.equal(reopened.info.schemaVersion, 3);
     assert.equal(reopened.readContent(item.id).body, 'before');
     assert.deepEqual(fs.readFileSync(path.join(root, system, '内容库.schema1.bak.json')), original);
     assert.equal(reopened.queryMutation(item.mutationId).content.body, 'before');
@@ -225,7 +225,7 @@ test('legacy staging is retained under pending, and schema-1 reader refuses the 
   `;
   reject('CORRUPT', () => Function('fs', 'dir', oldRecoverGuard)(fs, baseOf(root)));
   const upgraded = upgradeLibrary(root);
-  assert.equal(upgraded.info.schemaVersion, 2);
+  assert.equal(upgraded.info.schemaVersion, 3);
   assert.equal(fs.readFileSync(path.join(pendingOf(root), stage, 'intent.json'), 'utf8'), '{partial');
 });
 

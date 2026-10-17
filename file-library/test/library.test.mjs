@@ -456,7 +456,7 @@ test('bad JSON, missing body, duplicate identity and newer metadata fail without
   reject('CORRUPT', () => library.readContent(item.id));
   fs.writeFileSync(contentFile(root, item), 'x');
   const meta = JSON.parse(original);
-  fs.writeFileSync(metaFile, JSON.stringify({ ...meta, schemaVersion: 2 }));
+  fs.writeFileSync(metaFile, JSON.stringify({ ...meta, schemaVersion: 3 }));
   reject('FORMAT_UNSUPPORTED', () => library.readContent(item.id));
   fs.writeFileSync(metaFile, JSON.stringify({ ...meta, id: randomUUID() }));
   reject('CORRUPT', () => library.listContents());
@@ -466,7 +466,7 @@ test('newer/foreign root format and unknown nonempty directories are never taken
   const { parent, root, library } = fixture(t);
   const file = path.join(root, '内容库.json');
   const original = JSON.parse(fs.readFileSync(file));
-  fs.writeFileSync(file, JSON.stringify({ ...original, schemaVersion: 3 }));
+  fs.writeFileSync(file, JSON.stringify({ ...original, schemaVersion: 4 }));
   reject('FORMAT_UNSUPPORTED', () => library.createContent({ title: 'x', body: '' }));
   fs.writeFileSync(file, JSON.stringify({ ...original, format: 'other-product' }));
   reject('FORMAT_UNSUPPORTED', () => openLibrary(root));
