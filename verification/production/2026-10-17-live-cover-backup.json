@@ -1,0 +1,39 @@
+{
+  "checkedAt": "2026-10-17T13:34:29.012Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "source": "isolated current Codex thread live image generation probe",
+  "runtime": "standalone auth-required maintenance CLI",
+  "backupId": "6e60d8cc-563d-4241-bd65-1cb1c32e0bfc",
+  "libraryId": "c1e89bda-927b-4f94-b32b-75201c35f04b",
+  "treeHash": "77cd4c627d0d6a52b8bd90a444de3f2a94444f5918b2e23eae1030a8eff08777",
+  "counts": {
+    "files": 300,
+    "directories": 193,
+    "bytes": 79991299
+  },
+  "contentBytesAndMetadataUnchanged": true,
+  "sourceUnchanged": true,
+  "images": [
+    {
+      "candidateId": "a2ca14c5-6917-45ba-a0cd-f2765694785e",
+      "assetHash": "1e6750199cb209b7d3be951f929c57da513f38831f20b5090cb6b18c7ad0af15",
+      "bytes": 1631197,
+      "unchanged": true
+    },
+    {
+      "candidateId": "da5eae88-1d2a-42df-b7bf-1a59bddec9c5",
+      "assetHash": "f27f4e691a9ae4ee125082c40f9d87cfe24d0a854257fc90de89d477e11a6781",
+      "bytes": 1603577,
+      "unchanged": true
+    }
+  ],
+  "receiptReplayPreservedIds": true,
+  "interruptedAttempts": [],
+  "originalInputsPreserved": true,
+  "originalTreeEntriesCompared": 493,
+  "windowsTested": false,
+  "secondVolumeTested": false,
+  "powerLossTested": false,
+  "electronTested": false
+}

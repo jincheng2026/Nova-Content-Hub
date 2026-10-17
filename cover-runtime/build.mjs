@@ -17,13 +17,13 @@ for (const mode of modes) {
   const target = path.join(root, 'dist-cover-runtime', `auth-${mode}`);
   fs.rmSync(target, { recursive: true, force: true });
   fs.mkdirSync(path.join(target, 'cover-runtime'), { recursive: true });
-  for (const name of ['file-library', 'image-validation']) {
+  for (const name of ['file-library', 'image-validation', 'library-maintenance']) {
     fs.cpSync(path.join(root, name), path.join(target, name), { recursive: true, filter: source => path.basename(source) !== 'test' });
   }
   fs.copyFileSync(path.join(root, 'cover-runtime', 'cli.mjs'), path.join(target, 'cover-runtime', 'cli.mjs'));
   fs.cpSync(path.join(root, 'cover-runtime', 'skills'), path.join(target, 'cover-runtime', 'skills'), { recursive: true });
   fs.copyFileSync(path.join(root, 'cover-runtime', 'README.md'), path.join(target, 'cover-runtime', 'README.md'));
-  fs.writeFileSync(path.join(target, 'README.md'), '# 自媒体封面执行器 · 实验包\n\n运行 `node cover-runtime/cli.mjs help`。完整说明见 [运行说明](cover-runtime/README.md)。本包不代表商用发行就绪。\n');
+  fs.writeFileSync(path.join(target, 'README.md'), '# 自媒体封面执行器 · 实验包\n\n运行 `node cover-runtime/cli.mjs help`。完整说明见 [运行说明](cover-runtime/README.md)。本地数据备份、核验、恢复使用 `node library-maintenance/cli.mjs help`，见 [数据维护](library-maintenance/README.md)。本包不代表商用发行就绪。\n');
   fs.writeFileSync(path.join(target, 'cover-runtime', 'release.json'), JSON.stringify({
     format: 'nova-content-cover-runtime-release', schemaVersion: 1, appScope: release.appScope,
     version: release.version, protocolVersion: 1, AUTH_MODE: mode,
