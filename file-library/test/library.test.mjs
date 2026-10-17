@@ -124,17 +124,23 @@ test('a live child owns a lock with no age-based takeover', async t => {
   const worker = spawn(process.execPath, ['--input-type=module', '-e', `
     import fs from 'node:fs';import {openLibrary,__testing} from ${JSON.stringify(moduleURL)};
     const d=JSON.parse(process.env.TASK_DATA);const lib=openLibrary(d.root);
-    __testing.setHook(e=>{if(e.phase==='afterJournal'){fs.writeFileSync(d.ready,'ready');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,10000);}});
+    __testing.setHook(e=>{if(e.phase==='afterJournal'){fs.writeFileSync(d.ready,'ready');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,45000);}});
     lib.updateContent(d.item.id,{body:'child'},d.item.editToken);
-  `], { env: { ...process.env, NODE_ENV: 'test', TASK_DATA: JSON.stringify({ root, item, ready }) }, stdio: 'ignore' });
-  const ended = new Promise(resolve => worker.once('exit', resolve));
-  t.after(() => worker.kill('SIGKILL'));
-  for (let i = 0; i < 100 && !fs.existsSync(ready); i++) await delay(20);
-  assert.ok(fs.existsSync(ready), 'child acquired lock');
-  fs.utimesSync(lockPath(root), new Date(0), new Date(0));
-  reject('BUSY', () => library.readContent(item.id));
-  worker.kill('SIGKILL');
-  await ended;
+  `], { env: { ...process.env, NODE_ENV: 'test', TASK_DATA: JSON.stringify({ root, item, ready }) }, stdio: ['ignore', 'ignore', 'pipe'], timeout: 45000, killSignal: 'SIGKILL' });
+  let exited = false, stderr = '', spawnError;
+  worker.stderr.on('data', data => stderr += data);
+  worker.on('error', error => { spawnError = error; });
+  const ended = new Promise(resolve => worker.once('close', (status, signal) => { exited = true; resolve({ status, signal }); }));
+  try {
+    const deadline = Date.now() + 30000;
+    while (!fs.existsSync(ready) && !exited && Date.now() < deadline) await delay(20);
+    assert.ok(fs.existsSync(ready) && !exited, `child did not acquire lock within 30000ms: ${spawnError ?? stderr}`);
+    fs.utimesSync(lockPath(root), new Date(0), new Date(0));
+    reject('BUSY', () => library.readContent(item.id));
+  } finally {
+    worker.kill('SIGKILL');
+    await ended;
+  }
   assert.equal(openLibrary(root).readContent(item.id).body, 'child');
 });
 

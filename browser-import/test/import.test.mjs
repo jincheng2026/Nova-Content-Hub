@@ -303,26 +303,35 @@ test("same target parallel starts share one importId; a different raw backup con
   const run = () =>
     new Promise((resolve, reject) => {
       let stdout = "",
-        stderr = "";
+        stderr = "",
+        spawnError;
       const p = spawn(
         process.execPath,
         [
           "--input-type=module",
           "-e",
-          `import{importBrowserBackup,getBrowserImport,resumeBrowserImport}from ${JSON.stringify(moduleURL)};for(let n=0;n<100;n++){try{const r=await importBrowserBackup(process.env.SOURCE,process.env.DESTINATION);console.log(JSON.stringify(r));break;}catch(e){if(!['BUSY','LOCK_UNCERTAIN'].includes(e.code))throw e;await new Promise(r=>setTimeout(r,20));}}`,
+          `import{importBrowserBackup}from ${JSON.stringify(moduleURL)};const deadline=Date.now()+30000;for(;;){try{const r=await importBrowserBackup(process.env.SOURCE,process.env.DESTINATION);console.log(JSON.stringify(r));break;}catch(e){if(!['BUSY','LOCK_UNCERTAIN'].includes(e.code))throw e;if(Date.now()>=deadline)throw Object.assign(Error('Parallel import remained busy before its test deadline'),{code:'RETRY_TIMEOUT'});await new Promise(r=>setTimeout(r,20));}}`,
         ],
         {
           env: { ...process.env, SOURCE: f.source, DESTINATION: f.destination },
+          timeout: 45000,
+          killSignal: 'SIGKILL',
         },
       );
       p.stdout.on("data", (b) => (stdout += b));
       p.stderr.on("data", (b) => (stderr += b));
-      p.on("error", reject);
-      p.on("close", (code) =>
-        code === 0 ? resolve(JSON.parse(stdout)) : reject(Error(stderr)),
-      );
+      p.on("error", error => { spawnError = error; });
+      p.on("close", (code, signal) => {
+        if (spawnError) return reject(spawnError);
+        if (code !== 0) return reject(Error(stderr || `Parallel import exited ${code}/${signal}`));
+        try { resolve(JSON.parse(stdout)); }
+        catch { reject(Error(`Parallel import returned no JSON result: ${stderr}`)); }
+      });
     });
-  const [a, b] = await Promise.all([run(), run()]);
+  const results = await Promise.allSettled([run(), run()]);
+  const failure = results.find(result => result.status === 'rejected');
+  if (failure) throw failure.reason;
+  const [a, b] = results.map(result => result.value);
   assert.equal(a.importId, b.importId);
   assert.equal(openLibrary(f.destination).listContents().length, 1);
   f.state.data.ACCOUNT.intro = "different";

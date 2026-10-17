@@ -230,14 +230,20 @@ test('moving and replacing the bound root during decode cannot commit into a dif
 for (const same of [true, false]) test(`two independent processes submitting ${same ? 'same' : 'different'} receipts cannot double-register`, async t => {
   const f = await fixture(t); f.claim(); const first = await f.receipt(); const second = same ? first : { ...first, resultId: randomUUID() };
   const moduleURL = new URL('../index.mjs', import.meta.url).href;
-  const script = `import{openLibrary}from ${JSON.stringify(moduleURL)};const x=JSON.parse(process.env.COVER_TASK);for(let n=0;n<200;n++){try{const r=await openLibrary(x.root).commitCoverAttempt(x.contentId,x.requestId,x.attemptId,x.receipt);console.log(JSON.stringify({status:'committed',ids:r.candidateIds}));break}catch(e){if(['BUSY','LOCK_UNCERTAIN'].includes(e.code)){await new Promise(r=>setTimeout(r,20));continue}console.log(JSON.stringify({status:e.code,message:e.message}));break}}`;
-  const run = receipt => new Promise(resolve => {
-    const child = spawn(process.execPath, ['--input-type=module', '-e', script], { env: { ...process.env, COVER_TASK: JSON.stringify({ root: f.root, contentId: f.content.id, requestId: f.request.requestId, attemptId: f.attemptId, receipt }) }, stdio: ['ignore', 'pipe', 'pipe'] });
-    let stdout = '', stderr = ''; child.stdout.on('data', data => stdout += data); child.stderr.on('data', data => stderr += data); child.on('exit', status => resolve({ status, stdout, stderr }));
+  const script = `import{openLibrary}from ${JSON.stringify(moduleURL)};const x=JSON.parse(process.env.COVER_TASK);const deadline=Date.now()+30000;let finished=false;while(Date.now()<deadline){try{const r=await openLibrary(x.root).commitCoverAttempt(x.contentId,x.requestId,x.attemptId,x.receipt);console.log(JSON.stringify({status:'committed',ids:r.candidateIds}));finished=true;break}catch(e){if(['BUSY','LOCK_UNCERTAIN'].includes(e.code)){await new Promise(r=>setTimeout(r,20));continue}console.log(JSON.stringify({status:e.code,message:e.message}));finished=true;break}}if(!finished)throw Error('receipt submission timed out waiting for library lock after 30000ms');`;
+  const run = receipt => new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, ['--input-type=module', '-e', script], { env: { ...process.env, COVER_TASK: JSON.stringify({ root: f.root, contentId: f.content.id, requestId: f.request.requestId, attemptId: f.attemptId, receipt }) }, stdio: ['ignore', 'pipe', 'pipe'], timeout: 45000, killSignal: 'SIGKILL' });
+    let stdout = '', stderr = '', spawnError; child.stdout.on('data', data => stdout += data); child.stderr.on('data', data => stderr += data); child.on('error', error => { spawnError = error; }); child.on('close', (status, signal) => spawnError ? reject(spawnError) : resolve({ status, signal, stdout, stderr }));
   });
-  const outputs = await Promise.all([run(first), run(second)]);
+  const settled = await Promise.allSettled([run(first), run(second)]);
+  for (const result of settled) assert.equal(result.status, 'fulfilled', String(result.reason));
+  const outputs = settled.map(result => result.value);
   for (const output of outputs) assert.equal(output.status, 0, JSON.stringify(output));
-  const parsed = outputs.map(output => JSON.parse(output.stdout));
+  const parsed = outputs.map(output => {
+    let value;
+    assert.doesNotThrow(() => { value = JSON.parse(output.stdout); }, `invalid child JSON: ${JSON.stringify(output)}`);
+    return value;
+  });
   assert.deepEqual(parsed.map(item => item.status).sort(), same ? ['committed', 'committed'] : ['RECEIPT_CONFLICT', 'committed']);
   if (same) assert.deepEqual(parsed[0].ids, parsed[1].ids);
   assert.equal(openLibrary(f.root).readContent(f.content.id).candidates.length, 2);

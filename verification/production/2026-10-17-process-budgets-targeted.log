@@ -1,0 +1,13 @@
+✔ two independent initializer processes cannot create the same builtin prompt key (929.208292ms)
+✔ two independent processes submitting same receipts cannot double-register (1855.223917ms)
+✔ two independent processes submitting different receipts cannot double-register (1293.482417ms)
+✔ a live child owns a lock with no age-based takeover (1057.44675ms)
+✔ two independent settings writers serialize and stale token loses without lost updates (1120.128375ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3568.867917
