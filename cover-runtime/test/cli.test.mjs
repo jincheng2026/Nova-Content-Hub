@@ -73,20 +73,22 @@ test('both builds identify themselves and required mode refuses business IO befo
 test('independent packaged runtime fully decodes, submits, replays and exposes status through actual CLI commands', async t => {
   const resolved = createRequire(path.join(bundle, 'image-validation/index.mjs')).resolve('sharp');
   assert.ok(resolved.startsWith(path.join(bundle, 'node_modules') + path.sep));
+  const unified = (args, input) => run(['cover', ...args], input, path.join(bundle, 'plugin-src/src/cli.mjs'));
   const f = await fixture(t);
-  const created = run(['create', ...f.base, '--stdin'], { request: f.request, editToken: f.content.editToken, mutationId: randomUUID() });
+  const created = unified(['create', ...f.base, '--stdin'], { request: f.request, editToken: f.content.editToken, mutationId: randomUUID() });
   assert.equal(created.ok, true, created.message);
   assert.equal(Object.hasOwn(created.result, 'bodyBytes'), false);
   const req = created.result.request;
-  const started = run(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'codex' });
+  const started = unified(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'codex' });
   assert.equal(started.ok, true, started.message);
   const attemptId = started.result.attempt.attemptId;
   const args = [...f.base, '--request', req.requestId, '--attempt', attemptId];
-  const context = run(['context', ...args]);
+  const context = unified(['context', ...args]);
   assert.equal(context.ok, true, context.message);
+  assert.deepEqual(context, run(['context', ...args]));
   assert.equal(context.result.body, f.content.body);
   assert.equal(Object.hasOwn(context.result, 'bodyBytes'), false);
-  assert.equal(run(['claim', ...args, '--stdin'], { host: 'codex', readAssetHashes: [...new Set(context.result.inputs.map(input => input.assetHash))] }).ok, true);
+  assert.equal(unified(['claim', ...args, '--stdin'], { host: 'codex', readAssetHashes: [...new Set(context.result.inputs.map(input => input.assetHash))] }).ok, true);
   const files = [];
   for (const color of ['#506d45', '#bb384e']) {
     const bytes = await sharp({ create: { width: 24, height: 32, channels: 3, background: color } }).png().toBuffer();
@@ -98,7 +100,7 @@ test('independent packaged runtime fully decodes, submits, replays and exposes s
   const receiptFile = path.join(f.dir, 'original-receipt.json');
   const raw = JSON.stringify(receipt, null, 2) + '\n';
   fs.writeFileSync(receiptFile, raw);
-  const committed = run(['submit', ...args, '--file', receiptFile]);
+  const committed = unified(['submit', ...args, '--file', receiptFile]);
   assert.equal(committed.ok, true, committed.message);
   assert.equal(committed.result.candidateIds.length, 2);
   const content = f.library.readContent(f.content.id);
@@ -109,12 +111,13 @@ test('independent packaged runtime fully decodes, submits, replays and exposes s
   const replayed = run(['submit', ...args, '--stdin'], raw);
   assert.equal(replayed.ok, true, replayed.message);
   assert.deepEqual(replayed.result.candidateIds, committed.result.candidateIds);
-  assert.equal(run(['status', ...f.base]).result.coverJobs.length, 1);
-  const cancelled = run(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'workbuddy', reason: 'cancel test' });
+  assert.equal(unified(['status', ...f.base]).result.coverJobs.length, 1);
+  assert.deepEqual(unified(['status', ...f.base]), run(['status', ...f.base]));
+  const cancelled = unified(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'workbuddy', reason: 'cancel test' });
   const nextArgs = [...f.base, '--request', req.requestId, '--attempt', cancelled.result.attempt.attemptId];
-  assert.equal(run(['cancel', ...nextArgs]).result.attempt.status, 'cancelled');
-  const failed = run(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'workbuddy', reason: 'failure test' });
-  assert.equal(run(['fail', ...f.base, '--request', req.requestId, '--attempt', failed.result.attempt.attemptId, '--stdin'], { code: 'TOOL_UNAVAILABLE', message: '测试：未调用外部模型' }).result.attempt.status, 'failed');
+  assert.equal(unified(['cancel', ...nextArgs]).result.attempt.status, 'cancelled');
+  const failed = unified(['attempt', ...f.base, '--request', req.requestId, '--stdin'], { host: 'workbuddy', reason: 'failure test' });
+  assert.equal(unified(['fail', ...f.base, '--request', req.requestId, '--attempt', failed.result.attempt.attemptId, '--stdin'], { code: 'TOOL_UNAVAILABLE', message: '测试：未调用外部模型' }).result.attempt.status, 'failed');
   assert.equal(f.library.readContent(f.content.id).candidates.length, 2);
 });
 

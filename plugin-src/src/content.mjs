@@ -1,7 +1,8 @@
 import { readFileSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import Handoff from '../../原型/shared/handoff.js';
+import Handoff from './bridge/handoff.js';
 
+const PACKAGE_KIND = 'execution';
 export const OPERATIONS = { analyze: 'nova-content-template-study', restore: 'nova-content-template-restore', generate: 'nova-content-cover' };
 export const HOST_EVENTS = {
   codex: ['SessionStart', 'UserPromptSubmit', 'Stop', 'Interrupt'],
@@ -21,7 +22,16 @@ export function validRelease(release) {
     && release.protocolVersion === 1 && release.prototype === true && release.productionReady === false
     && ['required', 'disabled'].includes(release.AUTH_MODE) && typeof release.version === 'string'
     && /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/.test(release.version)
-    && release.pairId === `${release.appScope}@${release.version}:p${release.protocolVersion}:${release.AUTH_MODE}`;
+    && release.pairId === `${release.appScope}@${release.version}:p${release.protocolVersion}:${release.AUTH_MODE}`
+    && (!Object.hasOwn(release, 'format') || release.format === 'nova-content-plugin-release'
+      && release.schemaVersion === 1 && release.experimental === true
+      && release.platform === process.platform && release.arch === process.arch);
+}
+
+function packageRelease() {
+  const release = JSON.parse(readFileSync(new URL('./release.json', import.meta.url), 'utf8'));
+  if (!validRelease(release) || PACKAGE_KIND === 'execution' && release.format !== 'nova-content-plugin-release') throw new Error('PACKAGE_INVALID');
+  return release;
 }
 
 export function validateRequest(request, release) {
@@ -80,7 +90,7 @@ export function observeHook(host, event, input, release) {
   if (!HOST_EVENTS[host]?.includes(event)) return { output: {}, diagnostic: 'UNKNOWN_HOOK_EVENT' };
   if (!object(input) || input.hook_event_name !== event) return { output: {}, diagnostic: 'INVALID_HOOK_INPUT' };
   // A startup hint contains no project context and grants no execution authority.
-  if (event === 'SessionStart' && validRelease(release)) return { output: { hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: `Nova Content Hub 插件 ${release.version}；scope=nova-content-hub；模式=${release.AUTH_MODE}。仅响应显式自媒体工作台请求。先校验用户提供的 HANDOFF.json / REQUEST.json，不能从 cwd 猜库；真实库未绑定，路径不可用，可信授权未接入，executable=false。不要将宿主会话结束当作生成成功。` } }, diagnostic: null };
+  if (event === 'SessionStart' && validRelease(release)) return { output: { hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: `Nova Content Hub 插件 ${release.version}；scope=nova-content-hub；模式=${release.AUTH_MODE}。仅响应显式自媒体工作台请求。先校验用户提供的 HANDOFF.json / REQUEST.json，不能从 cwd 猜库；${release.format === 'nova-content-plugin-release' ? 'contract 命令仅校验未绑定原型请求，executable=false；cover 命令仅处理用户明确交来的绝对库位置与 UUID。required 模式因可信权益未接入而拒绝全部业务读写。' : '真实库未绑定，路径不可用，可信授权未接入，executable=false。'}不要将宿主会话结束当作生成成功。` } }, diagnostic: null };
   return { output: {}, diagnostic: null };
 }
 
@@ -114,8 +124,7 @@ export async function main(argv) {
     let result;
     try {
       if (args.length !== 4 || args[0] !== '--host' || args[2] !== '--event') throw new Error('INVALID_HOOK_ARGUMENTS');
-      const release = JSON.parse(readFileSync(new URL('./release.json', import.meta.url), 'utf8'));
-      if (!validRelease(release)) throw new Error('PACKAGE_INVALID');
+      const release = packageRelease();
       result = observeHook(args[1], args[3], await readInput(600), release);
     } catch (error) { result = { output: {}, diagnostic: error.message }; }
     if (result.diagnostic) process.stderr.write(JSON.stringify({ code: result.diagnostic }) + '\n');
@@ -124,8 +133,7 @@ export async function main(argv) {
   }
   let result;
   try {
-    const release = JSON.parse(readFileSync(new URL('./release.json', import.meta.url), 'utf8'));
-    if (!validRelease(release)) throw new Error('PACKAGE_INVALID');
+    const release = packageRelease();
     if (['context', 'check-request', 'check-handoff'].includes(command)) {
       const inputLimit = command === 'check-handoff' ? Handoff.MAX_BYTES : MAX_INPUT;
       if (args.length === 1 && args[0] === '--stdin') result = run(command, await readInput(1500, inputLimit), release);

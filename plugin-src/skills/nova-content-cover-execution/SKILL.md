@@ -5,7 +5,7 @@ description: 执行自媒体工作台已准备的封面请求。用户从工作�
 
 # 执行封面请求
 
-此 Skill 随实验本地执行包分发。CLI 位于本文件目录的 `../../cli.mjs`，以 Node.js 运行。使用用户本次提供的绝对库位置、内容 ID、请求 ID、尝试 ID 和助手名；信息缺失时先明确缺失项。只操作这次请求。
+此 Skill 随实验本地执行包分发。CLI 位于本文件目录的 `../../src/cli.mjs`（旧分发位置的同源副本使用 `../../cli.mjs` 兼容入口），以 Node.js 运行，统一入口业务命令都加 `cover` 命令空间，例如 `node ../../src/cli.mjs cover context …`；旧兼容入口省略 `cover`。使用用户本次提供的绝对库位置、内容 ID、请求 ID、尝试 ID 和助手名；信息缺失时先明确缺失项。只操作这次请求。原型的 HANDOFF.json / REQUEST.json 仅交给 `contract check-handoff` / `contract check-request` 校验；未绑定原型请求不能转成真实封面执行。
 
 ## 步骤
 
