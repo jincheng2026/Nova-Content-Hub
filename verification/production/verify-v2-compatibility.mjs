@@ -30,12 +30,12 @@ try {
   assert.deepEqual(fs.readFileSync(descriptor), original, 'barrier precedes the schema switch');
   assert.throws(() => oldHandle.updateContent(content.id, { body: 'must not write' }, content.editToken), error => error.code === 'CORRUPT');
   const upgraded = upgradeLibrary(root);
-  assert.equal(upgraded.info.schemaVersion, 3);
+  assert.equal(upgraded.info.schemaVersion, 4);
   assert.equal(upgraded.info.libraryId, library.info.libraryId);
   assert.equal(upgraded.readContent(content.id).body, content.body);
   assert.throws(() => oldHandle.updateContent(content.id, { body: 'must not write' }, content.editToken), error => error.code === 'FORMAT_UNSUPPORTED');
   console.log(JSON.stringify({ oldReaderCommit: oldCommit, oldV2Read: 'passed', newV2Open: 'UPGRADE_REQUIRED',
-    oldWriteDuringUpgrade: 'CORRUPT', oldWriteAfterUpgrade: 'FORMAT_UNSUPPORTED', upgradedSchema: 3,
+    oldWriteDuringUpgrade: 'CORRUPT', oldWriteAfterUpgrade: 'FORMAT_UNSUPPORTED', upgradedSchema: 4,
     identityAndBodyPreserved: true }, null, 2));
 } finally {
   if (previousEnvironment === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = previousEnvironment;

@@ -1,0 +1,45 @@
+{
+  "purpose": "isolated live cover execution probe",
+  "createdAt": "2026-10-17T06:48:11.042Z",
+  "generator": "Codex built-in image_gen",
+  "model": "not returned by tool",
+  "prompt": "Use case: ads-marketing. Create a new original Chinese creator cover as a portrait PNG exactly 1024 by 1536 pixels, aspect ratio 2:3. Use both supplied images ONLY as style references for editorial hierarchy, layered tool cards, precise Chinese typography and a polished professional creator aesthetic. Do not copy sample text, brands or people. No person or human face. Main title verbatim: \"封面怎么选\". Subtitle verbatim: \"先看主题，再选模板\". Small kicker verbatim: \"创作手记 01\". Depict the idea of selecting cover templates with layered content cards. Keep the title exceptionally readable at thumbnail size. Make one distinct composition per candidate. No watermark, no extra copy. Preserve the exact requested output dimensions; do not add an outside frame.",
+  "template": {
+    "id": "builtin-ai-tool",
+    "version": 4,
+    "packageHash": "446a9e29a574dfa140cf3becae1374778bee068d295e63ed612a7625262a91ec"
+  },
+  "styleAssetHashes": [
+    "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+    "d1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1"
+  ],
+  "photo": null,
+  "requestId": "e1e6480d-bae3-4b5f-baf6-eea7206f4c62",
+  "attemptId": "46373248-2d30-4705-8ccf-99c743484512",
+  "receiptHash": "456c8b1ac14745f1e200a18fde5a899a1551a331f527cc5648bfc4ca997f5d97",
+  "reportHash": "34b57e12585651b5b64c7f7fc2782b109013aa1f10152d14bb94d2fb84e659c9",
+  "humanQualityReview": "pending",
+  "automaticHandoffTested": false,
+  "images": [
+    {
+      "path": "assets/production-probes/e1e6480d-bae3-4b5f-baf6-eea7206f4c62-1.png",
+      "originalName": "live-1.png",
+      "format": "png",
+      "width": 1024,
+      "height": 1536,
+      "assetHash": "1e6750199cb209b7d3be951f929c57da513f38831f20b5090cb6b18c7ad0af15",
+      "bytes": 1631197,
+      "decoded": true
+    },
+    {
+      "path": "assets/production-probes/e1e6480d-bae3-4b5f-baf6-eea7206f4c62-2.png",
+      "originalName": "live-2.png",
+      "format": "png",
+      "width": 1024,
+      "height": 1536,
+      "assetHash": "f27f4e691a9ae4ee125082c40f9d87cfe24d0a854257fc90de89d477e11a6781",
+      "bytes": 1603577,
+      "decoded": true
+    }
+  ]
+}

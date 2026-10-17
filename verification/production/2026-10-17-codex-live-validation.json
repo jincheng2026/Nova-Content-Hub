@@ -1,0 +1,29 @@
+{
+  "format": "nova-cover-validation",
+  "schemaVersion": 1,
+  "receiptHash": "456c8b1ac14745f1e200a18fde5a899a1551a331f527cc5648bfc4ca997f5d97",
+  "requestHash": "5dc7749e2e68ed2ac4105092219da6069c9071d6cf2dd841b957c2a659e7240e",
+  "status": "passed",
+  "decoded": true,
+  "quality": "pending-human-review",
+  "files": [
+    {
+      "originalName": "live-1.png",
+      "format": "png",
+      "width": 1024,
+      "height": 1536,
+      "assetHash": "1e6750199cb209b7d3be951f929c57da513f38831f20b5090cb6b18c7ad0af15",
+      "bytes": 1631197,
+      "decoded": true
+    },
+    {
+      "originalName": "live-2.png",
+      "format": "png",
+      "width": 1024,
+      "height": 1536,
+      "assetHash": "f27f4e691a9ae4ee125082c40f9d87cfe24d0a854257fc90de89d477e11a6781",
+      "bytes": 1603577,
+      "decoded": true
+    }
+  ]
+}

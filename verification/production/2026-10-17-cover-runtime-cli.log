@@ -1,0 +1,16 @@
+
+> nova-content-hub-prototype@0.2.0 test:cover
+> node --test cover-runtime/test/*.test.mjs
+
+✔ both builds identify themselves and required mode refuses business IO before reading input or library (212.041792ms)
+✔ independent packaged runtime fully decodes, submits, replays and exposes status through actual CLI commands (2959.27675ms)
+✔ CLI bounds input, rejects malformed commands and never writes on transport failures (697.993958ms)
+✔ the bundled Skill references the real CLI and contains no template or user library scripts (0.573333ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5122.283708

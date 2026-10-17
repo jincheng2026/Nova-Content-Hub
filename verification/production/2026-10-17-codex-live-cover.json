@@ -1,0 +1,22 @@
+{
+  "requestId": "e1e6480d-bae3-4b5f-baf6-eea7206f4c62",
+  "attemptId": "46373248-2d30-4705-8ccf-99c743484512",
+  "status": "committed",
+  "candidateIds": [
+    "a2ca14c5-6917-45ba-a0cd-f2765694785e",
+    "da5eae88-1d2a-42df-b7bf-1a59bddec9c5"
+  ],
+  "files": [
+    {
+      "name": "live-1.png",
+      "sha256": "1e6750199cb209b7d3be951f929c57da513f38831f20b5090cb6b18c7ad0af15"
+    },
+    {
+      "name": "live-2.png",
+      "sha256": "f27f4e691a9ae4ee125082c40f9d87cfe24d0a854257fc90de89d477e11a6781"
+    }
+  ],
+  "replayPreservedIds": true,
+  "humanQualityReview": "pending",
+  "automaticHandoffTested": false
+}

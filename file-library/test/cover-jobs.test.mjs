@@ -5,6 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { spawnSync, spawn } from 'node:child_process';
+import { pathToFileURL } from 'node:url';
 import sharp from 'sharp';
 import { createLibrary, openLibrary, upgradeLibrary, __testing } from '../index.mjs';
 import { validateImage } from '../../image-validation/index.mjs';
@@ -197,7 +198,7 @@ test('the actual previous schema3 implementation refuses schema4 and refuses the
   const f = await fixture(t);
   const oldSource = spawnSync('git', ['show', '39dda17:file-library/index.mjs'], { cwd: new URL('../..', import.meta.url), encoding: 'utf8' }); assert.equal(oldSource.status, 0, oldSource.stderr);
   const oldFile = path.join(f.parent, 'old-schema3.mjs'); fs.writeFileSync(oldFile, oldSource.stdout);
-  const run = () => spawnSync(process.execPath, ['--input-type=module', '-e', `import{openLibrary}from ${JSON.stringify(new URL(`file://${oldFile}`).href)};try{openLibrary(process.env.COVER_ROOT);process.exitCode=9}catch(e){console.log(e.code)}`], { env: { ...process.env, COVER_ROOT: f.root }, encoding: 'utf8', timeout: 10000 });
+  const run = () => spawnSync(process.execPath, ['--input-type=module', '-e', `import{openLibrary}from ${JSON.stringify(pathToFileURL(oldFile).href)};try{openLibrary(process.env.COVER_ROOT);process.exitCode=9}catch(e){console.log(e.code)}`], { env: { ...process.env, COVER_ROOT: f.root }, encoding: 'utf8', timeout: 10000 });
   const unsupported = run(); assert.equal(unsupported.status, 0, unsupported.stderr); assert.match(unsupported.stdout, /FORMAT_UNSUPPORTED/);
   const filename = path.join(f.root, '内容库.json'), info = JSON.parse(fs.readFileSync(filename)); fs.writeFileSync(filename, JSON.stringify({ ...info, schemaVersion: 3 })); upgradeLibrary(f.root);
   fs.writeFileSync(filename, JSON.stringify({ ...info, schemaVersion: 3 })); const barrier = run(); assert.equal(barrier.status, 0, barrier.stderr); assert.match(barrier.stdout, /CORRUPT/);

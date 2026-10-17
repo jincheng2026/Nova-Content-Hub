@@ -1,0 +1,9 @@
+{
+  "oldReaderCommit": "02ab0f4",
+  "oldV1Read": "passed",
+  "newV1Open": "UPGRADE_REQUIRED",
+  "oldWriteDuringUpgrade": "CORRUPT",
+  "oldWriteAfterUpgrade": "FORMAT_UNSUPPORTED",
+  "upgradedSchema": 4,
+  "identityAndBodyPreserved": true
+}
