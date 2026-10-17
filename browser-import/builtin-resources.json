@@ -1,0 +1,438 @@
+{
+  "format": "nova-browser-import-builtin-resources",
+  "schemaVersion": 1,
+  "entries": {
+    "图库/AI参考/geometry-v3.png": {
+      "path": "图库/AI参考/geometry-v3.png",
+      "bytes": 1930317,
+      "sha256": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+      "kind": "raster"
+    },
+    "图库/AI参考/geometry-group-v4.png": {
+      "path": "图库/AI参考/geometry-group-v4.png",
+      "bytes": 1882022,
+      "sha256": "8dcf82de5d74b83d32d92a04942400be26321716db010f6d6f261743bd4e8100",
+      "kind": "raster"
+    },
+    "图库/内置模板/geometry-v2-source.svg": {
+      "path": "图库/内置模板/geometry-v2-source.svg",
+      "bytes": 1643,
+      "sha256": "d80ccbc72bd69153c5af090268b2ce9fd58d37df3da539fc6f34a69a4057a2d0",
+      "kind": "structure"
+    },
+    "图库/内置模板/geometry-v2-reference.svg": {
+      "path": "图库/内置模板/geometry-v2-reference.svg",
+      "bytes": 1670,
+      "sha256": "dd25eefa6df1b1af43fad6b7dffa1dbcbb8b53ae400ea440651adcf8e8486805",
+      "kind": "structure"
+    },
+    "图库/AI参考/paper-v3.png": {
+      "path": "图库/AI参考/paper-v3.png",
+      "bytes": 2894533,
+      "sha256": "a5b67cfb16fe35092f0713c3517d2dbc6547610aa0751a80e60174cbfe9fb8dc",
+      "kind": "raster"
+    },
+    "图库/AI参考/paper-group-v4.png": {
+      "path": "图库/AI参考/paper-group-v4.png",
+      "bytes": 2885236,
+      "sha256": "e390d57e1d9231727229b79b54b1c9823fed461b0acff899b8f6269baae7e97c",
+      "kind": "raster"
+    },
+    "图库/内置模板/paper-v2-source.svg": {
+      "path": "图库/内置模板/paper-v2-source.svg",
+      "bytes": 5968,
+      "sha256": "5a62db2f7eca08260c67a8c9a93e07b3ee92c8774c4bcf19b8ad52f67f20e2d2",
+      "kind": "structure"
+    },
+    "图库/内置模板/paper-v2-reference.svg": {
+      "path": "图库/内置模板/paper-v2-reference.svg",
+      "bytes": 5992,
+      "sha256": "b08c57d07c0b504a4defc3792fe2464bc018212440ce4eded0012f29758c3b49",
+      "kind": "structure"
+    },
+    "图库/AI参考/notes-v3.png": {
+      "path": "图库/AI参考/notes-v3.png",
+      "bytes": 2561297,
+      "sha256": "42b42e93ce5be581ec865cf43bb4a2bd8d3467386a82fe2e71bdc5c49d4cba75",
+      "kind": "raster"
+    },
+    "图库/AI参考/notes-group-v4.png": {
+      "path": "图库/AI参考/notes-group-v4.png",
+      "bytes": 2508057,
+      "sha256": "4fb6db11d503807c351f74f5004d3918481bb70b4bfb027763c4dc119d893315",
+      "kind": "raster"
+    },
+    "图库/内置模板/notes-v2-source.svg": {
+      "path": "图库/内置模板/notes-v2-source.svg",
+      "bytes": 54240,
+      "sha256": "9adc55f159db9039d42c7426a047a83aa5d2f5af9621ad89e8c2dd01dda3f225",
+      "kind": "structure"
+    },
+    "图库/内置模板/notes-v2-reference.svg": {
+      "path": "图库/内置模板/notes-v2-reference.svg",
+      "bytes": 54252,
+      "sha256": "32b78826163aef60bac0b6016cc3882498edf7635b095ced2717ce30718d5bdf",
+      "kind": "structure"
+    },
+    "图库/AI参考/comparison-v3.png": {
+      "path": "图库/AI参考/comparison-v3.png",
+      "bytes": 2349287,
+      "sha256": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+      "kind": "raster"
+    },
+    "图库/AI参考/comparison-group-v4.png": {
+      "path": "图库/AI参考/comparison-group-v4.png",
+      "bytes": 2355465,
+      "sha256": "845ce661844459baf8a82573fd2edad85cdd9d7b7769999196de1ef376a8e124",
+      "kind": "raster"
+    },
+    "图库/内置模板/comparison-v2-source.svg": {
+      "path": "图库/内置模板/comparison-v2-source.svg",
+      "bytes": 2507,
+      "sha256": "410868e87fb10eaf4f421153eb80ef77202bd791831a2c589b2e0c532835798a",
+      "kind": "structure"
+    },
+    "图库/内置模板/comparison-v2-reference.svg": {
+      "path": "图库/内置模板/comparison-v2-reference.svg",
+      "bytes": 2525,
+      "sha256": "c2b3a32719a37bc7a51b4b6bd287ab4f0638898ec89ea1dd1f43bae444e7fb91",
+      "kind": "structure"
+    },
+    "图库/AI参考/neon-v3.png": {
+      "path": "图库/AI参考/neon-v3.png",
+      "bytes": 2154232,
+      "sha256": "e93143665c1db169404e47e837a92b8ea20091a02f09a3a83d5cbc587e6b3a6e",
+      "kind": "raster"
+    },
+    "图库/AI参考/neon-group-v4.png": {
+      "path": "图库/AI参考/neon-group-v4.png",
+      "bytes": 2298873,
+      "sha256": "e71dfcf9f6129c7fbaeda38091532aeaf506585e972aeda5337d6299d90942f0",
+      "kind": "raster"
+    },
+    "图库/内置模板/neon-v2-source.svg": {
+      "path": "图库/内置模板/neon-v2-source.svg",
+      "bytes": 4841,
+      "sha256": "95cf1787d0daab1ebdd40a5e90d9d9cdc11eeb7b8b6260000c0e2a19326b1353",
+      "kind": "structure"
+    },
+    "图库/内置模板/neon-v2-reference.svg": {
+      "path": "图库/内置模板/neon-v2-reference.svg",
+      "bytes": 4855,
+      "sha256": "12d7d466eba214c3ce370f8c784dac7222654cfdfdc6a417e7774ad069d93f74",
+      "kind": "structure"
+    },
+    "图库/AI参考/magazine-v3.png": {
+      "path": "图库/AI参考/magazine-v3.png",
+      "bytes": 2520387,
+      "sha256": "c441f9b13de938dfa7e316432013f303005e6f90faaf71f00ce4ecc06eedbbee",
+      "kind": "raster"
+    },
+    "图库/AI参考/magazine-group-v4.png": {
+      "path": "图库/AI参考/magazine-group-v4.png",
+      "bytes": 2751220,
+      "sha256": "c910bab287382824461253abfbc69f0a920f471afea2e6b9b67c24a4384f44cf",
+      "kind": "raster"
+    },
+    "图库/内置模板/magazine-v2-source.svg": {
+      "path": "图库/内置模板/magazine-v2-source.svg",
+      "bytes": 2349,
+      "sha256": "77c44855f4e7915610a3eb3bff1717bb21a2a653fc67a1a1a5316a261c5f0de4",
+      "kind": "structure"
+    },
+    "图库/内置模板/magazine-v2-reference.svg": {
+      "path": "图库/内置模板/magazine-v2-reference.svg",
+      "bytes": 2382,
+      "sha256": "9219e1128b9e856dc0bbeba35514915e727cd1d7714bdac26a035cfbd0e8870a",
+      "kind": "structure"
+    },
+    "图库/AI参考/interview-v2.png": {
+      "path": "图库/AI参考/interview-v2.png",
+      "bytes": 2154609,
+      "sha256": "eb0858494089b5f9e6df8a880883831ea79a243117c2efbccb5ef48f18c3b66e",
+      "kind": "raster"
+    },
+    "图库/AI参考/interview-group-v4.png": {
+      "path": "图库/AI参考/interview-group-v4.png",
+      "bytes": 2167062,
+      "sha256": "e8208112cad532292d910f9c977122a9f7ad99e56443c882d076975a87c1ddf6",
+      "kind": "raster"
+    },
+    "图库/内置模板/interview-v2-source.svg": {
+      "path": "图库/内置模板/interview-v2-source.svg",
+      "bytes": 2162,
+      "sha256": "ab2b93baf76607a4c85ba127631dacfa9cdc342667f5ff2dcab0f06062f8f9e0",
+      "kind": "structure"
+    },
+    "图库/内置模板/interview-v2-reference.svg": {
+      "path": "图库/内置模板/interview-v2-reference.svg",
+      "bytes": 2153,
+      "sha256": "93da57f4ff6eefea69ff31de5f469514eb0bd8106900e74d48f91d45481872f1",
+      "kind": "structure"
+    },
+    "图库/AI参考/lifestyle-v2.png": {
+      "path": "图库/AI参考/lifestyle-v2.png",
+      "bytes": 2228845,
+      "sha256": "c801a7554a3fd22a7dbeadaccd07b4d25a14067eb477659768754e03b53faf97",
+      "kind": "raster"
+    },
+    "图库/AI参考/lifestyle-group-v4.png": {
+      "path": "图库/AI参考/lifestyle-group-v4.png",
+      "bytes": 2180601,
+      "sha256": "bfa11d302a33d21fd440576e8fb541aa9fb7bed88f97135641c5e34acb989551",
+      "kind": "raster"
+    },
+    "图库/内置模板/lifestyle-v2-source.svg": {
+      "path": "图库/内置模板/lifestyle-v2-source.svg",
+      "bytes": 2248,
+      "sha256": "48422f2674731270632e1a13986cdf6424e5e1c175eed5a69cadf85191c458b4",
+      "kind": "structure"
+    },
+    "图库/内置模板/lifestyle-v2-reference.svg": {
+      "path": "图库/内置模板/lifestyle-v2-reference.svg",
+      "bytes": 2266,
+      "sha256": "45c49f21ca668e958ccc1077fd275bb41a88b589cc517158375e0d9e989f780c",
+      "kind": "structure"
+    },
+    "图库/AI参考/product-v2.png": {
+      "path": "图库/AI参考/product-v2.png",
+      "bytes": 2046739,
+      "sha256": "3fe7215f52c0cecf41b1c7a03025561f820dd4531eaea8398779aac8f8313982",
+      "kind": "raster"
+    },
+    "图库/AI参考/product-group-v4.png": {
+      "path": "图库/AI参考/product-group-v4.png",
+      "bytes": 2002921,
+      "sha256": "4e38e89d3aaace9e8131a989466cc017a6c16298b44bdc0232f485c58a601486",
+      "kind": "raster"
+    },
+    "图库/内置模板/product-v2-source.svg": {
+      "path": "图库/内置模板/product-v2-source.svg",
+      "bytes": 2698,
+      "sha256": "18d19445a2c595fa00b58acb971c2a61c0d0a39016e00f85c151a4593948b4ed",
+      "kind": "structure"
+    },
+    "图库/内置模板/product-v2-reference.svg": {
+      "path": "图库/内置模板/product-v2-reference.svg",
+      "bytes": 2707,
+      "sha256": "29d7a6363cae1b4996ff94c1d229790c9583f9426b8acce8bc513d8b47367545",
+      "kind": "structure"
+    },
+    "图库/AI参考/news-v2.png": {
+      "path": "图库/AI参考/news-v2.png",
+      "bytes": 2194037,
+      "sha256": "32b30a18e5cc198f2632a795207dc7e240abd95abc0a45bc6e252af960870502",
+      "kind": "raster"
+    },
+    "图库/AI参考/news-group-v4.png": {
+      "path": "图库/AI参考/news-group-v4.png",
+      "bytes": 2478390,
+      "sha256": "5c406b07be7c8ee05edcce87849432a3861b7a77f441250707b7ac2dbc79363c",
+      "kind": "raster"
+    },
+    "图库/内置模板/news-v2-source.svg": {
+      "path": "图库/内置模板/news-v2-source.svg",
+      "bytes": 2896,
+      "sha256": "20125909f8fc7e3e8ab8b6d5b6a8951c7c88109b6dae7400ac73086b11a81502",
+      "kind": "structure"
+    },
+    "图库/内置模板/news-v2-reference.svg": {
+      "path": "图库/内置模板/news-v2-reference.svg",
+      "bytes": 2908,
+      "sha256": "90203c51317e7ef5e5668d8f7e00d617b1855ff2c33531cc5f315bd6e542b2eb",
+      "kind": "structure"
+    },
+    "图库/AI参考/ai-tool-v2.png": {
+      "path": "图库/AI参考/ai-tool-v2.png",
+      "bytes": 1504474,
+      "sha256": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+      "kind": "raster"
+    },
+    "图库/AI参考/ai-tool-group-v4.png": {
+      "path": "图库/AI参考/ai-tool-group-v4.png",
+      "bytes": 1702773,
+      "sha256": "d1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1",
+      "kind": "raster"
+    },
+    "图库/内置模板/ai-tool-v2-source.svg": {
+      "path": "图库/内置模板/ai-tool-v2-source.svg",
+      "bytes": 2826,
+      "sha256": "04d530311db586cd0b7368d6c6fd355e6de4049ef415e8dc089ad6725f732206",
+      "kind": "structure"
+    },
+    "图库/内置模板/ai-tool-v2-reference.svg": {
+      "path": "图库/内置模板/ai-tool-v2-reference.svg",
+      "bytes": 2842,
+      "sha256": "dd7ef95f1bba41350d8d62341f8bd8ce646e65295d419d03fbb65ab3dd95e144",
+      "kind": "structure"
+    },
+    "图库/AI参考/agent-v2.png": {
+      "path": "图库/AI参考/agent-v2.png",
+      "bytes": 1813384,
+      "sha256": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+      "kind": "raster"
+    },
+    "图库/AI参考/agent-group-v4.png": {
+      "path": "图库/AI参考/agent-group-v4.png",
+      "bytes": 1851479,
+      "sha256": "da2af3996ec8a20744112064b410cb8286c4ea4d229317c5f00f47357ce462d5",
+      "kind": "raster"
+    },
+    "图库/内置模板/agent-v2-source.svg": {
+      "path": "图库/内置模板/agent-v2-source.svg",
+      "bytes": 3086,
+      "sha256": "303488c850ff164cd2e6c5ce6a2b0b4583e52b95159a972c25460e8589c945e3",
+      "kind": "structure"
+    },
+    "图库/内置模板/agent-v2-reference.svg": {
+      "path": "图库/内置模板/agent-v2-reference.svg",
+      "bytes": 3116,
+      "sha256": "746bdbfe3e575a143f3539c445a4b17e94d7d15b17bbdaec97825798e08e86e8",
+      "kind": "structure"
+    },
+    "图库/AI参考/tech-collage-v3.png": {
+      "path": "图库/AI参考/tech-collage-v3.png",
+      "bytes": 2267168,
+      "sha256": "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+      "kind": "raster"
+    },
+    "图库/AI参考/tech-collage-group-v4.png": {
+      "path": "图库/AI参考/tech-collage-group-v4.png",
+      "bytes": 2153941,
+      "sha256": "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd",
+      "kind": "raster"
+    },
+    "图库/内置模板/tech-collage-v3-source.svg": {
+      "path": "图库/内置模板/tech-collage-v3-source.svg",
+      "bytes": 2449,
+      "sha256": "a1f1b5ab18aac0f291d70e6962da2a7b5614c69cca46053f140ec098b54cf94b",
+      "kind": "structure"
+    },
+    "图库/内置模板/tech-collage-v3-reference.svg": {
+      "path": "图库/内置模板/tech-collage-v3-reference.svg",
+      "bytes": 2456,
+      "sha256": "54c3b9511b4f341cd0a7705c8b690498e776cbcd1461b7acb83eea87742d9b58",
+      "kind": "structure"
+    },
+    "图库/AI参考/big-head-v3.png": {
+      "path": "图库/AI参考/big-head-v3.png",
+      "bytes": 2069113,
+      "sha256": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+      "kind": "raster"
+    },
+    "图库/AI参考/big-head-group-v4.png": {
+      "path": "图库/AI参考/big-head-group-v4.png",
+      "bytes": 1815292,
+      "sha256": "c6bd1f84f9c23abec61d6cd3fabdf4097571203e54fa3a2bc6aea563ae7f438c",
+      "kind": "raster"
+    },
+    "图库/内置模板/big-head-v3-source.svg": {
+      "path": "图库/内置模板/big-head-v3-source.svg",
+      "bytes": 1706,
+      "sha256": "0139fcb32fb9dc5d612b5943d1843b1d25d0d64cd8bc017ede885832626feed4",
+      "kind": "structure"
+    },
+    "图库/内置模板/big-head-v3-reference.svg": {
+      "path": "图库/内置模板/big-head-v3-reference.svg",
+      "bytes": 1709,
+      "sha256": "2488e88fd888153b652fe521123b7c45afb904e991dde55c2473c0135d25730d",
+      "kind": "structure"
+    },
+    "图库/AI参考/life-story-v3.png": {
+      "path": "图库/AI参考/life-story-v3.png",
+      "bytes": 2305658,
+      "sha256": "a86b9b970b7653c8ac0c1d8f8910ca33d2f98e52c87794e842bb34ab6156f7f1",
+      "kind": "raster"
+    },
+    "图库/AI参考/life-story-group-v4.png": {
+      "path": "图库/AI参考/life-story-group-v4.png",
+      "bytes": 2484021,
+      "sha256": "8310a04611c0d9c8fee47ad2786383799df178873c9a31607f6db4054057fab5",
+      "kind": "raster"
+    },
+    "图库/内置模板/life-story-v3-source.svg": {
+      "path": "图库/内置模板/life-story-v3-source.svg",
+      "bytes": 1962,
+      "sha256": "73782dc3caf2cf3ef4e5aef21942141da5ecf8707127c81ca602bc6756eea276",
+      "kind": "structure"
+    },
+    "图库/内置模板/life-story-v3-reference.svg": {
+      "path": "图库/内置模板/life-story-v3-reference.svg",
+      "bytes": 1968,
+      "sha256": "3049d9ed76d730b5cdf4040705c559fd0afc7ee32456e7c97db4d66cdf779d9c",
+      "kind": "structure"
+    },
+    "图库/内置模板/geometry-source.svg": {
+      "path": "图库/内置模板/geometry-source.svg",
+      "bytes": 1634,
+      "sha256": "15ad3f119ff62017f4a110888a2c09deaadf567b3f1aa37cbbf667aa7e701de1",
+      "kind": "structure"
+    },
+    "图库/内置模板/geometry-reference.svg": {
+      "path": "图库/内置模板/geometry-reference.svg",
+      "bytes": 1661,
+      "sha256": "245eb6b40dd30b2270981ae58b0a0ad0e7e21cb9400cf98fa60dd043cb57e8fb",
+      "kind": "structure"
+    },
+    "图库/内置模板/paper-source.svg": {
+      "path": "图库/内置模板/paper-source.svg",
+      "bytes": 5929,
+      "sha256": "74ab281da797e0c355a98024ba339222466957d6edc0dc3c0ab7b888b8d8ff28",
+      "kind": "structure"
+    },
+    "图库/内置模板/paper-reference.svg": {
+      "path": "图库/内置模板/paper-reference.svg",
+      "bytes": 5953,
+      "sha256": "5191c9cb7e79ef1237b30ffc5aca8f53e3011847956bb2ea588318d616ed1fdf",
+      "kind": "structure"
+    },
+    "图库/内置模板/notes-source.svg": {
+      "path": "图库/内置模板/notes-source.svg",
+      "bytes": 54195,
+      "sha256": "c03c23ac7232cf907b9418ed379408077bf6015aa841dce3f09808835d062424",
+      "kind": "structure"
+    },
+    "图库/内置模板/notes-reference.svg": {
+      "path": "图库/内置模板/notes-reference.svg",
+      "bytes": 54207,
+      "sha256": "6d5a6215ebfc212be92f5e3b8a672b5e088410af65b60851f06978fe7802e01a",
+      "kind": "structure"
+    },
+    "图库/内置模板/comparison-source.svg": {
+      "path": "图库/内置模板/comparison-source.svg",
+      "bytes": 2459,
+      "sha256": "24f570a49ed473f85e6ace5dbad537554296ad89f5c214e153f2e9106f0beccb",
+      "kind": "structure"
+    },
+    "图库/内置模板/comparison-reference.svg": {
+      "path": "图库/内置模板/comparison-reference.svg",
+      "bytes": 2477,
+      "sha256": "e5ed371bb9392ab4e495957b49c9e90cee8c9e312c582002978322ef6e19b80a",
+      "kind": "structure"
+    },
+    "图库/内置模板/neon-source.svg": {
+      "path": "图库/内置模板/neon-source.svg",
+      "bytes": 4787,
+      "sha256": "2fa0d92ee69e6a9bf0ee5a0b1b70b4caf0def85d748ba5d21a448256bc4dc908",
+      "kind": "structure"
+    },
+    "图库/内置模板/neon-reference.svg": {
+      "path": "图库/内置模板/neon-reference.svg",
+      "bytes": 4784,
+      "sha256": "1bc19cac7c9ba7523b6e25eceae6db9a81f12bffed9fb095bd8ec1830e453150",
+      "kind": "structure"
+    },
+    "图库/内置模板/magazine-source.svg": {
+      "path": "图库/内置模板/magazine-source.svg",
+      "bytes": 2298,
+      "sha256": "327b89275d575b6ad8d1b35af6c7a247198808ad6954f02e764fc11db0cd488d",
+      "kind": "structure"
+    },
+    "图库/内置模板/magazine-reference.svg": {
+      "path": "图库/内置模板/magazine-reference.svg",
+      "bytes": 2331,
+      "sha256": "4c06a7626acd0c86d0a41af5e51c9cb2a91755aea40c1736a614ff514d860cb3",
+      "kind": "structure"
+    }
+  }
+}

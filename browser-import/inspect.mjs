@@ -43,6 +43,12 @@ export function readBrowserBackup(sourcePath) {
   } finally { if (fd !== undefined) fs.closeSync(fd); }
 }
 
+function legacyFingerprint(value) {
+  let a=2166136261,b=3339675911;
+  for(let i=0;i<value.length;i++){a=Math.imul(a^value.charCodeAt(i),16777619);b=Math.imul(b^value.charCodeAt(i),2246822507);}
+  return `${value.length}:${(a>>>0).toString(16).padStart(8,'0')}:${(b>>>0).toString(16).padStart(8,'0')}`;
+}
+
 // Keys include the owning project/material: candidate IDs are not globally unique.
 export function sourceReferences(state) {
   const references = [];
@@ -59,6 +65,14 @@ export function sourceReferences(state) {
   if (state.data.ACCOUNT.avatar) add('profile/avatar', 'avatar', state.data.ACCOUNT.avatar);
   for (const value of state.data.ACCOUNT.photos) photo(value, `photo/${value.id}`);
   for (const template of state.data.TEMPLATES) {
+    for (const [index, history] of (template.history || []).entries()) {
+      const definition = history.definition || {};
+      const pool=[...new Set([...template.shots,...state.trash.filter(item=>item.kind==='shot'&&item.tid===template.id).map(item=>item.value)])];
+      for(const reference of history.sources||[]){const matches=pool.filter(value=>legacyFingerprint(value)===reference.key);add(`template/${template.id}/history/${index}/source/${reference.id}`,'template-reference',matches.length===1?matches[0]:null,{historicalSourceId:reference.id});}
+      (definition.shots || []).forEach((source, n) => add(`template/${template.id}/history/${index}/shot/${n}`, 'template-reference', source));
+      (definition.assets || []).forEach((entry, n) => add(`template/${template.id}/history/${index}/asset/${n}`, 'template-resource', typeof entry === 'string' ? entry : entry.path));
+      (definition.generatedReferences || []).forEach((entry, n) => add(`template/${template.id}/history/${index}/generated-reference/${n}`, 'template-reference', entry.path));
+    }
     template.shots.forEach((source, index) => add(`template/${template.id}/shot/${index}`, 'template-reference', source));
     (template.generatedReferences || []).forEach((entry, index) => add(`template/${template.id}/generated-reference/${index}`, 'template-reference', entry.path));
     (template.assets || []).forEach((entry, index) => add(`template/${template.id}/asset/${index}`, 'template-resource', typeof entry === 'string' ? entry : entry.path));
