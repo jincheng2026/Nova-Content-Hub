@@ -5,11 +5,14 @@ import { createHash, randomUUID } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import { coverJobMethods, validateCoverJobs } from './cover-jobs.mjs';
 import { backupMethods } from './backup.mjs';
+import { modelMethods, modelDefaults, validateModelMetadata } from './model-v5.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
-const LIBRARY_VERSION = 4;
+const LIBRARY_VERSION = 5;
 const KINDS = Object.freeze({
+  workspace: { directory: '库配置', files: ['配置.json'], format: 'nova-workspace' },
+  collection: { directory: '合集', files: ['合集.json', '正文.md'], format: 'nova-collection' },
   content: { directory: '内容', files: ['内容.json', '正文.md'], format: 'nova-content' },
   prompt: { directory: '提示词', files: ['提示词.json', '正文.md'], format: 'nova-prompt' },
   photo: { directory: '我的照片', files: ['照片.json'], format: 'nova-photo' },
@@ -66,13 +69,14 @@ function format(record, expected, label, version = VERSION) {
 
 function objectId(kind, value) {
   if (!Object.hasOwn(KINDS, kind)) fail('CORRUPT', 'Unknown object kind');
+  if (kind === 'workspace' && value === 'default') return value;
   if (kind === 'template' && typeof value === 'string' && BUILTIN.test(value)) return value;
   return id(value);
 }
 
 function metadata(bytes, objectIdValue, kind = 'content') {
   const meta = parse(bytes, KINDS[kind].files[0]);
-  const supported = kind === 'content' && [2,3].includes(meta?.schemaVersion) ? meta.schemaVersion : 1;
+  const supported = (kind === 'content' && [2,3,4].includes(meta?.schemaVersion) || kind === 'prompt' && meta?.schemaVersion === 2) ? meta.schemaVersion : 1;
   format(meta, KINDS[kind].format, KINDS[kind].files[0], supported);
   let validDates = false;
   try { validDates = date(meta.createdAt) && date(meta.updatedAt) && (meta.deletedAt === null || date(meta.deletedAt)); } catch {}
@@ -220,8 +224,8 @@ function acquire(root) {
 function descriptor(root, upgrading = false) {
   directory(root);
   const info = parse(read(path.join(root, '内容库.json')), '内容库.json');
-  if (info?.format === FORMAT && [1, 2, 3].includes(info.schemaVersion) && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1, 2 or 3 requires explicit upgradeLibrary(root)');
-  format(info, FORMAT, '内容库.json', upgrading && [1, 2, 3].includes(info?.schemaVersion) ? info.schemaVersion : LIBRARY_VERSION);
+  if (info?.format === FORMAT && [1, 2, 3, 4].includes(info.schemaVersion) && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1, 2, 3 or 4 requires explicit upgradeLibrary(root)');
+  format(info, FORMAT, '内容库.json', upgrading && [1, 2, 3, 4].includes(info?.schemaVersion) ? info.schemaVersion : LIBRARY_VERSION);
   let validDate = false;
   try { validDate = date(info.createdAt); } catch {}
   if (!UUID.test(info.libraryId) || !validDate) fail('CORRUPT', 'Invalid library identity');
@@ -235,6 +239,9 @@ function descriptor(root, upgrading = false) {
   if (info.schemaVersion >= 3) {
     for (const name of ['提示词', '我的照片', '模板', '资产']) directory(path.join(root, name));
     directory(path.join(root, '资产', 'sha256'));
+  }
+  if (info.schemaVersion >= 5) {
+    directory(path.join(root, '库配置')); directory(path.join(root, '合集'));
   }
   return info;
 }
@@ -291,7 +298,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   const legacy = intent?.schemaVersion === 1;
   const kind = legacy ? 'content' : intent?.objectKind;
   const targetId = legacy ? intent.contentId : intent?.objectId;
-  if (!object(intent) || ![1, 2].includes(intent.schemaVersion) || !Object.hasOwn(KINDS, kind) || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
+  if (!object(intent) || ![1, 2, 3].includes(intent.schemaVersion) || !Object.hasOwn(KINDS, kind) || (intent.schemaVersion < 3 && ['workspace','collection'].includes(kind)) || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
       !['create', 'update', 'trash', 'restore', 'restore-interrupted'].includes(intent.operation) ||
       !HASH.test(intent.requestDigest) || !Array.isArray(intent.before) || intent.before.length !== KINDS[kind].files.length ||
       !Array.isArray(intent.after) || intent.after.length !== KINDS[kind].files.length || Object.keys(intent).some(key => !['schemaVersion', 'libraryId', 'mutationId', ...(legacy ? ['contentId'] : ['objectKind', 'objectId']), 'operation', 'requestDigest', 'before', 'after'].includes(key))) fail('CORRUPT', 'Invalid transaction plan');
@@ -304,7 +311,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
     if (next.revision !== 1 || next.deletedAt !== null) fail('CORRUPT', 'Invalid create plan');
   } else {
     const old = metadata(before[0], targetId, kind);
-    if (kind==='content' && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
+    if (['content','prompt'].includes(kind) && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
     if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
     if (intent.operation === 'restore-interrupted') {
       if (kind !== 'content' || !old.coverJobs?.some(job => job.attempts.some(attempt => ['created','claimed'].includes(attempt.status)))) fail('CORRUPT','Invalid restore interruption');
@@ -421,7 +428,7 @@ function applyTransaction(root, tx) {
 
 function recover(root, libraryId) {
   const base = path.join(root, SYSTEM, '事务');
-  if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER, '升级到4'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
+  if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER, '升级到4', '升级到5'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
   const dir = path.join(root, SYSTEM, '事务', '待恢复');
   // A prior rename may have succeeded before either parent-directory sync failed.
   syncDirectory(dir);
@@ -534,7 +541,7 @@ function library(root, initialInfo) {
           if (!marker) fail('CORRUPT','Cannot take over an unmarked template directory');
           unregisteredTemplate(marker,contentId);
         }
-        meta = { format: KINDS[kind].format, schemaVersion: VERSION, id: contentId, title: input.title, revision: 1, createdAt: now, updatedAt: now, deletedAt: null };
+        meta = { format: KINDS[kind].format, schemaVersion: kind === 'content' ? 4 : kind === 'prompt' ? 2 : VERSION, id: contentId, title: input.title, revision: 1, createdAt: now, updatedAt: now, deletedAt: null };
       } else {
         const current = result(before, contentId, undefined, kind);
         if (!currentRevision && current.editToken !== expectedToken) fail('CONFLICT', 'Content changed; read again before retrying');
@@ -544,13 +551,14 @@ function library(root, initialInfo) {
         if (operation === 'restore') meta.deletedAt = null;
         if (operation === 'update' && Object.hasOwn(input, 'title')) meta.title = input.title;
       }
+      if (operation === 'create') meta = { ...meta, ...modelDefaults(kind) };
       if (edit) {
         try { meta=edit(meta,before,{mutationId}); }
         catch(error) { throw Object.assign(ioError(error),{mutationId,pendingRecovery:false}); }
       }
       const after = [jsonBytes(meta), ...(KINDS[kind].files.length === 2 ? [operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]] : [])];
       metadata(after[0], contentId, kind);
-      const intent = { schemaVersion: 2, libraryId: initialInfo.libraryId, mutationId, objectKind: kind, objectId: contentId, operation, requestDigest, before: before.map(pack), after: after.map(pack) };
+      const intent = { schemaVersion: 3, libraryId: initialInfo.libraryId, mutationId, objectKind: kind, objectId: contentId, operation, requestDigest, before: before.map(pack), after: after.map(pack) };
       const stagingDir = path.join(root, SYSTEM, '事务', '待恢复', `.staging-${mutationId}-${randomUUID()}`);
       mkdir(stagingDir);
       let published = false;
@@ -598,13 +606,12 @@ function library(root, initialInfo) {
       safePath, directory, ensureDirectory, immutableFile, readAssetInternal, assetPath, hook, inputFields,
       text, id, objectId, checkedHash, templatePackage, fail, LibraryError,
     }),
+    ...modelMethods({root,locked,mutate,list,snapshot,result,metadata,hash,jsonBytes,read,safePath,directory,ensureDirectory,writeNew,syncDirectory,hook,inputFields,text,id,objectId,checkedHash,templatePackage,readAssetInternal,fail}),
     info: Object.freeze({ ...initialInfo, root, durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync' }),
     listContents: () => list(false),
     listTrash: () => list(true),
     readContent: contentId => locked(() => result(snapshot(root, id(contentId)), contentId)),
-    createContent: (input, options) => mutate('create', null, fields(input), null, options),
-    updateContent: (contentId, patch, token, options) => mutate('update', contentId, fields(patch, true), token, options),
-    trashContent: (contentId, token, options) => mutate('trash', contentId, {}, token, options),
+    trashContent: (contentId, token, options) => mutate('trash', contentId, {}, token, options, 'content', meta => { for (const name of fs.readdirSync(path.join(root,'合集'))) { const collection = metadata(snapshot(root,name,'collection')[0],name,'collection'); if (collection.deletedAt === null && collection.memberIds.includes(contentId)) fail('INVALID_STATE','Remove content from its collection before trashing'); } return meta; }),
     restoreContent: (contentId, token, options) => mutate('restore', contentId, {}, token, options),
     queryMutation: mutationId => locked(() => {
       if (!transactionDir(root, id(mutationId))) return null;
@@ -642,8 +649,9 @@ export function upgradeLibrary(root) {
   try {
     root = canonicalRoot(root);
     const initial = descriptor(root, true);
-    if (initial.schemaVersion >= 3) return upgradeTo4(root);
-    if (initial.schemaVersion === 2) { upgradeTo3(root); return upgradeTo4(root); }
+    if (initial.schemaVersion >= 4) return upgradeTo5(root);
+    if (initial.schemaVersion === 3) { upgradeTo4(root); return upgradeTo5(root); }
+    if (initial.schemaVersion === 2) { upgradeTo3(root); upgradeTo4(root); return upgradeTo5(root); }
     release = acquire(root);
     const info = descriptor(root, true);
     if (info.libraryId !== initial.libraryId) fail('CORRUPT', 'Library identity changed during upgrade');
@@ -728,7 +736,8 @@ export function upgradeLibrary(root) {
     }
   }
   upgradeTo3(root);
-  return upgradeTo4(root);
+  upgradeTo4(root);
+  return upgradeTo5(root);
 }
 
 export function createLibrary(root) {
@@ -746,6 +755,7 @@ export function createLibrary(root) {
     mkdir(path.join(root, '内容'));
     for (const name of ['提示词','我的照片','模板','资产']) mkdir(path.join(root,name));
     mkdir(path.join(root,'资产','sha256'));
+    initializeModel(root);
     writeNew(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: LIBRARY_VERSION, libraryId: randomUUID(), createdAt: new Date().toISOString() }));
     return openLibrary(root);
   } catch (error) { throw ioError(error); }
@@ -757,6 +767,7 @@ export function openLibrary(root) {
     const handle = library(root, descriptor(root));
     // Opening never exposes a half-committed content pair.
     handle.listContents();
+    handle.readLibrarySettings();
     return handle;
   } catch (error) { throw ioError(error); }
 }
@@ -981,7 +992,7 @@ function businessMethods(root, locked, mutate, list) {
         }
       }
       const { body, ...fields } = input;
-      return { ...(creating ? { category:'', when:'', summary:'', tags:[], provenance:null, builtinKey:null } : {}), ...meta, ...fields };
+      return { ...(creating ? { category:'', when:'', summary:'', tags:[], provenance:null, builtinKey:null } : {}), ...meta, schemaVersion:2, enabled:meta.enabled??true, ...fields };
     };
   }
   function photoInput(raw, patch) {
@@ -1309,10 +1320,47 @@ function upgradeTo4(root) {
     if(safePath(barrier,true))immutableFile(path.join(barrier,'完成.json'),jsonBytes({schemaVersion:4,libraryId:info.libraryId}));
   } catch(error) {primaryError=ioError(error);throw primaryError;}
   finally {try{release();}catch(error){if(!primaryError)throw ioError(error);}}
+  return null;
+}
+
+function initializeModel(root) {
+  for (const name of ['库配置','合集']) ensureDirectory(path.join(root,name));
+  ensureDirectory(path.join(root,'库配置','default'));
+  const target=path.join(root,'库配置','default','配置.json');
+  if (!safePath(target,true)) {
+    const now=new Date().toISOString();
+    immutableFile(target,jsonBytes({format:'nova-workspace',schemaVersion:1,id:'default',title:'库配置',revision:1,createdAt:now,updatedAt:now,deletedAt:null,...modelDefaults('workspace')}));
+  }
+  metadata(read(target),'default','workspace');
+}
+
+function upgradeTo5(root) {
+  const initial=descriptor(root,true), release=acquire(root); let primary;
+  try {
+    const info=descriptor(root,true);
+    if(info.libraryId!==initial.libraryId || ![4,5].includes(info.schemaVersion)) fail('CONFLICT','Unexpected schema during upgrade to 5');
+    const target=path.join(root,'内容库.json'), barrier=path.join(root,SYSTEM,'事务','升级到5');
+    if(info.schemaVersion===4) {
+      recover(root,info.libraryId);
+      const original=read(target);
+      immutableFile(path.join(root,SYSTEM,'内容库.schema4.bak.json'),original); hook('upgrade5AfterBackup');
+      ensureDirectory(barrier); hook('upgrade5AfterBarrier');
+      initializeModel(root); hook('upgrade5AfterDirectories');
+      if(!read(target).equals(original)) fail('CONFLICT','Descriptor changed during upgrade to 5');
+      const stage=path.join(root,`.内容库.schema5-${randomUUID()}`);
+      writeNew(stage,jsonBytes({...parse(original,'内容库.json'),schemaVersion:5}));
+      hook('upgrade5BeforeDescriptorPublish'); fs.renameSync(stage,target); hook('upgrade5AfterDescriptorPublish'); syncDirectory(root);
+    }
+    if(safePath(barrier,true)) immutableFile(path.join(barrier,'完成.json'),jsonBytes({schemaVersion:5,libraryId:info.libraryId}));
+    hook('upgrade5AfterFinalMarker');
+  } catch(error) {primary=ioError(error);throw primary;}
+  finally {try{release();}catch(error){if(!primary)throw ioError(error);}}
   return openLibrary(root);
 }
 
 function validateBusinessMetadata(meta,kind) {
+  if (kind === 'workspace' || kind === 'collection' || kind === 'content' && meta.schemaVersion === 4) { validateModelMetadata(meta,kind,fail,validateCoverJobs); return; }
+  if (kind === 'prompt' && meta.schemaVersion === 2 && typeof meta.enabled !== 'boolean') fail('CORRUPT','Invalid prompt enabled');
   const check=(condition,label)=>{if(!condition)fail('CORRUPT',`Invalid ${kind} ${label}`)};
   const string=(value,empty=false)=>typeof value==='string'&&(empty||!!value.trim())&&value.length<=10000;
   const iso=value=>{try{return date(value)}catch{return false}};
@@ -1376,8 +1424,9 @@ function interruptRestoredAttempts(meta, now) {
 }
 
 function validateRestoredLibrary(root, info) {
-  const api = library(root, info);
+  const api = info.schemaVersion === 4 ? contentBusinessMethods(root, fn => fn(), () => fail('INVALID_STATE','Restore validation is read-only')) : library(root, info);
   for (const [kind, spec] of Object.entries(KINDS)) {
+    if (info.schemaVersion < 5 && ['workspace','collection'].includes(kind)) continue;
     for (const name of fs.readdirSync(path.join(root,spec.directory)).sort()) {
       if (kind === 'template' && STAGING.test(name)) continue;
       objectId(kind,name);
@@ -1385,24 +1434,31 @@ function validateRestoredLibrary(root, info) {
         unregisteredTemplate(read(path.join(root,spec.directory,name,'未登记.json')),name); continue;
       }
       const meta = metadata(snapshot(root,name,kind)[0],name,kind);
+      if (info.schemaVersion === 4 && (kind === 'content' && meta.schemaVersion > 3 || kind === 'prompt' && meta.schemaVersion > 1)) fail('FORMAT_UNSUPPORTED','Schema4 backup contains newer business metadata');
       if (kind === 'photo') readAssetInternal(root,meta.assetHash);
+      if (kind === 'workspace' && meta.profile.avatarAssetHash) readAssetInternal(root,meta.profile.avatarAssetHash);
+      if (kind === 'collection' && meta.deletedAt === null) for (const memberId of meta.memberIds) if (metadata(snapshot(root,memberId)[0],memberId).deletedAt !== null) fail('CORRUPT','Active collection has a trashed member');
       if (kind === 'template') for (const version of meta.versions) templatePackage(root,name,version.version,version.packageHash);
-      if (kind !== 'content') continue;
+      if (!['content','collection'].includes(kind)) continue;
       for (const entry of [...(meta.materials || []),...(meta.candidates || [])]) {
+        if (entry.availability === 'unavailable') continue;
         readAssetInternal(root,entry.assetHash);
         if (entry.template) templatePackage(root,entry.template.id,entry.template.version,entry.template.packageHash);
       }
-      for (const entry of meta.publications || []) api.readPublication(name,entry.id);
+      for (const entry of meta.publications || []) (kind === 'collection' ? api.readCollectionPublication : api.readPublication)(name,entry.id);
+      for (const reference of meta.unavailableReferences || []) if (reference.availability === 'available') readAssetInternal(root,reference.assetHash);
+      if (kind === 'collection') continue;
       coverJobMethods({root,libraryId:info.libraryId,validationContent:meta, snapshot, result, metadata, hash,jsonBytes,read,safePath,directory,checkedHash,templatePackage,readAssetInternal,id,objectId,inputFields,fail,LibraryError});
     }
   }
-  for (const name of fs.readdirSync(path.join(root,SYSTEM,'事务','已提交')).sort()) transaction(root,id(name),info.libraryId);
+  for (const name of fs.readdirSync(path.join(root,SYSTEM,'事务','已提交')).sort()) { const tx=transaction(root,id(name),info.libraryId); if (info.schemaVersion === 4 && tx.intent.schemaVersion > 2) fail('FORMAT_UNSUPPORTED','Schema4 backup contains a newer transaction'); }
 }
 
 function prepareRestoredLibrary(root, backup) {
-  const info = descriptor(root);
+  const info = descriptor(root, true);
   const pending = path.join(root,SYSTEM,'事务','待恢复');
   const recoveredMutations = fs.readdirSync(pending).filter(name => UUID.test(name));
+  if (info.schemaVersion === 4) for (const mutationId of recoveredMutations) if (transaction(root,mutationId,info.libraryId).intent.schemaVersion > 2) fail('FORMAT_UNSUPPORTED','Schema4 backup contains a newer pending transaction');
   recover(root,info.libraryId);
   validateRestoredLibrary(root,info);
   const interruptedAttempts = [], mutations = [];
@@ -1413,7 +1469,7 @@ function prepareRestoredLibrary(root, backup) {
     const now = new Date().toISOString(), mutationId = randomUUID();
     const next = {...interruptRestoredAttempts(meta,now),revision:meta.revision+1,updatedAt:now};
     const after = [jsonBytes(next),before[1]];
-    const intent = {schemaVersion:2,libraryId:info.libraryId,mutationId,objectKind:'content',objectId:contentId,operation:'restore-interrupted',requestDigest:hash(jsonBytes({action:'restore-interrupted',backupId:backup.backupId,contentId})),before:before.map(pack),after:after.map(pack)};
+    const intent = {schemaVersion:info.schemaVersion >= 5 ? 3 : 2,libraryId:info.libraryId,mutationId,objectKind:'content',objectId:contentId,operation:'restore-interrupted',requestDigest:hash(jsonBytes({action:'restore-interrupted',backupId:backup.backupId,contentId})),before:before.map(pack),after:after.map(pack)};
     const location = path.join(pending,mutationId); mkdir(location); writeNew(path.join(location,'intent.json'),jsonBytes(intent));
     const tx = transaction(root,mutationId,info.libraryId); applyTransaction(root,tx); archiveTransaction(root,tx);
     interruptedAttempts.push(...live.map(attempt => ({...attempt,mutationId}))); mutations.push(mutationId);
@@ -1421,7 +1477,7 @@ function prepareRestoredLibrary(root, backup) {
   const provenance = path.join(root,SYSTEM,'恢复来源'); ensureDirectory(provenance);
   writeNew(path.join(provenance,`${randomUUID()}.json`),jsonBytes({format:'nova-content-library-restore',schemaVersion:1,backupId:backup.backupId,treeHash:backup.treeHash,libraryId:info.libraryId,restoredAt:new Date().toISOString(),recoveredMutations,interruptionMutations:mutations,interruptedAttempts}));
   validateRestoredLibrary(root,info);
-  return {recoveredMutations,interruptedAttempts};
+  return {recoveredMutations,interruptedAttempts,schemaVersion:info.schemaVersion,upgradeRequired:info.schemaVersion < LIBRARY_VERSION};
 }
 
 const backupOperations = backupMethods({fail,LibraryError,safePath,directory,descriptor,acquire,read,writeNew,syncDirectory,jsonBytes,hash,hook,prepareRestoredLibrary});

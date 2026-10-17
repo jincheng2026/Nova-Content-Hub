@@ -46,7 +46,7 @@ async function fixture(t, count = 2) {
 
 test('fixed packages, explicit claim and whole batch commit retain candidate selection as a manual step', async t => {
   const f = await fixture(t); const current = f.lib.readContent(f.content.id);
-  assert.equal(current.schemaVersion, 3); assert.equal(f.lib.info.schemaVersion, 4);
+  assert.equal(current.schemaVersion, 4); assert.equal(f.lib.info.schemaVersion, 5);
   assert.equal(f.request.photo, null); assert.equal(f.context.body, '# original\r\n'); assert.equal(f.context.inputs.length, 2);
   for (const input of f.context.inputs) assert.equal(digest(fs.readFileSync(input.path)), input.assetHash);
   assert.equal(f.context.attempt.status, 'created');
@@ -173,7 +173,7 @@ test('explicit schema-3 upgrade preserves historical bytes and erects an old-wri
   const f = await fixture(t); const descriptor = path.join(f.root, '内容库.json'); const info = JSON.parse(fs.readFileSync(descriptor));
   fs.writeFileSync(descriptor, JSON.stringify({ ...info, schemaVersion: 3 }));
   const original = fs.readFileSync(descriptor); throws('UPGRADE_REQUIRED', () => openLibrary(f.root)); assert.deepEqual(fs.readFileSync(descriptor), original);
-  const upgraded = upgradeLibrary(f.root); assert.equal(upgraded.info.schemaVersion, 4); assert.equal(upgraded.readContent(f.content.id).body, f.content.body);
+  const upgraded = upgradeLibrary(f.root); assert.equal(upgraded.info.schemaVersion, 5); assert.equal(upgraded.readContent(f.content.id).body, f.content.body);
   assert.deepEqual(fs.readFileSync(path.join(f.root, '系统（别动）', '内容库.schema3.bak.json')), original);
   assert.ok(fs.existsSync(path.join(f.root, '系统（别动）', '事务', '升级到4', '完成.json')));
 });
@@ -191,7 +191,7 @@ for (const phase of ['upgrade4AfterBackup', 'upgrade4AfterBarrier', 'upgrade4Bef
   const f = await fixture(t); const filename = path.join(f.root, '内容库.json'); const info = JSON.parse(fs.readFileSync(filename)); fs.writeFileSync(filename, JSON.stringify({ ...info, schemaVersion: 3 }));
   __testing.setHook(event => { if (event.phase === phase) throw new Error('interrupted upgrade'); });
   throws('IO_ERROR', () => upgradeLibrary(f.root)); __testing.setHook(undefined);
-  const current = upgradeLibrary(f.root); assert.equal(current.info.schemaVersion, 4); assert.equal(current.readContent(f.content.id).coverJobs[0].id, f.request.requestId);
+  const current = upgradeLibrary(f.root); assert.equal(current.info.schemaVersion, 5); assert.equal(current.readContent(f.content.id).coverJobs[0].id, f.request.requestId);
 });
 
 test('the actual previous schema3 implementation refuses schema4 and refuses the added barrier after descriptor rollback', async t => {

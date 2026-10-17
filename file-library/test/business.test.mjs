@@ -46,7 +46,7 @@ test('photo identity is separate from asset hash, declaration is explicit, and t
  const f=fixture(t);const a=asset(f);reject('INVALID_INPUT',()=>f.lib.createPhoto({title:'missing declaration',assetHash:a.assetHash}));
  let first=f.lib.createPhoto({title:'me',assetHash:a.assetHash,isOwnPhoto:true,originalName:'my photo.png'});const second=f.lib.createPhoto({title:'reference',assetHash:a.assetHash,isOwnPhoto:false});assert.notEqual(first.id,second.id);
  const updated=f.lib.updatePhoto(first.id,{title:'renamed'},first.editToken);reject('CONFLICT',()=>f.lib.updatePhoto(first.id,{title:'stale'},first.editToken));first=f.lib.trashPhoto(first.id,updated.editToken);assert.equal(f.lib.listPhotoTrash().length,1);first=f.lib.restorePhoto(first.id,first.editToken);assert.equal(first.assetHash,a.assetHash);assert.equal(first.isOwnPhoto,true);
- const journal=JSON.parse(fs.readFileSync(path.join(history(f.root),first.mutationId,'intent.json')));assert.equal(journal.schemaVersion,2);assert.equal(journal.objectKind,'photo');assert.equal(journal.after.length,1);assert.deepEqual(f.lib.queryMutation(first.mutationId).content,first);
+ const journal=JSON.parse(fs.readFileSync(path.join(history(f.root),first.mutationId,'intent.json')));assert.equal(journal.schemaVersion,3);assert.equal(journal.objectKind,'photo');assert.equal(journal.after.length,1);assert.deepEqual(f.lib.queryMutation(first.mutationId).content,first);
 });
 
 test('prompt Markdown is the sole body source; external edits invalidate token; builtin keys include trash',t=>{
@@ -93,8 +93,8 @@ test('missing template metadata without marker and damaged orphan marker fail cl
 });
 
 test('content materials, generated candidates and explicit selection remain separate facts',t=>{
- const f=fixture(t);const a=asset(f);let content=f.lib.createContent({title:'story',body:'body'});assert.equal(content.schemaVersion,1);
- content=f.lib.attachContentMaterial(content.id,{assetHash:a.assetHash,originalName:'research.png'},content.editToken);assert.equal(content.schemaVersion,2);assert.equal(content.materials.length,1);const materialId=content.materials[0].id;
+ const f=fixture(t);const a=asset(f);let content=f.lib.createContent({title:'story',body:'body'});assert.equal(content.schemaVersion,4);
+ content=f.lib.attachContentMaterial(content.id,{assetHash:a.assetHash,originalName:'research.png'},content.editToken);assert.equal(content.schemaVersion,4);assert.equal(content.materials.length,1);const materialId=content.materials[0].id;
  content=f.lib.registerContentCandidate(content.id,{assetHash:a.assetHash,requestId:'req-1',attemptId:'attempt-1',source:'manual-import'},content.editToken);assert.equal(content.candidates[0].accepted,false);assert.equal(content.selectedCover,null);
  content=f.lib.selectContentCover(content.id,content.candidates[0].id,content.editToken);assert.equal(content.selectedCover.assetHash,a.assetHash);assert.equal(content.candidates[0].accepted,true);content=f.lib.removeContentMaterial(content.id,materialId,content.editToken);assert.equal(content.materials.length,0);assert.deepEqual(f.lib.readAsset(a.assetHash).data,png);
 });
@@ -155,7 +155,7 @@ function schema2Fixture(f) {
 for(const phase of ['upgrade3AfterBackup','upgrade3AfterBarrier','upgrade3AfterDirectories','upgrade3BeforeDescriptorPublish','upgrade3AfterDescriptorPublish','upgrade3AfterFinalMarker'])test(`schema 2 to 3 resumes after ${phase} and blocks old schema 2 writers`,t=>{
  const f=fixture(t);const c=f.lib.createContent({title:'old',body:'old bytes'});const original=schema2Fixture(f);const before=fs.readFileSync(path.join(history(f.root),c.mutationId,'intent.json'));const result=spawnSync(process.execPath,['--input-type=module','-e',`import{upgradeLibrary,__testing}from ${JSON.stringify(moduleURL)};__testing.setHook(e=>{if(e.phase===process.env.TASK_PHASE)process.kill(process.pid,'SIGKILL')});upgradeLibrary(process.env.TASK_ROOT);`],{env:{...process.env,NODE_ENV:'test',TASK_ROOT:f.root,TASK_PHASE:phase},encoding:'utf8',timeout:10000});assert.equal(result.signal,'SIGKILL',result.stderr);
  const descriptor=JSON.parse(fs.readFileSync(path.join(f.root,'内容库.json')));if(descriptor.schemaVersion===2)reject('UPGRADE_REQUIRED',()=>openLibrary(f.root));if(fs.existsSync(path.join(f.root,'系统（别动）','事务','升级到3')))assert.ok(fs.readdirSync(path.join(f.root,'系统（别动）','事务')).some(name=>!['待恢复','已提交'].includes(name)));
- const lib=upgradeLibrary(f.root);assert.equal(lib.info.schemaVersion,4);assert.equal(lib.readContent(c.id).body,'old bytes');assert.deepEqual(fs.readFileSync(path.join(history(f.root),c.mutationId,'intent.json')),before);assert.deepEqual(fs.readFileSync(path.join(f.root,'系统（别动）','内容库.schema2.bak.json')),original);assert.equal(lib.listPrompts().length,0);
+ const lib=upgradeLibrary(f.root);assert.equal(lib.info.schemaVersion,5);assert.equal(lib.readContent(c.id).body,'old bytes');assert.deepEqual(fs.readFileSync(path.join(history(f.root),c.mutationId,'intent.json')),before);assert.deepEqual(fs.readFileSync(path.join(f.root,'系统（别动）','内容库.schema2.bak.json')),original);assert.equal(lib.listPrompts().length,0);
 });
 
 test('legacy journal schema 1 maps strictly to content and its raw history bytes are never rewritten',t=>{

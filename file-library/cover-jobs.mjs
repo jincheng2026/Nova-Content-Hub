@@ -50,7 +50,7 @@ export function coverJobMethods(h) {
   const requestDir = (contentId, requestId) => path.join(root, '内容', id(contentId), '封面任务', id(requestId));
   const attemptDir = (contentId, requestId, attemptId) => path.join(requestDir(contentId, requestId), '尝试', id(attemptId));
   const content = contentId => result(snapshot(root, id(contentId)), contentId);
-  const extend = meta => ({ ...meta, schemaVersion: 3, materials: meta.materials || [], candidates: meta.candidates || [], selectedCover: meta.selectedCover || null, plans: meta.plans || [], publications: meta.publications || [], coverJobs: meta.coverJobs || [] });
+  const extend = meta => ({ ...meta, schemaVersion: Math.max(meta.schemaVersion,3), materials: meta.materials || [], candidates: meta.candidates || [], selectedCover: meta.selectedCover || null, plans: meta.plans || [], publications: meta.publications || [], coverJobs: meta.coverJobs || [] });
   const host = value => { if (!HOSTS.includes(value)) fail('INVALID_INPUT', 'Unknown cover execution host'); return value; };
   function find(meta, requestId, attemptId) {
     id(requestId);
