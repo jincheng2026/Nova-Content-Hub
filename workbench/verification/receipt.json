@@ -1,0 +1,155 @@
+{
+  "format": "nova-content-workbench-verification",
+  "schemaVersion": 1,
+  "executedAt": "2026-10-17T15:19:25.600Z",
+  "sourceBaseCommit": "901b73cf0725519797571c8154de90b68135d826",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.20.0",
+  "versions": {
+    "electron": "44.9.0",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "@douyinfe/semi-ui-19": "2.104.0",
+    "vite": "8.3.4",
+    "typescript": "7.0.2",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "@types/node": "26.6.5",
+    "sharp": "0.35.5"
+  },
+  "results": {
+    "nativeTypecheck": "pass",
+    "rendererTypecheck": "pass",
+    "nodeTests": {
+      "passed": 14,
+      "failed": 0,
+      "originalTestsPreserved": 13
+    },
+    "buildModes": [
+      "required",
+      "disabled"
+    ],
+    "externalBundleProbe": {
+      "passed": true,
+      "modes": 2,
+      "realImportAndReopenProcesses": 4,
+      "missingConfigStartupRejections": 4,
+      "realReactButtons": true,
+      "sandboxedPreloadSixMethods": true,
+      "utilityProcessAndNativeSharp": true,
+      "sourceRemovedBeforeReopen": true,
+      "sameImportAndLibraryIdentity": true,
+      "postImportEditNotReplayed": true,
+      "titleAndBodyAreDOMText": true,
+      "workerRejectsMismatchedPair": true,
+      "exactRendererResourceMIME": true,
+      "actualCSPViolations": 0,
+      "primaryButtonComputedBackground": "rgb(38, 108, 219)"
+    },
+    "finalRebuildRuntimeRendererConfigHashesUnchanged": true
+  },
+  "modes": {
+    "required": {
+      "release": {
+        "AUTH_MODE": "required",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.2.0",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub",
+        "format": "nova-content-desktop-release",
+        "schemaVersion": 1,
+        "pairId": "nova-content-hub@0.2.0:p1:required",
+        "experimental": true,
+        "productionReady": false,
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "rendererResources": {
+        "/assets/index-04vLI7Sv.js": {
+          "file": "assets/index-04vLI7Sv.js",
+          "mime": "text/javascript; charset=utf-8"
+        },
+        "/assets/index-C5ylbGPJ.css": {
+          "file": "assets/index-C5ylbGPJ.css",
+          "mime": "text/css; charset=utf-8"
+        },
+        "/index.html": {
+          "file": "index.html",
+          "mime": "text/html; charset=utf-8"
+        }
+      },
+      "lockedSharp": "0.35.5",
+      "externalSymlinkDependencies": false
+    },
+    "disabled": {
+      "release": {
+        "AUTH_MODE": "disabled",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.2.0",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub",
+        "format": "nova-content-desktop-release",
+        "schemaVersion": 1,
+        "pairId": "nova-content-hub@0.2.0:p1:disabled",
+        "experimental": true,
+        "productionReady": false,
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "rendererResources": {
+        "/assets/index-04vLI7Sv.js": {
+          "file": "assets/index-04vLI7Sv.js",
+          "mime": "text/javascript; charset=utf-8"
+        },
+        "/assets/index-C5ylbGPJ.css": {
+          "file": "assets/index-C5ylbGPJ.css",
+          "mime": "text/css; charset=utf-8"
+        },
+        "/index.html": {
+          "file": "index.html",
+          "mime": "text/html; charset=utf-8"
+        }
+      },
+      "lockedSharp": "0.35.5",
+      "externalSymlinkDependencies": false
+    }
+  },
+  "electronBinary": {
+    "version": "44.9.0",
+    "source": "existing project development install, previously checked official darwin-arm64 artifact",
+    "shippedInBundle": false
+  },
+  "evidence": {
+    "typecheck.log": {
+      "sha256": "36b7e904327ea9e5f3398d89042541f3653cffe494cfe2b8e418b32566c81a3e"
+    },
+    "node-test.log": {
+      "sha256": "5293055074375feddd3025d06fe63e33ebbfbd027605a4e7c2f9d79ab2fa0124"
+    },
+    "build.log": {
+      "sha256": "f78499ec1323c0e6736cfb8511f81d04484849eba18b186ebd2757f64215e4d7"
+    },
+    "electron-probe.log": {
+      "sha256": "f9f7895d4228840efbb20bcad4fecaa5f0dc564de8378c61a42df50eaf8beda1"
+    },
+    "auth-required.png": {
+      "sha256": "e14461a110667922d9c7a2423e519ed6cab7c5fbc8112eea01d5e282f37497e0"
+    },
+    "auth-disabled.png": {
+      "sha256": "e14461a110667922d9c7a2423e519ed6cab7c5fbc8112eea01d5e282f37497e0"
+    }
+  },
+  "notVerified": [
+    "real system dialogs and human interaction",
+    "macOS unlock",
+    "Windows/Linux runtime",
+    "installer/signing/notarization",
+    "upgrade/uninstall",
+    "host combinations",
+    "production authorization"
+  ],
+  "productionReady": false
+}

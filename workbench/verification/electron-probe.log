@@ -1,0 +1,75 @@
+
+> nova-content-hub-workbench@0.2.0 probe
+> node scripts/probe.mjs
+
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/main/desktop.mjs:18:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/main/index.mjs:4:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/release.json'
+}
+PASS auth-required: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/main/desktop.mjs:17:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/main/index.mjs:4:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-required/workbench/dist/renderer-resources.json'
+}
+PASS auth-required: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+React business status loaded; clicking backup/destination/import
+PASS Electron 44.9.0: auth-required/import, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PASS Electron 44.9.0: auth-required/reopen, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/main/desktop.mjs:18:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/main/index.mjs:4:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/release.json'
+}
+PASS auth-disabled: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/main/desktop.mjs:17:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/main/index.mjs:4:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/electron-desktop/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-hAFmCW/auth-disabled/workbench/dist/renderer-resources.json'
+}
+PASS auth-disabled: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+React business status loaded; clicking backup/destination/import
+PASS Electron 44.9.0: auth-disabled/import, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PASS Electron 44.9.0: auth-disabled/reopen, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi + utility-process/sharp import; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.

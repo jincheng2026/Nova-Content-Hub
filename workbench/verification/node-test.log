@@ -1,0 +1,26 @@
+
+> nova-content-hub-workbench@0.2.0 test
+> node --test test/*.test.mjs
+
+✔ only exact top-level sender with no renderer arguments can invoke business (0.835625ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.473083ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.433667ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (32.966291ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.424375ms)
+✔ persisted accepted task is recovered after worker exit and fresh application; resume uses exact task (66.182625ms)
+✔ committed retries never replay import and reject changed source or replaced library (46.824334ms)
+✔ source must still match the preview before launching, and failed pre-reservation can be reselected (72.736791ms)
+✔ a restart finds the accepted disk task even when both operation response and recovery query were lost (87.103ms)
+✔ replaced committed target cannot be listed or resumed (72.525208ms)
+✔ startup and user status queries share one disk query instead of colliding in the worker (90.525541ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (106.571958ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.338625ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (3291.656167ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3656.75375
