@@ -23,6 +23,7 @@ async function fixture(t) {
       return task;
     }
     if (op === 'resume') { assert.equal(args.importId, task.importId); task = { ...task, status: 'committed', libraryId: randomUUID() }; return task; }
+    if (op === 'bind') return { root: args.destination, libraryId: args.libraryId, rootIdentity: { dev: '1', ino: '2' } };
     if (op === 'list') return [{ title: '<script>bad()</script>', body: 'original' }];
     throw new Error(op);
   } };

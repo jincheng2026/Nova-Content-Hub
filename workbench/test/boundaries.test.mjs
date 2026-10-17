@@ -15,7 +15,7 @@ test('only exact top-level sender with no renderer arguments can invoke business
   for (const attack of [{ ...event, sender: {} }, { ...event, senderFrame: { url: PAGE } }, { ...event, senderFrame: null }]) assert.throws(() => assertCaller(attack, sender, []), { code: 'FORBIDDEN' });
   assert.throws(() => assertCaller(event, sender, ['/arbitrary/path']), { code: 'FORBIDDEN' });
   frame.url = 'https://app/index.html'; assert.throws(() => assertCaller(event, sender, []), { code: 'FORBIDDEN' });
-  assert.equal(CHANNELS.length, 6);
+  assert.equal(CHANNELS.length, 16);
 });
 test('static protocol maps only exact manifest resources and refuses URL normalization', () => {
   const resources = validateResources({ format: 'nova-desktop-renderer-resources', schemaVersion: 1, entries: { '/index.html': { file: 'index.html', mime: 'text/html; charset=utf-8' }, '/assets/app-123.js': { file: 'assets/app-123.js', mime: 'text/javascript; charset=utf-8' } } });

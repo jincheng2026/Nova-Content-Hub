@@ -1,4 +1,5 @@
 import { isRecord, errorInfo } from '../shared/contracts.ts';
+import { identity, libraryBinding, mutation, uuid } from '../shared/validation.ts';
 import type { Binding } from '../shared/contracts.ts';
 import fs from 'node:fs/promises';
 import path from 'node:path';
@@ -7,24 +8,28 @@ import { randomUUID } from 'node:crypto';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const absolute = (value: unknown) => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0');
 export function validateBinding(value: unknown): Binding {
-  if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId'].includes(key)) ||
+  if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect'].includes(key)) ||
       !(value.source === null || absolute(value.source)) || !(value.destination === null || absolute(value.destination)) ||
       !(value.sourceHash === null || (typeof value.sourceHash === 'string' && /^[0-9a-f]{64}$/.test(value.sourceHash))) || typeof value.started !== 'boolean' ||
       !(value.importId === null || (typeof value.importId === 'string' && UUID.test(value.importId))) || !(value.libraryId === null || (typeof value.libraryId === 'string' && UUID.test(value.libraryId))) ||
       (!!value.source !== !!value.sourceHash) || (value.started && (!value.source || !value.destination)) ||
+      (value.current !== undefined && value.current !== null && (!libraryBinding(value.current) || !absolute(value.current.root))) ||
+      (value.pending !== undefined && value.pending !== null && (!mutation(value.pending) || !value.current)) ||
+      (value.creation !== undefined && value.creation !== null && (!isRecord(value.creation) || Object.keys(value.creation).length !== 3 || !uuid(value.creation.mutationId) || !absolute(value.creation.root) || !identity(value.creation.rootIdentity))) ||
+      (value.needsReselect !== undefined && typeof value.needsReselect !== 'boolean') || (value.pending && value.creation) ||
       (value.importId && !value.started) || (value.libraryId && !value.importId)) {
     throw Object.assign(new Error('机器绑定记录损坏，已保留现场；请联系维护者检查。'), { code: 'BINDING_INVALID' });
   }
   return value as unknown as Binding;
 }
-export const emptyBinding = (): Binding => ({ version: 1, source: null, sourceHash: null, destination: null, started: false, importId: null, libraryId: null });
+export const emptyBinding = (): Binding => ({ version: 1, source: null, sourceHash: null, destination: null, started: false, importId: null, libraryId: null, current: null, pending: null, creation: null, needsReselect: false });
 export class BindingStore {
   file: string;
   constructor(file: string) { this.file = file; }
   async load() {
     try {
       const info = await fs.lstat(this.file);
-      if (!info.isFile() || info.isSymbolicLink() || info.size > 16384) throw new Error('Invalid binding file');
+      if (!info.isFile() || info.isSymbolicLink() || info.size > 8_000_000) throw new Error('Invalid binding file');
       return validateBinding(JSON.parse(await fs.readFile(this.file, 'utf8')));
     } catch (error) {
       if (errorInfo(error).code === 'ENOENT') return emptyBinding();

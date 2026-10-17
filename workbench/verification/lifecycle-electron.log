@@ -1,0 +1,30 @@
+
+> nova-content-hub-workbench@0.2.0 probe:lifecycle
+> node scripts/lifecycle-probe.mjs
+
+Error: Invalid desktop release build configuration
+    at validateBuildConfig (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-disabled/workbench/dist/main/boundary.mjs:18:15)
+    at validateRelease (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-disabled/workbench/dist/main/boundary.mjs:22:20)
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-disabled/workbench/dist/main/desktop.mjs:18:21)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-disabled/workbench/dist/main/lifecycle-probe.mjs:17:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/.codex/worktrees/local-file-library/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/.codex/worktrees/local-file-library/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9
+PASS auth-disabled: malformed release refuses startup; production package contains no probe entry
+PASS Electron 44.9.0 auth-disabled/crud: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS actual pre-dispatch exit after durable mutation reservation
+PASS actual post-commit exit before controller acknowledges result
+PASS Electron 44.9.0 auth-disabled/reopen: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+Error: Invalid desktop release build configuration
+    at validateBuildConfig (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-required/workbench/dist/main/boundary.mjs:18:15)
+    at validateRelease (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-required/workbench/dist/main/boundary.mjs:22:20)
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-required/workbench/dist/main/desktop.mjs:18:21)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-z8PcS3/auth-required/workbench/dist/main/lifecycle-probe.mjs:17:1
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async loadApplicationPackage (file:///Users/mac/.codex/worktrees/local-file-library/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:133:9)
+    at async file:///Users/mac/.codex/worktrees/local-file-library/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/Resources/default_app.asar/main.js:277:9
+PASS auth-required: malformed release refuses startup; production package contains no probe entry
+PASS Electron 44.9.0 auth-required/required: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS external standalone native lifecycle packages: disabled CRUD/conflict/dirty guards and 4 actual processes; required main+worker five writes refused. Native system choosers/close-dialog clicks, Windows and production authorization remain unverified.

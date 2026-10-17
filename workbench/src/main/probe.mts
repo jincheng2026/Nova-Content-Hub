@@ -29,7 +29,7 @@ startDesktop({ onConsoleMessage: message => consoleMessages.push(message), show:
   }
   const preferences = (window.webContents as typeof window.webContents & { getLastWebPreferences(): { sandbox: boolean; contextIsolation: boolean; nodeIntegration: boolean } }).getLastWebPreferences();
   assert.equal(preferences.sandbox, true); assert.equal(preferences.contextIsolation, true); assert.equal(preferences.nodeIntegration, false);
-  assert.deepEqual(await run('({ require: typeof require, process: typeof process, bridge: Object.keys(window.contentHub).sort() })'), { require: 'undefined', process: 'undefined', bridge: ['chooseBackup', 'chooseDestination', 'importBackup', 'listContents', 'resumeImport', 'status'] });
+  assert.deepEqual(await run('({ require: typeof require, process: typeof process, bridge: Object.keys(window.contentHub).sort() })'), { require: 'undefined', process: 'undefined', bridge: ['chooseBackup', 'chooseDestination', 'createContent', 'createLibrary', 'importBackup', 'listContents', 'openLibrary', 'queryPendingMutation', 'readContent', 'resolvePendingMutation', 'restoreContent', 'resumeImport', 'retryPendingMutation', 'status', 'trashContent', 'updateContent'] });
   if (process.env.NOVA_DESKTOP_PROBE_PHASE === 'import') {
     console.log('React business status loaded; clicking backup/destination/import');
     await run('document.getElementById("backup").click()');
@@ -60,7 +60,7 @@ startDesktop({ onConsoleMessage: message => consoleMessages.push(message), show:
   assert.equal(await run('globalThis.untrustedExecuted === true'), false);
   assert.equal(await run('document.querySelectorAll("#contents script").length'), 0);
   if (process.env.NOVA_DESKTOP_PROBE_PHASE === 'reopen') assert.ok(await run<boolean>(`document.querySelector('#contents pre').textContent.includes('edited after import')`));
-  await assert.rejects(worker.call('list', { destination, libraryId: 'not-a-library-id' }), { code: 'INVALID_INPUT' });
+  await assert.rejects(worker.call('list', { binding: { root: destination, libraryId: 'not-a-library-id', rootIdentity: { dev: '0', ino: '0' } }, view: 'active' }), { code: 'INVALID_INPUT' });
   const wrongWorker = new WorkerClient(() => utilityProcess.fork(fileURLToPath(new URL('./worker.mjs', import.meta.url)), ['wrong-pair'], { stdio: 'ignore' }));
   try { await assert.rejects(wrongWorker.call('inspect', { source: path.join(root, 'source.json') }), { code: 'RELEASE_MISMATCH' }); } finally { wrongWorker.stop(); }
   const table = JSON.parse(await fs.readFile(new URL('../renderer-resources.json', import.meta.url), 'utf8')) as { entries: Record<string, { mime: string }> };

@@ -28,7 +28,7 @@ for (const mode of modes) {
   fs.rmSync(target, { recursive: true, force: true });
   const dist = path.join(target, 'workbench/dist');
   fs.mkdirSync(dist, { recursive: true });
-  fs.cpSync(path.join(workbench, '.native'), dist, { recursive: true, filter: source => path.basename(source) !== 'probe.mjs' });
+  fs.cpSync(path.join(workbench, '.native'), dist, { recursive: true, filter: source => !['probe.mjs', 'lifecycle-probe.mjs'].includes(path.basename(source)) });
   fs.writeFileSync(path.join(target, 'workbench/package.json'), JSON.stringify({ type: 'module', main: 'dist/main/index.mjs' }) + '\n');
   const preload = fs.readFileSync(path.join(dist, 'preload/index.cjs'), 'utf8');
   if ([...preload.matchAll(/require\(['"]([^'"]+)['"]\)/g)].map(match => match[1]).join() !== 'electron') throw new Error('Sandbox preload must require only electron');

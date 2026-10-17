@@ -1,23 +1,8 @@
 # 本地内容工作台 · 技术入口
 
-当前栈为 **Electron 44.9.0 + TypeScript 7.0.2 + React/ReactDOM 19.3.1 + Semi UI React 19 版 2.104.0 + Vite 8.3.4**。顶层依赖与完整安装树在本目录精确锁定；Semi 使用 `@douyinfe/semi-ui-19`，其官方 peer 要求为 React/ReactDOM `^19.0.0`。运行开发命令需要 Node >=22.18.0，文件核心与 sharp 0.35.5 继续复用仓库既有 ESM 实现。
+当前栈为 **Electron 44.9.0 + TypeScript 7.0.2 + React/ReactDOM 19.3.1 + Semi UI React 19 版 2.104.0 + Vite 8.3.4**，Node >=22.18.0。依赖精确锁定，文件核心与 sharp 0.35.5 继续复用已有 ESM 实现。
 
-这是有限的本地导入与读取入口：系统选择旧备份 → 只读预检 → 系统选择新内容库位置 → 导入并打开 → 内容列表/原文 → 查询或继续同一任务。旧渠道文案留在各自发布计划；不拼成基础正文。此轮没有新增内容 CRUD、助手调用、授权实现或宿主桥接。
-
-## 目录
-
-```text
-workbench/
-  src/main/       窗口与系统对话框、IPC边界、机器绑定、控制器、utility worker
-  src/preload/    单个隔离桥接入口（仅 require electron）
-  src/renderer/   React/Semi UI 页面与本地 CSS
-  src/shared/     六方法合同、错误投影、既有共享 ESM 的有限声明接缝
-  scripts/        可复现构建与真实 Electron 双进程探针
-  test/           原有13项回归与新增配置/资源/CSP边界检查
-  verification/   本机实际执行日志、收据与渲染截图
-```
-
-主进程、工作进程和 preload 都以 TS 维护。原生 NodeNext 编译输出保留 `main/preload/shared` 层级；Vite 只处理 renderer。没有把文件核心或 sharp 打入浏览器 bundle。
+实验入口可明确新建或打开一个当前文件库，创建内容、编辑标题/正文、保存、移入回收站、恢复、关闭后重开；也保留旧备份预检与同任务导入恢复。内容只通过文件核心写入；标题修改只传 title/body，不整包覆盖发布计划、素材等其他业务字段。正式授权、助手调用、其余业务页面和宿主桥接仍未实现。
 
 ## 开发与构建
 
@@ -29,27 +14,34 @@ npm test --prefix workbench
 npm run build --prefix workbench -- --auth both
 npm start --prefix workbench
 npm run probe --prefix workbench
+npm run probe:lifecycle --prefix workbench
 ```
 
-构建参数必须显式给出 `--auth required|disabled|both`，缺失或未知参数会失败。产物为仓库根 `dist-desktop/auth-required`、`dist-desktop/auth-disabled`。根 `release.config.json` 必须具有固定产品 scope/productId、合法版本、协议1、实验标记与合法 AUTH_MODE；构建分别写入随包配置，主进程和 worker 再核对 scope、pairId、模式、平台与架构。不从环境、查询参数、源码目录或包目录推断模式，也没有运行时切换入口。两模式当前都只验证已有导入/读取流程，均为 `experimental:true / productionReady:false`。
+构建必须显式选择 `--auth required|disabled|both`。产物为仓库根 `dist-desktop/auth-required`、`dist-desktop/auth-disabled`，均为 `experimental:true / productionReady:false`。根 `release.config.json` 的 scope/productId、版本、协议、实验标记、AUTH_MODE 与随包平台/架构/pairId 在构建、main、worker 分别核验。缺失或坏配置会拒绝启动；环境变量、query、localStorage、旧演示登录均不能切换权限。
 
-每包包含 `workbench/dist/{main,preload,shared,renderer}`、固定 `renderer-resources.json`、`release.json`、相邻根目录的 `file-library/browser-import/image-validation`、可信原型 validator/72项摘要校验资源，以及通过 locked `npm ci --omit=dev --ignore-scripts` 安装的生产 sharp。原型 validator 保留 CommonJS 所需包边界，worker 的相对导入在源码与产物均有效。包可以移动出仓库再用 Electron 打开；它是实验运行目录，**没有捆绑 Electron 应用运行时或制作签名安装器**。开发依赖中的 Electron binary 只用于维护者启动/验证，不会成为产物中的绝对路径或符号链接依赖。
+required 包在 main 与 worker 独立拒绝新建库及内容创建、编辑、回收、恢复，返回 `AUTH_NOT_CONFIGURED`。读取及旧导入维护仍可用，读取可能由核心完成已有事务恢复。disabled 包为独立构建；没有运行时放行开关。
 
-本机验证先定位官方 Electron 缓存，仅发现旧版33缓存，随后复用本项目开发目录已按精确44.9.0 npm checksums校验的官方 darwin-arm64 binary；未借用旅游项目运行时。全新开发机仍由正常 `npm ci --prefix workbench` 下载精确版本 Electron；下载失败应明确修复网络/下载问题，不回退未知运行时。
+每个实验运行目录包含完整 `workbench/dist`、精确资源清单、随包配置、文件核心/导入/图片校验模块、可信原型校验器及72项摘要核对资源，并通过锁文件独立安装生产 sharp。浏览器 bundle 不含文件核心、Node 或 sharp。运行目录可移出仓库，但没有捆绑 Electron 应用运行时，也不是签名安装包。
 
-## 边界与数据行为
+## 业务与安全边界
 
-- preload 只暴露 `status/chooseBackup/chooseDestination/importBackup/resumeImport/listContents` 六个无参数方法。renderer 不能传路径、库/任务ID或通用IPC。每次调用核对当前 webContents、精确顶层frame与受控页面URL，拒绝额外参数。worker 再校验有限业务操作与字段，文件核心负责最终路径、身份及锁校验。
-- `sandbox/contextIsolation/webSecurity` 开启，Node、webview、导航、新窗口和权限关闭。自定义协议仅查构建清单中精确 URL→固定相对文件/MIME；未登记资源、query/hash、编码与路径规范化形式均不匹配；不开放泛 assets 目录。
-- CSP 保留 `script-src 'self'`，没有 inline script、unsafe-eval、CDN或外部连接。Semi CSS 由Vite打包为本地文件；只允许组件所需 style 属性，`style-src` 仍为 self，未放开 style 标签。React 的文字子节点渲染标题和正文，不解释 HTML。
-- 预检、导入、图片完整解码和列表读取在 utilityProcess。主进程只保留机器绑定；renderer 状态投影不含原始备份路径、任务/库身份或完整预检来源信息。工作进程退出不会视为成功。
-- 接受导入前先刷盘来源摘要和固定目标；响应丢失后按同一磁盘预约找回任务。未完成任务不能更换目标，继续使用已归档原备份，原JSON移走后仍能继续/查询。提交后只查询/读取，不重放导入覆盖后续编辑。不会删锁、删任务或改数据文件来修复。
-- 缺失/不支持资源保留记录；本人照缺失不等于可信本人声明。列表只读，本入口暂不提供补文件、合集/发布等完整编辑界面。旧演示授权、安装或信任状态不作为正式状态导入。
+- preload 只暴露16个有限方法：原六方法，加 createLibrary/openLibrary/readContent/createContent/updateContent/trashContent/restoreContent/queryPendingMutation/retryPendingMutation/resolvePendingMutation。renderer 可提交内容 UUID、title/body、editToken、active/trash 视图及明确恢复动作；不能提交文件路径、库/导入任务身份、权限模式、任意 patch 或方法。main 校验当前 webContents、精确顶层 frame 和受控 URL，再校验字段；worker 独立核验。标题上限500字符，正文上限1,000,000个 UTF-16 code units。
+- sandbox/contextIsolation/webSecurity 开启；Node、webview、导航、新窗口及权限关闭。自定义协议只接受清单中的精确 URL，不开放泛目录；拒绝 query/hash、编码、路径规范化与未登记资源。
+- CSP 保留 `script-src 'self'`，没有 inline script、eval、CDN或外部连接。Semi CSS 是本地构建资源；仅允许组件必要的 style 属性。用户标题和正文只作为 React 文本/value显示。
+- 当前库持久保存 `{root,libraryId,rootIdentity:{dev,ino}}`，与导入记录分别绑定。明确打开其他库或接受新库预约前必须确认已有导入完成；随后清除机器上的已完成导入指针，磁盘导入现场保留，旧导入目录失效不会阻塞新当前库。每次已有库读写/查询均在恢复前携预期库ID和原根身份给 `openLibrary`。同路径换库、同ID克隆均拒绝；旧绑定无根身份时明确要求重新选择，不后台接受现路径。旧格式/未来格式不静默升级。
+- 接受内容写入前，main 生成 mutationId，将唯一 pending、本次有限输入与当前库绑定刷盘，再调 worker。退出或丢响应显示“保存结果待核实”，阻止第二笔写入和换库。核验只按同一ID；查不到才允许用户明确重试同请求同ID，恢复错误保留现场。已提交回执只用来定位对象，另读当前版本，不能把历史快照覆盖后续编辑。
+- CONFLICT 保存提交草稿；可核验/比较、保留、另存为新内容，或明确放弃提交并载入磁盘。列表刷新、焦点回到窗口、worker退出不清脏编辑器。切内容、换库、回收以及关闭时提示保存/放弃/留在当前页；磁盘版本变化时同时显示磁盘与本地草稿，保存不能自动覆盖。未提交的编辑器草稿保存在内存，不宣称断电恢复。
+- 新库使用系统选择的新路径，main 预约新目录身份并刷盘唯一创建记录。响应丢失固定原目标核验；空预约可明确重试，部分失败保留目录，允许明确放弃创建而不删目录。创建身份防写仍取决于文件核心的创建接缝；当前验证不宣称原子 openat 或 inode 复用防护。
+- 导入接受前刷盘来源摘要和固定目标；未完成任务不能更换库或目标，继续使用归档备份。提交后只核验/读取，不重放导入覆盖后续编辑。不删锁、删任务或改业务文件来修复。旧渠道文案保留在各发布计划，缺失资源保留记录，本人照缺失不构成可信本人声明。
 
 ## 验证范围
 
-实际结果见 [收据](verification/receipt.json)、[类型检查](verification/typecheck.log)、[Node测试](verification/node-test.log)、[构建](verification/build.log) 与 [Electron探针](verification/electron-probe.log)。`probe` 把两个完整产物复制到仓库外临时目录再启动；测试入口仅注入临时副本，不进入正式包。每模式先验证缺少显式配置拒绝启动，再使用两个真实Electron进程验证：React/Semi已挂载、sandbox/preload/IPC、utilityProcess/sharp导入、移走来源后同任务重启、后续编辑不被覆盖、恶意标题/正文仍是DOM文本，以及实际资源MIME与CSP无拒绝。
+原导入探针仍使用仓库外两包、每包两个真实 Electron 进程，覆盖 React/Semi、sandbox/preload/IPC、utilityProcess/sharp、来源移走后同任务重启、后续编辑保留、恶意正文文本显示、资源MIME与CSP；缺少配置拒绝启动。
 
-自动探针使用隐藏窗口和稳定业务选择器，不依赖Semi内部DOM。未验收真实系统选择器、人工目视交互、macOS解锁、Windows/Linux、签名/公证、升级/卸载、双宿主四组合或正式授权；运行目录不是可商用安装包。
+生命周期探针另将两包复制出仓库。disabled 使用4个真实进程，验证新建/编辑/软删/恢复、脏稿刷新/换库保留、关闭事件阻止、外部冲突比较/另存、同路径不同库及同ID克隆拒绝、main持久预约后提交前退出、实际提交后控制器确认前退出、重启同ID核验/明确重试、后续外部编辑不被历史回执覆盖。required 验证 main/worker 五类新业务写拒绝而读取可用。错 sender、恶意字段/ID、资源清单和实际CSP也在真实 Electron 核验。测试入口只注入仓库外临时副本，构建包排除两个 probe 文件；未新增生产绕过接口。
 
-官方依据：[Semi React 19说明](https://semi.design/en-US/start/getting-started)、[Electron安全指南](https://www.electronjs.org/docs/latest/tutorial/security)、[utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process)、[自定义协议](https://www.electronjs.org/docs/latest/api/protocol)、[contextBridge](https://www.electronjs.org/docs/latest/api/context-bridge)。精确版本另通过 npm 官方registry实时核对并写入lock。
+本轮执行证据使用 `verification/lifecycle-{typecheck,node-test,build,electron,import-electron}.log` 与 `lifecycle-receipt.json`。原 `receipt.json` 等保留为此前迁移基线，不能用于证明本轮生命周期全部完成。
+
+未验收真实系统选择器点击、原生关闭弹窗按钮、人工目视/辅助技术交互、macOS解锁、Windows/Linux、正式权益、签名/公证、升级/卸载和双宿主四组合；运行目录不是可商用安装包。
+
+官方依据：[Semi React 19](https://semi.design/en-US/start/getting-started)、[Electron安全](https://www.electronjs.org/docs/latest/tutorial/security)、[utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process)、[自定义协议](https://www.electronjs.org/docs/latest/api/protocol)、[contextBridge](https://www.electronjs.org/docs/latest/api/context-bridge)。

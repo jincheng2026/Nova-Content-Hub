@@ -14,7 +14,8 @@
     "build": "node scripts/build.mjs",
     "start": "electron ../dist-desktop/auth-required",
     "test": "node --test test/*.test.mjs",
-    "probe": "node scripts/probe.mjs"
+    "probe": "node scripts/probe.mjs",
+    "probe:lifecycle": "node scripts/lifecycle-probe.mjs"
   },
   "dependencies": {
     "sharp": "0.35.5"

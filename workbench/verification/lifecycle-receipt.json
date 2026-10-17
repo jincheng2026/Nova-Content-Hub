@@ -1,0 +1,204 @@
+{
+  "format": "nova-content-native-lifecycle-verification",
+  "schemaVersion": 1,
+  "executedAt": "2026-10-17T16:11:31.544Z",
+  "sourceBaseCommit": "48eede7",
+  "sourceWorkingTree": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.20.0",
+  "productionReady": false,
+  "contractStatus": "pending-core-creation-identity-guard",
+  "blockingFinding": "worker pre/post root checks cannot prevent createLibrary writing or recovering a replacement target. Core createLibrary must accept expectedRootIdentity and use guarded initialization plus expected ID/inode on final open; worker wiring and fault validation remain required.",
+  "results": {
+    "strictNativeTypecheck": "pass",
+    "strictRendererTypecheck": "pass",
+    "nodeTests": {
+      "passed": 27,
+      "failed": 0,
+      "original14Preserved": true
+    },
+    "standaloneBuildModes": [
+      "required",
+      "disabled"
+    ],
+    "realLifecycleProbe": {
+      "passed": true,
+      "disabledProcesses": 4,
+      "requiredProcesses": 1,
+      "malformedConfigStartupRejections": 2,
+      "actualUtilityProcesses": true,
+      "mainAndWorkerFiveBusinessWritesRefusedInRequired": true,
+      "crudTrashRestoreReopen": true,
+      "dirtyRefreshAndNavigationAndRecycleGuards": true,
+      "rendererBeforeUnloadCancellation": true,
+      "conflictBothVersionsAndExplicitSaveAs": true,
+      "replacedLibraryAndSameIdCloneRefused": true,
+      "persistBeforeDispatchAndExitBeforeCommit": true,
+      "exitAfterCommitBeforeControllerAcknowledgement": true,
+      "sameMutationIdQueryAndExplicitRetry": true,
+      "laterExternalEditsNotOverwritten": true,
+      "foreignSenderAndFiniteInputRejections": true,
+      "actualCSPViolations": 0,
+      "exactResourceMIME": true,
+      "probeEntriesExcludedFromProductionPackages": true
+    },
+    "preservedImportProbe": {
+      "passed": true,
+      "modes": 2,
+      "realImportReopenProcesses": 4,
+      "missingConfigStartupRejections": 4,
+      "sourceRemovalAndSameTaskAndLaterEditsPreserved": true
+    }
+  },
+  "electronBinary": {
+    "version": "44.9.0",
+    "source": "official darwin-arm64 zip extracted with ditto into worktree development dependency",
+    "zipSHA256": "12d873a5ae98a6598e730402e9278c5d132e97ea1a4405a7713bec2a3e83921f",
+    "shippedInBundle": false
+  },
+  "notVerified": [
+    "core guarded creation integration and its fault cases",
+    "native system chooser clicks",
+    "native close-dialog button clicks",
+    "human visual/accessibility acceptance",
+    "Windows/Linux",
+    "production entitlement implementation",
+    "host combinations",
+    "signed installers/notarization/upgrades"
+  ],
+  "coreSourceSHA256": {
+    "file-library/index.mjs": "a615be0a4a0cc5ca5ce4783354b366f3cf02fc92fa5eb12af1897b5d9d4e122c"
+  },
+  "modes": {
+    "required": {
+      "release": {
+        "AUTH_MODE": "required",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.2.0",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub",
+        "format": "nova-content-desktop-release",
+        "schemaVersion": 1,
+        "pairId": "nova-content-hub@0.2.0:p1:required",
+        "experimental": true,
+        "productionReady": false,
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "rendererResources": {
+        "format": "nova-desktop-renderer-resources",
+        "schemaVersion": 1,
+        "entries": {
+          "/assets/index-B8GxjClF.js": {
+            "file": "assets/index-B8GxjClF.js",
+            "mime": "text/javascript; charset=utf-8"
+          },
+          "/assets/index-Cv2wAdwb.css": {
+            "file": "assets/index-Cv2wAdwb.css",
+            "mime": "text/css; charset=utf-8"
+          },
+          "/index.html": {
+            "file": "index.html",
+            "mime": "text/html; charset=utf-8"
+          }
+        }
+      },
+      "mainSHA256": "2b309b86cb6be7b835619c001a8e7ad82f79040e2dfcab6c4dda581d1c279113",
+      "workerSHA256": "ee55ae6163cb097c9f94fb5910279adb1518d46a415131158961c3ac32b22655"
+    },
+    "disabled": {
+      "release": {
+        "AUTH_MODE": "disabled",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.2.0",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub",
+        "format": "nova-content-desktop-release",
+        "schemaVersion": 1,
+        "pairId": "nova-content-hub@0.2.0:p1:disabled",
+        "experimental": true,
+        "productionReady": false,
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "rendererResources": {
+        "format": "nova-desktop-renderer-resources",
+        "schemaVersion": 1,
+        "entries": {
+          "/assets/index-B8GxjClF.js": {
+            "file": "assets/index-B8GxjClF.js",
+            "mime": "text/javascript; charset=utf-8"
+          },
+          "/assets/index-Cv2wAdwb.css": {
+            "file": "assets/index-Cv2wAdwb.css",
+            "mime": "text/css; charset=utf-8"
+          },
+          "/index.html": {
+            "file": "index.html",
+            "mime": "text/html; charset=utf-8"
+          }
+        }
+      },
+      "mainSHA256": "2b309b86cb6be7b835619c001a8e7ad82f79040e2dfcab6c4dda581d1c279113",
+      "workerSHA256": "ee55ae6163cb097c9f94fb5910279adb1518d46a415131158961c3ac32b22655"
+    }
+  },
+  "sourceSHA256": {
+    "workbench/scripts/build.mjs": "62fae5a3fd41a974aea43db202096f8bcc2f85887f0eda9e744bcfa64f45041d",
+    "workbench/scripts/lifecycle-probe.mjs": "0a7d47ecf739f1b466a68c98595a201e8d3712db0c4104c87b6a98b6ecd730c2",
+    "workbench/scripts/probe.mjs": "c44869025ad51fcb2ca14eb556478fb84a17d8d2edc8e5dce11e6b4ee7e67dbc",
+    "workbench/src/main/bindings.mts": "a01e8dcd894a9755a8fd83a4c250ebc489a051a48fafa4aaac609355151b563b",
+    "workbench/src/main/boundary.mts": "a8d964652063eed31698e0dc08fc4734a4396e96feb9ba346034d80335355349",
+    "workbench/src/main/controller.mts": "a811ce4f07fffb67176aba54cad3ddb4911f05a7246259f54f82b03f530275a7",
+    "workbench/src/main/desktop.mts": "37a4ed4c09223af94d7ab8a6aec838cab862e2b66808a643f89f2c38e1164162",
+    "workbench/src/main/index.mts": "efa86cb69252d2907fa2fbc3d679c549e700fd4066c89fe50ed0c1959cffb828",
+    "workbench/src/main/lifecycle-probe.mts": "866ee918cae9a7cfdf62846aada82b1d653af57140ebb8a43bf97971abcea38c",
+    "workbench/src/main/probe.mts": "1e364eec095f0aaac9edc341fe2072a72553437ced3045d40fa3aafdd1569bff",
+    "workbench/src/main/worker-client.mts": "7828ee94c0a810d57145b2e8db0b90e7bf15c1e21e548ff1894f9ac353e92e88",
+    "workbench/src/main/worker.mts": "36d858089d9464256d21ef08ed3e246117fb77bdc272900b06e1da6e0f4ced45",
+    "workbench/src/preload/index.cts": "8b2b841c417cfba28f8f737663a483cb3a62dea9e0bd6588d520c2864c50c67a",
+    "workbench/src/renderer/app.tsx": "957d475402c87b220552d80678bf0be9430cd813093b658927411f4a36b2a244",
+    "workbench/src/renderer/env.d.ts": "38ea7f532dd85ec2cb34d0b375ff8c06e408c1eca87db8ce525e278dd2132fe5",
+    "workbench/src/renderer/index.html": "2c3f684146283e15de90bfdf629c84791bf7d87bae9dde2c027c44207adb6726",
+    "workbench/src/renderer/style.css": "e654e6c6c7f8ed4ad9befcd5d85b58fa13f2a1ee79d6c00ea91b0f7cd6757b14",
+    "workbench/src/shared/contracts.ts": "91ce2b83c3832162fea49cbd6a4a748f112c185941b0b18c2b25b8ae24bcdc39",
+    "workbench/src/shared/shared-core.d.ts": "a7712a8d93106aee62dc0aed1df8bda650580a4992a8f179b049cf5c600b1b3c",
+    "workbench/src/shared/validation.ts": "b1e9f8fe060837c1cbb0ac0284ebfd3ed10b5e2fb71974b2a6fd444a4ced1f11",
+    "workbench/test/boundaries.test.mjs": "96cdf7a3c469164043a64b10e759a702d4506f6b6657efbfba4bd86dbab3ea83",
+    "workbench/test/controller.test.mjs": "5d8fc6f26847d5ea0faa2b1c98454257b9783f336033ce0a7ca421cc7a7607db",
+    "workbench/test/lifecycle.test.mjs": "42ffca78be216af0d66f49ed9a32425f0fd18dbb7e048f61b4d34f5358143b82",
+    "workbench/test/worker.test.mjs": "c3ecf0de542e1a79d640a3cc9d3d0b66b7f30e085b4cc6adff71a44760892565"
+  },
+  "evidence": {
+    "lifecycle-build.log": {
+      "sha256": "27d81499db5b76ab51db878c77abb3f63461bce89862d5429cb8040a32465625"
+    },
+    "lifecycle-conflict.png": {
+      "sha256": "fdf3f0b9b7729ec494681c64d38f50bee2933c046581274ba1cd8d4c2579294d"
+    },
+    "lifecycle-disabled.png": {
+      "sha256": "80f7d6afb5662a7f7258c7ddebecf7a8556807cc69ceb01c92f0883f93c2c576"
+    },
+    "lifecycle-electron.log": {
+      "sha256": "a27ad07c5b0e4da3b08ed7135b939e32b4f6f087b3cebc31f929aaba36539112"
+    },
+    "lifecycle-import-disabled.png": {
+      "sha256": "13fbe866e4d5a7dc226b7b43a87f5ffe803f27eb5398d17cb1e90947f546860f"
+    },
+    "lifecycle-import-electron.log": {
+      "sha256": "220d058cc3e898665add18e8b2d9fcd5bc3a17f7d5d07d3f63cdbec9b62571eb"
+    },
+    "lifecycle-import-required.png": {
+      "sha256": "13fbe866e4d5a7dc226b7b43a87f5ffe803f27eb5398d17cb1e90947f546860f"
+    },
+    "lifecycle-node-test.log": {
+      "sha256": "6fae02c59779d2d9c50bb27146f4e55d01e0556e6104ab601967ce7bdb7ed74d"
+    },
+    "lifecycle-typecheck.log": {
+      "sha256": "8a3e20f88333dd9a2466636e455fd75e55f498f12ac5d9209067663d69cf9405"
+    }
+  }
+}

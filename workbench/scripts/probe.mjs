@@ -39,7 +39,7 @@ try {
     const entry = path.join(native, 'main/probe.mjs');
     await fs.copyFile(path.join(workbench, '.native/main/probe.mjs'), entry);
     for (const phase of ['import', 'reopen']) await launch(bundle, entry, phase, data);
-    await fs.copyFile(path.join(data, 'workbench.png'), path.join(workbench, 'verification', `auth-${mode}.png`));
+    await fs.copyFile(path.join(data, 'workbench.png'), path.join(workbench, 'verification', `lifecycle-import-${mode}.png`));
   }
   console.log('PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi + utility-process/sharp import; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.');
 } finally { await fs.rm(root, { recursive: true, force: true }); }

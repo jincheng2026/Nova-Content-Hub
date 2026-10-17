@@ -1,8 +1,9 @@
+import { validateInput } from '../shared/validation.ts';
 import { isRecord } from '../shared/contracts.ts';
 import type { BuildConfig, DesktopMethod, RendererResources, Release } from '../shared/contracts.ts';
 import type { IpcMainInvokeEvent, WebContents } from 'electron';
 export const PAGE = 'nova-content://app/index.html';
-export const CHANNELS = Object.freeze(['status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents'] satisfies DesktopMethod[]);
+export const CHANNELS = Object.freeze(['status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents', 'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation'] satisfies DesktopMethod[]);
 export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
 const MIME: Record<string, string> = { html: 'text/html; charset=utf-8', js: 'text/javascript; charset=utf-8', css: 'text/css; charset=utf-8' };
 export function validateResources(value: unknown): RendererResources {
@@ -21,8 +22,9 @@ export function validateRelease(value: unknown): Release {
   if (!isRecord(value) || value.format !== 'nova-content-desktop-release' || value.schemaVersion !== 1 || value.experimental !== true || value.productionReady !== false || !['darwin', 'linux', 'win32'].includes(process.platform) || !['arm64', 'x64'].includes(process.arch) || value.platform !== process.platform || value.arch !== process.arch || value.pairId !== `${config.appScope}@${config.version}:p${config.protocolVersion}:${config.AUTH_MODE}`) throw new Error('Missing or invalid explicit desktop release configuration');
   return value as unknown as Release;
 }
-export function assertCaller(event: IpcMainInvokeEvent, webContents: WebContents | undefined, args: unknown[]) {
-  if (!webContents || webContents.isDestroyed() || event.sender !== webContents || !event.senderFrame || event.senderFrame !== webContents.mainFrame || event.senderFrame.url !== PAGE || args.length !== 0) throw Object.assign(new Error('该窗口无权调用此操作。'), { code: 'FORBIDDEN' });
+export function assertCaller(event: IpcMainInvokeEvent, webContents: WebContents | undefined, args: unknown[], method?: DesktopMethod) {
+  if (!webContents || webContents.isDestroyed() || event.sender !== webContents || !event.senderFrame || event.senderFrame !== webContents.mainFrame || event.senderFrame.url !== PAGE || (method ? args.length > 1 : args.length !== 0)) throw Object.assign(new Error('该窗口无权调用此操作。'), { code: 'FORBIDDEN' });
+  if (method) validateInput(method, args[0]);
 }
 export function staticResource(rawUrl: string, resources: RendererResources): [string, string] | null {
   const prefix = 'nova-content://app';
