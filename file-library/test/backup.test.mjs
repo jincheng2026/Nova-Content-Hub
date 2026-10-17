@@ -259,3 +259,55 @@ test('COMMITTED pending archives only and retains later external Markdown bytes'
   fs.writeFileSync(path.join(f.root,'内容',item.id,'正文.md'),'external after commit\r\n');backupLibrary(f.root,f.backup);restoreBackup(f.backup,f.restored);
   const lib=openLibrary(f.restored);assert.equal(lib.readContent(item.id).body,'external after commit\r\n');assert.equal(lib.queryMutation(mutationId).content.body,'committed');
 });
+
+for (const character of ['<','>','"','|','?','*']) {
+  test(`source filenames reject Windows forbidden ${JSON.stringify(character)}`, {skip:process.platform==='win32'},t=>{
+    const f=fixture(t),filename=path.join(f.root,`unsafe${character}name.txt`);fs.writeFileSync(filename,'retained');
+    throws('UNSAFE_PATH',()=>backupLibrary(f.root,f.backup));assert.equal(fs.readFileSync(filename,'utf8'),'retained');assert.equal(fs.existsSync(f.backup),true);assert.equal(fs.existsSync(path.join(f.backup,'COMPLETE.json')),false);
+  });
+  test(`entries reject Windows forbidden ${JSON.stringify(character)}`,t=>{
+    const f=fixture(t);backupLibrary(f.root,f.backup);
+    reseal(f.backup,(_manifest,filename)=>{const lines=fs.readFileSync(filename,'utf8').trimEnd().split('\n');lines[0]=JSON.stringify({path:`unsafe${character}name`,type:'directory'});fs.writeFileSync(filename,`${lines.join('\n')}\n`);});
+    throws('UNSAFE_PATH',()=>verifyBackup(f.backup));throws('UNSAFE_PATH',()=>restoreBackup(f.backup,f.restored));assert.equal(fs.existsSync(f.restored),false);
+  });
+}
+for (const name of ['COM¹','COM².txt','COM³','LPT¹.txt','LPT²','LPT³.txt']) test(`entries reject Windows superscript device ${name}`,t=>{
+  const f=fixture(t);backupLibrary(f.root,f.backup);
+  reseal(f.backup,(_manifest,filename)=>{const lines=fs.readFileSync(filename,'utf8').trimEnd().split('\n');lines[0]=JSON.stringify({path:name,type:'directory'});fs.writeFileSync(filename,`${lines.join('\n')}\n`);});
+  throws('UNSAFE_PATH',()=>verifyBackup(f.backup));
+});
+
+for(const operation of ['backup','restore'])for(const change of ['body','extra-file','extra-directory','missing-file','replaced-directory'])test(`${operation} final publication refuses target ${change}`,t=>{
+  const f=fixture(t),item=f.lib.createContent({title:'original',body:'original'}),sourceBefore=bytesTree(f.root);
+  if(operation==='restore')backupLibrary(f.root,f.backup);
+  const backupBefore=operation==='restore'?bytesTree(f.backup):null;
+  const destination=operation==='backup'?path.join(f.backup,'data'):f.restored;
+  __testing.setHook(event=>{
+    if(event.phase!==(operation==='backup'?'backupCompleteBeforePublish':'restoreDescriptorBeforePublish'))return;
+    if(change==='body')fs.writeFileSync(path.join(destination,'内容',item.id,'正文.md'),'tampered');
+    if(change==='extra-file')fs.writeFileSync(path.join(destination,'late-user-file'),'added');
+    if(change==='extra-directory')fs.mkdirSync(path.join(destination,'late-empty-directory'));
+    if(change==='missing-file')fs.unlinkSync(path.join(destination,'内容',item.id,'正文.md'));
+    if(change==='replaced-directory'){const replaced=path.join(destination,'资产');fs.renameSync(replaced,path.join(destination,'moved-assets'));fs.mkdirSync(replaced);fs.mkdirSync(path.join(replaced,'sha256'));}
+  });
+  assert.throws(()=>operation==='backup'?backupLibrary(f.root,f.backup):restoreBackup(f.backup,f.restored),error=>error.code==='SOURCE_CHANGED'&&error.outcome===undefined);
+  __testing.setHook(undefined);
+  assert.equal(fs.existsSync(operation==='backup'?path.join(f.backup,'COMPLETE.json'):path.join(f.restored,'内容库.json')),false);
+  assert.deepEqual(bytesTree(f.root),sourceBefore);if(backupBefore)assert.deepEqual(bytesTree(f.backup),backupBefore);
+});
+
+for(const name of ['manifest.json','entries.ndjson'])test(`backup final publication refuses altered ${name}`,t=>{
+  const f=fixture(t);__testing.setHook(event=>{if(event.phase==='backupCompleteBeforePublish')fs.appendFileSync(path.join(f.backup,name),' ');});
+  assert.throws(()=>backupLibrary(f.root,f.backup),error=>error.code==='SOURCE_CHANGED'&&error.outcome===undefined);assert.equal(fs.existsSync(path.join(f.backup,'COMPLETE.json')),false);
+});
+
+for(const operation of ['backup','restore'])test(`${operation} rechecks directory members after final target hashing`,t=>{
+  const f=fixture(t),item=f.lib.createContent({title:'original',body:'original'});
+  if(operation==='restore')backupLibrary(f.root,f.backup);
+  const destination=operation==='backup'?path.join(f.backup,'data'):f.restored,originalRead=fs.readSync;
+  let armed=false,changed=false,targetIdentity;
+  __testing.setHook(event=>{if(event.phase===(operation==='backup'?'backupCompleteBeforePublish':'restoreDescriptorBeforePublish')){armed=true;const info=fs.statSync(path.join(destination,'内容',item.id,'正文.md'),{bigint:true});targetIdentity=`${info.dev}:${info.ino}`;}});
+  fs.readSync=(fd,...args)=>{const count=originalRead(fd,...args);if(armed&&!changed&&count){const info=fs.fstatSync(fd,{bigint:true});if(`${info.dev}:${info.ino}`===targetIdentity){changed=true;fs.mkdirSync(path.join(destination,'added-during-final-hash'));}}return count;};
+  try{assert.throws(()=>operation==='backup'?backupLibrary(f.root,f.backup):restoreBackup(f.backup,f.restored),error=>error.code==='SOURCE_CHANGED'&&error.outcome===undefined);}finally{fs.readSync=originalRead;__testing.setHook(undefined);}
+  assert.equal(changed,true);assert.equal(fs.existsSync(operation==='backup'?path.join(f.backup,'COMPLETE.json'):path.join(f.restored,'内容库.json')),false);
+});

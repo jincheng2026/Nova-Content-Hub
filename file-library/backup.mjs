@@ -17,8 +17,8 @@ export function backupMethods(h) {
   const { fail, LibraryError, safePath, directory, descriptor, acquire, read, writeNew, syncDirectory, jsonBytes, hash, hook, prepareRestoredLibrary } = h;
   const stat = target => { safePath(target); return fs.lstatSync(target, { bigint: true }); };
   function portable(relative) {
-    if (typeof relative !== 'string' || !relative || relative.length > 8192 || relative.startsWith('/') || /[\\:\x00-\x1f\x7f]/.test(relative)) fail('UNSAFE_PATH', 'Unsafe backup relative path');
-    for (const part of relative.split('/')) if (!part || part === '.' || part === '..' || /[. ]$/.test(part) || /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(part)) fail('UNSAFE_PATH', 'Path cannot be represented safely on Windows and macOS');
+    if (typeof relative !== 'string' || !relative || relative.length > 8192 || relative.startsWith('/') || /[\\:<>"|?*\x00-\x1f\x7f]/.test(relative)) fail('UNSAFE_PATH', 'Unsafe backup relative path');
+    for (const part of relative.split('/')) if (!part || part === '.' || part === '..' || /[. ]$/.test(part) || /^(?:con|prn|aux|nul|com[1-9¹²³]|lpt[1-9¹²³])(?:\.|$)/i.test(part)) fail('UNSAFE_PATH', 'Path cannot be represented safely on Windows and macOS');
     return relative;
   }
   const targetPath = (root, relative) => path.join(root, ...portable(relative).split('/'));
@@ -118,8 +118,10 @@ export function backupMethods(h) {
     const publishingParent = identity(stat(path.dirname(target)));
     const staged = path.join(path.dirname(path.dirname(target)), `.publish-${randomUUID()}`);
     writeNew(staged, bytes);
+    const stagedInfo = {path:path.basename(staged),fingerprint:fingerprint(stat(staged)),bytes:bytes.length};
     hook(`${phase}BeforePublish`, { target });
     beforePublish();
+    if (stableFile(staged,stagedInfo).sha256 !== hash(bytes)) fail('SOURCE_CHANGED','Publication bytes changed');
     if (identity(stat(path.dirname(target))) !== publishingParent) fail('SOURCE_CHANGED','Publication directory was replaced');
     fs.linkSync(staged, target); onPublished();
     hook(`${phase}AfterPublish`, { target });
@@ -152,7 +154,17 @@ export function backupMethods(h) {
       const manifest = { format: FORMAT, schemaVersion: 1, backupId, source: { libraryId: initial.libraryId, schemaVersion: initial.schemaVersion }, startedAt, completedAt: new Date().toISOString(), toolVersion: '0.2.0', platform: os.platform(), consistency: 'stable-verified-copy', excludedPaths: [EXCLUDED], entriesHash, counts };
       const manifestBytes = jsonBytes(manifest); writeNew(path.join(binding.target, 'manifest.json'), manifestBytes);
       binding.check();
-      publish(path.join(binding.target, 'COMPLETE.json'), jsonBytes({ format: 'nova-content-library-backup-complete', schemaVersion: 1, backupId, manifestHash: hash(manifestBytes), entriesHash }), 'backupComplete', () => { committed = true; }, () => { binding.check(); sameInventory(entries,scan(root,true)); if (identity(stat(root)) !== rootIdentity || !read(path.join(root,'内容库.json')).equals(original)) fail('SOURCE_CHANGED','Library changed at completion boundary'); });
+      const packageReady = scan(binding.target);
+      publish(path.join(binding.target, 'COMPLETE.json'), jsonBytes({ format: 'nova-content-library-backup-complete', schemaVersion: 1, backupId, manifestHash: hash(manifestBytes), entriesHash }), 'backupComplete', () => { committed = true; }, () => {
+        binding.check(); sameInventory(entries,scan(root,true));
+        if (identity(stat(root)) !== rootIdentity || !read(path.join(root,'内容库.json')).equals(original)) fail('SOURCE_CHANGED','Library changed at completion boundary');
+        sameInventory(packageReady,scan(binding.target));
+        assertHashes(path.join(binding.target,'data'),copiedInventory,copied);
+        for (const [name,expectedHash] of [['entries.ndjson',entriesHash],['manifest.json',hash(manifestBytes)]]) {
+          if (stableFile(path.join(binding.target,name),packageReady.find(entry=>entry.path===name)).sha256 !== expectedHash) fail('SOURCE_CHANGED','Backup metadata changed before completion');
+        }
+        sameInventory(packageReady,scan(binding.target));
+      });
       return { backupId, backupDir: binding.target, libraryId: initial.libraryId, manifest, counts, outcome: 'committed' };
     } catch (error) { primary = wrap(error); if (committed) primary.outcome = 'committed'; if (binding) primary.backupDir = binding.target; throw primary; }
     finally { if (release) try { release(); } catch (error) { if (!primary) throw Object.assign(wrap(error), committed ? { outcome: 'committed', backupId } : {}); } }
@@ -230,13 +242,13 @@ export function backupMethods(h) {
       copyTree(stage, binding.target, ready, true);
       assertHashes(stage, ready, finalEntries);
       const expectedWithoutDescriptor = finalEntries.filter(entry => entry.path !== '内容库.json'), actual = scan(binding.target);
-      if (actual.length !== expectedWithoutDescriptor.length) fail('SOURCE_CHANGED', 'Restore destination members changed');
-      for (let i = 0; i < actual.length; i++) {
-        const entry = expectedWithoutDescriptor[i];
-        if (actual[i].path !== entry.path || actual[i].type !== entry.type || entry.type === 'file' && stableFile(targetPath(binding.target, entry.path), actual[i]).sha256 !== entry.sha256) fail('SOURCE_CHANGED', 'Restore destination changed before publication');
-      }
+      assertHashes(binding.target,actual,expectedWithoutDescriptor);
+      const descriptorBytes = read(path.join(stage,'内容库.json'));
+      if (hash(descriptorBytes) !== finalEntries.find(entry=>entry.path==='内容库.json').sha256) fail('SOURCE_CHANGED','Staged descriptor changed before publication');
       binding.check();
-      publish(path.join(binding.target, '内容库.json'), read(path.join(stage, '内容库.json')), 'restoreDescriptor', () => { committed = true; });
+      publish(path.join(binding.target, '内容库.json'), descriptorBytes, 'restoreDescriptor', () => { committed = true; }, () => {
+        binding.check(); assertHashes(binding.target,actual,expectedWithoutDescriptor);
+      });
       hook('restoreAfterDescriptorSync', { root: binding.target });
       fs.rmSync(stage, { recursive: true }); syncDirectory(path.dirname(stage));
       return { backupId: verified.backupId, root: binding.target, libraryId: verified.libraryId, ...processing, outcome: 'committed' };
