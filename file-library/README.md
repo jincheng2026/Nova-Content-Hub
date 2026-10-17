@@ -1,4 +1,4 @@
-# 本地文件库：内容 CRUD 首个单元
+# 本地文件库：schema 5 有限文件模型
 
 Node ESM，使用精确锁定的 sharp 0.35.5 完整解码真实生成封面，供后续 Electron **主进程**和 CLI 共用。已包含内容、资产、照片、提示词、模板版本、候选封面、人工计划和人工发布快照；已增加真实封面任务文件核心，尚未接入 renderer 或外部发布。这不是完整 P1，也不是 Electron 发行验收。Node 20.11+。
 
@@ -22,12 +22,12 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 | --- | --- |
 | `createLibrary(root)` | 只接受不存在或为空的目录；不接管已有非空目录 |
 | `openLibrary(root)` | 校验身份、路径、内容，先恢复未完成事务；整库移动后以新路径打开 |
-| `upgradeLibrary(root)` | 显式将旧 schema 1/2/3 库升级为 schema 4，支持中断后重入；已经是 schema 4 时幂等打开 |
+| `upgradeLibrary(root)` | 显式将旧 schema 1/2/3/4 库升级为 schema 5，支持中断后重入；已经是 schema 5 时幂等打开 |
 | `library.info` | 冻结的打开时身份快照：`format/schemaVersion/libraryId/createdAt/root/durability`；root 为祖先路径解析后的真实位置，操作会重新核对磁盘身份 |
 | `listContents()` / `listTrash()` | 按 ID 排序的当前内容 / 已删除内容数组 |
 | `readContent(id)` | 读取内容；可读取回收站中的内容 |
 | `createContent({title, body}, options?)` | 创建稳定 UUID v4 内容 ID |
-| `updateContent(id, {title?, body?}, expectedToken, options?)` | 非空补丁，只接受这两个字段；不能编辑已删除内容 |
+| `updateContent(id, {title?, body?}, expectedToken, options?)` | 非空补丁；另接受下文 schema 5 描述字段；不能编辑已删除内容 |
 | `trashContent(id, expectedToken, options?)` | 设置 `deletedAt`，不搬目录、不删正文 |
 | `restoreContent(id, expectedToken, options?)` | 清除 `deletedAt`；重复删除/恢复报 `INVALID_STATE` |
 | `queryMutation(mutationId)` | 先恢复后返回 `{mutationId, status: 'committed', content}`；未知 ID 返回 `null` |
@@ -56,11 +56,11 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
   事务/已提交/<mutationId>/     # 完成后整笔事务原样归档，所有历史字节保留
 ```
 
-根描述文件 `内容库.json` 的 `schemaVersion` 现在是 **4**。旧内容元信息 schema 1 仍可读写；首次使用资料/候选/计划/发布功能的那条内容才更新为 schema 2；首次使用真实封面任务时更新为 schema 3，保留全部旧字段。新事务意图 schema 2 仅允许 content/prompt/photo/template 四种内部类型；旧 schema 1 意图严格映射为 content，共用相同捕获/安装/恢复引擎，历史原字节不重写。
+根描述文件 `内容库.json` 的 `schemaVersion` 是 **5**。新内容为 schema 4，新提示词为 schema 2；旧内容 1/2/3 与旧提示词 1 继续可读，普通业务编辑惰性升级，真实封面任务保持较高版本、不降回 3。新事务 schema 3 的类型严格限定 content/prompt/photo/template/workspace/collection；旧 schema 1 严格映射 content，旧 schema 2 只允许原四种类型。共用捕获/安装/恢复引擎，历史原字节不重写。
 
 每次读取/变更都拿全库 `mkdir` 锁，锁内重读身份并先恢复事务。仅同机且 `kill(pid, 0)` 明确返回 `ESRCH` 的持有者可回收；活进程、PID 复用、权限未知、异机持有者一律不按年龄抢锁。回收只删除精确旧 token；`unlink` 失败（包含 `ENOENT`）立即停止，只有删除成功者才尝试非递归 `rmdir`。释放也只删除自己的 token。空锁保留并报诊断，不能靠超时猜测它是否安全。
 
-意图日志先写入明确命名的 staging 目录，完整写入并刷盘后，才以目录 rename 原子发布为正式 UUID 事务；发布前绝不动权威文件。中断留下的 staging 保留且不参与恢复，调用方可用相同 mutationId 重试；**正式事务中的坏意图仍拒绝恢复**。日志不接受路径指令：目标只能由已校验的有限 kind 与对象 ID 推导为固定文件集（content/prompt 各两个文件，photo/template 各一个文件），并检查产品格式、版本、字节哈希、revision 和状态转换。每次恢复先检查该 kind 的**全部**目标；遇到既非 before 又非 after 的第三种字节，保留日志/文件，停止自动写入。
+意图日志先写入明确命名的 staging 目录，完整写入并刷盘后，才以目录 rename 原子发布为正式 UUID 事务；发布前绝不动权威文件。中断留下的 staging 保留且不参与恢复，调用方可用相同 mutationId 重试；**正式事务中的坏意图仍拒绝恢复**。日志不接受路径指令：目标只能由已校验的有限 kind 与对象 ID 推导为固定文件集（content/prompt/collection 各两个文件，photo/template/workspace 各一个文件），并检查产品格式、版本、字节哈希、revision 和状态转换。每次恢复先检查该 kind 的**全部**目标；遇到既非 before 又非 after 的第三种字节，保留日志/文件，停止自动写入。
 
 替换时先将目标 `rename` 捕获到事务目录，重新读取捕获字节与 before 对比；不同则保留捕获现场并报冲突。新字节先写入同卷临时文件并刷盘，再以 `link` **独占**安装到目标。出现 `EEXIST` 时保留双方，不回退到覆盖式 rename。所有目标 after 字节确认一致后，将完成判据写入 `.COMMITTED-<uuid>` 临时文件，刷盘后以 `link` 原子发布 `COMMITTED`；部分临时判据不影响重开，恢复可重写。回读确认后，以同卷目录 rename 将事务移至 `已提交` 并同步两侧父目录，才返回成功。历史日志的 before 字节永久保留；当前没有物理 purge 或自动历史清理。
 
@@ -70,7 +70,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 
 ## 旧库的显式升级
 
-`openLibrary` 遇到 schema 1/2/3 只抛 `UPGRADE_REQUIRED`，不会建目录、备份、恢复或写入旧库。由调用方明确调用 `upgradeLibrary(root)`：
+`openLibrary` 遇到 schema 1/2/3/4 只抛 `UPGRADE_REQUIRED`，不会建目录、备份、恢复或写入旧库。由调用方明确调用 `upgradeLibrary(root)`：
 
 1. 拿同一全库锁并重新校验身份，将根描述文件**原字节**经 staging 持久发布到 `系统（别动）/内容库.schema1.bak.json`。已有备份必须一致。
 2. 建立 `待恢复` / `已提交` 两个目录作为旧版读写屏障。旧 schema 1 实现见到这些非 UUID 目录会拒绝继续。
@@ -88,7 +88,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 | `CONFLICT` | 读取后被另一调用方/外部编辑器修改，或创建 ID 冲突 |
 | `INVALID_STATE` | 重复删除/恢复，或编辑回收站内容 |
 | `FORMAT_UNSUPPORTED` | 非本产品、未知或较新 schema，禁止写入 |
-| `UPGRADE_REQUIRED` | 旧 schema 1/2/3 库，需要调用方显式升级，普通打开没有修改 |
+| `UPGRADE_REQUIRED` | 旧 schema 1/2/3/4 库，需要调用方显式升级，普通打开没有修改 |
 | `UNSAFE_PATH` | 符号链接或非预期文件/目录类型 |
 | `NOT_EMPTY` | 新建目标已有数据，拒绝接管 |
 | `BUSY` | 活锁、异机锁、无法证实死亡，或回收时锁变化 |
@@ -171,7 +171,7 @@ definition 按调用方的有限 JSON 数据原样保存，包括旧 v3 来源�
 | `recordPublication(id,{planId,publishedAt,timezone,url?},token,options?)` | 仅人工登记；先安装不可变快照，再在同一内容事务中更新计划与 publications[] |
 | `readPublication(id,publicationId)` | 返回 `{snapshot,body,bodyBytes:Buffer,cover,template}`；校验快照 hash、正文原 bytes 及固定资产/模板引用 |
 
-时间必须 UTC ISO Z，入库规范为毫秒 ISO；timezone 使用 IANA 名称，channelId 使用稳定字母/数字/点/下划线/短横线标识。发布 URL 仅 HTTP(S) 且拒绝内嵌用户名/密码。
+上表 scheduledAt/publishedAt 是兼容入口：UTC ISO Z 入库规范为毫秒 ISO；timezone 使用 IANA 名称。新入口使用下文三精度 schedule。channelId 使用稳定字母/数字/点/下划线/短横线标识。发布 URL 仅 HTTP(S) 且拒绝内嵌用户名/密码。
 
 发布快照在 `内容/<id>/发布快照/<publicationId>/` 中包含 `快照.json` 和原字节 `正文.md`；固定标题/修订、计划、发布时间、封面 assetHash 和模板版本/packageHash。后续改稿、换封面、删除照片/模板记录均不改历史。快照先安装、引用后提交，故障可能留无引用快照，不产生假发布事实。它不调用外部平台，不代表已执行自动发布或实际生图。
 
@@ -235,7 +235,7 @@ const restored = restoreBackup(saved.backupDir, '/Users/me/Documents/恢复的�
 
 三个同步业务入口供桌面主进程或 CLI 使用；大库应放到 worker，避免阻塞界面。精确目标目录必须不存在，空目录也拒绝；父目录必须存在。恢复不修改原库和备份，不替换现有目录，不自动启动 Codex、WorkBuddy 或生成任务。没有 ZIP、云同步、续传、自动重试或自动清理失败现场。
 
-备份支持当前 schema 4。它拿现有全库锁，但**不调用 openLibrary、不执行 pending 恢复**。除精确的 `系统（别动）/库锁` 外，整棵树均保留：正文原始字节（BOM、CRLF、末尾换行均不改）、软删对象、资产、模板版本、任务请求/交接/inbox/回执/校验报告、发布快照、所有 pending/history/升级备份/staging/孤儿、未知用户文件和空目录。HTML、脚本、未知文件只当作字节，不执行。封面解码在锁外运行，captured 图片及拒绝报告落盘经过短库锁，所以备份与核心持久写互斥；遇到 `BUSY` 不会把活跃任务自动标记失败。
+新建备份支持当前 schema 5；verify/restore 继续接受上一版 schema 4 备份。它拿现有全库锁，但**不调用 openLibrary、不执行 pending 恢复**。除精确的 `系统（别动）/库锁` 外，整棵树均保留：正文原始字节（BOM、CRLF、末尾换行均不改）、软删对象、资产、模板版本、任务请求/交接/inbox/回执/校验报告、发布快照、所有 pending/history/升级备份/staging/孤儿、未知用户文件和空目录。HTML、脚本、未知文件只当作字节，不执行。封面解码在锁外运行，captured 图片及拒绝报告落盘经过短库锁，所以备份与核心持久写互斥；遇到 `BUSY` 不会把活跃任务自动标记失败。
 
 备份目录协议固定为：
 
@@ -254,6 +254,72 @@ COMPLETE.json                 # 最后独占 link 发布，绑定 manifestHash +
 
 恢复先核验包，再复制到**目标卷**独立 staging 并复验；仅在 staging 内恢复 pending：有 COMMITTED 的只归档，未完成的按既有 before/after 引擎恢复，第三种字节立即停止。随后检查对象、资产/模板引用、任务请求/交接/已提交回执/报告、发布快照与全部历史事务；历史逐笔读取，不把所有历史正文同时载入内存。所有 created/claimed 尝试（包含软删内容）在 staging 内通过受限 `restore-interrupted` 事务改为 failed/`RESTORED_INTERRUPTED` 并清空 activeAttemptId；保留所有 ID、既有 committed 候选和 before 历史，不临时恢复/删除软删内容。`系统（别动）/恢复来源/<uuid>.json` 绑定 backupId/treeHash、恢复的 mutation、打断的 attempt 与新增 mutation。
 
+恢复保持备份原 schema：schema 4 不创建 workspace/collection、不写内容4或事务3，返回 `schemaVersion:4, upgradeRequired:true`；普通 open 仍拒绝，必须显式 `upgradeLibrary`。schema 5 返回 `upgradeRequired:false`。
+
 最后 `mkdir` 独占最终目标，文件逐项 O_EXCL 复制并全树核对，`内容库.json` 最后经 fsync + 独占 link 发布，作为可 open 的边界；不用可能接管空目录的 exists + rename。发布前失败的目录没有 descriptor，不能当作已恢复库。完成标志或 descriptor 发布后的刷盘/清理错误带 `outcome:'committed'`，调用方须展示明确状态；失败目录和 staging 保留用于诊断，不自动续传。返回的 `interruptedAttempts`、`recoveredMutations` 是数组；备份/核验结果另含 manifest/counts，核验含 `verified:true` 和 treeHash。
 
 文件与目录刷新沿用核心现有策略：Windows Node 无法 fsync 目录句柄时，只声明进程崩溃与文件 fsync 级别，不能据 macOS 的目录刷盘结果宣称 Windows 掉电安全。跨卷复制算法可用，但未在真实第二卷和 Windows 主机上验证；macOS 合成临时库测试不代表 Windows、Codex/WorkBuddy 实机四组合验收。
+
+
+## schema 5 可携带配置与内容增量
+
+所有下列写入仍使用读取时的 `editToken` 与可选 `{mutationId}`；返回完整对象与新 token，不接受任意 JSON patch 或文件路径。`库配置/default/配置.json` 是唯一 workspace（id=`default`）；`合集/<uuid>/合集.json` + `正文.md` 是独立 collection。
+
+| 方法 | 有限输入 |
+| --- | --- |
+| `readLibrarySettings()` | 返回 profile/defaults/channels/promptCategories/customRatios；附只读投影 `defaultIssues` 与 `visiblePromptCategories` |
+| `updateProfile(patch,token,options?)` | `name/intro/avatarAssetHash/marks:[{key,value}]`；头像 null 或真实 raster 资产 hash |
+| `setGenerationDefaults(patch,token,options?)` | `photoId/templateId/coverCount`（1–20）；设置时核对 active 本人照与模板；null 表示无默认 |
+| `createChannel(input,token,options?)` | `name,ink?,bg?,requiredRatio?`；生成 `channel-<uuid>`，颜色为 #rrggbb，比例 null 或正整数 width:height |
+| `updateChannel(channelId,patch,token,options?)` | 同上字段，ID 不变；不能编辑软删渠道 |
+| `trashChannel/restoreChannel(channelId,token,options?)` | 只改变 deletedAt；旧计划与快照仍可读 |
+| `setPromptCategories(categories,token,options?)` | 有序、唯一、非空字符串；保留空分类；显示分类为此目录与当前未删除提示词分类并集 |
+| `addCustomRatio/removeCustomRatio(ratio,token,options?)` | 约分存储，例如 6:8 → 3:4；去重 |
+| `setPromptEnabled(promptId,enabled,token,options?)` | enabled 与软删除分离，旧提示词编辑后默认 enabled:true |
+
+默认 photoId/templateId 失效时不改选，`defaultIssues` 含 `{field,id,reason:'missing'|'trashed'|'ownership-revoked'}`。用户撤销本人声明仍保留引用。配置默认值仅影响将来的 GUI 输入，生成请求依然逐次明确固定。内置五渠道 ID 为 douyin/xiaohongshu/wechat-channels/wechat-official/bilibili；比例 3:4/1:1/3:4/47:20/16:9 是产品可编辑初值，未核实为平台强制像素要求。host/showSample/motion/最近库路径、安装/信任/授权演示状态不进入 workspace。
+
+`createContent/updateContent` 另接受 `recordedDate/plannedDate`（严格 YYYY-MM-DD 或 null）、`preferredTemplateId`（ID 或 null）、`channelIds`（active 渠道 ID 数组）、`isExample`（boolean）。createdAt 仍为本文件对象建立时间。基础正文独立，不从渠道文案拼接。
+
+`createCollection({title,body,dateRange?,channelIds?},options?)`、`readCollection(id)`、`updateCollection(id,patch,token,options?)`、`listCollections/listCollectionTrash()`、`trashCollection/restoreCollection(id,token,options?)`。dateRange 固定 `{start,end}`，两端日期或 null，已知起止不得倒置。`setCollectionMembers(id,contentIds,token,options?)` 只接受未删除内容，不支持嵌套合集；成员不复制正文/候选/任务。active 合集成员必须先移出才能删除；恢复合集前先恢复其成员。
+
+## 规格、旧批次与不可用引用
+
+下列 `Content` 名称也有一组固定 `Collection` 对应方法；除明确列出的别名外不接受任意类型参数。
+
+| 方法 | 有限输入 |
+| --- | --- |
+| `saveContentCoverVariant(id,input,token,options?)` | `id?`（更新时指定）、`name/ratio/preferredTemplateId?/selectedCandidateId?`；新规格默认无选图；别名 `saveCoverVariant` |
+| `removeContentCoverVariant(id,variantId,token,options?)` | 被计划引用时拒绝；清除候选的该规格归属，保留资产 |
+| `selectVariantCover(id,variantId,candidateId,token,options?)` | 改该规格选图并记录候选 accepted；主 selectedCover 独立；合集名为 selectCollectionVariantCover |
+| `updateContentCandidate(id,candidateId,patch,token,options?)` | 仅 `variantId/favorite/displayNumber/note/provenance`；provenance 固定 null 或 `{source,originalId?,note?}`；别名 updateCandidate |
+| `setCandidateFavorite(id,candidateId,boolean,token,options?)` | 内容候选收藏便利入口 |
+| `addContentUnavailableReference(id,input,token,options?)` | `{kind:'material'|'candidate'|'template-image',originalId,reason,originalName?,provenance?}`，保存明确 unavailable，不造假 hash |
+| `resolveContentUnavailableReference(id,referenceId,{assetHash,template?},token,options?)` | 明确补文件；candidate/material 沿用引用 ID 建真实对象；模板图只保存已补资产，须另行安装真实模板版本；保留原来源、原ID、原因与 available/assetHash/resolvedObjectId |
+| `saveContentImportedCoverBatch(id,input,token,options?)` | `candidateIds` 必填，另接 `displayNumber/date/templateGroupId/referenceCandidateIds/originalStatus/provenance`；候选必须属于本对象或其不可用候选引用；只追加历史批次，不创造运行任务 |
+
+不可用候选 ID 可作为规格历史选图保留，但 select/发布解析必须能找到真实候选和资产，否则失败；不能作为真实生成输入。旧模板仅组 ID 的批次保持版本未知。Collection 另提供 `attachCollectionMaterial/removeCollectionMaterial/registerCollectionCandidate/selectCollectionCover`，输入和内容版本一致；没有为合集伪造 coverJobs。
+
+## 独立渠道文案、时间精度与发布 v2
+
+新计划 `savePublicationPlan(id,{id?,channelId,text,schedule,coverChoice?},token,options?)` 必须明确传 text（空字符串也是事实）；channelId 必须在配置中 active。coverChoice 为 null、`{variantId}` 或 `{candidateId}`；默认沿用该计划选择，新计划为 null；null 发布时使用当时主 selectedCover。规格选择在发布时解析到具体候选，不冻结可变规格引用代替具体图。
+
+```js
+{ precision:'date', date:'2026-10-18' }
+{ precision:'local-minute', date:'2026-10-18', time:'19:00', timezone:null }
+{ precision:'instant', at:'2026-10-18T11:00:00.000Z', timezone:'Asia/Shanghai' }
+```
+
+local-minute 的 timezone 也可为明确 IANA 名称；null 不套当前机器时区，date 不补午夜。兼容旧 `{scheduledAt,timezone}` 输入，规范化为 instant 并保存 `textMode:'body',text:null`，继续引用基础正文。原 schema4 计划原样保留至用户编辑；新式编辑后 `textMode:'explicit'`。兼容入口允许未登记旧渠道；快照渠道名缺证据时 nameStatus:'unknown'，不杜撰名称。
+
+`recordPublication(id,{planId,schedule,url?},token,options?)` 与兼容 `{publishedAt,timezone}` 入口只登记 planned 项。快照 schema 2 固定基础正文原字节、正文/内容元信息知识状态、独立 `publicationText:{status:'known',text}`、渠道 ID 与当时名称、计划/发布精度、具体 cover/hash/template version/packageHash。`readPublication` 返回 snapshot/body/bodyBytes/cover/template，v2 另返回 publicationText。旧 v1 快照继续原字节/hash读取，不重写。
+
+`correctPublication(id,publicationId,{reason,text,schedule,url?,coverChoice?},token,options?)` 追加新不可变快照和 corrected 事实，默认保留旧基础正文、旧渠道名称、旧具体封面；只有明确 coverChoice 才换图。`retractPublication(id,publicationId,{reason},token,options?)` 追加 retracted 事实并使计划重新 planned；可重新登记发布。旧 publications[]、旧快照、原 hash 均不改。每个发布仅能追加一次终结事实，重复更正/撤销拒绝；publicationEvents 为固定有限字段，无通用事件接口。合集对应 `saveCollectionPublicationPlan/cancelCollectionPublicationPlan/recordCollectionPublication/readCollectionPublication/correctCollectionPublication/retractCollectionPublication`。
+
+为导入提供两个有限入口 `recordHistoricalPublication` 与 `recordHistoricalCollectionPublication`，输入 `{planId,schedule,publicationText,cover,source}`（url/channelName 可选）：publicationText 为明确已知 string 或 null（unknown）；cover 必须显式 null 或 `{candidateId}`，后者只解析已经登记的具体候选，不读当前规格/主选图。source 为 null 或有限 provenance；历史渠道名称只有显式 channelName 才标 known，缺失不读取当前名称；旧选图时间无证据时 selectedAt:null/selectedAtKnowledge:unknown。历史基础正文与标题/修订证据缺失时固定 `baseTextKnowledge/contentKnowledge:'unknown'`，正文快照为空 bytes，读取 body:null；不会拿当前正文、当前文案或当前选图补成历史事实。该接口只保存给定证据，不实现浏览器备份读取、ID映射、任意路径读取或脚本执行。
+
+## schema4 → 5 升级与验证边界
+
+专用升级拿锁、恢复 pending、保留 `系统（别动）/内容库.schema4.bak.json` 原字节、持久建立 `事务/升级到5/` 旧 writer 屏障，再独占发布缺失的固定 workspace 配置与合集目录，最后发布 descriptor5。现存内容、历史 intent、模板版本、发布快照不重写。中断后显式重入；旧 schema4 writer 在 descriptor5 或 descriptor4 + 新屏障时都拒写，不能把描述文件回退当降级方案。
+
+`model-v5.test.mjs` 使用真实旧提交 df55c5f 的 v4 模块、真实临时资产、六个升级阶段 SIGKILL、旧 writer 拒写、两渠道不同文案/规格、三个时间精度、不可用引用、收藏、合集、停用/软删、追加更正撤销及 schema4/schema5 backup roundtrip。Windows/macOS 两宿主、Electron、browser-import、安装发行与远端生图仍须独立验收。
