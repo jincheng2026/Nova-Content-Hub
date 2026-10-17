@@ -4,7 +4,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { pathToFileURL, fileURLToPath } from 'node:url';
-import { createLibrary, openLibrary, upgradeLibrary } from '../../file-library/index.mjs';
+import { openLibrary, upgradeLibrary } from '../../file-library/index.mjs';
 
 const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nch-v1-compatibility-'));
 try {
@@ -14,16 +14,10 @@ try {
   fs.writeFileSync(oldFile, execFileSync('git', ['show', `${oldCommit}:file-library/index.mjs`], { cwd: project }));
   const old = await import(pathToFileURL(oldFile));
   const root = path.join(parent, '库');
-  const library = createLibrary(root);
+  const library = old.createLibrary(root);
   const content = library.createContent({ title: 'compatibility', body: '# keep original bytes\r\n' });
   const base = path.join(root, '系统（别动）', '事务');
-  for (const name of ['待恢复', '已提交']) {
-    for (const entry of fs.readdirSync(path.join(base, name))) fs.renameSync(path.join(base, name, entry), path.join(base, entry));
-    fs.rmdirSync(path.join(base, name));
-  }
   const descriptor = path.join(root, '内容库.json');
-  const info = JSON.parse(fs.readFileSync(descriptor));
-  fs.writeFileSync(descriptor, JSON.stringify({ ...info, schemaVersion: 1 }));
   const oldHandle = old.openLibrary(root);
   assert.equal(oldHandle.readContent(content.id).body, content.body);
   const unchanged = fs.readFileSync(descriptor);

@@ -1,0 +1,18 @@
+
+> nova-content-hub-prototype@0.2.0 test:seeds
+> node --test builtin-prompts/test/*.test.mjs library-seed/test/*.test.mjs
+
+✔ catalog has a supported version and 26 uniquely identified prompts (0.800042ms)
+✔ every prompt has usable metadata and original project provenance (2.537583ms)
+✔ variables use complete, simple placeholders without a duplicated variable schema (0.495083ms)
+✔ real bundled groups and original prompts install, reopen and seed again without overwriting user facts (11771.966875ms)
+✔ a corrupt bundled PNG stops preflight before any template or prompt is written (94.249792ms)
+✔ bundle resource links cannot read a file outside the packaged resource root (137.389875ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12094.5565
