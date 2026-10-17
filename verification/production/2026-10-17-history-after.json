@@ -1,0 +1,19 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.20.0",
+  "revisions": 41,
+  "bodyBytes": 86016,
+  "startup": {
+    "readCalls": 5,
+    "bytesRead": 86745,
+    "historicalIntentsRead": 0,
+    "milliseconds": 17.9
+  },
+  "currentRead": {
+    "readCalls": 4,
+    "bytesRead": 86586,
+    "historicalIntentsRead": 0,
+    "milliseconds": 8.92
+  }
+}

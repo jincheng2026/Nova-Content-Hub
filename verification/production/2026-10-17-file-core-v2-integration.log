@@ -1,0 +1,312 @@
+
+> nova-content-hub-prototype@0.2.0 verify
+> npm run check && node --check file-library/index.mjs && npm test && npm run test:file-library && node --test plugin-src/tests/*.test.mjs && npm run build:both && node --test verification/*.test.mjs
+
+
+> nova-content-hub-prototype@0.2.0 check
+> node --check 原型/app.js && node --check 原型/core.js && node --check 原型/data.js && node --check 原型/shared/handoff.js && node --check 原型/shared/zip.js && node builtin-templates/generate.mjs --check
+
+Verified 15 v4 template groups (11 general / 4 AI), 36 preserved and 6 new SVG structure assets, 30 PNG visual references and 45 legacy definitions.
+
+> nova-content-hub-prototype@0.2.0 test
+> node --test test/*.test.cjs
+
+✔ photo uploader validates decoded images, cancellation and atomic capacity failures before reporting success (218.454792ms)
+✔ creator upload locally resizes common large photos and rolls back when canvas compression fails (45.36875ms)
+✔ cover keeps the selected person across template changes, permits no person, and exports actual local bytes (125.798458ms)
+✔ photo clicks and drag uploads enforce current authorization, including auth expiry during decoding (39.116583ms)
+✔ photo-delete quota rollback preserves this batch person and rebinds the cover project (54.951459ms)
+✔ photo-default quota rollback preserves this batch person and rebinds the cover project (59.5415ms)
+✔ photo-restore quota rollback preserves this batch person and rebinds the cover project (74.641541ms)
+✔ isolated renderer executes five pages and details without missing references (92.244791ms)
+✔ action classification is exhaustive and UI filters remain readable when logged out (23.282042ms)
+✔ collection UI creates a collection, project route clears comparisons, template target never comes from stale pid (24.386834ms)
+✔ generation persists handoff facts without fake candidates and freezes template version (29.801375ms)
+✔ real inline blur callback enforces auth and authorized edits persist (28.519041ms)
+✔ external task creation/acceptance use the same persistent transaction (43.430042ms)
+✔ prompt file preview is read-only and saving rechecks current write authorization (27.638542ms)
+✔ prompt drag callback blocks unauthenticated sorting and persists authorized sorting (24.897167ms)
+✔ context menu favorite callback is gated and persists without changing another project (25.157042ms)
+✔ template analysis result is reviewed and finishes only after manual acceptance (51.392083ms)
+✔ host selection lives only in settings and manual configuration follows the current assistant (23.771583ms)
+✔ settings host changes update the sidebar launch button, persist on reload and preserve existing task owners (98.325875ms)
+✔ rejected host changes restore selection and storage failures never show a success toast (33.607333ms)
+✔ every AI entry uses the current assistant and cross-host launch preserves historical facts (80.808083ms)
+✔ same-host task actions resume through the bridge without creating or rewriting tasks (44.298333ms)
+✔ new generation and restore actions go straight to the current assistant bridge (40.128958ms)
+✔ cross-host task bridge rechecks external permission while read-only history stays available (39.089458ms)
+✔ failed cross-host persistence preserves history and never opens a new target handoff (41.641833ms)
+✔ required auth demo never produces a content-bearing outbound link, including active demo (19.556292ms)
+✔ built-in templates are usable from actual cover UI without claiming AI restore verification (34.465875ms)
+✔ manual plugin configuration writes only the current assistant (27.593833ms)
+✔ prompt fields deduplicate names, preserve hints and replace all occurrences literally (15.617292ms)
+✔ prompt missing values block clipboard, focus first field, and show explicit preview markers (21.335042ms)
+✔ prompt successful async copy retains values and dialog, counts only success and blocks double-click in flight (17.7105ms)
+✔ prompt clipboard failure retains input and exposes full manual selection; fallback success is counted (16.963708ms)
+✔ no-variable prompts use the same preview window; raw template is an explicit copy path (17.538333ms)
+✔ prompt card, search Enter and project picker open the shared use window; IME and ordinary Enter never copy (17.360291ms)
+✔ prompt card click and Ctrl/Cmd Enter use the shared flow, including close/reopen during pending copy (22.393667ms)
+✔ unsettled Clipboard API times out, recovers the copy button and permits manual full-text selection (16.101583ms)
+✔ actual builtin cover selection shows source design, changed-title reference and fixed rules (17.102542ms)
+✔ long handoff separates actual URI prefill from the complete text available for copying (31.741542ms)
+✔ actual intake and scheduling actions carry distinct intent and only relevant planning context (32.228209ms)
+✔ adding requires only body, derives an editable name and stores literal optional fields (23.718875ms)
+✔ prompt field blocks are parsed once and ordinary Markdown separators remain literal (23.599875ms)
+✔ only URL is explained, and duplicate bodies require an explicit retained copy (23.586042ms)
+✔ clipboard failure gives a paste instruction; pending and cancelled reads never replace text (20.752417ms)
+✔ draft stays in memory and failed persistence keeps the editable dialog without success (22.545458ms)
+✔ multiple txt/md files are previewed, errors remain visible and duplicate copies need confirmation (23.140875ms)
+✔ cancelled file reads do not overwrite a new draft and directory reads enforce the same limits (17.158583ms)
+✔ variable helper replaces only a valid retained selection and the use dialog reads body before fields (33.02675ms)
+✔ clipboard read timeout releases retry, ignores late results and cannot invalidate newer file reads (15.793416ms)
+✔ a URL-only file is a visible per-file error while other valid files can still be confirmed (22.749125ms)
+✔ media template filters show eleven general and four AI templates and details expose actionable design rules (23.07975ms)
+✔ cover automatically carries the selected template PNG style and keeps other references scoped to this project (37.465625ms)
+✔ template failure preserves an explicit reason and passing review requires all five checks (29.064542ms)
+✔ v2 draft DOM offers explicit reference update, then selects real AI style asset without changing historical task (109.236333ms)
+✔ older same-version restoration task cannot accept a newer imported candidate (107.859708ms)
+✔ review modal pins restoration candidate and template version until save (80.686959ms)
+✔ old running restoration request cannot import into a newer template or relabel its result version (48.478875ms)
+✔ restoration file picker rejects a template version change while the file is being selected (57.712167ms)
+✔ builtin gallery uses fifteen finished PNG previews and keeps unfinished demos out of cover selection (33.298875ms)
+✔ cover submit keeps either its single bridge or an explicit per-size selector open (36.409458ms)
+✔ unsupported original-session resume falls back to a new bridge in the same selected assistant (16.118208ms)
+✔ a trusted builtin explicitly marked failed keeps its status and update path without claiming usability (67.6495ms)
+✔ six imported samples are one default group, person and candidates survive switching, and result count stays independent (46.916958ms)
+✔ reference export uses request IDs and original template version after a builtin group update (141.110625ms)
+✔ a group above the reference budget stays intact and requires explicit deselection before submission (50.915375ms)
+✔ template card downloads its whole group even when another project remains selected (21.272709ms)
+✔ custom candidate count does not leave a stale generated count beside the sample group (18.925083ms)
+✔ rejected person replacement over budget preserves the prior person until references are reduced (36.142333ms)
+✔ group ZIP download happens once after every image validates and a failed image produces no partial archive (69.260417ms)
+✔ project has one state entry, keeps legacy demos in read-only history, and uses a summary when no real request exists (18.741833ms)
+✔ single real project tasks route by state and completed results never default to another handoff (281.966208ms)
+✔ mixed project tasks are scoped, sorted without preselection, and keep completed history reachable (144.358917ms)
+✔ all-complete project entry selects existing results and preserves original session details (54.288792ms)
+✔ a multi-size cover batch exposes every newly created request and never silently launches its last task (35.232583ms)
+✔ cover empty and pending summaries are accurate and offer one creation action or a read-only task view (30.246209ms)
+✔ task review only shows its own request batch and requires that actual batch to be opened before approval (66.870542ms)
+✔ retry replaces bad-ratio candidates in a new attempt and preserves selected and published history across reload (214.849125ms)
+✔ repeated failed or interrupted imports isolate duplicate hashes and enforce each attempt count (247.20625ms)
+✔ retry import storage failure rolls back history creation and remains retryable without bypassing authorization (117.971083ms)
+✔ retry recovers after repeated ratio and exact-pixel failures while earlier attempts remain historical (137.739625ms)
+✔ template current step does not advance old requests and keeps historical tasks readable (45.96575ms)
+✔ handoff footer has one main action while ZIP and mandatory long JSON attachment live in preparation (34.21725ms)
+✔ new task viewing and selection stay read-only under required auth while handoff preserves the existing gate (48.39225ms)
+✔ usable custom template current step offers use instead of creating another restoration (25.387542ms)
+✔ legacy-marked records carrying a request stay in template history and never route to the assistant (31.718ms)
+✔ analysis import binds the selected earlier running task and never writes a later same-version task (58.264208ms)
+✔ analysis rule modal rejects changed state without relabeling another task (43.724125ms)
+✔ analysis rule modal rejects changed version without relabeling another task (49.983333ms)
+✔ restoration import explicitly selects the earlier of two running tasks and preserves the other (85.23525ms)
+✔ restoration file callback rejects selected task state changes during image reading without switching tasks (69.563625ms)
+✔ sidebar and overview share real current pending counts while old generation snapshots remain actionable (50.275584ms)
+✔ a transferred source remains history and the unified project action reuses its current-host successor (54.80775ms)
+✔ running cover batches display manual progress without invented or undefined external steps (45.998667ms)
+✔ task selector accepts a native radio change event before continuing (43.136084ms)
+✔ fictional seeds retain 13 original SVGs and only manifest-declared AI PNG assets (63.63275ms)
+✔ startup and rollback migrate known demo paths while preserving custom projects, account and bytes (71.355875ms)
+✔ known embedded demo bytes and default identity migrate on import without guessing other images (46.610042ms)
+✔ migration storage failure leaves original storage intact and blocks later writes (32.468083ms)
+✔ new creator samples expose no third-party private identity or source file (0.632125ms)
+✔ v4 has fifteen directly selectable PNG previews and keeps honest reference provenance (5.699917ms)
+✔ every PNG byte, real pixel size and prompt is recorded without claiming restore acceptance (80.072834ms)
+✔ all earlier complete definitions remain in the generated trusted legacy export (12.569291ms)
+✔ catalog schema distinguishes PNG previews from immutable SVG structure assets (3.745541ms)
+✔ the original twelve complete v3 definitions remain unchanged (0.477083ms)
+✔ creator templates have original safe structures and explicit identity, wardrobe and no-photo boundaries (0.755792ms)
+✔ the full historical v3 catalog remains immutable after grouped v4 changes (0.493292ms)
+✔ semantic foregrounds retain readable contrast on their actual surfaces (1.976292ms)
+✔ all 13 demo illustrations are original local geometry with safe SVG elements (6.925333ms)
+✔ local photos have one default, survive reload and use recoverable immutable identities (136.687042ms)
+✔ photo writes recheck authorization, invalid input and storage quota roll back the whole batch (76.8735ms)
+✔ creator content stays in request rules and current person policy replaces sample identity instructions (30.2495ms)
+✔ startup upgrades only unchanged shipped definitions and keeps old task and definition snapshots (114.122416ms)
+✔ real dates, safe protocols, confined paths, equivalent ratios (0.175625ms)
+✔ all business facts persist including builtin channel override, collection and members (22.523708ms)
+✔ same-name attachment delete affects only its stable id and can restore actual bytes (31.700458ms)
+✔ template request or checkbox never implies verification; rules and actual restore proof required (14.00125ms)
+✔ external requests are explicit, isolated snapshots without image payload; no implicit task running (7.856791ms)
+✔ publication pins candidate snapshot through later selections and reload (26.625167ms)
+✔ quota/validation failure rolls back whole workspace without deleting stored facts (22.522792ms)
+✔ backup import rejects malformed, future, path escape, unsafe URLs and oversize without overwrite (59.822791ms)
+✔ corrupt storage remains intact and is read-only until valid recovery (21.113625ms)
+✔ required/disabled gating, no auth credentials in backup; offline grace blocks external (17.123709ms)
+✔ malicious channel styles and malformed account imports are rejected without overwrite (24.28825ms)
+✔ nested IDs, numeric candidate numbers and template text shapes are validated at import (30.098375ms)
+✔ request boundary normalizes ratios and rejects references/pixels beyond plugin contract (9.342917ms)
+✔ template edits preserve previous text, evidence and validation references without copying image bytes (10.848875ms)
+✔ direct commit validation/serialization failure restores data and trash, then accepts a new valid edit (20.338875ms)
+✔ request pretty JSON is bounded by actual UTF8 bytes and rejects unknown or executable fields (18.808125ms)
+✔ deep schema rejects null records, arrays instead of maps and poisoned trash without overwriting (30.078ms)
+✔ one global host controls new work while original tasks and cross-host source stay intact (30.730375ms)
+✔ new handoff backups validate task binding and request snapshots without overwriting on forgery (49.396041ms)
+✔ bundled authored designs generate immediately and lose bundled trust after source or rule edits (19.457708ms)
+✔ bundled manifest is never trusted from backup and missing builtins install additively (35.559958ms)
+✔ older release handoffs stay recoverable and a transfer explicitly creates a current release request (27.063291ms)
+✔ a legacy task can carry its project summary into a new assistant without inventing chat history (12.1865ms)
+✔ context-only transfer preserves all original context and source without borrowing another project (35.509292ms)
+✔ media catalog groups eleven general and four AI designs, generation rules fill known values without invented facts (11.61175ms)
+✔ reference selection accepts only stable assets for current template version, same project and authorized account material (12.397541ms)
+✔ legacy authored v1 stays writable and explicit builtin update preserves definition and task snapshots (48.490209ms)
+✔ new design metadata rejects malicious structures without widening SVG or import trust (17.875542ms)
+✔ trusted v2 drafts upgrade explicitly and preserve old task snapshots and custom rules (57.1775ms)
+✔ generated reference metadata must match a known asset and cannot move across templates or imply acceptance (32.179458ms)
+✔ custom extended design history preserves anatomy and generation without copying imported image bytes (12.778625ms)
+✔ v3 startup migration archives the whole old group, skips failed and edited templates, and rejects over 32 references (48.756458ms)
+✔ old imported group request resolves removed originals from recoverable trash without duplicating private bytes in history (11.902125ms)
+✔ reference export strictly rejects photo and archived source version mismatches (15.689417ms)
+✔ ZIP STORE exports real PNG bytes and UTF8 names accepted by independent unzip with CRC checks (328.06325ms)
+✔ ZIP rejects empty groups, unsafe or duplicate filenames, and non-byte payloads (0.222208ms)
+ℹ tests 147
+ℹ suites 0
+ℹ pass 147
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5102.894084
+
+> nova-content-hub-prototype@0.2.0 test:file-library
+> node --test file-library/test/*.test.mjs
+
+✔ real files: independent records, reopen, title/ID separation and whole-library relocation (592.730208ms)
+✔ external raw Markdown and metadata edits change token; stale writes do not touch bytes (386.850667ms)
+✔ trash and restore preserve ID, directory, body and history snapshots (654.407792ms)
+✔ two independent processes reject the second stale token (582.354041ms)
+✔ a live child owns a lock with no age-based takeover (508.134667ms)
+✔ dead same-host lock is reclaimed, live/foreign/empty/malformed owners fail closed (190.145167ms)
+✔ stale-token unlink loser never removes a replacement lock (126.009167ms)
+✔ release only removes its own token, preserving a replacement holder (102.717375ms)
+✔ SIGKILL afterJournal: reopen recovers complete bytes and mutation receipt (547.819917ms)
+✔ SIGKILL afterFile: reopen recovers complete bytes and mutation receipt (613.263958ms)
+✔ SIGKILL beforeCommit: reopen recovers complete bytes and mutation receipt (582.440375ms)
+✔ SIGKILL beforeMarkerPublish: reopen recovers complete bytes and mutation receipt (591.572958ms)
+✔ recovery detects a third external state before touching either target (493.982792ms)
+✔ capture closes check/rename window and preserves newly observed external bytes (387.335917ms)
+✔ exclusive link refuses a target recreated after capture and retains both versions (372.275375ms)
+✔ injected write error reports pending recovery and never false success (509.168625ms)
+✔ actual file-write boundary failure leaves durable intent and recovers on reopen (509.278083ms)
+✔ incomplete unpublished journal is retained and cannot brick library recovery (642.882834ms)
+✔ SIGKILL before intent publication leaves only staging; reopen can retry same mutation (692.876458ms)
+✔ a partially written completion staging file is ignored and recovery completes after state (692.073542ms)
+✔ lock owner file-write failure cleans the exact token and does not leave a live-PID lock (125.39725ms)
+✔ lock post-owner sync failure cleans only its lock; failed cleanup is diagnosable (91.379208ms)
+✔ post-commit release failure returns generated mutationId for query instead of duplicate create (268.484333ms)
+✔ macOS /tmp and /var ancestor aliases work without caller realpath; linked roots stay refused (319.736083ms)
+✔ mutation IDs replay the same committed snapshot and query an ambiguous success (730.338125ms)
+✔ invalid inputs, traversal and unknown fields do not create transactions (228.096916ms)
+✔ bad JSON, missing body, duplicate identity and newer metadata fail without rewriting (320.35875ms)
+✔ newer/foreign root format and unknown nonempty directories are never taken over (83.493583ms)
+✔ symlink escape at root is refused and outside bytes stay intact (212.481166ms)
+✔ symlink escape at contentDirectory is refused and outside bytes stay intact (308.428125ms)
+✔ symlink escape at body is refused and outside bytes stay intact (196.444333ms)
+✔ symlink escape at system is refused and outside bytes stay intact (266.05625ms)
+✔ symlink escape at transaction is refused and outside bytes stay intact (273.710084ms)
+✔ journal is validated data, never a caller-controlled filesystem instruction (474.555291ms)
+✔ checksum damage fails closed and keeps the unfinished intent (391.567167ms)
+✔ cold open and content reads never read committed history bytes; query reads exactly its target (4904.248583ms)
+✔ SIGKILL afterCommit: committed recovery archives without replaying over a new external body (518.459458ms)
+✔ SIGKILL beforeArchive: committed recovery archives without replaying over a new external body (698.570958ms)
+✔ SIGKILL afterArchiveRename: committed recovery archives without replaying over a new external body (612.646833ms)
+✔ SIGKILL afterArchiveSourceSync: committed recovery archives without replaying over a new external body (714.705875ms)
+✔ SIGKILL afterArchiveTargetSync: committed recovery archives without replaying over a new external body (668.692667ms)
+✔ archive failure reports committed mutation and blocks opening any new intent until recovery (460.562709ms)
+✔ failed archive target-directory sync is retried before any subsequent content mutation (260.376917ms)
+✔ v1 open requires explicit upgrade without changing a byte; upgrade preserves all history and root fields (788.488833ms)
+✔ SIGKILL upgradeBeforeBackupPublish: explicit upgrade resumes without losing descriptor or history (510.948792ms)
+✔ SIGKILL upgradeAfterBackup: explicit upgrade resumes without losing descriptor or history (445.585875ms)
+✔ SIGKILL upgradeAfterDirectory: explicit upgrade resumes without losing descriptor or history (657.324834ms)
+✔ SIGKILL upgradeAfterDirectories: explicit upgrade resumes without losing descriptor or history (460.077792ms)
+✔ SIGKILL upgradeAfterMove: explicit upgrade resumes without losing descriptor or history (495.666916ms)
+✔ SIGKILL upgradeAfterRecovery: explicit upgrade resumes without losing descriptor or history (576.372166ms)
+✔ SIGKILL upgradeBeforeDescriptorPublish: explicit upgrade resumes without losing descriptor or history (634.447625ms)
+✔ SIGKILL upgradeAfterDescriptorPublish: explicit upgrade resumes without losing descriptor or history (484.895ms)
+✔ a v1 unfinished transaction recovers during explicit upgrade and remains queryable (385.599917ms)
+✔ legacy staging is retained under pending, and schema-1 reader refuses the upgrade barrier (222.504583ms)
+✔ upgrade preflight duplicate fails closed and preserves transaction bytes (149.267084ms)
+✔ upgrade preflight badMarker fails closed and preserves transaction bytes (168.089459ms)
+✔ upgrade preflight thirdState fails closed and preserves transaction bytes (260.393167ms)
+✔ upgrade preflight badBackup fails closed and preserves transaction bytes (138.511459ms)
+✔ pending duplicate IDs and forged completion markers fail without replaying bytes (256.120292ms)
+✔ queryMutation rejects missing or damaged history markers and never returns an unverified receipt (187.975459ms)
+ℹ tests 60
+ℹ suites 0
+ℹ pass 60
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15725.261792
+✔ both builds carry exact release pairing and reject cross-mode requests (84.85575ms)
+✔ invalid package releases fail closed in exported entrypoints (0.36825ms)
+✔ CLI rejects bad release.json before reading requests or reporting a disabled mode (230.572709ms)
+✔ required fails closed; disabled only validates and returns unavailable paths (0.364917ms)
+✔ all operations validate with matched skill; analyze can use null version (0.181334ms)
+✔ UI-sized batches, long rules, evidence objects and normalized integer ratios are supported (0.214792ms)
+✔ bad identifiers, missing fields, malformed options and incompatible protocol are rejected (0.201333ms)
+✔ paths remain planned and reject absolute, URL, traversal and claimed binding (0.242334ms)
+✔ context is read only and never echoes title, rules, references or paths (0.178ms)
+✔ runtime flags and environment cannot disable required auth (76.77875ms)
+✔ malformed and oversized JSON fail without executing (119.451542ms)
+✔ unimplemented task and commit stay explicit and create no files (234.566292ms)
+✔ all hook events safely return JSON without project context or business completion (322.153792ms)
+✔ empty, bad and unknown hook inputs are bounded safe JSON (193.6295ms)
+✔ a host leaving stdin open cannot hold a hook past the short input budget (667.665917ms)
+✔ Skill entrypoints have the required frontmatter and no scaffold placeholders (2.15425ms)
+✔ manifest and skill references exist inside each package; host event subscriptions do not duplicate (328.146042ms)
+✔ each standalone Skill contains its entire reference and license link graph (12.755708ms)
+✔ packages include no private keys, token files, external absolute source paths or dependencies (20.656042ms)
+✔ portable sh launcher resolves only its package location (67.740583ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2417.267333
+
+> nova-content-hub-prototype@0.2.0 build:both
+> node builtin-templates/generate.mjs && node scripts/build-prototype.mjs --auth both && node plugin-src/build.mjs --auth both
+
+Generated 15 v4 template groups (11 general / 4 AI), 36 preserved and 6 new SVG structure assets, 30 PNG visual references and 45 legacy definitions.
+dist-prototype/auth-required/index.html
+dist-prototype/auth-disabled/index.html
+[
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/dist-plugin-contract/nova-content-hub-required",
+    "pairId": "nova-content-hub@0.2.0:p1:required"
+  },
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/dist-plugin-contract/nova-content-hub-disabled",
+    "pairId": "nova-content-hub@0.2.0:p1:disabled"
+  }
+]
+✔ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (81.962875ms)
+✔ independent schemas and runtime reject malformed envelopes and nested requests (10.49775ms)
+✔ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (12.537334ms)
+✔ host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content (12.362459ms)
+✔ required browser simulation and runtime flags never authorize a real content-bearing launch (11.43225ms)
+✔ actual packaged check-handoff validates both modes without echoing project content or executing (114.833375ms)
+✔ bundled native hook context is minimal guidance and cannot acknowledge business success (86.371167ms)
+✔ all fifteen self-media designs build bounded requests accepted by the packaged CLI (930.821334ms)
+✔ both delivered bundles include actual AI reference bytes and their reproducible prompts (89.118042ms)
+✔ independent design schema rejects invalid nested design, reference and review records (2.092708ms)
+✔ both prototype bundles retain the fictional examples and declared gallery directories (32.588458ms)
+✔ three UI request kinds match the disabled plugin and remain non-executable (144.796166ms)
+✔ simulated active authorization does not authorize the required plugin (143.832ms)
+✔ pairing mismatch is rejected before a cross-mode handoff (50.22025ms)
+✔ generation snapshot survives later template edits and excludes binary images (9.077042ms)
+✔ contract rejects paths and injected image/token fields rather than forwarding them (89.346292ms)
+✔ preset decimal ratios normalize at the UI request exit and validate in the real CLI (173.42775ms)
+✔ UI rejects reference, pixel and serialized transport overflow before exporting a request (12.31175ms)
+✔ both delivered prototypes load the complete ZIP helper before the app (0.621333ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1476.139167
