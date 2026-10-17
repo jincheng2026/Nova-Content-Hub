@@ -4,6 +4,7 @@ import os from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
 import { coverJobMethods, validateCoverJobs } from './cover-jobs.mjs';
+import { backupMethods } from './backup.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
@@ -291,7 +292,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   const kind = legacy ? 'content' : intent?.objectKind;
   const targetId = legacy ? intent.contentId : intent?.objectId;
   if (!object(intent) || ![1, 2].includes(intent.schemaVersion) || !Object.hasOwn(KINDS, kind) || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
-      !['create', 'update', 'trash', 'restore'].includes(intent.operation) ||
+      !['create', 'update', 'trash', 'restore', 'restore-interrupted'].includes(intent.operation) ||
       !HASH.test(intent.requestDigest) || !Array.isArray(intent.before) || intent.before.length !== KINDS[kind].files.length ||
       !Array.isArray(intent.after) || intent.after.length !== KINDS[kind].files.length || Object.keys(intent).some(key => !['schemaVersion', 'libraryId', 'mutationId', ...(legacy ? ['contentId'] : ['objectKind', 'objectId']), 'operation', 'requestDigest', 'before', 'after'].includes(key))) fail('CORRUPT', 'Invalid transaction plan');
   try { objectId(kind, targetId); } catch { fail('CORRUPT', 'Invalid transaction object ID'); }
@@ -305,11 +306,15 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
     const old = metadata(before[0], targetId, kind);
     if (kind==='content' && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
     if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
-    if (intent.operation !== 'update') {
+    if (intent.operation === 'restore-interrupted') {
+      if (kind !== 'content' || !old.coverJobs?.some(job => job.attempts.some(attempt => ['created','claimed'].includes(attempt.status)))) fail('CORRUPT','Invalid restore interruption');
+      const expected = interruptRestoredAttempts(old, next.updatedAt);
+      if (!isDeepStrictEqual(next, {...expected, revision: old.revision + 1, updatedAt: next.updatedAt}) || !equal(before[1],after[1])) fail('CORRUPT','Restore interruption changed unrelated data');
+    } else if (intent.operation !== 'update') {
       const business=record=>Object.fromEntries(Object.entries(record).filter(([key])=>!['revision','updatedAt','deletedAt'].includes(key)));
       if (!isDeepStrictEqual(business(old),business(next))) fail('CORRUPT','Trash/restore cannot change business fields');
     }
-    if (intent.operation !== 'update' && ((before[1] && !before[1].equals(after[1])) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
+    if (!['update','restore-interrupted'].includes(intent.operation) && ((before[1] && !before[1].equals(after[1])) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
     if ((intent.operation === 'trash' && (old.deletedAt !== null || next.deletedAt === null)) ||
         (intent.operation === 'restore' && (old.deletedAt === null || next.deletedAt !== null)) ||
         (intent.operation === 'update' && (old.deletedAt !== null || next.deletedAt !== null))) fail('CORRUPT', 'Invalid state transition');
@@ -427,13 +432,14 @@ function recover(root, libraryId) {
     if (STAGING.test(name)) { directory(path.join(dir, name)); continue; }
     if (!UUID.test(name)) fail('CORRUPT', `Unexpected transaction entry: ${name}`);
     const tx = transaction(root, name, libraryId);
-    if (tx.committed) completed.push(tx);
-    else pending.push(tx);
+    if (tx.committed) completed.push(name);
+    else pending.push(name);
   }
   // One writer cannot start another intent before recovering the previous one.
   if (pending.length > 1) fail('RECOVERY_CONFLICT', 'Multiple unfinished transactions; manual diagnosis required');
-  for (const tx of completed) archiveTransaction(root, tx);
-  for (const tx of pending) {
+  for (const name of completed) archiveTransaction(root, transaction(root,name,libraryId));
+  for (const name of pending) {
+    const tx = transaction(root,name,libraryId);
     try { applyTransaction(root, tx); archiveTransaction(root, tx); }
     catch (error) { throw Object.assign(ioError(error), { mutationId: tx.intent.mutationId, pendingRecovery: true }); }
   }
@@ -1363,3 +1369,62 @@ function validateBusinessMetadata(meta,kind) {
     if(meta.derivedFrom!==null){const ref=meta.derivedFrom;check(keys(ref,['id','version'])&&Number.isSafeInteger(ref.version)&&ref.version>0,'derived source');try{objectId('template',ref.id)}catch{fail('CORRUPT','Invalid derived template ID')}}
   }
 }
+
+
+function interruptRestoredAttempts(meta, now) {
+  return {...meta, coverJobs: meta.coverJobs.map(job => ({...job, activeAttemptId: null, attempts: job.attempts.map(attempt => ['created','claimed'].includes(attempt.status) ? {...attempt, status:'failed', updatedAt:now, failure:{code:'RESTORED_INTERRUPTED',message:'Restored backup requires an explicit new host attempt'}} : attempt)}))};
+}
+
+function validateRestoredLibrary(root, info) {
+  const api = library(root, info);
+  for (const [kind, spec] of Object.entries(KINDS)) {
+    for (const name of fs.readdirSync(path.join(root,spec.directory)).sort()) {
+      if (kind === 'template' && STAGING.test(name)) continue;
+      objectId(kind,name);
+      if (kind === 'template' && !safePath(path.join(root,spec.directory,name,spec.files[0]),true)) {
+        unregisteredTemplate(read(path.join(root,spec.directory,name,'未登记.json')),name); continue;
+      }
+      const meta = metadata(snapshot(root,name,kind)[0],name,kind);
+      if (kind === 'photo') readAssetInternal(root,meta.assetHash);
+      if (kind === 'template') for (const version of meta.versions) templatePackage(root,name,version.version,version.packageHash);
+      if (kind !== 'content') continue;
+      for (const entry of [...(meta.materials || []),...(meta.candidates || [])]) {
+        readAssetInternal(root,entry.assetHash);
+        if (entry.template) templatePackage(root,entry.template.id,entry.template.version,entry.template.packageHash);
+      }
+      for (const entry of meta.publications || []) api.readPublication(name,entry.id);
+      coverJobMethods({root,libraryId:info.libraryId,validationContent:meta, snapshot, result, metadata, hash,jsonBytes,read,safePath,directory,checkedHash,templatePackage,readAssetInternal,id,objectId,inputFields,fail,LibraryError});
+    }
+  }
+  for (const name of fs.readdirSync(path.join(root,SYSTEM,'事务','已提交')).sort()) transaction(root,id(name),info.libraryId);
+}
+
+function prepareRestoredLibrary(root, backup) {
+  const info = descriptor(root);
+  const pending = path.join(root,SYSTEM,'事务','待恢复');
+  const recoveredMutations = fs.readdirSync(pending).filter(name => UUID.test(name));
+  recover(root,info.libraryId);
+  validateRestoredLibrary(root,info);
+  const interruptedAttempts = [], mutations = [];
+  for (const contentId of fs.readdirSync(path.join(root,'内容')).sort()) {
+    const before = snapshot(root,contentId), meta = metadata(before[0],contentId);
+    const live = (meta.coverJobs || []).flatMap(job => job.attempts.filter(attempt => ['created','claimed'].includes(attempt.status)).map(attempt => ({contentId,requestId:job.id,attemptId:attempt.attemptId})));
+    if (!live.length) continue;
+    const now = new Date().toISOString(), mutationId = randomUUID();
+    const next = {...interruptRestoredAttempts(meta,now),revision:meta.revision+1,updatedAt:now};
+    const after = [jsonBytes(next),before[1]];
+    const intent = {schemaVersion:2,libraryId:info.libraryId,mutationId,objectKind:'content',objectId:contentId,operation:'restore-interrupted',requestDigest:hash(jsonBytes({action:'restore-interrupted',backupId:backup.backupId,contentId})),before:before.map(pack),after:after.map(pack)};
+    const location = path.join(pending,mutationId); mkdir(location); writeNew(path.join(location,'intent.json'),jsonBytes(intent));
+    const tx = transaction(root,mutationId,info.libraryId); applyTransaction(root,tx); archiveTransaction(root,tx);
+    interruptedAttempts.push(...live.map(attempt => ({...attempt,mutationId}))); mutations.push(mutationId);
+  }
+  const provenance = path.join(root,SYSTEM,'恢复来源'); ensureDirectory(provenance);
+  writeNew(path.join(provenance,`${randomUUID()}.json`),jsonBytes({format:'nova-content-library-restore',schemaVersion:1,backupId:backup.backupId,treeHash:backup.treeHash,libraryId:info.libraryId,restoredAt:new Date().toISOString(),recoveredMutations,interruptionMutations:mutations,interruptedAttempts}));
+  validateRestoredLibrary(root,info);
+  return {recoveredMutations,interruptedAttempts};
+}
+
+const backupOperations = backupMethods({fail,LibraryError,safePath,directory,descriptor,acquire,read,writeNew,syncDirectory,jsonBytes,hash,hook,prepareRestoredLibrary});
+export const backupLibrary = backupOperations.backupLibrary;
+export const verifyBackup = backupOperations.verifyBackup;
+export const restoreBackup = backupOperations.restoreBackup;

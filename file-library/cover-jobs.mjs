@@ -68,7 +68,7 @@ export function coverJobMethods(h) {
     if (hash(raw) !== job.requestHash) fail('CORRUPT', 'Cover request package checksum mismatch');
     let request;
     try { request = JSON.parse(raw); } catch { fail('CORRUPT', 'Invalid cover request package'); }
-    if (request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity mismatch');
+    if (request.format !== 'nova-cover-request' || request.schemaVersion !== 1 || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity mismatch');
     const bodyBytes = read(path.join(dir, '正文.md'));
     if (hash(bodyBytes) !== request.bodyHash) fail('CORRUPT', 'Cover body snapshot checksum mismatch');
     for (const entry of request.inputs) {
@@ -83,7 +83,7 @@ export function coverJobMethods(h) {
     if (hash(raw) !== attempt.handoffHash) fail('CORRUPT', 'Cover handoff checksum mismatch');
     let handoff;
     try { handoff = JSON.parse(raw); } catch { fail('CORRUPT', 'Invalid cover handoff'); }
-    if (handoff.libraryId !== libraryId || handoff.contentId !== contentId || handoff.requestId !== job.id || handoff.attemptId !== attempt.attemptId || handoff.requestHash !== job.requestHash || handoff.host !== attempt.host) fail('CORRUPT', 'Cover handoff identity mismatch');
+    if (handoff.format !== 'nova-cover-handoff' || handoff.schemaVersion !== 1 || JSON.stringify(handoff.protocol) !== JSON.stringify(PROTOCOL) || handoff.libraryId !== libraryId || handoff.contentId !== contentId || handoff.requestId !== job.id || handoff.attemptId !== attempt.attemptId || handoff.requestHash !== job.requestHash || handoff.host !== attempt.host) fail('CORRUPT', 'Cover handoff identity mismatch');
     const index = job.attempts.findIndex(item => item.attemptId === attempt.attemptId);
     if (handoff.sourceAttemptId === null ? index !== 0 : !job.attempts.slice(0, index).some(item => item.attemptId === handoff.sourceAttemptId)) fail('CORRUPT', 'Cover handoff source must reference an earlier attempt in this request');
     return handoff;
@@ -313,13 +313,13 @@ export function coverJobMethods(h) {
     let report;
     try {
       if (receipt.files.length !== prepared.request.count) fail('IMAGE_COUNT_MISMATCH', `Expected exactly ${prepared.request.count} images, received ${receipt.files.length}`);
-      // No library lock is held while copying/decoding untrusted images.
+      // Decoding stays outside the library lock; every persistent write uses a short lock.
       for (let index = 0; index < receipt.files.length; index++) {
         assertRootIdentity();
         const { name, sha256 } = receipt.files[index];
         const captured = path.join(prepared.location, `图片-${index}`);
         let bytes = safePath(captured, true) ? stableBytes(captured) : null;
-        if (bytes === null) { bytes = stableBytes(path.join(prepared.inbox, name)); immutableFile(captured, bytes); }
+        if (bytes === null) { bytes = stableBytes(path.join(prepared.inbox, name)); locked(() => immutableFile(captured, bytes)); }
         if (hash(bytes) !== sha256) fail('IMAGE_HASH_MISMATCH', 'Image bytes do not match receipt SHA256');
         totalBytes += bytes.length;
         if (totalBytes > 512 * 1024 * 1024) fail('INVALID_IMAGE', 'Result batch exceeds 512 MiB');
@@ -369,9 +369,39 @@ export function coverJobMethods(h) {
       if (failure.outcome === 'committed') throw failure;
       // A submission/archival failure must not be labelled a failed pixel validation.
       const rejected = jsonBytes({ format: 'nova-cover-validation', schemaVersion: 1, receiptHash, requestHash: receipt.requestHash, status: report ? 'submission-error' : 'rejected', code: failure.code, message: failure.message, files: files.map(entry => ({ originalName: entry.name, ...entry.decoded })) });
-      try { assertRootIdentity(); immutableFile(path.join(prepared.location, `拒绝-${hash(rejected)}.json`), rejected); } catch (preservationError) { failure.preservationError = preservationError.message; }
+      try { locked(() => immutableFile(path.join(prepared.location, `拒绝-${hash(rejected)}.json`), rejected)); } catch (preservationError) { failure.preservationError = preservationError.message; }
       throw failure;
     }
+  }
+  if (h.validationContent) {
+    const meta = h.validationContent;
+    for (const job of meta.coverJobs || []) {
+      const {request} = requestPackage(meta.id,job);
+      const normalized = Object.fromEntries(Object.entries(request).filter(([key]) => !['format','schemaVersion','requestId','createdAt','inputHash','requestHash'].includes(key)));
+      if (hash(jsonBytes(normalized)) !== job.inputHash) fail('CORRUPT','Restored request input hash mismatch');
+      if (!Number.isSafeInteger(request.count) || request.count < 1 || request.count > 20 || !request.template) fail('CORRUPT','Invalid restored request shape');
+      templatePackage(root,request.template.id,request.template.version,request.template.packageHash);
+      for (const attempt of job.attempts) {
+        const handoff = handoffPackage(meta.id,job,attempt);
+        if (JSON.stringify(handoff.inputAssetHashes) !== JSON.stringify([...new Set(request.inputs.map(entry => entry.assetHash))])) fail('CORRUPT','Restored handoff input mismatch');
+        directory(path.join(attemptDir(meta.id,job.id,attempt.attemptId),'inbox'));
+        if (attempt.status === 'committed') {
+          verifyCommittedEvidence(meta.id,meta,job,attempt,attempt.receiptHash);
+          const location = path.join(attemptDir(meta.id,job.id,attempt.attemptId),'收件',attempt.receiptHash);
+          const raw = read(path.join(location,'回执.json'));
+          const {receipt} = receiptInput(raw,meta.id,job.id,attempt.attemptId);
+          if (receipt.requestHash !== job.requestHash) fail('CORRUPT','Restored receipt request mismatch');
+          const report = JSON.parse(read(path.join(location,'校验报告.json')));
+          if (report.format !== 'nova-cover-validation' || report.schemaVersion !== 1 || report.receiptHash !== attempt.receiptHash || report.requestHash !== job.requestHash || report.status !== 'passed' || report.decoded !== true) fail('CORRUPT','Restored validation report ownership mismatch');
+          if (receipt.files.length !== request.count || attempt.candidateIds.length !== receipt.files.length || !Array.isArray(report.files) || report.files.length !== receipt.files.length) fail('CORRUPT','Restored result count mismatch');
+          for (let index=0;index<receipt.files.length;index++) {
+            const file = receipt.files[index], candidate = meta.candidates.find(item => item.id === attempt.candidateIds[index]);
+            if (hash(read(path.join(location,`图片-${index}`))) !== file.sha256 || candidate.assetHash !== file.sha256 || candidate.originalName !== file.name || report.files[index].assetHash !== file.sha256 || report.files[index].originalName !== file.name) fail('CORRUPT','Restored captured image or candidate mismatch');
+          }
+        }
+      }
+    }
+    return {};
   }
   return { createCoverRequest, createCoverAttempt, claimCoverAttempt, readCoverContext, commitCoverAttempt, failCoverAttempt, cancelCoverAttempt };
 }

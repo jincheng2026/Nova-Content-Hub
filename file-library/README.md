@@ -223,3 +223,37 @@ definition 按调用方的有限 JSON 数据原样保存，包括旧 v3 来源�
 唯一可变任务真源在内容 `coverJobs` 引用和有限状态内；不另建任务 registry 或 journal。候选和 selectedCover 历史不因新任务清除。库 3→4 显式升级先恢复旧 pending、备份 schema3 descriptor、持久创建 `事务/升级到4/` 屏障，最后发布 descriptor4 并保存完成标记；旧 schema3 writer 即使误换回 descriptor3，也因不认识屏障而拒写。升级阶段可重入，内容 schema 不倒退；备份仍仅是根描述文件，不提供安全降级。
 
 `node --test file-library/test/*.test.mjs` 包含正常整批、失败矩阵、真实解码/EXIF、稳定收件、解码期间状态竞争、幂等与 SIGKILL 后恢复证据。当前实测是 macOS 开发机上的核心文件能力；不代替 Windows、两个宿主真实看图/生成、Electron、正式授权、安装/升级发行、断电和商用性能验收。
+
+## 整库备份、核验与安全恢复
+
+```js
+import { backupLibrary, verifyBackup, restoreBackup } from './file-library/index.mjs';
+const saved = backupLibrary('/Users/me/Documents/内容库', '/Volumes/Backup/2026-10-17');
+const checked = verifyBackup(saved.backupDir);
+const restored = restoreBackup(saved.backupDir, '/Users/me/Documents/恢复的内容库');
+```
+
+三个同步业务入口供桌面主进程或 CLI 使用；大库应放到 worker，避免阻塞界面。精确目标目录必须不存在，空目录也拒绝；父目录必须存在。恢复不修改原库和备份，不替换现有目录，不自动启动 Codex、WorkBuddy 或生成任务。没有 ZIP、云同步、续传、自动重试或自动清理失败现场。
+
+备份支持当前 schema 4。它拿现有全库锁，但**不调用 openLibrary、不执行 pending 恢复**。除精确的 `系统（别动）/库锁` 外，整棵树均保留：正文原始字节（BOM、CRLF、末尾换行均不改）、软删对象、资产、模板版本、任务请求/交接/inbox/回执/校验报告、发布快照、所有 pending/history/升级备份/staging/孤儿、未知用户文件和空目录。HTML、脚本、未知文件只当作字节，不执行。封面解码在锁外运行，captured 图片及拒绝报告落盘经过短库锁，所以备份与核心持久写互斥；遇到 `BUSY` 不会把活跃任务自动标记失败。
+
+备份目录协议固定为：
+
+```text
+manifest.json                 # nova-content-library-backup / schemaVersion 1
+entries.ndjson                # 有序、无重复、逐行规范 JSON 条目
+data/                         # 库全树，仅排除库锁
+COMPLETE.json                 # 最后独占 link 发布，绑定 manifestHash + entriesHash
+```
+
+实际根目录只允许 `manifest.json`、`entries.ndjson`、`data/`、`COMPLETE.json` 四项。条目为 `{path,type:'directory'}` 或 `{path,type:'file',bytes,sha256}`，path 为规范 `/` 分隔相对路径；NDJSON 逐行解析，单行最多 64 KiB。manifest 包含 `backupId`、来源 `libraryId/schemaVersion`、起止时间、工具版本、系统、唯一排除路径、计数和 entriesHash。SHA256 用于完整性检查，不是来源签名。
+
+`consistency: 'stable-verified-copy'` 表示：锁内盘点，按块复制与 SHA256，文件在打开前/句柄上/路径上核对 dev/ino/size/mtime/ctime，目录成员与身份复扫，源全树再次流式算 hash，目标也复验；最后重核 descriptor 原字节和库根身份。它是普通文件系统的稳定观测，**不是操作系统原子快照，也不隔离恶意同权限进程**。外部 Markdown 编辑器和 host inbox 不遵守库锁，观测到变化会报 `SOURCE_CHANGED` 并留下未完成目标，换新的目标目录重做。备份/恢复路径所有祖先和树内都拒绝符号链接；仅接受普通文件/目录，拒绝 Windows 设备名、尾点空格、控制字符、反斜杠、绝对/越界路径以及大小写/Unicode 规范化冲突，不擅自改名或跳过。
+
+`verifyBackup` 严格检查根布局、manifest/seal/descriptor 身份和 schema、条目顺序/唯一性、真实全树的缺失/额外成员、字节数与 SHA256；不拿源库锁，也不恢复任何业务事务。缺完成标志的包不能恢复。
+
+恢复先核验包，再复制到**目标卷**独立 staging 并复验；仅在 staging 内恢复 pending：有 COMMITTED 的只归档，未完成的按既有 before/after 引擎恢复，第三种字节立即停止。随后检查对象、资产/模板引用、任务请求/交接/已提交回执/报告、发布快照与全部历史事务；历史逐笔读取，不把所有历史正文同时载入内存。所有 created/claimed 尝试（包含软删内容）在 staging 内通过受限 `restore-interrupted` 事务改为 failed/`RESTORED_INTERRUPTED` 并清空 activeAttemptId；保留所有 ID、既有 committed 候选和 before 历史，不临时恢复/删除软删内容。`系统（别动）/恢复来源/<uuid>.json` 绑定 backupId/treeHash、恢复的 mutation、打断的 attempt 与新增 mutation。
+
+最后 `mkdir` 独占最终目标，文件逐项 O_EXCL 复制并全树核对，`内容库.json` 最后经 fsync + 独占 link 发布，作为可 open 的边界；不用可能接管空目录的 exists + rename。发布前失败的目录没有 descriptor，不能当作已恢复库。完成标志或 descriptor 发布后的刷盘/清理错误带 `outcome:'committed'`，调用方须展示明确状态；失败目录和 staging 保留用于诊断，不自动续传。返回的 `interruptedAttempts`、`recoveredMutations` 是数组；备份/核验结果另含 manifest/counts，核验含 `verified:true` 和 treeHash。
+
+文件与目录刷新沿用核心现有策略：Windows Node 无法 fsync 目录句柄时，只声明进程崩溃与文件 fsync 级别，不能据 macOS 的目录刷盘结果宣称 Windows 掉电安全。跨卷复制算法可用，但未在真实第二卷和 Windows 主机上验证；macOS 合成临时库测试不代表 Windows、Codex/WorkBuddy 实机四组合验收。
