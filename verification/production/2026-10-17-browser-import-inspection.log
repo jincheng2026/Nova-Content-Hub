@@ -1,0 +1,18 @@
+
+> nova-content-hub-prototype@0.2.0 test:browser-import
+> node --test browser-import/test/*.test.mjs
+
+✔ inspection preserves source bytes, separates scoped candidate IDs and never claims a migration or image decode (6.143625ms)
+✔ attachment srcPath is inert even when a matching local file exists (3.070833ms)
+✔ malformed, invalid UTF-8, credential fields, newer format and excessive size are refused without writes (5.025875ms)
+✔ only an explicitly selected ordinary absolute file is accepted (1.814417ms)
+✔ external replacement during a selected file read is detected (1.849083ms)
+✔ BOM and CRLF remain intact in the private raw archive input (2.457667ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89.9115
