@@ -3,10 +3,11 @@ import path from 'node:path';
 import os from 'node:os';
 import { createHash, randomUUID } from 'node:crypto';
 import { isDeepStrictEqual } from 'node:util';
+import { coverJobMethods, validateCoverJobs } from './cover-jobs.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
-const LIBRARY_VERSION = 3;
+const LIBRARY_VERSION = 4;
 const KINDS = Object.freeze({
   content: { directory: '内容', files: ['内容.json', '正文.md'], format: 'nova-content' },
   prompt: { directory: '提示词', files: ['提示词.json', '正文.md'], format: 'nova-prompt' },
@@ -70,7 +71,7 @@ function objectId(kind, value) {
 
 function metadata(bytes, objectIdValue, kind = 'content') {
   const meta = parse(bytes, KINDS[kind].files[0]);
-  const supported = kind === 'content' && meta?.schemaVersion === 2 ? 2 : 1;
+  const supported = kind === 'content' && [2,3].includes(meta?.schemaVersion) ? meta.schemaVersion : 1;
   format(meta, KINDS[kind].format, KINDS[kind].files[0], supported);
   let validDates = false;
   try { validDates = date(meta.createdAt) && date(meta.updatedAt) && (meta.deletedAt === null || date(meta.deletedAt)); } catch {}
@@ -218,8 +219,8 @@ function acquire(root) {
 function descriptor(root, upgrading = false) {
   directory(root);
   const info = parse(read(path.join(root, '内容库.json')), '内容库.json');
-  if (info?.format === FORMAT && [1, 2].includes(info.schemaVersion) && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1 or 2 requires explicit upgradeLibrary(root)');
-  format(info, FORMAT, '内容库.json', upgrading && [1, 2].includes(info?.schemaVersion) ? info.schemaVersion : LIBRARY_VERSION);
+  if (info?.format === FORMAT && [1, 2, 3].includes(info.schemaVersion) && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1, 2 or 3 requires explicit upgradeLibrary(root)');
+  format(info, FORMAT, '内容库.json', upgrading && [1, 2, 3].includes(info?.schemaVersion) ? info.schemaVersion : LIBRARY_VERSION);
   let validDate = false;
   try { validDate = date(info.createdAt); } catch {}
   if (!UUID.test(info.libraryId) || !validDate) fail('CORRUPT', 'Invalid library identity');
@@ -230,7 +231,7 @@ function descriptor(root, upgrading = false) {
     directory(path.join(root, SYSTEM, '事务', '待恢复'));
     directory(path.join(root, SYSTEM, '事务', '已提交'));
   }
-  if (info.schemaVersion === 3) {
+  if (info.schemaVersion >= 3) {
     for (const name of ['提示词', '我的照片', '模板', '资产']) directory(path.join(root, name));
     directory(path.join(root, '资产', 'sha256'));
   }
@@ -302,7 +303,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
     if (next.revision !== 1 || next.deletedAt !== null) fail('CORRUPT', 'Invalid create plan');
   } else {
     const old = metadata(before[0], targetId, kind);
-    if (kind==='content' && old.schemaVersion===2 && next.schemaVersion!==2) fail('CORRUPT','Content schema cannot regress');
+    if (kind==='content' && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
     if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
     if (intent.operation !== 'update') {
       const business=record=>Object.fromEntries(Object.entries(record).filter(([key])=>!['revision','updatedAt','deletedAt'].includes(key)));
@@ -415,7 +416,7 @@ function applyTransaction(root, tx) {
 
 function recover(root, libraryId) {
   const base = path.join(root, SYSTEM, '事务');
-  if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
+  if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER, '升级到4'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
   const dir = path.join(root, SYSTEM, '事务', '待恢复');
   // A prior rename may have succeeded before either parent-directory sync failed.
   syncDirectory(dir);
@@ -447,14 +448,22 @@ function fields(value, patch = false) {
 }
 
 function library(root, initialInfo) {
+  const rootIdentity = fs.lstatSync(root, {bigint:true});
+  function assertRootIdentity() {
+    directory(root);
+    const current = fs.lstatSync(root, {bigint:true});
+    if (current.dev !== rootIdentity.dev || current.ino !== rootIdentity.ino) fail('CONFLICT','Library root was replaced; explicitly reopen the selected library');
+  }
   function locked(fn) {
     let release;
     let primaryError;
     let value;
     try {
+      assertRootIdentity();
       const info = descriptor(root);
       if (info.libraryId !== initialInfo.libraryId) fail('CORRUPT', 'Library identity changed');
       release = acquire(root);
+      assertRootIdentity();
       const current = descriptor(root);
       if (current.libraryId !== initialInfo.libraryId) fail('CORRUPT', 'Library identity changed');
       recover(root, current.libraryId);
@@ -491,12 +500,12 @@ function library(root, initialInfo) {
     }).filter(item => (item.deletedAt !== null) === deleted));
   }
 
-  function mutate(operation, contentId, input, expectedToken, options = {}, kind = 'content', edit, forcedId) {
+  function mutate(operation, contentId, input, expectedToken, options = {}, kind = 'content', edit, forcedId, currentRevision = false) {
     if (!object(options) || Object.keys(options).some(key => key !== 'mutationId')) fail('INVALID_INPUT', 'Only mutationId is accepted as an option');
     const mutationId = options.mutationId === undefined ? randomUUID() : id(options.mutationId);
     if (operation !== 'create') {
       objectId(kind, contentId);
-      if (typeof expectedToken !== 'string' || !/^[0-9a-f]{64}$/.test(expectedToken)) fail('INVALID_INPUT', 'A read editToken is required');
+      if (!currentRevision && (typeof expectedToken !== 'string' || !/^[0-9a-f]{64}$/.test(expectedToken))) fail('INVALID_INPUT', 'A read editToken is required');
     }
     const requestDigest = hash(jsonBytes(kind === 'content' ? { operation, contentId, input, expectedToken } : { objectKind: kind, operation, objectId: contentId, input, expectedToken }));
     return locked(() => {
@@ -522,7 +531,7 @@ function library(root, initialInfo) {
         meta = { format: KINDS[kind].format, schemaVersion: VERSION, id: contentId, title: input.title, revision: 1, createdAt: now, updatedAt: now, deletedAt: null };
       } else {
         const current = result(before, contentId, undefined, kind);
-        if (current.editToken !== expectedToken) fail('CONFLICT', 'Content changed; read again before retrying');
+        if (!currentRevision && current.editToken !== expectedToken) fail('CONFLICT', 'Content changed; read again before retrying');
         if ((operation === 'restore') !== (current.deletedAt !== null)) fail('INVALID_STATE', 'Content is already in the requested state or is trashed');
         meta = { ...metadata(before[0], contentId, kind), revision: current.revision + 1, updatedAt: now };
         if (operation === 'trash') meta.deletedAt = now;
@@ -565,6 +574,24 @@ function library(root, initialInfo) {
 
   return Object.freeze({
     ...businessMethods(root, locked, mutate, list),
+    ...coverJobMethods({
+      changeCurrent: (contentId,input,edit,options) => mutate('update',contentId,input,undefined,options,'content',edit,undefined,true),
+      replayCoverRequest: (contentId,input,expectedToken,options = {}) => {
+        if (!object(options) || Object.keys(options).some(key => key !== 'mutationId')) fail('INVALID_INPUT','Only mutationId is accepted as an option');
+        if (options.mutationId === undefined) return null;
+        const mutationId = id(options.mutationId);
+        return locked(() => {
+          if (!transactionDir(root,mutationId)) return null;
+          const tx = transaction(root,mutationId,initialInfo.libraryId);
+          const digest = hash(jsonBytes({operation:'update',contentId,input,expectedToken}));
+          if (tx.intent.requestDigest !== digest) fail('INVALID_INPUT','mutationId was used with a different request');
+          return result(tx.after,tx.objectId,mutationId,tx.kind);
+        });
+      },
+      root, libraryId: initialInfo.libraryId, assertRootIdentity, locked, mutate, snapshot, result, metadata, hash, jsonBytes, read,
+      safePath, directory, ensureDirectory, immutableFile, readAssetInternal, assetPath, hook, inputFields,
+      text, id, objectId, checkedHash, templatePackage, fail, LibraryError,
+    }),
     info: Object.freeze({ ...initialInfo, root, durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync' }),
     listContents: () => list(false),
     listTrash: () => list(true),
@@ -609,7 +636,8 @@ export function upgradeLibrary(root) {
   try {
     root = canonicalRoot(root);
     const initial = descriptor(root, true);
-    if (initial.schemaVersion >= 2) return upgradeTo3(root);
+    if (initial.schemaVersion >= 3) return upgradeTo4(root);
+    if (initial.schemaVersion === 2) { upgradeTo3(root); return upgradeTo4(root); }
     release = acquire(root);
     const info = descriptor(root, true);
     if (info.libraryId !== initial.libraryId) fail('CORRUPT', 'Library identity changed during upgrade');
@@ -693,7 +721,8 @@ export function upgradeLibrary(root) {
       try { release(); } catch (error) { if (!primaryError) throw ioError(error); }
     }
   }
-  return upgradeTo3(root);
+  upgradeTo3(root);
+  return upgradeTo4(root);
 }
 
 export function createLibrary(root) {
@@ -1076,7 +1105,7 @@ function timezone(value) {
 
 function contentBusinessMethods(root, locked, mutate) {
   function extended(meta) {
-    return { ...meta, schemaVersion:2, materials:meta.materials || [], candidates:meta.candidates || [], selectedCover:meta.selectedCover || null, plans:meta.plans || [], publications:meta.publications || [] };
+    return { ...meta, schemaVersion:Math.max(meta.schemaVersion,2), materials:meta.materials || [], candidates:meta.candidates || [], selectedCover:meta.selectedCover || null, plans:meta.plans || [], publications:meta.publications || [] };
   }
   function change(contentId, action, input, token, options, update) {
     return mutate('update',contentId,{action,...input},token,options,'content',(meta,before) => update(extended(meta),before));
@@ -1129,7 +1158,9 @@ function contentBusinessMethods(root, locked, mutate) {
       if (input.source!==undefined) text(input.source,'candidate source');
       if (input.originalName!==undefined) text(input.originalName,'originalName',true);
       return change(contentId,'registerCandidate',input,token,options,meta=>{
+        if ((meta.coverJobs || []).some(job => job.id === input.requestId || job.attempts.some(attempt => attempt.attemptId === input.attemptId))) fail('INVALID_INPUT','Managed cover task candidates must use commitCoverAttempt');
         imageAsset(input.assetHash);
+
         const template=resolveTemplate(input.template);
         return {...meta,candidates:[...meta.candidates,{id:randomUUID(),...input,template,accepted:false,createdAt:new Date().toISOString()}]};
       });
@@ -1242,6 +1273,36 @@ function upgradeTo3(root) {
     }
   } catch(error) {primaryError=ioError(error);throw primaryError;}
   finally {try{release();}catch(error){if(!primaryError)throw ioError(error);}}
+  return null;
+}
+
+function upgradeTo4(root) {
+  const initial=descriptor(root,true);
+  const release=acquire(root);
+  let primaryError;
+  try {
+    const info=descriptor(root,true);
+    if (info.libraryId!==initial.libraryId || ![3,4].includes(info.schemaVersion)) fail('CONFLICT','Unexpected library schema during upgrade to 4');
+    const descriptorPath=path.join(root,'内容库.json');
+    const barrier=path.join(root,SYSTEM,'事务','升级到4');
+    if(info.schemaVersion===3) {
+      recover(root,info.libraryId);
+      const original=read(descriptorPath);
+      immutableFile(path.join(root,SYSTEM,'内容库.schema3.bak.json'),original);
+      hook('upgrade4AfterBackup');
+      ensureDirectory(barrier);
+      hook('upgrade4AfterBarrier');
+      if(!read(descriptorPath).equals(original))fail('CONFLICT','Library descriptor changed during upgrade to 4');
+      const stage=path.join(root,`.内容库.schema4-${randomUUID()}`);
+      writeNew(stage,jsonBytes({...parse(original,'内容库.json'),schemaVersion:4}));
+      hook('upgrade4BeforeDescriptorPublish');
+      fs.renameSync(stage,descriptorPath);
+      hook('upgrade4AfterDescriptorPublish');
+      syncDirectory(root);
+    }
+    if(safePath(barrier,true))immutableFile(path.join(barrier,'完成.json'),jsonBytes({schemaVersion:4,libraryId:info.libraryId}));
+  } catch(error) {primaryError=ioError(error);throw primaryError;}
+  finally {try{release();}catch(error){if(!primaryError)throw ioError(error);}}
   return openLibrary(root);
 }
 
@@ -1263,8 +1324,10 @@ function validateBusinessMetadata(meta,kind) {
     for(const item of items){check(plain(item)&&UUID.test(item.id)&&!ids.has(item.id),`${label} IDs`);ids.add(item.id);}
   };
   if(kind==='content') {
-    if(meta.schemaVersion===1){check(!['materials','candidates','selectedCover','plans','publications'].some(key=>Object.hasOwn(meta,key)),'schema-1 extension fields');return;}
+    if(meta.schemaVersion===1){check(!['materials','candidates','selectedCover','plans','publications','coverJobs'].some(key=>Object.hasOwn(meta,key)),'schema-1 extension fields');return;}
     for(const field of ['materials','candidates','plans','publications'])unique(meta[field],field);
+    if(meta.schemaVersion===3)validateCoverJobs(meta,fail);
+    else check(!Object.hasOwn(meta,'coverJobs'),'schema-2 coverJobs');
     for(const item of meta.materials)check(keys(item,['id','assetHash','originalName','role','createdAt'])&&HASH.test(item.assetHash)&&string(item.originalName,true)&&string(item.role)&&iso(item.createdAt),'material');
     for(const item of meta.candidates)check(keys(item,['id','assetHash','requestId','attemptId','template','source','originalName','accepted','createdAt','acceptedAt'])&&HASH.test(item.assetHash)&&string(item.requestId)&&string(item.attemptId)&&(item.template===null||templateRef(item.template))&&typeof item.accepted==='boolean'&&iso(item.createdAt)&&(item.source===undefined||string(item.source))&&(item.originalName===undefined||string(item.originalName,true))&&(item.accepted?iso(item.acceptedAt):item.acceptedAt===undefined),'candidate');
     check(meta.selectedCover===null||keys(meta.selectedCover,['candidateId','assetHash','requestId','attemptId','template','selectedAt']),'selected cover shape');

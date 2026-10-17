@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "ajv": "8.20.0"
+  },
+  "dependencies": {
+    "sharp": "0.35.5"
   }
 }

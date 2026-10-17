@@ -1,6 +1,6 @@
 # 本地文件库：内容 CRUD 首个单元
 
-纯 Node ESM、零新增依赖，供后续 Electron **主进程**和 CLI 共用。已包含内容、资产、照片、提示词、模板版本、候选封面、人工计划和人工发布快照；尚未接入 renderer、真实生成任务或外部发布。这不是完整 P1，也不是 Electron 发行验收。Node 20.11+。
+Node ESM，使用精确锁定的 sharp 0.35.5 完整解码真实生成封面，供后续 Electron **主进程**和 CLI 共用。已包含内容、资产、照片、提示词、模板版本、候选封面、人工计划和人工发布快照；已增加真实封面任务文件核心，尚未接入 renderer 或外部发布。这不是完整 P1，也不是 Electron 发行验收。Node 20.11+。
 
 ```js
 import { createLibrary, openLibrary, upgradeLibrary, LibraryError } from './file-library/index.mjs';
@@ -16,13 +16,13 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 
 ## 接口与返回
 
-所有函数同步执行，会抛出 `LibraryError`；Electron 应在主进程合适的执行上下文调用，不能向 renderer 暴露通用文件或 shell 权限。
+除 `commitCoverAttempt` 返回 Promise 外，函数同步执行；失败会抛出 `LibraryError`；Electron 应在主进程合适的执行上下文调用，不能向 renderer 暴露通用文件或 shell 权限。
 
 | 接口 | 含义 |
 | --- | --- |
 | `createLibrary(root)` | 只接受不存在或为空的目录；不接管已有非空目录 |
 | `openLibrary(root)` | 校验身份、路径、内容，先恢复未完成事务；整库移动后以新路径打开 |
-| `upgradeLibrary(root)` | 显式将旧 schema 1/2 库升级为 schema 3，支持中断后重入；已经是 schema 3 时幂等打开 |
+| `upgradeLibrary(root)` | 显式将旧 schema 1/2/3 库升级为 schema 4，支持中断后重入；已经是 schema 4 时幂等打开 |
 | `library.info` | 冻结的打开时身份快照：`format/schemaVersion/libraryId/createdAt/root/durability`；root 为祖先路径解析后的真实位置，操作会重新核对磁盘身份 |
 | `listContents()` / `listTrash()` | 按 ID 排序的当前内容 / 已删除内容数组 |
 | `readContent(id)` | 读取内容；可读取回收站中的内容 |
@@ -56,7 +56,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
   事务/已提交/<mutationId>/     # 完成后整笔事务原样归档，所有历史字节保留
 ```
 
-根描述文件 `内容库.json` 的 `schemaVersion` 现在是 **3**。旧内容元信息 schema 1 仍可读写；首次使用资料/候选/计划/发布功能的那条内容才更新为 schema 2。新事务意图 schema 2 仅允许 content/prompt/photo/template 四种内部类型；旧 schema 1 意图严格映射为 content，共用相同捕获/安装/恢复引擎，历史原字节不重写。
+根描述文件 `内容库.json` 的 `schemaVersion` 现在是 **4**。旧内容元信息 schema 1 仍可读写；首次使用资料/候选/计划/发布功能的那条内容才更新为 schema 2；首次使用真实封面任务时更新为 schema 3，保留全部旧字段。新事务意图 schema 2 仅允许 content/prompt/photo/template 四种内部类型；旧 schema 1 意图严格映射为 content，共用相同捕获/安装/恢复引擎，历史原字节不重写。
 
 每次读取/变更都拿全库 `mkdir` 锁，锁内重读身份并先恢复事务。仅同机且 `kill(pid, 0)` 明确返回 `ESRCH` 的持有者可回收；活进程、PID 复用、权限未知、异机持有者一律不按年龄抢锁。回收只删除精确旧 token；`unlink` 失败（包含 `ENOENT`）立即停止，只有删除成功者才尝试非递归 `rmdir`。释放也只删除自己的 token。空锁保留并报诊断，不能靠超时猜测它是否安全。
 
@@ -70,7 +70,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 
 ## 旧库的显式升级
 
-`openLibrary` 遇到 schema 1/2 只抛 `UPGRADE_REQUIRED`，不会建目录、备份、恢复或写入旧库。由调用方明确调用 `upgradeLibrary(root)`：
+`openLibrary` 遇到 schema 1/2/3 只抛 `UPGRADE_REQUIRED`，不会建目录、备份、恢复或写入旧库。由调用方明确调用 `upgradeLibrary(root)`：
 
 1. 拿同一全库锁并重新校验身份，将根描述文件**原字节**经 staging 持久发布到 `系统（别动）/内容库.schema1.bak.json`。已有备份必须一致。
 2. 建立 `待恢复` / `已提交` 两个目录作为旧版读写屏障。旧 schema 1 实现见到这些非 UUID 目录会拒绝继续。
@@ -78,7 +78,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 4. 完成事务原样移入已提交；唯一未完成事务移入待恢复、恢复并归档。旧 staging 移入待恢复保留且不执行。每次移动同步父目录。
 5. 确认没有遗留旧事务或未解决 pending 后，最后原子发布只将 schemaVersion 改为 2 的根描述文件，保留其他字段。
 
-升级中断可再次显式调用同一函数继续；schema 3 调用幂等。`内容库.schema1.bak.json` **仅是根描述文件备份，不是整库备份，也不提供安全降级**。schema 1→2 完成后，继续执行专用 2→3 升级：先恢复旧 pending，再持久备份 schema 2 描述文件；在事务根创建 `升级到3/` 屏障，旧 schema 2 的恢复器会拒写；建立新增业务目录；最后原子发布 descriptor 3 并保存完成标记。各阶段均可显式重入。两个描述文件备份都不代表整库备份，不能以换回 descriptor 的方式降级。没有引入通用迁移平台。
+升级中断可再次显式调用同一函数继续。`内容库.schema1.bak.json` **仅是根描述文件备份，不是整库备份，也不提供安全降级**。schema 1→2 完成后，继续执行专用 2→3 升级：先恢复旧 pending，再持久备份 schema 2 描述文件；在事务根创建 `升级到3/` 屏障，旧 schema 2 的恢复器会拒写；建立新增业务目录；最后原子发布 descriptor 3 并保存完成标记。各阶段均可显式重入。描述文件备份都不代表整库备份，不能以换回 descriptor 的方式降级。没有引入通用迁移平台。
 
 ## 错误与诊断
 
@@ -88,7 +88,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 | `CONFLICT` | 读取后被另一调用方/外部编辑器修改，或创建 ID 冲突 |
 | `INVALID_STATE` | 重复删除/恢复，或编辑回收站内容 |
 | `FORMAT_UNSUPPORTED` | 非本产品、未知或较新 schema，禁止写入 |
-| `UPGRADE_REQUIRED` | 旧 schema 1/2 库，需要调用方显式升级，普通打开没有修改 |
+| `UPGRADE_REQUIRED` | 旧 schema 1/2/3 库，需要调用方显式升级，普通打开没有修改 |
 | `UNSAFE_PATH` | 符号链接或非预期文件/目录类型 |
 | `NOT_EMPTY` | 新建目标已有数据，拒绝接管 |
 | `BUSY` | 活锁、异机锁、无法证实死亡，或回收时锁变化 |
@@ -115,7 +115,7 @@ Mac / POSIX 使用文件与目录 `fsync`、同卷 `rename` 和硬链接，`info
 
 定向 I/O 测试覆盖 30 次编辑后冷启动与连续 read：已提交历史内容读取次数为 0；query 只读取目标事务的 intent 和 COMMITTED。列表仍读取全部当前内容，待恢复目录仍需枚举 staging；大规模内容列表、海量 staging、高频编辑与商业性能验收尚未完成，不将本次减少历史 I/O 等同于大库整体性能达标。
 
-已验证范围仅当前 Mac 开发机临时目录、文件导入和进程崩溃，不等于断电/磁盘硬件持久化测试。Windows、网络盘、云同步盘、恶意路径替换、Electron IPC/UI、WorkBuddy/Codex 接入、安装发行、大库性能及真实生图/任务回流等剩余 P1 闭环尚未验收。
+已验证范围仅当前 Mac 开发机临时目录、文件导入和进程崩溃，不等于断电/磁盘硬件持久化测试。Windows、网络盘、云同步盘、恶意路径替换、Electron IPC/UI、WorkBuddy/Codex 真实生图接入、安装发行、大库性能及其余 P1 闭环尚未验收。
 
 ## 照片、提示词和资产接口
 
@@ -136,7 +136,7 @@ Mac / POSIX 使用文件与目录 `fsync`、同卷 `rename` 和硬链接，`info
 
 purpose 为 `photo/material/template-reference/template-structure/generated-cover`。单文件最大 64 MiB，以 64 KiB 分块复制并计算 SHA256，源文件读前/后身份和时间戳不一致则停止。完整暂存刷盘后以独占 link 安装到 `资产/sha256/<前两位>/<完整hash>`；同 hash 已存在必须字节一致才复用。调用方文件名不参与库内路径，原名和角色只留在引用中。
 
-类型只由字节决定，与源扩展名无关。支持 PNG/JPEG/WebP/GIF、PDF、UTF-8 文本；可明确解析为 JSON 的对象/数组规范识别为 application/json，Markdown/CSV/普通文本统一为 text/plain。SVG 仅在 template-structure 用途导入，仅作为原始结构说明，不执行；photo/template-reference/generated-cover 要求 raster 图片。`decoded:false` 明确表示只检查类型特征和完整原字节，未做像素解码、图片质量或人像识别。真实生成回流仍需后续真实解码和质量验收。
+类型只由字节决定，与源扩展名无关。支持 PNG/JPEG/WebP/GIF、PDF、UTF-8 文本；可明确解析为 JSON 的对象/数组规范识别为 application/json，Markdown/CSV/普通文本统一为 text/plain。SVG 仅在 template-structure 用途导入，仅作为原始结构说明，不执行；photo/template-reference/generated-cover 要求 raster 图片。`decoded:false` 明确表示只检查类型特征和完整原字节，未做像素解码、图片质量或人像识别。此旧导入接口保持 header 检测；真实生成回流走下面的任务提交接口，强制完整解码，视觉质量仍需人工确认。
 
 资产先安装，引用后通过单对象事务提交；失败最多留下未引用资产/暂存，不宣称逻辑对象创建成功。首版不提供物理 GC，不删除历史 bytes。
 
@@ -176,3 +176,50 @@ definition 按调用方的有限 JSON 数据原样保存，包括旧 v3 来源�
 发布快照在 `内容/<id>/发布快照/<publicationId>/` 中包含 `快照.json` 和原字节 `正文.md`；固定标题/修订、计划、发布时间、封面 assetHash 和模板版本/packageHash。后续改稿、换封面、删除照片/模板记录均不改历史。快照先安装、引用后提交，故障可能留无引用快照，不产生假发布事实。它不调用外部平台，不代表已执行自动发布或实际生图。
 
 扩展元信息在业务层校验每个条目、ID 唯一性、当前模板版本、候选/selectedCover 的内容归属、计划/发布对应关系；伪造选择、null/重复条目会拒读和拒写。事务校验禁止 content schema 2 倒退到 1；trash/restore 只允许 revision/updatedAt/deletedAt 变化，不能夹带正文或其他业务字段变化。
+
+
+## 真实封面任务文件核心
+
+`createCoverRequest(contentId, input, editToken, options?)` 固定输入并返回 `{content, request, bodyBytes}`；`request.requestId` 和 `request.requestHash` 是后续交接的唯一身份。`input` 必须完整给出：
+
+```js
+{
+  template: {id: '模板ID', version: 1},
+  styleAssetHashes: ['本次选入该模板版本的style样张SHA256'],
+  photo: null, // 或 {id, assetHash}；该照片必须 isOwnPhoto:true
+  materialIds: [],
+  prompt: '用户实际选择的提示文字',
+  pixels: {width: 1200, height: 1600}, ratio: '3:4',
+  count: 10, outputFormat: 'png', scope: 'cover-only'
+}
+```
+
+尺寸非空、正整数、上限四千万像素，ratio 必须与尺寸精确一致；count 为 1–20，格式只允许 png/jpeg/webp。模板样张人物不作为本人身份来源；必须明确传 photo:null 才表示这次不放人物。协议 `nova-cover-execution`、版本 1、appScope `nova-content-hub` 由核心固定。内容标题、正文原字节 hash、模板版本/packageHash/definition、本次选入样张、本人照声明引用、选入资料与提示都进入固定包；图片和资料原字节复制到包内。GUI 可默认整组，但核心只要求选入非空、唯一且属于该准确模板版本的 style 样张；未选择样张及结构资源不自动发送给宿主。相同固定输入重用既有 request，重试或换宿主须新建 attempt；变化输入新建 request。
+
+| 方法 | 返回与约束 |
+| --- | --- |
+| `createCoverAttempt(contentId, requestId, {host,reason?}, options?)` | `{content,attempt,handoff,inbox}`，host 仅 codex/workbuddy；新 attempt 在一笔内容事务中只 supersede 同 request 的旧活跃 attempt，不影响其他尺寸的 request；交接包 sourceAttemptId 保存接续来源，不表示恢复聊天 |
+| `readCoverContext(contentId, requestId, attemptId)` | `{content,request,attempt,handoff,body,bodyBytes,inbox,inputs}`；inputs 含 role/assetHash/bytes/detectedType/path。paths 全由绑定库根推导，读取会重核包与输入字节 |
+| `claimCoverAttempt(contentId, requestId, attemptId, {host,readAssetHashes}, options?)` | `{content,attempt}`；核对全部输入 hash 声明和宿主归属，状态只变为 claimed。声明本身不证明宿主真正看过图 |
+| `await commitCoverAttempt(contentId, requestId, attemptId, receipt)` | `{content,attempt,candidateIds}`；receipt 可传原始 Buffer 保留精确 JSON 字节或对象；核心独立校验，不接受调用方 report |
+| `failCoverAttempt(contentId, requestId, attemptId, {code,message}, options?)` | `{content,attempt}`，只结束对应活跃 attempt |
+| `cancelCoverAttempt(contentId, requestId, attemptId, options?)` | `{content,attempt}`，已取消/失败/superseded/committed 不再提交 |
+
+回执严格字段为 `{libraryId,contentId,requestId,attemptId,requestHash,resultId,files:[{name,sha256}]}`，resultId 为 UUIDv4，sha256 为文件原字节 hash。只接受固定 inbox 内 basename，拒绝 URL、绝对路径、穿越、Windows 保留名、symlink 和未知字段；不能传任意路径、报告或 decoded:true。每图最多 64 MiB，整批最多 512 MiB。核心把稳定原字节复制到不可变收件现场，再按同一 bytes 做 PNG/JPEG/WebP magic 筛选和 sharp strict `failOn:warning` 全量 raw 像素解码，拒绝动画、截断和错误格式；按 EXIF 方向核对显示尺寸，不缩放、不重编码原文件。输出报告固定实际 format/width/height/hash/bytes/decoded:true，缺少 decoder 则 `DECODER_UNAVAILABLE`。
+
+打开句柄绑定根目录 dev/ino，同 libraryId 的克隆目录也不能在调用中替换当前根；移动后须显式重开。核心先在短锁中核对身份、固定包和幂等回执，然后释放锁复制并顺序解码；最终私有业务变更在同一既有同步库锁中读取最新内容，重核 claim/活跃 attempt、标题、正文 hash、包完整性，安装全部资产与报告后，复用原 finite content 事务一次登记全部候选及 committed 状态。不会因 claim 或其他元信息 revision 改变而误报正文过期。解码期间修改输入报 STALE_INPUT；取消、重试、换宿主后的迟到收件保留但不登记。失败不部分登记候选；资产先安装、事务前崩溃可能留下未引用资产，重试可复用。相同原始回执 bytes 幂等返回既有候选，即使 inbox 源文件已删除；已 committed 的同 attempt 不同回执报 RECEIPT_CONFLICT；技术验证失败仅保留对应回执/失败报告，attempt 仍为 claimed，可修正问题重交，或显式 fail/cancel/新建 attempt。技术通过不会自动选封面或将 accepted 设为 true。
+
+```text
+内容/<contentId>/封面任务/<requestId>/
+  请求.json / 正文.md / 输入/<assetHash>   # 不可变固定包
+  尝试/<attemptId>/
+    交接.json                            # 不可变
+    inbox/<用户交回的basename>            # 不可信收件入口
+    收件/<receiptHash>/
+      回执.json / 图片-<index> / 校验报告.json
+      拒绝-<reportHash>.json              # 失败或迟到诊断，保留现场
+```
+
+唯一可变任务真源在内容 `coverJobs` 引用和有限状态内；不另建任务 registry 或 journal。候选和 selectedCover 历史不因新任务清除。库 3→4 显式升级先恢复旧 pending、备份 schema3 descriptor、持久创建 `事务/升级到4/` 屏障，最后发布 descriptor4 并保存完成标记；旧 schema3 writer 即使误换回 descriptor3，也因不认识屏障而拒写。升级阶段可重入，内容 schema 不倒退；备份仍仅是根描述文件，不提供安全降级。
+
+`node --test file-library/test/*.test.mjs` 包含正常整批、失败矩阵、真实解码/EXIF、稳定收件、解码期间状态竞争、幂等与 SIGKILL 后恢复证据。当前实测是 macOS 开发机上的核心文件能力；不代替 Windows、两个宿主真实看图/生成、Electron、正式授权、安装/升级发行、断电和商用性能验收。
