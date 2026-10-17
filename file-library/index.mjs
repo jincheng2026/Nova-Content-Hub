@@ -468,8 +468,7 @@ function fields(value, patch = false) {
   return { ...(Object.hasOwn(value, 'title') ? { title: value.title } : {}), ...(Object.hasOwn(value, 'body') ? { body: value.body } : {}) };
 }
 
-function library(root, initialInfo) {
-  const rootIdentity = fs.lstatSync(root, {bigint:true});
+function library(root, initialInfo, rootIdentity) {
   function assertRootIdentity() {
     directory(root);
     const current = fs.lstatSync(root, {bigint:true});
@@ -615,7 +614,7 @@ function library(root, initialInfo) {
       text, id, objectId, checkedHash, templatePackage, fail, LibraryError,
     }),
     ...modelMethods({root,locked,mutate,list,snapshot,result,metadata,hash,jsonBytes,read,safePath,directory,ensureDirectory,writeNew,syncDirectory,hook,inputFields,text,id,objectId,checkedHash,templatePackage,readAssetInternal,fail}),
-    info: Object.freeze({ ...initialInfo, root, durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync' }),
+    info: Object.freeze({ ...initialInfo, root, rootIdentity: Object.freeze({dev:rootIdentity.dev.toString(),ino:rootIdentity.ino.toString()}), durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync' }),
     listContents: () => list(false),
     listTrash: () => list(true),
     readContent: contentId => locked(() => result(snapshot(root, id(contentId)), contentId)),
@@ -769,10 +768,25 @@ export function createLibrary(root) {
   } catch (error) { throw ioError(error); }
 }
 
-export function openLibrary(root) {
+export function openLibrary(root, options) {
   try {
+    let expected;
+    if (options !== undefined) {
+      const exact = (value, keys) => object(value) && Reflect.ownKeys(value).length === keys.length && keys.every(key => Object.hasOwn(value,key));
+      const decimal = value => typeof value === 'string' && /^(0|[1-9][0-9]*)$/.exec(value)?.[0] === value;
+      if (!exact(options,['expectedLibraryId','expectedRootIdentity']) ||
+          typeof options.expectedLibraryId !== 'string' || options.expectedLibraryId.length !== 36 || !UUID.test(options.expectedLibraryId) ||
+          !exact(options.expectedRootIdentity,['dev','ino']) ||
+          !decimal(options.expectedRootIdentity.dev) || !decimal(options.expectedRootIdentity.ino)) fail('INVALID_INPUT','Expected exact library ID and decimal root identity');
+      expected = {libraryId:options.expectedLibraryId,dev:BigInt(options.expectedRootIdentity.dev),ino:BigInt(options.expectedRootIdentity.ino)};
+    }
     root = canonicalRoot(root);
-    const handle = library(root, descriptor(root));
+    const openingIdentity = fs.lstatSync(root, {bigint:true});
+    if (expected && (openingIdentity.dev !== expected.dev || openingIdentity.ino !== expected.ino)) fail('CONFLICT','Selected library root identity changed');
+    const info = descriptor(root);
+    if (expected && info.libraryId !== expected.libraryId) fail('CONFLICT','Selected library ID changed');
+    hook('afterOpenValidation', {root});
+    const handle = library(root, info, openingIdentity);
     // Opening never exposes a half-committed content pair.
     handle.listContents();
     handle.readLibrarySettings();
@@ -1464,7 +1478,7 @@ function interruptRestoredAttempts(meta, now) {
 }
 
 function validateRestoredLibrary(root, info) {
-  const api = info.schemaVersion === 4 ? contentBusinessMethods(root, fn => fn(), () => fail('INVALID_STATE','Restore validation is read-only')) : library(root, info);
+  const api = info.schemaVersion === 4 ? contentBusinessMethods(root, fn => fn(), () => fail('INVALID_STATE','Restore validation is read-only')) : library(root, info, fs.lstatSync(root, {bigint:true}));
   for (const [kind, spec] of Object.entries(KINDS)) {
     if (info.schemaVersion < 5 && ['workspace','collection'].includes(kind)) continue;
     for (const name of fs.readdirSync(path.join(root,spec.directory)).sort()) {

@@ -1,0 +1,14 @@
+✔ expected root identity rejects a same-ID full clone before pending recovery (229.2225ms)
+✔ expected library ID rejects a different library at the selected path before pending recovery (320.394708ms)
+✔ expected identity opens and recovers; identity projection is deeply frozen and old API stays compatible (370.466709ms)
+✔ root identity captured for opening cannot be refreshed by a same-ID replacement before recovery (213.435584ms)
+✔ opening options require exact UUID and canonical nonnegative decimal strings (107.514333ms)
+✔ opening root identity preserves BigInt precision above the safe integer range (148.671833ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1457.52025
