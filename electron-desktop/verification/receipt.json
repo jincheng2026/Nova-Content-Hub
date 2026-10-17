@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-17",
+  "platform": "darwin",
+  "arch": "arm64",
+  "developmentNode": "24.20.0",
+  "electron": "44.9.0",
+  "binary": {
+    "source": "https://github.com/electron/electron/releases/download/v44.9.0/electron-v44.9.0-darwin-arm64.zip",
+    "sha256": "12d873a5ae98a6598e730402e9278c5d132e97ea1a4405a7713bec2a3e83921f",
+    "matchedExactNpmPackageChecksums": true,
+    "installation": "npm package installed; its Node fetch failed; curl retrieved the official release; checksum verified before extraction"
+  },
+  "nodeTests": { "command": "npm test --prefix electron-desktop", "passed": 13, "failed": 0, "log": "node-test.log" },
+  "electronProbe": {
+    "command": "npm run probe --prefix electron-desktop",
+    "exitCode": 0,
+    "log": "electron-probe.log",
+    "actualProcesses": 2,
+    "passed": ["actual application window/protocol/preload/IPC setup", "sandbox/context isolation/no renderer Node", "real utility process browser import and native image decoding", "malicious title/body rendered as text without script nodes or execution", "new Electron process reloads same machine binding and import task", "source JSON removed before reopen", "committed resume preserves normal post-import body edit"],
+    "notCovered": ["human visual interaction", "real system dialog selection", "Windows", "signed distribution", "install/upgrade/uninstall", "production authorization", "Codex and WorkBuddy four-combination live generation"]
+  }
+}

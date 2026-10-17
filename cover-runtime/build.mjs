@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const args = process.argv.slice(2);
@@ -17,8 +18,24 @@ for (const mode of modes) {
   const target = path.join(root, 'dist-cover-runtime', `auth-${mode}`);
   fs.rmSync(target, { recursive: true, force: true });
   fs.mkdirSync(path.join(target, 'cover-runtime'), { recursive: true });
-  for (const name of ['file-library', 'image-validation', 'library-maintenance']) {
+  for (const name of ['file-library', 'image-validation', 'library-maintenance', 'browser-import']) {
     fs.cpSync(path.join(root, name), path.join(target, name), { recursive: true, filter: source => path.basename(source) !== 'test' });
+  }
+  // Import validation executes only these trusted prototype modules, never data.js or source scripts.
+  for (const relative of ['core.js', 'builtin-templates.js', 'shared/handoff.js']) {
+    const destination = path.join(target, '原型', relative);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.copyFileSync(path.join(root, '原型', relative), destination);
+  }
+  const importCatalog = JSON.parse(fs.readFileSync(path.join(root, 'browser-import/builtin-resources.json'), 'utf8'));
+  if (importCatalog.format !== 'nova-browser-import-builtin-resources' || importCatalog.schemaVersion !== 1 || !importCatalog.entries) throw new Error('Unsupported import resource catalog');
+  for (const [relative, entry] of Object.entries(importCatalog.entries)) {
+    if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
+    const bytes = fs.readFileSync(path.join(root, '原型', relative));
+    if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
+    const destination = path.join(target, '原型', relative);
+    fs.mkdirSync(path.dirname(destination), { recursive: true });
+    fs.writeFileSync(destination, bytes, { flag: 'wx' });
   }
   fs.copyFileSync(path.join(root, 'cover-runtime', 'cli.mjs'), path.join(target, 'cover-runtime', 'cli.mjs'));
   fs.cpSync(path.join(root, 'cover-runtime', 'skills'), path.join(target, 'cover-runtime', 'skills'), { recursive: true });

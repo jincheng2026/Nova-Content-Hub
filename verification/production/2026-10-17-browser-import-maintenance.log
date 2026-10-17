@@ -1,0 +1,17 @@
+
+> nova-content-hub-prototype@0.2.0 test:maintenance
+> node --test library-maintenance/test/*.test.mjs
+
+✔ maintenance command rejects malformed arguments before touching the chosen library (348.818ms)
+✔ standalone required bundle imports a browser backup, resolves bundled bytes and reuses its durable operation (11362.047625ms)
+✔ standalone disabled bundle imports a browser backup, resolves bundled bytes and reuses its durable operation (6804.952917ms)
+✔ standalone required bundle backs up and restores user files without generation authorization (1358.329042ms)
+✔ standalone disabled bundle backs up and restores user files without generation authorization (1306.139042ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21470.061084
