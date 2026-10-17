@@ -136,6 +136,7 @@ export function coverJobMethods(h) {
     if (input.photo !== null) {
       inputFields(input.photo, ['id', 'assetHash'], ['id', 'assetHash']);
       const photoMeta = metadata(snapshot(root, id(input.photo.id), 'photo')[0], input.photo.id, 'photo');
+      if (photoMeta.availability === 'unavailable') fail('INVALID_INPUT', 'Selected photo is unavailable; resolve it before generation');
       if (photoMeta.deletedAt || photoMeta.isOwnPhoto !== true || photoMeta.assetHash !== input.photo.assetHash) fail('INVALID_INPUT', 'Photo must be explicitly declared as the user own photo and match the selected hash');
       photo = { id: photoMeta.id, assetHash: photoMeta.assetHash };
       include(photo.assetHash, 'own-photo', { photoId: photo.id });
@@ -145,6 +146,7 @@ export function coverJobMethods(h) {
       id(materialId);
       const item = (meta.materials || []).find(entry => entry.id === materialId);
       if (!item) fail('INVALID_INPUT', 'Unknown selected content material');
+      if (item.deletedAt || (meta.unavailableReferences || []).some(entry => (entry.id === materialId || entry.resolvedObjectId === materialId) && entry.deletedAt)) fail('INVALID_INPUT', 'Selected content material is trashed');
       include(item.assetHash, 'material', { materialId });
       return { id: item.id, assetHash: item.assetHash, originalName: item.originalName, role: item.role };
     });

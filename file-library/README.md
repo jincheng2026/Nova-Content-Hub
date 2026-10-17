@@ -278,7 +278,21 @@ COMPLETE.json                 # 最后独占 link 发布，绑定 manifestHash +
 | `addCustomRatio/removeCustomRatio(ratio,token,options?)` | 约分存储，例如 6:8 → 3:4；去重 |
 | `setPromptEnabled(promptId,enabled,token,options?)` | enabled 与软删除分离，旧提示词编辑后默认 enabled:true |
 
-正常设置仍严格要求 active 本人照/模板；导入旧来源的已失效默认引用必须用专用 restoreGenerationDefaultReferences，不能临时伪设本人声明或复活对象。默认 photoId/templateId 失效时不改选，`defaultIssues` 含 `{field,id,reason:'missing'|'trashed'|'ownership-revoked'}`。用户撤销本人声明仍保留引用。配置默认值仅影响将来的 GUI 输入，生成请求依然逐次明确固定。内置五渠道 ID 为 douyin/xiaohongshu/wechat-channels/wechat-official/bilibili；比例 3:4/1:1/3:4/47:20/16:9 是产品可编辑初值，未核实为平台强制像素要求。host/showSample/motion/最近库路径、安装/信任/授权演示状态不进入 workspace。
+正常设置仍严格要求 active、available 本人照/模板；导入旧来源的已失效默认引用必须用专用 restoreGenerationDefaultReferences，不能临时伪设本人声明或复活对象。默认 photoId/templateId 失效时不改选，`defaultIssues` 含 `{field,id,reason:'missing'|'trashed'|'unavailable'|'ownership-revoked'}`。用户撤销本人声明仍保留引用。配置默认值仅影响将来的 GUI 输入，生成请求依然逐次明确固定。profile.marks 保留有序 `{key,value}` 数组，允许相同 key 的不同记录。内置五渠道 ID 为 douyin/xiaohongshu/wechat-channels/wechat-official/bilibili；比例 3:4/1:1/3:4/47:20/16:9 是产品可编辑初值，未核实为平台强制像素要求。host/showSample/motion/最近库路径、安装/信任/授权演示状态不进入 workspace。
+
+## 导入照片的可用状态
+
+`createUnavailablePhoto({title,isOwnPhoto,originalName?,source,reason},{mutationId}?)` 同步创建照片 schema2：`availability:'unavailable',assetHash:null`。source 必须是有限来源 `{source,originalId?,note?}`，reason 是非空文字；本人声明必须明确 boolean。照片目录仍是唯一真源，正常 read/list/update/trash/restore 均支持缺文件照片。`readPhoto/listPhotos/listPhotoTrash` 为 schema1 返回 `availability:'available'` 读取投影，不改 schemaVersion、元数据原字节或事务历史；queryMutation 保留旧历史返回形状。
+
+`await resolvePhoto(photoId,{assetHash},token,{mutationId}?)` 在库锁之外用 [导入栅格校验](../image-validation/README.md) 完整解码已导入资产，再在短事务内重新校验 token 和资产 hash。只接受 schema2 unavailable；保留原 ID、标题、本人声明、来源、缺失原因和 deletedAt，包括仍在回收站的照片，不自动恢复或设默认。使用独立 resolve-photo 事务操作，mutationId 重试返回原历史结果。schema2 的 updatePhoto 只改描述/本人声明，不能借 assetHash 绕过完整解码。旧 createPhoto/updatePhoto 的 schema1 同步收件语义保持兼容；浏览器导入必须使用 unavailable→resolve 路径。
+
+不可用照片不能设为正常生成默认项，createCoverRequest 明确拒绝它；不会等 null hash 在深层偶然失败。备份恢复不遍历 unavailable 的 null 资产，但对 available 校验真实原文件。schema4 恢复拒绝 photo2 元数据及 pending/history 中的任一 before/after photo2；pending 在恢复写入前拒绝。静态封面结果的 validateImage receipt 协议未放宽。
+
+## 资料和缺失引用的软删除
+
+`trashContentMaterial/restoreContentMaterial(contentId,materialId,token,options?)` 与 `trashCollectionMaterial/restoreCollectionMaterial` 保留真实资料 ID、资产与字段，只改变条目可选 deletedAt；缺字段或 null 为 active。`trashContentUnavailableReference/restoreContentUnavailableReference(contentId,referenceId,token,options?)` 与 Collection 对应方法对缺失引用提供同样状态。新内容变更升级到 content schema4；旧 removeMaterial 仍按原语义移除数组条目。正常读取保留完整数组，由 deletedAt 区分状态，无额外目录或照片副本。
+
+补齐一个已回收引用保留其 deletedAt。引用与补齐后的真实 material 各自恢复；任意一方仍被回收，资料不能用于新 createCoverRequest。已回收 candidate 引用不能再设为当前选图、规格或发布封面；历史请求/发布快照仍按原 bytes/hash 读取，纠正文案保留原冻结封面的语义不变。
 
 `createContent/updateContent` 另接受 `recordedDate/plannedDate`（严格 YYYY-MM-DD 或 null）、`preferredTemplateId`（ID 或 null）、`channelIds`（active 渠道 ID 数组）、`isExample`（boolean）。createdAt 仍为本文件对象建立时间。基础正文独立，不从渠道文案拼接。
 

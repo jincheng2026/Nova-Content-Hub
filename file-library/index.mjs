@@ -6,6 +6,7 @@ import { isDeepStrictEqual } from 'node:util';
 import { coverJobMethods, validateCoverJobs } from './cover-jobs.mjs';
 import { backupMethods } from './backup.mjs';
 import { modelMethods, modelDefaults, validateModelMetadata } from './model-v5.mjs';
+import { validateImportedRaster } from '../image-validation/index.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
@@ -54,6 +55,9 @@ function id(value) {
 }
 
 function object(value) { return value && typeof value === 'object' && !Array.isArray(value); }
+function validPhotoSource(value) {
+  return object(value) && Object.keys(value).every(key=>['source','originalId','note'].includes(key)) && typeof value.source==='string' && !!value.source.trim() && value.source.length<=10000 && ['originalId','note'].every(key=>value[key]===undefined || typeof value[key]==='string' && (key==='note' || !!value[key].trim()) && value[key].length<=10000);
+}
 function date(value) { return typeof value === 'string' && new Date(value).toISOString() === value; }
 
 function parse(bytes, label) {
@@ -76,7 +80,7 @@ function objectId(kind, value) {
 
 function metadata(bytes, objectIdValue, kind = 'content') {
   const meta = parse(bytes, KINDS[kind].files[0]);
-  const supported = (kind === 'content' && [2,3,4].includes(meta?.schemaVersion) || kind === 'prompt' && meta?.schemaVersion === 2) ? meta.schemaVersion : 1;
+  const supported = (kind === 'content' && [2,3,4].includes(meta?.schemaVersion) || ['prompt','photo'].includes(kind) && meta?.schemaVersion === 2) ? meta.schemaVersion : 1;
   format(meta, KINDS[kind].format, KINDS[kind].files[0], supported);
   let validDates = false;
   try { validDates = date(meta.createdAt) && date(meta.updatedAt) && (meta.deletedAt === null || date(meta.deletedAt)); } catch {}
@@ -299,7 +303,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   const kind = legacy ? 'content' : intent?.objectKind;
   const targetId = legacy ? intent.contentId : intent?.objectId;
   if (!object(intent) || ![1, 2, 3].includes(intent.schemaVersion) || !Object.hasOwn(KINDS, kind) || (intent.schemaVersion < 3 && ['workspace','collection'].includes(kind)) || intent.libraryId !== libraryId || intent.mutationId !== mutationId ||
-      !['create', 'update', 'trash', 'restore', 'restore-interrupted'].includes(intent.operation) ||
+      !['create', 'update', 'trash', 'restore', 'restore-interrupted', 'resolve-photo'].includes(intent.operation) ||
       !HASH.test(intent.requestDigest) || !Array.isArray(intent.before) || intent.before.length !== KINDS[kind].files.length ||
       !Array.isArray(intent.after) || intent.after.length !== KINDS[kind].files.length || Object.keys(intent).some(key => !['schemaVersion', 'libraryId', 'mutationId', ...(legacy ? ['contentId'] : ['objectKind', 'objectId']), 'operation', 'requestDigest', 'before', 'after'].includes(key))) fail('CORRUPT', 'Invalid transaction plan');
   try { objectId(kind, targetId); } catch { fail('CORRUPT', 'Invalid transaction object ID'); }
@@ -307,21 +311,25 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
   const after = intent.after.map(unpack);
   if (after.some(bytes => bytes === null) || (intent.operation === 'create' ? before.some(bytes => bytes !== null) : before.some(bytes => bytes === null))) fail('CORRUPT', 'Invalid transaction file set');
   const next = metadata(after[0], targetId, kind);
+  if (intent.operation === 'resolve-photo' && kind !== 'photo') fail('CORRUPT', 'Resolve-photo requires a photo');
   if (intent.operation === 'create') {
     if (next.revision !== 1 || next.deletedAt !== null) fail('CORRUPT', 'Invalid create plan');
   } else {
     const old = metadata(before[0], targetId, kind);
-    if (['content','prompt'].includes(kind) && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
+    if (['content','prompt','photo'].includes(kind) && next.schemaVersion<old.schemaVersion) fail('CORRUPT','Content schema cannot regress');
     if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
     if (intent.operation === 'restore-interrupted') {
       if (kind !== 'content' || !old.coverJobs?.some(job => job.attempts.some(attempt => ['created','claimed'].includes(attempt.status)))) fail('CORRUPT','Invalid restore interruption');
       const expected = interruptRestoredAttempts(old, next.updatedAt);
       if (!isDeepStrictEqual(next, {...expected, revision: old.revision + 1, updatedAt: next.updatedAt}) || !equal(before[1],after[1])) fail('CORRUPT','Restore interruption changed unrelated data');
+    } else if (intent.operation === 'resolve-photo') {
+      const expected = {...old, assetHash:next.assetHash, availability:'available', revision:old.revision+1, updatedAt:next.updatedAt};
+      if (old.schemaVersion !== 2 || old.availability !== 'unavailable' || !isDeepStrictEqual(next,expected)) fail('CORRUPT','Photo resolution changed unrelated data');
     } else if (intent.operation !== 'update') {
       const business=record=>Object.fromEntries(Object.entries(record).filter(([key])=>!['revision','updatedAt','deletedAt'].includes(key)));
       if (!isDeepStrictEqual(business(old),business(next))) fail('CORRUPT','Trash/restore cannot change business fields');
     }
-    if (!['update','restore-interrupted'].includes(intent.operation) && ((before[1] && !before[1].equals(after[1])) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
+    if (!['update','restore-interrupted','resolve-photo'].includes(intent.operation) && ((before[1] && !before[1].equals(after[1])) || old.title !== next.title)) fail('CORRUPT', 'Invalid trash/restore plan');
     if ((intent.operation === 'trash' && (old.deletedAt !== null || next.deletedAt === null)) ||
         (intent.operation === 'restore' && (old.deletedAt === null || next.deletedAt !== null)) ||
         (intent.operation === 'update' && (old.deletedAt !== null || next.deletedAt !== null))) fail('CORRUPT', 'Invalid state transition');
@@ -545,7 +553,7 @@ function library(root, initialInfo) {
       } else {
         const current = result(before, contentId, undefined, kind);
         if (!currentRevision && current.editToken !== expectedToken) fail('CONFLICT', 'Content changed; read again before retrying');
-        if ((operation === 'restore') !== (current.deletedAt !== null)) fail('INVALID_STATE', 'Content is already in the requested state or is trashed');
+        if (operation !== 'resolve-photo' && (operation === 'restore') !== (current.deletedAt !== null)) fail('INVALID_STATE', 'Content is already in the requested state or is trashed');
         meta = { ...metadata(before[0], contentId, kind), revision: current.revision + 1, updatedAt: now };
         if (operation === 'trash') meta.deletedAt = now;
         if (operation === 'restore') meta.deletedAt = null;
@@ -1007,11 +1015,37 @@ function businessMethods(root, locked, mutate, list) {
   function photoEdit(input, creating) {
     return meta => {
       const next = { ...(creating ? { originalName:'' } : {}), ...meta, ...input };
+      if (meta.schemaVersion === 2 && input.assetHash !== undefined) fail('INVALID_INPUT','Use resolvePhoto to fully validate an unavailable photo asset');
+      if (meta.schemaVersion === 2 && meta.availability === 'unavailable') {
+        return next;
+      }
       const asset = readAssetInternal(root,next.assetHash);
       if (!['image/png','image/jpeg','image/gif','image/webp'].includes(asset.detectedType)) fail('INVALID_INPUT', 'Photo must reference a raster image');
       return next;
     };
   }
+  function createUnavailablePhoto(raw, options) {
+    const input = inputFields(raw,['title','isOwnPhoto','originalName','source','reason'],['title','isOwnPhoto','source','reason']);
+    photoInput({title:input.title,isOwnPhoto:input.isOwnPhoto,...(input.originalName === undefined ? {} : {originalName:input.originalName})},true);
+    text(input.reason,'reason');
+    if (!validPhotoSource(input.source)) fail('INVALID_INPUT','Photo source must contain source and optional originalId/note');
+    return mutate('create',null,input,null,options,'photo',meta=>({...meta,schemaVersion:2,...input,originalName:input.originalName??'',availability:'unavailable',assetHash:null}));
+  }
+  async function resolvePhoto(photoId, raw, token, options) {
+    id(photoId);
+    const input = inputFields(raw,['assetHash'],['assetHash']);
+    const mutationOptions = inputFields(options === undefined ? {} : options,['mutationId']);
+    if (mutationOptions.mutationId !== undefined) id(mutationOptions.mutationId);
+    checkedHash(input.assetHash);
+    const asset = locked(()=>readAssetInternal(root,input.assetHash));
+    await validateImportedRaster(asset.data);
+    return mutate('resolve-photo',photoId,input,token,mutationOptions,'photo',meta=>{
+      if (meta.schemaVersion !== 2 || meta.availability !== 'unavailable') fail('INVALID_STATE','Only unavailable photos can be resolved');
+      readAssetInternal(root,input.assetHash);
+      return {...meta,assetHash:input.assetHash,availability:'available'};
+    });
+  }
+  const photoProjection = record => record.schemaVersion === 1 ? {...record,availability:'available'} : record;
   function readTemplate(templateId, version) {
     return locked(() => {
       const record = result(snapshot(root,objectId('template',templateId),'template'),templateId,undefined,'template');
@@ -1084,10 +1118,12 @@ function businessMethods(root, locked, mutate, list) {
     trashPrompt: (promptId,token,options) => changeState('prompt','trash',promptId,token,options),
     restorePrompt: (promptId,token,options) => changeState('prompt','restore',promptId,token,options),
     createPhoto: (raw,options) => { const input=photoInput(raw,false); return mutate('create',null,input,null,options,'photo',photoEdit(input,true)); },
+    createUnavailablePhoto,
+    resolvePhoto,
     updatePhoto: (photoId,raw,token,options) => { const input=photoInput(raw,true); return mutate('update',photoId,input,token,options,'photo',photoEdit(input,false)); },
-    readPhoto: photoId => readObject('photo',photoId),
-    listPhotos: () => list(false,'photo'),
-    listPhotoTrash: () => list(true,'photo'),
+    readPhoto: photoId => photoProjection(readObject('photo',photoId)),
+    listPhotos: () => list(false,'photo').map(photoProjection),
+    listPhotoTrash: () => list(true,'photo').map(photoProjection),
     trashPhoto: (photoId,token,options) => changeState('photo','trash',photoId,token,options),
     restorePhoto: (photoId,token,options) => changeState('photo','restore',photoId,token,options),
     createTemplate: (raw,options) => createTemplate(raw,options),
@@ -1408,7 +1444,11 @@ function validateBusinessMetadata(meta,kind) {
     check(string(meta.category,true)&&string(meta.when,true)&&string(meta.summary,true)&&Array.isArray(meta.tags)&&meta.tags.every(tag=>string(tag))&&new Set(meta.tags).size===meta.tags.length,'prompt fields');
     check(meta.builtinKey===null||string(meta.builtinKey),'builtin key');check(meta.provenance===null||plain(meta.provenance),'provenance');
   }
-  if(kind==='photo')check(HASH.test(meta.assetHash)&&typeof meta.isOwnPhoto==='boolean'&&string(meta.originalName,true),'photo fields');
+  if(kind==='photo'){
+    check(typeof meta.isOwnPhoto==='boolean'&&string(meta.originalName,true),'photo fields');
+    if(meta.schemaVersion===1)check(HASH.test(meta.assetHash),'photo asset');
+    else check(validPhotoSource(meta.source)&&string(meta.reason)&&(meta.availability==='available'?HASH.test(meta.assetHash):meta.availability==='unavailable'&&meta.assetHash===null),'photo availability');
+  }
   if(kind==='template'){
     check(typeof meta.builtin==='boolean'&&meta.builtin===BUILTIN.test(meta.id)&&Array.isArray(meta.versions)&&meta.versions.length>0,'template identity');
     const versions=new Set();
@@ -1434,8 +1474,8 @@ function validateRestoredLibrary(root, info) {
         unregisteredTemplate(read(path.join(root,spec.directory,name,'未登记.json')),name); continue;
       }
       const meta = metadata(snapshot(root,name,kind)[0],name,kind);
-      if (info.schemaVersion === 4 && (kind === 'content' && meta.schemaVersion > 3 || kind === 'prompt' && meta.schemaVersion > 1)) fail('FORMAT_UNSUPPORTED','Schema4 backup contains newer business metadata');
-      if (kind === 'photo') readAssetInternal(root,meta.assetHash);
+      if (info.schemaVersion === 4 && (kind === 'content' && meta.schemaVersion > 3 || ['prompt','photo'].includes(kind) && meta.schemaVersion > 1)) fail('FORMAT_UNSUPPORTED','Schema4 backup contains newer business metadata');
+      if (kind === 'photo' && meta.availability !== 'unavailable') readAssetInternal(root,meta.assetHash);
       if (kind === 'workspace' && meta.profile.avatarAssetHash) readAssetInternal(root,meta.profile.avatarAssetHash);
       if (kind === 'collection' && meta.deletedAt === null) for (const memberId of meta.memberIds) if (metadata(snapshot(root,memberId)[0],memberId).deletedAt !== null) fail('CORRUPT','Active collection has a trashed member');
       if (kind === 'template') for (const version of meta.versions) templatePackage(root,name,version.version,version.packageHash);
@@ -1451,14 +1491,22 @@ function validateRestoredLibrary(root, info) {
       coverJobMethods({root,libraryId:info.libraryId,validationContent:meta, snapshot, result, metadata, hash,jsonBytes,read,safePath,directory,checkedHash,templatePackage,readAssetInternal,id,objectId,inputFields,fail,LibraryError});
     }
   }
-  for (const name of fs.readdirSync(path.join(root,SYSTEM,'事务','已提交')).sort()) { const tx=transaction(root,id(name),info.libraryId); if (info.schemaVersion === 4 && tx.intent.schemaVersion > 2) fail('FORMAT_UNSUPPORTED','Schema4 backup contains a newer transaction'); }
+  for (const name of fs.readdirSync(path.join(root,SYSTEM,'事务','已提交')).sort()) { const tx=transaction(root,id(name),info.libraryId); if (info.schemaVersion === 4) validateSchema4Transaction(tx); }
+}
+
+function validateSchema4Transaction(tx) {
+  if (tx.intent.schemaVersion > 2) fail('FORMAT_UNSUPPORTED','Schema4 backup contains a newer transaction');
+  for (const bytes of [tx.before[0],tx.after[0]]) if (bytes) {
+    const meta = metadata(bytes,tx.objectId,tx.kind);
+    if (tx.kind === 'content' && meta.schemaVersion > 3 || ['prompt','photo'].includes(tx.kind) && meta.schemaVersion > 1) fail('FORMAT_UNSUPPORTED','Schema4 backup contains newer transaction metadata');
+  }
 }
 
 function prepareRestoredLibrary(root, backup) {
   const info = descriptor(root, true);
   const pending = path.join(root,SYSTEM,'事务','待恢复');
   const recoveredMutations = fs.readdirSync(pending).filter(name => UUID.test(name));
-  if (info.schemaVersion === 4) for (const mutationId of recoveredMutations) if (transaction(root,mutationId,info.libraryId).intent.schemaVersion > 2) fail('FORMAT_UNSUPPORTED','Schema4 backup contains a newer pending transaction');
+  if (info.schemaVersion === 4) for (const mutationId of recoveredMutations) validateSchema4Transaction(transaction(root,mutationId,info.libraryId));
   recover(root,info.libraryId);
   validateRestoredLibrary(root,info);
   const interruptedAttempts = [], mutations = [];

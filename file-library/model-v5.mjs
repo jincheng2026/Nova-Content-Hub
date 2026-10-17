@@ -59,7 +59,7 @@ export function validateModelMetadata(meta,kind,fail,validateCoverJobs) {
   if (kind === 'workspace') {
     check(keys(meta,[...COMMON,'profile','defaults','channels','promptCategories','customRatios']) && meta.id === 'default' && meta.deletedAt === null,'shape');
     const p=meta.profile,d=meta.defaults;
-    check(keys(p,['name','intro','avatarAssetHash','marks']) && str(p.name,true) && str(p.intro,true) && (p.avatarAssetHash === null || HASH.test(p.avatarAssetHash)) && Array.isArray(p.marks) && p.marks.every(mark=>keys(mark,['key','value']) && str(mark.key) && str(mark.value,true)) && new Set(p.marks.map(mark=>mark.key)).size===p.marks.length,'profile');
+    check(keys(p,['name','intro','avatarAssetHash','marks']) && str(p.name,true) && str(p.intro,true) && (p.avatarAssetHash === null || HASH.test(p.avatarAssetHash)) && Array.isArray(p.marks) && p.marks.every(mark=>keys(mark,['key','value']) && str(mark.key) && str(mark.value,true)),'profile');
     check(keys(d,['photoId','templateId','coverCount']) && (d.photoId===null || UUID.test(d.photoId)) && ref(d.templateId) && Number.isSafeInteger(d.coverCount) && d.coverCount>=1 && d.coverCount<=20,'defaults');
     check(Array.isArray(meta.channels) && meta.channels.every(plain) && new Set(meta.channels.map(c=>c.id)).size===meta.channels.length,'channels');
     for(const c of meta.channels) check(keys(c,['id','name','ink','bg','requiredRatio','builtinKey','deletedAt']) && CHANNEL.test(c.id) && str(c.name) && /^#[0-9a-fA-F]{6}$/.test(c.ink) && /^#[0-9a-fA-F]{6}$/.test(c.bg) && (c.requiredRatio===null || normalizeRatio(c.requiredRatio)===c.requiredRatio) && (c.builtinKey===null || str(c.builtinKey)) && (c.deletedAt===null || iso(c.deletedAt)),'channel');
@@ -73,11 +73,11 @@ export function validateModelMetadata(meta,kind,fail,validateCoverJobs) {
   } else check(keys(meta.dateRange,['start','end']) && [meta.dateRange.start,meta.dateRange.end].every(value=>value===null || day(value)) && (!meta.dateRange.start || !meta.dateRange.end || meta.dateRange.start<=meta.dateRange.end) && listOf(meta.memberIds,value=>UUID.test(value)),'members/dates');
   check(listOf(meta.channelIds,value=>CHANNEL.test(value)),'channel IDs');
   for(const key of ['materials','candidates','plans','publications','publicationEvents','coverVariants','importedCoverBatches','unavailableReferences']) check(uniqueObjects(meta[key]),key);
-  for(const m of meta.materials) check(keys(m,['id','assetHash','originalName','role','createdAt']) && HASH.test(m.assetHash) && str(m.originalName,true) && str(m.role) && iso(m.createdAt),'material');
+  for(const m of meta.materials) check(keys(m,['id','assetHash','originalName','role','createdAt','deletedAt']) && HASH.test(m.assetHash) && str(m.originalName,true) && str(m.role) && iso(m.createdAt) && (m.deletedAt===undefined || m.deletedAt===null || iso(m.deletedAt)),'material');
   for(const c of meta.candidates) check(keys(c,['id','assetHash','requestId','attemptId','template','source','originalName','accepted','createdAt','acceptedAt','variantId','favorite','displayNumber','note','provenance']) && HASH.test(c.assetHash) && str(c.requestId) && str(c.attemptId) && (c.template===null || template(c.template)) && typeof c.accepted==='boolean' && iso(c.createdAt) && (c.accepted?iso(c.acceptedAt):c.acceptedAt===undefined) && (c.source===undefined || str(c.source)) && (c.originalName===undefined || str(c.originalName,true)) && (c.variantId===undefined || c.variantId===null || meta.coverVariants.some(v=>v.id===c.variantId)) && (c.favorite===undefined || typeof c.favorite==='boolean') && (c.displayNumber===undefined || str(c.displayNumber,true)) && (c.note===undefined || str(c.note,true)) && (c.provenance===undefined || provenance(c.provenance)),'candidate');
   const knownCandidate=value=>meta.candidates.some(c=>c.id===value) || meta.unavailableReferences.some(r=>r.id===value && r.kind==='candidate');
   for(const v of meta.coverVariants) check(keys(v,['id','name','ratio','preferredTemplateId','selectedCandidateId']) && str(v.name) && normalizeRatio(v.ratio)===v.ratio && ref(v.preferredTemplateId) && (v.selectedCandidateId===null || knownCandidate(v.selectedCandidateId)),'variant');
-  for(const r of meta.unavailableReferences) check(keys(r,['id','kind','originalId','reason','originalName','provenance','availability','assetHash','resolvedObjectId']) && ['material','candidate','template-image'].includes(r.kind) && str(r.originalId) && str(r.reason) && str(r.originalName,true) && provenance(r.provenance) && (r.availability==='unavailable'?r.assetHash===undefined && r.resolvedObjectId===undefined:r.availability==='available' && HASH.test(r.assetHash) && (r.kind==='template-image'?r.resolvedObjectId===null:(r.kind==='candidate'?meta.candidates:meta.materials).some(v=>v.id===r.resolvedObjectId && v.assetHash===r.assetHash))),'import reference');
+  for(const r of meta.unavailableReferences) check(keys(r,['id','kind','originalId','reason','originalName','provenance','availability','assetHash','resolvedObjectId','deletedAt']) && ['material','candidate','template-image'].includes(r.kind) && str(r.originalId) && str(r.reason) && str(r.originalName,true) && provenance(r.provenance) && (r.deletedAt===undefined || r.deletedAt===null || iso(r.deletedAt)) && (r.availability==='unavailable'?r.assetHash===undefined && r.resolvedObjectId===undefined:r.availability==='available' && HASH.test(r.assetHash) && (r.kind==='template-image'?r.resolvedObjectId===null:(r.kind==='candidate'?meta.candidates:meta.materials).some(v=>v.id===r.resolvedObjectId && v.assetHash===r.assetHash))),'import reference');
   for(const b of meta.importedCoverBatches) check(keys(b,['id','displayNumber','date','templateGroupId','candidateIds','referenceCandidateIds','originalStatus','provenance']) && str(b.displayNumber,true) && (b.date===null || day(b.date)) && (b.templateGroupId===null || str(b.templateGroupId)) && listOf(b.candidateIds,knownCandidate) && listOf(b.referenceCandidateIds,knownCandidate) && str(b.originalStatus,true) && provenance(b.provenance),'imported batch');
   check(meta.selectedCover===null || keys(meta.selectedCover,['candidateId','assetHash','requestId','attemptId','template','selectedAt']),'selected cover shape');
   if(meta.selectedCover) { const c=meta.candidates.find(c=>c.id===meta.selectedCover.candidateId),s=meta.selectedCover; check(c && c.accepted && c.assetHash===s.assetHash && c.requestId===s.requestId && c.attemptId===s.attemptId && isDeepStrictEqual(c.template,s.template) && iso(s.selectedAt),'selected cover'); }
@@ -128,7 +128,7 @@ export function modelMethods(h) {
   const createContent=(raw,options)=>{const input=contentInput(raw,true);return mutate('create',null,input,null,options,'content',editContent(input,'content'));};
   const updateContent=(value,raw,token,options)=>{const input=contentInput(raw,false);return mutate('update',value,input,token,options,'content',editContent(input,'content'));};
   function candidateCover(meta,candidateId) {
-    const c=meta.candidates.find(c=>c.id===candidateId);invalid(c,'Unknown or unavailable candidate');image(c.assetHash);if(c.template)templatePackage(root,c.template.id,c.template.version,c.template.packageHash);
+    const c=meta.candidates.find(c=>c.id===candidateId);invalid(c,'Unknown or unavailable candidate');invalid(!meta.unavailableReferences.some(r=>(r.id===candidateId || r.resolvedObjectId===candidateId) && r.deletedAt),'Candidate import reference is trashed');image(c.assetHash);if(c.template)templatePackage(root,c.template.id,c.template.version,c.template.packageHash);
     return {candidateId:c.id,assetHash:c.assetHash,requestId:c.requestId,attemptId:c.attemptId,template:c.template,selectedAt:new Date().toISOString()};
   }
   function image(assetHash) {const asset=readAssetInternal(root,checkedHash(assetHash));invalid(['image/png','image/jpeg','image/gif','image/webp'].includes(asset.detectedType),'A raster image is required');return asset;}
@@ -151,6 +151,8 @@ export function modelMethods(h) {
       const old=input.id?meta.plans.find(p=>p.id===input.id):null;
       if(input.id)invalid(old,'Unknown plan');if(old?.status==='published')fail('INVALID_STATE','Published plans require correction/retraction');
       const choice=input.coverChoice===undefined?(old?.coverChoice??null):input.coverChoice;invalid(coverChoice(choice,meta),'Unknown cover choice');
+      if(input.coverChoice?.candidateId)candidateCover(meta,input.coverChoice.candidateId);
+      if(input.coverChoice?.variantId){const v=meta.coverVariants.find(v=>v.id===input.coverChoice.variantId);if(v.selectedCandidateId)invalid(!meta.unavailableReferences.some(r=>r.id===v.selectedCandidateId && r.deletedAt),'Variant candidate import reference is trashed');}
       const now=new Date().toISOString(),plan={id:old?.id||randomUUID(),channelId:input.channelId,schedule:modern?structuredClone(input.schedule):{precision:'instant',at:input.scheduledAt,timezone:input.timezone},textMode:typeof input.text==='string'?'explicit':old?.textMode||'body',text:typeof input.text==='string'?input.text:old?.text??null,coverChoice:choice,status:'planned',createdAt:old?.createdAt||now,updatedAt:now};
       return {...meta,plans:old?meta.plans.map(p=>p.id===plan.id?plan:p):[...meta.plans,plan]};
     });
@@ -171,7 +173,7 @@ export function modelMethods(h) {
       const choice=plan.coverChoice;
       if(choice?.candidateId)cover=candidateCover(meta,choice.candidateId);
       else if(choice?.variantId) { const variant=meta.coverVariants.find(v=>v.id===choice.variantId);invalid(variant?.selectedCandidateId,'Variant has no selected cover');cover=candidateCover(meta,variant.selectedCandidateId); }
-      else cover=meta.selectedCover?structuredClone(meta.selectedCover):null;
+      else {cover=meta.selectedCover?structuredClone(meta.selectedCover):null;if(cover && !frozen)candidateCover(meta,cover.candidateId);}
       if(cover)image(cover.assetHash);
     }
     if(cover?.template)templatePackage(root,cover.template.id,cover.template.version,cover.template.packageHash);
@@ -245,6 +247,7 @@ export function modelMethods(h) {
         if(!safePath(path.join(root,kind==='photo'?'我的照片':'模板',s.defaults[key]),true)){defaultIssues.push({field:key,id:s.defaults[key],reason:'missing'});continue;}
         const record=readObject(kind,s.defaults[key]);
         if(record.deletedAt!==null)defaultIssues.push({field:key,id:record.id,reason:'trashed'});
+        else if(kind==='photo' && record.availability==='unavailable')defaultIssues.push({field:key,id:record.id,reason:'unavailable'});
         else if(kind==='photo' && !record.isOwnPhoto)defaultIssues.push({field:key,id:record.id,reason:'ownership-revoked'});
       }
       const categories=[...s.promptCategories];for(const name of fs.readdirSync(path.join(root,'提示词'))) {const p=readObject('prompt',name);if(p.deletedAt===null && p.category && !categories.includes(p.category))categories.push(p.category);}
@@ -253,7 +256,7 @@ export function modelMethods(h) {
     updateProfile:(raw,token,options)=>{
       const input=fields(raw,['name','intro','avatarAssetHash','marks']);invalid(Object.keys(input).length,'Empty profile patch');
       if(input.name!==undefined)text(input.name,'name',true);if(input.intro!==undefined)text(input.intro,'intro',true);
-      if(input.marks!==undefined)invalid(Array.isArray(input.marks) && input.marks.every(m=>keys(m,['key','value'])&&str(m.key)&&str(m.value,true)) && new Set(input.marks.map(m=>m.key)).size===input.marks.length,'Invalid profile marks');
+      if(input.marks!==undefined)invalid(Array.isArray(input.marks) && input.marks.every(m=>keys(m,['key','value'])&&str(m.key)&&str(m.value,true)),'Invalid profile marks');
       if(input.avatarAssetHash!==undefined && input.avatarAssetHash!==null)checkedHash(input.avatarAssetHash);
       return settingChange('updateProfile',input,token,options,meta=>{if(input.avatarAssetHash)image(input.avatarAssetHash);return {...meta,profile:{...meta.profile,...input}};});
     },
@@ -261,7 +264,7 @@ export function modelMethods(h) {
       const input=fields(raw,['photoId','templateId','coverCount']);invalid(Object.keys(input).length,'Empty defaults patch');
       if(input.photoId!==undefined && input.photoId!==null)id(input.photoId);if(input.templateId!==undefined)invalid(ref(input.templateId),'Invalid default template');
       if(input.coverCount!==undefined)invalid(Number.isSafeInteger(input.coverCount)&&input.coverCount>=1&&input.coverCount<=20,'coverCount must be 1–20');
-      return settingChange('setGenerationDefaults',input,token,options,meta=>{if(input.photoId){const p=readObject('photo',input.photoId);invalid(p.deletedAt===null && p.isOwnPhoto,'Default photo requires an active own photo');}if(input.templateId)activeTemplate(input.templateId);return {...meta,defaults:{...meta.defaults,...input}};});
+      return settingChange('setGenerationDefaults',input,token,options,meta=>{if(input.photoId){const p=readObject('photo',input.photoId);invalid(p.availability!=='unavailable','Default photo is unavailable');invalid(p.deletedAt===null && p.isOwnPhoto,'Default photo requires an active own photo');}if(input.templateId)activeTemplate(input.templateId);return {...meta,defaults:{...meta.defaults,...input}};});
     },
     restoreGenerationDefaultReferences:(raw,token,options)=>{
       const input=fields(raw,['photoId','templateId','coverCount','source'],['photoId','templateId','source']);
@@ -314,9 +317,20 @@ export function modelMethods(h) {
   }
   function channelState(channelId,trash,token,options) {invalid(CHANNEL.test(channelId),'Invalid channel ID');return settingChange(trash?'trashChannel':'restoreChannel',{channelId},token,options,meta=>{const c=meta.channels.find(c=>c.id===channelId);invalid(c,'Unknown channel');if((c.deletedAt!==null)===trash)fail('INVALID_STATE','Channel already in requested state');return {...meta,channels:meta.channels.map(c=>c.id===channelId?{...c,deletedAt:trash?new Date().toISOString():null}:c)};});}
   for(const [kind,prefix] of [['content','Content'],['collection','Collection']]) {
+    for(const [label,field] of [['Material','materials'],['UnavailableReference','unavailableReferences']]) for(const trash of [true,false]) {
+      const action=`${trash?'trash':'restore'}${label}`;
+      api[`${trash?'trash':'restore'}${prefix}${label}`]=(value,entryId,token,options)=>{
+        id(entryId);
+        return change(kind,value,action,{entryId},token,options,meta=>{
+          const entry=meta[field].find(item=>item.id===entryId);invalid(entry,`Unknown ${label}`);
+          if(!!entry.deletedAt===trash)fail('INVALID_STATE',`${label} is already in the requested state`);
+          return {...meta,[field]:meta[field].map(item=>item.id===entryId?{...item,deletedAt:trash?new Date().toISOString():null}:item)};
+        });
+      };
+    }
     api[`save${prefix}CoverVariant`]=(value,raw,token,options)=>{
       const input=fields(raw,['id','name','ratio','preferredTemplateId','selectedCandidateId'],['name','ratio']);if(input.id!==undefined)id(input.id);text(input.name,'variant name');input.ratio=checkedRatio(input.ratio);if(input.preferredTemplateId!==undefined)invalid(ref(input.preferredTemplateId),'Invalid template');
-      return change(kind,value,'saveVariant',input,token,options,meta=>{if(input.preferredTemplateId)activeTemplate(input.preferredTemplateId);const old=input.id?meta.coverVariants.find(v=>v.id===input.id):null;if(input.id)invalid(old,'Unknown variant');const v={id:old?.id||randomUUID(),name:input.name,ratio:input.ratio,preferredTemplateId:input.preferredTemplateId===undefined?old?.preferredTemplateId??null:input.preferredTemplateId,selectedCandidateId:input.selectedCandidateId===undefined?old?.selectedCandidateId??null:input.selectedCandidateId};invalid(v.selectedCandidateId===null || meta.candidates.some(c=>c.id===v.selectedCandidateId) || meta.unavailableReferences.some(r=>r.id===v.selectedCandidateId&&r.kind==='candidate'),'Unknown selected candidate');return {...meta,coverVariants:old?meta.coverVariants.map(item=>item.id===v.id?v:item):[...meta.coverVariants,v]};});
+      return change(kind,value,'saveVariant',input,token,options,meta=>{if(input.preferredTemplateId)activeTemplate(input.preferredTemplateId);const old=input.id?meta.coverVariants.find(v=>v.id===input.id):null;if(input.id)invalid(old,'Unknown variant');const v={id:old?.id||randomUUID(),name:input.name,ratio:input.ratio,preferredTemplateId:input.preferredTemplateId===undefined?old?.preferredTemplateId??null:input.preferredTemplateId,selectedCandidateId:input.selectedCandidateId===undefined?old?.selectedCandidateId??null:input.selectedCandidateId};invalid(v.selectedCandidateId===null || meta.candidates.some(c=>c.id===v.selectedCandidateId) || meta.unavailableReferences.some(r=>r.id===v.selectedCandidateId&&r.kind==='candidate'),'Unknown selected candidate');if(input.selectedCandidateId)invalid(!meta.unavailableReferences.some(r=>r.id===input.selectedCandidateId&&r.deletedAt),'Selected candidate import reference is trashed');return {...meta,coverVariants:old?meta.coverVariants.map(item=>item.id===v.id?v:item):[...meta.coverVariants,v]};});
     };
     api[`remove${prefix}CoverVariant`]=(value,variantId,token,options)=>{id(variantId);return change(kind,value,'removeVariant',{variantId},token,options,meta=>{invalid(meta.coverVariants.some(v=>v.id===variantId),'Unknown variant');if(meta.plans.some(p=>p.coverChoice?.variantId===variantId))fail('INVALID_STATE','Variant is referenced by a plan');return {...meta,coverVariants:meta.coverVariants.filter(v=>v.id!==variantId),candidates:meta.candidates.map(c=>c.variantId===variantId?{...c,variantId:null}:c)};});};
     api[`update${prefix}Candidate`]=(value,candidateId,raw,token,options)=>{
