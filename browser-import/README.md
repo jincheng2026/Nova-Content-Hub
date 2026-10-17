@@ -9,12 +9,16 @@ import {
 } from './browser-import/index.mjs';
 
 const preview = inspectBrowserBackup('/absolute/旧工作台.json');
-const imported = await importBrowserBackup('/absolute/旧工作台.json', '/absolute/新内容库');
+const imported = await importBrowserBackup('/absolute/旧工作台.json', '/absolute/新内容库', {
+  expectedSourceHash: preview.source.sha256,
+});
 const status = getBrowserImport('/absolute/新内容库', imported.importId);
 const resumed = await resumeBrowserImport('/absolute/新内容库', imported.importId);
 ```
 
 `inspectBrowserBackup` 继续只读：4 MiB、稳定普通文件读取、严格 UTF-8/JSON 与随包 Core.validate。预检的 embedded-unverified 不代表图片解码通过。source JSON 可以有 BOM/CRLF，归档保留原字节；不执行脚本、不按 srcPath 读本机文件、不下载 URL。
+
+`importBrowserBackup(source, destination, options?)` 保留两参数调用；可选 options 仅接受 `expectedSourceHash`，值为 64 位十六进制 SHA256（大小写均可）。GUI 可传预检的 `preview.source.sha256`：导入在自身那次稳定读取完成后直接比较实际原字节 hash，任何目标预约或业务写入之前不匹配即报 SOURCE_CHANGED，不创建预约；不会通过额外一次预检替代绑定。未知 options 键或无效 hash 报 INVALID_INPUT。resume 仍只使用已接受并存档的来源。
 
 导入/恢复为 Promise，查询同步且不打开业务库、不恢复 pending。共同返回 `{importId,status,sourceHash,destination,libraryId?,progress,issues,targetChanged?,descriptorChanged?}`。progress 包含已落结果的 steps、resources 数量，报告完成后另含逐类 counts。状态有限为 prepared/running/blocked/ready/publishing/committed；无目标预约的查询返回 null。异常在已接受操作后带 importId/workDirectory/destination；提交后错误另带 outcome:'committed'。资源问题列 key/code/status，不把完整图像 base64 或私人正文放入调用结果。
 

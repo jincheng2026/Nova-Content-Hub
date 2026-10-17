@@ -1021,9 +1021,22 @@ export async function resumeBrowserImport(value, importId) {
   if (!UUID.test(importId)) fail("INVALID_INPUT", "Expected importId UUID");
   return execute(operationFor(value, importId));
 }
-export async function importBrowserBackup(sourceFile, value) {
-  const checked = readBrowserBackup(sourceFile),
-    d = destination(value);
+export async function importBrowserBackup(sourceFile, value, options = {}) {
+  if (
+    !object(options) ||
+    Reflect.ownKeys(options).some((key) => key !== "expectedSourceHash") ||
+    (Object.hasOwn(options, "expectedSourceHash") &&
+      (typeof options.expectedSourceHash !== "string" ||
+        !HASH.test(options.expectedSourceHash.toLowerCase())))
+  )
+    fail("INVALID_INPUT", "Expected only an optional SHA256 expectedSourceHash");
+  const expectedSourceHash = Object.hasOwn(options, "expectedSourceHash")
+    ? options.expectedSourceHash.toLowerCase()
+    : undefined;
+  const checked = readBrowserBackup(sourceFile);
+  if (expectedSourceHash && checked.sourceHash !== expectedSourceHash)
+    fail("SOURCE_CHANGED", "Selected backup differs from the inspected source");
+  const d = destination(value);
   const source = path.join(
     fs.realpathSync(path.dirname(sourceFile)),
     path.basename(sourceFile),

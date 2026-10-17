@@ -7,6 +7,7 @@ import { spawnSync, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { makeBackup } from "./fixture.mjs";
 import {
+  inspectBrowserBackup,
   importBrowserBackup,
   getBrowserImport,
   resumeBrowserImport,
@@ -84,6 +85,60 @@ function evidence(root, id, name) {
     fs.readFileSync(path.join(root, "系统（别动）", "导入", id, name)),
   );
 }
+
+test("expected source hash binds the actual read before any target reservation", async (t) => {
+  const f = await fixture(t),
+    original = fs.readFileSync(f.source),
+    preview = inspectBrowserBackup(f.source);
+  f.state.data.PROJECTS[0].name = "合法但已更换的备份";
+  fs.writeFileSync(f.source, JSON.stringify(f.state));
+  assert.notEqual(
+    inspectBrowserBackup(f.source).source.sha256,
+    preview.source.sha256,
+  );
+  const before = fs.readdirSync(f.parent);
+  await fail("SOURCE_CHANGED", () =>
+    importBrowserBackup(f.source, f.destination, {
+      expectedSourceHash: preview.source.sha256,
+    }),
+  );
+  assert.deepEqual(fs.readdirSync(f.parent), before);
+  assert.equal(fs.existsSync(f.destination), false);
+  assert.equal(getBrowserImport(f.destination), null);
+  fs.writeFileSync(f.source, original);
+  const result = await importBrowserBackup(f.source, f.destination, {
+    expectedSourceHash: preview.source.sha256.toUpperCase(),
+  });
+  assert.equal(result.status, "committed");
+  assert.equal(result.sourceHash, preview.source.sha256);
+  assert.equal(
+    (await importBrowserBackup(f.source, f.destination)).importId,
+    result.importId,
+  );
+});
+
+test("import options reject unknown keys and malformed expected hashes without reserving", async (t) => {
+  const f = await fixture(t),
+    before = fs.readdirSync(f.parent);
+  for (const options of [
+    null,
+    [],
+    "hash",
+    { unknown: true },
+    { [Symbol("unknown")]: true },
+    { expectedSourceHash: "a".repeat(64), unknown: true },
+    { expectedSourceHash: "a".repeat(63) },
+    { expectedSourceHash: "g".repeat(64) },
+    { expectedSourceHash: 123 },
+    { expectedSourceHash: undefined },
+  ]) {
+    await fail("INVALID_INPUT", () =>
+      importBrowserBackup(f.source, f.destination, options),
+    );
+    assert.deepEqual(fs.readdirSync(f.parent), before);
+    assert.equal(getBrowserImport(f.destination), null);
+  }
+});
 
 test("full migration exposes every real business object and scoped historical evidence, then survives backup/restore", async (t) => {
   const f = await fixture(t, true),
