@@ -6,6 +6,7 @@ import { createHash, randomUUID } from 'node:crypto';
 const FORMAT = 'nova-content-library';
 const CONTENT_FORMAT = 'nova-content';
 const VERSION = 1;
+const LIBRARY_VERSION = 2;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const STAGING = /^\.staging-[0-9a-f-]{36}-[0-9a-f-]{36}$/;
 const FILES = ['内容.json', '正文.md'];
@@ -47,8 +48,8 @@ function parse(bytes, label) {
   catch { fail('CORRUPT', `Invalid JSON: ${label}`); }
 }
 
-function format(record, expected, label) {
-  if (!object(record) || record.format !== expected || record.schemaVersion !== VERSION) {
+function format(record, expected, label, version = VERSION) {
+  if (!object(record) || record.format !== expected || record.schemaVersion !== version) {
     fail('FORMAT_UNSUPPORTED', `Unknown or unsupported format: ${label}`);
   }
 }
@@ -192,16 +193,21 @@ function acquire(root) {
   fail('BUSY', 'Library lock changed; retry');
 }
 
-function descriptor(root) {
+function descriptor(root, upgrading = false) {
   directory(root);
   const info = parse(read(path.join(root, '内容库.json')), '内容库.json');
-  format(info, FORMAT, '内容库.json');
+  if (info?.format === FORMAT && info.schemaVersion === 1 && !upgrading) fail('UPGRADE_REQUIRED', 'Library schema 1 requires explicit upgradeLibrary(root)');
+  format(info, FORMAT, '内容库.json', upgrading && info?.schemaVersion === 1 ? 1 : LIBRARY_VERSION);
   let validDate = false;
   try { validDate = date(info.createdAt); } catch {}
   if (!UUID.test(info.libraryId) || !validDate) fail('CORRUPT', 'Invalid library identity');
   directory(path.join(root, '内容'));
   directory(path.join(root, SYSTEM));
   directory(path.join(root, SYSTEM, '事务'));
+  if (info.schemaVersion === LIBRARY_VERSION) {
+    directory(path.join(root, SYSTEM, '事务', '待恢复'));
+    directory(path.join(root, SYSTEM, '事务', '已提交'));
+  }
   return info;
 }
 
@@ -238,8 +244,19 @@ function unpack(value) {
   return bytes;
 }
 
-function transaction(root, mutationId, libraryId) {
-  const dir = path.join(root, SYSTEM, '事务', id(mutationId));
+function transactionDir(root, mutationId) {
+  const base = path.join(root, SYSTEM, '事务');
+  const pending = path.join(base, '待恢复', id(mutationId));
+  const committed = path.join(base, '已提交', mutationId);
+  const pendingExists = safePath(pending, true);
+  const committedExists = safePath(committed, true);
+  if (pendingExists && committedExists) fail('RECOVERY_CONFLICT', `Duplicate mutation ID: ${mutationId}`);
+  return pendingExists ? pending : committedExists ? committed : null;
+}
+
+function transaction(root, mutationId, libraryId, location = transactionDir(root, mutationId)) {
+  if (!location) fail('CORRUPT', `Missing transaction: ${mutationId}`);
+  const dir = location;
   directory(dir);
   const raw = read(path.join(dir, 'intent.json'));
   const intent = parse(raw, 'intent.json');
@@ -265,10 +282,32 @@ function transaction(root, mutationId, libraryId) {
   }
   const marker = read(path.join(dir, 'COMMITTED'), true);
   if (marker && marker.toString() !== `${hash(raw)}\n`) fail('CORRUPT', 'Invalid completion marker');
+  if (dir === path.join(root, SYSTEM, '事务', '已提交', mutationId) && marker === null) fail('CORRUPT', 'Committed history is missing its completion marker');
   return { dir, intent, raw, before, after, committed: marker !== null };
 }
 
 function equal(a, b) { return a === null || b === null ? a === b : a.equals(b); }
+
+function committedFailure(error, tx) {
+  return Object.assign(ioError(error), { mutationId: tx.intent.mutationId, contentId: tx.intent.contentId, outcome: 'committed', pendingRecovery: true });
+}
+
+function archiveTransaction(root, tx) {
+  const history = path.join(root, SYSTEM, '事务', '已提交');
+  const target = path.join(history, tx.intent.mutationId);
+  try {
+    directory(history);
+    directory(tx.dir);
+    if (safePath(target, true)) fail('RECOVERY_CONFLICT', `Duplicate mutation ID: ${tx.intent.mutationId}`);
+    hook('beforeArchive', { mutationId: tx.intent.mutationId });
+    fs.renameSync(tx.dir, target);
+    hook('afterArchiveRename', { mutationId: tx.intent.mutationId });
+    syncDirectory(path.dirname(tx.dir));
+    hook('afterArchiveSourceSync', { mutationId: tx.intent.mutationId });
+    syncDirectory(history);
+    hook('afterArchiveTargetSync', { mutationId: tx.intent.mutationId });
+  } catch (error) { throw committedFailure(error, tx); }
+}
 
 function currentState(tx, targets) {
   return targets.map((target, index) => {
@@ -339,19 +378,26 @@ function applyTransaction(root, tx) {
 }
 
 function recover(root, libraryId) {
-  const dir = path.join(root, SYSTEM, '事务');
+  const base = path.join(root, SYSTEM, '事务');
+  if (fs.readdirSync(base).some(name => !['待恢复', '已提交'].includes(name))) fail('CORRUPT', 'Unexpected schema 2 transaction layout');
+  const dir = path.join(root, SYSTEM, '事务', '待恢复');
+  // A prior rename may have succeeded before either parent-directory sync failed.
+  syncDirectory(dir);
+  syncDirectory(path.join(base, '已提交'));
   const pending = [];
-  // shortcut: every read scans full history bytes; split pending/history before large-library release.
+  const completed = [];
   for (const name of fs.readdirSync(dir).sort()) {
     if (STAGING.test(name)) { directory(path.join(dir, name)); continue; }
     if (!UUID.test(name)) fail('CORRUPT', `Unexpected transaction entry: ${name}`);
     const tx = transaction(root, name, libraryId);
-    if (!tx.committed) pending.push(tx);
+    if (tx.committed) completed.push(tx);
+    else pending.push(tx);
   }
   // One writer cannot start another intent before recovering the previous one.
   if (pending.length > 1) fail('RECOVERY_CONFLICT', 'Multiple unfinished transactions; manual diagnosis required');
+  for (const tx of completed) archiveTransaction(root, tx);
   for (const tx of pending) {
-    try { applyTransaction(root, tx); }
+    try { applyTransaction(root, tx); archiveTransaction(root, tx); }
     catch (error) { throw Object.assign(ioError(error), { mutationId: tx.intent.mutationId, pendingRecovery: true }); }
   }
 }
@@ -408,8 +454,8 @@ function library(root, initialInfo) {
     }
     const requestDigest = hash(jsonBytes({ operation, contentId, input, expectedToken }));
     return locked(() => {
-      const txDir = path.join(root, SYSTEM, '事务', mutationId);
-      if (safePath(txDir, true)) {
+      const txDir = path.join(root, SYSTEM, '事务', '待恢复', mutationId);
+      if (transactionDir(root, mutationId)) {
         const tx = transaction(root, mutationId, initialInfo.libraryId);
         if (tx.intent.requestDigest !== requestDigest) fail('INVALID_INPUT', 'mutationId was used with a different request');
         return result(tx.after, tx.intent.contentId, mutationId);
@@ -432,7 +478,7 @@ function library(root, initialInfo) {
       }
       const after = [jsonBytes(meta), operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]];
       const intent = { schemaVersion: VERSION, libraryId: initialInfo.libraryId, mutationId, contentId, operation, requestDigest, before: before.map(pack), after: after.map(pack) };
-      const stagingDir = path.join(root, SYSTEM, '事务', `.staging-${mutationId}-${randomUUID()}`);
+      const stagingDir = path.join(root, SYSTEM, '事务', '待恢复', `.staging-${mutationId}-${randomUUID()}`);
       mkdir(stagingDir);
       let published = false;
       // Only a fully durable staged intent is published as a recoverable transaction.
@@ -446,8 +492,16 @@ function library(root, initialInfo) {
         hook('afterJournal', { mutationId });
         const tx = transaction(root, mutationId, initialInfo.libraryId);
         applyTransaction(root, tx);
+        archiveTransaction(root, tx);
         return result(after, contentId, mutationId);
-      } catch (error) { throw Object.assign(ioError(error), { mutationId, pendingRecovery: published }); }
+      } catch (error) {
+        let completed;
+        if (published) {
+          try { completed = transaction(root, mutationId, initialInfo.libraryId); } catch {}
+        }
+        if (completed?.committed) throw committedFailure(error, completed);
+        throw Object.assign(ioError(error), { mutationId, pendingRecovery: published });
+      }
     });
   }
 
@@ -461,8 +515,7 @@ function library(root, initialInfo) {
     trashContent: (contentId, token, options) => mutate('trash', contentId, {}, token, options),
     restoreContent: (contentId, token, options) => mutate('restore', contentId, {}, token, options),
     queryMutation: mutationId => locked(() => {
-      const dir = path.join(root, SYSTEM, '事务', id(mutationId));
-      if (!safePath(dir, true)) return null;
+      if (!transactionDir(root, id(mutationId))) return null;
       const tx = transaction(root, mutationId, initialInfo.libraryId);
       return { mutationId, status: 'committed', content: result(tx.after, tx.intent.contentId, mutationId) };
     }),
@@ -479,6 +532,111 @@ function canonicalRoot(root) {
   return path.join(fs.realpathSync(path.dirname(root)), path.basename(root));
 }
 
+function upgradeMove(source, target, mutationId) {
+  directory(source);
+  directory(path.dirname(target));
+  if (safePath(target, true)) fail('RECOVERY_CONFLICT', `Upgrade destination already exists: ${mutationId}`);
+  hook('upgradeBeforeMove', { mutationId });
+  fs.renameSync(source, target);
+  hook('upgradeAfterMove', { mutationId });
+  syncDirectory(path.dirname(source));
+  syncDirectory(path.dirname(target));
+}
+
+/** Explicit, resumable schema-1 -> schema-2 transaction layout upgrade. */
+export function upgradeLibrary(root) {
+  let release;
+  let primaryError;
+  try {
+    root = canonicalRoot(root);
+    const initial = descriptor(root, true);
+    if (initial.schemaVersion === LIBRARY_VERSION) return openLibrary(root);
+    release = acquire(root);
+    const info = descriptor(root, true);
+    if (info.libraryId !== initial.libraryId) fail('CORRUPT', 'Library identity changed during upgrade');
+    if (info.schemaVersion !== 1) fail('CONFLICT', 'Library schema changed during upgrade; reopen it');
+    const descriptorPath = path.join(root, '内容库.json');
+    const original = read(descriptorPath);
+    const system = path.join(root, SYSTEM);
+    const backup = path.join(system, '内容库.schema1.bak.json');
+    const existingBackup = read(backup, true);
+    if (existingBackup !== null && !existingBackup.equals(original)) fail('RECOVERY_CONFLICT', 'Existing schema-1 descriptor backup differs from the current descriptor');
+    if (existingBackup === null) {
+      const temporary = path.join(system, `.内容库.schema1.bak-${randomUUID()}`);
+      writeNew(temporary, original);
+      hook('upgradeBeforeBackupPublish');
+      safePath(backup, true);
+      fs.linkSync(temporary, backup);
+      syncDirectory(system);
+    }
+    hook('upgradeAfterBackup');
+    const base = path.join(system, '事务');
+    const pending = path.join(base, '待恢复');
+    const history = path.join(base, '已提交');
+    for (const dir of [pending, history]) {
+      if (!safePath(dir, true)) mkdir(dir);
+      else directory(dir);
+      hook('upgradeAfterDirectory', { name: path.basename(dir) });
+    }
+    hook('upgradeAfterDirectories');
+    const seen = new Set();
+    const plans = [];
+    const stages = [];
+    let unfinished = 0;
+    // Validate every legacy/pending/history plan before moving or replaying any transaction.
+    for (const dir of [base, pending, history]) {
+      for (const name of fs.readdirSync(dir).sort()) {
+        if (dir === base && ['待恢复', '已提交'].includes(name)) continue;
+        const source = path.join(dir, name);
+        if (STAGING.test(name) && dir !== history) {
+          directory(source);
+          if (dir === base) {
+            const target = path.join(pending, name);
+            if (safePath(target, true)) fail('RECOVERY_CONFLICT', `Duplicate staging entry during upgrade: ${name}`);
+            stages.push({ source, target });
+          }
+          continue;
+        }
+        if (!UUID.test(name)) fail('CORRUPT', `Unexpected upgrade transaction entry: ${name}`);
+        if (seen.has(name)) fail('RECOVERY_CONFLICT', `Duplicate mutation ID during upgrade: ${name}`);
+        seen.add(name);
+        const tx = transaction(root, name, info.libraryId, source);
+        if (dir === history && !tx.committed) fail('CORRUPT', 'Uncommitted transaction in committed history');
+        if (!tx.committed) {
+          unfinished++;
+          const contentDir = path.join(root, '内容', tx.intent.contentId);
+          if (!safePath(contentDir, true)) {
+            if (tx.intent.operation !== 'create') fail('RECOVERY_CONFLICT', 'Pending content directory disappeared');
+          } else currentState(tx, contentPaths(root, tx.intent.contentId));
+        }
+        plans.push({ tx, target: path.join(tx.committed ? history : pending, name) });
+      }
+    }
+    if (unfinished > 1) fail('RECOVERY_CONFLICT', 'Multiple unfinished upgrade transactions');
+    hook('upgradeAfterPreflight');
+    for (const { tx, target } of plans) if (tx.dir !== target) upgradeMove(tx.dir, target, tx.intent.mutationId);
+    for (const { source, target } of stages) upgradeMove(source, target, path.basename(source));
+    recover(root, info.libraryId);
+    hook('upgradeAfterRecovery');
+    if (fs.readdirSync(base).some(name => !['待恢复', '已提交'].includes(name)) ||
+        fs.readdirSync(pending).some(name => !STAGING.test(name))) fail('RECOVERY_CONFLICT', 'Upgrade still has unresolved transactions');
+    if (!read(descriptorPath).equals(original)) fail('CONFLICT', 'Library descriptor changed during upgrade');
+    const descriptorStage = path.join(root, `.内容库.schema2-${randomUUID()}`);
+    writeNew(descriptorStage, jsonBytes({ ...parse(original, '内容库.json'), schemaVersion: LIBRARY_VERSION }));
+    hook('upgradeBeforeDescriptorPublish');
+    safePath(descriptorPath);
+    fs.renameSync(descriptorStage, descriptorPath);
+    hook('upgradeAfterDescriptorPublish');
+    syncDirectory(root);
+  } catch (error) { primaryError = ioError(error); throw primaryError; }
+  finally {
+    if (release) {
+      try { release(); } catch (error) { if (!primaryError) throw ioError(error); }
+    }
+  }
+  return openLibrary(root);
+}
+
 export function createLibrary(root) {
   try {
     root = canonicalRoot(root);
@@ -489,8 +647,10 @@ export function createLibrary(root) {
     // mkdir is the exclusive initialization gate for two simultaneous creators.
     mkdir(path.join(root, SYSTEM));
     mkdir(path.join(root, SYSTEM, '事务'));
+    mkdir(path.join(root, SYSTEM, '事务', '待恢复'));
+    mkdir(path.join(root, SYSTEM, '事务', '已提交'));
     mkdir(path.join(root, '内容'));
-    writeNew(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: VERSION, libraryId: randomUUID(), createdAt: new Date().toISOString() }));
+    writeNew(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: LIBRARY_VERSION, libraryId: randomUUID(), createdAt: new Date().toISOString() }));
     return openLibrary(root);
   } catch (error) { throw ioError(error); }
 }

@@ -19,7 +19,13 @@ function fixture(t) {
   return { parent, root, library: createLibrary(root) };
 }
 const contentFile = (root, item, name = '正文.md') => path.join(root, '内容', item.id, name);
-const transactions = root => path.join(root, system, '事务');
+const transactionRoot = root => path.join(root, system, '事务');
+const transactions = root => path.join(transactionRoot(root), '已提交');
+const pendingRoot = root => path.join(transactionRoot(root), '待恢复');
+const transactionDir = (root, mutationId) => {
+  const history = path.join(transactions(root), mutationId);
+  return fs.existsSync(history) ? history : path.join(pendingRoot(root), mutationId);
+};
 const lockPath = root => path.join(root, system, '库锁');
 function reject(code, fn) { assert.throws(fn, error => error.code === code); }
 function child(script, data = {}) {
@@ -94,7 +100,7 @@ test('trash and restore preserve ID, directory, body and history snapshots', t =
   assert.equal(library.listTrash().length, 0);
   reject('INVALID_STATE', () => library.restoreContent(item.id, restored.editToken));
   assert.equal(fs.readdirSync(transactions(root)).length, 3);
-  const trashIntent = JSON.parse(fs.readFileSync(path.join(transactions(root), trashed.mutationId, 'intent.json')));
+  const trashIntent = JSON.parse(fs.readFileSync(path.join(transactionDir(root, trashed.mutationId), 'intent.json')));
   assert.equal(Buffer.from(trashIntent.before[1].bytes, 'base64').toString(), item.body);
   assert.ok(fs.existsSync(contentFile(root, item)));
 });
@@ -191,7 +197,7 @@ for (const phase of ['afterJournal', 'afterFile', 'beforeCommit', 'beforeMarkerP
     assert.equal(recovered.body, 'after body');
     assert.equal(recovered.revision, 2);
     assert.equal(reopened.queryMutation(mutationId).content.editToken, recovered.editToken);
-    assert.equal(fs.readFileSync(path.join(transactions(root), mutationId, 'captured-1'), 'utf8'), 'before');
+    assert.equal(fs.readFileSync(path.join(transactionDir(root, mutationId), 'captured-1'), 'utf8'), 'before');
   });
 }
 
@@ -204,8 +210,8 @@ test('recovery detects a third external state before touching either target', t 
   reject('RECOVERY_CONFLICT', () => openLibrary(root));
   assert.deepEqual(fs.readFileSync(contentFile(root, item, '内容.json')), oldMeta);
   assert.equal(fs.readFileSync(contentFile(root, item), 'utf8'), 'third-party body');
-  assert.ok(fs.existsSync(path.join(transactions(root), mutationId, 'intent.json')));
-  assert.ok(!fs.existsSync(path.join(transactions(root), mutationId, 'COMMITTED')));
+  assert.ok(fs.existsSync(path.join(transactionDir(root, mutationId), 'intent.json')));
+  assert.ok(!fs.existsSync(path.join(transactionDir(root, mutationId), 'COMMITTED')));
 });
 
 test('capture closes check/rename window and preserves newly observed external bytes', t => {
@@ -216,7 +222,7 @@ test('capture closes check/rename window and preserves newly observed external b
     if (event.phase === 'beforeCapture' && event.index === 1) fs.writeFileSync(contentFile(root, item), 'racing external writer');
   });
   assert.throws(() => library.updateContent(item.id, { title: 'after', body: 'after' }, item.editToken, { mutationId }), error => error.code === 'RECOVERY_CONFLICT' && error.pendingRecovery);
-  assert.equal(fs.readFileSync(path.join(transactions(root), mutationId, 'captured-1'), 'utf8'), 'racing external writer');
+  assert.equal(fs.readFileSync(path.join(transactionDir(root, mutationId), 'captured-1'), 'utf8'), 'racing external writer');
   __testing.setHook(undefined);
   reject('RECOVERY_CONFLICT', () => openLibrary(root));
 });
@@ -230,7 +236,7 @@ test('exclusive link refuses a target recreated after capture and retains both v
   });
   reject('RECOVERY_CONFLICT', () => library.updateContent(item.id, { body: 'our replacement' }, item.editToken, { mutationId }));
   assert.equal(fs.readFileSync(contentFile(root, item), 'utf8'), 'external replacement');
-  assert.equal(fs.readFileSync(path.join(transactions(root), mutationId, 'captured-1'), 'utf8'), 'before');
+  assert.equal(fs.readFileSync(path.join(transactionDir(root, mutationId), 'captured-1'), 'utf8'), 'before');
   const temporary = fs.readdirSync(path.dirname(contentFile(root, item))).find(name => name.startsWith('.install-'));
   assert.equal(fs.readFileSync(path.join(path.dirname(contentFile(root, item)), temporary), 'utf8'), 'our replacement');
 });
@@ -243,7 +249,7 @@ test('injected write error reports pending recovery and never false success', t 
     if (event.phase === 'afterFile' && event.index === 0) throw Object.assign(new Error('injected ENOSPC'), { code: 'ENOSPC' });
   });
   assert.throws(() => library.updateContent(item.id, { title: 'after', body: 'after' }, item.editToken, { mutationId }), error => error.code === 'IO_ERROR' && error.pendingRecovery && error.mutationId === mutationId);
-  assert.ok(!fs.existsSync(path.join(transactions(root), mutationId, 'COMMITTED')));
+  assert.ok(!fs.existsSync(path.join(transactionDir(root, mutationId), 'COMMITTED')));
   __testing.setHook(undefined);
   assert.equal(openLibrary(root).readContent(item.id).body, 'after');
 });
@@ -261,8 +267,8 @@ test('actual file-write boundary failure leaves durable intent and recovers on r
     return originalWrite.call(this, file, data, ...rest);
   };
   assert.throws(() => library.updateContent(item.id, { title: 'after', body: 'failed body write' }, item.editToken, { mutationId }), error => error.code === 'IO_ERROR' && error.cause.code === 'ENOSPC' && error.pendingRecovery);
-  assert.ok(!fs.existsSync(path.join(transactions(root), mutationId, 'COMMITTED')));
-  assert.equal(fs.readFileSync(path.join(transactions(root), mutationId, 'captured-1'), 'utf8'), 'before');
+  assert.ok(!fs.existsSync(path.join(transactionDir(root, mutationId), 'COMMITTED')));
+  assert.equal(fs.readFileSync(path.join(transactionDir(root, mutationId), 'captured-1'), 'utf8'), 'before');
   fs.writeFileSync = originalWrite;
   assert.equal(openLibrary(root).readContent(item.id).body, 'failed body write');
 });
@@ -285,8 +291,8 @@ test('incomplete unpublished journal is retained and cannot brick library recove
   assert.equal(fs.readFileSync(contentFile(root, item), 'utf8'), 'before');
   assert.equal(JSON.parse(fs.readFileSync(contentFile(root, item, '内容.json'))).title, 'before');
   assert.equal(openLibrary(root).readContent(item.id).body, 'before');
-  const staging = fs.readdirSync(transactions(root)).find(name => name.startsWith(`.staging-${mutationId}-`));
-  assert.equal(fs.readFileSync(path.join(transactions(root), staging, 'intent.json'), 'utf8'), '{partial');
+  const staging = fs.readdirSync(pendingRoot(root)).find(name => name.startsWith(`.staging-${mutationId}-`));
+  assert.equal(fs.readFileSync(path.join(pendingRoot(root), staging, 'intent.json'), 'utf8'), '{partial');
   assert.equal(library.queryMutation(mutationId), null);
   assert.equal(library.updateContent(item.id, { title: 'after', body: 'after' }, item.editToken, { mutationId }).body, 'after');
 });
@@ -298,7 +304,7 @@ test('SIGKILL before intent publication leaves only staging; reopen can retry sa
   const reopened = openLibrary(root);
   assert.equal(reopened.readContent(item.id).body, 'before');
   assert.equal(reopened.queryMutation(mutationId), null);
-  assert.ok(fs.readdirSync(transactions(root)).some(name => name.startsWith(`.staging-${mutationId}-`)));
+  assert.ok(fs.readdirSync(pendingRoot(root)).some(name => name.startsWith(`.staging-${mutationId}-`)));
   assert.equal(reopened.updateContent(item.id, { title: 'after title', body: 'after body' }, item.editToken, { mutationId }).body, 'after body');
 });
 
@@ -317,8 +323,8 @@ test('a partially written completion staging file is ignored and recovery comple
   };
   assert.throws(() => library.updateContent(item.id, { title: 'after', body: 'after' }, item.editToken, { mutationId }), error => error.code === 'IO_ERROR' && error.pendingRecovery);
   fs.writeFileSync = originalWrite;
-  assert.ok(!fs.existsSync(path.join(transactions(root), mutationId, 'COMMITTED')));
-  assert.ok(fs.readdirSync(path.join(transactions(root), mutationId)).some(name => name.startsWith('.COMMITTED-')));
+  assert.ok(!fs.existsSync(path.join(transactionDir(root, mutationId), 'COMMITTED')));
+  assert.ok(fs.readdirSync(transactionDir(root, mutationId)).some(name => name.startsWith('.COMMITTED-')));
   const reopened = openLibrary(root);
   assert.equal(reopened.readContent(item.id).body, 'after');
   assert.equal(reopened.queryMutation(mutationId).status, 'committed');
@@ -460,7 +466,7 @@ test('newer/foreign root format and unknown nonempty directories are never taken
   const { parent, root, library } = fixture(t);
   const file = path.join(root, '内容库.json');
   const original = JSON.parse(fs.readFileSync(file));
-  fs.writeFileSync(file, JSON.stringify({ ...original, schemaVersion: 2 }));
+  fs.writeFileSync(file, JSON.stringify({ ...original, schemaVersion: 3 }));
   reject('FORMAT_UNSUPPORTED', () => library.createContent({ title: 'x', body: '' }));
   fs.writeFileSync(file, JSON.stringify({ ...original, format: 'other-product' }));
   reject('FORMAT_UNSUPPORTED', () => openLibrary(root));
@@ -483,10 +489,10 @@ for (const surface of ['root', 'contentDirectory', 'body', 'system', 'transactio
     if (surface === 'contentDirectory') target = path.dirname(contentFile(root, item));
     if (surface === 'body') target = contentFile(root, item);
     if (surface === 'system') target = path.join(root, system);
-    if (surface === 'transaction') target = path.join(transactions(root), item.mutationId);
+    if (surface === 'transaction') target = transactionDir(root, item.mutationId);
     fs.renameSync(target, `${target}.saved`);
     fs.symlinkSync(surface === 'body' ? path.join(outside, 'keep') : outside, target);
-    reject('UNSAFE_PATH', () => library.readContent(item.id));
+    reject('UNSAFE_PATH', () => surface === 'transaction' ? library.queryMutation(item.mutationId) : library.readContent(item.id));
     assert.equal(fs.readFileSync(path.join(outside, 'keep'), 'utf8'), 'outside');
   });
 }
@@ -495,7 +501,7 @@ test('journal is validated data, never a caller-controlled filesystem instructio
   const { parent, root, library } = fixture(t);
   const item = library.createContent({ title: 'before', body: 'before' });
   const mutationId = killDuring(root, item, 'afterJournal');
-  const intentFile = path.join(transactions(root), mutationId, 'intent.json');
+  const intentFile = path.join(transactionDir(root, mutationId), 'intent.json');
   const intent = JSON.parse(fs.readFileSync(intentFile));
   const outside = path.join(parent, 'outside.md');
   fs.writeFileSync(outside, 'keep');
@@ -508,7 +514,7 @@ test('checksum damage fails closed and keeps the unfinished intent', t => {
   const { root, library } = fixture(t);
   const item = library.createContent({ title: 'before', body: 'before' });
   const mutationId = killDuring(root, item, 'afterJournal');
-  const intentFile = path.join(transactions(root), mutationId, 'intent.json');
+  const intentFile = path.join(transactionDir(root, mutationId), 'intent.json');
   const intent = JSON.parse(fs.readFileSync(intentFile));
   intent.after[1].bytes = Buffer.from('tampered').toString('base64');
   fs.writeFileSync(intentFile, JSON.stringify(intent));
