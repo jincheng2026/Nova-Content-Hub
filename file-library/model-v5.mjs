@@ -263,6 +263,17 @@ export function modelMethods(h) {
       if(input.coverCount!==undefined)invalid(Number.isSafeInteger(input.coverCount)&&input.coverCount>=1&&input.coverCount<=20,'coverCount must be 1–20');
       return settingChange('setGenerationDefaults',input,token,options,meta=>{if(input.photoId){const p=readObject('photo',input.photoId);invalid(p.deletedAt===null && p.isOwnPhoto,'Default photo requires an active own photo');}if(input.templateId)activeTemplate(input.templateId);return {...meta,defaults:{...meta.defaults,...input}};});
     },
+    restoreGenerationDefaultReferences:(raw,token,options)=>{
+      const input=fields(raw,['photoId','templateId','coverCount','source'],['photoId','templateId','source']);
+      if(input.photoId!==null)id(input.photoId);invalid(ref(input.templateId),'Invalid default template');
+      invalid(input.source!==null && provenance(input.source),'Restored references require a finite source record');
+      if(input.coverCount!==undefined)invalid(Number.isSafeInteger(input.coverCount)&&input.coverCount>=1&&input.coverCount<=20,'coverCount must be 1–20');
+      return settingChange('restoreGenerationDefaultReferences',input,token,options,meta=>{
+        for(const [key,kind,folder] of [['photoId','photo','我的照片'],['templateId','template','模板']])if(input[key]!==null){invalid(!!safePath(path.join(root,folder,input[key]),true),'Restored default reference must already exist');readObject(kind,input[key]);}
+        const {source,...defaults}=input;
+        return {...meta,defaults:{...meta.defaults,...defaults}};
+      });
+    },
     createChannel:(raw,token,options)=>{
       const input=channelInput(raw,false);
       return settingChange('createChannel',input,token,options,meta=>({...meta,channels:[...meta.channels,{id:`channel-${randomUUID()}`,name:input.name,ink:input.ink??'#555555',bg:input.bg??'#f0f0f0',requiredRatio:input.requiredRatio??null,builtinKey:null,deletedAt:null}]}));

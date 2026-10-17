@@ -270,6 +270,7 @@ COMPLETE.json                 # 最后独占 link 发布，绑定 manifestHash +
 | `readLibrarySettings()` | 返回 profile/defaults/channels/promptCategories/customRatios；附只读投影 `defaultIssues` 与 `visiblePromptCategories` |
 | `updateProfile(patch,token,options?)` | `name/intro/avatarAssetHash/marks:[{key,value}]`；头像 null 或真实 raster 资产 hash |
 | `setGenerationDefaults(patch,token,options?)` | `photoId/templateId/coverCount`（1–20）；设置时核对 active 本人照与模板；null 表示无默认 |
+| `restoreGenerationDefaultReferences(input,token,options?)` | 仅恢复已有 photoId/templateId（均须显式给出，允许 null）与可选 coverCount；source 必填 `{source,originalId?,note?}`；允许已软删/本人声明已撤销引用，拒不存在 ID；不提高本人声明、不复活、不改变资产可用性；source 参与事务 requestDigest |
 | `createChannel(input,token,options?)` | `name,ink?,bg?,requiredRatio?`；生成 `channel-<uuid>`，颜色为 #rrggbb，比例 null 或正整数 width:height |
 | `updateChannel(channelId,patch,token,options?)` | 同上字段，ID 不变；不能编辑软删渠道 |
 | `trashChannel/restoreChannel(channelId,token,options?)` | 只改变 deletedAt；旧计划与快照仍可读 |
@@ -277,7 +278,7 @@ COMPLETE.json                 # 最后独占 link 发布，绑定 manifestHash +
 | `addCustomRatio/removeCustomRatio(ratio,token,options?)` | 约分存储，例如 6:8 → 3:4；去重 |
 | `setPromptEnabled(promptId,enabled,token,options?)` | enabled 与软删除分离，旧提示词编辑后默认 enabled:true |
 
-默认 photoId/templateId 失效时不改选，`defaultIssues` 含 `{field,id,reason:'missing'|'trashed'|'ownership-revoked'}`。用户撤销本人声明仍保留引用。配置默认值仅影响将来的 GUI 输入，生成请求依然逐次明确固定。内置五渠道 ID 为 douyin/xiaohongshu/wechat-channels/wechat-official/bilibili；比例 3:4/1:1/3:4/47:20/16:9 是产品可编辑初值，未核实为平台强制像素要求。host/showSample/motion/最近库路径、安装/信任/授权演示状态不进入 workspace。
+正常设置仍严格要求 active 本人照/模板；导入旧来源的已失效默认引用必须用专用 restoreGenerationDefaultReferences，不能临时伪设本人声明或复活对象。默认 photoId/templateId 失效时不改选，`defaultIssues` 含 `{field,id,reason:'missing'|'trashed'|'ownership-revoked'}`。用户撤销本人声明仍保留引用。配置默认值仅影响将来的 GUI 输入，生成请求依然逐次明确固定。内置五渠道 ID 为 douyin/xiaohongshu/wechat-channels/wechat-official/bilibili；比例 3:4/1:1/3:4/47:20/16:9 是产品可编辑初值，未核实为平台强制像素要求。host/showSample/motion/最近库路径、安装/信任/授权演示状态不进入 workspace。
 
 `createContent/updateContent` 另接受 `recordedDate/plannedDate`（严格 YYYY-MM-DD 或 null）、`preferredTemplateId`（ID 或 null）、`channelIds`（active 渠道 ID 数组）、`isExample`（boolean）。createdAt 仍为本文件对象建立时间。基础正文独立，不从渠道文案拼接。
 
