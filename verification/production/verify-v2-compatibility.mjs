@@ -30,7 +30,7 @@ try {
   assert.deepEqual(fs.readFileSync(descriptor), original, 'barrier precedes the schema switch');
   assert.throws(() => oldHandle.updateContent(content.id, { body: 'must not write' }, content.editToken), error => error.code === 'CORRUPT');
   const upgraded = upgradeLibrary(root);
-  assert.equal(upgraded.info.schemaVersion, 4);
+  assert.equal(upgraded.info.schemaVersion, 5);
   assert.equal(upgraded.info.libraryId, library.info.libraryId);
   assert.equal(upgraded.readContent(content.id).body, content.body);
   assert.throws(() => oldHandle.updateContent(content.id, { body: 'must not write' }, content.editToken), error => error.code === 'FORMAT_UNSUPPORTED');

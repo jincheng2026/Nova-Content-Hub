@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-10-17T14:01:28.461Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "backupSchema4Verified": true,
+  "restoredSchemaPreserved": 4,
+  "explicitUpgradeRequired": true,
+  "explicitlyUpgradedTo": 5,
+  "originalLibraryUnchanged": true,
+  "originalContentBytesPreserved": true,
+  "realGeneratedCandidateIds": [
+    "a2ca14c5-6917-45ba-a0cd-f2765694785e",
+    "da5eae88-1d2a-42df-b7bf-1a59bddec9c5"
+  ],
+  "realImagesBytesPreserved": true,
+  "receiptReplayPreservedIds": true,
+  "schema5BackupRestore": true,
+  "defaultChannels": 5,
+  "windowsTested": false,
+  "electronTested": false
+}
