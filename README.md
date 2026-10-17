@@ -1,12 +1,37 @@
 # Nova Content Hub · 自媒体工作台
 
-当前阶段：**产品原型、真实文件核心与实验封面执行器**。先验证业务和宿主链路，再接正式 Electron。浏览器工作区的保存、备份与手动导出可用；登录是明确标注的交互演示，原型界面尚未接操作系统目录、真实授权和正式宿主自动回流。
+当前阶段：**TypeScript / React / Semi UI 的 Electron 技术入口、真实文件核心与插件执行器**。桌面已能导入旧备份并重启恢复任务；正式五页、生产授权与双助手自动生成仍在实施。浏览器原型另行保留，其演示登录不构成真实授权。
 
 商用桌面端实施已启动，按步骤记录设计、变更和验收证据。当前状态见 [实施计划与验收台账](docs/实施/00-实施计划与验收台账.md)，过程见 [实施日志](docs/实施/01-实施日志.md)。各阶段分别验收，不能将原型测试通过视为商用桌面端就绪。
 
 真实本地文件核心位于 [file-library](file-library/README.md)：内容与提示词的 Markdown 真源、照片、不可变资产、模板组版本、候选封面、发布计划与人工发布快照，共用跨进程锁、可恢复事务、软删除与幂等回执。[内置资源安装器](library-seed/README.md) 将实际模板图片和原创创作者提示词导入新库，保留已有用户修改和删除。它们尚未连接原型界面与生产授权；不会把浏览器保存自动改成真实目录写入。
 
-[实验封面执行器](cover-runtime/README.md) 已实现请求/尝试、固定参考图、完整解码与整批候选提交，并配套 CLI 和 Skill。当前 Codex 线程真实两图回流的样本与边界见 [验证样本](assets/production-probes/README.md)；自动交接、WorkBuddy/Windows、Electron 和正式授权仍未验收，旧插件契约不因此变成可执行版本。
+[插件执行入口](plugin-src/README.md) 以明确的`contract`/`cover`命令区分不可执行原型契约与真实封面文件任务；执行实现、Skill和桥接规则只维护一份。旧[封面执行器](cover-runtime/README.md)仅兼容转发。当前Codex线程真实两图回流见[验证样本](assets/production-probes/README.md)；它不证明自动交接、WorkBuddy/Windows或正式授权可用。
+
+## 桌面技术栈与目录
+
+| 目录 | 职责 |
+| --- | --- |
+| [workbench](workbench/README.md) | Electron；TypeScript main/preload/worker，React19 + Semi UI19界面，Vite构建 |
+| [plugin-src](plugin-src/README.md) | Skills、命令分派、Hooks、纯桥接与插件构建的唯一源码 |
+| [file-library](file-library/README.md) | 桌面与插件共用的文件CRUD、事务、历史与封面任务 |
+| [browser-import](browser-import/README.md)、[library-maintenance](library-maintenance/README.md) | 旧备份迁移、整库备份/核验/恢复 |
+| [image-validation](image-validation/README.md)、[library-seed](library-seed/README.md) | 完整图片解码、内置模板与提示词安装 |
+| `原型/`、`builtin-templates/`、`builtin-prompts/` | 浏览器原型及原创可分发素材 |
+| `schemas/`、`docs/`、`verification/`、`scripts/` | 对外协议、设计/实施记录、证据与工具 |
+
+桌面源码按`workbench/src/{main,preload,renderer,shared}`分层；不引入Vue，已有共享ESM JavaScript核心不因更换界面框架重写。助手路由/交接数据归`plugin-src/src/bridge`，系统发现和受限启动归桌面main。完整取舍见[技术栈与插件化设计](docs/实施/12-技术栈目录与插件化设计.md)。`dist-*`均是生成物，不是修改入口。
+
+开发桌面需Node22.18+，安装根目录与`workbench/`各自锁定依赖后执行：
+
+```sh
+npm ci
+npm ci --prefix workbench
+npm run build:desktop -- --auth both
+npm start --prefix workbench
+```
+
+当前生成的是两种模式的实验运行目录，仍借助开发环境Electron启动，不是可售安装包；真实系统选择器人工验收、双系统双助手、生产授权与发行仍独立验收。构建模式不可由用户运行时切换。
 
 ## 查看原型
 
@@ -56,7 +81,7 @@ node dist/content.mjs check-request --file REQUEST.json
 npm run verify
 ```
 
-首次运行完整验证先执行 `npm ci --ignore-scripts`。只查看 HTML 或构建插件不需要安装 Ajv。修改内置模板时编辑 `builtin-templates/catalog.json`，再运行 `node builtin-templates/generate.mjs`；`npm run check` 会检查生成物没有漂移。
+完整验证使用Node22.18+，先安装根目录与`workbench/`依赖。`npm run verify`包含原型、共享核心、插件、桌面类型检查及双模式构建；真实Electron探针另用`npm run probe:desktop`，不会把普通Node测试冒充窗口验收。修改内置模板时编辑`builtin-templates/catalog.json`；修改桥接只编辑`plugin-src/src/bridge/handoff.js`，`npm run sync:bridge`生成原型副本。`npm run check`会拒绝生成物漂移。
 
 工作区测试使用内存存储，插件测试使用独立临时目录，交接测试使用实际双构建产物。自动化测试不操作真实资料库、不调用模型或登录服务。内置样图由实际 imagegen 调用生成，保留完整提示与文件校验记录；这不证明工作台的自动执行已接入。自动化测试不能代替浏览器渲染、真实宿主安装、Electron 安装升级或跨平台验收。
 

@@ -1,0 +1,25 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "electron": "44.9.0",
+  "hosts": [
+    {
+      "host": "codex",
+      "protocol": "codex://",
+      "registered": true,
+      "name": "ChatGPT",
+      "applicationPath": "/Applications/ChatGPT.app"
+    },
+    {
+      "host": "workbuddy",
+      "protocol": "workbuddy://",
+      "registered": true,
+      "name": "WorkBuddy",
+      "applicationPath": "/Applications/WorkBuddy.app"
+    }
+  ],
+  "appOpened": false,
+  "draftPrefilled": false,
+  "pluginTrusted": false,
+  "generationTested": false
+}

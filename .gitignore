@@ -4,4 +4,5 @@ node_modules/
 dist-prototype/
 dist-plugin-contract/
 dist-cover-runtime/
+dist-desktop/
 .local-probes/

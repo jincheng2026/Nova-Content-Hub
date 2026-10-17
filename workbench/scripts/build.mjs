@@ -4,10 +4,12 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { build } from 'vite';
+import { syncBridge } from '../../plugin-src/scripts/sync-bridge.mjs';
 import { validateBuildConfig, validateResources, validateRelease } from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const root = path.resolve(workbench, '..');
+await syncBridge(true);
 const args = process.argv.slice(2);
 if (args.length !== 2 || args[0] !== '--auth' || !['required', 'disabled', 'both'].includes(args[1])) throw new Error('Use npm run build -- --auth required|disabled|both');
 const npmCLI = process.env.npm_execpath;

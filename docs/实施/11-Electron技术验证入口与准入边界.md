@@ -1,6 +1,6 @@
 # Electron 技术验证入口与准入边界
 
-日期：2026-10-17。本文件约束最小技术验证。`electron-desktop/` 已交付对应程序并通过Mac真实双进程自动探针，仍不提前通过 G1/G2。
+日期：2026-10-17。本文件约束最小技术验证。最初`electron-desktop/`已交付程序并通过Mac真实双进程探针；按用户新指示已迁到`workbench/`的TS/React/Semi结构，仍不提前通过G1/G2。
 
 ## 先验证一个真实文件流程
 
@@ -40,7 +40,7 @@ Windows 真机资源与 Mac 解锁仍待用户答复。共用代码可继续实�
 
 ## 当前技术入口证据
 
-程序与维护者运行说明见 `electron-desktop/README.md`，精确Electron依赖锁在其子目录；没有复用旅游工程运行时。真实Mac arm64探针启动两个Electron进程，通过生产入口相同的窗口/协议/preload配置与真实utilityProcess：导入合成旧备份、原生图片解码、renderer无Node、恶意标题/正文实际进入DOM且只作为文本；删除原备份后第二进程找回同一任务，继续不覆盖导入后正文编辑。13项边界/恢复测试通过，receipt与日志在 `electron-desktop/verification/`。
+当前程序与运行说明见`workbench/README.md`，精确依赖锁在该目录；没有复用旅游运行时。初版13项和双进程证据见历史提交901b73c；迁移后14项及双模式仓库外四阶段探针见`workbench/verification/`，包括真实React按钮、utility原生解码、移走原备份重启同任务、正常编辑不重放、恶意文本、CSP与错误pair拒绝。系统选择器仍使用合成测试注入。
 
 原始探针暴露ESM顶层await等待app.ready的启动死锁，以及页面启动查询和用户查询并发造成BUSY；均修复后完成完整探针。Astra另复现预检后源被换成另一份合法备份：现在将用户确认的expectedSourceHash传入导入器自身稳定读取，在预约前拒绝变化；原复现返回SOURCE_CHANGED、无预约且可正常重选。
 
