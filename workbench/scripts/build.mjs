@@ -37,7 +37,7 @@ for (const mode of modes) {
     fs.cpSync(appIcons, path.join(dist, 'brand'), {recursive: true});
     fs.cpSync(path.join(workbench, '.native'), dist, {
         recursive: true,
-        filter: source => !['probe.mjs', 'lifecycle-probe.mjs'].includes(path.basename(source))
+        filter: source => !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs'].includes(path.basename(source))
     });
     fs.writeFileSync(path.join(target, 'workbench/package.json'), JSON.stringify({
         type: 'module',
@@ -82,11 +82,21 @@ for (const mode of modes) {
         platform: process.platform,
         arch: process.arch
     }), null, 2) + '\n');
-    for (const name of ['file-library', 'image-validation', 'browser-import']) fs.cpSync(path.join(root, name), path.join(target, name), {
+    for (const name of ['file-library', 'image-validation', 'browser-import', 'library-seed']) fs.cpSync(path.join(root, name), path.join(target, name), {
         recursive: true,
         filter: source => path.basename(source) !== 'test'
     });
     for (const relative of ['core.js', 'builtin-templates.js', 'shared/handoff.js']) {
+            const destination = path.join(target, '原型', relative);
+        fs.mkdirSync(path.dirname(destination), { recursive: true });
+        fs.copyFileSync(path.join(root, '原型', relative), destination);
+    }
+    for (const relative of ['builtin-templates/catalog.json', 'builtin-prompts/catalog.json', 'assets/ai-reference-prompts/generated-files.json', 'plugin-src/src/bridge/native-handoff.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/content.mjs']) {
+        const destination = path.join(target, relative); fs.mkdirSync(path.dirname(destination), { recursive: true }); fs.copyFileSync(path.join(root, relative), destination);
+    }
+    const seedCatalog = JSON.parse(fs.readFileSync(path.join(root, 'builtin-templates/catalog.json'), 'utf8'));
+    for (const relative of new Set(seedCatalog.templates.flatMap(template => [...template.generatedReferences.map(r => r.path), ...(template.assets || []).map(a => a.path)]))) {
+        if (typeof relative !== 'string' || !relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..')) throw new Error('Unsafe builtin resource');
         const destination = path.join(target, '原型', relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
         fs.copyFileSync(path.join(root, '原型', relative), destination);
@@ -97,9 +107,9 @@ for (const mode of modes) {
         if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
         const bytes = fs.readFileSync(path.join(root, '原型', relative));
         if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
-        const destination = path.join(target, '原型', relative);
+            const destination = path.join(target, '原型', relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
-        fs.writeFileSync(destination, bytes, {flag: 'wx'});
+        if (fs.existsSync(destination)) { if (!fs.readFileSync(destination).equals(bytes)) throw new Error('Bundled resource collision'); } else fs.writeFileSync(destination, bytes, {flag: 'wx'});
     }
     const {type: _type, ...runtimePackage} = packageJSON;
     fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({

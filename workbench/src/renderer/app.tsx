@@ -7,12 +7,12 @@ import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import Typography from '@douyinfe/semi-ui-19/lib/es/typography';
 import '@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import './style.css';
-import {errorInfo} from '../shared/contracts.ts';
+import {CoverPanel } from './covers.tsx';
+import {invoke} from './client.ts';
+import { errorInfo} from '../shared/contracts.ts';
 import type {
     Content,
     DesktopMethod,
-    DesktopResults,
-    DesktopInputs,
     Status,
     TaskStatus,
     Draft,
@@ -29,13 +29,10 @@ const labels: Record<TaskStatus, string> = {
     committed: '导入已完成'
 };
 
-async function invoke<K extends DesktopMethod>(method: K, input?: DesktopInputs[K]): Promise<DesktopResults[K]> {
-    const reply = await window.contentHub[method](input);
-    if (!reply.ok) throw Object.assign(new Error(reply.error.message), {code: reply.error.code});
-    return reply.value as DesktopResults[K];
-}
+
 
 function App() {
+    const [libraryEpoch, setLibraryEpoch] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
     const [contents, setContents] = useState<Content[] | null>(null);
     const [error, setError] = useState('');
@@ -67,7 +64,7 @@ function App() {
         setDisk(null);
     };
     const clearEditor = () => {
-        setBase(null);
+        setLibraryEpoch(n => n + 1); setBase(null);
         setDraft(null);
         draftRef.current = null;
         setDisk(null);
@@ -272,7 +269,7 @@ function App() {
 
     const task = status?.task;
     const busy = acting || !status || status.busy;
-    const blocked = !!status?.pending || status?.creating;
+    const blocked = !!status?.pending || status?.creating|| !!status?.photoPending || !!status?.coverPending || !!status?.coverActionPending;
     let message = !status ? '正在读取机器绑定…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '明确新建或打开内容库，也可导入旧备份。';
     if (task?.targetChanged) message += '。原内容库位置已被替换，请恢复原目录。';
     if (task?.descriptorChanged) message += '。内容库格式已变更，旧导入完成事实保留。';
@@ -281,7 +278,7 @@ function App() {
         <header><p className="eyebrow">NOVA CONTENT HUB / 本地内容工作台</p><Typography.Title
             heading={1}>本地内容库</Typography.Title><Typography.Paragraph>明确选择一个当前库。保存、回收或恢复；外部修改发生时保留本地草稿。</Typography.Paragraph>
         </header>
-        <Banner type="info" closeIcon={null} description="此入口为原生内容生命周期实验；正式授权和助手生成尚未接入。"/>
+        <Banner type="info" closeIcon={null} description="此入口为原生内容生命周期实验；正式授权尚未接入；助手执行需真实宿主另行验收。"/>
         <Card title="当前内容库"><p
             id="current-library">{status?.currentName || '尚未打开内容库'}{status?.needsReselect ? ' · 旧绑定缺少目录身份，请明确重选' : ''}</p>
             <div className="actions"><Button id="create-library" disabled={busy || blocked}
@@ -291,7 +288,7 @@ function App() {
             {status?.creating &&
                 <div><p>新库创建结果待核实；固定原目标，失败目录会保留。</p><Button id="abandon-creation" disabled={busy}
                                                                                  onClick={() => void resolve('discard')}>明确放弃这次创建并保留目录</Button>
-                </div>}{blocked &&
+                </div>}{(!!status?.pending || status?.creating) &&
                 <div id="pending"><p>保存结果待核实。提交草稿已保留；核验前不能换库或发起第二笔写入。</p><Button
                     id="query-pending" disabled={busy}
                     onClick={() => void recover()}>核验保存结果</Button>{(pending?.state === 'missing' || status?.creationMissing) &&
@@ -386,7 +383,8 @@ function App() {
                                                                                                    disabled={!!status?.pending}
                                                                                                    onClick={() => load(disk)}>明确放弃草稿并载入磁盘</Button>
             </section>}</Card>}
-        {leaving &&
+        <CoverPanel key={libraryEpoch} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} run={nativeAction} onContent={item => { if (dirty && item.editToken !== base?.editToken) setDisk(item); else if (!dirty) load(item); }} />
+    {leaving &&
             <dialog ref={leaveDialog} className="leave-dialog" onCancel={() => setLeaving(null)} aria-modal="true"
                     aria-labelledby="leave-title"><h3 id="leave-title">草稿尚未保存</h3>
                 <p>保存后继续、明确放弃，或留在当前内容。</p><Button id="leave-save" disabled={busy || !!status?.pending}

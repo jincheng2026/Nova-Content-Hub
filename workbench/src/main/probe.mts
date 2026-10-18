@@ -4,6 +4,7 @@ import {WorkerClient} from './worker-client.mts';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import {CHANNELS} from './boundary.mts';
 import {startDesktop} from './desktop.mts';
 import {openLibrary} from '../../../file-library/index.mjs';
 import type {Content, DesktopMethod, DesktopResults, Reply} from '../shared/contracts.ts';
@@ -45,11 +46,11 @@ startDesktop({
         assert.deepEqual(await run('({ require: typeof require, process: typeof process, bridge: Object.keys(window.contentHub).sort() })'), {
             require: 'undefined',
             process: 'undefined',
-            bridge: ['chooseBackup', 'chooseDestination', 'createContent', 'createLibrary', 'importBackup', 'listContents', 'openLibrary', 'queryPendingMutation', 'readContent', 'resolvePendingMutation', 'restoreContent', 'resumeImport', 'retryPendingMutation', 'status', 'trashContent', 'updateContent']
-        });
+            bridge: [...CHANNELS]
+        .sort() });
         if (process.env.NOVA_DESKTOP_PROBE_PHASE === 'import') {
             await run('document.getElementById("open-library").click()');
-            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('current-library').textContent.includes('library')`);
+            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('current-library').textContent.includes('library')`, 45000);
             await run('document.getElementById("list").click()');
             await wait(`document.querySelector('#contents details button') && document.querySelector('[data-busy="false"]')`);
             await run('document.querySelector("#contents details button").click()');

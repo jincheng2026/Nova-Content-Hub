@@ -1,3 +1,4 @@
+import {coverDesktopInput} from './cover-validation.ts';
 import {isRecord} from './contracts.ts';
 import type {DesktopMethod, LibraryBinding, Mutation, RootIdentity} from './contracts.ts';
 
@@ -14,6 +15,11 @@ export const libraryBinding = (v: unknown): v is LibraryBinding => exact(v, ['ro
 export function validateInput(method: DesktopMethod, input: unknown) {
     const ref = (v: unknown) => exact(v, ['id', 'editToken']) && uuid(v.id) && token(v.editToken);
     const draft = (v: Record<string, unknown>) => typeof v.title === 'string' && !!v.title.trim() && v.title.length <= 500 && typeof v.body === 'string' && v.body.length <= 1_000_000;
+    const cover = coverDesktopInput(method, input);
+    if (cover !== undefined) {
+        if (!cover) fail('INVALID_INPUT', '封面操作拒绝额外、路径或无效字段。');
+        return;
+    }
     let valid: boolean;
     switch (method) {
         case 'createContent':

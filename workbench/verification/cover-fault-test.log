@@ -1,0 +1,25 @@
+✔ only exact top-level sender with no renderer arguments can invoke business (1.4515ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.775292ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.523ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (23.118584ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.528958ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (595.910125ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (5003.46025ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2160.510958ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (4116.859417ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (889.021042ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (878.176416ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2612.762834ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (391.636ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (3214.607792ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (92.749833ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.32425ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (5221.984667ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20216

@@ -1,3 +1,4 @@
+import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, PhotoPending, CoverActionPending, Assistant} from './cover-contracts.ts';
 export interface Issue {
     code: string;
     key?: string;
@@ -96,10 +97,15 @@ export interface Status {
     needsReselect: boolean;
     pending: PendingView | null;
     creating: boolean;
-    creationMissing: boolean
+    creationMissing: boolean;
+    assistant: Assistant;
+    photoPending: boolean;
+    coverActionPending: boolean;
+    coverPending: boolean;
+    seedPending: boolean
 }
 
-export interface DesktopInputs {
+export interface DesktopInputs extends CoverInputs {
     status: undefined;
     chooseBackup: undefined;
     chooseDestination: undefined;
@@ -118,7 +124,7 @@ export interface DesktopInputs {
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults {
+export interface DesktopResults extends CoverResults {
     status: Status;
     chooseBackup: void;
     chooseDestination: void;
@@ -149,13 +155,18 @@ export interface Binding {
     started: boolean;
     importId: string | null;
     libraryId: string | null;
+    assistant?: Assistant;
+    photoPending?: PhotoPending | null;
+    coverActionPending?: CoverActionPending | null;
+    coverPending?: CoverPending | null;
+    seedPending?: boolean;
     current?: LibraryBinding | null;
     pending?: Mutation | null;
     creation?: { root: string; rootIdentity: RootIdentity; mutationId: string } | null;
     needsReselect?: boolean
 }
 
-export interface WorkerOperations {
+export interface WorkerOperations extends CoverWorkerOperations {
     inspect: { args: { source: string }; result: Inspection };
     query: { args: { destination: string; importId: string | null }; result: ImportTask | null };
     import: { args: { source: string; destination: string; expectedSourceHash: string }; result: ImportTask };
@@ -183,7 +194,11 @@ export interface Dialogs {
 
     destination(defaultPath: string): Promise<string | null>;
 
-    library?(): Promise<string | null>
+    library?(): Promise<string | null>;
+
+    photo?(): Promise<string | null>;
+
+    export?(defaultName: string): Promise<string | null>
 }
 
 export interface RendererResource {

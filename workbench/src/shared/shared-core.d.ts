@@ -11,13 +11,31 @@ declare module '*browser-import/index.mjs' {
 }
 declare module '*file-library/index.mjs' {
     interface Library {
-        info: { root: string; libraryId: string; rootIdentity: import('./contracts.ts').RootIdentity };
+        listPhotos(): import('./cover-contracts.ts').Photo[];
+        readPhoto(id: string): import('./cover-contracts.ts').Photo & { editToken: string };
+        updatePhoto(id: string, input: { isOwnPhoto: boolean }, token: string): unknown;
+        createPhoto(input: { title: string; originalName: string; assetHash: string; isOwnPhoto: boolean }, options: { mutationId: string }): import('./cover-contracts.ts').Photo;
+        readAsset(hash: string): { assetHash: string; bytes: number; detectedType: string; data: Uint8Array };
+        importAsset(source: string, options: { purpose: 'photo' }): { assetHash: string };
+        listTemplates(): { id: string; currentVersion: number }[];
+        readTemplate(id: string, version?: number): { id: string; title: string; currentVersion: number; definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
+        inspectCoverInput(id: string, input: import('./cover-contracts.ts').CoverInput, token: string): import('./cover-contracts.ts').Fingerprint;
+        findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;
+        createCoverRequest(id: string, input: import('./cover-contracts.ts').CoverInput, token: string, options: { mutationId: string }): import('./cover-contracts.ts').RequestResult;
+        createCoverAttempt(id: string, requestId: string, input: { host: import('./cover-contracts.ts').Assistant; reason: string }, options: { mutationId: string }): { attempt: import('./cover-contracts.ts').Attempt };
+        readCoverContext(id: string, requestId: string, attemptId: string): import('./cover-contracts.ts').CoverContext & { inbox: string; inputs: { assetHash: string }[]; request: import('./cover-contracts.ts').CoverContext['request'] & { photo: { id: string; assetHash: string } | null } };
+        claimCoverAttempt(id: string, requestId: string, attemptId: string, input: { host: 'codex' | 'workbuddy'; readAssetHashes: string[] }): unknown;
+        commitCoverAttempt(id: string, requestId: string, attemptId: string, receipt: unknown): Promise<unknown>;
+        cancelCoverAttempt(id: string, requestId: string, attemptId: string, options: { mutationId: string }): unknown;
+        selectContentCover(id: string, candidateId: string, token: string, options: { mutationId: string }): unknown;
+
+    info: { root: string; libraryId: string; rootIdentity: import('./contracts.ts').RootIdentity };
 
         listContents(): import('./contracts.ts').Content[];
 
         listTrash(): import('./contracts.ts').Content[];
 
-        readContent(id: string): import('./contracts.ts').Content;
+        readContent(id: string): import('./contracts.ts').Content& { coverJobs?: import('./cover-contracts.ts').CoverJob[]; candidates?: Omit<import('./cover-contracts.ts').Candidate, 'url'>[]; selectedCover?: { candidateId: string } | null };
 
         createContent(input: import('./contracts.ts').Draft, options?: {
             mutationId: string
@@ -33,7 +51,7 @@ declare module '*file-library/index.mjs' {
             mutationId: string
         }): import('./contracts.ts').Content;
 
-        queryMutation(id: string): { objectId: string } | null;
+        queryMutation(id: string): { objectId: string ; objectKind: string; content: { coverJobs?: import('./cover-contracts.ts').CoverJob[] } } | null;
     }
 
     export function openLibrary(destination: string, options?: {
@@ -45,3 +63,6 @@ declare module '*file-library/index.mjs' {
         expectedRootIdentity: import('./contracts.ts').RootIdentity
     }): Library;
 }
+declare module '*library-seed/index.mjs' { export function installBuiltins(library: unknown): unknown; }
+declare module '*image-validation/index.mjs' { export function validateImportedRaster(bytes: Uint8Array): Promise<{ assetHash: string; format: string }>; }
+declare module '*bridge/native-handoff.mjs' { export function nativeHandoffDirectory(appData: string): string; export function prepareNativeHandoff(directory: string, binding: import('./contracts.ts').LibraryBinding, reference: import('./cover-contracts.ts').CoverReference & { requestHash: string; host: import('./cover-contracts.ts').Assistant }, release: import('./contracts.ts').Release): Promise<{ id: string; url: string }>; }

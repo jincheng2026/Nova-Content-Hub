@@ -1,3 +1,4 @@
+import {assistant, coverPending, photoPending, coverActionPending} from '../shared/cover-validation.ts';
 import {isRecord, errorInfo} from '../shared/contracts.ts';
 import {identity, libraryBinding, mutation, uuid} from '../shared/validation.ts';
 import type {Binding} from '../shared/contracts.ts';
@@ -9,7 +10,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
 const absolute = (value: unknown) => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0');
 
 export function validateBinding(value: unknown): Binding {
-    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect'].includes(key)) ||
+    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect', 'assistant', 'photoPending', 'coverPending', 'seedPending', 'coverActionPending'].includes(key)) ||
         !(value.source === null || absolute(value.source)) || !(value.destination === null || absolute(value.destination)) ||
         !(value.sourceHash === null || (typeof value.sourceHash === 'string' && /^[0-9a-f]{64}$/.test(value.sourceHash))) || typeof value.started !== 'boolean' ||
         !(value.importId === null || (typeof value.importId === 'string' && UUID.test(value.importId))) || !(value.libraryId === null || (typeof value.libraryId === 'string' && UUID.test(value.libraryId))) ||
@@ -17,6 +18,12 @@ export function validateBinding(value: unknown): Binding {
         (value.current !== undefined && value.current !== null && (!libraryBinding(value.current) || !absolute(value.current.root))) ||
         (value.pending !== undefined && value.pending !== null && (!mutation(value.pending) || !value.current)) ||
         (value.creation !== undefined && value.creation !== null && (!isRecord(value.creation) || Object.keys(value.creation).length !== 3 || !uuid(value.creation.mutationId) || !absolute(value.creation.root) || !identity(value.creation.rootIdentity))) ||
+        (value.assistant !== undefined && !assistant(value.assistant)) ||
+        (value.photoPending !== undefined && value.photoPending !== null && (!photoPending(value.photoPending) || !absolute(value.photoPending.source) || !value.current)) ||
+        (value.coverPending !== undefined && value.coverPending !== null && (!coverPending(value.coverPending) || !value.current)) ||
+        (value.coverActionPending !== undefined && value.coverActionPending !== null && (!coverActionPending(value.coverActionPending) || !value.current)) ||
+        (value.seedPending !== undefined && typeof value.seedPending !== 'boolean') ||
+        ([value.pending, value.creation, value.photoPending, value.coverPending, value.coverActionPending].filter(Boolean).length > 1) ||
         (value.needsReselect !== undefined && typeof value.needsReselect !== 'boolean') || (value.pending && value.creation) ||
         (value.importId && !value.started) || (value.libraryId && !value.importId)) {
         throw Object.assign(new Error('机器绑定记录损坏，已保留现场；请联系维护者检查。'), {code: 'BINDING_INVALID'});

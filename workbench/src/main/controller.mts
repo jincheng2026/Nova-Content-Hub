@@ -1,3 +1,5 @@
+import {Covers} from './covers.mts';
+import type {CoverStart, CoverReference, Assistant} from '../shared/cover-contracts.ts';
 import type {
     Binding,
     Inspection,
@@ -25,6 +27,7 @@ function fail(code: string, message: string): never {
 }
 
 export class DesktopController {
+    covers: Covers;
     store: BindingStore;
     worker: Worker;
     dialogs: Dialogs;
@@ -38,18 +41,89 @@ export class DesktopController {
     authMode: 'required' | 'disabled';
     querying: Promise<ImportTask | null> | null = null;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required'}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, resourceWorker}: {
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
         documents: string;
-        authMode?: 'required' | 'disabled'
+        authMode?: 'required' | 'disabled';
+        launch?: Covers['launch'];
+        resourceWorker?: Worker
     }) {
         this.store = store;
         this.worker = worker;
         this.dialogs = dialogs;
         this.documents = documents;
         this.authMode = authMode;
+        this.covers = new Covers(this, launch, resourceWorker);
+    }
+
+    resumeCoverAction() {
+        return this.covers.resumeCoverAction();
+    }
+
+    abandonCoverAction() {
+        return this.covers.abandonCoverAction();
+    }
+
+    listCoverAssets() {
+        return this.covers.listCoverAssets();
+    }
+
+    retryBuiltins() {
+        return this.covers.retryBuiltins();
+    }
+
+    choosePhoto(input: { title: string; isOwnPhoto: boolean }) {
+        return this.covers.choosePhoto(input);
+    }
+
+    resumePhoto() {
+        return this.covers.resumePhoto();
+    }
+
+    abandonPhoto() {
+        return this.covers.abandonPhoto();
+    }
+
+    readCover(input: { contentId: string }) {
+        return this.covers.readCover(input);
+    }
+
+    generateCover(input: CoverStart) {
+        return this.covers.generateCover(input);
+    }
+
+    resumeCover() {
+        return this.covers.resumeCover();
+    }
+
+    abandonCover() {
+        return this.covers.abandonCover();
+    }
+
+    continueCover(input: CoverReference) {
+        return this.covers.continueCover(input);
+    }
+
+    retryCover(input: CoverReference) {
+        return this.covers.retryCover(input);
+    }
+
+    cancelCover(input: CoverReference) {
+        return this.covers.cancelCover(input);
+    }
+
+    selectCover(input: { contentId: string; candidateId: string; editToken: string }) {
+        return this.covers.selectCover(input);
+    }
+
+    exportCover(input: { contentId: string; candidateId: string }) {
+        return this.covers.exportCover(input);
+    }
+
+    setAssistant(input: {host: Assistant}) {
+        return this.covers.setAssistant(input);
     }
 
     async initialize() {
@@ -96,7 +170,8 @@ export class DesktopController {
         const task = this.busy ? this.last : await this.query();
         if (this.binding.source && !this.inspection && !this.binding.started) this.inspection = await this.worker.call('inspect', {source: this.binding.source});
         return {
-            busy: this.busy,
+            assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
+        busy: this.busy,
             sourceName: this.binding.source ? path.basename(this.binding.source) : null,
             destinationName: this.binding.destination ? path.basename(this.binding.destination) : null,
             inspection: this.inspection ? {counts: this.inspection.counts, warnings: this.inspection.warnings} : null,
@@ -135,7 +210,7 @@ export class DesktopController {
             if (!source) return;
             const inspection = await this.worker.call('inspect', {source});
             const next = {
-                ...emptyBinding(),
+                ...emptyBinding(), assistant: this.binding.assistant,
                 current: this.binding.current ?? null,
                 source,
                 sourceHash: inspection.source.sha256
@@ -214,11 +289,11 @@ export class DesktopController {
 
     async persist(next: Binding) {
         await this.store.save(next);
-        this.binding = next;
+        if (JSON.stringify(next.current) !== JSON.stringify(this.binding.current)) this.covers.revoke(); this.binding = next;
     }
 
     noPending() {
-        if (this.binding.pending || this.binding.creation) fail('PENDING_MUTATION', '保存结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
+        if (this.binding.pending || this.binding.creation|| this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending) fail('PENDING_MUTATION', '保存结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
     }
 
     async maySwitch() {
@@ -240,6 +315,7 @@ export class DesktopController {
             importId: this.binding.importId!
         });
         await this.persist({...this.binding, current});
+    if (this.authMode === 'disabled') await this.covers.seed();
     }
 
     async openLibrary() {
@@ -248,7 +324,8 @@ export class DesktopController {
             const destination = await this.dialogs.library?.();
             if (!destination) return;
             const current = await this.worker.call('bind', {destination, libraryId: null, importId: null});
-            await this.persist({...emptyBinding(), current});
+            await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+            if (this.authMode === 'disabled') await this.covers.seed();
         });
     }
 
@@ -271,9 +348,10 @@ export class DesktopController {
                 mutationId: randomUUID(),
                 rootIdentity: {dev: stat.dev.toString(), ino: stat.ino.toString()}
             };
-            await this.persist({...emptyBinding(), current: this.binding.current ?? null, creation});
+            await this.persist({...emptyBinding(), assistant: this.binding.assistant, current: this.binding.current ?? null, creation});
             const current = await this.worker.call('createLibrary', creation);
-            await this.persist({...emptyBinding(), current});
+            await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+            if (this.authMode === 'disabled') await this.covers.seed();
         });
     }
 
@@ -386,7 +464,8 @@ export class DesktopController {
                     this.creationMissing = true;
                     return null;
                 }
-                await this.persist({...emptyBinding(), current});
+                await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+                if (this.authMode === 'disabled') await this.covers.seed();
                 this.creationMissing = false;
             }
             return this.checkPending();
@@ -401,7 +480,8 @@ export class DesktopController {
                 const reservation = this.binding.creation;
                 const found = await this.worker.call('queryCreation', reservation);
                 const current = found ?? await this.worker.call('createLibrary', reservation);
-                await this.persist({...emptyBinding(), current});
+                await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+                if (this.authMode === 'disabled') await this.covers.seed();
                 this.creationMissing = false;
                 return null;
             }

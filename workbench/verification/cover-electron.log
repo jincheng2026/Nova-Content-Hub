@@ -1,0 +1,7 @@
+
+> nova-content-hub-workbench@0.2.0 probe:cover
+> node scripts/cover-probe.mjs
+
+PASS actual disabled Electron: 15 seeded template groups, all sample images decoded, false photo declaration, explicit photo:null, fixed cover request, synthetic real candidate raster, selection and byte-identical export; grants revoked
+PASS actual required Electron: no startup seed, main refuses cover/photo/launch, worker seed gate
+PASS external standalone native cover packages. Synthetic candidate verification only; real host, native dialog clicks and Windows remain unverified. productionReady=false

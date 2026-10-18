@@ -1,5 +1,6 @@
 import {isRecord} from '../shared/contracts.ts';
 import type {Worker, WorkerOperation, WorkerOperations} from '../shared/contracts.ts';
+const explanations: Record<string, string> = { PHOTO_SOURCE_MISSING: '照片尚未进入内容库，原文件已不在原位置。请恢复原文件后继续；待处理记录仍保留。', STALE_INPUT: '标题或正文已改变，请用当前内容重新准备封面；原待处理意图仍保留。', INVALID_IMAGE: '图片未通过完整解码校验，请选择完整的PNG、JPEG、WebP或GIF原图。' };
 
 interface Child {
     on(event: 'message', listener: (message: unknown) => void): unknown;
@@ -32,7 +33,10 @@ export class WorkerClient implements Worker {
                 const pending = this.pending;
                 this.pending = null;
                 if (message.ok === true) pending.resolve(message.value);
-                else pending.reject(Object.assign(new Error('文件操作未完成，请查询状态后继续；原文件和任务现场会保留。'), {code: isRecord(message.error) && typeof message.error.code === 'string' ? message.error.code : 'WORKER_ERROR'}));
+                else {
+                    const code = isRecord(message.error) && typeof message.error.code === 'string' ? message.error.code : 'WORKER_ERROR';
+                    pending.reject(Object.assign(new Error(Object.hasOwn(explanations, code) ? explanations[code] : '文件操作未完成，请查询状态后继续；原文件和任务现场会保留。'), {code}));
+                }
             });
             const failed = () => {
                 if (this.child !== child) return;

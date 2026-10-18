@@ -1,6 +1,7 @@
+import {prepareNativeHandoff, nativeHandoffDirectory} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
-import {app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell} from 'electron';
 import fs from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
@@ -43,6 +44,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     }
     let window: BrowserWindow;
     let worker: WorkerClient | undefined;
+    let resourceWorker: WorkerClient | undefined;
     app.on('second-instance', () => {
         if (window) {
             if (window.isMinimized()) window.restore();
@@ -50,7 +52,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         }
     });
     app.on('window-all-closed', () => app.quit());
-    app.on('will-quit', () => worker?.stop());
+    app.on('will-quit', () => { worker?.stop(); resourceWorker?.stop(); });
     await app.whenReady();
     const icon = nativeImage.createFromPath(icons.png);
     const size = icon.getSize();
@@ -62,8 +64,12 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     }
     session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
     session.defaultSession.setPermissionCheckHandler(() => false);
-    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: !staticResource(details.url, resources)}));
+    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url))}));
     protocol.handle('nova-content', async request => {
+        if (request.method === 'GET' && controller.covers.allows(request.url)) {
+            try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
+            return new Response('Not found', { status: 404 });
+        }
         const resource = staticResource(request.url, resources);
         if (request.method !== 'GET' || !resource) return new Response('Not found', {status: 404});
         return new Response(await fs.readFile(path.join(here, '../renderer', resource[0])), {
@@ -78,12 +84,17 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         serviceName: 'Nova 文件业务',
         stdio: 'ignore'
     }));
+    resourceWorker = new WorkerClient(() => utilityProcess.fork(path.join(here, 'worker.mjs'), [release.pairId], { serviceName: 'Nova 本机图片', stdio: 'ignore' }));
     const controller = new DesktopController({
+        resourceWorker,
         store: new BindingStore(path.join(app.getPath('userData'), 'machine-binding.json')),
         worker,
         authMode: release.AUTH_MODE,
         documents: app.getPath('documents'),
+        launch: async (binding, reference) => { const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release); await shell.openExternal(handoff.url); },
         dialogs: dialogs ?? {
+            async photo() { const selected = await dialog.showOpenDialog(window, { title: '选择本机照片', properties: ['openFile'], filters: [{ name: '图片', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'] }] }); return selected.canceled ? null : selected.filePaths[0]; },
+            async export(defaultPath) { const selected = await dialog.showSaveDialog(window, { title: '导出候选封面', defaultPath, properties: ['showOverwriteConfirmation'] }); return selected.canceled ? null : selected.filePath ?? null; },
             async library() {
                 const selected = await dialog.showOpenDialog(window, {
                     title: '打开内容库',

@@ -1,3 +1,4 @@
+import {isCoverOperation, executeCover} from './cover-worker.mts';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import {validateRelease} from './boundary.mts';
@@ -24,7 +25,7 @@ const bound = (binding: LibraryBinding) => openLibrary(binding.root, {
     expectedLibraryId: binding.libraryId,
     expectedRootIdentity: binding.rootIdentity
 });
-const schemas: Record<WorkerOperation, string[]> = {
+const schemas: Record<Exclude<WorkerOperation, keyof import('../shared/cover-contracts.ts').CoverWorkerOperations>, string[]> = {
     inspect: ['source'],
     query: ['destination', 'importId'],
     import: ['source', 'destination', 'expectedSourceHash'],
@@ -39,7 +40,8 @@ const schemas: Record<WorkerOperation, string[]> = {
 };
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
-    const fields = typeof op === 'string' && Object.hasOwn(schemas, op) ? schemas[op as WorkerOperation] : null;
+    if (isCoverOperation(op)) return executeCover(op, args, mode);
+    const fields = typeof op === 'string' && Object.hasOwn(schemas, op) ? schemas[op as keyof typeof schemas] : null;
     if (!fields || !exact(args, fields) || fields.some(key => {
         const value = args[key];
         if (['source', 'destination', 'root'].includes(key)) return !absolute(value);
