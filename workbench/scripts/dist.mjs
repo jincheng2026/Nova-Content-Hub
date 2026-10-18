@@ -3,6 +3,9 @@ import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
+import {isDeepStrictEqual} from 'node:util';
+import {releaseModes} from '../../plugin-src/scripts/build.mjs';
+import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
 import {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';
 
@@ -64,6 +67,17 @@ export function testingEnvironment(parent = process.env) {
     return env;
 }
 
+export async function validateInstallerMarketplace(input, release, sealed) {
+    const entries = await snapshotPackage(input);
+    if (sealed && !isDeepStrictEqual(entries, sealed)) throw Error('Packaged marketplace changed from the sealed desktop stage');
+    const plugin = path.join(input, release.appScope);
+    const runtime = await validateRuntime(plugin, release);
+    const files = readJSON(path.join(input, 'package-files.json'));
+    if (files.format !== 'nova-content-marketplace-package-files' || files.schemaVersion !== 1 || !isDeepStrictEqual(files.release, readJSON(path.join(plugin, 'plugin-src/src/release.json'))) || !isDeepStrictEqual(files.entries, runtime)) throw Error('Marketplace package-files integrity mismatch');
+    if (!isDeepStrictEqual(entries, await snapshotPackage(input))) throw Error('Marketplace changed during installer validation');
+    return entries;
+}
+
 export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
@@ -92,6 +106,8 @@ export function installerConfig(options, version) {
             icon: path.join(icons, 'icon.icns'),
             category: 'public.app-category.productivity',
             identity: '-', hardenedRuntime: false, notarize: false,
+            // Preserve sealed Node and plugin native libraries; the app and desktop sharp still get signed.
+            signIgnore: ['[/\\\\]Contents[/\\\\]Resources[/\\\\]plugin-marketplace(?:[/\\\\]|$)'],
             minimumSystemVersion: '13.0'
         },
         dmg: {sign: false},
@@ -132,11 +148,18 @@ export async function distribute(args = process.argv.slice(2)) {
         console.log(`Fresh portable native payload for universal preview assembly: ${payload}`);
     }
     const builderConfig = installerConfig(options, config.version);
+    const [pluginRelease] = await releaseModes(options.auth);
+    const sealedMarketplace = await validateInstallerMarketplace(builderConfig.extraResources[0].from, pluginRelease);
     fs.mkdirSync(builderConfig.directories.output, {recursive: true});
     const configFile = path.join(builderConfig.directories.output, 'electron-builder.json');
     fs.writeFileSync(configFile, JSON.stringify(builderConfig, null, 2) + '\n');
     const env = testingEnvironment();
     execFileSync(process.execPath, [path.join(workbench, 'node_modules/electron-builder/cli.js'), options.platform === 'darwin' ? '--mac' : '--win', `--${options.arch}`, '--publish', 'never', '--config', configFile], {cwd: workbench, stdio: 'inherit', env});
+    const suffix = options.arch === 'x64' ? '' : `-${options.arch}`;
+    const resources = options.platform === 'darwin'
+        ? path.join(builderConfig.directories.output, `mac${suffix}`, `${builderConfig.productName}.app`, 'Contents/Resources')
+        : path.join(builderConfig.directories.output, `win${suffix}-unpacked`, 'resources');
+    await validateInstallerMarketplace(path.join(resources, 'plugin-marketplace'), pluginRelease, sealedMarketplace);
     console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);
 }
 
