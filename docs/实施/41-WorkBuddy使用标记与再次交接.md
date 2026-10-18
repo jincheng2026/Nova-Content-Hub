@@ -21,4 +21,4 @@
 
 ## 验证与部署
 
-[定向运行时验证](../verification/production/2026-10-19-workbuddy-cache-metadata-01.log)及[类型检查](../verification/production/2026-10-19-workbuddy-cache-metadata-types-01.log)分别记录命令输出；覆盖生命周期、非法文件/链接/字段、载荷篡改、扫描竞态以及拒绝时不启动doctor/交接。最终重新打包、安装及原生再次交接由主线程继续，尚不能将源码验证写成安装版已通过。
+[定向运行时验证](../verification/production/2026-10-19-workbuddy-cache-metadata-01.log)及[类型检查](../verification/production/2026-10-19-workbuddy-cache-metadata-types-01.log)分别记录命令输出；覆盖生命周期、非法文件/链接/字段、载荷篡改、扫描竞态以及拒绝时不启动doctor/交接。32/32通过、两项类型检查通过。第八轮安装包及签名完整性、DMG、完整可信载荷校验退出0，[随包与宿主核对](../verification/production/2026-10-19-unified-packaged-plugin-08.log)确认插件451项保持原字节，另有两项已验证宿主元数据。已通过原生引导重新安装；[再次交接收据](../verification/production/2026-10-19-native-focus-and-repeat-01.json)确认正确Skill预填、未发送且明确取消新尝试，六候选及原选择保留。没有再次生图或消耗额外生成额度。末次核对宿主元数据已为空，与此前两项分别留证；未捕捉到标记删除的精确时间，不据此虚构执行顺序。

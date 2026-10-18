@@ -1,0 +1,40 @@
+{
+  "format": "nova-native-post-install-acceptance",
+  "recordedAt": "2026-10-18T18:02:00.371Z",
+  "sourceCommit": "77ccc65",
+  "version": "0.3.1",
+  "handoffId": "e09544e6-524f-435b-b91c-c1e8140c4ef1",
+  "task": {
+    "contentId": "209cebcc-619c-47ee-81ce-0c67e6de8062",
+    "requestId": "0a0c0a4f-d479-4f80-bb28-7bf0da42ab36",
+    "attemptId": "dfaf000d-277c-49d7-bbd5-406ea2f1d4d4",
+    "requestHash": "f0c6396060335b0de8d3a3a002185960ff2f4455c8853ef19a081e737af30b97",
+    "host": "workbuddy"
+  },
+  "binding": {
+    "root": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+    "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "69179810"
+    }
+  },
+  "nativeOverviewSingleClickOpenedDetails": true,
+  "nativeSingleClickSwitchedToBodyAndBack": true,
+  "returnedFromAssistantStayedOnSameDetails": true,
+  "nativeRepeatHandoffOpenedComposer": true,
+  "executionSkillChipVerified": true,
+  "assistantSendPerformed": false,
+  "extraImageGeneration": false,
+  "testAttemptStatus": "cancelled",
+  "testCandidateCount": 0,
+  "validatedHostMetadataEntries": 0,
+  "allPriorCandidateHashesVerified": true,
+  "totalContentCandidates": 6,
+  "selectedCandidatePreserved": "4b6145fd-e72e-44fb-9ab4-a4f24a88f647",
+  "workbuddyUnsentComposerCleared": true,
+  "productionReady": false,
+  "nativeContentListSingleClickOpenedDetails": true,
+  "packagedAuditValidatedHostMetadataEntriesBeforeNativeReentry": 2,
+  "hostMetadataAfterNativeReentryMayBeRemovedByHost": true
+}
