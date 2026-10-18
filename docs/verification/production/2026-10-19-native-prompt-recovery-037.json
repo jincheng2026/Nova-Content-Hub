@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-18T22:41:44.935Z",
+  "version": "0.3.7",
+  "library": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "prompt": {
+    "id": "8ea8b935-cd8a-41e8-aea7-8d9487f02190",
+    "title": "原生提示词验收·恢复完成",
+    "revision": 9,
+    "enabled": true,
+    "deletedAt": null,
+    "bodyHash": "a30db50ba241920e3d62bb90141379ad73eecdfb40ad77541536b39bafef8b09"
+  },
+  "native": {
+    "editSaved": true,
+    "disabledRemovedFromAvailable": true,
+    "explicitEnable": true,
+    "trashRestoreSameId": true,
+    "oldVersionExternalConflictRefused": true,
+    "externalBytesPreserved": true,
+    "oldDraftPreservedUntilExplicitDiscard": true,
+    "newVersionDisabledCardBlocked": true,
+    "newVersionEnableGuidance": true,
+    "externalUpdateDetectedBeforeSave": true,
+    "staleSaveDisabled": true,
+    "reloadConfirmationCancelKeepsDraft": true,
+    "confirmedReloadLoadsExternalBodyAndFreshToken": true,
+    "freshSaveSucceeded": true,
+    "finalPromptCount": 28,
+    "aboutVersion": "0.3.7",
+    "independentRestartPid": 25413,
+    "startupLoadingVisible": true,
+    "originalScheduleVisible": true,
+    "twoContentsWithSelectedCovers": true
+  },
+  "installationOnlyReceipt": "2026-10-19-mac-037-installed.json",
+  "afterInstallIntentionalChanges": "test prompt disable/enable, external Markdown line and confirmed reload/name save",
+  "restartLibraryUnchanged": true,
+  "libraryDigest": "66947c34d1c1a359e3c196f7fd379630bdc9511de0b705f66a2d7bbbed0a2f15",
+  "newImagesGeneratedBeforeInstall": 2,
+  "realGenerationReceipt": "2026-10-19-workbuddy-personal-group-037.json",
+  "productionReady": false
+}

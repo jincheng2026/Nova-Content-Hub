@@ -1,0 +1,80 @@
+{
+  "at": "2026-10-18T22:30:25.958Z",
+  "desktopVersionAtGeneration": "0.3.6",
+  "hostPluginVersion": "0.3.6",
+  "host": "workbuddy",
+  "nativeSend": true,
+  "skill": "nova-content-cover-execution",
+  "handoffId": "f63c127e-c58d-4a42-a49f-ac0d87c2ea12",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "contentId": "79b02918-43b8-498a-a906-95e0ffad72fa",
+  "requestId": "b6c3f200-108c-473b-9213-b230a29f037e",
+  "requestHash": "f1edea636d66cd73751f4376703135f56cf616f23795e5f69f2dbf4afba08fd6",
+  "template": {
+    "id": "603c91f0-c7da-41bf-a96d-0416aabaca14",
+    "version": 1,
+    "packageHash": "f37063f7007e8d5fd0f54393cf2cd095311de55f3448775af38d4ce4fdf3fbc4"
+  },
+  "styleAssetHashes": [
+    "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+    "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd"
+  ],
+  "fictionalPhoto": {
+    "id": "6d03ee28-d4bd-4b3f-aec8-ab1922595830",
+    "assetHash": "e6cb57e33971c9b8eb2bdfbc5ea239ffe9f805af7076d91c674603c5d4b1f9fa",
+    "representsUser": false,
+    "finalOwnDeclaration": false
+  },
+  "attempt": {
+    "attemptId": "6d361755-6411-4587-878d-4401938e2110",
+    "host": "workbuddy",
+    "reason": "initial",
+    "status": "committed",
+    "createdAt": "2026-10-18T22:01:32.974Z",
+    "updatedAt": "2026-10-18T22:10:36.276Z",
+    "handoffHash": "6258d2aa932cac055ff6c08688bf6efa20c18ec5a8f2a936ae22091255531920",
+    "receiptHash": "25ea65e9b98bfe0c492d5f50efae8469bf43e5963d2e5ffd598cb62936b572d2",
+    "reportHash": "238b54b9c841b69ee9cda756ae5325d909a06ca733ef409c38dfdbfce582418a",
+    "candidateIds": [
+      "7cda0593-541f-41c5-8eeb-fdcf0f2d77f6",
+      "71b1a024-0de7-4c94-8c68-8ebbdd6f3f31"
+    ],
+    "failure": null
+  },
+  "files": [
+    {
+      "id": "7cda0593-541f-41c5-8eeb-fdcf0f2d77f6",
+      "assetHash": "c5599f8c54fabf046d0813c462078f5f77f3c170bd12b291a9f006983ff5602b",
+      "bytes": 2163219,
+      "width": 1152,
+      "height": 1536,
+      "selected": false
+    },
+    {
+      "id": "71b1a024-0de7-4c94-8c68-8ebbdd6f3f31",
+      "assetHash": "2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+      "bytes": 2095580,
+      "width": 1152,
+      "height": 1536,
+      "selected": true
+    }
+  ],
+  "nativeExport": {
+    "file": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/native-creator-037/export/封面.png",
+    "sha256": "2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+    "originalBytes": true
+  },
+  "visualReview": {
+    "candidate1": "Decorative UI contains illegible text; retained but not chosen.",
+    "candidate2": "Main title and subtitle legible; cleaner composition; selected in native UI for synthetic acceptance.",
+    "visiblePlatformMark": "AI生成 WORKBUDDY",
+    "userIdentityPreservationVerified": false
+  },
+  "preservation": {
+    "originalContentEntries": 71,
+    "originalSixCandidates": true,
+    "originalSelection": true
+  },
+  "realGeneration": true,
+  "productionReady": false
+}
