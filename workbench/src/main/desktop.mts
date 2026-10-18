@@ -20,7 +20,7 @@ import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
 import {launchWithAssistantRuntime} from './assistant-runtime.mts';
-import {offerApplicationInstall} from './installation.mts';
+import {confirmInstalledApplication, offerApplicationInstall} from './installation.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
@@ -56,6 +56,10 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     const release = validateRelease(JSON.parse(readFileSync(path.join(here, '../release.json'), 'utf8')));
     const icons = appIconPaths(path.join(here, '../brand'));
     if (!app.requestSingleInstanceLock()) {
+        if (show && process.platform === 'darwin' && app.isPackaged && !app.isInApplicationsFolder()) {
+            await app.whenReady();
+            dialog.showMessageBoxSync({type: 'info', message: '请先退出正在运行的自媒体工作台', detail: '安装需要先关闭原来的工作台，再重新打开当前安装包。原来的工作台可以继续使用。', buttons: ['知道了']});
+        }
         app.quit();
         return;
     }
@@ -348,4 +352,5 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     syncLibraryWatcher();
     reminders.start();
     await ready?.({window, controller, worker, release, tray});
+    await confirmInstalledApplication(app).catch(() => {});
 }

@@ -2,90 +2,83 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {offerApplicationInstall} from '../src/main/installation.mts';
 
-function fixture({packaged = true, installed = false, choice = 0, replacement = 1, move = () => true} = {}) {
-    const prompts = [];
-    const conflicts = [];
-    let moves = 0;
-    let installedChecks = 0;
-    const app = {
-        isPackaged: packaged,
-        isInApplicationsFolder() { installedChecks++; return installed; },
-        moveToApplicationsFolder(options) { moves++; return move(options); }
-    };
-    const dialog = {
-        async showMessageBox(options) { prompts.push(options); return {response: choice}; },
-        showMessageBoxSync(options) { conflicts.push(options); return replacement; }
-    };
-    return {app, dialog, prompts, conflicts, moves: () => moves, installedChecks: () => installedChecks};
+function fixture({packaged = true, installed = false, choice = 0, replacement = 1, exists = false, install = async () => ({execPath: '/Applications/自媒体工作台.app/Contents/MacOS/Workbench'}), relaunch = () => {}} = {}) {
+    const prompts = [], conflicts = [], launches = [];
+    let installs = 0, recoveries = 0, quits = 0, installedChecks = 0;
+    const app = {isPackaged: packaged, isInApplicationsFolder() { installedChecks++; return installed; },
+        relaunch(options) { launches.push(options); relaunch(options); }, quit() { quits++; }};
+    const dialog = {async showMessageBox(options) { prompts.push(options); return {response: choice}; }, showMessageBoxSync(options) { conflicts.push(options); return replacement; }};
+    const installer = {async recover() { recoveries++; }, async exists() { return exists; }, async install() { installs++; return install(); }};
+    return {app, dialog, installer, prompts, conflicts, launches, installs: () => installs, recoveries: () => recoveries, quits: () => quits, installedChecks: () => installedChecks,
+        offer: () => offerApplicationInstall(app, dialog, 'darwin', installer)};
 }
 
 test('only packaged macOS apps outside Applications offer installation', async () => {
     for (const [platform, options] of [['win32', {}], ['linux', {}], ['darwin', {packaged: false}], ['darwin', {installed: true}]]) {
         const f = fixture(options);
-        assert.equal(await offerApplicationInstall(f.app, f.dialog, platform), 'continue');
+        assert.equal(await offerApplicationInstall(f.app, f.dialog, platform, f.installer), 'continue');
         assert.equal(f.prompts.length, 0);
-        assert.equal(f.moves(), 0);
+        assert.equal(f.installs(), 0);
+        assert.equal(f.recoveries(), 0);
         if (platform !== 'darwin' || options.packaged === false) assert.equal(f.installedChecks(), 0);
     }
 });
 
-test('skipping installation continues without moving the application', async () => {
+test('skipping installation still recovers interrupted publication before offering install', async () => {
     const f = fixture({choice: 1});
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'continue');
-    assert.equal(f.moves(), 0);
+    assert.equal(await f.offer(), 'continue');
+    assert.equal(f.installs(), 0);
+    assert.equal(f.recoveries(), 1);
     assert.equal(f.prompts[0].cancelId, 1);
 });
 
-test('successful native move stops startup for Electron relaunch', async () => {
-    const f = fixture({move: options => {
-        assert.equal(typeof options.conflictHandler, 'function');
-        return true;
-    }});
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'relaunching');
-    assert.equal(f.moves(), 1);
-    assert.equal(f.prompts.length, 1);
+test('successful verified publication explicitly relaunches installed executable with safe args', async () => {
+    const f = fixture();
+    assert.equal(await f.offer(), 'relaunching');
+    assert.equal(f.installs(), 1);
+    assert.deepEqual(f.launches, [{execPath: '/Applications/自媒体工作台.app/Contents/MacOS/Workbench', args: []}]);
+    assert.equal(f.quits(), 1);
 });
 
-test('native false and thrown failure offer Finder guidance and continue', async () => {
-    for (const move of [() => false, () => { throw new Error('copy failed'); }]) {
-        const f = fixture({move});
-        assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'continue');
+test('copy and relaunch failures continue without a false success', async () => {
+    for (const options of [{install: async () => { throw Error('copy failed'); }}, {relaunch: () => { throw Error('relaunch failed'); }}]) {
+        const f = fixture(options);
+        assert.equal(await f.offer(), 'continue');
         assert.equal(f.prompts.length, 2);
-        assert.match(f.prompts[1].detail, /访达/);
-        assert.match(f.prompts[1].detail, /继续使用/);
+        assert.match(f.prompts[1].detail, /保留/);
+        assert.equal(f.quits(), 0);
     }
 });
 
-test('replacement is explicit and cancel declines without a second failure notice', async () => {
-    const f = fixture({move: ({conflictHandler}) => conflictHandler('exists')});
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'continue');
+test('replacement is explicit and cancel performs no installation', async () => {
+    const f = fixture({exists: true});
+    assert.equal(await f.offer(), 'continue');
     assert.equal(f.conflicts.length, 1);
-    assert.match(f.conflicts[0].detail, /废纸篓/);
+    assert.match(f.conflicts[0].detail, /保留/);
     assert.equal(f.conflicts[0].defaultId, 1);
-    assert.equal(f.conflicts[0].cancelId, 1);
+    assert.equal(f.installs(), 0);
     assert.equal(f.prompts.length, 1);
 });
 
-test('confirmed replacement allows the native move and relaunch', async () => {
-    const f = fixture({replacement: 0, move: ({conflictHandler}) => conflictHandler('exists')});
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'relaunching');
-    assert.equal(f.conflicts.length, 1);
+test('confirmed replacement permits verified installation', async () => {
+    const f = fixture({exists: true, replacement: 0});
+    assert.equal(await f.offer(), 'relaunching');
+    assert.equal(f.installs(), 1);
 });
 
-test('a running installed app is never silently focused or replaced', async () => {
-    const f = fixture({replacement: 0, move: ({conflictHandler}) => {
-        assert.equal(conflictHandler('existsAndRunning'), false);
-        return false;
-    }});
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'continue');
-    assert.match(f.conflicts[0].detail, /先退出/);
-    assert.equal(f.prompts.length, 1);
+test('running app and unknown recovery records produce a native notice without installation', async () => {
+    const running = fixture({install: async () => { throw Error('原工作台正在运行，请先退出'); }});
+    assert.equal(await running.offer(), 'continue');
+    assert.match(running.prompts[1].detail, /先退出/);
+    const recovery = fixture();
+    recovery.installer.recover = async () => { throw Error('unknown recovery'); };
+    assert.equal(await recovery.offer(), 'continue');
+    assert.match(recovery.prompts[0].detail, /unknown recovery/);
+    assert.equal(recovery.installs(), 0);
 });
 
-
-test('an unavailable optional installation dialog does not prevent desktop startup', async () => {
-    const f = fixture();
-    f.dialog.showMessageBox = async () => { throw new Error('native dialog unavailable'); };
-    assert.equal(await offerApplicationInstall(f.app, f.dialog, 'darwin'), 'continue');
-    assert.equal(f.moves(), 0);
+test('an unavailable optional dialog does not prevent desktop startup', async () => {
+    const f = fixture(); f.dialog.showMessageBox = async () => { throw Error('dialog unavailable'); };
+    assert.equal(await f.offer(), 'continue');
+    assert.equal(f.installs(), 0);
 });
