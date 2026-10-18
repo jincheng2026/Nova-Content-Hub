@@ -1,0 +1,24 @@
+✔ Chinese macOS menu retains native editing, window and application roles (1.021542ms)
+✔ Windows and Linux keep editing and exit without macOS application actions (0.155625ms)
+(node:36607) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (5.664917ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (4.812542ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.205375ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.105333ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.153667ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.078791ms)
+✔ navigation and new draft survive a paused focus refresh (1.678125ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (0.921542ms)
+✔ paused editor read preserves a draft typed while its result was in flight (1.063959ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.888291ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.177916ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.821667ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 146.867667

@@ -11,6 +11,7 @@ import {BindingStore} from './bindings.mts';
 import {DesktopController} from './controller.mts';
 import {WorkerClient} from './worker-client.mts';
 import {appIconPaths} from './branding.mts';
+import {applicationMenu} from './application-menu.mts';
 import {keepResident} from './resident.mts';
 import {createOperationQueue} from './operation-queue.mts';
 import {Preferences} from './preferences.mts';
@@ -77,6 +78,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     app.on('window-all-closed', () => app.quit());
     app.on('will-quit', () => { libraryWatcher?.close(); reminders?.dispose(); tray?.destroy(); worker?.stop(); resourceWorker?.stop(); });
     await app.whenReady();
+    Menu.setApplicationMenu(Menu.buildFromTemplate(applicationMenu(process.platform, app.getName())));
     const icon = nativeImage.createFromPath(icons.png);
     const size = icon.getSize();
     if (icon.isEmpty() || !icon.getScaleFactors().includes(1) || size.width !== 512 || size.height !== 512) throw new Error('Cannot decode the bundled application PNG icon');
@@ -323,7 +325,6 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     powerMonitor.on('resume', resumeReminders);
     powerMonitor.on('unlock-screen', resumeReminders);
     app.once('will-quit', () => { powerMonitor.removeListener('resume', resumeReminders); powerMonitor.removeListener('unlock-screen', resumeReminders); });
-    window.removeMenu();
     window.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
     window.webContents.on('will-navigate', event => event.preventDefault());
     window.webContents.on('will-frame-navigate', event => event.preventDefault());

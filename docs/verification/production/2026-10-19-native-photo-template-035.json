@@ -1,0 +1,36 @@
+{
+  "at": "2026-10-18T21:11:21.873Z",
+  "library": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "executedInVersion": "0.3.4",
+  "retainedAfterInstall": "0.3.5",
+  "photo": {
+    "id": "7e03c43a-1c26-40bd-b721-2704f5b727ec",
+    "revision": 4,
+    "isOwnPhoto": false,
+    "assetHash": "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd",
+    "sourceBytesMatch": true,
+    "renamed": true,
+    "dirtyCloseContinueVerified": true,
+    "trashedThenRestored": true,
+    "originalIdRetained": true,
+    "excludedFromOwnPhotoDefaults": true
+  },
+  "template": {
+    "id": "603c91f0-c7da-41bf-a96d-0416aabaca14",
+    "version": 1,
+    "styleImageCount": 2,
+    "styleHashes": [
+      "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+      "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd"
+    ],
+    "sourceBytesMatch": true,
+    "groupPreviewDisplayedBoth": true,
+    "selectedForSavedContent": true,
+    "candidateCountIndependent": 4,
+    "noPersonExplicitlySelected": true
+  },
+  "originalContentEntriesUnchanged": 82,
+  "newGeneration": false,
+  "realOwnIdentityVerification": false,
+  "platformPosting": false
+}

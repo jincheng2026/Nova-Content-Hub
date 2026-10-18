@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-18T21:10:45.182Z",
+  "version": "0.3.5",
+  "app": "/Applications/自媒体工作台.app",
+  "builtApp": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app",
+  "installedTreeMatchesBuild": true,
+  "entries": 1466,
+  "counts": {
+    "files": 996,
+    "links": 15,
+    "directories": 455
+  },
+  "appDigest": "086b0317f91a1d3e4d64929f4c48f71db5faf4210a0791951ee2a1c45a09d54e",
+  "pluginEntries": 451,
+  "pluginVersion": "0.3.5",
+  "nativeInstall": {
+    "method": "verified private ditto staging; retained old app; journaled rename publication; explicit relaunch",
+    "phase": "complete",
+    "transaction": "/Applications/.nova-content-hub-install-98227e43-1267-4fdc-a913-e8d809430566",
+    "previousApplicationMatchesBefore": true
+  },
+  "libraryUnchanged": true,
+  "libraryDigest": "87cefe32c0c8e1ba59e962cc53602a6d866b3f8f5c5c4976df9ff0eafc1bc651",
+  "codesignIntegrity": true,
+  "productionReady": false,
+  "nativeUI": {
+    "aboutVersion": "0.3.5",
+    "autoRelaunched": true,
+    "independentRestart": true,
+    "runningMainPid": 55654,
+    "ownDMGEjected": true,
+    "loadingMessageObserved": true,
+    "noFalseEmptyDuringObservedStartup": true,
+    "loadedContents": 2,
+    "plannedDayDisplayed": "2026-10-21",
+    "chineseApplicationMenu": true,
+    "nativeEditMenuUndoVerified": true,
+    "temporaryPromptDraftDiscarded": true,
+    "newGeneration": false
+  }
+}
