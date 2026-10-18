@@ -10,13 +10,14 @@ const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.
 const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const task = status?.task;')) + `
     return {nativeAction, refreshStatus, refreshWorkspace, load, clearEditor, setDraft,
         refresh: () => {changesPending.current = true; automaticRefresh.current();},
+        select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,
         error, status, workspace, contents, draft, disk, pendingRefresh: changesPending.current};
 }`;
 const compiled = stripTypeScriptTypes(actions);
 
 function fixture() {
     const slots = [];
-    let cursor = 0, fail = null, version = 0;
+    let cursor = 0, fail = null, version = 0, pause = null;
     const calls = [];
     const item = {id: 'content', title: 'saved', body: 'saved body', editToken: 'original'};
     const context = vm.createContext({
@@ -33,16 +34,17 @@ function fixture() {
         hasManagedDrafts: () => false,
         async invoke(method) {
             calls.push(method);
+            if (pause?.method === method) {const gate = pause; pause = null; await gate.wait;}
             if (fail?.method === method) throw Object.assign(new Error(fail.code), {code: fail.code});
             if (method === 'status') return {currentName: 'library', busy: false, pending: null};
             if (method === 'listContents') return [{...item, version}];
-            if (method === 'readContent') return item;
+            if (method === 'readContent') return {...item};
             return {version};
         }
     });
     vm.runInContext(compiled, context);
     const render = () => {cursor = 0; return context.App();};
-    return {render, calls, item, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
+    return {render, calls, item, pause(method) {let release; const wait = new Promise(resolve => {release = resolve;}); pause = {method, wait}; return release;}, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
 }
 
 async function ready(f) {
@@ -132,4 +134,136 @@ test('success in another library epoch cannot clear an earlier library BUSY', as
     f.fail(null);
     await ready(f);
     assert.equal((await refresh(f)).error, original);
+});
+
+test('focus refresh keeps controls usable and queues one foreground open until reads finish', async () => {
+    const f = fixture();
+    await ready(f);
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    assert.equal(f.render().acting, false, 'background reads must not disable the first click');
+    const opened = f.render().select(f.item);
+    assert.equal(f.render().acting, true, 'the accepted foreground action owns the write lock');
+    assert.equal(f.calls.includes('readContent'), false, 'foreground waits for background reads');
+    let duplicate = false;
+    await f.render().nativeAction(async () => {duplicate = true;});
+    assert.equal(duplicate, false, 'only one foreground operation may be queued');
+    release();
+    await opened;
+    assert.equal(f.render().detailOpen, true);
+    assert.equal(f.render().page, 'content');
+    assert.equal(f.render().draft.title, 'saved');
+    assert.equal(f.render().acting, false);
+});
+
+test('navigation and new draft survive a paused focus refresh', async () => {
+    const f = fixture();
+    await ready(f);
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    await f.render().navigate('templates');
+    assert.equal(f.render().page, 'templates');
+    await f.render().newContent();
+    f.render().setDraft({title: 'unsaved', body: 'typed during refresh'});
+    release();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(f.render().detailOpen, true);
+    assert.equal(f.render().draft.body, 'typed during refresh');
+});
+
+test('queued foreground write and coalesced change refresh stay mutually exclusive', async () => {
+    const f = fixture();
+    await ready(f);
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    const before = f.calls.length;
+    let writes = 0;
+    const write = f.render().nativeAction(async () => {writes++;});
+    f.render().refresh();
+    f.render().refresh();
+    assert.equal(writes, 0);
+    assert.equal(f.calls.length, before, 'no concurrent refresh may pass the queued foreground action');
+    release();
+    await write;
+    assert.equal(writes, 1);
+    assert.equal(f.render().pendingRefresh, true);
+    // React schedules its acting=false effect; the hook harness calls the same scheduler directly.
+    f.render().refresh();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(f.render().pendingRefresh, false);
+    assert.equal(f.calls.filter(method => method === 'listContents').length, 2);
+});
+
+
+test('paused editor read preserves a draft typed while its result was in flight', async () => {
+    const f = fixture();
+    await ready(f);
+    f.render().load({...f.item});
+    f.render();
+    const release = f.pause('readContent');
+    f.render().refresh();
+    f.render().setDraft({title: 'typing', body: 'new unsaved body'});
+    f.render();
+    f.item.editToken = 'external-update';
+    release();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(f.render().draft.body, 'new unsaved body');
+    assert.equal(f.render().disk.editToken, 'external-update');
+});
+
+test('paused list read from an old library epoch cannot repopulate a cleared editor', async () => {
+    const f = fixture();
+    await ready(f);
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    f.render().clearEditor();
+    release();
+    await new Promise(resolve => setImmediate(resolve));
+    assert.equal(f.render().contents, null);
+    assert.equal(f.render().draft, null);
+});
+
+
+test('cover automatic reads share the background promise and finish before the foreground write', async () => {
+    const f = fixture();
+    await ready(f);
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    const events = [];
+    const cover = f.render().backgroundAction(async () => {events.push('cover-read');});
+    assert.equal(f.render().acting, false);
+    const write = f.render().nativeAction(async () => {events.push('write');});
+    assert.deepEqual(events, []);
+    release();
+    await Promise.all([cover, write]);
+    assert.deepEqual(events, ['cover-read', 'write']);
+    assert.equal(f.render().acting, false);
+});
+
+test('automatic cover reads cannot cross the selected content or library epoch', async () => {
+    const f = fixture();
+    await ready(f);
+    f.render().load({...f.item});
+    f.render();
+    const release = f.pause('listContents');
+    f.render().refresh();
+    await Promise.resolve();
+    await Promise.resolve();
+    const before = f.calls.filter(method => method === 'readCover').length;
+    const cover = f.render().readCoverAutomatically(f.item.id);
+    f.render().clearEditor();
+    release();
+    await cover;
+    assert.equal(f.calls.filter(method => method === 'readCover').length, before);
+    assert.equal(f.render().draft, null);
 });

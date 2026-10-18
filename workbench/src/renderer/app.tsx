@@ -53,6 +53,7 @@ function App() {
     const [watchUnavailable, setWatchUnavailable] = useState(false);
     const changesPending = useRef(false);
     const automaticRefresh = useRef<() => void>(() => {});
+    const backgroundRefresh = useRef<Promise<unknown> | null>(null);
     const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
     const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);
     const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);
@@ -171,16 +172,16 @@ function App() {
     }
 
     automaticRefresh.current = () => {
-        if (!changesPending.current || active.current || document.hidden || !status?.currentName || status.busy) return;
+        if (!changesPending.current || active.current || backgroundRefresh.current || document.hidden || !status?.currentName || status.busy) return;
         changesPending.current = false;
         const epoch = epochRef.current;
-        void nativeAction(async () => {
+        void backgroundAction(async () => {
             await refreshEditor();
             const items = await invoke('listContents', {view});
             if (epoch !== epochRef.current) return;
             setContents(items);
             setCoverRefresh(value => value + 1);
-        }, {preserveError: true});
+        });
     };
     useEffect(() => {
         const unsubscribe = window.contentHub.onWorkspaceChanged(change => {
@@ -212,14 +213,40 @@ function App() {
         if (dirty) setLeaving(() => action); else await action();
     }
 
-    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false}: {preserveError?: boolean} = {}): Promise<T | undefined> {
-        if (active.current) return;
-        active.current = true;
-        setActing(true);
+    function backgroundAction<T>(action: () => Promise<T>): Promise<T | undefined> {
+        if (active.current) return Promise.resolve(undefined);
+        const previous = backgroundRefresh.current, epoch = epochRef.current;
+        const operation = (async () => {
+            await previous;
+            if (epoch !== epochRef.current) return;
+            return nativeAction(action, {preserveError: true, background: true});
+        })();
+        const complete = operation.finally(() => {
+            if (backgroundRefresh.current !== complete) return;
+            backgroundRefresh.current = null;
+            automaticRefresh.current();
+        });
+        backgroundRefresh.current = complete;
+        return complete;
+    }
+    async function readCoverAutomatically(contentId: string) {
+        return backgroundAction(async () => {
+            if (baseRef.current?.id !== contentId) return;
+            const assets = await invoke('listCoverAssets');
+            const cover = await invoke('readCover', {contentId});
+            return {assets, cover};
+        });
+    }
+
+    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false, background = false}: {preserveError?: boolean; background?: boolean} = {}): Promise<T | undefined> {
+        if (!background && active.current) return;
+        if (!background) { active.current = true; setActing(true); }
         if (!preserveError) setError('');
         const epoch = epochRef.current;
         let succeeded = false;
+        // Accept the first click during a background read, then serialize its operation.
         try {
+            if (!background) await backgroundRefresh.current;
             const result = await action();
             succeeded = true;
             return result;
@@ -239,8 +266,7 @@ function App() {
                 if (!preserveError) setStatus(null);
                 report(failure, preserveError, epoch);
             }
-            active.current = false;
-            setActing(false);
+            if (!background) { active.current = false; setActing(false); }
         }
     }
 
@@ -586,7 +612,7 @@ function App() {
         {contentTab === 'materials' && <><ContentMaterialPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} contentId={base?.id ?? null} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>{base && !base.deletedAt && <ContentMetadataPanel key={`${libraryEpoch}:${base.id}`} contentId={base.id} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>}</>}
         {contentTab === 'publication' && <><div className="content-publication-entry"><p className="muted">这篇内容在各个渠道的计划和发布历史，都保存在这里。</p><Button theme="borderless" disabled={busy || !base || !!base.deletedAt} onClick={() => base && void openCalendarFocus({kind: 'content', id: base.id})}>在日历中查看 →</Button></div><PublicationPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} library={library} documentId={base?.id ?? null} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => {await refreshWorkspace(); await refreshEditor();}}/></>}
         <div className="cover-detail-pane" hidden={contentTab !== 'covers'}>
-        <CoverPanel startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
+        <CoverPanel readAutomatically={readCoverAutomatically} startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
         </div>
         </div></section>)}
         {recoveryOpen && <dialog ref={recoveryDialog} className="library-manager-dialog" aria-labelledby="retained-recovery-title" onCancel={event => {event.preventDefault(); setRecoveryOpen(false);}}><div className="dialog-heading"><div><h2 id="retained-recovery-title">继续处理待确认操作</h2><p>原编辑窗口与填写内容保持打开。处理后关闭此窗口，返回继续编辑。</p></div><Button disabled={acting} onClick={() => setRecoveryOpen(false)}>返回编辑</Button></div><p className="manager-error" role="alert">{error}</p><section className="library-manager" aria-label="待确认操作">{recoveryCards}{!blocked && <p role="status">待确认操作已处理，可以返回原编辑窗口。</p>}</section></dialog>}

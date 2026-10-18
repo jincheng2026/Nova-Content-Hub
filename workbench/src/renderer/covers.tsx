@@ -7,7 +7,7 @@ import './cover-workspace.css';
 import type { Attempt, CoverView, CoverHandoff, CoverResults, CoverReference } from '../shared/cover-contracts.ts';
 import type { Content, Status } from '../shared/contracts.ts';
 import type { WorkspaceLibrarySnapshot, WorkspaceContentDetails, WorkspaceCandidate } from '../shared/workspace-contracts.ts';
-interface Props { startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
+interface Props { startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; readAutomatically(contentId: string): Promise<{assets: CoverResults['listCoverAssets']; cover: CoverView} | undefined>; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
 const attemptLabels: Record<Attempt['status'], string> = { created: '待接单', claimed: '已接单', committed: '已入库', failed: '失败', cancelled: '已取消', superseded: '已替换' };
 function ratioPixels(ratio: string): { width: number; height: number } | null {
   if (!/^\d{1,8}:\d{1,8}$/.test(ratio)) return null;
@@ -23,7 +23,7 @@ function ratioPixels(ratio: string): { width: number; height: number } | null {
 function CoverMaterials({materials, selected, invalid, disabled, change}: {materials: WorkspaceContentDetails['materials']; selected: string[]; invalid: string[]; disabled: boolean; change(ids: string[]): void}) {
   return <fieldset className="cover-materials" disabled={disabled}><legend>本次封面要参考的内容资料（可选）</legend><p>默认不带资料。只有你在这里明确勾选的文件，才会进入本次请求；请先确认资料适合交给当前助手使用。</p>{materials.filter(item => !item.deletedAt).map(item => <label key={item.id} className="checkbox"><input type="checkbox" checked={selected.includes(item.id)} disabled={item.availability !== 'available' && !selected.includes(item.id)} onChange={event => change(event.target.checked ? [...selected, item.id] : selected.filter(id => id !== item.id))}/><span>{item.originalName || '未命名资料'}<span className="material-detail">{materialType(item.detectedType)} · {materialSize(item.bytes)} · {item.availability === 'available' ? '可用' : '原资料缺失，无法使用'}</span></span></label>)}{!materials.some(item => !item.deletedAt) && <p>还没有资料，可先在“内容资料附件”中添加，也可以不带资料继续。</p>}{invalid.length > 0 && <div role="alert"><p>已选的 {invalid.length} 份资料已被移除或不可用，请明确取消失效选择，或重新添加后勾选。</p><Button disabled={disabled} onClick={() => change(selected.filter(id => !invalid.includes(id)))}>取消失效资料的选择</Button></div>}<p>本次已选 {selected.length} 份资料。</p></fieldset>;
 }
-export function CoverPanel({ startOpenKey, library, refresh: refreshWorkspace, selectedTemplate, status, content, dirty, busy, blocked, refreshToken, run, onContent }: Props) {
+export function CoverPanel({ startOpenKey, library, refresh: refreshWorkspace, selectedTemplate, status, content, dirty, busy, blocked, refreshToken, readAutomatically, run, onContent }: Props) {
   const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
   const [cover, setCover] = useState<CoverView | null>(null);
   const [templateId, setTemplateId] = useState('');
@@ -80,7 +80,7 @@ export function CoverPanel({ startOpenKey, library, refresh: refreshWorkspace, s
     const key = `${content?.id}:${refreshToken}`;
     if (!status?.currentName || !content || busy || refreshed.current === key) return;
     refreshed.current = key;
-    void run(refresh);
+    void readAutomatically(content.id).then(next => { if (!next || !alive.current) return; setAssets(next.assets); apply(next.cover); });
   }, [status?.currentName, content?.id, busy, refreshToken]);
   const initialized = useRef<string | null>(null);
   const touched = useRef({ template: false, photo: false, count: false });

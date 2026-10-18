@@ -1,0 +1,220 @@
+Evidence record assembled from this task's tool-return output on 2026-10-19.
+These commands were actually run before this file was written. This is a transcription,
+not a claim that a raw stdout file already existed. No commands were rerun to make this record.
+
+1. RED — original App scheduling (before fix)
+Command: node --test workbench/test/background-refresh.test.mjs
+Exit: 1
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (8.082125ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (4.425416ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.078542ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (0.956667ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.03475ms)
+✖ focus refresh keeps controls usable and queues one foreground open until reads finish (1.076875ms)
+✔ navigation and new draft survive a paused focus refresh (1.986625ms)
+✖ queued foreground write and coalesced change refresh stay mutually exclusive (0.894125ms)
+ℹ tests 8
+ℹ pass 6
+ℹ fail 2
+AssertionError [ERR_ASSERTION]: background reads must not disable the first click
+true !== false
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+0 !== 1
+
+2. RED — actual Electron, pre-fix bundle renderer
+Command: node workbench/scripts/focus-refresh-probe.mjs --baseline
+Exit: 1
+AssertionError [ERR_ASSERTION]: focus refresh disabled the first content click
+true !== false
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-sSnVpb/bundle/workbench/dist/main/focus-refresh-probe.mjs:30:12)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-sSnVpb/bundle/workbench/dist/main/desktop.mjs:379:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+Error: Focus refresh probe failed: 1
+Node.js v24.20.0
+
+3. GREEN — actual Electron, isolated renderer built from fixed source
+Command: node workbench/scripts/focus-refresh-probe.mjs
+Exit: 0
+vite v8.3.4 building client environment for production...
+✓ 1676 modules transformed.
+✓ built in 338ms
+Vite warning: Some chunks are larger than 500 kB after minification.
+PASS actual Electron: one trusted content click during paused focus refresh opens details; no click retry.
+Scope: synthetic focus event + one Chromium trusted mouse click while listContents IPC was paused.
+Before releasing the read gate the probe observed foreground acting=true, proving click acceptance.
+This run covered the list entry. Detail CoverPanel automatic-read chaining was not covered in this first round.
+
+4. GREEN — focused regressions and retained main/worker queue safety
+Command: node --test workbench/test/background-refresh.test.mjs workbench/test/operation-queue.test.mjs workbench/test/worker-client-busy.test.mjs
+Exit: 0
+(node:72118) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (13.52375ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (10.799417ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (5.877542ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (5.806791ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.255375ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.102ms)
+✔ navigation and new draft survive a paused focus refresh (2.410375ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.420875ms)
+✔ paused editor read preserves a draft typed while its result was in flight (1.105542ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.126334ms)
+✔ desktop operations finish in FIFO order without overlap (0.893083ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.810959ms)
+✔ an image grant revoked while queued is checked again before any worker read (1.205417ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (8.062542ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (3.7725ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (1.324458ms)
+✔ readonly non-BUSY failures are returned once (0.311834ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.264333ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 155.563541
+
+5. GREEN — renderer typecheck and whitespace check
+Command: npm --prefix workbench run typecheck:renderer
+Exit: 0
+> nova-content-hub-workbench@0.3.1 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+Command: git diff --check -- workbench/src/renderer/app.tsx workbench/test/background-refresh.test.mjs workbench/scripts/focus-refresh-probe.mjs
+Exit: 0
+Output: empty
+
+No installer, production package, plugin or shared dist-desktop output was changed by this focused task.
+
+6. RED — detail follow-up: current App scheduler, prior CoverPanel automatic run(refresh)
+Command: node workbench/scripts/focus-refresh-probe.mjs --cover-baseline > /tmp/nova-focus-detail-baseline.log 2>&1
+Exit: 1
+The test-only Vite transform restores only CoverPanel's prior automatic effect. Manual refresh/write paths are unchanged.
+The following is copied from that command's real stdout/stderr file:
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1676 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/renderer/index.html                                       0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/renderer/assets/index-NVqlZeJt.css                      146.55 kB │ gzip:  25.07 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/renderer/assets/index-bvRvlV6p.js                       552.45 kB │ gzip: 162.81 kB
+
+✓ built in 378ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS actual Electron: one trusted content click during paused focus refresh opens details; no click retry.
+AssertionError [ERR_ASSERTION]: automatic cover read disabled the first detail tab click
+
+true !== false
+
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/main/focus-refresh-probe.mjs:49:12)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-kP7bH5/bundle/workbench/dist/main/desktop.mjs:379:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/focus-refresh-probe.mjs:90
+        child.once('close', code => {clearTimeout(timeout); code === 0 ? resolve() : reject(new Error('Focus refresh probe failed: ' + code));});
+                                                                                            ^
+
+Error: Focus refresh probe failed: 1
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/focus-refresh-probe.mjs:90:93)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0
+
+7. GREEN — complete list and detail automatic-read fix in actual isolated Electron
+Command: node workbench/scripts/focus-refresh-probe.mjs > /tmp/nova-focus-detail-fixed.log 2>&1
+Exit: 0
+The following is copied from that command's real stdout/stderr file:
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1676 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-o0mMVR/bundle/workbench/dist/renderer/index.html                                       0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-o0mMVR/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-o0mMVR/bundle/workbench/dist/renderer/assets/index-NVqlZeJt.css                      146.55 kB │ gzip:  25.07 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-focus-refresh-o0mMVR/bundle/workbench/dist/renderer/assets/index-Dn9AlkdZ.js                       552.50 kB │ gzip: 162.83 kB
+
+✓ built in 245ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS actual Electron: one trusted content click during paused focus refresh opens details; no click retry.
+PASS actual Electron: one trusted detail tab click during paused readCover works; unsaved draft, content identity and leave guard survive the returned cover read.
+
+8. GREEN — final focused regressions after detail read-path integration
+Command: node --test workbench/test/background-refresh.test.mjs workbench/test/operation-queue.test.mjs workbench/test/worker-client-busy.test.mjs
+Exit: 0
+This section is transcribed from the tool return, not a pre-existing stdout file.
+(node:75728) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (14.840958ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (6.277334ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.375458ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.347209ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.263542ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (0.932375ms)
+✔ navigation and new draft survive a paused focus refresh (2.054666ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.060875ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.75125ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.067709ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.462625ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.573125ms)
+✔ desktop operations finish in FIFO order without overlap (0.909125ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.304666ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.822375ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (7.658458ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.685792ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.484083ms)
+✔ readonly non-BUSY failures are returned once (0.22025ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.271833ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 159.112541
+
+9. GREEN — final renderer typecheck
+Command: npm --prefix workbench run typecheck:renderer
+Exit: 0
+This section is transcribed from the tool return, not a pre-existing stdout file.
+> nova-content-hub-workbench@0.3.1 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+10. GREEN — final whitespace check after code/probe changes
+Command: git diff --check -- workbench/src/renderer/app.tsx workbench/src/renderer/covers.tsx workbench/test/background-refresh.test.mjs workbench/scripts/focus-refresh-probe.mjs docs/verification/production/2026-10-19-focus-refresh-01.log
+Exit: 0
+Output: empty
+
+Final scope: App focus/workspace automatic refresh and CoverPanel's automatic assets/cover read share
+one background promise. Foreground actions reserve the existing active lock immediately, await already
+accepted background reads and execute once. Additional background reads cannot be accepted while a
+foreground action holds that lock. Only the automatic CoverPanel effect receives the restricted
+readAutomatically(contentId) API; explicit refresh and all mutation run calls remain foreground.
+Library epoch/content identity, dirty draft handling, BUSY reporting/recovery and native operation
+queue remain enforced. Probe used synthetic focus events and trusted Chromium input in an isolated
+Electron copy, not installed-app macOS activation or a real assistant/provider call.
+No full verification, installer rebuild, installation, plugin edit or shared dist-desktop edit was performed.
