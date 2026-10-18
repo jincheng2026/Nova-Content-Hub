@@ -55,6 +55,9 @@ function id(value) {
 }
 
 function object(value) { return value && typeof value === 'object' && !Array.isArray(value); }
+const exact = (value, keys) => object(value) && Reflect.ownKeys(value).length === keys.length && keys.every(key => Object.hasOwn(value,key));
+const decimal = value => typeof value === 'string' && /^(0|[1-9][0-9]*)$/.exec(value)?.[0] === value;
+const validRootIdentity = value => exact(value,['dev','ino']) && decimal(value.dev) && decimal(value.ino);
 function validPhotoSource(value) {
   return object(value) && Object.keys(value).every(key=>['source','originalId','note'].includes(key)) && typeof value.source==='string' && !!value.source.trim() && value.source.length<=10000 && ['originalId','note'].every(key=>value[key]===undefined || typeof value[key]==='string' && (key==='note' || !!value[key].trim()) && value[key].length<=10000);
 }
@@ -747,24 +750,67 @@ export function upgradeLibrary(root) {
   return upgradeTo5(root);
 }
 
-export function createLibrary(root) {
+export function createLibrary(root, options) {
   try {
+    let expected;
+    if (options !== undefined) {
+      if (!exact(options,['expectedRootIdentity']) || !validRootIdentity(options.expectedRootIdentity)) fail('INVALID_INPUT','Expected exact decimal root identity');
+      expected = {dev:BigInt(options.expectedRootIdentity.dev),ino:BigInt(options.expectedRootIdentity.ino)};
+    }
     root = canonicalRoot(root);
     directory(path.dirname(root));
-    if (!safePath(root, true)) mkdir(root);
+    if (!safePath(root, true)) {
+      if (expected) fail('CONFLICT','Selected creation directory disappeared');
+      mkdir(root);
+    }
     directory(root);
+    const rootIdentity = fs.lstatSync(root,{bigint:true});
+    if (expected && (rootIdentity.dev !== expected.dev || rootIdentity.ino !== expected.ino)) fail('CONFLICT','Selected creation directory identity changed');
+    // shortcut: path checks leave syscall races and inode reuse; use native directory handles for hostile concurrent replacement.
+    const identities = new Map([[root,rootIdentity]]);
+    const assertIdentity = () => {
+      for (const [target,identity] of identities) {
+        try {
+          directory(target);
+          const current = fs.lstatSync(target,{bigint:true});
+          if (current.dev !== identity.dev || current.ino !== identity.ino) fail('CONFLICT','Creation directory identity changed');
+        } catch (error) {
+          if (error.code === 'ENOENT') fail('CONFLICT','Creation directory disappeared');
+          throw error;
+        }
+      }
+    };
+    const initializeDirectory = target => {
+      hook('createBeforeDirectory',{root,relative:path.relative(root,target)});
+      assertIdentity();
+      mkdir(target);
+      assertIdentity();
+      identities.set(target,fs.lstatSync(target,{bigint:true}));
+      hook('createAfterDirectory',{root,relative:path.relative(root,target)});
+    };
+    const initializeFile = (target,bytes) => {
+      hook('createBeforeFile',{root,relative:path.relative(root,target)});
+      assertIdentity();
+      writeNew(target,bytes);
+      assertIdentity();
+      hook('createAfterFile',{root,relative:path.relative(root,target)});
+    };
+    const libraryId = randomUUID();
+    assertIdentity();
     if (fs.readdirSync(root).length) fail('NOT_EMPTY', 'Refusing to take over a nonempty directory');
+    hook('createAfterEmptyCheck',{root});
     // mkdir is the exclusive initialization gate for two simultaneous creators.
-    mkdir(path.join(root, SYSTEM));
-    mkdir(path.join(root, SYSTEM, '事务'));
-    mkdir(path.join(root, SYSTEM, '事务', '待恢复'));
-    mkdir(path.join(root, SYSTEM, '事务', '已提交'));
-    mkdir(path.join(root, '内容'));
-    for (const name of ['提示词','我的照片','模板','资产']) mkdir(path.join(root,name));
-    mkdir(path.join(root,'资产','sha256'));
-    initializeModel(root);
-    writeNew(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: LIBRARY_VERSION, libraryId: randomUUID(), createdAt: new Date().toISOString() }));
-    return openLibrary(root);
+    initializeDirectory(path.join(root, SYSTEM));
+    initializeDirectory(path.join(root, SYSTEM, '事务'));
+    initializeDirectory(path.join(root, SYSTEM, '事务', '待恢复'));
+    initializeDirectory(path.join(root, SYSTEM, '事务', '已提交'));
+    initializeDirectory(path.join(root, '内容'));
+    for (const name of ['提示词','我的照片','模板','资产']) initializeDirectory(path.join(root,name));
+    initializeDirectory(path.join(root,'资产','sha256'));
+    initializeModel(root,{mkdir:initializeDirectory,writeNew:initializeFile,assertIdentity});
+    initializeFile(path.join(root, '内容库.json'), jsonBytes({ format: FORMAT, schemaVersion: LIBRARY_VERSION, libraryId, createdAt: new Date().toISOString() }));
+    assertIdentity();
+    return openLibrary(root,{expectedLibraryId:libraryId,expectedRootIdentity:{dev:String(rootIdentity.dev),ino:String(rootIdentity.ino)}});
   } catch (error) { throw ioError(error); }
 }
 
@@ -772,12 +818,9 @@ export function openLibrary(root, options) {
   try {
     let expected;
     if (options !== undefined) {
-      const exact = (value, keys) => object(value) && Reflect.ownKeys(value).length === keys.length && keys.every(key => Object.hasOwn(value,key));
-      const decimal = value => typeof value === 'string' && /^(0|[1-9][0-9]*)$/.exec(value)?.[0] === value;
       if (!exact(options,['expectedLibraryId','expectedRootIdentity']) ||
           typeof options.expectedLibraryId !== 'string' || options.expectedLibraryId.length !== 36 || !UUID.test(options.expectedLibraryId) ||
-          !exact(options.expectedRootIdentity,['dev','ino']) ||
-          !decimal(options.expectedRootIdentity.dev) || !decimal(options.expectedRootIdentity.ino)) fail('INVALID_INPUT','Expected exact library ID and decimal root identity');
+          !validRootIdentity(options.expectedRootIdentity)) fail('INVALID_INPUT','Expected exact library ID and decimal root identity');
       expected = {libraryId:options.expectedLibraryId,dev:BigInt(options.expectedRootIdentity.dev),ino:BigInt(options.expectedRootIdentity.ino)};
     }
     root = canonicalRoot(root);
@@ -1373,14 +1416,16 @@ function upgradeTo4(root) {
   return null;
 }
 
-function initializeModel(root) {
-  for (const name of ['库配置','合集']) ensureDirectory(path.join(root,name));
-  ensureDirectory(path.join(root,'库配置','default'));
+function initializeModel(root, initialization) {
+  const initializeDirectory=initialization?.mkdir || ensureDirectory;
+  for (const name of ['库配置','合集']) initializeDirectory(path.join(root,name));
+  initializeDirectory(path.join(root,'库配置','default'));
   const target=path.join(root,'库配置','default','配置.json');
-  if (!safePath(target,true)) {
+  if (initialization || !safePath(target,true)) {
     const now=new Date().toISOString();
-    immutableFile(target,jsonBytes({format:'nova-workspace',schemaVersion:1,id:'default',title:'库配置',revision:1,createdAt:now,updatedAt:now,deletedAt:null,...modelDefaults('workspace')}));
+    (initialization?.writeNew || immutableFile)(target,jsonBytes({format:'nova-workspace',schemaVersion:1,id:'default',title:'库配置',revision:1,createdAt:now,updatedAt:now,deletedAt:null,...modelDefaults('workspace')}));
   }
+  initialization?.assertIdentity();
   metadata(read(target),'default','workspace');
 }
 

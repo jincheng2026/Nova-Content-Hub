@@ -20,7 +20,7 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 
 | 接口 | 含义 |
 | --- | --- |
-| `createLibrary(root)` | 只接受不存在或为空的目录；不接管已有非空目录 |
+| `createLibrary(root, options?)` | 只接受不存在或为空的目录；可绑定所选空目录身份，不接管已有非空目录 |
 | `openLibrary(root, options?)` | 可绑定下文预期身份，核对后才拿锁恢复未完成事务；省略 options 保留原行为，整库移动后以新路径打开 |
 | `upgradeLibrary(root)` | 显式将旧 schema 1/2/3/4 库升级为 schema 5，支持中断后重入；已经是 schema 5 时幂等打开 |
 | `library.info` | 冻结的打开时身份快照：`format/schemaVersion/libraryId/createdAt/root/rootIdentity/durability`；root 为祖先路径解析后的真实位置，嵌套 `rootIdentity:{dev,ino}` 也冻结，操作会重新核对磁盘身份 |
@@ -35,6 +35,8 @@ const reopened = openLibrary('/Users/me/Documents/自媒体内容库');
 内容返回：`format/schemaVersion/id/title/revision/createdAt/updatedAt/deletedAt/body/editToken`。变更结果另带 `mutationId`。标题保留调用方原字符串，必须非全空白且不超过 500 个 JS 字符；正文可为空。目录名只使用内部生成的 ID，标题不成为路径。
 
 `openLibrary` 的 options 若提供，必须精确为 `{expectedLibraryId: UUIDv4, expectedRootIdentity: {dev: string, ino: string}}`，两层均不接受缺字段或额外键。dev/ino 为规范非负十进制 BigInt 字符串（`0` 或无前导零的正整数；不接受符号、空白、小数或指数），不转 Number。调用方可保存已明确选择库的 `library.info.libraryId` 和 `library.info.rootIdentity`，下次打开时传回。规范化根路径后，先采集并核对这一次目录身份，再读 descriptor 核对 libraryId；任一身份不符报 CONFLICT，发生在任何拿锁和 pending 恢复之前。该次采集身份固定传入库实例，原有锁前、锁内检查继续使用同一身份，不在构造时重新采集并接受替换目录。`rootIdentity` 只是运行时投影，不写入 descriptor 或改变库 schema。省略 options 仍允许显式重开当前路径；桌面调用方需保存并传回两种身份才能使用此约束。该合同不声明抵抗持续恶意路径竞态或 inode 复用。
+
+`createLibrary` 的 options 若提供，必须精确为 `{expectedRootIdentity: {dev: string, ino: string}}`，使用相同的规范十进制校验，两层均不接受缺字段或额外键；非法参数在任何落盘前拒绝。传入身份时，所选目录必须仍然存在且匹配，目录消失或 dev/ino 不符报 CONFLICT，不会自动重建；软链接等不安全路径继续拒绝。省略 options 保留创建缺失目录的用法。创建固定首次 root 身份和各个已创建子目录身份，每次初始化目录、配置和 descriptor 写入前重验；配置使用独占创建。最后用提前生成的 libraryId 和固定 root 身份调用受约束的 `openLibrary`，在拿锁或恢复 pending 前拒绝替换库。失败会保留原目录的半成品，不按旧路径清理新出现的目录。目录身份检查与 Node 路径系统调用之间仍有窗口，这不是原子 openat 防护，也不保证识别 inode 复用；需要抵抗持续恶意替换时必须改用具备相应能力的原生文件系统层。
 
 `editToken = SHA256(SHA256(元信息原字节) || SHA256(正文原字节))`，其中两段内部哈希是各 32 字节。它包含正文和元信息的原始字节，外部 Markdown 编辑或仅 JSON 格式变化都会让旧 token 失效。单纯改标题会保留正文原字节，包括 CRLF；`body` 返回 UTF-8 字符串。
 
