@@ -18,7 +18,7 @@ dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-NVqlZeJt.css    
 dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-DW1Wc4bq.js                       552.77 kB │ gzip: 162.92 kB
 
 ✓ built in 420ms
-[plugin builtin:vite-reporter] 
+[plugin builtin:vite-reporter]
 (!) Some chunks are larger than 500 kB after minification. Consider:
 - Using dynamic import() to code-split the application
 - Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
