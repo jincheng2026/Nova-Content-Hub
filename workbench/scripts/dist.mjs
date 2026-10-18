@@ -2,7 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
+import {randomUUID} from 'node:crypto';
 import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
+import {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -10,6 +12,8 @@ const usage = 'Use npm run dist:local|dist:preview|dist:testing|dist:production 
 const channelAuth = {local: 'disabled', preview: 'disabled', testing: 'required', production: 'disabled'};
 
 export function parseOptions(args, host = process) {
+    const exportPayload = args[0] === '--export-payload';
+    if (exportPayload) args = args.slice(1);
     const options = {};
     if (args.length !== 8) throw new Error(usage);
     for (let index = 0; index < args.length; index += 2) {
@@ -19,6 +23,10 @@ export function parseOptions(args, host = process) {
     }
     if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel] || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);
     if (options.platform !== host.platform || options.arch !== host.arch) throw new Error('Use a native runner with matching process.platform and process.arch; cross-platform/architecture packaging is refused.');
+    if (exportPayload) {
+        if (options.platform !== 'darwin' || options.channel !== 'preview') throw Error('Native payload export is available only for free macOS preview builds');
+        options.exportPayload = true;
+    }
     return options;
 }
 
@@ -101,7 +109,7 @@ export function installerConfig(options, version) {
     };
 }
 
-export function distribute(args = process.argv.slice(2)) {
+export async function distribute(args = process.argv.slice(2)) {
     const options = parseOptions(args);
     const packageJSON = readJSON(path.join(workbench, 'package.json'));
     const config = readJSON(path.join(workbench, '../release.config.json'));
@@ -111,8 +119,18 @@ export function distribute(args = process.argv.slice(2)) {
     for (const [name, version] of [['electron', '44.9.0'], ['electron-builder', '26.15.3']]) {
         if (readJSON(path.join(workbench, 'node_modules', name, 'package.json')).version !== version) throw new Error(`Run npm ci --include=optional to install pinned ${name}.`);
     }
+    const exportPayload = options.exportPayload === true;
+    const source = exportPayload ? sourceIdentity(path.dirname(workbench), npmCLI) : undefined;
     execFileSync(process.execPath, [npmCLI, 'run', 'build', '--', '--auth', options.auth], {cwd: workbench, stdio: 'inherit'});
     assertStage(readJSON(path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/dist/release.json`)), config, options.auth);
+    if (source) {
+        assertSourceUnchanged(source, sourceIdentity(path.dirname(workbench), npmCLI));
+        const parent = path.join(workbench, 'release/native-payloads', source.commit);
+        fs.mkdirSync(parent, {recursive: true});
+        const payload = await exportNativePayload(path.join(workbench, 'dist-desktop/auth-disabled'), path.join(parent, `darwin-${options.arch}-${randomUUID()}`), source, options.arch);
+        assertSourceUnchanged(source, sourceIdentity(path.dirname(workbench), npmCLI));
+        console.log(`Fresh portable native payload for universal preview assembly: ${payload}`);
+    }
     const builderConfig = installerConfig(options, config.version);
     fs.mkdirSync(builderConfig.directories.output, {recursive: true});
     const configFile = path.join(builderConfig.directories.output, 'electron-builder.json');
@@ -123,5 +141,5 @@ export function distribute(args = process.argv.slice(2)) {
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-    try { distribute(); } catch (error) { console.error(error.message); process.exitCode = 1; }
+    try { await distribute(); } catch (error) { console.error(error.message); process.exitCode = 1; }
 }

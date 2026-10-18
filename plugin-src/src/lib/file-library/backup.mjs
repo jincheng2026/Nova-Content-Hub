@@ -27,6 +27,7 @@ export function backupMethods(h) {
         jsonBytes,
         hash,
         hook,
+        libraryPin,
         prepareRestoredLibrary
     } = h;
     const stat = target => {
@@ -42,14 +43,17 @@ export function backupMethods(h) {
 
     const targetPath = (root, relative) => path.join(root, ...portable(relative).split('/'));
 
-    function scan(root, excluded = false) {
+    function scan(root, excluded = false, assertIdentity = () => {}) {
+        assertIdentity();
         directory(root);
         const entries = [], collisions = new Set();
 
         function walk(base, prefix = '') {
+            assertIdentity();
             const before = stat(base);
             const names = fs.readdirSync(base).sort(compare);
             for (const name of names) {
+                assertIdentity();
                 const relative = prefix ? `${prefix}/${name}` : name;
                 if (excluded && relative === EXCLUDED) continue;
                 portable(relative);
@@ -73,7 +77,8 @@ export function backupMethods(h) {
         return entries.sort((a, b) => compare(a.path, b.path));
     }
 
-    function stableFile(filename, expected, destination) {
+    function stableFile(filename, expected, destination, assertIdentity = () => {}) {
+        assertIdentity();
         const before = stat(filename);
         if (!before.isFile() || fingerprint(before) !== expected.fingerprint) fail('SOURCE_CHANGED', `File changed before read: ${expected.path}`);
         const fd = fs.openSync(filename, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW);
@@ -87,6 +92,7 @@ export function backupMethods(h) {
             const digest = createHash('sha256'), chunk = Buffer.alloc(128 * 1024);
             let bytes = 0;
             for (; ;) {
+                assertIdentity();
                 const count = fs.readSync(fd, chunk, 0, chunk.length, null);
                 if (!count) break;
                 digest.update(chunk.subarray(0, count));
@@ -103,9 +109,11 @@ export function backupMethods(h) {
             }
             if (out !== undefined) {
                 hook('backupBeforeFileSync', {path: expected.path});
+                assertIdentity();
                 fs.fsyncSync(out);
             }
             const after = fs.fstatSync(fd, {bigint: true}), current = stat(filename);
+            assertIdentity();
             if (fingerprint(before) !== fingerprint(after) || fingerprint(after) !== fingerprint(current) || BigInt(bytes) !== after.size) fail('SOURCE_CHANGED', `File changed while read: ${expected.path}`);
             return {bytes, sha256: digest.digest('hex')};
         } finally {
@@ -118,19 +126,22 @@ export function backupMethods(h) {
         if (before.length !== after.length || before.some((entry, index) => entry.path !== after[index].path || entry.type !== after[index].type || entry.fingerprint !== after[index].fingerprint)) fail('SOURCE_CHANGED', 'Tree changed during stable copy');
     }
 
-    function copyTree(source, destination, entries, omitDescriptor = false) {
+    function copyTree(source, destination, entries, omitDescriptor = false, assertIdentity = () => {}) {
         for (const entry of entries.filter(item => item.type === 'directory').sort((a, b) => a.path.split('/').length - b.path.split('/').length || compare(a.path, b.path))) {
+            assertIdentity();
             fs.mkdirSync(targetPath(destination, entry.path), {mode: 0o700});
         }
         const copied = [];
         for (const entry of entries) {
+            assertIdentity();
             if (entry.type === 'directory') {
                 copied.push({path: entry.path, type: entry.type});
                 continue;
             }
-            const digest = stableFile(targetPath(source, entry.path), entry, omitDescriptor && entry.path === '内容库.json' ? undefined : targetPath(destination, entry.path));
+            const digest = stableFile(targetPath(source, entry.path), entry, omitDescriptor && entry.path === '内容库.json' ? undefined : targetPath(destination, entry.path), assertIdentity);
             copied.push({path: entry.path, type: entry.type, ...digest});
             hook('backupAfterFile', {path: entry.path, source, destination});
+            assertIdentity();
         }
         for (const entry of [...entries].filter(item => item.type === 'directory').reverse()) syncDirectory(targetPath(destination, entry.path));
         syncDirectory(destination);
@@ -194,27 +205,46 @@ export function backupMethods(h) {
 
     const wrap = error => error instanceof LibraryError ? error : new LibraryError('IO_ERROR', error.message, {cause: error});
 
-    function backupLibrary(root, destination) {
+    function backupLibrary(root, destination, options) {
         let release, committed = false, primary;
         const backupId = randomUUID(), startedAt = new Date().toISOString();
         let binding;
         try {
             root = path.resolve(root);
             directory(root);
+            let pin;
+            if (options !== undefined) {
+                const keys = ['allowSchema4', 'expectedLibraryId', 'expectedRootIdentity', 'expectedDescriptorHash'];
+                if (!options || typeof options !== 'object' || Array.isArray(options) || Reflect.ownKeys(options).length !== keys.length || keys.some(key => !Object.hasOwn(options, key)) || options.allowSchema4 !== true) fail('INVALID_INPUT', 'Schema 4 backup requires the exact explicit pinned options');
+                pin = libraryPin(root, {expectedLibraryId: options.expectedLibraryId, expectedRootIdentity: options.expectedRootIdentity, expectedDescriptorHash: options.expectedDescriptorHash});
+                const selected = pin.snapshot();
+                if (![4, 5].includes(selected.info.schemaVersion)) fail('FORMAT_UNSUPPORTED', 'Pinned backup accepts schema 4 or 5 only');
+                if (hash(selected.bytes) !== pin.expectedDescriptorHash) fail('CONFLICT', 'Approved backup descriptor changed');
+            }
             const rootIdentity = identity(stat(root)), original = read(path.join(root, '内容库.json')),
-                initial = descriptor(root);
+                initial = descriptor(root, !!pin);
+            const check = () => {
+                if (pin) {
+                    const current = pin.snapshot();
+                    if (![4, 5].includes(current.info.schemaVersion) || hash(current.bytes) !== pin.expectedDescriptorHash) fail('CONFLICT', 'Approved backup descriptor changed');
+                }
+                if (identity(stat(root)) !== rootIdentity || !read(path.join(root, '内容库.json')).equals(original) || descriptor(root, !!pin).libraryId !== initial.libraryId) fail('SOURCE_CHANGED', 'Library identity changed during backup');
+            };
+            check();
             binding = parentBinding(destination, root);
-            release = acquire(root);
-            if (identity(stat(root)) !== rootIdentity || !read(path.join(root, '内容库.json')).equals(original) || descriptor(root).libraryId !== initial.libraryId) fail('SOURCE_CHANGED', 'Library identity changed before backup');
+            release = acquire(root, read, fs.readdirSync, check);
+            check();
             createTarget(binding);
             fs.mkdirSync(path.join(binding.target, 'data'), {mode: 0o700});
             hook('backupLocked', {root, destination: binding.target});
-            const entries = scan(root, true), copied = copyTree(root, path.join(binding.target, 'data'), entries);
+            check();
+            const entries = scan(root, true, check), copied = copyTree(root, path.join(binding.target, 'data'), entries, false, check);
             const copiedInventory = scan(path.join(binding.target, 'data'));
             assertHashes(path.join(binding.target, 'data'), copiedInventory, copied);
-            sameInventory(entries, scan(root, true));
-            for (let i = 0; i < entries.length; i++) if (entries[i].type === 'file' && stableFile(targetPath(root, entries[i].path), entries[i]).sha256 !== copied[i].sha256) fail('SOURCE_CHANGED', 'Source digest changed after copy');
-            sameInventory(entries, scan(root, true));
+            sameInventory(entries, scan(root, true, check));
+            for (let i = 0; i < entries.length; i++) if (entries[i].type === 'file' && stableFile(targetPath(root, entries[i].path), entries[i], undefined, check).sha256 !== copied[i].sha256) fail('SOURCE_CHANGED', 'Source digest changed after copy');
+            sameInventory(entries, scan(root, true, check));
+            check();
             if (identity(stat(root)) !== rootIdentity || !read(path.join(root, '内容库.json')).equals(original)) fail('SOURCE_CHANGED', 'Library changed at backup boundary');
             const entriesPath = path.join(binding.target, 'entries.ndjson');
             const fd = fs.openSync(entriesPath, 'wx', 0o600), entriesDigest = createHash('sha256');
@@ -261,6 +291,7 @@ export function backupMethods(h) {
             }), 'backupComplete', () => {
                 committed = true;
             }, () => {
+                check();
                 binding.check();
                 sameInventory(entries, scan(root, true));
                 if (identity(stat(root)) !== rootIdentity || !read(path.join(root, '内容库.json')).equals(original)) fail('SOURCE_CHANGED', 'Library changed at completion boundary');
@@ -270,7 +301,9 @@ export function backupMethods(h) {
                     if (stableFile(path.join(binding.target, name), packageReady.find(entry => entry.path === name)).sha256 !== expectedHash) fail('SOURCE_CHANGED', 'Backup metadata changed before completion');
                 }
                 sameInventory(packageReady, scan(binding.target));
+                check();
             });
+            check();
             return {
                 backupId,
                 backupDir: binding.target,

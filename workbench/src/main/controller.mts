@@ -135,6 +135,12 @@ export class DesktopController {
     readMaintenanceStatus() { return this.maintenance.readMaintenanceStatus(); }
     recoverMaintenance() { return this.maintenance.recoverMaintenance(); }
     abandonMaintenance() { return this.maintenance.abandonMaintenance(); }
+    prepareLibraryUpgrade() { return this.maintenance.prepareLibraryUpgrade(); }
+    cancelLibraryUpgrade() { return this.maintenance.cancelLibraryUpgrade(); }
+    confirmLibraryUpgrade() { return this.maintenance.confirmLibraryUpgrade(); }
+    queryLibraryUpgrade() { return this.maintenance.queryLibraryUpgrade(); }
+    continueLibraryUpgrade() { return this.maintenance.continueLibraryUpgrade(); }
+    openUpgradedLibrary() { return this.maintenance.openUpgradedLibrary(); }
 
     service<K extends keyof ControllerServices>(key: K): NonNullable<ControllerServices[K]> {
         const service = this.services[key];

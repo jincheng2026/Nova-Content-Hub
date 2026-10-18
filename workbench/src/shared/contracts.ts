@@ -249,6 +249,7 @@ export interface Dialogs {
     templateImages?(): Promise<string[] | null>;
     material?(): Promise<string | null>;
     maintenanceParent?(): Promise<string | null>;
+    legacyLibrary?(): Promise<string | null>;
     libraryBackup?(): Promise<string | null>;
     backup(): Promise<string | null>;
 

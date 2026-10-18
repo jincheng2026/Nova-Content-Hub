@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {createHash} from 'node:crypto';
-import {backupLibrary, verifyBackup, restoreBackup, inspectLibraryHealth} from '../../../plugin-src/src/lib/file-library/index.mjs';
+import {createHash, randomUUID} from 'node:crypto';
+import {backupLibrary, verifyBackup, restoreBackup, inspectLibraryHealth, upgradeLibrary, inspectLibraryUpgrade, openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {isRecord} from '../shared/contracts.ts';
-import {exact, fail, libraryBinding} from '../shared/validation.ts';
+import {exact, fail, libraryBinding, uuid} from '../shared/validation.ts';
 import {maintenancePending} from '../shared/maintenance-validation.ts';
 import type {LibraryBinding, RootIdentity} from '../shared/contracts.ts';
-import type {BackupIdentity, MaintenancePending, MaintenanceReceipt, MaintenanceWorkerOperations} from '../shared/maintenance-contracts.ts';
+import type {BackupIdentity, MaintenancePending, MaintenanceReceipt, MaintenanceWorkerOperations, UpgradePending, UpgradeProgress} from '../shared/maintenance-contracts.ts';
 
-const operations = ['inspectLibraryHealth', 'inspectMaintenanceLibrary', 'inspectLibraryBackup', 'runMaintenance', 'queryMaintenance'] as const;
+const operations = ['inspectLibraryHealth', 'inspectMaintenanceLibrary', 'inspectLibraryBackup', 'runMaintenance', 'queryMaintenance', 'inspectLegacyLibrary', 'queryLibraryUpgrade', 'runLibraryUpgradeStage', 'bindUpgradedLibrary'] as const;
 export function isMaintenanceOperation(op: unknown): op is keyof MaintenanceWorkerOperations { return typeof op === 'string' && operations.some(item => item === op); }
 const absolute = (v: unknown): v is string => typeof v === 'string' && v.length <= 32_768 && path.isAbsolute(v) && !v.includes('\0');
 const sameIdentity = (a: RootIdentity, b: RootIdentity) => a.dev === b.dev && a.ino === b.ino;
@@ -68,7 +68,7 @@ function checkedBackup(expected: BackupIdentity) {
 }
 function checkedParent(pending: MaintenancePending) {
     if (!sameIdentity(directoryIdentity(path.dirname(pending.destination)), pending.parentIdentity)) fail('SOURCE_CHANGED', '目标父文件夹已被替换，维护操作已停止。');
-    const source = pending.kind === 'backup' ? pending.binding.root : pending.backup.source;
+    const source = pending.kind === 'backup' ? pending.binding.root : pending.kind === 'upgrade' ? pending.source.root : pending.backup.source;
     const relative = path.relative(path.resolve(source), path.resolve(pending.destination));
     if (!relative || !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative)) fail('UNSAFE_PATH', '新文件夹必须位于来源文件夹之外。');
 }
@@ -76,6 +76,7 @@ function receipt(pending: MaintenancePending, counts: MaintenanceReceipt['counts
     return {kind: pending.kind, destinationName: path.basename(pending.destination), counts, recovered, upgradeRequired, interruptedAttempts};
 }
 function query(pending: MaintenancePending): MaintenanceReceipt {
+    if (pending.kind === 'upgrade') fail('INVALID_INPUT', '升级记录请使用专用核验入口。');
     checkedParent(pending);
     if (pending.kind === 'backup') {
         const found = inspectBackup(pending.destination);
@@ -101,7 +102,124 @@ function query(pending: MaintenancePending): MaintenanceReceipt {
     return receipt(pending, source.counts, true, descriptor.value.schemaVersion !== 5, interruptedAttempts);
 }
 
+function legacyLibrary(source: string) {
+    const rootIdentity = directoryIdentity(source), descriptor = boundedJSON(path.join(source, '内容库.json'));
+    const value = descriptor.value;
+    if (!isRecord(value) || value.format !== 'nova-content-library' || !uuid(value.libraryId) || !Number.isSafeInteger(value.schemaVersion)) fail('CORRUPT', '所选文件夹不是可识别的内容库。');
+    if (value.schemaVersion === 5) fail('UPGRADE_ALREADY_CURRENT', '这个内容库已是当前版本，可以使用“打开本机内容库”。');
+    if (Number(value.schemaVersion) > 5) fail('UPGRADE_FUTURE_FORMAT', '这个内容库来自更新版本，请使用创建它的新版工作台。');
+    if (value.schemaVersion !== 4) fail('UPGRADE_LEGACY_FORMAT', '此入口仅支持第4版内容库；第1至3版请先使用兼容工具升级到第4版。');
+    if (!sameIdentity(rootIdentity, directoryIdentity(source))) fail('SOURCE_CHANGED', '旧内容库目录在读取时改变。');
+    return {binding: {root: source, libraryId: value.libraryId, rootIdentity}, descriptorHash: descriptor.hash};
+}
+const pins = (pending: UpgradePending, target = false) => ({expectedLibraryId: pending.source.libraryId, expectedRootIdentity: target ? pending.targetIdentity! : pending.source.rootIdentity, expectedDescriptorHash: pending.descriptorHash});
+function exists(filename: string) {
+    try { fs.lstatSync(filename); return true; } catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false; throw error; }
+}
+function upgradeParent(pending: UpgradePending) {
+    checkedParent(pending);
+    if (path.dirname(pending.backupDestination) !== path.dirname(pending.destination) || pending.backupDestination === pending.destination) fail('UNSAFE_PATH', '备份与升级副本必须使用不同的新文件夹。');
+    checkedParent({...pending, destination: pending.backupDestination});
+}
+function upgradeBackup(pending: UpgradePending) {
+    const found = inspectBackup(pending.backupDestination);
+    if (found.backup.libraryId !== pending.source.libraryId || found.backup.descriptorHash !== pending.descriptorHash || found.manifest.source.schemaVersion !== 4 || found.manifest.startedAt < pending.startedAt) fail('CONFLICT', '备份与本次固定的旧内容库不一致。');
+    if (pending.backup) {
+        if (pending.backup.source !== pending.backupDestination || !sameIdentity(pending.backup.rootIdentity, found.backup.rootIdentity)) fail('SOURCE_CHANGED', '已固定的备份文件夹被替换。');
+        checkedBackup(pending.backup);
+    }
+    return found;
+}
+function upgradeReceipt(pending: UpgradePending, recovered: boolean): MaintenanceReceipt {
+    const found = upgradeBackup(pending);
+    return {...receipt(pending, found.counts, recovered), backupName: path.basename(pending.backupDestination)};
+}
+const operationFile = (pending: UpgradePending) => path.join(path.dirname(pending.destination), `.Nova-upgrade-${pending.operationId}.json`);
+function operationRecord(pending: UpgradePending) {
+    return {format: 'nova-desktop-library-upgrade', schemaVersion: 1, operationId: pending.operationId, startedAt: pending.startedAt, source: pending.source, descriptorHash: pending.descriptorHash, backup: pending.backup, destination: pending.destination, parentIdentity: pending.parentIdentity, targetIdentity: pending.targetIdentity, resultHash: pending.resultHash};
+}
+function inspectUpgrade(pending: UpgradePending): UpgradeProgress {
+    upgradeParent(pending);
+    if (pending.stage === 'backup') {
+        if (!exists(pending.backupDestination)) return {pending, receipt: null};
+        const found = upgradeBackup(pending);
+        return {pending: {...pending, stage: 'verify', backup: found.backup}, receipt: null};
+    }
+    const found = upgradeBackup(pending);
+    pending = {...pending, backup: found.backup};
+    if (pending.stage === 'verify') return {pending: {...pending, stage: 'restore'}, receipt: null};
+    if (pending.stage === 'restore') {
+        if (!exists(pending.destination)) return {pending, receipt: null};
+        const targetIdentity = directoryIdentity(pending.destination);
+        query({...pending, kind: 'restore', backup: found.backup});
+        if (!sameIdentity(targetIdentity, directoryIdentity(pending.destination))) fail('SOURCE_CHANGED', '恢复副本在固定身份前被替换。');
+        // Persist this identity in the main process before any upgrade call can run.
+        inspectLibraryUpgrade(pending.destination, {...pins(pending), expectedRootIdentity: targetIdentity});
+        return {pending: {...pending, stage: 'upgrade', targetIdentity}, receipt: null};
+    }
+    if (!sameIdentity(directoryIdentity(pending.destination), pending.targetIdentity!)) fail('SOURCE_CHANGED', '升级副本文件夹已被替换，请保留现场。');
+    const inspected = inspectLibraryUpgrade(pending.destination, pins(pending, true));
+    if (!inspected.upgradeComplete) {
+        if (pending.stage === 'receipt') fail('CONFLICT', '升级完成证据已改变，请保留现场。');
+        return {pending, receipt: null};
+    }
+    if (pending.resultHash && pending.resultHash !== inspected.descriptorHash) fail('CONFLICT', '升级结果与固定的完成记录不一致。');
+    pending = {...pending, stage: 'receipt', resultHash: inspected.descriptorHash};
+    if (!exists(operationFile(pending))) return {pending, receipt: null};
+    const saved = boundedJSON(operationFile(pending)).value;
+    if (JSON.stringify(saved) !== JSON.stringify(operationRecord(pending))) fail('CONFLICT', '升级操作完成凭据不匹配，请保留现场。');
+    upgradeParent(pending);
+    return {pending, receipt: upgradeReceipt(pending, true)};
+}
+function runUpgrade(pending: UpgradePending): UpgradeProgress {
+    upgradeParent(pending);
+    if (pending.stage === 'backup') {
+        if (exists(pending.backupDestination)) fail('TARGET_EXISTS', '备份目标已存在，请先核验；未完成文件不会被覆盖。');
+        const source = legacyLibrary(pending.source.root);
+        if (JSON.stringify(source.binding) !== JSON.stringify(pending.source) || source.descriptorHash !== pending.descriptorHash) fail('SOURCE_CHANGED', '旧内容库在确认后改变，请重新选择。');
+        backupLibrary(pending.source.root, pending.backupDestination, {...pins(pending), allowSchema4: true});
+    } else if (pending.stage === 'verify') {
+        upgradeBackup(pending);
+    } else if (pending.stage === 'restore') {
+        upgradeBackup(pending);
+        if (exists(pending.destination)) fail('TARGET_EXISTS', '恢复目标已存在，请先核验；未完成文件不会被覆盖。');
+        restoreBackup(pending.backup!.source, pending.destination);
+    } else if (pending.stage === 'upgrade') {
+        upgradeBackup(pending);
+        if (!sameIdentity(directoryIdentity(pending.destination), pending.targetIdentity!)) fail('SOURCE_CHANGED', '升级副本文件夹已被替换。');
+        upgradeLibrary(pending.destination, pins(pending, true));
+    } else {
+        const inspected = inspectUpgrade(pending);
+        if (inspected.receipt) return inspected;
+        if (!inspected.pending.resultHash) fail('BACKUP_INCOMPLETE', '升级结果尚未完成，不能记录成功。');
+        // A final upgrade marker does not prove that business metadata can actually be opened.
+        openLibrary(pending.destination, {expectedLibraryId: pending.source.libraryId, expectedRootIdentity: pending.targetIdentity!});
+        const reopened = inspectUpgrade(pending);
+        if (reopened.receipt) return reopened;
+        const filename = operationFile(pending), temporary = `${filename}.${randomUUID()}.tmp`, fd = fs.openSync(temporary, 'wx', 0o600);
+        try { fs.writeFileSync(fd, `${JSON.stringify(operationRecord(pending))}\n`); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
+        // Publish without replacing an existing receipt; interrupted temporary files remain for inspection.
+        fs.linkSync(temporary, filename);
+        fs.unlinkSync(temporary);
+        if (process.platform !== 'win32') { const parent = fs.openSync(path.dirname(filename), 'r'); try { fs.fsyncSync(parent); } finally { fs.closeSync(parent); } }
+    }
+    return inspectUpgrade(pending);
+}
+
 export function executeMaintenance(op: keyof MaintenanceWorkerOperations, raw: unknown): MaintenanceWorkerOperations[keyof MaintenanceWorkerOperations]['result'] {
+    if (op === 'inspectLegacyLibrary') {
+        if (!exact(raw, ['source']) || !absolute(raw.source)) fail('INVALID_INPUT', '旧内容库选择无效。');
+        return legacyLibrary(raw.source);
+    }
+    if (op === 'queryLibraryUpgrade' || op === 'runLibraryUpgradeStage' || op === 'bindUpgradedLibrary') {
+        if (!exact(raw, ['pending']) || !maintenancePending(raw.pending) || raw.pending.kind !== 'upgrade' || !absolute(raw.pending.source.root) || !absolute(raw.pending.destination) || !absolute(raw.pending.backupDestination) || raw.pending.backup && !absolute(raw.pending.backup.source)) fail('INVALID_INPUT', '升级记录无效。');
+        if (op === 'bindUpgradedLibrary') {
+            if (!inspectUpgrade(raw.pending).receipt) fail('BACKUP_INCOMPLETE', '升级完成凭据不完整，不能打开。');
+            const library = openLibrary(raw.pending.destination, {expectedLibraryId: raw.pending.source.libraryId, expectedRootIdentity: raw.pending.targetIdentity!});
+            return {root: library.info.root, libraryId: library.info.libraryId, rootIdentity: library.info.rootIdentity};
+        }
+        return op === 'queryLibraryUpgrade' ? inspectUpgrade(raw.pending) : runUpgrade(raw.pending);
+    }
     if (op === 'inspectLibraryHealth') {
         if (!exact(raw, ['binding']) || !libraryBinding(raw.binding) || !absolute(raw.binding.root)) fail('INVALID_INPUT', '内容库检查参数无效。');
         return inspectLibraryHealth(raw.binding.root, {expectedLibraryId: raw.binding.libraryId, expectedRootIdentity: raw.binding.rootIdentity});
@@ -115,7 +233,7 @@ export function executeMaintenance(op: keyof MaintenanceWorkerOperations, raw: u
         const found = inspectBackup(raw.source);
         return {backup: found.backup, counts: found.counts};
     }
-    if (!exact(raw, ['pending']) || !maintenancePending(raw.pending) || !absolute(raw.pending.destination) || !(raw.pending.kind === 'backup' ? absolute(raw.pending.binding.root) : absolute(raw.pending.backup.source))) fail('INVALID_INPUT', '维护任务参数无效。');
+    if (!exact(raw, ['pending']) || !maintenancePending(raw.pending) || raw.pending.kind === 'upgrade' || !absolute(raw.pending.destination) || !(raw.pending.kind === 'backup' ? absolute(raw.pending.binding.root) : absolute(raw.pending.backup.source))) fail('INVALID_INPUT', '维护任务参数无效。');
     const pending = raw.pending;
     if (op === 'queryMaintenance') return query(pending);
     checkedParent(pending);

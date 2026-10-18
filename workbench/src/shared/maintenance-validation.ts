@@ -14,9 +14,17 @@ export function backupIdentity(v: unknown): v is BackupIdentity {
 export function maintenancePending(v: unknown): v is MaintenancePending {
     const common = ['operationId', 'startedAt', 'destination', 'parentIdentity', 'kind'];
     if (!isRecord(v)) return false;
+    if (v.kind === 'upgrade') {
+        if (!exact(v, [...common, 'source', 'descriptorHash', 'backupDestination', 'stage', 'backup', 'targetIdentity', 'resultHash']) || !uuid(v.operationId) || !instant(v.startedAt) || !filePath(v.destination) || !identity(v.parentIdentity) || !libraryBinding(v.source) || !filePath(v.source.root) || !token(v.descriptorHash) || !filePath(v.backupDestination)) return false;
+        if (v.stage === 'backup') return v.backup === null && v.targetIdentity === null && v.resultHash === null;
+        if (!backupIdentity(v.backup) || v.backup.source !== v.backupDestination) return false;
+        if (v.stage === 'verify' || v.stage === 'restore') return v.targetIdentity === null && v.resultHash === null;
+        if (!identity(v.targetIdentity)) return false;
+        return v.stage === 'upgrade' ? v.resultHash === null : v.stage === 'receipt' && token(v.resultHash);
+    }
     if (v.kind === 'backup') return exact(v, [...common, 'binding', 'descriptorHash']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && libraryBinding(v.binding) && filePath(v.binding.root) && token(v.descriptorHash);
     return v.kind === 'restore' && exact(v, [...common, 'backup']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && backupIdentity(v.backup);
 }
 export function maintenanceDesktopInput(method: string, input: unknown): boolean | undefined {
-    return ['inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance'].includes(method) ? input === undefined : undefined;
+    return ['inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance', 'prepareLibraryUpgrade', 'cancelLibraryUpgrade', 'confirmLibraryUpgrade', 'queryLibraryUpgrade', 'continueLibraryUpgrade', 'openUpgradedLibrary'].includes(method) ? input === undefined : undefined;
 }

@@ -49,6 +49,44 @@ function bytesTree(root) {
     return files;
 }
 
+test('schema 4 backup requires full pinned consent and preserves source business bytes without recovery', t => {
+    const f = fixture(t), filename = path.join(f.root, '内容库.json'), raw = json({...JSON.parse(fs.readFileSync(filename)), schemaVersion: 4});
+    fs.writeFileSync(filename, raw);
+    for (const name of ['库配置', '合集']) fs.rmSync(path.join(f.root, name), {recursive: true});
+    // A malformed pending entry would fail a recovering open; backup must only copy it.
+    fs.writeFileSync(path.join(f.root, '系统（别动）', '事务', '待恢复', 'manual-note'), 'do not recover');
+    const rootStat = fs.lstatSync(f.root, {bigint: true}), options = {
+        allowSchema4: true,
+        expectedLibraryId: f.lib.info.libraryId,
+        expectedRootIdentity: {dev: String(rootStat.dev), ino: String(rootStat.ino)},
+        expectedDescriptorHash: digest(raw)
+    }, before = bytesTree(f.root);
+    throws('UPGRADE_REQUIRED', () => backupLibrary(f.root, f.backup));
+    throws('INVALID_INPUT', () => backupLibrary(f.root, f.backup, {allowSchema4: true}));
+    throws('CONFLICT', () => backupLibrary(f.root, f.backup, {...options, expectedDescriptorHash: '0'.repeat(64)}));
+    assert.equal(fs.existsSync(f.backup), false);
+    backupLibrary(f.root, f.backup, options);
+    assert.equal(verifyBackup(f.backup).manifest.source.schemaVersion, 4);
+    assert.deepEqual(bytesTree(f.root), before);
+    assert.deepEqual(fs.readFileSync(path.join(f.backup, 'data', '内容库.json')), raw);
+});
+
+test('pinned backup refuses a replaced clone before creating lock or destination', t => {
+    const f = fixture(t), original = path.join(f.parent, 'original'), rootStat = fs.lstatSync(f.root, {bigint: true}), options = {
+        allowSchema4: true,
+        expectedLibraryId: f.lib.info.libraryId,
+        expectedRootIdentity: {dev: String(rootStat.dev), ino: String(rootStat.ino)},
+        expectedDescriptorHash: digest(fs.readFileSync(path.join(f.root, '内容库.json')))
+    };
+    fs.renameSync(f.root, original);
+    fs.cpSync(original, f.root, {recursive: true});
+    const before = bytesTree(f.root);
+    throws('CONFLICT', () => backupLibrary(f.root, f.backup, options));
+    assert.deepEqual(bytesTree(f.root), before);
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '库锁')), false);
+    assert.equal(fs.existsSync(f.backup), false);
+});
+
 function reseal(backup, change) {
     const entriesPath = path.join(backup, 'entries.ndjson'), manifestPath = path.join(backup, 'manifest.json');
     const manifest = JSON.parse(fs.readFileSync(manifestPath));

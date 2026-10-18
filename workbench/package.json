@@ -14,6 +14,8 @@
     "build": "node scripts/build.mjs",
     "dist:local": "node scripts/dist.mjs --channel local --auth disabled",
     "dist:preview": "node scripts/dist.mjs --channel preview --auth disabled",
+    "dist:preview:payload": "node scripts/dist.mjs --export-payload --channel preview --auth disabled",
+    "dist:preview:universal": "node scripts/dist-universal.mjs",
     "dist:testing": "node scripts/dist.mjs --channel testing --auth required",
     "dist:production": "node scripts/dist.mjs --channel production --auth disabled",
     "start": "electron dist-desktop/auth-disabled",

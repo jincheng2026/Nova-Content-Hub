@@ -28,6 +28,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 interface StartOptions {
     show?: boolean;
     userData?: string;
+    marketRoot?: string;
     dialogs?: Dialogs;
     onConsoleMessage?: (message: string) => void;
     ready?: (context: {
@@ -48,7 +49,7 @@ const existingUserData = path.join(app.getPath('appData'), 'Nova 内容库技术
 app.setName('自媒体工作台');
 if (existsSync(existingUserData)) app.setPath('userData', existingUserData);
 
-export async function startDesktop({show = true, userData, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
+export async function startDesktop({show = true, userData, marketRoot, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
     if (userData) app.setPath('userData', userData);
     const resources = validateResources(JSON.parse(readFileSync(path.join(here, '../renderer-resources.json'), 'utf8')));
     const release = validateRelease(JSON.parse(readFileSync(path.join(here, '../release.json'), 'utf8')));
@@ -151,6 +152,10 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             },
             async maintenanceParent() {
                 const selected = await dialog.showOpenDialog(window, {title: '选择用于建立独立新文件夹的位置', properties: ['openDirectory', 'createDirectory']});
+                return selected.canceled ? null : selected.filePaths[0] ?? null;
+            },
+            async legacyLibrary() {
+                const selected = await dialog.showOpenDialog(window, {title: '选择第4版旧内容库（原库保留，将升级独立副本）', properties: ['openDirectory']});
                 return selected.canceled ? null : selected.filePaths[0] ?? null;
             },
             async libraryBackup() {
@@ -284,7 +289,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     await reminders.initialize();
     const setup = new Setup({
         release,
-        marketRoot: app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'),
+        marketRoot: marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace')),
         assistant: () => readAssistantSetup(controller.binding?.assistant ?? 'codex'),
         shell, clipboard,
         saveDiagnosticDialog: async () => {
@@ -317,7 +322,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
-                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (['openLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
+                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
             };
         } catch (error) {
             return {

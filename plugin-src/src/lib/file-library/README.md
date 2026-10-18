@@ -497,6 +497,35 @@ null/selectedAtKnowledge:unknown。历史基础正文与标题/修订证据缺�
 
 ## schema4 → 5 升级与验证边界
 
+受控恢复流程使用完整固定身份；升级仅支持 schema 4 → 5，原无 options 的 1/2/3/4 升级 API 保持兼容：
+
+```js
+const pins = {
+    expectedLibraryId: approvedLibraryId,
+    expectedRootIdentity: {dev: approvedDev, ino: approvedIno}, // 十进制字符串
+    expectedDescriptorHash: approvedSchema4DescriptorSHA256
+};
+backupLibrary(sourceRoot, newBackupDir, {...pins, allowSchema4: true});
+// 恢复后的新目录必须重新取得该目录的 dev/ino，保留原 schema4 描述文件 hash。
+const proof = inspectLibraryUpgrade(restoredRoot, restoredPins);
+const upgraded = upgradeLibrary(restoredRoot, restoredPins);
+```
+
+两个 options 对象都封闭：缺字段、额外字段均拒绝；backup 的 `allowSchema4` 必须明确为 `true`。没有 options 的 backup
+仍只接受 schema5；有完整 options 的 backup 仅接受 schema4/5。backup 不恢复 pending、不升级、不改业务文件，只使用协调锁并稳定复制。
+升级在拿锁前后、恢复循环、模型初始化、原字节备份、描述文件及完成标记发布前后反复检查根 dev/ino、libraryId 和描述文件 hash。
+schema4 原字节保留在 `系统（别动）/内容库.schema4.bak.json`；升级后的继续操作仍传原 schema4 hash，不能换成 schema5 hash。
+
+`inspectLibraryUpgrade(root, pins)` 只读，不拿锁、不恢复、不写文件，返回
+`{libraryId, schemaVersion, descriptorHash, upgradeComplete, upgradeRequired}`。`descriptorHash` 是当前描述文件 hash。
+schema5 必须与原备份字节精确推导出的 schema5 描述文件一致、原备份 hash 匹配批准的 schema4 hash，并存在升级屏障；
+只有 `完成.json` 内容及默认 workspace 元数据均合法时才返回 `upgradeComplete:true`。描述文件已发布、完成标记缺失时返回
+`schemaVersion:5, upgradeComplete:false, upgradeRequired:true`，必须显式继续升级。相同 libraryId 的替换克隆、无原备份证明的
+其他 schema5 库、原备份改变或完成后回退描述文件均拒绝。
+
+这些是路径检查与操作边界复核，不是原子目录句柄保护；仍有系统调用之间的替换窗口和 inode 重用限制。身份发生冲突时，
+清理不会穿过已改变的固定身份删除锁，可能保留需人工检查的锁或未完成文件；不得按时间递归清锁。
+
 专用升级拿锁、恢复 pending、保留 `系统（别动）/内容库.schema4.bak.json` 原字节、持久建立 `事务/升级到5/` 旧 writer
 屏障，再独占发布缺失的固定 workspace 配置与合集目录，最后发布 descriptor5。现存内容、历史 intent、模板版本、发布快照不重写。中断后显式重入；旧
 schema4 writer 在 descriptor5 或 descriptor4 + 新屏障时都拒写，不能把描述文件回退当降级方案。

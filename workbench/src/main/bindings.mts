@@ -14,6 +14,7 @@ const absolute = (value: unknown) => typeof value === 'string' && path.isAbsolut
 
 function validMaintenance(value: unknown, current: unknown): boolean {
     if (!maintenancePending(value) || !absolute(value.destination)) return false;
+    if (value.kind === 'upgrade') return absolute(value.source.root) && absolute(value.backupDestination) && (!value.backup || absolute(value.backup.source));
     if (value.kind === 'restore') return absolute(value.backup.source);
     return absolute(value.binding.root) && libraryBinding(current) && value.binding.root === current.root && value.binding.libraryId === current.libraryId && value.binding.rootIdentity.dev === current.rootIdentity.dev && value.binding.rootIdentity.ino === current.rootIdentity.ino;
 }

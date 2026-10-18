@@ -69,6 +69,83 @@ const exact = (value, keys) => object(value) && Reflect.ownKeys(value).length ==
 const decimal = value => typeof value === 'string' && /^(0|[1-9][0-9]*)$/.exec(value)?.[0] === value;
 const validRootIdentity = value => exact(value, ['dev', 'ino']) && decimal(value.dev) && decimal(value.ino);
 
+function libraryPin(root, options) {
+    if (!exact(options, ['expectedLibraryId', 'expectedRootIdentity', 'expectedDescriptorHash']) ||
+        typeof options.expectedLibraryId !== 'string' || !UUID.test(options.expectedLibraryId) ||
+        !validRootIdentity(options.expectedRootIdentity) || typeof options.expectedDescriptorHash !== 'string' || !HASH.test(options.expectedDescriptorHash)) fail('INVALID_INPUT', 'Expected exact library ID, root identity and descriptor SHA256');
+    // Copy caller values so a hook or caller cannot change the approved identity mid-operation.
+    const expectedLibraryId = options.expectedLibraryId, expectedDescriptorHash = options.expectedDescriptorHash,
+        dev = BigInt(options.expectedRootIdentity.dev), ino = BigInt(options.expectedRootIdentity.ino);
+    // shortcut: path rechecks leave syscall races and inode reuse; use native directory handles for hostile concurrent replacement.
+    const checkRoot = () => {
+        directory(root);
+        const current = fs.lstatSync(root, {bigint: true});
+        if (current.dev !== dev || current.ino !== ino) fail('CONFLICT', 'Selected library root identity changed');
+    };
+    const snapshot = () => {
+        checkRoot();
+        const target = path.join(root, '内容库.json');
+        if (safePath(target).size > 65536) fail('CORRUPT', 'Library descriptor exceeds size limit');
+        const bytes = read(target), info = descriptor(root, true);
+        checkRoot();
+        if (!read(target).equals(bytes)) fail('CONFLICT', 'Library descriptor changed while reading');
+        if (info.libraryId !== expectedLibraryId) fail('CONFLICT', 'Selected library ID changed');
+        return {info, bytes};
+    };
+    return {checkRoot, snapshot, expectedLibraryId, expectedDescriptorHash,
+        openOptions: {expectedLibraryId, expectedRootIdentity: {dev: String(dev), ino: String(ino)}}};
+}
+
+function upgradePin(root, options) {
+    const pin = libraryPin(root, options), barrier = path.join(root, SYSTEM, '事务', '升级到5'),
+        marker = path.join(barrier, '完成.json'), backup = path.join(root, SYSTEM, '内容库.schema4.bak.json');
+    const check = () => {
+        const {info, bytes} = pin.snapshot();
+        if (![4, 5].includes(info.schemaVersion)) fail('FORMAT_UNSUPPORTED', 'Pinned upgrade accepts schema 4 to 5 only');
+        let upgradeComplete = false;
+        const proofFiles = [];
+        if (info.schemaVersion === 4) {
+            if (hash(bytes) !== pin.expectedDescriptorHash) fail('CONFLICT', 'Approved schema 4 descriptor changed');
+            const backupStat = safePath(backup, true);
+            if (backupStat && (backupStat.size > 65536 || !read(backup).equals(bytes))) fail('CONFLICT', 'Original schema 4 descriptor backup changed');
+            if (safePath(barrier, true)) {
+                directory(barrier);
+                if (safePath(marker, true)) fail('CONFLICT', 'Completed upgrade descriptor was rolled back');
+            }
+        } else {
+            directory(barrier);
+            if (safePath(backup).size > 65536) fail('CORRUPT', 'Upgrade descriptor backup exceeds size limit');
+            const original = read(backup), old = parse(original, 'schema 4 descriptor backup');
+            proofFiles.push([backup, original]);
+            if (hash(original) !== pin.expectedDescriptorHash || old?.format !== FORMAT || old.schemaVersion !== 4 || old.libraryId !== pin.expectedLibraryId ||
+                !bytes.equals(jsonBytes({...old, schemaVersion: 5}))) fail('CONFLICT', 'Schema 5 descriptor is not the approved schema 4 upgrade');
+            metadata(read(path.join(root, '库配置', 'default', '配置.json')), 'default', 'workspace');
+            const markerStat = safePath(marker, true);
+            if (markerStat && markerStat.size > 65536) fail('CORRUPT', 'Upgrade completion exceeds size limit');
+            const completion = read(marker, true);
+            proofFiles.push([marker, completion]);
+            if (completion !== null) {
+                if (!completion.equals(jsonBytes({schemaVersion: 5, libraryId: pin.expectedLibraryId}))) fail('CORRUPT', 'Invalid schema 5 upgrade completion');
+                upgradeComplete = true;
+            }
+        }
+        pin.checkRoot();
+        if (!pin.snapshot().bytes.equals(bytes) || proofFiles.some(([target, expected]) => !equal(read(target, true), expected))) fail('CONFLICT', 'Upgrade proof changed while reading');
+        pin.checkRoot();
+        return {libraryId: info.libraryId, schemaVersion: info.schemaVersion, descriptorHash: hash(bytes), upgradeComplete, upgradeRequired: !upgradeComplete};
+    };
+    return {...pin, check};
+}
+
+/** Read-only continuation proof; descriptor 5 alone never means upgrade completion. */
+export function inspectLibraryUpgrade(root, options) {
+    try {
+        return upgradePin(canonicalRoot(root), options).check();
+    } catch (error) {
+        throw ioError(error);
+    }
+}
+
 function validPhotoSource(value) {
     return object(value) && Object.keys(value).every(key => ['source', 'originalId', 'note'].includes(key)) && typeof value.source === 'string' && !!value.source.trim() && value.source.length <= 10000 && ['originalId', 'note'].every(key => value[key] === undefined || typeof value[key] === 'string' && (key === 'note' || !!value[key].trim()) && value[key].length <= 10000);
 }
@@ -187,12 +264,13 @@ function ioError(error) {
     return error instanceof LibraryError ? error : new LibraryError('IO_ERROR', error.message, {cause: error});
 }
 
-function acquire(root, reader = read, listNames = fs.readdirSync) {
+function acquire(root, reader = read, listNames = fs.readdirSync, assertIdentity = () => {}) {
     const lock = path.join(root, SYSTEM, '库锁');
     directory(path.dirname(lock));
     const token = randomUUID();
     const tokenName = `${token}.json`;
     for (let attempt = 0; attempt < 2; attempt++) {
+        assertIdentity();
         safePath(lock, true);
         try {
             fs.mkdirSync(lock, {mode: 0o700});
@@ -224,6 +302,7 @@ function acquire(root, reader = read, listNames = fs.readdirSync) {
                 if (error.code !== 'ESRCH') throw error.code === 'BUSY' ? error : new LibraryError('BUSY', 'Lock owner liveness is unknown');
             }
             hook('beforeStaleUnlink', {token: owner.token});
+            assertIdentity();
             // Only the exact-token unlink winner may rmdir. Never retry or recursively remove.
             try {
                 fs.unlinkSync(ownerPath);
@@ -231,6 +310,7 @@ function acquire(root, reader = read, listNames = fs.readdirSync) {
                 fail('BUSY', 'Old lock changed during reclamation');
             }
             hook('afterStaleUnlink', {token: owner.token});
+            assertIdentity();
             try {
                 fs.rmdirSync(lock);
             } catch {
@@ -240,12 +320,15 @@ function acquire(root, reader = read, listNames = fs.readdirSync) {
         }
         try {
             hook('beforeOwnerWrite', {token});
+            assertIdentity();
             writeNew(path.join(lock, tokenName), jsonBytes({token, host: os.hostname(), pid: process.pid}));
             hook('afterOwnerWrite', {token});
+            assertIdentity();
             syncDirectory(path.dirname(lock));
         } catch (error) {
-            // Initialization owns this exact token; never leave a live-PID lock after a failed acquire.
+            // Clean up only while the approved identity still matches; otherwise retain the uncertain lock.
             try {
+                assertIdentity();
                 try {
                     fs.unlinkSync(path.join(lock, tokenName));
                 } catch (cleanupError) {
@@ -264,6 +347,7 @@ function acquire(root, reader = read, listNames = fs.readdirSync) {
         return () => {
             directory(lock);
             hook('beforeRelease', {token});
+            assertIdentity();
             try {
                 fs.unlinkSync(path.join(lock, tokenName));
             } catch (error) {
@@ -436,22 +520,26 @@ function committedFailure(error, tx) {
     });
 }
 
-function archiveTransaction(root, tx) {
+function archiveTransaction(root, tx, assertIdentity = () => {}) {
     const history = path.join(root, SYSTEM, '事务', '已提交');
     const target = path.join(history, tx.intent.mutationId);
     try {
+        assertIdentity();
         directory(history);
         directory(tx.dir);
         if (safePath(target, true)) fail('RECOVERY_CONFLICT', `Duplicate mutation ID: ${tx.intent.mutationId}`);
         hook('beforeArchive', {mutationId: tx.intent.mutationId});
+        assertIdentity();
         fs.renameSync(tx.dir, target);
         hook('afterArchiveRename', {mutationId: tx.intent.mutationId});
+        assertIdentity();
         syncDirectory(path.dirname(tx.dir));
         hook('afterArchiveSourceSync', {mutationId: tx.intent.mutationId});
         syncDirectory(history);
         hook('afterArchiveTargetSync', {mutationId: tx.intent.mutationId});
         if (tx.kind === 'template' && tx.intent.operation === 'create') {
             try {
+                assertIdentity();
                 fs.unlinkSync(path.join(root, '模板', tx.objectId, '未登记.json'));
                 syncDirectory(path.join(root, '模板', tx.objectId));
             } catch {
@@ -475,7 +563,8 @@ function currentState(tx, targets) {
     });
 }
 
-function applyTransaction(root, tx) {
+function applyTransaction(root, tx, assertIdentity = () => {}) {
+    assertIdentity();
     const contentDir = path.join(root, KINDS[tx.kind].directory, tx.objectId);
     if (!safePath(contentDir, true)) {
         if (tx.intent.operation !== 'create') fail('RECOVERY_CONFLICT', 'Existing content directory disappeared');
@@ -485,10 +574,12 @@ function applyTransaction(root, tx) {
     // Inspect every file in the fixed kind before changing any; third-state data stops recovery.
     const states = currentState(tx, targets);
     for (let index = 0; index < targets.length; index++) {
+        assertIdentity();
         const target = targets[index];
         let {current, captured} = states[index];
         if (equal(current, tx.after[index])) continue;
         hook('beforeCapture', {mutationId: tx.intent.mutationId, index});
+        assertIdentity();
         if (current !== null) {
             directory(contentDir);
             safePath(target);
@@ -501,9 +592,11 @@ function applyTransaction(root, tx) {
             if (!equal(captured, tx.before[index])) fail('RECOVERY_CONFLICT', `File changed while being captured: ${target}`);
         }
         hook('afterCapture', {mutationId: tx.intent.mutationId, index});
+        assertIdentity();
         const temporary = path.join(contentDir, `.install-${tx.intent.mutationId}-${index}-${randomUUID()}`);
         writeNew(temporary, tx.after[index]);
         hook('beforeInstall', {mutationId: tx.intent.mutationId, index});
+        assertIdentity();
         directory(contentDir);
         safePath(target, true);
         try {
@@ -513,6 +606,7 @@ function applyTransaction(root, tx) {
             throw error;
         }
         syncDirectory(contentDir);
+        assertIdentity();
         fs.unlinkSync(temporary);
         syncDirectory(contentDir);
         hook('afterFile', {mutationId: tx.intent.mutationId, index});
@@ -520,18 +614,22 @@ function applyTransaction(root, tx) {
     const final = targets.map(target => read(target));
     if (!final.every((bytes, index) => equal(bytes, tx.after[index]))) fail('RECOVERY_CONFLICT', 'Files changed before commit');
     hook('beforeCommit', {mutationId: tx.intent.mutationId});
+    assertIdentity();
     const markerStage = path.join(tx.dir, `.COMMITTED-${randomUUID()}`);
     writeNew(markerStage, Buffer.from(`${hash(tx.raw)}\n`));
     hook('beforeMarkerPublish', {mutationId: tx.intent.mutationId});
+    assertIdentity();
     safePath(path.join(tx.dir, 'COMMITTED'), true);
     fs.linkSync(markerStage, path.join(tx.dir, 'COMMITTED'));
     syncDirectory(tx.dir);
     hook('afterCommit', {mutationId: tx.intent.mutationId});
+    assertIdentity();
     // Return success only after the final authoritative bytes have been checked again.
     if (!targets.every((target, index) => equal(read(target), tx.after[index]))) fail('RECOVERY_CONFLICT', 'Files changed immediately after commit');
 }
 
-function recover(root, libraryId) {
+function recover(root, libraryId, assertIdentity = () => {}) {
+    assertIdentity();
     const base = path.join(root, SYSTEM, '事务');
     if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER, '升级到4', '升级到5'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
     const dir = path.join(root, SYSTEM, '事务', '待恢复');
@@ -541,6 +639,7 @@ function recover(root, libraryId) {
     const pending = [];
     const completed = [];
     for (const name of fs.readdirSync(dir).sort()) {
+        assertIdentity();
         if (STAGING.test(name)) {
             directory(path.join(dir, name));
             continue;
@@ -552,12 +651,13 @@ function recover(root, libraryId) {
     }
     // One writer cannot start another intent before recovering the previous one.
     if (pending.length > 1) fail('RECOVERY_CONFLICT', 'Multiple unfinished transactions; manual diagnosis required');
-    for (const name of completed) archiveTransaction(root, transaction(root, name, libraryId));
+    for (const name of completed) archiveTransaction(root, transaction(root, name, libraryId), assertIdentity);
     for (const name of pending) {
+        assertIdentity();
         const tx = transaction(root, name, libraryId);
         try {
-            applyTransaction(root, tx);
-            archiveTransaction(root, tx);
+            applyTransaction(root, tx, assertIdentity);
+            archiveTransaction(root, tx, assertIdentity);
         } catch (error) {
             throw Object.assign(ioError(error), {mutationId: tx.intent.mutationId, pendingRecovery: true});
         }
@@ -892,11 +992,12 @@ function upgradeMove(source, target, mutationId) {
 }
 
 /** Explicit, resumable schema-1 -> schema-2 -> schema-3 upgrades. */
-export function upgradeLibrary(root) {
+export function upgradeLibrary(root, options) {
     let release;
     let primaryError;
     try {
         root = canonicalRoot(root);
+        if (options !== undefined) return upgradeTo5(root, upgradePin(root, options));
         const initial = descriptor(root, true);
         if (initial.schemaVersion >= 4) return upgradeTo5(root);
         if (initial.schemaVersion === 3) {
@@ -1145,7 +1246,8 @@ function text(value, label, empty = false) {
     return value;
 }
 
-function immutableFile(target, bytes) {
+function immutableFile(target, bytes, assertIdentity = () => {}) {
+    assertIdentity();
     const existing = read(target, true);
     if (existing !== null) {
         if (!existing.equals(bytes)) fail('CONFLICT', 'Immutable package differs from installed bytes');
@@ -1153,6 +1255,7 @@ function immutableFile(target, bytes) {
     }
     const temporary = path.join(path.dirname(target), `.immutable-${randomUUID()}`);
     writeNew(temporary, bytes);
+    assertIdentity();
     safePath(target, true);
     try {
         fs.linkSync(temporary, target);
@@ -1160,6 +1263,7 @@ function immutableFile(target, bytes) {
         if (error.code !== 'EEXIST') throw error;
     }
     syncDirectory(path.dirname(target));
+    assertIdentity();
     if (!read(target).equals(bytes)) fail('CONFLICT', 'Immutable publication collided with different bytes');
     fs.unlinkSync(temporary);
     syncDirectory(path.dirname(target));
@@ -1960,35 +2064,53 @@ function initializeModel(root, initialization) {
     metadata(read(target), 'default', 'workspace');
 }
 
-function upgradeTo5(root) {
-    const initial = descriptor(root, true), release = acquire(root);
+function upgradeTo5(root, pin) {
+    const check = pin ? () => pin.check() : () => {};
+    check();
+    const initial = descriptor(root, true);
+    check();
+    const release = acquire(root, read, fs.readdirSync, check);
     let primary;
     try {
+        check();
         const info = descriptor(root, true);
         if (info.libraryId !== initial.libraryId || ![4, 5].includes(info.schemaVersion)) fail('CONFLICT', 'Unexpected schema during upgrade to 5');
         const target = path.join(root, '内容库.json'), barrier = path.join(root, SYSTEM, '事务', '升级到5');
         if (info.schemaVersion === 4) {
-            recover(root, info.libraryId);
+            check();
+            recover(root, info.libraryId, check);
+            check();
             const original = read(target);
-            immutableFile(path.join(root, SYSTEM, '内容库.schema4.bak.json'), original);
+            immutableFile(path.join(root, SYSTEM, '内容库.schema4.bak.json'), original, check);
             hook('upgrade5AfterBackup');
+            check();
             ensureDirectory(barrier);
             hook('upgrade5AfterBarrier');
-            initializeModel(root);
+            check();
+            initializeModel(root, pin ? {
+                mkdir: target => {check(); ensureDirectory(target); check();},
+                writeNew: (target, bytes) => {check(); if (!safePath(target, true)) immutableFile(target, bytes, check); check();},
+                assertIdentity: check
+            } : undefined);
             hook('upgrade5AfterDirectories');
+            check();
             if (!read(target).equals(original)) fail('CONFLICT', 'Descriptor changed during upgrade to 5');
             const stage = path.join(root, `.内容库.schema5-${randomUUID()}`);
             writeNew(stage, jsonBytes({...parse(original, '内容库.json'), schemaVersion: 5}));
             hook('upgrade5BeforeDescriptorPublish');
+            check();
             fs.renameSync(stage, target);
             hook('upgrade5AfterDescriptorPublish');
+            check();
             syncDirectory(root);
         }
+        check();
         if (safePath(barrier, true)) immutableFile(path.join(barrier, '完成.json'), jsonBytes({
             schemaVersion: 5,
             libraryId: info.libraryId
-        }));
+        }), check);
         hook('upgrade5AfterFinalMarker');
+        check();
     } catch (error) {
         primary = ioError(error);
         throw primary;
@@ -1999,7 +2121,8 @@ function upgradeTo5(root) {
             if (!primary) throw ioError(error);
         }
     }
-    return openLibrary(root);
+    check();
+    return openLibrary(root, pin?.openOptions);
 }
 
 function validateBusinessMetadata(meta, kind) {
@@ -2266,6 +2389,7 @@ function prepareRestoredLibrary(root, backup) {
 }
 
 const backupOperations = backupMethods({
+    libraryPin,
     fail,
     LibraryError,
     safePath,

@@ -26,18 +26,32 @@ interface MaintenanceIntent {
 }
 export type MaintenancePending = MaintenanceIntent & (
     { kind: 'backup'; binding: LibraryBinding; descriptorHash: string } |
-    { kind: 'restore'; backup: BackupIdentity }
+    { kind: 'restore'; backup: BackupIdentity } | UpgradeIntent
 );
+export interface UpgradeIntent {
+    kind: 'upgrade';
+    source: LibraryBinding;
+    descriptorHash: string;
+    backupDestination: string;
+    stage: 'backup' | 'verify' | 'restore' | 'upgrade' | 'receipt';
+    backup: BackupIdentity | null;
+    targetIdentity: RootIdentity | null;
+    resultHash: string | null;
+}
+export type UpgradePending = MaintenanceIntent & UpgradeIntent;
+export interface UpgradePreview { sourceName: string; backupName: string; destinationName: string }
+export interface UpgradeProgress { pending: UpgradePending; receipt: MaintenanceReceipt | null }
 export interface MaintenanceReceipt {
-    kind: 'backup' | 'verify' | 'restore';
+    kind: 'backup' | 'verify' | 'restore' | 'upgrade';
     destinationName: string;
     counts: MaintenanceCounts;
     recovered: boolean;
     upgradeRequired: boolean;
     interruptedAttempts: number;
+    backupName?: string;
 }
 export interface MaintenanceStatus {
-    pending: { kind: 'backup' | 'restore'; destinationName: string } | null;
+    pending: { kind: 'backup' | 'restore' | 'upgrade'; destinationName: string; backupName?: string; stage?: UpgradeIntent['stage'] } | null;
     receipt: MaintenanceReceipt | null;
     health?: LibraryHealthReport | null;
 }
@@ -49,6 +63,12 @@ export interface MaintenanceInputs {
     readMaintenanceStatus: undefined;
     recoverMaintenance: undefined;
     abandonMaintenance: undefined;
+    prepareLibraryUpgrade: undefined;
+    cancelLibraryUpgrade: undefined;
+    confirmLibraryUpgrade: undefined;
+    queryLibraryUpgrade: undefined;
+    continueLibraryUpgrade: undefined;
+    openUpgradedLibrary: undefined;
 }
 export interface MaintenanceResults {
     inspectLibraryHealth: LibraryHealthReport;
@@ -58,6 +78,12 @@ export interface MaintenanceResults {
     readMaintenanceStatus: MaintenanceStatus;
     recoverMaintenance: MaintenanceReceipt;
     abandonMaintenance: void;
+    prepareLibraryUpgrade: UpgradePreview | null;
+    cancelLibraryUpgrade: void;
+    confirmLibraryUpgrade: MaintenanceReceipt;
+    queryLibraryUpgrade: {complete: boolean; stage: UpgradeIntent['stage']};
+    continueLibraryUpgrade: MaintenanceReceipt;
+    openUpgradedLibrary: void;
 }
 export interface MaintenanceWorkerOperations {
     inspectLibraryHealth: {args: {binding: LibraryBinding}; result: LibraryHealthReport};
@@ -65,4 +91,8 @@ export interface MaintenanceWorkerOperations {
     inspectLibraryBackup: { args: {source: string}; result: {backup: BackupIdentity; counts: MaintenanceCounts} };
     runMaintenance: { args: {pending: MaintenancePending}; result: MaintenanceReceipt };
     queryMaintenance: { args: {pending: MaintenancePending}; result: MaintenanceReceipt };
+    inspectLegacyLibrary: {args: {source: string}; result: {binding: LibraryBinding; descriptorHash: string}};
+    queryLibraryUpgrade: {args: {pending: UpgradePending}; result: UpgradeProgress};
+    runLibraryUpgradeStage: {args: {pending: UpgradePending}; result: UpgradeProgress};
+    bindUpgradedLibrary: {args: {pending: UpgradePending}; result: LibraryBinding};
 }

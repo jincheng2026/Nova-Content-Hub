@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {randomUUID} from 'node:crypto';
+import {createHash, randomUUID} from 'node:crypto';
 import {spawn, spawnSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import sharp from 'sharp';
@@ -11,6 +11,7 @@ import {
     createLibrary,
     openLibrary,
     upgradeLibrary,
+    inspectLibraryUpgrade,
     backupLibrary,
     verifyBackup,
     restoreBackup,
@@ -69,6 +70,96 @@ function downgrade(f) {
     for (const dir of ['库配置', '合集']) fs.rmSync(path.join(f.root, dir), {recursive: true});
     return raw;
 }
+
+function upgradePins(f, raw) {
+    const stat = fs.lstatSync(f.root, {bigint: true});
+    return {
+        expectedLibraryId: f.lib.info.libraryId,
+        expectedRootIdentity: {dev: String(stat.dev), ino: String(stat.ino)},
+        expectedDescriptorHash: createHash('sha256').update(raw).digest('hex')
+    };
+}
+
+test('pinned upgrade rejects changed original descriptor and replaced clone before recovery or model creation', t => {
+    const f = fixture(t), raw = downgrade(f), pins = upgradePins(f, raw), filename = path.join(f.root, '内容库.json');
+    fs.appendFileSync(filename, ' ');
+    reject('CONFLICT', () => upgradeLibrary(f.root, pins));
+    assert.equal(fs.existsSync(path.join(f.root, '库配置')), false);
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '库锁')), false);
+    fs.writeFileSync(filename, raw);
+    const original = path.join(f.parent, 'original');
+    fs.renameSync(f.root, original);
+    fs.cpSync(original, f.root, {recursive: true});
+    reject('CONFLICT', () => upgradeLibrary(f.root, pins));
+    reject('CONFLICT', () => inspectLibraryUpgrade(f.root, pins));
+    assert.equal(fs.existsSync(path.join(f.root, '库配置')), false);
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '库锁')), false);
+});
+
+for (const phase of ['upgrade5AfterBackup', 'upgrade5AfterBarrier', 'upgrade5AfterDirectories', 'upgrade5BeforeDescriptorPublish', 'upgrade5AfterDescriptorPublish', 'upgrade5AfterFinalMarker']) test(`pinned upgrade resumes ${phase} and query never mistakes descriptor publication for completion`, t => {
+    const f = fixture(t), raw = downgrade(f), pins = upgradePins(f, raw);
+    __testing.setHook(event => {if (event.phase === phase) throw new Error('interrupted');});
+    reject('IO_ERROR', () => upgradeLibrary(f.root, pins));
+    __testing.setHook(undefined);
+    const marker = path.join(f.root, '系统（别动）', '事务', '升级到5', '完成.json'),
+        before = fs.readFileSync(path.join(f.root, '内容库.json')),
+        proof = inspectLibraryUpgrade(f.root, pins);
+    assert.equal(proof.upgradeComplete, phase === 'upgrade5AfterFinalMarker');
+    assert.equal(proof.upgradeRequired, !proof.upgradeComplete);
+    assert.deepEqual(fs.readFileSync(path.join(f.root, '内容库.json')), before);
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '库锁')), false);
+    if (phase === 'upgrade5AfterDescriptorPublish') {
+        assert.equal(proof.schemaVersion, 5);
+        assert.equal(fs.existsSync(marker), false);
+    }
+    assert.equal(upgradeLibrary(f.root, pins).info.schemaVersion, 5);
+    assert.equal(inspectLibraryUpgrade(f.root, pins).upgradeComplete, true);
+    assert.deepEqual(fs.readFileSync(path.join(f.root, '系统（别动）', '内容库.schema4.bak.json')), raw);
+    const backup = path.join(f.root, '系统（别动）', '内容库.schema4.bak.json');
+    fs.appendFileSync(backup, ' ');
+    reject('CONFLICT', () => inspectLibraryUpgrade(f.root, pins));
+    reject('CONFLICT', () => upgradeLibrary(f.root, pins));
+});
+
+test('pinned upgrade refuses unrelated schema 5 and closed options never open legacy schemas 1 to 3', t => {
+    const f = fixture(t), raw = fs.readFileSync(path.join(f.root, '内容库.json')), pins = upgradePins(f, raw);
+    assert.throws(() => upgradeLibrary(f.root, pins));
+    reject('INVALID_INPUT', () => inspectLibraryUpgrade(f.root, {...pins, allowSchema4: true}));
+    reject('INVALID_INPUT', () => upgradeLibrary(f.root, {expectedLibraryId: pins.expectedLibraryId}));
+    const legacy = Buffer.from(JSON.stringify({...JSON.parse(raw), schemaVersion: 3}));
+    fs.writeFileSync(path.join(f.root, '内容库.json'), legacy);
+    reject('FORMAT_UNSUPPORTED', () => upgradeLibrary(f.root, upgradePins(f, legacy)));
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '库锁')), false);
+});
+
+test('pinned upgrade rechecks descriptor after lock and original-backup boundary before further publication', t => {
+    const f = fixture(t), raw = downgrade(f), pins = upgradePins(f, raw), filename = path.join(f.root, '内容库.json');
+    __testing.setHook(event => {
+        if (event.phase === 'upgrade5AfterBackup') fs.appendFileSync(filename, ' ');
+    });
+    reject('CONFLICT', () => upgradeLibrary(f.root, pins));
+    assert.equal(fs.existsSync(path.join(f.root, '库配置')), false);
+    assert.equal(fs.existsSync(path.join(f.root, '系统（别动）', '事务', '升级到5')), false);
+    assert.deepEqual(fs.readFileSync(path.join(f.root, '系统（别动）', '内容库.schema4.bak.json')), raw);
+});
+
+test('pinned upgrade refuses root replacement during lock acquisition before pending recovery', t => {
+    const f = fixture(t), raw = downgrade(f), pins = upgradePins(f, raw), original = path.join(f.parent, 'original');
+    fs.writeFileSync(path.join(f.root, '系统（别动）', '事务', '待恢复', 'manual-note'), 'preserve pending');
+    __testing.setHook(event => {
+        if (event.phase !== 'afterOwnerWrite') return;
+        fs.renameSync(f.root, original);
+        fs.cpSync(original, f.root, {recursive: true});
+    });
+    assert.throws(() => upgradeLibrary(f.root, pins), error => error.code === 'LOCK_UNCERTAIN' && error.initializationError?.code === 'CONFLICT');
+    for (const root of [f.root, original]) {
+        assert.equal(fs.existsSync(path.join(root, '库配置')), false);
+        assert.equal(fs.existsSync(path.join(root, '系统（别动）', '内容库.schema4.bak.json')), false);
+        assert.equal(fs.readFileSync(path.join(root, '系统（别动）', '事务', '待恢复', 'manual-note'), 'utf8'), 'preserve pending');
+        assert.deepEqual(fs.readFileSync(path.join(root, '内容库.json')), raw);
+        assert.equal(fs.readdirSync(path.join(root, '系统（别动）', '库锁')).length, 1);
+    }
+});
 
 function oldRun(f, url, code) {
     const r = spawnSync(process.execPath, ['--input-type=module', '-e', `import{openLibrary,backupLibrary}from ${JSON.stringify(url)};${code}`], {

@@ -6,6 +6,8 @@
 
 五页围绕内容：总览了解进度，模板组与本人照片辅助生图，内容保存正文、资料和封面，日历记录人工发布计划，提示词辅助打磨。当前按用户要求先完成全部功能，再统一测试。进度见[实施台账](docs/实施/00-实施计划与验收台账.md)、[免费体验发行策略](docs/实施/28-免费体验发行策略.md)与[交互重构记录](docs/实施/29-免费体验与创作流程重构.md)。
 
+用户操作见[上手指南](docs/用户上手指南.md)。新增[Mac 通用包源码流程](docs/实施/31-Mac通用包与原生产物装配.md)和[旧库升级副本流程](docs/实施/32-旧库升级副本与中断恢复.md)，均待统一验证，尚无本批新安装包。
+
 [file-library](plugin-src/src/lib/file-library/README.md) 是 Electron 与插件共用的本地文件核心：Markdown/JSON 真源、不可变图片、模板组版本、封面候选、发布快照、回收站及可恢复事务。内置资源通过[安装器](plugin-src/src/lib/library-seed/README.md)进入真实内容库，保留用户修改。
 
 [插件](plugin-src/README.md) 的 `contract` 仅校验旧原型契约；`cover` / `template` 执行固定的真实文件任务。历史真实宿主证据见[验收记录](docs/实施/18-五页桌面与真实宿主验收.md)，其覆盖范围不自动延伸到本批源码或 Windows/Intel。
@@ -36,7 +38,7 @@ npm start --prefix workbench
 默认生成无需登录的免费体验运行目录。免费体验安装器使用 `npm run dist:preview --prefix workbench -- --platform darwin --arch arm64` 等对应原生目标入口；当前未执行本批构建或打包。系统选择器、双系统双助手、升级、签名与发行仍须统一验收。构建模式不由用户运行时切换。
 
 桌面采用指定的蓝色 N [应用图标](workbench/resources/brand/desktop/README.md)，窗口与macOS Dock从随包固定资源加载；两模式同时带PNG、Windows
-ICO及macOS ICNS。`npm run icons:check`核验资源，`npm run icons:build`在macOS从现有母版重新导出。正式EXE/app安装图标仍须在发行阶段配置打包器并真机验收。
+ICO及macOS ICNS。`npm run icons:check`核验资源，`npm run icons:build`在macOS从现有母版重新导出。打包器已引用固定图标，正式EXE/app安装后的显示仍待真机验收。
 
 ## 查看原型
 
