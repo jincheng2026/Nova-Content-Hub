@@ -1,0 +1,62 @@
+Nova Content Hub verified assistant runtime preflight
+Date: 2026-10-19 Asia/Shanghai
+Source: working tree based on d3172ac; coordinated release bump to 0.3.1 owned by parent agent.
+This work did not build distribution packages, install/update host caches, modify host settings, disable hooks, alter hook timeouts, or commit.
+
+Change:
+- Extract snapshotPackage into shipped plugin-src/src/lib/package-snapshot.mjs; retain marketplace-builder import/reexport compatibility.
+- Add stable descriptor reads with before/after identity checks, bounded streaming hashes, directory/link stability and no escaping links. Optional trusted expected entries reject unknown paths, size/mode/type/hash differences before execution.
+- Add launchWithAssistantRuntime for explicit handoff launch only, after installed/enabled matching Skill verification. Readiness polling remains metadata-only.
+- Read trusted app-bundled package-files.json through the existing bounded, ordinary-file, ancestor-no-symlink stable reader; require exact format/schema/full release.
+- Compare the complete host-installed package tree with that trusted app inventory. Cache self-resealed integrity metadata never serves as the trust source.
+- Only Codex may omit the absent node_modules/.bin/semver link when the trusted entry is exactly {link:../semver/bin/semver.js}. Existing modified links, all other omissions, and the same omission in WorkBuddy refuse.
+- Capture Node/launcher file identities before full verification and recheck immediately before execFile. The exact verified host cache runtime/node (node.exe on Windows) runs fixed runtime/launch.mjs doctor; no shell, PATH search, app-copy fallback or cross-launch warm cache.
+- Close stdin; 30-second timeout; SIGKILL on timeout; 64-KiB stdout/stderr buffers. Strip Node/Electron and loader injection environment variables, retaining ordinary PATH.
+- Require successful exit, empty stderr and JSON ok:true/authMode:disabled/library:unbound/imageGeneration:false before creating the envelope or opening the assistant.
+- Cover and template launch callbacks both await the same preflight. Errors preserve the existing fixed attempt and use existing NOT_READY recovery.
+
+Commands and observed results:
+
+1. node --test workbench/test/assistant-runtime.test.mjs workbench/test/assistant-skill.test.mjs
+   Initial run: tests=24 pass=24 fail=0 skipped=0; duration=6227.834333ms.
+   Actual copied fixed Node plus shipped launcher doctor test passed read-only; full fixture test=5368.86125ms.
+
+2. node --test plugin-src/tests/marketplace.test.mjs
+   tests=15 pass=14 fail=0 skipped=1; duration=1725.603ms.
+   Explicit existing opt-in real-native-market test skipped; fixture-only marketplace copying/sealing and escape/mutation tests passed.
+   No repository distribution package was built or replaced.
+
+3. node --test workbench/test/assistant-runtime.test.mjs workbench/test/assistant-skill.test.mjs workbench/test/covers.test.mjs workbench/test/native-payload.test.mjs
+   Final run after strengthening tests: tests=61 pass=61 fail=0 cancelled=0 skipped=0 todo=0; duration=45780.312167ms.
+   New coverage includes both hosts x both capabilities; doctor awaits completion before envelope/external open; bounded fixed execFile arguments and cleaned environment; independent node/launcher/CLI/other-payload tampering before and after cache self-resealing; missing/wrong release/extra/unsafe symlink payloads; malformed/oversized/symlinked trusted manifests; exact Codex omission; timeout/error/malformed/oversized/business-bound doctor output; required mode no exec; no verification cache after replacement.
+   Real Covers.openAttempt and TemplateController.open preflight-failure recovery tests both continue the same fixed reference, using only handoff-context reads and producing no new business writes.
+   Actual copied fixed Node plus shipped launcher doctor passed read-only again; full fixture test=3883.716833ms; before/after full payload snapshots equal.
+   Existing cover recovery, retry/host changes, selected-candidate preservation, required mode, immutable native payload and signing-mutation checks all passed.
+
+4. npm run typecheck --prefix workbench
+   Final exit=0; typecheck:native (tsconfig.native.json --noEmit) and typecheck:renderer (tsconfig.renderer.json) passed with workbench version 0.3.1.
+
+5. git diff --check
+   exit=0; no output.
+   node --check plugin-src/src/lib/package-snapshot.mjs
+   exit=0; no output.
+   node --check plugin-src/scripts/marketplace-builder.mjs
+   exit=0; no output.
+
+Read-only architecture review by the delegated Astra reviewer found no distribution blocker in trust, full inventory, Codex omission, stable reads, fixed doctor execution, either handoff ordering, or existing build-copy inclusion of the shared module. This is review evidence, not a package/runtime acceptance result.
+
+Owned files:
+plugin-src/src/lib/package-snapshot.mjs (new)
+plugin-src/scripts/marketplace-builder.mjs
+workbench/src/main/assistant-runtime.mts (new)
+workbench/src/main/assistant-skill.mts (existing safe reader export only)
+workbench/src/main/desktop.mts
+workbench/src/shared/shared-core.d.ts
+workbench/test/assistant-runtime.test.mjs (new)
+this verification log (new)
+
+Uncovered / limits:
+- No newly built 0.3.1 app/installer or real native cold WorkBuddy/Codex handoff was exercised by this agent. Parent owns packaging and native acceptance.
+- Existing 0.3.0 WorkBuddy generation task and caches were left untouched.
+- File identity/hash checks reduce replacement races; they do not claim absolute protection from an adversarial same-UID process modifying paths after the final check.
+- Every explicit handoff re-verifies the full installed tree and runs read-only doctor; there is no cross-handoff performance cache.

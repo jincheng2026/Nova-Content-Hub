@@ -1,3 +1,7 @@
+declare module '*lib/package-snapshot.mjs' {
+    export type PackageEntry = {directory: true} | {link: string} | {sha256: string; bytes: number; executable: boolean};
+    export function snapshotPackage(input: string, expected?: Record<string, PackageEntry>): Promise<Record<string, PackageEntry>>;
+}
 declare module '*browser-import/index.mjs' {
     export function inspectBrowserBackup(source: string): import('./contracts.ts').Inspection;
 

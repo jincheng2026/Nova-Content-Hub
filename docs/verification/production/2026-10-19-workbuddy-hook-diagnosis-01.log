@@ -1,0 +1,71 @@
+Nova Content Hub WorkBuddy 0.3.0 hook timeout diagnosis
+Date: 2026-10-19 Asia/Shanghai
+Source baseline: d3172ac
+Scope: read-only hook/runtime diagnosis; synthetic stdin; temporary executable copies deleted after measurement.
+No source code, installed cache, host settings, hook budgets, signatures, or runtime checks changed.
+
+Native failure (preserved separately in 2026-10-19-unified-workbuddy-030-hook-failure.json):
+UserPromptSubmit operation blocked by product hook: Hook timed out after 5000ms.
+handoffId=852a00b1-3077-4162-adcb-50db6fce36a8; generationStarted=false.
+
+Hook path inspected:
+hooks/hooks.json -> /bin/sh bin/run-node hook --host workbuddy --event UserPromptSubmit
+bin/run-node -> fixed runtime/node runtime/launch.mjs
+runtime/launch.mjs -> Node/platform/architecture/realpath + binary/LICENSE SHA256 -> plugin-src/src/cli.mjs
+cli.mjs hook -> content.mjs main -> bounded readInput(600) -> observeHook
+The hook never reads a content library or generates images. UserPromptSubmit returns {}.
+The installed launcher hashes Node+LICENSE, not the full package payload.
+Hook caller subscriptions and argument construction originate in plugin-src/scripts/build.mjs: hooksFor/manifests.
+Existing source test covers a host leaving stdin open, but invokes the contract CLI directly using an already running Node; it does not cover a cold packaged runtime.
+
+Exact installed wrapper synthetic probes:
+Command: /bin/sh <installed root>/bin/run-node hook --host workbuddy --event UserPromptSubmit
+Installed root: /Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0
+stdin EOF JSON: {hook_event_name: UserPromptSubmit, prompt: synthetic probe}
+1. EOF: elapsed=690ms exit=0 stdout={} stderr=empty
+2. stdin held open: elapsed=776ms exit=0 stdout={} stderr={code:INPUT_TIMEOUT}
+3. same pinned runtime/node -e process.stdout.write(...): elapsed=45ms exit=0
+4. same Node direct plugin-src/src/cli.mjs hook: elapsed=41ms exit=0 stdout={}
+5. five warm exact wrapper runs: 169ms, 142ms, 140ms, 139ms, 151ms; all exit=0 stdout={} stderr=empty.
+The probes used child_process.spawn with pipes; bounded kill timers; no business commands.
+
+Cold executable isolation:
+Three fs.copyFile copies of the identical installed runtime/node in a new OS temporary directory; chmod 0755; run only -e process.stdout.write(...); immediate rerun of each; directory removed in finally.
+copy0 first=2783ms second=39ms; copy1 first=1514ms second=36ms; copy2 first=2440ms second=39ms.
+All six exit=0, expected stdout, empty stderr. The >5000ms native timeout did not reproduce in this controlled copy experiment.
+macOS syspolicyd for those fresh copies records scan finished, waking up any waiters, then provenance creation.
+codesign inspection: runtime/node retains Node.js Foundation Developer ID, team HX7739G8FX, hardened runtime.
+xattr names: com.apple.provenance; no quarantine attribute on the installed binary.
+
+Actual host shell isolation:
+WorkBuddy's installed HookExecutor uses getShellConfiguration, spawns user's shell with -c, starts the hook timeout at spawn, writes JSON and ends stdin.
+/bin/zsh -c ':' elapsed=6ms; same exact product hook via /bin/zsh -c elapsed=366ms.
+/bin/bash -c ':' elapsed=3ms; product hook=144ms.
+/bin/sh -c ':' elapsed=5ms; product hook=160ms.
+All exit=0, no stderr. No shell/profile/settings files were changed or dumped.
+
+Correlated actual failure metadata (no prompt or account configuration captured):
+WorkBuddy log /Users/mac/.workbuddy/logs/2026-10-18/桌面封面验收库__3cf47396106b6f1ebb81fe3b748c1a78.log:
+00:49:03.743 UserPromptSubmit HookExecutor spawn pid=31945 shell=/bin/zsh timeout=5000ms.
+00:49:06.485 SessionStart HookExecutor spawn pid=32036 shell=/bin/zsh timeout=5000ms.
+00:49:08.743 UserPromptSubmit timed out after 5000ms.
+00:49:08.744 UserPromptSubmit abnormal exit pid=31945 code=null elapsed=5002ms timedOut=true.
+00:49:09.232 SessionStart abnormal exit pid=32036 code=0 elapsed=2763ms timedOut=false.
+macOS unified log, same time range:
+00:49:03.765 amfid: Entering OSX path for <exact installed root>/runtime/node.
+00:49:07.450 syspolicyd: scan finished, waking up any waiters; team=HX7739G8FX id=node.
+00:49:07.450 syspolicyd: GK evaluateScanResult:2; found provenance data.
+00:49:07.451 syspolicyd: created provenance data.
+The observed scan spans 3685ms, consuming most of the 5000ms host budget before JavaScript hook logic runs. Concurrent cold startup and the remaining runtime/integrity startup are the supported explanation; individual post-scan contributions are not separately timed in that native failure.
+
+Reference travel plugin inspected read-only:
+/Users/mac/code/ide/NovaIsland-Tech/Nova-Travel-Marketing-dashboard/plugin-src/src/lib/hooks-table.mjs
+SessionStart=10s; UserPromptSubmit/Stop/StopFailure=5s; Codex Interrupt=3s.
+Its run-node first selects WORKBUDDY_EXTRA_PATHS Node, then PATH or other installed Node; it does not cold-start a newly copied pinned Node or hash that binary every invocation.
+Its turn hook reads stdin synchronously; actual WorkBuddy HookExecutor closes stdin. Nova Content Hub already bounds its input read at 600ms.
+Therefore the reference 5s measurement (0.1-0.3s warm) is not a cold-runtime budget measurement for this product.
+
+Disposition:
+No blind hook timeout increase or validation removal is justified. Warm CLI passes do not prove native WorkBuddy generation; parent agent owns native UI retry of the same unchanged handoff.
+If product prevention is requested: preserve metadata-only Skill discovery; separately validate the exact installed executable/launcher/release hashes and await a read-only runtime probe before handoff creation/opening, shared by cover and template launches. Do not execute an unverified cache root from installedAssistantSkill, which currently verifies release and Skill bytes but not executable/launcher hashes. Do not warm an app-bundled copy when the host will execute a different installed cache inode.
+Uncovered: a new fully cold native WorkBuddy installation retry; deterministic >5000ms reproduction; production/provider generation acceptance.

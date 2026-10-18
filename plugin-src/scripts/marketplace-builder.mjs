@@ -1,10 +1,12 @@
-import {cp, lstat, mkdir, mkdtemp, readFile, readdir, readlink, realpath, rename, rm, writeFile} from 'node:fs/promises';
+import {cp, lstat, mkdir, mkdtemp, readFile, readdir, realpath, rename, rm, writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {fileURLToPath} from 'node:url';
-import {dirname, isAbsolute, join, relative, resolve, sep} from 'node:path';
+import {isAbsolute, join, relative, sep} from 'node:path';
 import {allSkillNames, integrityPaths, releaseModes, skillNames} from './build.mjs';
 import {archiveFor, nodeRelease} from './bundled-node.mjs';
+import {snapshotPackage} from '../src/lib/package-snapshot.mjs';
+export {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const packageEntries = ['.codebuddy-plugin', '.codex-plugin', 'README.md', 'bin', 'cover-runtime', 'hooks', 'integrity.json', 'node_modules', 'package-lock.json', 'package.json', 'plugin-src', 'runtime', 'skills'].sort();
@@ -18,34 +20,6 @@ const inside = (parent, path) => {
 
 async function directory(path) {
     if (!(await lstat(path)).isDirectory()) throw Error(`Unsafe marketplace directory: ${path}`);
-}
-
-// Preserve relative npm links, but never carry a link to the source checkout or outside the package.
-export async function snapshotPackage(input) {
-    await directory(input);
-    const base = await realpath(input);
-    const entries = {};
-    async function walk(path) {
-        for (const name of (await readdir(path)).sort()) {
-            if (/[\\:\u0000-\u001f\u007f]/.test(name) || ['.', '..', '__proto__'].includes(name)) throw Error(`Unsafe package entry path: ${name}`);
-            const file = join(path, name);
-            const key = relative(base, file).split(sep).join('/');
-            const stat = await lstat(file);
-            if (stat.isSymbolicLink()) {
-                const target = await readlink(file);
-                if (/[\\:\u0000-\u001f\u007f]/.test(target) || isAbsolute(target) || !inside(base, resolve(dirname(file), target)) || !inside(base, await realpath(file))) throw Error(`Escaping package symlink: ${key}`);
-                entries[key] = {link: target};
-            } else if (stat.isDirectory()) {
-                entries[key] = {directory: true};
-                await walk(file);
-            } else if (stat.isFile()) {
-                const bytes = await readFile(file);
-                entries[key] = {sha256: hash(bytes), bytes: bytes.length, executable: Boolean(stat.mode & 0o111)};
-            } else throw Error(`Unsupported package entry: ${key}`);
-        }
-    }
-    await walk(base);
-    return entries;
 }
 
 export async function validateRuntime(input, expected) {

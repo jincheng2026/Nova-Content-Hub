@@ -19,6 +19,7 @@ import {LibraryWatcher} from './library-watch.mts';
 import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
+import {launchWithAssistantRuntime} from './assistant-runtime.mts';
 import {offerApplicationInstall} from './installation.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
@@ -116,6 +117,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         try { return {host, ready: true, skill: installedAssistantSkill(host, release, {capability: 'template'}), reason: 'available'}; }
         catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
     };
+    const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
     const controller = new DesktopController({
         copyText: text => clipboard.writeText(text),
         openPublicationURL: url => shell.openExternal(url),
@@ -131,14 +133,20 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             const setup = await readTemplateAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY'});
             const {templateId, requestId, attemptId, requestHash, host} = reference;
-            const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, {templateId, requestId, attemptId, requestHash, host}, release, {kind: 'template', installedSkill: setup.skill});
-            await shell.openExternal(handoff.url);
+            const installedSkill = setup.skill;
+            await launchWithAssistantRuntime(host, release, assistantMarketRoot, async () => {
+                const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, {templateId, requestId, attemptId, requestHash, host}, release, {kind: 'template', installedSkill});
+                await shell.openExternal(handoff.url);
+            }, {capability: 'template'});
         },
         launch: async (binding, reference) => {
             const setup = await readAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('助手或配套插件尚未准备好，请在工作台左下角设置中检查后重试。'), {code: 'NOT_READY'});
-            const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill: setup.skill});
-            await shell.openExternal(handoff.url);
+            const installedSkill = setup.skill;
+            await launchWithAssistantRuntime(reference.host, release, assistantMarketRoot, async () => {
+                const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill});
+                await shell.openExternal(handoff.url);
+            });
         },
         dialogs: dialogs ?? {
             async promptDocument() { const selected = await dialog.showOpenDialog(window, { title: '选择提示词文件', properties: ['openFile'], filters: [{ name: 'Markdown 或文本', extensions: ['md', 'markdown', 'txt'] }] }); return selected.canceled ? null : selected.filePaths[0] ?? null; },
@@ -289,7 +297,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     await reminders.initialize();
     const setup = new Setup({
         release,
-        marketRoot: marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace')),
+        marketRoot: assistantMarketRoot,
         assistant: () => readAssistantSetup(controller.binding?.assistant ?? 'codex'),
         shell, clipboard,
         saveDiagnosticDialog: async () => {

@@ -26,8 +26,10 @@ launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin
 3. 实际读取输入后，运行 `RUN cover claim --handoff <ID> --file <接单JSON>`，提交包含 host 和 readAssetHashes 的 JSON；host
    为当前助手的 `codex` 或 `workbuddy`，hash 列表覆盖本次全部输入。JSON 也可通过 `--stdin` 输入。由助手生成该临时文件，以
    CLI 成功回执作为接单完成判据。只接单不代表生图成功。
-4. 使用当前宿主可用的图像生成能力，真实生成请求数量的图片。需要编辑本地参考时按宿主图像工具要求先看图。把结果作为普通文件复制到
-   context 返回的 inbox，用单层文件名；保持生成原始字节。尺寸、数量或内容不符时，保留产物并说明问题，不裁切、拉伸或复用同图来凑数。
+4. 使用当前宿主可用的图像生成能力，真实生成请求数量的图片。ratio-minimum 优先使用 pixels 或宿主明确支持的同比例尺寸；
+   样张尺寸不代表工具支持该尺寸。需要编辑本地参考时按宿主图像工具要求先看图。把结果作为普通文件复制到 context 返回的 inbox，
+   用单层文件名，保持原始字节及工具自带标识。检查真实输出尺寸后再准备回执；尺寸不符时保留该产物，按原请求最多重新生成一批，
+   仍不符则报告失败。数量或内容不符时保留产物并说明问题，不裁切、拉伸或复用同图来凑数。向用户说明保留的可见平台标识。
 5. 计算每个收件文件的真实 SHA256，创建一份原始回执 JSON：
    `libraryId/contentId/requestId/attemptId/requestHash/resultId/files`，这些身份字段来自 context。resultId 使用新
    UUIDv4，files 为 `[{"name":"文件名.png","sha256":"64位小写hash"}]`。保存并保留这份回执原字节，重试使用同一文件。运行

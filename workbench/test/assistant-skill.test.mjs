@@ -39,7 +39,7 @@ for (const host of ['codex', 'workbuddy']) {
     test(`${host}: only exact installed enabled native release is accepted`, t => {
         const f = fixture(t, host);
         assert.equal(f.verify(), skill);
-        assert.throws(() => installedAssistantSkill(host, {...release, version: '0.3.0', pairId: 'nova-content-hub@0.3.0:p1:disabled'}, {home: f.home, env: {}}), {code: 'NOT_READY'});
+        assert.throws(() => installedAssistantSkill(host, {...release, version: '0.3.1', pairId: 'nova-content-hub@0.3.1:p1:disabled'}, {home: f.home, env: {}}), {code: 'NOT_READY'});
         assert.throws(() => f.verify({}, host === 'codex' ? 'workbuddy' : 'codex'), {code: 'NOT_READY'});
         write(f.settings, host === 'codex' ? `[plugins."${key}"]\nenabled = false\n` : {enabledPlugins: {[key]: false}});
         assert.throws(() => f.verify(), {code: 'NOT_READY'});

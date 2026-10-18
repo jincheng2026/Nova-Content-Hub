@@ -39,6 +39,8 @@ function read(file: string, limit = 2 * 1024 * 1024): Buffer {
     } finally { fs.closeSync(fd); }
 }
 
+export {read as readAssistantFile};
+
 function json(file: string): Record<string, unknown> {
     const value: unknown = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(read(file)));
     if (!isRecord(value)) throw notReady();
