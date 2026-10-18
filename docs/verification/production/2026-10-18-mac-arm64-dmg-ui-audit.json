@@ -1,0 +1,23 @@
+{
+  "format": "nova-packaged-mac-ui-audit",
+  "arch": "arm64",
+  "syntheticLibrary": true,
+  "contentTitle": "安装包只读验收内容",
+  "contentBodyUnchanged": true,
+  "templates": 15,
+  "photos": 0,
+  "observedWithCua": {
+    "actualPackagedApp": true,
+    "libraryRead": true,
+    "contentRead": true,
+    "templateSampleImagesListed": 30,
+    "visibleSampleImagesDecoded": true,
+    "cmdQRequested": true,
+    "cmdQExited": true
+  },
+  "runtimeLog": "",
+  "productionReady": false,
+  "physicalTrayClick": false,
+  "allPlatforms": false,
+  "actualAppExitCode": 0
+}

@@ -7,3 +7,4 @@ workbench/dist-desktop/
 workbench/.native/
 .local-probes/
 plugin-src/.cache/
+workbench/release/

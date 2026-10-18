@@ -1,0 +1,75 @@
+{
+  "root": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN",
+  "target": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg",
+  "sha256": "610388696072345d297f51d361d66ea953bd4da0aae9d766509fa212670f798b",
+  "bytes": 208289000,
+  "release": {
+    "AUTH_MODE": "required",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.2.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.2.0:p1:required",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "commands": [
+    {
+      "cmd": "/usr/bin/hdiutil",
+      "args": [
+        "verify",
+        "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg"
+      ],
+      "status": 0,
+      "output": "正在检查“Protective Master Boot Record（MBR：0）”的校验和…\nProtective Master Boot Record（MBR：0）：已验证CRC32 $111A03CF\n正在检查“GPT Header（Primary GPT Header：1）”的校验和…\n    GPT Header（Primary GPT Header：1）：已验证CRC32 $8714C7C0\n正在检查“GPT Partition Data（Primary GPT Table：2）”的校验和…\nGPT Partition Data（Primary GPT Table：已验证CRC32 $57C81E73\n正在检查“（Apple_Free：3）”的校验和…\n                      （Apple_Free：3）：已验证CRC32 $00000000\n正在检查“disk image（Apple_HFS：4）”的校验和…\n             disk image（Apple_HFS：4）：已验证CRC32 $888A51E9\n正在检查“（Apple_Free：5）”的校验和…\n                      （Apple_Free：5）：已验证CRC32 $00000000\n正在检查“GPT Partition Data（Backup GPT Table：6）”的校验和…\nGPT Partition Data（Backup GPT Table：：已验证CRC32 $57C81E73\n正在检查“GPT Header（Backup GPT Header：7）”的校验和…\n     GPT Header（Backup GPT Header：7）：已验证CRC32 $059FB804\n已验证CRC32 $44394482\nhdiutil: verify: checksum of \"/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg\" is VALID\n"
+    },
+    {
+      "cmd": "/usr/bin/hdiutil",
+      "args": [
+        "attach",
+        "-readonly",
+        "-nobrowse",
+        "-mountpoint",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/mounted",
+        "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg"
+      ],
+      "status": 0,
+      "output": "预计CRC32 $44394482\n/dev/disk4          \tGUID_partition_scheme          \t\n/dev/disk4s1        \tApple_HFS                      \t/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/mounted\n"
+    },
+    {
+      "cmd": "/usr/bin/ditto",
+      "args": [
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/mounted/NovaContentHub-Testing.app",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app"
+      ],
+      "status": 0,
+      "output": ""
+    },
+    {
+      "cmd": "/usr/bin/codesign",
+      "args": [
+        "--verify",
+        "--deep",
+        "--strict",
+        "--verbose=2",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app"
+      ],
+      "status": 0,
+      "output": "--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (Plugin).app\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (GPU).app\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (Renderer).app\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper.app\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (Plugin).app\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (GPU).app\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper (Renderer).app\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Mantle.framework/Versions/Current/.\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/自媒体工作台 Testing Helper.app\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader\n--prepared:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler\n--validated:/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.\n/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app: valid on disk\n/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app: satisfies its Designated Requirement\n"
+    },
+    {
+      "cmd": "/usr/bin/file",
+      "args": [
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/MacOS/NovaContentHub-Testing"
+      ],
+      "status": 0,
+      "output": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/MacOS/NovaContentHub-Testing: Mach-O 64-bit executable arm64\n"
+    }
+  ]
+}

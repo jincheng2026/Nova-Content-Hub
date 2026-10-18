@@ -37,7 +37,7 @@ for (const mode of modes) {
     fs.cpSync(appIcons, path.join(dist, 'brand'), {recursive: true});
     fs.cpSync(path.join(workbench, '.native'), dist, {
         recursive: true,
-        filter: source => !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs'].includes(path.basename(source))
+        filter: source => !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs', 'resident-probe.mjs'].includes(path.basename(source))
     });
     fs.writeFileSync(path.join(target, 'workbench/package.json'), JSON.stringify({
         type: 'module',

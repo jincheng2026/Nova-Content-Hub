@@ -73,6 +73,19 @@ startDesktop({ show: false, userData: path.join(root, 'machine'), dialogs: { bac
     await run("document.getElementById('cover-candidates').scrollIntoView({block:'center'})");
     await window.webContents.capturePage().then(image => fs.writeFile(path.join(root, 'cover.png'), image.toPNG()));
     const authorized = await net.fetch(granted, { cache: 'no-store' }); assert.equal(authorized.status, 200); assert.equal(authorized.headers.get('content-type'), 'image/png');
+    const imageReads = Promise.all([...assets.templates.flatMap(t => t.samples), { url: granted, assetHash: selected.candidates[0]!.assetHash }].map(async image => {
+      const response = await net.fetch(image.url!, { cache: 'no-store' }); assert.equal(response.status, 200);
+      assert.equal(createHash('sha256').update(Buffer.from(await response.arrayBuffer())).digest('hex'), image.assetHash);
+    }));
+    const concurrentEdit = (async () => {
+      const created = await bridge('createContent', { title: '图片读取同时创建', body: '原始正文' });
+      const saved = await bridge('updateContent', { id: created.id, editToken: created.editToken, title: created.title, body: '图片读取同时保存成功' });
+      assert.equal(saved.body, '图片读取同时保存成功');
+      assert.equal((await bridge('readContent', { id: saved.id })).editToken, saved.editToken);
+      assert.equal((await bridge('status')).currentName !== null, true);
+    })();
+    await Promise.all([imageReads, concurrentEdit]);
+    console.log('PASS concurrent actual Electron: all granted template/candidate reads and IPC content create/save/read/status completed without lock conflicts');
     controller.covers.revoke(); assert.equal(controller.covers.allows(granted), false);
     const revoked = await net.fetch(granted, { cache: 'no-store' }).then(response => response.status, () => 0); assert.ok([0, 404].includes(revoked));
     console.log(`PASS actual disabled Electron: ${assets.templates.length} seeded template groups, all sample images decoded, false photo declaration, explicit photo:null, fixed cover request, synthetic real candidate raster, selection and byte-identical export; grants revoked`);

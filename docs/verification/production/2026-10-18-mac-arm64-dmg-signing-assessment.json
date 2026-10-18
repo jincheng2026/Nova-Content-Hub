@@ -1,0 +1,40 @@
+{
+  "readOnly": true,
+  "quarantineRemoved": false,
+  "systemSecurityChanged": false,
+  "productionReady": false,
+  "results": [
+    {
+      "command": "/usr/sbin/spctl",
+      "args": [
+        "--assess",
+        "--type",
+        "execute",
+        "--verbose=2",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app"
+      ],
+      "status": 3,
+      "output": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app: rejected\n"
+    },
+    {
+      "command": "/usr/bin/xattr",
+      "args": [
+        "-p",
+        "com.apple.quarantine",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app"
+      ],
+      "status": 1,
+      "output": "xattr: /var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app: No such xattr: com.apple.quarantine\n"
+    },
+    {
+      "command": "/usr/bin/codesign",
+      "args": [
+        "--display",
+        "--verbose=2",
+        "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app"
+      ],
+      "status": 0,
+      "output": "Executable=/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app/Contents/MacOS/NovaContentHub-Testing\nIdentifier=com.novaisland.nova-content-hub.testing\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20400 size=448 flags=0x2(adhoc) hashes=3+7 location=embedded\nSignature=adhoc\nInfo.plist entries=32\nTeamIdentifier=not set\nSealed Resources version=2 rules=13 files=316\nInternal requirements count=0 size=12\n"
+    }
+  ]
+}

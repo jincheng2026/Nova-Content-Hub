@@ -1,0 +1,6 @@
+PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (save)
+PASS actual dirty renderer: cancelled quit and failed save retain draft and reset ordinary close to hide
+PASS actual save-before-quit commits the draft through the utility worker and exits
+PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (discard)
+PASS explicit native quit can deliberately discard the dirty draft
+PASS standalone native resident probes; actual menu pointer clicks, Windows tray, login launch and production authorization were not tested.

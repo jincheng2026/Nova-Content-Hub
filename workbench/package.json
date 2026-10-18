@@ -12,6 +12,8 @@
     "typecheck:renderer": "tsc -p tsconfig.renderer.json",
     "typecheck": "npm run typecheck:native && npm run typecheck:renderer",
     "build": "node scripts/build.mjs",
+    "dist:testing": "node scripts/dist.mjs --channel testing --auth required",
+    "dist:production": "node scripts/dist.mjs --channel production --auth required",
     "start": "electron dist-desktop/auth-required",
     "test": "node --test test/*.test.mjs",
     "probe": "node scripts/probe.mjs",
@@ -23,6 +25,7 @@
   },
   "devDependencies": {
     "electron": "44.9.0",
+    "electron-builder": "26.15.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "@douyinfe/semi-ui-19": "2.104.0",

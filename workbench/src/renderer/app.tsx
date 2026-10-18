@@ -160,13 +160,13 @@ function App() {
     }
 
     useEffect(() => {
-        const close = () => {
+        const close = (event: Event) => {
+            const complete = (event as CustomEvent<unknown>).detail;
+            if (typeof complete !== 'function') return;
             void save().then(saved => {
-                if (saved) {
-                    dirtyRef.current = false;
-                    window.close();
-                }
-            });
+                if (saved) dirtyRef.current = false;
+                complete(saved === true);
+            }, () => complete(false));
         };
         window.addEventListener('nova-save-close', close);
         return () => window.removeEventListener('nova-save-close', close);

@@ -1,0 +1,23 @@
+✔ installer accepts only explicit native platform/arch and required authentication (0.798792ms)
+✔ release pairing, auth and toolchain fail closed (0.447584ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.258583ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (448.431833ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.359375ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (341.196791ms)
+✔ desktop operations finish in FIFO order without overlap (1.291167ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.380458ms)
+✔ an image grant revoked while queued is checked again before any worker read (1.087042ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (1.850709ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.212833ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.543709ms)
+✔ save-before-quit only retries quit for an exact true response (13.871917ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (3.044625ms)
+✔ without a tray, dirty close still offers cancel, discard and save (1.888459ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1116.991125

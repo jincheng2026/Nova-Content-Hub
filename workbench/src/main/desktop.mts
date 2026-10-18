@@ -1,7 +1,7 @@
 import {prepareNativeHandoff, nativeHandoffDirectory} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
-import {app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell} from 'electron';
+import {app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray} from 'electron';
 import fs from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
@@ -11,6 +11,8 @@ import {BindingStore} from './bindings.mts';
 import {DesktopController} from './controller.mts';
 import {WorkerClient} from './worker-client.mts';
 import {appIconPaths} from './branding.mts';
+import {keepResident} from './resident.mts';
+import {createOperationQueue} from './operation-queue.mts';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -23,7 +25,8 @@ interface StartOptions {
         window: BrowserWindow;
         controller: DesktopController;
         worker: WorkerClient;
-        release: Release
+        release: Release;
+        tray: Tray | null
     }) => Promise<void>
 }
 
@@ -31,6 +34,7 @@ protocol.registerSchemesAsPrivileged([{
     scheme: 'nova-content',
     privileges: {standard: true, secure: true, supportFetchAPI: true}
 }]);
+// Preserve the default userData path and existing machine-library bindings.
 app.setName('Nova 内容库技术验证');
 
 export async function startDesktop({show = true, userData, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
@@ -45,14 +49,14 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     let window: BrowserWindow;
     let worker: WorkerClient | undefined;
     let resourceWorker: WorkerClient | undefined;
-    app.on('second-instance', () => {
-        if (window) {
-            if (window.isMinimized()) window.restore();
-            window.focus();
-        }
-    });
+    let resident: ReturnType<typeof keepResident> | undefined;
+    let tray: Tray | null = null;
+    // shortcut: native dialogs also queue image reads; split only when dialogs can release library ownership safely.
+    const runOperation = createOperationQueue();
+    app.on('second-instance', () => resident?.show());
+    app.on('activate', () => resident?.show());
     app.on('window-all-closed', () => app.quit());
-    app.on('will-quit', () => { worker?.stop(); resourceWorker?.stop(); });
+    app.on('will-quit', () => { tray?.destroy(); worker?.stop(); resourceWorker?.stop(); });
     await app.whenReady();
     const icon = nativeImage.createFromPath(icons.png);
     const size = icon.getSize();
@@ -67,7 +71,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url))}));
     protocol.handle('nova-content', async request => {
         if (request.method === 'GET' && controller.covers.allows(request.url)) {
-            try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
+            try { const image = await runOperation(() => controller.covers.resource(request.url)); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
         }
         const resource = staticResource(request.url, resources);
@@ -134,7 +138,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         minHeight: 520,
         show: false,
         icon: icons.window,
-        title: 'Nova 内容库 · 技术验证',
+        title: '自媒体工作台 · 技术验证',
         webPreferences: {
             preload: path.join(here, '../preload/index.cjs'),
             sandbox: true,
@@ -145,18 +149,31 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             devTools: false
         }
     });
-    window.webContents.on('will-prevent-unload', event => {
-        const choice = dialog.showMessageBoxSync(window, {
+    resident = keepResident(app, window, () => tray !== null && !tray.isDestroyed(), () =>
+        dialog.showMessageBoxSync(window, {
             type: 'question',
             title: '草稿尚未保存',
-            message: '是否保存当前草稿后关闭？',
-            buttons: ['保存后关闭', '明确放弃并关闭', '留在当前内容'],
+            message: '是否保存当前草稿后退出？',
+            buttons: ['保存后退出', '明确放弃并退出', '留在当前内容'],
             defaultId: 2,
             cancelId: 2
-        });
-        if (choice === 1) event.preventDefault();
-        if (choice === 0) void window.webContents.executeJavaScript("window.dispatchEvent(new Event('nova-save-close'))");
-    });
+        }));
+    try {
+        const trayIcon = icon.resize({width: 18, height: 18});
+        trayIcon.addRepresentation({scaleFactor: 2, buffer: icon.resize({width: 36, height: 36}).toPNG()});
+        tray = new Tray(trayIcon);
+        tray.setToolTip('自媒体工作台');
+        tray.setContextMenu(Menu.buildFromTemplate([
+            {label: '打开工作台', click: () => resident?.show()},
+            {type: 'separator'},
+            {label: '退出', click: () => app.quit()}
+        ]));
+        tray.on('click', () => resident?.show());
+    } catch (error) {
+        tray?.destroy();
+        tray = null;
+        console.warn('菜单栏/托盘不可用，关闭窗口将退出工作台。', error);
+    }
     window.removeMenu();
     window.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
     window.webContents.on('will-navigate', event => event.preventDefault());
@@ -168,7 +185,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             if (initializationError) throw initializationError;
             return {
                 ok: true,
-                value: await (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])
+                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod]))
             };
         } catch (error) {
             return {
@@ -183,5 +200,5 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     if (show) window.once('ready-to-show', () => window.show());
     if (onConsoleMessage) window.webContents.on('console-message', (_event, _level, message) => onConsoleMessage(message));
     await window.loadURL(PAGE);
-    await ready?.({window, controller, worker, release});
+    await ready?.({window, controller, worker, release, tray});
 }
