@@ -1,0 +1,40 @@
+{
+  "at": "2026-10-18T21:54:54.936Z",
+  "version": "0.3.6",
+  "library": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "fictionalTestPhoto": {
+    "id": "6d03ee28-d4bd-4b3f-aec8-ab1922595830",
+    "title": "AI虚构创作者·流程验收",
+    "assetHash": "e6cb57e33971c9b8eb2bdfbc5ea239ffe9f805af7076d91c674603c5d4b1f9fa",
+    "revision": 5,
+    "isOwnPhoto": false,
+    "deletedAt": null,
+    "representsUser": false
+  },
+  "native": {
+    "systemFileChooserImport": true,
+    "temporaryTestPersonaDeclaration": true,
+    "explicitDefaultSelection": true,
+    "revocationPreservedInvalidReference": true,
+    "trashRestoreSameIdAndHash": true,
+    "installedChineseInvalidOption": true,
+    "explicitNoneSaved": true,
+    "promptSixCharactersUndoZero": true,
+    "cleanCloseWithoutConfirmation": true,
+    "promptCount": 28,
+    "independentRestartPid": 89987,
+    "startupLoading": true,
+    "existingContentAndScheduleVisible": true
+  },
+  "preservation": {
+    "installationOnlyReceipt": "2026-10-19-mac-036-installed.json",
+    "afterInstallExplicitChanges": "clear revoked test photo default to null via native UI",
+    "contentEntriesUnchanged": 82,
+    "promptEntriesUnchanged": 84,
+    "restartTreeUnchanged": true,
+    "libraryDigest": "1f713a6febdee7c8fd6206d5f0833460410d29d803fcb6164eccea8b394e5e26"
+  },
+  "realGenerationThisTurn": false,
+  "userIdentityPreservationVerified": false,
+  "productionReady": false
+}
