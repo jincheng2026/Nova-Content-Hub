@@ -1,0 +1,12 @@
+✔ official platform locks agree with recorded Node SHASUMS; unsupported targets fail (3.209291ms)
+✔ archive validation rejects changed bytes, directories and symlinks (17.109042ms)
+✔ launchers use only fixed bundled runtime and fail closed with an empty PATH (37.679166ms)
+✔ real pinned Node runs outside the repo without PATH, rejects damage, and cleans failed extraction (7466.505875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7613.72875

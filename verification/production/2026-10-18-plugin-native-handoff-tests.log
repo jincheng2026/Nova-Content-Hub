@@ -1,0 +1,40 @@
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (12.288584ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (295.010208ms)
+✔ official platform locks agree with recorded Node SHASUMS; unsupported targets fail (12.0175ms)
+✔ archive validation rejects changed bytes, directories and symlinks (9.351666ms)
+✔ launchers use only fixed bundled runtime and fail closed with an empty PATH (40.590959ms)
+﹣ real pinned Node runs outside the repo without PATH, rejects damage, and cleans failed extraction (0.224333ms) # SKIP
+✔ both builds carry exact release pairing and reject cross-mode requests (568.268875ms)
+✔ invalid package releases fail closed in exported entrypoints (0.488792ms)
+✔ CLI rejects bad release.json before reading requests or reporting a disabled mode (352.241584ms)
+✔ required fails closed; disabled only validates and returns unavailable paths (2.902458ms)
+✔ all operations validate with matched skill; analyze can use null version (2.36075ms)
+✔ UI-sized batches, long rules, evidence objects and normalized integer ratios are supported (1.600583ms)
+✔ bad identifiers, missing fields, malformed options and incompatible protocol are rejected (1.656625ms)
+✔ paths remain planned and reject absolute, URL, traversal and claimed binding (6.666292ms)
+✔ context is read only and never echoes title, rules, references or paths (1.000459ms)
+✔ runtime flags and environment cannot disable required auth (103.840166ms)
+✔ malformed and oversized JSON fail without executing (151.787916ms)
+✔ unimplemented task and commit stay explicit and create no files (239.520125ms)
+✔ all hook events safely return JSON without project context or business completion (353.09775ms)
+✔ empty, bad and unknown hook inputs are bounded safe JSON (216.91075ms)
+✔ a host leaving stdin open cannot hold a hook past the short input budget (643.392ms)
+✔ Skill entrypoints have the required frontmatter and no scaffold placeholders (1.6155ms)
+✔ manifest and skill references exist inside each package; host event subscriptions do not duplicate (349.726958ms)
+✔ each standalone Skill contains its entire reference and license link graph (30.994916ms)
+✔ packages include no private keys, token files, external absolute source paths or dependencies (47.365ms)
+✔ portable sh launcher resolves only its package location (63.024459ms)
+✔ codex envelope resolves exact bound attempt and URL contains only the short handoff identity (1327.610083ms)
+✔ workbuddy envelope resolves exact bound attempt and URL contains only the short handoff identity (1090.986875ms)
+✔ release and request/host validation stop before creating an envelope (740.499625ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1175.550917ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (759.12125ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (1164.110542ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 6594.349375

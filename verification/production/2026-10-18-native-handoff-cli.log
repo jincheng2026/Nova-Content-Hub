@@ -1,0 +1,12 @@
+✔ standalone bundled launcher resolves handoff and completes context/claim/submit/status/replay with empty Node PATH (8906.841791ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1310.261958ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1229.675792ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (1756.923666ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14551.254958
