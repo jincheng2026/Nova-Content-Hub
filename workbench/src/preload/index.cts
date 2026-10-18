@@ -2,6 +2,18 @@ import type {ContentHub} from '../shared/contracts.ts';
 
 const {contextBridge, ipcRenderer} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    readTemplateAssistantSetup: () => ipcRenderer.invoke('nova:readTemplateAssistantSetup'),
+    readTemplateWorkflow: input => ipcRenderer.invoke('nova:readTemplateWorkflow', input),
+    startTemplateStudy: input => ipcRenderer.invoke('nova:startTemplateStudy', input),
+    continueTemplateStudy: input => ipcRenderer.invoke('nova:continueTemplateStudy', input),
+    retryTemplateStudy: input => ipcRenderer.invoke('nova:retryTemplateStudy', input),
+    cancelTemplateStudy: input => ipcRenderer.invoke('nova:cancelTemplateStudy', input),
+    acceptTemplateStudy: input => ipcRenderer.invoke('nova:acceptTemplateStudy', input),
+    recoverTemplateMutation: () => ipcRenderer.invoke('nova:recoverTemplateMutation'),
+    retryTemplateMutation: () => ipcRenderer.invoke('nova:retryTemplateMutation'),
+    abandonTemplateMutation: () => ipcRenderer.invoke('nova:abandonTemplateMutation'),
+    readBootstrapRecovery: () => ipcRenderer.invoke('nova:readBootstrapRecovery'),
+    resetMachineBinding: input => ipcRenderer.invoke('nova:resetMachineBinding', input),
     choosePromptDocument: () => ipcRenderer.invoke('nova:choosePromptDocument'),
     chooseTemplateImages: () => ipcRenderer.invoke('nova:chooseTemplateImages'),
     chooseContentMaterial: () => ipcRenderer.invoke('nova:chooseContentMaterial'),

@@ -1,4 +1,7 @@
 import {Covers} from './covers.mts';
+import {TemplateController} from './template-controller.mts';
+import type {TemplateCallbacks} from './template-controller.mts';
+import type {TemplateStart, TemplateReference, TemplateAccept} from '../shared/template-contracts.ts';
 import {WorkspaceController} from './workspace-controller.mts';
 import {Maintenance} from './maintenance-controller.mts';
 import {readPromptDocument} from './document-import.mts';
@@ -9,6 +12,8 @@ import type {SetupInputs} from '../shared/setup-contracts.ts';
 import type {Preferences} from './preferences.mts';
 import type {Reminders} from './reminders.mts';
 import type {Setup} from './setup.mts';
+import type {BootstrapRecovery} from './bootstrap-recovery.mts';
+import type {BootstrapInputs} from '../shared/bootstrap-contracts.ts';
 import type {
     Binding,
     Inspection,
@@ -36,6 +41,7 @@ function fail(code: string, message: string): never {
 }
 
 export interface ControllerServices {
+    bootstrap?: Pick<BootstrapRecovery, 'readBootstrapRecovery' | 'resetMachineBinding'>;
     preferences?: Pick<Preferences, 'readPreferences' | 'savePreferences'>;
     reminders?: Pick<Reminders, 'readReminderStatus' | 'testReminder'>;
     setup?: Pick<Setup, 'readSetup' | 'openSetupTarget' | 'copyPluginMarketLocation' | 'exportDiagnostics'>;
@@ -50,6 +56,7 @@ export class DesktopController {
     }
     covers: Covers;
     workspace: WorkspaceController;
+    templates: TemplateController;
     maintenance: Maintenance;
     services: ControllerServices;
     store: BindingStore;
@@ -66,7 +73,7 @@ export class DesktopController {
     copyText?: (text: string) => void | Promise<void>;
     querying: Promise<ImportTask | null> | null = null;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, services = {}}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, services = {}, readTemplateAssistantSetup, launchTemplate}: {
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
@@ -76,6 +83,8 @@ export class DesktopController {
         readAssistantSetup?: Covers['setup'];
         resourceWorker?: Worker;
         copyText?: (text: string) => void | Promise<void>;
+        readTemplateAssistantSetup?: TemplateCallbacks['readTemplateAssistantSetup'];
+        launchTemplate?: TemplateCallbacks['launchTemplate'];
         services?: ControllerServices
     }) {
         this.store = store;
@@ -87,8 +96,20 @@ export class DesktopController {
         this.services = services;
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
+        this.templates = new TemplateController(this, {readTemplateAssistantSetup: readTemplateAssistantSetup ?? (async host => ({host, ready: false, skill: null, reason: 'unconfigured'})), launchTemplate: launchTemplate ?? (async () => fail('NOT_READY', '当前构建未配置模板助手交接。'))});
         this.maintenance = new Maintenance(this);
     }
+
+    readTemplateAssistantSetup(input?: undefined) { return this.templates.readTemplateAssistantSetup(input); }
+    readTemplateWorkflow(input: {templateId: string}) { return this.templates.readTemplateWorkflow(input); }
+    startTemplateStudy(input: TemplateStart) { return this.templates.startTemplateStudy(input); }
+    continueTemplateStudy(input: TemplateReference) { return this.templates.continueTemplateStudy(input); }
+    retryTemplateStudy(input: TemplateReference) { return this.templates.retryTemplateStudy(input); }
+    cancelTemplateStudy(input: TemplateReference) { return this.templates.cancelTemplateStudy(input); }
+    acceptTemplateStudy(input: TemplateAccept) { return this.templates.acceptTemplateStudy(input); }
+    recoverTemplateMutation(input?: undefined) { return this.templates.recoverTemplateMutation(input); }
+    retryTemplateMutation(input?: undefined) { return this.templates.retryTemplateMutation(input); }
+    abandonTemplateMutation(input?: undefined) { return this.templates.abandonTemplateMutation(input); }
 
     chooseTemplateImages(input?: undefined) { return this.workspace.chooseTemplateImages(input); }
     chooseContentMaterial(input?: undefined) { return this.workspace.chooseContentMaterial(input); }
@@ -110,6 +131,15 @@ export class DesktopController {
         const service = this.services[key];
         if (!service) fail('NOT_READY', '当前桌面环境尚未配置此本机服务，请使用完整桌面应用或重启后重试。');
         return service as NonNullable<ControllerServices[K]>;
+    }
+
+    readBootstrapRecovery(input?: undefined) {
+        validateInput('readBootstrapRecovery', input);
+        return this.exclusive(() => this.service('bootstrap').readBootstrapRecovery(input));
+    }
+    resetMachineBinding(input: BootstrapInputs['resetMachineBinding']) {
+        validateInput('resetMachineBinding', input);
+        return this.exclusive(() => this.service('bootstrap').resetMachineBinding(input));
     }
 
     readPreferences(input?: undefined) {
@@ -270,6 +300,7 @@ export class DesktopController {
         return {
             assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
             workspacePending: this.workspace.view(),
+            templatePending: this.templates.view(),
             maintenance: this.maintenance.readMaintenanceStatus(),
         busy: this.busy,
             sourceName: this.binding.source ? path.basename(this.binding.source) : null,
@@ -393,7 +424,7 @@ export class DesktopController {
     }
 
     noPending(allowSeedRetry = false) {
-        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.maintenancePending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
+        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.templatePending || this.binding.maintenancePending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
     }
 
     async maySwitch() {

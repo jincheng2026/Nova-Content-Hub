@@ -1,0 +1,75 @@
+import {useEffect, useState} from 'react';
+import Button from '@douyinfe/semi-ui-19/lib/es/button';
+import type {CoverResults} from '../shared/cover-contracts.ts';
+import type {TemplateAssistantSetup, TemplateAttemptView, TemplateWorkflowResult, TemplateWorkflowView} from '../shared/template-contracts.ts';
+import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
+import type {WorkspaceRun} from './library-panels.tsx';
+import {invoke} from './client.ts';
+import './template-workflow.css';
+
+export interface TemplateWorkflowPanelProps {templateId: string; library: WorkspaceLibrarySnapshot | null; assets: CoverResults['listCoverAssets'] | null; busy: boolean; run: WorkspaceRun; refresh(): Promise<void>; onDerive?(): Promise<void>}
+const statusNames = {created: '待助手处理', claimed: '助手已认领', committed: '待人工验收', failed: '失败', cancelled: '已取消', superseded: '已被后续尝试替代'};
+export function TemplateWorkflowPanel({templateId, library, assets, busy, run, refresh, onDerive}: TemplateWorkflowPanelProps) {
+    const [view, setView] = useState<TemplateWorkflowView | null>(null), [setup, setSetup] = useState<TemplateAssistantSetup | null>(null), [notes, setNotes] = useState(''), [selected, setSelected] = useState(''), [confirm, setConfirm] = useState(false), [notice, setNotice] = useState(''), [loading, setLoading] = useState(false);
+    useEffect(() => {setNotes('');}, [templateId]);
+    useEffect(() => {
+        let cancelled = false;
+        setView(null); setSelected(''); setConfirm(false); setNotice(''); setLoading(true);
+        Promise.all([invoke('readTemplateWorkflow', {templateId}), invoke('readTemplateAssistantSetup')]).then(([next, assistant]) => {
+            if (!cancelled) {setView(next); setSetup(assistant);}
+        }).catch(error => {if (!cancelled) setNotice(error instanceof Error ? error.message : '暂时无法读取学习历史。');}).finally(() => {if (!cancelled) setLoading(false);});
+        return () => {cancelled = true;};
+    }, [templateId, library, assets]);
+    const template = library?.templates.find(t => t.id === templateId), asset = assets?.templates.find(t => t.id === templateId);
+    const attempts = view?.jobs.flatMap(j => j.attempts) ?? [];
+    const activeAttempt = attempts.find(a => view?.jobs.some(j => j.activeAttemptId === a.attemptId && ['created', 'claimed'].includes(a.status)));
+    const attempt = attempts.find(a => a.attemptId === selected) ?? attempts.at(-1);
+    const job = view?.jobs.find(j => j.id === attempt?.reference.requestId);
+    const live = attempt && job?.activeAttemptId === attempt.attemptId && ['created', 'claimed'].includes(attempt.status);
+    const accepted = !!job?.acceptance && job.acceptance.attemptId === attempt?.attemptId;
+    const jobAccepted = !!job?.acceptance;
+    const sourceMatches = attempt?.reference.sourceVersion === view?.currentVersion && attempt?.reference.sourcePackageHash === template?.versions.find(v => v.version === view?.currentVersion)?.packageHash;
+    const unavailable = !view || busy || loading || !!view.deletedAt;
+    async function update(action: () => Promise<TemplateWorkflowResult>) {
+        if (unavailable) return;
+        await run(async () => {
+            try {
+                const result = await action();
+                setView(result.view); setConfirm(false);
+                setNotice(result.launchRequested ? '已请求打开助手；提交后点击“刷新学习结果”查看。' : '模板操作已保存。');
+                await refresh();
+            } catch (error) {
+                setNotice(error instanceof Error ? error.message : '操作尚未确认，请检查全局恢复入口。');
+                throw error;
+            }
+        });
+    }
+    async function reload() {
+        if (busy || loading) return;
+        await run(async () => {const [next, assistant] = await Promise.all([invoke('readTemplateWorkflow', {templateId}), invoke('readTemplateAssistantSetup')]); setView(next); setSetup(assistant); setConfirm(false); setNotice('已读取当前学习记录。');});
+    }
+    return <section className="template-workflow" aria-label="模板学习与人工验收">
+        <div className="management-toolbar"><div><h3>{view?.title ?? template?.title ?? asset?.name ?? '模板'} · 学习与还原</h3><p>学习整组样张，先还原第 1 张验收。规则与还原图提交后，由你确认并保存为新版本。</p></div><Button disabled={busy || loading} onClick={() => void reload()}>刷新学习结果</Button></div>
+        {view?.builtin ? <div className="template-workflow-message"><p>内置模板需要先复制为自己的模板，再学习并还原。</p>{onDerive && <Button disabled={busy} onClick={() => void onDerive()}>复制为我的模板再学习</Button>}</div> : <>
+            <p className="muted">本次使用全局助手：{setup?.host === 'workbuddy' ? 'WorkBuddy' : 'Codex'}。{setup && !setup.ready ? '模板执行能力尚未准备好，请在设置中检查配套插件。' : '助手选择可在左下角设置中调整。'}</p>
+            <label className="template-study-notes">补充要求（可选）<textarea maxLength={10_000} value={notes} disabled={unavailable} placeholder="比如：重点还原标题层级与留白关系" onChange={event => setNotes(event.target.value)}/></label>
+            {!activeAttempt && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}))}>{attempts.length ? '开始新一轮学习并还原' : '学习整组并还原首张'}</Button>}{activeAttempt && attempt?.attemptId !== activeAttempt.attemptId && <Button disabled={busy} onClick={() => {setSelected(activeAttempt.attemptId); setConfirm(false);}}>查看当前进行中的学习</Button>}
+        </>}
+        <p role="status" aria-live="polite">{loading ? '正在读取学习记录…' : notice}</p>
+        {!!attempts.length && <><label>学习历史<select value={attempt?.attemptId ?? ''} disabled={busy} onChange={event => {setSelected(event.target.value); setConfirm(false);}}>{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</select></label>
+            {attempt && <div className="template-attempt"><p>源版本 v{attempt.reference.sourceVersion || '?'} · {attempt.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {accepted ? '已记录人工验收' : statusNames[attempt.status]}</p>
+                {attempt.failure && <p role="alert">{attempt.failure.message}（{attempt.failure.code}）</p>}
+                {attempt.unavailable && <p role="alert">这次学习的历史证据暂不可读。记录已保留，请核验内容库完整性。</p>}
+                {!attempt.unavailable && !jobAccepted && !view?.builtin && <div className="management-actions">{live && <><Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('continueTemplateStudy', attempt.reference))}>{setup?.host !== attempt.host ? '用当前助手继续（保留原尝试）' : '继续打开助手'}</Button><Button disabled={unavailable} onClick={() => void update(() => invoke('cancelTemplateStudy', attempt.reference))}>取消本次尝试</Button></>}{!activeAttempt && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('retryTemplateStudy', attempt.reference))}>重新学习并还原</Button>}</div>}
+                {!sourceMatches && !accepted && <p role="alert">当前已切换模板版本。此次结果保留在源版本下，请返回源版本后继续或验收；进行中的尝试也可以直接取消。</p>}
+                {attempt.result && <TemplateComparison attempt={attempt}/>}
+                {attempt.result && !jobAccepted && !attempt.unavailable && !view?.builtin && <div className="template-accept">{activeAttempt && <p>请先完成或取消当前进行中的学习，再验收历史结果。</p>}<label><input type="checkbox" checked={confirm} disabled={unavailable || !sourceMatches || !!activeAttempt} onChange={event => setConfirm(event.target.checked)}/>我已对照样张、规则证据和首张还原效果，确认可用于后续生成。</label><Button theme="solid" disabled={unavailable || !sourceMatches || !!activeAttempt || !confirm} onClick={() => view && void update(() => invoke('acceptTemplateStudy', {...attempt.reference, resultHash: attempt.result!.resultHash, editToken: view.editToken}))}>确认规则与还原效果，保存为新版本</Button></div>}
+                {accepted && <p>验收保存为 v{job?.acceptance?.acceptedTemplate.version}。{view?.currentVersion === job?.acceptance?.acceptedTemplate.version ? '当前版本已记录人工验收，可用于封面生成。' : '当前所选版本不同，此验收记录不会自动套用。'}</p>}
+            </div>}</>}
+        {view && !attempts.length && <p className="muted">尚未完成学习验收。手动导入的规则可继续使用，学习记录将在这里保留。</p>}
+    </section>;
+}
+function TemplateComparison({attempt}: {attempt: TemplateAttemptView}) {
+    const result = attempt.result!;
+    return <div><div className="template-comparison"><figure>{attempt.samples[0] && <img src={attempt.samples[0].url} alt="固定参考组中的第 1 张样张"/>}<figcaption>原样张 · 第 1 张（整组共 {attempt.samples.length} 张）</figcaption></figure><figure><img src={result.restore.url} alt="助手提交的首张还原图，等待人工确认"/><figcaption>首张还原图 · 待你判断效果</figcaption></figure></div><details><summary>查看本次固定的全部 {attempt.samples.length} 张样张</summary><div className="template-evidence-samples">{attempt.samples.map((sample, i) => <figure key={sample.assetHash}><img src={sample.url} alt={`本次固定参考样张 ${i + 1}`}/><figcaption>样张 {i + 1}</figcaption></figure>)}</div></details><div className="template-rules">{(['fixed', 'variable'] as const).map(type => <section key={type}><h4>{type === 'fixed' ? '固定规则' : '可变规则'}</h4><ol>{result.rules[type].map((rule, i) => <li key={`${type}:${i}`}><p>{rule}</p>{result.rules.evidence.filter(e => e.ruleType === type && e.ruleIndex === i).map((e, n) => <p className="muted" key={n}>样张 {attempt.samples.findIndex(s => s.assetHash === e.sourceAssetHash) + 1}：{e.observation}</p>)}</li>)}</ol></section>)}</div></div>;
+}

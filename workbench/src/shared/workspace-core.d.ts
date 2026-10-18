@@ -39,7 +39,7 @@ type Correction = {reason: string; text: string; schedule: WorkspaceSchedule; ur
 type CandidateInput = {favorite: boolean; displayNumber: string; note: string; variantId: string | null};
 type ChannelInput = import('./workspace-contracts.ts').WorkspaceChannelFields;
 interface TemplatePackage {
-    definition: {desc: string; rules: string[]};
+    definition: Record<string, unknown>;
     resources: Record<string, {assetHash: string; bytes: number; detectedType: string; role: 'style'}>;
 }
 export interface WorkspaceCoreLibrary {
@@ -69,8 +69,8 @@ export interface WorkspaceCoreLibrary {
     restorePhoto(id: string, editToken: string, options: Options): Changed;
     listTemplates(): WorkspaceCoreTemplate[];
     listTemplateTrash(): WorkspaceCoreTemplate[];
-    readTemplate(id: string, version?: number): WorkspaceCoreTemplate & {definition: Record<string, unknown>; resources: Record<string, {assetHash: string; role: string}>};
-    createTemplate(input: TemplatePackage & {name: string}, options: Options): Changed;
+    readTemplate(id: string, version?: number): WorkspaceCoreTemplate & {definition: Record<string, unknown>; resources: TemplatePackage['resources']};
+    createTemplate(input: TemplatePackage & {name: string; derivedFrom?: {id: string; version: number}}, options: Options): Changed;
     addTemplateVersion(id: string, input: TemplatePackage & {version: number}, editToken: string, options: Options): Changed;
     selectTemplateVersion(id: string, version: number, editToken: string, options: Options): Changed;
     trashTemplate(id: string, editToken: string, options: Options): Changed;

@@ -14,9 +14,11 @@ import {appIconPaths} from './branding.mts';
 import {keepResident} from './resident.mts';
 import {createOperationQueue} from './operation-queue.mts';
 import {Preferences} from './preferences.mts';
+import {BootstrapRecovery} from './bootstrap-recovery.mts';
 import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
+import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -103,6 +105,12 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         try { return {host, ready: true, skill: installedAssistantSkill(host, release), reason: 'available'}; }
         catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
     };
+    const readTemplateAssistantSetup = async (host: Assistant): Promise<TemplateAssistantSetup> => {
+        try { await app.getApplicationInfoForProtocol(`${host}://`); }
+        catch { return {host, ready: false, skill: null, reason: 'protocol-missing'}; }
+        try { return {host, ready: true, skill: installedAssistantSkill(host, release, {capability: 'template'}), reason: 'available'}; }
+        catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
+    };
     const controller = new DesktopController({
         copyText: text => clipboard.writeText(text),
         resourceWorker,
@@ -111,6 +119,14 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         authMode: release.AUTH_MODE,
         documents: app.getPath('documents'),
         readAssistantSetup,
+        readTemplateAssistantSetup,
+        launchTemplate: async (binding, reference) => {
+            const setup = await readTemplateAssistantSetup(reference.host);
+            if (!setup.ready || !setup.skill) throw Object.assign(new Error('请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY'});
+            const {templateId, requestId, attemptId, requestHash, host} = reference;
+            const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, {templateId, requestId, attemptId, requestHash, host}, release, {kind: 'template', installedSkill: setup.skill});
+            await shell.openExternal(handoff.url);
+        },
         launch: async (binding, reference) => {
             const setup = await readAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('助手或配套插件尚未准备好，请在工作台左下角设置中检查后重试。'), {code: 'NOT_READY'});
@@ -164,7 +180,29 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         },
     });
     let initializationError: unknown;
+    let bootstrapReason = 'none';
+    let bindingBackupName: string | null = null;
+    const bootstrap = new BootstrapRecovery({store: controller.store, onRecovered: async () => {
+        await controller.initialize();
+        controller.covers.revoke();
+        controller.pendingView = null;
+        controller.workspace.pendingView = null;
+        controller.templates.pendingView = null;
+        controller.querying = null;
+        controller.last = null;
+        controller.inspection = null;
+        initializationError = undefined;
+    }});
+    const readBootstrapRecovery = async () => {
+        const result = await bootstrap.readBootstrapRecovery();
+        bootstrapReason = result.reasonCode;
+        bindingBackupName = result.backupName;
+        if (result.state === 'ready' && initializationError) { await controller.initialize(); initializationError = undefined; }
+        return result;
+    };
     try {
+        const startup = await readBootstrapRecovery();
+        if (startup.state !== 'ready') throw Object.assign(new Error('本机内容库连接记录不可用，请使用重新连接入口保留原记录并恢复。'), {code: 'BINDING_INVALID'});
         await controller.initialize();
     } catch (error) {
         initializationError = error;
@@ -215,7 +253,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     const preferences = new Preferences({file: path.join(app.getPath('userData'), 'local-preferences.json'), login: app});
     const serviceErrors: string[] = [];
     try { await preferences.initialize(); } catch { serviceErrors.push('PREFERENCES_UNAVAILABLE'); }
-    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.maintenancePending && !controller.binding.seedPending;
+    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.templatePending && !controller.binding.maintenancePending && !controller.binding.seedPending;
     reminders = new Reminders({
         file: path.join(app.getPath('userData'), 'daily-reminder.json'),
         preferences: () => preferences.values,
@@ -243,14 +281,14 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         },
         contextSummary: () => {
             const binding = controller.binding;
-            return {bindingPresent: !!binding?.current, recovery: {
-                content: !!binding?.pending, workspace: !!binding?.workspacePending, creation: !!binding?.creation,
+            return {bindingPresent: !!binding?.current, bindingBackupName, recovery: {
+                content: !!binding?.pending, workspace: !!binding?.workspacePending, template: !!binding?.templatePending, creation: !!binding?.creation,
                 photo: !!binding?.photoPending, cover: !!binding?.coverPending, coverAction: !!binding?.coverActionPending,
                 maintenance: !!binding?.maintenancePending, seed: !!binding?.seedPending, needsReselect: !!binding?.needsReselect
-            }, counts: controller.inspection?.counts, errorCodes: [...serviceErrors, ...(initializationError ? [errorInfo(initializationError).code] : [])]};
+            }, counts: controller.inspection?.counts, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};
         }
     });
-    controller.services = {preferences, reminders, setup};
+    controller.services = {preferences, reminders, setup, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
     preferences.onSaved = () => { void reminders?.refresh(true); };
     const resumeReminders = () => { void reminders?.refresh(true); };
     powerMonitor.on('resume', resumeReminders);
@@ -264,7 +302,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     for (const method of CHANNELS) ipcMain.handle(`nova:${method}`, async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, args, method);
-            if (initializationError && !['readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
+            if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
                 value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { if (['openLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })

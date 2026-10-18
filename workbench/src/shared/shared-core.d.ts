@@ -18,8 +18,8 @@ declare module '*file-library/index.mjs' {
         createPhoto(input: { title: string; originalName: string; assetHash: string; isOwnPhoto: boolean }, options: { mutationId: string }): import('./cover-contracts.ts').Photo;
         readAsset(hash: string): { assetHash: string; bytes: number; detectedType: string; data: Uint8Array };
         importAsset(source: string, options: { purpose: 'photo' }): { assetHash: string };
-        listTemplates(): { id: string; currentVersion: number }[];
-        readTemplate(id: string, version?: number): { id: string; title: string; currentVersion: number; definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
+        listTemplates(): (import('./template-core.d.ts').TemplateCoreDocument)[];
+        readTemplate(id: string, version?: number): import('./template-core.d.ts').TemplateCoreDocument & { definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
         inspectCoverInput(id: string, input: import('./cover-contracts.ts').CoverInput, token: string): import('./cover-contracts.ts').Fingerprint;
         findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;
         createCoverRequest(id: string, input: import('./cover-contracts.ts').CoverInput, token: string, options: { mutationId: string }): import('./cover-contracts.ts').RequestResult;
@@ -72,4 +72,4 @@ declare module '*file-library/index.mjs' {
 }
 declare module '*library-seed/index.mjs' { export function installBuiltins(library: unknown): unknown; }
 declare module '*image-validation/index.mjs' { export function validateImportedRaster(bytes: Uint8Array): Promise<{ assetHash: string; format: string; width: number; height: number }>; }
-declare module '*bridge/native-handoff.mjs' { export function nativeHandoffDirectory(appData: string): string; export function prepareNativeHandoff(directory: string, binding: import('./contracts.ts').LibraryBinding, reference: import('./cover-contracts.ts').CoverReference & { requestHash: string; host: import('./cover-contracts.ts').Assistant }, release: import('./contracts.ts').Release, options: { installedSkill: 'nova-content-cover-execution' }): Promise<{ id: string; url: string }>; }
+declare module '*bridge/native-handoff.mjs' { export function nativeHandoffDirectory(appData: string): string; export function prepareNativeHandoff(directory: string, binding: import('./contracts.ts').LibraryBinding, reference: {templateId: string; requestId: string; attemptId: string; requestHash: string; host: import('./cover-contracts.ts').Assistant}, release: import('./contracts.ts').Release, options: {kind: 'template'; installedSkill: 'nova-content-template-execution'}): Promise<{id: string; url: string}>; export function prepareNativeHandoff(directory: string, binding: import('./contracts.ts').LibraryBinding, reference: import('./cover-contracts.ts').CoverReference & { requestHash: string; host: import('./cover-contracts.ts').Assistant }, release: import('./contracts.ts').Release, options: { installedSkill: 'nova-content-cover-execution' }): Promise<{ id: string; url: string }>; }

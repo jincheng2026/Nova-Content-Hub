@@ -132,6 +132,7 @@ export async function main(argv) {
                 if (!['claim', 'context', 'submit', 'fail', 'cancel', 'status'].includes(command) ||
                     Object.keys(values).some(key => !['handoff', 'file', 'stdin'].includes(key))) throw problem('INVALID_ARGUMENTS', '本机交接只接受固定尝试的执行命令，不能混用路径或其他 ID。');
                 located = readNativeHandoff(nativeHandoffDirectory(), values.handoff, config);
+                if (located.kind !== 'cover') throw problem('INVALID_HANDOFF', '封面命令只接受封面交接。');
                 delete values.handoff;
                 Object.assign(values, {library: located.binding.root, content: located.task.contentId});
                 if (command !== 'status') Object.assign(values, {

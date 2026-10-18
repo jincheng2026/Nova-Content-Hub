@@ -8,9 +8,9 @@ import {isRecord, type Release} from '../shared/contracts.ts';
 import type {Assistant} from '../shared/cover-contracts.ts';
 import {validateRelease} from './boundary.mts';
 
-const SKILL = 'nova-content-cover-execution';
-const skillFile = `skills/${SKILL}/SKILL.md`;
-const notReady = () => Object.assign(new Error('所选助手的配套封面执行 Skill 尚未安装、启用或校验未通过，请在助手中检查插件后重试。'), {code: 'NOT_READY'});
+const SKILLS = {cover: 'nova-content-cover-execution', template: 'nova-content-template-execution'} as const;
+type SkillOptions = {env?: NodeJS.ProcessEnv; home?: string};
+const notReady = () => Object.assign(new Error('所选助手的配套执行 Skill 尚未安装、启用或校验未通过，请在助手中检查插件后重试。'), {code: 'NOT_READY'});
 
 // Read host metadata only; never execute installed plugin code to discover a Skill.
 function read(file: string, limit = 2 * 1024 * 1024): Buffer {
@@ -45,8 +45,12 @@ function json(file: string): Record<string, unknown> {
     return value;
 }
 
-export function installedAssistantSkill(host: Assistant, release: Release, {env = process.env, home = os.homedir()}: {env?: NodeJS.ProcessEnv; home?: string} = {}): typeof SKILL {
+export function installedAssistantSkill(host: Assistant, release: Release, options?: SkillOptions & {capability?: 'cover'}): typeof SKILLS.cover;
+export function installedAssistantSkill(host: Assistant, release: Release, options: SkillOptions & {capability: 'template'}): typeof SKILLS.template;
+export function installedAssistantSkill(host: Assistant, release: Release, {env = process.env, home = os.homedir(), capability = 'cover'}: SkillOptions & {capability?: keyof typeof SKILLS} = {}): typeof SKILLS[keyof typeof SKILLS] {
     try {
+        if (!Object.hasOwn(SKILLS, capability)) throw notReady();
+        const SKILL = SKILLS[capability], skillFile = `skills/${SKILL}/SKILL.md`;
         validateRelease(release);
         if (!['codex', 'workbuddy'].includes(host) || release.AUTH_MODE !== 'disabled' || release.platform !== process.platform || release.arch !== process.arch) throw notReady();
         const market = `nova-content-hub-auth-${release.AUTH_MODE}-${release.platform}-${release.arch}`;
@@ -74,9 +78,9 @@ export function installedAssistantSkill(host: Assistant, release: Release, {env 
         if (!isDeepStrictEqual(installedRelease, {...release, format: 'nova-content-plugin-release'})) throw notReady();
         const integrity = json(path.join(root, 'integrity.json'));
         const capabilities = isRecord(integrity.skills) ? integrity.skills[SKILL] : null;
-        if (integrity.format !== 'nova-content-plugin-integrity' || integrity.schemaVersion !== 1 || integrity.pairId !== release.pairId || integrity.AUTH_MODE !== release.AUTH_MODE || !isRecord(capabilities) || capabilities.namespace !== 'cover' || capabilities.executable !== true || !isRecord(integrity.hashes)) throw notReady();
+        if (integrity.format !== 'nova-content-plugin-integrity' || integrity.schemaVersion !== 1 || integrity.pairId !== release.pairId || integrity.AUTH_MODE !== release.AUTH_MODE || !isRecord(capabilities) || capabilities.namespace !== capability || capabilities.executable !== true || !isRecord(integrity.hashes)) throw notReady();
         const bytes = read(path.join(root, skillFile), 64 * 1024);
-        if (integrity.hashes[skillFile] !== createHash('sha256').update(bytes).digest('hex') || !/^---\r?\nname: nova-content-cover-execution\r?\n/.test(new TextDecoder('utf-8', {fatal: true}).decode(bytes))) throw notReady();
+        if (integrity.hashes[skillFile] !== createHash('sha256').update(bytes).digest('hex') || !new RegExp(`^---\\r?\\nname: ${SKILL}\\r?\\n`).test(new TextDecoder('utf-8', {fatal: true}).decode(bytes))) throw notReady();
         return SKILL;
     } catch { throw notReady(); }
 }

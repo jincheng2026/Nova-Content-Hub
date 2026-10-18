@@ -1,4 +1,5 @@
 import {isCoverOperation, executeCover} from './cover-worker.mts';
+import {isTemplateOperation, executeTemplate} from './template-worker.mts';
 import {isWorkspaceOperation, executeWorkspace} from './workspace-worker.mts';
 import {isMaintenanceOperation, executeMaintenance} from './maintenance-worker.mts';
 import path from 'node:path';
@@ -60,7 +61,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
     return {contents, prompts, channels};
 }
 
-type DelegatedOperation = keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations;
+type DelegatedOperation = keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
     inspect: ['source'],
     query: ['destination', 'importId'],
@@ -78,6 +79,7 @@ const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = 
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
     if (isCoverOperation(op)) return executeCover(op, args, mode);
+    if (isTemplateOperation(op)) return executeTemplate(op, args, mode);
     if (isWorkspaceOperation(op)) return executeWorkspace(op, args, mode);
     if (isMaintenanceOperation(op)) return executeMaintenance(op, args);
     const fields = typeof op === 'string' && Object.hasOwn(schemas, op) ? schemas[op as keyof typeof schemas] : null;

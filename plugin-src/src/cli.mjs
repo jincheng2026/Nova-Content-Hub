@@ -6,6 +6,10 @@ export async function main(argv) {
     const [namespace = 'help', ...args] = argv;
     if (namespace === 'contract') return contract(args);
     if (namespace === 'hook') return contract(['hook', ...args]);
+    if (namespace === 'template') {
+        const {main: template} = await import('./commands/template.mjs');
+        return template(args);
+    }
     if (namespace === 'cover' || namespace === 'doctor' && args.length === 0) {
         const {main: cover} = await import('./commands/cover.mjs');
         return cover(namespace === 'doctor' ? ['doctor'] : args);
@@ -13,8 +17,8 @@ export async function main(argv) {
     const ok = namespace === 'help' && args.length === 0;
     process.stdout.write(JSON.stringify({
         ok, ...(ok ? {} : {code: 'INVALID_ARGUMENTS'}),
-        namespaces: ['contract', 'cover', 'hook', 'doctor'], productionReady: false,
-        message: '显式使用 contract 或 cover 命令空间；原型请求只供契约校验。'
+        namespaces: ['contract', 'cover', 'template', 'hook', 'doctor'], productionReady: false,
+        message: '显式使用 contract、cover 或 template 命令空间；原型请求只供契约校验。'
     }) + '\n');
     return ok ? 0 : 1;
 }

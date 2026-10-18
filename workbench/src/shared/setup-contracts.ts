@@ -12,7 +12,8 @@ export interface SetupView {
 }
 export interface SetupContextSummary {
     bindingPresent: boolean;
-    recovery?: Partial<Record<'content' | 'workspace' | 'creation' | 'photo' | 'cover' | 'coverAction' | 'maintenance' | 'seed' | 'needsReselect', boolean>>;
+    bindingBackupName?: string | null;
+    recovery?: Partial<Record<'content' | 'workspace' | 'template' | 'creation' | 'photo' | 'cover' | 'coverAction' | 'maintenance' | 'seed' | 'needsReselect', boolean>>;
     counts?: Partial<Record<'contents' | 'collections' | 'templates' | 'photos' | 'prompts', number>>;
     errorCodes?: string[];
 }

@@ -12,7 +12,7 @@ import {bundleNode, writeLaunchers, cleanNodeEnv} from './bundled-node.mjs';
 const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
 export const skillNames = ['nova-content-template-study', 'nova-content-template-restore', 'nova-content-cover'];
-export const allSkillNames = [...skillNames, 'nova-content-cover-execution'];
+export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution'];
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
 
 export function hooksFor(host, events) {
@@ -50,7 +50,7 @@ export async function releaseModes(mode) {
 }
 
 export function integrityPaths(platform = process.platform) {
-    return ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
+    return ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
         'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'];
@@ -176,7 +176,7 @@ export async function buildCover(mode) {
         await writeFile(legacySkill, (await readFile(legacySkill, 'utf8')).replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
         await writeFile(join(target, 'cover-runtime/README.md'), '# 兼容封面入口\n\n`node cover-runtime/cli.mjs` 转发到唯一封面命令。[完整说明](../plugin-src/compat/cover-runtime/README.md)。\n');
         await cp(join(source, 'README.md'), join(target, 'plugin-src/README.md'));
-        await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](plugin-src/src/lib/library-maintenance/README.md)。本包不代表商用发行就绪。\n');
+        await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover` 和 `template`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](plugin-src/src/lib/library-maintenance/README.md)。本包不代表商用发行就绪。\n');
         await cp(join(source, 'runtime/README.md'), join(target, 'runtime/README.md'));
         await manifests(target, release, allSkillNames);
         await writeLaunchers(target);
@@ -215,8 +215,8 @@ export async function buildCover(mode) {
             AUTH_MODE: release.AUTH_MODE,
             hashes,
             skills: Object.fromEntries(allSkillNames.map(name => [name, {
-                namespace: skillNames.includes(name) ? 'contract' : 'cover',
-                executable: name === 'nova-content-cover-execution' && release.AUTH_MODE === 'disabled'
+                namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover',
+                executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && release.AUTH_MODE === 'disabled'
             }]))
         });
         outputs.push({path: target, pairId: release.pairId});

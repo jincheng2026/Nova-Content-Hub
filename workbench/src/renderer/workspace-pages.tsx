@@ -8,6 +8,7 @@ import { dayDate, fillPrompt, localDay, pastedPrompt, promptFields, scheduleDay,
 import type {WorkspaceLibraryPrompt, WorkspaceLibrarySnapshot, WorkspaceLibraryTemplate, WorkspaceTemplateImage, WorkspaceKind, WorkspaceLibraryPlan, WorkspacePublication, WorkspaceSchedule} from '../shared/workspace-contracts.ts';
 import {ManagementDialog, useWorkspaceMutation, type WorkspaceManagementProps} from './library-panels.tsx';
 import './workspace-management.css';
+import {TemplateWorkflowPanel} from './template-workflow-panel.tsx';
 import {publicationEntries} from '../shared/publication-view.ts';
 export type Page = 'overview' | 'templates' | 'content' | 'calendar' | 'prompts';
 export const pageNames: Record<Page, string> = { overview: '总览', templates: '模板', content: '内容', calendar: '日历', prompts: '提示词' };
@@ -76,6 +77,7 @@ function PromptDialog({ prompt, close }: { prompt: Prompt; close(): void }) {
 }
 export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverResults['listCoverAssets'] | null; busy: boolean; useTemplate(template: TemplateGroup): void }) {
   const {assets, busy, useTemplate, library} = props;
+  const [workflowTemplateId, setWorkflowTemplateId] = useState<string | null>(null);
   const [managing, setManaging] = useState(false), [importing, setImporting] = useState<{template: WorkspaceLibraryTemplate | null; images: WorkspaceTemplateImage[]} | null>(null);
   async function importImages(template: WorkspaceLibraryTemplate | null = null) {
     if (busy || !library) return;
@@ -84,11 +86,21 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
       if (images?.length) setImporting({template, images});
     });
   }
+  async function derive() {
+    const source = library?.templates.find(template => template.id === workflowTemplateId);
+    const version = source?.versions.find(version => version.version === source.currentVersion);
+    if (busy || !source || !version) return;
+    await props.run(async () => {
+      const saved = await invoke('mutateWorkspace', {op: 'deriveTemplate', sourceTemplateId: source.id, sourceVersion: version.version, sourcePackageHash: version.packageHash, name: `${source.title.slice(0, 100)} · 我的副本`});
+      setWorkflowTemplateId(saved.objectId);
+      await props.refresh();
+    });
+  }
   const [query, setQuery] = useState(''), [preview, setPreview] = useState<TemplateGroup | null>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   useEffect(() => { if (preview) dialog.current?.showModal(); }, [preview]);
   const matching = assets?.templates.filter(template => `${template.name} ${template.description}`.toLowerCase().includes(query.toLowerCase())) ?? [];
-  return <section className="workspace-page"><div className="page-intro"><h2>找到这一次的封面风格</h2><p>一组样张，共同定义一种风格。先选模板，再为自己的内容准备封面。</p></div><div className="management-toolbar"><p className="muted">使用当前选中的模板版本；版本和回收站可在管理中调整。</p><div className="management-actions"><Button theme="solid" disabled={busy || !library} onClick={() => void importImages()}>导入我的模板</Button><Button disabled={busy || !library} onClick={() => setManaging(!managing)}>{managing ? '收起模板管理' : '管理版本与回收站'}</Button></div></div>{managing && <TemplateManagement {...props} addVersion={template => void importImages(template)}/>}<p className="muted">一组最多 50 张参考样张。样张用于定义风格；需要生成几张候选，在制作封面时单独选择。</p><input className="page-search" type="search" aria-label="搜索模板" value={query} placeholder="搜索模板名称、风格与适用内容" onChange={event => setQuery(event.target.value)}/><div className="gallery-grid">{matching.map(template => <Card key={template.id} className="gallery-card"><button className="gallery-preview" onClick={() => setPreview(template)} aria-label={`预览 ${template.name} 整组样张`}>{template.samples.length ? <img src={template.samples[0].url} alt={`${template.name}首张样张`}/> : <span>此模板尚无可用样张</span>}<span>{template.samples.length} 张一组</span></button><div className="gallery-caption"><div><h3>{template.name}</h3><p>{template.description}</p></div><div className="gallery-footer"><span className="muted">{template.accepted && template.aiTested ? '已记录验收' : '生图待验收'}</span><Button disabled={busy || !template.samples.length} onClick={() => useTemplate(template)}>使用这组模板</Button></div></div></Card>)}</div>{!matching.length && <Card><div className="blank-state">{assets?.templates.length ? '没有匹配的模板，换个关键词试试。' : '打开内容库后，会显示库中可用的模板组。'}</div></Card>}{preview && <dialog ref={dialog} className="image-preview" onCancel={() => setPreview(null)} aria-label={preview.name}><div className="dialog-heading"><div><h2>{preview.name}</h2><p>{preview.samples.length} 张风格样张 · 同一模板组</p></div><Button onClick={() => setPreview(null)}>关闭预览</Button></div><div className="preview-grid">{preview.samples.map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`${preview.name}样张 ${index + 1}`}/>)}</div></dialog>}{importing && <TemplateImportDialog props={props} template={importing.template} initialImages={importing.images} close={() => setImporting(null)}/>}</section>;
+  return <section className="workspace-page"><div className="page-intro"><h2>找到这一次的封面风格</h2><p>一组样张，共同定义一种风格。先选模板，再为自己的内容准备封面。</p></div><div className="management-toolbar"><p className="muted">使用当前选中的模板版本；版本和回收站可在管理中调整。</p><div className="management-actions"><Button theme="solid" disabled={busy || !library} onClick={() => void importImages()}>导入我的模板</Button><Button disabled={busy || !library} onClick={() => setManaging(!managing)}>{managing ? '收起模板管理' : '管理版本与回收站'}</Button></div></div>{managing && <TemplateManagement {...props} addVersion={template => void importImages(template)}/>}<p className="muted">一组最多 50 张参考样张。样张用于定义风格；需要生成几张候选，在制作封面时单独选择。</p><input className="page-search" type="search" aria-label="搜索模板" value={query} placeholder="搜索模板名称、风格与适用内容" onChange={event => setQuery(event.target.value)}/><div className="gallery-grid">{matching.map(template => <Card key={template.id} className="gallery-card"><button className="gallery-preview" onClick={() => setPreview(template)} aria-label={`预览 ${template.name} 整组样张`}>{template.samples.length ? <img src={template.samples[0].url} alt={`${template.name}首张样张`}/> : <span>此模板尚无可用样张</span>}<span>{template.samples.length} 张一组</span></button><div className="gallery-caption"><div><h3>{template.name}</h3><p>{template.description}</p></div><div className="gallery-footer"><span className="muted">{template.builtin ? '内置 · 可直接使用' : template.accepted && template.aiTested ? '已记录人工验收' : '我的参考模板'}</span><div className="management-actions"><Button disabled={busy || !library} onClick={() => setWorkflowTemplateId(template.id)}>学习与还原</Button><Button disabled={busy || !template.samples.length} onClick={() => useTemplate(template)}>使用这组模板</Button></div></div></div></Card>)}</div>{!matching.length && <Card><div className="blank-state">{assets?.templates.length ? '没有匹配的模板，换个关键词试试。' : '打开内容库后，会显示库中可用的模板组。'}</div></Card>}{preview && <dialog ref={dialog} className="image-preview" onCancel={() => setPreview(null)} aria-label={preview.name}><div className="dialog-heading"><div><h2>{preview.name}</h2><p>{preview.samples.length} 张风格样张 · 同一模板组</p></div><Button onClick={() => setPreview(null)}>关闭预览</Button></div><div className="preview-grid">{preview.samples.map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`${preview.name}样张 ${index + 1}`}/>)}</div></dialog>}{workflowTemplateId && <Card title="模板学习与还原" extra={<Button disabled={busy} onClick={() => setWorkflowTemplateId(null)}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card>}{importing && <TemplateImportDialog props={props} template={importing.template} initialImages={importing.images} close={() => setImporting(null)}/>}</section>;
 }
 
 function ScheduleEditor({value, change, disabled}: {value: WorkspaceSchedule; change(value: WorkspaceSchedule): void; disabled: boolean}) {
@@ -97,7 +109,6 @@ function ScheduleEditor({value, change, disabled}: {value: WorkspaceSchedule; ch
 }
 function CalendarManagement(props: Props & WorkspaceManagementProps & {selectedDay: string; focus: {kind: WorkspaceKind; id: string} | null}) {
   const {library, busy} = props, [selected, setSelected] = useState(''), [dialog, setDialog] = useState<{mode: 'plan' | 'record' | 'correct' | 'retract'; documentId: string; kind: WorkspaceKind; plan?: WorkspaceLibraryPlan; publication?: WorkspacePublication} | null>(null), {mutate, notice} = useWorkspaceMutation(props);
-  useEffect(() => { if (props.focus) setSelected(`${props.focus.kind}:${props.focus.id}`); }, [props.focus]);
   useEffect(() => { if (props.focus) setSelected(`${props.focus.kind}:${props.focus.id}`); }, [props.focus]);
   if (!library) return null;
   const documents = [...library.contentDetails.filter(item => !item.deletedAt).map(item => ({document: item, kind: 'content' as const})), ...library.collections.filter(item => !item.deletedAt).map(item => ({document: item, kind: 'collection' as const}))];

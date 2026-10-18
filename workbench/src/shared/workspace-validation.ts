@@ -61,6 +61,7 @@ export function workspaceMutation(v: unknown): v is WorkspaceMutation {
             return fields(v, ['op', 'id', 'editToken']) && template(v.id) && token(v.editToken);
         case 'updatePhoto': return fields(v, ['op', 'id', 'editToken', 'title', 'isOwnPhoto']) && ref(v) && text(v.title, 500) && bool(v.isOwnPhoto);
         case 'selectTemplateVersion': return fields(v, ['op', 'id', 'editToken', 'version']) && template(v.id) && token(v.editToken) && Number.isSafeInteger(v.version) && (v.version as number) > 0 && (v.version as number) <= 1_000_000;
+        case 'deriveTemplate': return fields(v, ['op', 'sourceTemplateId', 'sourceVersion', 'sourcePackageHash', 'name']) && template(v.sourceTemplateId) && Number.isSafeInteger(v.sourceVersion) && (v.sourceVersion as number) > 0 && (v.sourceVersion as number) <= 1_000_000 && token(v.sourcePackageHash) && text(v.name, 500);
         case 'createTemplate': return fields(v, ['op', 'name', ...templateFields]) && text(v.name, 500) && templateData(v);
         case 'addTemplateVersion': return fields(v, ['op', 'id', 'editToken', 'version', ...templateFields]) && ref(v) && Number.isSafeInteger(v.version) && (v.version as number) > 0 && (v.version as number) <= 1_000_000 && templateData(v);
         case 'attachMaterial': return fields(v, ['op', 'id', 'editToken', 'assetHash', 'originalName', 'role']) && ref(v) && token(v.assetHash) && text(v.originalName, 255) && !/[\\/\u0000-\u001f]/.test(v.originalName) && ['material', 'reference'].includes(v.role as string);

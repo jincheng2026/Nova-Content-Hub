@@ -196,7 +196,7 @@ function target(input: WorkspaceMutation): {kind: WorkspaceObjectKind; id: strin
         case 'createPrompt': return {kind: 'prompt', id: null};
         case 'updatePrompt': case 'setPromptEnabled': case 'trashPrompt': case 'restorePrompt': return {kind: 'prompt', id: input.id};
         case 'updatePhoto': case 'trashPhoto': case 'restorePhoto': return {kind: 'photo', id: input.id};
-        case 'createTemplate': return {kind: 'template', id: null};
+        case 'deriveTemplate': case 'createTemplate': return {kind: 'template', id: null};
         case 'selectTemplateVersion': case 'addTemplateVersion': case 'trashTemplate': case 'restoreTemplate': return {kind: 'template', id: input.id};
         case 'createCollection': return {kind: 'collection', id: null};
         case 'updateCollection': case 'setCollectionMembers': case 'trashCollection': case 'restoreCollection': return {kind: 'collection', id: input.id};
@@ -240,6 +240,12 @@ async function mutate(library: WorkspaceCoreLibrary, pending: WorkspacePending):
             case 'trashPhoto': return library.trashPhoto(input.id, input.editToken, options);
             case 'restorePhoto': return library.restorePhoto(input.id, input.editToken, options);
             case 'selectTemplateVersion': return library.selectTemplateVersion(input.id, input.version, input.editToken, options);
+            case 'deriveTemplate': {
+                const source = library.readTemplate(input.sourceTemplateId, input.sourceVersion);
+                const version = source.versions.find(item => item.version === input.sourceVersion);
+                if (source.deletedAt || !version || version.packageHash !== input.sourcePackageHash) fail('CONFLICT', '原模板已改变或不可用，请重新选择要复制的版本。');
+                return library.createTemplate({name: input.name, definition: {...source.definition, accepted: false, aiTested: false}, resources: source.resources, derivedFrom: {id: input.sourceTemplateId, version: input.sourceVersion}}, options);
+            }
             case 'createTemplate': return library.createTemplate({name: input.name, ...await templatePackage(library, input)}, options);
             case 'addTemplateVersion': return library.addTemplateVersion(input.id, {version: input.version, ...await templatePackage(library, input)}, input.editToken, options);
             case 'attachMaterial': {

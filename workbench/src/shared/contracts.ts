@@ -2,6 +2,8 @@ import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, Pho
 import type {WorkspaceInputs, WorkspaceResults, WorkspaceWorkerOperations, WorkspacePending, WorkspacePendingView} from './workspace-contracts.ts';
 import type {MaintenanceInputs, MaintenanceResults, MaintenanceWorkerOperations, MaintenancePending, MaintenanceStatus} from './maintenance-contracts.ts';
 import type {PreferencesInputs, PreferencesResults} from './preferences-contracts.ts';
+import type {TemplateInputs, TemplateResults, TemplateWorkerOperations, TemplatePending, TemplatePendingView} from './template-contracts.ts';
+import type {BootstrapInputs, BootstrapResults} from './bootstrap-contracts.ts';
 import type {SetupInputs, SetupResults} from './setup-contracts.ts';
 export interface Issue {
     code: string;
@@ -141,10 +143,11 @@ export interface Status {
     coverPending: boolean;
     seedPending: boolean;
     workspacePending: WorkspacePendingView | null;
+    templatePending: TemplatePendingView | null;
     maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs {
+export interface DesktopInputs extends CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     choosePromptDocument: undefined;
     status: undefined;
     chooseBackup: undefined;
@@ -166,7 +169,7 @@ export interface DesktopInputs extends CoverInputs, WorkspaceInputs, Maintenance
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults {
+export interface DesktopResults extends CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     choosePromptDocument: {title: string; body: string} | null;
     status: Status;
     chooseBackup: void;
@@ -205,6 +208,7 @@ export interface Binding {
     coverActionPending?: CoverActionPending | null;
     coverPending?: CoverPending | null;
     workspacePending?: WorkspacePending | null;
+    templatePending?: TemplatePending | null;
     maintenancePending?: MaintenancePending | null;
     seedPending?: boolean;
     current?: LibraryBinding | null;
@@ -213,7 +217,7 @@ export interface Binding {
     needsReselect?: boolean
 }
 
-export interface WorkerOperations extends CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations {
+export interface WorkerOperations extends CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
     inspect: { args: { source: string }; result: Inspection };
     query: { args: { destination: string; importId: string | null }; result: ImportTask | null };
     import: { args: { source: string; destination: string; expectedSourceHash: string }; result: ImportTask };

@@ -9,8 +9,8 @@ import {setupDesktopInput} from '../shared/setup-validation.ts';
 import {fail} from '../shared/validation.ts';
 import {readLocalRecord} from './preferences.mts';
 
-const diagnosticCodes = new Set(['AUTH_NOT_CONFIGURED', 'BINDING_INVALID', 'CONFLICT', 'CORRUPT', 'IO_ERROR', 'NOT_READY', 'WORKER_EXIT', 'WORKER_STOPPED', 'PENDING_MUTATION', 'IMPORT_IN_PROGRESS', 'BACKUP_INCOMPLETE', 'SOURCE_CHANGED', 'FORMAT_UNSUPPORTED', 'PREFERENCES_UNAVAILABLE', 'MARKET_NOT_AVAILABLE', 'MARKET_MISMATCH', 'ASSISTANT_NOT_READY', 'OTHER']);
-const recoveryKeys = ['content', 'workspace', 'creation', 'photo', 'cover', 'coverAction', 'maintenance', 'seed', 'needsReselect'] as const;
+const diagnosticCodes = new Set(['AUTH_NOT_CONFIGURED', 'BINDING_INVALID', 'CONFLICT', 'CORRUPT', 'IO_ERROR', 'NOT_READY', 'WORKER_EXIT', 'WORKER_STOPPED', 'PENDING_MUTATION', 'IMPORT_IN_PROGRESS', 'BACKUP_INCOMPLETE', 'SOURCE_CHANGED', 'FORMAT_UNSUPPORTED', 'PREFERENCES_UNAVAILABLE', 'MARKET_NOT_AVAILABLE', 'MARKET_MISMATCH', 'ASSISTANT_NOT_READY', 'BOOTSTRAP_CHANGED', 'BOOTSTRAP_UNSAFE', 'BOOTSTRAP_RECOVERY_INCOMPLETE', 'OTHER']);
+const recoveryKeys = ['content', 'workspace', 'template', 'creation', 'photo', 'cover', 'coverAction', 'maintenance', 'seed', 'needsReselect'] as const;
 const countKeys = ['contents', 'collections', 'templates', 'photos', 'prompts'] as const;
 export class Setup {
     release: Release;
@@ -92,7 +92,8 @@ export class Setup {
             const recovery = Object.fromEntries(recoveryKeys.map(key => [key, context.recovery?.[key] === true]));
             const counts = Object.fromEntries(countKeys.flatMap(key => { const value = context.counts?.[key]; return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? [[key, value]] : []; }));
             const errorCodes = [...new Set((context.errorCodes ?? []).slice(0, 100).map(code => diagnosticCodes.has(code) ? code : 'OTHER'))].slice(0, 32);
-            const report = {format: 'nova-content-desktop-diagnostics', schemaVersion: 1, platform: this.release.platform, arch: this.release.arch, version: this.release.version, mode: this.release.AUTH_MODE, bindingPresent: context.bindingPresent === true, recovery, counts, errorCodes};
+            const bindingBackupName = typeof context.bindingBackupName === 'string' && /^machine-binding\.[0-9a-f-]{36}\.backup\.json$/.test(context.bindingBackupName) ? context.bindingBackupName : null;
+            const report = {bindingBackupName, format: 'nova-content-desktop-diagnostics', schemaVersion: 1, platform: this.release.platform, arch: this.release.arch, version: this.release.version, mode: this.release.AUTH_MODE, bindingPresent: context.bindingPresent === true, recovery, counts, errorCodes};
             const handle = await fs.open(destination, 'wx', 0o600);
             try { await handle.writeFile(`${JSON.stringify(report, null, 2)}\n`); await handle.sync(); }
             finally { await handle.close(); }

@@ -32,9 +32,10 @@ function bindingFor(binding) {
     return binding;
 }
 
-function taskFor(task) {
-    if (!exact(task, ['contentId', 'requestId', 'attemptId', 'requestHash', 'host']) ||
-        ![task.contentId, task.requestId, task.attemptId].every(uuid) || !hash(task.requestHash) || !['codex', 'workbuddy'].includes(task.host)) refuse('INVALID_HANDOFF', '交接必须指向固定的封面尝试。');
+function taskFor(task, kind = 'cover') {
+    const key = kind === 'template' ? 'templateId' : 'contentId';
+    if (!['cover', 'template'].includes(kind) || !exact(task, [key, 'requestId', 'attemptId', 'requestHash', 'host']) ||
+        !(kind === 'template' ? typeof task[key] === 'string' && (uuid(task[key]) || /^builtin-[a-z0-9][a-z0-9-]*$/.test(task[key])) : uuid(task[key])) || ![task.requestId, task.attemptId].every(uuid) || !hash(task.requestHash) || !['codex', 'workbuddy'].includes(task.host)) refuse('INVALID_HANDOFF', '交接必须指向对应业务的固定尝试。');
     return task;
 }
 
@@ -71,24 +72,27 @@ function sameEntry(a, b) {
     return a.dev === b.dev && a.ino === b.ino;
 }
 
-function contextFor(binding, task, launching = false) {
+function contextFor(binding, task, launching = false, kind = 'cover') {
     const library = openLibrary(binding.root, {
         expectedLibraryId: binding.libraryId,
         expectedRootIdentity: binding.rootIdentity
     });
-    const context = library.readCoverContext(task.contentId, task.requestId, task.attemptId);
+    const context = kind === 'template' ? library.readTemplateContext(task.templateId, task.requestId, task.attemptId) : library.readCoverContext(task.contentId, task.requestId, task.attemptId);
     if (context.request.requestHash !== task.requestHash || context.attempt.host !== task.host || context.handoff.host !== task.host) refuse('CONFLICT', '固定请求或助手归属与交接不一致。');
     if (launching) {
-        const job = context.content.coverJobs.find(job => job.id === task.requestId);
-        if (context.content.deletedAt || job.activeAttemptId !== task.attemptId || !['created', 'claimed'].includes(context.attempt.status)) refuse('ATTEMPT_INACTIVE', '这次尝试已结束，请在工作台查看或重试。');
-        if (context.content.title !== context.request.title || createHash('sha256').update(Buffer.from(context.content.body)).digest('hex') !== context.request.bodyHash) refuse('STALE_INPUT', '内容已经修改，请回工作台准备新的生成请求。');
+        const record = kind === 'template' ? context.template : context.content;
+        const job = (kind === 'template' ? record.templateJobs : record.coverJobs).find(job => job.id === task.requestId);
+        if (record.deletedAt || job.activeAttemptId !== task.attemptId || !['created', 'claimed'].includes(context.attempt.status)) refuse('ATTEMPT_INACTIVE', '这次尝试已结束，请在工作台查看或重试。');
+        if (kind === 'template' && (record.currentVersion !== context.request.template.version || !record.versions.some(v => v.version === context.request.template.version && v.packageHash === context.request.template.packageHash))) refuse('STALE_INPUT', '模板版本已经变化，请回工作台准备新的学习请求。');
+        if (kind === 'cover' && (context.content.title !== context.request.title || createHash('sha256').update(Buffer.from(context.content.body)).digest('hex') !== context.request.bodyHash)) refuse('STALE_INPUT', '内容已经修改，请回工作台准备新的生成请求。');
     }
     return {library, context};
 }
 
-function hostURL(host, id, root, options) {
-    if (!exact(options, ['installedSkill']) || options.installedSkill !== 'nova-content-cover-execution') refuse('NOT_READY', '请先在所选助手安装并启用配套的封面执行 Skill。');
-    const prompt = `${host === 'codex' ? '$nova-content-cover-execution\n' : ''}执行工作台交接 ID：${id}。用随包 run-node cover context --handoff ${id} 读取本次请求并按 Skill 完成。`;
+function hostURL(host, id, root, options, kind = 'cover') {
+    const skill = kind === 'template' ? 'nova-content-template-execution' : 'nova-content-cover-execution';
+    if (!exact(options, ['installedSkill', ...(options && Object.hasOwn(options, 'kind') ? ['kind'] : [])]) || options.installedSkill !== skill) refuse('NOT_READY', '请先在所选助手安装并启用配套的执行 Skill。');
+    const prompt = `${host === 'codex' ? '$' + skill + '\n' : ''}执行工作台交接 ID：${id}。用随包 run-node ${kind} context --handoff ${id} 读取本次请求并按 Skill 完成。`;
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
         url.searchParams.set('action', 'start');
@@ -103,13 +107,15 @@ function hostURL(host, id, root, options) {
 export async function prepareNativeHandoff(directory, binding, task, release, options) {
     releaseFor(release);
     bindingFor(binding);
-    taskFor(task);
-    contextFor(binding, task, true);
-    const id = randomUUID(), url = hostURL(task.host, id, binding.root, options);
+    const kind = options?.kind === undefined ? 'cover' : options.kind;
+    taskFor(task, kind);
+    contextFor(binding, task, true, kind);
+    const id = randomUUID(), url = hostURL(task.host, id, binding.root, options, kind);
     const before = directoryStat(directory, true);
     const envelope = {
         format: 'nova-content-native-handoff',
-        schemaVersion: 1,
+        schemaVersion: kind === 'template' ? 2 : 1,
+        ...(kind === 'template' ? {kind: 'template'} : {}),
         handoffId: id,
         pairId: release.pairId,
         AUTH_MODE: release.AUTH_MODE,
@@ -130,7 +136,7 @@ export async function prepareNativeHandoff(directory, binding, task, release, op
         fs.closeSync(fd);
     }
     if (!sameEntry(before, directoryStat(directory))) refuse('CONFLICT', '本机交接目录已经被替换。');
-    contextFor(binding, task, true);
+    contextFor(binding, task, true, kind);
     // shortcut: path checks do not provide atomic openat semantics; re-audit before supporting shared/untrusted appData.
     return {id, url};
 }
@@ -166,9 +172,10 @@ export function readNativeHandoff(directory, id, release) {
     } catch {
         refuse('INVALID_HANDOFF', '本机交接不是有效 UTF-8 JSON。');
     }
-    if (!exact(envelope, ['format', 'schemaVersion', 'handoffId', 'pairId', 'AUTH_MODE', 'platform', 'arch', 'binding', 'task', 'createdAt']) || envelope.format !== 'nova-content-native-handoff' || envelope.schemaVersion !== 1 || envelope.handoffId !== id || typeof envelope.createdAt !== 'string' || !Number.isFinite(Date.parse(envelope.createdAt))) refuse('INVALID_HANDOFF', '本机交接字段无效。');
+    const kind = envelope?.schemaVersion === 2 && envelope?.kind === 'template' ? 'template' : 'cover';
+    if (!exact(envelope, ['format', 'schemaVersion', ...(kind === 'template' ? ['kind'] : []), 'handoffId', 'pairId', 'AUTH_MODE', 'platform', 'arch', 'binding', 'task', 'createdAt']) || envelope.format !== 'nova-content-native-handoff' || envelope.schemaVersion !== (kind === 'template' ? 2 : 1) || envelope.handoffId !== id || typeof envelope.createdAt !== 'string' || !Number.isFinite(Date.parse(envelope.createdAt))) refuse('INVALID_HANDOFF', '本机交接字段无效。');
     if (['pairId', 'AUTH_MODE', 'platform', 'arch'].some(key => envelope[key] !== release[key])) refuse('PAIR_MISMATCH', '工作台交接与插件构建不配套。');
-    const binding = bindingFor(envelope.binding), task = taskFor(envelope.task);
-    const {library} = contextFor(binding, task);
-    return {binding, task, library};
+    const binding = bindingFor(envelope.binding), task = taskFor(envelope.task, kind);
+    const {library} = contextFor(binding, task, false, kind);
+    return {binding, task, library, kind};
 }

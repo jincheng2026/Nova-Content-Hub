@@ -3,7 +3,7 @@ export const ASSISTANTS = ['codex', 'workbuddy'] as const;
 export type Assistant = typeof ASSISTANTS[number];
 export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-content-cover-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured' }
 export interface Raster { assetHash: string; url: string }
-export interface TemplateGroup { id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
+export interface TemplateGroup { builtin: boolean; id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
 export interface Photo { id: string; title: string; assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; url: string | null }
 export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; pixels: { width: number; height: number }; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
 export interface CoverStart { contentId: string; editToken: string; input: CoverInput }

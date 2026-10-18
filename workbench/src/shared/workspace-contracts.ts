@@ -29,6 +29,7 @@ export type WorkspaceMutation =
     | ({op: 'trashPrompt' | 'restorePrompt' | 'trashPhoto' | 'restorePhoto' | 'trashTemplate' | 'restoreTemplate' | 'trashCollection' | 'restoreCollection'} & WorkspaceReference)
     | ({op: 'updatePhoto'; title: string; isOwnPhoto: boolean} & WorkspaceReference)
     | ({op: 'selectTemplateVersion'; version: number} & WorkspaceReference)
+    | {op: 'deriveTemplate'; sourceTemplateId: string; sourceVersion: number; sourcePackageHash: string; name: string}
     | ({op: 'createTemplate'; name: string} & WorkspaceTemplateFields)
     | ({op: 'addTemplateVersion'; version: number} & WorkspaceReference & WorkspaceTemplateFields)
     | ({op: 'attachMaterial'; assetHash: string; originalName: string; role: 'material' | 'reference'} & WorkspaceReference)
