@@ -468,7 +468,7 @@ coverJobs。
 
 新计划 `savePublicationPlan(id,{id?,channelId,text,schedule,coverChoice?},token,options?)` 必须明确传
 text（空字符串也是事实）；channelId 必须在配置中 active。coverChoice 为 null、`{variantId}` 或 `{candidateId}`；默认沿用该计划选择，新计划为
-null；null 发布时使用当时主 selectedCover。规格选择在发布时解析到具体候选，不冻结可变规格引用代替具体图。
+null；现代 `textMode:'explicit'` 计划的 null 表示这次不记录封面，不继承主 selectedCover；旧 `textMode:'body'` 或尚未规范化的旧计划保留主封面回退。规格选择在发布时解析到具体候选，不冻结可变规格引用代替具体图。更正未传 coverChoice 保留旧实际封面，明确 null 则不记录封面。
 
 ```js
 { precision:'date', date:'2026-10-18' }

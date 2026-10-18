@@ -1,0 +1,48 @@
+✔ pinned upgrade rejects changed original descriptor and replaced clone before recovery or model creation (119.157459ms)
+✔ pinned upgrade resumes upgrade5AfterBackup and query never mistakes descriptor publication for completion (268.715042ms)
+✔ pinned upgrade resumes upgrade5AfterBarrier and query never mistakes descriptor publication for completion (265.143584ms)
+✔ pinned upgrade resumes upgrade5AfterDirectories and query never mistakes descriptor publication for completion (276.290125ms)
+✔ pinned upgrade resumes upgrade5BeforeDescriptorPublish and query never mistakes descriptor publication for completion (277.371959ms)
+✔ pinned upgrade resumes upgrade5AfterDescriptorPublish and query never mistakes descriptor publication for completion (256.232834ms)
+✔ pinned upgrade resumes upgrade5AfterFinalMarker and query never mistakes descriptor publication for completion (261.406208ms)
+✔ pinned upgrade refuses unrelated schema 5 and closed options never open legacy schemas 1 to 3 (106.230833ms)
+✔ pinned upgrade rechecks descriptor after lock and original-backup boundary before further publication (131.453708ms)
+✔ pinned upgrade refuses root replacement during lock acquisition before pending recovery (120.027333ms)
+✔ portable settings, normalized ratios, channel identity, prompt disable and explicit invalid defaults (1451.162917ms)
+✔ collections own body/materials/plan/publication and only reference content members (1243.551458ms)
+✔ variants, candidate favorites and imported unavailable references cannot fake executable assets or tasks (1140.8775ms)
+✔ content explicit no-cover plan does not inherit the selected cover (720.285792ms)
+✔ collection explicit no-cover plan does not inherit the selected cover (764.896042ms)
+✔ content publication correction and retraction preserve intended plan (1200.343167ms)
+✔ collection publication correction and retraction preserve intended plan (1196.412791ms)
+✔ two channels freeze different text/covers and all date precisions; correction/retraction preserve old snapshots (1503.396625ms)
+✔ legacy plans retain body reference and absent historical text/cover stays unknown (724.805583ms)
+✔ SIGKILL upgrade5AfterBackup: schema4→5 resumes with raw history/descriptor intact (711.488709ms)
+✔ SIGKILL upgrade5AfterBarrier: schema4→5 resumes with raw history/descriptor intact (693.536291ms)
+✔ SIGKILL upgrade5AfterDirectories: schema4→5 resumes with raw history/descriptor intact (719.502625ms)
+✔ SIGKILL upgrade5BeforeDescriptorPublish: schema4→5 resumes with raw history/descriptor intact (683.23575ms)
+✔ SIGKILL upgrade5AfterDescriptorPublish: schema4→5 resumes with raw history/descriptor intact (689.739375ms)
+✔ SIGKILL upgrade5AfterFinalMarker: schema4→5 resumes with raw history/descriptor intact (665.637833ms)
+✔ actual schema4 writer refuses schema5 and new barrier even after descriptor rollback (382.105834ms)
+✔ transaction3 settings recover once, and old transaction types cannot smuggle workspace (235.893708ms)
+✔ schema5 backup roundtrip retains settings, collections, publication events, unavailable refs and disabled trashed prompt (3075.966292ms)
+✔ real schema4 backup verifies/restores original schema and requires explicit upgrade (1475.069208ms)
+✔ workspace SIGKILL afterCapture recovers before reading fixed config (299.15ms)
+✔ workspace SIGKILL afterFile recovers before reading fixed config (319.291125ms)
+✔ two independent settings writers serialize and stale token loses without lost updates (376.362334ms)
+✔ new workspace rejects malformed finite fields before read or restore publication (272.842167ms)
+✔ new collection rejects malformed finite fields before read or restore publication (442.218125ms)
+✔ historical publication with explicit candidate freezes original image but keeps unknown selection time and base body (476.681417ms)
+✔ publication correction facts cannot refer backward or to themselves (485.760167ms)
+✔ legacy content plan accepts unregistered history but rejects a registered trashed channel (397.777167ms)
+✔ legacy collection plan accepts unregistered history but rejects a registered trashed channel (331.081417ms)
+✔ schema4 restore refuses newer metadata instead of installing a disguised downgraded library (458.410416ms)
+✔ restoring invalid default references preserves IDs and source digest without reviving or authorizing generation (947.8705ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26280.250667

@@ -1,0 +1,58 @@
+✖ content publication correction and retraction preserve intended plan (814.257959ms)
+✖ collection publication correction and retraction preserve intended plan (818.106875ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1873.82125
+
+✖ failing tests:
+
+test at plugin-src/src/lib/file-library/test/model-v5.test.mjs:316:47
+✖ content publication correction and retraction preserve intended plan (814.257959ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   at: '2026-10-17T18:59:45.000Z',
+  -   at: '2026-10-22T18:57:06.000Z',
+      precision: 'instant',
+      timezone: 'Asia/Shanghai'
+    }
+
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/model-v5.test.mjs:350:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { precision: 'instant', at: '2026-10-17T18:59:45.000Z', timezone: 'Asia/Shanghai' },
+    expected: { precision: 'instant', at: '2026-10-22T18:57:06.000Z', timezone: 'Asia/Shanghai' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at plugin-src/src/lib/file-library/test/model-v5.test.mjs:316:47
+✖ collection publication correction and retraction preserve intended plan (818.106875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+    {
+  +   at: '2026-10-17T18:59:45.000Z',
+  -   at: '2026-10-22T18:57:06.000Z',
+      precision: 'instant',
+      timezone: 'Asia/Shanghai'
+    }
+
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/model-v5.test.mjs:350:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { precision: 'instant', at: '2026-10-17T18:59:45.000Z', timezone: 'Asia/Shanghai' },
+    expected: { precision: 'instant', at: '2026-10-22T18:57:06.000Z', timezone: 'Asia/Shanghai' },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

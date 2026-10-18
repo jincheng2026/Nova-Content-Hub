@@ -117,7 +117,8 @@ test('trashed resolved candidate references cannot become current selections or 
     const referenceId = c.unavailableReferences[0].id;
     c = f.lib.resolveContentUnavailableReference(c.id, referenceId, {assetHash: a.assetHash}, c.editToken);
     c = f.lib.selectContentCover(c.id, referenceId, c.editToken);
-    c = f.lib.savePublicationPlan(c.id, {channelId: 'douyin', text: 'post', schedule: date}, c.editToken);
+    c = f.lib.savePublicationPlan(c.id, {channelId: 'douyin', text: 'post', schedule: date, coverChoice: {candidateId: referenceId}}, c.editToken);
+    c = f.lib.savePublicationPlan(c.id, {channelId: 'douyin', text: '', schedule: date, coverChoice: null}, c.editToken);
     c = f.lib.trashContentUnavailableReference(c.id, referenceId, c.editToken);
     reject('INVALID_INPUT', () => f.lib.selectContentCover(c.id, referenceId, c.editToken));
     reject('INVALID_INPUT', () => f.lib.saveContentCoverVariant(c.id, {
@@ -126,9 +127,13 @@ test('trashed resolved candidate references cannot become current selections or 
         selectedCandidateId: referenceId
     }, c.editToken));
     reject('INVALID_INPUT', () => f.lib.recordPublication(c.id, {planId: c.plans[0].id, schedule: date}, c.editToken));
+    c = f.lib.recordPublication(c.id, {planId: c.plans[1].id, schedule: date}, c.editToken);
+    const noCover = f.lib.readPublication(c.id, c.publications[0].id);
+    assert.equal(noCover.cover, null);
+    assert.equal(noCover.template, null);
     c = f.lib.restoreContentUnavailableReference(c.id, referenceId, c.editToken);
     c = f.lib.recordPublication(c.id, {planId: c.plans[0].id, schedule: date}, c.editToken);
-    assert.equal(f.lib.readPublication(c.id, c.publications[0].id).cover.candidateId, referenceId);
+    assert.equal(f.lib.readPublication(c.id, c.publications[1].id).cover.candidateId, referenceId);
 });
 
 test('profile marks retain duplicate keys with distinct original values', t => {

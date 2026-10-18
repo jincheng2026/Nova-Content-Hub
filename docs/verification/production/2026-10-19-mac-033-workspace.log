@@ -1,0 +1,21 @@
+✔ recording an instant preserves its timezone and precision while using the actual current instant (8.888791ms)
+✔ local minute records use the planned timezone across a date boundary (14.880792ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.2805ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.36775ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (1434.267291ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (452.492625ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (240.910458ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (146.297458ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (345.971958ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.564917ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.147333ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (1017.082792ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (751.496291ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4696.737375

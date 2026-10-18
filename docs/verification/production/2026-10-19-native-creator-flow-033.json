@@ -1,0 +1,102 @@
+{
+  "at": "2026-10-18T19:51:44.952Z",
+  "installedVersion": "0.3.3",
+  "libraryRoot": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "syntheticContentOnly": true,
+  "realPlatformPublication": false,
+  "aiGenerationThisTurn": false,
+  "templateFlow": {
+    "group": "观点金句",
+    "version": 4,
+    "styleSamples": 2,
+    "groupPreviewOpened": true,
+    "newContentCreatedThroughTemplate": true,
+    "contentId": "79b02918-43b8-498a-a906-95e0ffad72fa",
+    "titleAndBodySavedNatively": true,
+    "composerSelectedTemplateRetained": true,
+    "explicitNoPerson": true,
+    "photoChooserCancelled": true,
+    "actualOwnPhotoUpload": false,
+    "personalTemplateImport": false
+  },
+  "promptFlow": {
+    "promptId": "8ea8b935-cd8a-41e8-aea7-8d9487f02190",
+    "importChooserCancelled": true,
+    "fileImported": true,
+    "rawUtf8BodyPreserved": true,
+    "rawBodySha256": "1700ea63177d02a5b5d273e384c655e71cfa0daf832ed7e6b807a41b0be913f5",
+    "explicitContentAssociation": true,
+    "includeBodyInitiallyFalse": true,
+    "variablesFilled": [
+      "主题",
+      "读者"
+    ],
+    "copied": true,
+    "clipboardVerifiedByNativePasteIntoUnsavedEditor": true,
+    "closeContinueRetainedValues": true,
+    "explicitDiscardClosed": true,
+    "unsavedPasteDraftDiscarded": true,
+    "retainedAfterRestart": true,
+    "totalPrompts": 28,
+    "crudDisableTrashRestoreNotRun": true
+  },
+  "publicationFlow": {
+    "broken032": {
+      "contentId": "79b02918-43b8-498a-a906-95e0ffad72fa",
+      "dateOnlyAndLocalMinuteSaved": true,
+      "explicitEmptyTextSaved": true,
+      "UTCStoredCorrectly": true,
+      "UTCShownOnShanghaiNextDay": true,
+      "localPlanCancelled": true,
+      "recordCorrectRetractHistoryPreserved": true,
+      "intendedPlanOverwritten": true
+    },
+    "fixed033": {
+      "contentId": "209cebcc-619c-47ee-81ce-0c67e6de8062",
+      "planId": "b1eddfe9-a608-4a3d-a42b-0d85a453b0d8",
+      "originalMainCoverSelected": true,
+      "planBeforeRecord": {
+        "id": "b1eddfe9-a608-4a3d-a42b-0d85a453b0d8",
+        "channelId": "douyin",
+        "schedule": {
+          "precision": "date",
+          "date": "2026-10-21"
+        },
+        "textMode": "explicit",
+        "text": "原生0.3.3复验计划，非真实发布。",
+        "coverChoice": null,
+        "status": "planned",
+        "createdAt": "2026-10-18T19:44:22.128Z",
+        "updatedAt": "2026-10-18T19:44:22.128Z"
+      },
+      "actualInitialDate": "2026-10-19",
+      "actualCorrectedDate": "2026-10-18",
+      "actualCorrectedText": "更正后的验收发布文字，原计划应保持。",
+      "actualNoCoverAndNoTemplateVerified": true,
+      "plannedScheduleAndTextUnchanged": true,
+      "planRevertedToPlanned": true,
+      "calendarDateAfterRetraction": "2026-10-21",
+      "effectivePublicationCountAfterRetraction": 0,
+      "originalAndCorrectedSnapshotsReadableAndUnchanged": true,
+      "originalSixCandidatesAndSelectedCoverUnchanged": true,
+      "restartRetained": true
+    }
+  },
+  "sourceVerification": {
+    "log": "2026-10-19-unified-source-10.log",
+    "tests": 872,
+    "passed": 870,
+    "failed": 0,
+    "skipped": 2,
+    "authRequiredAndDisabledBuilds": true
+  },
+  "remaining": {
+    "nativeAutomaticAppReplacementFailed": true,
+    "installedByVerifiedStagedCopy": true,
+    "ownPhotoRealGeneration": false,
+    "nativeCodexSend": false,
+    "WindowsIntelMachinesUnavailable": true,
+    "productionReady": false
+  }
+}

@@ -377,13 +377,13 @@ export function modelMethods(h) {
             selectedAtKnowledge: 'unknown'
         } : null;
         if (!historical) {
-            const choice = plan.coverChoice;
+            const choice = frozen ? input.coverChoice : plan.coverChoice;
             if (choice?.candidateId) cover = candidateCover(meta, choice.candidateId);
             else if (choice?.variantId) {
                 const variant = meta.coverVariants.find(v => v.id === choice.variantId);
                 invalid(variant?.selectedCandidateId, 'Variant has no selected cover');
                 cover = candidateCover(meta, variant.selectedCandidateId);
-            } else {
+            } else if (frozen || plan.textMode !== 'explicit') {
                 cover = meta.selectedCover ? structuredClone(meta.selectedCover) : null;
                 if (cover && !frozen) candidateCover(meta, cover.candidateId);
             }
@@ -396,7 +396,7 @@ export function modelMethods(h) {
             text: null
         } : {status: 'known', text: input.publicationText}) : {
             status: 'known',
-            text: plan.textMode === 'explicit' ? plan.text : before[1].toString('utf8')
+            text: frozen ? input.text : plan.textMode === 'explicit' ? plan.text : before[1].toString('utf8')
         };
         const snapshotBody = historical ? Buffer.alloc(0) : before[1];
         const record = {
@@ -419,7 +419,7 @@ export function modelMethods(h) {
                 createdAt: meta.createdAt,
                 updatedAt: metadata(before[0], value, kind).updatedAt
             }),
-            plan: structuredClone(plan),
+            plan: structuredClone(frozen?.plan ?? plan),
             channel: frozen?.channel ?? (historical ? {
                 id: plan.channelId,
                 name: input.channelName ?? null,
@@ -547,32 +547,26 @@ export function modelMethods(h) {
                 const old = readPublicationUnlocked(kind, value, original); // Corrections preserve frozen base text and cover unless explicitly replaced.
                 const choice = input.coverChoice === undefined ? null : input.coverChoice;
                 invalid(coverChoice(choice, meta), 'Unknown cover choice');
-                const correctedPlan = {
-                    ...plan,
-                    schedule: structuredClone(input.schedule),
-                    textMode: 'explicit',
-                    text: input.text,
-                    coverChoice: choice
-                };
-                delete correctedPlan.scheduledAt;
-                delete correctedPlan.timezone;
                 const frozenBefore = [before[0], old.bodyBytes];
                 const frozenMeta = {
                     ...meta,
                     title: old.snapshot.content.title,
                     selectedCover: input.coverChoice === undefined ? old.snapshot.cover : null
                 };
-                replacement = makePublication(kind, value, frozenMeta, frozenBefore, correctedPlan, {
+                replacement = makePublication(kind, value, frozenMeta, frozenBefore, plan, {
                     schedule: input.schedule,
+                    text: input.text,
+                    coverChoice: choice,
                     url: input.url === undefined ? original.url : input.url
                 }, false, {
+                    plan: old.snapshot.plan,
                     content: old.snapshot.content,
                     contentKnowledge: old.snapshot.contentKnowledge ?? 'known',
                     baseTextKnowledge: old.snapshot.baseTextKnowledge ?? 'known',
                     channel: old.snapshot.channel ?? {id: plan.channelId, name: null, nameStatus: 'unknown'}
                 });
                 nextPlan = {
-                    ...correctedPlan,
+                    ...plan,
                     status: 'published',
                     publicationId: replacement.id,
                     updatedAt: new Date().toISOString()

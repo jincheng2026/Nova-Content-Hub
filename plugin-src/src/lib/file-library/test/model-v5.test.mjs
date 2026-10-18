@@ -313,6 +313,104 @@ test('variants, candidate favorites and imported unavailable references cannot f
     assert.equal(f.lib.readPublication(c.id, c.publications[0].id).cover.assetHash, a.assetHash);
 });
 
+for (const kind of ['content', 'collection']) test(`${kind} explicit no-cover plan does not inherit the selected cover`, async t => {
+    const f = fixture(t), asset = await image(f);
+    const methods = kind === 'content' ? {
+        create: 'createContent', candidate: 'registerContentCandidate', select: 'selectContentCover',
+        save: 'savePublicationPlan', record: 'recordPublication', read: 'readPublication'
+    } : {
+        create: 'createCollection', candidate: 'registerCollectionCandidate', select: 'selectCollectionCover',
+        save: 'saveCollectionPublicationPlan', record: 'recordCollectionPublication', read: 'readCollectionPublication'
+    };
+    let document = f.lib[methods.create]({title: 'with main cover', body: 'base body'});
+    document = f.lib[methods.candidate](document.id, {assetHash: asset.assetHash, requestId: 'manual', attemptId: 'manual'}, document.editToken);
+    document = f.lib[methods.select](document.id, document.candidates[0].id, document.editToken);
+    document = f.lib[methods.save](document.id, {channelId: 'douyin', scheduledAt: instant.at, timezone: instant.timezone}, document.editToken);
+    document = f.lib[methods.record](document.id, {planId: document.plans[0].id, schedule: date}, document.editToken);
+    assert.equal(f.lib[methods.read](document.id, document.publications[0].id).cover.assetHash, asset.assetHash);
+    document = f.lib[methods.save](document.id, {channelId: 'douyin', schedule: date, text: '', coverChoice: null}, document.editToken);
+    document = f.lib[methods.record](document.id, {planId: document.plans[1].id, schedule: instant}, document.editToken);
+    const publication = f.lib[methods.read](document.id, document.publications[1].id);
+    assert.equal(publication.publicationText.text, '');
+    assert.equal(publication.cover, null);
+    assert.equal(publication.template, null);
+    assert.equal(document.selectedCover.assetHash, asset.assetHash);
+});
+
+for (const kind of ['content', 'collection']) test(`${kind} publication correction and retraction preserve intended plan`, async t => {
+    const f = fixture(t), red = await image(f), blue = await image(f, 'blue');
+    const methods = kind === 'content' ? {
+        create: 'createContent', candidate: 'registerContentCandidate', select: 'selectContentCover', save: 'savePublicationPlan',
+        record: 'recordPublication', read: 'readPublication', correct: 'correctPublication', retract: 'retractPublication', reopen: 'readContent'
+    } : {
+        create: 'createCollection', candidate: 'registerCollectionCandidate', select: 'selectCollectionCover', save: 'saveCollectionPublicationPlan',
+        record: 'recordCollectionPublication', read: 'readCollectionPublication', correct: 'correctCollectionPublication', retract: 'retractCollectionPublication', reopen: 'readCollection'
+    };
+    let document = f.lib[methods.create]({title: 'planned story', body: 'base body'});
+    for (const asset of [red, blue]) document = f.lib[methods.candidate](document.id, {
+        assetHash: asset.assetHash, requestId: asset.assetHash, attemptId: 'manual'
+    }, document.editToken);
+    document = f.lib[methods.select](document.id, document.candidates[0].id, document.editToken);
+    const planned = {precision: 'instant', at: '2026-10-22T18:57:06.000Z', timezone: 'Asia/Shanghai'},
+        actual = {precision: 'instant', at: '2026-10-18T18:59:45.000Z', timezone: 'Asia/Shanghai'},
+        corrected = {precision: 'instant', at: '2026-10-17T18:59:45.000Z', timezone: 'Asia/Shanghai'};
+    document = f.lib[methods.save](document.id, {
+        channelId: 'douyin', schedule: planned, text: 'intended text', coverChoice: {candidateId: document.candidates[0].id}
+    }, document.editToken);
+    const plan = structuredClone(document.plans[0]);
+    document = f.lib[methods.record](document.id, {planId: plan.id, schedule: actual}, document.editToken);
+    const original = f.lib[methods.read](document.id, document.publications[0].id);
+    const originalHash = document.publications[0].snapshotHash,
+        originalFile = path.join(f.root, kind === 'content' ? '内容' : '合集', document.id, '发布快照', original.snapshot.publicationId, '快照.json'),
+        originalBytes = fs.readFileSync(originalFile);
+    assert.deepEqual(document.plans[0].schedule, plan.schedule);
+    assert.equal(document.plans[0].text, plan.text);
+    assert.deepEqual(document.plans[0].coverChoice, plan.coverChoice);
+    assert.deepEqual(original.snapshot.plan, plan);
+    assert.deepEqual(original.snapshot.schedule, actual);
+    assert.equal(original.publicationText.text, plan.text);
+    assert.equal(original.cover.assetHash, red.assetHash);
+    document = f.lib[methods.correct](document.id, original.snapshot.publicationId, {
+        reason: 'correct actual publication', schedule: corrected, text: 'corrected actual text',
+        coverChoice: {candidateId: document.candidates[1].id}
+    }, document.editToken);
+    const replacement = f.lib[methods.read](document.id, document.publications[1].id);
+    assert.deepEqual(replacement.snapshot.schedule, corrected);
+    assert.equal(replacement.publicationText.text, 'corrected actual text');
+    assert.equal(replacement.cover.assetHash, blue.assetHash);
+    assert.deepEqual(f.lib[methods.read](document.id, original.snapshot.publicationId), original);
+    assert.deepEqual(replacement.snapshot.plan, plan);
+    assert.deepEqual(document.plans[0].schedule, plan.schedule);
+    assert.equal(document.plans[0].text, plan.text);
+    assert.deepEqual(document.plans[0].coverChoice, plan.coverChoice);
+    document = f.lib[methods.correct](document.id, replacement.snapshot.publicationId, {
+        reason: 'keep actual cover', schedule: wall, text: 'same actual cover'
+    }, document.editToken);
+    const retained = f.lib[methods.read](document.id, document.publications[2].id);
+    assert.equal(retained.cover.assetHash, blue.assetHash);
+    assert.deepEqual(retained.snapshot.plan, plan);
+    document = f.lib[methods.correct](document.id, retained.snapshot.publicationId, {
+        reason: 'actual post had no text or cover', schedule: date, text: '', coverChoice: null
+    }, document.editToken);
+    const cleared = f.lib[methods.read](document.id, document.publications[3].id);
+    assert.deepEqual(cleared.snapshot.plan, plan);
+    assert.deepEqual(cleared.snapshot.schedule, date);
+    assert.equal(cleared.publicationText.text, '');
+    assert.equal(cleared.cover, null);
+    document = f.lib[methods.retract](document.id, cleared.snapshot.publicationId, {reason: 'withdraw'}, document.editToken);
+    document = openLibrary(f.root)[methods.reopen](document.id);
+    assert.equal(document.plans[0].status, 'planned');
+    assert.deepEqual(document.plans[0].schedule, plan.schedule);
+    assert.equal(document.plans[0].textMode, plan.textMode);
+    assert.equal(document.plans[0].text, plan.text);
+    assert.deepEqual(document.plans[0].coverChoice, plan.coverChoice);
+    assert.equal(document.publications[0].snapshotHash, originalHash);
+    assert.deepEqual(fs.readFileSync(originalFile), originalBytes);
+    assert.deepEqual(f.lib[methods.read](document.id, replacement.snapshot.publicationId), replacement);
+    assert.deepEqual(f.lib[methods.read](document.id, retained.snapshot.publicationId), retained);
+    assert.deepEqual(f.lib[methods.read](document.id, cleared.snapshot.publicationId), cleared);
+});
+
 test('two channels freeze different text/covers and all date precisions; correction/retraction preserve old snapshots', async t => {
     const f = fixture(t), red = await image(f), blue = await image(f, 'blue');
     let c = f.lib.createContent({title: 'original', body: 'base body'});

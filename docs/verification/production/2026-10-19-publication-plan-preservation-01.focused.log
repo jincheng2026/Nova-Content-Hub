@@ -1,0 +1,12 @@
+✔ content explicit no-cover plan does not inherit the selected cover (712.937875ms)
+✔ collection explicit no-cover plan does not inherit the selected cover (689.653167ms)
+✔ content publication correction and retraction preserve intended plan (1199.980916ms)
+✔ collection publication correction and retraction preserve intended plan (1161.522875ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3889.566875

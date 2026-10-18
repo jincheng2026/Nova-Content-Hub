@@ -1,0 +1,64 @@
+✖ content explicit no-cover plan does not inherit the selected cover (784.677667ms)
+✖ collection explicit no-cover plan does not inherit the selected cover (684.280792ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1620.766542
+
+✖ failing tests:
+
+test at plugin-src/src/lib/file-library/test/model-v5.test.mjs:316:47
+✖ content explicit no-cover plan does not inherit the selected cover (784.677667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + {
+  +   assetHash: 'e937b4ee0f72ba72c0c6df50566876835fbe6bbaf2267a52a186b3962d30335e',
+  +   attemptId: 'manual',
+  +   candidateId: '7f211e26-7b04-48e0-8c65-90caff9ef6bf',
+  +   requestId: 'manual',
+  +   selectedAt: '2026-10-18T19:11:07.767Z',
+  +   template: null
+  + }
+  - null
+
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/model-v5.test.mjs:335:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { candidateId: '7f211e26-7b04-48e0-8c65-90caff9ef6bf', assetHash: 'e937b4ee0f72ba72c0c6df50566876835fbe6bbaf2267a52a186b3962d30335e', requestId: 'manual', attemptId: 'manual', template: null, selectedAt: '2026-10-18T19:11:07.767Z' },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at plugin-src/src/lib/file-library/test/model-v5.test.mjs:316:47
+✖ collection explicit no-cover plan does not inherit the selected cover (684.280792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + {
+  +   assetHash: 'e937b4ee0f72ba72c0c6df50566876835fbe6bbaf2267a52a186b3962d30335e',
+  +   attemptId: 'manual',
+  +   candidateId: 'fd40f22a-3a19-4538-953b-a12d8e41b3a3',
+  +   requestId: 'manual',
+  +   selectedAt: '2026-10-18T19:11:08.506Z',
+  +   template: null
+  + }
+  - null
+
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/model-v5.test.mjs:335:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { candidateId: 'fd40f22a-3a19-4538-953b-a12d8e41b3a3', assetHash: 'e937b4ee0f72ba72c0c6df50566876835fbe6bbaf2267a52a186b3962d30335e', requestId: 'manual', attemptId: 'manual', template: null, selectedAt: '2026-10-18T19:11:08.506Z' },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

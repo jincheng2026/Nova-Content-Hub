@@ -1,0 +1,31 @@
+{
+  "at": "2026-10-18T19:40:29.526Z",
+  "version": "0.3.3",
+  "app": "/Applications/自媒体工作台.app",
+  "builtApp": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app",
+  "matchingFiles": {
+    "Contents/Info.plist": "31a1ff2eb398d676882fc36b12e25d92a33e6a783b8ba1b919db2480338f0161",
+    "Contents/Resources/app/workbench/dist/main/assistant-runtime.mjs": "e91aacac249041e6c0b3c74c59386b92c89890453f78c62f7485ccaecc7ba746",
+    "Contents/Resources/app/workbench/dist/renderer-resources.json": "c6a5f99ef22a70e066462b64eeefddbe0da930d4ee86b4fc0695ebf56696f329",
+    "Contents/Resources/icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1",
+    "Contents/Resources/app/plugin-src/src/lib/file-library/model-v5.mjs": "e6d5c2c3c1c103bc63893e85d59bf81d2cee251c10caad5f726c84fd2cad1675"
+  },
+  "pluginVersion": "0.3.3",
+  "pluginEntries": 451,
+  "nativeInstall": {
+    "moveAttemptFailed": true,
+    "completeStagedCopyRecovery": {
+      "at": "2026-10-18T19:39:21.995Z",
+      "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-033-install-bMspCJ/自媒体工作台.app",
+      "destination": "/Applications/自媒体工作台.app",
+      "partialPreserved": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/incomplete-native-033-1792352361994.app",
+      "stagedFullTreeMatchesBuild": true,
+      "entries": 1009,
+      "integrityVerifiedBeforeReplace": true,
+      "method": "ditto-to-independent-stage; verify full tree and codesign; rename into Applications",
+      "closedUninitializedProcess": 80427
+    },
+    "relaunched": true
+  },
+  "productionReady": false
+}
