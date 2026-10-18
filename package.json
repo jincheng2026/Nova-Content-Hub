@@ -12,7 +12,7 @@
     "check": "node plugin-src/scripts/sync-bridge.mjs --check && node --check 原型/app.js && node --check 原型/core.js && node --check 原型/data.js && node --check 原型/shared/handoff.js && node --check 原型/shared/zip.js && node builtin-templates/generate.mjs --check",
     "build": "node plugin-src/scripts/sync-bridge.mjs && node builtin-templates/generate.mjs && node scripts/build-prototype.mjs && node plugin-src/build.mjs",
     "build:both": "node plugin-src/scripts/sync-bridge.mjs && node builtin-templates/generate.mjs && node scripts/build-prototype.mjs --auth both && node plugin-src/build.mjs --auth both",
-    "verify": "npm run check && node --check file-library/index.mjs && node --check library-seed/index.mjs && node --check cover-runtime/cli.mjs && node --check library-maintenance/cli.mjs && npm test && npm run test:file-library && npm run test:seeds && node --test plugin-src/tests/*.test.mjs && npm run build:both && node --test verification/*.test.mjs && npm run build:cover -- --auth both && npm run test:cover && npm run test:maintenance && npm run test:browser-import && npm run test:images && npm run test:desktop && npm run build:desktop -- --auth both",
+    "verify": "npm run check && node --check file-library/index.mjs && node --check library-seed/index.mjs && node --check cover-runtime/cli.mjs && node --check library-maintenance/cli.mjs && npm test && npm run test:file-library && npm run test:seeds && node --test plugin-src/tests/*.test.mjs && npm run build:both && node --test verification/*.test.mjs && npm run build:cover -- --auth both && npm run test:cover && npm run test:maintenance && npm run test:browser-import && npm run test:images && npm run test:icons && npm run test:desktop && npm run build:desktop -- --auth both",
     "test:maintenance": "node --test library-maintenance/test/*.test.mjs",
     "test:browser-import": "node --test browser-import/test/*.test.mjs",
     "test:images": "node --test image-validation/test/*.test.mjs",
@@ -21,7 +21,10 @@
     "build:desktop": "npm run build --prefix workbench --",
     "probe:desktop": "npm run probe --prefix workbench",
     "build:plugin": "node plugin-src/scripts/build.mjs --target all",
-    "sync:bridge": "node plugin-src/scripts/sync-bridge.mjs"
+    "sync:bridge": "node plugin-src/scripts/sync-bridge.mjs",
+    "icons:build": "node scripts/build-app-icons.mjs",
+    "icons:check": "node scripts/build-app-icons.mjs --check",
+    "test:icons": "node --test scripts/test/app-icons.test.mjs"
   },
   "engines": {
     "node": ">=20.11"

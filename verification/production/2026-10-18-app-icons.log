@@ -1,0 +1,15 @@
+
+> nova-content-hub-prototype@0.2.0 test:icons
+> node --test scripts/test/app-icons.test.mjs
+
+✔ desktop icon containers preserve transparency and provide all Windows DPI sizes (41.60875ms)
+✔ changing an output or the master is rejected without silently rebuilding it (231.281209ms)
+✔ macOS iconutil can decode the committed ICNS into the complete Retina iconset (380.246ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 806.986792

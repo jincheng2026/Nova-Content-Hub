@@ -1,0 +1,23 @@
+{
+  "format": "nova-content-app-icons",
+  "schemaVersion": 1,
+  "source": "nova-content-hub-icon-master.png",
+  "sourceHash": "40c5860a7075a6b53a637d30921e199d721c2c0e917aaeb71e8bcb3755e9bb0b",
+  "windowsSizes": [
+    16,
+    20,
+    24,
+    32,
+    40,
+    48,
+    64,
+    128,
+    256
+  ],
+  "files": {
+    "icon.png": "e1daf4c981dc80a15e76037987554fd9e0c101451f3d289e00246bcec3e6dece",
+    "icon@2x.png": "bf110ae6a15ae262199e5e362d7d4072c4363e3f03e6e192e4b5a45e88fc1b35",
+    "icon.ico": "2757f6485ef09c8009e2275ad158561c9e9ad40bbc8223ecb3048f8823412fc7",
+    "icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1"
+  }
+}
