@@ -6,7 +6,7 @@ import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
-const usage = 'Use npm run dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';
+const usage = 'Use npm run dist:local|dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';
 
 export function parseOptions(args, host = process) {
     const options = {};
@@ -16,7 +16,7 @@ export function parseOptions(args, host = process) {
         if (!['--channel', '--auth', '--platform', '--arch'].includes(args[index]) || Object.hasOwn(options, key)) throw new Error(usage);
         options[key] = args[index + 1];
     }
-    if (!['testing', 'production'].includes(options.channel) || options.auth !== 'required' || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);
+    if (!['local', 'testing', 'production'].includes(options.channel) || (options.channel === 'local' ? options.auth !== 'disabled' : options.auth !== 'required') || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);
     if (options.platform !== host.platform || options.arch !== host.arch) throw new Error('Use a native runner with matching process.platform and process.arch; cross-platform/architecture packaging is refused.');
     return options;
 }
@@ -33,7 +33,7 @@ export function assertProductionSigning(platform, env) {
 
 export function assertDistribution(options, config, packageJSON, env = process.env) {
     validateBuildConfig(config);
-    if (options.auth !== 'required' || config.AUTH_MODE !== 'required') throw new Error('Installers require AUTH_MODE=required in both the command and release.config.json.');
+    if (options.channel !== 'local' && (options.auth !== 'required' || config.AUTH_MODE !== 'required')) throw new Error('Installers require AUTH_MODE=required in both the command and release.config.json.');
     if (packageJSON.version !== config.version || packageJSON.devDependencies?.electron !== '44.9.0' || packageJSON.devDependencies?.['electron-builder'] !== '26.15.3') throw new Error('Installer version or pinned packaging toolchain mismatch.');
     if (options.channel === 'production') {
         assertProductionSigning(options.platform, env);
@@ -41,9 +41,9 @@ export function assertDistribution(options, config, packageJSON, env = process.e
     }
 }
 
-export function assertStage(release, config) {
+export function assertStage(release, config, auth = 'required') {
     validateRelease(release);
-    if (release.AUTH_MODE !== 'required' || Object.keys(config).some(key => release[key] !== config[key])) throw new Error('Desktop stage does not match release.config.json / AUTH_MODE=required.');
+    if (!['required', 'disabled'].includes(auth) || release.AUTH_MODE !== auth || Object.keys(config).some(key => release[key] !== (key === 'AUTH_MODE' ? auth : config[key]))) throw new Error('Desktop stage does not match release.config.json and the explicitly selected authentication mode.');
 }
 
 export function testingEnvironment(parent = process.env) {
@@ -58,13 +58,12 @@ export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
     return {
-        appId: 'com.novaisland.nova-content-hub.testing',
-        productName: '自媒体工作台 Testing',
-        executableName: 'NovaContentHub-Testing',
+        appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : 'com.novaisland.nova-content-hub.testing',
+        productName: '自媒体工作台',
         electronVersion: '44.9.0',
-        directories: {app: path.join(workbench, 'dist-desktop/auth-required'), output},
-        extraMetadata: {version, description: 'Nova Content Hub restricted testing installer; authentication unavailable', author: 'Nova Content Hub'},
-        artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-testing.\${ext}`,
+        directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},
+        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; authentication disabled; not for distribution' : '自媒体工作台 restricted testing build; authentication unavailable', author: 'Nova Content Hub'},
+        artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\${ext}`,
         publish: null,
         // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.
         asar: false,
@@ -77,7 +76,7 @@ export function installerConfig(options, version) {
             '!**/*.map', '!**/.DS_Store', '!package-lock.json'
         ],
         // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.
-        extraResources: [{from: path.join(workbench, 'dist-desktop/auth-required/workbench/plugin-marketplace'), to: 'plugin-marketplace', filter: ['**/*']}],
+        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']}],
         mac: {
             target: [{target: 'dmg', arch: [options.arch]}],
             icon: path.join(icons, 'icon.icns'),
@@ -110,15 +109,15 @@ export function distribute(args = process.argv.slice(2)) {
     for (const [name, version] of [['electron', '44.9.0'], ['electron-builder', '26.15.3']]) {
         if (readJSON(path.join(workbench, 'node_modules', name, 'package.json')).version !== version) throw new Error(`Run npm ci --include=optional to install pinned ${name}.`);
     }
-    execFileSync(process.execPath, [npmCLI, 'run', 'build', '--', '--auth', 'required'], {cwd: workbench, stdio: 'inherit'});
-    assertStage(readJSON(path.join(workbench, 'dist-desktop/auth-required/workbench/dist/release.json')), config);
+    execFileSync(process.execPath, [npmCLI, 'run', 'build', '--', '--auth', options.auth], {cwd: workbench, stdio: 'inherit'});
+    assertStage(readJSON(path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/dist/release.json`)), config, options.auth);
     const builderConfig = installerConfig(options, config.version);
     fs.mkdirSync(builderConfig.directories.output, {recursive: true});
     const configFile = path.join(builderConfig.directories.output, 'electron-builder.json');
     fs.writeFileSync(configFile, JSON.stringify(builderConfig, null, 2) + '\n');
     const env = testingEnvironment();
     execFileSync(process.execPath, [path.join(workbench, 'node_modules/electron-builder/cli.js'), options.platform === 'darwin' ? '--mac' : '--win', `--${options.arch}`, '--publish', 'never', '--config', configFile], {cwd: workbench, stdio: 'inherit', env});
-    console.log(`Restricted testing installer: ${builderConfig.directories.output}; AUTH_MODE=required, experimental=true, productionReady=false. Authentication is unavailable.`);
+    console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. Authentication is unavailable.`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

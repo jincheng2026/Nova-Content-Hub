@@ -71,5 +71,5 @@ declare module '*file-library/index.mjs' {
     }): Library;
 }
 declare module '*library-seed/index.mjs' { export function installBuiltins(library: unknown): unknown; }
-declare module '*image-validation/index.mjs' { export function validateImportedRaster(bytes: Uint8Array): Promise<{ assetHash: string; format: string }>; }
+declare module '*image-validation/index.mjs' { export function validateImportedRaster(bytes: Uint8Array): Promise<{ assetHash: string; format: string; width: number; height: number }>; }
 declare module '*bridge/native-handoff.mjs' { export function nativeHandoffDirectory(appData: string): string; export function prepareNativeHandoff(directory: string, binding: import('./contracts.ts').LibraryBinding, reference: import('./cover-contracts.ts').CoverReference & { requestHash: string; host: import('./cover-contracts.ts').Assistant }, release: import('./contracts.ts').Release, options: { installedSkill: 'nova-content-cover-execution' }): Promise<{ id: string; url: string }>; }

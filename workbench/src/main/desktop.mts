@@ -3,7 +3,7 @@ import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
 import {app, BrowserWindow, clipboard, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray, powerMonitor} from 'electron';
 import fs from 'node:fs/promises';
-import {readFileSync} from 'node:fs';
+import {readFileSync, existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {PAGE, CHANNELS, CSP, assertCaller, staticResource, validateResources, validateRelease} from './boundary.mts';
@@ -39,8 +39,10 @@ protocol.registerSchemesAsPrivileged([{
     scheme: 'nova-content',
     privileges: {standard: true, secure: true, supportFetchAPI: true}
 }]);
-// Preserve the default userData path and existing machine-library bindings.
-app.setName('Nova 内容库技术验证');
+// Keep the existing machine binding location while changing the public application name.
+const existingUserData = path.join(app.getPath('appData'), 'Nova 内容库技术验证');
+app.setName('自媒体工作台');
+if (existsSync(existingUserData)) app.setPath('userData', existingUserData);
 
 export async function startDesktop({show = true, userData, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
     if (userData) app.setPath('userData', userData);
@@ -174,7 +176,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         minHeight: 520,
         show: false,
         icon: icons.window,
-        title: '自媒体工作台 · 技术验证',
+        title: '自媒体工作台',
         webPreferences: {
             preload: path.join(here, '../preload/index.cjs'),
             sandbox: true,

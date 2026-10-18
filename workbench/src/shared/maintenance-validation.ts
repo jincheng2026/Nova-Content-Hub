@@ -1,3 +1,4 @@
+import {isRecord} from './contracts.ts';
 import {exact, identity, libraryBinding, token, uuid} from './validation.ts';
 import type {BackupIdentity, MaintenancePending} from './maintenance-contracts.ts';
 
@@ -12,7 +13,7 @@ export function backupIdentity(v: unknown): v is BackupIdentity {
 }
 export function maintenancePending(v: unknown): v is MaintenancePending {
     const common = ['operationId', 'startedAt', 'destination', 'parentIdentity', 'kind'];
-    if (!v || typeof v !== 'object' || !('kind' in v)) return false;
+    if (!isRecord(v)) return false;
     if (v.kind === 'backup') return exact(v, [...common, 'binding', 'descriptorHash']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && libraryBinding(v.binding) && filePath(v.binding.root) && token(v.descriptorHash);
     return v.kind === 'restore' && exact(v, [...common, 'backup']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && backupIdentity(v.backup);
 }

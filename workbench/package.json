@@ -12,6 +12,7 @@
     "typecheck:renderer": "tsc -p tsconfig.renderer.json",
     "typecheck": "npm run typecheck:native && npm run typecheck:renderer",
     "build": "node scripts/build.mjs",
+    "dist:local": "node scripts/dist.mjs --channel local --auth disabled",
     "dist:testing": "node scripts/dist.mjs --channel testing --auth required",
     "dist:production": "node scripts/dist.mjs --channel production --auth required",
     "start": "electron dist-desktop/auth-required",
