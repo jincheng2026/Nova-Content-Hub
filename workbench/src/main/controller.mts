@@ -123,6 +123,7 @@ export class DesktopController {
     backupLibrary() { return this.maintenance.backupLibrary(); }
     verifyLibraryBackup() { return this.maintenance.verifyLibraryBackup(); }
     restoreLibraryBackup() { return this.maintenance.restoreLibraryBackup(); }
+    inspectLibraryHealth(input?: undefined) { validateInput('inspectLibraryHealth', input); return this.maintenance.inspectLibraryHealth(); }
     readMaintenanceStatus() { return this.maintenance.readMaintenanceStatus(); }
     recoverMaintenance() { return this.maintenance.recoverMaintenance(); }
     abandonMaintenance() { return this.maintenance.abandonMaintenance(); }

@@ -14,7 +14,7 @@ export const CHANNELS = Object.freeze([
     'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',
     'cancelCover', 'selectCover', 'exportCover', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
     'readWorkspaceLibrary', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
-    'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
+    'inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
     'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',
     'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'
 ] satisfies DesktopMethod[]);

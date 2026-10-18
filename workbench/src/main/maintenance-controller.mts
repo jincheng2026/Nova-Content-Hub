@@ -2,17 +2,30 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import type {DesktopController} from './controller.mts';
-import type {MaintenancePending, MaintenanceReceipt, MaintenanceStatus} from '../shared/maintenance-contracts.ts';
+import type {MaintenancePending, MaintenanceReceipt, MaintenanceStatus, LibraryHealthReport} from '../shared/maintenance-contracts.ts';
 import {fail} from '../shared/validation.ts';
 
 export class Maintenance {
     owner: DesktopController;
     receipt: MaintenanceReceipt | null = null;
+    health: LibraryHealthReport | null = null;
+    healthBinding: string | null = null;
+    private bindingKey() { const binding = this.owner.binding?.current; return binding ? JSON.stringify(binding) : null; }
+    currentHealth() { return this.healthBinding === this.bindingKey() ? this.health : null; }
+    inspectLibraryHealth() {
+        return this.owner.exclusive(async () => {
+            const binding = this.owner.binding?.current;
+            if (!binding) fail('LIBRARY_NOT_READY', '请先明确打开一个内容库。');
+            this.health = await this.owner.worker.call('inspectLibraryHealth', {binding: structuredClone(binding)});
+            this.healthBinding = this.bindingKey();
+            return this.health;
+        });
+    }
     constructor(owner: DesktopController) { this.owner = owner; }
 
     readMaintenanceStatus(): MaintenanceStatus {
         const pending = this.owner.binding.maintenancePending;
-        return {pending: pending ? {kind: pending.kind, destinationName: path.basename(pending.destination)} : null, receipt: this.receipt};
+        return {pending: pending ? {kind: pending.kind, destinationName: path.basename(pending.destination)} : null, receipt: this.receipt, health: this.currentHealth()};
     }
     async ready() {
         const c = this.owner;

@@ -8,6 +8,7 @@ import {templateJobMethods, validateTemplateJobs} from './template-jobs.mjs';
 import {backupMethods} from './backup.mjs';
 import {modelMethods, modelDefaults, validateModelMetadata} from './model-v5.mjs';
 import {validateImportedRaster} from '../image-validation/index.mjs';
+import {inspectHealth} from './health.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
@@ -186,7 +187,7 @@ function ioError(error) {
     return error instanceof LibraryError ? error : new LibraryError('IO_ERROR', error.message, {cause: error});
 }
 
-function acquire(root) {
+function acquire(root, reader = read, listNames = fs.readdirSync) {
     const lock = path.join(root, SYSTEM, '库锁');
     directory(path.dirname(lock));
     const token = randomUUID();
@@ -201,12 +202,12 @@ function acquire(root) {
             let owner;
             try {
                 directory(lock);
-                const names = fs.readdirSync(lock);
+                const names = listNames(lock);
                 if (names.length !== 1 || !UUID.test(names[0].slice(0, -5)) || !names[0].endsWith('.json')) {
                     fail('LOCK_UNCERTAIN', 'Empty or malformed lock; inspect it manually, never reclaim by age');
                 }
                 ownerPath = path.join(lock, names[0]);
-                owner = parse(read(ownerPath), 'lock owner');
+                owner = parse(reader(ownerPath), 'lock owner');
                 if (!object(owner) || owner.token !== names[0].slice(0, -5) || !Number.isSafeInteger(owner.pid) || owner.pid <= 0 || typeof owner.host !== 'string') {
                     fail('LOCK_UNCERTAIN', 'Malformed lock owner');
                 }
@@ -315,10 +316,10 @@ function contentPaths(root, contentId, kind = 'content') {
     return KINDS[kind].files.map(file => path.join(dir, file));
 }
 
-function snapshot(root, contentId, kind = 'content') {
+function snapshot(root, contentId, kind = 'content', reader = read) {
     let files;
     try {
-        files = contentPaths(root, contentId, kind).map(file => read(file));
+        files = contentPaths(root, contentId, kind).map(file => reader(file));
     } catch (error) {
         if (error.code === 'ENOENT') fail('CORRUPT', `Missing content directory or authoritative file: ${contentId}`);
         throw error;
@@ -359,11 +360,11 @@ function transactionDir(root, mutationId) {
     return pendingExists ? pending : committedExists ? committed : null;
 }
 
-function transaction(root, mutationId, libraryId, location = transactionDir(root, mutationId)) {
+function transaction(root, mutationId, libraryId, location = transactionDir(root, mutationId), reader = read, validateMetadata = metadata) {
     if (!location) fail('CORRUPT', `Missing transaction: ${mutationId}`);
     const dir = location;
     directory(dir);
-    const raw = read(path.join(dir, 'intent.json'));
+    const raw = reader(path.join(dir, 'intent.json'));
     const intent = parse(raw, 'intent.json');
     const legacy = intent?.schemaVersion === 1;
     const kind = legacy ? 'content' : intent?.objectKind;
@@ -380,12 +381,12 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
     const before = intent.before.map(unpack);
     const after = intent.after.map(unpack);
     if (after.some(bytes => bytes === null) || (intent.operation === 'create' ? before.some(bytes => bytes !== null) : before.some(bytes => bytes === null))) fail('CORRUPT', 'Invalid transaction file set');
-    const next = metadata(after[0], targetId, kind);
+    const next = validateMetadata(after[0], targetId, kind);
     if (intent.operation === 'resolve-photo' && kind !== 'photo') fail('CORRUPT', 'Resolve-photo requires a photo');
     if (intent.operation === 'create') {
         if (next.revision !== 1 || next.deletedAt !== null) fail('CORRUPT', 'Invalid create plan');
     } else {
-        const old = metadata(before[0], targetId, kind);
+        const old = validateMetadata(before[0], targetId, kind);
         if (['content', 'prompt', 'photo', 'template'].includes(kind) && next.schemaVersion < old.schemaVersion) fail('CORRUPT', 'Content schema cannot regress');
         if (next.revision !== old.revision + 1 || next.createdAt !== old.createdAt) fail('CORRUPT', 'Invalid revision plan');
         if (intent.operation === 'restore-interrupted') {
@@ -414,7 +415,7 @@ function transaction(root, mutationId, libraryId, location = transactionDir(root
             (intent.operation === 'restore' && (old.deletedAt === null || next.deletedAt !== null)) ||
             (intent.operation === 'update' && (old.deletedAt !== null || next.deletedAt !== null))) fail('CORRUPT', 'Invalid state transition');
     }
-    const marker = read(path.join(dir, 'COMMITTED'), true);
+    const marker = reader(path.join(dir, 'COMMITTED'), true);
     if (marker && marker.toString() !== `${hash(raw)}\n`) fail('CORRUPT', 'Invalid completion marker');
     if (dir === path.join(root, SYSTEM, '事务', '已提交', mutationId) && marker === null) fail('CORRUPT', 'Committed history is missing its completion marker');
     return {dir, intent, raw, before, after, kind, objectId: targetId, committed: marker !== null};
@@ -1104,6 +1105,16 @@ export function openLibrary(root, options) {
     }
 }
 
+// Diagnosis shares validators, but never opens a recovering business handle.
+export function inspectLibraryHealth(root, options) {
+    return inspectHealth(root, options, {
+        canonicalRoot, safePath, acquire, KINDS, SYSTEM, UUID, STAGING,
+        exact, validRootIdentity, metadata, objectId, hash, jsonBytes, parse, date, fail,
+        snapshot, transaction, templatePackage, readAssetInternal, unregisteredTemplate,
+        modelMethods, coverJobMethods, templateJobMethods, result, checkedHash, id, inputFields, LibraryError,
+    });
+}
+
 function ensureDirectory(target) {
     if (!safePath(target, true)) mkdir(target);
     else directory(target);
@@ -1183,13 +1194,13 @@ function assetPath(root, assetHash) {
     return path.join(root, '资产', 'sha256', assetHash.slice(0, 2), assetHash);
 }
 
-function readAssetInternal(root, assetHash) {
+function readAssetInternal(root, assetHash, reader = read) {
     let bytes;
     try {
         const target = assetPath(root, assetHash);
         const stat = safePath(target);
         if (stat.size > 64 * 1024 * 1024) fail('CORRUPT', 'Stored asset exceeds the import limit');
-        bytes = read(target);
+        bytes = reader(target);
     } catch (error) {
         if (error.code === 'ENOENT') fail('CORRUPT', 'Referenced immutable asset is missing');
         throw error;
@@ -1274,13 +1285,13 @@ function versionNumber(version) {
     return version;
 }
 
-function templatePackage(root, templateId, version, expectedHash) {
-    const bytes = read(path.join(root, '模板', objectId('template', templateId), '版本', String(versionNumber(version)), '定义.json'));
+function templatePackage(root, templateId, version, expectedHash, reader = read, assetReader = readAssetInternal) {
+    const bytes = reader(path.join(root, '模板', objectId('template', templateId), '版本', String(versionNumber(version)), '定义.json'));
     if (expectedHash && hash(bytes) !== expectedHash) fail('CORRUPT', 'Template package checksum mismatch');
     const pkg = parse(bytes, '定义.json');
     if (!object(pkg) || Object.keys(pkg).some(key => !['definition', 'resources'].includes(key)) || !object(pkg.definition) || !object(pkg.resources)) fail('CORRUPT', 'Invalid template package');
     try {
-        normalizePackage(root, pkg.definition, pkg.resources);
+        normalizePackage(root, pkg.definition, pkg.resources, assetReader);
     } catch (error) {
         if (error.code === 'UNSAFE_PATH') throw error;
         throw new LibraryError('CORRUPT', 'Template resource bytes do not match the immutable package', {cause: error});
@@ -1288,13 +1299,13 @@ function templatePackage(root, templateId, version, expectedHash) {
     return {version, packageHash: hash(bytes), ...pkg};
 }
 
-function normalizePackage(root, definition, resources) {
+function normalizePackage(root, definition, resources, assetReader = readAssetInternal) {
     if (!object(definition) || !object(resources)) fail('INVALID_INPUT', 'Template definition and resources must be objects');
     const normalized = {};
     for (const [key, raw] of Object.entries(resources)) {
         text(key, 'resource source identifier');
         const resource = inputFields(raw, ['assetHash', 'bytes', 'detectedType', 'role'], ['assetHash', 'bytes', 'detectedType', 'role']);
-        const actual = readAssetInternal(root, resource.assetHash);
+        const actual = assetReader(root, resource.assetHash);
         if (actual.bytes !== resource.bytes || actual.detectedType !== resource.detectedType || typeof resource.role !== 'string') fail('INVALID_INPUT', 'Resource descriptor does not match imported asset');
         if (!['style', 'structure'].includes(resource.role)) fail('INVALID_INPUT', 'Template resource role must be style or structure');
         const raster = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];

@@ -1,14 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
-import {backupLibrary, verifyBackup, restoreBackup} from '../../../plugin-src/src/lib/file-library/index.mjs';
+import {backupLibrary, verifyBackup, restoreBackup, inspectLibraryHealth} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {isRecord} from '../shared/contracts.ts';
 import {exact, fail, libraryBinding} from '../shared/validation.ts';
 import {maintenancePending} from '../shared/maintenance-validation.ts';
 import type {LibraryBinding, RootIdentity} from '../shared/contracts.ts';
 import type {BackupIdentity, MaintenancePending, MaintenanceReceipt, MaintenanceWorkerOperations} from '../shared/maintenance-contracts.ts';
 
-const operations = ['inspectMaintenanceLibrary', 'inspectLibraryBackup', 'runMaintenance', 'queryMaintenance'] as const;
+const operations = ['inspectLibraryHealth', 'inspectMaintenanceLibrary', 'inspectLibraryBackup', 'runMaintenance', 'queryMaintenance'] as const;
 export function isMaintenanceOperation(op: unknown): op is keyof MaintenanceWorkerOperations { return typeof op === 'string' && operations.some(item => item === op); }
 const absolute = (v: unknown): v is string => typeof v === 'string' && v.length <= 32_768 && path.isAbsolute(v) && !v.includes('\0');
 const sameIdentity = (a: RootIdentity, b: RootIdentity) => a.dev === b.dev && a.ino === b.ino;
@@ -102,6 +102,10 @@ function query(pending: MaintenancePending): MaintenanceReceipt {
 }
 
 export function executeMaintenance(op: keyof MaintenanceWorkerOperations, raw: unknown): MaintenanceWorkerOperations[keyof MaintenanceWorkerOperations]['result'] {
+    if (op === 'inspectLibraryHealth') {
+        if (!exact(raw, ['binding']) || !libraryBinding(raw.binding) || !absolute(raw.binding.root)) fail('INVALID_INPUT', '内容库检查参数无效。');
+        return inspectLibraryHealth(raw.binding.root, {expectedLibraryId: raw.binding.libraryId, expectedRootIdentity: raw.binding.rootIdentity});
+    }
     if (op === 'inspectMaintenanceLibrary') {
         if (!exact(raw, ['binding']) || !libraryBinding(raw.binding) || !absolute(raw.binding.root)) fail('INVALID_INPUT', '内容库维护参数无效。');
         return {descriptorHash: boundDescriptor(raw.binding).hash};

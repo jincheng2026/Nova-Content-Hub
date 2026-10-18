@@ -11,6 +11,7 @@ export interface SetupView {
     entitlement: 'not-integrated' | 'disabled-experimental';
 }
 export interface SetupContextSummary {
+    libraryHealth?: import('./maintenance-contracts.ts').LibraryHealthReport | null;
     bindingPresent: boolean;
     bindingBackupName?: string | null;
     recovery?: Partial<Record<'content' | 'workspace' | 'template' | 'creation' | 'photo' | 'cover' | 'coverAction' | 'maintenance' | 'seed' | 'needsReselect', boolean>>;

@@ -18,5 +18,5 @@ export function maintenancePending(v: unknown): v is MaintenancePending {
     return v.kind === 'restore' && exact(v, [...common, 'backup']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && backupIdentity(v.backup);
 }
 export function maintenanceDesktopInput(method: string, input: unknown): boolean | undefined {
-    return ['backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance'].includes(method) ? input === undefined : undefined;
+    return ['inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance'].includes(method) ? input === undefined : undefined;
 }

@@ -13,6 +13,10 @@ export function fillPrompt(body: string, values: Record<string, string>) {
     return typeof values[key] === 'string' && values[key].trim() ? values[key] : `【待填写：${key}】`;
   });
 }
+export function promptPreview(body: string, values: Record<string, string>, content: {title: string; body: string} | null, includeContent = false) {
+  const prompt = fillPrompt(body, values);
+  return includeContent && content ? `${prompt}\n\n本次参考内容\n标题：${content.title}\n正文：\n${content.body}` : prompt;
+}
 export function localDay(date: Date) {
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 }

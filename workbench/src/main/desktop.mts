@@ -281,7 +281,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         },
         contextSummary: () => {
             const binding = controller.binding;
-            return {bindingPresent: !!binding?.current, bindingBackupName, recovery: {
+            return {bindingPresent: !!binding?.current, bindingBackupName, libraryHealth: controller.maintenance.currentHealth(), recovery: {
                 content: !!binding?.pending, workspace: !!binding?.workspacePending, template: !!binding?.templatePending, creation: !!binding?.creation,
                 photo: !!binding?.photoPending, cover: !!binding?.coverPending, coverAction: !!binding?.coverActionPending,
                 maintenance: !!binding?.maintenancePending, seed: !!binding?.seedPending, needsReselect: !!binding?.needsReselect

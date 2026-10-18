@@ -8,6 +8,7 @@ import type {SetupContextSummary, SetupView} from '../shared/setup-contracts.ts'
 import {setupDesktopInput} from '../shared/setup-validation.ts';
 import {fail} from '../shared/validation.ts';
 import {readLocalRecord} from './preferences.mts';
+import {LIBRARY_HEALTH_CODES} from '../shared/maintenance-contracts.ts';
 
 const diagnosticCodes = new Set(['AUTH_NOT_CONFIGURED', 'BINDING_INVALID', 'CONFLICT', 'CORRUPT', 'IO_ERROR', 'NOT_READY', 'WORKER_EXIT', 'WORKER_STOPPED', 'PENDING_MUTATION', 'IMPORT_IN_PROGRESS', 'BACKUP_INCOMPLETE', 'SOURCE_CHANGED', 'FORMAT_UNSUPPORTED', 'PREFERENCES_UNAVAILABLE', 'MARKET_NOT_AVAILABLE', 'MARKET_MISMATCH', 'ASSISTANT_NOT_READY', 'BOOTSTRAP_CHANGED', 'BOOTSTRAP_UNSAFE', 'BOOTSTRAP_RECOVERY_INCOMPLETE', 'OTHER']);
 const recoveryKeys = ['content', 'workspace', 'template', 'creation', 'photo', 'cover', 'coverAction', 'maintenance', 'seed', 'needsReselect'] as const;
@@ -93,7 +94,11 @@ export class Setup {
             const counts = Object.fromEntries(countKeys.flatMap(key => { const value = context.counts?.[key]; return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? [[key, value]] : []; }));
             const errorCodes = [...new Set((context.errorCodes ?? []).slice(0, 100).map(code => diagnosticCodes.has(code) ? code : 'OTHER'))].slice(0, 32);
             const bindingBackupName = typeof context.bindingBackupName === 'string' && /^machine-binding\.[0-9a-f-]{36}\.backup\.json$/.test(context.bindingBackupName) ? context.bindingBackupName : null;
-            const report = {bindingBackupName, format: 'nova-content-desktop-diagnostics', schemaVersion: 1, platform: this.release.platform, arch: this.release.arch, version: this.release.version, mode: this.release.AUTH_MODE, bindingPresent: context.bindingPresent === true, recovery, counts, errorCodes};
+            const health = context.libraryHealth;
+            const healthStates = ['healthy', 'issues', 'blocked', 'incomplete'], rootStates = ['matched', 'missing', 'unreadable', 'replaced', 'unsafe', 'identity-unverified'];
+            const healthCounts = Object.fromEntries(['objects', 'assets', 'transactions', 'requests'].flatMap(key => { const value = health?.checked[key as keyof NonNullable<typeof health>['checked']]; return typeof value === 'number' && Number.isSafeInteger(value) && value >= 0 ? [[key, value]] : []; }));
+            const libraryHealth = health && healthStates.includes(health.state) && rootStates.includes(health.root) ? {state: health.state, root: health.root, complete: health.complete === true, checked: healthCounts, codes: [...new Set(health.issues.slice(0, 200).map(issue => (LIBRARY_HEALTH_CODES as readonly string[]).includes(issue.code) ? issue.code : 'OTHER'))]} : null;
+            const report = {libraryHealth, bindingBackupName, format: 'nova-content-desktop-diagnostics', schemaVersion: 1, platform: this.release.platform, arch: this.release.arch, version: this.release.version, mode: this.release.AUTH_MODE, bindingPresent: context.bindingPresent === true, recovery, counts, errorCodes};
             const handle = await fs.open(destination, 'wx', 0o600);
             try { await handle.writeFile(`${JSON.stringify(report, null, 2)}\n`); await handle.sync(); }
             finally { await handle.close(); }

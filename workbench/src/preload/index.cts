@@ -2,6 +2,7 @@ import type {ContentHub} from '../shared/contracts.ts';
 
 const {contextBridge, ipcRenderer} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    inspectLibraryHealth: () => ipcRenderer.invoke('nova:inspectLibraryHealth'),
     readTemplateAssistantSetup: () => ipcRenderer.invoke('nova:readTemplateAssistantSetup'),
     readTemplateWorkflow: input => ipcRenderer.invoke('nova:readTemplateWorkflow', input),
     startTemplateStudy: input => ipcRenderer.invoke('nova:startTemplateStudy', input),
