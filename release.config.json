@@ -1,5 +1,5 @@
 {
-  "AUTH_MODE": "required",
+  "AUTH_MODE": "disabled",
   "prototype": true,
   "appScope": "nova-content-hub",
   "version": "0.2.0",

@@ -1,18 +1,14 @@
 # Nova Content Hub · 自媒体工作台
 
-当前阶段： **TypeScript / React / Semi UI 的 Electron 技术入口、真实文件核心与插件执行器**
-。桌面已能新建/打开文件库、编辑内容、回收恢复，并核验中断的保存与导入；正式五页、生产授权与双助手自动生成仍在实施。浏览器原型另行保留，其演示登录不构成真实授权。
+当前阶段：**TypeScript / React / Semi UI / Electron 的本地内容工作台，正在完成功能与交互重构，尚未统一验收。**
 
-商用桌面端实施已启动，按步骤记录设计、变更和验收证据。当前状态见 [实施计划与验收台账](docs/实施/00-实施计划与验收台账.md)
-，过程见 [实施日志](docs/实施/01-实施日志.md)。各阶段分别验收，不能将原型测试通过视为商用桌面端就绪。
+一期交付免费体验版，无需注册、登录或产品权益。Pro 与收费鉴权不在本期；默认构建为 `AUTH_MODE=disabled`，旧 `required` 构建仅保留内部受限兼容，不是用户入口。当前源码和本机已安装旧包分别记录，不能将源码完成或旧批测试视为商用就绪。
 
-真实本地文件核心位于 [file-library](plugin-src/src/lib/file-library/README.md)：内容与提示词的 Markdown
-真源、照片、不可变资产、模板组版本、候选封面、发布计划与人工发布快照，共用跨进程锁、可恢复事务、软删除与幂等回执。[内置资源安装器](plugin-src/src/lib/library-seed/README.md)
-将实际模板图片和原创创作者提示词导入新库，保留已有用户修改和删除。它们尚未连接原型界面与生产授权；不会把浏览器保存自动改成真实目录写入。
+五页围绕内容：总览了解进度，模板组与本人照片辅助生图，内容保存正文、资料和封面，日历记录人工发布计划，提示词辅助打磨。当前按用户要求先完成全部功能，再统一测试。进度见[实施台账](docs/实施/00-实施计划与验收台账.md)、[免费体验发行策略](docs/实施/28-免费体验发行策略.md)与[交互重构记录](docs/实施/29-免费体验与创作流程重构.md)。
 
-[插件执行入口](plugin-src/README.md) 以明确的`contract`/`cover`
-命令区分不可执行原型契约与真实封面文件任务；执行实现、Skill和桥接规则只维护一份。旧[封面执行器](plugin-src/compat/cover-runtime/README.md)
-仅兼容转发。当前Codex线程真实两图回流见[验证样本](docs/verification/production-probes/README.md)；它不证明自动交接、WorkBuddy/Windows或正式授权可用。
+[file-library](plugin-src/src/lib/file-library/README.md) 是 Electron 与插件共用的本地文件核心：Markdown/JSON 真源、不可变图片、模板组版本、封面候选、发布快照、回收站及可恢复事务。内置资源通过[安装器](plugin-src/src/lib/library-seed/README.md)进入真实内容库，保留用户修改。
+
+[插件](plugin-src/README.md) 的 `contract` 仅校验旧原型契约；`cover` / `template` 执行固定的真实文件任务。历史真实宿主证据见[验收记录](docs/实施/18-五页桌面与真实宿主验收.md)，其覆盖范围不自动延伸到本批源码或 Windows/Intel。
 
 ## 桌面技术栈与目录
 
@@ -33,11 +29,11 @@
 ```sh
 npm ci
 npm ci --prefix workbench
-npm run build:desktop -- --auth both
+npm run build:desktop -- --auth disabled
 npm start --prefix workbench
 ```
 
-当前生成的是两种模式的实验运行目录，仍借助开发环境Electron启动，不是可售安装包；真实系统选择器人工验收、双系统双助手、生产授权与发行仍独立验收。构建模式不可由用户运行时切换。
+默认生成无需登录的免费体验运行目录。免费体验安装器使用 `npm run dist:preview --prefix workbench -- --platform darwin --arch arm64` 等对应原生目标入口；当前未执行本批构建或打包。系统选择器、双系统双助手、升级、签名与发行仍须统一验收。构建模式不由用户运行时切换。
 
 桌面采用指定的蓝色 N [应用图标](workbench/resources/brand/desktop/README.md)，窗口与macOS Dock从随包固定资源加载；两模式同时带PNG、Windows
 ICO及macOS ICNS。`npm run icons:check`核验资源，`npm run icons:build`在macOS从现有母版重新导出。正式EXE/app安装图标仍须在发行阶段配置打包器并真机验收。
@@ -117,8 +113,7 @@ imagegen 调用生成，保留完整提示与文件校验记录；这不证明�
 - 首批场景设计与旅游机制借鉴：[自媒体模板与生成流程升级](docs/自媒体模板与生成流程升级.md)（保留为阶段记录）。
 - `docs/reviews/2026-10-16-生产交付审查与桌面演进.md` 和当时模型诊断记录是修改前的审查快照，行号和诊断脚本不再代表当前实现。
 
-本项目参考旅游工作台机制，未修改它的源码、安装插件或访问其真实活动库。生产鉴权需要本产品独立 Native 应用、scope
-与可信权益签发能力；不能复用浏览器演示状态或复制客户端签名私钥替代。
+本项目参考旅游工作台机制与已安装参考产品的界面，不修改参考源码、业务文件或凭据，不将同事私人图片作为内置素材分发。历史授权设计仅留档，一期免费体验不等待该接入。
 
 项目右侧统一为一个按任务状态变化的入口；多个任务先单选，旧演示与完成记录在历史中查看。多尺寸生成会列出本批全部任务。交接弹窗先准备参考图
 ZIP 和必要的 HANDOFF.json，再使用底部一个主按钮继续；备用方式与技术详情可按需展开。

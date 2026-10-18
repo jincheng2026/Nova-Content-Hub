@@ -216,3 +216,26 @@ test('published workspace entries use actual publication time and retain the ori
     await fs.writeFile(file, JSON.stringify(meta));
     await assert.rejects(f.controller.readWorkspace(), {code: 'CORRUPT'});
 });
+
+test('library thumbnails use scoped candidate URLs and revoke them when the library epoch changes', async t => {
+    const f = await fixture(t);
+    let content = f.library.createContent({title: 'Thumbnail content', body: 'Keep source bytes'});
+    const image = path.join(f.parent, 'thumbnail.png');
+    await sharp({create: {width: 8, height: 8, channels: 3, background: 'blue'}}).png().toFile(image);
+    const asset = f.library.importAsset(image, {purpose: 'generated-cover'});
+    content = f.library.registerContentCandidate(content.id, {assetHash: asset.assetHash, requestId: 'manual', attemptId: 'thumbnail'}, content.editToken);
+    const file = path.join(f.root, '内容', content.id, '内容.json');
+    const before = await fs.readFile(file, 'utf8');
+    const snapshot = await f.controller.readWorkspaceLibrary();
+    const candidate = snapshot.contentDetails.find(item => item.id === content.id).candidates[0];
+    assert.match(candidate.url, /^nova-content:\/\/assets\/[0-9a-f-]+\/[0-9a-f]{64}$/);
+    assert.equal(f.controller.covers.allows(candidate.url), true);
+    assert.equal(JSON.stringify(snapshot).includes(f.root), false);
+    assert.equal(await fs.readFile(file, 'utf8'), before);
+    const raster = await f.controller.covers.resource(candidate.url);
+    assert.equal(raster.mime, 'image/png');
+    f.controller.covers.revoke();
+    assert.equal(f.controller.covers.allows(candidate.url), false);
+    assert.equal(await f.controller.covers.resource(candidate.url), null);
+    assert.notEqual((await f.controller.readWorkspaceLibrary()).contentDetails.find(item => item.id === content.id).candidates[0].url, candidate.url);
+});

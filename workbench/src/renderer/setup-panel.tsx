@@ -2,25 +2,31 @@ import {useEffect, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import type {SetupView} from '../shared/setup-contracts.ts';
+import type {Assistant} from '../shared/cover-contracts.ts';
 import {invoke} from './client.ts';
 
-export function SetupPanel({busy, run}: {busy: boolean; run<T>(action: () => Promise<T>): Promise<T | undefined>}) {
+export function SetupPanel({busy, run, host}: {busy: boolean; host?: Assistant; run<T>(action: () => Promise<T>): Promise<T | undefined>}) {
     const [setup, setSetup] = useState<SetupView | null>(null), [notice, setNotice] = useState('');
-    useEffect(() => { let active = true; void invoke('readSetup').then(value => { if (active) setSetup(value); }, () => { if (active) setNotice('安装信息未能读取，请重新检查。'); }); return () => { active = false; }; }, []);
-    async function refresh() { setSetup(await invoke('readSetup')); setNotice('安装信息已重新检查。'); }
+    useEffect(() => { let active = true; setSetup(null); void invoke('readSetup').then(value => { if (active) setSetup(value); }, () => { if (active) setNotice('安装信息未能读取，请重新检查。'); }); return () => { active = false; }; }, [host]);
+    async function refresh() { setSetup(await invoke('readSetup')); setNotice('安装信息已更新。'); }
     const assistant = setup?.assistant.host === 'workbuddy' ? 'WorkBuddy' : 'Codex';
-    return <section className="setup-panel" aria-label="安装、插件与升级"><Card title="安装、插件与升级"><p className="muted">{setup ? `当前版本 ${setup.version} · ${setup.platform}/${setup.arch} · ${setup.mode} · 实验构建` : '正在读取当前安装信息…'}</p>
-        {setup && <><p role="status">{setup.entitlement === 'not-integrated' ? '此 required 安装包尚未接入可信权益服务，受保护的业务操作会继续拒绝；本页不会提供绕过开关。' : '当前是关闭鉴权的实验模式，尚未接入正式权益服务，不能据此视为商用授权。'}</p>
-        <h3>配套助手与插件</h3><p role="status">{assistant}：{setup.assistant.ready ? '检测到匹配的封面执行 Skill。实际接单、生图和回传仍需在助手中完成。' : setup.assistant.reason === 'protocol-missing' ? '尚未发现助手打开入口，请先安装并启动一次。' : setup.assistant.reason === 'skill-missing' ? '配套插件未安装、未启用或未通过匹配检查。' : '当前安装未配置助手检查。'}</p>
-        <p role="status">配套插件市场：{setup.market.state === 'available' ? `找到匹配的市场 ${setup.market.name}。` : setup.market.state === 'mismatch' ? '现有文件与此应用的版本、模式或架构不匹配，请获取完整匹配的一套文件。' : '当前安装没有可用的市场文件；请向发行方获取与本版本、系统和架构匹配的完整插件包。'}</p>
-        <ol><li>在全局设置中选择实际要使用的助手，并先安装、启动它。</li><li>打开配套市场文件夹。在 Codex 插件界面选择本地市场清单 <code>.agents/plugins/marketplace.json</code>；WorkBuddy 从插件页添加这个完整市场目录。本地市场入口是否受支持，以当前助手界面为准。</li><li>在助手内安装并启用 Nova Content Hub，审阅需要的插件权限或 Hooks 信任，再返回本页重新检查。</li><li>检查通过后回到原内容或模板继续任务；打开助手本身不会创建任务，也不代表已经安装或执行成功。</li></ol>
-        <div className="management-actions" style={{display: 'flex', gap: 12, flexWrap: 'wrap'}}><Button disabled={busy} onClick={() => void run(async () => { await invoke('openSetupTarget', {target: 'assistant'}); setNotice('已请求系统打开所选助手，请在助手内继续安装或启用插件。'); })}>打开 {assistant}</Button><Button disabled={busy || setup.market.state !== 'available'} onClick={() => void run(async () => { await invoke('openSetupTarget', {target: 'market'}); setNotice('已请求系统打开配套市场文件夹。'); })}>打开配套市场文件夹</Button><Button disabled={busy || setup.market.state !== 'available'} onClick={() => void run(async () => { await invoke('copyPluginMarketLocation'); setNotice('配套市场位置已复制，可粘贴到助手的本地市场入口。'); })}>复制市场位置</Button><Button disabled={busy} onClick={() => void run(refresh)}>重新检查</Button></div>
-        <h3>安装与手动升级</h3><ol><li>先在“备份与恢复”中备份当前内容库，并检查备份完整。记住由自己选择的内容库文件夹。</li><li>从可信发行方获取同模式的新版本应用与配套插件，核对 macOS Apple 芯片 / Intel 或 Windows 的架构。</li><li>macOS：退出旧应用，按发行说明将新应用放入“应用程序”，不要直接从磁盘映像内长期运行。Windows：退出旧应用，按发行说明运行匹配的安装程序。安装应用不等于安装助手插件。</li><li>保留原内容库文件夹和备份。安装完成后重新打开原库，再检查配套插件。旧格式或未来格式被拒绝时先保留原件，按版本迁移说明处理。</li></ol>
-        <p className="muted">本页提供手动升级步骤，没有自动下载或覆盖用户库。卸载与更换应用时请保留自己选择的内容库目录。当前实验构建的签名、公证和跨平台安装仍需单独验收。</p>
-        <details><summary>macOS 提示应用损坏或无法打开</summary><p>先核对下载来源、包是否完整、系统版本和芯片架构，再向发行方提供原始提示与下方脱敏诊断。损坏提示也可能涉及签名、公证、隔离属性或下载不完整；不能一概归因于隔离属性。本页不执行 xattr 命令或关闭系统安全校验。</p></details>
+    return <section className="setup-panel" aria-label="版本与使用帮助"><Card title="版本与使用帮助">
+        <p>{setup ? `自媒体工作台 ${setup.version} · ${setup.platform === 'darwin' ? 'macOS' : setup.platform === 'win32' ? 'Windows' : setup.platform} · ${setup.arch === 'arm64' ? 'ARM64' : 'Intel / AMD 64 位'}` : '正在读取安装信息…'}</p>
+        {setup && <>
+            <p className="muted">{setup.mode === 'disabled' ? '免费体验版，无需注册或登录。内容与图片保存在你选择的本机内容库中。' : '这是旧的受限内部构建，无法处理业务。请安装一期免费体验版；本页不切换构建模式。'}</p>
+            <h3>连接你的 AI 助手</h3>
+            <p role="status">{assistant}：{setup.assistant.ready ? '已找到匹配的配套插件，可以回到内容中制作封面。' : setup.assistant.reason === 'protocol-missing' ? '请先安装并打开一次，再回这里检查。' : '需要安装或启用配套插件，按下方说明完成一次即可。'}</p>
+            <div className="management-actions"><Button disabled={busy} onClick={() => void run(async () => { await invoke('openSetupTarget', {target: 'assistant'}); setNotice(`已请求打开 ${assistant}。`); })}>打开 {assistant}</Button><Button disabled={busy} onClick={() => void run(refresh)}>重新检查连接</Button></div>
+            {!setup.assistant.ready && <details open><summary>第一次连接：安装配套插件</summary>
+                <ol><li>打开 {assistant} 的插件页面，选择添加本地插件市场。</li><li>点击下方“复制插件位置”，粘贴到助手的添加窗口。Codex 选择市场中的 <code>.agents/plugins/marketplace.json</code> 文件；WorkBuddy 选择整个市场文件夹。</li><li>找到 Nova Content Hub，按助手提示安装、启用并确认插件权限，然后回这里重新检查连接。</li></ol>
+                <div className="management-actions"><Button disabled={busy || setup.market.state !== 'available'} onClick={() => void run(async () => { await invoke('copyPluginMarketLocation'); setNotice('插件位置已复制，可粘贴到助手的添加窗口。'); })}>复制插件位置</Button><Button disabled={busy || setup.market.state !== 'available'} onClick={() => void run(async () => { await invoke('openSetupTarget', {target: 'market'}); setNotice('已请求打开配套插件文件夹。'); })}>打开插件文件夹</Button></div>
+                {setup.market.state !== 'available' && <p role="alert">{setup.market.state === 'mismatch' ? '配套插件与当前应用版本不匹配，请获取完整安装包。' : '当前安装没有配套插件，请获取包含插件的完整安装包。'}</p>}
+            </details>}
+            <p className="muted">选择哪位助手统一在设置顶部调整。封面由助手生成，可能使用你已有的助手额度；打开助手不代表已经生成成功。</p>
+            <details><summary>安装与升级</summary><ol><li>升级前，在“内容库 → 备份与维护”备份你的内容库。</li><li>macOS：退出工作台，将新版本拖入“应用程序”。Windows：退出工作台，运行新版本安装程序。</li><li>保留原内容库文件夹，重新打开工作台后继续使用；如配套插件有更新，一并安装再检查连接。</li></ol><p className="muted">请选择与你系统及芯片匹配的安装包。内容库独立于应用安装目录；更换或卸载应用时不要删除内容库。</p></details>
+            <details><summary>macOS 提示无法打开或应用损坏</summary><p>先保留安装包，核对下载来源、系统及芯片版本。如系统允许，可在“系统设置 → 隐私与安全性”查看原始拦截提示并选择系统提供的打开入口；仍无法打开时请提供提示原文与下方诊断。</p><p className="muted">安装包尚未完成正式签名、公证及多平台验收。这里不会自动修改系统安全设置；损坏提示也可能来自下载不完整。</p></details>
         </>}
-        <h3>导出脱敏诊断</h3><p className="muted">只导出版本、平台、构建模式、是否绑定内容库、待恢复状态、可用的数量和有限错误码。不含目录路径、正文、照片、令牌或错误堆栈。诊断保存在本机，由你决定是否分享。</p>
-        <Button disabled={busy} onClick={() => void run(async () => { const result = await invoke('exportDiagnostics'); if (result.exported) setNotice(`脱敏诊断已导出：${result.name}`); })}>选择位置并导出诊断</Button>
+        <details><summary>遇到问题：导出诊断</summary><p className="muted">只包含版本、系统、数量和有限错误码，不含目录路径、正文、照片或凭据。保存到本机后，由你决定是否分享。</p><Button disabled={busy} onClick={() => void run(async () => { const result = await invoke('exportDiagnostics'); if (result.exported) setNotice(`诊断已保存：${result.name}`); })}>保存诊断文件</Button></details>
         {!setup && <Button disabled={busy} onClick={() => void run(refresh)}>重新读取安装信息</Button>}
         {notice && <p role="status">{notice}</p>}
     </Card></section>;

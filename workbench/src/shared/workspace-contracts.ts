@@ -63,7 +63,7 @@ export interface WorkspacePublication {
     coverCandidateId: string | null; recordedAt: string | null;
 }
 export interface WorkspacePublicationEvent { id: string; type: 'corrected' | 'retracted'; targetId: string; replacementId: string | null; reason: string; recordedAt: string }
-export interface WorkspaceCandidate { id: string; assetHash: string; accepted: boolean; favorite: boolean; displayNumber: string; note: string; variantId: string | null }
+export interface WorkspaceCandidate { id: string; assetHash: string; accepted: boolean; favorite: boolean; displayNumber: string; note: string; variantId: string | null; url?: string }
 export interface WorkspaceDocument extends WorkspaceEntity {
     body: string; channelIds: string[]; materials: WorkspaceMaterial[]; plans: WorkspaceLibraryPlan[]; publications: WorkspacePublication[];
     publicationEvents: WorkspacePublicationEvent[]; candidates: WorkspaceCandidate[];

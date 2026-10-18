@@ -8,6 +8,7 @@ import Typography from '@douyinfe/semi-ui-19/lib/es/typography';
 import '@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import './style.css';
 import {CoverPanel } from './covers.tsx';
+import {ContentList} from './content-list.tsx';
 import {AssistantSettings} from './assistant-settings.tsx';
 import {LibraryPanels, ContentMetadataPanel, ContentMaterialPanel, hasManagedDrafts} from './library-panels.tsx';
 import {MaintenancePanel} from './maintenance-panel.tsx';
@@ -44,7 +45,7 @@ const labels: Record<TaskStatus, string> = {
 
 
 function App() {
-    const [page, setPage] = useState<Page>('content');
+    const [page, setPage] = useState<Page>('overview');
     const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);
     const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);
     const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);
@@ -60,8 +61,18 @@ function App() {
     const [libraryEpoch, setLibraryEpoch] = useState(0);
     const epochRef = useRef(0);
     const [libraryOpen, setLibraryOpen] = useState(false);
+    const libraryDialog = useRef<HTMLDialogElement>(null);
+    const recoveryDialog = useRef<HTMLDialogElement>(null);
+    const [recoveryOpen, setRecoveryOpen] = useState(false);
+    useEffect(() => {if (recoveryOpen) recoveryDialog.current?.showModal();}, [recoveryOpen]);
+    const [libraryTab, setLibraryTab] = useState<'resources' | 'storage'>('resources');
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [contentTab, setContentTab] = useState<'covers' | 'body' | 'materials' | 'publication'>('covers');
+    const [coverStartOpenKey, setCoverStartOpenKey] = useState(0);
+    useEffect(() => { if (libraryOpen) libraryDialog.current?.showModal(); }, [libraryOpen]);
     const [photoManagerEpoch, setPhotoManagerEpoch] = useState(0);
     const [promptContentId, setPromptContentId] = useState<string | null>(null);
+    const [calendarContentId, setCalendarContentId] = useState<string | null>(null);
     const [settings, setSettings] = useState(false);
     const [coverRefresh, setCoverRefresh] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
@@ -112,6 +123,9 @@ function App() {
         setSelectedTemplate(null);
         setTemplatePicker(null);
         setPromptContentId(null);
+        setCalendarContentId(null);
+        setDetailOpen(false);
+        setContentTab('covers');
     };
     const refreshStatus = async () => {
         const epoch = epochRef.current;
@@ -125,7 +139,7 @@ function App() {
         const epoch = epochRef.current;
         let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;
         try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }
-        catch (failure) { if (epoch === epochRef.current) {setLibraryOpen(true); setWorkspaceUnavailable(true);} throw failure; }
+        catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }
         if (epoch !== epochRef.current) return;
         setWorkspace(snapshot);
         setWorkspaceUnavailable(false);
@@ -134,11 +148,11 @@ function App() {
     }
     useEffect(() => {
         const epoch = epochRef.current;
-        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(failure => {setLibraryOpen(true); report(failure);});
+        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(failure => {report(failure);});
     }, []);
 
     useEffect(() => { void invoke('readPreferences').then(value => { document.documentElement.dataset.reducedMotion = String(value.values.reducedMotion); }, () => {}); }, []);
-    useEffect(() => { const show = () => { void guard(async () => setPage('calendar')); }; window.addEventListener('nova-show-calendar', show); return () => window.removeEventListener('nova-show-calendar', show); });
+    useEffect(() => { const show = () => { void navigate('calendar'); }; window.addEventListener('nova-show-calendar', show); return () => window.removeEventListener('nova-show-calendar', show); });
 
     async function refreshEditor() {
         if (!base) return;
@@ -164,7 +178,7 @@ function App() {
     };
     useEffect(() => {
         const unsubscribe = window.contentHub.onWorkspaceChanged(change => {
-            if (change === 'unavailable') {setWatchUnavailable(true); setLibraryOpen(true); return;}
+            if (change === 'unavailable') {setWatchUnavailable(true); return;}
             setWatchUnavailable(false);
             changesPending.current = true;
             automaticRefresh.current();
@@ -282,6 +296,7 @@ function App() {
                 }
                 if (found.current) setDisk(found.current);
             }
+            if (found?.current || found?.draft) {setPage('content'); setDetailOpen(true); setContentTab('body');}
             const next = await refreshStatus();
             if (next.currentName) setContents(await invoke('listContents', {view}));
         });
@@ -300,6 +315,7 @@ function App() {
                     }
                 } else if (item) load(item);
             }
+            if (item || retained && action === 'keep') {setPage('content'); setDetailOpen(true); setContentTab('body');}
             if (action !== 'keep') {
                 if (item) load(item); else {
                     setBase(null);
@@ -311,10 +327,10 @@ function App() {
         });
     }
 
-    async function select(item: Content, template?: string) {
+    async function select(item: Content, template?: string, generate = false) {
         await guard(async () => {
             const epoch = epochRef.current;
-            await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setPage('content'); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); setTemplatePicker(null); } });
+            await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setPage('content'); setDetailOpen(true); setContentTab('covers'); setCoverStartOpenKey(value => generate ? value + 1 : 0); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); if (template) setCoverStartOpenKey(value => value + 1); setTemplatePicker(null); } });
         });
     }
 
@@ -358,7 +374,7 @@ function App() {
     useLayoutEffect(() => { window.scrollTo(0, 0); }, [page]);
 
     async function navigate(next: Page) {
-        await guard(async () => { setPromptContentId(null); setPage(next); });
+        await guard(async () => { setPromptContentId(null); setPage(next); setCalendarContentId(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
     }
     async function openContentPrompts() {
         const selectedId = baseRef.current?.id;
@@ -376,6 +392,7 @@ function App() {
     }
     async function openPhotoManagement() {
         await guard(async () => {
+            setLibraryTab('resources');
             setPhotoManagerEpoch(value => value + 1);
             setLibraryOpen(true);
             requestAnimationFrame(() => document.getElementById('library-panels')?.scrollIntoView({block: 'start'}));
@@ -390,23 +407,85 @@ function App() {
                     load(current);
                     setSelectedTemplate({id: template.id, key: Date.now()});
                     setPage('content');
+                    setDetailOpen(true);
+                    setContentTab('covers');
+                    setCoverStartOpenKey(value => value + 1);
                 });
             } else setTemplatePicker(template);
         });
     }
+    async function changeContentTab(next: typeof contentTab) {
+        if (next === contentTab) return;
+        const current = disk ?? baseRef.current;
+        const wasDirty = dirty;
+        await guard(async saved => {
+            if (wasDirty && !saved && current) load(current);
+            setContentTab(next);
+        });
+    }
+    async function startCover() {
+        const current = disk ?? baseRef.current;
+        if (!current || current.deletedAt) return;
+        const wasDirty = dirty;
+        await guard(async saved => {
+            if (wasDirty && !saved) load(current);
+            setContentTab('covers');
+            setCoverStartOpenKey(value => value + 1);
+        });
+    }
+    async function openPublicationCalendar() {
+        const id = baseRef.current?.id;
+        if (!id || baseRef.current?.deletedAt) return;
+        await guard(async () => {setCalendarContentId(id); setCoverStartOpenKey(0); setPage('calendar');});
+    }
+    async function newContent() {
+        await guard(async () => {
+            setBase(null); setDraft({title: '未命名内容', body: ''}); setDisk(null); setSelectedTemplate(null);
+            setContentTab('body'); setCoverStartOpenKey(0); setDetailOpen(true); setPage('content');
+        });
+    }
+    async function backToContents() {
+        await guard(async () => { setBase(null); setDraft(null); setDisk(null); setCoverStartOpenKey(0); setDetailOpen(false); });
+    }
+    function openRecovery() {
+        if (hasManagedDrafts()) {setRecoveryOpen(true); return;}
+        setLibraryTab('storage');
+        setLibraryOpen(true);
+    }
+    async function recoverCoverOperation(method: 'resumePhoto' | 'abandonPhoto' | 'resumeCover' | 'abandonCover' | 'resumeCoverAction' | 'abandonCoverAction' | 'retryBuiltins') {
+        await nativeAction(async () => {
+            await invoke(method);
+            setCoverRefresh(value => value + 1);
+            await refreshEditor();
+        });
+    }
+    function closeLibrary() {
+        if (hasManagedDrafts()) { setError('内容库管理中还有未保存的填写内容，请先保存或放弃修改。'); return; }
+        setLibraryOpen(false);
+    }
     const task = status?.task;
     const busy = acting || !status || status.busy;
     const blocked = !!status?.pending || status?.creating|| !!status?.photoPending || !!status?.coverPending || !!status?.coverActionPending || !!status?.workspacePending || !!status?.templatePending || !!status?.maintenance.pending || !!status?.seedPending;
-    let message = !status ? '正在读取机器绑定…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '明确新建或打开内容库，也可导入旧备份。';
+    let message = !status ? '正在打开工作空间…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '明确新建或打开内容库，也可导入旧备份。';
     if (task?.targetChanged) message += '。原内容库位置已被替换，请恢复原目录。';
     if (task?.descriptorChanged) message += '。内容库格式已变更，旧导入完成事实保留。';
     const counts = status?.inspection?.counts;
+    const recoveryCards = <>
+        {status?.workspacePending && <Card title="上次修改需要核验"><p>原操作与输入已保留，确认前不会开始新的写入。</p><p>状态：{status.workspacePending.state === 'conflict' ? '对象已改变，请保留输入后重新编辑' : status.workspacePending.state === 'missing' ? '尚未找到提交记录' : '结果待核验'}</p><details><summary>查看已保留的输入</summary><pre>{JSON.stringify(status.workspacePending.input, null, 2)}</pre></details><div className="actions"><Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('recoverWorkspaceMutation'); await refreshEditor(); })}>核验上次修改</Button>{status.workspacePending.state === 'missing' && <Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('retryWorkspaceMutation'); await refreshEditor(); })}>重试同一操作</Button>}{['missing', 'conflict'].includes(status.workspacePending.state) && <Button disabled={busy} onClick={() => void nativeAction(() => invoke('abandonWorkspaceMutation'))}>放弃原修改并保留文件</Button>}</div></Card>}
+        {status?.templatePending && <Card title="模板操作需要核验"><p>学习、还原或验收的原操作已保留。核验前不会开始新的写入。</p><p>状态：{status.templatePending.state === 'conflict' ? '原模板已改变' : status.templatePending.state === 'missing' ? '尚未找到提交记录' : '结果待核验'}</p><div className="actions"><Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('recoverTemplateMutation'); await refreshWorkspace(); })}>核验模板操作</Button>{status.templatePending.state === 'missing' && <Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('retryTemplateMutation'); await refreshWorkspace(); })}>重试同一操作</Button>}{['missing', 'conflict'].includes(status.templatePending.state) && <Button disabled={busy} onClick={() => void nativeAction(() => invoke('abandonTemplateMutation'))}>放弃原操作并保留文件</Button>}</div></Card>}
+        {status?.photoPending && <Card title="继续导入照片"><p>原文件选择与本人照片声明已保留；空内容库也可以继续处理。</p><div className="actions"><Button id="global-resume-photo" disabled={busy} onClick={() => void recoverCoverOperation('resumePhoto')}>核验并继续导入</Button><Button id="global-abandon-photo" disabled={busy} onClick={() => void recoverCoverOperation('abandonPhoto')}>放弃这次导入意图</Button></div></Card>}
+        {status?.coverPending && <Card title="继续准备封面"><p>原请求已保留，继续同一次操作；已提交任务仍留在原内容中。</p><div className="actions"><Button id="global-resume-cover" disabled={busy} onClick={() => void recoverCoverOperation('resumeCover')}>核验并交给助手</Button><Button id="global-abandon-cover" disabled={busy} onClick={() => void recoverCoverOperation('abandonCover')}>放弃这次准备意图</Button></div></Card>}
+        {status?.coverActionPending && <Card title="核验封面操作"><p>上次选用或取消的原操作已保留。</p><div className="actions"><Button id="global-resume-cover-action" disabled={busy} onClick={() => void recoverCoverOperation('resumeCoverAction')}>核验并继续原操作</Button><Button id="global-abandon-cover-action" disabled={busy} onClick={() => void recoverCoverOperation('abandonCoverAction')}>放弃这次操作意图</Button></div></Card>}
+        {status?.seedPending && <Card title="继续准备内置模板"><p>上次内置模板准备尚未完成。</p><Button id="global-retry-builtins" disabled={busy} onClick={() => void recoverCoverOperation('retryBuiltins')}>继续准备内置模板</Button></Card>}
+    </>;
     return <main data-app="ready" data-loaded={status ? 'true' : 'false'} data-busy={acting ? 'true' : 'false'}>
-        <aside className="app-navigation" aria-label="主导航"><div className="brand"><span className="brand-mark" role="img" aria-label="自媒体工作台图标"/><div><strong>自媒体工作台</strong><span>内容创作工作空间</span></div></div><div className="nav-label">工作空间</div><nav>{(Object.keys(pageNames) as Page[]).map(key => <button key={key} id={`nav-${key}`} aria-current={page === key ? 'page' : undefined} className={page === key ? 'nav-item active' : 'nav-item'} disabled={busy} onClick={() => void navigate(key)}><NavigationIcon name={key}/>{pageNames[key]}</button>)}</nav><div className="nav-bottom"><button id="library-menu" className="nav-item" onClick={() => void guard(async () => setLibraryOpen(open => !open))}><NavigationIcon name="library"/>内容库</button><button id="open-settings" className="nav-item" disabled={acting || !!status?.busy} onClick={() => { if (hasManagedDrafts()) setError('请先保存或明确关闭当前编辑，再打开设置。'); else setSettings(true); }}><NavigationIcon name="settings"/>设置</button><div className="nav-library"><span className="library-dot"/><span id="library-summary">{status?.currentName || '尚未打开内容库'}</span></div><p className="nav-footnote">资料保存在你的本机</p></div></aside>
-        <div className="app-stage"><header className="app-header"><div><p className="breadcrumb">工作空间 / {pageNames[page]}</p><Typography.Title heading={1}>{pageNames[page]}</Typography.Title></div><div className="header-actions"><span className="save-indicator">{dirty ? '有未保存草稿' : '本机内容库'}</span><Button id="refresh-workspace" disabled={busy || !status?.currentName} onClick={() => void nativeAction(async () => { await refreshEditor(); setCoverRefresh(n => n + 1); if (status?.currentName) setContents(await invoke('listContents', {view})); })}>刷新</Button></div></header>
-        {(blocked || status?.seedPending || status?.task && status.task.status !== 'committed') && <Banner type="warning" closeIcon={null} description="有待恢复的操作，请查看内容库或封面创作中的提示，继续同一操作。"/>}
-        {!status && !settings && <BootstrapRecoveryPanel busy={acting} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/>}
-        <section className="library-manager" hidden={!!status?.currentName && !libraryOpen && !status?.pending && !status?.creating && !status?.workspacePending && !status?.templatePending && !status?.maintenance.pending && !(status?.task && status.task.status !== 'committed')} aria-label="内容库管理">
+        <aside className="app-navigation" aria-label="主导航"><div className="brand"><span className="brand-mark" role="img" aria-label="自媒体工作台图标"/><div><strong>自媒体工作台</strong><span>内容创作工作空间</span></div></div><div className="nav-label">工作空间 <span className="free-badge">免费体验</span></div><nav>{(Object.keys(pageNames) as Page[]).map(key => <button key={key} id={`nav-${key}`} aria-current={page === key ? 'page' : undefined} className={page === key ? 'nav-item active' : 'nav-item'} disabled={busy} onClick={() => void navigate(key)}><NavigationIcon name={key}/>{pageNames[key]}</button>)}</nav><div className="nav-bottom"><button id="library-menu" className="nav-item" onClick={() => void guard(async () => {setLibraryTab('resources'); setLibraryOpen(true);})}><NavigationIcon name="library"/>内容库</button><button id="open-settings" className="nav-item" disabled={acting || !!status?.busy} onClick={() => { if (hasManagedDrafts()) setError('请先保存或明确关闭当前编辑，再打开设置。'); else setSettings(true); }}><NavigationIcon name="settings"/>设置</button><div className="nav-library"><span className="library-dot"/><span id="library-summary">{status?.currentName || '尚未打开内容库'}</span></div><p className="nav-footnote">资料保存在你的本机</p></div></aside>
+        <div className="app-stage"><header className="app-header"><div><p className="breadcrumb">工作空间 / {pageNames[page]}</p><Typography.Title heading={1}>{page === 'content' && detailOpen ? '内容详情' : pageNames[page]}</Typography.Title></div><div className="header-actions"><span className="save-indicator">{dirty ? '有未保存草稿' : '本机保存'}</span><Button id="refresh-workspace" disabled={busy || !status?.currentName} onClick={() => void nativeAction(async () => { await refreshEditor(); setCoverRefresh(n => n + 1); if (status?.currentName) setContents(await invoke('listContents', {view})); })}>刷新</Button></div></header>
+        {(blocked || status?.task && status.task.status !== 'committed') && <div className="recovery-notice"><Banner type="warning" closeIcon={null} description="有一项操作等待确认，已保留原输入。"/><Button onClick={openRecovery}>继续处理</Button></div>}
+        {!status && !settings && <BootstrapRecoveryPanel busy={acting} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryTab('storage'); setLibraryOpen(true); await refreshStatus(); }}/>}
+        {status && !status.currentName && <section className="welcome-library"><span className="welcome-brand brand-mark" aria-hidden="true"/><div><h2>让内容创作，从这里开始</h2><p>新建内容库，或打开你已有的本机内容库。</p></div><div className="actions"><Button id="welcome-create-library" theme="solid" disabled={busy || blocked} onClick={() => void guard(() => act('createLibrary'))}>新建内容库</Button><Button id="welcome-open-library" disabled={busy || blocked} onClick={() => void guard(() => act('openLibrary'))}>打开内容库</Button></div></section>}
+        {libraryOpen && <dialog ref={libraryDialog} className="library-manager-dialog" aria-labelledby="library-manager-title" onCancel={event => {event.preventDefault(); closeLibrary();}}><div className="dialog-heading"><div><h2 id="library-manager-title">内容库管理</h2><p>{status?.currentName || '打开或新建你的本机内容库'}</p></div><div className="actions">{blocked && <Button onClick={openRecovery}>继续处理</Button>}<Button disabled={acting} onClick={closeLibrary}>关闭</Button></div></div><div className="manager-tabs"><Button theme={libraryTab === 'resources' ? 'solid' : 'borderless'} onClick={() => {if (hasManagedDrafts()) setError('请先保存或放弃当前填写，再切换管理页。'); else setLibraryTab('resources');}}>资料与默认值</Button><Button theme={libraryTab === 'storage' ? 'solid' : 'borderless'} onClick={() => {if (hasManagedDrafts()) setError('请先保存或放弃当前填写，再切换管理页。'); else setLibraryTab('storage');}}>备份与维护</Button></div><p className="manager-error" role="alert">{error}</p>
+        {libraryTab === 'storage' && <section className="library-manager" aria-label="备份与维护">
         <Card title="当前内容库"><p
             id="current-library">{status?.currentName || '尚未打开内容库'}{status?.needsReselect ? ' · 旧绑定缺少目录身份，请明确重选' : ''}</p>
             <div className="actions"><Button id="create-library" disabled={busy || blocked}
@@ -429,8 +508,7 @@ function App() {
                                                                                               disabled={busy}
                                                                                               onClick={() => void resolve('discard')}>明确放弃提交并载入磁盘</Button></>}
                 </div>}</Card>
-        {status?.workspacePending && <Card title="上次修改需要核验"><p>原操作与输入已保留，确认前不会开始新的写入。</p><p>状态：{status.workspacePending.state === 'conflict' ? '对象已改变，请保留输入后重新编辑' : status.workspacePending.state === 'missing' ? '尚未找到提交记录' : '结果待核验'}</p><details><summary>查看已保留的输入</summary><pre>{JSON.stringify(status.workspacePending.input, null, 2)}</pre></details><div className="actions"><Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('recoverWorkspaceMutation'); await refreshEditor(); })}>核验上次修改</Button>{status.workspacePending.state === 'missing' && <Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('retryWorkspaceMutation'); await refreshEditor(); })}>重试同一操作</Button>}{['missing', 'conflict'].includes(status.workspacePending.state) && <Button disabled={busy} onClick={() => void nativeAction(() => invoke('abandonWorkspaceMutation'))}>放弃原修改并保留文件</Button>}</div></Card>}
-        {status?.templatePending && <Card title="模板操作需要核验"><p>学习、还原或验收的原操作已保留。核验前不会开始新的写入。</p><p>状态：{status.templatePending.state === 'conflict' ? '原模板已改变' : status.templatePending.state === 'missing' ? '尚未找到提交记录' : '结果待核验'}</p><div className="actions"><Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('recoverTemplateMutation'); await refreshWorkspace(); })}>核验模板操作</Button>{status.templatePending.state === 'missing' && <Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('retryTemplateMutation'); await refreshWorkspace(); })}>重试同一操作</Button>}{['missing', 'conflict'].includes(status.templatePending.state) && <Button disabled={busy} onClick={() => void nativeAction(() => invoke('abandonTemplateMutation'))}>放弃原操作并保留文件</Button>}</div></Card>}
+        {!recoveryOpen && recoveryCards}
         <MaintenancePanel key={libraryEpoch} status={status} busy={busy} diagnosticsBusy={acting} blocked={!!blocked} run={nativeAction}/>
         <Card title={<h2 id="import-heading">导入旧备份</h2>} aria-labelledby="import-heading">
             <div className="actions"><Button id="backup" theme="solid"
@@ -458,47 +536,18 @@ function App() {
                 <li>有 {task.issues.length} 项待确认；缺失资源保留了记录。</li>}{task?.issues.slice(0, 50).map((issue, index) =>
                 <li key={index}>{issue.code || '资源待补齐'}{issue.key ? ` · ${issue.key}` : ''}</li>)}</ul>
         </Card>
-        </section>
-        {libraryOpen && status?.currentName && <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} library={library} assets={assets} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section>}
+        </section>}
+        {libraryTab === 'resources' && (status?.currentName ? <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} library={library} assets={assets} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section> : <div className="blank-state"><p>先打开内容库，再管理照片、渠道和默认值。</p><Button onClick={() => setLibraryTab('storage')}>打开内容库</Button></div>)}</dialog>}
         <p id="error" role="alert">{error}</p>
         {workspaceUnavailable && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
-        {page === 'overview' && <Overview workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={() => void navigate('calendar')}/>}
+        {page === 'overview' && <Overview createContent={() => void newContent()} openTemplates={() => void navigate('templates')} openCalendar={() => void navigate('calendar')} generate={item => void select(item, undefined, true)} workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={() => void navigate('calendar')}/>}
         {page === 'templates' && <TemplatesPage key={libraryEpoch} library={library} run={nativeAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openPhotoManagement()}/>}
-        {page === 'calendar' && <CalendarPage key={libraryEpoch} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
+        {page === 'calendar' && <CalendarPage key={`${libraryEpoch}:${calendarContentId ?? 'all'}`} initialContentId={calendarContentId} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
         {page === 'prompts' && <PromptsPage key={libraryEpoch} initialContentId={promptContentId} currentContentId={base && !base.deletedAt ? base.id : null} workspace={workspace} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={refreshWorkspace} importPrompt={async () => await nativeAction(() => invoke('choosePromptDocument')) ?? null}/>}
-        <div className="content-workspace" hidden={page !== 'content'}><aside className="content-sidebar">
-        <Card title={<h2 id="content-heading">内容列表</h2>} aria-labelledby="content-heading">
-            <div className="actions"><Button id="new-content" disabled={busy || !status?.currentName || blocked}
-                                             onClick={() => void guard(async () => {
-                                                 setBase(null);
-                                                 setDraft({title: '未命名内容', body: ''});
-                                                 setDisk(null);
-                                             })}>新建内容</Button><Button id="active-view"
-                                                                          disabled={busy || !status?.currentName}
-                                                                          onClick={() => void nativeAction(async () => {
-                                                                              setView('active');
-                                                                              setContents(await invoke('listContents', {view: 'active'}));
-                                                                          })}>活动内容</Button><Button id="trash-view"
-                                                                                                       disabled={busy || !status?.currentName}
-                                                                                                       onClick={() => void nativeAction(async () => {
-                                                                                                           setView('trash');
-                                                                                                           setContents(await invoke('listContents', {view: 'trash'}));
-                                                                                                       })}>回收站</Button><Button
-                id="refresh-contents" disabled={busy || !status?.currentName}
-                onClick={() => void act('listContents')}>刷新内容与磁盘版本</Button></div>
-            <input type="search" className="content-search" aria-label="搜索内容" placeholder="搜索标题或正文" value={contentQuery} onChange={event => setContentQuery(event.target.value)}/><div id="contents">{contents === null ? <p>打开内容库后可查看内容。</p> : contents.length === 0 ?
-                <p>当前视图没有内容。</p> : contents.filter(item => `${item.title} ${item.body}`.toLowerCase().includes(contentQuery.toLowerCase())).map(item => <details key={item.id} open={item.id === base?.id} className={item.id === base?.id ? 'content-row selected' : 'content-row'} data-content-id={item.id}>
-                    <summary onClick={event => { event.preventDefault(); if (!busy) void select(item); }}>{item.title}</summary>
-                    <pre>{item.body || '（基础正文为空；旧渠道文案保存在各自发布计划中。）'}</pre>
-                    <Button disabled={busy} onClick={() => void select(item)}>打开编辑</Button><Button disabled={busy || blocked}
-                                                                                       onClick={() => void recycle(item)}>{view === 'trash' ? '恢复内容' : '移入回收站'}</Button>
-                </details>)}</div>
-        </Card>
-        </aside><section className="content-detail" aria-label="内容详情">
-        {!draft && <Card className="empty-detail"><h2>{status?.currentName ? '选择一篇内容，开始创作' : '欢迎来到你的内容中心'}</h2><p>{status?.currentName ? '从左侧打开内容，或新建一篇。保存正文后就能选择模板并准备封面。' : '请先新建内容库，或打开已有内容库。旧版资料可从“导入旧备份”恢复。'}</p></Card>}
-        {draft && <Card title="编辑内容"><p
-            id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
+        {page === 'content' && (!detailOpen || !draft ? <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>← 返回内容列表</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{base?.deletedAt ? '回收站' : base ? '创作中' : '新内容'}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
+        {contentTab === 'body' && <Card title="标题与正文"><p
+            id="editor-dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
             htmlFor="content-title">标题</label><input id="content-title" disabled={busy || blocked} maxLength={500}
                                                        value={draft.title} onChange={event => setDraft({
             ...draft,
@@ -526,12 +575,15 @@ function App() {
                                                                                                    disabled={!!status?.pending}
                                                                                                    onClick={() => load(disk)}>明确放弃草稿并载入磁盘</Button>
             </section>}</Card>}
-        {base && !base.deletedAt && <ContentMetadataPanel key={`${libraryEpoch}:${base.id}`} contentId={base.id} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>}
-        <ContentMaterialPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} contentId={base?.id ?? null} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>
-        <CoverPanel library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
-        </section></div>
+        {contentTab === 'materials' && <><ContentMaterialPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} contentId={base?.id ?? null} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>{base && !base.deletedAt && <ContentMetadataPanel key={`${libraryEpoch}:${base.id}`} contentId={base.id} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>}</>}
+        {contentTab === 'publication' && <Card className="content-publication-entry"><h3>安排这篇内容的发布</h3><p>在日历中选择渠道、安排时间，发布后记录结果。</p><Button theme="solid" disabled={busy || !base || !!base.deletedAt} onClick={() => void openPublicationCalendar()}>前往日历管理发布计划</Button></Card>}
+        <div className="cover-detail-pane" hidden={contentTab !== 'covers'}>
+        <CoverPanel startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
+        </div>
+        </div></section>)}
+        {recoveryOpen && <dialog ref={recoveryDialog} className="library-manager-dialog" aria-labelledby="retained-recovery-title" onCancel={event => {event.preventDefault(); setRecoveryOpen(false);}}><div className="dialog-heading"><div><h2 id="retained-recovery-title">继续处理待确认操作</h2><p>原编辑窗口与填写内容保持打开。处理后关闭此窗口，返回继续编辑。</p></div><Button disabled={acting} onClick={() => setRecoveryOpen(false)}>返回编辑</Button></div><p className="manager-error" role="alert">{error}</p><section className="library-manager" aria-label="待确认操作">{recoveryCards}{!blocked && <p role="status">待确认操作已处理，可以返回原编辑窗口。</p>}</section></dialog>}
         {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={() => setTemplatePicker(null)} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 打开内容后预选这组样张</p></div><Button onClick={() => setTemplatePicker(null)}>关闭</Button></div><div className="template-content-list">{workspace?.contents.filter(item => !item.deletedAt).map(item => <button disabled={busy} key={item.id} onClick={() => void select(item, templatePicker.id)}><strong>{item.title}</strong><span>{item.body.slice(0, 90) || '正文待补充'}</span></button>)}{!workspace?.contents.some(item => !item.deletedAt) && <p>还没有活动内容。先到“内容”页新建并保存，再使用模板。</p>}</div></dialog>}
-        {settings && <AssistantSettings status={status} busy={acting || !!status?.busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)}><PreferencesPanel busy={acting || !!status?.busy} run={nativeAction}/><SetupPanel busy={acting || !!status?.busy} run={nativeAction}/><BootstrapRecoveryPanel busy={acting || !!status?.busy} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/></AssistantSettings>}
+        {settings && <AssistantSettings status={status} busy={acting || !!status?.busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)}><PreferencesPanel busy={acting || !!status?.busy} run={nativeAction}/><SetupPanel host={status?.assistant} busy={acting || !!status?.busy} run={nativeAction}/><BootstrapRecoveryPanel busy={acting || !!status?.busy} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/></AssistantSettings>}
     {leaving &&
             <dialog ref={leaveDialog} className="leave-dialog" onCancel={() => setLeaving(null)} aria-modal="true"
                     aria-labelledby="leave-title"><h3 id="leave-title">草稿尚未保存</h3>

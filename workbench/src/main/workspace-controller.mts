@@ -50,8 +50,8 @@ export class WorkspaceController {
     decorate(library: WorkspaceLibrarySnapshot): WorkspaceLibrarySnapshot {
         return {
             ...library,
-            contentDetails: library.contentDetails.map(content => ({...content, materials: content.materials.map(material => this.decorateMaterial(material))})),
-            collections: library.collections.map(collection => ({...collection, materials: collection.materials.map(material => this.decorateMaterial(material))}))
+            contentDetails: library.contentDetails.map(content => ({...content, materials: content.materials.map(material => this.decorateMaterial(material)), candidates: content.candidates.map(candidate => ({...candidate, url: this.owner.covers.grant(candidate.assetHash)}))})),
+            collections: library.collections.map(collection => ({...collection, materials: collection.materials.map(material => this.decorateMaterial(material)), candidates: collection.candidates.map(candidate => ({...candidate, url: this.owner.covers.grant(candidate.assetHash)}))}))
         };
     }
 

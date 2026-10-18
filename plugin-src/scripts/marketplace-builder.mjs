@@ -93,7 +93,7 @@ export async function buildMarketplace(mode, {runtimeRoot = join(root, 'plugin/r
             await cp(input, plugin, {recursive: true, verbatimSymlinks: true});
             if (!isDeepStrictEqual(snapshot, await validateRuntime(plugin, release)) || !isDeepStrictEqual(snapshot, await snapshotPackage(input))) throw Error('Runtime package changed during marketplace copy');
             const name = `${release.appScope}-auth-${release.AUTH_MODE}-${process.platform}-${process.arch}`;
-            const description = `Nova Content Hub · 实验插件 · 鉴权未接入 · 非商用 · ${release.AUTH_MODE} · ${process.platform}/${process.arch}`;
+            const description = `Nova Content Hub · ${release.AUTH_MODE === 'disabled' ? '免费体验版配套插件 · 无需登录' : '受限内部插件 · 业务未开放'} · ${process.platform}/${process.arch}`;
             await mkdir(join(stage, '.agents/plugins'), {recursive: true});
             await mkdir(join(stage, '.codebuddy-plugin'), {recursive: true});
             await json(join(stage, '.agents/plugins/marketplace.json'), {
@@ -104,7 +104,7 @@ export async function buildMarketplace(mode, {runtimeRoot = join(root, 'plugin/r
                 name, owner: {name: 'Nova Content Hub'}, metadata: {description},
                 plugins: [{name: release.appScope, source: './' + release.appScope, description, version: release.version}]
             });
-            await writeFile(join(stage, 'README.md'), `# ${description}\n\n本目录是本机架构的完整本地市场，需整体保存。两个市场均指向同一个 nova-content-hub/ 完整子包。无需另外安装 Node。\n\nCodex：使用 .agents/plugins/marketplace.json 打开本地插件详情，安装、启用及 Hooks 信任由用户在宿主内确认。WorkBuddy：插件页 + 添加本目录为市场，再查看插件详情；本地路径兼容仍需当前宿主 GUI 验证。\n\nrequired 拒绝 cover 业务读写；disabled 仅供无鉴权实验。三项 contract Skill 仍不可执行，cover-execution Skill 的真实能力以原包 integrity.json 为准。打开宿主或插件详情不代表安装、接单、生图或提交成功。未接入可信授权，非商用发行。\n`);
+            await writeFile(join(stage, 'README.md'), `# ${description}\n\n本目录是本机架构的完整本地市场，需整体保存。两个市场均指向同一个 nova-content-hub/ 完整子包。无需另外安装 Node。\n\nCodex：使用 .agents/plugins/marketplace.json 打开本地插件详情，安装、启用及 Hooks 信任由用户在宿主内确认。WorkBuddy：插件页 + 添加本目录为市场，再查看插件详情；本地路径兼容仍需当前宿主 GUI 验证。\n\n一期免费体验使用 disabled 构建，无需产品登录；required 保留为旧受限内部构建并继续拒绝业务读写。contract Skill 仅做契约校验，执行 Skill 的真实能力以原包 integrity.json 为准。打开宿主或插件详情不代表安装、接单、生图或提交成功。当前构建尚未完成统一发行验收，不代表正式发布就绪。\n`);
             if (!isDeepStrictEqual(snapshot, await snapshotPackage(input)) || !isDeepStrictEqual(snapshot, await snapshotPackage(plugin))) throw Error('Runtime package changed before marketplace manifest');
             await json(join(stage, 'package-files.json'), {
                 format: 'nova-content-marketplace-package-files', schemaVersion: 1,

@@ -211,10 +211,10 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         initializationError = error;
     }
     window = new BrowserWindow({
-        width: 960,
-        height: 760,
-        minWidth: 600,
-        minHeight: 520,
+        width: 1280,
+        height: 860,
+        minWidth: 960,
+        minHeight: 680,
         show: false,
         icon: icons.window,
         title: '自媒体工作台',

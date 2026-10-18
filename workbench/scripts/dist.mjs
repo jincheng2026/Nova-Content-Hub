@@ -6,7 +6,8 @@ import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
-const usage = 'Use npm run dist:local|dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';
+const usage = 'Use npm run dist:local|dist:preview|dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';
+const channelAuth = {local: 'disabled', preview: 'disabled', testing: 'required', production: 'disabled'};
 
 export function parseOptions(args, host = process) {
     const options = {};
@@ -16,7 +17,7 @@ export function parseOptions(args, host = process) {
         if (!['--channel', '--auth', '--platform', '--arch'].includes(args[index]) || Object.hasOwn(options, key)) throw new Error(usage);
         options[key] = args[index + 1];
     }
-    if (!['local', 'testing', 'production'].includes(options.channel) || (options.channel === 'local' ? options.auth !== 'disabled' : options.auth !== 'required') || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);
+    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel] || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);
     if (options.platform !== host.platform || options.arch !== host.arch) throw new Error('Use a native runner with matching process.platform and process.arch; cross-platform/architecture packaging is refused.');
     return options;
 }
@@ -33,11 +34,12 @@ export function assertProductionSigning(platform, env) {
 
 export function assertDistribution(options, config, packageJSON, env = process.env) {
     validateBuildConfig(config);
-    if (options.channel !== 'local' && (options.auth !== 'required' || config.AUTH_MODE !== 'required')) throw new Error('Installers require AUTH_MODE=required in both the command and release.config.json.');
+    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel]) throw new Error('AUTH_MODE must be disabled for local/preview/production and required only for restricted testing.');
+    if (['preview', 'production'].includes(options.channel) && config.AUTH_MODE !== 'disabled') throw new Error('Free preview and production commands require AUTH_MODE=disabled in release.config.json.');
     if (packageJSON.version !== config.version || packageJSON.devDependencies?.electron !== '44.9.0' || packageJSON.devDependencies?.['electron-builder'] !== '26.15.3') throw new Error('Installer version or pinned packaging toolchain mismatch.');
     if (options.channel === 'production') {
         assertProductionSigning(options.platform, env);
-        throw new Error('Production is blocked: authentication is not connected and this release is experimental, productionReady=false.');
+        throw new Error('Production is blocked: full functional and native installer acceptance, signing/notarization verification and experimental release gates are incomplete; productionReady=false.');
     }
 }
 
@@ -58,11 +60,11 @@ export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
     return {
-        appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : 'com.novaisland.nova-content-hub.testing',
+        appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',
         productName: '自媒体工作台',
         electronVersion: '44.9.0',
         directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},
-        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; authentication disabled; not for distribution' : '自媒体工作台 restricted testing build; authentication unavailable', author: 'Nova Content Hub'},
+        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 free preview; no login required; non-production build', author: 'Nova Content Hub'},
         artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\${ext}`,
         publish: null,
         // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.
@@ -117,7 +119,7 @@ export function distribute(args = process.argv.slice(2)) {
     fs.writeFileSync(configFile, JSON.stringify(builderConfig, null, 2) + '\n');
     const env = testingEnvironment();
     execFileSync(process.execPath, [path.join(workbench, 'node_modules/electron-builder/cli.js'), options.platform === 'darwin' ? '--mac' : '--win', `--${options.arch}`, '--publish', 'never', '--config', configFile], {cwd: workbench, stdio: 'inherit', env});
-    console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. Authentication is unavailable.`);
+    console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
