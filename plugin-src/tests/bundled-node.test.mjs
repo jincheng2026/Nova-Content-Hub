@@ -93,7 +93,7 @@ test('real pinned Node runs outside the repo without PATH, rejects damage, and c
     await writeFile(join(failing, 'runtime', process.platform === 'win32' ? 'node.exe' : 'node'), 'existing unsafe runtime');
     await assert.rejects(bundleNode(failing), /EEXIST/);
     await assert.rejects(readFile(join(failing, 'runtime/manifest.json')), /ENOENT/);
-    const cache = new URL('../../.node-runtime-cache/', import.meta.url);
+    const cache = new URL('../.cache/node/', import.meta.url);
     assert.ok((await readdir(cache)).every(name => !name.startsWith('.download-') && !name.startsWith('.extract-')));
     assert.equal(spawnSync(node, ['-p', 'process.version'], {encoding: 'utf8'}).stdout.trim(), 'v24.20.0');
 });

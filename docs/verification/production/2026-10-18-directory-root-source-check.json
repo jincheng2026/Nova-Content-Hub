@@ -1,0 +1,8 @@
+{
+  "format": "nova-directory-root-source-check",
+  "checked": 5,
+  "coreImplementationBytesUnchanged": true,
+  "catalogAndProtocolAndMasterAndLegacyChecks": 14,
+  "referenceCommit": "d149fdf",
+  "recordedAt": "2026-10-18T03:26:54.598Z"
+}

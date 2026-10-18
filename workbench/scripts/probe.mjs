@@ -4,8 +4,8 @@ import os from 'node:os';
 import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import electron from 'electron';
-import {makeBackup} from '../../browser-import/test/fixture.mjs';
-import {createLibrary} from '../../file-library/index.mjs';
+import {makeBackup} from '../../plugin-src/src/lib/browser-import/test/fixture.mjs';
+import {createLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const repository = path.resolve(workbench, '..');
@@ -39,7 +39,7 @@ try {
         const bundle = path.join(root, `auth-${mode}`);
         const data = path.join(root, `data-${mode}`);
         await fs.mkdir(path.join(data, 'machine'), {recursive: true});
-        await fs.cp(path.join(repository, 'dist-desktop', `auth-${mode}`), bundle, {recursive: true});
+        await fs.cp(path.join(repository, 'workbench/dist-desktop', `auth-${mode}`), bundle, {recursive: true});
         await fs.mkdir(path.join(data, 'initial'));
         createLibrary(path.join(data, 'initial/library')).createContent({
             title: 'Library A saved editor',
@@ -61,7 +61,7 @@ try {
         const entry = path.join(native, 'main/probe.mjs');
         await fs.copyFile(path.join(workbench, '.native/main/probe.mjs'), entry);
         for (const phase of ['import', 'reopen']) await launch(bundle, entry, phase, data);
-        await fs.copyFile(path.join(data, 'workbench.png'), path.join(workbench, 'verification', `lifecycle-import-${mode}.png`));
+        await fs.copyFile(path.join(data, 'workbench.png'), path.join(repository, 'docs/verification/production', `2026-10-18-directory-import-${mode}.png`));
     }
     console.log('PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi + utility-process/sharp import; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.');
 } finally {

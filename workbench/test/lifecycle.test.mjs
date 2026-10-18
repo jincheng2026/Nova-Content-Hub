@@ -8,7 +8,7 @@ import {DesktopController} from '../src/main/controller.mts';
 import {BindingStore} from '../src/main/bindings.mts';
 import {execute} from '../src/main/worker.mts';
 import {assertCaller, PAGE} from '../src/main/boundary.mts';
-import {openLibrary, createLibrary, __testing} from '../../file-library/index.mjs';
+import {openLibrary, createLibrary, __testing} from '../../plugin-src/src/lib/file-library/index.mjs';
 
 process.env.NODE_ENV = 'test';
 

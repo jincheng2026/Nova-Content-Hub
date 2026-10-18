@@ -6,7 +6,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {CHANNELS} from './boundary.mts';
 import {startDesktop} from './desktop.mts';
-import {openLibrary} from '../../../file-library/index.mjs';
+import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import type {Content, DesktopMethod, DesktopResults, Reply} from '../shared/contracts.ts';
 
 const root = process.env.NOVA_DESKTOP_PROBE_ROOT;

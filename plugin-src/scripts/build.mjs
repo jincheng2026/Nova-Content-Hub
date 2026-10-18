@@ -78,7 +78,7 @@ export async function build(mode) {
     await validateSkills();
     const outputs = [];
     for (const release of await releaseModes(mode)) {
-        const dest = join(root, 'dist-plugin-contract', `${release.appScope}-${release.AUTH_MODE}`);
+        const dest = join(root, 'plugin/contract', `${release.appScope}-${release.AUTH_MODE}`);
         await rm(dest, {recursive: true, force: true});
         for (const directory of ['dist', 'bin', 'hooks', '.codex-plugin', '.codebuddy-plugin', 'references']) await mkdir(join(dest, directory), {recursive: true});
         const cliSource = (await readFile(join(source, 'src/content.mjs'), 'utf8'))
@@ -86,7 +86,7 @@ export async function build(mode) {
             .replace("const PACKAGE_KIND = 'execution';", "const PACKAGE_KIND = 'contract';");
         await writeFile(join(dest, 'dist/content.mjs'), cliSource);
         await cp(join(source, 'src/bridge/handoff.js'), join(dest, 'dist/handoff.js'));
-        await cp(join(root, 'schemas'), join(dest, 'schemas'), {recursive: true});
+        await cp(join(source, 'schemas'), join(dest, 'schemas'), {recursive: true});
         await json(join(dest, 'dist/release.json'), release);
         await json(join(dest, 'contract.json'), {
             ...release,
@@ -111,7 +111,7 @@ export async function build(mode) {
             await mkdir(join(skill, 'references'), {recursive: true});
             await writeFile(join(skill, 'scripts/content.mjs'), cliSource);
             await cp(join(source, 'src/bridge/handoff.js'), join(skill, 'scripts/handoff.js'));
-            await cp(join(root, 'schemas'), join(skill, 'schemas'), {recursive: true});
+            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
             await json(join(skill, 'scripts/release.json'), release);
             await cp(join(source, 'references'), join(skill, 'references'), {recursive: true});
         }
@@ -135,20 +135,14 @@ export async function buildCover(mode) {
             ...base, format: 'nova-content-plugin-release', schemaVersion: 1,
             experimental: true, platform: process.platform, arch: process.arch
         };
-        const target = join(root, 'dist-cover-runtime', `auth-${release.AUTH_MODE}`);
+        const target = join(root, 'plugin/runtime', `auth-${release.AUTH_MODE}`);
         await rm(target, {recursive: true, force: true});
         await mkdir(join(target, 'cover-runtime'), {recursive: true});
         const bundled = await bundleNode(target);
-        for (const name of ['file-library', 'image-validation', 'library-maintenance', 'browser-import']) {
-            await cp(join(root, name), join(target, name), {
-                recursive: true,
-                filter: source => !['test', '.DS_Store'].includes(basename(source))
-            });
-        }
-        await cp(join(source, 'src'), join(target, 'plugin-src/src'), {recursive: true});
+        await cp(join(source, 'src'), join(target, 'plugin-src/src'), {recursive: true, filter: input => !['test', '.DS_Store'].includes(basename(input))});
         // One release file serves both command spaces; compatibility paths never carry their own auth mode.
         await json(join(target, 'plugin-src/src/release.json'), release);
-        await cp(join(root, 'schemas'), join(target, 'schemas'), {recursive: true});
+        await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true});
         await cp(join(source, 'skills'), join(target, 'plugin-src/skills'), {recursive: true});
         await cp(join(source, 'references'), join(target, 'plugin-src/references'), {recursive: true});
         for (const name of skillNames) {
@@ -156,29 +150,23 @@ export async function buildCover(mode) {
             await mkdir(join(skill, 'scripts'), {recursive: true});
             await writeFile(join(skill, 'scripts/content.mjs'), "import { main } from '../../../src/content.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
             await cp(join(source, 'references'), join(skill, 'references'), {recursive: true});
-            await cp(join(root, 'schemas'), join(skill, 'schemas'), {recursive: true});
+            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
         }
-        // Trusted import validators need only these modules and the exact catalogued resource bytes.
-        for (const relative of ['core.js', 'builtin-templates.js', 'shared/handoff.js']) {
-            const destination = join(target, '原型', relative);
-            await mkdir(resolve(destination, '..'), {recursive: true});
-            await cp(join(root, '原型', relative), destination);
-        }
-        const importCatalog = JSON.parse(await readFile(join(root, 'browser-import/builtin-resources.json'), 'utf8'));
-        if (importCatalog.format !== 'nova-browser-import-builtin-resources' || importCatalog.schemaVersion !== 1 || !importCatalog.entries) throw new Error('Unsupported import resource catalog');
+        // Resource paths match the source tree; no dependency on the browser workbench.
+        const importCatalog = JSON.parse(await readFile(join(source, 'src/lib/browser-import/builtin-resources.json'), 'utf8'));
+        if (importCatalog.format !== 'nova-browser-import-builtin-resources' || importCatalog.schemaVersion !== 1 || !importCatalog.entries || Object.keys(importCatalog.entries).length !== 72) throw new Error('Unsupported import resource catalog');
         for (const [relative, entry] of Object.entries(importCatalog.entries)) {
             if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
-            const bytes = await readFile(join(root, '原型', relative));
+            const bytes = await readFile(join(source, 'resources', relative));
             if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
-            const destination = join(target, '原型', relative);
-            await mkdir(resolve(destination, '..'), {recursive: true});
-            await writeFile(destination, bytes, {flag: 'wx'});
         }
-        await cp(join(root, 'cover-runtime/cli.mjs'), join(target, 'cover-runtime/cli.mjs'));
+        await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: input => !['test', '.DS_Store'].includes(basename(input))});
+        await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs'});
+        await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
         await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true});
-        await cp(join(root, 'cover-runtime/README.md'), join(target, 'cover-runtime/README.md'));
+        await writeFile(join(target, 'cover-runtime/README.md'), '# 兼容封面入口\n\n`node cover-runtime/cli.mjs` 转发到唯一封面命令。[完整说明](../plugin-src/compat/cover-runtime/README.md)。\n');
         await cp(join(source, 'README.md'), join(target, 'plugin-src/README.md'));
-        await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](library-maintenance/README.md)。本包不代表商用发行就绪。\n');
+        await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](plugin-src/src/lib/library-maintenance/README.md)。本包不代表商用发行就绪。\n');
         await cp(join(source, 'runtime/README.md'), join(target, 'runtime/README.md'));
         await manifests(target, release, allSkillNames, './plugin-src/skills');
         await writeLaunchers(target);
@@ -197,7 +185,7 @@ export async function buildCover(mode) {
             await cp(target, standalone, {recursive: true});
             const standaloneEnv = {...cleanNodeEnv(), PATH: '', NODE_PATH: ''};
             const fixedNode = join(standalone, 'runtime', basename(bundled.node));
-            execFileSync(fixedNode, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#ffffff'}}).png().toBuffer();await validateImage(bytes);"], {
+            execFileSync(fixedNode, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './plugin-src/src/lib/image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#ffffff'}}).png().toBuffer();await validateImage(bytes);"], {
                 cwd: standalone,
                 env: standaloneEnv,
                 stdio: 'pipe',

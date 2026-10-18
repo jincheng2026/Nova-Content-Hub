@@ -141,7 +141,7 @@ export async function main(argv) {
             }
             const withInput = requiredFlags(command, values);
             const input = withInput ? await payload(values, command === 'submit') : null;
-            const {openLibrary} = await import('../../../file-library/index.mjs');
+            const {openLibrary} = await import('../lib/file-library/index.mjs');
             const library = located ? openLibrary(located.binding.root, {
                 expectedLibraryId: located.binding.libraryId,
                 expectedRootIdentity: located.binding.rootIdentity

@@ -19,7 +19,7 @@ npm run probe:lifecycle --prefix workbench
 npm run probe:cover --prefix workbench
 ```
 
-构建必须显式选择 `--auth required|disabled|both`。产物为仓库根 `dist-desktop/auth-required`、`dist-desktop/auth-disabled`
+构建必须显式选择 `--auth required|disabled|both`。产物为仓库根 `workbench/dist-desktop/auth-required`、`workbench/dist-desktop/auth-disabled`
 ，均为 `experimental:true / productionReady:false`。根 `release.config.json` 的 scope/productId、版本、协议、实验标记、AUTH_MODE
 与随包平台/架构/pairId 在构建、main、worker 分别核验。缺失或坏配置会拒绝启动；环境变量、query、localStorage、旧演示登录均不能切换权限。
 

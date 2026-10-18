@@ -1,0 +1,24 @@
+
+> nova-content-hub-prototype@0.2.0 test:cover
+> node --test plugin-src/tests/cover/*.test.mjs
+
+✔ both builds identify themselves and required mode refuses business IO before reading input or library (332.663083ms)
+✔ independent packaged runtime fully decodes, submits, replays and exposes status through actual CLI commands (7701.638875ms)
+✔ CLI bounds input, rejects malformed commands and never writes on transport failures (1005.030292ms)
+✔ the bundled Skill references the real CLI and contains no template or user library scripts (0.762208ms)
+✔ both independent packages separate contract and cover commands and preserve the legacy wrapper (956.167292ms)
+✔ required unified commands and legacy wrappers reject environment and argument auth overrides before IO (181.394958ms)
+✔ one release file controls and validates both namespaces; missing or mismatched pairing cannot fall back (1542.540583ms)
+✔ implementation, hooks, skill capabilities, mode and hashed import resources agree in both packages (1282.824208ms)
+✔ standalone bundled launcher resolves handoff and completes context/claim/submit/status/replay with empty Node PATH (9754.7285ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1890.041792ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1609.411541ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (2810.115084ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17296.207125

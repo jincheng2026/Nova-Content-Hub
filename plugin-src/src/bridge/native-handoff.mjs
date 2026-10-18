@@ -3,7 +3,7 @@ import path from 'node:path';
 import os from 'node:os';
 import {randomUUID, createHash} from 'node:crypto';
 import {validRelease} from '../content.mjs';
-import {openLibrary} from '../../../file-library/index.mjs';
+import {openLibrary} from '../lib/file-library/index.mjs';
 
 const MAX_BYTES = 64 * 1024;
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);

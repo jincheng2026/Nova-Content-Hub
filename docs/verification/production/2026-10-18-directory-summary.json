@@ -1,0 +1,25 @@
+{
+  "format": "nova-directory-migration-verification",
+  "date": "2026-10-18",
+  "verifyExitCode": 0,
+  "tests": 661,
+  "passed": 660,
+  "failed": 0,
+  "skipped": 1,
+  "groups": {
+    "prototype": 148,
+    "fileLibrary": 349,
+    "seeds": 6,
+    "plugin": 33,
+    "integration": 19,
+    "coverCLI": 12,
+    "maintenance": 5,
+    "browserImport": 35,
+    "images": 11,
+    "icons": 3,
+    "desktop": 40
+  },
+  "defaultSkip": "bundled Node real download test requires opt-in; fixed archived runtime builds and external empty-PATH CLI were exercised",
+  "platform": "darwin/arm64",
+  "productionReady": false
+}

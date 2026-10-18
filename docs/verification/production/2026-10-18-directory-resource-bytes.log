@@ -1,0 +1,12 @@
+{
+  "baseCommit": "d149fdf57bb815cf4bc184d2ebb4e7367e505ffb",
+  "unchangedByteGroups": {
+    "assets": 12,
+    "verification": 104,
+    "workbench": 30,
+    "原型": 86
+  },
+  "catalogEntries": 72,
+  "catalogHashesPassed": true,
+  "businessCatalogLogicChanged": false
+}

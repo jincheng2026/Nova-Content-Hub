@@ -1,0 +1,27 @@
+✔ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (91.333ms)
+✔ independent schemas and runtime reject malformed envelopes and nested requests (12.826417ms)
+✔ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (16.678583ms)
+✔ host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content (15.471083ms)
+✔ required browser simulation and runtime flags never authorize a real content-bearing launch (10.864958ms)
+✔ actual packaged check-handoff validates both modes without echoing project content or executing (121.003916ms)
+✔ bundled native hook context is minimal guidance and cannot acknowledge business success (124.437584ms)
+✔ all fifteen self-media designs build bounded requests accepted by the packaged CLI (715.901459ms)
+✔ both delivered bundles include actual AI reference bytes and their reproducible prompts (90.932125ms)
+✔ independent design schema rejects invalid nested design, reference and review records (1.845417ms)
+✔ both prototype bundles retain the fictional examples and declared gallery directories (36.950833ms)
+✔ three UI request kinds match the disabled plugin and remain non-executable (166.398958ms)
+✔ simulated active authorization does not authorize the required plugin (161.048542ms)
+✔ pairing mismatch is rejected before a cross-mode handoff (69.276417ms)
+✔ generation snapshot survives later template edits and excludes binary images (9.761708ms)
+✔ contract rejects paths and injected image/token fields rather than forwarding them (104.470833ms)
+✔ preset decimal ratios normalize at the UI request exit and validate in the real CLI (61.525625ms)
+✔ UI rejects reference, pixel and serialized transport overflow before exporting a request (11.066083ms)
+✔ both delivered prototypes load the complete ZIP helper before the app (0.610875ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1343.034833

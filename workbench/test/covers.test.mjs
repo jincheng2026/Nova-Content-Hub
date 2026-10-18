@@ -9,7 +9,7 @@ import { DesktopController } from '../src/main/controller.mts';
 import { BindingStore, emptyBinding, validateBinding } from '../src/main/bindings.mts';
 import { execute } from '../src/main/worker.mts';
 import { validateInput } from '../src/shared/validation.ts';
-import { createLibrary, openLibrary, __testing } from '../../file-library/index.mjs';
+import { createLibrary, openLibrary, __testing } from '../../plugin-src/src/lib/file-library/index.mjs';
 process.env.NODE_ENV = 'test';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 async function fixture(t, mode = 'disabled') {

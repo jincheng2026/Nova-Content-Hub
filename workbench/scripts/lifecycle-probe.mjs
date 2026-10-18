@@ -6,7 +6,7 @@ import {spawn} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import electron from 'electron';
-import {createLibrary, openLibrary} from '../../file-library/index.mjs';
+import {createLibrary, openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const repository = path.resolve(workbench, '..');
@@ -40,7 +40,7 @@ try {
         const bundle = path.join(root, `auth-${mode}`);
         const data = path.join(root, `data-${mode}`);
         await fs.mkdir(data, {recursive: true});
-        await fs.cp(path.join(repository, 'dist-desktop', `auth-${mode}`), bundle, {recursive: true});
+        await fs.cp(path.join(repository, 'workbench/dist-desktop', `auth-${mode}`), bundle, {recursive: true});
         for (const probe of ['probe.mjs', 'lifecycle-probe.mjs']) await assert.rejects(fs.stat(path.join(bundle, 'workbench/dist/main', probe)), {code: 'ENOENT'});
         await fs.copyFile(path.join(workbench, '.native/main/lifecycle-probe.mjs'), path.join(bundle, 'workbench/dist/main/lifecycle-probe.mjs'));
         const configFile = path.join(bundle, 'workbench/dist/release.json');
@@ -85,8 +85,8 @@ try {
                 await fs.mkdir(guardData);
                 await launch(bundle, guardData, phase);
             }
-            await fs.copyFile(path.join(data, 'lifecycle.png'), path.join(workbench, 'verification/lifecycle-disabled.png'));
-            await fs.copyFile(path.join(data, 'conflict.png'), path.join(workbench, 'verification/lifecycle-conflict.png'));
+            await fs.copyFile(path.join(data, 'lifecycle.png'), path.join(repository, 'docs/verification/production/2026-10-18-directory-lifecycle-disabled.png'));
+            await fs.copyFile(path.join(data, 'conflict.png'), path.join(repository, 'docs/verification/production/2026-10-18-directory-lifecycle-conflict.png'));
         }
     }
     console.log('PASS external standalone native lifecycle packages: disabled CRUD/conflict/dirty guards and 7 actual disabled processes (including three guarded-creation faults); required main+worker five writes refused. Native system choosers/close-dialog clicks, Windows and production authorization remain unverified.');

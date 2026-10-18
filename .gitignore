@@ -1,9 +1,9 @@
 .DS_Store
 .idea/
 node_modules/
-dist-prototype/
-dist-plugin-contract/
-dist-cover-runtime/
-dist-desktop/
+plugin/
+workbench/dist-prototype/
+workbench/dist-desktop/
+workbench/.native/
 .local-probes/
-.node-runtime-cache/
+plugin-src/.cache/

@@ -8,7 +8,7 @@ import {randomUUID} from 'node:crypto';
 import {startDesktop} from './desktop.mts';
 import {WorkerClient} from './worker-client.mts';
 import {createHash} from 'node:crypto';
-import {openLibrary, createLibrary} from '../../../file-library/index.mjs';
+import {openLibrary, createLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import type {Content, DesktopMethod, DesktopResults, DesktopInputs, Reply, Mutation} from '../shared/contracts.ts';
 
 const root = process.env.NOVA_DESKTOP_PROBE_ROOT;
@@ -115,7 +115,7 @@ startDesktop({
             } else {
                 // Only this external test worker enables existing core fault hooks; release auth remains unchanged.
                 const wrapper = fileURLToPath(new URL('./creation-fault-worker.mjs', import.meta.url));
-                const coreURL = new URL('../../../file-library/index.mjs', import.meta.url).href;
+                const coreURL = new URL('../../../plugin-src/src/lib/file-library/index.mjs', import.meta.url).href;
                 await fs.writeFile(wrapper, `import fs from 'node:fs';import path from 'node:path';import{createHash}from'node:crypto';import{openLibrary,__testing}from ${JSON.stringify(coreURL)};
 process.env.NODE_ENV='test';const root=process.argv[3],phase=process.argv[4],target=path.join(root,'library');let armed=true,seed=false;
 const snapshot=()=>fs.readdirSync(target,{recursive:true}).sort().map(relative=>{const file=path.join(target,relative);return[relative,fs.lstatSync(file).isDirectory()?null:createHash('sha256').update(fs.readFileSync(file)).digest('hex')]});

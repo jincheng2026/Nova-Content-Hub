@@ -1,0 +1,26 @@
+
+> nova-content-hub-workbench@0.2.0 probe:cover
+> node scripts/cover-probe.mjs
+
+LibraryError: Empty or malformed lock; inspect it manually, never reclaim by age
+    at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/plugin-src/src/lib/file-library/index.mjs:42:11)
+    at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/plugin-src/src/lib/file-library/index.mjs:205:21)
+    at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/plugin-src/src/lib/file-library/index.mjs:588:23)
+    at readObject (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/plugin-src/src/lib/file-library/index.mjs:1330:49)
+    at Object.readPhoto (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/plugin-src/src/lib/file-library/index.mjs:1528:47)
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/workbench/dist/main/cover-probe.mjs:62:42)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-KLfude/auth-disabled/workbench/dist/main/desktop.mjs:188:5) {
+  code: 'LOCK_UNCERTAIN'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23
+      child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
+                                                                                                                                  ^
+
+Error: Cover probe failed 1/null
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23:131)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

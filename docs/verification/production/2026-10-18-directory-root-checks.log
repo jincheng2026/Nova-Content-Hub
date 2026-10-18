@@ -1,0 +1,19 @@
+✔ official platform locks agree with recorded Node SHASUMS; unsupported targets fail (10.342791ms)
+✔ archive validation rejects changed bytes, directories and symlinks (6.796916ms)
+✔ launchers use only fixed bundled runtime and fail closed with an empty PATH (68.613167ms)
+✔ real pinned Node runs outside the repo without PATH, rejects damage, and cleans failed extraction (5727.206416ms)
+✔ canonical plugin core is independent of the workbench and all 72 resource hashes remain exact (123.799791ms)
+✔ codex envelope resolves exact bound attempt and URL contains only the short handoff identity (1251.195ms)
+✔ workbuddy envelope resolves exact bound attempt and URL contains only the short handoff identity (1181.284583ms)
+✔ release and request/host validation stop before creating an envelope (691.9425ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1201.770708ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (906.892458ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (792.717792ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6285.283209

@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { openLibrary } from '../../../file-library/index.mjs';
-import { installBuiltins } from '../../../library-seed/index.mjs';
-import { validateImportedRaster } from '../../../image-validation/index.mjs';
+import { openLibrary } from '../../../plugin-src/src/lib/file-library/index.mjs';
+import { installBuiltins } from '../../../plugin-src/src/lib/library-seed/index.mjs';
+import { validateImportedRaster } from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import { exact, uuid, token, libraryBinding, requireWrite, fail } from '../shared/validation.ts';
 import { coverInput, coverPending, photoPending, fingerprint, coverReference } from '../shared/cover-validation.ts';
 import type { LibraryBinding, Content } from '../shared/contracts.ts';

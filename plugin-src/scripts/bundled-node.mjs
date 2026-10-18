@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 
 const source = fileURLToPath(new URL('../runtime/', import.meta.url));
 export const nodeRelease = JSON.parse(await readFile(join(source, 'node-release.json'), 'utf8'));
-const cache = resolve(source, '../../.node-runtime-cache');
+const cache = resolve(source, '../.cache/node');
 const MAX_ARCHIVE_BYTES = 150 * 1024 * 1024;
 export const cleanNodeEnv = () => Object.fromEntries(Object.entries(process.env).filter(([key]) => !['NODE_OPTIONS', 'NODE_PATH', 'ELECTRON_RUN_AS_NODE'].includes(key.toUpperCase())));
 

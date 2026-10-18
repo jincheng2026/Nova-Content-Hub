@@ -5,7 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {build} from 'vite';
 import {syncBridge} from '../../plugin-src/scripts/sync-bridge.mjs';
-import {checkAppIcons} from '../../scripts/build-app-icons.mjs';
+import {checkAppIcons} from './build-app-icons.mjs';
 import {validateBuildConfig, validateResources, validateRelease} from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
@@ -30,7 +30,7 @@ const mimes = {
     '.css': 'text/css; charset=utf-8'
 };
 for (const mode of modes) {
-    const target = path.join(root, 'dist-desktop', `auth-${mode}`);
+    const target = path.join(root, 'workbench/dist-desktop', `auth-${mode}`);
     fs.rmSync(target, {recursive: true, force: true});
     const dist = path.join(target, 'workbench/dist');
     fs.mkdirSync(dist, {recursive: true});
@@ -82,34 +82,17 @@ for (const mode of modes) {
         platform: process.platform,
         arch: process.arch
     }), null, 2) + '\n');
-    for (const name of ['file-library', 'image-validation', 'browser-import', 'library-seed']) fs.cpSync(path.join(root, name), path.join(target, name), {
-        recursive: true,
-        filter: source => path.basename(source) !== 'test'
-    });
-    for (const relative of ['core.js', 'builtin-templates.js', 'shared/handoff.js']) {
-            const destination = path.join(target, '原型', relative);
-        fs.mkdirSync(path.dirname(destination), { recursive: true });
-        fs.copyFileSync(path.join(root, '原型', relative), destination);
-    }
-    for (const relative of ['builtin-templates/catalog.json', 'builtin-prompts/catalog.json', 'assets/ai-reference-prompts/generated-files.json', 'plugin-src/src/bridge/native-handoff.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/content.mjs']) {
-        const destination = path.join(target, relative); fs.mkdirSync(path.dirname(destination), { recursive: true }); fs.copyFileSync(path.join(root, relative), destination);
-    }
-    const seedCatalog = JSON.parse(fs.readFileSync(path.join(root, 'builtin-templates/catalog.json'), 'utf8'));
-    for (const relative of new Set(seedCatalog.templates.flatMap(template => [...template.generatedReferences.map(r => r.path), ...(template.assets || []).map(a => a.path)]))) {
-        if (typeof relative !== 'string' || !relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..')) throw new Error('Unsafe builtin resource');
-        const destination = path.join(target, '原型', relative);
+    for (const relative of ['plugin-src/src/lib', 'plugin-src/resources', 'plugin-src/src/bridge', 'plugin-src/src/content.mjs', 'plugin-src/references', 'plugin-src/schemas']) {
+        const destination = path.join(target, relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
-        fs.copyFileSync(path.join(root, '原型', relative), destination);
+        fs.cpSync(path.join(root, relative), destination, {recursive: true, filter: input => !['test', '.DS_Store'].includes(path.basename(input))});
     }
-    const catalog = JSON.parse(fs.readFileSync(path.join(root, 'browser-import/builtin-resources.json'), 'utf8'));
+    const catalog = JSON.parse(fs.readFileSync(path.join(root, 'plugin-src/src/lib/browser-import/builtin-resources.json'), 'utf8'));
     if (catalog.format !== 'nova-browser-import-builtin-resources' || catalog.schemaVersion !== 1 || !catalog.entries || Object.keys(catalog.entries).length !== 72) throw new Error('Unsupported import resource catalog');
     for (const [relative, entry] of Object.entries(catalog.entries)) {
         if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
-        const bytes = fs.readFileSync(path.join(root, '原型', relative));
+        const bytes = fs.readFileSync(path.join(target, 'plugin-src/resources', relative));
         if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
-            const destination = path.join(target, '原型', relative);
-        fs.mkdirSync(path.dirname(destination), {recursive: true});
-        if (fs.existsSync(destination)) { if (!fs.readFileSync(destination).equals(bytes)) throw new Error('Bundled resource collision'); } else fs.writeFileSync(destination, bytes, {flag: 'wx'});
     }
     const {type: _type, ...runtimePackage} = packageJSON;
     fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({
@@ -123,7 +106,7 @@ for (const mode of modes) {
         stdio: 'pipe',
         timeout: 180000
     });
-    execFileSync(process.execPath, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#fff'}}).png().toBuffer();await validateImage(bytes);"], {
+    execFileSync(process.execPath, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './plugin-src/src/lib/image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#fff'}}).png().toBuffer();await validateImage(bytes);"], {
         cwd: target,
         stdio: 'pipe',
         timeout: 15000

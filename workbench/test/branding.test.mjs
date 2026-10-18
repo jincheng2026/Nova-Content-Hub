@@ -6,7 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {appIconPaths} from '../src/main/branding.mts';
 
-const source = fileURLToPath(new URL('../../assets/brand/desktop/', import.meta.url));
+const source = fileURLToPath(new URL('../resources/brand/desktop/', import.meta.url));
 test('app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes', async t => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-brand-icons-'));
     t.after(() => fs.rm(root, {recursive: true, force: true}));

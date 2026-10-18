@@ -1,0 +1,3 @@
+workbench/dist-prototype/auth-required/index.html
+workbench/dist-prototype/auth-disabled/index.html
+Both prototype outputs exclude source test fixtures.

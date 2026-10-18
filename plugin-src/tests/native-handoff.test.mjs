@@ -5,7 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 import sharp from 'sharp';
 import {randomUUID} from 'node:crypto';
-import {createLibrary} from '../../file-library/index.mjs';
+import {createLibrary} from '../src/lib/file-library/index.mjs';
 import {nativeHandoffDirectory, prepareNativeHandoff, readNativeHandoff} from '../src/bridge/native-handoff.mjs';
 
 const release = {

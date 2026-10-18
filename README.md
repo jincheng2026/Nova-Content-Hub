@@ -6,29 +6,26 @@
 商用桌面端实施已启动，按步骤记录设计、变更和验收证据。当前状态见 [实施计划与验收台账](docs/实施/00-实施计划与验收台账.md)
 ，过程见 [实施日志](docs/实施/01-实施日志.md)。各阶段分别验收，不能将原型测试通过视为商用桌面端就绪。
 
-真实本地文件核心位于 [file-library](file-library/README.md)：内容与提示词的 Markdown
-真源、照片、不可变资产、模板组版本、候选封面、发布计划与人工发布快照，共用跨进程锁、可恢复事务、软删除与幂等回执。[内置资源安装器](library-seed/README.md)
+真实本地文件核心位于 [file-library](plugin-src/src/lib/file-library/README.md)：内容与提示词的 Markdown
+真源、照片、不可变资产、模板组版本、候选封面、发布计划与人工发布快照，共用跨进程锁、可恢复事务、软删除与幂等回执。[内置资源安装器](plugin-src/src/lib/library-seed/README.md)
 将实际模板图片和原创创作者提示词导入新库，保留已有用户修改和删除。它们尚未连接原型界面与生产授权；不会把浏览器保存自动改成真实目录写入。
 
 [插件执行入口](plugin-src/README.md) 以明确的`contract`/`cover`
-命令区分不可执行原型契约与真实封面文件任务；执行实现、Skill和桥接规则只维护一份。旧[封面执行器](cover-runtime/README.md)
-仅兼容转发。当前Codex线程真实两图回流见[验证样本](assets/production-probes/README.md)；它不证明自动交接、WorkBuddy/Windows或正式授权可用。
+命令区分不可执行原型契约与真实封面文件任务；执行实现、Skill和桥接规则只维护一份。旧[封面执行器](plugin-src/compat/cover-runtime/README.md)
+仅兼容转发。当前Codex线程真实两图回流见[验证样本](docs/verification/production-probes/README.md)；它不证明自动交接、WorkBuddy/Windows或正式授权可用。
 
 ## 桌面技术栈与目录
 
-| 目录                                                                                             | 职责                                                                        |
-|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------|
-| [workbench](workbench/README.md)                                                                 | Electron；TypeScript main/preload/worker，React19 + Semi UI19界面，Vite构建 |
-| [plugin-src](plugin-src/README.md)                                                               | Skills、命令分派、Hooks、纯桥接与插件构建的唯一源码                         |
-| [file-library](file-library/README.md)                                                           | 桌面与插件共用的文件CRUD、事务、历史与封面任务                              |
-| [browser-import](browser-import/README.md)、[library-maintenance](library-maintenance/README.md) | 旧备份迁移、整库备份/核验/恢复                                              |
-| [image-validation](image-validation/README.md)、[library-seed](library-seed/README.md)           | 完整图片解码、内置模板与提示词安装                                          |
-| `原型/`、`builtin-templates/`、`builtin-prompts/`                                                | 浏览器原型及原创可分发素材                                                  |
-| `schemas/`、`docs/`、`verification/`、`scripts/`                                                 | 对外协议、设计/实施记录、证据与工具                                         |
+| 目录 | 职责 |
+|---|---|
+| [docs](docs/实施/00-实施计划与验收台账.md) | 设计、实施台账与原始验收证据 |
+| [plugin-src](plugin-src/README.md) | 唯一插件源码、共享文件核心、协议、Skills 与固定资源 |
+| [workbench](workbench/README.md) | Electron / React 桌面端及保留的浏览器原型 |
+| `plugin/` | 生成的契约包与实验执行包 |
 
 桌面源码按`workbench/src/{main,preload,renderer,shared}`分层；不引入Vue，已有共享ESM JavaScript核心不因更换界面框架重写。助手路由/交接数据归
 `plugin-src/src/bridge`
-，系统发现和受限启动归桌面main。完整取舍见[技术栈与插件化设计](docs/实施/12-技术栈目录与插件化设计.md)。`dist-*`
+，系统发现和受限启动归桌面main。完整取舍见[技术栈与插件化设计](docs/实施/12-技术栈目录与插件化设计.md)。`plugin/`、`workbench/dist-desktop/` 与 `workbench/dist-prototype/`
 均是生成物，不是修改入口。
 
 开发桌面需Node22.18+，安装根目录与`workbench/`各自锁定依赖后执行：
@@ -42,7 +39,7 @@ npm start --prefix workbench
 
 当前生成的是两种模式的实验运行目录，仍借助开发环境Electron启动，不是可售安装包；真实系统选择器人工验收、双系统双助手、生产授权与发行仍独立验收。构建模式不可由用户运行时切换。
 
-桌面采用指定的蓝色 N [应用图标](assets/brand/desktop/README.md)，窗口与macOS Dock从随包固定资源加载；两模式同时带PNG、Windows
+桌面采用指定的蓝色 N [应用图标](workbench/resources/brand/desktop/README.md)，窗口与macOS Dock从随包固定资源加载；两模式同时带PNG、Windows
 ICO及macOS ICNS。`npm run icons:check`核验资源，`npm run icons:build`在macOS从现有母版重新导出。正式EXE/app安装图标仍须在发行阶段配置打包器并真机验收。
 
 ## 查看原型
@@ -56,8 +53,8 @@ npm run build:both
 
 构建后，分别双击：
 
-- `dist-prototype/auth-required/index.html`：鉴权交互演示。
-- `dist-prototype/auth-disabled/index.html`：免鉴权原型。
+- `workbench/dist-prototype/auth-required/index.html`：鉴权交互演示。
+- `workbench/dist-prototype/auth-disabled/index.html`：免鉴权原型。
 
 不要把两模式的“已开通”演示和浏览器状态当作真实授权。鉴权模式由根 `release.config.json` 的 `AUTH_MODE` 决定，值为
 `required` 或 `disabled`；构建命令可显式生成两版，不提供运行时关闭鉴权入口。
@@ -81,7 +78,7 @@ npm run build:both
 
 ## 插件契约包
 
-配套目录位于 `dist-plugin-contract/nova-content-hub-required`、`dist-plugin-contract/nova-content-hub-disabled`
+配套目录位于 `plugin/contract/nova-content-hub-required`、`plugin/contract/nova-content-hub-disabled`
 ，各包含两宿主清单、Hooks、CLI 及三个业务 Skills。
 
 在生成的插件目录中运行：
@@ -104,7 +101,7 @@ npm run verify
 ```
 
 完整验证使用Node22.18+，先安装根目录与`workbench/`依赖。`npm run verify`包含原型、共享核心、插件、桌面类型检查及双模式构建；真实Electron探针另用
-`npm run probe:desktop`，不会把普通Node测试冒充窗口验收。修改内置模板时编辑`builtin-templates/catalog.json`；修改桥接只编辑
+`npm run probe:desktop`，不会把普通Node测试冒充窗口验收。修改内置模板时编辑`plugin-src/resources/builtin-templates/catalog.json`；修改桥接只编辑
 `plugin-src/src/bridge/handoff.js`，`npm run sync:bridge`生成原型副本。`npm run check`会拒绝生成物漂移。
 
 工作区测试使用内存存储，插件测试使用独立临时目录，交接测试使用实际双构建产物。自动化测试不操作真实资料库、不调用模型或登录服务。内置样图由实际

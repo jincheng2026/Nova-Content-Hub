@@ -1,0 +1,16 @@
+
+> nova-content-hub-prototype@0.2.0 build:cover
+> node plugin-src/compat/cover-runtime/build.mjs --auth both
+
+Built experimental required plugin for darwin/arm64
+Built experimental disabled plugin for darwin/arm64
+[
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/plugin/runtime/auth-required",
+    "pairId": "nova-content-hub@0.2.0:p1:required"
+  },
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/plugin/runtime/auth-disabled",
+    "pairId": "nova-content-hub@0.2.0:p1:disabled"
+  }
+]

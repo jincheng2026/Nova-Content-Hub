@@ -6,7 +6,7 @@ PATH、宿主私有运行时或用户配置的替代 Node。缺失、版本/系�
 
 `node-release.json` 锁定官方 HTTPS 下载地址和 archive SHA256；`SHASUMS256.txt` 是 2026-10-18
 从 https://nodejs.org/dist/v24.20.0/SHASUMS256.txt 获取的证据。构建器仅下载当前系统/架构的官方 archive，每次使用
-`.node-runtime-cache/` 都重新校验 archive，再提取 Node 和官方 LICENSE。缓存不进入 Git 或成品。构建还使用包内 Node 执行
+`plugin-src/.cache/node/` 都重新校验 archive，再提取 Node 和官方 LICENSE。缓存不进入 Git 或成品。构建还使用包内 Node 执行
 doctor 和 sharp 图片生成/解码校验。
 
 成品 `manifest.json` 记录官方 URL、archive SHA256、Node 二进制 SHA256、LICENSE SHA256、版本、系统和架构。启动自校验用于发现损坏与误配；同目录可修改的

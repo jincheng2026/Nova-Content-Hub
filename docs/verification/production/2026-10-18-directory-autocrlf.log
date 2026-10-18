@@ -1,0 +1,8 @@
+{
+  "test": "core.autocrlf=true temporary-index checkout on macOS",
+  "resourceHashes": 72,
+  "byteIdenticalFiles": 217,
+  "sourceLF": true,
+  "windowsMachine": false,
+  "passed": true
+}

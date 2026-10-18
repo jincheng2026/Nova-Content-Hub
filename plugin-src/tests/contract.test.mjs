@@ -48,7 +48,7 @@ let outputs;
 before(async () => {
     outputs = await build('both');
 });
-const cli = (mode, args, input, env = {}) => spawnSync(process.execPath, [join(root, 'dist-plugin-contract', `nova-content-hub-${mode}`, 'dist/content.mjs'), ...args], {
+const cli = (mode, args, input, env = {}) => spawnSync(process.execPath, [join(root, 'plugin/contract', `nova-content-hub-${mode}`, 'dist/content.mjs'), ...args], {
     input: typeof input === 'string' ? input : input === undefined ? '' : JSON.stringify(input),
     encoding: 'utf8',
     timeout: 3000,
@@ -89,8 +89,8 @@ test('invalid package releases fail closed in exported entrypoints', () => {
 test('CLI rejects bad release.json before reading requests or reporting a disabled mode', async () => {
     const cwd = await realpath(await mkdtemp(join(tmpdir(), 'nch-invalid-release-')));
     try {
-        await cp(join(root, 'dist-plugin-contract/nova-content-hub-required/dist/content.mjs'), join(cwd, 'content.mjs'));
-        await cp(join(root, '原型/shared/handoff.js'), join(cwd, 'handoff.js'));
+        await cp(join(root, 'plugin/contract/nova-content-hub-required/dist/content.mjs'), join(cwd, 'content.mjs'));
+        await cp(join(root, 'workbench/prototype/shared/handoff.js'), join(cwd, 'handoff.js'));
         for (const change of [{AUTH_MODE: 'garbage'}, {AUTH_MODE: undefined}, {pairId: 'wrong-pair'}]) {
             await writeFile(join(cwd, 'release.json'), JSON.stringify({...releaseFor('required'), ...change}));
             for (const args of [['summary'], ['check-request', '--file', '/nonexistent-request.json']]) {
@@ -210,7 +210,7 @@ test('unimplemented task and commit stay explicit and create no files', async ()
     const cwd = await mkdtemp(join(tmpdir(), 'nch-no-mutation-'));
     try {
         for (const command of ['task', 'taskstart', 'commit', 'import', 'generate', 'register']) {
-            const result = spawnSync(process.execPath, [join(root, 'dist-plugin-contract/nova-content-hub-required/dist/content.mjs'), command, 'start'], {
+            const result = spawnSync(process.execPath, [join(root, 'plugin/contract/nova-content-hub-required/dist/content.mjs'), command, 'start'], {
                 cwd,
                 encoding: 'utf8'
             });
@@ -256,7 +256,7 @@ test('empty, bad and unknown hook inputs are bounded safe JSON', () => {
 
 test('a host leaving stdin open cannot hold a hook past the short input budget', async () => {
     const started = performance.now();
-    const child = spawn(process.execPath, [join(root, 'dist-plugin-contract/nova-content-hub-required/dist/content.mjs'), 'hook', '--host', 'codex', '--event', 'Interrupt'], {stdio: ['pipe', 'pipe', 'pipe']});
+    const child = spawn(process.execPath, [join(root, 'plugin/contract/nova-content-hub-required/dist/content.mjs'), 'hook', '--host', 'codex', '--event', 'Interrupt'], {stdio: ['pipe', 'pipe', 'pipe']});
     let stdout = '', stderr = '';
     child.stdout.on('data', value => {
         stdout += value;
@@ -368,7 +368,7 @@ test('packages include no private keys, token files, external absolute source pa
 });
 
 test('portable sh launcher resolves only its package location', () => {
-    const result = spawnSync('sh', [join(root, 'dist-plugin-contract/nova-content-hub-required/bin/run-node'), 'summary'], {
+    const result = spawnSync('sh', [join(root, 'plugin/contract/nova-content-hub-required/bin/run-node'), 'summary'], {
         encoding: 'utf8',
         cwd: '/'
     });
