@@ -1,0 +1,31 @@
+{
+  "host": "codex",
+  "installedVersion": "0.2.0",
+  "installPath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.2.0",
+  "all444RetainedEntriesMatch": true,
+  "hostCacheOmission": "node_modules/.bin/semver (unused relative link omitted by Codex installer)",
+  "doctor": {
+    "ok": true,
+    "experimental": true,
+    "productionReady": false,
+    "authMode": "disabled",
+    "commands": [
+      "help",
+      "doctor",
+      "create",
+      "attempt",
+      "claim",
+      "context",
+      "submit",
+      "fail",
+      "cancel",
+      "status"
+    ],
+    "usage": "COMMAND --handoff UUID [--file JSON | --stdin] OR COMMAND --library ABSOLUTE_ROOT --content UUID [--request UUID] [--attempt UUID] [--file JSON | --stdin]",
+    "library": "unbound",
+    "imageGeneration": false,
+    "message": "实验文件执行器；生图由已选助手完成，不代表商用发行就绪。"
+  },
+  "hooksTrust": "not verified by GUI",
+  "realGeneration": false
+}

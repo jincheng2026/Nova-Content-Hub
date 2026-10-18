@@ -23,6 +23,7 @@ const release = {
     platform: process.platform,
     arch: process.arch
 };
+const options = {installedSkill: 'nova-content-cover-execution'};
 const failure = (code, callback) => assert.throws(callback, error => error.code === code);
 
 async function fixture(t, host = 'codex') {
@@ -81,13 +82,17 @@ async function fixture(t, host = 'codex') {
     return {parent, library, content, binding, task, directory};
 }
 
-for (const host of ['codex', 'workbuddy']) test(`${host} envelope resolves exact bound attempt and URL contains only the short handoff identity`, async t => {
-    const f = await fixture(t, host), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release);
+for (const host of ['codex', 'workbuddy']) test(`${host} envelope resolves exact bound attempt and URL attaches the installed Skill and bound workspace without content payload`, async t => {
+    const f = await fixture(t, host), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     const url = new URL(prepared.url);
     assert.equal(url.protocol, `${host}:`);
-    assert.ok(prepared.url.length < 2081);
-    assert.ok(url.searchParams.get('prompt').includes(prepared.id));
-    assert.ok(!prepared.url.includes(encodeURIComponent(f.parent)));
+    assert.equal(url.hostname, host === 'codex' ? 'new' : 'task');
+    assert.equal(url.searchParams.get('skills'), host === 'workbuddy' ? options.installedSkill : null);
+    assert.equal(url.searchParams.get(host === 'workbuddy' ? 'cwd' : 'path'), f.binding.root);
+    assert.equal(url.searchParams.get('action'), host === 'workbuddy' ? 'start' : null);
+    assert.deepEqual([...url.searchParams.keys()].sort(), host === 'workbuddy' ? ['action', 'cwd', 'prompt', 'skills'] : ['path', 'prompt']);
+    assert.ok(prepared.url.length <= 2048);
+    assert.equal(url.searchParams.get('prompt'), `${host === 'codex' ? '$nova-content-cover-execution\n' : ''}执行工作台交接 ID：${prepared.id}。用随包 run-node cover context --handoff ${prepared.id} 读取本次请求并按 Skill 完成。`);
     assert.ok(!url.searchParams.get('prompt').includes(f.content.title));
     const found = readNativeHandoff(f.directory, prepared.id, {...release, format: 'nova-content-plugin-release'});
     assert.deepEqual(found.binding, f.binding);
@@ -104,31 +109,49 @@ test('release and request/host validation stop before creating an envelope', asy
     for (const bad of [null, {...release, pairId: 'wrong'}, {...release, platform: 'other'}, {
         ...release,
         productionReady: true
-    }]) await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, bad), {code: 'PACKAGE_INVALID'});
+    }]) await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, bad, options), {code: 'PACKAGE_INVALID'});
     await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, {
         ...release,
         AUTH_MODE: 'required',
         pairId: 'nova-content-hub@0.2.0:p1:required'
-    }), {code: 'AUTH_NOT_CONFIGURED'});
+    }, options), {code: 'AUTH_NOT_CONFIGURED'});
     await assert.rejects(prepareNativeHandoff(f.directory, f.binding, {
         ...f.task,
         host: 'workbuddy'
-    }, release), {code: 'CONFLICT'});
+    }, release, options), {code: 'CONFLICT'});
     await assert.rejects(prepareNativeHandoff(f.directory, f.binding, {
         ...f.task,
         requestHash: '0'.repeat(64)
-    }, release), {code: 'CONFLICT'});
+    }, release, options), {code: 'CONFLICT'});
     await assert.rejects(prepareNativeHandoff(f.directory, {
         ...f.binding,
         rootIdentity: {dev: '00', ino: '1'}
-    }, f.task, release), {code: 'INVALID_HANDOFF'});
+    }, f.task, release, options), {code: 'INVALID_HANDOFF'});
+    assert.equal(fs.existsSync(f.directory), false);
+});
+
+test('unverified or arbitrary Skill options cannot open an ordinary task', async t => {
+    const f = await fixture(t);
+    for (const invalid of [undefined, null, {}, {installedSkill: 'other'}, {...options, skills: 'other'}]) {
+        await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, release, invalid), {code: 'NOT_READY'});
+    }
+    assert.equal(fs.existsSync(f.directory), false);
+});
+
+test('long workspace paths refuse before writing instead of bypassing the 2048 character URL limit', async t => {
+    const f = await fixture(t, 'workbuddy');
+    const parent = path.join(f.parent, ...Array(7).fill('界'.repeat(25)));
+    fs.mkdirSync(parent, {recursive: true});
+    const root = path.join(parent, 'library');
+    fs.renameSync(f.binding.root, root);
+    await assert.rejects(prepareNativeHandoff(f.directory, {...f.binding, root}, f.task, release, options), {code: 'INVALID_HANDOFF'});
     assert.equal(fs.existsSync(f.directory), false);
 });
 
 test('launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks', async t => {
-    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release);
+    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     f.library.cancelCoverAttempt(f.task.contentId, f.task.requestId, f.task.attemptId);
-    await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, release), {code: 'ATTEMPT_INACTIVE'});
+    await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, release, options), {code: 'ATTEMPT_INACTIVE'});
     const found = readNativeHandoff(f.directory, prepared.id, release);
     assert.equal(found.library.readCoverContext(f.task.contentId, f.task.requestId, f.task.attemptId).attempt.status, 'cancelled');
     const newer = f.library.createCoverAttempt(f.task.contentId, f.task.requestId, {host: 'codex'});
@@ -137,11 +160,11 @@ test('launching stale or inactive attempts refuses; historical envelope still pe
     await assert.rejects(prepareNativeHandoff(f.directory, f.binding, {
         ...f.task,
         attemptId: newer.attempt.attemptId
-    }, release), {code: 'STALE_INPUT'});
+    }, release, options), {code: 'STALE_INPUT'});
 });
 
 test('malformed, oversized, symlink and cross-pair envelopes fail closed', async t => {
-    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release);
+    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     const file = path.join(f.directory, `${prepared.id}.json`), original = fs.readFileSync(file),
         parsed = JSON.parse(original);
     failure('INVALID_HANDOFF', () => readNativeHandoff(f.directory, '../other', release));
@@ -163,14 +186,14 @@ test('malformed, oversized, symlink and cross-pair envelopes fail closed', async
     failure('UNSAFE_PATH', () => readNativeHandoff(f.directory, prepared.id, release));
     const alias = path.join(f.parent, 'alias');
     fs.symlinkSync(f.directory, alias, 'dir');
-    await assert.rejects(prepareNativeHandoff(alias, f.binding, f.task, release), {code: 'UNSAFE_PATH'});
+    await assert.rejects(prepareNativeHandoff(alias, f.binding, f.task, release, options), {code: 'UNSAFE_PATH'});
 });
 
 test('same-ID library clone cannot be recovered or mutated through a stale machine locator', async t => {
-    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release);
+    const f = await fixture(t), prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     fs.renameSync(f.binding.root, `${f.binding.root}-original`);
     fs.cpSync(`${f.binding.root}-original`, f.binding.root, {recursive: true});
     failure('CONFLICT', () => readNativeHandoff(f.directory, prepared.id, release));
-    await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, release), {code: 'CONFLICT'});
+    await assert.rejects(prepareNativeHandoff(f.directory, f.binding, f.task, release, options), {code: 'CONFLICT'});
     assert.equal(fs.readdirSync(f.directory).length, 1);
 });

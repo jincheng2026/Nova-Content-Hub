@@ -1,0 +1,60 @@
+{
+  "readOnly": true,
+  "modified": false,
+  "target": "/Applications/内容工作台.app",
+  "relationship": "colleague reference application, not our NovaContentHub testing installer",
+  "checks": [
+    {
+      "key": "CFBundleIdentifier",
+      "status": 0,
+      "value": "com.hejincheng.content-workbench-student"
+    },
+    {
+      "key": "CFBundleName",
+      "status": 0,
+      "value": "内容工作台"
+    },
+    {
+      "key": "CFBundleDisplayName",
+      "status": 0,
+      "value": "内容工作台"
+    },
+    {
+      "key": "CFBundleShortVersionString",
+      "status": 0,
+      "value": "0.1.0"
+    },
+    {
+      "key": "CFBundleExecutable",
+      "status": 0,
+      "value": "内容工作台"
+    },
+    {
+      "key": "LSMinimumSystemVersion",
+      "status": 0,
+      "value": "13.0"
+    }
+  ],
+  "commands": [
+    {
+      "command": "/usr/bin/file",
+      "status": 0,
+      "output": "/Applications/内容工作台.app/Contents/MacOS/内容工作台: Mach-O universal binary with 2 architectures: [x86_64:Mach-O 64-bit executable x86_64] [arm64:Mach-O 64-bit executable arm64]\n/Applications/内容工作台.app/Contents/MacOS/内容工作台 (for architecture x86_64):\tMach-O 64-bit executable x86_64\n/Applications/内容工作台.app/Contents/MacOS/内容工作台 (for architecture arm64):\tMach-O 64-bit executable arm64\n"
+    },
+    {
+      "command": "/usr/bin/codesign",
+      "status": 1,
+      "output": "/Applications/内容工作台.app: code object is not signed at all\n"
+    },
+    {
+      "command": "/usr/sbin/spctl",
+      "status": 3,
+      "output": "/Applications/内容工作台.app: rejected\nsource=no usable signature\n"
+    },
+    {
+      "command": "/usr/bin/xattr",
+      "status": 0,
+      "output": "01c1;6ad0ca4a;sharingd;7EA3FE5E-E184-4853-A1DF-CEB3CF255905\n"
+    }
+  ]
+}

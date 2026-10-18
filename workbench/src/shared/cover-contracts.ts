@@ -8,7 +8,8 @@ export interface CoverInput { template: { id: string; version: number }; styleAs
 export interface CoverStart { contentId: string; editToken: string; input: CoverInput }
 export interface Fingerprint { contentId: string; title: string; bodyHash: string; editToken: string; inputHash: string; existingRequest: { requestId: string; requestHash: string } | null }
 export interface Attempt { attemptId: string; host: Assistant; status: 'created' | 'claimed' | 'committed' | 'failed' | 'cancelled' | 'superseded'; reason: string; failure: { code: string; message: string } | null }
-export interface CoverJob { id: string; requestHash: string; inputHash: string; activeAttemptId: string | null; attempts: Attempt[] }
+export interface CoverRequestSummary { template: { id: string; version: number }; styleSampleCount: number; hasOwnPhoto: boolean; pixels: { width: number; height: number }; count: number; ratio: string; outputFormat: string }
+export interface CoverJob { summary?: CoverRequestSummary | null; id: string; requestHash: string; inputHash: string; activeAttemptId: string | null; attempts: Attempt[] }
 export interface Candidate { id: string; assetHash: string; originalName: string; requestId: string; attemptId: string; accepted: boolean; url: string }
 export interface CoverView { content: Content; jobs: CoverJob[]; candidates: Candidate[]; selectedCandidateId: string | null }
 export interface PhotoPending { source: string; expectedHash: string; mutationId: string; title: string; originalName: string; isOwnPhoto: boolean }

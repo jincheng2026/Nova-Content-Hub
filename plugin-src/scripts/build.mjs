@@ -28,7 +28,7 @@ export function hooksFor(host, events) {
     };
 }
 
-async function releaseModes(mode) {
+export async function releaseModes(mode) {
     const config = JSON.parse(await readFile(join(root, 'release.config.json'), 'utf8'));
     if (!/^\d+\.\d+\.\d+$/.test(config.version) || config.appScope !== 'nova-content-hub' || config.productId !== config.appScope || config.protocolVersion !== 1 || config.prototype !== true || !['required', 'disabled'].includes(config.AUTH_MODE)) throw new Error('Invalid prototype release.config.json');
     const modes = mode === 'both' ? ['required', 'disabled'] : [mode ?? config.AUTH_MODE];
@@ -47,6 +47,13 @@ async function releaseModes(mode) {
         if (!validRelease(release)) throw new Error('Invalid package release configuration');
         return release;
     });
+}
+
+export function integrityPaths(platform = process.platform) {
+    return ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
+        ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
+        'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
+        'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'];
 }
 
 async function validateSkills() {
@@ -143,12 +150,13 @@ export async function buildCover(mode) {
         // One release file serves both command spaces; compatibility paths never carry their own auth mode.
         await json(join(target, 'plugin-src/src/release.json'), release);
         await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true});
-        await cp(join(source, 'skills'), join(target, 'plugin-src/skills'), {recursive: true});
+        // WorkBuddy's global Skill scanner uses this root even when manifests specify a custom path.
+        await cp(join(source, 'skills'), join(target, 'skills'), {recursive: true});
         await cp(join(source, 'references'), join(target, 'plugin-src/references'), {recursive: true});
         for (const name of skillNames) {
-            const skill = join(target, 'plugin-src/skills', name);
+            const skill = join(target, 'skills', name);
             await mkdir(join(skill, 'scripts'), {recursive: true});
-            await writeFile(join(skill, 'scripts/content.mjs'), "import { main } from '../../../src/content.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
+            await writeFile(join(skill, 'scripts/content.mjs'), "import { main } from '../../../plugin-src/src/content.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
             await cp(join(source, 'references'), join(skill, 'references'), {recursive: true});
             await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
         }
@@ -164,11 +172,13 @@ export async function buildCover(mode) {
         await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs'});
         await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
         await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true});
+        const legacySkill = join(target, 'cover-runtime/skills/nova-content-cover-execution/SKILL.md');
+        await writeFile(legacySkill, (await readFile(legacySkill, 'utf8')).replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
         await writeFile(join(target, 'cover-runtime/README.md'), '# 兼容封面入口\n\n`node cover-runtime/cli.mjs` 转发到唯一封面命令。[完整说明](../plugin-src/compat/cover-runtime/README.md)。\n');
         await cp(join(source, 'README.md'), join(target, 'plugin-src/README.md'));
         await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](plugin-src/src/lib/library-maintenance/README.md)。本包不代表商用发行就绪。\n');
         await cp(join(source, 'runtime/README.md'), join(target, 'runtime/README.md'));
-        await manifests(target, release, allSkillNames, './plugin-src/skills');
+        await manifests(target, release, allSkillNames);
         await writeLaunchers(target);
         await json(join(target, 'package.json'), {
             ...sourcePackage,
@@ -197,11 +207,7 @@ export async function buildCover(mode) {
         } finally {
             await rm(standalone, {recursive: true, force: true});
         }
-        const paths = ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
-            ...allSkillNames.map(name => `plugin-src/skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
-            'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
-            'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${process.platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'];
-        const hashes = Object.fromEntries(await Promise.all(paths.map(async relative => [relative, createHash('sha256').update(await readFile(join(target, relative))).digest('hex')])));
+        const hashes = Object.fromEntries(await Promise.all(integrityPaths().map(async relative => [relative, createHash('sha256').update(await readFile(join(target, relative))).digest('hex')])));
         await json(join(target, 'integrity.json'), {
             format: 'nova-content-plugin-integrity',
             schemaVersion: 1,

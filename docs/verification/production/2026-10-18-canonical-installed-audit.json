@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-18T09:20:34.903Z",
+  "audits": [
+    {
+      "host": "codex",
+      "matchingRetainedEntries": 444,
+      "omitted": [
+        "node_modules/.bin/semver"
+      ],
+      "canonicalSkills": true
+    },
+    {
+      "host": "workbuddy",
+      "matchingRetainedEntries": 445,
+      "omitted": [],
+      "canonicalSkills": true
+    }
+  ],
+  "skillChipVerified": true,
+  "workbuddy": {
+    "version": "5.8.3",
+    "skillChip": "nova-content-cover-execution",
+    "handoffId": "730244f4-3592-4252-98bc-b5918d0a10dc",
+    "workspace": "synthetic acceptance library",
+    "promptPrefilled": true,
+    "sent": false,
+    "verification": "native AX sortable Skill label and visible screenshot"
+  }
+}

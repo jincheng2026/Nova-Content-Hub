@@ -6,7 +6,7 @@ import * as imports from '../../../plugin-src/src/lib/browser-import/index.mjs';
 import {openLibrary, createLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {isRecord, errorInfo} from '../shared/contracts.ts';
 import {exact, uuid, identity, libraryBinding, mutation, requireWrite, fail} from '../shared/validation.ts';
-import type {Content, WorkerOperations, WorkerOperation, LibraryBinding} from '../shared/contracts.ts';
+import type {Content, WorkerOperations, WorkerOperation, LibraryBinding, WorkspaceSnapshot, WorkspacePlan} from '../shared/contracts.ts';
 
 const absolute = (value: unknown): value is string => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0');
 const projection = ({id, title, body, editToken, deletedAt}: Content): Content => ({
@@ -25,6 +25,39 @@ const bound = (binding: LibraryBinding) => openLibrary(binding.root, {
     expectedLibraryId: binding.libraryId,
     expectedRootIdentity: binding.rootIdentity
 });
+function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
+    const contents = [...library.listContents(), ...library.listTrash()].map(({id}) => {
+        const content = library.readContent(id);
+        return {
+            ...projection(content),
+            createdAt: content.createdAt,
+            updatedAt: content.updatedAt,
+            plans: (content.plans ?? []).map(plan => {
+                const publication = plan.status === 'published' ? content.publications?.find(item => item.id === plan.publicationId && item.planId === plan.id) : undefined;
+                if (plan.status === 'published' && !publication) fail('CORRUPT', 'Published plan has no matching publication record');
+                const timing = publication ? publication.schedule : plan.schedule;
+                const legacyAt = publication ? publication.publishedAt : plan.scheduledAt;
+                const timezone = publication ? publication.timezone : plan.timezone;
+                let schedule: WorkspacePlan['schedule'];
+                if (timing?.precision === 'date') schedule = {precision: 'date', date: timing.date};
+                else if (timing?.precision === 'instant') schedule = {precision: 'instant', at: timing.at, timezone: timing.timezone};
+                else if (timing?.precision === 'local-minute') schedule = {precision: 'local-minute', date: timing.date, time: timing.time, timezone: timing.timezone};
+                else if (!timing && legacyAt && timezone) schedule = {precision: 'instant', at: legacyAt, timezone};
+                else fail('UNSUPPORTED_SCHEDULE', '排期时间格式无法在当前视图中完整表示，请升级工作台。');
+                return {id: plan.id, channelId: plan.channelId, status: plan.status, schedule};
+            }),
+            candidateCount: content.candidates?.length ?? 0,
+            selectedCandidateId: content.selectedCover?.candidateId ?? null
+        };
+    });
+    const prompts = library.listPrompts().map(({id}) => {
+        const {title, body, category, summary, when, tags, enabled, editToken} = library.readPrompt(id);
+        return {id, title, body, category, summary, when, tags, enabled: enabled ?? true, editToken};
+    });
+    const channels = library.readLibrarySettings().channels.map(({id, name, deletedAt}) => ({id, name, enabled: deletedAt === null}));
+    return {contents, prompts, channels};
+}
+
 const schemas: Record<Exclude<WorkerOperation, keyof import('../shared/cover-contracts.ts').CoverWorkerOperations>, string[]> = {
     inspect: ['source'],
     query: ['destination', 'importId'],
@@ -33,6 +66,7 @@ const schemas: Record<Exclude<WorkerOperation, keyof import('../shared/cover-con
     bind: ['destination', 'libraryId', 'importId'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
     queryCreation: ['root', 'rootIdentity', 'mutationId'],
+    workspace: ['binding'],
     list: ['binding', 'view'],
     readContent: ['binding', 'id'],
     mutate: ['binding', 'mutation'],
@@ -87,6 +121,7 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
         return bindingOf(library);
     }
     const library = bound(args.binding as unknown as LibraryBinding);
+    if (op === 'workspace') return workspace(library);
     if (op === 'list') return (args.view === 'trash' ? library.listTrash() : library.listContents()).map(projection);
     if (op === 'readContent') return projection(library.readContent(args.id as string));
     if (op === 'queryMutation') {

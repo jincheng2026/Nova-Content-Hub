@@ -86,24 +86,27 @@ function contextFor(binding, task, launching = false) {
     return {library, context};
 }
 
-function hostURL(host, id) {
-    const prompt = `$nova-content-cover-execution\n执行工作台交接 ID：${id}。用随包 run-node cover context --handoff ${id} 读取本次请求并按 Skill 完成。`;
+function hostURL(host, id, root, options) {
+    if (!exact(options, ['installedSkill']) || options.installedSkill !== 'nova-content-cover-execution') refuse('NOT_READY', '请先在所选助手安装并启用配套的封面执行 Skill。');
+    const prompt = `${host === 'codex' ? '$nova-content-cover-execution\n' : ''}执行工作台交接 ID：${id}。用随包 run-node cover context --handoff ${id} 读取本次请求并按 Skill 完成。`;
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
         url.searchParams.set('action', 'start');
-        url.searchParams.set('skills', 'nova-content-cover-execution');
+        url.searchParams.set('skills', options.installedSkill);
     }
+    url.searchParams.set(host === 'workbuddy' ? 'cwd' : 'path', root);
     url.searchParams.set('prompt', prompt);
-    if (url.href.length > 2081) refuse('INVALID_HANDOFF', '助手交接链接超过系统长度限制。');
+    if (url.href.length > 2048) refuse('INVALID_HANDOFF', '助手交接链接超过系统长度限制，请使用路径较短的内容库。');
     return url.href;
 }
 
-export async function prepareNativeHandoff(directory, binding, task, release) {
+export async function prepareNativeHandoff(directory, binding, task, release, options) {
     releaseFor(release);
     bindingFor(binding);
     taskFor(task);
     contextFor(binding, task, true);
-    const before = directoryStat(directory, true), id = randomUUID();
+    const id = randomUUID(), url = hostURL(task.host, id, binding.root, options);
+    const before = directoryStat(directory, true);
     const envelope = {
         format: 'nova-content-native-handoff',
         schemaVersion: 1,
@@ -129,7 +132,7 @@ export async function prepareNativeHandoff(directory, binding, task, release) {
     if (!sameEntry(before, directoryStat(directory))) refuse('CONFLICT', '本机交接目录已经被替换。');
     contextFor(binding, task, true);
     // shortcut: path checks do not provide atomic openat semantics; re-audit before supporting shared/untrusted appData.
-    return {id, url: hostURL(task.host, id)};
+    return {id, url};
 }
 
 export function readNativeHandoff(directory, id, release) {

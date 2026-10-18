@@ -1,0 +1,84 @@
+{
+  "format": "nova-real-host-cover-acceptance",
+  "recordedAt": "2026-10-18T09:09:29.494Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "productionReady": false,
+  "fixture": "original synthetic reference group; no personal photos",
+  "hosts": [
+    {
+      "host": "codex",
+      "handoffId": "657511a5-bd45-4063-883e-bb79fcd477da",
+      "requestId": "c38bc558-fe6e-412f-b9f5-181f1cd3dcf5",
+      "attemptId": "40a0bcb5-8c80-4162-a7f9-aa68fe412d66",
+      "status": "committed",
+      "receiptHash": "1ea79bad575c6a41470084074551eb8d65a2b6a2847fb3d4d5eb91bbe35355da",
+      "reportHash": "6b93200598c27be891d654ffe895a3784b5b9babcc7f9588ec4d4a5cb08cb939",
+      "requestHash": "b49bb5a0001434468cbe958d7aa2e5a3c5f7b6ad4a1df19420da4847e223590c",
+      "count": 2,
+      "photo": null,
+      "candidates": [
+        {
+          "id": "3d512db4-5c6a-4902-a3b1-9693a82c4c29",
+          "sha256": "f34ef3f7cf57a0637a3907eb849d09132f104518de6d27b7e04932a531fd776c",
+          "width": 1024,
+          "height": 1536,
+          "format": "png",
+          "bytes": 1415869,
+          "file": "2026-10-18-codex-real-cover-1.png"
+        },
+        {
+          "id": "cfa3ac96-fc23-4a14-9a05-314f9e01d941",
+          "sha256": "885f3e492c58c08dfcb0558a35d82783583af7d5e173023c5ca66c2bebcddae5",
+          "width": 1024,
+          "height": 1536,
+          "format": "png",
+          "bytes": 1658182,
+          "file": "2026-10-18-codex-real-cover-2.png"
+        }
+      ],
+      "toolEvidence": {
+        "threadId": "01a14dc1-cdca-7ac0-a74e-4d135b0c8977",
+        "tool": "image_gen.imagegen",
+        "originalResults": "/Users/mac/Documents/Codex/2026-10-18/nova-content-host-acceptance/outputs/imagegen-results-657511a5.json"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "handoffId": "7226b07e-8e57-4cc9-8832-512f9d4695d8",
+      "requestId": "6ca6195c-7453-44a9-b202-2b32f3ee9426",
+      "attemptId": "547ddc6c-fc03-40fd-bfa1-0f70930f019e",
+      "status": "committed",
+      "receiptHash": "4632d642e00393da4143f9d82cafe15bfd136cfc1cb9d4f84912999726b2c6a4",
+      "reportHash": "9a1829785a11edca3e73c1a3ab125bba42f4a3bde861a9448938f694d587ab54",
+      "requestHash": "e962536b2f41c59c5a8cc046019b5669d4dcd05aff544f9bd905061b8b423310",
+      "count": 2,
+      "photo": null,
+      "candidates": [
+        {
+          "id": "faa08144-08d0-4981-b459-cbca225d2e3e",
+          "sha256": "5b39ad62a2117ee427299eddf6e26e481be45dda96b77f75c79a680d1ee7fb96",
+          "width": 1024,
+          "height": 1536,
+          "format": "png",
+          "bytes": 1340989,
+          "file": "2026-10-18-workbuddy-real-cover-1.png"
+        },
+        {
+          "id": "4afdfc76-d333-4bf7-8a90-38ff54fd6b18",
+          "sha256": "93ccfb6c73bd75bd53fe05e8bd4b547d946a93422835735da56e4023dc5e2599",
+          "width": 1024,
+          "height": 1536,
+          "format": "png",
+          "bytes": 1768224,
+          "file": "2026-10-18-workbuddy-real-cover-2.png"
+        }
+      ],
+      "toolEvidence": {
+        "hostVersion": "5.8.3",
+        "taskVisibleResult": "ImageGen; two PNG; committed; matching candidateIds",
+        "rawToolTrace": "not independently exported"
+      }
+    }
+  ]
+}

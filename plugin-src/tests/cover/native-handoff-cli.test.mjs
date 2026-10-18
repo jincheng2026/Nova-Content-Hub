@@ -105,7 +105,7 @@ async function fixture(t) {
         host: 'codex'
     };
     const directory = nativeHandoffDirectory(appDataFor(home));
-    const {id} = await prepareNativeHandoff(directory, binding, task, release);
+    const {id} = await prepareNativeHandoff(directory, binding, task, release, {installedSkill: 'nova-content-cover-execution'});
     return {home, library, binding, task, id, directory};
 }
 
@@ -173,7 +173,7 @@ test('cancel and fail use the same fixed handoff; inactive claim does not create
     const {id} = await prepareNativeHandoff(f.directory, f.binding, {
         ...f.task,
         attemptId: next.attempt.attemptId
-    }, release);
+    }, release, {installedSkill: 'nova-content-cover-execution'});
     assert.equal(run(f.home, ['cover', 'cancel', '--handoff', id]).ok, true);
     assert.equal(f.library.readContent(f.task.contentId).coverJobs[0].attempts.length, 2);
 });

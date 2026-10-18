@@ -21,7 +21,8 @@
     "probe:cover": "node scripts/cover-probe.mjs"
   },
   "dependencies": {
-    "sharp": "0.35.5"
+    "sharp": "0.35.5",
+    "smol-toml": "1.9.1"
   },
   "devDependencies": {
     "electron": "44.9.0",

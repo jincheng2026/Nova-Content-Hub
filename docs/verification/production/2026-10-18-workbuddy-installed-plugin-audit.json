@@ -1,0 +1,36 @@
+{
+  "format": "nova-workbuddy-installed-plugin-audit",
+  "recordedAt": "2026-10-18T04:21:07.287Z",
+  "hostVersion": "5.8.3",
+  "key": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "installedVersion": "0.2.0",
+  "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.2.0",
+  "all445EntriesMatch": true,
+  "enabled": true,
+  "doctorExitCode": 0,
+  "doctor": {
+    "ok": true,
+    "experimental": true,
+    "productionReady": false,
+    "authMode": "disabled",
+    "commands": [
+      "help",
+      "doctor",
+      "create",
+      "attempt",
+      "claim",
+      "context",
+      "submit",
+      "fail",
+      "cancel",
+      "status"
+    ],
+    "usage": "COMMAND --handoff UUID [--file JSON | --stdin] OR COMMAND --library ABSOLUTE_ROOT --content UUID [--request UUID] [--attempt UUID] [--file JSON | --stdin]",
+    "library": "unbound",
+    "imageGeneration": false,
+    "message": "实验文件执行器；生图由已选助手完成，不代表商用发行就绪。"
+  },
+  "trust": "host-managed; no separate trust control observed in plugin detail",
+  "syntheticLibraryOnly": true,
+  "realGeneration": false
+}

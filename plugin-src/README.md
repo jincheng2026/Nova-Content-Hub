@@ -79,7 +79,7 @@ bin/run-node cover context --handoff UUID
 handoff 混入其他库或 ID。旧绝对库定位与 `cover-runtime/cli.mjs` 仅供维护兼容。required 包因可信权益未接入而拒绝全部 cover
 业务读写；环境与参数不能切换模式。
 
-真实包根目录是宿主插件根，清单指向 `plugin-src/skills/` 四项 Skill；三项契约 Skill 保持不可执行，
+真实包根目录是宿主插件根，清单与宿主默认扫描统一指向包根 `skills/` 四项 Skill（唯一源码仍在 `plugin-src/skills/`）；三项契约 Skill 保持不可执行，
 `nova-content-cover-execution` 处理真实文件任务。完整目录包包含固定 Node、许可证、插件、相邻共享文件核心、图像解码器、维护/迁移工具、可信原型校验器及
 72 项 hash 校验资源，需整体移动。locked sharp 与本机原生依赖由 npm ci 安装，禁用生命周期脚本。launcher 不寻找 PATH/宿主
 Node，缺失或校验失败即退出。构建在仓库外、空 PATH/NODE_PATH 下执行实际 launcher 与 sharp 解码；不代表 Windows
@@ -89,3 +89,25 @@ Node，缺失或校验失败即退出。构建在仓库外、空 PATH/NODE_PATH 
 product/scope/version/protocol/pair/auth/platform；兼容入口和 Skill 不各带一份授权配置。`integrity.json` 记录发布模式、四项
 Skill 能力以及实现、Hooks、清单与 Skill 的 hash，用于构建一致性核验，不代表数字签名或可信授权。旧 runtime Skill
 路径仅由构建器从唯一原文生成。
+
+完整执行包也可包装为两家宿主可发现的本地市场：
+
+```sh
+# 维护者在对应系统/架构先生成原生执行包，再包装；用户无需运行这些命令
+npm run build:cover -- --auth both
+node plugin-src/scripts/marketplace-builder.mjs --auth both
+node --test plugin-src/tests/marketplace.test.mjs
+NOVA_MARKETPLACE_INTEGRATION=1 node --test plugin-src/tests/marketplace.test.mjs
+```
+
+市场位于 `plugin/marketplace/auth-{required,disabled}/<platform>-<arch>/`。每份市场的
+`.agents/plugins/marketplace.json` 与 `.codebuddy-plugin/marketplace.json` 均从市场根目录定位同一个
+`./nova-content-hub/` 完整子包。包装器核验根发布配置、固定 Node 锁、原 integrity 与四项 Skill 能力，拒绝混模式、
+非本机架构、损坏包、额外顶层资料与符号链接逃逸；保留安全的 npm 相对链接，复制前后核对全部文件字节及执行位。
+原生包与市场包中的 Node、release、清单、Hooks、Skill、integrity 原字节保持一致。市场名包含产品、模式、平台与架构，
+不包含版本。Windows 与 Mac 的包必须分别在对应系统/架构构建；不能给 Mac 包改名冒充 Windows。
+
+市场只声明 `AVAILABLE`；生成和查看产物不安装插件、不修改宿主配置、不自动启用或信任 Hooks。Codex 的本地详情链接
+`marketplacePath` 必须指向市场内 `.agents/plugins/marketplace.json` 的绝对文件路径；打开详情与实际安装分开。
+WorkBuddy 按插件页的 `+` 添加市场，当前版本能否接受本地目录仍需 GUI 验证。两家当前宿主的实际安装、缓存、Hooks
+信任及真实生图验收均需另外核对，不能从目录存在推断成功。详见源码仓库的 `docs/实施/17-助手插件安装与交接准备.md`。

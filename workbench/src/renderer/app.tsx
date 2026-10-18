@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import '@douyinfe/semi-ui-19/react19-adapter';
 import Banner from '@douyinfe/semi-ui-19/lib/es/banner';
@@ -8,10 +8,15 @@ import Typography from '@douyinfe/semi-ui-19/lib/es/typography';
 import '@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import './style.css';
 import {CoverPanel } from './covers.tsx';
+import {AssistantSettings} from './assistant-settings.tsx';
 import {invoke} from './client.ts';
+import {CalendarPage, Overview, PromptsPage, TemplatesPage, pageNames} from './workspace-pages.tsx';
+import type {Page} from './workspace-pages.tsx';
+import type {CoverResults, TemplateGroup} from '../shared/cover-contracts.ts';
 import { errorInfo} from '../shared/contracts.ts';
 import type {
     Content,
+    DesktopResults,
     DesktopMethod,
     Status,
     TaskStatus,
@@ -32,7 +37,19 @@ const labels: Record<TaskStatus, string> = {
 
 
 function App() {
+    const [page, setPage] = useState<Page>('content');
+    const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);
+    const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
+    const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);
+    const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);
+    const [contentQuery, setContentQuery] = useState('');
+    const templateDialog = useRef<HTMLDialogElement>(null);
+    useEffect(() => { if (templatePicker) templateDialog.current?.showModal(); }, [templatePicker]);
     const [libraryEpoch, setLibraryEpoch] = useState(0);
+    const epochRef = useRef(0);
+    const [libraryOpen, setLibraryOpen] = useState(false);
+    const [settings, setSettings] = useState(false);
+    const [coverRefresh, setCoverRefresh] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
     const [contents, setContents] = useState<Content[] | null>(null);
     const [error, setError] = useState('');
@@ -40,6 +57,8 @@ function App() {
     const active = useRef(false);
     const [view, setView] = useState<View>('active');
     const [base, setBase] = useState<Content | null>(null);
+    const baseRef = useRef(base);
+    baseRef.current = base;
     const [draft, setDraft] = useState<Draft | null>(null);
     const draftRef = useRef(draft);
     draftRef.current = draft;
@@ -64,34 +83,50 @@ function App() {
         setDisk(null);
     };
     const clearEditor = () => {
-        setLibraryEpoch(n => n + 1); setBase(null);
+        epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;
         setDraft(null);
         draftRef.current = null;
         setDisk(null);
         savedContent.current = null;
         setContents(null);
+        setWorkspace(null);
+        setAssets(null);
+        setSelectedTemplate(null);
+        setTemplatePicker(null);
     };
     const refreshStatus = async () => {
+        const epoch = epochRef.current;
         const next = await invoke('status');
+        if (epoch !== epochRef.current) return next;
         setStatus(next);
         setPending(next.pending);
         return next;
     };
+    async function refreshWorkspace() {
+        const epoch = epochRef.current;
+        const [snapshot, coverAssets] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets')]);
+        if (epoch !== epochRef.current) return;
+        setWorkspace(snapshot);
+        setAssets(coverAssets);
+    }
     useEffect(() => {
-        void refreshStatus().catch(report);
+        const epoch = epochRef.current;
+        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(report);
     }, []);
 
     async function refreshEditor() {
         if (!base) return;
-        const current = await invoke('readContent', {id: base.id});
-        if (current.editToken !== base.editToken) {
-            if (dirty) setDisk(current); else load(current);
+        const epoch = epochRef.current, selected = base.id;
+        const current = await invoke('readContent', {id: selected});
+        if (epoch !== epochRef.current || baseRef.current?.id !== selected) return;
+        if (current.editToken !== baseRef.current.editToken) {
+            if (dirtyRef.current) setDisk(current); else load(current);
         }
     }
 
     useEffect(() => {
         const focus = () => {
-            if (!active.current) void nativeAction(refreshEditor);
+            if (!active.current) void nativeAction(async () => { await refreshEditor(); if (status?.currentName) setContents(await invoke('listContents', {view})); setCoverRefresh(n => n + 1); });
         };
         window.addEventListener('focus', focus);
         return () => window.removeEventListener('focus', focus);
@@ -123,7 +158,10 @@ function App() {
             return undefined;
         } finally {
             try {
-                await refreshStatus();
+                const next = await refreshStatus();
+                if (next.currentName) {
+                    try { await refreshWorkspace(); } catch (failure) { report(failure); }
+                }
             } catch (failure) {
                 setStatus(null);
                 report(failure);
@@ -154,6 +192,7 @@ function App() {
             }
             setContents(await invoke('listContents', {view}));
             savedContent.current = item;
+            setCoverRefresh(n => n + 1);
             return unchangedDraft && item.title === submitted.title && item.body === submitted.body;
         });
         return result === true;
@@ -225,10 +264,10 @@ function App() {
         });
     }
 
-    async function select(item: Content) {
+    async function select(item: Content, template?: string) {
         await guard(async () => {
-            const current = await nativeAction(() => invoke('readContent', {id: item.id}));
-            if (current) load(current);
+            const epoch = epochRef.current;
+            await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setPage('content'); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); setTemplatePicker(null); } });
         });
     }
 
@@ -255,10 +294,12 @@ function App() {
             if (method === 'listContents') {
                 setContents(await invoke('listContents', {view}));
                 await refreshEditor();
+                setCoverRefresh(n => n + 1);
             } else {
                 if (['createLibrary', 'openLibrary', 'importBackup', 'resumeImport'].includes(method)) clearEditor();
                 await invoke(method);
-                if (method === 'createLibrary' || method === 'openLibrary') setContents(await invoke('listContents', {view}));
+                if (method === 'status') setCoverRefresh(n => n + 1);
+                if (method === 'createLibrary' || method === 'openLibrary') { setContents(await invoke('listContents', {view})); setLibraryOpen(false); }
                 if (method === 'importBackup' || method === 'resumeImport') {
                     const next = await invoke('status');
                     if (next.task?.status === 'committed' && !next.task.targetChanged) setContents(await invoke('listContents', {view}));
@@ -267,6 +308,24 @@ function App() {
         });
     }
 
+    useLayoutEffect(() => { window.scrollTo(0, 0); }, [page]);
+
+    async function navigate(next: Page) {
+        await guard(async () => { setPage(next); });
+    }
+    async function useTemplate(template: TemplateGroup) {
+        await guard(async () => {
+            if (baseRef.current && !baseRef.current.deletedAt) {
+                const id = baseRef.current.id;
+                await nativeAction(async () => {
+                    const current = await invoke('readContent', {id});
+                    load(current);
+                    setSelectedTemplate({id: template.id, key: Date.now()});
+                    setPage('content');
+                });
+            } else setTemplatePicker(template);
+        });
+    }
     const task = status?.task;
     const busy = acting || !status || status.busy;
     const blocked = !!status?.pending || status?.creating|| !!status?.photoPending || !!status?.coverPending || !!status?.coverActionPending;
@@ -275,10 +334,10 @@ function App() {
     if (task?.descriptorChanged) message += '。内容库格式已变更，旧导入完成事实保留。';
     const counts = status?.inspection?.counts;
     return <main data-app="ready" data-loaded={status ? 'true' : 'false'} data-busy={acting ? 'true' : 'false'}>
-        <header><p className="eyebrow">NOVA CONTENT HUB / 本地内容工作台</p><Typography.Title
-            heading={1}>本地内容库</Typography.Title><Typography.Paragraph>明确选择一个当前库。保存、回收或恢复；外部修改发生时保留本地草稿。</Typography.Paragraph>
-        </header>
-        <Banner type="info" closeIcon={null} description="此入口为原生内容生命周期实验；正式授权尚未接入；助手执行需真实宿主另行验收。"/>
+        <aside className="app-navigation" aria-label="主导航"><div className="brand"><span className="brand-mark">N</span><div><strong>Nova</strong><span>内容工作台</span></div></div><div className="nav-label">工作空间</div><nav>{(Object.keys(pageNames) as Page[]).map((key, index) => <button key={key} id={`nav-${key}`} aria-current={page === key ? 'page' : undefined} className={page === key ? 'nav-item active' : 'nav-item'} disabled={busy} onClick={() => void navigate(key)}><span className="nav-symbol" aria-hidden="true">{['◫', '▧', '▤', '▦', '✧'][index]}</span>{pageNames[key]}</button>)}</nav><div className="nav-bottom"><button id="library-menu" className="nav-item" onClick={() => setLibraryOpen(open => !open)}><span className="nav-symbol" aria-hidden="true">▱</span>内容库</button><button id="open-settings" className="nav-item" disabled={busy || blocked} onClick={() => setSettings(true)}><span className="nav-symbol" aria-hidden="true">⚙</span>设置</button><div className="nav-library"><span className="library-dot"/><span id="library-summary">{status?.currentName || '尚未打开内容库'}</span></div><p className="nav-footnote">资料保存在你的本机</p></div></aside>
+        <div className="app-stage"><header className="app-header"><div><p className="breadcrumb">工作空间 / {pageNames[page]}</p><Typography.Title heading={1}>{pageNames[page]}</Typography.Title></div><div className="header-actions"><span className="save-indicator">{dirty ? '有未保存草稿' : '本机内容库'}</span><Button id="refresh-workspace" disabled={busy || !status?.currentName} onClick={() => void nativeAction(async () => { await refreshEditor(); setCoverRefresh(n => n + 1); if (status?.currentName) setContents(await invoke('listContents', {view})); })}>刷新</Button></div></header>
+        {(blocked || status?.seedPending || status?.task && status.task.status !== 'committed') && <Banner type="warning" closeIcon={null} description="有待恢复的操作，请查看内容库或封面创作中的提示，继续同一操作。"/>}
+        <section className="library-manager" hidden={!!status?.currentName && !libraryOpen && !status?.pending && !status?.creating && !(status?.task && status.task.status !== 'committed')} aria-label="内容库管理">
         <Card title="当前内容库"><p
             id="current-library">{status?.currentName || '尚未打开内容库'}{status?.needsReselect ? ' · 旧绑定缺少目录身份，请明确重选' : ''}</p>
             <div className="actions"><Button id="create-library" disabled={busy || blocked}
@@ -322,11 +381,18 @@ function App() {
                                                                                                            disabled={busy || (!status?.currentName && task?.status !== 'committed') || task?.targetChanged}
                                                                                                            onClick={() => void act('listContents')}>查看内容</Button>
             </div>
-            <p id="status" role="status" aria-live="polite">{message}</p><p id="error" role="alert">{error}</p>
+            <p id="status" role="status" aria-live="polite">{message}</p>
             <ul id="issues">{!!task?.issues.length &&
                 <li>有 {task.issues.length} 项待确认；缺失资源保留了记录。</li>}{task?.issues.slice(0, 50).map((issue, index) =>
                 <li key={index}>{issue.code || '资源待补齐'}{issue.key ? ` · ${issue.key}` : ''}</li>)}</ul>
         </Card>
+        </section>
+        <p id="error" role="alert">{error}</p>
+        {page === 'overview' && <Overview workspace={workspace} busy={busy} open={item => void select(item)}/>}
+        {page === 'templates' && <TemplatesPage key={libraryEpoch} assets={assets} busy={busy || !!blocked} useTemplate={template => void useTemplate(template)}/>}
+        {page === 'calendar' && <CalendarPage workspace={workspace} busy={busy} open={item => void select(item)}/>}
+        {page === 'prompts' && <PromptsPage key={libraryEpoch} workspace={workspace}/>}
+        <div className="content-workspace" hidden={page !== 'content'}><aside className="content-sidebar">
         <Card title={<h2 id="content-heading">内容列表</h2>} aria-labelledby="content-heading">
             <div className="actions"><Button id="new-content" disabled={busy || !status?.currentName || blocked}
                                              onClick={() => void guard(async () => {
@@ -346,15 +412,17 @@ function App() {
                                                                                                        })}>回收站</Button><Button
                 id="refresh-contents" disabled={busy || !status?.currentName}
                 onClick={() => void act('listContents')}>刷新内容与磁盘版本</Button></div>
-            <div id="contents">{contents === null ? <p>打开内容库后可查看内容。</p> : contents.length === 0 ?
-                <p>当前视图没有内容。</p> : contents.map(item => <details key={item.id} data-content-id={item.id}>
-                    <summary>{item.title}</summary>
+            <input type="search" className="content-search" aria-label="搜索内容" placeholder="搜索标题或正文" value={contentQuery} onChange={event => setContentQuery(event.target.value)}/><div id="contents">{contents === null ? <p>打开内容库后可查看内容。</p> : contents.length === 0 ?
+                <p>当前视图没有内容。</p> : contents.filter(item => `${item.title} ${item.body}`.toLowerCase().includes(contentQuery.toLowerCase())).map(item => <details key={item.id} open={item.id === base?.id} className={item.id === base?.id ? 'content-row selected' : 'content-row'} data-content-id={item.id}>
+                    <summary onClick={event => { event.preventDefault(); if (!busy) void select(item); }}>{item.title}</summary>
                     <pre>{item.body || '（基础正文为空；旧渠道文案保存在各自发布计划中。）'}</pre>
-                    <Button onClick={() => void select(item)}>打开编辑</Button><Button disabled={busy || blocked}
+                    <Button disabled={busy} onClick={() => void select(item)}>打开编辑</Button><Button disabled={busy || blocked}
                                                                                        onClick={() => void recycle(item)}>{view === 'trash' ? '恢复内容' : '移入回收站'}</Button>
                 </details>)}</div>
         </Card>
-        {draft && <Card title="内容编辑器"><p
+        </aside><section className="content-detail" aria-label="内容详情">
+        {!draft && <Card className="empty-detail"><h2>{status?.currentName ? '选择一篇内容，开始创作' : '欢迎来到你的内容中心'}</h2><p>{status?.currentName ? '从左侧打开内容，或新建一篇。保存正文后就能选择模板并准备封面。' : '请先新建内容库，或打开已有内容库。旧版资料可从“导入旧备份”恢复。'}</p></Card>}
+        {draft && <Card title="编辑内容"><p
             id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
             htmlFor="content-title">标题</label><input id="content-title" disabled={busy || blocked} maxLength={500}
                                                        value={draft.title} onChange={event => setDraft({
@@ -383,7 +451,10 @@ function App() {
                                                                                                    disabled={!!status?.pending}
                                                                                                    onClick={() => load(disk)}>明确放弃草稿并载入磁盘</Button>
             </section>}</Card>}
-        <CoverPanel key={libraryEpoch} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} run={nativeAction} onContent={item => { if (dirty && item.editToken !== base?.editToken) setDisk(item); else if (!dirty) load(item); }} />
+        <CoverPanel selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
+        </section></div>
+        {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={() => setTemplatePicker(null)} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 打开内容后预选这组样张</p></div><Button onClick={() => setTemplatePicker(null)}>关闭</Button></div><div className="template-content-list">{workspace?.contents.filter(item => !item.deletedAt).map(item => <button disabled={busy} key={item.id} onClick={() => void select(item, templatePicker.id)}><strong>{item.title}</strong><span>{item.body.slice(0, 90) || '正文待补充'}</span></button>)}{!workspace?.contents.some(item => !item.deletedAt) && <p>还没有活动内容。先到“内容”页新建并保存，再使用模板。</p>}</div></dialog>}
+        {settings && <AssistantSettings status={status} busy={busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)} />}
     {leaving &&
             <dialog ref={leaveDialog} className="leave-dialog" onCancel={() => setLeaving(null)} aria-modal="true"
                     aria-labelledby="leave-title"><h3 id="leave-title">草稿尚未保存</h3>
@@ -406,7 +477,7 @@ function App() {
                                                                                                     void action(false);
                                                                                                 }}>放弃后继续</Button><Button
                     id="leave-stay" onClick={() => setLeaving(null)}>留在当前内容</Button></dialog>}
-    </main>;
+    </div></main>;
 }
 
 const root = document.getElementById('root');

@@ -35,8 +35,8 @@ cwd 或链接猜库。该定位文件不是任务状态，也不含图片或正�
 完整 API、输入限制、状态与真实解码语义以 [文件核心说明](../../src/lib/file-library/README.md) 为准。submit 保留原始回执字节；重复提交使用同一份
 JSON 文件。核心校验数量、准确尺寸、格式、hash 与归属，一笔事务登记整批候选。CLI 不接受宿主自报的“校验通过”报告，也不自动选封面。
 
-配套流程源码在 `plugin-src/skills/nova-content-cover-execution/SKILL.md`；包内的旧
-`cover-runtime/skills/nova-content-cover-execution/SKILL.md` 路径由构建生成；需要宿主实际读取图片并生成本地结果。本包不自动安装插件、信任
+配套流程源码在 `plugin-src/skills/nova-content-cover-execution/SKILL.md`，安装包从根目录 `skills/` 加载；包内的旧
+`cover-runtime/skills/nova-content-cover-execution/SKILL.md` 路径仅为兼容文档，由构建从同一源码生成并修正相对 launcher 路径，不列入插件清单或默认扫描目录；需要宿主实际读取图片并生成本地结果。本包不自动安装插件、信任
 Hooks 或向宿主发送请求。最终安装/信任流程由后续桌面入口接入。
 
 验证包含真实临时文件库和打包后独立目录运行；不读取用户实际资料，不调用付费模型。Mac 本机通过不代表 Windows、助手生图、Electron

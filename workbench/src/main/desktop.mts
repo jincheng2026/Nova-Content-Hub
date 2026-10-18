@@ -1,7 +1,7 @@
 import {prepareNativeHandoff, nativeHandoffDirectory} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
-import {app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray} from 'electron';
+import {app, BrowserWindow, clipboard, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray} from 'electron';
 import fs from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
@@ -13,6 +13,7 @@ import {WorkerClient} from './worker-client.mts';
 import {appIconPaths} from './branding.mts';
 import {keepResident} from './resident.mts';
 import {createOperationQueue} from './operation-queue.mts';
+import {installedAssistantSkill} from './assistant-skill.mts';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -90,12 +91,19 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     }));
     resourceWorker = new WorkerClient(() => utilityProcess.fork(path.join(here, 'worker.mjs'), [release.pairId], { serviceName: 'Nova 本机图片', stdio: 'ignore' }));
     const controller = new DesktopController({
+        copyText: text => clipboard.writeText(text),
         resourceWorker,
         store: new BindingStore(path.join(app.getPath('userData'), 'machine-binding.json')),
         worker,
         authMode: release.AUTH_MODE,
         documents: app.getPath('documents'),
-        launch: async (binding, reference) => { const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release); await shell.openExternal(handoff.url); },
+        launch: async (binding, reference) => {
+            const installedSkill = installedAssistantSkill(reference.host, release);
+            try { await app.getApplicationInfoForProtocol(`${reference.host}://`); }
+            catch { throw Object.assign(new Error('所选助手尚未注册本机打开协议，请安装或启动助手后重试。'), {code: 'NOT_READY'}); }
+            const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill});
+            await shell.openExternal(handoff.url);
+        },
         dialogs: dialogs ?? {
             async photo() { const selected = await dialog.showOpenDialog(window, { title: '选择本机照片', properties: ['openFile'], filters: [{ name: '图片', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif'] }] }); return selected.canceled ? null : selected.filePaths[0]; },
             async export(defaultPath) { const selected = await dialog.showSaveDialog(window, { title: '导出候选封面', defaultPath, properties: ['showOverwriteConfirmation'] }); return selected.canceled ? null : selected.filePath ?? null; },

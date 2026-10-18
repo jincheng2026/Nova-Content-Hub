@@ -45,6 +45,39 @@ export interface Content {
     deletedAt: string | null
 }
 
+export interface WorkspacePlan {
+    id: string;
+    channelId: string;
+    status: 'planned' | 'cancelled' | 'published';
+    schedule: { precision: 'date'; date: string } | { precision: 'instant'; at: string; timezone: string } | { precision: 'local-minute'; date: string; time: string; timezone: string | null }
+}
+
+export interface WorkspaceContent extends Content {
+    createdAt: string;
+    updatedAt: string;
+    plans: WorkspacePlan[];
+    candidateCount: number;
+    selectedCandidateId: string | null
+}
+
+export interface WorkspacePrompt {
+    id: string;
+    title: string;
+    body: string;
+    category: string;
+    summary: string;
+    when: string;
+    tags: string[];
+    enabled: boolean;
+    editToken: string
+}
+
+export interface WorkspaceSnapshot {
+    contents: WorkspaceContent[];
+    prompts: WorkspacePrompt[];
+    channels: { id: string; name: string; enabled: boolean }[]
+}
+
 export interface Draft {
     title: string;
     body: string
@@ -112,6 +145,8 @@ export interface DesktopInputs extends CoverInputs {
     importBackup: undefined;
     resumeImport: undefined;
     listContents: { view: View } | undefined;
+    readWorkspace: undefined;
+    copyPrompt: { text: string };
     createLibrary: undefined;
     openLibrary: undefined;
     readContent: { id: string };
@@ -131,6 +166,8 @@ export interface DesktopResults extends CoverResults {
     importBackup: void;
     resumeImport: void;
     listContents: Content[];
+    readWorkspace: WorkspaceSnapshot;
+    copyPrompt: void;
     createLibrary: void;
     openLibrary: void;
     readContent: Content;
@@ -177,6 +214,7 @@ export interface WorkerOperations extends CoverWorkerOperations {
         args: { root: string; rootIdentity: RootIdentity; mutationId: string };
         result: LibraryBinding | null
     };
+    workspace: { args: { binding: LibraryBinding }; result: WorkspaceSnapshot };
     list: { args: { binding: LibraryBinding; view: View }; result: Content[] };
     readContent: { args: { binding: LibraryBinding; id: string }; result: Content };
     mutate: { args: { binding: LibraryBinding; mutation: Mutation }; result: Content };

@@ -7,6 +7,8 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     chooseDestination: () => ipcRenderer.invoke('nova:chooseDestination'),
     importBackup: () => ipcRenderer.invoke('nova:importBackup'),
     resumeImport: () => ipcRenderer.invoke('nova:resumeImport'),
+    copyPrompt: input => ipcRenderer.invoke('nova:copyPrompt', input),
+    readWorkspace: () => ipcRenderer.invoke('nova:readWorkspace'),
     listContents: input => ipcRenderer.invoke('nova:listContents', input),
     createLibrary: () => ipcRenderer.invoke('nova:createLibrary'),
     openLibrary: () => ipcRenderer.invoke('nova:openLibrary'),

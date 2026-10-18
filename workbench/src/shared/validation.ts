@@ -38,6 +38,12 @@ export function validateInput(method: DesktopMethod, input: unknown) {
         case 'listContents':
             valid = input === undefined || (exact(input, ['view']) && ['active', 'trash'].includes(input.view as string));
             break;
+        case 'copyPrompt':
+            valid = exact(input, ['text']) && typeof input.text === 'string' && input.text.length > 0 && input.text.length <= 256 * 1024 && !input.text.includes('\0') && new TextEncoder().encode(input.text).byteLength <= 256 * 1024;
+            break;
+        case 'readWorkspace':
+            valid = input === undefined;
+            break;
         case 'resolvePendingMutation':
             valid = exact(input, ['action']) && ['keep', 'saveAs', 'discard'].includes(input.action as string);
             break;

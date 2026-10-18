@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
+import fsSync from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import sharp from 'sharp';
@@ -45,7 +46,11 @@ test('request and attempt lost acknowledgements resume same durable mutations af
     await assert.rejects(f.controller.createContent({ title: 'blocked', body: '' }), { code: 'PENDING_MUTATION' });
     await assert.rejects(f.controller.choosePhoto({ title: 'blocked', isOwnPhoto: true }), { code: 'PENDING_MUTATION' });
     const reopened = f.make(); await reopened.initialize(); const result = await reopened.resumeCover();
-    assert.equal(result.jobs.length, 1); assert.equal(result.jobs[0].attempts.length, 1); assert.equal(result.jobs[0].attempts[0].host, 'codex'); assert.equal(reopened.binding.coverPending, null);
+    assert.equal(result.jobs.length, 1);
+    assert.deepEqual(result.jobs[0].summary, { template: f.input.template, styleSampleCount: 1, hasOwnPhoto: false, pixels: f.input.pixels, count: 1, ratio: '4:3', outputFormat: 'png' });
+    assert.equal(JSON.stringify(result.jobs).includes('inbox'), false);
+    assert.equal(JSON.stringify(result.jobs).includes('fixed body'), false);
+    assert.equal(result.jobs[0].attempts.length, 1); assert.equal(result.jobs[0].attempts[0].host, 'codex'); assert.equal(reopened.binding.coverPending, null);
     assert.ok(f.library.queryMutation(durable.requestMutationId)); assert.ok(f.library.queryMutation(durable.attemptMutationId));
     await reopened.continueCover({ contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId });
     await reopened.continueCover({ contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId });
@@ -60,7 +65,7 @@ test('reused A after B has no new request receipt; recovery resolves A and metad
   await assert.rejects(f.start(), { code: 'WORKER_EXIT' }); assert.equal(pending.requestId, a.request.requestId); assert.equal(f.library.queryMutation(pending.requestMutationId), null);
   const current = f.library.readContent(f.content.id); f.library.savePublicationPlan(current.id, { channelId: 'wechat', scheduledAt: '2026-10-20T00:00:00Z', timezone: 'UTC' }, current.editToken);
   f.worker.call = call; const reopened = f.make(); await reopened.initialize(); const result = await reopened.resumeCover();
-  assert.equal(result.jobs.find(j => j.id === a.request.requestId).attempts.length, 1); assert.equal(result.jobs.find(j => j.id === b.request.requestId).attempts.length, 0);
+  assert.equal(result.jobs.find(j => j.id === a.request.requestId).attempts.length, 1); assert.equal(result.jobs.find(j => j.id === b.request.requestId).attempts.length, 0); assert.equal(result.jobs.find(j => j.id === b.request.requestId).summary, null);
 });
 test('body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source', async t => {
   const f = await fixture(t); const first = await f.start(); const job = first.jobs[0], reference = { contentId: f.content.id, requestId: job.id, attemptId: job.activeAttemptId };
@@ -115,6 +120,53 @@ test('synthetic committed candidates show real bytes, manual selection/export, c
   await assert.rejects(f.controller.exportCover({ contentId: randomUUID(), candidateId }));
   const retry = await f.controller.retryCover({ contentId: f.content.id, requestId: job.id, attemptId }); const ref = { contentId: f.content.id, requestId: job.id, attemptId: retry.jobs[0].activeAttemptId }; await f.controller.cancelCover(ref);
   await assert.rejects(f.controller.continueCover(ref), { code: 'ATTEMPT_INACTIVE' });
+});
+test('unavailable historical snapshots do not hide healthy jobs, candidates or completed actions', async t => {
+  const f = await fixture(t); const first = await f.start(), old = first.jobs[0];
+  const oldReference = { contentId: f.content.id, requestId: old.id, attemptId: old.activeAttemptId };
+  await f.controller.cancelCover(oldReference);
+  const next = await f.start(f.controller, { ...f.input, prompt: 'healthy newer request' }), job = next.jobs.find(j => j.id !== old.id), attemptId = job.activeAttemptId;
+  const context = f.library.readCoverContext(f.content.id, job.id, attemptId);
+  f.library.claimCoverAttempt(f.content.id, job.id, attemptId, { host: 'codex', readAssetHashes: context.inputs.map(i => i.assetHash) });
+  await fs.writeFile(path.join(context.inbox, 'result.png'), f.bytes);
+  await f.library.commitCoverAttempt(f.content.id, job.id, attemptId, { libraryId: f.binding.libraryId, contentId: f.content.id, requestId: job.id, attemptId, requestHash: job.requestHash, resultId: randomUUID(), files: [{ name: 'result.png', sha256: hash(f.bytes) }] });
+  const snapshot = path.join(f.libraryRoot, '内容', f.content.id, '封面任务', old.id, '输入', f.asset.assetHash);
+  await fs.rm(snapshot);
+  for (const errorCode of ['IO_ERROR', 'CORRUPT']) {
+    await assert.rejects(f.worker.call('coverContext', { binding: f.binding, reference: oldReference }), { code: errorCode });
+    const view = await f.controller.readCover({ contentId: f.content.id });
+    assert.equal(view.jobs.length, 2); assert.equal(view.jobs.find(j => j.id === old.id).summary, null);
+    assert.equal(view.jobs.find(j => j.id === old.id).attempts[0].status, 'cancelled');
+    assert.deepEqual(view.jobs.find(j => j.id === job.id).summary.pixels, f.input.pixels);
+    assert.equal(view.candidates.length, 1); assert.equal(view.candidates[0].requestId, job.id);
+    assert.deepEqual((await f.controller.covers.resource(view.candidates[0].url)).data, f.bytes);
+    const selected = await f.controller.selectCover({ contentId: f.content.id, candidateId: view.candidates[0].id, editToken: view.content.editToken });
+    assert.equal(selected.selectedCandidateId, view.candidates[0].id); assert.equal(f.controller.binding.coverActionPending, null);
+    await fs.writeFile(snapshot, 'corrupt snapshot');
+  }
+});
+test('summary fallback preserves strict input integrity checks for execution', async t => {
+  const f = await fixture(t), prepared = await f.start(), job = prepared.jobs[0], attemptId = job.activeAttemptId;
+  const reference = { contentId: f.content.id, requestId: job.id, attemptId };
+  const context = f.library.readCoverContext(f.content.id, job.id, attemptId), claim = { host: 'codex', readAssetHashes: context.inputs.map(i => i.assetHash) };
+  f.library.claimCoverAttempt(f.content.id, job.id, attemptId, claim);
+  await fs.writeFile(context.inputs[0].path, 'corrupt snapshot');
+  assert.equal((await f.controller.readCover({ contentId: f.content.id })).jobs[0].summary, null);
+  for (const op of ['coverContext', 'handoffContext']) await assert.rejects(f.worker.call(op, { binding: f.binding, reference }), { code: 'CORRUPT' });
+  assert.throws(() => f.library.createCoverAttempt(f.content.id, job.id, { host: 'codex', reason: 'retry' }), { code: 'CORRUPT' });
+  assert.throws(() => f.library.claimCoverAttempt(f.content.id, job.id, attemptId, claim), { code: 'CORRUPT' });
+  await fs.writeFile(path.join(context.inbox, 'result.png'), f.bytes);
+  await assert.rejects(f.library.commitCoverAttempt(f.content.id, job.id, attemptId, { libraryId: f.binding.libraryId, contentId: f.content.id, requestId: job.id, attemptId, requestHash: job.requestHash, resultId: randomUUID(), files: [{ name: 'result.png', sha256: hash(f.bytes) }] }), { code: 'CORRUPT' });
+});
+test('unexpected errors during summary loading still propagate', async t => {
+  const f = await fixture(t), prepared = await f.start(), job = prepared.jobs[0];
+  const context = f.library.readCoverContext(f.content.id, job.id, job.activeAttemptId);
+  const unexpected = new TypeError('unexpected summary failure'), openSync = fsSync.openSync;
+  t.mock.method(fsSync, 'openSync', function (file, ...args) {
+    if (file === context.inputs[0].path) throw unexpected;
+    return openSync(file, ...args);
+  });
+  await assert.rejects(f.controller.readCover({ contentId: f.content.id }), error => error.code === 'IO_ERROR' && error.cause === unexpected);
 });
 test('required main and worker gates seed, photos, cover, selection, cancellation and launch', async t => {
   const f = await fixture(t, 'required');

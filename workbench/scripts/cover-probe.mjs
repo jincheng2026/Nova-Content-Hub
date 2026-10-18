@@ -22,8 +22,11 @@ try {
       const timeout = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Cover Electron probe exceeded 120 seconds')); }, 120000);
       child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
     });
-    if (mode === 'disabled') await fs.copyFile(path.join(data, 'cover.png'), path.join(repository, 'docs/verification/production/2026-10-18-directory-cover-disabled.png'));
+    if (mode === 'disabled') {
+      await fs.copyFile(path.join(data, 'cover.png'), path.join(repository, 'docs/verification/production/2026-10-18-content-workflow-disabled.png'));
+      for (const page of ['overview', 'templates', 'calendar', 'prompts']) await fs.copyFile(path.join(data, `${page}.png`), path.join(repository, `docs/verification/production/2026-10-18-desktop-${page}.png`));
+    }
   }
-  await fs.writeFile(path.join(repository, 'docs/verification/production/2026-10-18-directory-cover-receipt.json'), JSON.stringify({ format: 'nova-native-cover-verification', platform: process.platform, arch: process.arch, recordedAt: new Date().toISOString(), productionReady: false, syntheticCandidates: true, realHostGeneration: false, systemDialogs: false, windows: false, passed: true }, null, 2) + '\n');
+  await fs.writeFile(path.join(repository, 'docs/verification/production/2026-10-18-content-workflow-receipt.json'), JSON.stringify({ format: 'nova-native-cover-verification', platform: process.platform, arch: process.arch, recordedAt: new Date().toISOString(), productionReady: false, syntheticCandidates: true, realHostGeneration: false, systemDialogs: false, windows: false, passed: true }, null, 2) + '\n');
   console.log('PASS external standalone native cover packages. Synthetic candidate verification only; real host, native dialog clicks and Windows remain unverified. productionReady=false');
 } finally { await fs.rm(root, { recursive: true, force: true }); }

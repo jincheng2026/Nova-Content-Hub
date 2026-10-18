@@ -1,0 +1,75 @@
+{
+  "format": "nova-installation-readonly-inventory",
+  "recordedAt": "2026-10-18T04:00:43.583Z",
+  "scannedLocations": [
+    "/Applications",
+    "/Users/mac/Applications",
+    "/Users/mac/Downloads",
+    "/Users/mac/Desktop",
+    "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release"
+  ],
+  "scope": "named product entries only; unrelated file contents not read",
+  "hits": [
+    {
+      "path": "/Applications/内容工作台.app",
+      "kind": "directory",
+      "bytes": 96,
+      "modified": "2026-09-27T08:26:59.461Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/2026-10-15_内容工作台学员版_Mac安装包.dmg",
+      "kind": "file",
+      "bytes": 269103196,
+      "modified": "2026-10-15T12:42:19.000Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/2026-10-15_内容工作台学员版_代码交接包 2.zip",
+      "kind": "file",
+      "bytes": 43196944,
+      "modified": "2026-10-15T12:39:16.000Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/2026-10-15_内容工作台学员版_代码交接包.zip",
+      "kind": "file",
+      "bytes": 43407946,
+      "modified": "2026-10-15T12:37:53.000Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/内容工作台学员版_代码交接包",
+      "kind": "directory",
+      "bytes": 192,
+      "modified": "2026-10-15T12:38:36.320Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/内容工作台学员版_代码交接包/内容工作台App",
+      "kind": "directory",
+      "bytes": 480,
+      "modified": "2026-10-15T12:38:43.204Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/内容工作台学员版_代码交接包 2",
+      "kind": "directory",
+      "bytes": 192,
+      "modified": "2026-10-15T12:40:26.983Z"
+    },
+    {
+      "path": "/Users/mac/Downloads/内容工作台学员版_代码交接包 2/内容工作台App",
+      "kind": "directory",
+      "bytes": 480,
+      "modified": "2026-10-15T12:40:26.980Z"
+    },
+    {
+      "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg",
+      "kind": "file",
+      "bytes": 208289000,
+      "modified": "2026-10-18T03:48:36.013Z"
+    },
+    {
+      "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/Nova-Content-Hub-0.2.0-darwin-arm64-testing.dmg.blockmap",
+      "kind": "file",
+      "bytes": 215761,
+      "modified": "2026-10-18T03:48:41.802Z"
+    }
+  ],
+  "reports": []
+}

@@ -5,10 +5,10 @@ description: 执行自媒体工作台交来的封面 handoff ID：读取固定�
 
 # 执行封面请求
 
-此 Skill 随实验本地执行包分发。使用本文件目录的 `../../../bin/run-node`（macOS）或 `../../../bin/run-node.cmd`
+此 Skill 随实验本地执行包分发。使用本文件目录的 `../../bin/run-node`（macOS）或 `../../bin/run-node.cmd`
 （Windows），其中包含固定 Node；所有命令均在包内执行，不要求用户安装 Node、复制库路径或组装 JSON。示例里的 `RUN` 表示这个
-launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin/sh "<本文件目录>/../../../bin/run-node"`，Windows 用
-`"<本文件目录>\..\..\..\bin\run-node.cmd"`。
+launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin/sh "<本文件目录>/../../bin/run-node"`，Windows 用
+`"<本文件目录>\..\..\bin\run-node.cmd"`。
 
 工作台给出的 handoff ID 是唯一定位入口，保留原 ID，实际库与固定请求由 CLI 验证。本次助手必须与 context 的 attempt.host
 一致，错宿主则回工作台切换设置并开始新尝试。原型的 HANDOFF.json / REQUEST.json 仅供 `contract check-handoff` /

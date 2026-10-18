@@ -192,10 +192,11 @@ test('CLI bounds input, rejects malformed commands and never writes on transport
 });
 
 test('the bundled Skill references the real CLI and contains no template or user library scripts', () => {
-    const skillDir = path.join(bundle, 'cover-runtime/skills/nova-content-cover-execution');
+    const skillDir = path.join(bundle, 'skills/nova-content-cover-execution');
     const skill = fs.readFileSync(path.join(skillDir, 'SKILL.md'), 'utf8');
     assert.match(skill, /^---\nname: nova-content-cover-execution\ndescription: .+\n---/);
-    assert.ok(fs.existsSync(path.resolve(skillDir, '../../cli.mjs')));
+    assert.ok(fs.existsSync(path.resolve(skillDir, '../../bin/run-node')));
+    assert.match(skill, /\.\.\/\.\.\/bin\/run-node/);
     assert.match(skill, /submit/);
     assert.match(skill, /AUTH_NOT_CONFIGURED/);
 });

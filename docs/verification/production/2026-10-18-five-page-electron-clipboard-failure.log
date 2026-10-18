@@ -1,0 +1,23 @@
+
+> nova-content-hub-workbench@0.2.0 probe:cover
+> node scripts/cover-probe.mjs
+
+PASS actual Electron selection safety: held read blocks content/library switch; subsequent explicit selection loads only its own candidates and body
+PASS concurrent actual Electron: all granted template/candidate reads and IPC content create/save/read/status completed without lock conflicts
+TypeError: clipboard.write cannot accept a ClipboardItem returned from clipboard.read() — construct a new ClipboardItem to write.
+    at [toNative] (node:electron/js2c/browser_init:1:23803)
+    at Object.write (node:electron/js2c/browser_init:1:24758)
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-h39jQ6/auth-disabled/workbench/dist/main/cover-probe.mjs:181:45)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-cover-probe-h39jQ6/auth-disabled/workbench/dist/main/desktop.mjs:213:5)
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23
+      child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
+                                                                                                                                  ^
+
+Error: Cover probe failed 1/null
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23:131)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

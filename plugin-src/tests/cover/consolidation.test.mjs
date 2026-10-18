@@ -70,7 +70,7 @@ test('both independent packages separate contract and cover commands and preserv
         assert.equal(checked.code, mode === 'required' ? 'AUTH_NOT_CONFIGURED' : 'REQUEST_VALIDATED');
         assert.equal(run(mode, ['cover', 'context', '--stdin'], request(mode)).output.code, mode === 'required' ? 'AUTH_NOT_CONFIGURED' : 'INVALID_ARGUMENTS');
         for (const name of ['nova-content-cover', 'nova-content-template-restore', 'nova-content-template-study']) {
-            assert.equal(run(mode, ['summary'], undefined, {}, `plugin-src/skills/${name}/scripts/content.mjs`).output.release.AUTH_MODE, mode);
+            assert.equal(run(mode, ['summary'], undefined, {}, `skills/${name}/scripts/content.mjs`).output.release.AUTH_MODE, mode);
         }
     }
 });
@@ -118,9 +118,9 @@ test('implementation, hooks, skill capabilities, mode and hashed import resource
             const cover = name === 'nova-content-cover-execution';
             assert.equal(capability.namespace, cover ? 'cover' : 'contract');
             assert.equal(capability.executable, cover && mode === 'disabled');
-            assert.equal(fs.readFileSync(packagePath(mode, `plugin-src/skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(path.join(root, `plugin-src/skills/${name}/SKILL.md`), 'utf8'));
-            if (cover) assert.equal(fs.readFileSync(packagePath(mode, `cover-runtime/skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(packagePath(mode, `plugin-src/skills/${name}/SKILL.md`), 'utf8'));
-            else assert.equal(fs.existsSync(packagePath(mode, `plugin-src/skills/${name}/scripts/release.json`)), false);
+            assert.equal(fs.readFileSync(packagePath(mode, `skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(path.join(root, `plugin-src/skills/${name}/SKILL.md`), 'utf8'));
+            if (cover) assert.equal(fs.readFileSync(packagePath(mode, `cover-runtime/skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(packagePath(mode, `skills/${name}/SKILL.md`), 'utf8').replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
+            else assert.equal(fs.existsSync(packagePath(mode, `skills/${name}/scripts/release.json`)), false);
         }
         for (const [host, events] of Object.entries(HOST_EVENTS)) for (const event of events) {
             const result = run(mode, ['hook', '--host', host, '--event', event], {

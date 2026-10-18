@@ -39,22 +39,25 @@ export class DesktopController {
     creationMissing = false;
     pendingView: PendingView | null = null;
     authMode: 'required' | 'disabled';
+    copyText?: (text: string) => void | Promise<void>;
     querying: Promise<ImportTask | null> | null = null;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required', launch, resourceWorker}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, resourceWorker, copyText}: {
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
         documents: string;
         authMode?: 'required' | 'disabled';
         launch?: Covers['launch'];
-        resourceWorker?: Worker
+        resourceWorker?: Worker;
+        copyText?: (text: string) => void | Promise<void>
     }) {
         this.store = store;
         this.worker = worker;
         this.dialogs = dialogs;
         this.documents = documents;
         this.authMode = authMode;
+        this.copyText = copyText;
         this.covers = new Covers(this, launch, resourceWorker);
     }
 
@@ -362,6 +365,22 @@ export class DesktopController {
             if (!this.binding.current && task?.status === 'committed' && !task.targetChanged && !this.binding.needsReselect) await this.bindImported();
             if (task?.targetChanged && this.binding.current?.root === this.binding.destination) fail('LIBRARY_NOT_READY', '原内容库位置已改变。');
             return this.worker.call('list', {binding: this.current(), view: input?.view ?? 'active'});
+        });
+    }
+
+    async copyPrompt(input: { text: string }) {
+        validateInput('copyPrompt', input);
+        if (!this.copyText) fail('CLIPBOARD_UNAVAILABLE', '当前环境无法复制，请在桌面工作台重试。');
+        await this.copyText(input.text);
+    }
+
+    async readWorkspace(input?: undefined) {
+        validateInput('readWorkspace', input);
+        return this.exclusive(async () => {
+            const task = await this.query();
+            if (!this.binding.current && task?.status === 'committed' && !task.targetChanged && !this.binding.needsReselect) await this.bindImported();
+            if (task?.targetChanged && this.binding.current?.root === this.binding.destination) fail('LIBRARY_NOT_READY', '原内容库位置已改变。');
+            return this.worker.call('workspace', {binding: this.current()});
         });
     }
 
