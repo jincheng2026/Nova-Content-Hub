@@ -2,10 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validRelease } from '../content.mjs';
+import { nativeHandoffDirectory, readNativeHandoff } from '../bridge/native-handoff.mjs';
 
 const MAX_INPUT = 64 * 1024;
 const commands = ['help', 'doctor', 'create', 'attempt', 'claim', 'context', 'submit', 'fail', 'cancel', 'status'];
-const flags = ['library', 'content', 'request', 'attempt', 'file', 'stdin'];
+const flags = ['library', 'content', 'request', 'attempt', 'handoff', 'file', 'stdin'];
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);
 const problem = (code, message) => Object.assign(new Error(message), { code });
 
@@ -108,13 +109,22 @@ export async function main(argv) {
     const facts = { experimental: true, productionReady: false, authMode: config.AUTH_MODE };
     if (command === 'help' || command === 'doctor') {
       if (Object.keys(values).length) throw problem('INVALID_ARGUMENTS', '此命令不接受参数。');
-      output = { ok: true, ...facts, commands, usage: 'COMMAND --library ABSOLUTE_ROOT --content UUID [--request UUID] [--attempt UUID] [--file JSON | --stdin]', library: 'unbound', imageGeneration: false, message: '实验文件执行器；生图由已选助手完成，不代表商用发行就绪。' };
+      output = { ok: true, ...facts, commands, usage: 'COMMAND --handoff UUID [--file JSON | --stdin] OR COMMAND --library ABSOLUTE_ROOT --content UUID [--request UUID] [--attempt UUID] [--file JSON | --stdin]', library: 'unbound', imageGeneration: false, message: '实验文件执行器；生图由已选助手完成，不代表商用发行就绪。' };
     } else {
       if (config.AUTH_MODE === 'required') throw problem('AUTH_NOT_CONFIGURED', '可信权益验证尚未接入，鉴权执行包停止业务读写。');
+      let located;
+      if (Object.hasOwn(values, 'handoff')) {
+        if (!['claim', 'context', 'submit', 'fail', 'cancel', 'status'].includes(command) ||
+            Object.keys(values).some(key => !['handoff', 'file', 'stdin'].includes(key))) throw problem('INVALID_ARGUMENTS', '本机交接只接受固定尝试的执行命令，不能混用路径或其他 ID。');
+        located = readNativeHandoff(nativeHandoffDirectory(), values.handoff, config);
+        delete values.handoff;
+        Object.assign(values, { library: located.binding.root, content: located.task.contentId });
+        if (command !== 'status') Object.assign(values, { request: located.task.requestId, attempt: located.task.attemptId });
+      }
       const withInput = requiredFlags(command, values);
       const input = withInput ? await payload(values, command === 'submit') : null;
       const { openLibrary } = await import('../../../file-library/index.mjs');
-      const library = openLibrary(values.library);
+      const library = located ? openLibrary(located.binding.root, { expectedLibraryId: located.binding.libraryId, expectedRootIdentity: located.binding.rootIdentity }) : openLibrary(values.library);
       const args = [values.content, values.request, values.attempt];
       let result;
       switch (command) {
