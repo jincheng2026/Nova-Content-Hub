@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import type {CoverResults} from '../shared/cover-contracts.ts';
 import type {TemplateAssistantSetup, TemplateAttemptView, TemplateWorkflowResult, TemplateWorkflowView} from '../shared/template-contracts.ts';
@@ -11,12 +11,14 @@ export interface TemplateWorkflowPanelProps {templateId: string; library: Worksp
 const statusNames = {created: '待助手处理', claimed: '助手已认领', committed: '待人工验收', failed: '失败', cancelled: '已取消', superseded: '已被后续尝试替代'};
 export function TemplateWorkflowPanel({templateId, library, assets, busy, run, refresh, onDerive}: TemplateWorkflowPanelProps) {
     const [view, setView] = useState<TemplateWorkflowView | null>(null), [setup, setSetup] = useState<TemplateAssistantSetup | null>(null), [notes, setNotes] = useState(''), [selected, setSelected] = useState(''), [confirm, setConfirm] = useState(false), [notice, setNotice] = useState(''), [loading, setLoading] = useState(false);
-    useEffect(() => {setNotes('');}, [templateId]);
+    const viewRef = useRef(view);
+    viewRef.current = view;
+    useEffect(() => {setNotes(''); setView(null); setSelected(''); setConfirm(false); setNotice('');}, [templateId]);
     useEffect(() => {
         let cancelled = false;
-        setView(null); setSelected(''); setConfirm(false); setNotice(''); setLoading(true);
+        setLoading(true);
         Promise.all([invoke('readTemplateWorkflow', {templateId}), invoke('readTemplateAssistantSetup')]).then(([next, assistant]) => {
-            if (!cancelled) {setView(next); setSetup(assistant);}
+            if (!cancelled) {if (viewRef.current?.editToken !== next.editToken) setConfirm(false); setView(next); setSetup(assistant);}
         }).catch(error => {if (!cancelled) setNotice(error instanceof Error ? error.message : '暂时无法读取学习历史。');}).finally(() => {if (!cancelled) setLoading(false);});
         return () => {cancelled = true;};
     }, [templateId, library, assets]);

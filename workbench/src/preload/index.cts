@@ -1,7 +1,14 @@
 import type {ContentHub} from '../shared/contracts.ts';
+import type {IpcRendererEvent} from 'electron';
 
 const {contextBridge, ipcRenderer} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    onWorkspaceChanged: listener => {
+        if (typeof listener !== 'function') throw new TypeError('Expected a workspace listener');
+        const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'changed' || value === 'unavailable') listener(value); };
+        ipcRenderer.on('nova:workspace-changed', receive);
+        return () => { ipcRenderer.removeListener('nova:workspace-changed', receive); };
+    },
     inspectLibraryHealth: () => ipcRenderer.invoke('nova:inspectLibraryHealth'),
     readTemplateAssistantSetup: () => ipcRenderer.invoke('nova:readTemplateAssistantSetup'),
     readTemplateWorkflow: input => ipcRenderer.invoke('nova:readTemplateWorkflow', input),

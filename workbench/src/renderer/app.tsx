@@ -48,6 +48,9 @@ function App() {
     const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);
     const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);
     const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);
+    const [watchUnavailable, setWatchUnavailable] = useState(false);
+    const changesPending = useRef(false);
+    const automaticRefresh = useRef<() => void>(() => {});
     const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
     const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);
     const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);
@@ -84,9 +87,9 @@ function App() {
     const dirty = !!draft && (!base || draft.title !== base.title || draft.body !== base.body);
     const dirtyRef = useRef(false);
     dirtyRef.current = dirty;
-    const report = (failure: unknown) => {
+    const report = (failure: unknown, preserveError = false) => {
         const value = errorInfo(failure);
-        setError(`${value.message}（${value.code}）`);
+        setError(previous => preserveError && previous ? previous : `${value.message}（${value.code}）`);
     };
     const load = (item: Content) => {
         setBase(item);
@@ -103,6 +106,8 @@ function App() {
         setWorkspace(null);
         setLibrary(null);
         setWorkspaceUnavailable(false);
+        setWatchUnavailable(false);
+        changesPending.current = false;
         setAssets(null);
         setSelectedTemplate(null);
         setTemplatePicker(null);
@@ -145,13 +150,32 @@ function App() {
         }
     }
 
+    automaticRefresh.current = () => {
+        if (!changesPending.current || active.current || document.hidden || !status?.currentName || status.busy) return;
+        changesPending.current = false;
+        const epoch = epochRef.current;
+        void nativeAction(async () => {
+            await refreshEditor();
+            const items = await invoke('listContents', {view});
+            if (epoch !== epochRef.current) return;
+            setContents(items);
+            setCoverRefresh(value => value + 1);
+        }, {preserveError: true});
+    };
     useEffect(() => {
-        const focus = () => {
-            if (!active.current) void nativeAction(async () => { await refreshEditor(); if (status?.currentName) setContents(await invoke('listContents', {view})); setCoverRefresh(n => n + 1); });
-        };
+        const unsubscribe = window.contentHub.onWorkspaceChanged(change => {
+            if (change === 'unavailable') {setWatchUnavailable(true); setLibraryOpen(true); return;}
+            setWatchUnavailable(false);
+            changesPending.current = true;
+            automaticRefresh.current();
+        });
+        const focus = () => {changesPending.current = true; automaticRefresh.current();};
+        const visible = () => {if (!document.hidden) focus();};
         window.addEventListener('focus', focus);
-        return () => window.removeEventListener('focus', focus);
-    });
+        document.addEventListener('visibilitychange', visible);
+        return () => {unsubscribe(); window.removeEventListener('focus', focus); document.removeEventListener('visibilitychange', visible);};
+    }, []);
+    useEffect(() => {if (!acting) automaticRefresh.current();}, [acting, status?.currentName]);
     useEffect(() => {
         const prevent = (event: BeforeUnloadEvent) => {
             if (dirtyRef.current || hasManagedDrafts()) {
@@ -168,25 +192,25 @@ function App() {
         if (dirty) setLeaving(() => action); else await action();
     }
 
-    async function nativeAction<T>(action: () => Promise<T>): Promise<T | undefined> {
+    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false}: {preserveError?: boolean} = {}): Promise<T | undefined> {
         if (active.current) return;
         active.current = true;
         setActing(true);
-        setError('');
+        if (!preserveError) setError('');
         try {
             return await action();
         } catch (failure) {
-            report(failure);
+            report(failure, preserveError);
             return undefined;
         } finally {
             try {
                 const next = await refreshStatus();
                 if (next.currentName) {
-                    try { await refreshWorkspace(); } catch (failure) { report(failure); }
+                    try { await refreshWorkspace(); } catch (failure) { report(failure, preserveError); }
                 }
             } catch (failure) {
                 setStatus(null);
-                report(failure);
+                report(failure, preserveError);
             }
             active.current = false;
             setActing(false);
@@ -438,6 +462,7 @@ function App() {
         {libraryOpen && status?.currentName && <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} library={library} assets={assets} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section>}
         <p id="error" role="alert">{error}</p>
         {workspaceUnavailable && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
+        {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
         {page === 'overview' && <Overview workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={() => void navigate('calendar')}/>}
         {page === 'templates' && <TemplatesPage key={libraryEpoch} library={library} run={nativeAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openPhotoManagement()}/>}
         {page === 'calendar' && <CalendarPage key={libraryEpoch} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}

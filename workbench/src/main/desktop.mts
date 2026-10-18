@@ -15,6 +15,7 @@ import {keepResident} from './resident.mts';
 import {createOperationQueue} from './operation-queue.mts';
 import {Preferences} from './preferences.mts';
 import {BootstrapRecovery} from './bootstrap-recovery.mts';
+import {LibraryWatcher} from './library-watch.mts';
 import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
@@ -61,12 +62,13 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     let resident: ReturnType<typeof keepResident> | undefined;
     let tray: Tray | null = null;
     let reminders: Reminders | undefined;
+    let libraryWatcher: LibraryWatcher | undefined;
     // shortcut: native dialogs also queue image reads; split only when dialogs can release library ownership safely.
     const runOperation = createOperationQueue();
     app.on('second-instance', () => resident?.show());
     app.on('activate', () => resident?.show());
     app.on('window-all-closed', () => app.quit());
-    app.on('will-quit', () => { reminders?.dispose(); tray?.destroy(); worker?.stop(); resourceWorker?.stop(); });
+    app.on('will-quit', () => { libraryWatcher?.close(); reminders?.dispose(); tray?.destroy(); worker?.stop(); resourceWorker?.stop(); });
     await app.whenReady();
     const icon = nativeImage.createFromPath(icons.png);
     const size = icon.getSize();
@@ -192,6 +194,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
         controller.last = null;
         controller.inspection = null;
         initializationError = undefined;
+        libraryWatcher?.bind(null);
     }});
     const readBootstrapRecovery = async () => {
         const result = await bootstrap.readBootstrapRecovery();
@@ -234,6 +237,11 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             defaultId: 2,
             cancelId: 2
         }));
+    libraryWatcher = new LibraryWatcher({notify: change => {
+        if (!window.isDestroyed() && !window.webContents.isDestroyed() && window.webContents.getURL() === PAGE) window.webContents.send('nova:workspace-changed', change);
+        if (change === 'changed') void reminders?.refresh(true);
+    }});
+    const syncLibraryWatcher = () => libraryWatcher?.bind(initializationError || controller.binding?.needsReselect ? null : controller.binding?.current ?? null);
     try {
         const trayIcon = icon.resize({width: 18, height: 18});
         trayIcon.addRepresentation({scaleFactor: 2, buffer: icon.resize({width: 36, height: 36}).toPNG()});
@@ -305,7 +313,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
             if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
-                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { if (['openLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
+                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (['openLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
             };
         } catch (error) {
             return {
@@ -320,6 +328,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     if (show) window.once('ready-to-show', () => window.show());
     if (onConsoleMessage) window.webContents.on('console-message', (_event, _level, message) => onConsoleMessage(message));
     await window.loadURL(PAGE);
+    syncLibraryWatcher();
     reminders.start();
     await ready?.({window, controller, worker, release, tray});
 }

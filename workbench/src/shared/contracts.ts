@@ -193,7 +193,10 @@ export interface DesktopResults extends CoverResults, WorkspaceResults, Maintena
 
 export type DesktopMethod = keyof DesktopResults;
 export type Reply<T> = { ok: true; value: T } | { ok: false; error: { code: string; message: string } };
-export type ContentHub = { [K in DesktopMethod]: (input?: DesktopInputs[K]) => Promise<Reply<DesktopResults[K]>> };
+export type WorkspaceChange = 'changed' | 'unavailable';
+export type ContentHub = { [K in DesktopMethod]: (input?: DesktopInputs[K]) => Promise<Reply<DesktopResults[K]>> } & {
+    onWorkspaceChanged(listener: (change: WorkspaceChange) => void): () => void;
+};
 
 export interface Binding {
     version: 1;
