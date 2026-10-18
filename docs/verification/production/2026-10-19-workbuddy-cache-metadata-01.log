@@ -1,0 +1,40 @@
+✔ codex cover: verified doctor must finish before envelope creation and external open (48.1155ms)
+✔ codex template: verified doctor must finish before envelope creation and external open (32.873167ms)
+✔ workbuddy cover: verified doctor must finish before envelope creation and external open (33.004916ms)
+✔ workbuddy template: verified doctor must finish before envelope creation and external open (32.921208ms)
+✔ tampered executable, launcher, CLI and other payload bytes refuse before spawn, even with cache self-resealing (59.768542ms)
+✔ missing files, wrong release, root/file symlinks, and extra or escaping payload entries refuse before spawn (28.033209ms)
+✔ trusted app inventory must be an ordinary bounded file with exact release and schema (24.655583ms)
+✔ only Codex may omit the exact trusted semver link; present changes never qualify (131.062584ms)
+✔ runtime error, timeout, malformed/oversized or business-bound output never creates an envelope or opens the host (92.8835ms)
+✔ required mode never executes and successful launches do not cache verification across replacements (23.905833ms)
+✔ WorkBuddy allows bounded non-executable in-use markers across live and ended host stages (64.398208ms)
+✔ only WorkBuddy permits validated host markers; trusted inventories cannot declare them (40.602291ms)
+✔ WorkBuddy permits only bounded atomic-write temporary names and exact platform identity data (78.620541ms)
+✔ invalid names, marker schemas and excessive host metadata refuse before spawn (239.295333ms)
+✔ host metadata cannot hide executable files, symlinks, hardlinks, subdirectories, or changed payload (27.597625ms)
+✔ host marker changes during verification fail closed without retrying doctor or launch (61.595875ms)
+✔ cover: failed preflight can continue the same fixed attempt without business writes (29.035458ms)
+✔ template: failed preflight can continue the same fixed attempt without business writes (22.87075ms)
+✔ real fixed Node and shipped launcher doctor are read-only and complete before launch (3046.227834ms)
+✔ codex: only exact installed enabled native release is accepted (13.244958ms)
+✔ codex: explicit config homes never fall back to a different installed host home (9.268416ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (8.364333ms)
+✔ codex: Skill symlinks and oversized metadata refuse (8.877709ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (5.107208ms)
+✔ workbuddy: only exact installed enabled native release is accepted (15.989166ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (13.285167ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (20.092917ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (9.573541ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (4.729584ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (7.497334ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (8.172459ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (8.949875ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4325.824542

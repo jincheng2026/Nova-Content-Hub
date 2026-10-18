@@ -6,7 +6,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {snapshotPackage} from '../../plugin-src/src/lib/package-snapshot.mjs';
-import {launchWithAssistantRuntime} from '../src/main/assistant-runtime.mts';
+import {launchWithAssistantRuntime, readWorkBuddyCacheMetadata} from '../src/main/assistant-runtime.mts';
 import {Covers} from '../src/main/covers.mts';
 import {TemplateController} from '../src/main/template-controller.mts';
 
@@ -123,6 +123,78 @@ test('required mode never executes and successful launches do not cache verifica
     const f = await fixture(t); let calls = 0;
     await assert.rejects(launchWithAssistantRuntime(f.host, {...release, AUTH_MODE: 'required', pairId: release.pairId.replace('disabled', 'required')}, f.trusted, async () => {}, {...f.options, run: () => { calls++; throw Error('must not spawn'); }}), {code: 'NOT_READY'});
     await f.open(); await fs.writeFile(path.join(f.root, 'runtime/launch.mjs'), 'replacement'); await assert.rejects(f.open(), {code: 'NOT_READY'}); assert.equal(calls, 0);
+});
+
+test('WorkBuddy allows bounded non-executable in-use markers across live and ended host stages', async t => {
+    const f = await fixture(t), directory = path.join(f.root, '.in_use'), marker = path.join(directory, String(process.pid));
+    await f.open();
+    await fs.mkdir(directory); await f.open();
+    await write(marker, {pid: process.pid, procStart: '2026-10-18T17:23:47.089Z'}); await f.open();
+    await fs.unlink(marker); await f.open();
+    await fs.rmdir(directory); await f.open();
+});
+
+test('only WorkBuddy permits validated host markers; trusted inventories cannot declare them', async t => {
+    const codex = await fixture(t, 'codex'); await fs.mkdir(path.join(codex.root, '.in_use'));
+    await assert.rejects(codex.open(), {code: 'NOT_READY'});
+    const f = await fixture(t); await fs.mkdir(path.join(f.root, '.in_use')); await f.seal();
+    await assert.rejects(f.open(), {code: 'NOT_READY'});
+});
+
+test('WorkBuddy permits only bounded atomic-write temporary names and exact platform identity data', async t => {
+    const f = await fixture(t), directory = path.join(f.root, '.in_use'); await fs.mkdir(directory);
+    const name = `${process.pid}.tmp.1792344227089.abc123`, file = path.join(directory, name);
+    await write(file, ''); await f.open();
+    const marker = {pid: process.pid, procStart: '2026-10-18T17:23:47.089Z', ...(process.platform === 'win32' ? {procStartFt: '134052530270890000'} : process.platform === 'linux' ? {procStartTicks: '123456'} : {})};
+    await write(file, marker); await f.open();
+    const metadata = await readWorkBuddyCacheMetadata(f.root);
+    assert.deepEqual(Object.keys(metadata.entries).sort(), ['.in_use', `.in_use/${name}`]);
+    await fs.rename(file, path.join(directory, String(process.pid))); await f.open();
+    await write(path.join(f.root, '.orphaned_at'), '1792344227089'); await assert.rejects(f.open(), {code: 'NOT_READY'});
+});
+
+test('invalid names, marker schemas and excessive host metadata refuse before spawn', async t => {
+    const f = await fixture(t), directory = path.join(f.root, '.in_use'); await fs.mkdir(directory);
+    let spawns = 0;
+    const options = {run: () => { spawns++; throw Error('must not spawn'); }};
+    const valid = {pid: 65238, procStart: '2026-10-18T17:23:47.089Z'};
+    for (const name of ['0', '-1', '065238', '4294967296', '65238.mjs', '65238.tmp.123.abc', '65238.tmp.1792344227089.ABC', '65238.tmp.1792344227089.abcdefghijklmnopq', '65238.tmp.1792344227089.']) {
+        const file = path.join(directory, name); await write(file, valid); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(file);
+    }
+    for (const value of ['', '{"pid":', ' '.repeat(1025), {...valid, pid: '65238'}, {...valid, pid: 1}, {pid: 65238}, {...valid, procStart: '2026-02-30T17:23:47.089Z'}, {...valid, procStart: '2026-10-18T17:23:47Z'}, {...valid, script: 'evil'}, {...valid, processStart: valid.procStart}, {...valid, procStartFt: 'not-decimal'}, {...valid, procStartTicks: 1}]) {
+        const file = path.join(directory, '65238'); await write(file, value); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(file);
+    }
+    await write(path.join(directory, '65238.tmp.1792344227089.abc'), '{"pid":'); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.rm(directory, {recursive: true}); await fs.mkdir(directory);
+    for (let pid = 1; pid <= 257; pid++) await write(path.join(directory, String(pid)), {...valid, pid});
+    await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); assert.equal(spawns, 0);
+});
+
+test('host metadata cannot hide executable files, symlinks, hardlinks, subdirectories, or changed payload', async t => {
+    const f = await fixture(t), directory = path.join(f.root, '.in_use'), marker = path.join(directory, '65238'); await fs.mkdir(directory);
+    let spawns = 0; const options = {run: () => { spawns++; throw Error('must not spawn'); }};
+    const valid = {pid: 65238, procStart: '2026-10-18T17:23:47.089Z'};
+    await write(marker, valid); await fs.chmod(marker, 0o755); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(marker);
+    const target = path.join(f.home, 'marker'); await write(target, valid);
+    await fs.symlink(target, marker); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(marker);
+    await fs.link(target, marker); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(marker);
+    await fs.mkdir(marker); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.rmdir(marker);
+    await fs.rmdir(directory); await fs.symlink(f.home, directory); await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); await fs.unlink(directory); await fs.mkdir(directory);
+    await write(marker, valid); await fs.writeFile(path.join(f.root, 'plugin-src/src/cli.mjs'), 'tampered payload');
+    await assert.rejects(f.open(undefined, options), {code: 'NOT_READY'}); assert.equal(spawns, 0);
+});
+
+test('host marker changes during verification fail closed without retrying doctor or launch', async t => {
+    const f = await fixture(t), directory = path.join(f.root, '.in_use'), marker = path.join(directory, '65238');
+    const valid = {pid: 65238, procStart: '2026-10-18T17:23:47.089Z'}, originalStat = fs.lstat;
+    let spawns = 0, launches = 0;
+    for (const change of [() => fs.unlink(marker), () => write(marker, {...valid, procStart: '2026-10-18T17:23:48.089Z'}), () => write(path.join(directory, '65239'), {...valid, pid: 65239}), () => fs.rm(directory, {recursive: true})]) {
+        await fs.mkdir(directory, {recursive: true}); await write(marker, valid); let nodeReads = 0;
+        const patched = t.mock.method(fs, 'lstat', async (file, ...args) => { if (file === path.join(f.root, nodeFile) && ++nodeReads === 2) await change(); return originalStat(file, ...args); });
+        try { await assert.rejects(f.open(async () => { launches++; }, {run: () => { spawns++; throw Error('must not spawn'); }}), {code: 'NOT_READY'}); }
+        finally { patched.mock.restore(); await fs.rm(directory, {recursive: true, force: true}); }
+    }
+    assert.equal(spawns, 0); assert.equal(launches, 0);
+    await f.open();
 });
 
 for (const capability of ['cover', 'template']) test(`${capability}: failed preflight can continue the same fixed attempt without business writes`, async t => {

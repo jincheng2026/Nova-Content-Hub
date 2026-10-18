@@ -1,0 +1,3941 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  {
+    '.codebuddy-plugin': {
+      directory: true
+    },
+    '.codebuddy-plugin/plugin.json': {
+...
+    },
++   '.in_use': {
++     directory: true
++   },
++   '.in_use/65238': {
++     bytes: 53,
++     executable: false,
++     sha256: '72c55a19a352ef627dc762758e3ec5c1d091988d3284ba21b03b586a4d395183'
++   },
+    'README.md': {
+      bytes: 603,
+      executable: false,
+      sha256: '525f9d485213f0c063953d955d50164b2d7947fc4c620df6faff7746260f41c3'
+    },
+
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:4:135 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    '.codebuddy-plugin': { directory: true },
+    '.codebuddy-plugin/plugin.json': {
+      sha256: '4b1e5b7e431c407ddb66f9dc01da1a10cf7fb49b59e82d2c0975b26f015b4742',
+      bytes: 556,
+      executable: false
+    },
+    '.codex-plugin': { directory: true },
+    '.codex-plugin/plugin.json': {
+      sha256: 'f845992cf4359e48633b9c06ce76ae2854a939fa06bac659f6960fd0fccbebdc',
+      bytes: 305,
+      executable: false
+    },
+    '.in_use': { directory: true },
+    '.in_use/65238': {
+      sha256: '72c55a19a352ef627dc762758e3ec5c1d091988d3284ba21b03b586a4d395183',
+      bytes: 53,
+      executable: false
+    },
+    'README.md': {
+      sha256: '525f9d485213f0c063953d955d50164b2d7947fc4c620df6faff7746260f41c3',
+      bytes: 603,
+      executable: false
+    },
+    bin: { directory: true },
+    'bin/run-node': {
+      sha256: '58e7e1f1c53e2776e23be310c311c7546273b3d532512032832477a5c310e1df',
+      bytes: 404,
+      executable: true
+    },
+    'bin/run-node.cmd': {
+      sha256: 'e23dfcd40e58bc1178f5849f74a06f4fa7651d2eed38fe12e347055267a967d3',
+      bytes: 326,
+      executable: false
+    },
+    'cover-runtime': { directory: true },
+    'cover-runtime/README.md': {
+      sha256: '80569f94049d8e3699130ce3754ae1dc405b8d4e09f0b54a0db1411db4696f0f',
+      bytes: 145,
+      executable: false
+    },
+    'cover-runtime/cli.mjs': {
+      sha256: 'c3c917d17bcbb1326e8dff15d691156c93a3fdd02fd30a07d85ddf1e1531093b',
+      bytes: 113,
+      executable: false
+    },
+    'cover-runtime/skills': { directory: true },
+    'cover-runtime/skills/nova-content-cover-execution': { directory: true },
+    'cover-runtime/skills/nova-content-cover-execution/SKILL.md': {
+      sha256: 'ab6a48e9f87fe1807afea2a821968e9416f4eab541acc344dadf95b8a059e5ec',
+      bytes: 5027,
+      executable: false
+    },
+    hooks: { directory: true },
+    'hooks/codex.json': {
+      sha256: '961e5dd33e43778445ea49547a9c20885723c9ee93d1fe9fe065a44547b105c0',
+      bytes: 1723,
+      executable: false
+    },
+    'hooks/hooks.json': {
+      sha256: '51799964a28c23d16069e3c2b4c3f56decd100d7fbdc0215785db9957de3eeb7',
+      bytes: 1325,
+      executable: false
+    },
+    'hooks/workbuddy.json': {
+      sha256: '2171ecb57202ee24b317a7bdbbe6c420e541929385fd1e2d33503c15df7eb9d3',
+      bytes: 456,
+      executable: false
+    },
+    'integrity.json': {
+      sha256: '2cdc029bbf307a3d95060d17f4186bf57461d61b4e398c81df2df6d4ca8ca05e',
+      bytes: 3414,
+      executable: false
+    },
+    node_modules: { directory: true },
+    'node_modules/.bin': { directory: true },
+    'node_modules/.bin/semver': { link: '../semver/bin/semver.js' },
+    'node_modules/.package-lock.json': {
+      sha256: 'cc0754b303b5c16bd4c13ea47daf2337097ad2bf966bf25d6b245d07ebaa1bb0',
+      bytes: 4284,
+      executable: false
+    },
+    'node_modules/@img': { directory: true },
+    'node_modules/@img/colour': { directory: true },
+    'node_modules/@img/colour/LICENSE.md': {
+      sha256: 'e2eaa4603c14cb26f301e88648c12a853fa3f0f5da6d4b0972958c666e7f2ab8',
+      bytes: 4433,
+      executable: false
+    },
+    'node_modules/@img/colour/README.md': {
+      sha256: 'be7edf3bc6467f761168cef3bb2b9b3def2532c98a86249848376ea00338ad1d',
+      bytes: 562,
+      executable: false
+    },
+    'node_modules/@img/colour/color.cjs': {
+      sha256: 'f7c3efcf482624007f2019fffee3e1dec56b8cb893faa9a420b2832805888dce',
+      bytes: 45136,
+      executable: false
+    },
+    'node_modules/@img/colour/index.cjs': {
+      sha256: 'e6e93e7fb209420a20fdf2ec676e9c67413be8d5ace99eec64f9468480f0368d',
+      bytes: 49,
+      executable: false
+    },
+    'node_modules/@img/colour/index.d.ts': {
+      sha256: '2467b00d963828f540f4acd7910f4c04cfe4b489550e6bb682212f65583bca5b',
+      bytes: 21569,
+      executable: false
+    },
+    'node_modules/@img/colour/package.json': {
+      sha256: 'bc38c5097693ed53b91c32f35fb0a52569736c7854ba2eb6d080f3252071f75c',
+      bytes: 1515,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64': { directory: true },
+    'node_modules/@img/sharp-darwin-arm64/LICENSE': {
+      sha256: '73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68',
+      bytes: 10273,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/README.md': {
+      sha256: 'ef448bf7ac130f0c6b51dbfbadc617b046a200d082de8648ab090784c5db0c3d',
+      bytes: 699,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/index.cjs': {
+      sha256: '779fece1ac73b7136281d9767b90267f19d3a296e850ecf474d9c89a8ef1968c',
+      bytes: 141,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/lib': { directory: true },
+    'node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node': {
+      sha256: '791921f975371be33aed727e06283282cc001c960792eb52505b579fdaaf1b55',
+      bytes: 280256,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/package.json': {
+      sha256: '157996706c751e9a3608f35811f156238fa4ad1f367abfd4facec30883747f5e',
+      bytes: 862,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/README.md': {
+      sha256: '5dd6d3c034f925604681d49b7bedc71bd08dcf3d0cfc6d16b9f0569497d700dc',
+      bytes: 4333,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0/include': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0/include/glibconfig.h': {
+      sha256: '52dc7deb43d9ee5306df7489f305cc1ee4426dab443bb328f45b4fe58dff2dff',
+      bytes: 5981,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/index.js': {
+      sha256: '516a08c06660cddb50d5f30ccac29a0514b05724956a11e8a7e6b799f2e1ab72',
+      bytes: 28,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib': {
+      sha256: 'c1a5b5633b21aeb8a229abf7d062e07e4d778c0b44ed43cd1f93362bda58c322',
+      bytes: 18231688,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/package.json': {
+      sha256: '394ecfe4e823ebf6ddc9f9b7155046aad1f0492300920323ddfb84cae85dbac0',
+      bytes: 876,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/versions.json': {
+      sha256: 'e2611d5d854815a8b33c8a3d2ec649511a9596ccf16844e8eae7cf81e79881c4',
+      bytes: 596,
+      executable: false
+    },
+    'node_modules/detect-libc': { directory: true },
+    'node_modules/detect-libc/LICENSE': {
+      sha256: 'b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1',
+      bytes: 11357,
+      executable: false
+    },
+    'node_modules/detect-libc/README.md': {
+      sha256: '51a97449c443889155bc872522e6de5a91a5fa73edeffa03d749e186bf0eebca',
+      bytes: 3215,
+      executable: false
+    },
+    'node_modules/detect-libc/index.d.ts': {
+      sha256: '9500090533aafe039c41d8d368a44959f04482bb75636d96bc843c06f3d6a348',
+      bytes: 436,
+      executable: false
+    },
+    'node_modules/detect-libc/lib': { directory: true },
+    'node_modules/detect-libc/lib/detect-libc.js': {
+      sha256: '5de6a1c1abec8bba5ea1261cf819d83a73c92ebe72b879ae48c59ca12320a462',
+      bytes: 7503,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/elf.js': {
+      sha256: '0e8820f00ee11d179d94894d4f97a6e87c34ab59e5dd4d3a571dfabcecf043af',
+      bytes: 982,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/filesystem.js': {
+      sha256: '5c98fb66b559d0b4fa82c7a3e39d9ab6840f022c4c73e6b1a73ac6d16ec13fd7',
+      bytes: 1097,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/process.js': {
+      sha256: 'f37dd0ead9f70b50c6f5529c600e1cdf076e3c3bc8e6b4a0a9820a8d65244628',
+      bytes: 569,
+      executable: false
+    },
+    'node_modules/detect-libc/package.json': {
+      sha256: 'ee88e5b954fdf3a8480b1d01ef767d68d8ca2c6da269f58c5cf1c5550e9aa2a7',
+      bytes: 1278,
+      executable: false
+    },
+    'node_modules/semver': { directory: true },
+    'node_modules/semver/LICENSE': {
+      sha256: '4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b',
+      bytes: 765,
+      executable: false
+    },
+    'node_modules/semver/README.md': {
+      sha256: 'f1a789dcec285150be24db2ea04dd3175031554fa9834ec92fab83fb5e025a57',
+      bytes: 25669,
+      executable: false
+    },
+    'node_modules/semver/bin': { directory: true },
+    'node_modules/semver/bin/semver.js': {
+      sha256: 'bd6c871026985937dc945011fc54b74b47f5998154216d7b8d40d5ed782e4402',
+      bytes: 4957,
+      executable: true
+    },
+    'node_modules/semver/classes': { directory: true },
+    'node_modules/semver/classes/comparator.js': {
+      sha256: '054202956430d63d5ff4599fae09760ce465b489e4f0b5ef5ce7cc7ac21157ac',
+      bytes: 3631,
+      executable: false
+    },
+    'node_modules/semver/classes/index.js': {
+      sha256: '3bb69280c2a788d0eb16f915bb9df4dbe812075182024c753dca2283bcea1b17',
+      bytes: 143,
+      executable: false
+    },
+    'node_modules/semver/classes/range.js': {
+      sha256: 'a6544485aa8575aa9854c67e2caa67726815de18a482d0ceb8a1003244de3bc1',
+      bytes: 15647,
+      executable: false
+    },
+    'node_modules/semver/classes/semver.js': {
+      sha256: '813b2c185512d30c9b931c2fed8140889d9d7490ceeeedc370da30337dc8ca57',
+      bytes: 9891,
+      executable: false
+    },
+    'node_modules/semver/functions': { directory: true },
+    'node_modules/semver/functions/clean.js': {
+      sha256: '4eadb0892844cf3ae295121a86163a66c73f89acd1b7f0b114ec115b4539512f',
+      bytes: 205,
+      executable: false
+    },
+    'node_modules/semver/functions/cmp.js': {
+      sha256: 'a63d74e87b73788e78e9ce0a4892b5333d6b809c0de88b31e4ed76cbf17f94b3',
+      bytes: 961,
+      executable: false
+    },
+    'node_modules/semver/functions/coerce.js': {
+      sha256: '28a251c5ab210ddf9e97551b9f37a53329fcce91f0c3943dcbc02de1a1de915a',
+      bytes: 2004,
+      executable: false
+    },
+    'node_modules/semver/functions/compare-build.js': {
+      sha256: '5ab651d5b40af289bd85c645a92b6d8cfe1a986dc413c797cfcc8d623d7c844c',
+      bytes: 281,
+      executable: false
+    },
+    'node_modules/semver/functions/compare-loose.js': {
+      sha256: '07b6a3a1db0a5210ceb784c1708bd4679f3a94fc73a9c9eb349349e7070a6f78',
+      bytes: 132,
+      executable: false
+    },
+    'node_modules/semver/functions/compare.js': {
+      sha256: 'd404b5aa48aaddc8a654c5da8fb7d4443404b7948589b21ac4b045d1cee4e34c',
+      bytes: 170,
+      executable: false
+    },
+    'node_modules/semver/functions/diff.js': {
+      sha256: '7a11fd39b987cdf06c65e928cb1aca49bec583feb86fb5c8fe47a6fd61d7de31',
+      bytes: 1423,
+      executable: false
+    },
+    'node_modules/semver/functions/eq.js': {
+      sha256: 'b6e30a7168e52723216fc163d300e2bbabf92ec0251f9ac5438bb6ccf57c8936',
+      bytes: 126,
+      executable: false
+    },
+    'node_modules/semver/functions/gt.js': {
+      sha256: '135523704aa48cd98834dd170ee9f74f0e68043b379f32d021db11e6304c5c93',
+      bytes: 124,
+      executable: false
+    },
+    'node_modules/semver/functions/gte.js': {
+      sha256: '991c5bbe48ecb210a562646872f05862ad9fc0d42186d85aa60bdc6fa323eb9d',
+      bytes: 127,
+      executable: false
+    },
+    'node_modules/semver/functions/inc.js': {
+      sha256: '952069fc8690b7d3af0fe9d55f7c54fe2ac067b48c5e74f6a54f9ce19a334493',
+      bytes: 478,
+      executable: false
+    },
+    'node_modules/semver/functions/lt.js': {
+      sha256: '1c897a9bc849320e2e9dc0f6c09555c01ee3ddf30734515d717b88ad7740ea25',
+      bytes: 124,
+      executable: false
+    },
+    'node_modules/semver/functions/lte.js': {
+      sha256: '3a8d0b1d00423f60cc7cb810b36ab77b61330831ad237dbe73eb5cecfa412800',
+      bytes: 127,
+      executable: false
+    },
+    'node_modules/semver/functions/major.js': {
+      sha256: '5c678480d882f511200fed2c16ec3847dfedb08a1d70328dc2f031d35d825276',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/minor.js': {
+      sha256: '1b051794f1713adec2a236517196691687c35f82e0b596ff3316a78b3cc10ae6',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/neq.js': {
+      sha256: 'a662883751918822c162183b46b9e20d09489132f82686c92ab78bee67f3a127',
+      bytes: 128,
+      executable: false
+    },
+    'node_modules/semver/functions/parse.js': {
+      sha256: '29a69e15b6d02fe381d573f861881a89590e9d0f0f0ca740c5f85eaf0234c4ad',
+      bytes: 331,
+      executable: false
+    },
+    'node_modules/semver/functions/patch.js': {
+      sha256: 'f02d3c1b059fe3d96ce124886f7eef321d381a95638fd3c4a8d5ccd8e76ffadd',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/prerelease.js': {
+      sha256: 'baedbf503d5610ad041bfb56071efa48feb331ca278295c399537d35d3ffb593',
+      bytes: 234,
+      executable: false
+    },
+    'node_modules/semver/functions/rcompare.js': {
+      sha256: '84fa5e88adf08d15c993cac8cdec6d1a65045b7e95a9c55184230a7f807f4dc0',
+      bytes: 132,
+      executable: false
+    },
+    'node_modules/semver/functions/rsort.js': {
+      sha256: '6ec659ce3b6c2b173c719286caab04409adba046c0917874ec3b5e36ddfbc7e3',
+      bytes: 163,
+      executable: false
+    },
+    'node_modules/semver/functions/satisfies.js': {
+      sha256: '8cf5e122b757251671ed6c9d9680904b71cd375845853f05312e608cf2cc2946',
+      bytes: 247,
+      executable: false
+    },
+    'node_modules/semver/functions/sort.js': {
+      sha256: 'c2fe2d3ed0be8a4e9de8f02abdfd5d9c0d3bcc510d88e87af84185592882c4b8',
+      bytes: 161,
+      executable: false
+    },
+    'node_modules/semver/functions/truncate.js': {
+      sha256: 'e145833a250311927c92f424f56498c52f1b7bb1271ce6afbf006db87773ff43',
+      bytes: 1021,
+      executable: false
+    },
+    'node_modules/semver/functions/valid.js': {
+      sha256: '0de7ea736cb7807179d46dfac09c830a9338e02b6a07db12d7040cde2def6025',
+      bytes: 176,
+      executable: false
+    },
+    'node_modules/semver/index.js': {
+      sha256: '4b3e57d3d40e29e0706002eba113d09f35aea593578376bbeec83b777b9912ab',
+      bytes: 2691,
+      executable: false
+    },
+    'node_modules/semver/internal': { directory: true },
+    'node_modules/semver/internal/constants.js': {
+      sha256: '38a112baf27ceca0260082ff26ac2fd7a9861cab1af12dd65e720277f68e6ce9',
+      bytes: 873,
+      executable: false
+    },
+    'node_modules/semver/internal/debug.js': {
+      sha256: '8a9f420572260f3cf944463b5090d62a60f0730589dc23a7ec4ca25e2ee41bb3',
+      bytes: 240,
+      executable: false
+    },
+    'node_modules/semver/internal/identifiers.js': {
+      sha256: 'b4916b09dc7869ae0eb05e71c855c942a3a7365f7e6e89185d59a9e45a2451d7',
+      bytes: 525,
+      executable: false
+    },
+    'node_modules/semver/internal/lrucache.js': {
+      sha256: '14d087c87da87b6f5c36fc4cdd7d2d14077874b14a68e20fce5b6138fa2ca34f',
+      bytes: 802,
+      executable: false
+    },
+    'node_modules/semver/internal/parse-options.js': {
+      sha256: 'fdf51d0de8d5442c35a997ef58cd530d239ce206f961d14c5121354451b01d01',
+      bytes: 338,
+      executable: false
+    },
+    'node_modules/semver/internal/re.js': {
+      sha256: '5833262888e2b5d843a69193f83c05e374818dbe55379b497819b5bf58e48cd8',
+      bytes: 8139,
+      executable: false
+    },
+    'node_modules/semver/package.json': {
+      sha256: '7c94cb7f2a53c27b20d76386ec144c062894dbcc909cfabd0f728c37874b1776',
+      bytes: 1661,
+      executable: false
+    },
+    'node_modules/semver/preload.js': {
+      sha256: 'edb6808911bebcb324b2df57e5c9935149e56984ff083b74c6cfe215f5b710ba',
+      bytes: 83,
+      executable: false
+    },
+    'node_modules/semver/range.bnf': {
+      sha256: '15d0baf9b7b98e6d862c0cb9e822d2533d2bc23e136bb75314d802ca1fcb0392',
+      bytes: 702,
+      executable: false
+    },
+    'node_modules/semver/ranges': { directory: true },
+    'node_modules/semver/ranges/gtr.js': {
+      sha256: '8fadad28e36d28e93d498ac7ac20badba2a407312845eabc18e82e90a0732b19',
+      bytes: 231,
+      executable: false
+    },
+    'node_modules/semver/ranges/intersects.js': {
+      sha256: 'fe87ac5d3020010ad3ec00636dadbf0c669ff07d0f57e0a8165a8264f79a676f',
+      bytes: 224,
+      executable: false
+    },
+    'node_modules/semver/ranges/ltr.js': {
+      sha256: 'e5186fcc03018acf9be6d968755d4c49727aeb0d981d179eb568ae5fbe983038',
+      bytes: 227,
+      executable: false
+    },
+    'node_modules/semver/ranges/max-satisfying.js': {
+      sha256: 'e1a2c0d6144cc772cd20bbc8ecb9e8a3a4074e9172a3d8e794838b591cdeb416',
+      bytes: 593,
+      executable: false
+    },
+    'node_modules/semver/ranges/min-satisfying.js': {
+      sha256: '2681abf54098aa670f12826b76a6ec77a2441186ae4243afde3be8ae4908f7ca',
+      bytes: 591,
+      executable: false
+    },
+    'node_modules/semver/ranges/min-version.js': {
+      sha256: 'fefba0a88c2bf74d5cede504b5ae50a8dc3edfd69cf0174a491e2cf3e442614b',
+      bytes: 1514,
+      executable: false
+    },
+    'node_modules/semver/ranges/outside.js': {
+      sha256: '3a2b0b23593d2f49419c06af2af75450cab103b0c25d665d48fe5bca495a21ca',
+      bytes: 2204,
+      executable: false
+    },
+    'node_modules/semver/ranges/simplify.js': {
+      sha256: '7b78581c13322bc68ece2088685386b2a9b51c15b94d0a2063bdf2546bd41934',
+      bytes: 1355,
+      executable: false
+    },
+    'node_modules/semver/ranges/subset.js': {
+      sha256: 'ceb9eb6ed5bfc6c7ac7af7f47e5c3535444a4e66a0e2b58cdad4bd02a35d454d',
+      bytes: 7478,
+      executable: false
+    },
+    'node_modules/semver/ranges/to-comparators.js': {
+      sha256: '6c5e966210cff270fa2850668aaf8460fac7759f8d99f282521ef7a78f4564e9',
+      bytes: 282,
+      executable: false
+    },
+    'node_modules/semver/ranges/valid.js': {
+      sha256: '5ef6f995af801868925940cf8df5735d565ebabb090b068695cae65218bcd3ac',
+      bytes: 326,
+      executable: false
+    },
+    'node_modules/sharp': { directory: true },
+    'node_modules/sharp/LICENSE': {
+      sha256: '73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68',
+      bytes: 10273,
+      executable: false
+    },
+    'node_modules/sharp/README.md': {
+      sha256: '89772961fcf195b976573874555f2902bfe04a3e57be61af261ac65ce9348735',
+      bytes: 3162,
+      executable: false
+    },
+    'node_modules/sharp/dist': { directory: true },
+    'node_modules/sharp/dist/channel.cjs': {
+      sha256: '7445567e8001f4be3126374e4c17e282777ed14c718acca875c91bec69a2d7a1',
+      bytes: 5383,
+      executable: false
+    },
+    'node_modules/sharp/dist/channel.mjs': {
+      sha256: '6067b0ba5ebcc9682a01d0b450a12b54849a95c8ed017f8485bddb5fd0b9db91',
+      bytes: 5376,
+      executable: false
+    },
+    'node_modules/sharp/dist/colour.cjs': {
+      sha256: 'da760186e75d4fd8b6da0a617ecf122deec2fa6d95fdcc194bbee0cb1c5e4605',
+      bytes: 5622,
+      executable: false
+    },
+    'node_modules/sharp/dist/colour.mjs': {
+      sha256: '760e7fa8161432a9cc97f0a3d9f3e0b757e66089c967e6b36f3131c9fdafa1b5',
+      bytes: 5610,
+      executable: false
+    },
+    'node_modules/sharp/dist/composite.cjs': {
+      sha256: '6e0837309d25c2b642d42b557f3e1292c2b057af09746647a3a6d54de772a157',
+      bytes: 9332,
+      executable: false
+    },
+    'node_modules/sharp/dist/composite.mjs': {
+      sha256: '16eadc26ba57417e90e4bb73aff1116b56ad26766088793ab0b7c4bbdd2bc9fc',
+      bytes: 9325,
+      executable: false
+    },
+    'node_modules/sharp/dist/constructor.cjs': {
+      sha256: '6b8978e0f1614d83a219cbbd455e3eed7922bc4212a5b3b99c5d37c3af3b3226',
+      bytes: 20364,
+      executable: false
+    },
+    'node_modules/sharp/dist/constructor.mjs': {
+      sha256: '8be8da679d2a028d0f53b02ce52f07f295134a297caf3068944cd8d0b57ab3d1',
+      bytes: 20340,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.cjs': {
+      sha256: 'd69f275bc49fcd2a6188b26b35c986d4db32a1b008653fef88adb4598688232a',
+      bytes: 620,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.d.cts': {
+      sha256: '24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884',
+      bytes: 92885,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.d.mts': {
+      sha256: 'b837d41bb8d39398690458f45cc445160dad36ec0db5ba0463d114e560d49d85',
+      bytes: 87987,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.mjs': {
+      sha256: '0e8f955c68a1b0bccf0ba5343c924dbfa6a46a76a0d491ec27fe6b328311363e',
+      bytes: 573,
+      executable: false
+    },
+    'node_modules/sharp/dist/input.cjs': {
+      sha256: 'e5eb5c891c0893098dbe8bc0358a2f2c7e800581018923a7956732fe1a5ddf8f',
+      bytes: 33741,
+      executable: false
+    },
+    'node_modules/sharp/dist/input.mjs': {
+      sha256: '4b0a51e678f9022cec06a1ffb34e17ea3498cfb707492b54de87541ccac54125',
+      bytes: 33729,
+      executable: false
+    },
+    'node_modules/sharp/dist/is.cjs': {
+      sha256: '46fa32e93964d8a31d6e851dc3bb7f3ec36935f9e8323b59603ff6cd84a7faa7',
+      bytes: 3042,
+      executable: false
+    },
+    'node_modules/sharp/dist/is.mjs': {
+      sha256: '96a3b1b82d389b7b57569332fed93e46cf9b5aa79f2babb82cbb15fe1581a409',
+      bytes: 3040,
+      executable: false
+    },
+    'node_modules/sharp/dist/libvips.cjs': {
+      sha256: '3419f6cb4303feaf4a76abe122ce1caf5dc755f9f17fa013afd5561827b61062',
+      bytes: 5833,
+      executable: false
+    },
+    'node_modules/sharp/dist/libvips.mjs': {
+      sha256: 'd9984601b0aafe44c393b29ce4b0712b1c40890c3d740d4fda49842a4ea5873d',
+      bytes: 5828,
+      executable: false
+    },
+    'node_modules/sharp/dist/operation.cjs': {
+      sha256: '11eb4921f37e4e06c0b349f55e186852cdd094203cc3c5651681801eea5d80f8',
+      bytes: 32930,
+      executable: false
+    },
+    'node_modules/sharp/dist/operation.mjs': {
+      sha256: 'a3b14c3a13305dbe8fde48a263d13b0a104dcb97afc65fe5f55b8e556d054be1',
+      bytes: 32923,
+      executable: false
+    },
+    'node_modules/sharp/dist/output.cjs': {
+      sha256: '4c2878241a264095b661fb321accf86fa9be033bfe541d5a70ac2f8d80150893',
+      bytes: 65469,
+      executable: false
+    },
+    'node_modules/sharp/dist/output.mjs': {
+      sha256: 'd1be82aace2d7f96bfc29e6e76538521fc8dfe6d4e90f7eda71a8f4c2a1597ba',
+      bytes: 65452,
+      executable: false
+    },
+    'node_modules/sharp/dist/resize.cjs': {
+      sha256: 'e03dce87aaee233fecf191ec3c713a9f856e13d0d9ccd7b0a7dbf35b65e36538',
+      bytes: 22840,
+      executable: false
+    },
+    'node_modules/sharp/dist/resize.mjs': {
+      sha256: 'e3d26f31cf391e28f3f96e708ccb96745cf016e18f8ef4486c837e5efcb3c922',
+      bytes: 22833,
+      executable: false
+    },
+    'node_modules/sharp/dist/sharp.cjs': {
+      sha256: '76120d3971051fcc469c0bfa36e7b23d3c388b6a2f5785bf1491bbdb90ff0176',
+      bytes: 6262,
+      executable: false
+    },
+    'node_modules/sharp/dist/sharp.mjs': {
+      sha256: 'd0c3ce3837636a140e8363850823e3b8dc2b000928303664cc9fc1aa2ba326ee',
+      bytes: 6357,
+      executable: false
+    },
+    'node_modules/sharp/dist/utility.cjs': {
+      sha256: '0f7a14858dfa8ebd01b2c6c2272297f7a34c4af3d84f0c0b926146c49a2655b1',
+      bytes: 9786,
+      executable: false
+    },
+    'node_modules/sharp/dist/utility.mjs': {
+      sha256: '761566e165bc1fc90bc6dd67a3b560c1a63e6cfe98009b726d35288606d629b9',
+      bytes: 9862,
+      executable: false
+    },
+    'node_modules/sharp/install': { directory: true },
+    'node_modules/sharp/install/build.js': {
+      sha256: 'fea92e0d55cce8692413c479021173aa1512304e1b849039949cbee9d6ceb1de',
+      bytes: 860,
+      executable: false
+    },
+    'node_modules/sharp/lib': { directory: true },
+    'node_modules/sharp/lib/index.d.ts': {
+      sha256: '24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884',
+      bytes: 92885,
+      executable: false
+    },
+    'node_modules/sharp/package.json': {
+      sha256: 'ad4a2535d72eb638053a38867b1abf43c328cd1c1dbae5cf4172d498365a8b97',
+      bytes: 8115,
+      executable: false
+    },
+    'node_modules/sharp/src': { directory: true },
+    'node_modules/sharp/src/binding.gyp': {
+      sha256: 'aa0750bba07e0de556ccdf1463e148a21e373ea43ac0ee622d23ad287890e658',
+      bytes: 10818,
+      executable: false
+    },
+    'node_modules/sharp/src/common.cc': {
+      sha256: 'c3c56a37bb780dfd97ee53d3556d9ba3d674b1b9cf7d57caf94248f982207a75',
+      bytes: 41483,
+      executable: false
+    },
+    'node_modules/sharp/src/common.h': {
+      sha256: '70a4f13f5e56a956edd8340066240865e39d3039157bd511930de2bf5aa17ba9',
+      bytes: 10988,
+      executable: false
+    },
+    'node_modules/sharp/src/metadata.cc': {
+      sha256: 'a127c134c9e537db9c63962ff1aa1d0762a8d517d746a844e6b43b299e11a581',
+      bytes: 15320,
+      executable: false
+    },
+    'node_modules/sharp/src/metadata.h': {
+      sha256: '5e02c25ec821a525b0caf31161b1e8675ff32cfd098c17cda0b888440362b057',
+      bytes: 1878,
+      executable: false
+    },
+    'node_modules/sharp/src/operations.cc': {
+      sha256: 'a61e6545cde7d2f2ae508b4eceeeec9db9ef711211d5cba1ed470f9325f914fb',
+      bytes: 17412,
+      executable: false
+    },
+    'node_modules/sharp/src/operations.h': {
+      sha256: '6f41d329634471dff8e093d12e38ff356293079e2aeecc5b922fc23ba99799e6',
+      bytes: 3625,
+      executable: false
+    },
+    'node_modules/sharp/src/pipeline.cc': {
+      sha256: '445ed9aa726806dc01188cf13a2866ee47ccd38504cddd049e4e639703edc0e9',
+      bytes: 92059,
+      executable: false
+    },
+    'node_modules/sharp/src/pipeline.h': {
+      sha256: 'e09c3dbd873071a373e6d95679b470a6fe1be5fc2ef781b00fd87958b5ab5e98',
+      bytes: 10131,
+      executable: false
+    },
+    'node_modules/sharp/src/sharp.cc': {
+      sha256: '9f407b50bb2d02e5eb711b769f05d3e6659028430e055c4271e5ab1593f5a257',
+      bytes: 1529,
+      executable: false
+    },
+    'node_modules/sharp/src/stats.cc': {
+      sha256: '72f8f2ad0e4315951c88b115511eb96741fd0479385ed094141f7bd254739791',
+      bytes: 6756,
+      executable: false
+    },
+    'node_modules/sharp/src/stats.h': {
+      sha256: 'db854f0c3c4a0db1751021ed676413c6d5ca00becc08bdc13258b29047450b8c',
+      bytes: 1267,
+      executable: false
+    },
+    'node_modules/sharp/src/utilities.cc': {
+      sha256: '91c164bb740529156e15dedbfcb4236dd2b5fbf94c7a3a4f1639929d034f700e',
+      bytes: 9522,
+      executable: false
+    },
+    'node_modules/sharp/src/utilities.h': {
+      sha256: '0b126ab63cf1aedf8e71e6cb8179899d3ef02c46419100e847b2ca4284b8901b',
+      bytes: 741,
+      executable: false
+    },
+    'package-lock.json': {
+      sha256: '5ae608c46124a3ab769a35603595502831b76358c46d7caddaf799c17be5821a',
+      bytes: 22426,
+      executable: false
+    },
+    'package.json': {
+      sha256: '405aeff0560c1c07d8f241b3a57b48f3d88cdc21a39f293bbe9824c2c752db89',
+      bytes: 278,
+      executable: false
+    },
+    'plugin-src': { directory: true },
+    'plugin-src/README.md': {
+      sha256: '3e42017206f331bb8db9a00b7ee87d9ce870ee957ca1ca95dc5157c08564692a',
+      bytes: 8733,
+      executable: false
+    },
+    'plugin-src/compat': { directory: true },
+    'plugin-src/compat/cover-runtime': { directory: true },
+    'plugin-src/compat/cover-runtime/README.md': {
+      sha256: '917809d2d3bf880783a86d207195a6d57ccf4d2526e70e46c22512c73e34403f',
+      bytes: 4592,
+      executable: false
+    },
+    'plugin-src/compat/cover-runtime/cli.mjs': {
+      sha256: 'eae94bc4ec9c21203ba9b005befb99a8819bea5a57876ec2d60e5897f9e6d8be',
+      bytes: 281,
+      executable: false
+    },
+    'plugin-src/references': { directory: true },
+    'plugin-src/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'plugin-src/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'plugin-src/references/licenses': { directory: true },
+    'plugin-src/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'plugin-src/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'plugin-src/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'plugin-src/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'plugin-src/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'plugin-src/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'plugin-src/resources': { directory: true },
+    'plugin-src/resources/assets': { directory: true },
+    'plugin-src/resources/assets/ai-reference-prompts': { directory: true },
+    'plugin-src/resources/assets/ai-reference-prompts/README.md': {
+      sha256: '76f88981f593ad8480dda762435299b5d5b23b95f70856bc526bc0d2f0cb6463',
+      bytes: 5280,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/agent-group-v4.md': {
+      sha256: '846aaf57a509eb09f44b9d830082eec1eacb0326e36f7bfa0969a92402a4c7b5',
+      bytes: 1452,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/agent-v2.md': {
+      sha256: 'afdc178b9fdf8bb266277f585b7fe9ee105d496df131583f615677b9dc671628',
+      bytes: 1332,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/ai-tool-group-v4.md': {
+      sha256: '691afd31ff2f0dff5502d08f61f1829925bae62bbbe0e84af7cb9fc92058fb4c',
+      bytes: 1439,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/ai-tool-v2.md': {
+      sha256: '2eda594da0bfca1873f5144dc197918907159074448756dd1865cb5707fce275',
+      bytes: 1329,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/big-head-group-v4.md': {
+      sha256: 'e092da6eda9cfb302d82c83739f9831f10c4675aa2db22a6c04bf056bfd2e734',
+      bytes: 1474,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/big-head-v3.md': {
+      sha256: '41cf2a751de8345eb98ae5331af6e78e400422af2c8769de1d41651295502d0d',
+      bytes: 1779,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/comparison-group-v4.md': {
+      sha256: '85d42f99069c0b4acd3f1141e577aecb3f7513b7f4c8b0e3a205efe50208f021',
+      bytes: 1481,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/comparison-v3.md': {
+      sha256: 'd5b02ed6a6b3c9291db9224404395e788d1cc0ff5cffcf8b6b98834f360b6f94',
+      bytes: 1444,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/generated-files.json': {
+      sha256: 'e19aeb138631715eb0924bf460753c6c2e72e309cdc89a90dd87db2401ba9e01',
+      bytes: 5535,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/geometry-group-v4.md': {
+      sha256: '7b59c981090bb464af84e7fc907dc0477ae0b01a4e00dc2edfc19ba5d57cf2ff',
+      bytes: 1397,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/geometry-v3.md': {
+      sha256: 'b2bcc0aa46ccf09a8e64da9e75a78de6b595c7e948440f11239a0ca4aa360716',
+      bytes: 1325,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/interview-group-v4.md': {
+      sha256: 'fb2f31f45df4f9b00a69d25d65ddc3a67cff621962ca343046527ed40a1e90bc',
+      bytes: 1475,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/interview-v2.md': {
+      sha256: 'a45e3f07d7af349bc04658a4ac2323bf1367ec0161dde43c31c5f29034096670',
+      bytes: 1222,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/life-story-group-v4.md': {
+      sha256: '095f8ebbe75dec8415dd65fa41272c24f23d07525de5722621dd26194664943c',
+      bytes: 1514,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/life-story-v3.md': {
+      sha256: '865891e7cb94085dd1ec08913431cdc48a9b86a2ebb6b94d3817b4e5ff36607c',
+      bytes: 1810,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/lifestyle-group-v4.md': {
+      sha256: '5d19779d9d8bebd07a4d3689d83b76cbae912304660005a9c431a8fb94d5c5ac',
+      bytes: 1445,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/lifestyle-v2.md': {
+      sha256: '933e203e80da978768059ec2597bab36490cd75d44df13ca33c19f5f200668d2',
+      bytes: 1181,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/magazine-group-v4.md': {
+      sha256: '0c650d4c20e0298d7f2342052b0f276308b79e5dd2df1ca56a7197467b0db53c',
+      bytes: 1418,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/magazine-v3.md': {
+      sha256: '409d760ff1317fea7aa60ba5af894706336bb1b527677bffab3df32157688c6c',
+      bytes: 1411,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/neon-group-v4.md': {
+      sha256: '0942c1438df4fbfd75dcf067aeabfb6e800f5bc5771d50b4db7ad79a8b8c39bf',
+      bytes: 1438,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/neon-v3.md': {
+      sha256: '99aab98acdd8dd83cf42029504b0a836a62e940a2ebd0057fa24c89138501d6d',
+      bytes: 1133,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/news-group-v4.md': {
+      sha256: '96e16bb8e6eecf67c1ea7e19ce09a8271732dfe1fe030ff2a44377b98bdf756f',
+      bytes: 1479,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/news-v2.md': {
+      sha256: '6c4e389794fb246043596dc541a8d51ef967d3520eb2912f9077405286c8a4a9',
+      bytes: 1157,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/notes-group-v4.md': {
+      sha256: '346e1dd52b8bf454d909ef0565539709ff9f1f69f7a1f64fff7c598f669f700b',
+      bytes: 1436,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/notes-v3.md': {
+      sha256: 'fbd3be08a94f6b34a3196789a197691c950e3332b58fae75e98bef4a69eb3ac7',
+      bytes: 1461,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/paper-group-v4.md': {
+      sha256: 'b16b2fe6595e30795b59ea6a77ecc59a73a73ad319d5ad1e25dd204503c685ef',
+      bytes: 1430,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/paper-v3.md': {
+      sha256: '9d6c1c2925119d96a31fd114bcd4a1f43b819d066dbe3b19f73574662b9564ae',
+      bytes: 1337,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/product-group-v4.md': {
+      sha256: '1dc4af0e4051205308e1e7cbededeb7f5cde35147dbfe4b2ac22c8d0dc0f1054',
+      bytes: 1458,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/product-v2.md': {
+      sha256: '744711d96a98b8a1bdfdfe3aa025d4a51efe02de49678703288b7b1624e37452',
+      bytes: 1139,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/tech-collage-group-v4.md': {
+      sha256: 'e80c9f1e38bb8935463e665c15ffeef1e34b6cc1377efd2d269a1561d795bc0b',
+      bytes: 1534,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/tech-collage-v3.md': {
+      sha256: '88cac228125f59ea27922d027a18bf7de953d3d593f43db69353c00afa626d78',
+      bytes: 2012,
+      executable: false
+    },
+    'plugin-src/resources/builtin-prompts': { directory: true },
+    'plugin-src/resources/builtin-prompts/README.md': {
+      sha256: '157fa39014d2d002e74a7bfd88576aebfda465dfbaf448b8e93891aaeb1dcc92',
+      bytes: 1747,
+      executable: false
+    },
+    'plugin-src/resources/builtin-prompts/catalog.json': {
+      sha256: '1ab33e0d4a1aee40612570aa9b1ba0fc88e4c2052500226630b5bc95eb65e0f7',
+      bytes: 38737,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates': { directory: true },
+    'plugin-src/resources/builtin-templates/README.md': {
+      sha256: 'd0069fce67a9143b9d94b91fb76dbaf02ebc05b81f1872b4c1e0fbc3d2c5a7a0',
+      bytes: 9856,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/catalog.json': {
+      sha256: 'b3383e5ad0255d07fdce0dec377a2675b21efa8ed9d13910d7dc728f999691a0',
+      bytes: 191743,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence': { directory: true },
+    'plugin-src/resources/builtin-templates/evidence/reference-contact-v2.png': {
+      sha256: '1e87fc81c989d282880cce496a77868e665fe795563004a11b51ef93df5382f3',
+      bytes: 464457,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/reference-contact.png': {
+      sha256: '695cb4eaade9263310cbd302e453c7c2405d3afe5b7ceec642471f891b33fd5d',
+      bytes: 364648,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/source-contact-v2.png': {
+      sha256: '41312a7a92523d794b1af7041565f6608d3eaeeae5b5b60e8dbf6122da34eff3',
+      bytes: 431676,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/source-contact.png': {
+      sha256: '7afa05973f59af4eb170eb9fd05966e3cbfbc521e797f0e8f59524a1c57d4ba1',
+      bytes: 337931,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/validation-v2.json': {
+      sha256: 'fb013904a884d330f7c1015b3adc7819243fb7a7d21cb178e8cde4634413e782',
+      bytes: 6692,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v1.json': {
+      sha256: '782a2ba17fb43f61c4422181df456117d106f60f94f4c19a5717b8b7034b4433',
+      bytes: 31530,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v2-complete.json': {
+      sha256: '59b127c70a5f1faf19695ed58b5e50b2c8405a5d1ce8df9172a37d29d1dbfb29',
+      bytes: 124160,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v2-draft.json': {
+      sha256: '5d6578fea9bb03f8df1cb1b5146a45373f2b678c36c95fce351ccc86efee9934',
+      bytes: 121511,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v3.json': {
+      sha256: '1090458436fb80f2829ccfc1a59be825f747b75f4062e2d2b17dbb20303d186f',
+      bytes: 182401,
+      executable: false
+    },
+    'plugin-src/resources/图库': { directory: true },
+    'plugin-src/resources/图库/AI参考': { directory: true },
+    'plugin-src/resources/图库/AI参考/agent-group-v4.png': {
+      sha256: 'da2af3996ec8a20744112064b410cb8286c4ea4d229317c5f00f47357ce462d5',
+      bytes: 1851479,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/agent-v2.png': {
+      sha256: '8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa',
+      bytes: 1813384,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/ai-tool-group-v4.png': {
+      sha256: 'd1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1',
+      bytes: 1702773,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/ai-tool-v2.png': {
+      sha256: 'c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb',
+      bytes: 1504474,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/big-head-group-v4.png': {
+      sha256: 'c6bd1f84f9c23abec61d6cd3fabdf4097571203e54fa3a2bc6aea563ae7f438c',
+      bytes: 1815292,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/big-head-v3.png': {
+      sha256: '743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70',
+      bytes: 2069113,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/comparison-group-v4.png': {
+      sha256: '845ce661844459baf8a82573fd2edad85cdd9d7b7769999196de1ef376a8e124',
+      bytes: 2355465,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/comparison-v3.png': {
+      sha256: '44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b',
+      bytes: 2349287,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/geometry-group-v4.png': {
+      sha256: '8dcf82de5d74b83d32d92a04942400be26321716db010f6d6f261743bd4e8100',
+      bytes: 1882022,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/geometry-v3.png': {
+      sha256: '27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00',
+      bytes: 1930317,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/interview-group-v4.png': {
+      sha256: 'e8208112cad532292d910f9c977122a9f7ad99e56443c882d076975a87c1ddf6',
+      bytes: 2167062,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/interview-v2.png': {
+      sha256: 'eb0858494089b5f9e6df8a880883831ea79a243117c2efbccb5ef48f18c3b66e',
+      bytes: 2154609,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/life-story-group-v4.png': {
+      sha256: '8310a04611c0d9c8fee47ad2786383799df178873c9a31607f6db4054057fab5',
+      bytes: 2484021,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/life-story-v3.png': {
+      sha256: 'a86b9b970b7653c8ac0c1d8f8910ca33d2f98e52c87794e842bb34ab6156f7f1',
+      bytes: 2305658,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/lifestyle-group-v4.png': {
+      sha256: 'bfa11d302a33d21fd440576e8fb541aa9fb7bed88f97135641c5e34acb989551',
+      bytes: 2180601,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/lifestyle-v2.png': {
+      sha256: 'c801a7554a3fd22a7dbeadaccd07b4d25a14067eb477659768754e03b53faf97',
+      bytes: 2228845,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/magazine-group-v4.png': {
+      sha256: 'c910bab287382824461253abfbc69f0a920f471afea2e6b9b67c24a4384f44cf',
+      bytes: 2751220,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/magazine-v3.png': {
+      sha256: 'c441f9b13de938dfa7e316432013f303005e6f90faaf71f00ce4ecc06eedbbee',
+      bytes: 2520387,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/neon-group-v4.png': {
+      sha256: 'e71dfcf9f6129c7fbaeda38091532aeaf506585e972aeda5337d6299d90942f0',
+      bytes: 2298873,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/neon-v3.png': {
+      sha256: 'e93143665c1db169404e47e837a92b8ea20091a02f09a3a83d5cbc587e6b3a6e',
+      bytes: 2154232,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/news-group-v4.png': {
+      sha256: '5c406b07be7c8ee05edcce87849432a3861b7a77f441250707b7ac2dbc79363c',
+      bytes: 2478390,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/news-v2.png': {
+      sha256: '32b30a18e5cc198f2632a795207dc7e240abd95abc0a45bc6e252af960870502',
+      bytes: 2194037,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/notes-group-v4.png': {
+      sha256: '4fb6db11d503807c351f74f5004d3918481bb70b4bfb027763c4dc119d893315',
+      bytes: 2508057,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/notes-v3.png': {
+      sha256: '42b42e93ce5be581ec865cf43bb4a2bd8d3467386a82fe2e71bdc5c49d4cba75',
+      bytes: 2561297,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/paper-group-v4.png': {
+      sha256: 'e390d57e1d9231727229b79b54b1c9823fed461b0acff899b8f6269baae7e97c',
+      bytes: 2885236,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/paper-v3.png': {
+      sha256: 'a5b67cfb16fe35092f0713c3517d2dbc6547610aa0751a80e60174cbfe9fb8dc',
+      bytes: 2894533,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/product-group-v4.png': {
+      sha256: '4e38e89d3aaace9e8131a989466cc017a6c16298b44bdc0232f485c58a601486',
+      bytes: 2002921,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/product-v2.png': {
+      sha256: '3fe7215f52c0cecf41b1c7a03025561f820dd4531eaea8398779aac8f8313982',
+      bytes: 2046739,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/tech-collage-group-v4.png': {
+      sha256: 'bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd',
+      bytes: 2153941,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/tech-collage-v3.png': {
+      sha256: '3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739',
+      bytes: 2267168,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板': { directory: true },
+    'plugin-src/resources/图库/内置模板/agent-v2-reference.svg': {
+      sha256: '746bdbfe3e575a143f3539c445a4b17e94d7d15b17bbdaec97825798e08e86e8',
+      bytes: 3116,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/agent-v2-source.svg': {
+      sha256: '303488c850ff164cd2e6c5ce6a2b0b4583e52b95159a972c25460e8589c945e3',
+      bytes: 3086,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/ai-tool-v2-reference.svg': {
+      sha256: 'dd7ef95f1bba41350d8d62341f8bd8ce646e65295d419d03fbb65ab3dd95e144',
+      bytes: 2842,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/ai-tool-v2-source.svg': {
+      sha256: '04d530311db586cd0b7368d6c6fd355e6de4049ef415e8dc089ad6725f732206',
+      bytes: 2826,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/big-head-v3-reference.svg': {
+      sha256: '2488e88fd888153b652fe521123b7c45afb904e991dde55c2473c0135d25730d',
+      bytes: 1709,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/big-head-v3-source.svg': {
+      sha256: '0139fcb32fb9dc5d612b5943d1843b1d25d0d64cd8bc017ede885832626feed4',
+      bytes: 1706,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-reference.svg': {
+      sha256: 'e5ed371bb9392ab4e495957b49c9e90cee8c9e312c582002978322ef6e19b80a',
+      bytes: 2477,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-source.svg': {
+      sha256: '24f570a49ed473f85e6ace5dbad537554296ad89f5c214e153f2e9106f0beccb',
+      bytes: 2459,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-v2-reference.svg': {
+      sha256: 'c2b3a32719a37bc7a51b4b6bd287ab4f0638898ec89ea1dd1f43bae444e7fb91',
+      bytes: 2525,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-v2-source.svg': {
+      sha256: '410868e87fb10eaf4f421153eb80ef77202bd791831a2c589b2e0c532835798a',
+      bytes: 2507,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-reference.svg': {
+      sha256: '245eb6b40dd30b2270981ae58b0a0ad0e7e21cb9400cf98fa60dd043cb57e8fb',
+      bytes: 1661,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-source.svg': {
+      sha256: '15ad3f119ff62017f4a110888a2c09deaadf567b3f1aa37cbbf667aa7e701de1',
+      bytes: 1634,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-v2-reference.svg': {
+      sha256: 'dd25eefa6df1b1af43fad6b7dffa1dbcbb8b53ae400ea440651adcf8e8486805',
+      bytes: 1670,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-v2-source.svg': {
+      sha256: 'd80ccbc72bd69153c5af090268b2ce9fd58d37df3da539fc6f34a69a4057a2d0',
+      bytes: 1643,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/interview-v2-reference.svg': {
+      sha256: '93da57f4ff6eefea69ff31de5f469514eb0bd8106900e74d48f91d45481872f1',
+      bytes: 2153,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/interview-v2-source.svg': {
+      sha256: 'ab2b93baf76607a4c85ba127631dacfa9cdc342667f5ff2dcab0f06062f8f9e0',
+      bytes: 2162,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/life-story-v3-reference.svg': {
+      sha256: '3049d9ed76d730b5cdf4040705c559fd0afc7ee32456e7c97db4d66cdf779d9c',
+      bytes: 1968,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/life-story-v3-source.svg': {
+      sha256: '73782dc3caf2cf3ef4e5aef21942141da5ecf8707127c81ca602bc6756eea276',
+      bytes: 1962,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/lifestyle-v2-reference.svg': {
+      sha256: '45c49f21ca668e958ccc1077fd275bb41a88b589cc517158375e0d9e989f780c',
+      bytes: 2266,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/lifestyle-v2-source.svg': {
+      sha256: '48422f2674731270632e1a13986cdf6424e5e1c175eed5a69cadf85191c458b4',
+      bytes: 2248,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-reference.svg': {
+      sha256: '4c06a7626acd0c86d0a41af5e51c9cb2a91755aea40c1736a614ff514d860cb3',
+      bytes: 2331,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-source.svg': {
+      sha256: '327b89275d575b6ad8d1b35af6c7a247198808ad6954f02e764fc11db0cd488d',
+      bytes: 2298,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-v2-reference.svg': {
+      sha256: '9219e1128b9e856dc0bbeba35514915e727cd1d7714bdac26a035cfbd0e8870a',
+      bytes: 2382,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-v2-source.svg': {
+      sha256: '77c44855f4e7915610a3eb3bff1717bb21a2a653fc67a1a1a5316a261c5f0de4',
+      bytes: 2349,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-reference.svg': {
+      sha256: '1bc19cac7c9ba7523b6e25eceae6db9a81f12bffed9fb095bd8ec1830e453150',
+      bytes: 4784,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-source.svg': {
+      sha256: '2fa0d92ee69e6a9bf0ee5a0b1b70b4caf0def85d748ba5d21a448256bc4dc908',
+      bytes: 4787,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-v2-reference.svg': {
+      sha256: '12d7d466eba214c3ce370f8c784dac7222654cfdfdc6a417e7774ad069d93f74',
+      bytes: 4855,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-v2-source.svg': {
+      sha256: '95cf1787d0daab1ebdd40a5e90d9d9cdc11eeb7b8b6260000c0e2a19326b1353',
+      bytes: 4841,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/news-v2-reference.svg': {
+      sha256: '90203c51317e7ef5e5668d8f7e00d617b1855ff2c33531cc5f315bd6e542b2eb',
+      bytes: 2908,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/news-v2-source.svg': {
+      sha256: '20125909f8fc7e3e8ab8b6d5b6a8951c7c88109b6dae7400ac73086b11a81502',
+      bytes: 2896,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-reference.svg': {
+      sha256: '6d5a6215ebfc212be92f5e3b8a672b5e088410af65b60851f06978fe7802e01a',
+      bytes: 54207,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-source.svg': {
+      sha256: 'c03c23ac7232cf907b9418ed379408077bf6015aa841dce3f09808835d062424',
+      bytes: 54195,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-v2-reference.svg': {
+      sha256: '32b78826163aef60bac0b6016cc3882498edf7635b095ced2717ce30718d5bdf',
+      bytes: 54252,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-v2-source.svg': {
+      sha256: '9adc55f159db9039d42c7426a047a83aa5d2f5af9621ad89e8c2dd01dda3f225',
+      bytes: 54240,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-reference.svg': {
+      sha256: '5191c9cb7e79ef1237b30ffc5aca8f53e3011847956bb2ea588318d616ed1fdf',
+      bytes: 5953,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-source.svg': {
+      sha256: '74ab281da797e0c355a98024ba339222466957d6edc0dc3c0ab7b888b8d8ff28',
+      bytes: 5929,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-v2-reference.svg': {
+      sha256: 'b08c57d07c0b504a4defc3792fe2464bc018212440ce4eded0012f29758c3b49',
+      bytes: 5992,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-v2-source.svg': {
+      sha256: '5a62db2f7eca08260c67a8c9a93e07b3ee92c8774c4bcf19b8ad52f67f20e2d2',
+      bytes: 5968,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/product-v2-reference.svg': {
+      sha256: '29d7a6363cae1b4996ff94c1d229790c9583f9426b8acce8bc513d8b47367545',
+      bytes: 2707,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/product-v2-source.svg': {
+      sha256: '18d19445a2c595fa00b58acb971c2a61c0d0a39016e00f85c151a4593948b4ed',
+      bytes: 2698,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/tech-collage-v3-reference.svg': {
+      sha256: '54c3b9511b4f341cd0a7705c8b690498e776cbcd1461b7acb83eea87742d9b58',
+      bytes: 2456,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/tech-collage-v3-source.svg': {
+      sha256: 'a1f1b5ab18aac0f291d70e6962da2a7b5614c69cca46053f140ec098b54cf94b',
+      bytes: 2449,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例': { directory: true },
+    'plugin-src/resources/图库/示例/avatar.svg': {
+      sha256: 'a6230bd681cfe20a45d8ef8ffd4ac9fb04749a71cac04c94783bd8d76baadd67',
+      bytes: 892,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-01.svg': {
+      sha256: 'f4e076f634eafb272258da469eea8d5446a09f1121443a0cc2c68c157094d288',
+      bytes: 2899,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-02.svg': {
+      sha256: '76024f97099c060c131b4b2cd51e23c87829d55b9d0ed7392619dc978a9a802d',
+      bytes: 2916,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-03.svg': {
+      sha256: '10e49965fad409802f19748945e38eec01353f74476327b99d5ac92c762cd890',
+      bytes: 3957,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-04.svg': {
+      sha256: 'aad83b84028090deda70b6441bf5fefeb4565ddaef3846ed15d7e0f19d7a14fc',
+      bytes: 3477,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-05.svg': {
+      sha256: '911c93c8144fe106ec12212cc8d781bc48b8734ea5e822ff1f65e8f7a7574097',
+      bytes: 2862,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-06.svg': {
+      sha256: '3ff90130a022350b532733f95b980601b1b10beb950506afe5a8545cc2933f98',
+      bytes: 2997,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-07.svg': {
+      sha256: '6ee0de00e448084d128380881436245038a6eed7d88b547bb317b1de38f2b9f6',
+      bytes: 3017,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-08.svg': {
+      sha256: 'dc0b032336832f306b06144490d8451402b04df4120a5341d6d0afa24cbfc1c0',
+      bytes: 4119,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-09.svg': {
+      sha256: '66c51971d1d01a70a8bbaa3d1c7b22a30beb8df6b090fa11a341736a0eaa62e1',
+      bytes: 3605,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-10.svg': {
+      sha256: '3100af868487d92b665d661a7886b6ef52726fa54031eee237bbb4fc4d090f27',
+      bytes: 2961,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/sample.svg': {
+      sha256: 'c5e85d38fccecb459dfb51a99e53bd84d17029cfe7212f6b2a8c6e3c3811bca2',
+      bytes: 2623,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/selected.svg': {
+      sha256: 'db6a591817fc395ab9d839784986300be38c546d536ba2651fc072912afb60f5',
+      bytes: 3723,
+      executable: false
+    },
+    'plugin-src/schemas': { directory: true },
+    'plugin-src/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'plugin-src/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'plugin-src/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'plugin-src/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'plugin-src/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'plugin-src/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'plugin-src/src': { directory: true },
+    'plugin-src/src/bridge': { directory: true },
+    'plugin-src/src/bridge/handoff.js': {
+      sha256: '980c13da4d04fd214406be8823a7ec0f6eede93696e738470e0e974fd5d74b9f',
+      bytes: 9586,
+      executable: false
+    },
+    'plugin-src/src/bridge/native-handoff.mjs': {
+      sha256: '4502282a5ec331e15150d6a88e69b9bfe3da488ebc1baa79258b662eae08558b',
+      bytes: 11101,
+      executable: false
+    },
+    'plugin-src/src/cli.mjs': {
+      sha256: 'f2cdf5c65958d0b2b41597d0f2c6c0699584442a3403852b2f9c2bf53c320436',
+      bytes: 1241,
+      executable: false
+    },
+    'plugin-src/src/commands': { directory: true },
+    'plugin-src/src/commands/cover.mjs': {
+      sha256: '51e295a86494dc5c6662ed50e440b564db1cba254bdf17c673c52fb7a2e3fec6',
+      bytes: 10905,
+      executable: false
+    },
+    'plugin-src/src/commands/template.mjs': {
+      sha256: 'a9f1438f48e9421eb2eb8589bb67993228212ac080d436e305678da10af21ae0',
+      bytes: 11730,
+      executable: false
+    },
+    'plugin-src/src/content.mjs': {
+      sha256: '7cf0b34d72996df5a0e8404f231c6cb567efc1552f29b2c5050cbf03fc1a9827',
+      bytes: 16103,
+      executable: false
+    },
+    'plugin-src/src/lib': { directory: true },
+    'plugin-src/src/lib/browser-import': { directory: true },
+    'plugin-src/src/lib/browser-import/README.md': {
+      sha256: '9a019c440997c3e2aa8aadaa057bfe67864e68d4f3bacad6c6cc6dbf1436f276',
+      bytes: 10070,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/builtin-resources.json': {
+      sha256: '7327e764f075d3aa6a7f61a104b5c1c5f5259a2c8311e9ab57fd79f6b863638e',
+      bytes: 17571,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/index.mjs': {
+      sha256: '6937e71bde8a0e933fd2a3b06a7f62937c8014488ac0b5dbbc9843d2927a3d3f',
+      bytes: 175,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/inspect.mjs': {
+      sha256: 'bd72d3ea81532aaf3b9dce9bc0640ab19a235d117a785fbe3fa0932fb612ff26',
+      bytes: 9266,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy': { directory: true },
+    'plugin-src/src/lib/browser-import/legacy/builtin-templates.js': {
+      sha256: 'c66d5a1ceb280d5a1530ce45aafb5f7b71d6add60128e4aec5d0a31f6d9aaeb6',
+      bytes: 618897,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/core.js': {
+      sha256: '206cf4cd515a7775ad82ca26e53b1691b329616b5e1ca882caad67bdcb9f529d',
+      bytes: 71887,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/package.json': {
+      sha256: 'dbf8353f77358bc12169b7bb7301e1978d5b503e002ee927229a8993672818fc',
+      bytes: 20,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/shared': { directory: true },
+    'plugin-src/src/lib/browser-import/legacy/shared/handoff.js': {
+      sha256: 'd42f155f39694a8e79171808ae42eec8fe46746f7f5b8d85e10439c869cfcda3',
+      bytes: 9677,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/map.mjs': {
+      sha256: '088b0d5b628eb6da828f6ba9d624233e8b54faaa9018e9fce010b50e9f9a9d64',
+      bytes: 38230,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/operation.mjs': {
+      sha256: '1d5afbc9e9920c0f96732fac08aa167d095abd869c5d231bcf92b3d40d72277d',
+      bytes: 39893,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/resources.mjs': {
+      sha256: 'b099e251b83e1f4f40cec7324c4416189cc9bbbdb45a75e8f20f902ae72f9e67',
+      bytes: 12228,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library': { directory: true },
+    'plugin-src/src/lib/file-library/README.md': {
+      sha256: '3307edabeb3b61453f8b8e3a210ddba6ff9b73f6eeccb080d0bb94172dcf7954',
+      bytes: 62561,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/backup.mjs': {
+      sha256: '2a74ecf5e969636abd316b10fc49a5fff0a6e06c54b48b77ae3f0df3676fec50',
+      bytes: 28265,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/cover-jobs.mjs': {
+      sha256: 'a9aa9878047193becc9437a37e8277e67b1dfcacf24edf0d8529d3e20d10f2b8',
+      bytes: 43723,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/health.mjs': {
+      sha256: 'fa6615b1fcb65c39989db073f14c7e74d632a67603cb48141d079d5fe5fea811',
+      bytes: 17704,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/index.mjs': {
+      sha256: '99fda9c50c7aeb1385fe926c22948f4b211b491a5430bbfcafc625c86f1d6f89',
+      bytes: 124492,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/model-v5.mjs': {
+      sha256: 'fa26688f06c5bb26259691e2385646bb61a35ee0d7d2dd71622cc0f4761dd24c',
+      bytes: 67751,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/template-jobs.mjs': {
+      sha256: '85dfcab11652e1f988062d34843b8a20cda5876e46030627b8cb5c803603fbaf',
+      bytes: 39922,
+      executable: false
+    },
+    'plugin-src/src/lib/image-validation': { directory: true },
+    'plugin-src/src/lib/image-validation/README.md': {
+      sha256: 'fd6c33db9263f439f733c88d007e8ccee9f3571fd2767c9c5d12982f9f57dbe5',
+      bytes: 2675,
+      executable: false
+    },
+    'plugin-src/src/lib/image-validation/index.mjs': {
+      sha256: '87a4b8e383b726dfa0eb9a87786d0c297e86e75cfa41365b0dcd498b8f3ff72b',
+      bytes: 10330,
+      executable: false
+    },
+    'plugin-src/src/lib/library-maintenance': { directory: true },
+    'plugin-src/src/lib/library-maintenance/README.md': {
+      sha256: 'b7675c37d3ca7876122b407872977094d2940a34dc977f43a455e0e49f1cf8ab',
+      bytes: 3408,
+      executable: false
+    },
+    'plugin-src/src/lib/library-maintenance/cli.mjs': {
+      sha256: '5226dc2a572ebe9bc495cabfca53b4024df1527aea93b8ba63c95b12181226f9',
+      bytes: 4030,
+      executable: false
+    },
+    'plugin-src/src/lib/library-seed': { directory: true },
+    'plugin-src/src/lib/library-seed/README.md': {
+      sha256: '922b7c7c9bf55f6eb29b3de028a3586e7772fb0e96cb139bcfc0f1cad34f6c59',
+      bytes: 1409,
+      executable: false
+    },
+    'plugin-src/src/lib/library-seed/index.mjs': {
+      sha256: 'becbf4fe3c9b903fbf975fef922358e71d411240af70ccc396cc963d4e21ace6',
+      bytes: 5919,
+      executable: false
+    },
+    'plugin-src/src/lib/package-snapshot.mjs': {
+      sha256: '7c75ec51f555f418a89df3c4cb11d89de3026ea9d9d0ff746929e40801fcfb93',
+      bytes: 4171,
+      executable: false
+    },
+    'plugin-src/src/release.json': {
+      sha256: 'ab728e86102749ee6f5ac79c9dffbb4e8b58a7188758c4ea8c4e856693b1b66e',
+      bytes: 376,
+      executable: false
+    },
+    runtime: { directory: true },
+    'runtime/LICENSE': {
+      sha256: '5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace',
+      bytes: 157609,
+      executable: false
+    },
+    'runtime/README.md': {
+      sha256: '4c4cfc4111e352c4ee28be9673e8c1bce45b1df5ef827eb220a4851063453458',
+      bytes: 1433,
+      executable: false
+    },
+    'runtime/launch.mjs': {
+      sha256: '10d8c374627c3e6f249041de585054e02d8b2362b32dc22374014f32aa6c7389',
+      bytes: 1659,
+      executable: false
+    },
+    'runtime/manifest.json': {
+      sha256: '19a7178a229f2e4de1d03437714e0d7bd6c14d7c741cfce81ac05c8bafbe1f12',
+      bytes: 520,
+      executable: false
+    },
+    'runtime/node': {
+      sha256: '9d050fd455b56426e25d4d603c7c501cbb2630348e836cf221dcce748e90588a',
+      bytes: 121911744,
+      executable: true
+    },
+    skills: { directory: true },
+    'skills/nova-content-cover': { directory: true },
+    'skills/nova-content-cover/SKILL.md': {
+      sha256: 'ac7b4f97bfde2b313144bac9e552efc836c4534ec3f92033c1072f1536f9ef1d',
+      bytes: 2388,
+      executable: false
+    },
+    'skills/nova-content-cover/references': { directory: true },
+    'skills/nova-content-cover/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-cover/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses': { directory: true },
+    'skills/nova-content-cover/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-cover/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-cover/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-cover/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas': { directory: true },
+    'skills/nova-content-cover/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-cover/scripts': { directory: true },
+    'skills/nova-content-cover/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    },
+    'skills/nova-content-cover-execution': { directory: true },
+    'skills/nova-content-cover-execution/SKILL.md': {
+      sha256: 'c06baebfc38b13dbafc41f6b6f78d100208915af379c8575f738d57cd9efdbb7',
+      bytes: 5015,
+      executable: false
+    },
+    'skills/nova-content-template-execution': { directory: true },
+    'skills/nova-content-template-execution/SKILL.md': {
+      sha256: '96ef420e992b5b5c601d17be3c300c97d3f052a71363243cfeffbbced696c429',
+      bytes: 5206,
+      executable: false
+    },
+    'skills/nova-content-template-restore': { directory: true },
+    'skills/nova-content-template-restore/SKILL.md': {
+      sha256: '7ba61df5d5c848f8a82a99966527e4eb4cfabd70cae60ce9bea42bf14ca865c9',
+      bytes: 2241,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references': { directory: true },
+    'skills/nova-content-template-restore/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses': { directory: true },
+    'skills/nova-content-template-restore/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas': { directory: true },
+    'skills/nova-content-template-restore/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-template-restore/scripts': { directory: true },
+    'skills/nova-content-template-restore/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    },
+    'skills/nova-content-template-study': { directory: true },
+    'skills/nova-content-template-study/SKILL.md': {
+      sha256: '92444c84d20d56fb547fa036e51acd9fe2857a3dc83a2013de15e83ddfb76ea7',
+      bytes: 2378,
+      executable: false
+    },
+    'skills/nova-content-template-study/references': { directory: true },
+    'skills/nova-content-template-study/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses': { directory: true },
+    'skills/nova-content-template-study/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas': { directory: true },
+    'skills/nova-content-template-study/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-template-study/scripts': { directory: true },
+    'skills/nova-content-template-study/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    }
+  },
+  expected: {
+    '.codebuddy-plugin': { directory: true },
+    '.codebuddy-plugin/plugin.json': {
+      sha256: '4b1e5b7e431c407ddb66f9dc01da1a10cf7fb49b59e82d2c0975b26f015b4742',
+      bytes: 556,
+      executable: false
+    },
+    '.codex-plugin': { directory: true },
+    '.codex-plugin/plugin.json': {
+      sha256: 'f845992cf4359e48633b9c06ce76ae2854a939fa06bac659f6960fd0fccbebdc',
+      bytes: 305,
+      executable: false
+    },
+    'README.md': {
+      sha256: '525f9d485213f0c063953d955d50164b2d7947fc4c620df6faff7746260f41c3',
+      bytes: 603,
+      executable: false
+    },
+    bin: { directory: true },
+    'bin/run-node': {
+      sha256: '58e7e1f1c53e2776e23be310c311c7546273b3d532512032832477a5c310e1df',
+      bytes: 404,
+      executable: true
+    },
+    'bin/run-node.cmd': {
+      sha256: 'e23dfcd40e58bc1178f5849f74a06f4fa7651d2eed38fe12e347055267a967d3',
+      bytes: 326,
+      executable: false
+    },
+    'cover-runtime': { directory: true },
+    'cover-runtime/README.md': {
+      sha256: '80569f94049d8e3699130ce3754ae1dc405b8d4e09f0b54a0db1411db4696f0f',
+      bytes: 145,
+      executable: false
+    },
+    'cover-runtime/cli.mjs': {
+      sha256: 'c3c917d17bcbb1326e8dff15d691156c93a3fdd02fd30a07d85ddf1e1531093b',
+      bytes: 113,
+      executable: false
+    },
+    'cover-runtime/skills': { directory: true },
+    'cover-runtime/skills/nova-content-cover-execution': { directory: true },
+    'cover-runtime/skills/nova-content-cover-execution/SKILL.md': {
+      sha256: 'ab6a48e9f87fe1807afea2a821968e9416f4eab541acc344dadf95b8a059e5ec',
+      bytes: 5027,
+      executable: false
+    },
+    hooks: { directory: true },
+    'hooks/codex.json': {
+      sha256: '961e5dd33e43778445ea49547a9c20885723c9ee93d1fe9fe065a44547b105c0',
+      bytes: 1723,
+      executable: false
+    },
+    'hooks/hooks.json': {
+      sha256: '51799964a28c23d16069e3c2b4c3f56decd100d7fbdc0215785db9957de3eeb7',
+      bytes: 1325,
+      executable: false
+    },
+    'hooks/workbuddy.json': {
+      sha256: '2171ecb57202ee24b317a7bdbbe6c420e541929385fd1e2d33503c15df7eb9d3',
+      bytes: 456,
+      executable: false
+    },
+    'integrity.json': {
+      sha256: '2cdc029bbf307a3d95060d17f4186bf57461d61b4e398c81df2df6d4ca8ca05e',
+      bytes: 3414,
+      executable: false
+    },
+    node_modules: { directory: true },
+    'node_modules/.bin': { directory: true },
+    'node_modules/.bin/semver': { link: '../semver/bin/semver.js' },
+    'node_modules/.package-lock.json': {
+      sha256: 'cc0754b303b5c16bd4c13ea47daf2337097ad2bf966bf25d6b245d07ebaa1bb0',
+      bytes: 4284,
+      executable: false
+    },
+    'node_modules/@img': { directory: true },
+    'node_modules/@img/colour': { directory: true },
+    'node_modules/@img/colour/LICENSE.md': {
+      sha256: 'e2eaa4603c14cb26f301e88648c12a853fa3f0f5da6d4b0972958c666e7f2ab8',
+      bytes: 4433,
+      executable: false
+    },
+    'node_modules/@img/colour/README.md': {
+      sha256: 'be7edf3bc6467f761168cef3bb2b9b3def2532c98a86249848376ea00338ad1d',
+      bytes: 562,
+      executable: false
+    },
+    'node_modules/@img/colour/color.cjs': {
+      sha256: 'f7c3efcf482624007f2019fffee3e1dec56b8cb893faa9a420b2832805888dce',
+      bytes: 45136,
+      executable: false
+    },
+    'node_modules/@img/colour/index.cjs': {
+      sha256: 'e6e93e7fb209420a20fdf2ec676e9c67413be8d5ace99eec64f9468480f0368d',
+      bytes: 49,
+      executable: false
+    },
+    'node_modules/@img/colour/index.d.ts': {
+      sha256: '2467b00d963828f540f4acd7910f4c04cfe4b489550e6bb682212f65583bca5b',
+      bytes: 21569,
+      executable: false
+    },
+    'node_modules/@img/colour/package.json': {
+      sha256: 'bc38c5097693ed53b91c32f35fb0a52569736c7854ba2eb6d080f3252071f75c',
+      bytes: 1515,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64': { directory: true },
+    'node_modules/@img/sharp-darwin-arm64/LICENSE': {
+      sha256: '73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68',
+      bytes: 10273,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/README.md': {
+      sha256: 'ef448bf7ac130f0c6b51dbfbadc617b046a200d082de8648ab090784c5db0c3d',
+      bytes: 699,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/index.cjs': {
+      sha256: '779fece1ac73b7136281d9767b90267f19d3a296e850ecf474d9c89a8ef1968c',
+      bytes: 141,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/lib': { directory: true },
+    'node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node': {
+      sha256: '791921f975371be33aed727e06283282cc001c960792eb52505b579fdaaf1b55',
+      bytes: 280256,
+      executable: false
+    },
+    'node_modules/@img/sharp-darwin-arm64/package.json': {
+      sha256: '157996706c751e9a3608f35811f156238fa4ad1f367abfd4facec30883747f5e',
+      bytes: 862,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/README.md': {
+      sha256: '5dd6d3c034f925604681d49b7bedc71bd08dcf3d0cfc6d16b9f0569497d700dc',
+      bytes: 4333,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0/include': { directory: true },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/glib-2.0/include/glibconfig.h': {
+      sha256: '52dc7deb43d9ee5306df7489f305cc1ee4426dab443bb328f45b4fe58dff2dff',
+      bytes: 5981,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/index.js': {
+      sha256: '516a08c06660cddb50d5f30ccac29a0514b05724956a11e8a7e6b799f2e1ab72',
+      bytes: 28,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib': {
+      sha256: 'c1a5b5633b21aeb8a229abf7d062e07e4d778c0b44ed43cd1f93362bda58c322',
+      bytes: 18231688,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/package.json': {
+      sha256: '394ecfe4e823ebf6ddc9f9b7155046aad1f0492300920323ddfb84cae85dbac0',
+      bytes: 876,
+      executable: false
+    },
+    'node_modules/@img/sharp-libvips-darwin-arm64/versions.json': {
+      sha256: 'e2611d5d854815a8b33c8a3d2ec649511a9596ccf16844e8eae7cf81e79881c4',
+      bytes: 596,
+      executable: false
+    },
+    'node_modules/detect-libc': { directory: true },
+    'node_modules/detect-libc/LICENSE': {
+      sha256: 'b40930bbcf80744c86c46a12bc9da056641d722716c378f5659b9e555ef833e1',
+      bytes: 11357,
+      executable: false
+    },
+    'node_modules/detect-libc/README.md': {
+      sha256: '51a97449c443889155bc872522e6de5a91a5fa73edeffa03d749e186bf0eebca',
+      bytes: 3215,
+      executable: false
+    },
+    'node_modules/detect-libc/index.d.ts': {
+      sha256: '9500090533aafe039c41d8d368a44959f04482bb75636d96bc843c06f3d6a348',
+      bytes: 436,
+      executable: false
+    },
+    'node_modules/detect-libc/lib': { directory: true },
+    'node_modules/detect-libc/lib/detect-libc.js': {
+      sha256: '5de6a1c1abec8bba5ea1261cf819d83a73c92ebe72b879ae48c59ca12320a462',
+      bytes: 7503,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/elf.js': {
+      sha256: '0e8820f00ee11d179d94894d4f97a6e87c34ab59e5dd4d3a571dfabcecf043af',
+      bytes: 982,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/filesystem.js': {
+      sha256: '5c98fb66b559d0b4fa82c7a3e39d9ab6840f022c4c73e6b1a73ac6d16ec13fd7',
+      bytes: 1097,
+      executable: false
+    },
+    'node_modules/detect-libc/lib/process.js': {
+      sha256: 'f37dd0ead9f70b50c6f5529c600e1cdf076e3c3bc8e6b4a0a9820a8d65244628',
+      bytes: 569,
+      executable: false
+    },
+    'node_modules/detect-libc/package.json': {
+      sha256: 'ee88e5b954fdf3a8480b1d01ef767d68d8ca2c6da269f58c5cf1c5550e9aa2a7',
+      bytes: 1278,
+      executable: false
+    },
+    'node_modules/semver': { directory: true },
+    'node_modules/semver/LICENSE': {
+      sha256: '4ec3d4c66cd87f5c8d8ad911b10f99bf27cb00cdfcff82621956e379186b016b',
+      bytes: 765,
+      executable: false
+    },
+    'node_modules/semver/README.md': {
+      sha256: 'f1a789dcec285150be24db2ea04dd3175031554fa9834ec92fab83fb5e025a57',
+      bytes: 25669,
+      executable: false
+    },
+    'node_modules/semver/bin': { directory: true },
+    'node_modules/semver/bin/semver.js': {
+      sha256: 'bd6c871026985937dc945011fc54b74b47f5998154216d7b8d40d5ed782e4402',
+      bytes: 4957,
+      executable: true
+    },
+    'node_modules/semver/classes': { directory: true },
+    'node_modules/semver/classes/comparator.js': {
+      sha256: '054202956430d63d5ff4599fae09760ce465b489e4f0b5ef5ce7cc7ac21157ac',
+      bytes: 3631,
+      executable: false
+    },
+    'node_modules/semver/classes/index.js': {
+      sha256: '3bb69280c2a788d0eb16f915bb9df4dbe812075182024c753dca2283bcea1b17',
+      bytes: 143,
+      executable: false
+    },
+    'node_modules/semver/classes/range.js': {
+      sha256: 'a6544485aa8575aa9854c67e2caa67726815de18a482d0ceb8a1003244de3bc1',
+      bytes: 15647,
+      executable: false
+    },
+    'node_modules/semver/classes/semver.js': {
+      sha256: '813b2c185512d30c9b931c2fed8140889d9d7490ceeeedc370da30337dc8ca57',
+      bytes: 9891,
+      executable: false
+    },
+    'node_modules/semver/functions': { directory: true },
+    'node_modules/semver/functions/clean.js': {
+      sha256: '4eadb0892844cf3ae295121a86163a66c73f89acd1b7f0b114ec115b4539512f',
+      bytes: 205,
+      executable: false
+    },
+    'node_modules/semver/functions/cmp.js': {
+      sha256: 'a63d74e87b73788e78e9ce0a4892b5333d6b809c0de88b31e4ed76cbf17f94b3',
+      bytes: 961,
+      executable: false
+    },
+    'node_modules/semver/functions/coerce.js': {
+      sha256: '28a251c5ab210ddf9e97551b9f37a53329fcce91f0c3943dcbc02de1a1de915a',
+      bytes: 2004,
+      executable: false
+    },
+    'node_modules/semver/functions/compare-build.js': {
+      sha256: '5ab651d5b40af289bd85c645a92b6d8cfe1a986dc413c797cfcc8d623d7c844c',
+      bytes: 281,
+      executable: false
+    },
+    'node_modules/semver/functions/compare-loose.js': {
+      sha256: '07b6a3a1db0a5210ceb784c1708bd4679f3a94fc73a9c9eb349349e7070a6f78',
+      bytes: 132,
+      executable: false
+    },
+    'node_modules/semver/functions/compare.js': {
+      sha256: 'd404b5aa48aaddc8a654c5da8fb7d4443404b7948589b21ac4b045d1cee4e34c',
+      bytes: 170,
+      executable: false
+    },
+    'node_modules/semver/functions/diff.js': {
+      sha256: '7a11fd39b987cdf06c65e928cb1aca49bec583feb86fb5c8fe47a6fd61d7de31',
+      bytes: 1423,
+      executable: false
+    },
+    'node_modules/semver/functions/eq.js': {
+      sha256: 'b6e30a7168e52723216fc163d300e2bbabf92ec0251f9ac5438bb6ccf57c8936',
+      bytes: 126,
+      executable: false
+    },
+    'node_modules/semver/functions/gt.js': {
+      sha256: '135523704aa48cd98834dd170ee9f74f0e68043b379f32d021db11e6304c5c93',
+      bytes: 124,
+      executable: false
+    },
+    'node_modules/semver/functions/gte.js': {
+      sha256: '991c5bbe48ecb210a562646872f05862ad9fc0d42186d85aa60bdc6fa323eb9d',
+      bytes: 127,
+      executable: false
+    },
+    'node_modules/semver/functions/inc.js': {
+      sha256: '952069fc8690b7d3af0fe9d55f7c54fe2ac067b48c5e74f6a54f9ce19a334493',
+      bytes: 478,
+      executable: false
+    },
+    'node_modules/semver/functions/lt.js': {
+      sha256: '1c897a9bc849320e2e9dc0f6c09555c01ee3ddf30734515d717b88ad7740ea25',
+      bytes: 124,
+      executable: false
+    },
+    'node_modules/semver/functions/lte.js': {
+      sha256: '3a8d0b1d00423f60cc7cb810b36ab77b61330831ad237dbe73eb5cecfa412800',
+      bytes: 127,
+      executable: false
+    },
+    'node_modules/semver/functions/major.js': {
+      sha256: '5c678480d882f511200fed2c16ec3847dfedb08a1d70328dc2f031d35d825276',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/minor.js': {
+      sha256: '1b051794f1713adec2a236517196691687c35f82e0b596ff3316a78b3cc10ae6',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/neq.js': {
+      sha256: 'a662883751918822c162183b46b9e20d09489132f82686c92ab78bee67f3a127',
+      bytes: 128,
+      executable: false
+    },
+    'node_modules/semver/functions/parse.js': {
+      sha256: '29a69e15b6d02fe381d573f861881a89590e9d0f0f0ca740c5f85eaf0234c4ad',
+      bytes: 331,
+      executable: false
+    },
+    'node_modules/semver/functions/patch.js': {
+      sha256: 'f02d3c1b059fe3d96ce124886f7eef321d381a95638fd3c4a8d5ccd8e76ffadd',
+      bytes: 136,
+      executable: false
+    },
+    'node_modules/semver/functions/prerelease.js': {
+      sha256: 'baedbf503d5610ad041bfb56071efa48feb331ca278295c399537d35d3ffb593',
+      bytes: 234,
+      executable: false
+    },
+    'node_modules/semver/functions/rcompare.js': {
+      sha256: '84fa5e88adf08d15c993cac8cdec6d1a65045b7e95a9c55184230a7f807f4dc0',
+      bytes: 132,
+      executable: false
+    },
+    'node_modules/semver/functions/rsort.js': {
+      sha256: '6ec659ce3b6c2b173c719286caab04409adba046c0917874ec3b5e36ddfbc7e3',
+      bytes: 163,
+      executable: false
+    },
+    'node_modules/semver/functions/satisfies.js': {
+      sha256: '8cf5e122b757251671ed6c9d9680904b71cd375845853f05312e608cf2cc2946',
+      bytes: 247,
+      executable: false
+    },
+    'node_modules/semver/functions/sort.js': {
+      sha256: 'c2fe2d3ed0be8a4e9de8f02abdfd5d9c0d3bcc510d88e87af84185592882c4b8',
+      bytes: 161,
+      executable: false
+    },
+    'node_modules/semver/functions/truncate.js': {
+      sha256: 'e145833a250311927c92f424f56498c52f1b7bb1271ce6afbf006db87773ff43',
+      bytes: 1021,
+      executable: false
+    },
+    'node_modules/semver/functions/valid.js': {
+      sha256: '0de7ea736cb7807179d46dfac09c830a9338e02b6a07db12d7040cde2def6025',
+      bytes: 176,
+      executable: false
+    },
+    'node_modules/semver/index.js': {
+      sha256: '4b3e57d3d40e29e0706002eba113d09f35aea593578376bbeec83b777b9912ab',
+      bytes: 2691,
+      executable: false
+    },
+    'node_modules/semver/internal': { directory: true },
+    'node_modules/semver/internal/constants.js': {
+      sha256: '38a112baf27ceca0260082ff26ac2fd7a9861cab1af12dd65e720277f68e6ce9',
+      bytes: 873,
+      executable: false
+    },
+    'node_modules/semver/internal/debug.js': {
+      sha256: '8a9f420572260f3cf944463b5090d62a60f0730589dc23a7ec4ca25e2ee41bb3',
+      bytes: 240,
+      executable: false
+    },
+    'node_modules/semver/internal/identifiers.js': {
+      sha256: 'b4916b09dc7869ae0eb05e71c855c942a3a7365f7e6e89185d59a9e45a2451d7',
+      bytes: 525,
+      executable: false
+    },
+    'node_modules/semver/internal/lrucache.js': {
+      sha256: '14d087c87da87b6f5c36fc4cdd7d2d14077874b14a68e20fce5b6138fa2ca34f',
+      bytes: 802,
+      executable: false
+    },
+    'node_modules/semver/internal/parse-options.js': {
+      sha256: 'fdf51d0de8d5442c35a997ef58cd530d239ce206f961d14c5121354451b01d01',
+      bytes: 338,
+      executable: false
+    },
+    'node_modules/semver/internal/re.js': {
+      sha256: '5833262888e2b5d843a69193f83c05e374818dbe55379b497819b5bf58e48cd8',
+      bytes: 8139,
+      executable: false
+    },
+    'node_modules/semver/package.json': {
+      sha256: '7c94cb7f2a53c27b20d76386ec144c062894dbcc909cfabd0f728c37874b1776',
+      bytes: 1661,
+      executable: false
+    },
+    'node_modules/semver/preload.js': {
+      sha256: 'edb6808911bebcb324b2df57e5c9935149e56984ff083b74c6cfe215f5b710ba',
+      bytes: 83,
+      executable: false
+    },
+    'node_modules/semver/range.bnf': {
+      sha256: '15d0baf9b7b98e6d862c0cb9e822d2533d2bc23e136bb75314d802ca1fcb0392',
+      bytes: 702,
+      executable: false
+    },
+    'node_modules/semver/ranges': { directory: true },
+    'node_modules/semver/ranges/gtr.js': {
+      sha256: '8fadad28e36d28e93d498ac7ac20badba2a407312845eabc18e82e90a0732b19',
+      bytes: 231,
+      executable: false
+    },
+    'node_modules/semver/ranges/intersects.js': {
+      sha256: 'fe87ac5d3020010ad3ec00636dadbf0c669ff07d0f57e0a8165a8264f79a676f',
+      bytes: 224,
+      executable: false
+    },
+    'node_modules/semver/ranges/ltr.js': {
+      sha256: 'e5186fcc03018acf9be6d968755d4c49727aeb0d981d179eb568ae5fbe983038',
+      bytes: 227,
+      executable: false
+    },
+    'node_modules/semver/ranges/max-satisfying.js': {
+      sha256: 'e1a2c0d6144cc772cd20bbc8ecb9e8a3a4074e9172a3d8e794838b591cdeb416',
+      bytes: 593,
+      executable: false
+    },
+    'node_modules/semver/ranges/min-satisfying.js': {
+      sha256: '2681abf54098aa670f12826b76a6ec77a2441186ae4243afde3be8ae4908f7ca',
+      bytes: 591,
+      executable: false
+    },
+    'node_modules/semver/ranges/min-version.js': {
+      sha256: 'fefba0a88c2bf74d5cede504b5ae50a8dc3edfd69cf0174a491e2cf3e442614b',
+      bytes: 1514,
+      executable: false
+    },
+    'node_modules/semver/ranges/outside.js': {
+      sha256: '3a2b0b23593d2f49419c06af2af75450cab103b0c25d665d48fe5bca495a21ca',
+      bytes: 2204,
+      executable: false
+    },
+    'node_modules/semver/ranges/simplify.js': {
+      sha256: '7b78581c13322bc68ece2088685386b2a9b51c15b94d0a2063bdf2546bd41934',
+      bytes: 1355,
+      executable: false
+    },
+    'node_modules/semver/ranges/subset.js': {
+      sha256: 'ceb9eb6ed5bfc6c7ac7af7f47e5c3535444a4e66a0e2b58cdad4bd02a35d454d',
+      bytes: 7478,
+      executable: false
+    },
+    'node_modules/semver/ranges/to-comparators.js': {
+      sha256: '6c5e966210cff270fa2850668aaf8460fac7759f8d99f282521ef7a78f4564e9',
+      bytes: 282,
+      executable: false
+    },
+    'node_modules/semver/ranges/valid.js': {
+      sha256: '5ef6f995af801868925940cf8df5735d565ebabb090b068695cae65218bcd3ac',
+      bytes: 326,
+      executable: false
+    },
+    'node_modules/sharp': { directory: true },
+    'node_modules/sharp/LICENSE': {
+      sha256: '73ba74dfaa520b49a401b5d21459a8523a146f3b7518a833eea5efa85130bf68',
+      bytes: 10273,
+      executable: false
+    },
+    'node_modules/sharp/README.md': {
+      sha256: '89772961fcf195b976573874555f2902bfe04a3e57be61af261ac65ce9348735',
+      bytes: 3162,
+      executable: false
+    },
+    'node_modules/sharp/dist': { directory: true },
+    'node_modules/sharp/dist/channel.cjs': {
+      sha256: '7445567e8001f4be3126374e4c17e282777ed14c718acca875c91bec69a2d7a1',
+      bytes: 5383,
+      executable: false
+    },
+    'node_modules/sharp/dist/channel.mjs': {
+      sha256: '6067b0ba5ebcc9682a01d0b450a12b54849a95c8ed017f8485bddb5fd0b9db91',
+      bytes: 5376,
+      executable: false
+    },
+    'node_modules/sharp/dist/colour.cjs': {
+      sha256: 'da760186e75d4fd8b6da0a617ecf122deec2fa6d95fdcc194bbee0cb1c5e4605',
+      bytes: 5622,
+      executable: false
+    },
+    'node_modules/sharp/dist/colour.mjs': {
+      sha256: '760e7fa8161432a9cc97f0a3d9f3e0b757e66089c967e6b36f3131c9fdafa1b5',
+      bytes: 5610,
+      executable: false
+    },
+    'node_modules/sharp/dist/composite.cjs': {
+      sha256: '6e0837309d25c2b642d42b557f3e1292c2b057af09746647a3a6d54de772a157',
+      bytes: 9332,
+      executable: false
+    },
+    'node_modules/sharp/dist/composite.mjs': {
+      sha256: '16eadc26ba57417e90e4bb73aff1116b56ad26766088793ab0b7c4bbdd2bc9fc',
+      bytes: 9325,
+      executable: false
+    },
+    'node_modules/sharp/dist/constructor.cjs': {
+      sha256: '6b8978e0f1614d83a219cbbd455e3eed7922bc4212a5b3b99c5d37c3af3b3226',
+      bytes: 20364,
+      executable: false
+    },
+    'node_modules/sharp/dist/constructor.mjs': {
+      sha256: '8be8da679d2a028d0f53b02ce52f07f295134a297caf3068944cd8d0b57ab3d1',
+      bytes: 20340,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.cjs': {
+      sha256: 'd69f275bc49fcd2a6188b26b35c986d4db32a1b008653fef88adb4598688232a',
+      bytes: 620,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.d.cts': {
+      sha256: '24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884',
+      bytes: 92885,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.d.mts': {
+      sha256: 'b837d41bb8d39398690458f45cc445160dad36ec0db5ba0463d114e560d49d85',
+      bytes: 87987,
+      executable: false
+    },
+    'node_modules/sharp/dist/index.mjs': {
+      sha256: '0e8f955c68a1b0bccf0ba5343c924dbfa6a46a76a0d491ec27fe6b328311363e',
+      bytes: 573,
+      executable: false
+    },
+    'node_modules/sharp/dist/input.cjs': {
+      sha256: 'e5eb5c891c0893098dbe8bc0358a2f2c7e800581018923a7956732fe1a5ddf8f',
+      bytes: 33741,
+      executable: false
+    },
+    'node_modules/sharp/dist/input.mjs': {
+      sha256: '4b0a51e678f9022cec06a1ffb34e17ea3498cfb707492b54de87541ccac54125',
+      bytes: 33729,
+      executable: false
+    },
+    'node_modules/sharp/dist/is.cjs': {
+      sha256: '46fa32e93964d8a31d6e851dc3bb7f3ec36935f9e8323b59603ff6cd84a7faa7',
+      bytes: 3042,
+      executable: false
+    },
+    'node_modules/sharp/dist/is.mjs': {
+      sha256: '96a3b1b82d389b7b57569332fed93e46cf9b5aa79f2babb82cbb15fe1581a409',
+      bytes: 3040,
+      executable: false
+    },
+    'node_modules/sharp/dist/libvips.cjs': {
+      sha256: '3419f6cb4303feaf4a76abe122ce1caf5dc755f9f17fa013afd5561827b61062',
+      bytes: 5833,
+      executable: false
+    },
+    'node_modules/sharp/dist/libvips.mjs': {
+      sha256: 'd9984601b0aafe44c393b29ce4b0712b1c40890c3d740d4fda49842a4ea5873d',
+      bytes: 5828,
+      executable: false
+    },
+    'node_modules/sharp/dist/operation.cjs': {
+      sha256: '11eb4921f37e4e06c0b349f55e186852cdd094203cc3c5651681801eea5d80f8',
+      bytes: 32930,
+      executable: false
+    },
+    'node_modules/sharp/dist/operation.mjs': {
+      sha256: 'a3b14c3a13305dbe8fde48a263d13b0a104dcb97afc65fe5f55b8e556d054be1',
+      bytes: 32923,
+      executable: false
+    },
+    'node_modules/sharp/dist/output.cjs': {
+      sha256: '4c2878241a264095b661fb321accf86fa9be033bfe541d5a70ac2f8d80150893',
+      bytes: 65469,
+      executable: false
+    },
+    'node_modules/sharp/dist/output.mjs': {
+      sha256: 'd1be82aace2d7f96bfc29e6e76538521fc8dfe6d4e90f7eda71a8f4c2a1597ba',
+      bytes: 65452,
+      executable: false
+    },
+    'node_modules/sharp/dist/resize.cjs': {
+      sha256: 'e03dce87aaee233fecf191ec3c713a9f856e13d0d9ccd7b0a7dbf35b65e36538',
+      bytes: 22840,
+      executable: false
+    },
+    'node_modules/sharp/dist/resize.mjs': {
+      sha256: 'e3d26f31cf391e28f3f96e708ccb96745cf016e18f8ef4486c837e5efcb3c922',
+      bytes: 22833,
+      executable: false
+    },
+    'node_modules/sharp/dist/sharp.cjs': {
+      sha256: '76120d3971051fcc469c0bfa36e7b23d3c388b6a2f5785bf1491bbdb90ff0176',
+      bytes: 6262,
+      executable: false
+    },
+    'node_modules/sharp/dist/sharp.mjs': {
+      sha256: 'd0c3ce3837636a140e8363850823e3b8dc2b000928303664cc9fc1aa2ba326ee',
+      bytes: 6357,
+      executable: false
+    },
+    'node_modules/sharp/dist/utility.cjs': {
+      sha256: '0f7a14858dfa8ebd01b2c6c2272297f7a34c4af3d84f0c0b926146c49a2655b1',
+      bytes: 9786,
+      executable: false
+    },
+    'node_modules/sharp/dist/utility.mjs': {
+      sha256: '761566e165bc1fc90bc6dd67a3b560c1a63e6cfe98009b726d35288606d629b9',
+      bytes: 9862,
+      executable: false
+    },
+    'node_modules/sharp/install': { directory: true },
+    'node_modules/sharp/install/build.js': {
+      sha256: 'fea92e0d55cce8692413c479021173aa1512304e1b849039949cbee9d6ceb1de',
+      bytes: 860,
+      executable: false
+    },
+    'node_modules/sharp/lib': { directory: true },
+    'node_modules/sharp/lib/index.d.ts': {
+      sha256: '24adc1ebbf6b05fc1434083b899b9ffd7edda0aa85ac0123d7ddb4ff860e5884',
+      bytes: 92885,
+      executable: false
+    },
+    'node_modules/sharp/package.json': {
+      sha256: 'ad4a2535d72eb638053a38867b1abf43c328cd1c1dbae5cf4172d498365a8b97',
+      bytes: 8115,
+      executable: false
+    },
+    'node_modules/sharp/src': { directory: true },
+    'node_modules/sharp/src/binding.gyp': {
+      sha256: 'aa0750bba07e0de556ccdf1463e148a21e373ea43ac0ee622d23ad287890e658',
+      bytes: 10818,
+      executable: false
+    },
+    'node_modules/sharp/src/common.cc': {
+      sha256: 'c3c56a37bb780dfd97ee53d3556d9ba3d674b1b9cf7d57caf94248f982207a75',
+      bytes: 41483,
+      executable: false
+    },
+    'node_modules/sharp/src/common.h': {
+      sha256: '70a4f13f5e56a956edd8340066240865e39d3039157bd511930de2bf5aa17ba9',
+      bytes: 10988,
+      executable: false
+    },
+    'node_modules/sharp/src/metadata.cc': {
+      sha256: 'a127c134c9e537db9c63962ff1aa1d0762a8d517d746a844e6b43b299e11a581',
+      bytes: 15320,
+      executable: false
+    },
+    'node_modules/sharp/src/metadata.h': {
+      sha256: '5e02c25ec821a525b0caf31161b1e8675ff32cfd098c17cda0b888440362b057',
+      bytes: 1878,
+      executable: false
+    },
+    'node_modules/sharp/src/operations.cc': {
+      sha256: 'a61e6545cde7d2f2ae508b4eceeeec9db9ef711211d5cba1ed470f9325f914fb',
+      bytes: 17412,
+      executable: false
+    },
+    'node_modules/sharp/src/operations.h': {
+      sha256: '6f41d329634471dff8e093d12e38ff356293079e2aeecc5b922fc23ba99799e6',
+      bytes: 3625,
+      executable: false
+    },
+    'node_modules/sharp/src/pipeline.cc': {
+      sha256: '445ed9aa726806dc01188cf13a2866ee47ccd38504cddd049e4e639703edc0e9',
+      bytes: 92059,
+      executable: false
+    },
+    'node_modules/sharp/src/pipeline.h': {
+      sha256: 'e09c3dbd873071a373e6d95679b470a6fe1be5fc2ef781b00fd87958b5ab5e98',
+      bytes: 10131,
+      executable: false
+    },
+    'node_modules/sharp/src/sharp.cc': {
+      sha256: '9f407b50bb2d02e5eb711b769f05d3e6659028430e055c4271e5ab1593f5a257',
+      bytes: 1529,
+      executable: false
+    },
+    'node_modules/sharp/src/stats.cc': {
+      sha256: '72f8f2ad0e4315951c88b115511eb96741fd0479385ed094141f7bd254739791',
+      bytes: 6756,
+      executable: false
+    },
+    'node_modules/sharp/src/stats.h': {
+      sha256: 'db854f0c3c4a0db1751021ed676413c6d5ca00becc08bdc13258b29047450b8c',
+      bytes: 1267,
+      executable: false
+    },
+    'node_modules/sharp/src/utilities.cc': {
+      sha256: '91c164bb740529156e15dedbfcb4236dd2b5fbf94c7a3a4f1639929d034f700e',
+      bytes: 9522,
+      executable: false
+    },
+    'node_modules/sharp/src/utilities.h': {
+      sha256: '0b126ab63cf1aedf8e71e6cb8179899d3ef02c46419100e847b2ca4284b8901b',
+      bytes: 741,
+      executable: false
+    },
+    'package-lock.json': {
+      sha256: '5ae608c46124a3ab769a35603595502831b76358c46d7caddaf799c17be5821a',
+      bytes: 22426,
+      executable: false
+    },
+    'package.json': {
+      sha256: '405aeff0560c1c07d8f241b3a57b48f3d88cdc21a39f293bbe9824c2c752db89',
+      bytes: 278,
+      executable: false
+    },
+    'plugin-src': { directory: true },
+    'plugin-src/README.md': {
+      sha256: '3e42017206f331bb8db9a00b7ee87d9ce870ee957ca1ca95dc5157c08564692a',
+      bytes: 8733,
+      executable: false
+    },
+    'plugin-src/compat': { directory: true },
+    'plugin-src/compat/cover-runtime': { directory: true },
+    'plugin-src/compat/cover-runtime/README.md': {
+      sha256: '917809d2d3bf880783a86d207195a6d57ccf4d2526e70e46c22512c73e34403f',
+      bytes: 4592,
+      executable: false
+    },
+    'plugin-src/compat/cover-runtime/cli.mjs': {
+      sha256: 'eae94bc4ec9c21203ba9b005befb99a8819bea5a57876ec2d60e5897f9e6d8be',
+      bytes: 281,
+      executable: false
+    },
+    'plugin-src/references': { directory: true },
+    'plugin-src/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'plugin-src/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'plugin-src/references/licenses': { directory: true },
+    'plugin-src/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'plugin-src/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'plugin-src/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'plugin-src/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'plugin-src/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'plugin-src/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'plugin-src/resources': { directory: true },
+    'plugin-src/resources/assets': { directory: true },
+    'plugin-src/resources/assets/ai-reference-prompts': { directory: true },
+    'plugin-src/resources/assets/ai-reference-prompts/README.md': {
+      sha256: '76f88981f593ad8480dda762435299b5d5b23b95f70856bc526bc0d2f0cb6463',
+      bytes: 5280,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/agent-group-v4.md': {
+      sha256: '846aaf57a509eb09f44b9d830082eec1eacb0326e36f7bfa0969a92402a4c7b5',
+      bytes: 1452,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/agent-v2.md': {
+      sha256: 'afdc178b9fdf8bb266277f585b7fe9ee105d496df131583f615677b9dc671628',
+      bytes: 1332,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/ai-tool-group-v4.md': {
+      sha256: '691afd31ff2f0dff5502d08f61f1829925bae62bbbe0e84af7cb9fc92058fb4c',
+      bytes: 1439,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/ai-tool-v2.md': {
+      sha256: '2eda594da0bfca1873f5144dc197918907159074448756dd1865cb5707fce275',
+      bytes: 1329,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/big-head-group-v4.md': {
+      sha256: 'e092da6eda9cfb302d82c83739f9831f10c4675aa2db22a6c04bf056bfd2e734',
+      bytes: 1474,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/big-head-v3.md': {
+      sha256: '41cf2a751de8345eb98ae5331af6e78e400422af2c8769de1d41651295502d0d',
+      bytes: 1779,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/comparison-group-v4.md': {
+      sha256: '85d42f99069c0b4acd3f1141e577aecb3f7513b7f4c8b0e3a205efe50208f021',
+      bytes: 1481,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/comparison-v3.md': {
+      sha256: 'd5b02ed6a6b3c9291db9224404395e788d1cc0ff5cffcf8b6b98834f360b6f94',
+      bytes: 1444,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/generated-files.json': {
+      sha256: 'e19aeb138631715eb0924bf460753c6c2e72e309cdc89a90dd87db2401ba9e01',
+      bytes: 5535,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/geometry-group-v4.md': {
+      sha256: '7b59c981090bb464af84e7fc907dc0477ae0b01a4e00dc2edfc19ba5d57cf2ff',
+      bytes: 1397,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/geometry-v3.md': {
+      sha256: 'b2bcc0aa46ccf09a8e64da9e75a78de6b595c7e948440f11239a0ca4aa360716',
+      bytes: 1325,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/interview-group-v4.md': {
+      sha256: 'fb2f31f45df4f9b00a69d25d65ddc3a67cff621962ca343046527ed40a1e90bc',
+      bytes: 1475,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/interview-v2.md': {
+      sha256: 'a45e3f07d7af349bc04658a4ac2323bf1367ec0161dde43c31c5f29034096670',
+      bytes: 1222,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/life-story-group-v4.md': {
+      sha256: '095f8ebbe75dec8415dd65fa41272c24f23d07525de5722621dd26194664943c',
+      bytes: 1514,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/life-story-v3.md': {
+      sha256: '865891e7cb94085dd1ec08913431cdc48a9b86a2ebb6b94d3817b4e5ff36607c',
+      bytes: 1810,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/lifestyle-group-v4.md': {
+      sha256: '5d19779d9d8bebd07a4d3689d83b76cbae912304660005a9c431a8fb94d5c5ac',
+      bytes: 1445,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/lifestyle-v2.md': {
+      sha256: '933e203e80da978768059ec2597bab36490cd75d44df13ca33c19f5f200668d2',
+      bytes: 1181,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/magazine-group-v4.md': {
+      sha256: '0c650d4c20e0298d7f2342052b0f276308b79e5dd2df1ca56a7197467b0db53c',
+      bytes: 1418,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/magazine-v3.md': {
+      sha256: '409d760ff1317fea7aa60ba5af894706336bb1b527677bffab3df32157688c6c',
+      bytes: 1411,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/neon-group-v4.md': {
+      sha256: '0942c1438df4fbfd75dcf067aeabfb6e800f5bc5771d50b4db7ad79a8b8c39bf',
+      bytes: 1438,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/neon-v3.md': {
+      sha256: '99aab98acdd8dd83cf42029504b0a836a62e940a2ebd0057fa24c89138501d6d',
+      bytes: 1133,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/news-group-v4.md': {
+      sha256: '96e16bb8e6eecf67c1ea7e19ce09a8271732dfe1fe030ff2a44377b98bdf756f',
+      bytes: 1479,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/news-v2.md': {
+      sha256: '6c4e389794fb246043596dc541a8d51ef967d3520eb2912f9077405286c8a4a9',
+      bytes: 1157,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/notes-group-v4.md': {
+      sha256: '346e1dd52b8bf454d909ef0565539709ff9f1f69f7a1f64fff7c598f669f700b',
+      bytes: 1436,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/notes-v3.md': {
+      sha256: 'fbd3be08a94f6b34a3196789a197691c950e3332b58fae75e98bef4a69eb3ac7',
+      bytes: 1461,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/paper-group-v4.md': {
+      sha256: 'b16b2fe6595e30795b59ea6a77ecc59a73a73ad319d5ad1e25dd204503c685ef',
+      bytes: 1430,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/paper-v3.md': {
+      sha256: '9d6c1c2925119d96a31fd114bcd4a1f43b819d066dbe3b19f73574662b9564ae',
+      bytes: 1337,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/product-group-v4.md': {
+      sha256: '1dc4af0e4051205308e1e7cbededeb7f5cde35147dbfe4b2ac22c8d0dc0f1054',
+      bytes: 1458,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/product-v2.md': {
+      sha256: '744711d96a98b8a1bdfdfe3aa025d4a51efe02de49678703288b7b1624e37452',
+      bytes: 1139,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/tech-collage-group-v4.md': {
+      sha256: 'e80c9f1e38bb8935463e665c15ffeef1e34b6cc1377efd2d269a1561d795bc0b',
+      bytes: 1534,
+      executable: false
+    },
+    'plugin-src/resources/assets/ai-reference-prompts/tech-collage-v3.md': {
+      sha256: '88cac228125f59ea27922d027a18bf7de953d3d593f43db69353c00afa626d78',
+      bytes: 2012,
+      executable: false
+    },
+    'plugin-src/resources/builtin-prompts': { directory: true },
+    'plugin-src/resources/builtin-prompts/README.md': {
+      sha256: '157fa39014d2d002e74a7bfd88576aebfda465dfbaf448b8e93891aaeb1dcc92',
+      bytes: 1747,
+      executable: false
+    },
+    'plugin-src/resources/builtin-prompts/catalog.json': {
+      sha256: '1ab33e0d4a1aee40612570aa9b1ba0fc88e4c2052500226630b5bc95eb65e0f7',
+      bytes: 38737,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates': { directory: true },
+    'plugin-src/resources/builtin-templates/README.md': {
+      sha256: 'd0069fce67a9143b9d94b91fb76dbaf02ebc05b81f1872b4c1e0fbc3d2c5a7a0',
+      bytes: 9856,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/catalog.json': {
+      sha256: 'b3383e5ad0255d07fdce0dec377a2675b21efa8ed9d13910d7dc728f999691a0',
+      bytes: 191743,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence': { directory: true },
+    'plugin-src/resources/builtin-templates/evidence/reference-contact-v2.png': {
+      sha256: '1e87fc81c989d282880cce496a77868e665fe795563004a11b51ef93df5382f3',
+      bytes: 464457,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/reference-contact.png': {
+      sha256: '695cb4eaade9263310cbd302e453c7c2405d3afe5b7ceec642471f891b33fd5d',
+      bytes: 364648,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/source-contact-v2.png': {
+      sha256: '41312a7a92523d794b1af7041565f6608d3eaeeae5b5b60e8dbf6122da34eff3',
+      bytes: 431676,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/source-contact.png': {
+      sha256: '7afa05973f59af4eb170eb9fd05966e3cbfbc521e797f0e8f59524a1c57d4ba1',
+      bytes: 337931,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/evidence/validation-v2.json': {
+      sha256: 'fb013904a884d330f7c1015b3adc7819243fb7a7d21cb178e8cde4634413e782',
+      bytes: 6692,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v1.json': {
+      sha256: '782a2ba17fb43f61c4422181df456117d106f60f94f4c19a5717b8b7034b4433',
+      bytes: 31530,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v2-complete.json': {
+      sha256: '59b127c70a5f1faf19695ed58b5e50b2c8405a5d1ce8df9172a37d29d1dbfb29',
+      bytes: 124160,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v2-draft.json': {
+      sha256: '5d6578fea9bb03f8df1cb1b5146a45373f2b678c36c95fce351ccc86efee9934',
+      bytes: 121511,
+      executable: false
+    },
+    'plugin-src/resources/builtin-templates/legacy-v3.json': {
+      sha256: '1090458436fb80f2829ccfc1a59be825f747b75f4062e2d2b17dbb20303d186f',
+      bytes: 182401,
+      executable: false
+    },
+    'plugin-src/resources/图库': { directory: true },
+    'plugin-src/resources/图库/AI参考': { directory: true },
+    'plugin-src/resources/图库/AI参考/agent-group-v4.png': {
+      sha256: 'da2af3996ec8a20744112064b410cb8286c4ea4d229317c5f00f47357ce462d5',
+      bytes: 1851479,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/agent-v2.png': {
+      sha256: '8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa',
+      bytes: 1813384,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/ai-tool-group-v4.png': {
+      sha256: 'd1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1',
+      bytes: 1702773,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/ai-tool-v2.png': {
+      sha256: 'c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb',
+      bytes: 1504474,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/big-head-group-v4.png': {
+      sha256: 'c6bd1f84f9c23abec61d6cd3fabdf4097571203e54fa3a2bc6aea563ae7f438c',
+      bytes: 1815292,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/big-head-v3.png': {
+      sha256: '743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70',
+      bytes: 2069113,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/comparison-group-v4.png': {
+      sha256: '845ce661844459baf8a82573fd2edad85cdd9d7b7769999196de1ef376a8e124',
+      bytes: 2355465,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/comparison-v3.png': {
+      sha256: '44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b',
+      bytes: 2349287,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/geometry-group-v4.png': {
+      sha256: '8dcf82de5d74b83d32d92a04942400be26321716db010f6d6f261743bd4e8100',
+      bytes: 1882022,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/geometry-v3.png': {
+      sha256: '27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00',
+      bytes: 1930317,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/interview-group-v4.png': {
+      sha256: 'e8208112cad532292d910f9c977122a9f7ad99e56443c882d076975a87c1ddf6',
+      bytes: 2167062,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/interview-v2.png': {
+      sha256: 'eb0858494089b5f9e6df8a880883831ea79a243117c2efbccb5ef48f18c3b66e',
+      bytes: 2154609,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/life-story-group-v4.png': {
+      sha256: '8310a04611c0d9c8fee47ad2786383799df178873c9a31607f6db4054057fab5',
+      bytes: 2484021,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/life-story-v3.png': {
+      sha256: 'a86b9b970b7653c8ac0c1d8f8910ca33d2f98e52c87794e842bb34ab6156f7f1',
+      bytes: 2305658,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/lifestyle-group-v4.png': {
+      sha256: 'bfa11d302a33d21fd440576e8fb541aa9fb7bed88f97135641c5e34acb989551',
+      bytes: 2180601,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/lifestyle-v2.png': {
+      sha256: 'c801a7554a3fd22a7dbeadaccd07b4d25a14067eb477659768754e03b53faf97',
+      bytes: 2228845,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/magazine-group-v4.png': {
+      sha256: 'c910bab287382824461253abfbc69f0a920f471afea2e6b9b67c24a4384f44cf',
+      bytes: 2751220,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/magazine-v3.png': {
+      sha256: 'c441f9b13de938dfa7e316432013f303005e6f90faaf71f00ce4ecc06eedbbee',
+      bytes: 2520387,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/neon-group-v4.png': {
+      sha256: 'e71dfcf9f6129c7fbaeda38091532aeaf506585e972aeda5337d6299d90942f0',
+      bytes: 2298873,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/neon-v3.png': {
+      sha256: 'e93143665c1db169404e47e837a92b8ea20091a02f09a3a83d5cbc587e6b3a6e',
+      bytes: 2154232,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/news-group-v4.png': {
+      sha256: '5c406b07be7c8ee05edcce87849432a3861b7a77f441250707b7ac2dbc79363c',
+      bytes: 2478390,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/news-v2.png': {
+      sha256: '32b30a18e5cc198f2632a795207dc7e240abd95abc0a45bc6e252af960870502',
+      bytes: 2194037,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/notes-group-v4.png': {
+      sha256: '4fb6db11d503807c351f74f5004d3918481bb70b4bfb027763c4dc119d893315',
+      bytes: 2508057,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/notes-v3.png': {
+      sha256: '42b42e93ce5be581ec865cf43bb4a2bd8d3467386a82fe2e71bdc5c49d4cba75',
+      bytes: 2561297,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/paper-group-v4.png': {
+      sha256: 'e390d57e1d9231727229b79b54b1c9823fed461b0acff899b8f6269baae7e97c',
+      bytes: 2885236,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/paper-v3.png': {
+      sha256: 'a5b67cfb16fe35092f0713c3517d2dbc6547610aa0751a80e60174cbfe9fb8dc',
+      bytes: 2894533,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/product-group-v4.png': {
+      sha256: '4e38e89d3aaace9e8131a989466cc017a6c16298b44bdc0232f485c58a601486',
+      bytes: 2002921,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/product-v2.png': {
+      sha256: '3fe7215f52c0cecf41b1c7a03025561f820dd4531eaea8398779aac8f8313982',
+      bytes: 2046739,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/tech-collage-group-v4.png': {
+      sha256: 'bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd',
+      bytes: 2153941,
+      executable: false
+    },
+    'plugin-src/resources/图库/AI参考/tech-collage-v3.png': {
+      sha256: '3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739',
+      bytes: 2267168,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板': { directory: true },
+    'plugin-src/resources/图库/内置模板/agent-v2-reference.svg': {
+      sha256: '746bdbfe3e575a143f3539c445a4b17e94d7d15b17bbdaec97825798e08e86e8',
+      bytes: 3116,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/agent-v2-source.svg': {
+      sha256: '303488c850ff164cd2e6c5ce6a2b0b4583e52b95159a972c25460e8589c945e3',
+      bytes: 3086,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/ai-tool-v2-reference.svg': {
+      sha256: 'dd7ef95f1bba41350d8d62341f8bd8ce646e65295d419d03fbb65ab3dd95e144',
+      bytes: 2842,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/ai-tool-v2-source.svg': {
+      sha256: '04d530311db586cd0b7368d6c6fd355e6de4049ef415e8dc089ad6725f732206',
+      bytes: 2826,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/big-head-v3-reference.svg': {
+      sha256: '2488e88fd888153b652fe521123b7c45afb904e991dde55c2473c0135d25730d',
+      bytes: 1709,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/big-head-v3-source.svg': {
+      sha256: '0139fcb32fb9dc5d612b5943d1843b1d25d0d64cd8bc017ede885832626feed4',
+      bytes: 1706,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-reference.svg': {
+      sha256: 'e5ed371bb9392ab4e495957b49c9e90cee8c9e312c582002978322ef6e19b80a',
+      bytes: 2477,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-source.svg': {
+      sha256: '24f570a49ed473f85e6ace5dbad537554296ad89f5c214e153f2e9106f0beccb',
+      bytes: 2459,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-v2-reference.svg': {
+      sha256: 'c2b3a32719a37bc7a51b4b6bd287ab4f0638898ec89ea1dd1f43bae444e7fb91',
+      bytes: 2525,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/comparison-v2-source.svg': {
+      sha256: '410868e87fb10eaf4f421153eb80ef77202bd791831a2c589b2e0c532835798a',
+      bytes: 2507,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-reference.svg': {
+      sha256: '245eb6b40dd30b2270981ae58b0a0ad0e7e21cb9400cf98fa60dd043cb57e8fb',
+      bytes: 1661,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-source.svg': {
+      sha256: '15ad3f119ff62017f4a110888a2c09deaadf567b3f1aa37cbbf667aa7e701de1',
+      bytes: 1634,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-v2-reference.svg': {
+      sha256: 'dd25eefa6df1b1af43fad6b7dffa1dbcbb8b53ae400ea440651adcf8e8486805',
+      bytes: 1670,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/geometry-v2-source.svg': {
+      sha256: 'd80ccbc72bd69153c5af090268b2ce9fd58d37df3da539fc6f34a69a4057a2d0',
+      bytes: 1643,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/interview-v2-reference.svg': {
+      sha256: '93da57f4ff6eefea69ff31de5f469514eb0bd8106900e74d48f91d45481872f1',
+      bytes: 2153,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/interview-v2-source.svg': {
+      sha256: 'ab2b93baf76607a4c85ba127631dacfa9cdc342667f5ff2dcab0f06062f8f9e0',
+      bytes: 2162,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/life-story-v3-reference.svg': {
+      sha256: '3049d9ed76d730b5cdf4040705c559fd0afc7ee32456e7c97db4d66cdf779d9c',
+      bytes: 1968,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/life-story-v3-source.svg': {
+      sha256: '73782dc3caf2cf3ef4e5aef21942141da5ecf8707127c81ca602bc6756eea276',
+      bytes: 1962,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/lifestyle-v2-reference.svg': {
+      sha256: '45c49f21ca668e958ccc1077fd275bb41a88b589cc517158375e0d9e989f780c',
+      bytes: 2266,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/lifestyle-v2-source.svg': {
+      sha256: '48422f2674731270632e1a13986cdf6424e5e1c175eed5a69cadf85191c458b4',
+      bytes: 2248,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-reference.svg': {
+      sha256: '4c06a7626acd0c86d0a41af5e51c9cb2a91755aea40c1736a614ff514d860cb3',
+      bytes: 2331,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-source.svg': {
+      sha256: '327b89275d575b6ad8d1b35af6c7a247198808ad6954f02e764fc11db0cd488d',
+      bytes: 2298,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-v2-reference.svg': {
+      sha256: '9219e1128b9e856dc0bbeba35514915e727cd1d7714bdac26a035cfbd0e8870a',
+      bytes: 2382,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/magazine-v2-source.svg': {
+      sha256: '77c44855f4e7915610a3eb3bff1717bb21a2a653fc67a1a1a5316a261c5f0de4',
+      bytes: 2349,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-reference.svg': {
+      sha256: '1bc19cac7c9ba7523b6e25eceae6db9a81f12bffed9fb095bd8ec1830e453150',
+      bytes: 4784,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-source.svg': {
+      sha256: '2fa0d92ee69e6a9bf0ee5a0b1b70b4caf0def85d748ba5d21a448256bc4dc908',
+      bytes: 4787,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-v2-reference.svg': {
+      sha256: '12d7d466eba214c3ce370f8c784dac7222654cfdfdc6a417e7774ad069d93f74',
+      bytes: 4855,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/neon-v2-source.svg': {
+      sha256: '95cf1787d0daab1ebdd40a5e90d9d9cdc11eeb7b8b6260000c0e2a19326b1353',
+      bytes: 4841,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/news-v2-reference.svg': {
+      sha256: '90203c51317e7ef5e5668d8f7e00d617b1855ff2c33531cc5f315bd6e542b2eb',
+      bytes: 2908,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/news-v2-source.svg': {
+      sha256: '20125909f8fc7e3e8ab8b6d5b6a8951c7c88109b6dae7400ac73086b11a81502',
+      bytes: 2896,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-reference.svg': {
+      sha256: '6d5a6215ebfc212be92f5e3b8a672b5e088410af65b60851f06978fe7802e01a',
+      bytes: 54207,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-source.svg': {
+      sha256: 'c03c23ac7232cf907b9418ed379408077bf6015aa841dce3f09808835d062424',
+      bytes: 54195,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-v2-reference.svg': {
+      sha256: '32b78826163aef60bac0b6016cc3882498edf7635b095ced2717ce30718d5bdf',
+      bytes: 54252,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/notes-v2-source.svg': {
+      sha256: '9adc55f159db9039d42c7426a047a83aa5d2f5af9621ad89e8c2dd01dda3f225',
+      bytes: 54240,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-reference.svg': {
+      sha256: '5191c9cb7e79ef1237b30ffc5aca8f53e3011847956bb2ea588318d616ed1fdf',
+      bytes: 5953,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-source.svg': {
+      sha256: '74ab281da797e0c355a98024ba339222466957d6edc0dc3c0ab7b888b8d8ff28',
+      bytes: 5929,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-v2-reference.svg': {
+      sha256: 'b08c57d07c0b504a4defc3792fe2464bc018212440ce4eded0012f29758c3b49',
+      bytes: 5992,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/paper-v2-source.svg': {
+      sha256: '5a62db2f7eca08260c67a8c9a93e07b3ee92c8774c4bcf19b8ad52f67f20e2d2',
+      bytes: 5968,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/product-v2-reference.svg': {
+      sha256: '29d7a6363cae1b4996ff94c1d229790c9583f9426b8acce8bc513d8b47367545',
+      bytes: 2707,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/product-v2-source.svg': {
+      sha256: '18d19445a2c595fa00b58acb971c2a61c0d0a39016e00f85c151a4593948b4ed',
+      bytes: 2698,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/tech-collage-v3-reference.svg': {
+      sha256: '54c3b9511b4f341cd0a7705c8b690498e776cbcd1461b7acb83eea87742d9b58',
+      bytes: 2456,
+      executable: false
+    },
+    'plugin-src/resources/图库/内置模板/tech-collage-v3-source.svg': {
+      sha256: 'a1f1b5ab18aac0f291d70e6962da2a7b5614c69cca46053f140ec098b54cf94b',
+      bytes: 2449,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例': { directory: true },
+    'plugin-src/resources/图库/示例/avatar.svg': {
+      sha256: 'a6230bd681cfe20a45d8ef8ffd4ac9fb04749a71cac04c94783bd8d76baadd67',
+      bytes: 892,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-01.svg': {
+      sha256: 'f4e076f634eafb272258da469eea8d5446a09f1121443a0cc2c68c157094d288',
+      bytes: 2899,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-02.svg': {
+      sha256: '76024f97099c060c131b4b2cd51e23c87829d55b9d0ed7392619dc978a9a802d',
+      bytes: 2916,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-03.svg': {
+      sha256: '10e49965fad409802f19748945e38eec01353f74476327b99d5ac92c762cd890',
+      bytes: 3957,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-04.svg': {
+      sha256: 'aad83b84028090deda70b6441bf5fefeb4565ddaef3846ed15d7e0f19d7a14fc',
+      bytes: 3477,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-05.svg': {
+      sha256: '911c93c8144fe106ec12212cc8d781bc48b8734ea5e822ff1f65e8f7a7574097',
+      bytes: 2862,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-06.svg': {
+      sha256: '3ff90130a022350b532733f95b980601b1b10beb950506afe5a8545cc2933f98',
+      bytes: 2997,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-07.svg': {
+      sha256: '6ee0de00e448084d128380881436245038a6eed7d88b547bb317b1de38f2b9f6',
+      bytes: 3017,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-08.svg': {
+      sha256: 'dc0b032336832f306b06144490d8451402b04df4120a5341d6d0afa24cbfc1c0',
+      bytes: 4119,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-09.svg': {
+      sha256: '66c51971d1d01a70a8bbaa3d1c7b22a30beb8df6b090fa11a341736a0eaa62e1',
+      bytes: 3605,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/cover-10.svg': {
+      sha256: '3100af868487d92b665d661a7886b6ef52726fa54031eee237bbb4fc4d090f27',
+      bytes: 2961,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/sample.svg': {
+      sha256: 'c5e85d38fccecb459dfb51a99e53bd84d17029cfe7212f6b2a8c6e3c3811bca2',
+      bytes: 2623,
+      executable: false
+    },
+    'plugin-src/resources/图库/示例/selected.svg': {
+      sha256: 'db6a591817fc395ab9d839784986300be38c546d536ba2651fc072912afb60f5',
+      bytes: 3723,
+      executable: false
+    },
+    'plugin-src/schemas': { directory: true },
+    'plugin-src/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'plugin-src/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'plugin-src/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'plugin-src/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'plugin-src/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'plugin-src/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'plugin-src/src': { directory: true },
+    'plugin-src/src/bridge': { directory: true },
+    'plugin-src/src/bridge/handoff.js': {
+      sha256: '980c13da4d04fd214406be8823a7ec0f6eede93696e738470e0e974fd5d74b9f',
+      bytes: 9586,
+      executable: false
+    },
+    'plugin-src/src/bridge/native-handoff.mjs': {
+      sha256: '4502282a5ec331e15150d6a88e69b9bfe3da488ebc1baa79258b662eae08558b',
+      bytes: 11101,
+      executable: false
+    },
+    'plugin-src/src/cli.mjs': {
+      sha256: 'f2cdf5c65958d0b2b41597d0f2c6c0699584442a3403852b2f9c2bf53c320436',
+      bytes: 1241,
+      executable: false
+    },
+    'plugin-src/src/commands': { directory: true },
+    'plugin-src/src/commands/cover.mjs': {
+      sha256: '51e295a86494dc5c6662ed50e440b564db1cba254bdf17c673c52fb7a2e3fec6',
+      bytes: 10905,
+      executable: false
+    },
+    'plugin-src/src/commands/template.mjs': {
+      sha256: 'a9f1438f48e9421eb2eb8589bb67993228212ac080d436e305678da10af21ae0',
+      bytes: 11730,
+      executable: false
+    },
+    'plugin-src/src/content.mjs': {
+      sha256: '7cf0b34d72996df5a0e8404f231c6cb567efc1552f29b2c5050cbf03fc1a9827',
+      bytes: 16103,
+      executable: false
+    },
+    'plugin-src/src/lib': { directory: true },
+    'plugin-src/src/lib/browser-import': { directory: true },
+    'plugin-src/src/lib/browser-import/README.md': {
+      sha256: '9a019c440997c3e2aa8aadaa057bfe67864e68d4f3bacad6c6cc6dbf1436f276',
+      bytes: 10070,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/builtin-resources.json': {
+      sha256: '7327e764f075d3aa6a7f61a104b5c1c5f5259a2c8311e9ab57fd79f6b863638e',
+      bytes: 17571,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/index.mjs': {
+      sha256: '6937e71bde8a0e933fd2a3b06a7f62937c8014488ac0b5dbbc9843d2927a3d3f',
+      bytes: 175,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/inspect.mjs': {
+      sha256: 'bd72d3ea81532aaf3b9dce9bc0640ab19a235d117a785fbe3fa0932fb612ff26',
+      bytes: 9266,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy': { directory: true },
+    'plugin-src/src/lib/browser-import/legacy/builtin-templates.js': {
+      sha256: 'c66d5a1ceb280d5a1530ce45aafb5f7b71d6add60128e4aec5d0a31f6d9aaeb6',
+      bytes: 618897,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/core.js': {
+      sha256: '206cf4cd515a7775ad82ca26e53b1691b329616b5e1ca882caad67bdcb9f529d',
+      bytes: 71887,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/package.json': {
+      sha256: 'dbf8353f77358bc12169b7bb7301e1978d5b503e002ee927229a8993672818fc',
+      bytes: 20,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/legacy/shared': { directory: true },
+    'plugin-src/src/lib/browser-import/legacy/shared/handoff.js': {
+      sha256: 'd42f155f39694a8e79171808ae42eec8fe46746f7f5b8d85e10439c869cfcda3',
+      bytes: 9677,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/map.mjs': {
+      sha256: '088b0d5b628eb6da828f6ba9d624233e8b54faaa9018e9fce010b50e9f9a9d64',
+      bytes: 38230,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/operation.mjs': {
+      sha256: '1d5afbc9e9920c0f96732fac08aa167d095abd869c5d231bcf92b3d40d72277d',
+      bytes: 39893,
+      executable: false
+    },
+    'plugin-src/src/lib/browser-import/resources.mjs': {
+      sha256: 'b099e251b83e1f4f40cec7324c4416189cc9bbbdb45a75e8f20f902ae72f9e67',
+      bytes: 12228,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library': { directory: true },
+    'plugin-src/src/lib/file-library/README.md': {
+      sha256: '3307edabeb3b61453f8b8e3a210ddba6ff9b73f6eeccb080d0bb94172dcf7954',
+      bytes: 62561,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/backup.mjs': {
+      sha256: '2a74ecf5e969636abd316b10fc49a5fff0a6e06c54b48b77ae3f0df3676fec50',
+      bytes: 28265,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/cover-jobs.mjs': {
+      sha256: 'a9aa9878047193becc9437a37e8277e67b1dfcacf24edf0d8529d3e20d10f2b8',
+      bytes: 43723,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/health.mjs': {
+      sha256: 'fa6615b1fcb65c39989db073f14c7e74d632a67603cb48141d079d5fe5fea811',
+      bytes: 17704,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/index.mjs': {
+      sha256: '99fda9c50c7aeb1385fe926c22948f4b211b491a5430bbfcafc625c86f1d6f89',
+      bytes: 124492,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/model-v5.mjs': {
+      sha256: 'fa26688f06c5bb26259691e2385646bb61a35ee0d7d2dd71622cc0f4761dd24c',
+      bytes: 67751,
+      executable: false
+    },
+    'plugin-src/src/lib/file-library/template-jobs.mjs': {
+      sha256: '85dfcab11652e1f988062d34843b8a20cda5876e46030627b8cb5c803603fbaf',
+      bytes: 39922,
+      executable: false
+    },
+    'plugin-src/src/lib/image-validation': { directory: true },
+    'plugin-src/src/lib/image-validation/README.md': {
+      sha256: 'fd6c33db9263f439f733c88d007e8ccee9f3571fd2767c9c5d12982f9f57dbe5',
+      bytes: 2675,
+      executable: false
+    },
+    'plugin-src/src/lib/image-validation/index.mjs': {
+      sha256: '87a4b8e383b726dfa0eb9a87786d0c297e86e75cfa41365b0dcd498b8f3ff72b',
+      bytes: 10330,
+      executable: false
+    },
+    'plugin-src/src/lib/library-maintenance': { directory: true },
+    'plugin-src/src/lib/library-maintenance/README.md': {
+      sha256: 'b7675c37d3ca7876122b407872977094d2940a34dc977f43a455e0e49f1cf8ab',
+      bytes: 3408,
+      executable: false
+    },
+    'plugin-src/src/lib/library-maintenance/cli.mjs': {
+      sha256: '5226dc2a572ebe9bc495cabfca53b4024df1527aea93b8ba63c95b12181226f9',
+      bytes: 4030,
+      executable: false
+    },
+    'plugin-src/src/lib/library-seed': { directory: true },
+    'plugin-src/src/lib/library-seed/README.md': {
+      sha256: '922b7c7c9bf55f6eb29b3de028a3586e7772fb0e96cb139bcfc0f1cad34f6c59',
+      bytes: 1409,
+      executable: false
+    },
+    'plugin-src/src/lib/library-seed/index.mjs': {
+      sha256: 'becbf4fe3c9b903fbf975fef922358e71d411240af70ccc396cc963d4e21ace6',
+      bytes: 5919,
+      executable: false
+    },
+    'plugin-src/src/lib/package-snapshot.mjs': {
+      sha256: '7c75ec51f555f418a89df3c4cb11d89de3026ea9d9d0ff746929e40801fcfb93',
+      bytes: 4171,
+      executable: false
+    },
+    'plugin-src/src/release.json': {
+      sha256: 'ab728e86102749ee6f5ac79c9dffbb4e8b58a7188758c4ea8c4e856693b1b66e',
+      bytes: 376,
+      executable: false
+    },
+    runtime: { directory: true },
+    'runtime/LICENSE': {
+      sha256: '5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace',
+      bytes: 157609,
+      executable: false
+    },
+    'runtime/README.md': {
+      sha256: '4c4cfc4111e352c4ee28be9673e8c1bce45b1df5ef827eb220a4851063453458',
+      bytes: 1433,
+      executable: false
+    },
+    'runtime/launch.mjs': {
+      sha256: '10d8c374627c3e6f249041de585054e02d8b2362b32dc22374014f32aa6c7389',
+      bytes: 1659,
+      executable: false
+    },
+    'runtime/manifest.json': {
+      sha256: '19a7178a229f2e4de1d03437714e0d7bd6c14d7c741cfce81ac05c8bafbe1f12',
+      bytes: 520,
+      executable: false
+    },
+    'runtime/node': {
+      sha256: '9d050fd455b56426e25d4d603c7c501cbb2630348e836cf221dcce748e90588a',
+      bytes: 121911744,
+      executable: true
+    },
+    skills: { directory: true },
+    'skills/nova-content-cover': { directory: true },
+    'skills/nova-content-cover/SKILL.md': {
+      sha256: 'ac7b4f97bfde2b313144bac9e552efc836c4534ec3f92033c1072f1536f9ef1d',
+      bytes: 2388,
+      executable: false
+    },
+    'skills/nova-content-cover/references': { directory: true },
+    'skills/nova-content-cover/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-cover/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses': { directory: true },
+    'skills/nova-content-cover/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-cover/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-cover/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-cover/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-cover/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas': { directory: true },
+    'skills/nova-content-cover/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-cover/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-cover/scripts': { directory: true },
+    'skills/nova-content-cover/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    },
+    'skills/nova-content-cover-execution': { directory: true },
+    'skills/nova-content-cover-execution/SKILL.md': {
+      sha256: 'c06baebfc38b13dbafc41f6b6f78d100208915af379c8575f738d57cd9efdbb7',
+      bytes: 5015,
+      executable: false
+    },
+    'skills/nova-content-template-execution': { directory: true },
+    'skills/nova-content-template-execution/SKILL.md': {
+      sha256: '96ef420e992b5b5c601d17be3c300c97d3f052a71363243cfeffbbced696c429',
+      bytes: 5206,
+      executable: false
+    },
+    'skills/nova-content-template-restore': { directory: true },
+    'skills/nova-content-template-restore/SKILL.md': {
+      sha256: '7ba61df5d5c848f8a82a99966527e4eb4cfabd70cae60ce9bea42bf14ca865c9',
+      bytes: 2241,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references': { directory: true },
+    'skills/nova-content-template-restore/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses': { directory: true },
+    'skills/nova-content-template-restore/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-template-restore/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas': { directory: true },
+    'skills/nova-content-template-restore/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-template-restore/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-template-restore/scripts': { directory: true },
+    'skills/nova-content-template-restore/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    },
+    'skills/nova-content-template-study': { directory: true },
+    'skills/nova-content-template-study/SKILL.md': {
+      sha256: '92444c84d20d56fb547fa036e51acd9fe2857a3dc83a2013de15e83ddfb76ea7',
+      bytes: 2378,
+      executable: false
+    },
+    'skills/nova-content-template-study/references': { directory: true },
+    'skills/nova-content-template-study/references/contract.md': {
+      sha256: 'aedeef40b5b250869996ca704a172d8805018d0c8415b0262d9b62f230bdac2b',
+      bytes: 4240,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/handoff.md': {
+      sha256: '25e411339ed478213df8651419e99a8609ac946f9934bcb0a242e47a5a81a75c',
+      bytes: 1710,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses': { directory: true },
+    'skills/nova-content-template-study/references/licenses/anthropic-Apache-2.0.txt': {
+      sha256: 'bc6b3af2f331cbc7fb0da1344efb2cbe5877a31498b4d70dbc7000f3405a1362',
+      bytes: 11345,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses/baoyu-MIT.txt': {
+      sha256: '601839401f6ce68b7a8aec0f7ba247ab8ef0848113378220bec4b2615cc84ee7',
+      bytes: 1064,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/licenses/openai-Apache-2.0.txt': {
+      sha256: '4dd13869245e356246a5b770723247bbb80a8f07a181d1d3d873a1734297cdb9',
+      bytes: 10776,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/media-template.md': {
+      sha256: '526332de5acfea0bb816efdd0700b0136b40a65a3fc9b3abf28aa728f236591b',
+      bytes: 6602,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/upstream-notices.md': {
+      sha256: '8b31bbb92289e82e2578cad9f5124c28475521193c6ad4ad767058c7831f64a7',
+      bytes: 3734,
+      executable: false
+    },
+    'skills/nova-content-template-study/references/visual-workflow.md': {
+      sha256: 'e470cccce20fe958c31c3e644c4f3cde9e1503d95ad0acba0c9d7ca5cbf3dd8c',
+      bytes: 4456,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas': { directory: true },
+    'skills/nova-content-template-study/schemas/README.md': {
+      sha256: '47f443e65e766c54e45bc3d6e39d961c8992caed1918d428158d0eefd6414009',
+      bytes: 1196,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/handoff.schema.json': {
+      sha256: '8f09a580320cb05e720a8cb4dedb52e0edd91174447dba23f1753e46a443486e',
+      bytes: 5054,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/request.schema.json': {
+      sha256: '46573a8ffc8e63300b47407128c536995b9d5739b2baefa16204816b932be8cd',
+      bytes: 6672,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/template-catalog.schema.json': {
+      sha256: '4807a6ff61ddfbcb62e96563482ff448ee3ccff470f0d7f67fd79042c171db14',
+      bytes: 6241,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/template-design.schema.json': {
+      sha256: 'c40a2981dc4ba8c67e81c4d97c76f21d5359f769af5b3e5e7c7e8ed9df957cdc',
+      bytes: 6357,
+      executable: false
+    },
+    'skills/nova-content-template-study/schemas/workspace.schema.json': {
+      sha256: '6fb8963c1ede831b94d036e2006c019547aabddecc82022871c2547e01feec06',
+      bytes: 8451,
+      executable: false
+    },
+    'skills/nova-content-template-study/scripts': { directory: true },
+    'skills/nova-content-template-study/scripts/content.mjs': {
+      sha256: 'd467ca8b60ae17fd50cbf3ff4ff8ea61b6d1e99a71b2cc4f6b7422201cf6109f',
+      bytes: 114,
+      executable: false
+    }
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0
