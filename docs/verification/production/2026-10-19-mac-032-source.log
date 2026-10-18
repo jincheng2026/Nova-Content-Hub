@@ -1,0 +1,81 @@
+Nova Content Hub 0.3.2 source verification
+Scope: health guard; workspace list-record projections; release metadata only.
+No packaged/native UI, installation, full verify or build executed by this agent.
+
+$ node --test plugin-src/src/lib/file-library/test/health.test.mjs
+✔ health validates the bound library without changing business bytes or retaining a lock (218.107666ms)
+✔ health reports a corrupt object without silently dropping it or fabricating content (199.550917ms)
+✔ health preserves pending journal and target bytes without recovery (253.375208ms)
+✔ health distinguishes missing, replaced, unsafe and unbound roots before locking (118.4415ms)
+✔ health bounds oversized authoritative files and reports incomplete rather than healthy (210.8245ms)
+✔ health charges each JSON node once while retaining the cumulative work limit (344.432708ms)
+✔ health refuses a live lock without touching its owner (105.043584ms)
+✔ health reports an unknown journal child that strict open would reject (118.440625ms)
+✔ an unreadable pending journal does not mislabel objects as corrupt (222.091958ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1859.122416
+EXIT 0; elapsed 1.906s
+
+$ node --test workbench/test/workspace-capacity.test.mjs workbench/test/worker.test.mjs workbench/test/worker-client-busy.test.mjs workbench/test/workspace.test.mjs workbench/test/workspace-open.test.mjs
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (4.56225ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (7.922458ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.92375ms)
+✔ readonly non-BUSY failures are returned once (0.245125ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.339084ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (165.014958ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.347708ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (6731.764083ms)
+✔ full list records retain the same validated bytes and edit tokens as individual reads, including trash (2124.996291ms)
+✔ workspace projections do not reopen each already validated full record (3235.651208ms)
+✔ only an owned stored publication URL is sent to the system browser (2526.061042ms)
+✔ invalid stored links and browser errors do not become successful opens (4916.719959ms)
+✔ reveal requests only the original bound directory and refuses replacements (708.388792ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (4261.833625ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1390.768667ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (633.954625ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (322.793167ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (677.79125ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.61675ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.131791ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (1292.050625ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (723.829084ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9569.57175
+EXIT 0; elapsed 9.614s
+
+$ npm run typecheck --prefix workbench
+
+> nova-content-hub-workbench@0.3.2 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.2 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.2 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+EXIT 0; elapsed 0.904s
+
+Release assertions: PASS. All five JSON files differ from HEAD only in root version and lock packages[''].version; every dependency entry and other field is identical. Backup source differs only in toolVersion. git diff --check: EXIT 0.
+Reviewed source SHA-256 after checks:
+eb1091d73200a1587066cfb32997a385279504df4fd3334fefc85a2d6496580d  plugin-src/src/lib/file-library/health.mjs
+5ef8bc56c8cb6ab83cd1a2d8dac1c40849f84c1ffd7d4ecf08ef4a6000674ec7  plugin-src/src/lib/file-library/test/health.test.mjs
+9bfaec840f631e47e5d2cb839269cb14378f710f47e4d376a4586edaef4947d0  workbench/src/main/worker.mts
+8086ca1f0747efd82c4c8baa5f83ba310d917cf322288e0c9ec78a82c50ea2cc  workbench/src/main/workspace-worker.mts
+8ebdbf1c13f43aa6939f38910f989b08b03a47177ee7968fecdb872d3702d563  workbench/src/shared/shared-core.d.ts
+3d3e2776437380077aec807806d3e4c8a709be431ecf83d8299612c59b16e524  workbench/src/shared/workspace-core.d.ts
+f6125a57be8f2b2be056d9046ec0f9360c84fc271216628f69eb855456c920b5  workbench/test/workspace-capacity.test.mjs

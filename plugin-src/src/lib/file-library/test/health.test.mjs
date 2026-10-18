@@ -78,6 +78,23 @@ test('health bounds oversized authoritative files and reports incomplete rather 
     assert.ok(report.issues.some(issue => issue.code === 'LIMIT_REACHED'));
 });
 
+test('health charges each JSON node once while retaining the cumulative work limit', t => {
+    const f = fixture(t);
+    f.library.createTemplate({name: 'bounded nodes', definition: {steps: Array(9900).fill(null)}, resources: {}});
+    const before = tree(f.root), report = inspectLibraryHealth(f.root, f.options);
+    assert.equal(report.state, 'healthy');
+    assert.equal(report.complete, true);
+    assert.equal(report.checked.transactions, 1);
+    assert.equal(report.checked.objects, 2);
+    assert.deepEqual(tree(f.root), before);
+
+    f.library.createTemplate({name: 'cumulative excess', definition: {steps: Array(11000).fill(null)}, resources: {}});
+    const limited = inspectLibraryHealth(f.root, f.options);
+    assert.equal(limited.state, 'incomplete');
+    assert.equal(limited.complete, false);
+    assert.ok(limited.issues.some(issue => issue.code === 'LIMIT_REACHED'));
+});
+
 test('health refuses a live lock without touching its owner', t => {
     const f = fixture(t), lock = path.join(f.root, '系统（别动）', '库锁'), token = randomUUID();
     fs.mkdirSync(lock);

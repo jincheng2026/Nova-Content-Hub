@@ -29,8 +29,7 @@ const bound = (binding: LibraryBinding) => openLibrary(binding.root, {
     expectedRootIdentity: binding.rootIdentity
 });
 function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
-    const contents = [...library.listContents(), ...library.listTrash()].map(({id}) => {
-        const content = library.readContent(id);
+    const contents = [...library.listContents(), ...library.listTrash()].map(content => {
         return {
             ...projection(content),
             createdAt: content.createdAt,
@@ -53,8 +52,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
             selectedCandidateId: content.selectedCover?.candidateId ?? null
         };
     });
-    const prompts = library.listPrompts().map(({id}) => {
-        const {title, body, category, summary, when, tags, enabled, editToken} = library.readPrompt(id);
+    const prompts = library.listPrompts().map(({id, title, body, category, summary, when, tags, enabled, editToken}) => {
         return {id, title, body, category, summary, when, tags, enabled: enabled ?? true, editToken};
     });
     const channels = library.readLibrarySettings().channels.map(({id, name, deletedAt}) => ({id, name, enabled: deletedAt === null}));

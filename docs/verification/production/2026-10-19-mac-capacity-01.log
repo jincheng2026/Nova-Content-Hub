@@ -1,0 +1,41 @@
+seeded 10/100 contents
+seeded 20/100 contents
+seeded 30/100 contents
+seeded 40/100 contents
+seeded 50/100 contents
+seeded 60/100 contents
+seeded 70/100 contents
+seeded 80/100 contents
+seeded 90/100 contents
+seeded 100/100 contents
+fixture ready in 87885.52 ms; 600 references share 6 real PNG assets
+listContents: processCold=98.86 ms; warm=85.94,87.48,91.19 ms; reads=432/2310497 bytes; return=697793 bytes
+readWorkspace: processCold=1528.87 ms; warm=1519.88,2035.92,1518.43 ms; reads=1135/4681081 bytes; return=767330 bytes
+readWorkspaceLibrary: processCold=1505.08 ms; warm=1586.69,1562.85,1608.2 ms; reads=1173/4695622 bytes; return=1087806 bytes
+readCover: processCold=74.13 ms; warm=61.75,63.05,74.04 ms; reads=234/1174182 bytes; return=9017 bytes
+
+Real DesktopController + in-process execute worker + file library; excludes Electron utility-process IPC, rendering, host plugins and production claims.
+processCold is first measured operation in a fresh Node process after loading its isolated binding. warm repeats in that process. OS page cache was not purged; seeding and preceding samples may warm it. No application cache is introduced.
+readFileSync counts/bytes are logical synchronous application reads including worker code in this process, not physical device I/O; lstatSync/readdirSync calls are also counted. Async binding initialization and JSON serialization are outside durationMs; serializeMs is separate.
+Synthetic content; six shared solid-color full-decode PNGs reduce fixture disk use and do not model photographic entropy or hundreds of unique images.
+No cover jobs, templates, photo records, collections, or trash in this fixture.
+Only one Mac and one dataset size; no commercial capacity or smoothness guarantee.
+
+Working-tree fix reuses full validated list records in workspace/workspaceLibrary instead of per-record readContent/readPrompt/readCollection. All list locks, binding/root validation and specialized template/asset/publication reads remain.
+Each list reads and validates current authoritative record bytes under its own existing library lock. Reusing those returned records adds no cache; subsequent calls observe subsequent committed edits. Active/trash/entity groups are sequential reads and do not form an atomic multi-group snapshot.
+workspace-capacity.test.mjs: full-list equivalence passed, duplicate-read assertion failed as expected (4 metadata reads versus 3).
+Same isolated library; all four controller results deepEqual before/after, with only ephemeral scoped asset URL epoch normalized.
+optimized listContents: processCold=115.8 ms; warm=90.25,88.25,79.23 ms; reads=432/2310497 bytes; return=697793 bytes
+optimized readWorkspace: processCold=164.85 ms; warm=161.97,147.11,141.94 ms; reads=687/3485358 bytes; return=767330 bytes
+optimized readWorkspaceLibrary: processCold=260.57 ms; warm=220.82,237.5,217.14 ms; reads=725/3499899 bytes; return=1087806 bytes
+optimized readCover: processCold=91.22 ms; warm=66.79,70.92,80.95 ms; reads=234/1174182 bytes; return=9017 bytes
+Replay: node workbench/scripts/capacity-probe.mjs --sample <repo>/.local-probes/capacity-XcuUpW <method>
+
+Optimized confirmation after targeted tests finished (same retained library, same 1 processCold + 3 warm runs):
+listContents: processCold=135.24 ms; warm=91.17,85.85,81.18 ms; reads=432/2310497 bytes; return=697793 bytes
+readWorkspace: processCold=161.46 ms; warm=142.96,157.93,134.06 ms; reads=687/3485358 bytes; return=767330 bytes
+readWorkspaceLibrary: processCold=254.78 ms; warm=229.08,245.58,256.23 ms; reads=725/3499899 bytes; return=1087806 bytes
+readCover: processCold=74.92 ms; warm=73.8,63.98,66.94 ms; reads=234/1174182 bytes; return=9017 bytes
+node --test workbench/test/workspace-capacity.test.mjs workbench/test/workspace.test.mjs workbench/test/workspace-open.test.mjs workbench/test/workspace-mutations.test.mjs: 14 tests passed, 0 failed.
+npm run typecheck:native --prefix workbench: exit 0.
+Reuse validated list objects now. Keep existing locks and validation; measure real Electron page refresh before considering any larger cache/index/pagination change. Do not expand capacity claims from this single synthetic 100-content dataset.

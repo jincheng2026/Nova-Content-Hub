@@ -17,13 +17,15 @@ export function inspectHealth(selectedRoot, options, h) {
         if (!issueKeys.has(key)) {issueKeys.add(key); report.issues.push(issue);}
     };
     const stop = code => {throw Object.assign(new Error(code), {healthStop: code});};
-    const guard = () => {if (++work > LIMITS.work || report.issues.length >= 200 || performance.now() - started > LIMITS.milliseconds) stop('LIMIT_REACHED');};
+    const guard = (cost = 1) => {if ((work += cost) > LIMITS.work || report.issues.length >= 200 || performance.now() - started > LIMITS.milliseconds) stop('LIMIT_REACHED');};
     const boundJSON = bytes => {
         let value;
         try {value = JSON.parse(bytes);} catch {return;}
         const queue = [[value, 0]];
+        guard();
         while (queue.length) {
-            guard();
+            // Nodes consume work when queued; visiting still checks the deadline.
+            guard(0);
             const [next, depth] = queue.pop();
             if (depth > LIMITS.jsonDepth) stop('LIMIT_REACHED');
             if (next && typeof next === 'object') for (const item of Object.values(next)) {guard(); queue.push([item, depth + 1]);}

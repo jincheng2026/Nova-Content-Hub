@@ -496,7 +496,7 @@ function App() {
     const task = status?.task;
     const busy = acting || !status || status.busy;
     const blocked = !!status?.pending || status?.creating|| !!status?.photoPending || !!status?.coverPending || !!status?.coverActionPending || !!status?.workspacePending || !!status?.templatePending || !!status?.maintenance.pending || !!status?.seedPending;
-    let message = !status ? '正在打开工作空间…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '明确新建或打开内容库，也可导入旧备份。';
+    let message = !status ? '正在打开工作空间…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '可新建或打开内容库；从网页版迁移时，选择网页版导出的备份。';
     if (task?.targetChanged) message += '。原内容库位置已被替换，请恢复原目录。';
     if (task?.descriptorChanged) message += '。内容库格式已变更，旧导入完成事实保留。';
     const currentContentSummary = workspace?.contents.find(item => item.id === base?.id);
@@ -544,13 +544,14 @@ function App() {
                 </div>}</Card>
         {!recoveryOpen && recoveryCards}
         <MaintenancePanel key={libraryEpoch} status={status} busy={busy} diagnosticsBusy={acting} blocked={!!blocked} run={nativeAction}/>
-        <Card title={<h2 id="import-heading">导入旧备份</h2>} aria-labelledby="import-heading">
+        <Card title={<h2 id="import-heading">从网页版迁移</h2>} aria-labelledby="import-heading">
             <div className="actions"><Button id="backup" theme="solid"
                                              disabled={busy || blocked || (!!task && task.status !== 'committed')}
-                                             onClick={() => void act('chooseBackup')}>选择旧备份</Button><Button
+                                             onClick={() => void act('chooseBackup')}>选择网页版备份</Button><Button
                 id="destination" disabled={busy || blocked || !status?.sourceName || !!task}
                 onClick={() => void act('chooseDestination')}>选择新库位置</Button></div>
-            <p id="selection">旧备份：{status?.sourceName || '未选择'} 新内容库：{status?.destinationName || '未选择'}</p>
+            <p className="muted">选择网页版导出的备份文件，导入到独立新库。桌面版备份请使用上方“从备份恢复到新文件夹”。</p>
+            <p id="selection">网页版备份：{status?.sourceName || '未选择'} 新内容库：{status?.destinationName || '未选择'}</p>
             <div id="preview">{counts && <><p>预检：内容 {counts.contents} · 合集 {counts.collections} ·
                 模板 {counts.templates} · 照片 {counts.photos} · 提示词 {counts.prompts} · 发布 {counts.publications} ·
                 回收项 {counts.trash}</p>

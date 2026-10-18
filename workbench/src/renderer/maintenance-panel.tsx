@@ -25,15 +25,15 @@ export function MaintenancePanel({status, busy, diagnosticsBusy = busy, blocked,
             if (result) { setReceipt(result); setConfirmKeep(false); setUpgrade(null); }
         });
     }
-    return <section className="maintenance-panel" aria-label="内容库备份与恢复"><Card title="检查当前内容库"><p className="muted">检查当前连接的目录、对象与引用，不修改正文、图片或业务记录。检查会取得内容库协调锁；发现问题后，请保留原文件，从完整备份恢复到新文件夹。</p><div className="management-actions"><Button disabled={diagnosticsBusy} onClick={() => void run(async () => { setHealth(await invoke('inspectLibraryHealth')); })}>检查当前内容库</Button><Button disabled={diagnosticsBusy} onClick={() => void run(async () => { const result = await invoke('exportDiagnostics'); if (result.exported) setNotice(`脱敏诊断已导出：${result.name}`); })}>导出脱敏诊断</Button></div>{(health ?? status?.maintenance.health) && <LibraryHealthSummary report={(health ?? status?.maintenance.health)!}/>}</Card><Card title="备份与恢复"><p className="muted">把本机内容库完整备份到另一个位置。恢复时自动建立新文件夹，原内容库和原备份都会保留。</p>
+    return <section className="maintenance-panel" aria-label="内容库备份与恢复"><Card title="检查当前内容库"><p className="muted">检查内容、图片和保存记录是否完整，保留全部原文件。检查期间请稍候；如有异常，可导出诊断或从备份恢复。</p><div className="management-actions"><Button disabled={diagnosticsBusy} onClick={() => void run(async () => { setHealth(await invoke('inspectLibraryHealth')); })}>检查当前内容库</Button><Button disabled={diagnosticsBusy} onClick={() => void run(async () => { const result = await invoke('exportDiagnostics'); if (result.exported) setNotice(`脱敏诊断已导出：${result.name}`); })}>导出脱敏诊断</Button></div>{(health ?? status?.maintenance.health) && <LibraryHealthSummary report={(health ?? status?.maintenance.health)!}/>}</Card><Card title="备份与恢复"><p className="muted">把本机内容库完整备份到另一个位置。恢复时自动建立新文件夹，原内容库和原备份都会保留。</p>
         <div className="management-actions" style={{display: 'flex', gap: 12, flexWrap: 'wrap'}}>
             <Button disabled={busy || blocked || !!pending || !status?.currentName} onClick={() => void action('backupLibrary')}>备份当前内容库</Button>
             <Button disabled={busy} onClick={() => void action('verifyLibraryBackup')}>检查一份备份</Button>
             <Button disabled={busy || blocked || !!pending} onClick={() => void action('restoreLibraryBackup')}>从备份恢复到新文件夹</Button>
             <Button disabled={busy || blocked || !!pending} onClick={() => void run(async () => { setNotice(''); setUpgrade(null); setReceipt(null); setUpgrade(await invoke('prepareLibraryUpgrade')); })}>升级旧版内容库</Button>
         </div>
-        <p className="muted">备份和恢复只需选择存放位置的父文件夹，工作台会自动生成唯一的新文件夹名。检查备份时，请选择包含 COMPLETE.json 的备份文件夹。</p>
-        <p className="muted">旧库升级支持第4版：先完整备份，再恢复到独立的新文件夹，只升级这个副本。原库正文、图片和业务记录保留；备份期间会取得原库协调锁。第1至3版需先用兼容工具升到第4版。</p>
+        <p className="muted">备份时选择存放位置，工作台会自动建立备份文件夹。检查或恢复时，选择之前生成的整个备份文件夹；恢复还需选择新副本的存放位置。</p>
+        <details><summary>旧版内容库升级说明</summary><p className="muted">旧库升级支持第4版：先完整备份，再恢复到独立的新文件夹，只升级这个副本。原库正文、图片和业务记录保留；备份期间会取得原库协调锁。第1至3版需先用兼容工具升到第4版。</p></details>
         {upgrade && !pending && <section aria-label="确认旧库升级"><h3>确认后开始完整复制</h3><p>原内容库：{upgrade.sourceName}</p><p>升级前备份：{upgrade.backupName}</p><p>升级后的内容库：{upgrade.destinationName}</p><p>请确保所选磁盘有足够空间存放完整备份和独立副本。完成后由你决定是否打开新库。</p><div className="management-actions"><Button disabled={busy || blocked} onClick={() => void action('confirmLibraryUpgrade')}>确认备份并升级副本</Button><Button disabled={busy} onClick={() => void run(async () => { await invoke('cancelLibraryUpgrade'); setUpgrade(null); })}>取消</Button></div></section>}
         {pending && <div role="status" style={{marginTop: 16}}><strong>{pending.kind === 'backup' ? '上次备份' : pending.kind === 'upgrade' ? '上次旧库升级' : '上次恢复'}的结果需要确认</strong><p>目标：{pending.destinationName}。请先核验结果；未完成的文件会保留，不会接着覆盖它们。核验未通过时，可保留现场并重新选择位置。</p>
             {pending.kind === 'upgrade' && <p>升级前备份：{pending.backupName}。当前步骤：{{backup: '完整备份', verify: '核验备份', restore: '恢复独立副本', upgrade: '升级副本', receipt: '核验完成凭据'}[pending.stage ?? 'backup']}。中断后会先检查固定的备份和副本，完整步骤可继续；不完整的复制需保留文件并重新开始。</p>}
@@ -42,7 +42,7 @@ export function MaintenancePanel({status, busy, diagnosticsBusy = busy, blocked,
         </div>}
         {completed && <div role="status" style={{marginTop: 16}}><strong>{completed.kind === 'backup' ? '备份完成' : completed.kind === 'verify' ? '备份检查通过' : completed.kind === 'upgrade' ? '独立副本升级完成' : '已恢复到新文件夹'}{completed.recovered ? '（已核验上次结果）' : ''}</strong><p>{completed.destinationName} · {completed.kind === 'restore' || completed.kind === 'upgrade' ? '原备份内 ' : ''}{completed.counts.files} 个文件 · {completed.counts.directories} 个文件夹 · {completed.counts.bytes.toLocaleString()} 字节</p>
             {completed.kind === 'upgrade' && <><p>升级前备份：{completed.backupName}。原内容库仍保留；尚未自动切换。</p><Button disabled={busy || blocked || !!pending} onClick={() => void run(async () => { await invoke('openUpgradedLibrary'); setNotice('已打开升级后的内容库。'); })}>打开升级后的库</Button></>}
-            {completed.kind === 'restore' && <><p>如需使用恢复的内容，请点击“打开本机内容库”并选择这个新文件夹。</p>{completed.interruptedAttempts > 0 && <p>{completed.interruptedAttempts} 个未完成的助手尝试已标为中断，可在恢复的内容库中重新开始。</p>}{completed.upgradeRequired && <p>这是旧版内容库。第4版可点击“升级旧版内容库”，选择这个恢复后的文件夹；第1至3版请先使用兼容工具升级到第4版。</p>}</>}
+            {completed.kind === 'restore' && <><p>如需使用恢复的内容，请点击上方“打开内容库”并选择这个新文件夹。</p>{completed.interruptedAttempts > 0 && <p>{completed.interruptedAttempts} 个未完成的助手尝试已标为中断，可在恢复的内容库中重新开始。</p>}{completed.upgradeRequired && <p>这是旧版内容库。第4版可点击“升级旧版内容库”，选择这个恢复后的文件夹；第1至3版请先使用兼容工具升级到第4版。</p>}</>}
         </div>}
         {notice && <p role="status">{notice}</p>}
     </Card></section>;

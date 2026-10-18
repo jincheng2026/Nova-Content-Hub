@@ -153,8 +153,7 @@ function document(library: WorkspaceCoreLibrary, input: WorkspaceCoreDocument, k
 export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrarySnapshot {
     const settings = library.readLibrarySettings();
     return {
-        prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(({id}) => {
-            const prompt = library.readPrompt(id);
+        prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(prompt => {
             return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true};
         }),
         photos: [...library.listPhotos(), ...library.listPhotoTrash()].map(photo => ({
@@ -171,12 +170,10 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
                 styleAssetHashes: [...new Set(Object.values(pkg.resources).filter(resource => resource.role === 'style').map(resource => resource.assetHash))]
             };
         }),
-        collections: [...library.listCollections(), ...library.listCollectionTrash()].map(({id}) => {
-            const collection = library.readCollection(id);
+        collections: [...library.listCollections(), ...library.listCollectionTrash()].map(collection => {
             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
         }),
-        contentDetails: [...library.listContents(), ...library.listTrash()].map(({id}) => {
-            const content = library.readContent(id);
+        contentDetails: [...library.listContents(), ...library.listTrash()].map(content => {
             return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
         }),
         settings: {

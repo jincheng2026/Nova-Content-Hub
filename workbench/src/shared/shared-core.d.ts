@@ -42,9 +42,9 @@ declare module '*file-library/index.mjs' {
 
         readPrompt(id: string): import('./contracts.ts').WorkspacePrompt;
 
-        listContents(): import('./contracts.ts').Content[];
+        listContents(): ReturnType<Library['readContent']>[];
 
-        listTrash(): import('./contracts.ts').Content[];
+        listTrash(): ReturnType<Library['readContent']>[];
 
         readContent(id: string): import('./contracts.ts').Content & { createdAt: string; updatedAt: string; plans?: (Omit<import('./contracts.ts').WorkspacePlan, 'schedule'> & { schedule?: import('./contracts.ts').WorkspacePlan['schedule']; scheduledAt?: string; timezone?: string; publicationId?: string })[]; publications?: { id: string; planId: string; schedule?: import('./contracts.ts').WorkspacePlan['schedule']; publishedAt?: string; timezone?: string }[]; coverJobs?: import('./cover-contracts.ts').CoverJob[]; candidates?: Omit<import('./cover-contracts.ts').Candidate, 'url'>[]; selectedCover?: { candidateId: string } | null };
 

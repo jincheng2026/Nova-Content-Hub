@@ -1,0 +1,8 @@
+{
+  "version": "0.3.2",
+  "AUTH_MODE": "disabled",
+  "entries": 451,
+  "sealedPayloadMatches": true,
+  "stageMatches": true,
+  "runtimeValidated": true
+}

@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-18T18:21:26.524Z",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/native-maintenance-ezcv3um_/备份存放/Nova-内容库备份-2026-10-18T18-12-17-330Z-e40fafb4-e5b2-4a3e-ba00-cddfed712701",
+  "restore": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/native-maintenance-ezcv3um_/恢复存放/Nova-恢复的内容库-2026-10-18T18-19-50-333Z-a42bfcb4-31ec-4938-97b8-d735caca5061",
+  "counts": {
+    "files": 392,
+    "directories": 235,
+    "bytes": 103531158
+  },
+  "matchedBackupFiles": 392,
+  "changedFromBackup": [],
+  "candidates": 6,
+  "candidatesAndSelectionEqual": true,
+  "bodyEqual": true,
+  "libraryIdPreserved": true,
+  "rootIdentityChanged": true,
+  "nativeUI": {
+    "backupCompleted": true,
+    "verificationPassed": true,
+    "restoreCompleted": true
+  },
+  "automaticSwitch": false
+}

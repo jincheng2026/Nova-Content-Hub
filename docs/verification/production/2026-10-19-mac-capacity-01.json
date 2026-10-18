@@ -1,0 +1,691 @@
+{
+  "schemaVersion": 1,
+  "measuredAt": "2026-10-18T18:12:41.902Z",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.20.0",
+    "osRelease": "25.4.0",
+    "cpuModel": "Apple M1 Pro",
+    "logicalCpus": 10,
+    "memoryGiB": 16
+  },
+  "scope": "Real DesktopController + in-process execute worker + file library; excludes Electron utility-process IPC, rendering, host plugins and production claims.",
+  "cache": "processCold is first measured operation in a fresh Node process after loading its isolated binding. warm repeats in that process. OS page cache was not purged; seeding and preceding samples may warm it. No application cache is introduced.",
+  "io": "readFileSync counts/bytes are logical synchronous application reads including worker code in this process, not physical device I/O; lstatSync/readdirSync calls are also counted. Async binding initialization and JSON serialization are outside durationMs; serializeMs is separate.",
+  "fixture": {
+    "contents": 100,
+    "candidatesPerContent": 6,
+    "plansPerContent": 3,
+    "prompts": 12,
+    "bodyUtf8Bytes": 6700,
+    "plans": 300,
+    "candidateReferences": 600,
+    "uniqueRasterAssets": 6,
+    "rasterPixels": {
+      "width": 720,
+      "height": 960
+    },
+    "totalUniqueRasterBytes": 75566,
+    "seedMs": 87885.52,
+    "retainedAt": ".local-probes/capacity-XcuUpW"
+  },
+  "limitations": [
+    "Synthetic content; six shared solid-color full-decode PNGs reduce fixture disk use and do not model photographic entropy or hundreds of unique images.",
+    "No cover jobs, templates, photo records, collections, or trash in this fixture.",
+    "Only one Mac and one dataset size; no commercial capacity or smoothness guarantee."
+  ],
+  "samples": [
+    {
+      "method": "listContents",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 135.24,
+          "serializeMs": 0.69,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 91.17,
+          "serializeMs": 1.11,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 85.85,
+          "serializeMs": 0.7,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 81.18,
+          "serializeMs": 0.67,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspace",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 161.46,
+          "serializeMs": 0.92,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 142.96,
+          "serializeMs": 1,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 157.93,
+          "serializeMs": 0.88,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 134.06,
+          "serializeMs": 0.99,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspaceLibrary",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 254.78,
+          "serializeMs": 1.91,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 229.08,
+          "serializeMs": 1.6,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 245.58,
+          "serializeMs": 1.61,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 256.23,
+          "serializeMs": 1.9,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readCover",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 74.92,
+          "serializeMs": 0.05,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 73.8,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 63.98,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 66.94,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        }
+      ]
+    }
+  ],
+  "baselineSamples": [
+    {
+      "method": "listContents",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 98.86,
+          "serializeMs": 0.74,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 85.94,
+          "serializeMs": 0.68,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 87.48,
+          "serializeMs": 0.64,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 91.19,
+          "serializeMs": 0.74,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspace",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 1528.87,
+          "serializeMs": 1.05,
+          "returnBytes": 767330,
+          "readCalls": 1135,
+          "readBytes": 4681081,
+          "lstatSync": 59351,
+          "readdirSync": 242,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 1519.88,
+          "serializeMs": 1.83,
+          "returnBytes": 767330,
+          "readCalls": 1135,
+          "readBytes": 4681081,
+          "lstatSync": 59351,
+          "readdirSync": 242,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 2035.92,
+          "serializeMs": 1.47,
+          "returnBytes": 767330,
+          "readCalls": 1135,
+          "readBytes": 4681081,
+          "lstatSync": 59351,
+          "readdirSync": 242,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 1518.43,
+          "serializeMs": 1,
+          "returnBytes": 767330,
+          "readCalls": 1135,
+          "readBytes": 4681081,
+          "lstatSync": 59351,
+          "readdirSync": 242,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspaceLibrary",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 1505.08,
+          "serializeMs": 2.05,
+          "returnBytes": 1087806,
+          "readCalls": 1173,
+          "readBytes": 4695622,
+          "lstatSync": 62395,
+          "readdirSync": 263,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 1586.69,
+          "serializeMs": 5.54,
+          "returnBytes": 1087806,
+          "readCalls": 1173,
+          "readBytes": 4695622,
+          "lstatSync": 62395,
+          "readdirSync": 263,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 1562.85,
+          "serializeMs": 1.77,
+          "returnBytes": 1087806,
+          "readCalls": 1173,
+          "readBytes": 4695622,
+          "lstatSync": 62395,
+          "readdirSync": 263,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 1608.2,
+          "serializeMs": 1.56,
+          "returnBytes": 1087806,
+          "readCalls": 1173,
+          "readBytes": 4695622,
+          "lstatSync": 62395,
+          "readdirSync": 263,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readCover",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 74.13,
+          "serializeMs": 0.04,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 61.75,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 63.05,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 74.04,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        }
+      ]
+    }
+  ],
+  "baselineMeasuredAt": "2026-10-18T18:09:01.883Z",
+  "sourceRevision": "2fb1568e28391ec8167935cf32bf85da6c77e00a",
+  "change": "Working-tree fix reuses full validated list records in workspace/workspaceLibrary instead of per-record readContent/readPrompt/readCollection. All list locks, binding/root validation and specialized template/asset/publication reads remain.",
+  "freshness": "Each list reads and validates current authoritative record bytes under its own existing library lock. Reusing those returned records adds no cache; subsequent calls observe subsequent committed edits. Active/trash/entity groups are sequential reads and do not form an atomic multi-group snapshot.",
+  "validation": {
+    "baselineRegression": "workspace-capacity.test.mjs: full-list equivalence passed, duplicate-read assertion failed as expected (4 metadata reads versus 3).",
+    "differential": "Same isolated library; all four controller results deepEqual before/after, with only ephemeral scoped asset URL epoch normalized.",
+    "targetedTests": "node --test workbench/test/workspace-capacity.test.mjs workbench/test/workspace.test.mjs workbench/test/workspace-open.test.mjs workbench/test/workspace-mutations.test.mjs: 14 tests passed, 0 failed.",
+    "nativeTypecheck": "npm run typecheck:native --prefix workbench: exit 0."
+  },
+  "firstOptimizedSamples": [
+    {
+      "method": "listContents",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 115.8,
+          "serializeMs": 0.72,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 90.25,
+          "serializeMs": 0.67,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 88.25,
+          "serializeMs": 0.63,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 79.23,
+          "serializeMs": 0.63,
+          "returnBytes": 697793,
+          "readCalls": 432,
+          "readBytes": 2310497,
+          "lstatSync": 8078,
+          "readdirSync": 9,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspace",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 164.85,
+          "serializeMs": 1.1,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 161.97,
+          "serializeMs": 0.92,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 147.11,
+          "serializeMs": 0.95,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 141.94,
+          "serializeMs": 0.95,
+          "returnBytes": 767330,
+          "readCalls": 687,
+          "readBytes": 3485358,
+          "lstatSync": 13207,
+          "readdirSync": 18,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readWorkspaceLibrary",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 260.57,
+          "serializeMs": 1.73,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 220.82,
+          "serializeMs": 1.54,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 237.5,
+          "serializeMs": 1.56,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 217.14,
+          "serializeMs": 1.83,
+          "returnBytes": 1087806,
+          "readCalls": 725,
+          "readBytes": 3499899,
+          "lstatSync": 16251,
+          "readdirSync": 39,
+          "uniqueReadFiles": 226
+        }
+      ]
+    },
+    {
+      "method": "readCover",
+      "records": [
+        {
+          "phase": "processCold",
+          "run": 0,
+          "durationMs": 91.22,
+          "serializeMs": 0.04,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 1,
+          "durationMs": 66.79,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 2,
+          "durationMs": 70.92,
+          "serializeMs": 0.03,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        },
+        {
+          "phase": "warm",
+          "run": 3,
+          "durationMs": 80.95,
+          "serializeMs": 0.02,
+          "returnBytes": 9017,
+          "readCalls": 234,
+          "readBytes": 1174182,
+          "lstatSync": 4910,
+          "readdirSync": 8,
+          "uniqueReadFiles": 226
+        }
+      ]
+    }
+  ],
+  "recommendation": "Reuse validated list objects now. Keep existing locks and validation; measure real Electron page refresh before considering any larger cache/index/pagination change. Do not expand capacity claims from this single synthetic 100-content dataset."
+}

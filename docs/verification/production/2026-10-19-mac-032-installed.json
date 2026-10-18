@@ -1,0 +1,52 @@
+{
+  "at": "2026-10-18T18:25:19.781Z",
+  "version": "0.3.2",
+  "app": "/Applications/自媒体工作台.app",
+  "builtApp": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app",
+  "matchingFiles": {
+    "Contents/Info.plist": "17faccd0b97bc8ab208c787dc47dd15ef954b076556f1cfa7b07a2b2de6c5927",
+    "Contents/Resources/app/workbench/dist/main/assistant-runtime.mjs": "e91aacac249041e6c0b3c74c59386b92c89890453f78c62f7485ccaecc7ba746",
+    "Contents/Resources/app/workbench/dist/renderer-resources.json": "c6a5f99ef22a70e066462b64eeefddbe0da930d4ee86b4fc0695ebf56696f329",
+    "Contents/Resources/icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1"
+  },
+  "pluginEntries": 451,
+  "pluginVersion": "0.3.2",
+  "nativeInstall": {
+    "moveToApplications": true,
+    "replacePriorApplication": true,
+    "originalBackedUp": true,
+    "relaunched": true
+  },
+  "productionReady": false,
+  "nativeAcceptance": {
+    "originalHealth": {
+      "complete": true,
+      "state": "healthy",
+      "objects": 44,
+      "assets": 66,
+      "transactions": 61,
+      "requests": 2
+    },
+    "maintenanceCopyDistinguishesBrowserImport": true,
+    "oldUpgradeDetailsCollapsed": true,
+    "realCandidates": 6,
+    "originalSelectionRetained": true,
+    "capacity": {
+      "library": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/capacity-XcuUpW/library",
+      "synthetic": true,
+      "contents": 100,
+      "plans": 300,
+      "candidateReferences": 600,
+      "sharedRasterAssets": 6,
+      "overviewCorrect": true,
+      "calendarOpened": true,
+      "contentSearch": "容量样本 100",
+      "searchResultOpened": true,
+      "candidatePanelCount": 6,
+      "promptsOpened": true,
+      "preciseLatencyMeasured": false,
+      "limitations": "Synthetic shared solid-color images; no general capacity/production guarantee. Native opening installs default builtins as normal bootstrap."
+    }
+  },
+  "scope": "Installed local arm64 Mac; neither Intel/Windows nor Developer ID/notarization accepted."
+}

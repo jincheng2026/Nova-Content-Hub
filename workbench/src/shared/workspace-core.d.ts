@@ -45,16 +45,16 @@ interface TemplatePackage {
 export interface WorkspaceCoreLibrary {
     importAsset(source: string, input: {purpose: 'template-reference' | 'material'}): {assetHash: string};
     readAsset(assetHash: string): {assetHash: string; bytes: number; detectedType: string; data: Uint8Array};
-    listContents(): Changed[];
-    listTrash(): Changed[];
+    listContents(): WorkspaceCoreDocument[];
+    listTrash(): WorkspaceCoreDocument[];
     readContent(id: string): WorkspaceCoreDocument;
     updateContent(id: string, input: {recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; channelIds: string[]; isExample: boolean}, editToken: string, options: Options): Changed;
     attachContentMaterial(id: string, input: {assetHash: string; originalName: string; role: 'material' | 'reference'}, editToken: string, options: Options): Changed;
     removeContentMaterial(id: string, materialId: string, editToken: string, options: Options): Changed;
     trashContentMaterial(id: string, materialId: string, editToken: string, options: Options): Changed;
     trashContentUnavailableReference(id: string, referenceId: string, editToken: string, options: Options): Changed;
-    listPrompts(): Changed[];
-    listPromptTrash(): Changed[];
+    listPrompts(): ReturnType<WorkspaceCoreLibrary['readPrompt']>[];
+    listPromptTrash(): ReturnType<WorkspaceCoreLibrary['readPrompt']>[];
     readPrompt(id: string): WorkspaceEntity & WorkspacePromptFields & {enabled?: boolean};
     createPrompt(input: WorkspacePromptFields, options: Options): Changed;
     updatePrompt(id: string, input: WorkspacePromptFields, editToken: string, options: Options): Changed;
@@ -75,8 +75,8 @@ export interface WorkspaceCoreLibrary {
     selectTemplateVersion(id: string, version: number, editToken: string, options: Options): Changed;
     trashTemplate(id: string, editToken: string, options: Options): Changed;
     restoreTemplate(id: string, editToken: string, options: Options): Changed;
-    listCollections(): Changed[];
-    listCollectionTrash(): Changed[];
+    listCollections(): WorkspaceCoreDocument[];
+    listCollectionTrash(): WorkspaceCoreDocument[];
     readCollection(id: string): WorkspaceCoreDocument;
     createCollection(input: WorkspaceCollectionFields, options: Options): Changed;
     updateCollection(id: string, input: WorkspaceCollectionFields, editToken: string, options: Options): Changed;
