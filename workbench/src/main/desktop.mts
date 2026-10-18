@@ -1,6 +1,6 @@
 import { errorInfo } from '../shared/contracts.ts';
 import type { Dialogs, Release, DesktopInputs, DesktopMethod } from '../shared/contracts.ts';
-import { app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, protocol, session, utilityProcess, nativeImage } from 'electron';
 import fs from 'node:fs/promises';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -9,6 +9,7 @@ import { PAGE, CHANNELS, CSP, assertCaller, staticResource, validateResources, v
 import { BindingStore } from './bindings.mts';
 import { DesktopController } from './controller.mts';
 import { WorkerClient } from './worker-client.mts';
+import { appIconPaths } from './branding.mts';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 interface StartOptions { show?: boolean; userData?: string; dialogs?: Dialogs; onConsoleMessage?: (message: string) => void; ready?: (context: { window: BrowserWindow; controller: DesktopController; worker: WorkerClient; release: Release }) => Promise<void> }
@@ -18,12 +19,18 @@ export async function startDesktop({ show = true, userData, dialogs, ready, onCo
   if (userData) app.setPath('userData', userData);
   const resources = validateResources(JSON.parse(readFileSync(path.join(here, '../renderer-resources.json'), 'utf8')));
   const release = validateRelease(JSON.parse(readFileSync(path.join(here, '../release.json'), 'utf8')));
+  const icons = appIconPaths(path.join(here, '../brand'));
   if (!app.requestSingleInstanceLock()) { app.quit(); return; }
   let window: BrowserWindow; let worker: WorkerClient | undefined;
   app.on('second-instance', () => { if (window) { if (window.isMinimized()) window.restore(); window.focus(); } });
   app.on('window-all-closed', () => app.quit());
   app.on('will-quit', () => worker?.stop());
   await app.whenReady();
+  const icon = nativeImage.createFromPath(icons.png);
+  const size = icon.getSize();
+  if (icon.isEmpty() || !icon.getScaleFactors().includes(1) || size.width !== 512 || size.height !== 512) throw new Error('Cannot decode the bundled application PNG icon');
+  if (icons.window !== icons.png && nativeImage.createFromPath(icons.window).isEmpty()) throw new Error('Cannot decode the bundled application ICO icon');
+  if (process.platform === 'darwin') { if (!app.dock) throw new Error('macOS Dock is unavailable'); app.dock.setIcon(icon); }
   session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
   session.defaultSession.setPermissionCheckHandler(() => false);
   session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({ cancel: !staticResource(details.url, resources) }));
@@ -43,7 +50,7 @@ export async function startDesktop({ show = true, userData, dialogs, ready, onCo
   });
   let initializationError: unknown;
   try { await controller.initialize(); } catch (error) { initializationError = error; }
-  window = new BrowserWindow({ width: 960, height: 760, minWidth: 600, minHeight: 520, show: false, title: 'Nova 内容库 · 技术验证', webPreferences: { preload: path.join(here, '../preload/index.cjs'), sandbox: true, contextIsolation: true, nodeIntegration: false, webSecurity: true, webviewTag: false, devTools: false } });
+  window = new BrowserWindow({ width: 960, height: 760, minWidth: 600, minHeight: 520, show: false, icon: icons.window, title: 'Nova 内容库 · 技术验证', webPreferences: { preload: path.join(here, '../preload/index.cjs'), sandbox: true, contextIsolation: true, nodeIntegration: false, webSecurity: true, webviewTag: false, devTools: false } });
   window.webContents.on('will-prevent-unload', event => {
     const choice = dialog.showMessageBoxSync(window, { type: 'question', title: '草稿尚未保存', message: '是否保存当前草稿后关闭？', buttons: ['保存后关闭', '明确放弃并关闭', '留在当前内容'], defaultId: 2, cancelId: 2 });
     if (choice === 1) event.preventDefault();

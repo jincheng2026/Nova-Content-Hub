@@ -34,7 +34,7 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
     if (!stat.isDirectory() || stat.isSymbolicLink() || stat.dev.toString() !== expected.dev || stat.ino.toString() !== expected.ino) fail('CONFLICT', '新库创建位置已被替换；保留原目标以供核验。');
     if (op === 'queryCreation' && (await fs.readdir(args.root as string)).length === 0) return null;
     const descriptor = op === 'queryCreation' ? JSON.parse(await fs.readFile(path.join(args.root as string, '内容库.json'), 'utf8')) as { libraryId: string } : null;
-    const library = op === 'createLibrary' ? createLibrary(args.root as string) : openLibrary(args.root as string, { expectedLibraryId: descriptor!.libraryId, expectedRootIdentity: expected });
+    const library = op === 'createLibrary' ? createLibrary(args.root as string, { expectedRootIdentity: expected }) : openLibrary(args.root as string, { expectedLibraryId: descriptor!.libraryId, expectedRootIdentity: expected });
     if (library.info.rootIdentity.dev !== expected.dev || library.info.rootIdentity.ino !== expected.ino) fail('CONFLICT', 'Library creation target changed');
     return bindingOf(library);
   }

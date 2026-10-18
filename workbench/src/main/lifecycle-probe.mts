@@ -1,11 +1,13 @@
 // Injected only into external verification copies; this entry is excluded from release packages.
-import { app, BrowserWindow, session } from 'electron';
+import { app, BrowserWindow, session, nativeImage, utilityProcess } from 'electron';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 import { startDesktop } from './desktop.mts';
+import { WorkerClient } from './worker-client.mts';
+import { createHash } from 'node:crypto';
 import { openLibrary, createLibrary } from '../../../file-library/index.mjs';
 import type { Content, DesktopMethod, DesktopResults, DesktopInputs, Reply, Mutation } from '../shared/contracts.ts';
 const root = process.env.NOVA_DESKTOP_PROBE_ROOT;
@@ -14,8 +16,23 @@ if (!root || !path.isAbsolute(root)) throw new Error('Run the lifecycle probe la
 const destination = path.join(root, 'library');
 const malicious = '<script>globalThis.untrustedExecuted=true</script>';
 const messages: string[] = [];
+let dockCalls = 0;
+const setDockIcon = app.dock?.setIcon.bind(app.dock);
+if (app.dock && setDockIcon) app.dock.setIcon = icon => { setDockIcon(icon); dockCalls += 1; };
+const tree = async (directory: string) => {
+  const result: [string, string | null][] = [];
+  for (const relative of (await fs.readdir(directory, { recursive: true })).sort()) {
+    const file = path.join(directory, relative); const stat = await fs.lstat(file);
+    result.push([relative, stat.isDirectory() ? null : createHash('sha256').update(await fs.readFile(file)).digest('hex')]);
+  }
+  return result;
+};
 startDesktop({ show: false, userData: path.join(root, 'machine'), dialogs: { backup: async () => null, destination: async () => destination, library: async () => destination }, onConsoleMessage: message => messages.push(message), async ready({ window, controller, worker, release }) {
   window.webContents.setBackgroundThrottling(false);
+  const icon = nativeImage.createFromPath(fileURLToPath(new URL('../brand/icon.png', import.meta.url)));
+  assert.equal(icon.isEmpty(), false); assert.deepEqual(icon.getSize(), { width: 512, height: 512 }); assert.deepEqual(icon.getScaleFactors(), [1, 2]);
+  if (process.platform === 'darwin') assert.equal(dockCalls, 1);
+  console.log(`PASS bundled NativeImage 512px, scales 1/2, actual Dock calls ${dockCalls}`);
   const run = <T = unknown,>(script: string): Promise<T> => window.webContents.executeJavaScript(script);
   const bridge = async <K extends DesktopMethod>(method: K, input?: DesktopInputs[K]): Promise<DesktopResults[K]> => {
     const result = await run<Reply<DesktopResults[K]>>(`window.contentHub.${method}(${input === undefined ? '' : JSON.stringify(input)})`);
@@ -48,6 +65,36 @@ startDesktop({ show: false, userData: path.join(root, 'machine'), dialogs: { bac
     await assert.rejects(worker.call('createLibrary', { root: destination, rootIdentity: binding.rootIdentity, mutationId: randomUUID() }), { code: 'AUTH_NOT_CONFIGURED' });
     assert.equal((await bridge('readContent', { id: item.id })).body, 'required readable');
     assert.equal((await bridge('listContents')).length, 1); assert.equal(controller.binding.pending, null);
+  } else if (phase?.startsWith('guard-')) {
+    if (phase === 'guard-pre') {
+      const call = worker.call.bind(worker);
+      worker.call = async (op, args) => {
+        if (op === 'createLibrary') { await fs.rename(destination, path.join(root, 'reserved-original')); await fs.mkdir(destination); }
+        return call(op, args);
+      };
+    } else {
+      // Only this external test worker enables existing core fault hooks; release auth remains unchanged.
+      const wrapper = fileURLToPath(new URL('./creation-fault-worker.mjs', import.meta.url));
+      const coreURL = new URL('../../../file-library/index.mjs', import.meta.url).href;
+      await fs.writeFile(wrapper, `import fs from 'node:fs';import path from 'node:path';import{createHash}from'node:crypto';import{openLibrary,__testing}from ${JSON.stringify(coreURL)};
+process.env.NODE_ENV='test';const root=process.argv[3],phase=process.argv[4],target=path.join(root,'library');let armed=true,seed=false;
+const snapshot=()=>fs.readdirSync(target,{recursive:true}).sort().map(relative=>{const file=path.join(target,relative);return[relative,fs.lstatSync(file).isDirectory()?null:createHash('sha256').update(fs.readFileSync(file)).digest('hex')]});
+__testing.setHook(event=>{
+if(seed&&event.phase==='afterJournal')throw new Error('pending fixture');
+if(!armed)return;
+if(phase==='guard-init'&&event.phase==='createAfterEmptyCheck'){armed=false;fs.renameSync(target,path.join(root,'reserved-original'));fs.mkdirSync(target);fs.writeFileSync(path.join(root,'replacement.json'),JSON.stringify(snapshot()));}
+if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内容库.json'){armed=false;const library=openLibrary(target);seed=true;try{library.createContent({title:'pending fixture',body:'must not recover in replacement'})}catch(error){if(!error.pendingRecovery)throw error}finally{seed=false}fs.renameSync(target,path.join(root,'reserved-original'));fs.cpSync(path.join(root,'reserved-original'),target,{recursive:true});fs.writeFileSync(path.join(root,'replacement.json'),JSON.stringify(snapshot()));}
+});await import('./worker.mjs');`);
+      const faultWorker = new WorkerClient(() => utilityProcess.fork(wrapper, [release.pairId, root, phase], { stdio: 'ignore' }));
+      controller.worker = faultWorker;
+    }
+    await rejected('createLibrary', undefined, 'CONFLICT');
+    assert.ok(controller.binding.creation); assert.equal(controller.binding.current, null);
+    const before = phase === 'guard-pre' ? [] : JSON.parse(await fs.readFile(path.join(root, 'replacement.json'), 'utf8')) as [string, string | null][];
+    assert.deepEqual(await tree(destination), before);
+    if (phase === 'guard-final') assert.ok(before.some(([relative]) => relative.includes('待恢复/') && relative.endsWith('intent.json')));
+    controller.worker !== worker && (controller.worker as WorkerClient).stop();
+    console.log(`PASS actual utility worker ${phase}: replacement unchanged; original reservation retained; no foreign pending recovery`);
   } else if (phase === 'crud') {
     await click('create-library'); assert.ok((await bridge('status')).currentName);
     await click('new-content'); await fill('content-title', malicious); await fill('content-body', `native body ${malicious}`); await click('save-content');
@@ -120,6 +167,11 @@ startDesktop({ show: false, userData: path.join(root, 'machine'), dialogs: { bac
     const saved = JSON.parse(await fs.readFile(path.join(root, 'after.json'), 'utf8')) as { pending: { mutationId: string }; content: Content };
     const identity = JSON.parse(await fs.readFile(path.join(root, 'identity.json'), 'utf8')) as { binding: unknown };
     assert.deepEqual(controller.binding.current, identity.binding);
+    assert.equal(await run("document.getElementById('content-body') === null"), true);
+    await click('keep-pending');
+    assert.equal(await run("document.getElementById('content-body').value"), 'historical receipt');
+    assert.equal(await run("document.getElementById('disk-body').textContent"), 'later external version');
+    assert.ok((await bridge('status')).pending);
     const result = await bridge('queryPendingMutation'); assert.equal(result?.state, 'committed'); assert.equal(result.mutationId, saved.pending.mutationId); assert.equal(result.current?.body, 'later external version'); assert.equal(result.draft?.body, 'historical receipt');
     await rejected('retryPendingMutation', undefined, 'NO_PENDING'); assert.equal((await bridge('listContents')).length, 4);
     await click('list'); assert.equal(await run('globalThis.untrustedExecuted===true'), false);

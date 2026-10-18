@@ -183,7 +183,7 @@ export class DesktopController {
   async updateContent(input: Edit) { validateInput('updateContent', input); return this.exclusive(() => this.write({ op: 'updateContent', input, mutationId: randomUUID() })); }
   async trashContent(input: ContentRef) { validateInput('trashContent', input); return this.exclusive(() => this.write({ op: 'trashContent', input, mutationId: randomUUID() })); }
   async restoreContent(input: ContentRef) { validateInput('restoreContent', input); return this.exclusive(() => this.write({ op: 'restoreContent', input, mutationId: randomUUID() })); }
-  async checkPending(): Promise<PendingView | null> {
+  async checkPending(clearCommitted = true): Promise<PendingView | null> {
     const pending = this.binding.pending;
     if (!pending) return null;
     this.pendingView = this.uncertain();
@@ -197,8 +197,8 @@ export class DesktopController {
     // Historical receipts identify the object only; always reread today's version.
     const current = await this.worker.call('readContent', { binding: this.current(), id: found.objectId });
     const result: PendingView = { ...this.uncertain(), state: 'committed', current };
-    await this.persist({ ...this.binding, pending: null });
-    this.pendingView = null;
+    if (clearCommitted) { await this.persist({ ...this.binding, pending: null }); this.pendingView = null; }
+    else this.pendingView = result;
     return result;
   }
   async queryPendingMutation() {
@@ -238,7 +238,7 @@ export class DesktopController {
         if (input.action !== 'discard') fail('INVALID_STATE', '请核验固定的新库位置，或明确放弃这次创建并保留目录。');
         await this.persist({ ...this.binding, creation: null }); this.creationMissing = false; return null;
       }
-      const result = await this.checkPending();
+      const result = await this.checkPending(input.action === 'discard');
       if (!result) return null;
       if (result.state === 'committed' && input.action !== 'saveAs') return result.current;
       if (input.action === 'keep') return result.current;

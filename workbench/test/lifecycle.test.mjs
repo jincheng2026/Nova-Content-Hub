@@ -158,3 +158,31 @@ test('explicitly adopting another current library retires only the completed imp
   f.worker.call = async (op, args) => { if (op === 'query') throw new Error('Old import path is no longer available'); return original(op, args); };
   assert.ok((await f.controller.status()).currentName); assert.equal((await f.controller.listContents()).length, 0);
 });
+test('save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically', async t => {
+  const f = await fixture(t); await f.controller.createLibrary(); const original = f.worker.call; let lost = false;
+  f.worker.call = async (op, args) => { const value = await original(op, args); if (op === 'mutate' && !lost) { lost = true; throw Object.assign(new Error('lost'), { code: 'WORKER_EXIT' }); } return value; };
+  await assert.rejects(f.controller.createContent({ title: 'submitted', body: 'durable original draft' }), { code: 'WORKER_EXIT' });
+  const pending = f.controller.binding.pending; const core = openLibrary(f.destination); const first = core.listContents()[0]; core.updateContent(first.id, { body: 'later disk edit' }, first.editToken);
+  const save = f.controller.store.save.bind(f.controller.store); const attempts = [];
+  f.controller.store.save = async next => { attempts.push(next.pending); throw Object.assign(new Error('disk full'), { code: 'ENOSPC' }); };
+  await assert.rejects(f.controller.resolvePendingMutation({ action: 'saveAs' }), { code: 'ENOSPC' });
+  assert.equal(attempts.length, 1); assert.equal(attempts[0].op, 'createContent'); assert.notEqual(attempts[0].mutationId, pending.mutationId);
+  assert.deepEqual(f.controller.binding.pending, pending); assert.deepEqual((await new BindingStore(f.file).load()).pending, pending);
+  f.controller.store.save = save; const reopened = f.make(); await reopened.initialize(); const result = await reopened.resolvePendingMutation({ action: 'saveAs' }); assert.equal(result.body, 'durable original draft'); assert.equal(core.listContents().length, 2);
+});
+test('keep on a committed pending retains the submitted draft and durable record after restart', async t => {
+  const f = await fixture(t); await f.controller.createLibrary(); const original = f.worker.call;
+  f.worker.call = async (op, args) => { const result = await original(op, args); if (op === 'mutate') throw Object.assign(new Error('lost'), { code: 'WORKER_EXIT' }); return result; };
+  await assert.rejects(f.controller.createContent({ title: 'submitted', body: 'keep this draft' }), { code: 'WORKER_EXIT' });
+  const core = openLibrary(f.destination); const item = core.listContents()[0]; core.updateContent(item.id, { body: 'later disk' }, item.editToken);
+  const reopened = f.make(); await reopened.initialize(); assert.equal((await reopened.resolvePendingMutation({ action: 'keep' })).body, 'later disk');
+  assert.equal((await reopened.status()).pending.draft.body, 'keep this draft'); assert.equal((await new BindingStore(f.file).load()).pending.input.body, 'keep this draft');
+});
+test('worker consumes core expectedRootIdentity during initialization before writing a replacement directory', async t => {
+  const f = await fixture(t); await fs.mkdir(f.destination); const stat = await fs.lstat(f.destination, { bigint: true });
+  // Fault hooks are synchronous: replace after the core emptiness check, before its first mkdir.
+  const sync = await import('node:fs');
+  __testing.setHook(event => { if (event.phase === 'createAfterEmptyCheck') { sync.renameSync(f.destination, path.join(f.root, 'reserved-original')); sync.mkdirSync(f.destination); } });
+  await assert.rejects(execute('createLibrary', { root: f.destination, rootIdentity: { dev: stat.dev.toString(), ino: stat.ino.toString() }, mutationId: randomUUID() }, 'disabled'), { code: 'CONFLICT' });
+  __testing.setHook(undefined); assert.deepEqual(await fs.readdir(f.destination), []);
+});

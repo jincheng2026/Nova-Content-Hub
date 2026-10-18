@@ -2,38 +2,42 @@
 > nova-content-hub-workbench@0.2.0 test
 > node --test test/*.test.mjs
 
-✔ only exact top-level sender with no renderer arguments can invoke business (0.850416ms)
-✔ static protocol maps only exact manifest resources and refuses URL normalization (1.329583ms)
-✔ release/resource configuration fails closed and scripts retain strict CSP (0.612083ms)
-✔ machine binding survives fresh store and refuses malformed or symlink state (32.059792ms)
-✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.439625ms)
-✔ persisted accepted task is recovered after worker exit and fresh application; resume uses exact task (109.9315ms)
-✔ committed retries never replay import and reject changed source or replaced library (103.666166ms)
-✔ source must still match the preview before launching, and failed pre-reservation can be reselected (87.781083ms)
-✔ a restart finds the accepted disk task even when both operation response and recovery query were lost (160.446958ms)
-✔ replaced committed target cannot be listed or resumed (130.917416ms)
-✔ startup and user status queries share one disk query instead of colliding in the worker (113.160917ms)
-✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (2546.693292ms)
-✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (1035.52425ms)
-✔ committed response loss queries current content and never replays old receipt over later edits (1030.05ms)
-✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (1183.371875ms)
-✔ required build main and worker reject all five business writes before any business mutation (256.772166ms)
-✔ bound roots reject different libraries and same-ID clones before any pending recovery (377.783166ms)
-✔ creation response loss verifies fixed original inode; failure never removes its directory (164.371458ms)
-✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (161.818375ms)
-✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (149.16075ms)
-✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (146.596209ms)
-✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (194.900709ms)
-✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (791.989083ms)
-✔ explicitly adopting another current library retires only the completed import pointer (232.858083ms)
-✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (142.077041ms)
-✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.378084ms)
-✔ real file import through controller and worker survives a fresh binding and keeps later edits (4814.89875ms)
-ℹ tests 27
+✔ only exact top-level sender with no renderer arguments can invoke business (2.767458ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.905167ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.876167ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (41.038875ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.506541ms)
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (341.016875ms)
+✔ persisted accepted task is recovered after worker exit and fresh application; resume uses exact task (210.711875ms)
+✔ committed retries never replay import and reject changed source or replaced library (173.958458ms)
+✔ source must still match the preview before launching, and failed pre-reservation can be reselected (101.570542ms)
+✔ a restart finds the accepted disk task even when both operation response and recovery query were lost (174.986ms)
+✔ replaced committed target cannot be listed or resumed (149.606917ms)
+✔ startup and user status queries share one disk query instead of colliding in the worker (156.314875ms)
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (4527.617791ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (1888.997167ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (1398.131125ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (2160.039625ms)
+✔ required build main and worker reject all five business writes before any business mutation (578.723208ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (937.646209ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (441.961459ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (422.550167ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (311.687209ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (252.509458ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (486.909834ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (1737.821083ms)
+✔ explicitly adopting another current library retires only the completed import pointer (560.492625ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (1878.204584ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (962.609ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (15.465583ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (219.171167ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.383584ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (7777.339042ms)
+ℹ tests 31
 ℹ suites 0
-ℹ pass 27
+ℹ pass 31
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 8407.864333
+ℹ duration_ms 18774.310291

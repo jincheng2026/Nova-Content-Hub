@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { build } from 'vite';
 import { syncBridge } from '../../plugin-src/scripts/sync-bridge.mjs';
+import { checkAppIcons } from '../../scripts/build-app-icons.mjs';
 import { validateBuildConfig, validateResources, validateRelease } from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
@@ -17,6 +18,7 @@ if (!npmCLI || !fs.statSync(npmCLI).isFile()) throw new Error('Run this builder 
 const packageJSON = JSON.parse(fs.readFileSync(path.join(workbench, 'package.json'), 'utf8'));
 const release = validateBuildConfig(JSON.parse(fs.readFileSync(path.join(root, 'release.config.json'), 'utf8')));
 if (!/^\d+\.\d+\.\d+$/.test(packageJSON.dependencies.sharp)) throw new Error('Pin the shared sharp runtime before building.');
+const appIcons = await checkAppIcons();
 const tsc = path.join(workbench, 'node_modules/typescript/bin/tsc');
 for (const config of ['tsconfig.native.json', 'tsconfig.renderer.json']) execFileSync(process.execPath, [tsc, '-p', path.join(workbench, config), '--noEmit'], { stdio: 'inherit' });
 fs.rmSync(path.join(workbench, '.native'), { recursive: true, force: true });
@@ -28,6 +30,7 @@ for (const mode of modes) {
   fs.rmSync(target, { recursive: true, force: true });
   const dist = path.join(target, 'workbench/dist');
   fs.mkdirSync(dist, { recursive: true });
+  fs.cpSync(appIcons, path.join(dist, 'brand'), { recursive: true });
   fs.cpSync(path.join(workbench, '.native'), dist, { recursive: true, filter: source => !['probe.mjs', 'lifecycle-probe.mjs'].includes(path.basename(source)) });
   fs.writeFileSync(path.join(target, 'workbench/package.json'), JSON.stringify({ type: 'module', main: 'dist/main/index.mjs' }) + '\n');
   const preload = fs.readFileSync(path.join(dist, 'preload/index.cjs'), 'utf8');

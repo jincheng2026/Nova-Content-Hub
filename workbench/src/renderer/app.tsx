@@ -35,6 +35,7 @@ function App() {
   const dirtyRef = useRef(false); dirtyRef.current = dirty;
   const report = (failure: unknown) => { const value = errorInfo(failure); setError(`${value.message}（${value.code}）`); };
   const load = (item: Content) => { setBase(item); setDraft({ title: item.title, body: item.body }); setDisk(null); };
+  const clearEditor = () => { setBase(null); setDraft(null); draftRef.current = null; setDisk(null); savedContent.current = null; setContents(null); };
   const refreshStatus = async () => { const next = await invoke('status'); setStatus(next); setPending(next.pending); return next; };
   useEffect(() => { void refreshStatus().catch(report); }, []);
   async function refreshEditor() {
@@ -49,7 +50,7 @@ function App() {
     if (active.current) return;
     active.current = true; setActing(true); setError('');
     try { return await action(); } catch (failure) { report(failure); return undefined; }
-    finally { try { await refreshStatus(); } catch (failure) { report(failure); } active.current = false; setActing(false); }
+    finally { try { await refreshStatus(); } catch (failure) { setStatus(null); report(failure); } active.current = false; setActing(false); }
   }
   async function save(): Promise<boolean> {
     if (!draft || disk) return false;
@@ -69,6 +70,7 @@ function App() {
   useEffect(() => { const close = () => { void save().then(saved => { if (saved) { dirtyRef.current = false; window.close(); } }); }; window.addEventListener('nova-save-close', close); return () => window.removeEventListener('nova-save-close', close); });
   async function recover(retry = false) {
     await nativeAction(async () => {
+      if (status?.creating) clearEditor();
       const found = retry ? { mutationId: pending?.mutationId ?? '', op: pending?.op ?? 'createContent', state: 'committed' as const, current: await invoke('retryPendingMutation'), draft: pending?.draft ?? null } : await invoke('queryPendingMutation');
       if (found?.current && found.state === 'committed') {
         if (dirty || (found.draft && (found.draft.title !== found.current.title || found.draft.body !== found.current.body))) { setDisk(found.current); if (!draft && found.draft) setDraft(found.draft); setBase(found.current); }
@@ -79,9 +81,12 @@ function App() {
   }
   async function resolve(action: 'keep' | 'saveAs' | 'discard') {
     await nativeAction(async () => {
+      const retained = draft ?? pending?.draft ?? null;
       const item = await invoke('resolvePendingMutation', { action });
-      const next = await invoke('status');
-      if (action === 'keep' && !next.pending && item) { if (draft && (draft.title !== item.title || draft.body !== item.body)) { setBase(item); setDisk(item); } else load(item); }
+      if (action === 'keep') {
+        if (retained) { setDraft(retained); if (item) { setBase(item); setDisk(retained.title !== item.title || retained.body !== item.body ? item : null); } }
+        else if (item) load(item);
+      }
       if (action !== 'keep') { if (item) load(item); else { setBase(null); setDraft(null); setDisk(null); } setContents(await invoke('listContents', { view })); }
     });
   }
@@ -93,8 +98,9 @@ function App() {
     await nativeAction(async () => {
       if (method === 'listContents') { setContents(await invoke('listContents', { view })); await refreshEditor(); }
       else {
+        if (['createLibrary', 'openLibrary', 'importBackup', 'resumeImport'].includes(method)) clearEditor();
         await invoke(method);
-        if (method === 'createLibrary' || method === 'openLibrary') { setContents(await invoke('listContents', { view })); setBase(null); setDraft(null); setDisk(null); }
+        if (method === 'createLibrary' || method === 'openLibrary') setContents(await invoke('listContents', { view }));
         if (method === 'importBackup' || method === 'resumeImport') { const next = await invoke('status'); if (next.task?.status === 'committed' && !next.task.targetChanged) setContents(await invoke('listContents', { view })); }
       }
     });

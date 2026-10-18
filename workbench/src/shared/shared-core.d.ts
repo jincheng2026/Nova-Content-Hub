@@ -16,5 +16,5 @@ declare module '*file-library/index.mjs' {
     queryMutation(id: string): { objectId: string } | null;
   }
   export function openLibrary(destination: string, options?: { expectedLibraryId: string; expectedRootIdentity: import('./contracts.ts').RootIdentity }): Library;
-  export function createLibrary(destination: string): Library;
+  export function createLibrary(destination: string, options?: { expectedRootIdentity: import('./contracts.ts').RootIdentity }): Library;
 }

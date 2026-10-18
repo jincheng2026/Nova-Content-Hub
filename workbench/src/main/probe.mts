@@ -14,7 +14,7 @@ const destination = path.join(root, 'library');
 const consoleMessages: string[] = [];
 const malicious = '<script>globalThis.untrustedExecuted=true</script>';
 console.log(`Starting Electron probe phase: ${process.env.NOVA_DESKTOP_PROBE_PHASE}`);
-startDesktop({ onConsoleMessage: message => consoleMessages.push(message), show: false, userData: path.join(root, 'machine'), dialogs: { backup: async () => path.join(root, 'source.json'), destination: async () => destination }, async ready({ window, controller, worker, release }) {
+startDesktop({ onConsoleMessage: message => consoleMessages.push(message), show: false, userData: path.join(root, 'machine'), dialogs: { backup: async () => path.join(root, 'source.json'), destination: async () => destination, library: async () => path.join(root, 'initial/library') }, async ready({ window, controller, worker, release }) {
   const run = <T = unknown,>(script: string): Promise<T> => window.webContents.executeJavaScript(script);
   const bridge = async <K extends DesktopMethod>(method: K): Promise<DesktopResults[K]> => {
     const reply = await run<Reply<DesktopResults[K]>>(`window.contentHub.${method}()`);
@@ -31,15 +31,43 @@ startDesktop({ onConsoleMessage: message => consoleMessages.push(message), show:
   assert.equal(preferences.sandbox, true); assert.equal(preferences.contextIsolation, true); assert.equal(preferences.nodeIntegration, false);
   assert.deepEqual(await run('({ require: typeof require, process: typeof process, bridge: Object.keys(window.contentHub).sort() })'), { require: 'undefined', process: 'undefined', bridge: ['chooseBackup', 'chooseDestination', 'createContent', 'createLibrary', 'importBackup', 'listContents', 'openLibrary', 'queryPendingMutation', 'readContent', 'resolvePendingMutation', 'restoreContent', 'resumeImport', 'retryPendingMutation', 'status', 'trashContent', 'updateContent'] });
   if (process.env.NOVA_DESKTOP_PROBE_PHASE === 'import') {
+    await run('document.getElementById("open-library").click()');
+    await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('current-library').textContent.includes('library')`);
+    await run('document.getElementById("list").click()');
+    await wait(`document.querySelector('#contents details button') && document.querySelector('[data-busy="false"]')`);
+    await run('document.querySelector("#contents details button").click()');
+    await wait(`document.getElementById('content-body')?.value === 'Library A saved body' && document.getElementById('dirty-state').textContent === '已保存'`);
+    const initialId = (await bridge('listContents'))[0]!.id;
+    if (release.AUTH_MODE === 'disabled') {
+      const call = worker.call.bind(worker); let lost = false;
+      worker.call = async (op, args) => { const result = await call(op, args); if (op === 'import' && !lost) { lost = true; throw Object.assign(new Error('import response lost'), { code: 'WORKER_EXIT' }); } return result; };
+    }
     console.log('React business status loaded; clicking backup/destination/import');
     await run('document.getElementById("backup").click()');
     await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('selection').textContent.includes('source.json')`);
     await run('document.getElementById("destination").click()');
     await wait(`document.querySelector('[data-busy="false"]') && !document.getElementById('import').disabled`);
     await run('document.getElementById("import").click()');
+    if (release.AUTH_MODE === 'disabled') {
+      await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成')`, 45000);
+      assert.equal(await run("document.getElementById('content-body') === null"), true);
+      const resume = controller.resumeImport.bind(controller); const status = controller.status.bind(controller); let lostStatus = 0;
+      controller.resumeImport = async () => { await resume(); lostStatus = 1; throw Object.assign(new Error('selection response lost after commit'), { code: 'WORKER_EXIT' }); };
+      controller.status = async () => { if (lostStatus) { lostStatus -= 1; throw Object.assign(new Error('status read failed'), { code: 'IO_ERROR' }); } return status(); };
+      await run('document.getElementById("resume").click()');
+      await wait(`document.querySelector('[data-busy="false"][data-loaded="false"]')`);
+      assert.equal(await run("document.getElementById('content-body') === null"), true);
+      assert.equal(await run("document.getElementById('new-content').disabled"), true);
+      controller.resumeImport = resume; controller.status = status;
+      await run('document.getElementById("refresh").click()');
+    }
+
     await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成') && !document.getElementById('list').disabled`, 45000);
     assert.equal(await run('document.getElementById("error").textContent'), '');
     assert.equal((await bridge('status')).task?.status, 'committed');
+    assert.equal(await run("document.getElementById('content-body') === null"), true);
+    assert.equal((await bridge('listContents')).some(item => item.id === initialId), false);
+    console.log('PASS saved A editor cleared before import/resume adopts B; lost selection/status cannot submit A identifiers');
     const list = await bridge('listContents'); assert.ok(list.some(item => item.title === malicious));
     const library = openLibrary(destination); const content = library.listContents()[0];
     library.updateContent(content.id, { body: `edited after import ${malicious}` }, content.editToken);

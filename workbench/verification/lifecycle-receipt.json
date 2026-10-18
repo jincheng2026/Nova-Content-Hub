@@ -1,20 +1,22 @@
 {
   "format": "nova-content-native-lifecycle-verification",
   "schemaVersion": 1,
-  "executedAt": "2026-10-17T16:11:31.544Z",
-  "sourceBaseCommit": "48eede7",
+  "executedAt": "2026-10-18T01:47:41.425Z",
+  "sourceBaseCommit": "b08fb8d",
+  "coreOriginalCommit": "577d4b7",
+  "coreWorktreeCommit": "d54eaab",
+  "iconSourceCommit": "823bbf8",
   "sourceWorkingTree": true,
   "platform": "darwin",
   "arch": "arm64",
   "node": "v24.20.0",
   "productionReady": false,
-  "contractStatus": "pending-core-creation-identity-guard",
-  "blockingFinding": "worker pre/post root checks cannot prevent createLibrary writing or recovering a replacement target. Core createLibrary must accept expectedRootIdentity and use guarded initialization plus expected ID/inode on final open; worker wiring and fault validation remain required.",
+  "contractStatus": "native-lifecycle-and-bundled-icons-verified-with-listed-platform-limits",
   "results": {
     "strictNativeTypecheck": "pass",
     "strictRendererTypecheck": "pass",
     "nodeTests": {
-      "passed": 27,
+      "passed": 31,
       "failed": 0,
       "original14Preserved": true
     },
@@ -24,20 +26,28 @@
     ],
     "realLifecycleProbe": {
       "passed": true,
-      "disabledProcesses": 4,
+      "disabledProcesses": 7,
       "requiredProcesses": 1,
+      "creationFaultProcessesIncludedInDisabled": 3,
       "malformedConfigStartupRejections": 2,
+      "undecodablePNGStartupRejections": 2,
       "actualUtilityProcesses": true,
       "mainAndWorkerFiveBusinessWritesRefusedInRequired": true,
       "crudTrashRestoreReopen": true,
       "dirtyRefreshAndNavigationAndRecycleGuards": true,
       "rendererBeforeUnloadCancellation": true,
       "conflictBothVersionsAndExplicitSaveAs": true,
+      "restartDirectKeepPreservesSubmittedAndLaterDiskDrafts": true,
       "replacedLibraryAndSameIdCloneRefused": true,
       "persistBeforeDispatchAndExitBeforeCommit": true,
       "exitAfterCommitBeforeControllerAcknowledgement": true,
       "sameMutationIdQueryAndExplicitRetry": true,
       "laterExternalEditsNotOverwritten": true,
+      "coreCreationExpectedRootIdentityConsumed": true,
+      "creationReplacementBeforeDispatchNoWrites": true,
+      "creationReplacementAfterEmptyCheckNoWrites": true,
+      "creationSameIdCloneWithPendingBeforeFinalOpenNotRecovered": true,
+      "testCoreFaultWrapperExternalOnly": true,
       "foreignSenderAndFiniteInputRejections": true,
       "actualCSPViolations": 0,
       "exactResourceMIME": true,
@@ -48,7 +58,40 @@
       "modes": 2,
       "realImportReopenProcesses": 4,
       "missingConfigStartupRejections": 4,
-      "sourceRemovalAndSameTaskAndLaterEditsPreserved": true
+      "sourceRemovalAndSameTaskAndLaterEditsPreserved": true,
+      "savedLibraryAEditorClearedBeforeLibraryBSelection": true,
+      "directImportAndExplicitResumeCovered": true,
+      "lostSelectionResponseAndStatusReadDisableWrites": true
+    },
+    "pendingRecovery": {
+      "saveAsAtomicReplacementENOSPCPreservesOriginalDurablePending": true,
+      "keepRetainsDurableSubmittedDraft": true,
+      "corruptAndRecoveryErrorsStillPreservedNotClassifiedAsMissing": true
+    },
+    "branding": {
+      "masterUnchanged": true,
+      "fixedBundledPaths": true,
+      "windowICOOnWindowsPNGElsewhere": true,
+      "actualNativePNGSize": {
+        "width": 512,
+        "height": 512
+      },
+      "actualNativeScaleFactors": [
+        1,
+        2
+      ],
+      "actualMacDockSetIconCallsPerVerifiedProcess": 1,
+      "verifiedProcesses": 8,
+      "sourceDirectoryNotNeededAtRuntime": true,
+      "damagedHashAndMissingFileNodeRejections": true,
+      "undecodablePNGNoDefaultFallback": true,
+      "icnsICOAvailableForFutureDistribution": true
+    },
+    "probeCleanup": {
+      "settleOnCloseOnly": true,
+      "timeoutSendsSIGKILLBeforeAwaitingClose": true,
+      "hardTimeoutMilliseconds": 60000,
+      "forcedSixtySecondTimerNotExercised": true
     }
   },
   "electronBinary": {
@@ -58,17 +101,24 @@
     "shippedInBundle": false
   },
   "notVerified": [
-    "core guarded creation integration and its fault cases",
     "native system chooser clicks",
     "native close-dialog button clicks",
     "human visual/accessibility acceptance",
-    "Windows/Linux",
+    "Windows/Linux runtime",
+    "Windows taskbar and Finder installation icons",
     "production entitlement implementation",
     "host combinations",
-    "signed installers/notarization/upgrades"
+    "signed installers/notarization/upgrades",
+    "atomic openat-level protection, persistent hostile replacement or inode reuse",
+    "broader corrupt-library diagnosis or pending cancellation workflow"
   ],
   "coreSourceSHA256": {
-    "file-library/index.mjs": "a615be0a4a0cc5ca5ce4783354b366f3cf02fc92fa5eb12af1897b5d9d4e122c"
+    "file-library/index.mjs": "be8fb6737aa2b65934b7bb39e5b276d5cf90dd934c1d07f037518045ee40bc5d"
+  },
+  "iconDependencySHA256": {
+    "scripts/build-app-icons.mjs": "84c67fa22131403095101e57e53ed4c04a4ea3a3ca46e7de1728b3bb0ae5585e",
+    "assets/brand/nova-content-hub-icon-master.png": "40c5860a7075a6b53a637d30921e199d721c2c0e917aaeb71e8bcb3755e9bb0b",
+    "assets/brand/desktop/manifest.json": "5b042a70733eafd5b6b8b35a6f5de38d44fb573e21b2e2e86c094efab5803662"
   },
   "modes": {
     "required": {
@@ -91,8 +141,8 @@
         "format": "nova-desktop-renderer-resources",
         "schemaVersion": 1,
         "entries": {
-          "/assets/index-B8GxjClF.js": {
-            "file": "assets/index-B8GxjClF.js",
+          "/assets/index-B5G_N2Ip.js": {
+            "file": "assets/index-B5G_N2Ip.js",
             "mime": "text/javascript; charset=utf-8"
           },
           "/assets/index-Cv2wAdwb.css": {
@@ -105,8 +155,31 @@
           }
         }
       },
-      "mainSHA256": "2b309b86cb6be7b835619c001a8e7ad82f79040e2dfcab6c4dda581d1c279113",
-      "workerSHA256": "ee55ae6163cb097c9f94fb5910279adb1518d46a415131158961c3ac32b22655"
+      "mainSHA256": "a510fca5b5360a817855d195586e51de232ced9a3412f96ee05cffc6ef7c281f",
+      "workerSHA256": "bda8dc90c0194313bf2633d6b841d8f6029e334e6994e5e725f0313987512201",
+      "brandManifest": {
+        "format": "nova-content-app-icons",
+        "schemaVersion": 1,
+        "source": "nova-content-hub-icon-master.png",
+        "sourceHash": "40c5860a7075a6b53a637d30921e199d721c2c0e917aaeb71e8bcb3755e9bb0b",
+        "windowsSizes": [
+          16,
+          20,
+          24,
+          32,
+          40,
+          48,
+          64,
+          128,
+          256
+        ],
+        "files": {
+          "icon.png": "e1daf4c981dc80a15e76037987554fd9e0c101451f3d289e00246bcec3e6dece",
+          "icon@2x.png": "bf110ae6a15ae262199e5e362d7d4072c4363e3f03e6e192e4b5a45e88fc1b35",
+          "icon.ico": "2757f6485ef09c8009e2275ad158561c9e9ad40bbc8223ecb3048f8823412fc7",
+          "icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1"
+        }
+      }
     },
     "disabled": {
       "release": {
@@ -128,8 +201,8 @@
         "format": "nova-desktop-renderer-resources",
         "schemaVersion": 1,
         "entries": {
-          "/assets/index-B8GxjClF.js": {
-            "file": "assets/index-B8GxjClF.js",
+          "/assets/index-B5G_N2Ip.js": {
+            "file": "assets/index-B5G_N2Ip.js",
             "mime": "text/javascript; charset=utf-8"
           },
           "/assets/index-Cv2wAdwb.css": {
@@ -142,39 +215,64 @@
           }
         }
       },
-      "mainSHA256": "2b309b86cb6be7b835619c001a8e7ad82f79040e2dfcab6c4dda581d1c279113",
-      "workerSHA256": "ee55ae6163cb097c9f94fb5910279adb1518d46a415131158961c3ac32b22655"
+      "mainSHA256": "a510fca5b5360a817855d195586e51de232ced9a3412f96ee05cffc6ef7c281f",
+      "workerSHA256": "bda8dc90c0194313bf2633d6b841d8f6029e334e6994e5e725f0313987512201",
+      "brandManifest": {
+        "format": "nova-content-app-icons",
+        "schemaVersion": 1,
+        "source": "nova-content-hub-icon-master.png",
+        "sourceHash": "40c5860a7075a6b53a637d30921e199d721c2c0e917aaeb71e8bcb3755e9bb0b",
+        "windowsSizes": [
+          16,
+          20,
+          24,
+          32,
+          40,
+          48,
+          64,
+          128,
+          256
+        ],
+        "files": {
+          "icon.png": "e1daf4c981dc80a15e76037987554fd9e0c101451f3d289e00246bcec3e6dece",
+          "icon@2x.png": "bf110ae6a15ae262199e5e362d7d4072c4363e3f03e6e192e4b5a45e88fc1b35",
+          "icon.ico": "2757f6485ef09c8009e2275ad158561c9e9ad40bbc8223ecb3048f8823412fc7",
+          "icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1"
+        }
+      }
     }
   },
   "sourceSHA256": {
-    "workbench/scripts/build.mjs": "62fae5a3fd41a974aea43db202096f8bcc2f85887f0eda9e744bcfa64f45041d",
-    "workbench/scripts/lifecycle-probe.mjs": "0a7d47ecf739f1b466a68c98595a201e8d3712db0c4104c87b6a98b6ecd730c2",
-    "workbench/scripts/probe.mjs": "c44869025ad51fcb2ca14eb556478fb84a17d8d2edc8e5dce11e6b4ee7e67dbc",
+    "workbench/scripts/build.mjs": "0fdb2ab70b746ebb70e5a9202fe286577164abb7241073e757b4fc0487b80748",
+    "workbench/scripts/lifecycle-probe.mjs": "af86e8920f02b7a2d8839b0911e66288c955552c2b2cba22f4958def636047f5",
+    "workbench/scripts/probe.mjs": "4d82b2bd5540cbcdfd37bb9bd4eb6fdc95b0ec38daa38d9c3be7f6ea4869a45c",
     "workbench/src/main/bindings.mts": "a01e8dcd894a9755a8fd83a4c250ebc489a051a48fafa4aaac609355151b563b",
     "workbench/src/main/boundary.mts": "a8d964652063eed31698e0dc08fc4734a4396e96feb9ba346034d80335355349",
-    "workbench/src/main/controller.mts": "a811ce4f07fffb67176aba54cad3ddb4911f05a7246259f54f82b03f530275a7",
-    "workbench/src/main/desktop.mts": "37a4ed4c09223af94d7ab8a6aec838cab862e2b66808a643f89f2c38e1164162",
+    "workbench/src/main/branding.mts": "5f8fa35b586bb0d614aaaee1666fc14ce74f560ffbce15e9d1b5836ef92723bb",
+    "workbench/src/main/controller.mts": "0ed9e6657fd935c783430bb73545fe34e6f4f9181603d9a2279cd2bcbe6618bf",
+    "workbench/src/main/desktop.mts": "b5ba04652f72827d2f4d536ee5944133d0638e2cb16d0f923037e47c51baf62e",
     "workbench/src/main/index.mts": "efa86cb69252d2907fa2fbc3d679c549e700fd4066c89fe50ed0c1959cffb828",
-    "workbench/src/main/lifecycle-probe.mts": "866ee918cae9a7cfdf62846aada82b1d653af57140ebb8a43bf97971abcea38c",
-    "workbench/src/main/probe.mts": "1e364eec095f0aaac9edc341fe2072a72553437ced3045d40fa3aafdd1569bff",
+    "workbench/src/main/lifecycle-probe.mts": "3bc43633c3d141e2b0b64e046dcb4085d1a06099b0b28f9dfa5417e62b31e183",
+    "workbench/src/main/probe.mts": "61842ba0213f1c249b9bebfda475148572676e1cc795c1fc8c683a0722e4b98a",
     "workbench/src/main/worker-client.mts": "7828ee94c0a810d57145b2e8db0b90e7bf15c1e21e548ff1894f9ac353e92e88",
-    "workbench/src/main/worker.mts": "36d858089d9464256d21ef08ed3e246117fb77bdc272900b06e1da6e0f4ced45",
+    "workbench/src/main/worker.mts": "4703eedfaa3f972dd5ccc7d6d790d384906fc832c8f44f53aec6ba3bd3caccb7",
     "workbench/src/preload/index.cts": "8b2b841c417cfba28f8f737663a483cb3a62dea9e0bd6588d520c2864c50c67a",
-    "workbench/src/renderer/app.tsx": "957d475402c87b220552d80678bf0be9430cd813093b658927411f4a36b2a244",
+    "workbench/src/renderer/app.tsx": "bd5fef549723350096717554530b25bd5c0fac60a5ae08faf2fdd548a0359e8d",
     "workbench/src/renderer/env.d.ts": "38ea7f532dd85ec2cb34d0b375ff8c06e408c1eca87db8ce525e278dd2132fe5",
     "workbench/src/renderer/index.html": "2c3f684146283e15de90bfdf629c84791bf7d87bae9dde2c027c44207adb6726",
     "workbench/src/renderer/style.css": "e654e6c6c7f8ed4ad9befcd5d85b58fa13f2a1ee79d6c00ea91b0f7cd6757b14",
     "workbench/src/shared/contracts.ts": "91ce2b83c3832162fea49cbd6a4a748f112c185941b0b18c2b25b8ae24bcdc39",
-    "workbench/src/shared/shared-core.d.ts": "a7712a8d93106aee62dc0aed1df8bda650580a4992a8f179b049cf5c600b1b3c",
+    "workbench/src/shared/shared-core.d.ts": "76a52f8aa9fe0e9fc5b191308a9a56e17ad9802b876e1427aadfd9c30b0e2754",
     "workbench/src/shared/validation.ts": "b1e9f8fe060837c1cbb0ac0284ebfd3ed10b5e2fb71974b2a6fd444a4ced1f11",
     "workbench/test/boundaries.test.mjs": "96cdf7a3c469164043a64b10e759a702d4506f6b6657efbfba4bd86dbab3ea83",
+    "workbench/test/branding.test.mjs": "00d453eadc61d0ac4a68ee4a433e98bdc218ccf9342fc81c2a2768baf422a0de",
     "workbench/test/controller.test.mjs": "5d8fc6f26847d5ea0faa2b1c98454257b9783f336033ce0a7ca421cc7a7607db",
-    "workbench/test/lifecycle.test.mjs": "42ffca78be216af0d66f49ed9a32425f0fd18dbb7e048f61b4d34f5358143b82",
+    "workbench/test/lifecycle.test.mjs": "51e062f2f2b4c7eeeafeec28b09f22eba2d07e6965cc9c1e94d73c54aaab7b9c",
     "workbench/test/worker.test.mjs": "c3ecf0de542e1a79d640a3cc9d3d0b66b7f30e085b4cc6adff71a44760892565"
   },
   "evidence": {
     "lifecycle-build.log": {
-      "sha256": "27d81499db5b76ab51db878c77abb3f63461bce89862d5429cb8040a32465625"
+      "sha256": "29882c901a5f0d4a0630484cf357682473e5dcfa327bd53e4fc3c6af776175d6"
     },
     "lifecycle-conflict.png": {
       "sha256": "fdf3f0b9b7729ec494681c64d38f50bee2933c046581274ba1cd8d4c2579294d"
@@ -183,19 +281,19 @@
       "sha256": "80f7d6afb5662a7f7258c7ddebecf7a8556807cc69ceb01c92f0883f93c2c576"
     },
     "lifecycle-electron.log": {
-      "sha256": "a27ad07c5b0e4da3b08ed7135b939e32b4f6f087b3cebc31f929aaba36539112"
+      "sha256": "69ed0883c204cabb8aa52486715056b8744b3235d462f70ee896445185675157"
     },
     "lifecycle-import-disabled.png": {
       "sha256": "13fbe866e4d5a7dc226b7b43a87f5ffe803f27eb5398d17cb1e90947f546860f"
     },
     "lifecycle-import-electron.log": {
-      "sha256": "220d058cc3e898665add18e8b2d9fcd5bc3a17f7d5d07d3f63cdbec9b62571eb"
+      "sha256": "e56bf84bf5fdd2f4de0de9022adb348ac7ead3c17ba1a6865dafebe46e8e0a6c"
     },
     "lifecycle-import-required.png": {
       "sha256": "13fbe866e4d5a7dc226b7b43a87f5ffe803f27eb5398d17cb1e90947f546860f"
     },
     "lifecycle-node-test.log": {
-      "sha256": "6fae02c59779d2d9c50bb27146f4e55d01e0556e6104ab601967ce7bdb7ed74d"
+      "sha256": "f382ed35bc5dd87d274dfb3e9f672efd3ed4efefddc63695e9fca6fd77760063"
     },
     "lifecycle-typecheck.log": {
       "sha256": "8a3e20f88333dd9a2466636e455fd75e55f498f12ac5d9209067663d69cf9405"

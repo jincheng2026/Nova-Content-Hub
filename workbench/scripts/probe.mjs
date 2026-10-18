@@ -5,6 +5,7 @@ import { spawn } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import electron from 'electron';
 import { makeBackup } from '../../browser-import/test/fixture.mjs';
+import { createLibrary } from '../../file-library/index.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const repository = path.resolve(workbench, '..');
@@ -12,9 +13,10 @@ const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-workbench-probe-'));
 async function launch(bundle, entry, phase, data, expected = 0) {
   await new Promise((resolve, reject) => {
     const child = spawn(electron, [entry], { cwd: bundle, env: { ...process.env, NOVA_DESKTOP_PROBE_ROOT: data, NOVA_DESKTOP_PROBE_PHASE: phase }, stdio: 'inherit' });
-    const timeout = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Electron probe exceeded 60 seconds; this does not prove a UI/runtime pass.')); }, 60000);
-    child.once('error', error => { clearTimeout(timeout); reject(error); });
-    child.once('exit', code => { clearTimeout(timeout); code === expected ? resolve() : reject(new Error(`Electron ${phase} probe exited ${code}, expected ${expected}`)); });
+    let failure;
+    const timeout = setTimeout(() => { failure = new Error(`Electron ${phase} probe exceeded 60 seconds`); child.kill('SIGKILL'); }, 60000);
+    child.once('error', error => { failure = error; if (child.pid) child.kill('SIGKILL'); });
+    child.once('close', (code, signal) => { clearTimeout(timeout); if (failure) reject(failure); else code === expected ? resolve() : reject(new Error(`Electron ${phase} probe closed with code ${code}, signal ${signal}, expected ${expected}`)); });
   });
 }
 try {
@@ -23,6 +25,8 @@ try {
     const data = path.join(root, `data-${mode}`);
     await fs.mkdir(path.join(data, 'machine'), { recursive: true });
     await fs.cp(path.join(repository, 'dist-desktop', `auth-${mode}`), bundle, { recursive: true });
+    await fs.mkdir(path.join(data, 'initial'));
+    createLibrary(path.join(data, 'initial/library')).createContent({ title: 'Library A saved editor', body: 'Library A saved body' });
     const { state } = await makeBackup();
     state.data.PROJECTS.find(item => item.kind === '内容').name = '<script>globalThis.untrustedExecuted=true</script>';
     await fs.writeFile(path.join(data, 'source.json'), JSON.stringify(state));
