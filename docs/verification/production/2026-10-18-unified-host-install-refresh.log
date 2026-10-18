@@ -1,0 +1,176 @@
+{
+  "at": "2026-10-18T15:14:35.731Z",
+  "command": [
+    "codex",
+    "plugin",
+    "marketplace",
+    "add",
+    "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "--json"
+  ],
+  "env": {},
+  "status": 1,
+  "stdout": "",
+  "stderr": "Error: marketplace 'nova-content-hub-auth-disabled-darwin-arm64' is already added from a different source; remove it before adding this source\n"
+}
+{
+  "at": "2026-10-18T15:14:37.310Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "marketplace",
+    "add",
+    "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "--name",
+    "nova-content-hub-auth-disabled-darwin-arm64"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Adding marketplace...\n✔ Marketplace 'nova-content-hub-auth-disabled-darwin-arm64' added successfully\n{\n  \"name\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"type\": \"directory\"\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:14:43.919Z",
+  "command": [
+    "codex",
+    "plugin",
+    "marketplace",
+    "remove",
+    "nova-content-hub-auth-disabled-darwin-arm64",
+    "--json"
+  ],
+  "env": {},
+  "status": 0,
+  "stdout": "{\n  \"marketplaceName\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"installedRoot\": null\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:14:43.986Z",
+  "command": [
+    "codex",
+    "plugin",
+    "marketplace",
+    "add",
+    "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "--json"
+  ],
+  "env": {},
+  "status": 0,
+  "stdout": "{\n  \"marketplaceName\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"installedRoot\": \"/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace\",\n  \"alreadyAdded\": false\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:14:44.198Z",
+  "command": [
+    "codex",
+    "plugin",
+    "add",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--json"
+  ],
+  "env": {},
+  "status": 0,
+  "stdout": "{\n  \"pluginId\": \"nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64\",\n  \"name\": \"nova-content-hub\",\n  \"marketplaceName\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"version\": \"0.2.0\",\n  \"installedPath\": \"/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.2.0\",\n  \"authPolicy\": \"ON_INSTALL\"\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:14:46.169Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "update",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Updating plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully updated plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:15:10.924Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "uninstall",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user",
+    "--keep-data"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Uninstalling plugin(s): nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully uninstalled plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:15:12.468Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "install",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Installing plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully installed plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:15:33.608Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "uninstall",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user",
+    "--keep-data"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Uninstalling plugin(s): nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully uninstalled plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T15:15:33.613Z",
+  "operation": "move residual product version cache after official uninstall",
+  "source": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.2.0",
+  "destination": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-host-install-20261018T151425701Z/workbuddy/residual-0.2.0-before-fresh-install"
+}
+{
+  "at": "2026-10-18T15:15:35.854Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "install",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Installing plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully installed plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}

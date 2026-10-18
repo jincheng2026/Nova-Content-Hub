@@ -1,0 +1,16 @@
+
+> nova-content-hub-prototype@0.3.0 build:desktop
+> npm run build --prefix workbench --
+
+
+> nova-content-hub-workbench@0.3.0 build
+> node scripts/build.mjs
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/build.mjs:17
+if (args.length !== 2 || args[0] !== '--auth' || !['required', 'disabled', 'both'].includes(args[1])) throw new Error('Use npm run build -- --auth required|disabled|both');
+                                                                                                            ^
+
+Error: Use npm run build -- --auth required|disabled|both
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/build.mjs:17:109
+
+Node.js v24.20.0

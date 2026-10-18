@@ -1,0 +1,9 @@
+file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:62
+        if (!/^[a-f0-9]{64}$/.test(expectedHash) || snapshot[path]?.sha256 !== expectedHash) throw Error(`Runtime integrity mismatch: ${path}`);
+                                                                                                   ^
+
+Error: Runtime integrity mismatch: runtime/node
+    at validateRuntime (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:62:100)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:4:15
+
+Node.js v24.20.0

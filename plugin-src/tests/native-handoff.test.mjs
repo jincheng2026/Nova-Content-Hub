@@ -26,7 +26,7 @@ const release = {
 const options = {installedSkill: 'nova-content-cover-execution'};
 const failure = (code, callback) => assert.throws(callback, error => error.code === code);
 
-async function fixture(t, host = 'codex') {
+async function fixture(t, host = 'codex', overrides = {}) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nova native handoff '));
     t.after(() => fs.rmSync(parent, {force: true, recursive: true}));
     const library = createLibrary(path.join(parent, '内容库'));
@@ -63,7 +63,8 @@ async function fixture(t, host = 'codex') {
         ratio: '3:4',
         count: 1,
         outputFormat: 'png',
-        scope: 'cover-only'
+        scope: 'cover-only',
+        ...overrides
     }, content.editToken);
     const {attempt} = library.createCoverAttempt(content.id, request.requestId, {host});
     const binding = {
@@ -102,6 +103,19 @@ for (const host of ['codex', 'workbuddy']) test(`${host} envelope resolves exact
         assert.equal(fs.statSync(path.join(f.directory, `${prepared.id}.json`)).mode & 0o777, 0o600);
         assert.equal(fs.statSync(f.directory).mode & 0o777, 0o700);
     }
+});
+
+test('native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels', async t => {
+    const f = await fixture(t, 'codex', {sizePolicy: 'ratio-minimum'});
+    const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
+    const found = readNativeHandoff(f.directory, prepared.id, release);
+    const context = found.library.readCoverContext(found.task.contentId, found.task.requestId, found.task.attemptId);
+    assert.deepEqual(found.binding, f.binding);
+    assert.deepEqual(found.task, f.task);
+    assert.equal(context.request.requestHash, f.task.requestHash);
+    assert.equal(context.request.schemaVersion, 2);
+    assert.equal(context.request.sizePolicy, 'ratio-minimum');
+    assert.deepEqual(context.request.pixels, {width: 24, height: 32});
 });
 
 test('release and request/host validation stop before creating an envelope', async t => {

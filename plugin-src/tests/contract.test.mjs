@@ -9,15 +9,16 @@ import {build, skillNames} from '../build.mjs';
 import {validateRequest, run, observeHook, HOST_EVENTS, validRelease} from '../src/content.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const currentVersion = JSON.parse(await readFile(join(root, 'release.config.json'), 'utf8')).version;
 const releaseFor = mode => ({
     productId: 'nova-content-hub',
-    version: '0.2.0',
+    version: currentVersion,
     appScope: 'nova-content-hub',
     protocolVersion: 1,
     prototype: true,
     productionReady: false,
     AUTH_MODE: mode,
-    pairId: `nova-content-hub@0.2.0:p1:${mode}`
+    pairId: `nova-content-hub@${currentVersion}:p1:${mode}`
 });
 const requestFor = (mode = 'disabled', kind = 'generate') => ({
     protocol: 'nova-content-hub-request',

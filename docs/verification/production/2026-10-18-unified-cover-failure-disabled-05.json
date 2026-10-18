@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-18T15:58:03.360Z",
+  "stage": "five pages: overview",
+  "source": "new Promise((resolve,reject)=>{const end=Date.now()+45000;const check=()=>{if(document.querySelector('.workspace-page') && document.querySelector('[data-busy=\"false\"]'))return resolve(true);if(Date.now()>end)return reject(new Error('Cover state timeout: '+\"document.querySelector('.workspace-page') && document.querySelector('[data-busy=\\\"false\\\"]')\"+' / '+document.getElementById('error')?.textContent));setTimeout(check,50)};check()})",
+  "error": "Error: Error: Cover state timeout: document.querySelector('.workspace-page') && document.querySelector('[data-busy=\"false\"]') /  during five pages: overview at new Promise((resolve,reject)=>{const end=Date.now()+45000;const check=()=>{if(document.querySelector('.workspace-page') && document.querySelector('[data-busy=\"false\"]'))return resolve(true);if(Date.now()>end)return reject(new Error('Cover state timeout: '+\"document.querySelector('.workspace-page') && document.querySelector('[data-busy=\\\"false\\\"]')\"+' / '+document.getElementById('error')?.textContent));setTimeout(check,50)};check()})",
+  "stack": "Error: Error: Cover state timeout: document.querySelector('.workspace-page') && document.querySelector('[data-busy=\"false\"]') /  during five pages: overview at new Promise((resolve,reject)=>{const end=Date.now()+45000;const check=()=>{if(document.querySelector('.workspace-page') && document.querySelector('[data-busy=\"false\"]'))return resolve(true);if(Date.now()>end)return reject(new Error('Cover state timeout: '+\"document.querySelector('.workspace-page') && document.querySelector('[data-busy=\\\"false\\\"]')\"+' / '+document.getElementById('error')?.textContent));setTimeout(check,50)};check()})\n    at run (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-XrqUQ3/auth-disabled/workbench/dist/main/cover-probe.mjs:43:23)\n    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-XrqUQ3/auth-disabled/workbench/dist/main/cover-probe.mjs:254:17)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-XrqUQ3/auth-disabled/workbench/dist/main/desktop.mjs:371:5)",
+  "consoleMessages": [],
+  "ui": {
+    "url": "nova-content://app/index.html",
+    "main": {
+      "app": "ready",
+      "loaded": "true",
+      "busy": "false"
+    },
+    "dialogs": [],
+    "alerts": [
+      ""
+    ],
+    "body": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日历\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n原生封面合成验收\n\n正文、封面和发布安排，都在这一篇内容里。\n\n封面\n正文\n资料\n发布计划\n封面作品\n\n共 1 张候选，选一张用作本篇封面。\n\n刷新结果\n再生成一批\n当前选用\n原生封面合成验收\n\n本篇内容使用这张封面。\n\n下载原图\n最近生成 · 1 张\nCodex · 3:4\n已选定\n候选 1\n当前封面\n下载\n收藏 / 备注\n生成记录（1 批）"
+  }
+}

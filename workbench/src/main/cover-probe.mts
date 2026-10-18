@@ -38,7 +38,10 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
   const bridge = async <K extends DesktopMethod>(method: K, input?: DesktopInputs[K]): Promise<DesktopResults[K]> => { const result = await run<Reply<DesktopResults[K]>>(`window.contentHub.${method}(${input === undefined ? '' : JSON.stringify(input)})`); assert.equal(result.ok, true, JSON.stringify(result)); if (!result.ok) throw new Error('Rejected'); return result.value; };
   const wait = (condition: string) => run(`new Promise((resolve,reject)=>{const end=Date.now()+45000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('Cover state timeout: '+${JSON.stringify(condition)}+' / '+document.getElementById('error')?.textContent));setTimeout(check,50)};check()})`);
   const idle = `document.querySelector('main[data-app="ready"][data-loaded="true"][data-busy="false"]')`;
-  const clickElement = async (element: string) => { await wait(`${idle} && (${element}) && !(${element}).disabled`); await run(`(${element}).click()`); await wait(idle); };
+  const clickElement = async (element: string) => {
+    await run(`new Promise((resolve,reject)=>{const end=Date.now()+45000;const check=()=>{const el=(${element});if(${idle} && el && !el.disabled){el.click();return resolve(true);}if(Date.now()>end)return reject(new Error('Clickable control timeout: '+${JSON.stringify(element)}));setTimeout(check,50)};check()})`);
+    await wait(idle);
+  };
   const click = (id: string) => clickElement(`document.getElementById(${JSON.stringify(id)})`);
   const button = (selector: string, text: string) => clickElement(`[...document.querySelectorAll(${JSON.stringify(selector)})].find(el => el.textContent.trim() === ${JSON.stringify(text)})`);
   const tab = (text: string) => button('.content-detail-tabs button', text);
@@ -91,6 +94,10 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
     assert.equal(await run(`document.getElementById('cover-photo').value`), own!.id);
     await click('no-person');
     await wait(`!document.querySelector('.cover-person-summary img') && document.getElementById('cover-photo').value === ''`);
+    for (const [ratio, minimum] of [['1:1', '768×768'], ['16:9', '1376×774'], ['3:4', '768×1024']]) {
+      await run(`(()=>{const el=document.getElementById('cover-ratio');el.value=${JSON.stringify(ratio)};el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+      await wait(`document.querySelector('.cover-size-hint').textContent === ${JSON.stringify(`${ratio} · 至少${minimum} · PNG原图；实际尺寸以生成结果为准`)}`);
+    }
     await fill('cover-count', '1');
     await wait(`document.getElementById('cover-count').value === '1'`);
     mark('generate synthetic handoff');
@@ -99,7 +106,7 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
     mark('history summary');
     await clickElement(`document.querySelector('.cover-history > summary')`);
     await wait(`document.querySelector('.cover-history-row')?.textContent.includes('不放人物')`);
-    assert.equal(await run(`document.querySelector('.cover-history-row').textContent.includes('1 张 · 900 × 1200 · 3:4')`), true);
+    assert.equal(await run(`document.querySelector('.cover-history-row').textContent.includes('1 张 · 3:4 · 至少768×1024；实际尺寸以生成结果为准')`), true);
     assert.equal(await run(`document.querySelector('.cover-history-row').textContent.includes('inbox')`), false);
     let view = await bridge('readCover', { contentId: content.id });
     const firstJob = view.jobs[0]!, firstAttempt = firstJob.activeAttemptId!;
@@ -122,6 +129,8 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
     mark('claim and synthetic commit');
     const context = library.readCoverContext(content.id, job.id, attemptId);
     assert.equal(context.request.photo, null);
+    assert.equal(context.request.sizePolicy, 'ratio-minimum');
+    assert.deepEqual(context.request.pixels, { width: 768, height: 1024 });
     library.claimCoverAttempt(content.id, job.id, attemptId, { host: 'codex', readAssetHashes: [...new Set(context.inputs.map(i => i.assetHash))] });
     const bytes = await sharp({ create: { width: 900, height: 1200, channels: 3, background: '#1c4f93' } }).png().toBuffer();
     await fs.writeFile(path.join(context.inbox, 'synthetic.png'), bytes);
@@ -234,7 +243,7 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
     assert.equal(await run(`document.querySelectorAll('[data-content-id]').length`), 0);
     assert.equal(controller.covers.allows(granted), false);
     const revoked = await net.fetch(granted, { cache: 'no-store' }).then(response => response.status, () => 0); assert.ok([0, 404].includes(revoked));
-    console.log(`PASS actual disabled Electron: ${assets.templates.length} seeded template groups, all sample images decoded, false photo declaration, explicit photo:null, fixed cover request, synthetic candidate raster and recorded handoffs (no real host generation), selection and byte-identical export; grants revoked`);
+    console.log(`PASS actual disabled Electron: ${assets.templates.length} seeded template groups, all sample images decoded, false photo declaration, explicit photo:null, ratio-minimum 768×1024 request accepts a synthetic 900×1200 raster, recorded handoffs (no real host generation), selection and byte-identical export; grants revoked`);
   }
   mark('complete');
   app.quit();

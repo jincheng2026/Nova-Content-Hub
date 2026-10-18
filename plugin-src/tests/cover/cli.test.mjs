@@ -102,11 +102,12 @@ test('both builds identify themselves and required mode refuses business IO befo
     assert.equal(run(['status', '--auth', 'disabled'], undefined, required).code, 'INVALID_ARGUMENTS');
 });
 
-test('independent packaged runtime fully decodes, submits, replays and exposes status through actual CLI commands', async t => {
+for (const sizePolicy of ['exact', 'ratio-minimum']) test(`independent packaged runtime fully decodes, submits, replays and exposes ${sizePolicy} status through actual CLI commands`, async t => {
     const resolved = createRequire(path.join(bundle, 'plugin-src/src/lib/image-validation/index.mjs')).resolve('sharp');
     assert.ok(resolved.startsWith(path.join(bundle, 'node_modules') + path.sep));
     const unified = (args, input) => run(['cover', ...args], input, path.join(bundle, 'plugin-src/src/cli.mjs'));
     const f = await fixture(t);
+    f.request.sizePolicy = sizePolicy;
     const created = unified(['create', ...f.base, '--stdin'], {
         request: f.request,
         editToken: f.content.editToken,
@@ -115,6 +116,8 @@ test('independent packaged runtime fully decodes, submits, replays and exposes s
     assert.equal(created.ok, true, created.message);
     assert.equal(Object.hasOwn(created.result, 'bodyBytes'), false);
     const req = created.result.request;
+    assert.equal(req.schemaVersion, sizePolicy === 'ratio-minimum' ? 2 : 1);
+    assert.equal(req.sizePolicy, sizePolicy === 'ratio-minimum' ? sizePolicy : undefined);
     const started = unified(['attempt', ...f.base, '--request', req.requestId, '--stdin'], {host: 'codex'});
     assert.equal(started.ok, true, started.message);
     const attemptId = started.result.attempt.attemptId;
@@ -123,6 +126,8 @@ test('independent packaged runtime fully decodes, submits, replays and exposes s
     assert.equal(context.ok, true, context.message);
     assert.deepEqual(context, run(['context', ...args]));
     assert.equal(context.result.body, f.content.body);
+    assert.equal(context.result.request.sizePolicy, req.sizePolicy);
+    assert.deepEqual(context.result.request.pixels, {width: 24, height: 32});
     assert.equal(Object.hasOwn(context.result, 'bodyBytes'), false);
     assert.equal(unified(['claim', ...args, '--stdin'], {
         host: 'codex',
@@ -130,7 +135,8 @@ test('independent packaged runtime fully decodes, submits, replays and exposes s
     }).ok, true);
     const files = [];
     for (const color of ['#506d45', '#bb384e']) {
-        const bytes = await sharp({create: {width: 24, height: 32, channels: 3, background: color}}).png().toBuffer();
+        const [width, height] = sizePolicy === 'ratio-minimum' ? [30, 40] : [24, 32];
+        const bytes = await sharp({create: {width, height, channels: 3, background: color}}).png().toBuffer();
         const name = `result-${files.length}.png`;
         fs.writeFileSync(path.join(context.result.inbox, name), bytes);
         files.push({name, sha256: createHash('sha256').update(bytes).digest('hex')});

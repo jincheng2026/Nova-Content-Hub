@@ -1,10 +1,13 @@
 import { ASSISTANTS } from './cover-contracts.ts';
 import type { CoverInput, CoverPending, PhotoPending, CoverActionPending, Fingerprint, CoverReference } from './cover-contracts.ts';
 import { exact, uuid, token } from './validation.ts';
+import { isRecord } from './contracts.ts';
 export const assistant = (v: unknown) => ASSISTANTS.includes(v as typeof ASSISTANTS[number]);
 export const templateId = (v: unknown) => uuid(v) || typeof v === 'string' && /^builtin-[a-z0-9-]{1,80}$/.test(v);
 export function coverInput(v: unknown): v is CoverInput {
-  return exact(v, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']) &&
+  const hasSizePolicy = isRecord(v) && Object.hasOwn(v, 'sizePolicy');
+  return exact(v, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', ...(hasSizePolicy ? ['sizePolicy'] : [])]) &&
+    (!hasSizePolicy || v.sizePolicy === 'exact' || v.sizePolicy === 'ratio-minimum') &&
     exact(v.template, ['id', 'version']) && templateId(v.template.id) && Number.isSafeInteger(v.template.version) && (v.template.version as number) > 0 &&
     Array.isArray(v.styleAssetHashes) && v.styleAssetHashes.length > 0 && v.styleAssetHashes.length <= 100 && v.styleAssetHashes.every(token) && new Set(v.styleAssetHashes).size === v.styleAssetHashes.length &&
     (v.photo === null || exact(v.photo, ['id', 'assetHash']) && uuid(v.photo.id) && token(v.photo.assetHash)) &&

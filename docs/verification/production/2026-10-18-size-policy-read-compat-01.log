@@ -1,0 +1,22 @@
+✔ omitted and explicit exact preserve v1 request bytes, hash and input identity (1962.441959ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":1,"sizePolicy":"ratio-minimum"} (1193.994167ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":1,"sizePolicy":"exact"} (1205.786041ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":2,"sizePolicy":"exact"} (1138.153459ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":2,"sizePolicy":"unknown"} (1238.534167ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":2,"sizePolicy":null} (1132.515542ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":2} (1104.159542ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"schemaVersion":3} (1123.5445ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"pixels":{"width":0,"height":0}} (1135.153792ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"pixels":{"width":1.5,"height":2}} (1143.869709ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"pixels":{"width":9007199254740992,"height":1}} (1104.436542ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"pixels":{"width":8000,"height":6000}} (1199.798166ms)
+✔ request reader rejects checksum-matched invalid policy or dimensions {"ratio":"3:4"} (938.237167ms)
+✔ the previous v1-only core rejects a checksum-matched v2 request before any execution (680.470375ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16401.941541

@@ -1,0 +1,21 @@
+✔ codex: only exact installed enabled native release is accepted (33.642792ms)
+✔ codex: explicit config homes never fall back to a different installed host home (16.016333ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (46.063959ms)
+✔ codex: Skill symlinks and oversized metadata refuse (22.651667ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (21.751333ms)
+✔ workbuddy: only exact installed enabled native release is accepted (38.020833ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (29.093042ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (44.732625ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (30.095791ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (25.323417ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (23.052083ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (39.217625ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (39.727375ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 529.993458

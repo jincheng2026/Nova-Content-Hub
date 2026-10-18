@@ -38,6 +38,18 @@ test('exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durabl
   await assert.rejects(execute('raster', { binding: f.binding, assetHash: f.asset.assetHash, url: 'file:///tmp/x' }), { code: 'INVALID_INPUT' });
   assert.throws(() => validateBinding({ ...emptyBinding(), current: f.binding, photoPending: { source: f.source, expectedHash: f.asset.assetHash, mutationId: randomUUID(), title: 'me', originalName: 'x.png', isOwnPhoto: false }, creation: { root: f.libraryRoot, mutationId: randomUUID(), rootIdentity: f.binding.rootIdentity } }), { code: 'BINDING_INVALID' });
 });
+test('cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries', async t => {
+  const f = await fixture(t), start = input => ({ contentId: f.content.id, editToken: f.content.editToken, input });
+  for (const input of [f.input, { ...f.input, sizePolicy: 'exact' }, { ...f.input, sizePolicy: 'ratio-minimum' }]) {
+    assert.doesNotThrow(() => validateInput('generateCover', start(input)));
+  }
+  for (const sizePolicy of ['automatic', '', null, undefined, 1, {}]) {
+    const input = { ...f.input, sizePolicy };
+    assert.throws(() => validateInput('generateCover', start(input)), { code: 'INVALID_INPUT' });
+    await assert.rejects(f.worker.call('inspectCoverInput', { binding: f.binding, ...start(input) }), { code: 'INVALID_INPUT' });
+  }
+  assert.throws(() => validateInput('generateCover', start({ ...f.input, sizePolicy: 'ratio-minimum', extra: true })), { code: 'INVALID_INPUT' });
+});
 test('missing or disabled assistant setup cannot create cover tasks or launch existing attempts', async t => {
   for (const setup of [{ readAssistantSetup: undefined }, { readAssistantSetup: async host => ({ host, ready: false, skill: null, reason: 'skill-missing' }) }]) {
     const f = await fixture(t), blocked = f.make(setup); await blocked.initialize();
@@ -64,7 +76,7 @@ test('request and attempt lost acknowledgements resume same durable mutations af
     const reopened = f.make(); await reopened.initialize(); const result = await reopened.resumeCover();
     assert.equal(result.launchRequested, true); assert.equal(f.launches.length, 1);
     assert.equal(result.jobs.length, 1);
-    assert.deepEqual(result.jobs[0].summary, { template: f.input.template, styleSampleCount: 1, hasOwnPhoto: false, pixels: f.input.pixels, count: 1, ratio: '4:3', outputFormat: 'png' });
+    assert.deepEqual(result.jobs[0].summary, { template: f.input.template, styleSampleCount: 1, hasOwnPhoto: false, pixels: f.input.pixels, sizePolicy: 'exact', count: 1, ratio: '4:3', outputFormat: 'png' });
     assert.equal(JSON.stringify(result.jobs).includes('inbox'), false);
     assert.equal(JSON.stringify(result.jobs).includes('fixed body'), false);
     assert.equal(result.jobs[0].attempts.length, 1); assert.equal(result.jobs[0].attempts[0].host, 'codex'); assert.equal(reopened.binding.coverPending, null);
@@ -73,6 +85,32 @@ test('request and attempt lost acknowledgements resume same durable mutations af
     await reopened.continueCover({ contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId });
     assert.equal(f.launches.length, 3); assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
     for (const launch of f.launches) assert.deepEqual(launch.reference, { contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId, requestHash: result.jobs[0].requestHash, host: 'codex' });
+  }
+});
+test('ratio-minimum policy survives durable recovery, retry, host changes and summary projection', async t => {
+  for (const phase of ['createCoverRequest', 'createCoverAttempt']) {
+    const f = await fixture(t), input = { ...f.input, pixels: { width: 768, height: 1024 }, ratio: '3:4', sizePolicy: 'ratio-minimum' };
+    const call = f.worker.call; let lost = false;
+    f.worker.call = async (op, args) => { const result = await call(op, args); if (op === phase && !lost) { lost = true; throw Object.assign(new Error('lost ack'), { code: 'WORKER_EXIT' }); } return result; };
+    await assert.rejects(f.start(f.controller, input), { code: 'WORKER_EXIT' });
+    assert.equal((await f.store.load()).coverPending.input.sizePolicy, 'ratio-minimum');
+    const reopened = f.make(); await reopened.initialize(); const result = await reopened.resumeCover();
+    const job = result.jobs[0], reference = { contentId: f.content.id, requestId: job.id, attemptId: job.activeAttemptId };
+    assert.deepEqual(job.summary, { template: input.template, styleSampleCount: 1, hasOwnPhoto: false, pixels: input.pixels, sizePolicy: 'ratio-minimum', count: 1, ratio: '3:4', outputFormat: 'png' });
+    const retried = await reopened.retryCover(reference);
+    assert.equal(retried.jobs.length, 1); assert.equal(retried.jobs[0].id, job.id); assert.equal(retried.jobs[0].attempts.length, 2);
+    await reopened.setAssistant({ host: 'workbuddy' });
+    await reopened.continueCover({ ...reference, attemptId: retried.jobs[0].activeAttemptId });
+    const current = await reopened.readCover({ contentId: f.content.id });
+    assert.equal(current.jobs.length, 1); assert.equal(current.jobs[0].attempts.length, 3);
+    assert.equal(current.jobs[0].summary.sizePolicy, 'ratio-minimum');
+    for (const attempt of current.jobs[0].attempts) {
+      const context = f.library.readCoverContext(f.content.id, job.id, attempt.attemptId);
+      assert.equal(context.request.sizePolicy, 'ratio-minimum');
+      assert.deepEqual(context.request.pixels, input.pixels);
+      assert.equal(context.request.inputHash, job.inputHash);
+    }
+    assert.equal(f.launches.at(-1).reference.host, 'workbuddy');
   }
 });
 test('reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request', async t => {

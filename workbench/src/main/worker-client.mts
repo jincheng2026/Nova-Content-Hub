@@ -2,10 +2,13 @@ import {isRecord} from '../shared/contracts.ts';
 import type {Worker, WorkerOperation, WorkerOperations} from '../shared/contracts.ts';
 const explanations: Record<string, string> = { PHOTO_SOURCE_MISSING: '照片尚未进入内容库，原文件已不在原位置。请恢复原文件后继续；待处理记录仍保留。', STALE_INPUT: '标题或正文已改变，请用当前内容重新准备封面；原待处理意图仍保留。', INVALID_IMAGE: '图片未通过完整解码校验，请选择完整的PNG、JPEG、WebP或GIF原图。' };
 Object.assign(explanations, {
+    BUSY: '内容库暂时被其他操作占用，请稍后刷新；原文件和草稿会保留。',
     UPGRADE_ALREADY_CURRENT: '这个内容库已是当前版本，可使用“打开本机内容库”。',
     UPGRADE_FUTURE_FORMAT: '这个内容库来自更新版本，请使用创建它的新版工作台；原文件保留。',
     UPGRADE_LEGACY_FORMAT: '此入口仅支持第4版内容库。第1至3版请先使用兼容工具升级到第4版；原文件保留。'
 });
+const retryableReads = new Set<WorkerOperation>(['workspace', 'list', 'readContent', 'workspaceLibrary', 'coverAssets', 'readCover', 'raster']);
+const busyDelays = [80, 240, 600];
 
 interface Child {
     on(event: 'message', listener: (message: unknown) => void): unknown;
@@ -22,7 +25,7 @@ export class WorkerClient implements Worker {
     child: Child | null = null;
     sequence = 0;
     stopped = false;
-    pending: { id: number; resolve(value: unknown): void; reject(error: unknown): void } | null = null;
+    pending: { id: number; timer?: ReturnType<typeof setTimeout>; resolve(value: unknown): void; reject(error: unknown): void } | null = null;
 
     constructor(spawn: () => Child) {
         this.spawn = spawn;
@@ -36,7 +39,6 @@ export class WorkerClient implements Worker {
             child.on('message', message => {
                 if (!isRecord(message) || !this.pending || message.id !== this.pending.id) return;
                 const pending = this.pending;
-                this.pending = null;
                 if (message.ok === true) pending.resolve(message.value);
                 else {
                     const code = isRecord(message.error) && typeof message.error.code === 'string' ? message.error.code : 'WORKER_ERROR';
@@ -55,22 +57,36 @@ export class WorkerClient implements Worker {
             child.on('error', failed);
         }
         return new Promise((resolve, reject) => {
-            this.pending = {
-                id: ++this.sequence,
-                resolve: value => resolve(value as WorkerOperations[K]['result']),
-                reject
+            const request = {id: ++this.sequence, op, args: structuredClone(args)};
+            let retries = 0;
+            const send = () => {
+                try { this.child!.postMessage(request); }
+                catch (error) { this.pending?.reject(error); }
             };
-            try {
-                this.child!.postMessage({id: this.sequence, op, args});
-            } catch (error) {
-                this.pending = null;
-                reject(error);
-            }
+            this.pending = {
+                id: request.id,
+                resolve: value => {
+                    clearTimeout(this.pending?.timer);
+                    this.pending = null;
+                    resolve(value as WorkerOperations[K]['result']);
+                },
+                reject: error => {
+                    if (!this.stopped && isRecord(error) && error.code === 'BUSY' && retryableReads.has(op) && retries < busyDelays.length) {
+                        this.pending!.timer = setTimeout(send, busyDelays[retries++]);
+                        return;
+                    }
+                    clearTimeout(this.pending?.timer);
+                    this.pending = null;
+                    reject(error);
+                }
+            };
+            send();
         });
     }
 
     stop() {
         this.stopped = true;
+        this.pending?.reject(Object.assign(new Error('应用正在关闭，任务将在下次启动时核验。'), {code: 'WORKER_STOPPED'}));
         this.child?.kill();
     }
 }

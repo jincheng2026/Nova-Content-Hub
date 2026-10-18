@@ -78,7 +78,9 @@ function App() {
     const [coverRefresh, setCoverRefresh] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
     const [contents, setContents] = useState<Content[] | null>(null);
-    const [error, setError] = useState('');
+    const [failure, setFailure] = useState<{message: string; backgroundBusyEpoch?: number}>({message: ''});
+    const error = failure.message;
+    const setError = (message: string) => setFailure({message});
     const [acting, setActing] = useState(false);
     const active = useRef(false);
     const [view, setView] = useState<View>('active');
@@ -99,9 +101,12 @@ function App() {
     const dirty = !!draft && (!base || draft.title !== base.title || draft.body !== base.body);
     const dirtyRef = useRef(false);
     dirtyRef.current = dirty;
-    const report = (failure: unknown, preserveError = false) => {
+    const report = (failure: unknown, preserveError = false, epoch = epochRef.current) => {
         const value = errorInfo(failure);
-        setError(previous => preserveError && previous ? previous : `${value.message}（${value.code}）`);
+        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || value.code === 'BUSY') ? previous : {
+            message: `${value.message}（${value.code}）`,
+            ...(preserveError && value.code === 'BUSY' ? {backgroundBusyEpoch: epoch} : {})
+        });
     };
     const load = (item: Content) => {
         setBase(item);
@@ -212,20 +217,27 @@ function App() {
         active.current = true;
         setActing(true);
         if (!preserveError) setError('');
+        const epoch = epochRef.current;
+        let succeeded = false;
         try {
-            return await action();
+            const result = await action();
+            succeeded = true;
+            return result;
         } catch (failure) {
-            report(failure, preserveError);
+            report(failure, preserveError, epoch);
             return undefined;
         } finally {
             try {
                 const next = await refreshStatus();
                 if (next.currentName) {
-                    try { await refreshWorkspace(); } catch (failure) { report(failure, preserveError); }
+                    try {
+                        await refreshWorkspace();
+                        if (succeeded && epoch === epochRef.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
+                    } catch (failure) { report(failure, preserveError, epoch); }
                 }
             } catch (failure) {
-                setStatus(null);
-                report(failure, preserveError);
+                if (!preserveError) setStatus(null);
+                report(failure, preserveError, epoch);
             }
             active.current = false;
             setActing(false);

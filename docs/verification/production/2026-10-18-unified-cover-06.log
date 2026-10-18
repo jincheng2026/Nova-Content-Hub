@@ -1,0 +1,35 @@
+
+> nova-content-hub-workbench@0.3.0 probe:cover
+> node scripts/cover-probe.mjs
+
+2026-10-18T16:00:11.506Z cover probe: renderer and sandbox
+2026-10-18T16:00:11.769Z cover probe: create library and content
+2026-10-18T16:00:37.418Z cover probe: composer assets and photo invalidation
+2026-10-18T16:00:48.993Z cover probe: generate synthetic handoff
+2026-10-18T16:00:54.459Z cover probe: history summary
+2026-10-18T16:00:54.515Z cover probe: continue same attempt
+2026-10-18T16:00:56.272Z cover probe: cancel live attempt
+2026-10-18T16:01:01.075Z cover probe: retry same job
+2026-10-18T16:01:06.133Z cover probe: claim and synthetic commit
+2026-10-18T16:01:06.387Z cover probe: focus refresh
+2026-10-18T16:01:08.186Z cover probe: candidate selection and byte export
+2026-10-18T16:01:18.556Z cover probe: held read prevents selection and library switches
+2026-10-18T16:01:25.320Z cover probe: release read and explicitly switch contents
+PASS actual Electron selection safety: held read blocks content/library switch; subsequent explicit selection loads only its own candidates and body
+2026-10-18T16:01:32.866Z cover probe: concurrent granted image reads and content writes
+PASS concurrent actual Electron: all granted template/candidate reads and IPC content create/save/read/status completed without lock conflicts
+2026-10-18T16:01:36.056Z cover probe: five pages: overview
+2026-10-18T16:01:42.278Z cover probe: five pages: templates
+2026-10-18T16:01:45.219Z cover probe: five pages: calendar
+2026-10-18T16:01:45.308Z cover probe: five pages: prompts
+PASS actual five-page shell: real overview counts, multi-image templates decoded, calendar month grid, prompt live variable preview and content return
+2026-10-18T16:01:45.514Z cover probe: switch library and revoke grants
+PASS actual disabled Electron: 15 seeded template groups, all sample images decoded, false photo declaration, explicit photo:null, ratio-minimum 768×1024 request accepts a synthetic 900×1200 raster, recorded handoffs (no real host generation), selection and byte-identical export; grants revoked
+2026-10-18T16:01:56.253Z cover probe: complete
+2026-10-18T16:02:01.340Z cover probe: renderer and sandbox
+2026-10-18T16:02:01.501Z cover probe: required authentication gate
+PASS actual required Electron: no startup seed, main refuses cover/photo/launch, worker seed gate
+2026-10-18T16:02:01.648Z cover probe: complete
+[84466:1019/000201.893744:ERROR:base/process/process_mac.cc:53] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)
+[84466:1019/000201.901023:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (ipc/send) invalid destination port (0x10000003)
+PASS external standalone current five-page native cover packages. Test-instance handoff recording and synthetic candidate verification only; real host, native dialog clicks and Windows remain unverified. productionReady=false

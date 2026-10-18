@@ -121,6 +121,14 @@ export function coverJobMethods(h) {
         return {job, attempt};
     }
 
+    function requestDimensions(pixels, ratio, code) {
+        const {width, height} = pixels || {};
+        if (!pixels || Array.isArray(pixels) || Object.keys(pixels).some(key => !['width', 'height'].includes(key)) || ![width, height].every(value => Number.isSafeInteger(value) && value > 0) || width * height > 40_000_000) fail(code, 'Positive integer display pixels within 40 million are required');
+        if (typeof ratio !== 'string' || !/^\d{1,8}:\d{1,8}$/.test(ratio)) fail(code, 'Explicit width:height ratio is required');
+        const [rw, rh] = ratio.split(':').map(Number);
+        if (!rw || !rh || width * rh !== height * rw) fail(code, 'Ratio does not match display pixels');
+    }
+
     function requestPackage(contentId, job) {
         const dir = requestDir(contentId, job.id);
         const raw = read(path.join(dir, '请求.json'));
@@ -131,7 +139,9 @@ export function coverJobMethods(h) {
         } catch {
             fail('CORRUPT', 'Invalid cover request package');
         }
-        if (request.format !== 'nova-cover-request' || request.schemaVersion !== 1 || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity mismatch');
+        const supportedSize = request.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || request.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum';
+        if (request.format !== 'nova-cover-request' || !supportedSize || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity or size policy mismatch');
+        requestDimensions(request.pixels, request.ratio, 'CORRUPT');
         const bodyBytes = read(path.join(dir, '正文.md'));
         if (hash(bodyBytes) !== request.bodyHash) fail('CORRUPT', 'Cover body snapshot checksum mismatch');
         for (const entry of request.inputs) {
@@ -181,15 +191,12 @@ export function coverJobMethods(h) {
     }
 
     function normalizeRequest(meta, bodyBytes, raw) {
-        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
+        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
         if (input.scope !== 'cover-only') fail('INVALID_INPUT', 'Only cover-only scope is supported');
+        if (Object.hasOwn(input, 'sizePolicy') && !['exact', 'ratio-minimum'].includes(input.sizePolicy)) fail('INVALID_INPUT', 'Unknown cover size policy');
         text(input.prompt, 'prompt');
         inputFields(input.pixels, ['width', 'height'], ['width', 'height']);
-        const {width, height} = input.pixels;
-        if (![width, height].every(value => Number.isSafeInteger(value) && value > 0) || width * height > 40_000_000) fail('INVALID_INPUT', 'Exact positive pixels within 40 million are required');
-        if (typeof input.ratio !== 'string' || !/^\d{1,8}:\d{1,8}$/.test(input.ratio)) fail('INVALID_INPUT', 'Explicit width:height ratio is required');
-        const [rw, rh] = input.ratio.split(':').map(Number);
-        if (!rw || !rh || width * rh !== height * rw) fail('INVALID_INPUT', 'Ratio does not match exact pixels');
+        requestDimensions(input.pixels, input.ratio, 'INVALID_INPUT');
         if (!Number.isSafeInteger(input.count) || input.count < 1 || input.count > 20 || !['png', 'jpeg', 'webp'].includes(input.outputFormat)) fail('INVALID_INPUT', 'Require 1 to 20 images in PNG, JPEG or WebP');
         inputFields(input.template, ['id', 'version'], ['id', 'version']);
         objectId('template', input.template.id);
@@ -241,6 +248,7 @@ export function coverJobMethods(h) {
             materials,
             prompt: input.prompt,
             pixels: input.pixels,
+            ...(input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {}),
             ratio: input.ratio,
             count: input.count,
             outputFormat: input.outputFormat,
@@ -304,8 +312,9 @@ export function coverJobMethods(h) {
         checkedHash(token);
         const requestInput = {
             action: 'createCoverRequest',
-            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
+            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
         };
+        if (requestInput.request.sizePolicy === 'exact') delete requestInput.request.sizePolicy;
         const replayed = replayCoverRequest(contentId, requestInput, token, options);
         if (replayed) {
             const job = replayed.coverJobs.at(-1);
@@ -329,7 +338,7 @@ export function coverJobMethods(h) {
             if (hash(jsonBytes(normalized)) !== initial.inputHash) fail('CONFLICT', 'Selected inputs changed before creating request');
             const request = {
                 format: 'nova-cover-request',
-                schemaVersion: 1,
+                schemaVersion: normalized.sizePolicy === 'ratio-minimum' ? 2 : 1,
                 requestId,
                 createdAt: now,
                 inputHash: initial.inputHash, ...normalized
@@ -594,7 +603,11 @@ export function coverJobMethods(h) {
                 hook('coverAfterDecode', {contentId, requestId, attemptId, index});
                 assertRootIdentity();
                 if (decoded.format !== prepared.request.outputFormat) fail('IMAGE_FORMAT_MISMATCH', 'Image format does not match request');
-                if (decoded.width !== prepared.request.pixels.width || decoded.height !== prepared.request.pixels.height) fail('IMAGE_DIMENSIONS_MISMATCH', 'Decoded display pixels do not match request');
+                const {width, height} = prepared.request.pixels;
+                if (prepared.request.sizePolicy === 'ratio-minimum') {
+                    if (decoded.width * height !== decoded.height * width) fail('IMAGE_DIMENSIONS_MISMATCH', `Decoded display ratio ${decoded.width}:${decoded.height} does not match required ${prepared.request.ratio}`);
+                    if (decoded.width < width || decoded.height < height) fail('IMAGE_DIMENSIONS_MISMATCH', `Decoded display pixels ${decoded.width}x${decoded.height} are below minimum ${width}x${height}`);
+                } else if (decoded.width !== width || decoded.height !== height) fail('IMAGE_DIMENSIONS_MISMATCH', `Decoded display pixels ${decoded.width}x${decoded.height} do not match exact ${width}x${height}`);
                 if (files.some(entry => entry.decoded.assetHash === decoded.assetHash)) fail('DUPLICATE_IMAGE', 'Result batch contains identical image bytes');
                 files.push({name, bytes, decoded});
             }

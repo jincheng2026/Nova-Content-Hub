@@ -5,11 +5,11 @@ export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-
 export interface Raster { assetHash: string; url: string }
 export interface TemplateGroup { builtin: boolean; id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
 export interface Photo { id: string; title: string; assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; url: string | null }
-export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; pixels: { width: number; height: number }; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
+export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; pixels: { width: number; height: number }; sizePolicy?: 'exact' | 'ratio-minimum'; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
 export interface CoverStart { contentId: string; editToken: string; input: CoverInput }
 export interface Fingerprint { contentId: string; title: string; bodyHash: string; editToken: string; inputHash: string; existingRequest: { requestId: string; requestHash: string } | null }
 export interface Attempt { attemptId: string; host: Assistant; status: 'created' | 'claimed' | 'committed' | 'failed' | 'cancelled' | 'superseded'; reason: string; failure: { code: string; message: string } | null }
-export interface CoverRequestSummary { template: { id: string; version: number }; styleSampleCount: number; hasOwnPhoto: boolean; pixels: { width: number; height: number }; count: number; ratio: string; outputFormat: string }
+export interface CoverRequestSummary { template: { id: string; version: number }; styleSampleCount: number; hasOwnPhoto: boolean; pixels: { width: number; height: number }; sizePolicy: 'exact' | 'ratio-minimum'; count: number; ratio: string; outputFormat: string }
 export interface CoverJob { summary?: CoverRequestSummary | null; id: string; requestHash: string; inputHash: string; activeAttemptId: string | null; attempts: Attempt[] }
 export interface Candidate { id: string; assetHash: string; originalName: string; requestId: string; attemptId: string; accepted: boolean; url: string }
 export interface CoverView { content: Content; jobs: CoverJob[]; candidates: Candidate[]; selectedCandidateId: string | null }
@@ -18,7 +18,7 @@ export interface PhotoPending { source: string; expectedHash: string; mutationId
 export type CoverActionPending = { mutationId: string } & ({ action: 'select'; contentId: string; candidateId: string; editToken: string } | { action: 'cancel'; reference: CoverReference });
 export interface CoverPending { input: CoverInput; fingerprint: Fingerprint; requestMutationId: string; attemptMutationId: string; host: Assistant; requestId: string | null; requestHash: string | null; reason: 'initial' | 'retry' | 'host-change' }
 export interface CoverReference { contentId: string; requestId: string; attemptId: string }
-export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string }; attempt: Attempt }
+export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string; sizePolicy?: CoverInput['sizePolicy'] }; attempt: Attempt }
 export interface RequestResult { content: Content & { coverJobs?: CoverJob[] }; request: CoverContext['request']; bodyBytes: Uint8Array }
 export interface CoverInputs {
   readAssistantSetup: undefined;

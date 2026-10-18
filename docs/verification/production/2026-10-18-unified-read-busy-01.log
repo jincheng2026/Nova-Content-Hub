@@ -1,0 +1,107 @@
+Scoped readonly BUSY retry and background error lifecycle verification
+Date: 2026-10-18
+Workspace: /Users/mac/code/dashboard/Nova-Content-Hub
+
+Targeted existing + focused run (complete recorded stdout/stderr from streamed execution)
+Command: node --test workbench/test/background-refresh.test.mjs workbench/test/worker-client-busy.test.mjs workbench/test/boundaries.test.mjs workbench/test/operation-queue.test.mjs workbench/test/library-watch.test.mjs workbench/test/lifecycle.test.mjs workbench/test/worker.test.mjs
+(node:78685) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (18.447125ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (11.463291ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (6.843292ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (3.328625ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.242959ms)
+✔ only exact top-level sender with no renderer arguments can invoke business (1.018ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.618417ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.481042ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (40.545417ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.532666ms)
+✔ business changes coalesce into fixed notifications without reading event paths (22.206333ms)
+✔ locks, transactions, scratch and temporary paths do not refresh the UI (10.871667ms)
+✔ continuous writes have a bounded maximum delay (6.180166ms)
+✔ identical bindings preserve native handles; unbind and close cancel stale callbacks (8.229083ms)
+✔ native failures notify once and only rearm the pinned library on a periodic check (12.13225ms)
+✔ notification failures cannot escape binding, recovery or debounce callbacks (3.911833ms)
+✔ silent root removal is detected and restoration of the same inode can rearm (7.343375ms)
+✔ a same-ID clone never rearms under the old binding; successful rebind clears unavailable immediately (4.971334ms)
+✔ descriptor identity, format, size and readability are checked before watching and while idle (4.131417ms)
+✔ descriptor changes during the bounded read are rejected (2.993042ms)
+✔ linked descriptors and root ancestors are rejected (1.853292ms)
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (9481.005541ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (7203.508958ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (6749.279667ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (7270.629458ms)
+✔ required build main and worker reject all five business writes before any business mutation (240.105667ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (6972.726083ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (6460.264291ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (8371.333416ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (7459.249417ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (7377.073292ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (8714.770959ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (8224.009583ms)
+✔ explicitly adopting another current library retires only the completed import pointer (10612.39ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (7377.412584ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (7095.181ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (3.529583ms)
+✔ desktop operations finish in FIFO order without overlap (4.192459ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.61375ms)
+✔ an image grant revoked while queued is checked again before any worker read (4.612333ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (3.059667ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (2.468708ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (1.495708ms)
+✔ readonly non-BUSY failures are returned once (0.370542ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.285459ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (97.707958ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.34ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (4421.589291ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109888.76275
+Exit code: 0
+
+
+Command: node --test workbench/test/background-refresh.test.mjs workbench/test/worker-client-busy.test.mjs
+(node:81069) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (6.52275ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (3.969458ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.764667ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.116583ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.017916ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (3.285625ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.557167ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.606667ms)
+✔ readonly non-BUSY failures are returned once (0.246ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.2565ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 126.563167
+Exit code: 0
+
+Command: npm --prefix workbench run typecheck
+
+> nova-content-hub-workbench@0.3.0 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.0 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.0 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+Exit code: 0
+
+Command: git diff --check
+Exit code: 0

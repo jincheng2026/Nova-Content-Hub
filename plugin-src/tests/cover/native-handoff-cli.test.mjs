@@ -51,7 +51,7 @@ function run(home, args, input, target = bundle) {
     return value;
 }
 
-async function fixture(t) {
+async function fixture(t, overrides = {}) {
     const home = path.join(parent, randomUUID());
     fs.mkdirSync(home);
     t.after(() => fs.rmSync(home, {recursive: true, force: true}));
@@ -89,7 +89,8 @@ async function fixture(t) {
         ratio: '3:4',
         count: 1,
         outputFormat: 'png',
-        scope: 'cover-only'
+        scope: 'cover-only',
+        ...overrides
     }, content.editToken);
     const {attempt} = library.createCoverAttempt(content.id, request.requestId, {host: 'codex'});
     const binding = {
@@ -109,11 +110,14 @@ async function fixture(t) {
     return {home, library, binding, task, id, directory};
 }
 
-test('standalone bundled launcher resolves handoff and completes context/claim/submit/status/replay with empty Node PATH', async t => {
-    const f = await fixture(t), args = ['--handoff', f.id];
+for (const sizePolicy of ['exact', 'ratio-minimum']) test(`standalone bundled launcher resolves ${sizePolicy} handoff and completes context/claim/submit/status/replay with empty Node PATH`, async t => {
+    const f = await fixture(t, {sizePolicy}), args = ['--handoff', f.id];
     const context = run(f.home, ['cover', 'context', ...args]);
     assert.equal(context.ok, true, context.message);
     assert.equal(context.result.request.requestId, f.task.requestId);
+    assert.equal(context.result.request.schemaVersion, sizePolicy === 'ratio-minimum' ? 2 : 1);
+    assert.equal(context.result.request.sizePolicy, sizePolicy === 'ratio-minimum' ? sizePolicy : undefined);
+    assert.deepEqual(context.result.request.pixels, {width: 24, height: 32});
     assert.equal(context.result.body, '# Private request\r\n');
     assert.equal(run(f.home, ['cover', 'claim', ...args, '--stdin'], {
         host: 'workbuddy',
@@ -124,7 +128,8 @@ test('standalone bundled launcher resolves handoff and completes context/claim/s
         readAssetHashes: [...new Set(context.result.inputs.map(item => item.assetHash))]
     });
     assert.equal(claimed.ok, true, claimed.message);
-    const image = await sharp({create: {width: 24, height: 32, channels: 3, background: '#abcdef'}}).png().toBuffer();
+    const [width, height] = sizePolicy === 'ratio-minimum' ? [30, 40] : [24, 32];
+    const image = await sharp({create: {width, height, channels: 3, background: '#abcdef'}}).png().toBuffer();
     fs.writeFileSync(path.join(context.result.inbox, 'result.png'), image);
     const receipt = {
         libraryId: f.binding.libraryId, ...Object.fromEntries(['contentId', 'requestId', 'attemptId', 'requestHash'].map(key => [key, f.task[key]])),

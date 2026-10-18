@@ -23,7 +23,7 @@ const image = (color = 'red', width = 8, height = 6, format = 'png') => sharp({
     }
 })[format]().toBuffer();
 
-async function fixture(t, count = 2) {
+async function fixture(t, count = 2, overrides = {}) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nova-cover-'));
     const root = path.join(parent, 'library');
     t.after(() => {
@@ -61,7 +61,8 @@ async function fixture(t, count = 2) {
         ratio: '4:3',
         count,
         outputFormat: 'png',
-        scope: 'cover-only'
+        scope: 'cover-only',
+        ...overrides
     };
     const created = lib.createCoverRequest(content.id, input, content.editToken);
     content = created.content;
@@ -76,7 +77,7 @@ async function fixture(t, count = 2) {
     const receipt = async (colors = ['green', 'yellow']) => {
         const files = [];
         for (let index = 0; index < colors.length; index++) {
-            const bytes = await image(colors[index]);
+            const bytes = Buffer.isBuffer(colors[index]) ? colors[index] : await image(colors[index], input.pixels.width, input.pixels.height, input.outputFormat);
             const name = `result-${index}.png`;
             fs.writeFileSync(path.join(context.inbox, name), bytes);
             files.push({name, sha256: digest(bytes)});
@@ -175,6 +176,123 @@ test('same fixed input reuses request; changing input makes a new request; task 
         readAssetHashes: context.inputs.map(input => input.assetHash)
     });
     assert.equal(claim.attempt.status, 'claimed');
+});
+
+test('omitted and explicit exact preserve v1 request bytes, hash and input identity', async t => {
+    const f = await fixture(t), current = f.lib.readContent(f.content.id);
+    const filename = path.join(f.root, '内容', current.id, '封面任务', f.request.requestId, '请求.json');
+    const original = fs.readFileSync(filename);
+    const exact = {...f.input, sizePolicy: 'exact'};
+    const inspected = f.lib.inspectCoverInput(current.id, exact, current.editToken);
+    const repeated = f.lib.createCoverRequest(current.id, exact, current.editToken);
+    assert.equal(f.request.schemaVersion, 1);
+    assert.equal(Object.hasOwn(f.request, 'sizePolicy'), false);
+    assert.equal(inspected.inputHash, f.request.inputHash);
+    assert.deepEqual(repeated.request, f.request);
+    assert.deepEqual(fs.readFileSync(filename), original);
+    assert.equal(digest(original), f.request.requestHash);
+    const ratio = f.lib.createCoverRequest(current.id, {...f.input, sizePolicy: 'ratio-minimum'}, current.editToken);
+    assert.equal(ratio.request.schemaVersion, 2);
+    assert.equal(ratio.request.sizePolicy, 'ratio-minimum');
+    assert.notEqual(ratio.request.inputHash, f.request.inputHash);
+    assert.notEqual(ratio.request.requestHash, f.request.requestHash);
+    const again = f.lib.createCoverRequest(current.id, {...f.input, sizePolicy: 'ratio-minimum'}, ratio.content.editToken);
+    assert.deepEqual(again.request, ratio.request);
+    assert.deepEqual(fs.readFileSync(filename), original);
+    assert.equal(f.lib.info.schemaVersion, 5);
+    assert.equal(again.content.schemaVersion, current.schemaVersion);
+    const raw = {...f.input, prompt: 'explicit exact mutation replay'}, options = {mutationId: randomUUID()};
+    const created = f.lib.createCoverRequest(current.id, raw, again.content.editToken, options);
+    const replayed = f.lib.createCoverRequest(current.id, {...raw, sizePolicy: 'exact'}, again.content.editToken, options);
+    assert.deepEqual(replayed.request, created.request);
+});
+
+for (const sizePolicy of [undefined, 'exact']) test(`legacy ${sizePolicy || 'omitted'} policy still rejects larger proportional generated originals`, async t => {
+    const f = await fixture(t, 1, {pixels: {width: 900, height: 1200}, ratio: '3:4', ...(sizePolicy ? {sizePolicy} : {})});
+    f.claim();
+    const receipt = await f.receipt([await image('green', 1086, 1448)]);
+    await assert.rejects(() => f.commit(receipt), error => error.code === 'IMAGE_DIMENSIONS_MISMATCH' && /exact 900x1200/.test(error.message));
+    assert.equal(f.lib.readContent(f.content.id).candidates.length, 0);
+});
+
+test('ratio minimum commits 1086x1448 originals for 900x1200 and preserves original bytes and SHA256', async t => {
+    const f = await fixture(t, 2, {pixels: {width: 900, height: 1200}, ratio: '3:4', sizePolicy: 'ratio-minimum'});
+    assert.equal(f.context.request.schemaVersion, 2);
+    assert.equal(f.context.request.sizePolicy, 'ratio-minimum');
+    f.claim();
+    const originals = await Promise.all(['green', 'yellow'].map(color => image(color, 1086, 1448)));
+    const receipt = await f.receipt(originals), done = await f.commit(receipt);
+    assert.equal(done.candidateIds.length, 2);
+    const location = path.join(f.root, '内容', f.content.id, '封面任务', f.request.requestId, '尝试', f.attemptId, '收件', done.attempt.receiptHash);
+    const report = JSON.parse(fs.readFileSync(path.join(location, '校验报告.json')));
+    for (let index = 0; index < originals.length; index++) {
+        assert.deepEqual(fs.readFileSync(path.join(location, `图片-${index}`)), originals[index]);
+        assert.equal(done.content.candidates[index].assetHash, digest(originals[index]));
+        assert.equal(report.files[index].width, 1086);
+        assert.equal(report.files[index].height, 1448);
+        assert.equal(report.files[index].assetHash, digest(originals[index]));
+    }
+    assert.equal(openLibrary(f.root).readCoverContext(f.content.id, f.request.requestId, f.attemptId).request.sizePolicy, 'ratio-minimum');
+});
+
+for (const [width, height, message] of [[897, 1196, /below minimum 900x1200/], [1087, 1448, /does not match required 3:4/]]) test(`ratio minimum atomically rejects one ${width}x${height} result in a batch`, async t => {
+    const f = await fixture(t, 2, {pixels: {width: 900, height: 1200}, ratio: '3:4', sizePolicy: 'ratio-minimum'});
+    f.claim();
+    const receipt = await f.receipt([await image('green', 1086, 1448), await image('yellow', width, height)]);
+    await assert.rejects(() => f.commit(receipt), error => error.code === 'IMAGE_DIMENSIONS_MISMATCH' && message.test(error.message));
+    const current = openLibrary(f.root).readContent(f.content.id);
+    assert.equal(current.candidates.length, 0);
+    assert.equal(current.coverJobs[0].attempts[0].status, 'claimed');
+    assert.ok(fs.existsSync(path.join(f.context.inbox, receipt.files[1].name)));
+});
+
+test('ratio minimum uses EXIF display orientation without modifying the encoded JPEG', async t => {
+    const f = await fixture(t, 1, {pixels: {width: 9, height: 12}, ratio: '3:4', sizePolicy: 'ratio-minimum', outputFormat: 'jpeg'});
+    const original = await sharp({create: {width: 16, height: 12, channels: 3, background: 'green'}}).jpeg().withMetadata({orientation: 6}).toBuffer();
+    f.claim();
+    const receipt = await f.receipt([original]), done = await f.commit(receipt);
+    assert.equal(done.content.candidates[0].assetHash, digest(original));
+    const location = path.join(f.root, '内容', f.content.id, '封面任务', f.request.requestId, '尝试', f.attemptId, '收件', done.attempt.receiptHash);
+    const report = JSON.parse(fs.readFileSync(path.join(location, '校验报告.json')));
+    assert.equal(report.files[0].width, 12);
+    assert.equal(report.files[0].height, 16);
+    assert.deepEqual(fs.readFileSync(path.join(location, '图片-0')), original);
+});
+
+test('size policy and ratio minimum pixels are validated before fixing a request', async t => {
+    const f = await fixture(t), current = f.lib.readContent(f.content.id);
+    for (const patch of [{sizePolicy: 'unknown'}, {sizePolicy: null}, {pixels: {width: 0, height: 0}}, {pixels: {width: 1.5, height: 2}}, {pixels: {width: Number.MAX_SAFE_INTEGER + 1, height: 1}}, {pixels: {width: 9000, height: 12000}}, {pixels: {width: 900, height: 1199}}]) {
+        throws('INVALID_INPUT', () => f.lib.createCoverRequest(current.id, {...f.input, sizePolicy: 'ratio-minimum', ...patch}, current.editToken));
+    }
+});
+
+for (const patch of [{schemaVersion: 1, sizePolicy: 'ratio-minimum'}, {schemaVersion: 1, sizePolicy: 'exact'}, {schemaVersion: 2, sizePolicy: 'exact'}, {schemaVersion: 2, sizePolicy: 'unknown'}, {schemaVersion: 2, sizePolicy: null}, {schemaVersion: 2, sizePolicy: undefined}, {schemaVersion: 3}, {pixels: {width: 0, height: 0}}, {pixels: {width: 1.5, height: 2}}, {pixels: {width: Number.MAX_SAFE_INTEGER + 1, height: 1}}, {pixels: {width: 8000, height: 6000}}, {ratio: '3:4'}]) test(`request reader rejects checksum-matched invalid policy or dimensions ${JSON.stringify(patch)}`, async t => {
+    const f = await fixture(t, 1, {sizePolicy: 'ratio-minimum'});
+    const raw = Buffer.from(JSON.stringify({...f.request, requestHash: undefined, ...patch}, null, 2) + '\n');
+    const job = f.lib.readContent(f.content.id).coverJobs[0];
+    job.requestHash = digest(raw);
+    // Exercise package validation directly so a matching checksum cannot hide an unsupported contract.
+    const {coverJobMethods} = await import('../cover-jobs.mjs');
+    throws('CORRUPT', () => coverJobMethods({
+        root: f.root, libraryId: f.lib.info.libraryId, validationContent: {id: f.content.id, coverJobs: [job]},
+        id: value => value, hash: digest, read: () => raw,
+        fail: (code, message) => { throw Object.assign(new Error(message), {code}); }
+    }));
+});
+
+test('the previous v1-only core rejects a checksum-matched v2 request before any execution', async t => {
+    const f = await fixture(t, 1, {sizePolicy: 'ratio-minimum'});
+    const oldSource = spawnSync('git', ['show', '2a126285f371692c483f714f05b07dc1ba954dd0:plugin-src/src/lib/file-library/cover-jobs.mjs'], {encoding: 'utf8'});
+    assert.equal(oldSource.status, 0, oldSource.stderr);
+    const oldFile = path.join(f.parent, 'v1-cover-jobs.mjs');
+    fs.writeFileSync(oldFile, oldSource.stdout.replace("'../image-validation/index.mjs'", JSON.stringify(new URL('../../image-validation/index.mjs', import.meta.url).href)));
+    const {coverJobMethods} = await import(pathToFileURL(oldFile).href);
+    const raw = fs.readFileSync(path.join(f.root, '内容', f.content.id, '封面任务', f.request.requestId, '请求.json'));
+    throws('CORRUPT', () => coverJobMethods({
+        root: f.root, libraryId: f.lib.info.libraryId, validationContent: {id: f.content.id, coverJobs: f.lib.readContent(f.content.id).coverJobs},
+        id: value => value, hash: digest, read: () => raw,
+        fail: (code, message) => { throw Object.assign(new Error(message), {code}); }
+    }));
 });
 
 const fingerprint = prepared => ({inputHash: prepared.inputHash, title: prepared.title, bodyHash: prepared.bodyHash});

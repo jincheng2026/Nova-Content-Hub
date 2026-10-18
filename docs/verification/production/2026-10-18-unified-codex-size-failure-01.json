@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-18T15:37:55.907Z",
+  "handoffId": "bb98653b-246e-4aad-940f-0f5703db8559",
+  "threadId": "01a14f99-dcbc-72e2-81f0-967c9eb7177b",
+  "launchInterface": "official thread API; Codex native UI access denied by CUA",
+  "viaInstalledDesktopRequest": true,
+  "nativeCodexComposerVerified": false,
+  "requestId": "ca50af6e-76f6-47cc-b33f-c507d57936c8",
+  "requestHash": "859da3edd8e4fa361459bd97005156b00c8fad6ecd4bb1ad8a85a7afa2b62ed0",
+  "requestSchemaVersion": 1,
+  "pixels": {
+    "width": 900,
+    "height": 1200
+  },
+  "ratio": "3:4",
+  "count": 2,
+  "attempt": {
+    "attemptId": "f223e398-a3c7-432d-b758-d2fb8e6f8faf",
+    "host": "codex",
+    "reason": "initial",
+    "status": "failed",
+    "createdAt": "2026-10-18T15:18:19.312Z",
+    "updatedAt": "2026-10-18T15:23:45.467Z",
+    "handoffHash": "5d2c0486fdfafa013a0ef9a5b5bddae23399a5e25366de85fe831058524c166d",
+    "receiptHash": null,
+    "reportHash": null,
+    "candidateIds": [],
+    "failure": {
+      "code": "IMAGE_DIMENSIONS_MISMATCH",
+      "message": "Codex 本宿主内置 imagegen 已独立生成 2 张 PNG；请求各 900×1200，实际各 1086×1448。提示中明确请求精确尺寸，但工具没有精确尺寸参数，实际输出未满足。原始字节已保留于本次 inbox，无裁切、拉伸或复用。整批 submit 已返回 IMAGE_DIMENSIONS_MISMATCH，未登记候选。"
+    }
+  },
+  "images": [
+    {
+      "file": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库/内容/209cebcc-619c-47ee-81ce-0c67e6de8062/封面任务/ca50af6e-76f6-47cc-b33f-c507d57936c8/尝试/f223e398-a3c7-432d-b758-d2fb8e6f8faf/inbox/codex-cover-01.png",
+      "sha256": "0b2a86932f134d5aa61c0e9489ca93ac1075e61bfdc5c951833d0c8155adbf04",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 1817481
+    },
+    {
+      "file": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库/内容/209cebcc-619c-47ee-81ce-0c67e6de8062/封面任务/ca50af6e-76f6-47cc-b33f-c507d57936c8/尝试/f223e398-a3c7-432d-b758-d2fb8e6f8faf/inbox/codex-cover-02.png",
+      "sha256": "01eec5eec698e75cf44cdb41399571af4a50fb6c8b2fa00a45d5beb95954f547",
+      "width": 1086,
+      "height": 1448,
+      "bytes": 1848575
+    }
+  ],
+  "candidateCount": 0,
+  "productionReady": false
+}

@@ -1,0 +1,17 @@
+✔ codex envelope resolves exact bound attempt and URL attaches the installed Skill and bound workspace without content payload (1815.564ms)
+✔ workbuddy envelope resolves exact bound attempt and URL attaches the installed Skill and bound workspace without content payload (1689.526041ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (1669.532333ms)
+✔ release and request/host validation stop before creating an envelope (1602.377958ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (2019.639916ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (1466.62125ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (2644.416083ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (1762.990417ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (1793.812667ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16593.873417

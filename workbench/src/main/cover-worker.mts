@@ -40,7 +40,7 @@ function view(library: Library, contentId: string): CoverView {
     let summary: CoverView['jobs'][number]['summary'] = null;
     if (attempt) try {
       const { request } = library.readCoverContext(contentId, job.id, attempt.attemptId);
-      summary = { template: { id: request.template.id, version: request.template.version }, styleSampleCount: request.styleAssetHashes.length, hasOwnPhoto: request.photo !== null, pixels: { width: request.pixels.width, height: request.pixels.height }, count: request.count, ratio: request.ratio, outputFormat: request.outputFormat };
+      summary = { template: { id: request.template.id, version: request.template.version }, styleSampleCount: request.styleAssetHashes.length, hasOwnPhoto: request.photo !== null, pixels: { width: request.pixels.width, height: request.pixels.height }, sizePolicy: request.sizePolicy ?? 'exact', count: request.count, ratio: request.ratio, outputFormat: request.outputFormat };
     } catch (error) {
       // Unavailable historical inputs must not hide other jobs or committed candidates.
       if (!(error instanceof LibraryError)) throw error;

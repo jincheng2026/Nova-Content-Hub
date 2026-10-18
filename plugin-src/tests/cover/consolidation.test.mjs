@@ -9,6 +9,7 @@ import {fileURLToPath} from 'node:url';
 import {HOST_EVENTS} from '../../src/content.mjs';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
+const currentVersion = JSON.parse(fs.readFileSync(path.join(root, 'release.config.json'), 'utf8')).version;
 let parent;
 before(() => {
     parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nch-unified-plugin-'));
@@ -37,7 +38,7 @@ function request(mode) {
         version: 1,
         appScope: 'nova-content-hub',
         authMode: mode,
-        pairId: `nova-content-hub@0.2.0:p1:${mode}`,
+        pairId: `nova-content-hub@${currentVersion}:p1:${mode}`,
         requestId: 'request-1',
         libraryId: 'library-1',
         targetId: 'content-1',

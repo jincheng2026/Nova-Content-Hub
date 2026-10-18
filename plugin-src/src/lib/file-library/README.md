@@ -269,7 +269,11 @@ content schema 2 倒退到 1；trash/restore 只允许 revision/updatedAt/delete
 }
 ```
 
-尺寸非空、正整数、上限四千万像素，ratio 必须与尺寸精确一致；count 为 1–20，格式只允许 png/jpeg/webp。模板样张人物不作为本人身份来源；必须明确传
+尺寸非空、正安全整数、上限四千万像素，ratio 必须与尺寸精确一致；count 为 1–20，格式只允许 png/jpeg/webp。可选 `sizePolicy` 为
+`exact` 或 `ratio-minimum`。省略或显式 `exact` 都规范化成原 v1 请求（不保存策略字段，原 inputHash 和幂等行为不变），按精确显示宽高验收。
+`ratio-minimum` 保存为 v2 请求并参与 inputHash/requestHash：pixels 表示最小显示宽高，结果须严格同比例且每一维达到最小值，
+例如 900×1200 接受 1086×1448；比例使用整数交叉乘精确比较。创建和读取请求均检查尺寸、比例和策略版本配对，旧 v1 核心拒绝 v2 请求，
+库 schema 5 与内容元数据版本不变。历史请求、产物和归属保持原样。模板样张人物不作为本人身份来源；必须明确传
 photo:null 才表示这次不放人物。协议 `nova-cover-execution`、版本 1、appScope `nova-content-hub` 由核心固定。内容标题、正文原字节
 hash、模板版本/packageHash/definition、本次选入样张、本人照声明引用、选入资料与提示都进入固定包；图片和资料原字节复制到包内。GUI
 可默认整组，但核心只要求选入非空、唯一且属于该准确模板版本的 style 样张；未选择样张及结构资源不自动发送给宿主。相同固定输入重用既有

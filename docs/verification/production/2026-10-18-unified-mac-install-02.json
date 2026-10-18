@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-18T15:06:32.650177+00:00",
+  "sourceCommit": "36506ac",
+  "additionalSourceFiles": [
+    "workbench/scripts/dist.mjs"
+  ],
+  "application": "/Applications/自媒体工作台.app",
+  "bundleId": "com.novaisland.nova-content-hub.local",
+  "version": "0.2.0",
+  "matchedFiles": {
+    "Contents/Info.plist": true,
+    "Contents/Resources/app/workbench/dist/main/desktop.mjs": true,
+    "Contents/Resources/app/workbench/dist/renderer-resources.json": true,
+    "Contents/Resources/icon.icns": true
+  },
+  "nativeInstallationPrompts": [
+    "放进应用程序",
+    "替换应用"
+  ],
+  "installedWithNativeMove": true,
+  "launchObservedAtInstalledPath": true,
+  "productionReady": false,
+  "packagingFixCommit": "2a12628"
+}
