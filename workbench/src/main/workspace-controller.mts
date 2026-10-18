@@ -7,7 +7,7 @@ import {workspaceDesktopInput} from '../shared/workspace-validation.ts';
 import type {Binding, ImportTask, LibraryBinding} from '../shared/contracts.ts';
 import type {
     WorkspaceMutation, WorkspaceMutationResult, WorkspacePending, WorkspacePendingView,
-    WorkspaceRecovery, WorkspaceWorker, WorkspaceLibrarySnapshot, WorkspaceMaterial, WorkspaceMaterialImport, WorkspaceMaterialReference
+    WorkspaceRecovery, WorkspaceWorker, WorkspaceLibrarySnapshot, WorkspaceMaterial, WorkspaceMaterialImport, WorkspaceMaterialReference, WorkspacePublicationReference
 } from '../shared/workspace-contracts.ts';
 
 type WorkspaceBinding = Binding & {workspacePending?: WorkspacePending | null};
@@ -17,6 +17,8 @@ export interface WorkspaceOwner {
     worker: WorkspaceWorker;
     dialogs: {templateImages?(): Promise<string[] | null>; material?(): Promise<string | null>; export?(defaultName: string): Promise<string | null>};
     covers: {grant(assetHash: string): string};
+    openPublicationURL?: (url: string) => Promise<void>;
+    revealFolder?: (root: string) => void;
     current(): LibraryBinding;
     noPending(): void;
     query(): Promise<ImportTask | null>;
@@ -53,6 +55,36 @@ export class WorkspaceController {
             contentDetails: library.contentDetails.map(content => ({...content, materials: content.materials.map(material => this.decorateMaterial(material)), candidates: content.candidates.map(candidate => ({...candidate, url: this.owner.covers.grant(candidate.assetHash)}))})),
             collections: library.collections.map(collection => ({...collection, materials: collection.materials.map(material => this.decorateMaterial(material)), candidates: collection.candidates.map(candidate => ({...candidate, url: this.owner.covers.grant(candidate.assetHash)}))}))
         };
+    }
+
+    async openPublicationLink(input: WorkspacePublicationReference): Promise<{opened: true}> {
+        this.validate('openPublicationLink', input);
+        return this.owner.exclusive(async () => {
+            if (!this.owner.openPublicationURL) fail('NOT_READY', '此安装尚未配置浏览器打开入口。');
+            const library = await this.owner.worker.call('workspaceLibrary', {binding: this.owner.current()});
+            const document = (input.kind === 'content' ? library.contentDetails : library.collections).find(item => item.id === input.id);
+            const stored = document?.publications.find(item => item.id === input.publicationId)?.url;
+            let url: URL;
+            try { if (!stored || stored.length > 4096 || /[\u0000-\u0020]/.test(stored)) throw new Error(); url = new URL(stored); }
+            catch { fail('INVALID_PUBLICATION_LINK', '这条发布记录没有可打开的完整网页链接。'); }
+            if (!['https:', 'http:'].includes(url.protocol) || !url.hostname || url.username || url.password) fail('INVALID_PUBLICATION_LINK', '只支持不含账号密码的 HTTP 或 HTTPS 发布链接。');
+            try { await this.owner.openPublicationURL(url.href); }
+            catch { fail('PUBLICATION_OPEN_FAILED', '系统未能打开发布链接，请稍后重试。'); }
+            return {opened: true};
+        });
+    }
+
+    async revealLibraryFolder(input?: undefined): Promise<{revealed: true}> {
+        this.validate('revealLibraryFolder', input);
+        return this.owner.exclusive(async () => {
+            if (!this.owner.revealFolder) fail('NOT_READY', '此安装尚未配置文件管理器入口。');
+            const binding = this.owner.current();
+            const info = await fs.lstat(binding.root, {bigint: true});
+            if (!info.isDirectory() || info.isSymbolicLink() || String(info.dev) !== binding.rootIdentity.dev || String(info.ino) !== binding.rootIdentity.ino) fail('LIBRARY_NOT_READY', '内容库原目录已改变，请重新连接后再查看。');
+            try { this.owner.revealFolder(binding.root); }
+            catch { fail('FOLDER_OPEN_FAILED', '系统未能显示内容库文件夹，请稍后重试。'); }
+            return {revealed: true};
+        });
     }
 
     async chooseContentMaterial(input?: undefined) {

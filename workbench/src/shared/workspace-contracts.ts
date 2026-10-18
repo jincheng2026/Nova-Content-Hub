@@ -19,6 +19,7 @@ export interface WorkspaceMaterial {
     bytes: number | null; availability: 'available' | 'unavailable'; deletedAt: string | null; url: string | null;
 }
 export interface WorkspaceMaterialReference {contentId: string; materialId: string}
+export interface WorkspacePublicationReference {kind: WorkspaceKind; id: string; publicationId: string}
 export const TEMPLATE_IMPORT_LIMITS = Object.freeze({files: 50, encodedBytes: 256 * 1024 * 1024});
 
 // Each command has a finite shape; renderer input never names a core method or filesystem path.
@@ -91,6 +92,8 @@ export interface WorkspaceReceipt { objectKind: WorkspaceObjectKind; objectId: s
 export interface WorkspaceMutationResult extends WorkspaceReceipt { mutationId: string; library: WorkspaceLibrarySnapshot }
 export interface WorkspaceRecovery { pending: WorkspacePendingView | null; result: WorkspaceMutationResult | null }
 export interface WorkspaceInputs {
+    openPublicationLink: WorkspacePublicationReference;
+    revealLibraryFolder: undefined;
     chooseTemplateImages: undefined;
     chooseContentMaterial: undefined;
     readContentMaterial: WorkspaceMaterialReference;
@@ -102,6 +105,8 @@ export interface WorkspaceInputs {
     abandonWorkspaceMutation: undefined;
 }
 export interface WorkspaceResults {
+    openPublicationLink: {opened: true};
+    revealLibraryFolder: {revealed: true};
     chooseTemplateImages: WorkspaceTemplateImage[] | null;
     chooseContentMaterial: WorkspaceMaterialImport | null;
     readContentMaterial: WorkspaceMaterialImport;

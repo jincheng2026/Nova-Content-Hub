@@ -13,7 +13,7 @@ export const CHANNELS = Object.freeze([
     'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
     'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',
     'cancelCover', 'selectCover', 'exportCover', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
-    'readWorkspaceLibrary', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
+    'readWorkspaceLibrary', 'openPublicationLink', 'revealLibraryFolder', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
     'inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
     'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',
     'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'

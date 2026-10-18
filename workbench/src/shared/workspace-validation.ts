@@ -91,9 +91,10 @@ export function workspacePending(v: unknown): v is WorkspacePending {
     return exact(v, ['mutationId', 'input', 'binding']) && uuid(v.mutationId) && workspaceMutation(v.input) && exact(v.binding, ['libraryId', 'rootIdentity']) && uuid(v.binding.libraryId) && identity(v.binding.rootIdentity);
 }
 export function workspaceDesktopInput(method: string, input: unknown): boolean | undefined {
+    if (method === 'openPublicationLink') return exact(input, ['kind', 'id', 'publicationId']) && ['content', 'collection'].includes(input.kind as string) && uuid(input.id) && uuid(input.publicationId);
     if (method === 'mutateWorkspace') return workspaceMutation(input);
     if (method === 'readContentMaterial' || method === 'exportContentMaterial') return workspaceMaterialReference(input);
-    if (['chooseTemplateImages', 'chooseContentMaterial', 'readWorkspaceLibrary', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation'].includes(method)) return input === undefined;
+    if (['revealLibraryFolder', 'chooseTemplateImages', 'chooseContentMaterial', 'readWorkspaceLibrary', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation'].includes(method)) return input === undefined;
     return undefined;
 }
 export function workspaceMaterialReference(input: unknown): input is import('./workspace-contracts.ts').WorkspaceMaterialReference {

@@ -19,6 +19,7 @@ import {NavigationIcon} from './navigation-icon.tsx';
 import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
 import {invoke} from './client.ts';
 import {CalendarPage, Overview, PromptsPage, TemplatesPage, pageNames} from './workspace-pages.tsx';
+import {PublicationPanel, type PublicationFocus} from './publication-panel.tsx';
 import type {Page} from './workspace-pages.tsx';
 import type {CoverResults, TemplateGroup} from '../shared/cover-contracts.ts';
 import { errorInfo} from '../shared/contracts.ts';
@@ -72,7 +73,7 @@ function App() {
     useEffect(() => { if (libraryOpen) libraryDialog.current?.showModal(); }, [libraryOpen]);
     const [photoManagerEpoch, setPhotoManagerEpoch] = useState(0);
     const [promptContentId, setPromptContentId] = useState<string | null>(null);
-    const [calendarContentId, setCalendarContentId] = useState<string | null>(null);
+    const [calendarFocus, setCalendarFocus] = useState<PublicationFocus | null>(null);
     const [settings, setSettings] = useState(false);
     const [coverRefresh, setCoverRefresh] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
@@ -123,7 +124,7 @@ function App() {
         setSelectedTemplate(null);
         setTemplatePicker(null);
         setPromptContentId(null);
-        setCalendarContentId(null);
+        setCalendarFocus(null);
         setDetailOpen(false);
         setContentTab('covers');
     };
@@ -374,7 +375,7 @@ function App() {
     useLayoutEffect(() => { window.scrollTo(0, 0); }, [page]);
 
     async function navigate(next: Page) {
-        await guard(async () => { setPromptContentId(null); setPage(next); setCalendarContentId(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
+        await guard(async () => { setPromptContentId(null); setPage(next); setCalendarFocus(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
     }
     async function openContentPrompts() {
         const selectedId = baseRef.current?.id;
@@ -433,10 +434,8 @@ function App() {
             setCoverStartOpenKey(value => value + 1);
         });
     }
-    async function openPublicationCalendar() {
-        const id = baseRef.current?.id;
-        if (!id || baseRef.current?.deletedAt) return;
-        await guard(async () => {setCalendarContentId(id); setCoverStartOpenKey(0); setPage('calendar');});
+    async function openCalendarFocus(focus?: PublicationFocus) {
+        await guard(async () => {setCalendarFocus(focus ?? null); setCoverStartOpenKey(0); setPage('calendar');});
     }
     async function newContent() {
         await guard(async () => {
@@ -469,6 +468,10 @@ function App() {
     let message = !status ? '正在打开工作空间…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '明确新建或打开内容库，也可导入旧备份。';
     if (task?.targetChanged) message += '。原内容库位置已被替换，请恢复原目录。';
     if (task?.descriptorChanged) message += '。内容库格式已变更，旧导入完成事实保留。';
+    const currentContentSummary = workspace?.contents.find(item => item.id === base?.id);
+    const currentContentDetails = library?.contentDetails.find(item => item.id === base?.id);
+    const hasPublishedRecord = !!currentContentDetails?.publications.some(item => !currentContentDetails.publicationEvents.some(event => event.targetId === item.id));
+    const contentStage = base?.deletedAt ? '回收站' : !base ? '新内容' : hasPublishedRecord ? '已有发布记录' : currentContentSummary?.selectedCandidateId ? '已选封面' : currentContentSummary?.candidateCount ? '待选封面' : '待做封面';
     const counts = status?.inspection?.counts;
     const recoveryCards = <>
         {status?.workspacePending && <Card title="上次修改需要核验"><p>原操作与输入已保留，确认前不会开始新的写入。</p><p>状态：{status.workspacePending.state === 'conflict' ? '对象已改变，请保留输入后重新编辑' : status.workspacePending.state === 'missing' ? '尚未找到提交记录' : '结果待核验'}</p><details><summary>查看已保留的输入</summary><pre>{JSON.stringify(status.workspacePending.input, null, 2)}</pre></details><div className="actions"><Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('recoverWorkspaceMutation'); await refreshEditor(); })}>核验上次修改</Button>{status.workspacePending.state === 'missing' && <Button disabled={busy} onClick={() => void nativeAction(async () => { await invoke('retryWorkspaceMutation'); await refreshEditor(); })}>重试同一操作</Button>}{['missing', 'conflict'].includes(status.workspacePending.state) && <Button disabled={busy} onClick={() => void nativeAction(() => invoke('abandonWorkspaceMutation'))}>放弃原修改并保留文件</Button>}</div></Card>}
@@ -491,7 +494,7 @@ function App() {
             <div className="actions"><Button id="create-library" disabled={busy || blocked}
                                              onClick={() => void guard(() => act('createLibrary'))}>新建内容库</Button><Button
                 id="open-library" disabled={busy || blocked}
-                onClick={() => void guard(() => act('openLibrary'))}>打开内容库</Button></div>
+                onClick={() => void guard(() => act('openLibrary'))}>打开内容库</Button><Button disabled={busy || !status?.currentName} onClick={() => void nativeAction(() => invoke('revealLibraryFolder'))}>在文件管理器中查看</Button></div>
             {status?.creating &&
                 <div><p>新库创建结果待核实；固定原目标，失败目录会保留。</p><Button id="abandon-creation" disabled={busy}
                                                                                  onClick={() => void resolve('discard')}>明确放弃这次创建并保留目录</Button>
@@ -541,11 +544,11 @@ function App() {
         <p id="error" role="alert">{error}</p>
         {workspaceUnavailable && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
-        {page === 'overview' && <Overview createContent={() => void newContent()} openTemplates={() => void navigate('templates')} openCalendar={() => void navigate('calendar')} generate={item => void select(item, undefined, true)} workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={() => void navigate('calendar')}/>}
+        {page === 'overview' && <Overview createContent={() => void newContent()} openTemplates={() => void navigate('templates')} openCalendar={focus => void openCalendarFocus(focus)} generate={item => void select(item, undefined, true)} workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={focus => void openCalendarFocus(focus)}/>}
         {page === 'templates' && <TemplatesPage key={libraryEpoch} library={library} run={nativeAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openPhotoManagement()}/>}
-        {page === 'calendar' && <CalendarPage key={`${libraryEpoch}:${calendarContentId ?? 'all'}`} initialContentId={calendarContentId} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
+        {page === 'calendar' && <CalendarPage key={`${libraryEpoch}:${calendarFocus ? `${calendarFocus.kind}:${calendarFocus.id}:${calendarFocus.planId ?? ''}:${calendarFocus.day ?? ''}` : 'all'}`} initialFocus={calendarFocus} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
         {page === 'prompts' && <PromptsPage key={libraryEpoch} initialContentId={promptContentId} currentContentId={base && !base.deletedAt ? base.id : null} workspace={workspace} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={refreshWorkspace} importPrompt={async () => await nativeAction(() => invoke('choosePromptDocument')) ?? null}/>}
-        {page === 'content' && (!detailOpen || !draft ? <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>← 返回内容列表</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{base?.deletedAt ? '回收站' : base ? '创作中' : '新内容'}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
+        {page === 'content' && (!detailOpen || !draft ? <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>← 返回内容列表</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
         {contentTab === 'body' && <Card title="标题与正文"><p
             id="editor-dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
             htmlFor="content-title">标题</label><input id="content-title" disabled={busy || blocked} maxLength={500}
@@ -576,7 +579,7 @@ function App() {
                                                                                                    onClick={() => load(disk)}>明确放弃草稿并载入磁盘</Button>
             </section>}</Card>}
         {contentTab === 'materials' && <><ContentMaterialPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} contentId={base?.id ?? null} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>{base && !base.deletedAt && <ContentMetadataPanel key={`${libraryEpoch}:${base.id}`} contentId={base.id} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }}/>}</>}
-        {contentTab === 'publication' && <Card className="content-publication-entry"><h3>安排这篇内容的发布</h3><p>在日历中选择渠道、安排时间，发布后记录结果。</p><Button theme="solid" disabled={busy || !base || !!base.deletedAt} onClick={() => void openPublicationCalendar()}>前往日历管理发布计划</Button></Card>}
+        {contentTab === 'publication' && <><div className="content-publication-entry"><p className="muted">这篇内容在各个渠道的计划和发布历史，都保存在这里。</p><Button theme="borderless" disabled={busy || !base || !!base.deletedAt} onClick={() => base && void openCalendarFocus({kind: 'content', id: base.id})}>在日历中查看 →</Button></div><PublicationPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} library={library} documentId={base?.id ?? null} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => {await refreshWorkspace(); await refreshEditor();}}/></>}
         <div className="cover-detail-pane" hidden={contentTab !== 'covers'}>
         <CoverPanel startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
         </div>

@@ -74,7 +74,10 @@ export class Setup {
     }
     async copyPluginMarketLocation(): Promise<{copied: true}> {
         const root = await this.requireMarket();
-        try { await this.clipboard.writeText(root); }
+        const assistant = await this.assistant();
+        if (!['codex', 'workbuddy'].includes(assistant.host)) fail('ASSISTANT_NOT_READY', '请先在设置中选择支持的助手。');
+        const location = assistant.host === 'codex' ? path.join(root, '.agents/plugins/marketplace.json') : root;
+        try { await this.clipboard.writeText(location); }
         catch { fail('CLIPBOARD_UNAVAILABLE', '未能复制配套市场位置，请重试。'); }
         return {copied: true};
     }

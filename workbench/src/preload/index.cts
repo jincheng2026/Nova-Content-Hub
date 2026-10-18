@@ -43,6 +43,8 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     copyPrompt: input => ipcRenderer.invoke('nova:copyPrompt', input),
     readWorkspace: () => ipcRenderer.invoke('nova:readWorkspace'),
     readWorkspaceLibrary: () => ipcRenderer.invoke('nova:readWorkspaceLibrary'),
+    openPublicationLink: input => ipcRenderer.invoke('nova:openPublicationLink', input),
+    revealLibraryFolder: () => ipcRenderer.invoke('nova:revealLibraryFolder'),
     mutateWorkspace: input => ipcRenderer.invoke('nova:mutateWorkspace', input),
     recoverWorkspaceMutation: () => ipcRenderer.invoke('nova:recoverWorkspaceMutation'),
     retryWorkspaceMutation: () => ipcRenderer.invoke('nova:retryWorkspaceMutation'),

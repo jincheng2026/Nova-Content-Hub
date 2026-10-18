@@ -6,7 +6,7 @@ import {WorkspaceController} from './workspace-controller.mts';
 import {Maintenance} from './maintenance-controller.mts';
 import {readPromptDocument} from './document-import.mts';
 import type {CoverStart, CoverReference, Assistant} from '../shared/cover-contracts.ts';
-import type {WorkspaceMutation, WorkspaceMaterialReference} from '../shared/workspace-contracts.ts';
+import type {WorkspaceMutation, WorkspaceMaterialReference, WorkspacePublicationReference} from '../shared/workspace-contracts.ts';
 import type {LocalPreferences} from '../shared/preferences-contracts.ts';
 import type {SetupInputs} from '../shared/setup-contracts.ts';
 import type {Preferences} from './preferences.mts';
@@ -71,9 +71,11 @@ export class DesktopController {
     pendingView: PendingView | null = null;
     authMode: 'required' | 'disabled';
     copyText?: (text: string) => void | Promise<void>;
+    openPublicationURL?: (url: string) => Promise<void>;
+    revealFolder?: (root: string) => void;
     querying: Promise<ImportTask | null> | null = null;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, services = {}, readTemplateAssistantSetup, launchTemplate}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, openPublicationURL, revealFolder, services = {}, readTemplateAssistantSetup, launchTemplate}: {
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
@@ -83,6 +85,8 @@ export class DesktopController {
         readAssistantSetup?: Covers['setup'];
         resourceWorker?: Worker;
         copyText?: (text: string) => void | Promise<void>;
+        openPublicationURL?: (url: string) => Promise<void>;
+        revealFolder?: (root: string) => void;
         readTemplateAssistantSetup?: TemplateCallbacks['readTemplateAssistantSetup'];
         launchTemplate?: TemplateCallbacks['launchTemplate'];
         services?: ControllerServices
@@ -93,6 +97,8 @@ export class DesktopController {
         this.documents = documents;
         this.authMode = authMode;
         this.copyText = copyText;
+        this.openPublicationURL = openPublicationURL;
+        this.revealFolder = revealFolder;
         this.services = services;
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
@@ -116,6 +122,8 @@ export class DesktopController {
     readContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.readContentMaterial(input); }
     exportContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.exportContentMaterial(input); }
     readWorkspaceLibrary(input?: undefined) { return this.workspace.readWorkspaceLibrary(input); }
+    openPublicationLink(input: WorkspacePublicationReference) { return this.workspace.openPublicationLink(input); }
+    revealLibraryFolder(input?: undefined) { return this.workspace.revealLibraryFolder(input); }
     mutateWorkspace(input: WorkspaceMutation) { return this.workspace.mutateWorkspace(input); }
     recoverWorkspaceMutation(input?: undefined) { return this.workspace.recoverWorkspaceMutation(input); }
     retryWorkspaceMutation(input?: undefined) { return this.workspace.retryWorkspaceMutation(input); }
@@ -466,7 +474,7 @@ export class DesktopController {
         requireWrite(this.authMode);
         return this.exclusive(async () => {
             await this.maySwitch();
-            const root = await this.dialogs.destination(path.join(this.documents, 'Nova 新内容库'));
+            const root = await this.dialogs.destination(path.join(this.documents, '我的内容库'));
             if (!root) return;
             // Reserve a fresh directory before dispatch; a lost response can only inspect this inode.
             let stat;
@@ -474,7 +482,7 @@ export class DesktopController {
                 await fs.mkdir(root, {mode: 0o700});
                 stat = await fs.lstat(root, {bigint: true});
             } catch {
-                fail('CREATE_RESERVATION_FAILED', '无法预约新内容库目录；请选择尚不存在的新路径，原位置会保留。');
+                fail('CREATE_RESERVATION_FAILED', '内容库未创建。请使用新的文件夹名称；工作台不会覆盖已有文件夹。');
             }
             const creation = {
                 root,

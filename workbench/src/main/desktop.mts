@@ -19,6 +19,7 @@ import {LibraryWatcher} from './library-watch.mts';
 import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
+import {offerApplicationInstall} from './installation.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
@@ -74,6 +75,7 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     const size = icon.getSize();
     if (icon.isEmpty() || !icon.getScaleFactors().includes(1) || size.width !== 512 || size.height !== 512) throw new Error('Cannot decode the bundled application PNG icon');
     if (icons.window !== icons.png && nativeImage.createFromPath(icons.window).isEmpty()) throw new Error('Cannot decode the bundled application ICO icon');
+    if (show && await offerApplicationInstall(app, dialog) === 'relaunching') return;
     if (process.platform === 'darwin') {
         if (!app.dock) throw new Error('macOS Dock is unavailable');
         app.dock.setIcon(icon);
@@ -115,6 +117,8 @@ export async function startDesktop({show = true, userData, dialogs, ready, onCon
     };
     const controller = new DesktopController({
         copyText: text => clipboard.writeText(text),
+        openPublicationURL: url => shell.openExternal(url),
+        revealFolder: root => shell.showItemInFolder(root),
         resourceWorker,
         store: new BindingStore(path.join(app.getPath('userData'), 'machine-binding.json')),
         worker,

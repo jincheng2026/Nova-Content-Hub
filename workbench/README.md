@@ -1,9 +1,11 @@
-# 本地内容工作台 · 技术入口
+# 自媒体工作台 · 桌面端
 
 当前栈为 **Electron 44.9.0 + TypeScript 7.0.2 + React/ReactDOM 19.3.1 + Semi UI React 19 版 2.104.0 + Vite 8.3.4**
 ，Node >=22.18.0。依赖精确锁定，文件核心与 sharp 0.35.5 继续复用已有 ESM 实现。
 
-实验入口可明确新建或打开一个当前文件库，创建内容、编辑标题/正文、保存、移入回收站、恢复、关闭后重开；也保留旧备份预检与同任务导入恢复。内容只通过文件核心写入；标题修改只传 title/body，不整包覆盖发布计划、素材等其他业务字段。编辑器现可选择模板组多样张、本人照片或明确不放人物，准备固定封面任务、交给设置中的当前助手继续，并浏览/选用/导出回库候选。正式授权、实际宿主生图与其余业务页面仍未验收。
+一期是无需登录的免费体验版，Pro/收费鉴权后置。五页源码已接入真实文件库：总览、整组模板、内容详情、发布日历和提示词；最新交互重构与验收状态以[实施台账](../docs/实施/00-实施计划与验收台账.md)为准。
+
+内容详情内直接管理正文、资料、封面候选和发布计划，日历复用同一套发布编辑器。封面生成固定内容、模板版本、参考样张和明确的人物选择，再交给全局助手执行；打开助手不是生成完成。所有写入沿用可恢复事务和 editToken，失败保留输入。当前按用户要求先完成功能，再统一测试；本批源码尚未构建或安装验收。
 
 ## 开发与构建
 
@@ -12,14 +14,14 @@ npm ci
 npm ci --prefix workbench
 npm run typecheck --prefix workbench
 npm test --prefix workbench
-npm run build --prefix workbench -- --auth both
+npm run build --prefix workbench -- --auth disabled
 npm start --prefix workbench
 npm run probe --prefix workbench
 npm run probe:lifecycle --prefix workbench
 npm run probe:cover --prefix workbench
 ```
 
-构建必须显式选择 `--auth required|disabled|both`。产物为仓库根 `workbench/dist-desktop/auth-required`、`workbench/dist-desktop/auth-disabled`
+默认启动和免费体验安装器使用 `disabled`；构建也可显式选择 `--auth required|disabled|both`，其中 required 仅供内部受限兼容。产物为仓库根 `workbench/dist-desktop/auth-required`、`workbench/dist-desktop/auth-disabled`
 ，均为 `experimental:true / productionReady:false`。根 `release.config.json` 的 scope/productId、版本、协议、实验标记、AUTH_MODE
 与随包平台/架构/pairId 在构建、main、worker 分别核验。缺失或坏配置会拒绝启动；环境变量、query、localStorage、旧演示登录均不能切换权限。
 
@@ -29,7 +31,7 @@ required 包在 main 与 worker 独立拒绝新建库、内容创建/编辑/回�
 
 应用图标沿用用户蓝色N母版。builder先调用 `checkAppIcons()` 核对母版及资源摘要，再把固定PNG/ICO/ICNS复制到
 `workbench/dist/brand`。main只从随包位置验证/解码：Windows窗口用ICO，其他平台用PNG；macOS ready后调用Dock
-setIcon。缺失、摘要损坏或PNG解码失败拒绝启动，不回退Electron默认图标。EXE/Finder安装图标仍由后续真实发行打包接入。
+setIcon。缺失、摘要损坏或PNG解码失败拒绝启动，不回退Electron默认图标。EXE/Finder 安装图标已在打包配置接入，跨平台真实显示仍须验收。
 
 ## 业务与安全边界
 
@@ -55,7 +57,7 @@ setIcon。缺失、摘要损坏或PNG解码失败拒绝启动，不回退Electro
 
 新增Node故障测试、严格TS、both build和仓库外Mac Electron封面探针，证据为verification/cover-*.log、cover-disabled.png、cover-receipt.json。探针可用合成PNG验证真实候选回库/显示/选用/原字节导出，不能据此声称助手生图验收。生产ready仍为false；真实选择器点击、OS助手打开/生成、Windows与发行继续独立验收。
 
-## 验证范围
+## 历史验证范围（不覆盖最新源码）
 
 原导入探针仍使用仓库外两包、每包两个真实 Electron 进程，覆盖
 React/Semi、sandbox/preload/IPC、utilityProcess/sharp、来源移走后同任务重启、后续编辑保留、恶意正文文本显示、资源MIME与CSP；缺少配置拒绝启动。
@@ -71,6 +73,6 @@ guard通过后，四种切库动作派发前清理旧编辑上下文；操作响
 本轮执行证据使用 `verification/lifecycle-{typecheck,node-test,build,electron,import-electron}.log` 与
 `lifecycle-receipt.json`。原 `receipt.json` 等保留为此前迁移基线，不能用于证明本轮生命周期全部完成。
 
-未验收真实系统选择器点击、原生关闭弹窗按钮、人工目视/辅助技术交互、macOS解锁、Windows/Linux运行、Windows任务栏/Finder安装图标、正式权益、签名/公证、升级/卸载和双宿主四组合；运行目录不是可商用安装包。
+未验收真实系统选择器点击、原生关闭弹窗按钮、人工目视/辅助技术交互、macOS解锁、Windows/Linux运行、Windows任务栏/Finder安装图标、签名/公证、升级/卸载和双宿主四组合；运行目录不是可商用安装包。
 
 官方依据：[Semi React 19](https://semi.design/en-US/start/getting-started)、[Electron安全](https://www.electronjs.org/docs/latest/tutorial/security)、[utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process)、[自定义协议](https://www.electronjs.org/docs/latest/api/protocol)、[contextBridge](https://www.electronjs.org/docs/latest/api/context-bridge)。
