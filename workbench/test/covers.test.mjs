@@ -29,6 +29,103 @@ async function fixture(t, mode = 'disabled') {
   const start = (c = controller, raw = input) => c.generateCover({ contentId: content.id, editToken: library.readContent(content.id).editToken, input: raw });
   return { root, libraryRoot, library, content, input, binding, source, bytes, asset, controller, make, worker, store, start, launches };
 }
+async function commitCandidate(f, job) {
+  const attemptId = job.activeAttemptId, context = f.library.readCoverContext(f.content.id, job.id, attemptId);
+  f.library.claimCoverAttempt(f.content.id, job.id, attemptId, { host: context.attempt.host, readAssetHashes: context.inputs.map(i => i.assetHash) });
+  await fs.writeFile(path.join(context.inbox, 'result.png'), f.bytes);
+  await f.library.commitCoverAttempt(f.content.id, job.id, attemptId, { libraryId: f.binding.libraryId, contentId: f.content.id, requestId: job.id, attemptId, requestHash: job.requestHash, resultId: randomUUID(), files: [{ name: 'result.png', sha256: hash(f.bytes) }] });
+}
+test('explicit same-input generate after committed result creates a new attempt on the current host', async t => {
+  const f = await fixture(t), first = await f.start(), original = first.jobs[0];
+  const requestFile = path.join(f.libraryRoot, '内容', f.content.id, '封面任务', original.id, '请求.json'), requestBytes = await fs.readFile(requestFile);
+  await commitCandidate(f, original);
+  let view = await f.controller.readCover({ contentId: f.content.id });
+  view = await f.controller.selectCover({ contentId: f.content.id, candidateId: view.candidates[0].id, editToken: view.content.editToken });
+  await f.controller.setAssistant({ host: 'workbuddy' });
+  const repeated = await f.start(), job = repeated.jobs[0];
+  assert.equal(repeated.launchRequested, true); assert.equal(repeated.jobs.length, 1); assert.equal(job.attempts.length, 2);
+  assert.equal(job.id, original.id); assert.equal(job.requestHash, original.requestHash); assert.equal(job.inputHash, original.inputHash);
+  assert.deepEqual(await fs.readFile(requestFile), requestBytes);
+  assert.deepEqual(job.attempts.map(a => [a.status, a.host, a.reason]), [['committed', 'codex', 'initial'], ['created', 'workbuddy', 'retry']]);
+  assert.deepEqual(repeated.candidates.map(c => c.id), view.candidates.map(c => c.id)); assert.equal(repeated.selectedCandidateId, view.selectedCandidateId);
+  assert.equal(f.library.readCoverContext(f.content.id, job.id, job.activeAttemptId).handoff.sourceAttemptId, original.activeAttemptId);
+  assert.equal(f.launches.length, 2); assert.equal(f.launches.at(-1).reference.host, 'workbuddy');
+  assert.equal((await f.start()).jobs[0].attempts.length, 2);
+});
+test('explicit same-input generate retries terminal histories and preserves active attempt reuse', async t => {
+  for (const status of ['cancelled', 'failed', 'superseded']) await t.test(status, async t => {
+    const f = await fixture(t), first = await f.start(), original = first.jobs[0];
+    if (status === 'failed') f.library.failCoverAttempt(f.content.id, original.id, original.activeAttemptId, { code: 'GENERATION_FAILED', message: 'fixture failure' });
+    else if (status === 'cancelled') f.library.cancelCoverAttempt(f.content.id, original.id, original.activeAttemptId);
+    else {
+      const next = f.library.createCoverAttempt(f.content.id, original.id, { host: 'codex', reason: 'retry' });
+      f.library.cancelCoverAttempt(f.content.id, original.id, next.attempt.attemptId);
+    }
+    const before = await f.controller.readCover({ contentId: f.content.id }), repeated = await f.start(), job = repeated.jobs[0];
+    assert.equal(repeated.launchRequested, true); assert.equal(repeated.jobs.length, 1); assert.equal(job.attempts.length, before.jobs[0].attempts.length + 1);
+    assert.equal(job.attempts[0].status, status); assert.deepEqual([job.attempts.at(-1).status, job.attempts.at(-1).host, job.attempts.at(-1).reason], ['created', 'codex', 'retry']);
+    const active = job.activeAttemptId;
+    assert.equal((await f.start()).jobs[0].activeAttemptId, active);
+    const context = f.library.readCoverContext(f.content.id, job.id, active);
+    f.library.claimCoverAttempt(f.content.id, job.id, active, { host: 'codex', readAssetHashes: context.inputs.map(i => i.assetHash) });
+    const claimed = await f.start(); assert.equal(claimed.jobs[0].activeAttemptId, active); assert.equal(claimed.jobs[0].attempts.length, job.attempts.length);
+    await f.controller.setAssistant({ host: 'workbuddy' });
+    const changedHost = await f.start(); assert.equal(changedHost.jobs[0].attempts.length, job.attempts.length + 1);
+    assert.equal(changedHost.jobs[0].attempts.at(-1).reason, 'host-change'); assert.equal(f.launches.at(-1).reference.host, 'workbuddy');
+  });
+});
+test('explicit completed-job retry survives restart before or after attempt creation without duplication', async t => {
+  for (const phase of ['before', 'after']) await t.test(phase, async t => {
+    const f = await fixture(t), first = await f.start(), original = first.jobs[0]; await commitCandidate(f, original);
+    await f.controller.setAssistant({ host: 'workbuddy' });
+    const call = f.worker.call; let pending;
+    f.worker.call = async (op, args) => {
+      if (op !== 'createCoverAttempt') return call(op, args);
+      pending = structuredClone(args.pending);
+      if (phase === 'after') await call(op, args);
+      throw Object.assign(new Error(`lost ${phase} attempt`), { code: 'WORKER_EXIT' });
+    };
+    await assert.rejects(f.start(), { code: 'WORKER_EXIT' }); assert.equal(f.launches.length, 1);
+    assert.equal(pending.reason, 'retry'); assert.equal(pending.host, 'workbuddy'); assert.equal(pending.requestId, original.id); assert.equal(pending.requestHash, original.requestHash);
+    assert.deepEqual((await f.store.load()).coverPending, pending);
+    assert.equal(!!f.library.queryMutation(pending.attemptMutationId), phase === 'after');
+    await assert.rejects(f.start(), { code: 'PENDING_MUTATION' });
+    f.worker.call = call; const reopened = f.make(); await reopened.initialize();
+    const resumed = await reopened.resumeCover(); assert.equal(resumed.launchRequested, true); assert.equal(resumed.jobs.length, 1); assert.equal(resumed.jobs[0].attempts.length, 2);
+    assert.equal(resumed.jobs[0].attempts[0].status, 'committed'); assert.equal(resumed.jobs[0].attempts[1].reason, 'retry'); assert.equal(resumed.candidates.length, 1);
+    assert.ok(f.library.queryMutation(pending.attemptMutationId)); assert.equal(reopened.binding.coverPending, null);
+    assert.equal(f.launches.length, 2); assert.equal(f.launches.at(-1).reference.host, 'workbuddy');
+    assert.equal((await f.start(reopened)).jobs[0].attempts.length, 2);
+  });
+});
+test('old initial intent ending before recovery remains read-only with or without its attempt receipt', async t => {
+  for (const receipt of [false, true]) await t.test(String(receipt), async t => {
+    const f = await fixture(t), call = f.worker.call; let pending;
+    f.worker.call = async (op, args) => { if (op === 'createCoverAttempt') pending = structuredClone(args.pending); return call(op, args); };
+    const first = await f.start(), job = first.jobs[0]; await commitCandidate(f, job);
+    if (!receipt) pending.attemptMutationId = randomUUID();
+    await f.controller.persist({ ...f.controller.binding, coverPending: pending });
+    const reopened = f.make(); await reopened.initialize(); const resumed = await reopened.resumeCover();
+    assert.equal(resumed.launchRequested, false); assert.equal(resumed.jobs[0].attempts.length, 1); assert.equal(resumed.candidates.length, 1);
+    assert.equal(f.launches.length, 1); assert.equal(reopened.binding.coverPending, null);
+  });
+});
+test('explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt', async t => {
+  const f = await fixture(t), first = await f.start(), job = first.jobs[0]; await commitCandidate(f, job);
+  const staleToken = f.library.readContent(f.content.id).editToken;
+  let current = f.library.readContent(f.content.id); f.library.savePublicationPlan(current.id, { channelId: 'wechat', scheduledAt: '2026-10-20T00:00:00Z', timezone: 'UTC' }, current.editToken);
+  await assert.rejects(f.controller.generateCover({ contentId: f.content.id, editToken: staleToken, input: f.input }), { code: 'CONFLICT' });
+  assert.equal(f.controller.binding.coverPending, null); assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
+  const call = f.worker.call;
+  f.worker.call = async (op, args) => { if (op === 'createCoverAttempt') throw Object.assign(new Error('before retry'), { code: 'WORKER_EXIT' }); return call(op, args); };
+  await assert.rejects(f.start(), { code: 'WORKER_EXIT' }); const pending = structuredClone(f.controller.binding.coverPending);
+  current = f.library.readContent(f.content.id); f.library.updateContent(current.id, { body: 'changed after explicit click' }, current.editToken);
+  f.worker.call = call; const reopened = f.make(); await reopened.initialize(); await assert.rejects(reopened.resumeCover(), { code: 'STALE_INPUT' });
+  assert.deepEqual(reopened.binding.coverPending, pending); assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1); assert.equal(f.launches.length, 1);
+  await reopened.abandonCover();
+  const changed = await f.start(reopened, { ...f.input, prompt: 'new settings' }); assert.equal(changed.launchRequested, true); assert.equal(changed.jobs.length, 2);
+  assert.equal(changed.jobs.find(j => j.id === job.id).attempts.length, 1); assert.equal(changed.jobs.find(j => j.id !== job.id).attempts[0].reason, 'initial');
+});
 test('exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents', async t => {
   const f = await fixture(t);
   for (const method of ['generateCover', 'choosePhoto', 'continueCover', 'setAssistant', 'selectCover', 'exportCover']) {

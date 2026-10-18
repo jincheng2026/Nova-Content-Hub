@@ -120,7 +120,7 @@ startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if 
     await button('#cover-jobs button', '取消这次生成');
     await wait(`!document.getElementById('continue-cover')`);
     mark('retry same job');
-    await button('.cover-history-row button', '按这批设置重做');
+    await button('.cover-history-row button', '按这组设置重做');
     assert.equal(await run(`document.querySelectorAll('#continue-cover').length`), 1);
     view = await bridge('readCover', { contentId: content.id }); const job = view.jobs[0]!, attemptId = job.activeAttemptId!;
     assert.equal(view.jobs.length, 1); assert.equal(job.id, firstJob.id); assert.equal(job.attempts.length, 2); assert.notEqual(attemptId, firstAttempt);

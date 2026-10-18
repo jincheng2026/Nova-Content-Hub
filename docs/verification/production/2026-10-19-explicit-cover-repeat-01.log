@@ -1,0 +1,56 @@
+$ node --test workbench/test/covers.test.mjs
+✔ explicit same-input generate after committed result creates a new attempt on the current host (2336.162542ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (2769.436958ms)
+  ✔ failed (2581.494917ms)
+  ✔ superseded (2799.958375ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (8151.570417ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2110.927958ms)
+  ✔ after (2171.367791ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (4283.089916ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1455.747708ms)
+  ✔ true (1431.949042ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (2888.355375ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2337.62475ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (340.262083ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (358.384459ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2119.922666ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2505.663584ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (3977.575792ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1265.584291ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3179.514834ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (816.437708ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (645.49425ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2404.166083ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (3340.504292ms)
+✔ summary fallback preserves strict input integrity checks for execution (1312.263792ms)
+✔ unexpected errors during summary loading still propagate (1077.942417ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (434.941208ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (2899.385792ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 46889.029875
+EXIT_CODE=0
+$ npm --prefix workbench run typecheck
+
+> nova-content-hub-workbench@0.3.0 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.0 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.0 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+EXIT_CODE=0
+$ git diff --check -- workbench/src/main/covers.mts workbench/test/covers.test.mjs
+EXIT_CODE=0

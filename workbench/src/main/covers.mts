@@ -69,7 +69,11 @@ export class Covers {
     return c.exclusive(async () => {
       await this.writable(); await this.requireAssistant(c.binding.assistant ?? 'codex');
       const fingerprint = await c.worker.call('inspectCoverInput', { binding: c.current(), ...input });
-      const pending: CoverPending = { input: structuredClone(input.input), fingerprint, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), host: c.binding.assistant ?? 'codex', requestId: null, requestHash: null, reason: 'initial' };
+      const found = await c.worker.call('findCoverRequest', { binding: c.current(), fingerprint });
+      const job = found?.content.coverJobs?.find(j => j.id === found.request.requestId);
+      // Only a new user click retries an ended job; recovery keeps its original intent.
+      const retry = job && job.attempts.length > 0 && job.activeAttemptId === null;
+      const pending: CoverPending = { input: structuredClone(input.input), fingerprint, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), host: c.binding.assistant ?? 'codex', requestId: retry ? job.id : null, requestHash: retry ? job.requestHash : null, reason: retry ? 'retry' : 'initial' };
       await c.persist({ ...c.binding, coverPending: pending });
       return this.finishCover();
     });

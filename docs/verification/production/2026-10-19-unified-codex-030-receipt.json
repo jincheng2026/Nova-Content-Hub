@@ -1,0 +1,73 @@
+{
+  "format": "nova-real-codex-cover-acceptance",
+  "recordedAt": "2026-10-18T16:25:23.575Z",
+  "version": "0.3.0",
+  "sourceCommit": "38af384",
+  "handoffId": "dfc251d2-4c1a-4c89-8ca8-1375d74cab7a",
+  "kind": "cover",
+  "binding": {
+    "root": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+    "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "69179810"
+    }
+  },
+  "task": {
+    "contentId": "209cebcc-619c-47ee-81ce-0c67e6de8062",
+    "requestId": "0a0c0a4f-d479-4f80-bb28-7bf0da42ab36",
+    "attemptId": "fc0666ea-697d-4938-b584-31d105a729e9",
+    "requestHash": "f0c6396060335b0de8d3a3a002185960ff2f4455c8853ef19a081e737af30b97",
+    "host": "codex"
+  },
+  "request": {
+    "schemaVersion": 2,
+    "sizePolicy": "ratio-minimum",
+    "pixels": {
+      "width": 768,
+      "height": 1024
+    },
+    "count": 2,
+    "ratio": "3:4",
+    "photo": null
+  },
+  "envelopeValidated": true,
+  "viaInstalledDesktop": true,
+  "productionReady": false,
+  "realImageGeneration": true,
+  "hostExecutionVia": "official authorized temporary Codex task API",
+  "nativeCodexComposerVerified": false,
+  "attemptStatus": "committed",
+  "receiptHash": "2b3784ec527e6a6f5d9381f8f7303f2b9c5b6f6e3d0300b93444c9308c52fe58",
+  "reportHash": "9b79f09e78c06fbb9329331e5fdfffc78a94662fde8e1a3bbcac5949940eeafa",
+  "images": [
+    {
+      "id": "4b6145fd-e72e-44fb-9ab4-a4f24a88f647",
+      "assetHash": "982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444",
+      "originalName": "codex-v030-cover-01.png",
+      "width": 1086,
+      "height": 1448,
+      "format": "png",
+      "bytes": 1858536,
+      "inboxMatchesStoredOriginal": true
+    },
+    {
+      "id": "1a4bf908-6430-496b-b357-ac9e45e8e812",
+      "assetHash": "e5d8cad9e9153b8604dbbc2e221cf7873cd7094297d48a2679756db8827dfc46",
+      "originalName": "codex-v030-cover-02.png",
+      "width": 1086,
+      "height": 1448,
+      "format": "png",
+      "bytes": 1904298,
+      "inboxMatchesStoredOriginal": true
+    }
+  ],
+  "nativeUI": {
+    "candidatesDisplayed": 2,
+    "selectedCandidateId": "4b6145fd-e72e-44fb-9ab4-a4f24a88f647",
+    "nativeSaveDialog": true,
+    "exported": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/Codex-030-原图验收.png",
+    "exportHash": "982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444"
+  },
+  "oldExactFailurePreserved": true
+}

@@ -1,0 +1,38 @@
+
+> nova-content-hub-workbench@0.3.0 dist:local
+> node scripts/dist.mjs --channel local --auth disabled --platform darwin --arch arm64
+
+
+> nova-content-hub-workbench@0.3.0 build
+> node scripts/build.mjs --auth disabled
+
+node:internal/child_process:1160
+    result.error = new ErrnoException(result.error, 'spawnSync ' + options.file);
+                   ^
+
+<ref *1> Error: spawnSync /var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova standalone plugin Kv9M2v/runtime/node ETIMEDOUT
+    at Object.spawnSync (node:internal/child_process:1160:20)
+    at spawnSync (node:child_process:928:24)
+    at execFileSync (node:child_process:971:15)
+    at buildCover (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/build.mjs:198:13)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/build.mjs:30:1 {
+  errno: -60,
+  code: 'ETIMEDOUT',
+  syscall: 'spawnSync /var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova standalone plugin Kv9M2v/runtime/node',
+  path: '/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova standalone plugin Kv9M2v/runtime/node',
+  spawnargs: [
+    '--input-type=module',
+    '--eval',
+    "import sharp from 'sharp';import {validateImage} from './plugin-src/src/lib/image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#ffffff'}}).png().toBuffer();await validateImage(bytes);"
+  ],
+  error: [Circular *1],
+  status: null,
+  signal: 'SIGTERM',
+  output: [ null, Buffer(0) [Uint8Array] [], Buffer(0) [Uint8Array] [] ],
+  pid: 84760,
+  stdout: Buffer(0) [Uint8Array] [],
+  stderr: Buffer(0) [Uint8Array] []
+}
+
+Node.js v24.20.0
+Command failed: /Users/mac/.local/bin/node /Users/mac/.local/lib/node_modules/npm/bin/npm-cli.js run build -- --auth disabled
