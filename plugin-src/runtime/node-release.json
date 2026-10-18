@@ -1,0 +1,14 @@
+{
+  "version": "24.20.0",
+  "origin": "https://nodejs.org/dist/v24.20.0/",
+  "archives": {
+    "darwin-arm64": "40e5607e5ecb3db9192723776da2d75d966260fc74a7a9e731c1bd67dda96bc8",
+    "darwin-x64": "9e5b2644cf107befb6aefca676b96d3296bc10138096f022ed378d6233ed81f4",
+    "win32-arm64": "31c6799744de8a54601643098040c68c3697e56c94e407d61d0e5fa5f34191d7",
+    "win32-x64": "6cac9ffbca8f6a47091e4b5c772e0606049c3871cb67d900c0cedde630e545ba",
+    "linux-arm64": "3515603e2487879a39bc75716f1a2affd027500c64ba50e845cf72cb33219013",
+    "linux-x64": "855d581f8a4eb1a8117e3426de25fe02770592febcfb31369aee1ffbfee9e8ec",
+    "linux-ppc64": "a734b36c8d1d16ce455c0eb9c329b07dd121c2c8554355064a9861bc96c3adcc",
+    "linux-s390x": "d8c224b46ef01f078a523d9b7db79282306fae281e986a15a2dbffe947c5301e"
+  }
+}

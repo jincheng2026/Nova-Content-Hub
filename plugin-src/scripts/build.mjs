@@ -1,11 +1,13 @@
-import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, cp, rm, mkdtemp } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve, join, basename } from 'node:path';
 import fs from 'node:fs';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import { syncBridge } from './sync-bridge.mjs';
 import { HOST_EVENTS, validRelease } from '../src/content.mjs';
+import { bundleNode, writeLaunchers, cleanNodeEnv } from './bundled-node.mjs';
 
 const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
@@ -16,8 +18,8 @@ const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '
 export function hooksFor(host, events) {
   return { hooks: Object.fromEntries(events.map(event => [event, [{ hooks: [{
     type: 'command',
-    command: `sh "\${CLAUDE_PLUGIN_ROOT}/bin/run-node" hook --host ${host} --event ${event}`,
-    commandWindows: `cmd /d /s /c "cd /d %CLAUDE_PLUGIN_ROOT%&& bin\\run-node.cmd hook --host ${host} --event ${event}"`,
+    command: `/bin/sh "\${CLAUDE_PLUGIN_ROOT}/bin/run-node" hook --host ${host} --event ${event}`,
+    commandWindows: `"%SystemRoot%\\System32\\cmd.exe" /d /s /c ""%CLAUDE_PLUGIN_ROOT%\\bin\\run-node.cmd" hook --host ${host} --event ${event}"`,
     timeout: event === 'Interrupt' ? 3 : 5,
   }] }]])) };
 }
@@ -71,6 +73,7 @@ export async function build(mode) {
     await json(join(dest, 'dist/release.json'), release);
     await json(join(dest, 'contract.json'), { ...release, status: 'preintegration', requestProtocol: 'nova-content-hub-request', handoffProtocol:'nova-content-hub-handoff', schemaDirectory:'./schemas/', requestEntrypoint: './dist/content.mjs', realAuthorization: 'not_configured', libraryBinding: 'unavailable', hosts: { codex: 'compatibility_unverified', workbuddy: 'compatibility_unverified' } });
     await cp(join(source, 'README.md'), join(dest, 'README.md'));
+    await writeFile(join(dest, 'PACKAGE-KIND.txt'), 'Contract-only preintegration package. Not an executable plugin distribution; bin/run-node requires separately installed Node. Use the cover package for a bundled runtime.\n');
     await cp(join(source, 'references'), join(dest, 'references'), { recursive: true });
     await writeFile(join(dest, 'bin/run-node'), '#!/bin/sh\nset -eu\nROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)\nexec node "$ROOT/dist/content.mjs" "$@"\n', { mode: 0o755 });
     await writeFile(join(dest, 'bin/run-node.cmd'), '@echo off\r\nnode "%~dp0..\\dist\\content.mjs" %*\r\n');
@@ -106,6 +109,7 @@ export async function buildCover(mode) {
     const target = join(root, 'dist-cover-runtime', `auth-${release.AUTH_MODE}`);
     await rm(target, { recursive: true, force: true });
     await mkdir(join(target, 'cover-runtime'), { recursive: true });
+    const bundled = await bundleNode(target);
     for (const name of ['file-library', 'image-validation', 'library-maintenance', 'browser-import']) {
       await cp(join(root, name), join(target, name), { recursive: true, filter: source => !['test', '.DS_Store'].includes(basename(source)) });
     }
@@ -142,18 +146,27 @@ export async function buildCover(mode) {
     await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), { recursive: true });
     await cp(join(root, 'cover-runtime/README.md'), join(target, 'cover-runtime/README.md'));
     await cp(join(source, 'README.md'), join(target, 'plugin-src/README.md'));
-    await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：`node plugin-src/src/cli.mjs doctor`。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。旧 `node cover-runtime/cli.mjs help` 入口继续可用。见 [插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](library-maintenance/README.md)。本包不代表商用发行就绪。\n');
+    await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](library-maintenance/README.md)。本包不代表商用发行就绪。\n');
+    await cp(join(source, 'runtime/README.md'), join(target, 'runtime/README.md'));
     await manifests(target, release, allSkillNames, './plugin-src/skills');
-    await writeFile(join(target, 'bin/run-node'), '#!/bin/sh\nset -eu\nROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)\nexec node "$ROOT/plugin-src/src/cli.mjs" "$@"\n', { mode: 0o755 });
-    await writeFile(join(target, 'bin/run-node.cmd'), '@echo off\r\nnode "%~dp0..\\plugin-src\\src\\cli.mjs" %*\r\n');
-    await json(join(target, 'package.json'), { ...sourcePackage, scripts: { start: 'node plugin-src/src/cli.mjs doctor' } });
+    await writeLaunchers(target);
+    await json(join(target, 'package.json'), { ...sourcePackage, scripts: { start: process.platform === 'win32' ? 'bin\\run-node.cmd doctor' : './bin/run-node doctor' } });
     await cp(join(root, 'package-lock.json'), join(target, 'package-lock.json'));
     execFileSync(process.execPath, [npmCLI, 'ci', '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'], { cwd: target, stdio: 'pipe', timeout: 180000 });
-    execFileSync(process.execPath, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#ffffff'}}).png().toBuffer();await validateImage(bytes);"], { cwd: target, stdio: 'pipe', timeout: 15000 });
-    execFileSync(process.execPath, [join(target, 'plugin-src/src/cli.mjs'), 'doctor'], { cwd: target, stdio: 'pipe', timeout: 10000 });
-    const paths = ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js', 'cover-runtime/cli.mjs',
+    const standalone = await mkdtemp(join(tmpdir(), 'nova standalone plugin '));
+    try {
+      await cp(target, standalone, { recursive: true });
+      const standaloneEnv = { ...cleanNodeEnv(), PATH: '', NODE_PATH: '' };
+      const fixedNode = join(standalone, 'runtime', basename(bundled.node));
+      execFileSync(fixedNode, ['--input-type=module', '--eval', "import sharp from 'sharp';import {validateImage} from './image-validation/index.mjs';const bytes=await sharp({create:{width:1,height:1,channels:3,background:'#ffffff'}}).png().toBuffer();await validateImage(bytes);"], { cwd: standalone, env: standaloneEnv, stdio: 'pipe', timeout: 15000 });
+      const launcher = process.platform === 'win32' ? join(process.env.SystemRoot || 'C:\\Windows', 'System32/cmd.exe') : '/bin/sh';
+      const launcherArgs = process.platform === 'win32' ? ['/d', '/s', '/c', `""${join(standalone, 'bin/run-node.cmd')}" doctor"`] : [join(standalone, 'bin/run-node'), 'doctor'];
+      execFileSync(launcher, launcherArgs, { cwd: tmpdir(), env: standaloneEnv, stdio: 'pipe', timeout: 15000 });
+    } finally { await rm(standalone, { recursive: true, force: true }); }
+    const paths = ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
       ...allSkillNames.map(name => `plugin-src/skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
-      'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json'];
+      'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
+      'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${process.platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'];
     const hashes = Object.fromEntries(await Promise.all(paths.map(async relative => [relative, createHash('sha256').update(await readFile(join(target, relative))).digest('hex')])));
     await json(join(target, 'integrity.json'), { format: 'nova-content-plugin-integrity', schemaVersion: 1, pairId: release.pairId, AUTH_MODE: release.AUTH_MODE, hashes,
       skills: Object.fromEntries(allSkillNames.map(name => [name, { namespace: skillNames.includes(name) ? 'contract' : 'cover', executable: name === 'nova-content-cover-execution' && release.AUTH_MODE === 'disabled' }])) });
