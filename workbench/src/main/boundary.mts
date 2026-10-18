@@ -4,18 +4,30 @@ import type {BuildConfig, DesktopMethod, RendererResources, Release} from '../sh
 import type {IpcMainInvokeEvent, WebContents} from 'electron';
 
 export const PAGE = 'nova-content://app/index.html';
-export const CHANNELS = Object.freeze(['status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents', 'readWorkspace', 'copyPrompt', 'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto', 'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover', 'cancelCover', 'selectCover', 'exportCover', 'setAssistant', 'resumeCoverAction', 'abandonCoverAction'] satisfies DesktopMethod[]);
-export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src nova-content://assets; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
+export const CHANNELS = Object.freeze([
+    'choosePromptDocument', 'chooseTemplateImages', 'chooseContentMaterial', 'readContentMaterial', 'exportContentMaterial',
+    'status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents', 'readWorkspace', 'copyPrompt',
+    'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent',
+    'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
+    'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',
+    'cancelCover', 'selectCover', 'exportCover', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
+    'readWorkspaceLibrary', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
+    'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
+    'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',
+    'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'
+] satisfies DesktopMethod[]);
+export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' nova-content://assets; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
 const MIME: Record<string, string> = {
     html: 'text/html; charset=utf-8',
     js: 'text/javascript; charset=utf-8',
-    css: 'text/css; charset=utf-8'
+    css: 'text/css; charset=utf-8',
+    png: 'image/png'
 };
 
 export function validateResources(value: unknown): RendererResources {
     if (!isRecord(value) || value.format !== 'nova-desktop-renderer-resources' || value.schemaVersion !== 1 || !isRecord(value.entries) || !Object.hasOwn(value.entries, '/index.html')) throw new Error('Missing or invalid renderer resource manifest');
     for (const [url, resource] of Object.entries(value.entries)) {
-        if (!/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.(?:html|js|css)$/.test(url) || url.includes('..') || !isRecord(resource) || resource.file !== url.slice(1) || resource.mime !== MIME[url.split('.').at(-1)!]) throw new Error('Invalid renderer resource entry');
+        if (!/^\/(?:[a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-][a-zA-Z0-9_.-]*\.(?:html|js|css|png)$/.test(url) || url.includes('..') || !isRecord(resource) || resource.file !== url.slice(1) || resource.mime !== MIME[url.split('.').at(-1)!]) throw new Error('Invalid renderer resource entry');
     }
     return value as unknown as RendererResources;
 }

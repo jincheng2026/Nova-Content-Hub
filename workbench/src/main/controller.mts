@@ -1,5 +1,14 @@
 import {Covers} from './covers.mts';
+import {WorkspaceController} from './workspace-controller.mts';
+import {Maintenance} from './maintenance-controller.mts';
+import {readPromptDocument} from './document-import.mts';
 import type {CoverStart, CoverReference, Assistant} from '../shared/cover-contracts.ts';
+import type {WorkspaceMutation, WorkspaceMaterialReference} from '../shared/workspace-contracts.ts';
+import type {LocalPreferences} from '../shared/preferences-contracts.ts';
+import type {SetupInputs} from '../shared/setup-contracts.ts';
+import type {Preferences} from './preferences.mts';
+import type {Reminders} from './reminders.mts';
+import type {Setup} from './setup.mts';
 import type {
     Binding,
     Inspection,
@@ -26,8 +35,23 @@ function fail(code: string, message: string): never {
     throw Object.assign(new Error(message), {code});
 }
 
+export interface ControllerServices {
+    preferences?: Pick<Preferences, 'readPreferences' | 'savePreferences'>;
+    reminders?: Pick<Reminders, 'readReminderStatus' | 'testReminder'>;
+    setup?: Pick<Setup, 'readSetup' | 'openSetupTarget' | 'copyPluginMarketLocation' | 'exportDiagnostics'>;
+}
+
 export class DesktopController {
+    async choosePromptDocument() {
+        return this.exclusive(async () => {
+            const file = await this.dialogs.promptDocument?.();
+            return file ? readPromptDocument(file) : null;
+        });
+    }
     covers: Covers;
+    workspace: WorkspaceController;
+    maintenance: Maintenance;
+    services: ControllerServices;
     store: BindingStore;
     worker: Worker;
     dialogs: Dialogs;
@@ -42,15 +66,17 @@ export class DesktopController {
     copyText?: (text: string) => void | Promise<void>;
     querying: Promise<ImportTask | null> | null = null;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required', launch, resourceWorker, copyText}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, services = {}}: {
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
         documents: string;
         authMode?: 'required' | 'disabled';
         launch?: Covers['launch'];
+        readAssistantSetup?: Covers['setup'];
         resourceWorker?: Worker;
-        copyText?: (text: string) => void | Promise<void>
+        copyText?: (text: string) => void | Promise<void>;
+        services?: ControllerServices
     }) {
         this.store = store;
         this.worker = worker;
@@ -58,7 +84,65 @@ export class DesktopController {
         this.documents = documents;
         this.authMode = authMode;
         this.copyText = copyText;
-        this.covers = new Covers(this, launch, resourceWorker);
+        this.services = services;
+        this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
+        this.workspace = new WorkspaceController(this);
+        this.maintenance = new Maintenance(this);
+    }
+
+    chooseTemplateImages(input?: undefined) { return this.workspace.chooseTemplateImages(input); }
+    chooseContentMaterial(input?: undefined) { return this.workspace.chooseContentMaterial(input); }
+    readContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.readContentMaterial(input); }
+    exportContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.exportContentMaterial(input); }
+    readWorkspaceLibrary(input?: undefined) { return this.workspace.readWorkspaceLibrary(input); }
+    mutateWorkspace(input: WorkspaceMutation) { return this.workspace.mutateWorkspace(input); }
+    recoverWorkspaceMutation(input?: undefined) { return this.workspace.recoverWorkspaceMutation(input); }
+    retryWorkspaceMutation(input?: undefined) { return this.workspace.retryWorkspaceMutation(input); }
+    abandonWorkspaceMutation(input?: undefined) { return this.workspace.abandonWorkspaceMutation(input); }
+    backupLibrary() { return this.maintenance.backupLibrary(); }
+    verifyLibraryBackup() { return this.maintenance.verifyLibraryBackup(); }
+    restoreLibraryBackup() { return this.maintenance.restoreLibraryBackup(); }
+    readMaintenanceStatus() { return this.maintenance.readMaintenanceStatus(); }
+    recoverMaintenance() { return this.maintenance.recoverMaintenance(); }
+    abandonMaintenance() { return this.maintenance.abandonMaintenance(); }
+
+    service<K extends keyof ControllerServices>(key: K): NonNullable<ControllerServices[K]> {
+        const service = this.services[key];
+        if (!service) fail('NOT_READY', '当前桌面环境尚未配置此本机服务，请使用完整桌面应用或重启后重试。');
+        return service as NonNullable<ControllerServices[K]>;
+    }
+
+    readPreferences(input?: undefined) {
+        validateInput('readPreferences', input);
+        return this.service('preferences').readPreferences();
+    }
+    savePreferences(input: LocalPreferences) {
+        validateInput('savePreferences', input);
+        return this.exclusive(() => this.service('preferences').savePreferences(input));
+    }
+    readReminderStatus(input?: undefined) {
+        validateInput('readReminderStatus', input);
+        return this.service('reminders').readReminderStatus();
+    }
+    testReminder(input?: undefined) {
+        validateInput('testReminder', input);
+        return this.exclusive(() => this.service('reminders').testReminder());
+    }
+    readSetup(input?: undefined) {
+        validateInput('readSetup', input);
+        return this.exclusive(() => this.service('setup').readSetup());
+    }
+    openSetupTarget(input: SetupInputs['openSetupTarget']) {
+        validateInput('openSetupTarget', input);
+        return this.exclusive(() => this.service('setup').openSetupTarget(input));
+    }
+    copyPluginMarketLocation(input?: undefined) {
+        validateInput('copyPluginMarketLocation', input);
+        return this.exclusive(() => this.service('setup').copyPluginMarketLocation());
+    }
+    exportDiagnostics(input?: undefined) {
+        validateInput('exportDiagnostics', input);
+        return this.exclusive(() => this.service('setup').exportDiagnostics());
     }
 
     resumeCoverAction() {
@@ -74,7 +158,14 @@ export class DesktopController {
     }
 
     retryBuiltins() {
-        return this.covers.retryBuiltins();
+        requireWrite(this.authMode);
+        return this.exclusive(async () => {
+            this.noPending(true);
+            this.current();
+            const task = await this.query();
+            if (this.binding.started && task?.status !== 'committed') fail('IMPORT_IN_PROGRESS', '请先完成或核验当前导入。');
+            await this.covers.seed();
+        });
     }
 
     choosePhoto(input: { title: string; isOwnPhoto: boolean }) {
@@ -129,6 +220,10 @@ export class DesktopController {
         return this.covers.setAssistant(input);
     }
 
+    readAssistantSetup() {
+        return this.covers.readAssistantSetup();
+    }
+
     async initialize() {
         this.binding = await this.store.load();
         if ((this.binding.libraryId || this.binding.started) && this.binding.current === undefined) this.binding.needsReselect = true;
@@ -174,6 +269,8 @@ export class DesktopController {
         if (this.binding.source && !this.inspection && !this.binding.started) this.inspection = await this.worker.call('inspect', {source: this.binding.source});
         return {
             assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
+            workspacePending: this.workspace.view(),
+            maintenance: this.maintenance.readMaintenanceStatus(),
         busy: this.busy,
             sourceName: this.binding.source ? path.basename(this.binding.source) : null,
             destinationName: this.binding.destination ? path.basename(this.binding.destination) : null,
@@ -295,8 +392,8 @@ export class DesktopController {
         if (JSON.stringify(next.current) !== JSON.stringify(this.binding.current)) this.covers.revoke(); this.binding = next;
     }
 
-    noPending() {
-        if (this.binding.pending || this.binding.creation|| this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending) fail('PENDING_MUTATION', '保存结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
+    noPending(allowSeedRetry = false) {
+        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.maintenancePending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
     }
 
     async maySwitch() {
@@ -312,6 +409,7 @@ export class DesktopController {
 
     async bindImported() {
         if (this.last?.status !== 'committed' || this.last.targetChanged || this.binding.needsReselect || this.binding.current?.root === this.binding.destination) return;
+        this.noPending();
         const current = await this.worker.call('bind', {
             destination: this.binding.destination!,
             libraryId: this.binding.libraryId!,

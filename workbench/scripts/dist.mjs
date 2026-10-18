@@ -76,6 +76,8 @@ export function installerConfig(options, version) {
             '!**/{test,tests,__tests__,scripts,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',
             '!**/*.map', '!**/.DS_Store', '!package-lock.json'
         ],
+        // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.
+        extraResources: [{from: path.join(workbench, 'dist-desktop/auth-required/workbench/plugin-marketplace'), to: 'plugin-marketplace', filter: ['**/*']}],
         mac: {
             target: [{target: 'dmg', arch: [options.arch]}],
             icon: path.join(icons, 'icon.icns'),

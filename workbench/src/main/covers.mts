@@ -2,14 +2,27 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import { randomUUID, createHash } from 'node:crypto';
 import type { DesktopController } from './controller.mts';
-import type { CoverStart, CoverReference, CoverView, Photo, CoverPending, CoverInput, Assistant, CoverContext, CoverActionPending } from '../shared/cover-contracts.ts';
+import type { CoverStart, CoverReference, CoverView, Photo, CoverPending, CoverInput, Assistant, AssistantSetup, CoverContext, CoverActionPending } from '../shared/cover-contracts.ts';
 import type { LibraryBinding, Worker } from '../shared/contracts.ts';
 import { requireWrite, validateInput, fail } from '../shared/validation.ts';
 export class Covers {
   reader: Worker; reading: Promise<void> = Promise.resolve();
   owner: DesktopController; epoch = randomUUID(); grants = new Map<string, string>();
   launch?: (binding: LibraryBinding, reference: CoverReference & { requestHash: string; host: Assistant }) => Promise<void>;
-  constructor(owner: DesktopController, launch?: Covers['launch'], reader: Worker = owner.worker) { this.owner = owner; this.launch = launch; this.reader = reader; }
+  setup: (host: Assistant) => Promise<AssistantSetup>;
+  constructor(owner: DesktopController, launch?: Covers['launch'], reader: Worker = owner.worker, setup?: Covers['setup']) { this.owner = owner; this.launch = launch; this.reader = reader; this.setup = setup ?? (async host => ({ host, ready: false, skill: null, reason: 'unconfigured' })); }
+  readAssistantSetup() { return this.setup(this.owner.binding.assistant ?? 'codex'); }
+  async requireAssistant(host: Assistant) {
+    const setup = await this.setup(host);
+    if (!setup.ready || setup.host !== host || setup.skill !== 'nova-content-cover-execution') fail('NOT_READY', '助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。');
+    if (!this.launch) fail('NOT_READY', '此构建尚未配置助手打开入口，请检查工作台安装。');
+  }
+  async openAttempt(reference: CoverReference) {
+    const c = this.owner;
+    const context = await c.worker.call('handoffContext', { binding: c.current(), reference });
+    await this.requireAssistant(context.attempt.host);
+    await this.launch!(c.current(), { ...reference, requestHash: context.request.requestHash, host: context.attempt.host });
+  }
   revoke() { this.epoch = randomUUID(); this.grants.clear(); }
   grant(hash: string) { const url = `nova-content://assets/${this.epoch}/${hash}`; this.grants.set(url, hash); return url; }
   allows(url: string) { return this.grants.has(url); }
@@ -54,15 +67,17 @@ export class Covers {
   async generateCover(input: CoverStart) {
     const c = this.owner; validateInput('generateCover', input); requireWrite(c.authMode);
     return c.exclusive(async () => {
-      await this.writable(); const fingerprint = await c.worker.call('inspectCoverInput', { binding: c.current(), ...input });
+      await this.writable(); await this.requireAssistant(c.binding.assistant ?? 'codex');
+      const fingerprint = await c.worker.call('inspectCoverInput', { binding: c.current(), ...input });
       const pending: CoverPending = { input: structuredClone(input.input), fingerprint, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), host: c.binding.assistant ?? 'codex', requestId: null, requestHash: null, reason: 'initial' };
       await c.persist({ ...c.binding, coverPending: pending });
       return this.finishCover();
     });
   }
-  async finishCover() {
+  async finishCover(open = true) {
     const c = this.owner; let pending = c.binding.coverPending;
     if (!pending) fail('NO_PENDING', '没有待核验的封面操作。');
+    await this.requireAssistant(pending.host);
     const binding = c.current();
     // A reused request may have no receipt for this mutation; lookup is authoritative.
     let found = await c.worker.call('findCoverRequest', { binding, fingerprint: pending.fingerprint });
@@ -81,44 +96,51 @@ export class Covers {
     if (!context && pending.reason === 'initial') {
       const job = found.content.coverJobs?.find(j => j.id === pending!.requestId);
       const existing = job?.attempts.find(a => a.attemptId === job.activeAttemptId);
+      if (existing && !['created', 'claimed'].includes(existing.status)) {
+        const result = this.decorate(await c.worker.call('readCover', { binding, contentId: pending.fingerprint.contentId }));
+        await c.persist({ ...c.binding, coverPending: null }); return { ...result, launchRequested: false };
+      }
       // Repeated generate/continue reuses the active attempt; only explicit retry/host change adds one.
       if (existing && existing.host !== pending.host) { pending = { ...pending, reason: 'host-change' }; await c.persist({ ...c.binding, coverPending: pending }); }
       if (existing && existing.host === pending.host) context = await c.worker.call('coverContext', { binding, reference: { contentId: pending.fingerprint.contentId, requestId: pending.requestId!, attemptId: existing.attemptId } });
       else if (job?.attempts.length && !existing) {
         const result = this.decorate(await c.worker.call('readCover', { binding, contentId: pending.fingerprint.contentId }));
-        await c.persist({ ...c.binding, coverPending: null }); return result;
+        await c.persist({ ...c.binding, coverPending: null }); return { ...result, launchRequested: false };
       }
     }
     if (!context) context = await c.worker.call('createCoverAttempt', { binding, pending });
     if (context.request.requestHash !== pending.requestHash) fail('CONFLICT', '尝试不属于已固定的封面请求。');
     const result = this.decorate(await c.worker.call('readCover', { binding, contentId: pending.fingerprint.contentId }));
-    await c.persist({ ...c.binding, coverPending: null }); return result;
+    await c.persist({ ...c.binding, coverPending: null });
+    const launchRequested = open && ['created', 'claimed'].includes(context.attempt.status);
+    if (launchRequested) await this.openAttempt({ contentId: pending.fingerprint.contentId, requestId: context.request.requestId, attemptId: context.attempt.attemptId });
+    return { ...result, launchRequested };
   }
   async resumeCover() { requireWrite(this.owner.authMode); return this.owner.exclusive(() => this.finishCover()); }
   async abandonCover() { return this.owner.exclusive(async () => { await this.owner.persist({ ...this.owner.binding, coverPending: null }); }); }
-  async newAttempt(reference: CoverReference, reason: 'retry' | 'host-change', context?: CoverContext) {
+  async newAttempt(reference: CoverReference, reason: 'retry' | 'host-change', context?: CoverContext, open = true) {
     const c = this.owner; await this.writable(); const binding = c.current();
+    await this.requireAssistant(c.binding.assistant ?? 'codex');
     const current = context ?? await c.worker.call('coverContext', { binding, reference });
     const request = current.request as CoverContext['request'] & CoverInput & { materials?: { id: string }[] };
     const input: CoverInput = { template: { id: request.template.id, version: request.template.version }, styleAssetHashes: [...request.styleAssetHashes], photo: request.photo ? { id: request.photo.id, assetHash: request.photo.assetHash } : null, materialIds: (request.materials || []).map(m => m.id), prompt: request.prompt, pixels: { ...request.pixels }, ratio: request.ratio, count: request.count, outputFormat: request.outputFormat, scope: 'cover-only' };
     const fingerprint = await c.worker.call('inspectCoverInput', { binding, contentId: reference.contentId, input, editToken: current.content.editToken });
     if (fingerprint.title !== request.title || fingerprint.bodyHash !== request.bodyHash) fail('STALE_INPUT', '正文或标题已改变，请使用当前内容重新准备封面。');
     await c.persist({ ...c.binding, coverPending: { input, fingerprint, host: c.binding.assistant ?? 'codex', requestId: reference.requestId, requestHash: request.requestHash, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), reason } });
-    return this.finishCover();
+    return this.finishCover(open);
   }
   async retryCover(reference: CoverReference) { validateInput('retryCover', reference); requireWrite(this.owner.authMode); return this.owner.exclusive(() => this.newAttempt(reference, 'retry')); }
   async continueCover(reference: CoverReference) {
     const c = this.owner; validateInput('continueCover', reference); requireWrite(c.authMode);
     return c.exclusive(async () => {
-      await this.writable(); let context = await c.worker.call('handoffContext', { binding: c.current(), reference });
+      await this.writable(); await this.requireAssistant(c.binding.assistant ?? 'codex');
+      const context = await c.worker.call('handoffContext', { binding: c.current(), reference });
       if (context.attempt.host !== (c.binding.assistant ?? 'codex')) {
-        const updated = await this.newAttempt(reference, 'host-change', context);
+        const updated = await this.newAttempt(reference, 'host-change', context, false);
         const job = updated.jobs.find(j => j.id === reference.requestId)!;
         reference = { ...reference, attemptId: job.activeAttemptId! };
-        context = await c.worker.call('handoffContext', { binding: c.current(), reference });
       }
-      if (!this.launch) fail('HOST_UNAVAILABLE', '此构建尚未配置助手打开入口。');
-      await this.launch(c.current(), { ...reference, requestHash: context.request.requestHash, host: context.attempt.host });
+      await this.openAttempt(reference);
       return { launchRequested: true as const };
     });
   }

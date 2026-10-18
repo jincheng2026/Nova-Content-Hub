@@ -1,0 +1,167 @@
+import {useEffect, useRef, useState, type ReactNode} from 'react';
+import Button from '@douyinfe/semi-ui-19/lib/es/button';
+import Card from '@douyinfe/semi-ui-19/lib/es/card';
+import type {WorkspaceLibrarySnapshot, WorkspaceMutation, WorkspaceLibraryCollection, WorkspaceLibraryPhoto, WorkspaceChannelFields, WorkspaceMaterialImport} from '../shared/workspace-contracts.ts';
+import type {CoverResults} from '../shared/cover-contracts.ts';
+import {invoke} from './client.ts';
+import './workspace-management.css';
+export type WorkspaceRun = <T>(action: () => Promise<T>) => Promise<T | undefined>;
+export interface WorkspaceManagementProps { library: WorkspaceLibrarySnapshot | null; busy: boolean; run: WorkspaceRun; refresh(): Promise<void> }
+export function useWorkspaceMutation({busy, run, refresh}: Pick<WorkspaceManagementProps, 'busy' | 'run' | 'refresh'>) {
+  const [notice, setNotice] = useState('');
+  async function mutate(input: WorkspaceMutation, done?: (library: WorkspaceLibrarySnapshot) => void) {
+    if (busy) return;
+    return run(async () => {
+      let saved: WorkspaceLibrarySnapshot;
+      try { saved = (await invoke('mutateWorkspace', input)).library; }
+      catch (error) { setNotice('操作未确认完成。请查看上方错误与恢复入口；编辑内容仍保留。'); throw error; }
+      setNotice('已保存到本机内容库。');
+      done?.(saved);
+      await refresh();
+      return true;
+    });
+  }
+  return {mutate, notice, setNotice};
+}
+const managedDrafts = new Set<symbol>();
+export function hasManagedDrafts() { return managedDrafts.size > 0; }
+export function useManagedDraftGuard(dirty: boolean) {
+  const identity = useRef(Symbol('inline-editor'));
+  useEffect(() => { if (dirty) managedDrafts.add(identity.current); else managedDrafts.delete(identity.current); return () => { managedDrafts.delete(identity.current); }; }, [dirty]);
+}
+async function reloadManagedWorkspace(props: WorkspaceManagementProps, apply: (library: WorkspaceLibrarySnapshot) => void) {
+  if (props.busy) return;
+  await props.run(async () => { const library = await invoke('readWorkspaceLibrary'); apply(library); await props.refresh(); });
+}
+export function ManagementDialog({title, close, busy, dirty = false, children}: {title: string; close(): void; busy: boolean; dirty?: boolean; children: ReactNode}) {
+  const dialog = useRef<HTMLDialogElement>(null), identity = useRef(Symbol('editor'));
+  const [minimized, setMinimized] = useState(false), [confirmClose, setConfirmClose] = useState(false);
+  useEffect(() => { dialog.current?.showModal(); return () => { managedDrafts.delete(identity.current); }; }, []);
+  useEffect(() => { if (dirty) managedDrafts.add(identity.current); }, [dirty]);
+  const requestClose = () => { if (managedDrafts.has(identity.current)) setConfirmClose(true); else close(); };
+  return <>{minimized && <div className="management-resume"><p>「{title}」的填写内容已保留。处理工作台提示后，可继续编辑。</p><Button onClick={() => { setMinimized(false); dialog.current?.showModal(); }}>继续编辑</Button></div>}<dialog ref={dialog} className="management-dialog" aria-label={title} onClickCapture={event => { if (event.target instanceof Element && event.target.closest('form button')) managedDrafts.add(identity.current); }} onInputCapture={() => managedDrafts.add(identity.current)} onChangeCapture={() => managedDrafts.add(identity.current)} onCancel={event => { event.preventDefault(); if (!busy) requestClose(); }}><div className="dialog-heading"><h2>{title}</h2><div className="management-actions"><Button onClick={() => { dialog.current?.close(); setMinimized(true); }}>暂时收起</Button><Button disabled={busy} onClick={requestClose}>关闭</Button></div></div>{confirmClose && <div role="alert"><p>填写内容尚未保存。关闭会放弃这次编辑，已经写入内容库的记录不受影响。</p><Button disabled={busy} onClick={close}>放弃填写并关闭</Button><Button onClick={() => setConfirmClose(false)}>继续填写</Button></div>}{children}</dialog></>;
+}
+function PhotoEditor({photo, props, close}: {photo: WorkspaceLibraryPhoto; props: WorkspaceManagementProps; close(): void}) {
+  const [title, setTitle] = useState(photo.title), [own, setOwn] = useState(photo.isOwnPhoto);
+  const {mutate, notice} = useWorkspaceMutation(props);
+  const current = props.library?.photos.find(item => item.id === photo.id);
+  return <ManagementDialog title="管理照片" busy={props.busy} close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (current) void mutate({op: 'updatePhoto', id: current.id, editToken: photo.editToken, title: title.trim(), isOwnPhoto: own}, close); }}><label>照片名称<input required value={title} onChange={event => setTitle(event.target.value)}/></label><label className="check-label"><input type="checkbox" checked={own} onChange={event => setOwn(event.target.checked)}/>我确认这是本人照片，可作为我的人物参考</label><p className="muted">撤销声明后，此照片不再可选作本人人物参考。已有发布记录会保留。</p><p role="status">{notice}</p><Button htmlType="submit" theme="solid" disabled={props.busy || !title.trim() || !current}>保存照片设置</Button></form></ManagementDialog>;
+}
+function ChannelEditor({channel, props, close}: {channel: (WorkspaceChannelFields & {id: string}) | null; props: WorkspaceManagementProps; close(): void}) {
+  const [name, setName] = useState(channel?.name ?? ''), [ratio, setRatio] = useState(channel?.requiredRatio ?? ''), [ink, setInk] = useState(channel?.ink ?? '#555555'), [bg, setBg] = useState(channel?.bg ?? '#f0f0f0');
+  const [token] = useState(props.library?.settings.editToken);
+  const {mutate, notice} = useWorkspaceMutation(props);
+  return <ManagementDialog title={channel ? '编辑渠道' : '新建渠道'} busy={props.busy} close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (token) void mutate({...{name: name.trim(), requiredRatio: ratio.trim() || null, ink, bg, editToken: token}, ...(channel ? {op: 'updateChannel', channelId: channel.id} : {op: 'createChannel'})}, close); }}><label>渠道名称<input required value={name} onChange={event => setName(event.target.value)}/></label><label>封面比例（可留空）<input value={ratio} pattern="[1-9][0-9]*:[1-9][0-9]*" placeholder="如 3:4" onChange={event => setRatio(event.target.value)}/></label><div className="management-columns"><label>文字颜色<input type="color" value={ink} onChange={event => setInk(event.target.value)}/></label><label>标签底色<input type="color" value={bg} onChange={event => setBg(event.target.value)}/></label></div><p role="status">{notice}</p><Button htmlType="submit" theme="solid" disabled={props.busy || !name.trim() || !token}>保存渠道</Button></form></ManagementDialog>;
+}
+function CollectionEditor({collection, props, close}: {collection: WorkspaceLibraryCollection | null; props: WorkspaceManagementProps; close(): void}) {
+  const [title, setTitle] = useState(collection?.title ?? ''), [body, setBody] = useState(collection?.body ?? ''), [start, setStart] = useState(collection?.dateRange.start ?? ''), [end, setEnd] = useState(collection?.dateRange.end ?? ''), [channels, setChannels] = useState(collection?.channelIds ?? []);
+  const {mutate, notice} = useWorkspaceMutation(props);
+  return <ManagementDialog title={collection ? '编辑合集' : '新建合集'} busy={props.busy} close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); const fields = {title: title.trim(), body, channelIds: channels, dateRange: {start: start || null, end: end || null}}; void mutate(collection ? {op: 'updateCollection', id: collection.id, editToken: collection.editToken, ...fields} : {op: 'createCollection', ...fields}, close); }}><label>合集名称<input required value={title} onChange={event => setTitle(event.target.value)}/></label><label>合集正文<textarea value={body} onChange={event => setBody(event.target.value)}/></label><div className="management-columns"><label>开始日期<input type="date" value={start} max={end || undefined} onChange={event => setStart(event.target.value)}/></label><label>结束日期<input type="date" min={start || undefined} value={end} onChange={event => setEnd(event.target.value)}/></label></div><fieldset><legend>适用渠道</legend>{props.library?.settings.channels.filter(item => !item.deletedAt || channels.includes(item.id)).map(item => <label className="check-label" key={item.id}><input type="checkbox" checked={channels.includes(item.id)} onChange={event => setChannels(old => event.target.checked ? [...old, item.id] : old.filter(id => id !== item.id))}/>{item.name}</label>)}</fieldset><p role="status">{notice}</p><Button htmlType="submit" theme="solid" disabled={props.busy || !title.trim()}>保存合集</Button></form></ManagementDialog>;
+}
+function MembersEditor({collection, props, close}: {collection: WorkspaceLibraryCollection; props: WorkspaceManagementProps; close(): void}) {
+  const [members, setMembers] = useState(collection.memberIds), {mutate, notice} = useWorkspaceMutation(props);
+  const current = props.library?.collections.find(item => item.id === collection.id);
+  return <ManagementDialog title={`管理「${collection.title}」的内容`} busy={props.busy} close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (current) void mutate({op: 'setCollectionMembers', id: current.id, editToken: collection.editToken, memberIds: members}, close); }}><p className="muted">勾选内容加入合集；取消勾选只移出合集，内容本身仍保留。</p><div className="members-picker">{props.library?.contentDetails.filter(item => !item.deletedAt || members.includes(item.id)).map(item => <label className="check-label" key={item.id}><input type="checkbox" disabled={!!item.deletedAt && !members.includes(item.id)} checked={members.includes(item.id)} onChange={event => setMembers(old => event.target.checked ? [...old, item.id] : old.filter(id => id !== item.id))}/>{item.title}{item.deletedAt ? '（回收站，保存前请移出或先恢复）' : ''}</label>)}</div><p role="status">{notice}</p><Button htmlType="submit" theme="solid" disabled={props.busy || !current}>保存成员</Button></form></ManagementDialog>;
+}
+export function LibraryPanels(props: WorkspaceManagementProps & {assets: CoverResults['listCoverAssets'] | null; choosePhoto?(): Promise<void>}) {
+  const {library, busy, assets} = props;
+  const [tab, setTab] = useState<'photos' | 'profile' | 'channels' | 'defaults' | 'collections' | 'catalogs'>('photos'), [trash, setTrash] = useState(false);
+  const [photo, setPhoto] = useState<WorkspaceLibraryPhoto | null>(null), [channel, setChannel] = useState<(WorkspaceChannelFields & {id: string}) | null | undefined>(undefined), [collection, setCollection] = useState<WorkspaceLibraryCollection | null | undefined>(undefined), [members, setMembers] = useState<WorkspaceLibraryCollection | null>(null);
+  const {mutate, notice, setNotice} = useWorkspaceMutation(props);
+  if (!library) return <p className="muted">打开内容库后，即可管理本机资料。</p>;
+  const settings = library.settings;
+  return <div className="workspace-management"><div className="management-tabs">{([['photos', '我的照片'], ['profile', '个人资料'], ['channels', '渠道'], ['defaults', '生成默认值'], ['collections', '合集'], ['catalogs', '分类与比例']] as const).map(([key, label]) => <Button key={key} theme={tab === key ? 'solid' : 'borderless'} onClick={() => { if (key === tab) return; if (hasManagedDrafts()) { setNotice('有尚未保存的填写。请先保存，或使用“放弃修改并重新读取”，再切换管理页面。'); return; } setNotice(''); setTab(key); setTrash(false); }}>{label}</Button>)}</div><p role="status" className="management-notice">{notice}</p>
+  {tab === 'photos' && <Card title="我的照片"><div className="management-toolbar"><span className="muted">只有明确声明为本人的可用照片，才能用于本人人物参考。</span><div className="management-actions"><Button onClick={() => setTrash(!trash)}>{trash ? '返回照片' : '照片回收站'}</Button>{props.choosePhoto && <Button disabled={busy} onClick={() => void props.choosePhoto?.()}>导入照片</Button>}</div></div>{library.photos.filter(item => !!item.deletedAt === trash).map(item => <div className="management-row" key={item.id}><div className="management-photo">{assets?.photos.find(asset => asset.id === item.id)?.url && <img src={assets.photos.find(asset => asset.id === item.id)!.url!} alt={item.title}/>}<div><strong>{item.title}</strong><p className="muted">{item.availability === 'unavailable' ? '原图不可用' : item.isOwnPhoto ? '已声明为本人照片' : '未声明为本人照片'}{settings.defaults.photoId === item.id ? ' · 默认人物参考' : ''}</p></div></div><div className="management-actions">{!trash && <Button disabled={busy} onClick={() => setPhoto(item)}>管理</Button>}<Button disabled={busy} onClick={() => void mutate({op: trash ? 'restorePhoto' : 'trashPhoto', id: item.id, editToken: item.editToken})}>{trash ? '恢复照片' : '移入回收站'}</Button></div></div>)}{!library.photos.some(item => !!item.deletedAt === trash) && <p className="muted">{trash ? '照片回收站为空。' : '还没有导入照片。'}</p>}</Card>}
+  {tab === 'profile' && <ProfileForm props={props}/>}
+  {tab === 'defaults' && <DefaultsForm props={props}/>}
+  {tab === 'channels' && <Card title="发布渠道"><div className="management-toolbar"><p className="muted">渠道用于归档和安排，不会连接或自动发布到平台。</p><Button disabled={busy} onClick={() => setChannel(null)}>新建渠道</Button></div>{settings.channels.map(item => <div className="management-row" key={item.id}><div><strong style={{color: item.ink, background: item.bg}}>{item.name}</strong><p className="muted">{item.requiredRatio || '不限制比例'}{item.deletedAt ? ' · 已停用' : ''}</p></div><div className="management-actions">{!item.deletedAt && <Button disabled={busy} onClick={() => setChannel(item)}>编辑</Button>}<Button disabled={busy} onClick={() => void mutate({op: item.deletedAt ? 'restoreChannel' : 'trashChannel', channelId: item.id, editToken: settings.editToken})}>{item.deletedAt ? '恢复渠道' : '停用渠道'}</Button></div></div>)}</Card>}
+  {tab === 'collections' && <Card title="内容合集"><div className="management-toolbar"><Button onClick={() => setTrash(!trash)}>{trash ? '返回合集' : '合集回收站'}</Button><Button disabled={busy} onClick={() => setCollection(null)}>新建合集</Button></div>{library.collections.filter(item => !!item.deletedAt === trash).map(item => <div className="management-row" key={item.id}><div><strong>{item.title}</strong><p className="muted">{item.memberIds.length} 篇内容{item.dateRange.start ? ` · ${item.dateRange.start}` : ''}{item.dateRange.end ? ` 至 ${item.dateRange.end}` : ''}</p><p>{item.body.slice(0, 100)}</p></div><div className="management-actions">{!trash && <><Button disabled={busy} onClick={() => setCollection(item)}>编辑</Button><Button disabled={busy} onClick={() => setMembers(item)}>管理内容</Button></>}<Button disabled={busy} onClick={() => void mutate({op: trash ? 'restoreCollection' : 'trashCollection', id: item.id, editToken: item.editToken})}>{trash ? '恢复合集' : '移入回收站'}</Button></div></div>)}{!library.collections.some(item => !!item.deletedAt === trash) && <p className="muted">{trash ? '合集回收站为空。' : '把同一主题的内容整理成合集。'}</p>}</Card>}
+  {tab === 'catalogs' && <CatalogForm props={props}/>}
+  {photo && <PhotoEditor photo={photo} props={props} close={() => setPhoto(null)}/ >}{channel !== undefined && <ChannelEditor channel={channel} props={props} close={() => setChannel(undefined)}/ >}{collection !== undefined && <CollectionEditor collection={collection} props={props} close={() => setCollection(undefined)}/ >}{members && <MembersEditor collection={members} props={props} close={() => setMembers(null)}/ >}</div>;
+}
+function ProfileForm({props}: {props: WorkspaceManagementProps}) {
+  const settings = props.library!.settings;
+  const [baseline, setBaseline] = useState(settings.profile), [token, setToken] = useState(settings.editToken), [name, setName] = useState(settings.profile.name), [intro, setIntro] = useState(settings.profile.intro), [marks, setMarks] = useState(settings.profile.marks);
+  const {mutate, notice, setNotice} = useWorkspaceMutation(props), profile = {...baseline, name, intro, marks};
+  const dirty = JSON.stringify(profile) !== JSON.stringify(baseline);
+  useManagedDraftGuard(dirty);
+  function load(library: WorkspaceLibrarySnapshot) {
+    const current = library.settings;
+    setBaseline(current.profile); setToken(current.editToken); setName(current.profile.name); setIntro(current.profile.intro); setMarks(current.profile.marks); setNotice('');
+  }
+  return <Card title="个人资料"><form className="management-form" onSubmit={event => { event.preventDefault(); void mutate({op: 'updateProfile', editToken: token, profile}, load); }}><fieldset disabled={props.busy}><div className="management-form"><label>名称<input value={name} onChange={event => setName(event.target.value)}/></label><label>自我介绍<textarea value={intro} onChange={event => setIntro(event.target.value)}/></label><fieldset><legend>品牌标记</legend>{marks.map((mark, index) => <div className="management-row" key={index}><div className="management-columns"><label>标记名称<input required value={mark.key} onChange={event => setMarks(old => old.map((item, i) => i === index ? {...item, key: event.target.value} : item))}/></label><label>标记内容<input value={mark.value} onChange={event => setMarks(old => old.map((item, i) => i === index ? {...item, value: event.target.value} : item))}/></label></div><Button onClick={() => setMarks(old => old.filter((_, i) => i !== index))}>移除</Button></div>)}<Button onClick={() => setMarks(old => [...old, {key: '', value: ''}])}>添加标记</Button></fieldset></div></fieldset>{token !== settings.editToken && <p className="danger-note">库中的设置已有更新，保存时会核对冲突。可放弃本栏修改后重新读取。</p>}<p role="status">{notice || (dirty ? '本栏有未保存修改。' : '')}</p><div className="management-actions"><Button htmlType="submit" theme="solid" disabled={props.busy || !dirty}>保存个人资料</Button><Button disabled={props.busy} onClick={() => void reloadManagedWorkspace(props, load)}>放弃修改并重新读取</Button></div></form></Card>;
+}
+function DefaultsForm({props}: {props: WorkspaceManagementProps}) {
+  const library = props.library!, settings = library.settings;
+  const [baseline, setBaseline] = useState(settings.defaults), [token, setToken] = useState(settings.editToken), [defaults, setDefaults] = useState(settings.defaults), {mutate, notice, setNotice} = useWorkspaceMutation(props);
+  const dirty = JSON.stringify(defaults) !== JSON.stringify(baseline);
+  useManagedDraftGuard(dirty);
+  function load(current: WorkspaceLibrarySnapshot) { setBaseline(current.settings.defaults); setDefaults(current.settings.defaults); setToken(current.settings.editToken); setNotice(''); }
+  return <Card title="生成默认值"><form className="management-form" onSubmit={event => { event.preventDefault(); void mutate({op: 'setGenerationDefaults', editToken: token, defaults}, load); }}><fieldset disabled={props.busy}><div className="management-form"><label>默认人物参考<select value={defaults.photoId ?? ''} onChange={event => setDefaults(old => ({...old, photoId: event.target.value || null}))}><option value="">这次不放人物／不预选照片</option>{library.photos.filter(item => !item.deletedAt && item.isOwnPhoto && item.availability === 'available').map(item => <option value={item.id} key={item.id}>{item.title}</option>)}</select></label><label>默认模板<select value={defaults.templateId ?? ''} onChange={event => setDefaults(old => ({...old, templateId: event.target.value || null}))}><option value="">每次自行选择</option>{library.templates.filter(item => !item.deletedAt).map(item => <option key={item.id} value={item.id}>{item.title} · v{item.currentVersion}</option>)}</select></label><label>默认候选张数<input required type="number" min={1} max={20} value={defaults.coverCount} onChange={event => setDefaults(old => ({...old, coverCount: Number(event.target.value)}))}/></label></div></fieldset>{settings.defaultIssues.length > 0 && <p className="danger-note">有默认引用已不可用，请重新选择后保存：{settings.defaultIssues.map(item => `${item.field}（${item.reason}）`).join('、')}</p>}{token !== settings.editToken && <p className="danger-note">库中的设置已有更新，保存时会核对冲突。可放弃本栏修改后重新读取。</p>}<p role="status">{notice || (dirty ? '本栏有未保存修改。' : '')}</p><div className="management-actions"><Button htmlType="submit" theme="solid" disabled={props.busy || !dirty}>保存默认值</Button><Button disabled={props.busy} onClick={() => void reloadManagedWorkspace(props, load)}>放弃修改并重新读取</Button></div></form></Card>;
+}
+function CatalogForm({props}: {props: WorkspaceManagementProps}) {
+  const settings = props.library!.settings;
+  const [baseline, setBaseline] = useState(settings.promptCategories.join('\n')), [token, setToken] = useState(settings.editToken), [categories, setCategories] = useState(settings.promptCategories.join('\n')), [ratio, setRatio] = useState(''), {mutate, notice, setNotice} = useWorkspaceMutation(props);
+  const categoryDirty = categories !== baseline, dirty = categoryDirty || ratio !== '';
+  useManagedDraftGuard(dirty);
+  function load(current: WorkspaceLibrarySnapshot) { const text = current.settings.promptCategories.join('\n'); setBaseline(text); setCategories(text); setRatio(''); setToken(current.settings.editToken); setNotice(''); }
+  function ratioSaved(current: WorkspaceLibrarySnapshot) { setToken(current.settings.editToken); setBaseline(current.settings.promptCategories.join('\n')); }
+  return <Card title="分类与自定义比例"><div className="management-form"><form className="management-form" onSubmit={event => { event.preventDefault(); void mutate({op: 'setPromptCategories', editToken: token, values: [...new Set(categories.split(/\r?\n/).map(value => value.trim()).filter(Boolean))]}, current => { const text = current.settings.promptCategories.join('\n'); setBaseline(text); setCategories(text); setToken(current.settings.editToken); }); }}><label>提示词分类（每行一个）<textarea disabled={props.busy} value={categories} onChange={event => setCategories(event.target.value)}/></label><Button htmlType="submit" disabled={props.busy || !categoryDirty}>保存分类</Button></form><div className="management-actions">{settings.customRatios.map(value => <Button key={value} disabled={props.busy} onClick={() => void mutate({op: 'removeCustomRatio', editToken: token, ratio: value}, ratioSaved)}>移除 {value}</Button>)}</div><form className="management-form" onSubmit={event => { event.preventDefault(); void mutate({op: 'addCustomRatio', editToken: token, ratio: ratio.trim()}, current => { setRatio(''); ratioSaved(current); }); }}><label>添加封面比例<input disabled={props.busy} required pattern="[1-9][0-9]*:[1-9][0-9]*" placeholder="如 4:5" value={ratio} onChange={event => setRatio(event.target.value)}/></label><Button htmlType="submit" disabled={props.busy || !ratio.trim()}>添加比例</Button></form>{token !== settings.editToken && <p className="danger-note">库中的设置已有更新，保存时会核对冲突。可放弃本栏修改后重新读取。</p>}<p role="status">{notice || (dirty ? '本栏有未保存修改。' : '')}</p><Button disabled={props.busy} onClick={() => void reloadManagedWorkspace(props, load)}>放弃修改并重新读取</Button></div></Card>;
+}
+
+export function ContentMetadataPanel(props: WorkspaceManagementProps & {contentId: string}) {
+  const content = props.library?.contentDetails.find(item => item.id === props.contentId);
+  if (!content || content.deletedAt) return null;
+  return <ContentMetadataForm key={content.id} props={props} content={content}/>;
+}
+function contentMetadataFields(content: WorkspaceLibrarySnapshot['contentDetails'][number]) {
+  return {recordedDate: content.recordedDate, plannedDate: content.plannedDate, preferredTemplateId: content.preferredTemplateId, channelIds: content.channelIds, isExample: content.isExample};
+}
+function ContentMetadataForm({props, content}: {props: WorkspaceManagementProps; content: WorkspaceLibrarySnapshot['contentDetails'][number]}) {
+  const [baseline, setBaseline] = useState(() => contentMetadataFields(content)), [token, setToken] = useState(content.editToken), [recordedDate, setRecordedDate] = useState(content.recordedDate ?? ''), [plannedDate, setPlannedDate] = useState(content.plannedDate ?? ''), [templateId, setTemplateId] = useState(content.preferredTemplateId ?? ''), [channels, setChannels] = useState(content.channelIds), [example, setExample] = useState(content.isExample), {mutate, notice, setNotice} = useWorkspaceMutation(props);
+  const fields = {recordedDate: recordedDate || null, plannedDate: plannedDate || null, preferredTemplateId: templateId || null, channelIds: channels, isExample: example};
+  const dirty = JSON.stringify(fields) !== JSON.stringify(baseline), source = useRef(content);
+  useManagedDraftGuard(dirty);
+  useEffect(() => {
+    if (JSON.stringify(contentMetadataFields(source.current)) === JSON.stringify(contentMetadataFields(content))) { source.current = content; setToken(content.editToken); }
+  }, [content]);
+  function load(library: WorkspaceLibrarySnapshot) {
+    const current = library.contentDetails.find(item => item.id === content.id && !item.deletedAt);
+    if (!current) throw Object.assign(new Error('内容已不可用，填写仍保留。请先核对内容库中的状态。'), {code: 'CONFLICT'});
+    source.current = current; setBaseline(contentMetadataFields(current)); setToken(current.editToken); setRecordedDate(current.recordedDate ?? ''); setPlannedDate(current.plannedDate ?? ''); setTemplateId(current.preferredTemplateId ?? ''); setChannels(current.channelIds); setExample(current.isExample); setNotice('');
+  }
+  return <div className="workspace-management"><Card title="内容资料"><form className="management-form" onSubmit={event => { event.preventDefault(); void mutate({op: 'updateContentMetadata', id: content.id, editToken: token, ...fields}, load); }}><fieldset disabled={props.busy}><div className="management-form"><div className="management-columns"><label>记录日期<input type="date" value={recordedDate} onChange={event => setRecordedDate(event.target.value)}/></label><label>期望发布日期<input type="date" value={plannedDate} onChange={event => setPlannedDate(event.target.value)}/></label></div><p className="muted">期望日期是内容资料；具体渠道与发布安排在日历中管理。</p><label>偏好模板<select value={templateId} onChange={event => setTemplateId(event.target.value)}><option value="">使用工作空间默认值</option>{props.library?.templates.filter(item => !item.deletedAt || item.id === templateId).map(item => <option key={item.id} value={item.id} disabled={!!item.deletedAt}>{item.title}{item.deletedAt ? '（已在回收站）' : ''}</option>)}</select></label><fieldset><legend>适用渠道</legend>{props.library?.settings.channels.filter(item => !item.deletedAt || channels.includes(item.id)).map(item => <label className="check-label" key={item.id}><input type="checkbox" checked={channels.includes(item.id)} onChange={event => setChannels(old => event.target.checked ? [...old, item.id] : old.filter(id => id !== item.id))}/>{item.name}{item.deletedAt ? '（已停用）' : ''}</label>)}</fieldset><label className="check-label"><input type="checkbox" checked={example} onChange={event => setExample(event.target.checked)}/>标记为示例内容</label></div></fieldset>{token !== content.editToken && <p className="danger-note">库中的内容资料已有更新，保存时会核对冲突。可放弃本栏修改后重新读取。</p>}<p role="status">{notice || (dirty ? '本栏有未保存修改。' : '')}</p><div className="management-actions"><Button theme="solid" htmlType="submit" disabled={props.busy || !dirty}>保存内容资料</Button><Button disabled={props.busy} onClick={() => void reloadManagedWorkspace(props, load)}>放弃修改并重新读取</Button></div></form></Card></div>;
+}
+
+export function materialSize(bytes: number | null) {
+  if (bytes === null) return '大小未记录';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KiB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MiB`;
+}
+export function materialType(type: string | null) {
+  if (!type) return '类型未记录';
+  if (type.startsWith('image/')) return `图片 · ${type.slice(6).toUpperCase()}`;
+  if (type === 'application/pdf') return 'PDF 文档';
+  if (type === 'text/markdown') return 'Markdown 文本';
+  if (type.startsWith('text/')) return '文本';
+  return type;
+}
+export function ContentMaterialPanel(props: WorkspaceManagementProps & {contentId: string | null}) {
+  const content = props.library?.contentDetails.find(item => item.id === props.contentId);
+  const [selected, setSelected] = useState<WorkspaceMaterialImport | null>(null), [preview, setPreview] = useState<{name: string; url: string | null; text: string | null} | null>(null), {mutate, notice, setNotice} = useWorkspaceMutation(props);
+  useEffect(() => { setSelected(null); setPreview(null); }, [props.contentId]);
+  async function choose() {
+    if (props.busy || !content) return;
+    await props.run(async () => { const material = await invoke('chooseContentMaterial'); if (material) setSelected(material); });
+  }
+  return <div className="workspace-management"><Card title="内容资料附件"><div className="management-toolbar"><p className="muted">附上图片、文字或 PDF，方便创作时参考。只有在制作封面时明确勾选的资料，才会进入本次请求。</p><Button disabled={props.busy || !content || !!content.deletedAt} onClick={() => void choose()}>从本机添加资料</Button></div>{!content ? <p className="muted">先保存标题与正文，再添加本篇内容的资料。</p> : <><p className="muted">支持 PNG、JPEG、WebP、GIF、Markdown、TXT 和 PDF；单份最多 64 MiB，文字最多 1 MiB。</p>{content.materials.filter(item => !item.deletedAt).map(item => <div className="management-row" key={item.id}><div className="management-photo">{item.url && item.detectedType?.startsWith('image/') && <img src={item.url} alt={item.originalName || '内容资料图片'}/>}<div><strong>{item.originalName || '未命名资料'}</strong><p className="muted">{materialType(item.detectedType)} · {materialSize(item.bytes)} · {item.availability === 'available' ? '本机资料可用' : '原资料缺失，无法使用'}</p><p className="muted">{item.role === 'reference' ? '参考资料' : '内容资料'}</p></div></div><div className="management-actions">{item.availability === 'available' && item.detectedType !== 'application/pdf' && <Button disabled={props.busy} onClick={() => void props.run(async () => { const view = await invoke('readContentMaterial', {contentId: content.id, materialId: item.id}); setPreview({name: item.originalName || '资料预览', ...view}); })}>预览</Button>}<Button disabled={props.busy || item.availability !== 'available'} onClick={() => void props.run(async () => { const result = await invoke('exportContentMaterial', {contentId: content.id, materialId: item.id}); if (result.exported) setNotice('资料原文件已导出。'); })}>导出原文件</Button><Button disabled={props.busy} onClick={() => void mutate({op: 'removeMaterial', id: content.id, editToken: content.editToken, materialId: item.id})}>从内容中移除</Button></div></div>)}{!content.materials.some(item => !item.deletedAt) && <p className="muted">还没有资料。添加后可预览、导出，并自行决定是否供这次封面使用。</p>}<p className="muted">移除只解除这份内容的资料关联，库中的源资产和本机原文件都会保留。</p></>}<p role="status" className="management-notice">{notice}</p></Card>{selected && content && <MaterialImportDialog key={content.id} props={props} contentId={content.id} editToken={content.editToken} initial={selected} close={() => setSelected(null)}/ >}{preview && <ManagementDialog title={preview.name} busy={props.busy} close={() => setPreview(null)}>{preview.text !== null ? <pre className="material-text-preview">{preview.text}</pre> : preview.url ? <img className="material-image-preview" src={preview.url} alt={preview.name}/> : <p>此资料暂不支持预览，可返回后导出原文件。</p>}</ManagementDialog>}</div>;
+}
+function MaterialImportDialog({props, contentId, editToken, initial, close}: {props: WorkspaceManagementProps; contentId: string; editToken: string; initial: WorkspaceMaterialImport; close(): void}) {
+  const [material, setMaterial] = useState(initial), [token] = useState(editToken), [name, setName] = useState(initial.originalName), [role, setRole] = useState<'material' | 'reference'>('material'), {mutate, notice} = useWorkspaceMutation(props);
+  async function replace() {
+    if (props.busy) return;
+    await props.run(async () => { const chosen = await invoke('chooseContentMaterial'); if (chosen) { setMaterial(chosen); setName(chosen.originalName); } });
+  }
+  return <ManagementDialog title="确认添加内容资料" busy={props.busy} dirty close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (!name.trim()) return; void mutate({op: 'attachMaterial', id: contentId, editToken: token, assetHash: material.assetHash, originalName: name.trim(), role}, close); }}><fieldset disabled={props.busy}><div className="management-form"><p className="muted">确认后把这份文件关联到当前内容。添加资料不会自动把它带进封面请求。</p><label>资料名称<input required maxLength={500} value={name} onChange={event => setName(event.target.value)}/></label><label>资料用途<select value={role} onChange={event => setRole(event.target.value === 'reference' ? 'reference' : 'material')}><option value="material">内容资料</option><option value="reference">参考资料</option></select></label><p>{materialType(material.detectedType)} · {materialSize(material.bytes)}</p>{material.text !== null ? <pre className="material-text-preview">{material.text}</pre> : material.url && material.detectedType.startsWith('image/') ? <img className="material-image-preview" src={material.url} alt={name || '待添加资料'}/> : <p className="muted">PDF 原文件可在添加后导出查看。</p>}<Button disabled={props.busy} onClick={() => void replace()}>重新选择文件</Button></div></fieldset><p role="status">{notice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || !name.trim()}>确认添加资料</Button></form></ManagementDialog>;
+}

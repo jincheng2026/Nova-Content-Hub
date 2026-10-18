@@ -1,4 +1,8 @@
 import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, PhotoPending, CoverActionPending, Assistant} from './cover-contracts.ts';
+import type {WorkspaceInputs, WorkspaceResults, WorkspaceWorkerOperations, WorkspacePending, WorkspacePendingView} from './workspace-contracts.ts';
+import type {MaintenanceInputs, MaintenanceResults, MaintenanceWorkerOperations, MaintenancePending, MaintenanceStatus} from './maintenance-contracts.ts';
+import type {PreferencesInputs, PreferencesResults} from './preferences-contracts.ts';
+import type {SetupInputs, SetupResults} from './setup-contracts.ts';
 export interface Issue {
     code: string;
     key?: string;
@@ -135,10 +139,13 @@ export interface Status {
     photoPending: boolean;
     coverActionPending: boolean;
     coverPending: boolean;
-    seedPending: boolean
+    seedPending: boolean;
+    workspacePending: WorkspacePendingView | null;
+    maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends CoverInputs {
+export interface DesktopInputs extends CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs {
+    choosePromptDocument: undefined;
     status: undefined;
     chooseBackup: undefined;
     chooseDestination: undefined;
@@ -159,7 +166,8 @@ export interface DesktopInputs extends CoverInputs {
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends CoverResults {
+export interface DesktopResults extends CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults {
+    choosePromptDocument: {title: string; body: string} | null;
     status: Status;
     chooseBackup: void;
     chooseDestination: void;
@@ -196,6 +204,8 @@ export interface Binding {
     photoPending?: PhotoPending | null;
     coverActionPending?: CoverActionPending | null;
     coverPending?: CoverPending | null;
+    workspacePending?: WorkspacePending | null;
+    maintenancePending?: MaintenancePending | null;
     seedPending?: boolean;
     current?: LibraryBinding | null;
     pending?: Mutation | null;
@@ -203,7 +213,7 @@ export interface Binding {
     needsReselect?: boolean
 }
 
-export interface WorkerOperations extends CoverWorkerOperations {
+export interface WorkerOperations extends CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations {
     inspect: { args: { source: string }; result: Inspection };
     query: { args: { destination: string; importId: string | null }; result: ImportTask | null };
     import: { args: { source: string; destination: string; expectedSourceHash: string }; result: ImportTask };
@@ -228,6 +238,11 @@ export interface Worker {
 }
 
 export interface Dialogs {
+    promptDocument?(): Promise<string | null>;
+    templateImages?(): Promise<string[] | null>;
+    material?(): Promise<string | null>;
+    maintenanceParent?(): Promise<string | null>;
+    libraryBackup?(): Promise<string | null>;
     backup(): Promise<string | null>;
 
     destination(defaultPath: string): Promise<string | null>;

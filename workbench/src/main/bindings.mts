@@ -1,4 +1,6 @@
 import {assistant, coverPending, photoPending, coverActionPending} from '../shared/cover-validation.ts';
+import {workspacePending} from '../shared/workspace-validation.ts';
+import {maintenancePending} from '../shared/maintenance-validation.ts';
 import {isRecord, errorInfo} from '../shared/contracts.ts';
 import {identity, libraryBinding, mutation, uuid} from '../shared/validation.ts';
 import type {Binding} from '../shared/contracts.ts';
@@ -9,8 +11,14 @@ import {randomUUID} from 'node:crypto';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const absolute = (value: unknown) => typeof value === 'string' && path.isAbsolute(value) && !value.includes('\0');
 
+function validMaintenance(value: unknown, current: unknown): boolean {
+    if (!maintenancePending(value) || !absolute(value.destination)) return false;
+    if (value.kind === 'restore') return absolute(value.backup.source);
+    return absolute(value.binding.root) && libraryBinding(current) && value.binding.root === current.root && value.binding.libraryId === current.libraryId && value.binding.rootIdentity.dev === current.rootIdentity.dev && value.binding.rootIdentity.ino === current.rootIdentity.ino;
+}
+
 export function validateBinding(value: unknown): Binding {
-    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect', 'assistant', 'photoPending', 'coverPending', 'seedPending', 'coverActionPending'].includes(key)) ||
+    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect', 'assistant', 'photoPending', 'coverPending', 'seedPending', 'coverActionPending', 'workspacePending', 'maintenancePending'].includes(key)) ||
         !(value.source === null || absolute(value.source)) || !(value.destination === null || absolute(value.destination)) ||
         !(value.sourceHash === null || (typeof value.sourceHash === 'string' && /^[0-9a-f]{64}$/.test(value.sourceHash))) || typeof value.started !== 'boolean' ||
         !(value.importId === null || (typeof value.importId === 'string' && UUID.test(value.importId))) || !(value.libraryId === null || (typeof value.libraryId === 'string' && UUID.test(value.libraryId))) ||
@@ -22,8 +30,11 @@ export function validateBinding(value: unknown): Binding {
         (value.photoPending !== undefined && value.photoPending !== null && (!photoPending(value.photoPending) || !absolute(value.photoPending.source) || !value.current)) ||
         (value.coverPending !== undefined && value.coverPending !== null && (!coverPending(value.coverPending) || !value.current)) ||
         (value.coverActionPending !== undefined && value.coverActionPending !== null && (!coverActionPending(value.coverActionPending) || !value.current)) ||
+        (value.workspacePending !== undefined && value.workspacePending !== null && (!workspacePending(value.workspacePending) || !libraryBinding(value.current) || value.workspacePending.binding.libraryId !== value.current.libraryId || value.workspacePending.binding.rootIdentity.dev !== value.current.rootIdentity.dev || value.workspacePending.binding.rootIdentity.ino !== value.current.rootIdentity.ino)) ||
+        (value.maintenancePending !== undefined && value.maintenancePending !== null && !validMaintenance(value.maintenancePending, value.current)) ||
         (value.seedPending !== undefined && typeof value.seedPending !== 'boolean') ||
-        ([value.pending, value.creation, value.photoPending, value.coverPending, value.coverActionPending].filter(Boolean).length > 1) ||
+        (value.seedPending && !value.current) ||
+        ([value.pending, value.creation, value.photoPending, value.coverPending, value.coverActionPending, value.workspacePending, value.maintenancePending, value.seedPending].filter(Boolean).length > 1) ||
         (value.needsReselect !== undefined && typeof value.needsReselect !== 'boolean') || (value.pending && value.creation) ||
         (value.importId && !value.started) || (value.libraryId && !value.importId)) {
         throw Object.assign(new Error('机器绑定记录损坏，已保留现场；请联系维护者检查。'), {code: 'BINDING_INVALID'});
@@ -41,6 +52,8 @@ export const emptyBinding = (): Binding => ({
     libraryId: null,
     current: null,
     pending: null,
+    workspacePending: null,
+    maintenancePending: null,
     creation: null,
     needsReselect: false
 });

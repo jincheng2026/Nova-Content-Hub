@@ -17,18 +17,18 @@ export function isCoverOperation(op: unknown): op is keyof CoverWorkerOperations
 const absolute = (v: unknown): v is string => typeof v === 'string' && path.isAbsolute(v) && !v.includes('\0');
 export const contentProjection = ({ id, title, body, editToken, deletedAt }: Content): Content => ({ id, title, body, editToken, deletedAt });
 const photoProjection = (p: Photo): Photo => ({ id: p.id, title: p.title, assetHash: p.assetHash, isOwnPhoto: p.isOwnPhoto, availability: p.availability === 'unavailable' ? 'unavailable' : 'available', url: null });
-function sourceBytes(source: string) {
+export function sourceBytes(source: string, maxBytes = 64 * 1024 * 1024) {
   const info = fs.lstatSync(source, { bigint: true });
-  if (!info.isFile() || info.isSymbolicLink() || info.size < 1n || info.size > 64n * 1024n * 1024n) fail('INVALID_IMAGE', '照片必须为完整、受限的普通图片文件。');
+  if (!info.isFile() || info.isSymbolicLink() || info.size < 1n || info.size > BigInt(maxBytes)) fail('INVALID_IMAGE', '请选择大小符合限制的完整普通文件。');
   const fd = fs.openSync(source, fs.constants.O_RDONLY | fs.constants.O_NOFOLLOW | fs.constants.O_NONBLOCK);
   try {
     const before = fs.fstatSync(fd, { bigint: true });
-    if (!before.isFile() || before.size < 1n || before.size > 64n * 1024n * 1024n || before.dev !== info.dev || before.ino !== info.ino) fail('CONFLICT', '照片在选择后被替换。');
+    if (!before.isFile() || before.size < 1n || before.size > BigInt(maxBytes) || before.dev !== info.dev || before.ino !== info.ino) fail('CONFLICT', '文件在选择后被替换。');
     const chunks: Buffer[] = []; let size = 0;
-    for (;;) { const chunk = Buffer.alloc(65536), count = fs.readSync(fd, chunk); if (!count) break; size += count; if (size > 64 * 1024 * 1024) fail('INVALID_IMAGE', '照片超过64 MiB。'); chunks.push(chunk.subarray(0, count)); }
+    for (;;) { const chunk = Buffer.alloc(65536), count = fs.readSync(fd, chunk); if (!count) break; size += count; if (size > maxBytes) fail('INVALID_IMAGE', '文件超过大小限制。'); chunks.push(chunk.subarray(0, count)); }
     const bytes = Buffer.concat(chunks, size);
     const after = fs.fstatSync(fd, { bigint: true }), current = fs.lstatSync(source, { bigint: true });
-    if (bytes.length > 64 * 1024 * 1024 || current.isSymbolicLink() || ['dev', 'ino', 'size', 'mtimeNs', 'ctimeNs'].some(k => before[k as keyof typeof before] !== after[k as keyof typeof after] || after[k as keyof typeof after] !== current[k as keyof typeof current]) || BigInt(bytes.length) !== after.size) fail('CONFLICT', '选择的照片在读取时改变，请重新选择。');
+    if (bytes.length > maxBytes || current.isSymbolicLink() || ['dev', 'ino', 'size', 'mtimeNs', 'ctimeNs'].some(k => before[k as keyof typeof before] !== after[k as keyof typeof after] || after[k as keyof typeof after] !== current[k as keyof typeof current]) || BigInt(bytes.length) !== after.size) fail('CONFLICT', '选择的文件在读取时改变，请重新选择。');
     return bytes;
   } finally { fs.closeSync(fd); }
 }

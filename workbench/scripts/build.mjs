@@ -4,6 +4,8 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {build} from 'vite';
+import {buildCover} from '../../plugin-src/scripts/build.mjs';
+import {buildMarketplace} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {syncBridge} from '../../plugin-src/scripts/sync-bridge.mjs';
 import {checkAppIcons} from './build-app-icons.mjs';
 import {validateBuildConfig, validateResources, validateRelease} from '../src/main/boundary.mts';
@@ -24,16 +26,23 @@ for (const config of ['tsconfig.native.json', 'tsconfig.renderer.json']) execFil
 fs.rmSync(path.join(workbench, '.native'), {recursive: true, force: true});
 execFileSync(process.execPath, [tsc, '-p', path.join(workbench, 'tsconfig.native.json')], {stdio: 'inherit'});
 const modes = args[1] === 'both' ? ['required', 'disabled'] : [args[1]];
+// Build one matching, self-contained plugin market; an old checkout package must not enter a new installer.
+await buildCover(args[1]);
+const markets = await buildMarketplace(args[1]);
 const mimes = {
     '.html': 'text/html; charset=utf-8',
     '.js': 'text/javascript; charset=utf-8',
-    '.css': 'text/css; charset=utf-8'
+    '.css': 'text/css; charset=utf-8',
+    '.png': 'image/png'
 };
 for (const mode of modes) {
     const target = path.join(root, 'workbench/dist-desktop', `auth-${mode}`);
     fs.rmSync(target, {recursive: true, force: true});
     const dist = path.join(target, 'workbench/dist');
     fs.mkdirSync(dist, {recursive: true});
+    const market = markets.find(item => item.pairId === `${release.appScope}@${release.version}:p${release.protocolVersion}:${mode}`);
+    if (!market) throw new Error('Matching bundled plugin market is missing');
+    fs.cpSync(market.path, path.join(target, 'workbench/plugin-marketplace'), {recursive: true, verbatimSymlinks: true});
     fs.cpSync(appIcons, path.join(dist, 'brand'), {recursive: true});
     fs.cpSync(path.join(workbench, '.native'), dist, {
         recursive: true,

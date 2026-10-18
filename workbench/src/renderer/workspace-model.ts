@@ -18,3 +18,11 @@ export function localDay(date: Date) {
 }
 export function dayDate(day: string) { const [year, month, date] = day.split('-').map(Number); return new Date(year, month - 1, date, 12); }
 export function shiftDay(day: string, amount: number) { const date = dayDate(day); date.setDate(date.getDate() + amount); return localDay(date); }
+
+export function pastedPrompt(body: string) {
+  const lines = body.split(/\r?\n/);
+  const firstLine = lines.find(line => /^\s{0,3}#{1,6}\s+/.test(line)) ?? lines.find(line => line.trim()) ?? '';
+  return { title: firstLine.replace(/^\s{0,3}#{1,6}\s+/, '').trim().slice(0, 120) || '导入的提示词', body };
+}
+
+export {scheduleDay} from '../shared/publication-view.ts';

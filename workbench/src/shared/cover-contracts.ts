@@ -1,6 +1,7 @@
 import type { Content, LibraryBinding } from './contracts.ts';
 export const ASSISTANTS = ['codex', 'workbuddy'] as const;
 export type Assistant = typeof ASSISTANTS[number];
+export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-content-cover-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured' }
 export interface Raster { assetHash: string; url: string }
 export interface TemplateGroup { id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
 export interface Photo { id: string; title: string; assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; url: string | null }
@@ -12,6 +13,7 @@ export interface CoverRequestSummary { template: { id: string; version: number }
 export interface CoverJob { summary?: CoverRequestSummary | null; id: string; requestHash: string; inputHash: string; activeAttemptId: string | null; attempts: Attempt[] }
 export interface Candidate { id: string; assetHash: string; originalName: string; requestId: string; attemptId: string; accepted: boolean; url: string }
 export interface CoverView { content: Content; jobs: CoverJob[]; candidates: Candidate[]; selectedCandidateId: string | null }
+export interface CoverHandoff extends CoverView { launchRequested: boolean }
 export interface PhotoPending { source: string; expectedHash: string; mutationId: string; title: string; originalName: string; isOwnPhoto: boolean }
 export type CoverActionPending = { mutationId: string } & ({ action: 'select'; contentId: string; candidateId: string; editToken: string } | { action: 'cancel'; reference: CoverReference });
 export interface CoverPending { input: CoverInput; fingerprint: Fingerprint; requestMutationId: string; attemptMutationId: string; host: Assistant; requestId: string | null; requestHash: string | null; reason: 'initial' | 'retry' | 'host-change' }
@@ -19,6 +21,7 @@ export interface CoverReference { contentId: string; requestId: string; attemptI
 export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string }; attempt: Attempt }
 export interface RequestResult { content: Content & { coverJobs?: CoverJob[] }; request: CoverContext['request']; bodyBytes: Uint8Array }
 export interface CoverInputs {
+  readAssistantSetup: undefined;
   resumeCoverAction: undefined; abandonCoverAction: undefined; listCoverAssets: undefined; retryBuiltins: undefined; choosePhoto: { title: string; isOwnPhoto: boolean }; resumePhoto: undefined; abandonPhoto: undefined;
   readCover: { contentId: string }; generateCover: CoverStart; resumeCover: undefined; abandonCover: undefined;
   continueCover: CoverReference; retryCover: CoverReference; cancelCover: CoverReference;
@@ -26,8 +29,9 @@ export interface CoverInputs {
   setAssistant: { host: Assistant };
 }
 export interface CoverResults {
+  readAssistantSetup: AssistantSetup;
   resumeCoverAction: CoverView; abandonCoverAction: void; listCoverAssets: { templates: TemplateGroup[]; photos: Photo[] }; retryBuiltins: void; choosePhoto: Photo | null; resumePhoto: Photo; abandonPhoto: void;
-  readCover: CoverView; generateCover: CoverView; resumeCover: CoverView; abandonCover: void; continueCover: { launchRequested: true }; retryCover: CoverView; cancelCover: CoverView;
+  readCover: CoverView; generateCover: CoverHandoff; resumeCover: CoverHandoff; abandonCover: void; continueCover: { launchRequested: true }; retryCover: CoverHandoff; cancelCover: CoverView;
   selectCover: CoverView; exportCover: { exported: boolean }; setAssistant: void;
 }
 export interface CoverWorkerOperations {

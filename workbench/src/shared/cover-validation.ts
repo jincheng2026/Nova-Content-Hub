@@ -22,7 +22,7 @@ export function coverActionPending(v: unknown): v is CoverActionPending { return
 export function coverPending(v: unknown): v is CoverPending { return exact(v, ['input', 'fingerprint', 'requestMutationId', 'attemptMutationId', 'host', 'requestId', 'requestHash', 'reason']) && coverInput(v.input) && fingerprint(v.fingerprint) && [v.requestMutationId, v.attemptMutationId].every(uuid) && assistant(v.host) && (v.requestId === null && v.requestHash === null || uuid(v.requestId) && token(v.requestHash)) && ['initial', 'retry', 'host-change'].includes(v.reason as string); }
 export function coverDesktopInput(method: string, v: unknown): boolean | undefined {
   switch (method) {
-    case 'resumeCoverAction': case 'abandonCoverAction': case 'listCoverAssets': case 'retryBuiltins': case 'resumePhoto': case 'abandonPhoto': case 'resumeCover': case 'abandonCover': return v === undefined;
+    case 'readAssistantSetup': case 'resumeCoverAction': case 'abandonCoverAction': case 'listCoverAssets': case 'retryBuiltins': case 'resumePhoto': case 'abandonPhoto': case 'resumeCover': case 'abandonCover': return v === undefined;
     case 'choosePhoto': return exact(v, ['title', 'isOwnPhoto']) && typeof v.title === 'string' && !!v.title.trim() && v.title.length <= 500 && typeof v.isOwnPhoto === 'boolean';
     case 'readCover': return exact(v, ['contentId']) && uuid(v.contentId);
     case 'generateCover': return exact(v, ['contentId', 'editToken', 'input']) && uuid(v.contentId) && token(v.editToken) && coverInput(v.input);
