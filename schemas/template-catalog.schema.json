@@ -1,20 +1,239 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://nova-content-hub.local/schemas/template-catalog.schema.json",
-  "title":"Authored built-in template group manifest",
-  "description":"shots are real group samples in v4; SVG structure assets are listed separately in assets. Older complete definitions retain their historical shape.",
-  "type":"object","required":["schema","version","templates"],"additionalProperties":false,
-  "properties":{
-    "schema":{"const":1},"version":{"type":"integer","minimum":1},
-    "templates":{"type":"array","minItems":1,"items":{"type":"object","allOf":[{"$ref":"template-design.schema.json"}],"required":["id","name","version","definitionVersion","builtin","ratio","img","shots","fixed","varies","assets","provenance","validation","audience","scenario","contentType","useCases","anatomy","generation","generatedReferences"],"properties":{
-      "id":{"type":"string","pattern":"^builtin-[a-z0-9-]+$"},"name":{"type":"string","minLength":1,"maxLength":100},
-      "version":{"type":"integer","minimum":1},"definitionVersion":{"type":"integer","minimum":1},"builtin":{"const":true},
-      "ratio":{"type":"string","pattern":"^[1-9][0-9]*:[1-9][0-9]*$"},"img":{"$ref":"#/$defs/path"},"shots":{"type":"array","minItems":1,"items":{"$ref":"#/$defs/path"}},
-      "fixed":{"$ref":"request.schema.json#/$defs/ruleList"},"varies":{"$ref":"request.schema.json#/$defs/ruleList"},
-      "assets":{"type":"array","minItems":2,"items":{"type":"object","required":["role","path","width","height","origin","aiTested"],"properties":{"role":{"enum":["source","reference"]},"path":{"$ref":"#/$defs/structurePath"},"width":{"type":"integer","minimum":1,"maximum":16384},"height":{"type":"integer","minimum":1,"maximum":16384},"origin":{"const":"original"},"aiTested":{"const":false}}}},
-      "provenance":{"type":"object","required":["origin","creator","privacy","aiTested","inspiredBy"],"properties":{"origin":{"const":"original"},"creator":{"const":"Nova Content Hub"},"privacy":{"const":"fictional"},"aiTested":{"const":false},"inspiredBy":{"type":"array","items":{"type":"object","required":["url","license","commit"],"properties":{"url":{"type":"string","pattern":"^https://github.com/"},"license":{"const":"MIT"},"commit":{"type":"string","pattern":"^[a-f0-9]{40}$"}}}}}},
-      "validation":{"type":"object","additionalProperties":false,"required":["kind","aiTested","referenceImage","provenance"],"properties":{"kind":{"const":"authored-design"},"aiTested":{"const":false},"referenceImage":{"$ref":"#/$defs/path"},"provenance":{"type":"object","required":["author","license","source"],"properties":{"author":{"const":"Nova Content Hub"},"license":{"const":"project-original"},"source":{"type":"string","pattern":"^builtin:"}}}}}
-    }}}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nova-content-hub.local/schemas/template-catalog.schema.json",
+  "title": "Authored built-in template group manifest",
+  "description": "shots are real group samples in v4; SVG structure assets are listed separately in assets. Older complete definitions retain their historical shape.",
+  "type": "object",
+  "required": [
+    "schema",
+    "version",
+    "templates"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "templates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "template-design.schema.json"
+          }
+        ],
+        "required": [
+          "id",
+          "name",
+          "version",
+          "definitionVersion",
+          "builtin",
+          "ratio",
+          "img",
+          "shots",
+          "fixed",
+          "varies",
+          "assets",
+          "provenance",
+          "validation",
+          "audience",
+          "scenario",
+          "contentType",
+          "useCases",
+          "anatomy",
+          "generation",
+          "generatedReferences"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^builtin-[a-z0-9-]+$"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "definitionVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "builtin": {
+            "const": true
+          },
+          "ratio": {
+            "type": "string",
+            "pattern": "^[1-9][0-9]*:[1-9][0-9]*$"
+          },
+          "img": {
+            "$ref": "#/$defs/path"
+          },
+          "shots": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "$ref": "#/$defs/path"
+            }
+          },
+          "fixed": {
+            "$ref": "request.schema.json#/$defs/ruleList"
+          },
+          "varies": {
+            "$ref": "request.schema.json#/$defs/ruleList"
+          },
+          "assets": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "object",
+              "required": [
+                "role",
+                "path",
+                "width",
+                "height",
+                "origin",
+                "aiTested"
+              ],
+              "properties": {
+                "role": {
+                  "enum": [
+                    "source",
+                    "reference"
+                  ]
+                },
+                "path": {
+                  "$ref": "#/$defs/structurePath"
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                },
+                "origin": {
+                  "const": "original"
+                },
+                "aiTested": {
+                  "const": false
+                }
+              }
+            }
+          },
+          "provenance": {
+            "type": "object",
+            "required": [
+              "origin",
+              "creator",
+              "privacy",
+              "aiTested",
+              "inspiredBy"
+            ],
+            "properties": {
+              "origin": {
+                "const": "original"
+              },
+              "creator": {
+                "const": "Nova Content Hub"
+              },
+              "privacy": {
+                "const": "fictional"
+              },
+              "aiTested": {
+                "const": false
+              },
+              "inspiredBy": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "url",
+                    "license",
+                    "commit"
+                  ],
+                  "properties": {
+                    "url": {
+                      "type": "string",
+                      "pattern": "^https://github.com/"
+                    },
+                    "license": {
+                      "const": "MIT"
+                    },
+                    "commit": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{40}$"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "kind",
+              "aiTested",
+              "referenceImage",
+              "provenance"
+            ],
+            "properties": {
+              "kind": {
+                "const": "authored-design"
+              },
+              "aiTested": {
+                "const": false
+              },
+              "referenceImage": {
+                "$ref": "#/$defs/path"
+              },
+              "provenance": {
+                "type": "object",
+                "required": [
+                  "author",
+                  "license",
+                  "source"
+                ],
+                "properties": {
+                  "author": {
+                    "const": "Nova Content Hub"
+                  },
+                  "license": {
+                    "const": "project-original"
+                  },
+                  "source": {
+                    "type": "string",
+                    "pattern": "^builtin:"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   },
-  "$defs":{"path":{"type":"string","pattern":"^图库/(?:内置模板/[a-z0-9-]+\\.svg|AI参考/[a-z0-9-]+-v[1-9][0-9]*\\.png)$"},"structurePath":{"type":"string","pattern":"^图库/内置模板/[a-z0-9-]+\\.svg$"}}
+  "$defs": {
+    "path": {
+      "type": "string",
+      "pattern": "^图库/(?:内置模板/[a-z0-9-]+\\.svg|AI参考/[a-z0-9-]+-v[1-9][0-9]*\\.png)$"
+    },
+    "structurePath": {
+      "type": "string",
+      "pattern": "^图库/内置模板/[a-z0-9-]+\\.svg$"
+    }
+  }
 }

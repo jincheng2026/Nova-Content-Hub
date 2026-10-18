@@ -1,1 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img" aria-label="虚构示例：星河创作实验室头像"><title>星河创作实验室</title><desc>原创几何插画 · 虚构演示素材。蓝墨稿纸标志，适用于头像。</desc><rect x="0" y="0" width="800" height="800" rx="0" fill="#315bd6"/><rect x="168" y="145" width="350" height="410" rx="26" fill="none" stroke="#f8f5ed" stroke-width="15"/><rect x="278" y="255" width="350" height="410" rx="26" fill="#315bd6" stroke="#f8f5ed" stroke-width="15"/><path d="M337 570V350l230 220V350" fill="none" stroke="#f8f5ed" stroke-width="25" stroke-linecap="round" stroke-linejoin="round"/><path d="M168 635v30h30M603 145h25v25" fill="none" stroke="#f8f5ed" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="800" viewBox="0 0 800 800" role="img"
+     aria-label="虚构示例：星河创作实验室头像">
+    <title>星河创作实验室</title>
+    <desc>原创几何插画 · 虚构演示素材。蓝墨稿纸标志，适用于头像。</desc>
+    <rect x="0" y="0" width="800" height="800" rx="0" fill="#315bd6"/>
+    <rect x="168" y="145" width="350" height="410" rx="26" fill="none" stroke="#f8f5ed" stroke-width="15"/>
+    <rect x="278" y="255" width="350" height="410" rx="26" fill="#315bd6" stroke="#f8f5ed" stroke-width="15"/>
+    <path d="M337 570V350l230 220V350" fill="none" stroke="#f8f5ed" stroke-width="25" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M168 635v30h30M603 145h25v25" fill="none" stroke="#f8f5ed" stroke-width="15" stroke-linecap="round"
+          stroke-linejoin="round"/>
+</svg>

@@ -2,39 +2,40 @@
 <!-- 截图用的临时页：先写入界面状态，再按 index.html 一样加载。测完删掉。 -->
 <html lang="zh-CN" data-motion="on">
 <head>
-  <meta charset="utf-8" />
-  <title>shot</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8"/>
+    <title>shot</title>
+    <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <div class="app">
+<div class="app">
     <aside class="side">
-      <div class="brand">
-        <span class="logo"><img src="brand/nova-content-hub-icon-128.png" width="40" height="40" alt="" /></span>
-        <div class="bt"><b>自媒体</b><span>工作台</span></div>
-      </div>
-      <ul class="nav" id="nav"></ul>
-      <div class="side-bot" id="side-bot"></div>
+        <div class="brand">
+            <span class="logo"><img src="brand/nova-content-hub-icon-128.png" width="40" height="40" alt=""/></span>
+            <div class="bt"><b>自媒体</b><span>工作台</span></div>
+        </div>
+        <ul class="nav" id="nav"></ul>
+        <div class="side-bot" id="side-bot"></div>
     </aside>
     <main class="main">
-      <div class="body" id="body"></div>
+        <div class="body" id="body"></div>
     </main>
-  </div>
-  <div class="mask" id="mask"></div>
-  <div id="layer"></div>
-  <div class="toasts" id="toasts"></div>
-  <script>
+</div>
+<div class="mask" id="mask"></div>
+<div id="layer"></div>
+<div class="toasts" id="toasts"></div>
+<script>
     try {
-      const s = new URLSearchParams(location.search).get('s');
-      if (s) {
-        const k = JSON.parse(localStorage.getItem('nch-lib-v5') || '{}');
-        localStorage.setItem('nch-lib-v5', JSON.stringify(Object.assign(k, JSON.parse(s))));
-      }
-    } catch (e) { }
-  </script>
-  <script src="build-config.js"></script>
-  <script src="data.js"></script>
-  <script src="core.js"></script>
-  <script src="app.js"></script>
+        const s = new URLSearchParams(location.search).get('s');
+        if (s) {
+            const k = JSON.parse(localStorage.getItem('nch-lib-v5') || '{}');
+            localStorage.setItem('nch-lib-v5', JSON.stringify(Object.assign(k, JSON.parse(s))));
+        }
+    } catch (e) {
+    }
+</script>
+<script src="build-config.js"></script>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

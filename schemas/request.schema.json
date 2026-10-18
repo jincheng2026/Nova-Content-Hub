@@ -4,42 +4,321 @@
   "title": "Nova Content Hub request v1",
   "type": "object",
   "additionalProperties": false,
-  "required": ["protocol","version","appScope","authMode","pairId","requestId","libraryId","targetId","kind","templateId","templateVersion","libraryRoot","pathsResolved","paths","skill","options","rules","references","createdAt"],
-  "properties": {
-    "protocol": {"const":"nova-content-hub-request"},
-    "version": {"const":1}, "appScope": {"const":"nova-content-hub"},
-    "authMode": {"enum":["required","disabled"]},
-    "pairId": {"type":"string","pattern":"^nova-content-hub@(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*):p1:(required|disabled)$"},
-    "requestId":{"$ref":"#/$defs/id"}, "libraryId":{"$ref":"#/$defs/id"}, "targetId":{"$ref":"#/$defs/id"}, "templateId":{"$ref":"#/$defs/id"},
-    "kind":{"enum":["analyze","restore","generate"]},
-    "templateVersion":{"type":["integer","null"],"minimum":1},
-    "libraryRoot":{"type":"null"}, "pathsResolved":{"const":false},
-    "paths":{"type":"object","additionalProperties":false,"required":["template","rules","target"],"properties":{"template":{"$ref":"#/$defs/path"},"rules":{"$ref":"#/$defs/path"},"target":{"$ref":"#/$defs/path"}}},
-    "skill":{"enum":["nova-content-template-study","nova-content-template-restore","nova-content-cover"]},
-    "cli":{"const":"node \"<PLUGIN_ROOT>/dist/content.mjs\" check-request --file REQUEST.json"},
-    "options":{"type":"object","additionalProperties":false,"properties":{
-      "title":{"type":"string","maxLength":300,"pattern":"^[^\\u0000-\\u001f]*$"},
-      "count":{"type":"integer","minimum":1,"maximum":20},
-      "format":{"type":"string","maxLength":300,"pattern":"^[^\\u0000-\\u001f]*$"},
-      "ratio":{"type":"string","pattern":"^[1-9][0-9]*:[1-9][0-9]*$"},
-      "pixels":{"anyOf":[{"type":"null"},{"type":"array","minItems":2,"maxItems":2,"items":{"type":"integer","minimum":1,"maximum":16384}}]},
-      "templateId":{"$ref":"#/$defs/id"},"references":{"$ref":"#/$defs/references"}
-    }},
-    "rules":{"type":"object","additionalProperties":false,"required":["fixed","varies","evidence"],"properties":{
-      "fixed":{"$ref":"#/$defs/ruleList"},"varies":{"$ref":"#/$defs/ruleList"},
-      "evidence":{"type":"array","items":{"type":"object","additionalProperties":false,"required":["sourceIndex","rule"],"properties":{"sourceIndex":{"type":"integer","minimum":0},"sourceId":{"$ref":"#/$defs/id"},"rule":{"type":"string","maxLength":1000}}}}
-    }},
-    "references":{"$ref":"#/$defs/references"}, "createdAt":{"type":"string","format":"date-time"}
-  },
-  "allOf":[
-    {"if":{"properties":{"kind":{"const":"analyze"}}},"then":{"properties":{"skill":{"const":"nova-content-template-study"}}}},
-    {"if":{"properties":{"kind":{"const":"restore"}}},"then":{"properties":{"skill":{"const":"nova-content-template-restore"},"templateVersion":{"type":"integer","minimum":1}}}},
-    {"if":{"properties":{"kind":{"const":"generate"}}},"then":{"properties":{"skill":{"const":"nova-content-cover"},"templateVersion":{"type":"integer","minimum":1},"options":{"required":["title","count","ratio"],"properties":{"title":{"minLength":1,"pattern":"\\S"}}}}}}
+  "required": [
+    "protocol",
+    "version",
+    "appScope",
+    "authMode",
+    "pairId",
+    "requestId",
+    "libraryId",
+    "targetId",
+    "kind",
+    "templateId",
+    "templateVersion",
+    "libraryRoot",
+    "pathsResolved",
+    "paths",
+    "skill",
+    "options",
+    "rules",
+    "references",
+    "createdAt"
   ],
-  "$defs":{
-    "id":{"type":"string","pattern":"^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"},
-    "path":{"type":"string","minLength":1,"maxLength":500,"pattern":"^(?![\\\\/~]|[A-Za-z][A-Za-z0-9+.-]*:)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)[^\\\\\\u0000-\\u001f]+$"},
-    "ruleList":{"type":"array","items":{"type":"string","maxLength":1000}},
-    "references":{"type":"array","maxItems":32,"items":{"type":"object","additionalProperties":false,"required":["id"],"properties":{"id":{"$ref":"#/$defs/id"},"version":{"type":["integer","null"],"minimum":1},"note":{"type":"string","maxLength":1000}}}}
+  "properties": {
+    "protocol": {
+      "const": "nova-content-hub-request"
+    },
+    "version": {
+      "const": 1
+    },
+    "appScope": {
+      "const": "nova-content-hub"
+    },
+    "authMode": {
+      "enum": [
+        "required",
+        "disabled"
+      ]
+    },
+    "pairId": {
+      "type": "string",
+      "pattern": "^nova-content-hub@(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*)\\.(?:0|[1-9]\\d*):p1:(required|disabled)$"
+    },
+    "requestId": {
+      "$ref": "#/$defs/id"
+    },
+    "libraryId": {
+      "$ref": "#/$defs/id"
+    },
+    "targetId": {
+      "$ref": "#/$defs/id"
+    },
+    "templateId": {
+      "$ref": "#/$defs/id"
+    },
+    "kind": {
+      "enum": [
+        "analyze",
+        "restore",
+        "generate"
+      ]
+    },
+    "templateVersion": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "libraryRoot": {
+      "type": "null"
+    },
+    "pathsResolved": {
+      "const": false
+    },
+    "paths": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "template",
+        "rules",
+        "target"
+      ],
+      "properties": {
+        "template": {
+          "$ref": "#/$defs/path"
+        },
+        "rules": {
+          "$ref": "#/$defs/path"
+        },
+        "target": {
+          "$ref": "#/$defs/path"
+        }
+      }
+    },
+    "skill": {
+      "enum": [
+        "nova-content-template-study",
+        "nova-content-template-restore",
+        "nova-content-cover"
+      ]
+    },
+    "cli": {
+      "const": "node \"<PLUGIN_ROOT>/dist/content.mjs\" check-request --file REQUEST.json"
+    },
+    "options": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "maxLength": 300,
+          "pattern": "^[^\\u0000-\\u001f]*$"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 20
+        },
+        "format": {
+          "type": "string",
+          "maxLength": 300,
+          "pattern": "^[^\\u0000-\\u001f]*$"
+        },
+        "ratio": {
+          "type": "string",
+          "pattern": "^[1-9][0-9]*:[1-9][0-9]*$"
+        },
+        "pixels": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 16384
+              }
+            }
+          ]
+        },
+        "templateId": {
+          "$ref": "#/$defs/id"
+        },
+        "references": {
+          "$ref": "#/$defs/references"
+        }
+      }
+    },
+    "rules": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fixed",
+        "varies",
+        "evidence"
+      ],
+      "properties": {
+        "fixed": {
+          "$ref": "#/$defs/ruleList"
+        },
+        "varies": {
+          "$ref": "#/$defs/ruleList"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "sourceIndex",
+              "rule"
+            ],
+            "properties": {
+              "sourceIndex": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "sourceId": {
+                "$ref": "#/$defs/id"
+              },
+              "rule": {
+                "type": "string",
+                "maxLength": 1000
+              }
+            }
+          }
+        }
+      }
+    },
+    "references": {
+      "$ref": "#/$defs/references"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "analyze"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "skill": {
+            "const": "nova-content-template-study"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "restore"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "skill": {
+            "const": "nova-content-template-restore"
+          },
+          "templateVersion": {
+            "type": "integer",
+            "minimum": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "generate"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "skill": {
+            "const": "nova-content-cover"
+          },
+          "templateVersion": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "options": {
+            "required": [
+              "title",
+              "count",
+              "ratio"
+            ],
+            "properties": {
+              "title": {
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$"
+    },
+    "path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "pattern": "^(?![\\\\/~]|[A-Za-z][A-Za-z0-9+.-]*:)(?!.*(?:^|/)\\.\\.?(?:/|$))(?!.*//)[^\\\\\\u0000-\\u001f]+$"
+    },
+    "ruleList": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "references": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id"
+        ],
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/id"
+          },
+          "version": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        }
+      }
+    }
   }
 }

@@ -1,26 +1,242 @@
 {
-  "$schema":"https://json-schema.org/draft/2020-12/schema",
-  "$id":"https://nova-content-hub.local/schemas/handoff.schema.json",
-  "title":"Nova Content Hub explicit host handoff v1",
-  "type":"object","additionalProperties":false,
-  "required":["protocol","version","appScope","authMode","pairId","handoffId","createdAt","target","sourceTaskId","request","context"],
-  "properties":{
-    "protocol":{"const":"nova-content-hub-handoff"},"version":{"const":1},"appScope":{"const":"nova-content-hub"},
-    "authMode":{"enum":["required","disabled"]},"pairId":{"$ref":"request.schema.json#/properties/pairId"},
-    "handoffId":{"$ref":"request.schema.json#/$defs/id"},"createdAt":{"type":"string","format":"date-time"},
-    "sourceTaskId":{"anyOf":[{"type":"null"},{"$ref":"request.schema.json#/$defs/id"}]},
-    "target":{"type":"object","additionalProperties":false,"required":["host","mode","sessionId"],"properties":{"host":{"enum":["codex","workbuddy"]},"mode":{"enum":["new","resume"]},"sessionId":{"type":["string","null"],"pattern":"^[A-Za-z0-9_-]{1,128}$"}},"allOf":[{"if":{"properties":{"mode":{"const":"new"}}},"then":{"properties":{"sessionId":{"type":"null"}}},"else":{"properties":{"sessionId":{"type":"string"}}}}]},
-    "request":{"anyOf":[{"type":"null"},{"$ref":"request.schema.json"}]},
-    "context":{"type":"object","additionalProperties":false,"required":["libraryId","project","template","materials","references"],"properties":{
-      "libraryId":{"$ref":"request.schema.json#/$defs/id"},
-      "project":{"anyOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["id","name","summary"],"properties":{"id":{"$ref":"request.schema.json#/$defs/id"},"name":{"type":"string","minLength":1,"maxLength":200,"pattern":"\\S"},"summary":{"type":"string","maxLength":2000}}}]},
-      "template":{"anyOf":[{"type":"null"},{"type":"object","additionalProperties":false,"required":["id","version","fixed","varies"],"properties":{"id":{"$ref":"request.schema.json#/$defs/id"},"version":{"type":"integer","minimum":1},"fixed":{"$ref":"#/$defs/rules"},"varies":{"$ref":"#/$defs/rules"}}}]},
-      "materials":{"type":"array","maxItems":16,"items":{"$ref":"#/$defs/ref"}},
-      "references":{"type":"array","maxItems":32,"items":{"$ref":"#/$defs/ref"}}
-    }}
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nova-content-hub.local/schemas/handoff.schema.json",
+  "title": "Nova Content Hub explicit host handoff v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "version",
+    "appScope",
+    "authMode",
+    "pairId",
+    "handoffId",
+    "createdAt",
+    "target",
+    "sourceTaskId",
+    "request",
+    "context"
+  ],
+  "properties": {
+    "protocol": {
+      "const": "nova-content-hub-handoff"
+    },
+    "version": {
+      "const": 1
+    },
+    "appScope": {
+      "const": "nova-content-hub"
+    },
+    "authMode": {
+      "enum": [
+        "required",
+        "disabled"
+      ]
+    },
+    "pairId": {
+      "$ref": "request.schema.json#/properties/pairId"
+    },
+    "handoffId": {
+      "$ref": "request.schema.json#/$defs/id"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sourceTaskId": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "request.schema.json#/$defs/id"
+        }
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "host",
+        "mode",
+        "sessionId"
+      ],
+      "properties": {
+        "host": {
+          "enum": [
+            "codex",
+            "workbuddy"
+          ]
+        },
+        "mode": {
+          "enum": [
+            "new",
+            "resume"
+          ]
+        },
+        "sessionId": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Za-z0-9_-]{1,128}$"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "mode": {
+                "const": "new"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "sessionId": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "sessionId": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "request": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "request.schema.json"
+        }
+      ]
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "libraryId",
+        "project",
+        "template",
+        "materials",
+        "references"
+      ],
+      "properties": {
+        "libraryId": {
+          "$ref": "request.schema.json#/$defs/id"
+        },
+        "project": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "name",
+                "summary"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "request.schema.json#/$defs/id"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200,
+                  "pattern": "\\S"
+                },
+                "summary": {
+                  "type": "string",
+                  "maxLength": 2000
+                }
+              }
+            }
+          ]
+        },
+        "template": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "version",
+                "fixed",
+                "varies"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "request.schema.json#/$defs/id"
+                },
+                "version": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "fixed": {
+                  "$ref": "#/$defs/rules"
+                },
+                "varies": {
+                  "$ref": "#/$defs/rules"
+                }
+              }
+            }
+          ]
+        },
+        "materials": {
+          "type": "array",
+          "maxItems": 16,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        },
+        "references": {
+          "type": "array",
+          "maxItems": 32,
+          "items": {
+            "$ref": "#/$defs/ref"
+          }
+        }
+      }
+    }
   },
-  "$defs":{
-    "rules":{"type":"array","maxItems":32,"items":{"type":"string","maxLength":1000}},
-    "ref":{"type":"object","additionalProperties":false,"required":["id","name"],"properties":{"id":{"$ref":"request.schema.json#/$defs/id"},"name":{"type":"string","maxLength":300}}}
+  "$defs": {
+    "rules": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "string",
+        "maxLength": 1000
+      }
+    },
+    "ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "request.schema.json#/$defs/id"
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 300
+        }
+      }
+    }
   }
 }

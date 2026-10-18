@@ -1,5 +1,14 @@
 # 人物访谈 · AI 风格参考
 
-Create one finished vertical 3:4 Chinese self-media editorial interview cover. Original fictional publication, no existing branding or identifiable real person. High-end magazine art direction: warm ivory background, very large charcoal Chinese typography at upper left, restrained vermilion accent, asymmetrical composition. A photorealistic fictional East Asian woman in her thirties in a dark blazer, naturally seated and thoughtfully looking toward the camera, occupies the lower right, softly lit, cropped at mid-torso. Face must be a new invented identity. Keep generous space around the headline; the person never covers text. Exact Chinese headline split in two lines: "把一件事" then "讲清楚". Small secondary text: "先说经历，再说观点". Small unobtrusive footer: "虚构访谈示例". Clear mobile readability, professional and human, subtle paper texture, refined photo cutout with natural edges. No claims about followers, performance or real interview, no logos, no watermarks, no other text. Deliver a single complete cover image, not a grid or mockup.
+Create one finished vertical 3:4 Chinese self-media editorial interview cover. Original fictional publication, no
+existing branding or identifiable real person. High-end magazine art direction: warm ivory background, very large
+charcoal Chinese typography at upper left, restrained vermilion accent, asymmetrical composition. A photorealistic
+fictional East Asian woman in her thirties in a dark blazer, naturally seated and thoughtfully looking toward the
+camera, occupies the lower right, softly lit, cropped at mid-torso. Face must be a new invented identity. Keep generous
+space around the headline; the person never covers text. Exact Chinese headline split in two lines: "把一件事" then
+"讲清楚". Small secondary text: "先说经历，再说观点". Small unobtrusive footer: "虚构访谈示例". Clear mobile readability,
+professional and human, subtle paper texture, refined photo cutout with natural edges. No claims about followers,
+performance or real interview, no logos, no watermarks, no other text. Deliver a single complete cover image, not a grid
+or mockup.
 
 用途：参考编辑构图、人物与文字关系；不表示已完成模板还原或真实访谈。

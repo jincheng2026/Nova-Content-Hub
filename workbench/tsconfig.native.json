@@ -1,9 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ES2023", "module": "NodeNext", "moduleResolution": "NodeNext",
-    "strict": true, "skipLibCheck": true, "types": ["node"],
-    "rewriteRelativeImportExtensions": true, "verbatimModuleSyntax": true,
-    "rootDir": "src", "outDir": ".native"
+    "target": "ES2023",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": [
+      "node"
+    ],
+    "rewriteRelativeImportExtensions": true,
+    "verbatimModuleSyntax": true,
+    "rootDir": "src",
+    "outDir": ".native"
   },
-  "include": ["src/main/**/*.mts", "src/preload/**/*.cts", "src/shared/**/*.ts"]
+  "include": [
+    "src/main/**/*.mts",
+    "src/preload/**/*.cts",
+    "src/shared/**/*.ts"
+  ]
 }

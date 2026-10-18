@@ -2,16 +2,23 @@
 
 日期：2026-10-17。
 
-- 主线程完整 `npm run verify` 退出 0：122 项应用测试、20 项插件测试、19 项独立构建验证，共 161 项，0 失败；日志 `/tmp/nch-template-groups-verified.log`。
-- 15 套 v4 模板，每套 2 张独立 PNG，共 30 张；SVG 结构图另列，不计入组内真实样张。新增图经内置 image_gen 逐套生成、人工看图，提示词与字节清单在 `assets/ai-reference-prompts/`。
+- 主线程完整 `npm run verify` 退出 0：122 项应用测试、20 项插件测试、19 项独立构建验证，共 161 项，0 失败；日志
+  `/tmp/nch-template-groups-verified.log`。
+- 15 套 v4 模板，每套 2 张独立 PNG，共 30 张；SVG 结构图另列，不计入组内真实样张。新增图经内置 image_gen 逐套生成、人工看图，提示词与字节清单在
+  `assets/ai-reference-prompts/`。
 - Chrome 实页确认列表样张数、详情缩略图与上一张/下一张切换；第二张实际加载 1086×1448 PNG。
-- 配置实测：科技人物拼贴默认使用 2/2 张样张，选择每版 8 张后底栏为“1 版 × 8 张”，仍带 2 张参考。取消单张后显示部分选择提示和 1 张参考，可恢复为整组。
+- 配置实测：科技人物拼贴默认使用 2/2 张样张，选择每版 8 张后底栏为“1 版 × 8 张”，仍带 2 张参考。取消单张后显示部分选择提示和
+  1 张参考，可恢复为整组。
 - 390px 视口下页面宽度 390、弹窗宽度 358，无横向溢出；临时视口及开发缓存设置已恢复。
 - 多文件逐张下载在 Chrome 实测只保存第一张，已改成单个 ZIP 下载，不要求改浏览器权限。
-- Chrome 实际下载 `/Users/mac/Downloads/builtin-tech-collage-v4-样张组.zip`，`unzip -t` 无错误。两张包内文件按稳定参考 ID 命名，哈希分别与旧主图、新组图完全相符：
-  - `builtin-tech-collage-ai-reference-v3.png`：2267168 字节，SHA256 `3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739`。
-  - `builtin-tech-collage-group-reference-v4.png`：2153941 字节，SHA256 `bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd`。
+- Chrome 实际下载 `/Users/mac/Downloads/builtin-tech-collage-v4-样张组.zip`，`unzip -t` 无错误。两张包内文件按稳定参考 ID
+  命名，哈希分别与旧主图、新组图完全相符：
+    - `builtin-tech-collage-ai-reference-v3.png`：2267168 字节，SHA256
+      `3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739`。
+    - `builtin-tech-collage-group-reference-v4.png`：2153941 字节，SHA256
+      `bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd`。
 
 ## 边界
 
-本次只验证原型配置、版本引用、真实样图、ZIP 下载与自动化契约。未把新候选登记为生成成功，未发送内容给外部助手；未验证助手收到整组附件后的真人替换、批量生图或跨比例质量。浏览器原型仍需主动解压并将参考图附给助手。
+本次只验证原型配置、版本引用、真实样图、ZIP
+下载与自动化契约。未把新候选登记为生成成功，未发送内容给外部助手；未验证助手收到整组附件后的真人替换、批量生图或跨比例质量。浏览器原型仍需主动解压并将参考图附给助手。

@@ -1,1 +1,63 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img" aria-label="虚构示例：今天做一小步"><title>今天做一小步</title><desc>原创几何插画 · 虚构演示素材。蓝墨编辑室系列，稿纸、取景框与创作步骤的独立几何构图。</desc><rect x="0" y="0" width="900" height="1200" rx="0" fill="#dce7ff"/><rect x="64" y="65" width="14" height="62" rx="5" fill="#315bd6"/><text x="98" y="107" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="25" font-weight="600" letter-spacing="3">蓝墨 / 编辑手记</text><text x="746" y="107" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28" font-weight="500" letter-spacing="0">08</text><text x="64" y="263" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="76" font-weight="650" letter-spacing="0">今天做</text><text x="64" y="361" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="76" font-weight="650" letter-spacing="0">一小步</text><text x="68" y="415" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20" font-weight="500" letter-spacing="2">SMALL STEPS, REAL PROGRESS</text><g transform="translate(0 20)"><path d="M224 660h140M536 660h140M450 730v130M450 490v100" fill="none" stroke="#315bd6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><rect x="110" y="585" width="212" height="154" rx="18" fill="#f8f5ed" stroke="#1e3557" stroke-width="3"/><rect x="345" y="570" width="212" height="184" rx="18" fill="#1e3557"/><rect x="594" y="585" width="202" height="154" rx="18" fill="#c9dfd5" stroke="#1e3557" stroke-width="3"/><rect x="345" y="845" width="212" height="154" rx="18" fill="#dce7ff" stroke="#1e3557" stroke-width="3"/><rect x="345" y="408" width="212" height="102" rx="18" fill="#edc7a4" stroke="#1e3557" stroke-width="3"/><text x="149" y="681" fill="#20314b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="43" font-weight="650" letter-spacing="0">想法</text><text x="388" y="652" fill="#f8f5ed" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="43" font-weight="650" letter-spacing="0">整理</text><text x="388" y="707" fill="#dce7ff" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="27" font-weight="650" letter-spacing="0">表达</text><text x="635" y="681" fill="#20314b" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="43" font-weight="650" letter-spacing="0">作品</text><path d="m407 919 24 24 62-62" fill="none" stroke="#315bd6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="451" cy="459" r="14" fill="#1e3557"/><path d="M126 824h96M174 776v96" fill="none" stroke="#315bd6" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></g><path d="M64 1100h772" fill="none" stroke="#1e3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="64" y="1149" fill="#1e3557" font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="23" font-weight="400" letter-spacing="0">原创几何插画 · 虚构演示素材</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200" role="img"
+     aria-label="虚构示例：今天做一小步">
+    <title>今天做一小步</title>
+    <desc>原创几何插画 · 虚构演示素材。蓝墨编辑室系列，稿纸、取景框与创作步骤的独立几何构图。</desc>
+    <rect x="0" y="0" width="900" height="1200" rx="0" fill="#dce7ff"/>
+    <rect x="64" y="65" width="14" height="62" rx="5" fill="#315bd6"/>
+    <text x="98" y="107" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="25"
+          font-weight="600" letter-spacing="3">蓝墨 / 编辑手记
+    </text>
+    <text x="746" y="107" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="28"
+          font-weight="500" letter-spacing="0">08
+    </text>
+    <text x="64" y="263" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="76"
+          font-weight="650" letter-spacing="0">今天做
+    </text>
+    <text x="64" y="361" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="76"
+          font-weight="650" letter-spacing="0">一小步
+    </text>
+    <text x="68" y="415" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="20"
+          font-weight="500" letter-spacing="2">SMALL STEPS, REAL PROGRESS
+    </text>
+    <g transform="translate(0 20)">
+        <path d="M224 660h140M536 660h140M450 730v130M450 490v100" fill="none" stroke="#315bd6" stroke-width="8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+        <rect x="110" y="585" width="212" height="154" rx="18" fill="#f8f5ed" stroke="#1e3557" stroke-width="3"/>
+        <rect x="345" y="570" width="212" height="184" rx="18" fill="#1e3557"/>
+        <rect x="594" y="585" width="202" height="154" rx="18" fill="#c9dfd5" stroke="#1e3557" stroke-width="3"/>
+        <rect x="345" y="845" width="212" height="154" rx="18" fill="#dce7ff" stroke="#1e3557" stroke-width="3"/>
+        <rect x="345" y="408" width="212" height="102" rx="18" fill="#edc7a4" stroke="#1e3557" stroke-width="3"/>
+        <text x="149" y="681" fill="#20314b"
+              font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif"
+              font-size="43" font-weight="650" letter-spacing="0">想法
+        </text>
+        <text x="388" y="652" fill="#f8f5ed"
+              font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif"
+              font-size="43" font-weight="650" letter-spacing="0">整理
+        </text>
+        <text x="388" y="707" fill="#dce7ff"
+              font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif"
+              font-size="27" font-weight="650" letter-spacing="0">表达
+        </text>
+        <text x="635" y="681" fill="#20314b"
+              font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif"
+              font-size="43" font-weight="650" letter-spacing="0">作品
+        </text>
+        <path d="m407 919 24 24 62-62" fill="none" stroke="#315bd6" stroke-width="8" stroke-linecap="round"
+              stroke-linejoin="round"/>
+        <circle cx="451" cy="459" r="14" fill="#1e3557"/>
+        <path d="M126 824h96M174 776v96" fill="none" stroke="#315bd6" stroke-width="6" stroke-linecap="round"
+              stroke-linejoin="round"/>
+    </g>
+    <path d="M64 1100h772" fill="none" stroke="#1e3557" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <text x="64" y="1149" fill="#1e3557"
+          font-family="-apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', sans-serif" font-size="23"
+          font-weight="400" letter-spacing="0">原创几何插画 · 虚构演示素材
+    </text>
+</svg>

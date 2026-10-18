@@ -1,18 +1,23 @@
 # Electron 技术验证入口与准入边界
 
-日期：2026-10-17。本文件约束最小技术验证。最初`electron-desktop/`已交付程序并通过Mac真实双进程探针；按用户新指示已迁到`workbench/`的TS/React/Semi结构，仍不提前通过G1/G2。
+日期：2026-10-17。本文件约束最小技术验证。最初`electron-desktop/`已交付程序并通过Mac真实双进程探针；按用户新指示已迁到
+`workbench/`的TS/React/Semi结构，仍不提前通过G1/G2。
 
 ## 先验证一个真实文件流程
 
-在完整导入器验收后，先做“选旧备份 → 查看数量与缺文件提示 → 导入并打开 → 关闭重启继续/查询”的小型原生入口，再扩展五页。仍需保留 Windows/Mac × WorkBuddy/Codex 四组合真实生成的 G1 验证；不能用原生窗口显示成功替代宿主接单、参考图读取、生图和回传。
+在完整导入器验收后，先做“选旧备份 → 查看数量与缺文件提示 → 导入并打开 → 关闭重启继续/查询”的小型原生入口，再扩展五页。仍需保留
+Windows/Mac × WorkBuddy/Codex 四组合真实生成的 G1 验证；不能用原生窗口显示成功替代宿主接单、参考图读取、生图和回传。
 
-一期界面不展示命令、路径参数或 importId。选择文件与目录用系统对话框；按钮只需“导入并打开”“继续导入”“查看内容”。新库默认放文档目录，可选位置；重试复用已记录的目标，不重新生成目录。缺文件提供系统选择入口，错误保留现场，用户不需删锁或改 JSON。
+一期界面不展示命令、路径参数或
+importId。选择文件与目录用系统对话框；按钮只需“导入并打开”“继续导入”“查看内容”。新库默认放文档目录，可选位置；重试复用已记录的目标，不重新生成目录。缺文件提供系统选择入口，错误保留现场，用户不需删锁或改
+JSON。
 
 ## 最小职责
 
 - main 管窗口、系统选择器、来源校验、机器偏好和工作进程；保存用户已选择的资源绑定，renderer 不提交任意本机路径。
 - preload 只暴露逐项命名的业务方法，不暴露 ipcRenderer、通用 invoke、文件系统或 shell。
-- utility process 执行共享文件核心和导入器，避免同步复制/哈希/解码阻塞主窗口。消息只接受有限操作和校验后的参数；进程退出必须回查 importId/mutationId，不把退出或超时当成功。
+- utility process 执行共享文件核心和导入器，避免同步复制/哈希/解码阻塞主窗口。消息只接受有限操作和校验后的参数；进程退出必须回查
+  importId/mutationId，不把退出或超时当成功。
 - renderer 展示业务投影。内容/渠道/模板/发布仍写同一文件库；总览和日历不再保存 localStorage 业务副本。文件变化重新读取，不能把旧页面对象整包覆盖。
 - 机器偏好只保存全局助手、示例/动画、近期绑定库与进行中的作业绑定。安装/信任/授权须有真实来源，旧演示状态不得转为可信值。
 
@@ -20,13 +25,20 @@
 
 ## 隔离与资源约束
 
-按 [Electron 官方安全说明](https://www.electronjs.org/docs/latest/tutorial/security) 设置 contextIsolation、sandbox，关闭 renderer Node 权限，限制导航/新窗口/权限并核验每次 IPC 的 sender。用受控自定义协议提供随包页面，严格 CSP；用户正文/提示词/附件视为数据，不执行其 HTML 或脚本。
+按 [Electron 官方安全说明](https://www.electronjs.org/docs/latest/tutorial/security) 设置 contextIsolation、sandbox，关闭
+renderer Node 权限，限制导航/新窗口/权限并核验每次 IPC 的 sender。用受控自定义协议提供随包页面，严格
+CSP；用户正文/提示词/附件视为数据，不执行其 HTML 或脚本。
 
-[protocol.handle](https://www.electronjs.org/docs/latest/api/protocol) 只映射有限静态资源或已绑定库的资产，不把 URL path 直接拼成本机路径。[utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process) 提供工作进程机制，但并不自动完成本产品的参数校验、取消恢复或 native decoder 打包。
+[protocol.handle](https://www.electronjs.org/docs/latest/api/protocol) 只映射有限静态资源或已绑定库的资产，不把 URL path
+直接拼成本机路径。[utilityProcess](https://www.electronjs.org/docs/latest/api/utility-process)
+提供工作进程机制，但并不自动完成本产品的参数校验、取消恢复或 native decoder 打包。
 
-实验 CLI 当前依赖外部 Node。正式双宿主执行器必须有随发行包可用的受控运行方式，不要求普通用户安装 Node 或设置环境变量。选具体分发方式前要实测两平台冷启动、stdout/回执、sharp native 装载及签名约束；不能依赖旅游项目的 node_modules、未知宿主内部路径或开发机缓存。
+实验 CLI 当前依赖外部 Node。正式双宿主执行器必须有随发行包可用的受控运行方式，不要求普通用户安装 Node
+或设置环境变量。选具体分发方式前要实测两平台冷启动、stdout/回执、sharp native 装载及签名约束；不能依赖旅游项目的
+node_modules、未知宿主内部路径或开发机缓存。
 
-本轮只读参考旅游源码 workbench/package.json、main/index.ts：其窗口启用了 sandbox/contextIsolation，并限制导航/新窗口；版本和依赖只作本机实现线索，不复制旅游的产品授权、页面、复杂模块或实际活动库。正式依赖须锁定并以实际构建/运行结果验收。
+本轮只读参考旅游源码 workbench/package.json、main/index.ts：其窗口启用了
+sandbox/contextIsolation，并限制导航/新窗口；版本和依赖只作本机实现线索，不复制旅游的产品授权、页面、复杂模块或实际活动库。正式依赖须锁定并以实际构建/运行结果验收。
 
 ## 必须取得的证据
 
@@ -40,7 +52,8 @@ Windows 真机资源与 Mac 解锁仍待用户答复。共用代码可继续实�
 
 ## 当前技术入口证据
 
-当前程序与运行说明见`workbench/README.md`，精确依赖锁在该目录；没有复用旅游运行时。初版13项和双进程证据见历史提交901b73c；迁移后14项及双模式仓库外四阶段探针见`workbench/verification/`，包括真实React按钮、utility原生解码、移走原备份重启同任务、正常编辑不重放、恶意文本、CSP与错误pair拒绝。系统选择器仍使用合成测试注入。
+当前程序与运行说明见`workbench/README.md`，精确依赖锁在该目录；没有复用旅游运行时。初版13项和双进程证据见历史提交901b73c；迁移后14项及双模式仓库外四阶段探针见
+`workbench/verification/`，包括真实React按钮、utility原生解码、移走原备份重启同任务、正常编辑不重放、恶意文本、CSP与错误pair拒绝。系统选择器仍使用合成测试注入。
 
 原始探针暴露ESM顶层await等待app.ready的启动死锁，以及页面启动查询和用户查询并发造成BUSY；均修复后完成完整探针。Astra另复现预检后源被换成另一份合法备份：现在将用户确认的expectedSourceHash传入导入器自身稳定读取，在预约前拒绝变化；原复现返回SOURCE_CHANGED、无预约且可正常重选。
 

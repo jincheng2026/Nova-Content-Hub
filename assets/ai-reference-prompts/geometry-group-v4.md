@@ -4,10 +4,14 @@
 
 最终提示词：
 
-Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI. This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled, legible at thumbnail size and inside a 5% safe margin.
-Visual system: 钴蓝背景、暖白超粗两行汉字，黄色哑光立体圆环和半透明蓝色折片。改变圆环为斜立且位置移到右下，玻璃折片在左下，演播室侧光。
-Exact main title, intentional line breaks:
-先完成
-再完善
-Other exact text, split semicolon-separated phrases into appropriate short labels: 给想法一个开始
-No other headings, names, dates, logos, watermarks, brands or invented claims. Any human is fictional and only illustrates a layout; no celebrity likeness. Render a standalone premium full-bleed finished cover, not a mockup, framed print, phone or sheet of several posters.
+Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI.
+This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type
+character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene
+arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled,
+legible at thumbnail size and inside a 5% safe margin. Visual system:
+钴蓝背景、暖白超粗两行汉字，黄色哑光立体圆环和半透明蓝色折片。改变圆环为斜立且位置移到右下，玻璃折片在左下，演播室侧光。 Exact
+main title, intentional line breaks:
+先完成 再完善 Other exact text, split semicolon-separated phrases into appropriate short labels: 给想法一个开始 No other
+headings, names, dates, logos, watermarks, brands or invented claims. Any human is fictional and only illustrates a
+layout; no celebrity likeness. Render a standalone premium full-bleed finished cover, not a mockup, framed print, phone
+or sheet of several posters.

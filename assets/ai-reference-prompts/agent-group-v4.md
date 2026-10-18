@@ -4,10 +4,14 @@
 
 最终提示词：
 
-Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI. This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled, legible at thumbnail size and inside a 5% safe margin.
-Visual system: 深海军蓝、白色粗体大字、青色细线和4个立体玻璃阶段。下半部流程从左下到右上错位串联而非直线，同样单向箭头；冷静摄影级材质，空间层次清晰。
+Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI.
+This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type
+character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene
+arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled,
+legible at thumbnail size and inside a 5% safe margin. Visual system:
+深海军蓝、白色粗体大字、青色细线和4个立体玻璃阶段。下半部流程从左下到右上错位串联而非直线，同样单向箭头；冷静摄影级材质，空间层次清晰。
 Exact main title, intentional line breaks:
-把任务交清楚
-一步步完成
-Other exact text, split semicolon-separated phrases into appropriate short labels: 输入 → 计划 → 执行 → 验收
-No other headings, names, dates, logos, watermarks, brands or invented claims. Any human is fictional and only illustrates a layout; no celebrity likeness. Render a standalone premium full-bleed finished cover, not a mockup, framed print, phone or sheet of several posters.
+把任务交清楚 一步步完成 Other exact text, split semicolon-separated phrases into appropriate short labels: 输入 → 计划 →
+执行 → 验收 No other headings, names, dates, logos, watermarks, brands or invented claims. Any human is fictional and
+only illustrates a layout; no celebrity likeness. Render a standalone premium full-bleed finished cover, not a mockup,
+framed print, phone or sheet of several posters.

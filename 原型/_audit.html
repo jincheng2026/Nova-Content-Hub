@@ -1,108 +1,216 @@
 <!doctype html>
 <html lang="zh-CN" data-motion="on">
 <head>
-  <meta charset="utf-8" />
-  <title>audit</title>
-  <link rel="stylesheet" href="styles.css" />
+    <meta charset="utf-8"/>
+    <title>audit</title>
+    <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <div class="app">
+<div class="app">
     <aside class="side">
-      <div class="brand"><span class="logo"><img src="brand/nova-content-hub-icon-128.png" width="40" height="40" alt="" /></span><div class="bt"><b>自媒体</b><span>工作台</span></div></div>
-      <ul class="nav" id="nav"></ul>
-      <div class="side-bot" id="side-bot"></div>
+        <div class="brand"><span class="logo"><img src="brand/nova-content-hub-icon-128.png" width="40" height="40"
+                                                   alt=""/></span>
+            <div class="bt"><b>自媒体</b><span>工作台</span></div>
+        </div>
+        <ul class="nav" id="nav"></ul>
+        <div class="side-bot" id="side-bot"></div>
     </aside>
-    <main class="main"><div class="body" id="body"></div></main>
-  </div>
-  <div class="mask" id="mask"></div>
-  <div id="layer"></div>
-  <div class="toasts" id="toasts"></div>
-  <script src="build-config.js"></script>
-  <script src="data.js"></script>
-  <script src="core.js"></script>
-  <script src="app.js"></script>
-  <script>
+    <main class="main">
+        <div class="body" id="body"></div>
+    </main>
+</div>
+<div class="mask" id="mask"></div>
+<div id="layer"></div>
+<div class="toasts" id="toasts"></div>
+<script src="build-config.js"></script>
+<script src="data.js"></script>
+<script src="core.js"></script>
+<script src="app.js"></script>
+<script>
     (async () => {
-      const bad = [], seen = new Set();
-      const wait = ms => new Promise(r => setTimeout(r, ms));
-      const Q = s => document.querySelector(s), QQ = s => Array.from(document.querySelectorAll(s));
-      const click = async sel => { const el = typeof sel === 'string' ? Q(sel) : sel; if (!el) { bad.push('找不到 ' + sel); return false; } el.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true })); await wait(260); return true; };
-      const txt = el => (el.textContent || '').replace(/\s+/g, ' ').trim();
-      const rgb = st => { const m = String(st).match(/[\d.]+/g); return m ? [+m[0], +m[1], +m[2], m.length > 3 ? +m[3] : 1] : null; };
-      const up = el => { /* 往上找第一个不透明的底色 */ for (let n = el; n; n = n.parentElement) { const bg = rgb(getComputedStyle(n).backgroundColor); if (bg && bg[3] > .85) return 'rgb(' + bg.slice(0, 3).join(',') + ')'; } return 'rgb(255,255,255)'; };
-      const lum = cs => { const [r, g, b] = cs.map(v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); }); return .2126 * r + .7152 * g + .0722 * b; };
-      const contrast = (a, b) => { const x = rgb(a), y = rgb(b); if (!x || !y) return 99; const l1 = lum(x.slice(0, 3)), l2 = lum(y.slice(0, 3)); return (Math.max(l1, l2) + .05) / (Math.min(l1, l2) + .05); };
-      function check(where, root) {
-        (root || document).querySelectorAll('button, .btn, a.btn').forEach(b => {
-          if ((root || document) === document && b.closest('.modal, #menu-live')) return;
-          const t = txt(b), hasSvg = !!b.querySelector('svg'), r = b.getBoundingClientRect();
-          const key = where + '|' + (b.className || '') + '|' + t + '|' + (b.dataset.act || b.dataset.vb || b.dataset.mi || '');
-          if (seen.has(key)) return; seen.add(key);
-          const why = [];
-          if (b.classList.contains('sw') || b.classList.contains('cb')) return;  /* 开关和勾选框本来就没字 */
-          if (!t && !hasSvg) why.push('没文字也没图标');
-          if (/undefined|NaN|\[object|null/.test(t)) why.push('文案里有脏值「' + t.slice(0, 24) + '」');
-          if (r.width < 14 || r.height < 12) why.push('尺寸 ' + Math.round(r.width) + 'x' + Math.round(r.height));
-          if (t && r.width > 6 && getComputedStyle(b).visibility === 'hidden') why.push('被隐藏');
-          if (t && r.width > 6 && +getComputedStyle(b).opacity === 0) why.push('透明');
-          /* 文字和底色撞一起（白底白字这类）只有量对比度才看得出来 */
-          if (t && r.width > 6) { const cs2 = getComputedStyle(b); const fg = cs2.color, bg = up(b); if (fg && contrast(fg, bg) < 2.2) why.push('字和底几乎同色：' + fg + ' on ' + bg + '（比 ' + contrast(fg, bg).toFixed(2) + '）'); }
-          if (why.length) bad.push(where + ' · <' + b.tagName.toLowerCase() + ' class="' + b.className + '" act="' + (b.dataset.act || '') + '"' + (b.disabled ? ' disabled' : '') + '> 「' + t.slice(0, 26) + '」 → ' + why.join('，'));
-        });
-      }
-      const closeAll = async () => { document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true })); await wait(260); if (Q('.modal')) bad.push('关不掉弹层：' + txt(Q('.modal-h'))); };
-      const nav = async p => { location.hash = '#/' + p; window.dispatchEvent(new HashChangeEvent('hashchange')); await wait(280); const el = Q('#body h1, #body .crumb b'); if (!el || !new RegExp(p === 'today' ? '月' : ({ templates: '模板', projects: '内容', calendar: '日历', prompts: '提示词', more: '更多', check: '检查|处要看' }[p] || '.'), 'i').test(txt(el))) bad.push('没走到 ' + p + '（当前 ' + (el ? txt(el).slice(0, 24) : '空') + '）'); };
-      const openModal = async (label, sel) => { await click(sel); if (!Q('.modal')) { bad.push('弹层没开：' + label + '（点 ' + sel + '）'); return null; } check('弹层 ' + label, Q('.modal')); return true; };
+        const bad = [], seen = new Set();
+        const wait = ms => new Promise(r => setTimeout(r, ms));
+        const Q = s => document.querySelector(s), QQ = s => Array.from(document.querySelectorAll(s));
+        const click = async sel => {
+            const el = typeof sel === 'string' ? Q(sel) : sel;
+            if (!el) {
+                bad.push('找不到 ' + sel);
+                return false;
+            }
+            el.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+            await wait(260);
+            return true;
+        };
+        const txt = el => (el.textContent || '').replace(/\s+/g, ' ').trim();
+        const rgb = st => {
+            const m = String(st).match(/[\d.]+/g);
+            return m ? [+m[0], +m[1], +m[2], m.length > 3 ? +m[3] : 1] : null;
+        };
+        const up = el => { /* 往上找第一个不透明的底色 */
+            for (let n = el; n; n = n.parentElement) {
+                const bg = rgb(getComputedStyle(n).backgroundColor);
+                if (bg && bg[3] > .85) return 'rgb(' + bg.slice(0, 3).join(',') + ')';
+            }
+            return 'rgb(255,255,255)';
+        };
+        const lum = cs => {
+            const [r, g, b] = cs.map(v => {
+                v /= 255;
+                return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+            });
+            return .2126 * r + .7152 * g + .0722 * b;
+        };
+        const contrast = (a, b) => {
+            const x = rgb(a), y = rgb(b);
+            if (!x || !y) return 99;
+            const l1 = lum(x.slice(0, 3)), l2 = lum(y.slice(0, 3));
+            return (Math.max(l1, l2) + .05) / (Math.min(l1, l2) + .05);
+        };
 
-      /* 1. 每一页 */
-      for (const p of ['today', 'templates', 'projects', 'calendar', 'prompts', 'more', 'check']) {
-        await nav(p); check('页 ' + p);
-        const t = Q('#body').textContent;
-        if (/undefined|NaN|\[object/.test(t)) bad.push('页 ' + p + ' 正文里有脏值：' + t.match(/.{0,20}(undefined|NaN|\[object).{0,20}/)[0]);
-      }
-      /* 2. 详情 + 各种弹层 */
-      await nav('projects'); await click('.row'); check('内容详情');
-      await openModal('出封面', '[data-act="make-cover"]'); await closeAll();
-      await openModal('改这一条', '[data-act="edit-proj"]'); await closeAll();
-      await openModal('资料', '[data-act="files"]'); await closeAll();
-      /* 勾两张 → 对比条 + 对比弹层 */
-      const cb = QQ('.fblk .cand .cmpb'); await click(cb[0]); await click(cb[1]); check('对比条', Q('.card-h .r'));
-      await click('[data-act="cmp"]'); check('弹层 对比后选定', Q('.modal')); await closeAll();
-      /* 批次菜单 / 版本弹层 */
-      await click('[data-act="old-batch"]');
-      await click('.fblk .mat-more, [data-act="mat-more"]'); check('右键 封面菜单', Q('#menu-live'));
-      await click('#menu-live [data-menu-action="versions"]'); check('弹层 这几版', Q('.modal') && Q('.modal h3').textContent.includes('版本')); await closeAll();
-      /* 提示词 */
-      await nav('prompts'); await openModal('标签常用', '[data-act="pw-filter"]'); await closeAll();
-      await click('.pc'); if (Q('.modal')) check('弹层 提示词详情', Q('.modal')); else bad.push('弹层没开：提示词详情'); await closeAll();
-      await openModal('新增提示词', '[data-act="new-prompt"]'); await closeAll();
-      /* 模板 */
-      await click('#nav [data-page="templates"]'); await openModal('新建模板', '[data-act="new-template"]'); await closeAll();
-      await click('.tpl[data-tpl="tpl-quote"]'); check('模板详情(方图)', Q('#body')); await closeAll();
-      await nav('templates'); await click('.tpl[data-tpl="tpl-banner"]'); check('模板详情(缺原图)', Q('#body'));
-      await nav('templates');
-      /* 日历 */
-      await nav('calendar'); await openModal('记发布', '[data-act="pub-free"]'); await closeAll();
-      await click('[data-act="calmode"][data-k="week"]'); check('周日历', Q('#body'));
-      /* 更多 */
-      await nav('more'); await openModal('渠道', '[data-act="chan-manage"]'); await closeAll();
-      await openModal('内置基线', '[data-act="builtin-list"]'); await closeAll();
-      /* 大图 */
-      await nav('templates'); await click('.tpl[data-tpl="tpl-bleed"]');
-      await click('.mat-grid .ibox [data-act="zoom"]'); check('灯箱', Q('.view'));
-      /* 自检：插一个已知坏的（白底白字）+ 一个没字的，排查器必须抓到，否则它报"没问题"不算数 */
-      const t1 = document.createElement('button'); t1.className = 'btn s p'; t1.style.cssText = 'color:#fff;background:#fff;position:fixed;left:0;top:0'; t1.textContent = '自检白底白字';
-      const t2 = document.createElement('button'); t2.className = 'btn s'; t2.style.cssText = 'position:fixed;left:0;top:40px'; t2.textContent = '  ';
-      document.body.append(t1, t2); check('自检');
-      const selfIssues = bad.filter(x => /自检白底白字|没文字/.test(x));
-      const hit = selfIssues.length;
-      selfIssues.forEach(x => bad.splice(bad.indexOf(x), 1));
-      if (hit < 2) bad.unshift('排查器自检失败：抓不到坏例子，结果不可信');
-      t1.remove(); t2.remove();
-      const pre = document.createElement('pre'); pre.id = 'AUDIT';
-      pre.textContent = bad.length ? bad.join('\n') : '没发现问题';
-      document.body.appendChild(pre);
+        function check(where, root) {
+            (root || document).querySelectorAll('button, .btn, a.btn').forEach(b => {
+                if ((root || document) === document && b.closest('.modal, #menu-live')) return;
+                const t = txt(b), hasSvg = !!b.querySelector('svg'), r = b.getBoundingClientRect();
+                const key = where + '|' + (b.className || '') + '|' + t + '|' + (b.dataset.act || b.dataset.vb || b.dataset.mi || '');
+                if (seen.has(key)) return;
+                seen.add(key);
+                const why = [];
+                if (b.classList.contains('sw') || b.classList.contains('cb')) return;  /* 开关和勾选框本来就没字 */
+                if (!t && !hasSvg) why.push('没文字也没图标');
+                if (/undefined|NaN|\[object|null/.test(t)) why.push('文案里有脏值「' + t.slice(0, 24) + '」');
+                if (r.width < 14 || r.height < 12) why.push('尺寸 ' + Math.round(r.width) + 'x' + Math.round(r.height));
+                if (t && r.width > 6 && getComputedStyle(b).visibility === 'hidden') why.push('被隐藏');
+                if (t && r.width > 6 && +getComputedStyle(b).opacity === 0) why.push('透明');
+                /* 文字和底色撞一起（白底白字这类）只有量对比度才看得出来 */
+                if (t && r.width > 6) {
+                    const cs2 = getComputedStyle(b);
+                    const fg = cs2.color, bg = up(b);
+                    if (fg && contrast(fg, bg) < 2.2) why.push('字和底几乎同色：' + fg + ' on ' + bg + '（比 ' + contrast(fg, bg).toFixed(2) + '）');
+                }
+                if (why.length) bad.push(where + ' · <' + b.tagName.toLowerCase() + ' class="' + b.className + '" act="' + (b.dataset.act || '') + '"' + (b.disabled ? ' disabled' : '') + '> 「' + t.slice(0, 26) + '」 → ' + why.join('，'));
+            });
+        }
+
+        const closeAll = async () => {
+            document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+            await wait(260);
+            if (Q('.modal')) bad.push('关不掉弹层：' + txt(Q('.modal-h')));
+        };
+        const nav = async p => {
+            location.hash = '#/' + p;
+            window.dispatchEvent(new HashChangeEvent('hashchange'));
+            await wait(280);
+            const el = Q('#body h1, #body .crumb b');
+            if (!el || !new RegExp(p === 'today' ? '月' : ({
+                templates: '模板',
+                projects: '内容',
+                calendar: '日历',
+                prompts: '提示词',
+                more: '更多',
+                check: '检查|处要看'
+            }[p] || '.'), 'i').test(txt(el))) bad.push('没走到 ' + p + '（当前 ' + (el ? txt(el).slice(0, 24) : '空') + '）');
+        };
+        const openModal = async (label, sel) => {
+            await click(sel);
+            if (!Q('.modal')) {
+                bad.push('弹层没开：' + label + '（点 ' + sel + '）');
+                return null;
+            }
+            check('弹层 ' + label, Q('.modal'));
+            return true;
+        };
+
+        /* 1. 每一页 */
+        for (const p of ['today', 'templates', 'projects', 'calendar', 'prompts', 'more', 'check']) {
+            await nav(p);
+            check('页 ' + p);
+            const t = Q('#body').textContent;
+            if (/undefined|NaN|\[object/.test(t)) bad.push('页 ' + p + ' 正文里有脏值：' + t.match(/.{0,20}(undefined|NaN|\[object).{0,20}/)[0]);
+        }
+        /* 2. 详情 + 各种弹层 */
+        await nav('projects');
+        await click('.row');
+        check('内容详情');
+        await openModal('出封面', '[data-act="make-cover"]');
+        await closeAll();
+        await openModal('改这一条', '[data-act="edit-proj"]');
+        await closeAll();
+        await openModal('资料', '[data-act="files"]');
+        await closeAll();
+        /* 勾两张 → 对比条 + 对比弹层 */
+        const cb = QQ('.fblk .cand .cmpb');
+        await click(cb[0]);
+        await click(cb[1]);
+        check('对比条', Q('.card-h .r'));
+        await click('[data-act="cmp"]');
+        check('弹层 对比后选定', Q('.modal'));
+        await closeAll();
+        /* 批次菜单 / 版本弹层 */
+        await click('[data-act="old-batch"]');
+        await click('.fblk .mat-more, [data-act="mat-more"]');
+        check('右键 封面菜单', Q('#menu-live'));
+        await click('#menu-live [data-menu-action="versions"]');
+        check('弹层 这几版', Q('.modal') && Q('.modal h3').textContent.includes('版本'));
+        await closeAll();
+        /* 提示词 */
+        await nav('prompts');
+        await openModal('标签常用', '[data-act="pw-filter"]');
+        await closeAll();
+        await click('.pc');
+        if (Q('.modal')) check('弹层 提示词详情', Q('.modal')); else bad.push('弹层没开：提示词详情');
+        await closeAll();
+        await openModal('新增提示词', '[data-act="new-prompt"]');
+        await closeAll();
+        /* 模板 */
+        await click('#nav [data-page="templates"]');
+        await openModal('新建模板', '[data-act="new-template"]');
+        await closeAll();
+        await click('.tpl[data-tpl="tpl-quote"]');
+        check('模板详情(方图)', Q('#body'));
+        await closeAll();
+        await nav('templates');
+        await click('.tpl[data-tpl="tpl-banner"]');
+        check('模板详情(缺原图)', Q('#body'));
+        await nav('templates');
+        /* 日历 */
+        await nav('calendar');
+        await openModal('记发布', '[data-act="pub-free"]');
+        await closeAll();
+        await click('[data-act="calmode"][data-k="week"]');
+        check('周日历', Q('#body'));
+        /* 更多 */
+        await nav('more');
+        await openModal('渠道', '[data-act="chan-manage"]');
+        await closeAll();
+        await openModal('内置基线', '[data-act="builtin-list"]');
+        await closeAll();
+        /* 大图 */
+        await nav('templates');
+        await click('.tpl[data-tpl="tpl-bleed"]');
+        await click('.mat-grid .ibox [data-act="zoom"]');
+        check('灯箱', Q('.view'));
+        /* 自检：插一个已知坏的（白底白字）+ 一个没字的，排查器必须抓到，否则它报"没问题"不算数 */
+        const t1 = document.createElement('button');
+        t1.className = 'btn s p';
+        t1.style.cssText = 'color:#fff;background:#fff;position:fixed;left:0;top:0';
+        t1.textContent = '自检白底白字';
+        const t2 = document.createElement('button');
+        t2.className = 'btn s';
+        t2.style.cssText = 'position:fixed;left:0;top:40px';
+        t2.textContent = '  ';
+        document.body.append(t1, t2);
+        check('自检');
+        const selfIssues = bad.filter(x => /自检白底白字|没文字/.test(x));
+        const hit = selfIssues.length;
+        selfIssues.forEach(x => bad.splice(bad.indexOf(x), 1));
+        if (hit < 2) bad.unshift('排查器自检失败：抓不到坏例子，结果不可信');
+        t1.remove();
+        t2.remove();
+        const pre = document.createElement('pre');
+        pre.id = 'AUDIT';
+        pre.textContent = bad.length ? bad.join('\n') : '没发现问题';
+        document.body.appendChild(pre);
     })();
-  </script>
+</script>
 </body>
 </html>

@@ -4,10 +4,14 @@
 
 最终提示词：
 
-Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI. This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled, legible at thumbnail size and inside a 5% safe margin.
-Visual system: 深森林绿背景、奶油色加酸橙色宋体标题、下半部等宽两列毛边纸卡。两列固定左右对比，改为有层次的倾斜纸卡和留白间距，自然日光。
+Use case: ads-marketing. Create ONE finished original Chinese self-media cover, portrait 3:4, not a collage sheet or UI.
+This is a SECOND independent sample in the same template style family as the reference. Keep the palette, type
+character, texture, visual hierarchy and production quality, but change the actual content and meaningful object/scene
+arrangement. Do not simply recolor, crop or copy the first cover. All typography must be sharp, correctly spelled,
+legible at thumbnail size and inside a 5% safe margin. Visual system:
+深森林绿背景、奶油色加酸橙色宋体标题、下半部等宽两列毛边纸卡。两列固定左右对比，改为有层次的倾斜纸卡和留白间距，自然日光。
 Exact main title, intentional line breaks:
-面对新任务
-换个顺序
-Other exact text, split semicolon-separated phrases into appropriate short labels: 先看资料 → 先定问题；急着动手 → 列出结构；一次做完 → 先做一版
-No other headings, names, dates, logos, watermarks, brands or invented claims. Any human is fictional and only illustrates a layout; no celebrity likeness. Render a standalone premium full-bleed finished cover, not a mockup, framed print, phone or sheet of several posters.
+面对新任务 换个顺序 Other exact text, split semicolon-separated phrases into appropriate short labels: 先看资料 →
+先定问题；急着动手 → 列出结构；一次做完 → 先做一版 No other headings, names, dates, logos, watermarks, brands or invented
+claims. Any human is fictional and only illustrates a layout; no celebrity likeness. Render a standalone premium
+full-bleed finished cover, not a mockup, framed print, phone or sheet of several posters.
