@@ -202,6 +202,8 @@ definition 按调用方的有限 JSON 数据原样保存，包括旧 v3 来源�
 
 | 方法 | 返回与约束 |
 | --- | --- |
+| `inspectCoverInput(contentId, input, editToken)` | 只读准备，返回 `{contentId,title,bodyHash,editToken,inputHash,existingRequest}`；核对当前 token、标题/正文、准确模板版本和全部选入资源，existingRequest 为 `{requestId,requestHash}` 或 null；既有包也重核原字节与归属 |
+| `findCoverRequest(contentId, {inputHash,title,bodyHash})` | 按已持久化的准备指纹只读核验，返回 `{content,request,bodyBytes}` 或 null；title/bodyHash 必须仍与当前原始标题/正文一致，否则 `STALE_INPUT`，不能当作 missing；仅元数据变化允许 token 不同，content 是最新投影；重复 inputHash 或损坏包拒读 |
 | `createCoverAttempt(contentId, requestId, {host,reason?}, options?)` | `{content,attempt,handoff,inbox}`，host 仅 codex/workbuddy；新 attempt 在一笔内容事务中只 supersede 同 request 的旧活跃 attempt，不影响其他尺寸的 request；交接包 sourceAttemptId 保存接续来源，不表示恢复聊天 |
 | `readCoverContext(contentId, requestId, attemptId)` | `{content,request,attempt,handoff,body,bodyBytes,inbox,inputs}`；inputs 含 role/assetHash/bytes/detectedType/path。paths 全由绑定库根推导，读取会重核包与输入字节 |
 | `claimCoverAttempt(contentId, requestId, attemptId, {host,readAssetHashes}, options?)` | `{content,attempt}`；核对全部输入 hash 声明和宿主归属，状态只变为 claimed。声明本身不证明宿主真正看过图 |

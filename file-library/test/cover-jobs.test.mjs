@@ -89,6 +89,83 @@ test('same fixed input reuses request; changing input makes a new request; task 
   assert.equal(claim.attempt.status, 'claimed');
 });
 
+const fingerprint = prepared => ({ inputHash: prepared.inputHash, title: prepared.title, bodyHash: prepared.bodyHash });
+
+test('read-only preparation finds an older reused request after a different request without writing a receipt', async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id);
+  const b = f.lib.createCoverRequest(current.id, { ...f.input, prompt: 'second request' }, current.editToken);
+  const history = path.join(f.root, '系统（别动）', '事务', '已提交'), before = fs.readdirSync(history);
+  const prepared = f.lib.inspectCoverInput(current.id, f.input, b.content.editToken);
+  assert.deepEqual(prepared.existingRequest, { requestId: f.request.requestId, requestHash: f.request.requestHash });
+  assert.equal(prepared.contentId, current.id); assert.equal(prepared.title, current.title);
+  assert.equal(prepared.bodyHash, digest(Buffer.from('# original\r\n'))); assert.equal(prepared.editToken, b.content.editToken);
+  const mutationId = randomUUID(), reused = f.lib.createCoverRequest(current.id, f.input, b.content.editToken, { mutationId });
+  assert.equal(reused.request.requestId, f.request.requestId);
+  const found = f.lib.findCoverRequest(current.id, fingerprint(prepared));
+  assert.equal(found.request.requestId, f.request.requestId); assert.deepEqual(found.content, f.lib.readContent(current.id));
+  assert.equal(found.content.editToken, b.content.editToken);
+  assert.equal(found.bodyBytes.toString(), '# original\r\n'); assert.deepEqual(fs.readdirSync(history), before);
+  assert.equal(fs.existsSync(path.join(history, mutationId)), false);
+});
+
+test('prepared fingerprint finds a newly committed request after its response is lost and recovery runs', async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id), raw = { ...f.input, prompt: 'prepared new request' };
+  const prepared = f.lib.inspectCoverInput(current.id, raw, current.editToken);
+  assert.equal(prepared.existingRequest, null); assert.equal(f.lib.findCoverRequest(current.id, fingerprint(prepared)), null);
+  let thrown = false;
+  __testing.setHook(event => { if (event.phase === 'afterCommit' && !thrown) { thrown = true; throw Object.assign(new Error('lost response'), { code: 'EIO' }); } });
+  throws('IO_ERROR', () => f.lib.createCoverRequest(current.id, raw, prepared.editToken, { mutationId: randomUUID() }));
+  __testing.setHook(undefined);
+  const found = f.lib.findCoverRequest(current.id, fingerprint(prepared));
+  assert.equal(found.request.inputHash, prepared.inputHash); assert.equal(found.request.prompt, raw.prompt);
+  assert.equal(found.content.coverJobs.length, current.coverJobs.length + 1);
+  assert.equal(openLibrary(f.root).findCoverRequest(current.id, fingerprint(prepared)).request.requestId, found.request.requestId);
+});
+
+test('prepared lookup tolerates metadata token changes and returns the latest content projection', async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id);
+  const prepared = f.lib.inspectCoverInput(current.id, f.input, current.editToken);
+  const updated = f.lib.attachContentMaterial(current.id, { assetHash: f.style.assetHash, originalName: 'later.png' }, current.editToken);
+  assert.notEqual(updated.editToken, prepared.editToken);
+  throws('CONFLICT', () => f.lib.inspectCoverInput(current.id, f.input, prepared.editToken));
+  const found = f.lib.findCoverRequest(current.id, fingerprint(prepared));
+  assert.equal(found.request.requestId, prepared.existingRequest.requestId); assert.deepEqual(found.content, f.lib.readContent(current.id));
+  assert.equal(found.content.editToken, updated.editToken); assert.equal(found.content.materials.length, 1);
+});
+
+for (const patch of [{ title: 'Changed title' }, { body: '# original\n' }]) test(`prepared lookup rejects changed ${Object.keys(patch)[0]} before reporting an absent request`, async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id), prepared = f.lib.inspectCoverInput(current.id, f.input, current.editToken);
+  f.lib.updateContent(current.id, patch, current.editToken);
+  throws('STALE_INPUT', () => f.lib.findCoverRequest(current.id, fingerprint(prepared)));
+  throws('STALE_INPUT', () => f.lib.findCoverRequest(current.id, { ...fingerprint(prepared), inputHash: '0'.repeat(64) }));
+});
+
+test('preparation validates exact selected inputs and lookup accepts only its finite fingerprint fields', async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id), prepared = f.lib.inspectCoverInput(current.id, f.input, current.editToken);
+  for (const bad of [{ photo: undefined }, { styleAssetHashes: ['0'.repeat(64)] }, { template: { id: f.input.template.id, version: 99 } }, { materialIds: [randomUUID()] }, { count: 0 }, { scope: 'all' }]) {
+    throws('INVALID_INPUT', () => f.lib.inspectCoverInput(current.id, { ...f.input, ...bad }, current.editToken));
+  }
+  for (const bad of [null, {}, { ...fingerprint(prepared), inputHash: 'bad' }, { ...fingerprint(prepared), bodyHash: null }, { ...fingerprint(prepared), title: '' }, prepared]) {
+    throws('INVALID_INPUT', () => f.lib.findCoverRequest(current.id, bad));
+  }
+  throws('STALE_INPUT', () => f.lib.findCoverRequest(current.id, { ...fingerprint(prepared), bodyHash: '0'.repeat(64) }));
+  throws('STALE_INPUT', () => f.lib.findCoverRequest(current.id, { ...fingerprint(prepared), title: 'wrong captured title' }));
+  assert.equal(f.lib.findCoverRequest(current.id, { ...fingerprint(prepared), inputHash: '0'.repeat(64) }), null);
+});
+
+test('both read-only cover methods reject damaged fixed packages and replaced library roots', async t => {
+  const f = await fixture(t), current = f.lib.readContent(f.content.id), prepared = f.lib.inspectCoverInput(current.id, f.input, current.editToken);
+  const requestFile = path.join(f.root, '内容', current.id, '封面任务', f.request.requestId, '请求.json'), bytes = fs.readFileSync(requestFile);
+  fs.writeFileSync(requestFile, 'damaged');
+  throws('CORRUPT', () => f.lib.inspectCoverInput(current.id, f.input, current.editToken));
+  throws('CORRUPT', () => f.lib.findCoverRequest(current.id, fingerprint(prepared)));
+  fs.writeFileSync(requestFile, bytes);
+  fs.renameSync(f.root, `${f.root}-original`); fs.cpSync(`${f.root}-original`, f.root, { recursive: true });
+  throws('CONFLICT', () => f.lib.inspectCoverInput(current.id, f.input, current.editToken));
+  throws('CONFLICT', () => f.lib.findCoverRequest(current.id, fingerprint(prepared)));
+  assert.equal(openLibrary(f.root).findCoverRequest(current.id, fingerprint(prepared)).request.requestId, f.request.requestId);
+});
+
 test('host claim must match immutable input set and assigned host', async t => {
   const f = await fixture(t);
   throws('INVALID_INPUT', () => f.lib.claimCoverAttempt(f.content.id, f.request.requestId, f.attemptId, { host: 'workbuddy', readAssetHashes: [] }));

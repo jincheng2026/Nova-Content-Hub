@@ -44,7 +44,7 @@ export function validateCoverJobs(meta, fail) {
   }
 }
 
-// Private business integration: callers receive only the seven finite cover methods below.
+// Private business integration: callers receive only the finite cover methods below.
 export function coverJobMethods(h) {
   const { root, libraryId, assertRootIdentity, locked, mutate, changeCurrent, replayCoverRequest, snapshot, result, metadata, hash, jsonBytes, read, safePath, directory, ensureDirectory, immutableFile, readAssetInternal, assetPath, hook, inputFields, text, id, objectId, checkedHash, templatePackage, fail, LibraryError } = h;
   const requestDir = (contentId, requestId) => path.join(root, '内容', id(contentId), '封面任务', id(requestId));
@@ -151,6 +151,39 @@ export function coverJobMethods(h) {
       return { id: item.id, assetHash: item.assetHash, originalName: item.originalName, role: item.role };
     });
     return { protocol: PROTOCOL, libraryId, contentId: meta.id, title: meta.title, bodyHash: hash(bodyBytes), template: { id: input.template.id, version: input.template.version, packageHash: version.packageHash }, styleAssetHashes: input.styleAssetHashes, templateDefinition: pkg.definition, photo, materials, prompt: input.prompt, pixels: input.pixels, ratio: input.ratio, count: input.count, outputFormat: input.outputFormat, inputs };
+  }
+  function preparedRequest(current, fingerprint) {
+    const jobs = (current.coverJobs || []).filter(job => job.inputHash === fingerprint.inputHash);
+    if (jobs.length > 1) fail('CORRUPT', 'Cover input has multiple fixed requests');
+    if (!jobs.length) return null;
+    const fixed = requestPackage(current.id, jobs[0]);
+    const normalized = Object.fromEntries(Object.entries(fixed.request).filter(([key]) => !['format','schemaVersion','requestId','createdAt','inputHash','requestHash'].includes(key)));
+    if (hash(jsonBytes(normalized)) !== fingerprint.inputHash || fixed.request.title !== fingerprint.title || fixed.request.bodyHash !== fingerprint.bodyHash) fail('CORRUPT', 'Cover request differs from the prepared input');
+    return { content: current, ...fixed };
+  }
+  function inspectCoverInput(contentId, raw, token) {
+    id(contentId); checkedHash(token);
+    return locked(() => {
+      const before = snapshot(root, contentId), current = result(before, contentId);
+      if (current.editToken !== token) fail('CONFLICT', 'Content changed before inspecting cover input');
+      if (current.deletedAt) fail('INVALID_STATE', 'Content is trashed');
+      const normalized = normalizeRequest(current, before[1], raw);
+      const fingerprint = { contentId, title: current.title, bodyHash: normalized.bodyHash, editToken: current.editToken, inputHash: hash(jsonBytes(normalized)) };
+      const existing = preparedRequest(current, fingerprint);
+      return { ...fingerprint, existingRequest: existing ? { requestId: existing.request.requestId, requestHash: existing.request.requestHash } : null };
+    });
+  }
+  function findCoverRequest(contentId, raw) {
+    id(contentId);
+    const fingerprint = inputFields(raw, ['inputHash', 'title', 'bodyHash'], ['inputHash', 'title', 'bodyHash']);
+    checkedHash(fingerprint.inputHash); checkedHash(fingerprint.bodyHash); text(fingerprint.title, 'title');
+    if (fingerprint.title.length > 500) fail('INVALID_INPUT', 'Title must contain 1–500 characters');
+    return locked(() => {
+      const before = snapshot(root, contentId), current = result(before, contentId);
+      if (current.deletedAt) fail('INVALID_STATE', 'Content is trashed');
+      fresh(current, before[1], fingerprint);
+      return preparedRequest(current, fingerprint);
+    });
   }
   function createCoverRequest(contentId, raw, token, options) {
     id(contentId); checkedHash(token);
@@ -405,5 +438,5 @@ export function coverJobMethods(h) {
     }
     return {};
   }
-  return { createCoverRequest, createCoverAttempt, claimCoverAttempt, readCoverContext, commitCoverAttempt, failCoverAttempt, cancelCoverAttempt };
+  return { inspectCoverInput, findCoverRequest, createCoverRequest, createCoverAttempt, claimCoverAttempt, readCoverContext, commitCoverAttempt, failCoverAttempt, cancelCoverAttempt };
 }
