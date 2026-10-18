@@ -329,6 +329,7 @@ function App() {
     }
 
     async function select(item: Content, template?: string, generate = false) {
+        if (template) closeTemplatePicker();
         await guard(async () => {
             const epoch = epochRef.current;
             await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setPage('content'); setDetailOpen(true); setContentTab('covers'); setCoverStartOpenKey(value => generate ? value + 1 : 0); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); if (template) setCoverStartOpenKey(value => value + 1); setTemplatePicker(null); } });
@@ -399,21 +400,12 @@ function App() {
             requestAnimationFrame(() => document.getElementById('library-panels')?.scrollIntoView({block: 'start'}));
         });
     }
-    async function useTemplate(template: TemplateGroup) {
-        await guard(async () => {
-            if (baseRef.current && !baseRef.current.deletedAt) {
-                const id = baseRef.current.id;
-                await nativeAction(async () => {
-                    const current = await invoke('readContent', {id});
-                    load(current);
-                    setSelectedTemplate({id: template.id, key: Date.now()});
-                    setPage('content');
-                    setDetailOpen(true);
-                    setContentTab('covers');
-                    setCoverStartOpenKey(value => value + 1);
-                });
-            } else setTemplatePicker(template);
-        });
+    function closeTemplatePicker() {
+        templateDialog.current?.close();
+        setTemplatePicker(null);
+    }
+    function useTemplate(template: TemplateGroup) {
+        setTemplatePicker(template);
     }
     async function changeContentTab(next: typeof contentTab) {
         if (next === contentTab) return;
@@ -437,9 +429,10 @@ function App() {
     async function openCalendarFocus(focus?: PublicationFocus) {
         await guard(async () => {setCalendarFocus(focus ?? null); setCoverStartOpenKey(0); setPage('calendar');});
     }
-    async function newContent() {
+    async function newContent(template?: string) {
+        if (template) closeTemplatePicker();
         await guard(async () => {
-            setBase(null); setDraft({title: '未命名内容', body: ''}); setDisk(null); setSelectedTemplate(null);
+            setBase(null); setDraft({title: '未命名内容', body: ''}); setDisk(null); setSelectedTemplate(template ? {id: template, key: Date.now()} : null);
             setContentTab('body'); setCoverStartOpenKey(0); setDetailOpen(true); setPage('content');
         });
     }
@@ -585,7 +578,7 @@ function App() {
         </div>
         </div></section>)}
         {recoveryOpen && <dialog ref={recoveryDialog} className="library-manager-dialog" aria-labelledby="retained-recovery-title" onCancel={event => {event.preventDefault(); setRecoveryOpen(false);}}><div className="dialog-heading"><div><h2 id="retained-recovery-title">继续处理待确认操作</h2><p>原编辑窗口与填写内容保持打开。处理后关闭此窗口，返回继续编辑。</p></div><Button disabled={acting} onClick={() => setRecoveryOpen(false)}>返回编辑</Button></div><p className="manager-error" role="alert">{error}</p><section className="library-manager" aria-label="待确认操作">{recoveryCards}{!blocked && <p role="status">待确认操作已处理，可以返回原编辑窗口。</p>}</section></dialog>}
-        {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={() => setTemplatePicker(null)} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 打开内容后预选这组样张</p></div><Button onClick={() => setTemplatePicker(null)}>关闭</Button></div><div className="template-content-list">{workspace?.contents.filter(item => !item.deletedAt).map(item => <button disabled={busy} key={item.id} onClick={() => void select(item, templatePicker.id)}><strong>{item.title}</strong><span>{item.body.slice(0, 90) || '正文待补充'}</span></button>)}{!workspace?.contents.some(item => !item.deletedAt) && <p>还没有活动内容。先到“内容”页新建并保存，再使用模板。</p>}</div></dialog>}
+        {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={closeTemplatePicker} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 选择已有内容，或新建并保存后制作封面。</p></div><Button onClick={closeTemplatePicker}>关闭</Button></div><div className="actions"><Button theme="solid" disabled={busy || blocked} onClick={() => void newContent(templatePicker.id)}>用此模板新建内容</Button></div><div className="template-content-list">{workspace?.contents.filter(item => !item.deletedAt).map(item => <button disabled={busy || blocked} key={item.id} onClick={() => void select(item, templatePicker.id)}><strong>{item.title}{item.id === base?.id ? ' · 当前打开的内容' : ''}</strong><span>{item.body.slice(0, 90) || '正文待补充'}</span></button>)}{!workspace?.contents.some(item => !item.deletedAt) && <p>还没有活动内容，可以用此模板新建内容。</p>}</div></dialog>}
         {settings && <AssistantSettings status={status} busy={acting || !!status?.busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)}><PreferencesPanel busy={acting || !!status?.busy} run={nativeAction}/><SetupPanel host={status?.assistant} busy={acting || !!status?.busy} run={nativeAction}/><BootstrapRecoveryPanel busy={acting || !!status?.busy} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/></AssistantSettings>}
     {leaving &&
             <dialog ref={leaveDialog} className="leave-dialog" onCancel={() => setLeaving(null)} aria-modal="true"
