@@ -1,0 +1,22 @@
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--prepared:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app: valid on disk
+workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app: satisfies its Designated Requirement

@@ -1,0 +1,21 @@
+{
+  "mount": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-031-install-s8w1vtr9",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/Nova-Content-Hub-0.3.1-darwin-arm64-local.dmg",
+  "app": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-031-install-s8w1vtr9/自媒体工作台.app",
+  "entities": [
+    {
+      "content-hint": "Apple_HFS",
+      "dev-entry": "/dev/disk4s1",
+      "mount-point": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-031-install-s8w1vtr9",
+      "potentially-mountable": true,
+      "unmapped-content-hint": "48465300-0000-11AA-AA11-00306543ECAC",
+      "volume-kind": "hfs"
+    },
+    {
+      "content-hint": "GUID_partition_scheme",
+      "dev-entry": "/dev/disk4",
+      "potentially-mountable": false,
+      "unmapped-content-hint": "GUID_partition_scheme"
+    }
+  ]
+}

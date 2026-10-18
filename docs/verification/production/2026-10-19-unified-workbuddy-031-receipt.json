@@ -1,0 +1,70 @@
+{
+  "format": "nova-real-workbuddy-cover-acceptance",
+  "recordedAt": "2026-10-18T17:29:58.000Z",
+  "version": "0.3.1",
+  "sourceCommit": "42a32b0",
+  "handoffId": "c0601797-c08e-44f6-b757-c2c193770a9d",
+  "binding": {
+    "root": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+    "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "69179810"
+    }
+  },
+  "task": {
+    "contentId": "209cebcc-619c-47ee-81ce-0c67e6de8062",
+    "requestId": "0a0c0a4f-d479-4f80-bb28-7bf0da42ab36",
+    "attemptId": "cfd47a1b-3248-449f-a651-80ef526b0b2d",
+    "requestHash": "f0c6396060335b0de8d3a3a002185960ff2f4455c8853ef19a081e737af30b97",
+    "host": "workbuddy"
+  },
+  "request": {
+    "schemaVersion": 2,
+    "sizePolicy": "ratio-minimum",
+    "pixels": {
+      "width": 768,
+      "height": 1024
+    },
+    "count": 2,
+    "ratio": "3:4",
+    "photo": null
+  },
+  "attemptReason": "retry",
+  "viaNativeDesktop": true,
+  "nativeComposerPrefillVerified": true,
+  "nativeWorkBuddyComposerSkillChip": true,
+  "nativeSendVerified": true,
+  "firstPromptReachedExecutionWithoutManualRetry": true,
+  "realImageGeneration": true,
+  "attemptStatus": "committed",
+  "receiptHash": "1ea0492677aa934f6536965d3e940f24f190d907d2b703b6d8698b8726eb581d",
+  "reportHash": "ef0e57b45ed7b8c29fc5ce5151a3f591c5dfae256adf50518db0d3419c566c6e",
+  "images": [
+    {
+      "id": "3233408a-1ec7-4855-80a0-6f799a92ecd3",
+      "sha256": "6c0473770b1ff69c07f9590ce3902fc695f39d5a77112b0199c8cbadfe712d0d",
+      "originalName": "candidate-1.png",
+      "width": 768,
+      "height": 1024,
+      "bytes": 969319,
+      "inboxMatchesStoredOriginal": true,
+      "fullRasterDecode": true,
+      "preview": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/WorkBuddy-031-original-1.png"
+    },
+    {
+      "id": "74942c79-f280-49b7-866d-927798fc2399",
+      "sha256": "f6bc8c2901a2f153c35bb77cbd57bda9fb3e0610a33e5aa7dcfce4cde7f5ff30",
+      "originalName": "candidate-2.png",
+      "width": 768,
+      "height": 1024,
+      "bytes": 942827,
+      "inboxMatchesStoredOriginal": true,
+      "fullRasterDecode": true,
+      "preview": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/WorkBuddy-031-original-2.png"
+    }
+  ],
+  "totalContentCandidates": 6,
+  "oldSelectedCandidateRetained": true,
+  "productionReady": false
+}

@@ -1,0 +1,57 @@
+WorkBuddy 0.3.1 cold native handoff: read-only timing correlation
+Recorded: 2026-10-18T17:26:45.343500+00:00 / 2026-10-19T01:26:45.343500+08:00 Asia/Shanghai
+Scope: file identity, installed verification report, handoff envelope locator metadata, macOS amfid/syspolicyd metadata, and narrowly filtered WorkBuddy Hook/tool-name metadata.
+This agent did not execute any 0.3.1 cache Node, launcher, hook, doctor, or business command. It did not alter caches, configuration, source, or the business library. This log is its only write for this follow-up.
+
+Installation evidence source:
+docs/verification/production/2026-10-19-unified-host-install-031.json
+Report verifiedAt=2026-10-18T17:21:50.193Z; version=0.3.1; matching source/cache inventory; WorkBuddy entries=451, differences=[], enabled=true.
+Report explicitly states direct plugin runtime/run-node/doctor/hook executions=0; installer-internal subprocess behavior was not traced. Therefore this is not proof of absolute system-wide non-execution before the UI action.
+
+Exact WorkBuddy cached runtime identity, read with lstat only:
+Path=/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1/runtime/node
+dev=16777231; ino=69546883; bytes=121911744; mode=0100755; ordinary file, not symlink.
+mtime=2026-10-18T17:21:03.084934Z; ctime=2026-10-18T17:21:03.087363Z.
+dev/ino/size/mode match the official-install verification report; no runtime inode replacement was observed.
+runtime/launch.mjs: ino=69546881; bytes=1659; mode=0100644; ordinary file, not symlink.
+plugin-src/src/cli.mjs: ino=69546834; bytes=1241; mode=0100644; ordinary file, not symlink.
+
+Correlated timeline (UTC; local time is UTC+8):
+17:23:00.000  Parent records before-open boundary, then performs native desktop UI action. This timestamp/action is parent-supplied, not independently inferred from system logs.
+17:23:17.730  amfid[6287] Entering OSX path for the exact WorkBuddy 0.3.1 cached runtime/node above.
+17:23:18.908  syspolicyd[264] scan finished, waking up any waiters; team=HX7739G8FX; id=node; path token=b7c2806ce0c2dce9.
+17:23:18.908  syspolicyd GK evaluateScanResult:2; found provenance data for the same Node path token.
+17:23:18.910  syspolicyd created provenance data for that token.
+17:23:21.334  Native handoff envelope createdAt; file mtime/ctime=17:23:21.334463Z.
+17:23:48.787  WorkBuddy [pid=65238] HookExecutor spawn pid=65355 shell=/bin/zsh timeout=5000ms, product 0.3.1 UserPromptSubmit.
+17:23:49.967  WorkBuddy [pid=65238] HookExecutor spawn pid=65894 shell=/bin/zsh timeout=5000ms, product 0.3.1 SessionStart.
+17:23:59.398  Same WorkBuddy host pid=65238 records toolName=Skill metadata; arguments/body withheld.
+17:24:08.227  Same host pid records toolName=Bash metadata; arguments/body withheld.
+17:25:08.284  Same host pid records toolName=Read metadata; arguments/body withheld.
+
+Handoff envelope metadata only:
+Path=/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/handoffs/c0601797-c08e-44f6-b757-c2c193770a9d.json
+handoffId=c0601797-c08e-44f6-b757-c2c193770a9d
+pairId=nova-content-hub@0.3.1:p1:disabled
+host=workbuddy
+requestId=0a0c0a4f-d479-4f80-bb28-7bf0da42ab36
+attemptId=cfd47a1b-3248-449f-a651-80ef526b0b2d
+No business prompt, asset contents, account configuration or credentials captured.
+
+WorkBuddy log source:
+/Users/mac/.workbuddy/logs/2026-10-18/桌面封面验收库__3cf47396106b6f1ebb81fe3b748c1a78.log
+Narrow scan for nova-content-hub commands containing /0.3.1/ at the time of inspection:
+product031_spawns=2; product031_timeouts=0; product031_abnormal_exits=0.
+Both product hooks' 5000ms deadlines had elapsed well before inspection. No product timeout or abnormal-exit record was present; later Skill/Bash/Read tool-name metadata appears under the same host PID.
+The logger emits abnormal-exit metadata for a timeout/nonzero exit or elapsed>1000ms; it does not provide a normal fast hook completion record here. Therefore an exact normal exit code and elapsed time for pid=65355 cannot be quoted from these records.
+
+macOS queries (read-only):
+/usr/bin/log show --start '2026-10-19 01:22:50' --end '2026-10-19 01:24:10' --style compact --predicate '(process == "syspolicyd" OR process == "amfid") AND (eventMessage CONTAINS "node" OR eventMessage CONTAINS "scan finished")' --info --debug
+An additional exact cached-Node amfid query over local 01:20:50-01:23:50 returned only the 01:23:17.730 record above. This bounded query is not a global execution audit.
+
+Supported conclusion:
+The observed macOS scan for the newly installed WorkBuddy cache Node completed 2.426 seconds before the native handoff envelope was created and 29.879 seconds before the first product UserPromptSubmit hook spawned. Unlike the recorded 0.3.0 failure, this scan was outside the host Hook's 5-second budget. The first submitted prompt showed no recorded product Hook timeout and the host subsequently reached Skill/tool metadata, consistent with passing the initial Hook gate.
+The installed app's reviewed launch path awaits verified read-only doctor before envelope creation; the ordering above is consistent with that path. These OS records identify the exact binary path and scan timing, not doctor argv or its child PID. No doctor PID, exit status or argv is invented, and the system logs alone cannot conclusively attribute that pre-handoff execution to doctor rather than another actor.
+
+Not covered:
+No generation-result receipt or image acceptance was checked by this agent; parent owns native UI and independent business receipt verification. No claim of completed cover generation or production readiness is made.

@@ -1,0 +1,15 @@
+node:internal/fs/promises:1734
+  const result = await PromisePrototypeThen(
+                 ^
+
+Error: ENOENT: no such file or directory, lstat 'workbench/dist-desktop/auth-disabled/plugin-marketplace/nova-content-hub'
+    at async lstat (node:internal/fs/promises:1734:18)
+    at async snapshotPackage (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/package-snapshot.mjs:14:18)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:9:26 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'lstat',
+  path: 'workbench/dist-desktop/auth-disabled/plugin-marketplace/nova-content-hub'
+}
+
+Node.js v24.20.0

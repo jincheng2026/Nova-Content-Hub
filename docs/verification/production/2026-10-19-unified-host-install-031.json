@@ -1,0 +1,240 @@
+{
+  "format": "nova-unified-host-install-verification",
+  "recordedAt": "2026-10-18T17:20:56.551Z",
+  "source": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-host-install-031-20261018T172055201Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.1",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.1:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "sourceEntries": 451,
+  "sourceMatchesPackageFiles": true,
+  "packageFilesSha256": "4b9c487f187bd5cd733a43b56888e310bb50401dc2a8250fb7f1ee430d219eaf",
+  "sourceTreeSnapshotSha256": "00c06037f72afe4731f3028a41747419bc1d7b1cbd968bd6875f8b65f3ee5474",
+  "hosts": {
+    "codex": {
+      "cache": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+      "runtimeIdentity": {
+        "runtime/node": {
+          "dev": 16777231,
+          "ino": 69546381,
+          "ctimeMs": 1792344056957.1638,
+          "mtimeMs": 1792343746000,
+          "birthtimeMs": 1792343746000,
+          "bytes": 121911744,
+          "mode": 33261
+        },
+        "bin/run-node": {
+          "dev": 16777231,
+          "ino": 69546226,
+          "ctimeMs": 1792344056935.098,
+          "mtimeMs": 1792343746000,
+          "birthtimeMs": 1792343746000,
+          "bytes": 404,
+          "mode": 33261
+        }
+      },
+      "oldCacheRetained": {
+        "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+        "payloadUnchanged": true,
+        "addedHostBookkeeping": [],
+        "snapshotSha256": "3a0c29dfa1dd7b0456fc124e57187326d8a886d5a7a82cfbddbd35c8e239b052"
+      },
+      "firstRuntimeExecutionPerformed": false,
+      "version": "0.3.1",
+      "entries": 450,
+      "matchedRetainedEntries": 450,
+      "allowedHostOmissions": [
+        {
+          "file": "node_modules/.bin/semver",
+          "expected": {
+            "link": "../semver/bin/semver.js"
+          },
+          "reason": "unused relative symlink omitted by official Codex installer"
+        }
+      ],
+      "differences": [],
+      "readiness": {
+        "cover": {
+          "ready": true,
+          "skill": "nova-content-cover-execution"
+        },
+        "template": {
+          "ready": true,
+          "skill": "nova-content-template-execution"
+        }
+      },
+      "unrelatedMetadataUnchanged": {
+        "config.toml": true
+      },
+      "unrelatedMetadataSha256": {
+        "config.toml": "d5be77ba7b607be5dbed5e3525a8d7a608aa9108fde112075743372c24db2868"
+      },
+      "cacheTreeSnapshotSha256": "12ca10b6608eef8a027cca113c959efb54fd43bde59b7b73c15714345eb5feb5",
+      "marketplace": {
+        "source_type": "local",
+        "source": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace"
+      },
+      "enabled": true,
+      "hooksTrustHashes": {
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64:hooks/codex.json:session_start:0:0": {
+          "trusted_hash": "sha256:20b7b4932f2dda6b6c0cf80e625df9f15b2c2bcaa606e0a05d0e84e27b6679c2"
+        },
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64:hooks/codex.json:user_prompt_submit:0:0": {
+          "trusted_hash": "sha256:f80817aeb1d75ac6b4c3b05cdd0ef1745db707e757350f5c7d17b6e60f14dc04"
+        },
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64:hooks/codex.json:stop:0:0": {
+          "trusted_hash": "sha256:d8f922cf4fa4f1bd63cbcdd4cac21eddb6eede3d66db463d73e361f25ecc3f29"
+        },
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64:hooks/codex.json:interrupt:0:0": {
+          "trusted_hash": "sha256:eaaabc2c16b9d7744ef6887591b32c3e58245dca838757beb7d11e4a4e0e0260"
+        }
+      },
+      "productHooksTrustUnchanged": true
+    },
+    "workbuddy": {
+      "cache": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+      "runtimeIdentity": {
+        "runtime/node": {
+          "dev": 16777231,
+          "ino": 69546883,
+          "ctimeMs": 1792344063087.3633,
+          "mtimeMs": 1792344063084.9343,
+          "birthtimeMs": 1792343746000,
+          "bytes": 121911744,
+          "mode": 33261
+        },
+        "bin/run-node": {
+          "dev": 16777231,
+          "ino": 69546502,
+          "ctimeMs": 1792344062380.4949,
+          "mtimeMs": 1792344062380.4197,
+          "birthtimeMs": 1792343746000,
+          "bytes": 404,
+          "mode": 33261
+        }
+      },
+      "oldCacheRetained": {
+        "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+        "payloadUnchanged": true,
+        "addedHostBookkeeping": [
+          ".orphaned_at"
+        ],
+        "snapshotSha256": "2974d8cc5b4a5ae8d0cb1287e81738735808e12d3a6e6dba6d612761440ca52e"
+      },
+      "firstRuntimeExecutionPerformed": false,
+      "version": "0.3.1",
+      "entries": 451,
+      "matchedRetainedEntries": 451,
+      "allowedHostOmissions": [],
+      "differences": [],
+      "readiness": {
+        "cover": {
+          "ready": true,
+          "skill": "nova-content-cover-execution"
+        },
+        "template": {
+          "ready": true,
+          "skill": "nova-content-template-execution"
+        }
+      },
+      "unrelatedMetadataUnchanged": {
+        "settings.json": true,
+        "plugins/installed_plugins.json": true,
+        "plugins/known_marketplaces.json": true,
+        "plugins/configured-plugins.json": true
+      },
+      "unrelatedMetadataSha256": {
+        "settings.json": "5e560d91c1b43d13abb61c4ade0b27a012afbdf6500964bffabc1bdb53b35c13",
+        "plugins/installed_plugins.json": "76f5a1ce1c6ec8bf62738b17fcf6abb15f431ea62a1e0c667f9bbc25c391ea1e",
+        "plugins/known_marketplaces.json": "f913653adac5c405eb411baa83d1fe267335e76f602c792a6fc7b7af538001b5",
+        "plugins/configured-plugins.json": "b02a22fe307a993926dabf443c3072876fe6d38dbcaf3a0cef0fa7d61d213240"
+      },
+      "cacheTreeSnapshotSha256": "00c06037f72afe4731f3028a41747419bc1d7b1cbd968bd6875f8b65f3ee5474",
+      "marketplace": {
+        "manifestName": "nova-content-hub-auth-disabled-darwin-arm64",
+        "type": "directory",
+        "source": {
+          "source": "directory",
+          "path": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace"
+        },
+        "installLocation": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "description": "Marketplace from /Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "lastUpdated": "2026-10-18T15:14:37.259Z",
+        "autoUpdate": false
+      },
+      "enabled": true,
+      "installRecords": [
+        {
+          "scope": "user",
+          "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+          "version": "0.3.1",
+          "installedAt": "2026-10-18T15:15:35.774Z",
+          "lastUpdated": "2026-10-18T17:21:03.139Z"
+        }
+      ]
+    }
+  },
+  "realGeneration": false,
+  "firstRuntimeExecutionPerformed": false,
+  "verificationRuntime": {
+    "execPath": "/Users/mac/.local/bin/node",
+    "version": "v24.20.0",
+    "pluginRuntimeUsed": false
+  },
+  "desktopInfoPlistVersion": "0.3.1",
+  "newCacheInitial": {
+    "codex": {
+      "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+      "existed": false
+    },
+    "workbuddy": {
+      "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+      "existed": false
+    }
+  },
+  "executionBoundary": {
+    "directPluginRuntimeExecutions": 0,
+    "directRunNodeExecutions": 0,
+    "directDoctorExecutions": 0,
+    "directHookExecutions": 0,
+    "officialInstallerSubprocessExecutionAudited": false,
+    "note": "Only official installer CLIs were spawned. Their outputs are retained. No plugin runtime, launcher, doctor, hook or session was directly invoked. Installer-internal subprocess behavior was not traced; no absolute system-wide non-execution claim is made."
+  },
+  "scope": {
+    "installationOnly": true,
+    "sessionsCreated": false,
+    "messagesSent": false,
+    "imageGeneration": false,
+    "businessLibraryAccess": false,
+    "sourceModified": false,
+    "otherPluginMetadataUnchanged": true
+  },
+  "hostReloadNote": "Official WorkBuddy CLI requests /reload-plugins or a new session; this agent did not create or send sessions.",
+  "ok": true,
+  "installationRecovery": {
+    "initialVerificationError": "ENOENT: no such file or directory, scandir '/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0'",
+    "oldCacheRestorations": [
+      {
+        "host": "codex",
+        "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+        "restoredFrom": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-host-install-031-20261018T172055201Z/codex/cache/0.3.0",
+        "reason": "Official installer removed old version cache"
+      }
+    ],
+    "backupSymlinkNote": "fs.cpSync default resolved relative symlinks in backup; old-cache checks normalize backup absolute links to their original relative targets.",
+    "previousVerificationFailure": "WorkBuddy installer adds .orphaned_at marker; old payload verification now reports that host bookkeeping separately."
+  },
+  "verifiedAt": "2026-10-18T17:21:50.193Z"
+}

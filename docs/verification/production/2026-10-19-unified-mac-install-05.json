@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-18T17:21:07.922Z",
+  "sourceCommit": "42a32b0",
+  "version": "0.3.1",
+  "application": "/Applications/自媒体工作台.app",
+  "nativeMoveAndReplace": true,
+  "installedFilesSha256": {
+    "Contents/Info.plist": "adb2fbfaf3c3c6c64c031001ba5f964b92476d3b13f90025f7a100aff8c2824d",
+    "Contents/Resources/app/workbench/dist/main/assistant-runtime.mjs": "b0311fdf9a7f8fae931aaa2399b50d9e754aab4a7b3a0a679fcb892bd969e8c6",
+    "Contents/Resources/app/workbench/dist/renderer-resources.json": "083c93fad48eb2849f629f8adb0cbd8473fae6945099cc42c395941bbc4018e7",
+    "Contents/Resources/icon.icns": "f640ade5d7759bd5f84e721ea9c19afbbda4e41ff79b0211c3f2d0b2041eafe1"
+  },
+  "sealedMarketMatchesBuilt": true,
+  "entries": 451,
+  "productionReady": false
+}

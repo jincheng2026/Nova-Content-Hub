@@ -1,0 +1,84 @@
+{
+  "at": "2026-10-18T17:20:56.819Z",
+  "command": [
+    "codex",
+    "plugin",
+    "marketplace",
+    "add",
+    "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "--json"
+  ],
+  "env": {},
+  "status": 0,
+  "stdout": "{\n  \"marketplaceName\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"installedRoot\": \"/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace\",\n  \"alreadyAdded\": true\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T17:20:57.021Z",
+  "command": [
+    "codex",
+    "plugin",
+    "add",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--json"
+  ],
+  "env": {},
+  "status": 0,
+  "stdout": "{\n  \"pluginId\": \"nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64\",\n  \"name\": \"nova-content-hub\",\n  \"marketplaceName\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"version\": \"0.3.1\",\n  \"installedPath\": \"/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1\",\n  \"authPolicy\": \"ON_INSTALL\"\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T17:20:59.421Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "marketplace",
+    "add",
+    "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "--name",
+    "nova-content-hub-auth-disabled-darwin-arm64"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Adding marketplace...\n✔ Marketplace 'nova-content-hub-auth-disabled-darwin-arm64' added successfully\n{\n  \"name\": \"nova-content-hub-auth-disabled-darwin-arm64\",\n  \"type\": \"directory\"\n}\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T17:21:03.207Z",
+  "command": [
+    "/Users/mac/.local/bin/codebuddy",
+    "plugin",
+    "update",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user"
+  ],
+  "env": {
+    "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+    "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+  },
+  "status": 0,
+  "stdout": "Updating plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...\n✔ Successfully updated plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.\n",
+  "stderr": ""
+}
+{
+  "at": "2026-10-18T17:21:50.193Z",
+  "operation": "readonly-post-install-verification-and-old-cache-preservation",
+  "installationRecovery": {
+    "initialVerificationError": "ENOENT: no such file or directory, scandir '/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0'",
+    "oldCacheRestorations": [
+      {
+        "host": "codex",
+        "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+        "restoredFrom": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-host-install-031-20261018T172055201Z/codex/cache/0.3.0",
+        "reason": "Official installer removed old version cache"
+      }
+    ],
+    "backupSymlinkNote": "fs.cpSync default resolved relative symlinks in backup; old-cache checks normalize backup absolute links to their original relative targets.",
+    "previousVerificationFailure": "WorkBuddy installer adds .orphaned_at marker; old payload verification now reports that host bookkeeping separately."
+  },
+  "firstRuntimeExecutionPerformed": false
+}
