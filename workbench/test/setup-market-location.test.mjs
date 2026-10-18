@@ -6,7 +6,7 @@ import path from 'node:path';
 import {Setup} from '../src/main/setup.mts';
 
 test('installation copy supplies the selected host exact manifest or folder without manual path edits', async t => {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-setup-location-'));
+    const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'nova-setup-location-'));
     t.after(() => fs.rm(root, {recursive: true, force: true}));
     const release = {format: 'nova-content-desktop-release', schemaVersion: 1, AUTH_MODE: 'disabled', appScope: 'nova-content-hub', productId: 'nova-content-hub', version: '0.2.0', protocolVersion: 1, pairId: 'nova-content-hub@0.2.0:p1:disabled', platform: process.platform, arch: process.arch, experimental: true, productionReady: false};
     const name = `nova-content-hub-auth-disabled-${process.platform}-${process.arch}`;

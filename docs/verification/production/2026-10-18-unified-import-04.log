@@ -1,0 +1,104 @@
+
+> nova-content-hub-prototype@0.2.0 probe:desktop
+> npm run probe --prefix workbench
+
+
+> nova-content-hub-workbench@0.2.0 probe
+> node scripts/probe.mjs
+
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/main/desktop.mjs:36:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/release.json'
+}
+PASS auth-required: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/main/desktop.mjs:35:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-required/workbench/dist/renderer-resources.json'
+}
+PASS auth-required: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+PROBE 2026-10-18T14:35:11.640Z required/import: waiting for initial renderer idle
+PROBE 2026-10-18T14:35:11.825Z required/import: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-18T14:35:11.827Z required/import: opening library A from welcome
+PROBE 2026-10-18T14:35:12.396Z required/import: library A summary loaded; navigating to content
+PROBE 2026-10-18T14:35:12.789Z required/import: library A content row rendered; opening saved body
+PROBE 2026-10-18T14:35:13.618Z required/import: library A body verified; opening import manager
+React business status loaded; clicking backup/destination/import
+PROBE 2026-10-18T14:35:14.484Z required/import: backup and destination selected; importing B
+PASS saved A editor cleared before import/resume adopts B; lost selection/status cannot submit A identifiers
+PROBE 2026-10-18T14:35:36.352Z required/import: import B adopted; editing fixture and removing source backup
+PROBE 2026-10-18T14:35:37.281Z required/import: refreshing imported content through manager
+PROBE 2026-10-18T14:35:39.145Z required/import: imported content table rendered; checking text-only data
+PROBE 2026-10-18T14:35:39.145Z required/import: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-18T14:35:39.286Z required/import: all import probe assertions passed
+PASS Electron 44.9.0: auth-required/import, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PROBE 2026-10-18T14:35:40.039Z required/reopen: waiting for initial renderer idle
+PROBE 2026-10-18T14:35:41.650Z required/reopen: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-18T14:35:41.652Z required/reopen: checking reopened binding and edited content without source backup
+PROBE 2026-10-18T14:35:41.698Z required/reopen: refreshing imported content through manager
+PROBE 2026-10-18T14:35:42.984Z required/reopen: imported content table rendered; checking text-only data
+PROBE 2026-10-18T14:35:44.244Z required/reopen: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-18T14:35:44.357Z required/reopen: all import probe assertions passed
+PASS Electron 44.9.0: auth-required/reopen, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/main/desktop.mjs:36:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/release.json'
+}
+PASS auth-disabled: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/main/desktop.mjs:35:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zl8Chm/auth-disabled/workbench/dist/renderer-resources.json'
+}
+PASS auth-disabled: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+PROBE 2026-10-18T14:35:46.328Z disabled/import: waiting for initial renderer idle
+PROBE 2026-10-18T14:35:46.399Z disabled/import: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-18T14:35:46.400Z disabled/import: opening library A from welcome
+PROBE 2026-10-18T14:35:56.272Z disabled/import: library A summary loaded; navigating to content
+PROBE 2026-10-18T14:35:56.282Z disabled/import: library A content row rendered; opening saved body
+PROBE 2026-10-18T14:35:59.572Z disabled/import: library A body verified; opening import manager
+React business status loaded; clicking backup/destination/import
+PROBE 2026-10-18T14:36:02.664Z disabled/import: backup and destination selected; importing B
+PROBE 2026-10-18T14:36:27.475Z disabled/import: lost import acknowledgement kept binding A; resuming B with lost status
+PASS saved A editor cleared before import/resume adopts B; lost selection/status cannot submit A identifiers
+PROBE 2026-10-18T14:36:37.568Z disabled/import: import B adopted; editing fixture and removing source backup
+PROBE 2026-10-18T14:36:37.754Z disabled/import: refreshing imported content through manager
+PROBE 2026-10-18T14:36:42.734Z disabled/import: imported content table rendered; checking text-only data
+PROBE 2026-10-18T14:36:42.735Z disabled/import: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-18T14:36:42.858Z disabled/import: all import probe assertions passed
+PASS Electron 44.9.0: auth-disabled/import, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PROBE 2026-10-18T14:36:43.550Z disabled/reopen: waiting for initial renderer idle
+PROBE 2026-10-18T14:36:47.208Z disabled/reopen: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-18T14:36:47.209Z disabled/reopen: checking reopened binding and edited content without source backup
+PROBE 2026-10-18T14:36:47.258Z disabled/reopen: refreshing imported content through manager
+PROBE 2026-10-18T14:36:50.881Z disabled/reopen: imported content table rendered; checking text-only data
+PROBE 2026-10-18T14:36:54.613Z disabled/reopen: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-18T14:36:54.732Z disabled/reopen: all import probe assertions passed
+PASS Electron 44.9.0: auth-disabled/reopen, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi + utility-process/sharp import; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.

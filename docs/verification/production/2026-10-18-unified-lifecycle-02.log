@@ -1,0 +1,108 @@
+
+> nova-content-hub-workbench@0.2.0 probe:lifecycle
+> node scripts/lifecycle-probe.mjs
+
+Error: Invalid desktop release build configuration
+    at validateBuildConfig (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-disabled/workbench/dist/main/boundary.mjs:37:15)
+    at validateRelease (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-disabled/workbench/dist/main/boundary.mjs:41:20)
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-disabled/workbench/dist/main/desktop.mjs:36:21)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-disabled/workbench/dist/main/lifecycle-probe.mjs:54:1
+PASS auth-disabled: malformed release refuses startup; production package contains no probe entry
+Error: Cannot decode the bundled application PNG icon
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-disabled/workbench/dist/main/desktop.mjs:59:15)
+PASS auth-disabled: undecodable icon refuses startup without Electron default fallback
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+STAGE 2026-10-18T14:07:11.397Z +705ms crud: create library and initial content
+STAGE 2026-10-18T14:07:28.560Z +17865ms crud: dirty refresh and leave-stay guards
+STAGE 2026-10-18T14:07:32.207Z +21512ms crud: external edit comparison and conflict recovery
+STAGE 2026-10-18T14:07:54.966Z +44271ms crud: dirty save on return and visible recycle
+PASS current UI dirty-save return to list, then visible row-menu recycle: saved body retained, no pending, active/trash counts 1/1
+STAGE 2026-10-18T14:08:01.729Z +51034ms crud: restore recycled content
+STAGE 2026-10-18T14:08:01.954Z +51259ms crud: rename original and copy clone
+STAGE 2026-10-18T14:08:02.134Z +51439ms crud: assert clone identity rejection
+STAGE 2026-10-18T14:08:02.134Z +51439ms crud: remove clone and create replacement
+STAGE 2026-10-18T14:08:02.262Z +51567ms crud: assert replacement identity rejection
+STAGE 2026-10-18T14:08:02.263Z +51568ms crud: remove replacement and restore original root
+STAGE 2026-10-18T14:08:02.265Z +51570ms crud: open library manager storage tab
+STAGE 2026-10-18T14:08:02.279Z +51584ms crud: manager status refresh
+STAGE 2026-10-18T14:08:05.610Z +54915ms crud: manager list refresh
+STAGE 2026-10-18T14:08:07.159Z +56464ms crud: close manager
+STAGE 2026-10-18T14:08:07.165Z +56470ms crud: open restored row detail and body
+STAGE 2026-10-18T14:08:10.492Z +59797ms crud: capture lifecycle screenshot
+STAGE 2026-10-18T14:08:10.540Z +59845ms crud: lifecycle screenshot captured
+STAGE 2026-10-18T14:08:10.540Z +59845ms crud: invalid-input security assertions
+STAGE 2026-10-18T14:08:10.541Z +59846ms crud: foreign window IPC rejection
+STAGE 2026-10-18T14:08:10.738Z +60043ms crud: fetch registered renderer resources
+STAGE 2026-10-18T14:08:10.743Z +60048ms crud: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:10.748Z +60053ms crud: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:10.749Z +60054ms crud: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:10.750Z +60055ms crud: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:10.751Z +60056ms crud: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-disabled/crud: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS actual pre-dispatch exit after durable mutation reservation
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS actual post-commit exit before controller acknowledges result
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+STAGE 2026-10-18T14:08:29.795Z +10846ms reopen: invalid-input security assertions
+STAGE 2026-10-18T14:08:29.796Z +10846ms reopen: foreign window IPC rejection
+STAGE 2026-10-18T14:08:29.961Z +11012ms reopen: fetch registered renderer resources
+STAGE 2026-10-18T14:08:29.964Z +11014ms reopen: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:29.967Z +11017ms reopen: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:29.968Z +11018ms reopen: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:29.969Z +11019ms reopen: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:29.970Z +11020ms reopen: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-disabled/reopen: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS actual utility worker guard-pre: replacement unchanged; original reservation retained; no foreign pending recovery
+STAGE 2026-10-18T14:08:30.590Z +422ms guard-pre: invalid-input security assertions
+STAGE 2026-10-18T14:08:30.590Z +422ms guard-pre: foreign window IPC rejection
+STAGE 2026-10-18T14:08:30.730Z +562ms guard-pre: fetch registered renderer resources
+STAGE 2026-10-18T14:08:30.733Z +565ms guard-pre: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:30.736Z +568ms guard-pre: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:30.738Z +570ms guard-pre: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:30.739Z +571ms guard-pre: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:30.740Z +572ms guard-pre: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-disabled/guard-pre: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS actual utility worker guard-init: replacement unchanged; original reservation retained; no foreign pending recovery
+STAGE 2026-10-18T14:08:31.366Z +428ms guard-init: invalid-input security assertions
+STAGE 2026-10-18T14:08:31.367Z +429ms guard-init: foreign window IPC rejection
+STAGE 2026-10-18T14:08:31.506Z +569ms guard-init: fetch registered renderer resources
+STAGE 2026-10-18T14:08:31.508Z +570ms guard-init: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:31.512Z +574ms guard-init: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:31.513Z +575ms guard-init: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:31.514Z +576ms guard-init: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:31.515Z +577ms guard-init: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-disabled/guard-init: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS actual utility worker guard-final: replacement unchanged; original reservation retained; no foreign pending recovery
+STAGE 2026-10-18T14:08:32.264Z +562ms guard-final: invalid-input security assertions
+STAGE 2026-10-18T14:08:32.266Z +563ms guard-final: foreign window IPC rejection
+STAGE 2026-10-18T14:08:32.408Z +705ms guard-final: fetch registered renderer resources
+STAGE 2026-10-18T14:08:32.410Z +707ms guard-final: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:32.413Z +710ms guard-final: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:32.414Z +711ms guard-final: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:32.415Z +712ms guard-final: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:32.416Z +713ms guard-final: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-disabled/guard-final: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+Error: Invalid desktop release build configuration
+    at validateBuildConfig (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-required/workbench/dist/main/boundary.mjs:37:15)
+    at validateRelease (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-required/workbench/dist/main/boundary.mjs:41:20)
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-required/workbench/dist/main/desktop.mjs:36:21)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-required/workbench/dist/main/lifecycle-probe.mjs:54:1
+PASS auth-required: malformed release refuses startup; production package contains no probe entry
+Error: Cannot decode the bundled application PNG icon
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-LOulLr/auth-required/workbench/dist/main/desktop.mjs:59:15)
+PASS auth-required: undecodable icon refuses startup without Electron default fallback
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+STAGE 2026-10-18T14:08:34.660Z +575ms required: invalid-input security assertions
+STAGE 2026-10-18T14:08:34.661Z +576ms required: foreign window IPC rejection
+STAGE 2026-10-18T14:08:34.817Z +732ms required: fetch registered renderer resources
+STAGE 2026-10-18T14:08:34.820Z +735ms required: fetch registered resource /assets/index-C1Xn16rK.css
+STAGE 2026-10-18T14:08:34.823Z +738ms required: fetch registered resource /assets/index-CvtNGqHW.js
+STAGE 2026-10-18T14:08:34.825Z +740ms required: fetch registered resource /assets/nova-content-hub-icon-512-A1Ow6cZT.png
+STAGE 2026-10-18T14:08:34.826Z +741ms required: fetch registered resource /index.html
+STAGE 2026-10-18T14:08:34.827Z +742ms required: reject unregistered resource URLs and assert CSP
+PASS Electron 44.9.0 auth-required/required: real IPC + utility process, lifecycle/identity/recovery, React text and CSP
+PASS external standalone native lifecycle packages: disabled CRUD/conflict/dirty guards and 7 actual disabled processes (including three guarded-creation faults); required main+worker five writes refused. Native system choosers/close-dialog clicks, Windows and production authorization remain unverified.

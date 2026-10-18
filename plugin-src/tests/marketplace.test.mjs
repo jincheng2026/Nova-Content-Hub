@@ -46,7 +46,7 @@ async function fixture(t) {
         await json(join(input, 'integrity.json'), {
             format: 'nova-content-plugin-integrity', schemaVersion: 1, pairId: release.pairId, AUTH_MODE: release.AUTH_MODE,
             hashes: Object.fromEntries(await Promise.all(integrityPaths().map(async path => [path, hash(await readFile(join(input, path)))]))),
-            skills: Object.fromEntries(allSkillNames.map(name => [name, {namespace: skillNames.includes(name) ? 'contract' : 'cover', executable: name === 'nova-content-cover-execution' && release.AUTH_MODE === 'disabled'}]))
+            skills: Object.fromEntries(allSkillNames.map(name => [name, {namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover', executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && release.AUTH_MODE === 'disabled'}]))
         });
     }
     return {runtimeRoot, outputRoot: join(parent, 'marketplace'), parent};
@@ -67,8 +67,9 @@ test('both local catalogs resolve from the movable market root to the same byte-
         assert.equal(wb.name, codex.name);
         assert.equal(codex.name, `nova-content-hub-auth-${mode}-${process.platform}-${process.arch}`);
         assert.doesNotMatch(codex.name, /0\.2\.0/);
-        assert.match(codex.interface.displayName, /实验.*鉴权未接入.*非商用/);
-        assert.match(wb.metadata.description, /实验.*鉴权未接入.*非商用/);
+        const description = `Nova Content Hub · ${mode === 'disabled' ? '免费体验版配套插件 · 无需登录' : '受限内部插件 · 业务未开放'} · ${process.platform}/${process.arch}`;
+        assert.equal(codex.interface.displayName, description);
+        assert.equal(wb.metadata.description, description);
         assert.deepEqual(codex.plugins[0].policy, {installation: 'AVAILABLE', authentication: 'ON_INSTALL'});
         assert.equal(codex.plugins[0].category, 'Productivity');
         assert.equal(codex.plugins[0].source.source, 'local');

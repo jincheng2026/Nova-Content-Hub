@@ -1,0 +1,70 @@
+
+> nova-content-hub-prototype@0.2.0 probe:desktop
+> npm run probe --prefix workbench
+
+
+> nova-content-hub-workbench@0.2.0 probe
+> node scripts/probe.mjs
+
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/desktop.mjs:36:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/release.json'
+}
+PASS auth-required: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/desktop.mjs:35:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/renderer-resources.json'
+}
+PASS auth-required: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  {
+    bridge: [
+      'abandonCover',
+      'abandonCoverAction',
+      'abandonMaintenance',
+...
+      'mutateWorkspace',
++     'onWorkspaceChanged',
+      'openLibrary',
+      'openPublicationLink',
+      'openSetupTarget',
+      'openUpgradedLibrary',
+      'prepareLibraryUpgrade',
+
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/probe.mjs:52:16)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-57Ya0H/auth-required/workbench/dist/main/desktop.mjs:371:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Object],
+  expected: [Object],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/probe.mjs:33
+            if (failure) reject(failure); else code === expected ? resolve() : reject(new Error(`Electron ${phase} probe closed with code ${code}, signal ${signal}, expected ${expected}`));
+                                                                                      ^
+
+Error: Electron import probe closed with code 1, signal null, expected 0
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/probe.mjs:33:87)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

@@ -1,0 +1,21 @@
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (362.717458ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2138.412667ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2550.934666ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1264.35125ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3205.718417ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (922.197333ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (747.484167ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2485.667083ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (3356.523791ms)
+✔ summary fallback preserves strict input integrity checks for execution (1321.767333ms)
+✔ unexpected errors during summary loading still propagate (1295.593791ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (378.819208ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (2857.178375ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23101.580625

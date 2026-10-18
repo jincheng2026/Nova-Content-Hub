@@ -17,6 +17,21 @@ if (!root || !path.isAbsolute(root)) throw new Error('Run the lifecycle probe la
 const destination = path.join(root, 'library');
 const malicious = '<script>globalThis.untrustedExecuted=true</script>';
 const messages: string[] = [];
+const beganAt = Date.now();
+let currentStage = 'startup';
+const stage = (label: string) => {
+    currentStage = label;
+    console.log(`STAGE ${new Date().toISOString()} +${Date.now() - beganAt}ms ${phase}: ${label}`);
+};
+const preserveFailure = async (error: unknown) => {
+    console.error(error);
+    try {
+        await fs.writeFile(path.join(root, `${phase}-failed.json`), JSON.stringify({phase, stage: currentStage, elapsedMs: Date.now() - beganAt, error: String(error)}, null, 2));
+        const window = BrowserWindow.getAllWindows().find(candidate => !candidate.isDestroyed());
+        if (window) await fs.writeFile(path.join(root, `${phase}-failed.png`), (await window.webContents.capturePage()).toPNG());
+    } catch (captureError) { console.error('Could not preserve lifecycle failure evidence', captureError); }
+};
+process.once('SIGTERM', () => { void preserveFailure(new Error('Launcher phase timeout')).finally(() => app.exit(1)); });
 let dockCalls = 0;
 const setDockIcon = app.dock?.setIcon.bind(app.dock);
 if (app.dock && setDockIcon) app.dock.setIcon = icon => {
@@ -57,10 +72,21 @@ startDesktop({
             if (!result.ok) assert.equal(result.error.code, code);
         };
         const wait = (condition: string) => run(`new Promise((resolve,reject)=>{const end=Date.now()+15000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+document.getElementById('error')?.textContent));setTimeout(check,25)};check()})`);
-        const idle = () => wait(`document.querySelector('[data-busy="false"]') && !document.getElementById('refresh').disabled`);
-        const click = async (id: string) => {
-            await run(`document.getElementById(${JSON.stringify(id)}).click()`);
+        const idle = () => wait(`document.querySelector('main[data-app="ready"][data-loaded="true"][data-busy="false"]')`);
+        const clickSelector = async (selector: string, text?: string) => {
+            const target = `[...document.querySelectorAll(${JSON.stringify(selector)})].find(el => el.checkVisibility() && !el.disabled && ${text === undefined ? 'true' : `el.textContent.trim() === ${JSON.stringify(text)}`} && (!document.querySelector('dialog:modal') || document.querySelector('dialog:modal').contains(el)))`;
+            await wait(`!!(${target})`);
+            await run(`(${target}).click()`);
             await idle();
+        };
+        const click = (id: string) => clickSelector(`#${id}`);
+        const openManager = async () => {
+            await click('library-menu');
+            await clickSelector('.library-manager-dialog .manager-tabs button', '备份与维护');
+        };
+        const closeManager = async () => {
+            await clickSelector('.library-manager-dialog .dialog-heading button', '关闭');
+            await wait(`!document.querySelector('.library-manager-dialog')`);
         };
         const fill = async (id: string, value: string) => {
             await run(`(()=>{const el=document.getElementById(${JSON.stringify(id)});Object.getOwnPropertyDescriptor(el.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
@@ -137,8 +163,10 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
             controller.worker !== worker && (controller.worker as WorkerClient).stop();
             console.log(`PASS actual utility worker ${phase}: replacement unchanged; original reservation retained; no foreign pending recovery`);
         } else if (phase === 'crud') {
-            await click('create-library');
+            stage('create library and initial content');
+            await click('welcome-create-library');
             assert.ok((await bridge('status')).currentName);
+            await click('nav-content');
             await click('new-content');
             await fill('content-title', malicious);
             await fill('content-body', `native body ${malicious}`);
@@ -147,19 +175,26 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
             let list = await bridge('listContents');
             assert.equal(list.length, 1);
             const first = list[0]!;
+            assert.equal(await run("document.querySelector('.content-detail-hero h2').textContent"), malicious);
+            assert.equal(await run("document.getElementById('content-body').value"), `native body ${malicious}`);
+            assert.equal(await run("document.querySelectorAll('.content-detail-page script').length"), 0);
+            assert.equal(await run('globalThis.untrustedExecuted===true'), false);
             await fill('content-body', 'local unsaved draft');
-            await click('refresh-contents');
+            stage('dirty refresh and leave-stay guards');
+            await click('refresh-workspace');
             assert.equal(await run("document.getElementById('content-body').value"), 'local unsaved draft');
-            await click('new-content');
+            await clickSelector('.back-to-contents');
             assert.equal(await run("!!document.getElementById('leave-title')"), true);
             await click('leave-stay');
-            await click('open-library');
+            await click('library-menu');
             assert.equal(await run("!!document.getElementById('leave-title')"), true);
             await click('leave-stay');
+            assert.equal(await run("document.getElementById('content-body').value"), 'local unsaved draft');
             assert.equal(await run("(()=>{const e=new Event('beforeunload',{cancelable:true});window.dispatchEvent(e);return e.defaultPrevented;})()"), true);
             const core = openLibrary(destination);
+            stage('external edit comparison and conflict recovery');
             core.updateContent(first.id, {body: 'disk external edit'}, first.editToken);
-            await click('refresh-contents');
+            await click('refresh-workspace');
             await wait(`document.getElementById('conflict')`);
             assert.equal(await run("document.getElementById('local-body').textContent"), 'local unsaved draft');
             assert.equal(await run("document.getElementById('disk-body').textContent"), 'disk external edit');
@@ -174,51 +209,77 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
             await click('save-content');
             assert.equal((await bridge('status')).pending?.state, 'conflict');
             assert.equal(await run("document.getElementById('content-body').value"), 'local unsaved draft');
+            await clickSelector('.recovery-notice button', '继续处理');
             await click('query-pending');
             await click('keep-pending');
             assert.ok((await bridge('status')).pending);
             await click('save-as-pending');
+            await closeManager();
             list = await bridge('listContents');
             assert.equal(list.length, 2);
             const copy = list.find(item => item.id !== first.id)!;
             assert.equal(copy.body, 'local unsaved draft');
             assert.equal(core.readContent(first.id).body, 'disk external edit after compare');
             await fill('content-body', 'saved before recycle');
-            await run(`document.querySelector('[data-content-id="${copy.id}"] button:last-child').click()`);
-            await idle();
+            stage('dirty save on return and visible recycle');
+            // The editor and row menu occupy separate pages; save on return before the reachable trash action.
+            await clickSelector('.back-to-contents');
             assert.equal(await run("!!document.getElementById('leave-title')"), true);
             await click('leave-save');
-            await wait(`!document.getElementById('leave-title') && document.querySelector('[data-busy="false"]')`);
+            await wait(`!document.getElementById('leave-title') && document.querySelector('#contents tr[data-content-id="${copy.id}"]')`);
+            assert.equal((await bridge('readContent', {id: copy.id})).body, 'saved before recycle');
+            await clickSelector(`#contents tr[data-content-id="${copy.id}"] .content-more`);
+            await clickSelector(`#contents tr[data-content-id="${copy.id}"] .content-action-menu button`, '移入回收站');
             let recycled = await bridge('readContent', {id: copy.id});
             assert.ok(recycled.deletedAt);
             assert.equal(recycled.body, 'saved before recycle');
             assert.equal((await bridge('status')).pending, null);
             assert.equal((await bridge('listContents')).length, 1);
             assert.equal((await bridge('listContents', {view: 'trash'})).length, 1);
+            console.log('PASS current UI dirty-save return to list, then visible row-menu recycle: saved body retained, no pending, active/trash counts 1/1');
+            stage('restore recycled content');
             recycled = await bridge('restoreContent', {id: recycled.id, editToken: recycled.editToken});
             assert.equal((await bridge('listContents')).length, 2);
             const originalRoot = path.join(root, 'original-library');
             const selected = controller.binding.current!;
+            stage('rename original and copy clone');
             await fs.rename(destination, originalRoot);
             await fs.cp(originalRoot, destination, {recursive: true});
+            stage('assert clone identity rejection');
             await assert.rejects(worker.call('list', {binding: selected, view: 'active'}), {code: 'CONFLICT'});
+            stage('remove clone and create replacement');
             await fs.rm(destination, {recursive: true});
             createLibrary(destination);
+            stage('assert replacement identity rejection');
             await assert.rejects(worker.call('list', {binding: selected, view: 'active'}), {code: 'CONFLICT'});
+            stage('remove replacement and restore original root');
             await fs.rm(destination, {recursive: true});
             await fs.rename(originalRoot, destination);
             await fs.writeFile(path.join(root, 'identity.json'), JSON.stringify({
                 binding: controller.binding.current,
                 originalId: first.id
             }));
+            stage('open library manager storage tab');
+            await openManager();
+            stage('manager status refresh');
+            await click('refresh');
+            stage('manager list refresh');
             await click('list');
+            stage('close manager');
+            await closeManager();
             assert.equal(await run('globalThis.untrustedExecuted===true'), false);
             assert.equal(await run("document.querySelectorAll('#contents script').length"), 0);
-            await run(`document.querySelector('[data-content-id="${copy.id}"] button').click()`);
-            await idle();
+            stage('open restored row detail and body');
+            await clickSelector(`#contents tr[data-content-id="${copy.id}"] .content-title-link`);
+            assert.equal(await run("document.querySelector('.content-detail-hero h2').textContent"), malicious);
+            await clickSelector('.content-detail-tabs button', '正文');
+            assert.equal(await run("document.getElementById('content-body').value"), 'saved before recycle');
+            assert.equal(await run("document.querySelectorAll('.content-detail-page script').length"), 0);
             await run("document.getElementById('content-title').scrollIntoView({block:'center'})");
             await run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+            stage('capture lifecycle screenshot');
             await fs.writeFile(path.join(root, 'lifecycle.png'), (await window.webContents.capturePage()).toPNG());
+            stage('lifecycle screenshot captured');
         } else if (phase === 'before-exit') {
             const call = worker.call.bind(worker);
             worker.call = async (op, args) => {
@@ -275,6 +336,7 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
             };
             assert.deepEqual(controller.binding.current, identity.binding);
             assert.equal(await run("document.getElementById('content-body') === null"), true);
+            await clickSelector('.recovery-notice button', '继续处理');
             await click('keep-pending');
             assert.equal(await run("document.getElementById('content-body').value"), 'historical receipt');
             assert.equal(await run("document.getElementById('disk-body').textContent"), 'later external version');
@@ -287,10 +349,13 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
             await rejected('retryPendingMutation', undefined, 'NO_PENDING');
             assert.equal((await bridge('listContents')).length, 4);
             await click('list');
+            await closeManager();
             assert.equal(await run('globalThis.untrustedExecuted===true'), false);
         }
+        stage('invalid-input security assertions');
         await rejected('createContent', {title: 'x', body: '', path: '/tmp/injection'}, 'INVALID_INPUT');
         await rejected('readContent', {id: 'https://evil.test'}, 'INVALID_INPUT');
+        stage('foreign window IPC rejection');
         const other = new BrowserWindow({
             show: false,
             webPreferences: {
@@ -305,21 +370,24 @@ if(phase==='guard-final'&&event.phase==='createAfterFile'&&event.relative==='内
         assert.equal(reply.ok, false);
         if (!reply.ok) assert.equal(reply.error.code, 'FORBIDDEN');
         other.destroy();
+        stage('fetch registered renderer resources');
         const table = JSON.parse(await fs.readFile(new URL('../renderer-resources.json', import.meta.url), 'utf8')) as {
             entries: Record<string, { mime: string }>
         };
         for (const [url, resource] of Object.entries(table.entries)) {
+            stage(`fetch registered resource ${url}`);
             const response = await session.defaultSession.fetch(`nova-content://app${url}`);
             assert.equal(response.status, 200);
             assert.equal(response.headers.get('content-type'), resource.mime);
         }
+        stage('reject unregistered resource URLs and assert CSP');
         for (const suffix of ['/index.html?AUTH_MODE=disabled', '/%69ndex.html', '/assets/unregistered.js']) await assert.rejects(session.defaultSession.fetch(`nova-content://app${suffix}`));
         assert.deepEqual(messages.filter(message => /violat|refused to (load|apply|execute)|content security policy/i.test(message)), []);
         console.log(`PASS Electron ${process.versions.electron} auth-${release.AUTH_MODE}/${phase}: real IPC + utility process, lifecycle/identity/recovery, React text and CSP`);
         window.destroy();
         app.quit();
     }
-}).catch(error => {
-    console.error(error);
+}).catch(async error => {
+    await preserveFailure(error);
     app.exit(1);
 });

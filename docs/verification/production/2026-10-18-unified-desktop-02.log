@@ -1,0 +1,435 @@
+
+> nova-content-hub-prototype@0.2.0 test:desktop
+> npm test --prefix workbench
+
+
+> nova-content-hub-workbench@0.2.0 test
+> node --test test/*.test.mjs
+
+✔ codex: only exact installed enabled native release is accepted (28.799459ms)
+✔ codex: explicit config homes never fall back to a different installed host home (5.330334ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (32.259375ms)
+✔ codex: Skill symlinks and oversized metadata refuse (18.017125ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (14.805625ms)
+✔ workbuddy: only exact installed enabled native release is accepted (33.769ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (20.508208ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (18.079833ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (114.156458ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (83.593375ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (149.315666ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (136.504583ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (161.846709ms)
+✔ only exact top-level sender with no renderer arguments can invoke business (0.955ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.499584ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.443792ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (52.766166ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.546291ms)
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (128.257834ms)
+✔ persisted accepted task is recovered after worker exit and fresh application; resume uses exact task (141.166334ms)
+✔ committed retries never replay import and reject changed source or replaced library (127.305291ms)
+✔ source must still match the preview before launching, and failed pre-reservation can be reselected (113.084666ms)
+✔ a restart finds the accepted disk task even when both operation response and recovery query were lost (168.178459ms)
+✔ replaced committed target cannot be listed or resumed (173.860125ms)
+✔ startup and user status queries share one disk query instead of colliding in the worker (189.611667ms)
+✔ browser backup and published snapshot candidates remain visible without invented generation records (0.972625ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.258167ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (1045.74325ms)
+✖ request and attempt lost acknowledgements resume same durable mutations after restart (1138.7135ms)
+✖ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2126.379833ms)
+✖ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (1208.103708ms)
+✖ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (2197.311ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (2672.860167ms)
+✖ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (1181.591791ms)
+✖ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (1146.1405ms)
+✖ summary fallback preserves strict input integrity checks for execution (874.687792ms)
+✖ unexpected errors during summary loading still propagate (1099.4135ms)
+✖ required main and worker gates seed, photos, cover, selection, cancellation and launch (950.505958ms)
+✖ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (816.484167ms)
+✔ free preview is the default experience and restricted testing stays explicit (0.555ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.541ms)
+✔ release pairing, auth and toolchain fail closed (0.764333ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.283208ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.280208ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (520.928708ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (2.699417ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.284916ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (309.0845ms)
+✔ only packaged macOS apps outside Applications offer installation (0.611542ms)
+✔ skipping installation continues without moving the application (0.105291ms)
+✔ successful native move stops startup for Electron relaunch (0.645792ms)
+✔ native false and thrown failure offer Finder guidance and continue (5.464333ms)
+✔ replacement is explicit and cancel declines without a second failure notice (0.623792ms)
+✔ confirmed replacement allows the native move and relaunch (0.259333ms)
+✔ a running installed app is never silently focused or replaced (0.228209ms)
+✔ an unavailable optional installation dialog does not prevent desktop startup (0.207708ms)
+✔ business changes coalesce into fixed notifications without reading event paths (5.519375ms)
+✔ locks, transactions, scratch and temporary paths do not refresh the UI (3.722042ms)
+✔ continuous writes have a bounded maximum delay (3.642167ms)
+✔ identical bindings preserve native handles; unbind and close cancel stale callbacks (17.898917ms)
+✔ native failures notify once and only rearm the pinned library on a periodic check (8.910792ms)
+✔ notification failures cannot escape binding, recovery or debounce callbacks (1.977625ms)
+✔ silent root removal is detected and restoration of the same inode can rearm (11.399209ms)
+✔ a same-ID clone never rearms under the old binding; successful rebind clears unavailable immediately (7.35325ms)
+✔ descriptor identity, format, size and readability are checked before watching and while idle (8.3975ms)
+✔ descriptor changes during the bounded read are rejected (3.722959ms)
+✔ linked descriptors and root ancestors are rejected (11.861334ms)
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (19466.377042ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (7130.094334ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (7182.682167ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (7594.227666ms)
+✔ required build main and worker reject all five business writes before any business mutation (257.145125ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (7428.658292ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (6744.805792ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (8438.891792ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (6923.701667ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (6730.070208ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (7148.653625ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (7345.980583ms)
+✔ explicitly adopting another current library retires only the completed import pointer (9078.464125ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (7195.587083ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (7192.745792ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (2.957ms)
+✖ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (1554.133875ms)
+✖ a final marker followed by an actual open failure cannot publish an operation receipt (1743.132333ms)
+✖ query proves a lost restore response and pins the completed target before continuation (2002.577709ms)
+✔ partial backup and partial restored target are preserved and never overwritten (2421.777959ms)
+✖ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (1650.482958ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (836.3595ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (696.863833ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (2494.357542ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (1697.470958ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (2034.46875ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (1791.565791ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (2238.139875ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.70175ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.575167ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (4353.964083ms)
+✔ desktop operations finish in FIFO order without overlap (0.887958ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.289208ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.383333ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (0.994959ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (1.941375ms)
+✔ local minute records use the planned timezone across a date boundary (12.802ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.182375ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.153167ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.686333ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.305ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.147875ms)
+✔ save-before-quit only retries quit for an exact true response (3.67125ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (0.427667ms)
+✔ without a tray, dirty close still offers cancel, discard and save (0.357334ms)
+✔ installation copy supplies the selected host exact manifest or folder without manual path edits (78.842333ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (210.703417ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.319959ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (8893.153709ms)
+✔ only an owned stored publication URL is sent to the system browser (3098.368166ms)
+✔ invalid stored links and browser errors do not become successful opens (7958.286375ms)
+✖ reveal requests only the original bound directory and refuses replacements (1252.19075ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (5360.291542ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (2151.609875ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (990.096208ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (517.931833ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1514.746458ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.574083ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.236625ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (3050.144916ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (2272.935333ms)
+ℹ tests 128
+ℹ suites 0
+ℹ pass 113
+ℹ fail 15
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116230.66425
+
+✖ failing tests:
+
+test at test/covers.test.mjs:41:1
+✖ request and attempt lost acknowledgements resume same durable mutations after restart (1138.7135ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'NOT_READY'
+  -   code: 'WORKER_EXIT'
+    }
+  
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:45:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+        at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+        at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+        at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:45:5)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    expected: { code: 'WORKER_EXIT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/covers.test.mjs:60:1
+✖ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2126.379833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'NOT_READY'
+  -   code: 'WORKER_EXIT'
+    }
+  
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:65:3)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+        at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+        at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+        at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:65:3)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    expected: { code: 'WORKER_EXIT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/covers.test.mjs:70:1
+✖ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (1208.103708ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:71:45)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/covers.test.mjs:83:1
+✖ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (2197.311ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'NOT_READY'
+  -   code: 'INVALID_INPUT'
+    }
+  
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:87:3)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+        at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+        at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+        at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+        at async waitForActual (node:assert:646:5)
+        at async strict.rejects (node:assert:769:25)
+        at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:87:3)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    expected: { code: 'INVALID_INPUT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/covers.test.mjs:110:1
+✖ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (1181.591791ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:111:48)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/covers.test.mjs:124:1
+✖ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (1146.1405ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:125:45)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/covers.test.mjs:148:1
+✖ summary fallback preserves strict input integrity checks for execution (874.687792ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:149:42)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/covers.test.mjs:161:1
+✖ unexpected errors during summary loading still propagate (1099.4135ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:162:42)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/covers.test.mjs:171:1
+✖ required main and worker gates seed, photos, cover, selection, cancellation and launch (950.505958ms)
+  Error: 此安装包需要正式权益，当前尚未配置；新建、编辑、回收与恢复暂不可用。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at requireWrite (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:73:30)
+      at DesktopController.retryBuiltins (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:206:9)
+      at f.controller.choosePhoto.title (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:173:44)
+      at waitForActual (node:assert:632:21)
+      at strict.rejects (node:assert:769:31)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:173:392)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'AUTH_NOT_CONFIGURED'
+  }
+
+test at test/covers.test.mjs:180:1
+✖ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (816.484167ms)
+  Error: 助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Covers.requireAssistant (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:17:96)
+      at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:70:30
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:182:20)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'NOT_READY'
+  }
+
+test at test/maintenance-upgrade.test.mjs:36:1
+✖ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (1554.133875ms)
+  Error [LibraryError]: Schema4 backup contains newer business metadata
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:44:11)
+      at validateRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2272:169)
+      at prepareRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2332:5)
+      at restoreBackup (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/backup.mjs:457:32)
+      at runUpgrade (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:186:9)
+      at executeMaintenance (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:221:77)
+      at step (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:28:25)
+      at throughRestore (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:33:12)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:38:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14) {
+    code: 'FORMAT_UNSUPPORTED',
+    root: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-WLrjaA/copy',
+    stage: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-WLrjaA/.restore-512a3609-06d2-4a58-a69c-0da351e7b9c0'
+  }
+
+test at test/maintenance-upgrade.test.mjs:56:1
+✖ a final marker followed by an actual open failure cannot publish an operation receipt (1743.132333ms)
+  Error [LibraryError]: Schema4 backup contains newer business metadata
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:44:11)
+      at validateRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2272:169)
+      at prepareRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2332:5)
+      at restoreBackup (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/backup.mjs:457:32)
+      at runUpgrade (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:186:9)
+      at executeMaintenance (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:221:77)
+      at step (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:28:25)
+      at throughRestore (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:33:12)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:57:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14) {
+    code: 'FORMAT_UNSUPPORTED',
+    root: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-ZyFm64/copy',
+    stage: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-ZyFm64/.restore-bca0c992-417a-490d-abc1-190a87e1e2a2'
+  }
+
+test at test/maintenance-upgrade.test.mjs:78:1
+✖ query proves a lost restore response and pins the completed target before continuation (2002.577709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'FORMAT_UNSUPPORTED'
+  -   code: 'WORKER_EXIT'
+    }
+  
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:102:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: LibraryError: Schema4 backup contains newer business metadata
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:44:11)
+        at validateRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2272:169)
+        at prepareRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2332:5)
+        at restoreBackup (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/backup.mjs:457:32)
+        at runUpgrade (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:186:9)
+        at executeMaintenance (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:221:77)
+        at Object.call (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:89:24)
+        at async Maintenance.advanceUpgrade (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-controller.mts:123:30)
+        at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:344:20)
+        at async waitForActual (node:assert:646:5),
+    expected: { code: 'WORKER_EXIT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at test/maintenance-upgrade.test.mjs:137:1
+✖ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (1650.482958ms)
+  Error [LibraryError]: Schema4 backup contains newer business metadata
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:44:11)
+      at validateRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2272:169)
+      at prepareRestoredLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:2332:5)
+      at restoreBackup (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/backup.mjs:457:32)
+      at runUpgrade (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:186:9)
+      at executeMaintenance (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/maintenance-worker.mts:221:77)
+      at step (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:28:25)
+      at throughRestore (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:33:12)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/maintenance-upgrade.test.mjs:138:37)
+      at Test.runInAsyncScope (node:async_hooks:227:14) {
+    code: 'FORMAT_UNSUPPORTED',
+    root: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-LfooHN/copy',
+    stage: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-upgrade-gui-LfooHN/.restore-44828508-92e4-4102-96d4-3b831950a357'
+  }
+
+test at test/workspace-open.test.mjs:52:1
+✖ reveal requests only the original bound directory and refuses replacements (1252.19075ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-stored-links-l78qZL/library'
+  -   '/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-stored-links-l78qZL/library'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/workspace-open.test.mjs:55:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-stored-links-l78qZL/library' ],
+    expected: [ '/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-stored-links-l78qZL/library' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

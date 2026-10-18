@@ -162,8 +162,9 @@ function load(mode = 'disabled', savedStorage = []) {
     vm.createContext(ctx);
     for (const file of ['build-config.js', 'data.js', 'builtin-templates.js', 'shared/handoff.js', 'shared/zip.js', 'core.js']) {
         let source = fs.readFileSync('workbench/prototype/' + file, 'utf8');
-        if (file === 'build-config.js') source = source.replaceAll('required', mode);
+        if (file === 'build-config.js') source = source.replace(/\b(?:required|disabled)\b/g, mode);
         vm.runInContext(source, ctx, {filename: file});
+        if (file === 'build-config.js') assert.equal(ctx.NCH_BUILD.AUTH_MODE, mode);
     }
     let source = fs.readFileSync('workbench/prototype/app.js', 'utf8');
     source = source.replace(/apply\(\);\s*render\(\);(?=\s*\}\)\(\);\s*$)/, 'apply(); render(); globalThis.TEST_UI = {resourceURL,A,S,V,render,route,actionKinds,startCover,openCoverSetup,photoFiles,normalizeCreatorPhoto,readFile,pwFiles,pwDrop,pwParse,pwModal,pwKeys,pwPickModal,closeModal,getPromptAdd:()=>PWADD,getPromptUse:()=>PWUSE,getCover:()=>CV};');

@@ -23,7 +23,12 @@ export interface TemplateCallbacks {
 const templateId = (p: TemplatePending) => p.action === 'start' || p.action === 'accept' ? p.input.templateId : p.reference.templateId;
 export class TemplateController {
     pendingView: TemplatePendingView | null = null;
-    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+    readonly owner: TemplateOwner;
+    readonly callbacks: TemplateCallbacks;
+    constructor(owner: TemplateOwner, callbacks: TemplateCallbacks) {
+        this.owner = owner;
+        this.callbacks = callbacks;
+    }
     validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
     view(): TemplatePendingView | null {
         const p = this.owner.binding.templatePending;

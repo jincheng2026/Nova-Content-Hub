@@ -1,0 +1,22 @@
+
+> nova-content-hub-prototype@0.2.0 typecheck:desktop
+> npm run typecheck --prefix workbench
+
+
+> nova-content-hub-workbench@0.2.0 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.2.0 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.2.0 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+src/renderer/client.ts(3,49): error TS2345: Argument of type 'ContentRef | CoverReference | CoverStart | Draft | Edit | LocalPreferences | TemplateAccept | ... 17 more ... | undefined' is not assignable to parameter of type 'undefined'.
+  Type 'ContentRef' is not assignable to type 'undefined'.
+src/renderer/workspace-pages.tsx(221,50): error TS2769: No overload matches this call.
+  The last overload gave the following error.
+    Type '{ title: string; extra: Element; children: Element; }' is not assignable to type 'IntrinsicAttributes & IntrinsicClassAttributes<Card> & Pick<Readonly<CardProps>, "actions" | ... 12 more ... | "title"> & InexactPartial<...> & InexactPartial<...>'.
+      Property 'extra' does not exist on type 'IntrinsicAttributes & IntrinsicClassAttributes<Card> & Pick<Readonly<CardProps>, "actions" | ... 12 more ... | "title"> & InexactPartial<...> & InexactPartial<...>'.

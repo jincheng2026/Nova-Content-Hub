@@ -10,29 +10,41 @@ import {createLibrary, openLibrary} from '../../plugin-src/src/lib/file-library/
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const repository = path.resolve(workbench, '..');
-const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-native-lifecycle-probe-'));
+const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'nova-native-lifecycle-probe-'));
 
 async function launch(bundle, data, phase, expected = 0) {
-    await new Promise((resolve, reject) => {
+    try { await new Promise((resolve, reject) => {
         const child = spawn(electron, [path.join(bundle, 'workbench/dist/main/lifecycle-probe.mjs')], {
             cwd: bundle,
             env: {...process.env, NOVA_DESKTOP_PROBE_ROOT: data, NOVA_DESKTOP_PROBE_PHASE: phase},
             stdio: 'inherit'
         });
         let failure;
+        let killTimeout;
+        // CRUD includes durable writes, seeding and directory copies; this budget is not a performance assertion.
+        const budgetMs = phase === 'crud' ? 180000 : 60000;
         const timeout = setTimeout(() => {
-            failure = new Error(`Lifecycle probe ${phase} exceeded 60 seconds`);
-            child.kill('SIGKILL');
-        }, 60000);
+            failure = new Error(`Lifecycle probe ${phase} exceeded ${budgetMs / 1000} seconds`);
+            child.kill('SIGTERM');
+            killTimeout = setTimeout(() => child.kill('SIGKILL'), 3000);
+        }, budgetMs);
         child.once('error', error => {
             failure = error;
             if (child.pid) child.kill('SIGKILL');
         });
         child.once('close', (code, signal) => {
             clearTimeout(timeout);
+            clearTimeout(killTimeout);
             if (failure) reject(failure); else code === expected ? resolve() : reject(new Error(`Lifecycle probe ${phase} closed with code ${code}, signal ${signal}, expected ${expected}`));
         });
-    });
+    }); } catch (error) {
+        for (const extension of ['json', 'png']) {
+            try {
+                await fs.copyFile(path.join(data, `${phase}-failed.${extension}`), path.join(repository, `docs/verification/production/2026-10-18-unified-lifecycle-failed-${path.basename(bundle)}-${phase}.${extension}`));
+            } catch (captureError) { if (captureError.code !== 'ENOENT') console.error('Could not export failure evidence', captureError); }
+        }
+        throw error;
+    }
 }
 
 try {
@@ -85,8 +97,8 @@ try {
                 await fs.mkdir(guardData);
                 await launch(bundle, guardData, phase);
             }
-            await fs.copyFile(path.join(data, 'lifecycle.png'), path.join(repository, 'docs/verification/production/2026-10-18-directory-lifecycle-disabled.png'));
-            await fs.copyFile(path.join(data, 'conflict.png'), path.join(repository, 'docs/verification/production/2026-10-18-directory-lifecycle-conflict.png'));
+            await fs.copyFile(path.join(data, 'lifecycle.png'), path.join(repository, 'docs/verification/production/2026-10-18-unified-lifecycle-disabled.png'));
+            await fs.copyFile(path.join(data, 'conflict.png'), path.join(repository, 'docs/verification/production/2026-10-18-unified-lifecycle-conflict.png'));
         }
     }
     console.log('PASS external standalone native lifecycle packages: disabled CRUD/conflict/dirty guards and 7 actual disabled processes (including three guarded-creation faults); required main+worker five writes refused. Native system choosers/close-dialog clicks, Windows and production authorization remain unverified.');

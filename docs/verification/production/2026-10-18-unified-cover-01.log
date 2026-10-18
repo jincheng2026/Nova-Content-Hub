@@ -1,0 +1,29 @@
+
+> nova-content-hub-workbench@0.2.0 probe:cover
+> node scripts/cover-probe.mjs
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+false !== true
+
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-dTrWDG/auth-disabled/workbench/dist/main/cover-probe.mjs:99:20)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-dTrWDG/auth-disabled/workbench/dist/main/desktop.mjs:371:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23
+      child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
+                                                                                                                                  ^
+
+Error: Cover probe failed 1/null
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23:131)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

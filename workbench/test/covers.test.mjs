@@ -24,7 +24,7 @@ async function fixture(t, mode = 'disabled') {
   const binding = { root: library.info.root, libraryId: library.info.libraryId, rootIdentity: library.info.rootIdentity };
   const store = new BindingStore(path.join(root, 'machine.json')); await store.save({ ...emptyBinding(), current: binding });
   const worker = { call: (op, args) => execute(op, args, mode) }, launches = [];
-  const make = () => new DesktopController({ store, worker, documents: root, authMode: mode, dialogs: { backup: async () => null, destination: async () => null, photo: async () => source, export: async () => path.join(root, 'export.png'), library: async () => libraryRoot }, launch: async (bound, reference) => launches.push({ bound, reference }) });
+  const make = (setup = {}) => new DesktopController({ store, worker, documents: root, authMode: mode, dialogs: { backup: async () => null, destination: async () => null, photo: async () => source, export: async () => path.join(root, 'export.png'), library: async () => libraryRoot }, launch: async (bound, reference) => launches.push({ bound, reference }), readAssistantSetup: async host => ({ host, ready: true, skill: 'nova-content-cover-execution', reason: 'available' }), ...setup });
   const controller = make(); await controller.initialize();
   const start = (c = controller, raw = input) => c.generateCover({ contentId: content.id, editToken: library.readContent(content.id).editToken, input: raw });
   return { root, libraryRoot, library, content, input, binding, source, bytes, asset, controller, make, worker, store, start, launches };
@@ -38,14 +38,31 @@ test('exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durabl
   await assert.rejects(execute('raster', { binding: f.binding, assetHash: f.asset.assetHash, url: 'file:///tmp/x' }), { code: 'INVALID_INPUT' });
   assert.throws(() => validateBinding({ ...emptyBinding(), current: f.binding, photoPending: { source: f.source, expectedHash: f.asset.assetHash, mutationId: randomUUID(), title: 'me', originalName: 'x.png', isOwnPhoto: false }, creation: { root: f.libraryRoot, mutationId: randomUUID(), rootIdentity: f.binding.rootIdentity } }), { code: 'BINDING_INVALID' });
 });
+test('missing or disabled assistant setup cannot create cover tasks or launch existing attempts', async t => {
+  for (const setup of [{ readAssistantSetup: undefined }, { readAssistantSetup: async host => ({ host, ready: false, skill: null, reason: 'skill-missing' }) }]) {
+    const f = await fixture(t), blocked = f.make(setup); await blocked.initialize();
+    await assert.rejects(f.start(blocked), { code: 'NOT_READY' });
+    assert.equal(f.library.readContent(f.content.id).coverJobs.length, 0);
+    assert.equal(blocked.binding.coverPending, undefined);
+    assert.equal(f.launches.length, 0);
+    const prepared = await f.start(), job = prepared.jobs[0];
+    const reference = { contentId: f.content.id, requestId: job.id, attemptId: job.activeAttemptId };
+    await assert.rejects(blocked.continueCover(reference), { code: 'NOT_READY' });
+    await assert.rejects(blocked.retryCover(reference), { code: 'NOT_READY' });
+    assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
+    assert.equal(f.launches.length, 1);
+    assert.equal(blocked.binding.coverPending, undefined);
+  }
+});
 test('request and attempt lost acknowledgements resume same durable mutations after restart', async t => {
   for (const phase of ['createCoverRequest', 'createCoverAttempt']) {
     const f = await fixture(t); const call = f.worker.call; let lost = false, durable;
     f.worker.call = async (op, args) => { const result = await call(op, args); if (op === phase && !lost) { lost = true; durable = (await f.store.load()).coverPending; throw Object.assign(new Error('lost ack'), { code: 'WORKER_EXIT' }); } return result; };
-    await assert.rejects(f.start(), { code: 'WORKER_EXIT' }); assert.ok(durable);
+    await assert.rejects(f.start(), { code: 'WORKER_EXIT' }); assert.ok(durable); assert.equal(f.launches.length, 0);
     await assert.rejects(f.controller.createContent({ title: 'blocked', body: '' }), { code: 'PENDING_MUTATION' });
     await assert.rejects(f.controller.choosePhoto({ title: 'blocked', isOwnPhoto: true }), { code: 'PENDING_MUTATION' });
     const reopened = f.make(); await reopened.initialize(); const result = await reopened.resumeCover();
+    assert.equal(result.launchRequested, true); assert.equal(f.launches.length, 1);
     assert.equal(result.jobs.length, 1);
     assert.deepEqual(result.jobs[0].summary, { template: f.input.template, styleSampleCount: 1, hasOwnPhoto: false, pixels: f.input.pixels, count: 1, ratio: '4:3', outputFormat: 'png' });
     assert.equal(JSON.stringify(result.jobs).includes('inbox'), false);
@@ -54,7 +71,8 @@ test('request and attempt lost acknowledgements resume same durable mutations af
     assert.ok(f.library.queryMutation(durable.requestMutationId)); assert.ok(f.library.queryMutation(durable.attemptMutationId));
     await reopened.continueCover({ contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId });
     await reopened.continueCover({ contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId });
-    assert.equal(f.launches.length, 2); assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
+    assert.equal(f.launches.length, 3); assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
+    for (const launch of f.launches) assert.deepEqual(launch.reference, { contentId: f.content.id, requestId: result.jobs[0].id, attemptId: result.jobs[0].activeAttemptId, requestHash: result.jobs[0].requestHash, host: 'codex' });
   }
 });
 test('reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request', async t => {
@@ -170,7 +188,7 @@ test('unexpected errors during summary loading still propagate', async t => {
 });
 test('required main and worker gates seed, photos, cover, selection, cancellation and launch', async t => {
   const f = await fixture(t, 'required');
-  for (const action of [() => f.controller.retryBuiltins(), () => f.controller.choosePhoto({ title: 'me', isOwnPhoto: true }), () => f.start(), () => f.controller.continueCover({ contentId: f.content.id, requestId: randomUUID(), attemptId: randomUUID() }), () => f.controller.selectCover({ contentId: f.content.id, candidateId: randomUUID(), editToken: f.content.editToken })]) await assert.rejects(action, { code: 'AUTH_NOT_CONFIGURED' });
+  for (const action of [() => f.controller.retryBuiltins(), () => f.controller.choosePhoto({ title: 'me', isOwnPhoto: true }), () => f.start(), () => f.controller.continueCover({ contentId: f.content.id, requestId: randomUUID(), attemptId: randomUUID() }), () => f.controller.selectCover({ contentId: f.content.id, candidateId: randomUUID(), editToken: f.content.editToken })]) await assert.rejects(async () => action(), { code: 'AUTH_NOT_CONFIGURED' });
   const fingerprint = f.library.inspectCoverInput(f.content.id, f.input, f.content.editToken);
   const pending = { input: f.input, fingerprint, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), host: 'codex', requestId: null, requestHash: null, reason: 'initial' };
   const reference = { contentId: f.content.id, requestId: randomUUID(), attemptId: randomUUID() };

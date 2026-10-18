@@ -1,10 +1,10 @@
 # Nova Content Hub · 自媒体工作台
 
-当前阶段：**TypeScript / React / Semi UI / Electron 的本地内容工作台，正在完成功能与交互重构，尚未统一验收。**
+当前阶段：**TypeScript / React / Semi UI / Electron 的本地内容工作台，功能队列已收口，正在统一验收。**
 
 一期交付免费体验版，无需注册、登录或产品权益。Pro 与收费鉴权不在本期；默认构建为 `AUTH_MODE=disabled`，旧 `required` 构建仅保留内部受限兼容，不是用户入口。当前源码和本机已安装旧包分别记录，不能将源码完成或旧批测试视为商用就绪。
 
-五页围绕内容：总览了解进度，模板组与本人照片辅助生图，内容保存正文、资料和封面，日历记录人工发布计划，提示词辅助打磨。当前按用户要求先完成全部功能，再统一测试。进度见[实施台账](docs/实施/00-实施计划与验收台账.md)、[免费体验发行策略](docs/实施/28-免费体验发行策略.md)与[交互重构记录](docs/实施/29-免费体验与创作流程重构.md)。
+五页围绕内容：总览了解进度，模板组与本人照片辅助生图，内容保存正文、资料和封面，日历记录人工发布计划，提示词辅助打磨。当前已按用户顺序转入集中验证；失败和修复见[统一验证记录](docs/实施/34-统一验证首轮问题与修复.md)。进度见[实施台账](docs/实施/00-实施计划与验收台账.md)、[免费体验发行策略](docs/实施/28-免费体验发行策略.md)与[交互重构记录](docs/实施/29-免费体验与创作流程重构.md)。
 
 用户操作见[上手指南](docs/用户上手指南.md)。新增[Mac 通用包源码流程](docs/实施/31-Mac通用包与原生产物装配.md)和[旧库升级副本流程](docs/实施/32-旧库升级副本与中断恢复.md)，均待统一验证，尚无本批新安装包。
 
@@ -35,7 +35,7 @@ npm run build:desktop -- --auth disabled
 npm start --prefix workbench
 ```
 
-默认生成无需登录的免费体验运行目录。免费体验安装器使用 `npm run dist:preview --prefix workbench -- --platform darwin --arch arm64` 等对应原生目标入口；当前未执行本批构建或打包。系统选择器、双系统双助手、升级、签名与发行仍须统一验收。构建模式不由用户运行时切换。
+默认生成无需登录的免费体验运行目录。免费体验安装器使用 `npm run dist:preview --prefix workbench -- --platform darwin --arch arm64` 等对应原生目标入口；本批两模式桌面构建与仓库外Electron探针已执行，系统选择器、当前安装包、双系统双助手、升级、签名与发行仍须分别验收。构建模式不由用户运行时切换。
 
 桌面采用指定的蓝色 N [应用图标](workbench/resources/brand/desktop/README.md)，窗口与macOS Dock从随包固定资源加载；两模式同时带PNG、Windows
 ICO及macOS ICNS。`npm run icons:check`核验资源，`npm run icons:build`在macOS从现有母版重新导出。打包器已引用固定图标，正式EXE/app安装后的显示仍待真机验收。

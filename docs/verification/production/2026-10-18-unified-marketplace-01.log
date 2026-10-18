@@ -1,0 +1,24 @@
+✔ both local catalogs resolve from the movable market root to the same byte-identical package (1100.857708ms)
+✔ the build-owned complete manifest detects changed business libraries, Node and sharp independently of installed integrity (1119.050959ms)
+▶ unsafe or inconsistent packages fail before replacing an existing market
+  ✔ release (388.486208ms)
+  ✔ foreign architecture (408.848042ms)
+  ✔ Node bytes (531.387166ms)
+  ✔ missing hash (283.41575ms)
+  ✔ claimed contract capability (350.351666ms)
+  ✔ duplicate source Skill directory (390.328459ms)
+  ✔ unexpected root Skill (366.412416ms)
+  ✔ legacy manifest Skill path with updated integrity (345.381542ms)
+  ✔ foreign Node lock with updated integrity (532.941542ms)
+  ✔ user data (387.511125ms)
+✔ unsafe or inconsistent packages fail before replacing an existing market (3987.035958ms)
+✔ package and output symlink escapes are refused; source cannot be overwritten (255.28775ms)
+﹣ real native market and simulated host cache run fixed Node from an unrelated cwd (0.105875ms) # SKIP
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 6531.075375

@@ -14,8 +14,14 @@ import {CHANNELS} from '../src/main/boundary.mts';
 function fixture(t) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nova-upgrade-gui-'));
     t.after(() => fs.rmSync(parent, {recursive: true, force: true}));
-    const source = path.join(parent, 'old-library'), library = createLibrary(source);
-    const content = library.createContent({title: '必须保留', body: '旧内容库正文'});
+    const source = path.join(parent, 'old-library');
+    createLibrary(source);
+    const content = {id: randomUUID()}, now = new Date().toISOString();
+    const directory = path.join(source, '内容', content.id);
+    fs.mkdirSync(directory);
+    // Write a real legacy shape directly; current createContent also emits schema5 transaction history.
+    fs.writeFileSync(path.join(directory, '内容.json'), JSON.stringify({format: 'nova-content', schemaVersion: 3, id: content.id, title: '必须保留', revision: 1, createdAt: now, updatedAt: now, deletedAt: null, materials: [], candidates: [], selectedCover: null, plans: [], publications: [], coverJobs: []}));
+    fs.writeFileSync(path.join(directory, '正文.md'), '旧内容库正文');
     const descriptor = path.join(source, '内容库.json');
     const original = Buffer.from(`${JSON.stringify({...JSON.parse(fs.readFileSync(descriptor)), schemaVersion: 4})}\n`);
     fs.writeFileSync(descriptor, original);

@@ -1,0 +1,15 @@
+✔ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (1847.052708ms)
+✔ a final marker followed by an actual open failure cannot publish an operation receipt (1652.741458ms)
+✔ query proves a lost restore response and pins the completed target before continuation (2245.544709ms)
+✔ partial backup and partial restored target are preserved and never overwritten (1142.4955ms)
+✔ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (1599.296625ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (97.487125ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (106.061625ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8810.59775

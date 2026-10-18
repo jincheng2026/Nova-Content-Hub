@@ -1,0 +1,126 @@
+
+> nova-content-hub-prototype@0.2.0 test:cover
+> node --test plugin-src/tests/cover/*.test.mjs
+
+✔ both builds identify themselves and required mode refuses business IO before reading input or library (317.068167ms)
+✔ independent packaged runtime fully decodes, submits, replays and exposes status through actual CLI commands (5049.420083ms)
+✔ CLI bounds input, rejects malformed commands and never writes on transport failures (714.360458ms)
+✔ the bundled Skill references the real CLI and contains no template or user library scripts (0.701667ms)
+✔ both independent packages separate contract and cover commands and preserve the legacy wrapper (935.538291ms)
+✔ required unified commands and legacy wrappers reject environment and argument auth overrides before IO (179.424667ms)
+✔ one release file controls and validates both namespaces; missing or mismatched pairing cannot fall back (1029.252542ms)
+✔ implementation, hooks, skill capabilities, mode and hashed import resources agree in both packages (970.514542ms)
+✔ standalone bundled launcher resolves handoff and completes context/claim/submit/status/replay with empty Node PATH (7015.458291ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1222.579334ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (990.343709ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (1665.046541ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11842.363917
+
+> nova-content-hub-prototype@0.2.0 test:maintenance
+> node --test plugin-src/src/lib/library-maintenance/test/*.test.mjs
+
+✔ maintenance command rejects malformed arguments before touching the chosen library (328.628625ms)
+✔ standalone required bundle imports a browser backup, resolves bundled bytes and reuses its durable operation (6723.140625ms)
+✔ standalone disabled bundle imports a browser backup, resolves bundled bytes and reuses its durable operation (7341.584833ms)
+✔ standalone required bundle backs up and restores user files without generation authorization (1518.350334ms)
+✔ standalone disabled bundle backs up and restores user files without generation authorization (1463.364083ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17654.286333
+
+> nova-content-hub-prototype@0.2.0 test:browser-import
+> node --test plugin-src/src/lib/browser-import/test/*.test.mjs
+
+✔ expected source hash binds the actual read before any target reservation (3891.096875ms)
+✔ import options reject unknown keys and malformed expected hashes without reserving (5.421833ms)
+✔ full migration exposes every real business object and scoped historical evidence, then survives backup/restore (35402.310417ms)
+✔ SIGKILL afterReservation: resumes same import and exact IDs without requiring original source (2623.985792ms)
+✔ SIGKILL beforeStageBinding: resumes same import and exact IDs without requiring original source (2676.315709ms)
+✔ SIGKILL afterStageBinding: resumes same import and exact IDs without requiring original source (2616.678959ms)
+✔ SIGKILL beforeStepIntent: resumes same import and exact IDs without requiring original source (2818.2155ms)
+✔ SIGKILL afterStepIntent: resumes same import and exact IDs without requiring original source (2709.828125ms)
+✔ SIGKILL afterCrud: resumes same import and exact IDs without requiring original source (2749.308375ms)
+✔ SIGKILL beforeStepResult: resumes same import and exact IDs without requiring original source (2893.95ms)
+✔ SIGKILL afterReady: resumes same import and exact IDs without requiring original source (2671.410042ms)
+✔ SIGKILL beforeTargetBinding: resumes same import and exact IDs without requiring original source (2577.433708ms)
+✔ SIGKILL afterTargetBinding: resumes same import and exact IDs without requiring original source (2644.416833ms)
+✔ SIGKILL afterInstallFile: resumes same import and exact IDs without requiring original source (2610.831042ms)
+✔ SIGKILL beforeDescriptor: resumes same import and exact IDs without requiring original source (2628.768125ms)
+✔ SIGKILL afterDescriptor: resumes same import and exact IDs without requiring original source (2754.282375ms)
+✔ SIGKILL beforeCommitted: resumes same import and exact IDs without requiring original source (2612.429083ms)
+✔ descriptor commit with lost response remains committed after normal content edits and stage no longer needed (2756.726084ms)
+✔ same target parallel starts share one importId; a different raw backup conflicts (2586.319708ms)
+✔ bound target replacement and changed installed files stop without overwriting external bytes (1305.120917ms)
+✔ foreign nonempty targets, portable aliases, unknown operation format and symlinks are refused (6.202292ms)
+✔ failure after CRUD reuses committed mutation and mismatch stops instead of changing its expected token (2797.636791ms)
+✔ EIO before descriptor publication resumes only its exact known temporary; divergent temporary is preserved (4951.526167ms)
+✔ a one-off storage unlink EIO blocks resource processing, then resume imports the original photo as available (3491.839ms)
+✔ same actual raster hash is decoded once per resource batch across roles; srcPath is inert (21174.8495ms)
+✔ inspection preserves source bytes, separates scoped candidate IDs and never claims a migration or image decode (5.118416ms)
+✔ attachment srcPath is inert even when a matching local file exists (1.62225ms)
+✔ malformed, invalid UTF-8, credential fields, newer format and excessive size are refused without writes (3.787708ms)
+✔ only an explicitly selected ordinary absolute file is accepted (1.152042ms)
+✔ external replacement during a selected file read is detected (3.936417ms)
+✔ BOM and CRLF remain intact in the private raw archive input (1.582458ms)
+✔ nonbuiltin historical weak fingerprints bind only unique known originals then decode actual full bytes (784.411209ms)
+✔ malformed raster bytes remain unavailable photo and preserved raw resource, never a substituted first frame (6007.479917ms)
+✔ missing decoder blocks accepted import; resume uses archived source after capability returns (6818.790042ms)
+✔ persisted resource metadata rejects path hashes and future fields before any source lookup (687.758459ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 116075.743167
+
+> nova-content-hub-prototype@0.2.0 test:images
+> node --test plugin-src/src/lib/image-validation/test/*.test.mjs
+
+✔ import validates real static png and keeps original bytes/hash (5.550792ms)
+✔ import validates real static jpeg and keeps original bytes/hash (3.475292ms)
+✔ import validates real static webp and keeps original bytes/hash (3.592ms)
+✔ JPEG EXIF orientation changes displayed dimensions without rewriting compressed source (7.54725ms)
+✔ all gif frames are decoded and receipt protocol remains static-only (2.282083ms)
+✔ all webp frames are decoded and receipt protocol remains static-only (1.934375ms)
+✔ GIF framing rejects an incomplete last frame even when sharp metadata reports a valid earlier frame (1.766875ms)
+✔ actual pixel decoding rejects a complete GIF container with damaged final-frame compressed data (2.449375ms)
+✔ APNG is explicitly unsupported and a PNG header cannot count as decoded pixels (1.425708ms)
+✔ encoded bytes, frames and total pixels have separate bounded rejection (48.105583ms)
+✔ missing packaged decoder is a distinct execution failure (62.81825ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 235.06525
+
+> nova-content-hub-prototype@0.2.0 test:icons
+> node --test workbench/test/icons/*.test.mjs
+
+✔ desktop icon containers preserve transparency and provide all Windows DPI sizes (27.288083ms)
+✔ changing an output or the master is rejected without silently rebuilding it (26.830292ms)
+✔ macOS iconutil can decode the committed ICNS into the complete Retina iconset (130.455833ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 296.670584

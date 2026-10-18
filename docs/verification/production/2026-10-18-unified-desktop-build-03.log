@@ -1,0 +1,44 @@
+
+> nova-content-hub-prototype@0.2.0 build:desktop
+> npm run build --prefix workbench -- --auth both
+
+
+> nova-content-hub-workbench@0.2.0 build
+> node scripts/build.mjs --auth both
+
+Built experimental required plugin for darwin/arm64
+Built experimental disabled plugin for darwin/arm64
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1676 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-required/workbench/dist/renderer/index.html                                       0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-C1Xn16rK.css                      146.42 kB │ gzip:  25.03 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-CvtNGqHW.js                       551.35 kB │ gzip: 162.40 kB
+
+✓ built in 285ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Built experimental desktop auth-required for darwin/arm64; productionReady=false
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1676 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-disabled/workbench/dist/renderer/index.html                                       0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-C1Xn16rK.css                      146.42 kB │ gzip:  25.03 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-CvtNGqHW.js                       551.35 kB │ gzip: 162.40 kB
+
+✓ built in 290ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Built experimental desktop auth-disabled for darwin/arm64; productionReady=false

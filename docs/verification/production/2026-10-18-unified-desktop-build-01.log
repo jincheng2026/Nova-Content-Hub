@@ -1,0 +1,20 @@
+
+> nova-content-hub-prototype@0.2.0 build:desktop
+> npm run build --prefix workbench -- --auth both
+
+
+> nova-content-hub-workbench@0.2.0 build
+> node scripts/build.mjs --auth both
+
+Built experimental required plugin for darwin/arm64
+Built experimental disabled plugin for darwin/arm64
+file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:60
+    if (integrity.format !== 'nova-content-plugin-integrity' || integrity.schemaVersion !== 1 || integrity.pairId !== release.pairId || integrity.AUTH_MODE !== release.AUTH_MODE || !isDeepStrictEqual(integrity.skills, skills) || !isDeepStrictEqual(Object.keys(integrity.hashes ?? {}).sort(), integrityPaths().sort())) throw Error('Runtime integrity metadata or Skill capabilities mismatch');
+                                                                                                                                                                                                                                                                                                                                    ^
+
+Error: Runtime integrity metadata or Skill capabilities mismatch
+    at validateRuntime (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:60:325)
+    at async buildMarketplace (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:85:26)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/build.mjs:31:17
+
+Node.js v24.20.0

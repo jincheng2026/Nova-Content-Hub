@@ -1,0 +1,11 @@
+✔ only an owned stored publication URL is sent to the system browser (2297.367666ms)
+✔ invalid stored links and browser errors do not become successful opens (4743.215875ms)
+✔ reveal requests only the original bound directory and refuses replacements (528.464959ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7706.36975

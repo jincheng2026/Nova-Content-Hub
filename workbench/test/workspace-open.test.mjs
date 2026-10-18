@@ -10,7 +10,7 @@ import {BindingStore} from '../src/main/bindings.mts';
 import {validateInput} from '../src/shared/validation.ts';
 
 async function fixture(t) {
-    const parent = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-stored-links-'));
+    const parent = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'nova-stored-links-'));
     t.after(() => fs.rm(parent, {recursive: true, force: true}));
     const root = path.join(parent, 'library'), library = createLibrary(root), opened = [], revealed = [];
     const controller = new DesktopController({store: new BindingStore(path.join(parent, 'binding.json')), worker: {call: execute}, documents: parent,

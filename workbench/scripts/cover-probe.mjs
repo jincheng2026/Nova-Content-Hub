@@ -8,7 +8,7 @@ import electron from 'electron';
 import sharp from 'sharp';
 import { createLibrary } from '../../plugin-src/src/lib/file-library/index.mjs';
 const workbench = fileURLToPath(new URL('../', import.meta.url)), repository = path.resolve(workbench, '..');
-const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-native-cover-probe-'));
+const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-unified-cover-probe-')));
 try {
   for (const mode of ['disabled', 'required']) {
     const bundle = path.join(root, `auth-${mode}`), data = path.join(root, `data-${mode}`); await fs.mkdir(data);
@@ -19,14 +19,21 @@ try {
     if (mode === 'required') createLibrary(path.join(data, 'library'));
     await new Promise((resolve, reject) => {
       const child = spawn(electron, [path.join(bundle, 'workbench/dist/main/cover-probe.mjs')], { cwd: bundle, env: { ...process.env, NOVA_DESKTOP_PROBE_ROOT: data }, stdio: 'inherit' });
-      const timeout = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Cover Electron probe exceeded 120 seconds')); }, 120000);
+      const timeout = setTimeout(() => { child.kill('SIGKILL'); reject(new Error('Full cover/five-page Electron probe exceeded 180 seconds')); }, 180000);
       child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
     });
     if (mode === 'disabled') {
-      await fs.copyFile(path.join(data, 'cover.png'), path.join(repository, 'docs/verification/production/2026-10-18-content-workflow-disabled.png'));
-      for (const page of ['overview', 'templates', 'calendar', 'prompts']) await fs.copyFile(path.join(data, `${page}.png`), path.join(repository, `docs/verification/production/2026-10-18-desktop-${page}.png`));
+      await fs.copyFile(path.join(data, 'cover.png'), path.join(repository, 'docs/verification/production/2026-10-18-unified-content-workflow-disabled.png'));
+      for (const page of ['overview', 'templates', 'calendar', 'prompts']) await fs.copyFile(path.join(data, `${page}.png`), path.join(repository, `docs/verification/production/2026-10-18-unified-desktop-${page}.png`));
     }
   }
-  await fs.writeFile(path.join(repository, 'docs/verification/production/2026-10-18-content-workflow-receipt.json'), JSON.stringify({ format: 'nova-native-cover-verification', platform: process.platform, arch: process.arch, recordedAt: new Date().toISOString(), productionReady: false, syntheticCandidates: true, realHostGeneration: false, systemDialogs: false, windows: false, passed: true }, null, 2) + '\n');
-  console.log('PASS external standalone native cover packages. Synthetic candidate verification only; real host, native dialog clicks and Windows remain unverified. productionReady=false');
-} finally { await fs.rm(root, { recursive: true, force: true }); }
+  await fs.writeFile(path.join(repository, 'docs/verification/production/2026-10-18-unified-content-workflow-receipt.json'), JSON.stringify({ format: 'nova-native-cover-verification', platform: process.platform, arch: process.arch, recordedAt: new Date().toISOString(), productionReady: false, syntheticCandidates: true, syntheticAssistantHandoffs: true, currentFivePageUI: true, realHostGeneration: false, systemDialogs: false, windows: false, passed: true }, null, 2) + '\n');
+  console.log('PASS external standalone current five-page native cover packages. Test-instance handoff recording and synthetic candidate verification only; real host, native dialog clicks and Windows remain unverified. productionReady=false');
+} finally {
+  for (const mode of ['disabled', 'required']) for (const extension of ['json', 'png']) {
+    const diagnostic = path.join(root, `data-${mode}`, `failure.${extension}`);
+    try { await fs.copyFile(diagnostic, path.join(repository, `docs/verification/production/2026-10-18-unified-cover-failure-${mode}.${extension}`)); }
+    catch (error) { if (error.code !== 'ENOENT') console.error('Could not preserve cover probe diagnostic:', error); }
+  }
+  await fs.rm(root, { recursive: true, force: true });
+}

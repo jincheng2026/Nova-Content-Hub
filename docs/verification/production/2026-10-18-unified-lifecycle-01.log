@@ -1,0 +1,25 @@
+
+> nova-content-hub-workbench@0.2.0 probe:lifecycle
+> node scripts/lifecycle-probe.mjs
+
+Error: Invalid desktop release build configuration
+    at validateBuildConfig (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-TjmeKP/auth-disabled/workbench/dist/main/boundary.mjs:37:15)
+    at validateRelease (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-TjmeKP/auth-disabled/workbench/dist/main/boundary.mjs:41:20)
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-TjmeKP/auth-disabled/workbench/dist/main/desktop.mjs:36:21)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-TjmeKP/auth-disabled/workbench/dist/main/lifecycle-probe.mjs:35:1
+PASS auth-disabled: malformed release refuses startup; production package contains no probe entry
+Error: Cannot decode the bundled application PNG icon
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-lifecycle-probe-TjmeKP/auth-disabled/workbench/dist/main/desktop.mjs:59:15)
+PASS auth-disabled: undecodable icon refuses startup without Electron default fallback
+PASS bundled NativeImage 512px, scales 1/2, actual Dock calls 1
+PASS current UI dirty-save return to list, then visible row-menu recycle: saved body retained, no pending, active/trash counts 1/1
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/lifecycle-probe.mjs:24
+            failure = new Error(`Lifecycle probe ${phase} exceeded 60 seconds`);
+                      ^
+
+Error: Lifecycle probe crud exceeded 60 seconds
+    at Timeout.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/lifecycle-probe.mjs:24:23)
+    at listOnTimeout (node:internal/timers:685:17)
+    at process.processTimers (node:internal/timers:618:7)
+
+Node.js v24.20.0

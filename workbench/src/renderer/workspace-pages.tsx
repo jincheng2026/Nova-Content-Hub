@@ -218,7 +218,7 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
       <div className="creator-template-tip"><span aria-hidden="true">✦</span><p>先选风格，再写内容。自己的标题、正文和人物选择，会在制作封面时逐项确认。</p></div>
     </aside></div>
     {preview && <dialog ref={dialog} className="image-preview" onCancel={() => setPreview(null)} aria-label={preview.name}><div className="dialog-heading"><div><h2>{preview.name}</h2><p>{preview.samples.length} 张风格样张 · 同一模板组 · v{preview.version}</p></div><Button onClick={() => setPreview(null)}>关闭预览</Button></div><div className="preview-grid">{preview.samples.map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`${preview.name}样张 ${index + 1}`}/>)}</div></dialog>}
-    {workflowTemplateId && <Card title="模板学习与还原" extra={<Button disabled={busy} onClick={() => setWorkflowTemplateId(null)}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card>}
+    {workflowTemplateId && <Card title="模板学习与还原" headerExtraContent={<Button disabled={busy} onClick={() => setWorkflowTemplateId(null)}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card>}
     {importing && <TemplateImportDialog props={props} template={importing.template} initialImages={importing.images} close={() => setImporting(null)}/>}
   </section>;
 }

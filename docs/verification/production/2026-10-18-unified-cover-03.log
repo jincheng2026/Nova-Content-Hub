@@ -1,0 +1,42 @@
+
+> nova-content-hub-workbench@0.2.0 probe:cover
+> node scripts/cover-probe.mjs
+
+2026-10-18T14:15:03.332Z cover probe: renderer and sandbox
+2026-10-18T14:15:03.475Z cover probe: create library and content
+2026-10-18T14:15:32.099Z cover probe: composer assets and photo invalidation
+2026-10-18T14:15:45.304Z cover probe: generate synthetic handoff
+2026-10-18T14:15:50.816Z cover probe: history summary
+2026-10-18T14:15:50.875Z cover probe: continue same attempt
+2026-10-18T14:15:52.604Z cover probe: cancel live attempt
+2026-10-18T14:15:58.115Z cover probe: retry same job
+2026-10-18T14:16:03.627Z cover probe: claim and synthetic commit
+2026-10-18T14:16:03.902Z cover probe: focus refresh
+2026-10-18T14:16:05.878Z cover probe: candidate selection and byte export
+2026-10-18T14:16:17.740Z cover probe: held read prevents selection and library switches
+2026-10-18T14:16:25.163Z cover probe: release read and explicitly switch contents
+PASS actual Electron selection safety: held read blocks content/library switch; subsequent explicit selection loads only its own candidates and body
+2026-10-18T14:16:33.502Z cover probe: concurrent granted image reads and content writes
+PASS concurrent actual Electron: all granted template/candidate reads and IPC content create/save/read/status completed without lock conflicts
+2026-10-18T14:16:36.587Z cover probe: five pages: overview
+2026-10-18T14:16:43.365Z cover probe: five pages: templates
+2026-10-18T14:16:46.190Z cover probe: five pages: calendar
+2026-10-18T14:16:46.269Z cover probe: five pages: prompts
+TypeError: Failed to construct 'ClipboardItem': at least one MIME type is required.
+    at new ClipboardItem (node:electron/js2c/browser_init:1:23109)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-UkAzFC/auth-disabled/workbench/dist/main/cover-probe.mjs:274:108
+    at async Promise.all (index 0)
+    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-UkAzFC/auth-disabled/workbench/dist/main/cover-probe.mjs:274:45)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-unified-cover-probe-UkAzFC/auth-disabled/workbench/dist/main/desktop.mjs:371:5)
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23
+      child.once('error', reject); child.once('close', (code, signal) => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Cover probe failed ${code}/${signal}`)); });
+                                                                                                                                  ^
+
+Error: Cover probe failed 1/null
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/cover-probe.mjs:23:131)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

@@ -1,0 +1,14 @@
+{
+  "format": "nova-native-cover-verification",
+  "platform": "darwin",
+  "arch": "arm64",
+  "recordedAt": "2026-10-18T14:24:51.161Z",
+  "productionReady": false,
+  "syntheticCandidates": true,
+  "syntheticAssistantHandoffs": true,
+  "currentFivePageUI": true,
+  "realHostGeneration": false,
+  "systemDialogs": false,
+  "windows": false,
+  "passed": true
+}

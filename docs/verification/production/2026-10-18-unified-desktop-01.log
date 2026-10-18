@@ -1,0 +1,312 @@
+
+> nova-content-hub-prototype@0.2.0 test:desktop
+> npm test --prefix workbench
+
+
+> nova-content-hub-workbench@0.2.0 test
+> node --test test/*.test.mjs
+
+✔ codex: only exact installed enabled native release is accepted (11.587333ms)
+✔ codex: explicit config homes never fall back to a different installed host home (9.464375ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (26.008875ms)
+✔ codex: Skill symlinks and oversized metadata refuse (8.772458ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (6.164833ms)
+✔ workbuddy: only exact installed enabled native release is accepted (8.987875ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (12.89825ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (26.328666ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (15.494458ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (33.83525ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (13.502375ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (10.521958ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (12.447292ms)
+✔ only exact top-level sender with no renderer arguments can invoke business (1.27575ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.565209ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.591084ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (36.075417ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.922791ms)
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (74.91975ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/controller.test.mjs (201.540208ms)
+✔ browser backup and published snapshot candidates remain visible without invented generation records (2.471708ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.714083ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/covers.test.mjs (258.535375ms)
+✔ free preview is the default experience and restricted testing stays explicit (0.544792ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.442709ms)
+✔ release pairing, auth and toolchain fail closed (0.459792ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.164709ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.216417ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (513.712084ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.149833ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.322167ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (290.516375ms)
+✔ only packaged macOS apps outside Applications offer installation (0.635666ms)
+✔ skipping installation continues without moving the application (0.104791ms)
+✔ successful native move stops startup for Electron relaunch (0.094041ms)
+✔ native false and thrown failure offer Finder guidance and continue (0.17575ms)
+✔ replacement is explicit and cancel declines without a second failure notice (0.115084ms)
+✔ confirmed replacement allows the native move and relaunch (0.092375ms)
+✔ a running installed app is never silently focused or replaced (0.077959ms)
+✔ an unavailable optional installation dialog does not prevent desktop startup (0.100416ms)
+✔ business changes coalesce into fixed notifications without reading event paths (40.830166ms)
+✔ locks, transactions, scratch and temporary paths do not refresh the UI (2.160333ms)
+✔ continuous writes have a bounded maximum delay (5.615792ms)
+✔ identical bindings preserve native handles; unbind and close cancel stale callbacks (3.27625ms)
+✔ native failures notify once and only rearm the pinned library on a periodic check (6.379209ms)
+✔ notification failures cannot escape binding, recovery or debounce callbacks (3.776ms)
+✔ silent root removal is detected and restoration of the same inode can rearm (11.272083ms)
+✔ a same-ID clone never rearms under the old binding; successful rebind clears unavailable immediately (6.767041ms)
+✔ descriptor identity, format, size and readability are checked before watching and while idle (3.264208ms)
+✔ descriptor changes during the bounded read are rejected (4.393125ms)
+✔ linked descriptors and root ancestors are rejected (2.708375ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/lifecycle.test.mjs (176.671083ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/maintenance-upgrade.test.mjs (169.979291ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (589.724ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (89.741333ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (116.616167ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (71.590541ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (89.946625ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.385375ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.228833ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (542.314917ms)
+✔ desktop operations finish in FIFO order without overlap (0.905166ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.493625ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.434ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (0.936417ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (3.177833ms)
+✔ local minute records use the planned timezone across a date boundary (15.137334ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.193292ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.887416ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.68925ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.148167ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.11075ms)
+✔ save-before-quit only retries quit for an exact true response (4.278ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (1.27725ms)
+✔ without a tray, dirty close still offers cancel, discard and save (1.083375ms)
+✖ installation copy supplies the selected host exact manifest or folder without manual path edits (51.473292ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/worker.test.mjs (202.502583ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/workspace-open.test.mjs (170.775458ms)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/template-controller.mts:26
+    pendingView: TemplatePendingView | null = null;
+    constructor(readonly owner: TemplateOwner, readonly callbacks: TemplateCallbacks) {}
+                         ^^^^^^^^^^^^^^^^^^^^
+    validate(method: string, input: unknown) {if (templateDesktopInput(method, input) !== true) fail('INVALID_INPUT', '拒绝无效、额外或超限的模板字段。');}
+
+SyntaxError [ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX]: TypeScript parameter property is not supported in strip-only mode
+    at parseTypeScript (node:internal/modules/typescript:68:40)
+    at processTypeScriptCode (node:internal/modules/typescript:146:42)
+    at stripTypeScriptModuleTypes (node:internal/modules/typescript:215:22)
+    at ModuleLoader.<anonymous> (node:internal/modules/esm/translators:680:29)
+    at #translate (node:internal/modules/esm/loader:438:20)
+    at afterLoad (node:internal/modules/esm/loader:506:29)
+    at ModuleLoader.loadAndTranslate (node:internal/modules/esm/loader:511:12)
+    at #getOrCreateModuleJobAfterResolve (node:internal/modules/esm/loader:564:36)
+    at afterResolve (node:internal/modules/esm/loader:611:52)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:617:12) {
+  code: 'ERR_UNSUPPORTED_TYPESCRIPT_SYNTAX'
+}
+
+Node.js v24.20.0
+✖ test/workspace.test.mjs (161.859583ms)
+ℹ tests 79
+ℹ suites 0
+ℹ pass 71
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1870.273166
+
+✖ failing tests:
+
+test at test/controller.test.mjs:1:1
+✖ test/controller.test.mjs (201.540208ms)
+  'test failed'
+
+test at test/covers.test.mjs:1:1
+✖ test/covers.test.mjs (258.535375ms)
+  'test failed'
+
+test at test/lifecycle.test.mjs:1:1
+✖ test/lifecycle.test.mjs (176.671083ms)
+  'test failed'
+
+test at test/maintenance-upgrade.test.mjs:1:1
+✖ test/maintenance-upgrade.test.mjs (169.979291ms)
+  'test failed'
+
+test at test/setup-market-location.test.mjs:8:1
+✖ installation copy supplies the selected host exact manifest or folder without manual path edits (51.473292ms)
+  Error: 当前安装未携带可用的配套插件市场，请获取发行方提供的完整匹配插件包。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:12:25)
+      at Setup.requireMarket (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/setup.mts:54:42)
+      at async Setup.copyPluginMarketLocation (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/setup.mts:76:22)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/setup-market-location.test.mjs:21:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'MARKET_NOT_AVAILABLE'
+  }
+
+test at test/worker.test.mjs:1:1
+✖ test/worker.test.mjs (202.502583ms)
+  'test failed'
+
+test at test/workspace-open.test.mjs:1:1
+✖ test/workspace-open.test.mjs (170.775458ms)
+  'test failed'
+
+test at test/workspace.test.mjs:1:1
+✖ test/workspace.test.mjs (161.859583ms)
+  'test failed'
