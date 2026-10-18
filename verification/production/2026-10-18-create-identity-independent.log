@@ -1,0 +1,15 @@
+✔ selected empty directory replaced before create is refused and stays empty (7.500667ms)
+✔ missing selected directory is never recreated; old API still creates missing roots (167.567541ms)
+✔ empty-check to first mkdir replacement is refused with or without options (3.598542ms)
+✔ descriptor publication replacement cannot lock or recover a foreign pending library (317.23675ms)
+✔ descriptor publication replacement cannot lock or recover a same-ID clone (217.238666ms)
+✔ descriptor ID changed inside the same root is rejected before lock acquisition (100.922542ms)
+✔ creation root identity preserves BigInt precision above the safe integer range (102.179583ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1004.430875
