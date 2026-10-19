@@ -1,0 +1,22 @@
+{
+  "version": "0.3.23",
+  "source": "/Applications/自媒体工作台.app",
+  "ok": true,
+  "method": "Installed worker and core read currently bound actual user library; no GUI or business mutation",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "counts": {
+    "activeContents": 3,
+    "trashedContents": 0,
+    "activeCollections": 1,
+    "trashedCollections": 0,
+    "templates": 21,
+    "prompts": 54,
+    "favoritePrompts": 0
+  },
+  "promptFavoriteBooleans": true,
+  "libraryBeforeSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "libraryAfterSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "bytesUnchanged": true,
+  "guiStartupAccepted": false,
+  "note": "First read audit observed removal of an expired internal lock directory and its lease after the old app quit; this repeat audit uses the stable tree and verifies every entry unchanged."
+}
