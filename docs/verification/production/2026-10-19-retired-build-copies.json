@@ -1,0 +1,24 @@
+{
+  "method": "Only generated build copies removed after fresh complete-tree equality with retained read-only DMG",
+  "copies": [
+    {
+      "version": "0.3.21",
+      "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-CE0Yan/mac-arm64/自媒体工作台.app",
+      "retainedDmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.21-darwin-arm64-preview.dmg",
+      "treeSha256": "aa02bc742c2f0630df3bef5cb77ee12cdf5487be60197e8e8764b8e3cc1a8308",
+      "dmGRestoresIdenticalApp": true,
+      "signatureValid": true,
+      "removed": true
+    },
+    {
+      "version": "0.3.23",
+      "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-vJwsFF/mac-arm64/自媒体工作台.app",
+      "retainedDmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.23-darwin-arm64-preview.dmg",
+      "treeSha256": "1a6d319cae5ec05b6a83301558812fdf19660f1d209859f248aafbb2fffe4533",
+      "dmGRestoresIdenticalApp": true,
+      "signatureValid": true,
+      "removed": true
+    }
+  ],
+  "ok": true
+}

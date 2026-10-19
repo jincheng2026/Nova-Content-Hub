@@ -1,0 +1,31 @@
+{
+  "diagnosedAt": "2026-10-19T14:38:42.516Z",
+  "reportedSymptom": "User saw 0.3.22 after 0.3.23 installation",
+  "initialNativeObservation": {
+    "pid": 53054,
+    "bundle": "/Applications/.nova-content-hub-install-97266b36-93a4-46fd-9def-c6fd2db43c48/previous.app",
+    "version": "0.3.22",
+    "basis": "Native process and metadata inspection at beginning of diagnosis, before this persisted report"
+  },
+  "actualCompletedBackupCheck": {
+    "phase": "complete",
+    "launchablePreviousApp": true,
+    "passed": false
+  },
+  "correctRunningProcessAfterPathLaunch": {
+    "expected": "0.3.23",
+    "target": "/Applications/自媒体工作台.app",
+    "processes": [
+      {
+        "pid": 54568,
+        "executable": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+        "bundle": "/Applications/自媒体工作台.app",
+        "version": "0.3.23",
+        "releaseVersion": "0.3.23"
+      }
+    ],
+    "passed": true
+  },
+  "guiAcceptance": "not-yet-confirmed",
+  "controlTimeoutIsNotLaunchFailure": true
+}
