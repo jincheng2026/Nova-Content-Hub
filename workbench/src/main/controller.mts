@@ -257,6 +257,7 @@ export class DesktopController {
         return this.covers.selectCover(input);
     }
 
+    revealCoverFolder(input: {contentId: string}) { return this.covers.revealCoverFolder(input); }
     exportCover(input: { contentId: string; candidateId: string }) {
         return this.covers.exportCover(input);
     }

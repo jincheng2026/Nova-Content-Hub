@@ -26,13 +26,14 @@ export interface CoverInputs {
   readCover: { contentId: string }; generateCover: CoverStart; resumeCover: undefined; abandonCover: undefined;
   continueCover: CoverReference; retryCover: CoverReference; cancelCover: CoverReference;
   selectCover: { contentId: string; candidateId: string; editToken: string }; exportCover: { contentId: string; candidateId: string };
+  revealCoverFolder: { contentId: string };
   setAssistant: { host: Assistant };
 }
 export interface CoverResults {
   readAssistantSetup: AssistantSetup;
   resumeCoverAction: CoverView; abandonCoverAction: void; listCoverAssets: { templates: TemplateGroup[]; photos: Photo[] }; retryBuiltins: void; choosePhoto: Photo | null; resumePhoto: Photo; abandonPhoto: void;
   readCover: CoverView; generateCover: CoverHandoff; resumeCover: CoverHandoff; abandonCover: void; continueCover: { launchRequested: true }; retryCover: CoverHandoff; cancelCover: CoverView;
-  selectCover: CoverView; exportCover: { exported: boolean }; setAssistant: void;
+  selectCover: CoverView; exportCover: { exported: boolean }; revealCoverFolder: { revealed: boolean }; setAssistant: void;
 }
 export interface CoverWorkerOperations {
   seed: { args: { binding: LibraryBinding }; result: void };

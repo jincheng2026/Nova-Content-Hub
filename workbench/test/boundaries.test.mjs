@@ -29,7 +29,7 @@ test('only exact top-level sender with no renderer arguments can invoke business
     assert.throws(() => assertCaller(event, sender, ['/arbitrary/path']), {code: 'FORBIDDEN'});
     frame.url = 'https://app/index.html';
     assert.throws(() => assertCaller(event, sender, []), {code: 'FORBIDDEN'});
-    assert.equal(new Set(CHANNELS).size, CHANNELS.length); assert.ok(CHANNELS.includes('generateCover')); assert.ok(CHANNELS.includes('exportCover'));
+    assert.equal(new Set(CHANNELS).size, CHANNELS.length); assert.ok(CHANNELS.includes('generateCover')); assert.ok(CHANNELS.includes('exportCover')); assert.ok(CHANNELS.includes('revealCoverFolder'));
 });
 test('static protocol maps only exact manifest resources and refuses URL normalization', () => {
     const resources = validateResources({

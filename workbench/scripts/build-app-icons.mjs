@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 const brand = fileURLToPath(new URL('../resources/brand/', import.meta.url));
 const master = 'nova-content-hub-icon-master.png';
-const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
+const files = ['icon.png', 'icon@2x.png', 'icon-mac.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
 const windowsSizes = [16, 20, 24, 32, 40, 48, 64, 128, 256];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 
@@ -27,6 +27,14 @@ export async function buildAppIcons() {
     const source = await fs.readFile(path.join(brand, master));
     const metadata = await sharp(source).metadata();
     if (!metadata.hasAlpha || metadata.width !== metadata.height || metadata.width < 1024) throw Error('Use the transparent square brand master, at least 1024px.');
+    // Tahoe masks opaque artwork; transparent legacy artwork gets an extra system plate.
+    const alpha = await sharp(source).extractChannel('alpha').threshold(127).png().toBuffer();
+    const {info: bounds} = await sharp(alpha).trim({background: '#000000', threshold: 1}).toBuffer({resolveWithObject: true});
+    const edge = Math.max(bounds.width, bounds.height);
+    const crop = {left: Math.round(-bounds.trimOffsetLeft + (bounds.width - edge) / 2), top: Math.round(-bounds.trimOffsetTop + (bounds.height - edge) / 2), width: edge, height: edge};
+    const macSource = await sharp(source).extract(crop).flatten({background: '#061b4e'}).ensureAlpha().png().toBuffer();
+    const macPngs = new Map();
+    for (const size of [16, 32, 64, 128, 256, 512, 1024]) macPngs.set(size, await sharp(macSource).resize(size, size).ensureAlpha().png({compressionLevel: 9}).toBuffer());
     const pngs = new Map();
     for (const size of new Set([...windowsSizes, 512, 1024])) pngs.set(size, await sharp(source).resize(size, size).ensureAlpha().png({compressionLevel: 9}).toBuffer());
     // ICO stores a directory followed by complete PNG images (Windows Vista and later).
@@ -47,12 +55,13 @@ export async function buildAppIcons() {
     try {
         const iconset = path.join(temporary, 'icon.iconset');
         await fs.mkdir(iconset);
-        for (const size of [16, 32, 128, 256, 512]) for (const scale of [1, 2]) await fs.writeFile(path.join(iconset, `icon_${size}x${size}${scale === 2 ? '@2x' : ''}.png`), pngs.get(size * scale));
+        for (const size of [16, 32, 128, 256, 512]) for (const scale of [1, 2]) await fs.writeFile(path.join(iconset, `icon_${size}x${size}${scale === 2 ? '@2x' : ''}.png`), macPngs.get(size * scale));
         execFileSync('/usr/bin/iconutil', ['-c', 'icns', '-o', path.join(temporary, 'icon.icns'), iconset]);
         const output = path.join(brand, 'desktop');
         const assets = {
             'icon.png': pngs.get(512),
             'icon@2x.png': pngs.get(1024),
+            'icon-mac.png': macPngs.get(1024),
             'icon.ico': Buffer.concat([header, ...windowsSizes.map(size => pngs.get(size))]),
             'icon.icns': await fs.readFile(path.join(temporary, 'icon.icns')),
             'trayTemplate.png': await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M3 15V3l12 12V3" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg>')).png().toBuffer(),

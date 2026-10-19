@@ -30,7 +30,7 @@ const assets={templates:[{id:'template',version:1,name:'清爽图文组',descrip
 const library={contentDetails:[details],templates:assets.templates,photos:assets.photos,settings:{defaults:{templateId:'template',photoId:'',coverCount:2},customRatios:[]}};
 const ok=value=>({ok:true,value});
 window.annotationSources={landscape,portrait,wide:artwork(1200,200,'#926347','宽图完整边界'),tall:artwork(200,1200,'#457192','长图完整边界')};window.mutations=[];
-window.contentHub={listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details=input.op==='attachMaterial'?{...details,editToken:'metadata-'+(++serial),materials:[...details.materials,{id:'refinement-material',assetHash:input.assetHash,role:input.role,originalName:input.originalName,availability:'available',bytes:100,detectedType:'image/png'}]}:{...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};view={...view,content:{...view.content,editToken:details.editToken}};return ok({library:{...library,contentDetails:[details]}});},cancelCover:async()=>{view={...view,jobs};return ok(view);},generateCover:async input=>{if(window.failGenerateOnce){window.failGenerateOnce=false;return {ok:false,error:{code:'TEST_GENERATE_FAILURE',message:'模拟助手启动失败'}};}window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
+window.contentHub={revealCoverFolder:async input=>{window.folderRequest=input;window.folderRequests=(window.folderRequests??0)+1;const revealed=!window.cancelFolder;window.cancelFolder=false;return ok({revealed});},listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details=input.op==='attachMaterial'?{...details,editToken:'metadata-'+(++serial),materials:[...details.materials,{id:'refinement-material',assetHash:input.assetHash,role:input.role,originalName:input.originalName,availability:'available',bytes:100,detectedType:'image/png'}]}:{...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};view={...view,content:{...view.content,editToken:details.editToken}};return ok({library:{...library,contentDetails:[details]}});},cancelCover:async()=>{view={...view,jobs};return ok(view);},generateCover:async input=>{if(window.failGenerateOnce){window.failGenerateOnce=false;return {ok:false,error:{code:'TEST_GENERATE_FAILURE',message:'模拟助手启动失败'}};}window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
 function Probe(){const [busy,setBusy]=useState(false),[assistant,setAssistant]=useState('workbuddy');window.chooseAssistant=setAssistant;return <CoverPanel library={library} status={{currentName:'isolated-fixture',assistant}} content={content} dirty={false} busy={busy} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover:view})} run={async action=>{setBusy(true);try{return await action();}catch(error){window.probeError=error.message;return undefined;}finally{setBusy(false);}}} onContent={()=>{}}/>;}
 createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWidth:1160,margin:'auto',fontFamily:'sans-serif'}}><Probe/></div>);
 `);
@@ -69,20 +69,37 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
     try {
       await window.loadFile(path.join(probeRoot,'dist/index.html'));
       await wait('document.querySelectorAll(".cover-result-card").length===5');
+      const screenshots=await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-gallery-ui-shots-'));
+      assert.equal(await run('getComputedStyle(document.querySelector(".cover-result-groups")).gridTemplateColumns.split(" ").length'),5,'1280px gallery has five columns');
+      assert.equal(await run('(()=>{const cards=Array.from(document.querySelectorAll(".cover-result-card"));return cards.every(card=>Math.abs(card.getBoundingClientRect().top-cards[0].getBoundingClientRect().top)<1)})()'),true,'candidates from all batches fill the first row');
+      assert.equal(await run('[...document.querySelectorAll(".cover-result-image")].every(el=>Math.abs(el.getBoundingClientRect().width/el.getBoundingClientRect().height-.75)<.01)'),true,'cover frames use 3:4 without cropping originals');
+      assert.equal(await run('document.querySelector(".cover-selected").getBoundingClientRect().height<=80'),true,'selected cover summary stays compact');
+      await run('window.cancelFolder=true');
+      await click('#open-cover-folder','打开原图文件夹');
+      await wait('window.folderRequests===1 && document.getElementById("cover-notice").textContent.includes("已取消")');
+      assert.deepEqual(await run('window.folderRequest'),{contentId:'content'},'folder export receives only the active content id');
+      assert.equal(await run('document.querySelectorAll(".cover-result-card").length'),5,'cancelling folder export keeps every candidate');
+      await click('#open-cover-folder','打开原图文件夹');
+      await wait('window.folderRequests===2 && document.getElementById("cover-notice").textContent.includes("独立新文件夹")');
+      assert.deepEqual(await run('window.folderRequest'),{contentId:'content'});
+      assert.equal(await run('document.getElementById("open-cover-folder").title.includes("选择保存位置") && document.getElementById("open-cover-folder").title.includes("不会覆盖")'),true);
+      await paint();
+      await fs.writeFile(path.join(screenshots,'gallery-five-columns.png'),(await window.webContents.capturePage()).toPNG());
       assert.deepEqual(await run('[...document.querySelectorAll(".cover-result-group")].map(el=>el.getAttribute("aria-label"))'),['第 2 批封面','第 1 批封面','历史候选']);
-      assert.deepEqual(await run('[...document.querySelectorAll(".cover-candidate-number")].map(el=>el.textContent)'),['03','04','01','02','05']);
+      assert.deepEqual(await run('[...document.querySelectorAll(".cover-candidate-number > span")].map(el=>el.textContent)'),['03','04','01','02','05']);
       assert.equal(await run(`(()=>{const frames=[...document.querySelectorAll('.cover-result-image')];return frames.every(frame=>{const a=frame.querySelector('.cover-artwork-original'),b=frame.querySelector('.cover-artwork-backdrop');return a.src===b.src&&getComputedStyle(a).objectFit==='contain'&&getComputedStyle(b).objectFit==='cover'&&getComputedStyle(b).filter.includes('blur(18px)')&&b.getAttribute('aria-hidden')==='true';});})()`),true);
       await click('.cover-result-card:first-child button','收藏');
       await wait('window.mutations.length===1 && document.querySelector(".cover-result-card:first-child button[aria-pressed=true]")');
       assert.equal(await run('window.mutations[0].favorite'),true);
       assert.equal(await run('window.mutations[0].candidateId'),'new-landscape');
-      await click('.cover-result-card:first-child button','备注');
+      assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-candidate-number small").textContent'),'第2批','favorites retain original batch provenance');
+      await click('.cover-result-card:first-child button','⋯');
       await wait('document.querySelector(".management-dialog[open] textarea")');
       await enter('.management-dialog textarea','保留横图的完整标题与边界');
       await click('.management-dialog button','暂时收起');
       await wait('document.querySelector(".management-resume") && !document.querySelector(".management-dialog[open]")');
       assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button[aria-pressed]")].every(button=>button.disabled&&button.title.includes("先保存或放弃"))'),true,'minimized candidate draft blocks favorite changes');
-      assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button")].filter(button=>button.textContent==="备注").every(button=>button.disabled)'),true,'another note entry cannot replace the minimized draft');
+      assert.equal(await run('[...document.querySelectorAll(".cover-card-tools button")].filter(button=>button.textContent==="⋯").every(button=>button.disabled)'),true,'another note entry cannot replace the minimized draft');
       await run('document.querySelector(".cover-result-actions button[aria-pressed]").click()');
       assert.equal(await run('window.mutations.length'),1,'disabled favorite cannot silently mutate or discard a draft');
       await click('.management-resume button','继续编辑');
@@ -93,11 +110,10 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.mutations[1].favorite'),true,'notes retain saved favorite');
       assert.equal(await run('window.mutations[1].editToken'),'metadata-1','notes use latest saved token');
       assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-result-caption > p").textContent'),'保留横图的完整标题与边界');
-      await click('.cover-result-card:first-child button','选为封面');
+      await click('.cover-result-card:first-child button','选用');
       await wait('document.querySelector(".cover-result-card:first-child.is-selected")');
       await click('.cover-result-card:first-child button','下载');
       await wait('window.exported?.candidateId==="new-landscape"');
-      const screenshots=await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-gallery-ui-shots-'));
       await run('document.querySelectorAll(".cover-card-title input")[0].click();document.querySelectorAll(".cover-card-title input")[1].click()');
       await wait('document.querySelector(".cover-gallery-toolbar").textContent.includes("已勾选 2 / 4")');
       await run('document.querySelectorAll(".cover-card-title input")[2].click();document.querySelectorAll(".cover-card-title input")[3].click()');
@@ -118,7 +134,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('document.querySelector(".cover-result-group").getAttribute("aria-label")'),'收藏优先');
       await run('document.querySelector(".cover-gallery-toolbar input").click()');
       await wait('document.querySelectorAll(".cover-result-card").length===5');
-      await click('.cover-result-card:first-child button','批注修改');
+      await click('.cover-result-card:first-child button','批注');
       await wait('document.querySelector(".cover-annotation-image img")?.naturalWidth>0');
       await run('document.querySelector(".cover-annotation-image").addEventListener("click",event=>window.annotationTrusted=event.isTrusted)');
       for (const [width, height] of [[1280,900],[900,700],[620,700]]) {
@@ -178,7 +194,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await click('.management-dialog button','保存批注');
       await wait('!document.querySelector(".management-dialog")');
       assert.equal(await run('window.mutations.at(-1).note.includes("x=50%, y=")'),true);
-      await click('.cover-result-card:first-child button','批注修改');
+      await click('.cover-result-card:first-child button','批注');
       await wait('document.querySelector(".cover-annotation-note-edit span")?.textContent==="标题放大，保留完整边界"');
       await click('.management-dialog button','按批注修改');
       await wait('document.querySelector(".cover-refinement-confirm")');
@@ -253,7 +269,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await click('#continue-cover','去 Codex 继续');
       await wait('window.continued?.attemptId==="live-attempt"');
       assert.equal(await run('window.probeError??null'),null);
-      console.log('PASS isolated real React/Semi/Electron: all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
+      console.log('PASS isolated real React/Semi/Electron: five-column continuous 3:4 gallery and compact selected row, exact-id folder export/cancellation, all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
       console.log('Screenshots: '+screenshots);
       app.exit(0);
     }catch(error){console.error(error);app.exit(1);}

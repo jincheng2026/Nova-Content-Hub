@@ -187,7 +187,7 @@ test('explicit repeat rejects stale input and recovered retry preserves stale in
 });
 test('exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents', async t => {
   const f = await fixture(t);
-  for (const method of ['generateCover', 'choosePhoto', 'continueCover', 'setAssistant', 'selectCover', 'exportCover']) {
+  for (const method of ['generateCover', 'choosePhoto', 'continueCover', 'setAssistant', 'selectCover', 'exportCover', 'revealCoverFolder']) {
     for (const attack of [{ path: '/tmp/private' }, { url: 'https://evil.test' }, { authMode: 'disabled' }]) assert.throws(() => validateInput(method, attack), { code: 'INVALID_INPUT' });
   }
   await assert.rejects(f.controller.generateCover({ contentId: f.content.id, editToken: f.content.editToken, input: { ...f.input, photo: undefined } }), { code: 'INVALID_INPUT' });
@@ -416,4 +416,58 @@ test('select/cancel durable action loss resumes same mutation, reads later selec
   await assert.rejects(next.selectCover({ contentId: f.content.id, candidateId: view.candidates[0].id, editToken: view.content.editToken }), { code: 'WORKER_EXIT' });
   const fixed = next.binding.coverActionPending; assert.equal(f.library.queryMutation(fixed.mutationId), null);
   const last = f.make(); await last.initialize(); assert.equal((await last.resumeCoverAction()).selectedCandidateId, view.candidates[0].id); assert.ok(f.library.queryMutation(fixed.mutationId));
+});
+
+test('cover folder export copies byte-exact owned candidates to unique external folders and opens their first image', async t => {
+  const f = await fixture(t);
+  await commitCandidate(f, (await f.start()).jobs[0]);
+  const firstBytes = Buffer.from(f.bytes);
+  f.bytes = await sharp({create: {width: 8, height: 6, channels: 3, background: '#da5829'}}).png().toBuffer();
+  const next = await f.start(f.controller, {...f.input, prompt: 'second batch'});
+  await commitCandidate(f, next.jobs.find(job => job.activeAttemptId));
+  const before = f.library.readContent(f.content.id), bytesByHash = new Map([[hash(firstBytes), firstBytes], [hash(f.bytes), f.bytes]]);
+  const parent = path.join(f.root, 'user exports'); await fs.mkdir(parent);
+  let choices = 0; const revealed = [];
+  f.controller.dialogs.maintenanceParent = async () => {choices++; return parent;};
+  f.controller.revealFolder = file => revealed.push(file);
+  await assert.rejects(f.controller.revealCoverFolder({contentId: randomUUID()}));
+  assert.equal(choices, 0, 'ownership is checked before any directory prompt');
+  for (let round = 0; round < 2; round++) {
+    assert.deepEqual(await f.controller.revealCoverFolder({contentId: f.content.id}), {revealed: true});
+    const folder = path.dirname(revealed[round]);
+    assert.equal(path.dirname(folder), await fs.realpath(parent)); assert.match(path.basename(folder), /^Nova-封面原图-/);
+    const files = await fs.readdir(folder); assert.equal(files.length, 2);
+    for (const [index, candidate] of before.candidates.entries()) {
+      const exported = path.join(folder, `${String(index + 1).padStart(3, '0')}-${candidate.id}.png`);
+      assert.deepEqual(await fs.readFile(exported), bytesByHash.get(candidate.assetHash));
+    }
+    assert.equal(revealed[round], path.join(folder, `001-${before.candidates[0].id}.png`));
+  }
+  assert.notEqual(path.dirname(revealed[0]), path.dirname(revealed[1]), 'another export never overwrites the previous folder');
+  assert.deepEqual(f.library.readContent(f.content.id), before, 'export does not mutate candidates or their history');
+  f.controller.dialogs.maintenanceParent = async () => null;
+  assert.deepEqual(await f.controller.revealCoverFolder({contentId: f.content.id}), {revealed: false});
+  assert.equal((await fs.readdir(parent)).length, 2, 'cancel creates no folder');
+  f.controller.dialogs.maintenanceParent = async () => f.libraryRoot;
+  await assert.rejects(f.controller.revealCoverFolder({contentId: f.content.id}), {code: 'INVALID_DESTINATION'});
+  assert.equal(revealed.length, 2);
+  f.controller.dialogs.maintenanceParent = async () => parent;
+  const call = f.controller.worker.call; let rasters = 0;
+  f.controller.worker = {call: (op, args) => {if (op === 'candidateRaster' && ++rasters === 2) throw Object.assign(new Error('synthetic read failure'), {code: 'CORRUPT'}); return call(op, args);}};
+  await assert.rejects(f.controller.revealCoverFolder({contentId: f.content.id}), {code: 'CORRUPT'});
+  const partial = (await fs.readdir(parent)).find(name => !revealed.some(file => path.basename(path.dirname(file)) === name));
+  const partialFiles = await fs.readdir(path.join(parent, partial)); assert.equal(partialFiles.length, 1);
+  assert.deepEqual(await fs.readFile(path.join(parent, partial, partialFiles[0])), bytesByHash.get(before.candidates[0].assetHash), 'partial export failure retains already copied originals');
+  for (const invalid of [{contentId: f.content.id, path: parent}, {contentId: f.content.id, candidateIds: []}, {contentId: 'bad'}]) assert.throws(() => validateInput('revealCoverFolder', invalid), {code: 'INVALID_INPUT'});
+});
+
+test('folder-open failure keeps exported originals recoverable', async t => {
+  const f = await fixture(t); await commitCandidate(f, (await f.start()).jobs[0]);
+  const parent = path.join(f.root, 'exports'); await fs.mkdir(parent);
+  f.controller.dialogs.maintenanceParent = async () => parent;
+  f.controller.revealFolder = () => {throw new Error('native shell unavailable');};
+  await assert.rejects(f.controller.revealCoverFolder({contentId: f.content.id}), {code: 'FOLDER_OPEN_FAILED'});
+  const folders = await fs.readdir(parent); assert.equal(folders.length, 1);
+  const folder = path.join(parent, folders[0]), files = await fs.readdir(folder);
+  assert.equal(files.length, 1); assert.deepEqual(await fs.readFile(path.join(folder, files[0])), f.bytes);
 });

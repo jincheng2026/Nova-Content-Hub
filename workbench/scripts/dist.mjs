@@ -4,6 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
+import {buildDemoLibrary} from './build-demo-library.mjs';
 import {releaseModes} from '../../plugin-src/scripts/build.mjs';
 import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
@@ -148,6 +149,11 @@ export async function distribute(args = process.argv.slice(2)) {
         console.log(`Fresh portable native payload for universal preview assembly: ${payload}`);
     }
     const builderConfig = installerConfig(options, config.version);
+    if (options.platform === 'darwin' && options.channel === 'preview') {
+        const demo = buildDemoLibrary();
+        const appFolder = path.join(builderConfig.directories.output, options.arch === 'arm64' ? 'mac-arm64' : 'mac', '自媒体工作台.app');
+        builderConfig.dmg = {...builderConfig.dmg, window: {width: 600, height: 450}, contents: [{x: 130, y: 150, type: 'file', path: appFolder}, {x: 450, y: 150, type: 'link', path: '/Applications'}, {x: 290, y: 330, type: 'dir', path: demo}]};
+    }
     const [pluginRelease] = await releaseModes(options.auth);
     const sealedMarketplace = await validateInstallerMarketplace(builderConfig.extraResources[0].from, pluginRelease);
     fs.mkdirSync(builderConfig.directories.output, {recursive: true});

@@ -81,7 +81,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     Menu.setApplicationMenu(Menu.buildFromTemplate(applicationMenu(process.platform, app.getName())));
     const icon = nativeImage.createFromPath(icons.png);
     const size = icon.getSize();
-    if (icon.isEmpty() || !icon.getScaleFactors().includes(1) || size.width !== 512 || size.height !== 512) throw new Error('Cannot decode the bundled application PNG icon');
+    if (icon.isEmpty() || !icon.getScaleFactors().includes(1) || size.width !== (process.platform === 'darwin' ? 1024 : 512) || size.height !== (process.platform === 'darwin' ? 1024 : 512)) throw new Error('Cannot decode the bundled application PNG icon');
     if (icons.window !== icons.png && nativeImage.createFromPath(icons.window).isEmpty()) throw new Error('Cannot decode the bundled application ICO icon');
     if (show && await offerApplicationInstall(app, dialog) === 'relaunching') return;
     if (process.platform === 'darwin') {

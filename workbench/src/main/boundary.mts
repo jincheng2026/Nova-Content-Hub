@@ -12,7 +12,7 @@ export const CHANNELS = Object.freeze([
     'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent',
     'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
     'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',
-    'cancelCover', 'selectCover', 'exportCover', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
+    'cancelCover', 'selectCover', 'exportCover', 'revealCoverFolder', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
     'readWorkspaceLibrary', 'openPublicationLink', 'revealLibraryFolder', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
     'inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
     'prepareLibraryUpgrade', 'cancelLibraryUpgrade', 'confirmLibraryUpgrade', 'queryLibraryUpgrade', 'continueLibraryUpgrade', 'openUpgradedLibrary',

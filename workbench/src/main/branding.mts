@@ -3,7 +3,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {exact} from '../shared/validation.ts';
 
-const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
+const files = ['icon-mac.png', 'icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
 
 export function appIconPaths(directory: string, platform: NodeJS.Platform = process.platform) {
     const manifest: unknown = JSON.parse(readFileSync(path.join(directory, 'manifest.json'), 'utf8'));
@@ -13,9 +13,9 @@ export function appIconPaths(directory: string, platform: NodeJS.Platform = proc
         if (typeof expected !== 'string' || !/^[0-9a-f]{64}$/.test(expected) || createHash('sha256').update(readFileSync(path.join(directory, name))).digest('hex') !== expected) throw new Error(`Bundled application icon is missing or damaged: ${name}`);
     }
     return {
-        png: path.join(directory, 'icon.png'),
+        png: path.join(directory, platform === 'darwin' ? 'icon-mac.png' : 'icon.png'),
         tray: path.join(directory, platform === 'darwin' ? 'trayTemplate.png' : 'icon.png'),
         trayRetina: path.join(directory, platform === 'darwin' ? 'trayTemplate@2x.png' : 'icon@2x.png'),
-        window: path.join(directory, platform === 'win32' ? 'icon.ico' : 'icon.png')
+        window: path.join(directory, platform === 'win32' ? 'icon.ico' : platform === 'darwin' ? 'icon-mac.png' : 'icon.png')
     };
 }

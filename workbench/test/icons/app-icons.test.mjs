@@ -38,6 +38,16 @@ test('desktop icon containers preserve transparency and provide all Windows DPI 
     assert.equal(end, bytes.length);
 });
 
+test('macOS uses full-bleed opaque navy while the Windows PNG remains transparent', async () => {
+    const directory = await checkAppIcons();
+    const {data, info} = await sharp(path.join(directory, 'icon-mac.png')).ensureAlpha().raw().toBuffer({resolveWithObject: true});
+    assert.equal(info.width, 1024); assert.equal(info.height, 1024);
+    for (let i = 3; i < data.length; i += 4) assert.equal(data[i], 255, 'macOS artwork must have no transparent plate inset');
+    assert.deepEqual([...data.subarray(0, 4)], [6, 27, 78, 255]);
+    const windows = await sharp(path.join(directory, 'icon@2x.png')).ensureAlpha().raw().toBuffer();
+    assert.equal(windows[3], 0, 'Windows retains transparent rounded corners');
+});
+
 test('changing an output or the master is rejected without silently rebuilding it', async t => {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-icon-check-'));
     t.after(() => fs.rm(root, {recursive: true, force: true}));
@@ -63,6 +73,9 @@ test('macOS iconutil can decode the committed ICNS into the complete Retina icon
         assert.equal(image.height, size * scale);
         assert.equal(image.hasAlpha, true);
     }
+    const retina = await sharp(path.join(output, 'icon_512x512@2x.png')).ensureAlpha().raw().toBuffer();
+    const mac = await sharp(path.join(await checkAppIcons(), 'icon-mac.png')).ensureAlpha().raw().toBuffer();
+    assert.deepEqual(retina, mac, 'ICNS and the macOS Dock use the same full-bleed artwork');
 });
 
 test('macOS tray artwork is a transparent monochrome glyph at normal and Retina sizes', async () => {

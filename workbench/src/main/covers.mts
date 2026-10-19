@@ -181,5 +181,31 @@ export class Covers {
       await fs.rename(temporary, destination); return { exported: true };
     });
   }
+  async revealCoverFolder(input: {contentId: string}) {
+    const c = this.owner; validateInput('revealCoverFolder', input);
+    return c.exclusive(async () => {
+      if (!c.revealFolder || !c.dialogs.maintenanceParent) fail('NOT_READY', '此安装尚未配置文件夹导出入口。');
+      const binding = c.current(), view = await c.worker.call('readCover', {binding, contentId: input.contentId});
+      if (!view.candidates.length) fail('NO_CANDIDATES', '还没有可导出的候选原图。');
+      const chosen = await c.dialogs.maintenanceParent();
+      if (!chosen) return {revealed: false};
+      const parent = await fs.realpath(chosen), libraryRoot = await fs.realpath(binding.root), relative = path.relative(libraryRoot, parent);
+      if (!relative || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)) fail('INVALID_DESTINATION', '请选择内容库之外的导出位置，避免修改内部素材。');
+      const destination = await fs.mkdtemp(path.join(parent, 'Nova-封面原图-'));
+      let firstFile = '';
+      for (const [index, candidate] of view.candidates.entries()) {
+        const raster = await c.worker.call('candidateRaster', {binding, contentId: input.contentId, candidateId: candidate.id});
+        const ext = {'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp', 'image/gif': 'gif'}[raster.mime];
+        if (!ext) fail('INVALID_IMAGE', '候选原图格式不受支持，已导出的文件会保留。');
+        const file = path.join(destination, `${String(index + 1).padStart(3, '0')}-${candidate.id}.${ext}`);
+        await fs.writeFile(file, raster.data, {flag: 'wx', mode: 0o600});
+        if (!firstFile) firstFile = file;
+      }
+      // Reveal a file so the system opens the export folder with its first image selected.
+      try { await c.revealFolder(firstFile); }
+      catch { fail('FOLDER_OPEN_FAILED', '原图已导出，系统未能打开文件夹；文件仍保留在所选位置。'); }
+      return {revealed: true};
+    });
+  }
   async setAssistant(input: { host: Assistant }) { const c = this.owner; validateInput('setAssistant', input); return c.exclusive(async () => { c.noPending(); await c.persist({ ...c.binding, assistant: input.host }); }); }
 }
