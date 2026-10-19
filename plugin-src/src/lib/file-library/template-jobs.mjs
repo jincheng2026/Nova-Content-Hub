@@ -76,8 +76,11 @@ export function templateJobMethods(h) {
         if (hash(raw) !== job.requestHash) fail('CORRUPT', 'Template request checksum mismatch');
         let request;
         try {request = JSON.parse(raw);} catch {fail('CORRUPT', 'Invalid template request JSON');}
-        if (!exact(request, ['format', 'schemaVersion', 'requestId', 'createdAt', 'inputHash', ...payloadFields]) || request.format !== 'nova-template-request' || request.schemaVersion !== 1 || request.libraryId !== libraryId || request.templateId !== tid || request.requestId !== job.id || request.createdAt !== job.createdAt || request.inputHash !== job.inputHash || !isDeepStrictEqual(request.protocol, PROTOCOL) || !reference(request.template) || request.template.id !== tid || typeof request.notes !== 'string' || request.notes.length > 10000) fail('CORRUPT', 'Template request identity mismatch');
-        const normalized = Object.fromEntries(payloadFields.map(k => [k, request[k]]));
+        const ratioMinimum = request?.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum';
+        const fields = [...payloadFields, ...(ratioMinimum ? ['sizePolicy'] : [])];
+        const supportedSize = request?.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || ratioMinimum;
+        if (!exact(request, ['format', 'schemaVersion', 'requestId', 'createdAt', 'inputHash', ...fields]) || request.format !== 'nova-template-request' || !supportedSize || request.libraryId !== libraryId || request.templateId !== tid || request.requestId !== job.id || request.createdAt !== job.createdAt || request.inputHash !== job.inputHash || !isDeepStrictEqual(request.protocol, PROTOCOL) || !reference(request.template) || request.template.id !== tid || typeof request.notes !== 'string' || request.notes.length > 10000) fail('CORRUPT', 'Template request identity mismatch');
+        const normalized = Object.fromEntries(fields.map(k => [k, request[k]]));
         if (hash(jsonBytes(normalized)) !== job.inputHash) fail('CORRUPT', 'Template input checksum mismatch');
         const pkg = templatePackage(root, tid, request.template.version, request.template.packageHash);
         if (!isDeepStrictEqual(pkg.definition, request.templateDefinition) || !isDeepStrictEqual(pkg.resources, request.templateResources)) fail('CORRUPT', 'Fixed template package differs');
@@ -118,7 +121,9 @@ export function templateJobMethods(h) {
 
     async function createTemplateRequest(tid, raw, token, options = {}) {
         objectId('template', tid);
-        const input = inputFields(raw, ['version', 'notes'], ['version']);
+        const input = inputFields(raw, ['version', 'notes', 'sizePolicy'], ['version']);
+        if (Object.hasOwn(input, 'sizePolicy') && !['exact', 'ratio-minimum'].includes(input.sizePolicy)) fail('INVALID_INPUT', 'Unknown template size policy');
+        if (input.sizePolicy === 'exact') delete input.sizePolicy;
         if (!Number.isSafeInteger(input.version) || input.version < 1 || input.notes !== undefined && (typeof input.notes !== 'string' || input.notes.length > 10000)) fail('INVALID_INPUT', 'Require a positive version and notes within 10000 characters');
         const mutation = {action: 'createTemplateRequest', ...input};
         const previous = replay(tid, mutation, token, options);
@@ -146,9 +151,9 @@ export function templateJobMethods(h) {
             const pkg = templatePackage(root, tid, input.version, fixed.pkg.packageHash);
             if (!isDeepStrictEqual(pkg, fixed.pkg) || meta.currentVersion !== input.version) fail('CONFLICT', 'Template package changed during decoding');
             const rid = randomUUID(), createdAt = new Date().toISOString();
-            const body = {protocol: PROTOCOL, libraryId, templateId: tid, template: {id: tid, version: input.version, packageHash: fixed.pkg.packageHash}, templateDefinition: pkg.definition, templateResources: pkg.resources, styleAssetHashes: fixed.styles, inputs, restore: {sourceAssetHash: inputs[0].assetHash, width: inputs[0].width, height: inputs[0].height, outputFormat: 'png'}, notes: input.notes || ''};
+            const body = {protocol: PROTOCOL, libraryId, templateId: tid, template: {id: tid, version: input.version, packageHash: fixed.pkg.packageHash}, templateDefinition: pkg.definition, templateResources: pkg.resources, styleAssetHashes: fixed.styles, inputs, restore: {sourceAssetHash: inputs[0].assetHash, width: inputs[0].width, height: inputs[0].height, outputFormat: 'png'}, notes: input.notes || '', ...(input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {})};
             const inputHash = hash(jsonBytes(body));
-            const request = {format: 'nova-template-request', schemaVersion: 1, requestId: rid, createdAt, inputHash, ...body};
+            const request = {format: 'nova-template-request', schemaVersion: input.sizePolicy === 'ratio-minimum' ? 2 : 1, requestId: rid, createdAt, inputHash, ...body};
             const bytes = jsonBytes(request), dir = requestDir(tid, rid);
             ensureDirectory(path.dirname(dir));
             ensureDirectory(dir);
@@ -275,6 +280,13 @@ export function templateJobMethods(h) {
         for (const type of ['fixed', 'variable']) for (let i = 0; i < rules[type].length; i++) if (!rules.evidence.some(e => e.ruleType === type && e.ruleIndex === i)) fail('INVALID_INPUT', 'Every rule requires source evidence');
         return rules;
     }
+    function restoreDimensionsMatch(request, {width, height}) {
+        if (![width, height].every(v => Number.isSafeInteger(v) && v > 0) || width * height > 40_000_000) return false;
+        const target = request.restore;
+        return request.sizePolicy === 'ratio-minimum'
+            ? width >= target.width && height >= target.height && width * target.height === height * target.width
+            : width === target.width && height === target.height;
+    }
     const receiptDir = (tid, job, attempt) => path.join(attemptDir(tid, job.id, attempt.attemptId), '收件', attempt.receiptHash);
     function verifyEvidence(tid, job, attempt, expectedReceipt = attempt.receiptHash) {
         if (attempt.receiptHash !== expectedReceipt) fail('RECEIPT_CONFLICT', 'This attempt already has a different result');
@@ -287,7 +299,7 @@ export function templateJobMethods(h) {
         try {resultValue = JSON.parse(resultRaw); report = JSON.parse(reportRaw);} catch {fail('CORRUPT', 'Invalid result or validation report');}
         if (!exact(resultValue, ['format', 'schemaVersion', 'libraryId', 'templateId', 'requestId', 'attemptId', 'requestHash', 'receiptHash', 'host', 'rulesHash', 'restore']) || resultValue.format !== 'nova-template-result' || resultValue.schemaVersion !== 1 || resultValue.libraryId !== libraryId || resultValue.templateId !== tid || resultValue.requestId !== job.id || resultValue.attemptId !== attempt.attemptId || resultValue.requestHash !== job.requestHash || resultValue.receiptHash !== attempt.receiptHash || resultValue.host !== attempt.host || resultValue.rulesHash !== hash(rulesRaw) || receipt.requestHash !== job.requestHash || receipt.host !== attempt.host) fail('CORRUPT', 'Result ownership mismatch');
         const imageHash = hash(image), restore = resultValue.restore;
-        if (!exact(restore, ['assetHash', 'bytes', 'format', 'width', 'height']) || restore.assetHash !== imageHash || restore.bytes !== image.length || restore.format !== 'png' || restore.width !== request.restore.width || restore.height !== request.restore.height || request.styleAssetHashes.includes(imageHash)) fail('CORRUPT', 'Restored image differs from the fixed target');
+        if (!exact(restore, ['assetHash', 'bytes', 'format', 'width', 'height']) || restore.assetHash !== imageHash || restore.bytes !== image.length || restore.format !== 'png' || !restoreDimensionsMatch(request, restore) || request.styleAssetHashes.includes(imageHash)) fail('CORRUPT', 'Restored image differs from the fixed target');
         const asset = readAssetInternal(root, imageHash);
         if (asset.bytes !== image.length || asset.detectedType !== 'image/png') fail('CORRUPT', 'Restoration asset mismatch');
         if (!exact(report, ['format', 'schemaVersion', 'requestHash', 'receiptHash', 'resultHash', 'status', 'decoded', 'quality', 'restore']) || report.format !== 'nova-template-validation' || report.schemaVersion !== 1 || report.requestHash !== job.requestHash || report.receiptHash !== attempt.receiptHash || report.resultHash !== attempt.resultHash || report.status !== 'passed' || report.decoded !== true || report.quality !== 'pending-human-review' || !isDeepStrictEqual(report.restore, restore)) fail('CORRUPT', 'Validation report binding mismatch');
@@ -319,7 +331,7 @@ export function templateJobMethods(h) {
         hook('templateAfterDecode', {templateId: tid, requestId: rid, attemptId: aid});
         assertRootIdentity();
         if (decoded.format !== 'png') fail('IMAGE_FORMAT_MISMATCH', 'Restoration must be a decoded PNG');
-        if (decoded.width !== prepared.request.restore.width || decoded.height !== prepared.request.restore.height) fail('IMAGE_DIMENSIONS_MISMATCH', 'Restoration must preserve exact first-reference display pixels');
+        if (!restoreDimensionsMatch(prepared.request, decoded)) fail('IMAGE_DIMENSIONS_MISMATCH', prepared.request.sizePolicy === 'ratio-minimum' ? 'Restoration must preserve the exact first-reference ratio and meet both minimum display dimensions' : 'Restoration must preserve exact first-reference display pixels');
         const restore = {assetHash: decoded.assetHash, bytes: decoded.bytes, format: decoded.format, width: decoded.width, height: decoded.height};
         const resultValue = {format: 'nova-template-result', schemaVersion: 1, libraryId, templateId: tid, requestId: rid, attemptId: aid, requestHash: receipt.requestHash, receiptHash, host: receipt.host, rulesHash: hash(prepared.rulesBytes), restore};
         const resultBytes = jsonBytes(resultValue), resultHash = hash(resultBytes);

@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-19T01:19:11.827Z",
+  "version": "0.3.7",
+  "contentId": "79b02918-43b8-498a-a906-95e0ffad72fa",
+  "requestId": "a480137c-2561-493b-9a71-14594c1554fa",
+  "requestHash": "bf72b626985e3b84ee281a8c985bb28d93612ffeec2612823fe13bb19b768823",
+  "attempts": [
+    {
+      "attemptId": "3ea7cfee-7c03-4643-bff8-30d4b31de86e",
+      "host": "workbuddy",
+      "reason": "initial",
+      "status": "cancelled",
+      "createdAt": "2026-10-19T01:03:44.634Z",
+      "updatedAt": "2026-10-19T01:04:48.340Z",
+      "handoffHash": "d998fac9e395c49e7889ea87c67364e876402b225b5a48d07dce50ef3f40090b",
+      "receiptHash": null,
+      "reportHash": null,
+      "candidateIds": [],
+      "failure": null
+    },
+    {
+      "attemptId": "4a06e6b4-cdab-4a2a-9cf2-fee4d21a9b6a",
+      "host": "workbuddy",
+      "reason": "retry",
+      "status": "cancelled",
+      "createdAt": "2026-10-19T01:06:07.066Z",
+      "updatedAt": "2026-10-19T01:07:15.995Z",
+      "handoffHash": "aa796da4dca6f8e3c58ca3b0cc5e408b650210e7765e430e2297c1caf72c0110",
+      "receiptHash": null,
+      "reportHash": null,
+      "candidateIds": [],
+      "failure": null
+    }
+  ],
+  "nativeFlow": "create -> cancel -> retry saved request -> cancel",
+  "hostDraftsCleared": true,
+  "hostSend": false,
+  "realGeneration": false,
+  "preservedCandidates": 2,
+  "preservedSelection": "71b1a024-0de7-4c94-8c68-8ebbdd6f3f31",
+  "productionReady": false
+}

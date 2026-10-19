@@ -13,7 +13,7 @@ export interface TemplateWorkflowView {templateId: string; title: string; editTo
 export interface TemplateWorkflowResult {view: TemplateWorkflowView; launchRequested: boolean}
 type Bound = {binding: Pick<LibraryBinding, 'libraryId' | 'rootIdentity'>; mutationId: string};
 export type TemplatePending = Bound & (
-    | {action: 'start'; input: TemplateStart; host: Assistant; requestMutationId: string; attemptMutationId: string; request: {requestId: string; requestHash: string; sourcePackageHash: string} | null}
+    | {action: 'start'; sizePolicy?: 'exact' | 'ratio-minimum'; input: TemplateStart; host: Assistant; requestMutationId: string; attemptMutationId: string; request: {requestId: string; requestHash: string; sourcePackageHash: string} | null}
     | {action: 'attempt'; reference: TemplateReference; host: Assistant; reason: 'retry' | 'host-change'}
     | {action: 'cancel'; reference: TemplateReference}
     | {action: 'accept'; input: TemplateAccept}

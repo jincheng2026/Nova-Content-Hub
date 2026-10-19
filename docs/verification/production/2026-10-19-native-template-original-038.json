@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-19T03:45:31.964Z",
+  "desktopVersion": "0.3.8",
+  "hostPluginVersion": "0.3.8",
+  "host": "workbuddy",
+  "skill": "nova-content-template-execution",
+  "nativeSend": true,
+  "handoffId": "ea972756-8add-4c25-82cb-458106c663d7",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "templateId": "603c91f0-c7da-41bf-a96d-0416aabaca14",
+  "requestId": "2a486569-d820-45c2-9b9b-898cbf94ed5a",
+  "requestHash": "b8f66c18e85d0e20a5c706d74720371425c78f312730e0e415ca4577a960a05f",
+  "schemaVersion": 2,
+  "sizePolicy": "ratio-minimum",
+  "sourceMinimum": {
+    "sourceAssetHash": "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+    "width": 1086,
+    "height": 1448,
+    "outputFormat": "png"
+  },
+  "styleAssetHashes": [
+    "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+    "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd"
+  ],
+  "attempt": {
+    "attemptId": "71cc1017-487b-4ccb-aae7-d4c498f92d31",
+    "host": "workbuddy",
+    "sourceAttemptId": null,
+    "reason": "initial",
+    "status": "committed",
+    "createdAt": "2026-10-19T03:32:35.188Z",
+    "updatedAt": "2026-10-19T03:40:57.327Z",
+    "handoffHash": "1da1708f215af2c03805e1d397e114c57ba094ede158491a1582a132c1c02346",
+    "receiptHash": "fce0fe9fea4cdc9ac9023e054ed9a679537c11cfc979dc78d115149ebc91ad61",
+    "reportHash": "b3d7a8db1314ada6b4069c8a5f461aa5728a4d6ac94c9211fc4dbae7142f08f8",
+    "resultHash": "4ae402f5b08f261666aff5ac19b375e2b88053b7f0c58c93ae942d3c539ecd9f",
+    "failure": null
+  },
+  "restore": {
+    "assetHash": "d67aa7185b2502471b8968a137166eb708e81bcc2819055c9424193d03102410",
+    "bytes": 2379183,
+    "format": "png",
+    "width": 1152,
+    "height": 1536,
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库/模板/603c91f0-c7da-41bf-a96d-0416aabaca14/学习任务/2a486569-d820-45c2-9b9b-898cbf94ed5a/尝试/71cc1017-487b-4ccb-aae7-d4c498f92d31/收件/fce0fe9fea4cdc9ac9023e054ed9a679537c11cfc979dc78d115149ebc91ad61/还原.png"
+  },
+  "report": {
+    "format": "nova-template-validation",
+    "schemaVersion": 1,
+    "requestHash": "b8f66c18e85d0e20a5c706d74720371425c78f312730e0e415ca4577a960a05f",
+    "receiptHash": "fce0fe9fea4cdc9ac9023e054ed9a679537c11cfc979dc78d115149ebc91ad61",
+    "resultHash": "4ae402f5b08f261666aff5ac19b375e2b88053b7f0c58c93ae942d3c539ecd9f",
+    "status": "passed",
+    "decoded": true,
+    "quality": "pending-human-review",
+    "restore": {
+      "assetHash": "d67aa7185b2502471b8968a137166eb708e81bcc2819055c9424193d03102410",
+      "bytes": 2379183,
+      "format": "png",
+      "width": 1152,
+      "height": 1536
+    }
+  },
+  "toolOriginalFile": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库/generated-images/原样还原这张竖版科技拼贴海报_严格保持构图与视觉规则_画面上_2026-10-19T03-39-47.png",
+  "sourceInboxArchiveAssetAndReviewHashesEqual": true,
+  "originalBytes": true,
+  "visiblePlatformMark": "AI生成 WORKBUDDY",
+  "rules": {
+    "fixed": 6,
+    "variable": 5,
+    "evidence": 22
+  },
+  "qualityAccepted": false,
+  "visualReview": "Main title, yellow footer, grey-shirt subject, translucent cards and studio composition retained; generated file keeps platform mark. Rule claiming purple is the only accent conflicts with prominent yellow and requires human review.",
+  "preservedContentEntries": 115,
+  "preservedOriginalCandidates": 8,
+  "templateVersion": 1,
+  "transientBusyRecoveredBySameClaim": true,
+  "nativeRestartWhileHostClaimed": {
+    "normalMenuQuit": true,
+    "applicationPidAfterRestart": 34908,
+    "originalAttemptRetained": true
+  },
+  "productionReady": false
+}

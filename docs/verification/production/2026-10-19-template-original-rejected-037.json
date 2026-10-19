@@ -1,0 +1,72 @@
+{
+  "at": "2026-10-19T01:19:11.829Z",
+  "host": "workbuddy",
+  "version": "0.3.7",
+  "nativeSend": true,
+  "realGeneration": true,
+  "handoffId": "6d5d0574-7678-4528-889f-ce4de832110a",
+  "requestId": "72baf3c3-aae4-47dd-b6f3-04afb94f7086",
+  "attemptId": "db633203-92cd-42d5-a24f-4bc6114120d6",
+  "referenceWidth": 1086,
+  "referenceHeight": 1448,
+  "rawOutput": {
+    "width": 1072,
+    "height": 1440,
+    "sha256": "6f60ccde0abac2a97e033f32b78a207726f03e273f17c06d42d9efe8b8ed9169"
+  },
+  "submitted": {
+    "width": 1086,
+    "height": 1448,
+    "sha256": "640e77623e371ba900429ba1a6eccf0bdbdf03f8fb5842baecc7eba7fc139bb1"
+  },
+  "technicalCommit": true,
+  "originalBytes": false,
+  "platformMarkErased": true,
+  "qualityAccepted": false,
+  "currentTemplateVersion": 1,
+  "reason": "Host erased platform mark and resized raw output before submit; original generation is 1072x1440, submitted 1086x1448.",
+  "retainedEvidenceFiles": [
+    {
+      "name": "claim-mutation-id.txt",
+      "sha256": "2e786e04e9c0da4b204e1faaec2d1618372cc3d27fa696fd81fe1e0240394eea",
+      "bytes": 37
+    },
+    {
+      "name": "claim.json",
+      "sha256": "750a3ea6fffc76c86d2c1a121b7d471c6c6cdcb3b47ddc856cbc9a348fe90f91",
+      "bytes": 307
+    },
+    {
+      "name": "no-wm.png",
+      "sha256": "5a2c4b98a59da34a11be82e4f5fa021c0cfb08b36e809dea3e65f191c31922be",
+      "bytes": 2270795,
+      "width": 1072,
+      "height": 1440
+    },
+    {
+      "name": "receipt.json",
+      "sha256": "e3a609acdbab855a01fe6a0ece1ef925b56b5236d8f9306d764f83b5cfc2c949",
+      "bytes": 468
+    },
+    {
+      "name": "submit-mutation-id.txt",
+      "sha256": "8f1a171b9e808f9b6b9eee13bfc0ab99a69ec04a6431af5f38e0089ebc05263e",
+      "bytes": 37
+    },
+    {
+      "name": "原样还原这张竖版科技拼贴风格海报_严格保持原图构图_文字与全_2026-10-19T01-01-44.png",
+      "sha256": "6f60ccde0abac2a97e033f32b78a207726f03e273f17c06d42d9efe8b8ed9169",
+      "bytes": 2015050,
+      "width": 1072,
+      "height": 1440
+    },
+    {
+      "name": "还原.png",
+      "sha256": "640e77623e371ba900429ba1a6eccf0bdbdf03f8fb5842baecc7eba7fc139bb1",
+      "bytes": 2092855,
+      "width": 1086,
+      "height": 1448
+    }
+  ],
+  "productionReady": false
+}

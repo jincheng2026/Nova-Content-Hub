@@ -166,6 +166,25 @@ function PromptDialog({ prompt, unavailable, content: initialContent, close }: {
 export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverResults['listCoverAssets'] | null; busy: boolean; useTemplate(template: TemplateGroup): void; managePhotos(): void }) {
   const {assets, busy, useTemplate, library} = props;
   const [workflowTemplateId, setWorkflowTemplateId] = useState<string | null>(null);
+  const [workflowExpanded, setWorkflowExpanded] = useState(false);
+  const [workflowRequest, setWorkflowRequest] = useState(0);
+  const workflowSection = useRef<HTMLElement>(null), workflowReturnId = useRef<string | null>(null), templateSearch = useRef<HTMLInputElement>(null);
+  function openWorkflow(templateId: string, fromCard = false) {
+    if (fromCard) workflowReturnId.current = templateId;
+    setWorkflowTemplateId(templateId);
+    setWorkflowExpanded(true);
+    setWorkflowRequest(value => value + 1);
+  }
+  function closeWorkflow() {
+    setWorkflowExpanded(false);
+    const trigger = document.getElementById(`template-workflow-trigger-${workflowReturnId.current}`);
+    (trigger ?? templateSearch.current)?.focus();
+  }
+  useEffect(() => {
+    if (!workflowRequest) return;
+    workflowSection.current?.focus({preventScroll: true});
+    workflowSection.current?.scrollIntoView({block: 'start', behavior: 'instant'});
+  }, [workflowRequest]);
   const [ownPhoto, setOwnPhoto] = useState(false);
   async function importPhoto() {
     if (busy || !library) return;
@@ -188,8 +207,8 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
     if (busy || !source || !version) return;
     await props.run(async () => {
       const saved = await invoke('mutateWorkspace', {op: 'deriveTemplate', sourceTemplateId: source.id, sourceVersion: version.version, sourcePackageHash: version.packageHash, name: `${source.title.slice(0, 100)} · 我的副本`});
-      setWorkflowTemplateId(saved.objectId);
       await props.refresh();
+      openWorkflow(saved.objectId);
     });
   }
   const [query, setQuery] = useState(''), [preview, setPreview] = useState<TemplateGroup | null>(null), [source, setSource] = useState<'all' | 'mine' | 'builtin'>('all');
@@ -205,12 +224,12 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
     <header className="creator-page-heading"><div><p className="eyebrow">COVER STYLES</p><h2>选一种风格，开始下一张封面</h2><p>每组参考共同定义版式与气质，选好后再填入你的内容。</p></div><div className="management-actions"><Button disabled={busy || !library} onClick={() => setManaging(!managing)}>{managing ? '收起管理' : '版本与回收站'}</Button><Button theme="solid" disabled={busy || !library} onClick={() => void importImages()}>＋ 导入我的模板</Button></div></header>
     {managing && <TemplateManagement {...props} addVersion={template => void importImages(template)}/>}
     <div className="creator-template-layout"><div className="creator-template-library">
-      <div className="creator-template-toolbar"><div className="creator-template-tabs" aria-label="模板来源">{([['all', '全部模板'], ['mine', '我的模板'], ['builtin', '内置模板']] as const).map(([key, label]) => <button key={key} aria-pressed={source === key} className={source === key ? 'active' : ''} onClick={() => setSource(key)}>{label}<span>{assets?.templates.filter(template => key === 'all' || (key === 'builtin' ? template.builtin : !template.builtin)).length ?? 0}</span></button>)}</div><input className="creator-template-search" type="search" aria-label="搜索模板" value={query} placeholder="搜索名称、风格或适用内容" onChange={event => setQuery(event.target.value)}/></div>
+      <div className="creator-template-toolbar"><div className="creator-template-tabs" aria-label="模板来源">{([['all', '全部模板'], ['mine', '我的模板'], ['builtin', '内置模板']] as const).map(([key, label]) => <button key={key} aria-pressed={source === key} className={source === key ? 'active' : ''} onClick={() => setSource(key)}>{label}<span>{assets?.templates.filter(template => key === 'all' || (key === 'builtin' ? template.builtin : !template.builtin)).length ?? 0}</span></button>)}</div><input ref={templateSearch} className="creator-template-search" type="search" aria-label="搜索模板" value={query} placeholder="搜索名称、风格或适用内容" onChange={event => setQuery(event.target.value)}/></div>
       <div className="creator-template-grid">{matching.map(template => <article key={template.id} className="creator-style-card">
         <button className="creator-reference-stack" disabled={busy} onClick={() => setPreview(template)} aria-label={`预览 ${template.name} 的 ${template.samples.length} 张参考样张`}>{template.samples.length ? <><span className="creator-stack-sheets">{template.samples.slice(0, 3).reverse().map((sample, index, stack) => <img key={sample.assetHash} src={sample.url} loading="lazy" className={`creator-stack-sheet sheet-${stack.length - index - 1}`} alt={index === stack.length - 1 ? `${template.name}参考样张` : ''}/>)}</span><span className="creator-sample-count">{template.samples.length} 张参考</span><span className="creator-stack-preview-label">查看整组 ↗</span></> : <span className="creator-no-reference">暂无可用参考样张</span>}</button>
         <div className="creator-style-card-body"><div className="creator-style-meta"><span>{template.builtin ? '内置风格' : '我的参考'}</span><span>v{template.version}{defaults?.templateId === template.id ? ' · 当前默认' : ''}</span></div><h3>{template.name}</h3><p className="creator-style-description">{template.description || '使用这组参考，为你的内容制作封面。'}</p>
           <button className="creator-sample-strip" disabled={busy || !template.samples.length} onClick={() => setPreview(template)} aria-label={`查看 ${template.name} 的全部样张`}>{template.samples.slice(0, 4).map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`样张 ${index + 1}`} loading="lazy"/>)}{template.samples.length > 4 && <span>+{template.samples.length - 4}</span>}</button>
-          <div className="creator-template-acceptance">{template.builtin ? '内置 · 可直接使用' : template.accepted && template.aiTested ? '已记录人工验收' : '可作为风格参考 · 效果待验收'}</div><div className="creator-style-actions"><Button theme="solid" disabled={busy || !library || !template.samples.length} onClick={() => useTemplate(template)}>使用这个风格</Button><Button theme="borderless" disabled={busy || !library} onClick={() => setWorkflowTemplateId(template.id)}>学习与还原</Button></div>
+          <div className="creator-template-acceptance">{template.builtin ? '内置 · 可直接使用' : template.accepted && template.aiTested ? '已记录人工验收' : '可作为风格参考 · 效果待验收'}</div><div className="creator-style-actions"><Button theme="solid" disabled={busy || !library || !template.samples.length} onClick={() => useTemplate(template)}>使用这个风格</Button><Button id={`template-workflow-trigger-${template.id}`} theme="borderless" disabled={busy || !library} aria-controls="template-learning-workflow" aria-expanded={workflowExpanded && workflowTemplateId === template.id} onClick={() => openWorkflow(template.id, true)}>学习与还原</Button></div>
         </div>
       </article>)}</div>
       {!matching.length && <section className="creator-panel creator-empty"><span className="creator-empty-icon" aria-hidden="true">▧</span><h3>{assets?.templates.length ? '没有找到合适的模板' : '把喜欢的风格存成模板'}</h3><p>{assets?.templates.length ? '换个关键词，或切换到全部模板。' : '从本机导入一组参考样张，之后可以反复使用。'}</p>{assets?.templates.length ? <Button disabled={busy} onClick={() => {setQuery(''); setSource('all');}}>查看全部模板</Button> : <Button theme="solid" disabled={busy || !library} onClick={() => void importImages()}>导入参考样张</Button>}</section>}
@@ -224,7 +243,7 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
       <div className="creator-template-tip"><span aria-hidden="true">✦</span><p>先选风格，再写内容。自己的标题、正文和人物选择，会在制作封面时逐项确认。</p></div>
     </aside></div>
     {preview && <dialog ref={dialog} className="image-preview" onCancel={() => setPreview(null)} aria-label={preview.name}><div className="dialog-heading"><div><h2>{preview.name}</h2><p>{preview.samples.length} 张风格样张 · 同一模板组 · v{preview.version}</p></div><Button onClick={() => setPreview(null)}>关闭预览</Button></div><div className="preview-grid">{preview.samples.map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`${preview.name}样张 ${index + 1}`}/>)}</div></dialog>}
-    {workflowTemplateId && <Card title="模板学习与还原" headerExtraContent={<Button disabled={busy} onClick={() => setWorkflowTemplateId(null)}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card>}
+    {workflowTemplateId && <section id="template-learning-workflow" aria-label="模板学习与还原" hidden={!workflowExpanded} tabIndex={-1} ref={workflowSection}><Card title="模板学习与还原" headerExtraContent={<Button disabled={busy} onClick={closeWorkflow}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card></section>}
     {importing && <TemplateImportDialog props={props} template={importing.template} initialImages={importing.images} close={() => setImporting(null)}/>}
   </section>;
 }

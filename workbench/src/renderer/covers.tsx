@@ -9,6 +9,7 @@ import type { Content, Status } from '../shared/contracts.ts';
 import type { WorkspaceLibrarySnapshot, WorkspaceContentDetails, WorkspaceCandidate } from '../shared/workspace-contracts.ts';
 interface Props { startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; readAutomatically(contentId: string): Promise<{assets: CoverResults['listCoverAssets']; cover: CoverView} | undefined>; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
 const attemptLabels: Record<Attempt['status'], string> = { created: '待接单', claimed: '已接单', committed: '已入库', failed: '失败', cancelled: '已取消', superseded: '已替换' };
+const launchNotice = '已请求系统打开助手。请在助手中确认执行；接单与结果将显示在这里。';
 function ratioPixels(ratio: string): { width: number; height: number } | null {
   if (!/^\d{1,8}:\d{1,8}$/.test(ratio)) return null;
   const [width, height] = ratio.split(':').map(Number);
@@ -67,7 +68,7 @@ export function CoverPanel({ startOpenKey, library, refresh: refreshWorkspace, s
     try {
       const next = await action(); apply(next);
       if (alive.current) setComposerOpen(false);
-      if (alive.current) setNotice(next.launchRequested ? '已请求系统打开助手。请在助手中确认执行；接单与结果将显示在这里。' : '这次固定请求已有结果或已结束，已显示原任务与候选。需要重做时，请明确重新生成。');
+      if (alive.current) setNotice(next.launchRequested ? launchNotice : '这次固定请求已有结果或已结束，已显示原任务与候选。需要重做时，请明确重新生成。');
     } catch (error) {
       if (alive.current) setNotice('尚未确认交接成功，设置已保留。可收起窗口，在任务区继续或处理恢复提示。');
       // A failed app launch must leave the persisted live attempt visible for recovery.
@@ -120,6 +121,7 @@ export function CoverPanel({ startOpenKey, library, refresh: refreshWorkspace, s
   const candidateGroups = currentCover ? coverCandidateGroups(currentCover) : [];
   const liveJob = jobs.find(job => job.attempts.some(attempt => attempt.attemptId === job.activeAttemptId && ['created', 'claimed'].includes(attempt.status)));
   const liveAttempt = liveJob?.attempts.find(attempt => attempt.attemptId === liveJob.activeAttemptId);
+  useEffect(() => { if (!liveAttempt && notice === launchNotice) setNotice(''); }, [liveAttempt, notice]);
   const liveReference: CoverReference | null = currentCover && liveJob && liveAttempt ? { contentId: currentCover.content.id, requestId: liveJob.id, attemptId: liveAttempt.attemptId } : null;
   const selectedCandidate = currentCover?.candidates.find(candidate => candidate.id === currentCover.selectedCandidateId);
   const generationDisabled = !enabled || dirty || !currentCover || !content || !!content.deletedAt || !!liveJob || !template || invalidTemplate || !pixels || invalidPhoto || invalidMaterialIds.length > 0 || !samples.length || !Number.isInteger(count) || count < 1 || count > 20 || !prompt.trim();

@@ -62,7 +62,7 @@ function attemptReference(t: TemplateCoreDocument, p: TemplatePending): Template
 async function verifyReplay(library: TemplateCoreLibrary, p: TemplatePending) {
     if (p.action === 'start') {
         if (!receipt(library, p, true)) fail('CORRUPT', '原尝试事务的请求回执丢失。');
-        await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes}, p.input.editToken, {mutationId: p.requestMutationId});
+        await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes, ...(p.sizePolicy ? {sizePolicy: p.sizePolicy} : {})}, p.input.editToken, {mutationId: p.requestMutationId});
         if (!p.request) fail('CORRUPT', '原尝试事务缺少请求绑定。');
         library.createTemplateAttempt(p.input.templateId, p.request.requestId, {host: p.host, reason: 'initial'}, {mutationId: p.mutationId});
     } else if (p.action === 'attempt') {
@@ -88,7 +88,7 @@ export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: u
         const found = receipt(library, p);
         if (found) {await verifyReplay(library, p); return {found: true, conflict: false, request: null, reference: attemptReference(found, p)};}
         const request = p.action === 'start' ? receipt(library, p, true) : null;
-        if (request && p.action === 'start') await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes}, p.input.editToken, {mutationId: p.requestMutationId});
+        if (request && p.action === 'start') await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes, ...(p.sizePolicy ? {sizePolicy: p.sizePolicy} : {})}, p.input.editToken, {mutationId: p.requestMutationId});
         const current = library.readTemplate(idOf(p));
         const sourceVersion = p.action === 'start' ? p.input.version : p.action === 'accept' ? p.input.sourceVersion : p.reference.sourceVersion;
         const tokenChanged = p.action === 'accept' ? current.editToken !== p.input.editToken : p.action === 'start' && !request && current.editToken !== p.input.editToken;
@@ -98,12 +98,12 @@ export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: u
         if (p.action !== 'start') fail('INVALID_INPUT', '仅新学习请求可创建固定输入。');
         const existing = receipt(library, p, true);
         if (existing) {
-            await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes}, p.input.editToken, {mutationId: p.requestMutationId});
+            await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes, ...(p.sizePolicy ? {sizePolicy: p.sizePolicy} : {})}, p.input.editToken, {mutationId: p.requestMutationId});
             return requestIdentity(existing, p);
         }
         const current = library.readTemplate(p.input.templateId);
         if (current.builtin) fail('BUILTIN_TEMPLATE', '请先派生为自己的模板，再学习并还原。');
-        const result = await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes}, p.input.editToken, {mutationId: p.requestMutationId});
+        const result = await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes, ...(p.sizePolicy ? {sizePolicy: p.sizePolicy} : {})}, p.input.editToken, {mutationId: p.requestMutationId});
         return {requestId: result.request.requestId, requestHash: result.request.requestHash, sourceVersion: result.request.template.version, sourcePackageHash: result.request.template.packageHash};
     }
     const existing = receipt(library, p);

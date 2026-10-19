@@ -230,6 +230,12 @@ addTemplateVersion 原地编辑；可显式创建 derivedFrom 克隆，内置新
 ID/version/mutationId/packageHash。列表只跳过有效未登记 marker 下的孤儿包和明确 staging；缺元信息却无 marker 或 marker
 损坏会拒绝。元信息存在时优先校验元信息；清 marker 失败不否定已提交结果。失败可留下诊断孤儿，稳定内置 ID 可以用同包重试，不覆盖不同包。
 
+模板学习的 `createTemplateRequest(id,{version,notes?,sizePolicy?},token,options?)` 固定整组样张和首张显示尺寸。
+省略 sizePolicy 或显式 `exact` 保持原 v1 请求、规范化输入与事务重放字节/hash；`ratio-minimum` 创建 v2，策略参与 inputHash/requestHash。
+v2 的 `restore.width/height` 是首张样张的最小显示宽高：提交 PNG 必须严格同比例且每一维达到最小值，按整数交叉相乘校验，无容差或缩放。
+例如 1086×1448 接受 1152×1536，拒绝 1072×1440（比例不同）和 1080×1440（小于最小值）。只读取无策略的 v1 或带 ratio-minimum 的 v2。
+提交、回读结果、验收和备份校验使用同一尺寸规则；旧任务的重试、换宿主继续使用原请求。桌面只给新建持久化意图写入 ratio-minimum，旧意图缺失策略仍按 v1 重放，IPC 不开放尺寸选项。
+
 ## 内容资料、封面与人工发布
 
 | 方法                                                                                                          | 说明                                                                                                    |

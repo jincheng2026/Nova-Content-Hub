@@ -1,0 +1,20 @@
+✔ omitted and exact preserve v1 request bytes, input digest and mutation replay (4384.873333ms)
+✔ ratio-minimum checks exact integer ratio and both minimums, then rereads, accepts and restores backup unchanged (3784.804833ms)
+✔ unknown template size policy "automatic" is rejected (336.748125ms)
+✔ unknown template size policy "" is rejected (302.009333ms)
+✔ unknown template size policy null is rejected (288.813875ms)
+✔ unknown template size policy 1 is rejected (1030.709042ms)
+✔ fixed request rejects unsupported version/policy 1/ratio-minimum (1531.234208ms)
+✔ fixed request rejects unsupported version/policy 1/exact (1742.593375ms)
+✔ fixed request rejects unsupported version/policy 2/undefined (1659.095042ms)
+✔ fixed request rejects unsupported version/policy 2/exact (1797.63675ms)
+✔ fixed request rejects unsupported version/policy 3/ratio-minimum (1796.553166ms)
+✔ evidence read rejects a resealed result below the fixed minimum (3678.681625ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22542.168041

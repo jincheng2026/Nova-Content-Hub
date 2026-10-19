@@ -1,0 +1,23 @@
+{
+  "at": "2026-10-19T03:49:28.269Z",
+  "version": "0.3.8",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/template-038/real-backup",
+  "restored": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/template-038/real-restored",
+  "sourceBusinessTreeMatchesBackup": true,
+  "excludedEphemeralPaths": [
+    "系统（别动）/库锁"
+  ],
+  "sourceEntries": 999,
+  "sourceDigest": "a277934307c576c6696a986a9c844c67faedc0d52753337663c2f5169ba230b6",
+  "schemaVersion": 2,
+  "sizePolicy": "ratio-minimum",
+  "requestBytesUnchanged": true,
+  "restoredAttempt": "committed",
+  "rawRestoreSha256": "d67aa7185b2502471b8968a137166eb708e81bcc2819055c9424193d03102410",
+  "templateAccepted": false,
+  "candidatesRetained": 8,
+  "selectionRetained": true,
+  "method": "actual core backup/verify/restore of native synthetic acceptance library; not native backup dialog",
+  "productionReady": false
+}

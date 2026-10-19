@@ -118,7 +118,7 @@ export class TemplateController {
             this.owner.noPending(); const binding = await this.writable(), host = this.owner.binding.assistant ?? 'codex';
             await this.requireAssistant(host);
             const attemptMutationId = randomUUID();
-            return this.save({action: 'start', input: structuredClone(input), host, binding: {libraryId: binding.libraryId, rootIdentity: {...binding.rootIdentity}}, mutationId: attemptMutationId, requestMutationId: randomUUID(), attemptMutationId, request: null});
+            return this.save({action: 'start', sizePolicy: 'ratio-minimum', input: structuredClone(input), host, binding: {libraryId: binding.libraryId, rootIdentity: {...binding.rootIdentity}}, mutationId: attemptMutationId, requestMutationId: randomUUID(), attemptMutationId, request: null});
         });
     }
     async newAttempt(reference: TemplateReference, reason: 'retry' | 'host-change') {
