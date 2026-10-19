@@ -5,20 +5,20 @@ import os from 'node:os';
 import path from 'node:path';
 import {installMacApplication, recoverMacInstallation, confirmMacInstallation, isMacApplicationRunning} from '../src/main/mac-installation.mts';
 
-async function fixture(t) {
+async function fixture(t, identifier = 'com.novaisland.nova-content-hub') {
     const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-install-')));
     t.after(() => fs.rm(root, {recursive: true, force: true}));
     const source = path.join(root, 'source.app'), target = path.join(root, 'Applications', '自媒体工作台.app');
     for (const [app, content] of [[source, 'new'], [target, 'old']]) {
         await fs.mkdir(path.join(app, 'Contents/MacOS'), {recursive: true});
-        await fs.writeFile(path.join(app, 'Contents/Info.plist'), 'plist');
+        await fs.writeFile(path.join(app, 'Contents/Info.plist'), identifier);
         await fs.writeFile(path.join(app, 'Contents/MacOS/Workbench'), content, {mode: 0o755});
     }
     const calls = [];
-    const options = {source, target, bundleIdentifier: 'com.novaisland.nova-content-hub', executable: 'Workbench',
+    const options = {source, target, bundleIdentifier: identifier, executable: 'Workbench',
         running: async () => false, verifySignature: async app => calls.push(app),
         copy: (from, to) => fs.cp(from, to, {recursive: true, verbatimSymlinks: true}),
-        readBundle: async () => ({identifier: 'com.novaisland.nova-content-hub', executable: 'Workbench'})};
+        readBundle: async app => ({identifier: await fs.readFile(path.join(app, 'Contents/Info.plist'), 'utf8'), executable: 'Workbench'})};
     return {root, source, target, options, calls, old: () => fs.readFile(path.join(target, 'Contents/MacOS/Workbench'), 'utf8')};
 }
 
@@ -31,6 +31,59 @@ test('verified installation retains the complete previous app and confirms only 
     assert.equal(await confirmMacInstallation({...f.options, source: f.source}), false);
     assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true);
     assert.equal((JSON.parse(await fs.readFile(path.join(result.transaction, 'record.json')))).phase, 'complete');
+});
+
+test('a completed local-channel journal can recover before an official-channel update', async t => {
+    const f = await fixture(t, 'com.novaisland.nova-content-hub.local');
+    const first = await installMacApplication(f.options);
+    assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true);
+    const incoming = {...f.options, bundleIdentifier: 'com.novaisland.nova-content-hub'};
+    await fs.writeFile(path.join(f.source, 'Contents/Info.plist'), incoming.bundleIdentifier);
+    assert.equal(await recoverMacInstallation(incoming), 'none');
+    assert.equal(await f.old(), 'new');
+    const next = await installMacApplication(incoming);
+    assert.notEqual(next.transaction, first.transaction);
+    assert.equal((await incoming.readBundle(f.target)).identifier, incoming.bundleIdentifier);
+    assert.equal((await incoming.readBundle(path.join(next.transaction, 'previous.app'))).identifier, f.options.bundleIdentifier);
+});
+
+test('allowed product channels replace and restore each other with the same executable', async t => {
+    const f = await fixture(t, 'com.novaisland.nova-content-hub.testing');
+    const incoming = {...f.options, bundleIdentifier: 'com.novaisland.nova-content-hub'};
+    await fs.writeFile(path.join(f.source, 'Contents/Info.plist'), incoming.bundleIdentifier);
+    const result = await installMacApplication(incoming);
+    assert.equal(await f.old(), 'new');
+    await fs.rename(f.target, path.join(result.transaction, 'candidate.app'));
+    assert.equal(await recoverMacInstallation(incoming), 'restored');
+    assert.equal(await f.old(), 'old');
+    assert.equal((await incoming.readBundle(f.target)).identifier, f.options.bundleIdentifier);
+});
+
+test('unknown journal channels and incompatible executables preserve recovery evidence', async t => {
+    for (const invalid of [{bundleIdentifier: 'unknown'}, {executable: 'Other'}]) {
+        const f = await fixture(t);
+        const result = await installMacApplication(f.options);
+        const file = path.join(result.transaction, 'record.json');
+        const record = JSON.parse(await fs.readFile(file));
+        await fs.writeFile(file, JSON.stringify({...record, ...invalid, phase: 'complete'}));
+        await assert.rejects(recoverMacInstallation(f.options), /Unknown installation record/);
+        assert.equal(await f.old(), 'new');
+        assert.equal(await fs.readFile(path.join(result.transaction, 'previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+        assert.ok((await fs.lstat(path.join(path.dirname(f.target), '.nova-content-hub-install'))).isFile());
+    }
+});
+
+test('unknown installed channels and mismatched incoming source or candidate channels are refused', async t => {
+    for (const mismatch of ['installed', 'source', 'candidate']) {
+        const f = await fixture(t);
+        if (mismatch !== 'candidate') await fs.writeFile(path.join(mismatch === 'installed' ? f.target : f.source, 'Contents/Info.plist'), mismatch === 'installed' ? 'unknown' : 'com.novaisland.nova-content-hub.local');
+        const copy = async (source, candidate) => {
+            await f.options.copy(source, candidate);
+            await fs.writeFile(path.join(candidate, 'Contents/Info.plist'), 'com.novaisland.nova-content-hub.local');
+        };
+        await assert.rejects(installMacApplication({...f.options, copy: mismatch === 'candidate' ? copy : f.options.copy}), /Unrecognized application bundle identity/);
+        assert.equal(await f.old(), 'old');
+    }
 });
 
 for (const failure of ['throw', 'missing', 'hash', 'mode', 'source-signature', 'candidate-signature']) {

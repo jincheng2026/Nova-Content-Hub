@@ -8,16 +8,17 @@ import type {Assistant, AssistantSetup, CoverResults} from '../shared/cover-cont
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Status} from '../shared/contracts.ts';
 import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
+import {PopupSelect} from './semi-controls.tsx';
 import './creator-settings.css';
 
 interface SettingsProps {
   status: Status | null; busy: boolean; blocked: boolean;
   run<T>(action: () => Promise<T>): Promise<T | undefined>; close(): void;
   library?: WorkspaceLibrarySnapshot | null; assets?: CoverResults['listCoverAssets'] | null;
-  refresh?(): Promise<void>; managePhotos?(): void; manageLibrary?(): void;
+  refresh?(): Promise<void>; managePhotos?(): void; manageLibrary?(): void; manageChannels?(): void;
   preferences?: ReactNode; setup?: ReactNode; recovery?: ReactNode; children?: ReactNode;
 }
-export function AssistantSettings({status, busy, blocked, run, close, library = null, assets = null, refresh, managePhotos, manageLibrary, preferences, setup: setupPanel, recovery, children}: SettingsProps) {
+export function AssistantSettings({status, busy, blocked, run, close, library = null, assets = null, refresh, managePhotos, manageLibrary, manageChannels, preferences, setup: setupPanel, recovery, children}: SettingsProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [closeNotice, setCloseNotice] = useState(''), [editingProfile, setEditingProfile] = useState(false);
   const requestClose = () => { if (hasManagedDrafts()) setCloseNotice('有尚未保存的设置或编辑，请先保存，或在对应表单中明确放弃修改。'); else close(); };
@@ -58,7 +59,8 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
       <Card title="内容库"><div className="creator-settings-library"><div><strong>{status?.currentName || '尚未打开内容库'}</strong><p>正文、封面、模板与照片都保存在这里。</p></div><Button disabled={busy || !manageLibrary} onClick={() => openResource(manageLibrary)}>管理内容库</Button></div>{status?.currentName && <><Button theme="borderless" disabled={busy} onClick={() => void run(() => invoke('revealLibraryFolder'))}>打开文件夹 →</Button><div className="creator-settings-check"><div><strong>内置模板与提示词</strong><p className="creator-settings-hint">补充新风格和提示词，保留已有修改与删除。</p></div><Button id="update-builtins" disabled={builtinsBlocked} onClick={() => {if (hasManagedDrafts()) {setCloseNotice('请先保存或放弃当前填写，再更新内置资源。'); return;} setBuiltinNotice('正在更新内置资源，请稍候…'); void run(async () => {try {await invoke('retryBuiltins'); setBuiltinNotice('内置模板与提示词已更新，已有修改和删除均已保留。');} catch (error) {setBuiltinNotice('更新尚未完成，原有内容保留；请处理工作台恢复提示后继续。'); throw error;}});}}>{status.seedPending ? '继续更新' : '更新内置资源'}</Button></div><p role="status">{builtinNotice}</p></>}</Card>
       {setupPanel}
     </div><div className="creator-settings-column">
-      <Card title="全局助手"><div className="creator-settings-row"><label htmlFor="assistant">交给哪个 AI 助手</label><select id="assistant" value={host} disabled={busy || blocked || !status} onChange={event => {const host = event.target.value as Assistant; void run(() => invoke('setAssistant', {host}));}}>{ASSISTANTS.map(host => <option key={host} value={host}>{host === 'codex' ? 'Codex（默认）' : 'WorkBuddy'}</option>)}</select></div><p className="creator-settings-hint">制作封面和学习模板时，统一交给这里选择的助手。</p>
+      <Card title="发布渠道"><div className="creator-settings-library"><div><strong>{library ? `${library.settings.channels.filter(channel => !channel.deletedAt).length} 个可用渠道` : '打开内容库后设置渠道'}</strong><p>渠道统一用于内容归档、封面和发布日程。</p></div><Button disabled={busy || blocked || !library || !manageChannels} onClick={() => openResource(manageChannels)}>管理渠道</Button></div><div className="creator-channel-preview">{library?.settings.channels.filter(channel => !channel.deletedAt).map(channel => <span key={channel.id} style={{color: channel.ink, background: channel.bg}}>{channel.name}</span>)}</div>{library && !library.settings.channels.some(channel => !channel.deletedAt) && <p className="creator-settings-hint">还没有可用渠道，可添加你自己的发布渠道。</p>}</Card>
+      <Card title="全局助手"><div className="creator-settings-row"><label htmlFor="assistant">交给哪个 AI 助手</label><PopupSelect id="assistant" value={host} disabled={busy || blocked || !status} onChange={value => {const host = value as Assistant; void run(() => invoke('setAssistant', {host}));}}>{ASSISTANTS.map(host => <option key={host} value={host}>{host === 'codex' ? 'Codex（默认）' : 'WorkBuddy'}</option>)}</PopupSelect></div><p className="creator-settings-hint">制作封面和学习模板时，统一交给这里选择的助手。</p>
         <div className="creator-settings-check"><span>检查连接</span><Button id="recheck-assistant" disabled={busy} onClick={() => void run(async () => {try {const [next, template] = await Promise.all([invoke('readAssistantSetup'), invoke('readTemplateAssistantSetup')]); setSetup(next); setTemplateSetup(template); setCheckFailed(false);} catch (error) {setCheckFailed(true); throw error;}})}>重新检查</Button></div>
         <p className="creator-settings-check-status" role="status">{checkFailed ? '检查未完成，请重新检查助手。' : !selectedSetup ? '正在检查助手与配套插件…' : selectedSetup.ready ? '封面助手已准备好。' : selectedSetup.reason === 'protocol-missing' ? '请安装并打开所选助手，再重新检查。' : selectedSetup.reason === 'skill-missing' ? '请先安装并启用工作台配套插件。' : '此构建尚未配置助手检查入口，请检查工作台安装。'}</p>
         <p className="creator-settings-check-status" role="status">模板学习与还原：{checkFailed ? '检查未完成' : templateSetup?.host !== host ? '正在检查…' : templateSetup.ready ? '已准备好。' : '配套模板执行能力尚未准备好，请安装并启用插件。'}</p>

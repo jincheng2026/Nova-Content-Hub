@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {coverCandidateGroups} from '../src/renderer/cover-gallery.ts';
+import {coverCandidateGroups, ratioPixels, imageAnnotationPoint, annotationNote, readAnnotationNote} from '../src/renderer/cover-gallery.ts';
 
 const candidate = (id, requestId, attemptId) => ({id, requestId, attemptId, assetHash: id, originalName: id, accepted: false, url: `asset://${id}`});
 const attempt = (attemptId, status = 'committed') => ({attemptId, host: 'codex', status, reason: 'initial', failure: null});
@@ -31,4 +31,38 @@ test('mixed histories show each candidate once and match both request and attemp
   assert.equal(groups[2].attempt, null);
   assert.deepEqual(jobs.map(item => item.id), ['older', 'newer']);
   assert.equal(newer.activeAttemptId, 'active');
+});
+
+test('favorites are globally first, unique, filterable and keep original batch numbers', () => {
+  const candidates = [candidate('old', 'old-job', 'old-attempt'), candidate('new', 'new-job', 'new-attempt'), candidate('imported', 'browser-import', 'unknown')];
+  const view = {jobs: [job('old-job', [attempt('old-attempt')]), job('new-job', [attempt('new-attempt')])], candidates};
+  const groups = coverCandidateGroups(view, new Set(['old', 'imported']));
+  assert.deepEqual(groups.map(group => group.candidates.map(item => item.id)), [['old', 'imported'], ['new']]);
+  assert.equal(groups[1].batchNumber, 2);
+  assert.equal(groups[1].latest, true);
+  assert.deepEqual(coverCandidateGroups(view, new Set(['old']), true).flatMap(group => group.candidates.map(item => item.id)), ['old']);
+  assert.deepEqual(coverCandidateGroups(view, new Set(), true), []);
+  assert.equal(new Set(groups.flatMap(group => group.candidates.map(item => item.id))).size, 3);
+});
+test('custom ratios use the same legal integer dimensions and reject unsafe extremes', () => {
+  assert.deepEqual(ratioPixels('2:3'), {width: 768, height: 1152});
+  assert.deepEqual(ratioPixels('21:9'), {width: 1792, height: 768});
+  assert.deepEqual(ratioPixels('6:8'), ratioPixels('3:4'));
+  for (const value of ['0:4', '3:0', '3/4', '2:-1', '99999999:1', '100000000:3', '']) assert.equal(ratioPixels(value), null);
+});
+test('annotations use the actual contained image and reject letterboxing', () => {
+  const rect = {left: 10, top: 20, width: 400, height: 400};
+  assert.equal(imageAnnotationPoint(50, 30, rect, 800, 400), null);
+  assert.deepEqual(imageAnnotationPoint(210, 220, rect, 800, 400), {x: 50, y: 50});
+  assert.deepEqual(imageAnnotationPoint(10, 120, rect, 800, 400), {x: 0, y: 0});
+  assert.deepEqual(imageAnnotationPoint(410, 320, rect, 800, 400), {x: 100, y: 100});
+  assert.equal(imageAnnotationPoint(210, 220, rect, 0, 0), null);
+});
+test('annotation notes round-trip through the existing note field without losing ordinary notes', () => {
+  const points = [{x: 20.5, y: 80, text: '放大标题'}, {x: 100, y: 0, text: '保留边界'}];
+  assert.deepEqual(readAnnotationNote(annotationNote(points, '保留人物\n不要加水印')), {points, overall: '保留人物\n不要加水印'});
+  assert.deepEqual(readAnnotationNote('原有普通备注'), {points: [], overall: '原有普通备注'});
+  assert.deepEqual(readAnnotationNote(annotationNote([], '整体说明')), {points: [], overall: '整体说明'});
+  const malformed = '【封面位置批注】\n1. (x=101%, y=0%) 错误\n【整体修改要求】\n不要丢掉';
+  assert.deepEqual(readAnnotationNote(malformed), {points: [], overall: malformed});
 });

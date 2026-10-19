@@ -1,0 +1,12 @@
+.color-field { display:grid; gap:9px; min-width:0; }
+.color-field-title { font-size:14px; }
+.color-field-value { display:flex; align-items:center; gap:9px; }
+.color-field-value>span { width:26px; height:26px; flex:none; border:1px solid var(--semi-color-border); border-radius:5px; }
+.color-field-presets { display:flex; flex-wrap:wrap; gap:7px; }
+.color-field-presets .color-field-swatch { width:25px; min-width:25px; height:25px; padding:0; border:1px solid #cdd4dd; border-radius:5px; color:#fff; text-shadow:0 1px 3px #000; }
+.color-field-presets .color-field-swatch[aria-pressed=true] { outline:2px solid var(--semi-color-primary); outline-offset:2px; }
+.color-field details { font-size:13px; }
+.color-field summary { cursor:pointer; color:var(--semi-color-primary); }
+.color-field fieldset { border:0; padding:12px 0 0; margin:0; min-width:0; }
+.color-field .semi-colorPicker input { min-height:0; padding:0 4px !important; }
+.channel-live-preview { display:inline-block; width:fit-content; padding:5px 12px; border-radius:5px; font-size:13px; }

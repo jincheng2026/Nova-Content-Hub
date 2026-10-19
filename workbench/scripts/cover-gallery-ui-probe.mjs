@@ -16,6 +16,7 @@ import {useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/react19-adapter'))};
 import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/lib/es/_base/base.css'))};
+import ${JSON.stringify(path.join(workbench, 'src/renderer/style.css'))};
 import {CoverPanel} from ${JSON.stringify(path.join(workbench, 'src/renderer/covers.tsx'))};
 const artwork=(w,h,color,label)=>'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'"><rect width="100%" height="100%" fill="'+color+'"/><rect x="8" y="8" width="'+(w-16)+'" height="'+(h-16)+'" fill="none" stroke="white" stroke-width="5"/><text x="50%" y="50%" text-anchor="middle" fill="white" font-size="32">'+label+'</text></svg>');
 const portrait=artwork(300,400,'#426b9a','竖图完整边界'),landscape=artwork(640,360,'#8a6144','横图完整边界');
@@ -28,9 +29,9 @@ let details={id:content.id,editToken:'metadata-0',materials:[{id:'material',orig
 const assets={templates:[{id:'template',version:1,name:'清爽图文组',description:'整组有横竖两种样张。',accepted:false,aiTested:false,builtin:false,samples:[{assetHash:'portrait',url:portrait},{assetHash:'landscape',url:landscape}]}],photos:[{id:'photo',title:'我的本人照',url:portrait,assetHash:'photo-hash',isOwnPhoto:true,availability:'available'}]};
 const library={contentDetails:[details],templates:assets.templates,photos:assets.photos,settings:{defaults:{templateId:'template',photoId:'',coverCount:2},customRatios:[]}};
 const ok=value=>({ok:true,value});
-window.mutations=[];
-window.contentHub={listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details={...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};return ok({library:{...library,contentDetails:[details]}});},generateCover:async input=>{window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
-function Probe(){const [busy,setBusy]=useState(false),[assistant,setAssistant]=useState('workbuddy');window.chooseAssistant=setAssistant;return <CoverPanel library={library} status={{currentName:'isolated-fixture',assistant}} content={content} dirty={false} busy={busy} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover:view})} run={async action=>{setBusy(true);try{return await action();}catch(error){window.probeError=error.message;throw error;}finally{setBusy(false);}}} onContent={()=>{}}/>;}
+window.annotationSources={landscape,portrait,wide:artwork(1200,200,'#926347','宽图完整边界'),tall:artwork(200,1200,'#457192','长图完整边界')};window.mutations=[];
+window.contentHub={listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details=input.op==='attachMaterial'?{...details,editToken:'metadata-'+(++serial),materials:[...details.materials,{id:'refinement-material',assetHash:input.assetHash,role:input.role,originalName:input.originalName,availability:'available',bytes:100,detectedType:'image/png'}]}:{...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};view={...view,content:{...view.content,editToken:details.editToken}};return ok({library:{...library,contentDetails:[details]}});},cancelCover:async()=>{view={...view,jobs};return ok(view);},generateCover:async input=>{if(window.failGenerateOnce){window.failGenerateOnce=false;return {ok:false,error:{code:'TEST_GENERATE_FAILURE',message:'模拟助手启动失败'}};}window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
+function Probe(){const [busy,setBusy]=useState(false),[assistant,setAssistant]=useState('workbuddy');window.chooseAssistant=setAssistant;return <CoverPanel library={library} status={{currentName:'isolated-fixture',assistant}} content={content} dirty={false} busy={busy} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover:view})} run={async action=>{setBusy(true);try{return await action();}catch(error){window.probeError=error.message;return undefined;}finally{setBusy(false);}}} onContent={()=>{}}/>;}
 createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWidth:1160,margin:'auto',fontFamily:'sans-serif'}}><Probe/></div>);
 `);
   await build({configFile:false,root,base:'./',resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}},oxc:{jsx:{runtime:'automatic'}},build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -48,6 +49,23 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
     const click=(selector,text)=>run(`(()=>{const button=[...document.querySelectorAll(${JSON.stringify(selector)})].find(el=>el.textContent===${JSON.stringify(text)});if(!button||button.disabled)throw new Error('Missing enabled button: '+${JSON.stringify(text)});button.click()})()`);
     const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
     const enter=(selector,value)=>run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el),'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
+    const trustedClick = async (x, y) => {
+      const point = {x: Math.round(x), y: Math.round(y)};
+      window.webContents.sendInputEvent({type: 'mouseMove', ...point});
+      window.webContents.sendInputEvent({type: 'mouseDown', button: 'left', clickCount: 1, ...point});
+      window.webContents.sendInputEvent({type: 'mouseUp', button: 'left', clickCount: 1, ...point});
+      await paint(); return point;
+    };
+    const imagePoint = async (x, y) => {
+      const rect = await run('document.querySelector(".cover-annotation-image img").getBoundingClientRect().toJSON()');
+      const clicked = await trustedClick(rect.left + rect.width * x, rect.top + rect.height * y);
+      await wait('document.querySelector(".cover-annotation-marker.is-draft") && document.getElementById("annotation-point-text")');
+      const marker = await run('document.querySelector(".cover-annotation-marker.is-draft").getBoundingClientRect().toJSON()');
+      assert.ok(Math.abs(marker.left + marker.width / 2 - clicked.x) <= 1, 'marker center matches trusted pointer x');
+      assert.ok(Math.abs(marker.top + marker.height / 2 - clicked.y) <= 1, 'marker center matches trusted pointer y');
+      assert.equal(await run('document.querySelectorAll(".cover-annotation-note").length'),0,'unconfirmed points stay out of the right list');
+      return clicked;
+    };
     try {
       await window.loadFile(path.join(probeRoot,'dist/index.html'));
       await wait('document.querySelectorAll(".cover-result-card").length===5');
@@ -80,10 +98,122 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await click('.cover-result-card:first-child button','下载');
       await wait('window.exported?.candidateId==="new-landscape"');
       const screenshots=await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-gallery-ui-shots-'));
+      await run('document.querySelectorAll(".cover-card-title input")[0].click();document.querySelectorAll(".cover-card-title input")[1].click()');
+      await wait('document.querySelector(".cover-gallery-toolbar").textContent.includes("已勾选 2 / 4")');
+      await run('document.querySelectorAll(".cover-card-title input")[2].click();document.querySelectorAll(".cover-card-title input")[3].click()');
+      await wait('document.querySelectorAll(".cover-card-title input:checked").length===4');
+      assert.equal(await run('document.querySelectorAll(".cover-card-title input")[4].disabled'),true,'comparison is capped at four');
+      await run('document.querySelectorAll(".cover-card-title input")[2].click();document.querySelectorAll(".cover-card-title input")[3].click()');
+      await click('.cover-gallery-toolbar button','并排比较（2）');
+      await wait('document.querySelectorAll(".cover-compare-grid article").length===2');
+      assert.equal(await run('[...document.querySelectorAll(".cover-compare-image .cover-artwork-original")].every(el=>getComputedStyle(el).objectFit==="contain")'),true);
+      await paint();
+      await fs.writeFile(path.join(screenshots,'compare-wide.png'),(await window.webContents.capturePage()).toPNG());
+      await click('.cover-compare-grid article:last-child button','收藏');
+      await wait('document.querySelectorAll(".cover-compare-grid button[aria-pressed=true]").length===2');
+      await click('.management-dialog button','关闭');
+      await wait('!document.querySelector(".management-dialog")');
+      await run('document.querySelector(".cover-gallery-toolbar input").click()');
+      await wait('document.querySelectorAll(".cover-result-card").length===2');
+      assert.equal(await run('document.querySelector(".cover-result-group").getAttribute("aria-label")'),'收藏优先');
+      await run('document.querySelector(".cover-gallery-toolbar input").click()');
+      await wait('document.querySelectorAll(".cover-result-card").length===5');
+      await click('.cover-result-card:first-child button','批注修改');
+      await wait('document.querySelector(".cover-annotation-image img")?.naturalWidth>0');
+      await run('document.querySelector(".cover-annotation-image").addEventListener("click",event=>window.annotationTrusted=event.isTrusted)');
+      for (const [width, height] of [[1280,900],[900,700],[620,700]]) {
+        window.setSize(width,height); await paint();
+        for (const raster of ['landscape','portrait','wide','tall']) {
+          await run(`document.querySelector('.management-dialog').scrollTop=0;document.querySelector('.cover-annotation-image img').src=window.annotationSources[${JSON.stringify(raster)}]`);
+          await wait(`document.querySelector('.cover-annotation-image img').src===window.annotationSources[${JSON.stringify(raster)}] && document.querySelector('.cover-annotation-image img').complete`); await paint();
+          assert.equal(await run(`(()=>{const img=document.querySelector('.cover-annotation-image img'),r=img.getBoundingClientRect(),stage=document.querySelector('.cover-annotation-stage').getBoundingClientRect();return Math.abs(r.width/r.height-img.naturalWidth/img.naturalHeight)<.01 && r.left>=stage.left && r.right<=stage.right && r.top>=stage.top && r.bottom<=stage.bottom && r.top>=0 && r.bottom<=innerHeight && getComputedStyle(img).objectFit==='contain';})()`),true,'whole original image fits stage and viewport: '+raster+' '+width);
+          for (const [x,y] of [[.16,.2],[.84,.78]]) {
+            await imagePoint(x,y);
+            assert.equal(await run('window.annotationTrusted'),true,'annotation uses a trusted Electron mouse click');
+            if(width===620 && raster==='tall' && x===.84) await fs.writeFile(path.join(screenshots,'annotation-floating-narrow-tall.png'),(await window.webContents.capturePage()).toPNG());
+            await click('.cover-annotation-popover button','取消'); await wait('!document.querySelector(".cover-annotation-popover")');
+          }
+          if (width===620) { await run('document.querySelector(".management-dialog").scrollTop=30'); await paint(); await imagePoint(.5,.6); await click('.cover-annotation-popover button','取消'); }
+        }
+      }
+      window.setSize(1280,900); await paint();
+      await run('document.querySelector(".management-dialog").scrollTop=0;document.querySelector(".cover-annotation-image img").src=window.annotationSources.landscape');
+      await paint();
+      const stageRect = await run('document.querySelector(".cover-annotation-stage").getBoundingClientRect().toJSON()');
+      await trustedClick(stageRect.left+4,stageRect.top+4);
+      assert.equal(await run('document.querySelectorAll(".cover-annotation-note").length'),0,'letterbox clicks create no annotation');
+      assert.equal(await run('document.querySelector(".cover-annotation-popover")===null'),true);
+      await imagePoint(.5,.5);
+      await enter('#annotation-point-text','标题放大，保留完整边界');
+      await paint();
+      await fs.writeFile(path.join(screenshots,'annotation-floating-wide.png'),(await window.webContents.capturePage()).toPNG());
+      await click('.management-dialog button','暂时收起');
+      await wait('document.querySelector(".management-resume")');
+      await click('.management-resume button','继续编辑');
+      await wait('document.querySelector(".management-dialog[open]")');
+      assert.equal(await run('document.getElementById("annotation-point-text").value'),'标题放大，保留完整边界','unconfirmed floating draft survives minimize');
+      await click('.cover-annotation-popover button','确认批注');
+      await wait('document.querySelectorAll(".cover-annotation-note").length===1 && !document.querySelector(".cover-annotation-popover")');
+      await run('document.querySelector(".cover-annotation-note-edit").click()');
+      await wait('document.getElementById("annotation-point-text")?.value==="标题放大，保留完整边界"');
+      await enter('#annotation-point-text','取消后不应覆盖原批注');
+      await click('.cover-annotation-popover button','取消');
+      assert.equal(await run('document.querySelector(".cover-annotation-note-edit span").textContent'),'标题放大，保留完整边界');
+      await click('.management-dialog button','添加中心位置批注');
+      await wait('document.getElementById("annotation-point-text")');
+      await enter('#annotation-point-text','测试第二个位置');
+      await click('.cover-annotation-popover button','确认批注');
+      await wait('document.querySelectorAll(".cover-annotation-note").length===2');
+      await click('.cover-annotation-note button','删除位置 2');
+      await wait('document.querySelectorAll(".cover-annotation-note").length===1 && document.querySelectorAll(".cover-annotation-canvas button.cover-annotation-marker").length===1');
+      await enter('#annotation-overall','保留人物和配色');
+      await paint();
+      await fs.writeFile(path.join(screenshots,'annotation-wide.png'),(await window.webContents.capturePage()).toPNG());
+      await click('.management-dialog button','暂时收起');
+      await wait('document.querySelector(".management-resume")');
+      assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button[aria-pressed]")].every(el=>el.disabled)'),true,'annotation draft blocks conflicting candidate mutations');
+      await click('.management-resume button','继续编辑');
+      await wait('document.querySelector(".management-dialog[open]")');
+      assert.equal(await run('document.querySelector(".cover-annotation-note-edit span").textContent'),'标题放大，保留完整边界');
+      await click('.management-dialog button','保存批注');
+      await wait('!document.querySelector(".management-dialog")');
+      assert.equal(await run('window.mutations.at(-1).note.includes("x=50%, y=")'),true);
+      await click('.cover-result-card:first-child button','批注修改');
+      await wait('document.querySelector(".cover-annotation-note-edit span")?.textContent==="标题放大，保留完整边界"');
+      await click('.management-dialog button','按批注修改');
+      await wait('document.querySelector(".cover-refinement-confirm")');
+      assert.equal(await run('window.generated??null'),null,'opening confirmation never starts generation');
+      assert.equal(await run('document.querySelector(".cover-refinement-confirm").textContent.includes("当前助手：WorkBuddy")'),true);
+      await run('window.failGenerateOnce=true');
+      await click('.management-dialog button','确认并去 WorkBuddy 修改');
+      await wait('window.probeError && !document.querySelector(".management-dialog button.semi-button-disabled")');
+      assert.equal(await run('document.querySelector(".cover-annotation-note-edit span").textContent'),'标题放大，保留完整边界','failed generation retains the annotation draft');
+      assert.equal(await run('window.mutations.filter(item=>item.op==="attachMaterial").length'),1);
+      assert.equal(await run('document.querySelectorAll(".cover-result-card").length'),5);
+      await run('window.probeError=null');
+      await click('.management-dialog button','确认并去 WorkBuddy 修改');
+      await wait('window.generated && !document.querySelector(".management-dialog") && document.getElementById("continue-cover")');
+      assert.equal(await run('window.generated.input.count'),1);
+      assert.deepEqual(await run('window.generated.input.materialIds'),['refinement-material']);
+      assert.equal(await run('window.generated.input.prompt.includes("x=50%, y=") && window.generated.input.prompt.includes("标题放大")'),true);
+      assert.equal(await run('window.generated.editToken===window.mutations.at(-1).editToken'),false,'generation uses token returned after reference attachment');
+      assert.equal(await run('window.mutations.filter(item=>item.op==="attachMaterial").length'),1,'retry reuses the attached reference');
+      assert.equal(await run('window.mutations.findLast(item=>item.op==="attachMaterial").assetHash'),'new-landscape');
+      assert.equal(await run('document.querySelectorAll(".cover-result-card").length'),5,'refinement keeps every original candidate');
+      await click('.cover-live-job button','取消这次生成');
+      await wait('!document.getElementById("continue-cover")');
       await paint();
       await fs.writeFile(path.join(screenshots,'gallery-wide.png'),(await window.webContents.capturePage()).toPNG());
       await click('.cover-toolbar button','再生成一批');
       await wait('document.querySelector(".cover-create-dialog[open]") && !document.getElementById("generate-cover").disabled');
+      await run('document.getElementById("cover-ratio").click()');
+      await wait('[...document.querySelectorAll(".semi-select-option")].some(el=>el.textContent==="自定义")');
+      await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent==="自定义").click()');
+      await wait('document.getElementById("cover-custom-ratio")');
+      await enter('#cover-custom-ratio','0:3');
+      await wait('document.getElementById("generate-cover").disabled');
+      await enter('#cover-custom-ratio','2:3');
+      await wait('!document.getElementById("generate-cover").disabled');
       assert.equal(await run('document.querySelector(".cover-template-browser").open'),false,'chosen template keeps composer concise');
       assert.equal(await run('document.querySelector(".cover-advanced").open'),false);
       assert.equal(await run('(()=>{const button=document.getElementById("generate-cover");return getComputedStyle(button.querySelector("span")).color===getComputedStyle(button).color;})()'),true,'footer helper text styling preserves action contrast');
@@ -101,10 +231,12 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
         assert.equal(await run('(()=>{const frame=document.querySelector(".cover-style-preview"),image=frame.querySelector(".cover-artwork-original"),a=frame.getBoundingClientRect(),b=image.getBoundingClientRect();return b.width<=a.width&&b.height<=a.height;})()'),true,'full-image element remains inside preview frame');
       }
       await fs.writeFile(path.join(screenshots,'composer-narrow.png'),(await window.webContents.capturePage()).toPNG());
-      await enter('#cover-photo','photo');
-      await wait('document.getElementById("cover-photo").value==="photo"');
+      await run('document.getElementById("cover-photo").click()');
+      await wait('[...document.querySelectorAll(".semi-select-option")].some(option=>option.textContent==="我的本人照")');
+      await run('[...document.querySelectorAll(".semi-select-option")].find(option=>option.textContent==="我的本人照").click()');
+      await wait('document.querySelector("#cover-photo .semi-select-selection-text").textContent==="我的本人照"');
       await click('#no-person','这次不放人物');
-      await wait('document.getElementById("cover-photo").value===""');
+      await wait('document.querySelector("#cover-photo .semi-select-selection-text").textContent==="这次不放人物"');
       await run('document.querySelector(".cover-advanced").open=true;document.querySelector(".cover-materials input").click()');
       await wait('document.querySelector(".cover-materials input").checked');
       await click('#generate-cover','去 WorkBuddy 生成封面');
@@ -113,6 +245,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.deepEqual(await run('window.generated.input.styleAssetHashes'),['portrait','landscape']);
       assert.deepEqual(await run('window.generated.input.materialIds'),['material']);
       assert.equal(await run('window.generated.input.count'),2);
+      assert.equal(await run('window.generated.input.ratio'),'2:3');
       assert.equal(await run('window.generated.input.scope'),'cover-only');
       await run('window.chooseAssistant("codex")');
       await wait('document.getElementById("continue-cover").textContent==="去 Codex 继续"');
@@ -120,7 +253,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await click('#continue-cover','去 Codex 继续');
       await wait('window.continued?.attemptId==="live-attempt"');
       assert.equal(await run('window.probeError??null'),null);
-      console.log('PASS isolated real React/Semi/Electron: all batches and historical candidates, full-image blur previews, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
+      console.log('PASS isolated real React/Semi/Electron: all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
       console.log('Screenshots: '+screenshots);
       app.exit(0);
     }catch(error){console.error(error);app.exit(1);}

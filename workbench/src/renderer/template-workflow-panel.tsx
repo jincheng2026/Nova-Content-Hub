@@ -1,5 +1,8 @@
 import {useEffect, useRef, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
+import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
+import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
+import {PopupSelect} from './semi-controls.tsx';
 import type {CoverResults} from '../shared/cover-contracts.ts';
 import type {TemplateAssistantSetup, TemplateAttemptView, TemplateWorkflowResult, TemplateWorkflowView} from '../shared/template-contracts.ts';
 import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
@@ -54,18 +57,18 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         <div className="management-toolbar"><div><h3>{view?.title ?? template?.title ?? asset?.name ?? '模板'} · 学习与还原</h3><p>学习整组样张，先还原第 1 张验收。规则与还原图提交后，由你确认并保存为新版本。</p></div><Button disabled={busy || loading} onClick={() => void reload()}>刷新学习结果</Button></div>
         {view?.builtin ? <div className="template-workflow-message"><p>内置模板需要先复制为自己的模板，再学习并还原。</p>{onDerive && <Button disabled={busy} onClick={() => void onDerive()}>复制为我的模板再学习</Button>}</div> : <>
             <p className="muted">本次使用全局助手：{setup?.host === 'workbuddy' ? 'WorkBuddy' : 'Codex'}。{setup && !setup.ready ? '模板执行能力尚未准备好，请在设置中检查配套插件。' : '助手选择可在左下角设置中调整。'}</p>
-            <label className="template-study-notes">补充要求（可选）<textarea maxLength={10_000} value={notes} disabled={unavailable} placeholder="比如：重点还原标题层级与留白关系" onChange={event => setNotes(event.target.value)}/></label>
+            <label className="template-study-notes">补充要求（可选）<TextArea className="semi-control-text" maxLength={10_000} value={notes} disabled={unavailable} placeholder="比如：重点还原标题层级与留白关系" onChange={setNotes}/></label>
             {!activeAttempt && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}))}>{attempts.length ? '开始新一轮学习并还原' : '学习整组并还原首张'}</Button>}{activeAttempt && attempt?.attemptId !== activeAttempt.attemptId && <Button disabled={busy} onClick={() => {setSelected(activeAttempt.attemptId); setConfirm(false);}}>查看当前进行中的学习</Button>}
         </>}
         <p role="status" aria-live="polite">{loading ? '正在读取学习记录…' : notice}</p>
-        {!!attempts.length && <><label>学习历史<select value={attempt?.attemptId ?? ''} disabled={busy} onChange={event => {setSelected(event.target.value); setConfirm(false);}}>{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</select></label>
+        {!!attempts.length && <><label>学习历史<PopupSelect aria-label="学习历史" value={attempt?.attemptId ?? ''} disabled={busy} onChange={value => {setSelected(value); setConfirm(false);}}>{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</PopupSelect></label>
             {attempt && <div className="template-attempt"><p>源版本 v{attempt.reference.sourceVersion || '?'} · {attempt.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {accepted ? '已记录人工验收' : statusNames[attempt.status]}</p>
                 {attempt.failure && <p role="alert">{attempt.failure.message}（{attempt.failure.code}）</p>}
                 {attempt.unavailable && <p role="alert">这次学习的历史证据暂不可读。记录已保留，请核验内容库完整性。</p>}
                 {!attempt.unavailable && !jobAccepted && !view?.builtin && <div className="management-actions">{live && <><Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('continueTemplateStudy', attempt.reference))}>{setup?.host !== attempt.host ? '用当前助手继续（保留原尝试）' : '继续打开助手'}</Button><Button disabled={unavailable} onClick={() => void update(() => invoke('cancelTemplateStudy', attempt.reference))}>取消本次尝试</Button></>}{!activeAttempt && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('retryTemplateStudy', attempt.reference))}>重新学习并还原</Button>}</div>}
                 {!sourceMatches && !accepted && <p role="alert">当前已切换模板版本。此次结果保留在源版本下，请返回源版本后继续或验收；进行中的尝试也可以直接取消。</p>}
                 {attempt.result && <TemplateComparison attempt={attempt}/>}
-                {attempt.result && !jobAccepted && !attempt.unavailable && !view?.builtin && <div className="template-accept">{activeAttempt && <p>请先完成或取消当前进行中的学习，再验收历史结果。</p>}<label><input type="checkbox" checked={confirm} disabled={unavailable || !sourceMatches || !!activeAttempt} onChange={event => setConfirm(event.target.checked)}/>我已对照样张、规则证据和首张还原效果，确认可用于后续生成。</label><Button theme="solid" disabled={unavailable || !sourceMatches || !!activeAttempt || !confirm} onClick={() => view && void update(() => invoke('acceptTemplateStudy', {...attempt.reference, resultHash: attempt.result!.resultHash, editToken: view.editToken}))}>确认规则与还原效果，保存为新版本</Button></div>}
+                {attempt.result && !jobAccepted && !attempt.unavailable && !view?.builtin && <div className="template-accept">{activeAttempt && <p>请先完成或取消当前进行中的学习，再验收历史结果。</p>}<Checkbox className="semi-control-check" checked={confirm} disabled={unavailable || !sourceMatches || !!activeAttempt} onChange={event => setConfirm(event.target.checked === true)}>我已对照样张、规则证据和首张还原效果，确认可用于后续生成。</Checkbox><Button theme="solid" disabled={unavailable || !sourceMatches || !!activeAttempt || !confirm} onClick={() => view && void update(() => invoke('acceptTemplateStudy', {...attempt.reference, resultHash: attempt.result!.resultHash, editToken: view.editToken}))}>确认规则与还原效果，保存为新版本</Button></div>}
                 {accepted && <p>验收保存为 v{job?.acceptance?.acceptedTemplate.version}。{view?.currentVersion === job?.acceptance?.acceptedTemplate.version ? '当前版本已记录人工验收，可用于封面生成。' : '当前所选版本不同，此验收记录不会自动套用。'}</p>}
             </div>}</>}
         {view && !attempts.length && <p className="muted">尚未完成学习验收。手动导入的规则可继续使用，学习记录将在这里保留。</p>}

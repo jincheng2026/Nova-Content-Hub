@@ -17,8 +17,8 @@ import '${workbench}/src/renderer/style.css';
 import {ContentList} from '${workbench}/src/renderer/content-list.tsx';
 const plan=(id,channelId,status='planned')=>({id,channelId,status,schedule:{precision:'date',date:'2026-10-19'}});
 const makeContent=(id,channelIds,plans)=>({id,title:id,body:'',channelIds,plans,deletedAt:null,isExample:false,candidates:[],coverVariants:[],publications:[],publicationEvents:[],candidateCount:0,selectedCandidateId:null});
-window.documents=[makeContent('empty-metadata',[],[plan('dy-1','douyin'),plan('dy-2','douyin'),plan('cancelled','cancelled-channel','cancelled')]),makeContent('explicit-metadata',['xiaohongshu','douyin'],[plan('dy-3','douyin')]),makeContent('historical-channel',['missing-channel'],[]),makeContent('cancelled-only',[],[plan('cancelled-2','cancelled-channel','cancelled')])];
-window.channels=[{id:'douyin',name:'抖音'},{id:'xiaohongshu',name:'小红书'},{id:'cancelled-channel',name:'已取消的渠道'}];
+window.documents=[makeContent('empty-metadata',[],[plan('dy-1','douyin'),plan('dy-2','douyin'),plan('cancelled','cancelled-channel','cancelled')]),makeContent('explicit-metadata',['xiaohongshu','douyin'],[plan('dy-3','douyin')]),makeContent('historical-channel',['missing-channel'],[]),makeContent('cancelled-only',[],[plan('cancelled-2','cancelled-channel','cancelled')]),makeContent('custom-sixth',['sixth-channel'],[])];
+window.channels=[{id:'douyin',name:'抖音',ink:'#335577',bg:'#eef5fa'},{id:'xiaohongshu',name:'小红书'},{id:'cancelled-channel',name:'已取消的渠道'},{id:'fourth',name:'第四渠道'},{id:'fifth',name:'第五渠道'},{id:'sixth-channel',name:'自定义直播渠道',ink:'#a92666',bg:'#fff0f6'}];
 window.library={contentDetails:window.documents,collections:[],settings:{channels:window.channels}};
 window.workspace={contents:window.documents,channels:window.channels};
 window.original=JSON.stringify({library:window.library,workspace:window.workspace});
@@ -34,7 +34,7 @@ app.setPath('userData',path.join(probeRoot,'machine'));await app.whenReady();con
 win.webContents.on('console-message',event=>console.log('renderer:',event.message)); const run=source=>win.webContents.executeJavaScript(source);const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+5000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(0,600)));setTimeout(check,15)};check()})`);
 const channelLabels=id=>run(`[...document.querySelector('[data-content-id="'+${JSON.stringify(id)}+'"] .content-channel-list').children].map(item=>item.textContent)`);
 try{
-await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll("tbody tr").length === 4');
+await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll("tbody tr").length === 5');
 assert.deepEqual(await channelLabels('empty-metadata'),['抖音'],'empty metadata still shows its valid plan channel, deduplicated');
 assert.deepEqual(await channelLabels('explicit-metadata'),['小红书','抖音'],'explicit metadata and plan channels are merged without duplicates');
 assert.deepEqual(await channelLabels('historical-channel'),['原渠道已不可用'],'unavailable historical channel keeps its existing label');
@@ -42,10 +42,18 @@ assert.deepEqual(await channelLabels('cancelled-only'),['未选择渠道'],'canc
 assert.equal(await run('document.querySelector(".content-channel-list").textContent.includes("已取消的渠道")'),false);
 assert.equal(await run('JSON.stringify({library:window.library,workspace:window.workspace}) === window.original'),true,'render does not mutate library or workspace');
 assert.deepEqual(await run('window.calls'),[],'render never invokes native mutations');
+assert.deepEqual(await channelLabels('custom-sixth'),['自定义直播渠道'],'sixth custom channel uses the shared registry');
+assert.equal(await run(`document.querySelector('[data-content-id="custom-sixth"] .creator-channel').style.getPropertyValue('--channel-color')`),'#a92666');
+assert.equal(await run(`document.querySelector('[data-content-id="custom-sixth"] .creator-channel').style.getPropertyValue('--channel-background')`),'#fff0f6');
+await run(`window.renderList({...window.library,settings:{...window.library.settings,channels:window.channels.map(c=>c.id==='sixth-channel'?{...c,name:'直播新名称',ink:'#236b43',bg:'#e7faed'}:c)}})`);
+await wait(`document.querySelector('[data-content-id="custom-sixth"] .creator-channel').textContent === '直播新名称'`);
+assert.equal(await run(`document.querySelector('[data-content-id="custom-sixth"] .creator-channel').style.getPropertyValue('--channel-color')`),'#236b43','registry color edit reaches the view');
+assert.equal(await run('JSON.stringify({library:window.library,workspace:window.workspace}) === window.original'),true,'view-only registry replacement does not mutate original fixtures');
+
 await run('window.renderList(null)');await run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
 assert.deepEqual(await channelLabels('empty-metadata'),['抖音'],'summary-only fallback still uses non-cancelled plan channels');
 assert.deepEqual(await channelLabels('cancelled-only'),['未选择渠道']);
-console.log('PASS: React/Semi content channel union, empty metadata fallback, cancelled exclusion, metadata preservation, deduplication, unavailable label, summary-only fallback, and no writes');app.exit(0);
+console.log('PASS: React/Semi content channel union, empty metadata fallback, cancelled exclusion, metadata preservation, deduplication, unavailable label, summary-only fallback, sixth custom channel, registry rename/color refresh, and no writes');app.exit(0);
 }catch(error){console.error(error);app.exit(1);}}
 await fs.writeFile(path.join(root,'probe-main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)});`);
 const child=spawn(electron,[path.join(root,'probe-main.mjs')],{stdio:'inherit',env:{...process.env,ELECTRON_RUN_AS_NODE:''}});const code=await new Promise(resolve=>child.on('exit',resolve));console.log('Probe fixture:',root);process.exitCode=code??1;

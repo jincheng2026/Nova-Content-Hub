@@ -5,6 +5,10 @@ import Banner from '@douyinfe/semi-ui-19/lib/es/banner';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import Typography from '@douyinfe/semi-ui-19/lib/es/typography';
+import Input from '@douyinfe/semi-ui-19/lib/es/input';
+import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
+import LocaleProvider from '@douyinfe/semi-ui-19/lib/es/locale/localeProvider';
+import zhCN from '@douyinfe/semi-ui-19/lib/es/locale/source/zh_CN';
 import '@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import './style.css';
 import {CoverPanel } from './covers.tsx';
@@ -216,13 +220,13 @@ function App() {
         if (dirty) setLeaving(() => action); else await action();
     }
 
-    function backgroundAction<T>(action: () => Promise<T>): Promise<T | undefined> {
+    function backgroundAction<T>(action: () => Promise<T>, refreshWorkspaceAfter = true): Promise<T | undefined> {
         if (active.current) return Promise.resolve(undefined);
         const previous = backgroundRefresh.current, epoch = epochRef.current;
         const operation = (async () => {
             await previous;
             if (epoch !== epochRef.current) return;
-            return nativeAction(action, {preserveError: true, background: true});
+            return nativeAction(action, {preserveError: true, background: true, refreshWorkspaceAfter});
         })();
         const complete = operation.finally(() => {
             if (backgroundRefresh.current !== complete) return;
@@ -233,15 +237,16 @@ function App() {
         return complete;
     }
     async function readCoverAutomatically(contentId: string) {
+        // This read returns fresh assets and content; workspace scans belong to actions and change refreshes.
         return backgroundAction(async () => {
             if (baseRef.current?.id !== contentId) return;
             const assets = await invoke('listCoverAssets');
             const cover = await invoke('readCover', {contentId});
             return {assets, cover};
-        });
+        }, false);
     }
 
-    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false, background = false}: {preserveError?: boolean; background?: boolean} = {}): Promise<T | undefined> {
+    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false, background = false, refreshWorkspaceAfter = true}: {preserveError?: boolean; background?: boolean; refreshWorkspaceAfter?: boolean} = {}): Promise<T | undefined> {
         if (!background && active.current) return;
         if (!background) { active.current = true; setActing(true); }
         if (!preserveError) setError('');
@@ -259,7 +264,7 @@ function App() {
         } finally {
             try {
                 const next = await refreshStatus();
-                if (next.currentName) {
+                if (next.currentName && refreshWorkspaceAfter) {
                     try {
                         await refreshWorkspace();
                         if (succeeded && epoch === epochRef.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
@@ -613,15 +618,15 @@ function App() {
         {page === 'content' && (!detailOpen || !draft ? <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} createCollection={() => void guard(async () => {setCreatingCollection(true);})} openCollection={id => void openLibraryResources('collections', id)} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>← 返回内容列表</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
         {contentTab === 'body' && <Card title="标题与正文"><p
             id="editor-dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
-            htmlFor="content-title">标题</label><input id="content-title" disabled={busy || blocked} maxLength={500}
-                                                       value={draft.title} onChange={event => setDraft({
+            htmlFor="content-title">标题</label><Input id="content-title" className="semi-control-text" disabled={busy || !!blocked} maxLength={500}
+                                                       value={draft.title} onChange={value => setDraft({
             ...draft,
-            title: event.target.value
-        })}/><label htmlFor="content-body">正文</label><textarea id="content-body" disabled={busy || blocked}
+            title: value
+        })}/><label htmlFor="content-body">正文</label><TextArea id="content-body" className="semi-control-text" disabled={busy || !!blocked}
                                                                  maxLength={1_000_000} value={draft.body}
-                                                                 onChange={event => setDraft({
+                                                                 onChange={value => setDraft({
                                                                      ...draft,
-                                                                     body: event.target.value
+                                                                     body: value
                                                                  })}/>
             <div className="actions"><Button id="save-content" theme="solid"
                                              disabled={busy || !dirty || blocked || !!disk || !!base?.deletedAt}
@@ -650,7 +655,7 @@ function App() {
         {recoveryOpen && <dialog ref={recoveryDialog} className="library-manager-dialog" aria-labelledby="retained-recovery-title" onCancel={event => {event.preventDefault(); setRecoveryOpen(false);}}><div className="dialog-heading"><div><h2 id="retained-recovery-title">继续处理待确认操作</h2><p>原编辑窗口与填写内容保持打开。处理后关闭此窗口，返回继续编辑。</p></div><Button disabled={acting} onClick={() => setRecoveryOpen(false)}>返回编辑</Button></div><p className="manager-error" role="alert">{error}</p><section className="library-manager" aria-label="待确认操作">{recoveryCards}{!blocked && <p role="status">待确认操作已处理，可以返回原编辑窗口。</p>}</section></dialog>}
         {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={closeTemplatePicker} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 选择已有内容，或新建并保存后制作封面。</p></div><Button onClick={closeTemplatePicker}>关闭</Button></div><div className="actions"><Button theme="solid" disabled={busy || blocked} onClick={() => void newContent(templatePicker.id)}>用此模板新建内容</Button></div><div className="template-content-list">{workspace?.contents.filter(item => !item.deletedAt).map(item => <button disabled={busy || blocked} key={item.id} onClick={() => void select(item, templatePicker.id)}><strong>{item.title}{item.id === base?.id ? ' · 当前打开的内容' : ''}</strong><span>{item.body.slice(0, 90) || '正文待补充'}</span></button>)}{!workspace?.contents.some(item => !item.deletedAt) && <p>还没有活动内容，可以用此模板新建内容。</p>}</div></dialog>}
         {creatingCollection && <CollectionEditor collection={null} props={{library, busy: busy || !!blocked, run: nativeAction, refresh: refreshWorkspace}} close={() => setCreatingCollection(false)}/>}
-        {settings && <AssistantSettings status={status} busy={acting || !!status?.busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)} library={library} assets={assets} refresh={refreshWorkspace} managePhotos={() => void openLibraryResources('photos')} manageLibrary={() => void guard(async () => {setSettings(false); setLibraryTab('storage'); setLibraryOpen(true);})} preferences={<PreferencesPanel busy={acting || !!status?.busy} run={nativeAction}/>} setup={<SetupPanel host={status?.assistant} busy={acting || !!status?.busy} run={nativeAction}/>} recovery={<BootstrapRecoveryPanel busy={acting || !!status?.busy} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/>} /> }
+        {settings && <AssistantSettings status={status} busy={acting || !!status?.busy} blocked={!!blocked} run={nativeAction} close={() => setSettings(false)} library={library} assets={assets} refresh={refreshWorkspace} managePhotos={() => void openLibraryResources('photos')} manageChannels={() => void openLibraryResources('channels')} manageLibrary={() => void guard(async () => {setSettings(false); setLibraryTab('storage'); setLibraryOpen(true);})} preferences={<PreferencesPanel busy={acting || !!status?.busy} run={nativeAction}/>} setup={<SetupPanel host={status?.assistant} busy={acting || !!status?.busy} run={nativeAction}/>} recovery={<BootstrapRecoveryPanel busy={acting || !!status?.busy} run={nativeAction} onRecovered={async () => { clearEditor(); setLibraryOpen(true); await refreshStatus(); }}/>} /> }
     {leaving &&
             <dialog ref={leaveDialog} className="leave-dialog" onCancel={() => setLeaving(null)} aria-modal="true"
                     aria-labelledby="leave-title"><h3 id="leave-title">草稿尚未保存</h3>
@@ -678,4 +683,4 @@ function App() {
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Renderer root is missing');
-createRoot(root).render(<App/>);
+createRoot(root).render(<LocaleProvider locale={zhCN}><App/></LocaleProvider>);

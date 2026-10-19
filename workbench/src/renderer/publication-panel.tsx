@@ -1,11 +1,14 @@
 import {useEffect, useRef, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
+import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
+import Input from '@douyinfe/semi-ui-19/lib/es/input';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import type {WorkspaceCoverChoice, WorkspaceKind, WorkspaceLibraryPlan, WorkspacePublication, WorkspaceSchedule} from '../shared/workspace-contracts.ts';
 import {ManagementDialog, useManagedDraftGuard, useWorkspaceMutation, type WorkspaceManagementProps} from './library-panels.tsx';
 import {localDay, scheduleDay} from './workspace-model.ts';
 import {publicationTime, recordingSchedule} from './publication-model.ts';
 import {invoke} from './client.ts';
+import {PopupSelect, CalendarDateInput, ClockTimeInput, UtcDateTimeInput} from './semi-controls.tsx';
 import './publication-workspace.css';
 
 export interface PublicationFocus {kind: WorkspaceKind; id: string; planId?: string; day?: string}
@@ -52,16 +55,16 @@ export function PublicationPanel(props: WorkspaceManagementProps & {documentId: 
 
 function ScheduleEditor({value, change, disabled}: {value: WorkspaceSchedule; change(value: WorkspaceSchedule): void; disabled: boolean}) {
   const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return <fieldset disabled={disabled}><div className="management-form"><label>时间精度<select value={value.precision} onChange={event => {
+  return <fieldset disabled={disabled}><div className="management-form"><label>时间精度<PopupSelect disabled={disabled} value={value.precision} onChange={precision => {
     let day = value.precision === 'instant' ? value.at.slice(0, 10) : value.date;
     if (value.precision === 'instant') {
       try { day = scheduleDay(value); } catch { /* Allow leaving an incomplete timezone field. */ }
     }
-    change(event.target.value === 'date' ? {precision: 'date', date: day} : event.target.value === 'local-minute' ? {precision: 'local-minute', date: day, time: '09:00', timezone: zone} : {precision: 'instant', at: new Date().toISOString(), timezone: zone});
-  }}><option value="date">只记录日期</option><option value="local-minute">当地日期与时间</option><option value="instant">明确时刻（UTC）</option></select></label>
-    {value.precision === 'instant' ? <><label>UTC 时间<input required type="datetime-local" step="1" value={value.at.replace(/Z$/, '').slice(0, 19)} onChange={event => { if (event.target.value) change({...value, at: new Date(`${event.target.value}Z`).toISOString()}); }}/></label><p className="muted">这里填写 UTC 时间；切换到此精度时先填入当前时刻，请核对。下方时区只影响日程中的显示。</p></> : <label>日期<input required type="date" value={value.date} onChange={event => { if (event.target.value) change({...value, date: event.target.value}); }}/></label>}
-    {value.precision === 'local-minute' && <label>当地时间<input required type="time" value={value.time} onChange={event => change({...value, time: event.target.value})}/></label>}
-    {value.precision !== 'date' && <label>{value.precision === 'instant' ? '显示时区' : '这次发布的时区（留空表示未记录）'}<input required={value.precision === 'instant'} placeholder={`本机时区：${zone}`} value={value.timezone ?? ''} onChange={event => { const timezone = event.target.value; try { if (timezone) new Intl.DateTimeFormat('zh-CN', {timeZone: timezone}); event.target.setCustomValidity(''); } catch { event.target.setCustomValidity('请填写有效时区，例如 Asia/Shanghai。'); } change(value.precision === 'instant' ? {...value, timezone} : {...value, timezone: timezone || null}); }}/></label>}
+    change(precision === 'date' ? {precision: 'date', date: day} : precision === 'local-minute' ? {precision: 'local-minute', date: day, time: '09:00', timezone: zone} : {precision: 'instant', at: new Date().toISOString(), timezone: zone});
+  }}><option value="date">只记录日期</option><option value="local-minute">当地日期与时间</option><option value="instant">明确时刻（UTC）</option></PopupSelect></label>
+    {value.precision === 'instant' ? <><label>UTC 时间<UtcDateTimeInput disabled={disabled} required value={value.at} onChange={at => { if (at) change({...value, at}); }}/></label><p className="muted">这里填写 UTC 时间；切换到此精度时先填入当前时刻，请核对。下方时区只影响日程中的显示。</p></> : <label>日期<CalendarDateInput disabled={disabled} required value={value.date} onChange={date => { if (date) change({...value, date}); }}/></label>}
+    {value.precision === 'local-minute' && <label>当地时间<ClockTimeInput disabled={disabled} required value={value.time} onChange={time => change({...value, time})}/></label>}
+    {value.precision !== 'date' && <label>{value.precision === 'instant' ? '显示时区' : '这次发布的时区（留空表示未记录）'}<Input className="semi-control-text" disabled={disabled} required={value.precision === 'instant'} placeholder={`本机时区：${zone}`} value={value.timezone ?? ''} onChange={(_, event) => { const timezone = event.target.value; try { if (timezone) new Intl.DateTimeFormat('zh-CN', {timeZone: timezone}); event.target.setCustomValidity(''); } catch { event.target.setCustomValidity('请填写有效时区，例如 Asia/Shanghai。'); } change(value.precision === 'instant' ? {...value, timezone} : {...value, timezone: timezone || null}); }}/></label>}
     {value.precision === 'date' && <p className="muted">只记录日期，不会推定具体时刻或时区。</p>}
   </div></fieldset>;
 }
@@ -78,9 +81,10 @@ function PublicationEditor({props, selection, initialDay, close}: {props: Worksp
   const title = {plan: selection.plan ? '编辑发布计划' : '新增发布计划', record: '记录实际发布', correct: '更正发布记录', retract: '撤销发布记录'}[mode];
   if (!document || !token) return null;
   const unavailable = !current || !!current.deletedAt, coverChoice: WorkspaceCoverChoice = cover.startsWith('candidate:') ? {candidateId: cover.slice(10)} : cover.startsWith('variant:') ? {variantId: cover.slice(8)} : null;
+  const validChannel = !!props.library?.settings.channels.some(item => item.id === channelId && !item.deletedAt);
   const knownCover = !cover || document.candidates.some(item => `candidate:${item.id}` === cover) || document.coverVariants.some(item => `variant:${item.id}` === cover);
   return <ManagementDialog title={title} busy={props.busy} close={close}><form className="management-form" onSubmit={event => {
-    event.preventDefault(); if (props.busy || unavailable) return;
+    event.preventDefault(); if (props.busy || unavailable || mode === 'plan' && !validChannel) return;
     const reference = {id: document.id, editToken: token, kind: selection.kind};
     if (mode === 'retract' && selection.publication) void mutate({op: 'retractPublication', ...reference, publicationId: selection.publication.id, reason: reason.trim()}, close);
     else if (mode === 'correct' && selection.publication) void mutate({op: 'correctPublication', ...reference, publicationId: selection.publication.id, reason: reason.trim(), text, schedule, url: url.trim() || null, ...(cover !== initialCover ? {coverChoice} : {})}, close);
@@ -91,10 +95,10 @@ function PublicationEditor({props, selection, initialDay, close}: {props: Worksp
     {unavailable && <p className="danger-note">内容已不可用或进入回收站。填写内容仍保留，请先核对并恢复内容，再重新打开编辑。</p>}
     {token !== document.editToken && <p className="danger-note">内容库已有更新，保存时会核对冲突；本次填写不会自动覆盖库中的新版本。</p>}
     <fieldset disabled={props.busy || unavailable}><div className="management-form">
-      {mode === 'plan' && <label>发布渠道<select required value={channelId} onChange={event => setChannel(event.target.value)}><option value="">请选择渠道</option>{props.library?.settings.channels.filter(item => !item.deletedAt || item.id === channelId).map(item => <option key={item.id} value={item.id} disabled={!!item.deletedAt}>{item.name}{item.deletedAt ? '（已停用，请重新选择）' : ''}</option>)}</select></label>}
+      {mode === 'plan' && <label>发布渠道<PopupSelect disabled={props.busy || unavailable} required value={channelId} onChange={setChannel}><option value="">请选择渠道</option>{channelId && !props.library?.settings.channels.some(item => item.id === channelId) && <option value={channelId} disabled>原渠道已不可用，请重新选择</option>}{props.library?.settings.channels.filter(item => !item.deletedAt || item.id === channelId).map(item => <option key={item.id} value={item.id} disabled={!!item.deletedAt}>{item.name}{item.deletedAt ? '（已停用，请重新选择）' : ''}</option>)}</PopupSelect></label>}
       {mode !== 'retract' && <ScheduleEditor value={schedule} change={setSchedule} disabled={props.busy || unavailable}/>}
-      {(mode === 'plan' || mode === 'correct') && <><label>{mode === 'correct' ? '实际发布的文字' : '准备发布的文字'}<textarea className="management-body" value={text} onChange={event => setText(event.target.value)}/></label><p className="muted">留空表示这次发布空文字；不会自动改用正文。</p><label>{mode === 'correct' ? '实际发布的封面' : '计划使用的封面'}<select value={cover} onChange={event => setCover(event.target.value)}><option value="">这次不记录封面</option>{!knownCover && <option value={cover}>原记录的封面（暂不可用）</option>}{document.candidates.map((item, index) => <option key={item.id} value={`candidate:${item.id}`}>候选 {item.displayNumber || index + 1}{item.favorite ? ' · 收藏' : ''}</option>)}{document.coverVariants.map(item => <option key={item.id} value={`variant:${item.id}`}>{item.name} · {item.ratio}</option>)}</select></label></>}
-      {(mode === 'record' || mode === 'correct') && <label>实际发布链接（可留空）<input type="url" value={url} placeholder="https://…" onChange={event => setUrl(event.target.value)}/></label>}
-      {(mode === 'correct' || mode === 'retract') && <label>{mode === 'correct' ? '更正原因' : '撤销原因'}<textarea required value={reason} onChange={event => setReason(event.target.value)}/></label>}
-    </div></fieldset><p role="status">{notice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || unavailable || ((mode === 'correct' || mode === 'retract') && !reason.trim()) || (mode === 'plan' && (!channelId || !!props.library?.settings.channels.find(item => item.id === channelId)?.deletedAt))}>{mode === 'record' ? '确认已经发布并保存记录' : mode === 'retract' ? '确认撤销这条记录' : '保存到本机'}</Button></form></ManagementDialog>;
+      {(mode === 'plan' || mode === 'correct') && <><label>{mode === 'correct' ? '实际发布的文字' : '准备发布的文字'}<TextArea disabled={props.busy || unavailable} className="semi-control-text management-body" value={text} onChange={value => setText(value)}/></label><p className="muted">留空表示这次发布空文字；不会自动改用正文。</p><label>{mode === 'correct' ? '实际发布的封面' : '计划使用的封面'}<PopupSelect disabled={props.busy || unavailable} value={cover} onChange={setCover}><option value="">这次不记录封面</option>{!knownCover && <option value={cover}>原记录的封面（暂不可用）</option>}{document.candidates.map((item, index) => <option key={item.id} value={`candidate:${item.id}`}>候选 {item.displayNumber || index + 1}{item.favorite ? ' · 收藏' : ''}</option>)}{document.coverVariants.map(item => <option key={item.id} value={`variant:${item.id}`}>{item.name} · {item.ratio}</option>)}</PopupSelect></label></>}
+      {(mode === 'record' || mode === 'correct') && <label>实际发布链接（可留空）<Input className="semi-control-text" disabled={props.busy || unavailable} type="url" value={url} placeholder="https://…" onChange={(_, event) => setUrl(event.target.value)}/></label>}
+      {(mode === 'correct' || mode === 'retract') && <label>{mode === 'correct' ? '更正原因' : '撤销原因'}<TextArea className="semi-control-text" disabled={props.busy || unavailable} required value={reason} onChange={value => setReason(value)}/></label>}
+    </div></fieldset><p role="status">{notice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || unavailable || ((mode === 'correct' || mode === 'retract') && !reason.trim()) || (mode === 'plan' && !validChannel)}>{mode === 'record' ? '确认已经发布并保存记录' : mode === 'retract' ? '确认撤销这条记录' : '保存到本机'}</Button></form></ManagementDialog>;
 }

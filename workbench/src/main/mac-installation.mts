@@ -79,11 +79,11 @@ async function appIdentity(file: string): Promise<Identity> {
 async function matches(file: string, expected: Identity) {
     if (!isDeepStrictEqual(await appIdentity(file), expected)) throw Error('Application recovery identity mismatch');
 }
-async function trustedBundle(file: string, options: Options) {
+async function trustedBundle(file: string, options: Options, previous = false) {
     const stat = await fs.lstat(file);
     if (!stat.isDirectory() || stat.isSymbolicLink()) throw Error('Unsafe application directory');
     const bundle = await (options.readBundle ?? readMacBundle)(file);
-    if (!allowedIdentifiers.has(options.bundleIdentifier) || bundle.identifier !== options.bundleIdentifier || bundle.executable !== options.executable || !/^[^/\\\x00-\x1f]+$/.test(bundle.executable) || ['.', '..'].includes(bundle.executable)) throw Error('Unrecognized application bundle identity');
+    if (!allowedIdentifiers.has(options.bundleIdentifier) || !allowedIdentifiers.has(bundle.identifier) || (!previous && bundle.identifier !== options.bundleIdentifier) || bundle.executable !== options.executable || !/^[^/\\\x00-\x1f]+$/.test(bundle.executable) || ['.', '..'].includes(bundle.executable)) throw Error('Unrecognized application bundle identity');
     const executable = await fs.lstat(path.join(file, 'Contents/MacOS', bundle.executable));
     if (!executable.isFile() || !(executable.mode & 0o111)) throw Error('Missing application executable');
 }
@@ -139,7 +139,7 @@ async function claimTransaction(directory: string) {
 }
 async function readRecord(directory: string, options: Options): Promise<RecordData> {
     const {value: record} = await privateJSON(path.join(directory, 'record.json'));
-    if (record.format !== 'nova-mac-install-v1' || !Number.isSafeInteger(record.ownerPid) || record.ownerPid <= 0 || !allowedIdentifiers.has(options.bundleIdentifier) || record.target !== options.target || record.bundleIdentifier !== options.bundleIdentifier || record.executable !== options.executable || !['staging', 'prepared', 'published', 'complete'].includes(record.phase) || (record.previous !== null && !validIdentity(record.previous)) || (record.candidate !== null && !validIdentity(record.candidate))) throw Error('Unknown installation record');
+    if (record.format !== 'nova-mac-install-v1' || !Number.isSafeInteger(record.ownerPid) || record.ownerPid <= 0 || !allowedIdentifiers.has(options.bundleIdentifier) || record.target !== options.target || !allowedIdentifiers.has(record.bundleIdentifier) || record.executable !== options.executable || !['staging', 'prepared', 'published', 'complete'].includes(record.phase) || (record.previous !== null && !validIdentity(record.previous)) || (record.candidate !== null && !validIdentity(record.candidate))) throw Error('Unknown installation record');
     if (record.phase !== 'staging' && !record.candidate) throw Error('Missing installation candidate identity');
     return record;
 }
@@ -170,7 +170,7 @@ export async function recoverMacInstallation(options: Options): Promise<'none' |
         assertRecoveryOwner(record);
         if (record.previous && !await absent(previous)) {
             await matches(previous, record.previous);
-            await trustedBundle(previous, options);
+            await trustedBundle(previous, options, true);
             if (await (options.running ?? isMacApplicationRunning)(options.target)) throw Error('「应用程序」中的工作台正在运行，请先退出。');
             await fs.rename(previous, options.target);
             await syncDirectory(path.dirname(options.target));
@@ -223,7 +223,7 @@ export async function installMacApplication(options: Options): Promise<{transact
     const running = options.running ?? isMacApplicationRunning;
     if (await running(options.target)) throw Error('「应用程序」中的工作台正在运行，请先退出后重新安装。');
     const existed = !await absent(options.target);
-    if (existed) await trustedBundle(options.target, options);
+    if (existed) await trustedBundle(options.target, options, true);
     const old = existed ? await appIdentity(options.target) : null;
     const source = await snapshotPackage(options.source);
     await (options.verifySignature ?? sign)(options.source);

@@ -1,0 +1,21 @@
+.semi-control { display: inline-flex; position: relative; min-width: 0; width: 100%; vertical-align: middle; }
+.semi-control > .semi-select, .semi-control > .semi-datepicker, .semi-control > .semi-timepicker { width: 100%; }
+.semi-control-validation { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; border: 0 !important; opacity: 0; pointer-events: none; clip-path: inset(50%); }
+.creator-channel-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.creator-channel-preview > span { padding: 4px 10px; border-radius: 6px; font-size: 13px; }
+.semi-control { flex-wrap: wrap; }
+.semi-control-error { flex-basis: 100%; margin-top: 4px; color: var(--semi-color-danger); font-size: 12px; }
+.workspace-management .semi-input, .management-dialog .semi-input { border: 0; border-radius: 0; background: transparent; padding-top: 0; padding-bottom: 0; }
+.semi-control .semi-input, .semi-control-text .semi-input, .workspace-management .semi-input, .management-dialog .semi-input, .cover-create-settings .semi-input { border: 0 !important; border-radius: 0 !important; padding: 0 12px !important; background: transparent !important; box-shadow: none !important; min-height: 0; }
+.semi-control-text .semi-input-textarea { border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding: 5px 12px !important; }
+.semi-control-check .semi-checkbox-inner input { padding: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
+.semi-control-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.semi-control > .semi-input-number { width: 100%; }
+/* Keep modal popups in its top layer while escaping the dialog scroll clipping. */
+.semi-dialog-popup-host { position: fixed; inset: 0; z-index: 1030; pointer-events: none; }
+.semi-dialog-popup-host .semi-portal-inner { pointer-events: auto; }
+.creator-settings-row > .semi-control { width: 180px; flex: none; }
+.creator-preference-row > .semi-control { display: inline-flex; width: 130px; flex: none; gap: 0; }
+.semi-control-check { margin: 0; line-height: 20px; }
+/* Native input padding must not push Semi placeholders below their fixed-height wrapper. */
+.semi-input-wrapper > input.semi-input { padding-top:0 !important; padding-bottom:0 !important; text-align:left; }

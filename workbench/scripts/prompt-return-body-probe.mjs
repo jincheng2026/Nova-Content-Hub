@@ -48,7 +48,7 @@ await import(${JSON.stringify(path.join(workbench, 'src/renderer/app.tsx'))});
         app.setPath('userData', path.join(probeRoot, 'machine'));
         await app.whenReady();
         const window = new BrowserWindow({show: false, width: 1440, height: 1000, webPreferences: {contextIsolation: true, nodeIntegration: false}});
-        const run = source => window.webContents.executeJavaScript(source);
+        const run = source => window.webContents.executeJavaScript(source).catch(error => {console.error("Failed browser script:", source); throw error;});
         const wait = condition => run(`new Promise((resolve,reject)=>{const end=Date.now()+5000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(0,800)));setTimeout(check,10)};check()})`);
         const click = selector => run(`document.querySelector(${JSON.stringify(selector)}).click()`);
         const clickText = text => run(`[...document.querySelectorAll('button')].find(button => button.textContent === ${JSON.stringify(text)}).click()`);
@@ -65,8 +65,12 @@ await import(${JSON.stringify(path.join(workbench, 'src/renderer/app.tsx'))});
             await wait('document.getElementById("return-prompt-content-body") && !document.getElementById("return-prompt-content-body").disabled');
         }
         async function chooseContent(id) {
-            await run(`(()=>{const select=document.querySelector('[aria-label="选择提示词参考内容"]');select.value=${JSON.stringify(id)};select.dispatchEvent(new Event('change',{bubbles:true}));})()`);
-            await wait(`document.querySelector('[aria-label="选择提示词参考内容"]').value === ${JSON.stringify(id)}`);
+            await run('document.querySelector(".prompt-reference-picker").open = true');
+            await click('.prompt-reference-fields .semi-select');
+            const label = id ? `内容 ${id}` : '暂不关联内容';
+            await wait(`[...document.querySelectorAll('[role="option"]')].some(option => option.textContent.trim() === ${JSON.stringify(label)})`);
+            await run(`[...document.querySelectorAll('[role="option"]')].find(option => option.textContent.trim() === ${JSON.stringify(label)}).click()`);
+            await wait(`document.querySelector('.prompt-reference-fields .semi-select').textContent.includes(${JSON.stringify(label)})`);
         }
         async function returnTo(id) {
             const reads = await run('window.reads.filter(item => item.method === "readContent").length');
@@ -139,7 +143,7 @@ await import(${JSON.stringify(path.join(workbench, 'src/renderer/app.tsx'))});
                 assert.equal(await run('document.getElementById("error").textContent.includes("关联内容")'), true, failure + ' reports a visible error');
                 if (failure === 'trashed' || failure === 'missing') {
                     assert.equal(await run('document.getElementById("return-prompt-content-body").disabled'), true, 'fresh snapshot disables unavailable target');
-                    assert.deepEqual(await run('(()=>{const select=document.querySelector("[aria-label=选择提示词参考内容]");return [select.value,select.selectedOptions[0].disabled]})()'), ['b', true], 'missing association remains explicit rather than silently choosing another content');
+                    assert.equal(await run('document.querySelector(".prompt-reference-fields .semi-select").textContent.includes("关联内容已移入回收站或不再可用")'), true, 'missing association remains explicit rather than silently choosing another content');
                 }
                 await run('window.readFailure=null;window.documents=window.savedDocuments');
                 await click('#refresh-workspace');

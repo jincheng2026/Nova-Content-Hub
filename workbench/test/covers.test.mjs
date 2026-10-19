@@ -35,6 +35,65 @@ async function commitCandidate(f, job) {
   await fs.writeFile(path.join(context.inbox, 'result.png'), f.bytes);
   await f.library.commitCoverAttempt(f.content.id, job.id, attemptId, { libraryId: f.binding.libraryId, contentId: f.content.id, requestId: job.id, attemptId, requestHash: job.requestHash, resultId: randomUUID(), files: [{ name: 'result.png', sha256: hash(f.bytes) }] });
 }
+test('candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request', async t => {
+  const f = await fixture(t), original = (await f.start()).jobs[0];
+  f.bytes = await sharp({create: {width: 8, height: 6, channels: 3, background: '#dc9a47'}}).png().toBuffer();
+  await commitCandidate(f, original);
+  const before = f.library.readContent(f.content.id), candidate = structuredClone(before.candidates[0]);
+  const originalRequestFile = path.join(f.libraryRoot, '内容', f.content.id, '封面任务', original.id, '请求.json');
+  const originalRequestBytes = await fs.readFile(originalRequestFile);
+  const originalName = `候选微调参考-${candidate.id}.png`;
+  const attached = await f.controller.mutateWorkspace({op: 'attachMaterial', id: before.id, editToken: before.editToken, assetHash: candidate.assetHash, originalName, role: 'reference'});
+  const current = attached.library.contentDetails.find(item => item.id === before.id);
+  const material = current.materials.find(item => item.originalName === originalName && item.assetHash === candidate.assetHash);
+  assert.equal(material.role, 'reference'); assert.notEqual(current.editToken, before.editToken);
+  assert.equal(f.launches.length, 1, 'preparing an explicit reference does not launch the assistant');
+  const prompt = `以资料“${originalName}”中的原候选图为修改基础。仅生成1张，保持4:3；未标注处保持不变。\n标注1：原图左上角为(0%,0%)，位置(25%,40%)：标题向右移，保留人物。`;
+  const input = {...f.input, materialIds: [material.id], prompt, count: 1};
+  await assert.rejects(f.controller.generateCover({contentId: before.id, editToken: before.editToken, input}), {code: 'CONFLICT'});
+  assert.equal(f.controller.binding.coverPending, null);
+  const refined = await f.controller.generateCover({contentId: before.id, editToken: current.editToken, input});
+  const job = refined.jobs.find(item => item.id !== original.id);
+  assert.ok(job); assert.equal(refined.launchRequested, true); assert.equal(f.launches.length, 2);
+  const context = await f.worker.call('handoffContext', {binding: f.binding, reference: {contentId: before.id, requestId: job.id, attemptId: job.activeAttemptId}});
+  assert.equal(context.request.prompt, prompt); assert.equal(context.request.count, 1);
+  assert.equal(context.request.ratio, '4:3'); assert.deepEqual(context.request.pixels, f.input.pixels);
+  assert.equal(context.request.photo, null);
+  assert.deepEqual(context.request.materials, [{id: material.id, assetHash: candidate.assetHash, originalName, role: 'reference'}]);
+  const reference = context.inputs.find(item => item.materialId === material.id);
+  assert.equal(reference.assetHash, candidate.assetHash); assert.equal(reference.detectedType, 'image/png');
+  assert.deepEqual(await fs.readFile(reference.path), f.bytes);
+  assert.equal(hash(await fs.readFile(reference.path)), candidate.assetHash);
+  assert.deepEqual(await fs.readFile(originalRequestFile), originalRequestBytes);
+  assert.deepEqual(f.library.readContent(before.id).candidates, [candidate]);
+  assert.deepEqual(Buffer.from(f.library.readAsset(candidate.assetHash).data), f.bytes);
+});
+test('refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch', async t => {
+  const f = await fixture(t), original = (await f.start()).jobs[0]; await commitCandidate(f, original);
+  const before = f.library.readContent(f.content.id), candidate = before.candidates[0];
+  const attached = await f.controller.mutateWorkspace({op: 'attachMaterial', id: before.id, editToken: before.editToken, assetHash: candidate.assetHash, originalName: 'refine-reference.png', role: 'reference'});
+  const current = attached.library.contentDetails.find(item => item.id === before.id), material = current.materials[0];
+  const input = {...f.input, materialIds: [material.id], prompt: '参考原候选；位置(75%,20%)的标题改为蓝色。仅生成一张。'};
+  const call = f.worker.call;
+  f.worker.call = async (op, args) => {
+    const result = await call(op, args);
+    if (op === 'createCoverRequest') throw Object.assign(new Error('lost request response'), {code: 'WORKER_EXIT'});
+    return result;
+  };
+  await assert.rejects(f.controller.generateCover({contentId: before.id, editToken: current.editToken, input}), {code: 'WORKER_EXIT'});
+  assert.deepEqual(f.controller.binding.coverPending.input, input);
+  assert.equal(f.launches.length, 1);
+  await assert.rejects(f.controller.mutateWorkspace({op: 'attachMaterial', id: before.id, editToken: current.editToken, assetHash: candidate.assetHash, originalName: 'duplicate.png', role: 'reference'}), {code: 'PENDING_MUTATION'});
+  f.worker.call = call; const reopened = f.make(); await reopened.initialize();
+  const resumed = await reopened.resumeCover();
+  assert.equal(resumed.launchRequested, true); assert.equal(resumed.jobs.length, 2); assert.equal(f.launches.length, 2);
+  const job = resumed.jobs.find(item => item.id !== original.id), context = f.library.readCoverContext(before.id, job.id, job.activeAttemptId);
+  assert.equal(context.request.prompt, input.prompt); assert.equal(context.request.materials[0].id, material.id);
+  assert.deepEqual(await fs.readFile(context.inputs.find(item => item.materialId === material.id).path), f.bytes);
+  assert.equal(f.library.readContent(before.id).materials.length, 1);
+  assert.deepEqual(f.library.readContent(before.id).candidates, before.candidates);
+  assert.equal(reopened.binding.coverPending, null);
+});
 test('explicit same-input generate after committed result creates a new attempt on the current host', async t => {
   const f = await fixture(t), first = await f.start(), original = first.jobs[0];
   const requestFile = path.join(f.libraryRoot, '内容', f.content.id, '封面任务', original.id, '请求.json'), requestBytes = await fs.readFile(requestFile);
