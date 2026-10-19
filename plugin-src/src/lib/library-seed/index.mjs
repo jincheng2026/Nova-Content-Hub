@@ -66,16 +66,12 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
     const colleague = prepareColleagueBuiltins(relative => sourceFile(bundleRoot, relative));
     prepared.push(...colleague.prepared);
     const allPrompts = [...prompts.prompts, ...colleague.prompts];
+    const assetDescriptors = library.readAssetDescriptors(prepared.flatMap(({resources}) => [...resources.values()].map(input => input.assetHash)));
     const templates = [];
     for (const {definition, resources} of prepared) {
         const installed = {};
         for (const [key, input] of resources) {
-            let asset;
-            try { asset = library.readAsset(input.assetHash); }
-            catch (error) {
-                if (error.code !== 'CORRUPT') throw error;
-                asset = library.importAsset(input.file, {purpose: input.purpose});
-            }
+            const asset = assetDescriptors.get(input.assetHash) ?? library.importAsset(input.file, {purpose: input.purpose});
             if (asset.assetHash !== input.assetHash) throw Error('内置资源在预检后发生变化');
             installed[key] = {
                 assetHash: asset.assetHash,

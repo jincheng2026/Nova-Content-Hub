@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-19T10:40:36.169Z",
+  "scope": "Current Node core, copied prepared library, warm page cache; not Electron latency proof",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-seed-performance-tCLjoM",
+  "fixture": {
+    "entries": 917,
+    "digest": "5c21e12951bcb68cff7a2590b4632ccbc23fa495bf451a624d4af1a56b91c013"
+  },
+  "durationMs": 3576.1477080000004,
+  "locks": 269,
+  "reads": {
+    "bundle": 1702,
+    "assets": 0,
+    "otherLibrary": 0
+  },
+  "readTimeMs": {
+    "bundle": 152.5936190000075
+  },
+  "unchanged": true,
+  "lockBudget": 90,
+  "passed": false
+}

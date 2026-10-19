@@ -1,0 +1,11 @@
+✔ catalog has a supported version and 26 uniquely identified prompts (0.530084ms)
+✔ every prompt has usable metadata and original project provenance (0.786083ms)
+✔ variables use complete, simple placeholders without a duplicated variable schema (0.438083ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 66.724292

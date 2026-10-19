@@ -132,6 +132,37 @@ test('root identity captured for opening cannot be refreshed by a same-ID replac
     assert.equal(fs.readFileSync(path.join(f.root, '内容', p.item.id, '正文.md'), 'utf8'), 'before');
 });
 
+for (const phase of ['beforeOwnerWrite', 'afterOwnerWrite', 'beforeRelease']) test(`library operation retains the copied lock when root changes at ${phase}`, t => {
+    const f = fixture(t), original = path.join(f.parent, 'original');
+    let replacement;
+    __testing.setHook(event => {
+        if (event.phase !== phase) return;
+        fs.renameSync(f.root, original);
+        fs.cpSync(original, f.root, {recursive: true});
+        replacement = tree(f.root);
+    });
+    assert.throws(() => f.lib.listContents(), error => phase !== 'beforeRelease'
+        ? error.code === 'LOCK_UNCERTAIN' && error.initializationError?.code === 'CONFLICT'
+        : error.code === 'CONFLICT');
+    assert.ok(replacement);
+    assert.deepEqual(tree(f.root), replacement);
+    assert.deepEqual(tree(original), replacement);
+});
+
+test('a primary read failure survives root replacement during release and retains the copied lock', t => {
+    const f = fixture(t), original = path.join(f.parent, 'original');
+    let replacement;
+    __testing.setHook(event => {
+        if (event.phase !== 'beforeRelease') return;
+        fs.renameSync(f.root, original);
+        fs.cpSync(original, f.root, {recursive: true});
+        replacement = tree(f.root);
+    });
+    assert.throws(() => f.lib.readAsset('f'.repeat(64)), error => error.code === 'CORRUPT' && /missing/.test(error.message));
+    assert.deepEqual(tree(f.root), replacement);
+    assert.deepEqual(tree(original), replacement);
+});
+
 test('opening options require exact UUID and canonical nonnegative decimal strings', t => {
     const f = fixture(t), good = expectation(f.lib), before = tree(f.root);
     const invalid = [null, [], {}, 'x', {...good, extra: true}, {...good, [Symbol('extra')]: true},

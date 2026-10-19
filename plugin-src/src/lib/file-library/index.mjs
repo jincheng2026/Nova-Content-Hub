@@ -687,7 +687,7 @@ function library(root, initialInfo, rootIdentity) {
             assertRootIdentity();
             const info = descriptor(root);
             if (info.libraryId !== initialInfo.libraryId) fail('CORRUPT', 'Library identity changed');
-            release = acquire(root);
+            release = acquire(root, read, fs.readdirSync, assertRootIdentity);
             assertRootIdentity();
             const current = descriptor(root);
             if (current.libraryId !== initialInfo.libraryId) fail('CORRUPT', 'Library identity changed');
@@ -847,6 +847,28 @@ function library(root, initialInfo, rootIdentity) {
         });
     }
 
+    function readAssetDescriptors(assetHashes) {
+        if (!Array.isArray(assetHashes)) fail('INVALID_INPUT', 'Expected an array of asset hashes');
+        const hashes = new Set(Array.from(assetHashes, checkedHash));
+        return locked(() => {
+            const descriptors = new Map();
+            for (const assetHash of hashes) {
+                let asset;
+                try {
+                    asset = readAssetInternal(root, assetHash);
+                } catch (error) {
+                    if (error.code === 'CORRUPT') continue;
+                    throw error;
+                }
+                descriptors.set(assetHash, {assetHash, bytes: asset.bytes, detectedType: asset.detectedType});
+            }
+            assertRootIdentity();
+            if (descriptor(root).libraryId !== initialInfo.libraryId) fail('CORRUPT', 'Library identity changed');
+            assertRootIdentity();
+            return descriptors;
+        });
+    }
+
     return Object.freeze({
         ...businessMethods(root, locked, mutate, list),
         ...templateJobMethods({
@@ -935,6 +957,7 @@ function library(root, initialInfo, rootIdentity) {
             readAssetInternal,
             fail
         }),
+        readAssetDescriptors,
         info: Object.freeze({
             ...initialInfo,
             root,

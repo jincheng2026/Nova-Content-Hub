@@ -1,0 +1,12 @@
+{"name":"open-library-to-ready","durationMs":6857.8,"value":{"app":"ready","loaded":"true","busy":"false"}}
+{"name":"content-list-dom","durationMs":287.47,"value":100}
+{"name":"content-list-100-thumbnails-full-decode","durationMs":8244.87,"value":{"elements":100,"uniqueUrls":50,"pixels":134450424,"resourceTimings":[]}}
+{"name":"search-input-to-one-row","durationMs":90.83,"value":"Capacity 100创作中"}
+{"name":"content-detail-six-candidates-dom","durationMs":1749.15,"value":6}
+{"name":"candidate-six-originals-full-decode","durationMs":316.48,"value":{"elements":6,"uniqueUrls":6,"pixels":9374496,"resourceTimings":[]}}
+{"name":"template-view-dom","durationMs":66.4,"value":20}
+{"name":"template-full-page-originals-full-decode","durationMs":2082.56,"value":{"elements":20,"uniqueUrls":20,"pixels":29702216,"resourceTimings":[]}}
+{"name":"calendar-dom","durationMs":141.34,"value":{"days":35,"renderedEvents":9,"labelledPlans":300}}
+{"name":"prompts-dom","durationMs":99.71,"value":64}
+{"name":"content-list-100-return-warm","durationMs":190.35,"value":100}
+{"output":"/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-19-seed-electron-before.json","mode":"baseline","passed":true,"root":"/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-seed-electron-6BAU76"}

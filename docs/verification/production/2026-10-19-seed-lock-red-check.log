@@ -1,0 +1,133 @@
+✖ library operation retains the copied lock when root changes at beforeOwnerWrite (252.29175ms)
+✖ library operation retains the copied lock when root changes at afterOwnerWrite (275.80175ms)
+✖ library operation retains the copied lock when root changes at beforeRelease (224.336ms)
+✖ a primary read failure survives root replacement during release and retains the copied lock (226.428041ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1053.819458
+
+✖ failing tests:
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:135:79
+✖ library operation retains the copied lock when root changes at beforeOwnerWrite (252.29175ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  LibraryError: Library root was replaced; explicitly reopen the selected library
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: LibraryError: Library root was replaced; explicitly reopen the selected library
+        at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:44:11)
+        at assertRootIdentity (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:679:83)
+        at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:691:13)
+        at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:720:16)
+        at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:944:29)
+        at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:31
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14),
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:135:79
+✖ library operation retains the copied lock when root changes at afterOwnerWrite (275.80175ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  LibraryError: Library root was replaced; explicitly reopen the selected library
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: LibraryError: Library root was replaced; explicitly reopen the selected library
+        at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:44:11)
+        at assertRootIdentity (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:679:83)
+        at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:691:13)
+        at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:720:16)
+        at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/index.mjs:944:29)
+        at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:31
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:12)
+        at Test.runInAsyncScope (node:async_hooks:227:14),
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:135:79
+✖ library operation retains the copied lock when root changes at beforeRelease (224.336ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:144:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:152:1
+✖ a primary read failure survives root replacement during release and retains the copied lock (226.428041ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    [
+      [
+        '内容',
+        null
+      ],
+  ...
+      [
+  -     '系统（别动）/库锁',
+  -     null
+  -   ],
+  -   [
+  -     '系统（别动）/库锁/5d8010ea-5af9-4b01-bd75-b109064d3894.json',
+  -     'ewogICJ0b2tlbiI6ICI1ZDgwMTBlYS01YWY5LTRiMDEtYmQ3NS1iMTA5MDY0ZDM4OTQiLAogICJob3N0IjogIk1pY2hhZWxNYWNCb29rLVByby5sb2NhbCIsCiAgInBpZCI6IDE5MDU3Cn0K'
+  -   ],
+  -   [
+        '资产',
+        null
+      ],
+      [
+        '资产/sha256',
+  
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-seed-lock-red-anJWTf/lib/file-library/test/open-identity.test.mjs:162:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ [ '内容', null ], [ '内容库.json', 'ewogICJmb3JtYXQiOiAibm92YS1jb250ZW50LWxpYnJhcnkiLAogICJzY2hlbWFWZXJzaW9uIjogNSwKICAibGlicmFyeUlkIjogImZiOGYzZjczLTM1ZDUtNDY2NS1iOWE0LWMwYzkwZWE3OTk5MyIsCiAgImNyZWF0ZWRBdCI6ICIyMDI2LTEwLTE5VDEwOjU2OjI5LjkzMVoiCn0K' ], [ '合集', null ], [ '库配置', null ], [ '库配置/default', null ], [ '库配置/default/配置.json', 'ewogICJmb3JtYXQiOiAibm92YS13b3Jrc3BhY2UiLAogICJzY2hlbWFWZXJzaW9uIjogMSwKICAiaWQiOiAiZGVmYXVsdCIsCiAgInRpdGxlIjogIuW6k+mFjee9riIsCiAgInJldmlzaW9uIjogMSwKICAiY3JlYXRlZEF0IjogIjIwMjYtMTAtMTlUMTA6NTY6MjkuOTE4WiIsCiAgInVwZGF0ZWRBdCI6ICIyMDI2LTEwLTE5VDEwOjU2OjI5LjkxOFoiLAogICJkZWxldGVkQXQiOiBudWxsLAogICJwcm9maWxlIjogewogICAgIm5hbWUiOiAiIiwKICAgICJpbnRybyI6ICIiLAogICAgImF2YXRhckFzc2V0SGFzaCI6IG51bGwsCiAgICAibWFya3MiOiBbXQogIH0sCiAgImRlZmF1bHRzIjogewogICAgInBob3RvSWQiOiBudWxsLAogICAgInRlbXBsYXRlSWQiOiBudWxsLAogICAgImNvdmVyQ291bnQiOiA0CiAgfSwKICAiY2hhbm5lbHMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJkb3V5aW4iLAogICAgICAibmFtZSI6ICLmipbpn7MiLAogICAgICAiaW5rIjogIiMxNjE4MWQiLAogICAgICAiYmciOiAiI2VjZWVmMSIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjM6NCIsCiAgICAgICJidWlsdGluS2V5IjogImRvdXlpbiIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAieGlhb2hvbmdzaHUiLAogICAgICAibmFtZSI6ICLlsI/nuqLkuaYiLAogICAgICAiaW5rIjogIiNkNjMzNmMiLAogICAgICAiYmciOiAiI2ZjZTllZiIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjE6MSIsCiAgICAgICJidWlsdGluS2V5IjogInhpYW9ob25nc2h1IiwKICAgICAgImRlbGV0ZWRBdCI6IG51bGwKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJ3ZWNoYXQtY2hhbm5lbHMiLAogICAgICAibmFtZSI6ICLop4bpopHlj7ciLAogICAgICAiaW5rIjogIiMwZjdiM2IiLAogICAgICAiYmciOiAiI2U2ZjRlYSIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjM6NCIsCiAgICAgICJidWlsdGluS2V5IjogIndlY2hhdC1jaGFubmVscyIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAid2VjaGF0LW9mZmljaWFsIiwKICAgICAgIm5hbWUiOiAi5YWs5LyX5Y+3IiwKICAgICAgImluayI6ICIjYTE1YzAwIiwKICAgICAgImJnIjogIiNmYmYwZGQiLAogICAgICAicmVxdWlyZWRSYXRpbyI6ICI0NzoyMCIsCiAgICAgICJidWlsdGluS2V5IjogIndlY2hhdC1vZmZpY2lhbCIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAiYmlsaWJpbGkiLAogICAgICAibmFtZSI6ICJCIOermSIsCiAgICAgICJpbmsiOiAiIzBhN2VhNCIsCiAgICAgICJiZyI6ICIjZTNmM2Y5IiwKICAgICAgInJlcXVpcmVkUmF0aW8iOiAiMTY6OSIsCiAgICAgICJidWlsdGluS2V5IjogImJpbGliaWxpIiwKICAgICAgImRlbGV0ZWRBdCI6IG51bGwKICAgIH0KICBdLAogICJwcm9tcHRDYXRlZ29yaWVzIjogW10sCiAgImN1c3RvbVJhdGlvcyI6IFtdCn0K' ], [ '我的照片', null ], [ '提示词', null ], [ '模板', null ], [ '系统（别动）', null ], [ '系统（别动）/事务', null ], [ '系统（别动）/事务/已提交', null ], [ '系统（别动）/事务/待恢复', null ], [ '资产', null ], [ '资产/sha256', null ] ],
+    expected: [ [ '内容', null ], [ '内容库.json', 'ewogICJmb3JtYXQiOiAibm92YS1jb250ZW50LWxpYnJhcnkiLAogICJzY2hlbWFWZXJzaW9uIjogNSwKICAibGlicmFyeUlkIjogImZiOGYzZjczLTM1ZDUtNDY2NS1iOWE0LWMwYzkwZWE3OTk5MyIsCiAgImNyZWF0ZWRBdCI6ICIyMDI2LTEwLTE5VDEwOjU2OjI5LjkzMVoiCn0K' ], [ '合集', null ], [ '库配置', null ], [ '库配置/default', null ], [ '库配置/default/配置.json', 'ewogICJmb3JtYXQiOiAibm92YS13b3Jrc3BhY2UiLAogICJzY2hlbWFWZXJzaW9uIjogMSwKICAiaWQiOiAiZGVmYXVsdCIsCiAgInRpdGxlIjogIuW6k+mFjee9riIsCiAgInJldmlzaW9uIjogMSwKICAiY3JlYXRlZEF0IjogIjIwMjYtMTAtMTlUMTA6NTY6MjkuOTE4WiIsCiAgInVwZGF0ZWRBdCI6ICIyMDI2LTEwLTE5VDEwOjU2OjI5LjkxOFoiLAogICJkZWxldGVkQXQiOiBudWxsLAogICJwcm9maWxlIjogewogICAgIm5hbWUiOiAiIiwKICAgICJpbnRybyI6ICIiLAogICAgImF2YXRhckFzc2V0SGFzaCI6IG51bGwsCiAgICAibWFya3MiOiBbXQogIH0sCiAgImRlZmF1bHRzIjogewogICAgInBob3RvSWQiOiBudWxsLAogICAgInRlbXBsYXRlSWQiOiBudWxsLAogICAgImNvdmVyQ291bnQiOiA0CiAgfSwKICAiY2hhbm5lbHMiOiBbCiAgICB7CiAgICAgICJpZCI6ICJkb3V5aW4iLAogICAgICAibmFtZSI6ICLmipbpn7MiLAogICAgICAiaW5rIjogIiMxNjE4MWQiLAogICAgICAiYmciOiAiI2VjZWVmMSIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjM6NCIsCiAgICAgICJidWlsdGluS2V5IjogImRvdXlpbiIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAieGlhb2hvbmdzaHUiLAogICAgICAibmFtZSI6ICLlsI/nuqLkuaYiLAogICAgICAiaW5rIjogIiNkNjMzNmMiLAogICAgICAiYmciOiAiI2ZjZTllZiIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjE6MSIsCiAgICAgICJidWlsdGluS2V5IjogInhpYW9ob25nc2h1IiwKICAgICAgImRlbGV0ZWRBdCI6IG51bGwKICAgIH0sCiAgICB7CiAgICAgICJpZCI6ICJ3ZWNoYXQtY2hhbm5lbHMiLAogICAgICAibmFtZSI6ICLop4bpopHlj7ciLAogICAgICAiaW5rIjogIiMwZjdiM2IiLAogICAgICAiYmciOiAiI2U2ZjRlYSIsCiAgICAgICJyZXF1aXJlZFJhdGlvIjogIjM6NCIsCiAgICAgICJidWlsdGluS2V5IjogIndlY2hhdC1jaGFubmVscyIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAid2VjaGF0LW9mZmljaWFsIiwKICAgICAgIm5hbWUiOiAi5YWs5LyX5Y+3IiwKICAgICAgImluayI6ICIjYTE1YzAwIiwKICAgICAgImJnIjogIiNmYmYwZGQiLAogICAgICAicmVxdWlyZWRSYXRpbyI6ICI0NzoyMCIsCiAgICAgICJidWlsdGluS2V5IjogIndlY2hhdC1vZmZpY2lhbCIsCiAgICAgICJkZWxldGVkQXQiOiBudWxsCiAgICB9LAogICAgewogICAgICAiaWQiOiAiYmlsaWJpbGkiLAogICAgICAibmFtZSI6ICJCIOermSIsCiAgICAgICJpbmsiOiAiIzBhN2VhNCIsCiAgICAgICJiZyI6ICIjZTNmM2Y5IiwKICAgICAgInJlcXVpcmVkUmF0aW8iOiAiMTY6OSIsCiAgICAgICJidWlsdGluS2V5IjogImJpbGliaWxpIiwKICAgICAgImRlbGV0ZWRBdCI6IG51bGwKICAgIH0KICBdLAogICJwcm9tcHRDYXRlZ29yaWVzIjogW10sCiAgImN1c3RvbVJhdGlvcyI6IFtdCn0K' ], [ '我的照片', null ], [ '提示词', null ], [ '模板', null ], [ '系统（别动）', null ], [ '系统（别动）/事务', null ], [ '系统（别动）/事务/已提交', null ], [ '系统（别动）/事务/待恢复', null ], [ '系统（别动）/库锁', null ], [ '系统（别动）/库锁/5d8010ea-5af9-4b01-bd75-b109064d3894.json', 'ewogICJ0b2tlbiI6ICI1ZDgwMTBlYS01YWY5LTRiMDEtYmQ3NS1iMTA5MDY0ZDM4OTQiLAogICJob3N0IjogIk1pY2hhZWxNYWNCb29rLVByby5sb2NhbCIsCiAgInBpZCI6IDE5MDU3Cn0K' ], [ '资产', null ], [ '资产/sha256', null ] ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

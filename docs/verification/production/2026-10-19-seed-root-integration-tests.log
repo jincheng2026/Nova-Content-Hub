@@ -1,0 +1,19 @@
+✔ all bundled groups and prompts install, reopen and seed again without overwriting user facts (23358.651333ms)
+✔ an existing library receives only missing colleague resources and preserves edits, trash and historic packages (18552.103375ms)
+✔ tampered colleague source is rejected during preflight (92.84875ms)
+✔ batch verification waits for the complete colleague source preflight (220.481041ms)
+✔ a corrupt bundled PNG stops preflight before any template or prompt is written (124.251417ms)
+✔ a missing asset is imported, but a tampered same-hash asset is never overwritten (548.453125ms)
+✔ stored assets changed after the batch are revalidated by template installation (497.596667ms)
+✔ root replacement after the batch stops installation before any write to the clone (521.970958ms)
+✔ source bytes changing after preflight still fail the import hash comparison (248.454875ms)
+✔ same-version package conflicts are still rejected after batch verification (541.700875ms)
+✔ bundle resource links cannot read a file outside the packaged resource root (118.8155ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44911.41475

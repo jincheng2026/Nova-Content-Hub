@@ -1,0 +1,25 @@
+✔ batch descriptors validate and deduplicate every hash, lock once and expose no asset buffers (343.862708ms)
+✔ missing, changed, oversized and invalid-type stored assets are omitted without hiding unsafe paths (512.360959ms)
+✔ batch descriptors propagate lock, recovery and I/O failures (415.033792ms)
+✔ batch descriptors recheck root after reading assets (407.09225ms)
+✔ batch descriptors recheck root during descriptor after reading assets (425.720208ms)
+✔ batch descriptors recheck descriptor after reading assets (407.163791ms)
+✔ batch descriptors recheck malformed descriptor after reading assets (329.255ms)
+✔ expected root identity rejects a same-ID full clone before pending recovery (478.982291ms)
+✔ expected library ID rejects a different library at the selected path before pending recovery (743.716458ms)
+✔ expected identity opens and recovers; identity projection is deeply frozen and old API stays compatible (919.212625ms)
+✔ root identity captured for opening cannot be refreshed by a same-ID replacement before recovery (600.307833ms)
+✔ library operation retains the copied lock when root changes at beforeOwnerWrite (152.850292ms)
+✔ library operation retains the copied lock when root changes at afterOwnerWrite (119.503667ms)
+✔ library operation retains the copied lock when root changes at beforeRelease (116.564166ms)
+✔ a primary read failure survives root replacement during release and retains the copied lock (238.5475ms)
+✔ opening options require exact UUID and canonical nonnegative decimal strings (178.177292ms)
+✔ opening root identity preserves BigInt precision above the safe integer range (252.421792ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3957.28125

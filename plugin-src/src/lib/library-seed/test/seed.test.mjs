@@ -23,7 +23,19 @@ function fixture(t) {
 
 test('all bundled groups and prompts install, reopen and seed again without overwriting user facts', async t => {
     const {library} = fixture(t);
-    const report = installBuiltins(library);
+    let batchReads = 0;
+    function batched(lib) {
+        return {...lib,
+            readAsset() { assert.fail('seed must batch asset verification'); },
+            readAssetDescriptors(hashes) {
+                batchReads++;
+                assert.equal(hashes.length, 195, 'batch covers the complete preflight, including colleague resources');
+                return lib.readAssetDescriptors(hashes);
+            }
+        };
+    }
+    const report = installBuiltins(batched(library));
+    assert.equal(batchReads, 1);
     assert.equal(report.templates.length, 20);
     assert.equal(report.styleSamples, 157);
     assert.equal(report.structureSamples, 38);
@@ -75,7 +87,8 @@ test('all bundled groups and prompts install, reopen and seed again without over
     const firstTemplate = library.readTemplate(templateCatalog.templates[0].id);
     const trashedTemplate = library.trashTemplate(firstTemplate.id, firstTemplate.editToken);
     const reopened = openLibrary(library.info.root);
-    const again = installBuiltins({...reopened, importAsset() { assert.fail('repeat installation must reuse verified immutable assets'); }});
+    const again = installBuiltins({...batched(reopened), importAsset() { assert.fail('repeat installation must reuse verified immutable assets'); }});
+    assert.equal(batchReads, 2);
     assert.equal(again.createdPrompts, 0);
     assert.equal(reopened.listPrompts().length, 51);
     assert.equal(reopened.listPromptTrash().length, 1);
@@ -130,6 +143,23 @@ test('tampered colleague source is rejected during preflight', t => {
     assert.throws(() => prepareColleagueBuiltins(relative => relative.endsWith(first) ? corrupt : path.join(project, relative)), /资源校验失败/);
 });
 
+test('batch verification waits for the complete colleague source preflight', t => {
+    const {library} = fixture(t), target = fs.realpathSync(path.join(sourceRoot, colleagueCatalog.files.at(-1).path));
+    const read = fs.readFileSync;
+    fs.readFileSync = function (file, ...args) {
+        return file === target ? Buffer.from('tampered final source') : read.call(this, file, ...args);
+    };
+    try {
+        assert.throws(() => installBuiltins({...library,
+            readAssetDescriptors() { assert.fail('batch must wait for all colleague source files'); }
+        }), /资源校验失败/);
+    } finally {
+        fs.readFileSync = read;
+    }
+    assert.equal(library.listTemplates().length, 0);
+    assert.equal(library.listPrompts().length, 0);
+});
+
 function incompleteBundle(parent) {
     const bundle = path.join(parent, 'bundle');
     for (const relative of ['plugin-src/resources/builtin-templates/catalog.json', 'plugin-src/resources/builtin-prompts/catalog.json', 'plugin-src/resources/assets/ai-reference-prompts/generated-files.json']) {
@@ -146,9 +176,97 @@ test('a corrupt bundled PNG stops preflight before any template or prompt is wri
     const {parent, library} = fixture(t);
     const {bundle, relative} = incompleteBundle(parent);
     fs.writeFileSync(path.join(bundle, relative), 'not the registered PNG');
-    assert.throws(() => installBuiltins(library, bundle), /图片校验失败/);
+    assert.throws(() => installBuiltins({...library, readAssetDescriptors() { assert.fail('batch must wait for all source preflight'); }}, bundle), /图片校验失败/);
     assert.equal(library.listTemplates().length, 0);
     assert.equal(library.listPrompts().length, 0);
+});
+
+function installFirstTemplate(library) {
+    const definition = templateCatalog.templates[0], resources = {};
+    for (const [refs, role, purpose] of [[definition.generatedReferences, 'style', 'template-reference'], [definition.assets, 'structure', 'template-structure']]) {
+        for (const ref of refs) {
+            const asset = library.importAsset(path.join(project, 'plugin-src/resources', ref.path), {purpose});
+            resources[ref.path] = {assetHash: asset.assetHash, bytes: asset.bytes, detectedType: asset.detectedType, role};
+        }
+    }
+    library.installBuiltinTemplate({id: definition.id, name: definition.name, version: definition.version, definition, resources});
+    return {definition, resources};
+}
+
+const assetPath = (root, hash) => path.join(root, '资产', 'sha256', hash.slice(0, 2), hash);
+
+test('a missing asset is imported, but a tampered same-hash asset is never overwritten', t => {
+    const {library} = fixture(t), {resources} = installFirstTemplate(library);
+    const hashes = Object.values(resources).map(resource => resource.assetHash);
+    const missing = assetPath(library.info.root, hashes[0]), tampered = assetPath(library.info.root, hashes[1]);
+    fs.unlinkSync(missing);
+    fs.writeFileSync(tampered, 'keep corrupt evidence');
+    const imported = [];
+    assert.throws(() => installBuiltins({...library,
+        importAsset(file, options) {
+            imported.push(file);
+            return library.importAsset(file, options);
+        }
+    }), error => error.code === 'CORRUPT');
+    assert.equal(imported.length, 2);
+    assert.ok(fs.existsSync(missing));
+    assert.equal(fs.readFileSync(tampered, 'utf8'), 'keep corrupt evidence');
+});
+
+test('stored assets changed after the batch are revalidated by template installation', t => {
+    const {library} = fixture(t), {resources} = installFirstTemplate(library);
+    const target = assetPath(library.info.root, Object.values(resources)[0].assetHash);
+    assert.throws(() => installBuiltins({...library,
+        readAssetDescriptors(hashes) {
+            const descriptors = library.readAssetDescriptors(hashes);
+            fs.writeFileSync(target, 'changed after batch');
+            return descriptors;
+        }
+    }), error => error.code === 'CORRUPT');
+    assert.equal(library.listTemplates().length, 1);
+    assert.equal(library.listPrompts().length, 0);
+    assert.equal(fs.readFileSync(target, 'utf8'), 'changed after batch');
+});
+
+test('root replacement after the batch stops installation before any write to the clone', t => {
+    const {parent, library} = fixture(t);
+    installFirstTemplate(library);
+    const root = library.info.root, original = path.join(parent, 'original');
+    assert.throws(() => installBuiltins({...library,
+        readAssetDescriptors(hashes) {
+            const descriptors = library.readAssetDescriptors(hashes);
+            fs.renameSync(root, original);
+            fs.cpSync(original, root, {recursive: true});
+            return descriptors;
+        }
+    }), error => error.code === 'CONFLICT');
+    assert.equal(fs.existsSync(path.join(root, '系统（别动）', '库锁')), false);
+    const reopened = openLibrary(root);
+    assert.equal(reopened.listTemplates().length, 1);
+    assert.equal(reopened.listPrompts().length, 0);
+    assert.equal(fs.readdirSync(path.join(root, '系统（别动）', '事务', '已提交')).length,
+        fs.readdirSync(path.join(original, '系统（别动）', '事务', '已提交')).length);
+});
+
+test('source bytes changing after preflight still fail the import hash comparison', t => {
+    const {parent, library} = fixture(t), changed = path.join(parent, 'changed.txt');
+    fs.writeFileSync(changed, 'different source bytes');
+    assert.throws(() => installBuiltins({...library,
+        importAsset() { return library.importAsset(changed, {purpose: 'template-structure'}); }
+    }), /预检后发生变化/);
+    assert.equal(library.listTemplates().length, 0);
+    assert.equal(library.listPrompts().length, 0);
+});
+
+test('same-version package conflicts are still rejected after batch verification', t => {
+    const {library} = fixture(t), {definition} = installFirstTemplate(library);
+    // Exercise a conflicting input at the real installer boundary without changing bundled sources.
+    assert.throws(() => installBuiltins({...library,
+        installBuiltinTemplate(input) {
+            return library.installBuiltinTemplate({...input, definition: {...input.definition, conflicting: true}});
+        }
+    }), error => error.code === 'CONFLICT');
+    assert.deepEqual(library.readTemplate(definition.id).definition, definition);
 });
 
 test('bundle resource links cannot read a file outside the packaged resource root', t => {

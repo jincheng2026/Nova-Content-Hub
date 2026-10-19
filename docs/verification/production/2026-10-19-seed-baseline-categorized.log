@@ -1,0 +1,16 @@
+{"at":"2026-10-19T10:41:43.218Z","scope":"Current Node core, copied prepared library, warm page cache; not Electron latency proof","root":"/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-seed-performance-EcpAvL","fixture":{"entries":917,"digest":"5c21e12951bcb68cff7a2590b4632ccbc23fa495bf451a624d4af1a56b91c013"},"durationMs":3631.1214579999996,"locks":269,"reads":{"bundle":227,"assets":585,"otherLibrary":890},"readTimeMs":{"bundle":95.88333799999964,"otherLibrary":12.814044999991893,"assets":65.12237499998992},"unchanged":true,"lockBudget":90,"passed":false}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Repeat seed used 269 durable lock/recovery cycles; budget 90
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/seed-performance-probe.mjs:46:8 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

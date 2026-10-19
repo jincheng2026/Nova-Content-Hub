@@ -1,0 +1,2052 @@
+{
+  "mode": "baseline",
+  "at": "2026-10-19T10:52:29.521Z",
+  "scope": "Frozen 0.3.18 app copy with test entry; current mode overlays only two explicitly hashed core modules. Repository pinned Electron, independent user-data/library, dialogs stubbed, warm cache. Not installed/native manual acceptance.",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-seed-electron-6BAU76",
+  "sourceUnchanged": true,
+  "sourceLibraryUnchanged": true,
+  "sourceFiles": 601,
+  "overlays": {},
+  "processExitCode": 0,
+  "passed": true,
+  "counts": {
+    "contents": 100,
+    "plans": 300,
+    "candidateReferences": 600,
+    "templates": 20,
+    "prompts": 64
+  },
+  "samples": [
+    {
+      "name": "launch-to-welcome",
+      "durationMs": 1893,
+      "memory": {
+        "mainBytes": {
+          "rss": 213991424,
+          "heapTotal": 12730368,
+          "heapUsed": 7797980,
+          "external": 9673435,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 208976,
+              "peakWorkingSetSize": 208976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.859212,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 93504,
+              "peakWorkingSetSize": 93504
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.210621,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 44432,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.077202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 143456,
+              "peakWorkingSetSize": 143456
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.228161,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "open-library-to-ready",
+      "durationMs": 6857.8,
+      "value": {
+        "app": "ready",
+        "loaded": "true",
+        "busy": "false"
+      },
+      "memory": {
+        "mainBytes": {
+          "rss": 201555968,
+          "heapTotal": 10633216,
+          "heapUsed": 7998696,
+          "external": 9804549,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 196832,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.90247,
+              "percentCPUUsage": 0.06307507082421465,
+              "idleWakeupsPerSecond": 2
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 86912,
+              "peakWorkingSetSize": 93696
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.257548,
+              "percentCPUUsage": 0.06842517834260795,
+              "idleWakeupsPerSecond": 18
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 43872,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.078931,
+              "percentCPUUsage": 0.002521085842900045,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 218448,
+              "peakWorkingSetSize": 218448
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.442856,
+              "percentCPUUsage": 0.31305062177063336,
+              "idleWakeupsPerSecond": 51
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 153424,
+              "peakWorkingSetSize": 193376
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.93043,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 0,
+              "peakWorkingSetSize": 0
+            },
+            "cpu": {
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "content-list-dom",
+      "durationMs": 287.47,
+      "value": 100,
+      "memory": {
+        "mainBytes": {
+          "rss": 159531008,
+          "heapTotal": 13778944,
+          "heapUsed": 10289480,
+          "external": 5484124,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 155792,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.935801,
+              "percentCPUUsage": 0.0958037326980718,
+              "idleWakeupsPerSecond": 2
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 84288,
+              "peakWorkingSetSize": 93696
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.301093,
+              "percentCPUUsage": 0.12515606784898842,
+              "idleWakeupsPerSecond": 25
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 41712,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080634,
+              "percentCPUUsage": 0.004894728839782562,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 350512,
+              "peakWorkingSetSize": 350512
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.832064,
+              "percentCPUUsage": 1.1186510242689398,
+              "idleWakeupsPerSecond": 6
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 113488,
+              "peakWorkingSetSize": 193376
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.309175,
+              "percentCPUUsage": 1.0885751132492334,
+              "idleWakeupsPerSecond": 1
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 124368,
+              "peakWorkingSetSize": 130848
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.412606,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "content-list-100-thumbnails-full-decode",
+      "durationMs": 8244.87,
+      "value": {
+        "elements": 100,
+        "uniqueUrls": 50,
+        "pixels": 134450424,
+        "resourceTimings": []
+      },
+      "memory": {
+        "mainBytes": {
+          "rss": 182534144,
+          "heapTotal": 16400384,
+          "heapUsed": 13054404,
+          "external": 45339909,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 178304,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.061251,
+              "percentCPUUsage": 0.15213156391005161,
+              "idleWakeupsPerSecond": 1
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 73440,
+              "peakWorkingSetSize": 107536
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.420108,
+              "percentCPUUsage": 0.14433068954452308,
+              "idleWakeupsPerSecond": 102
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40432,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0.0000945915120125763,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 326320,
+              "peakWorkingSetSize": 350560
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.531672,
+              "percentCPUUsage": 0.8484235219699887,
+              "idleWakeupsPerSecond": 15
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 83744,
+              "peakWorkingSetSize": 193376
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.906995,
+              "percentCPUUsage": 0.7249828643941757,
+              "idleWakeupsPerSecond": 1
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 174736,
+              "peakWorkingSetSize": 180976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.084174,
+              "percentCPUUsage": 3.239843715324004,
+              "idleWakeupsPerSecond": 2
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "search-input-to-one-row",
+      "durationMs": 90.83,
+      "value": "Capacity 100创作中",
+      "memory": {
+        "mainBytes": {
+          "rss": 173473792,
+          "heapTotal": 16662528,
+          "heapUsed": 13088976,
+          "external": 45339909,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 169408,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.063086,
+              "percentCPUUsage": 0.20088234972139207,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 91248,
+              "peakWorkingSetSize": 107536
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.426305,
+              "percentCPUUsage": 0.6780977808902701,
+              "idleWakeupsPerSecond": 131
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40432,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 330640,
+              "peakWorkingSetSize": 350560
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.612782,
+              "percentCPUUsage": 8.874567814784017,
+              "idleWakeupsPerSecond": 66
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 81600,
+              "peakWorkingSetSize": 193376
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.906995,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 156000,
+              "peakWorkingSetSize": 180976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.084174,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "content-detail-six-candidates-dom",
+      "durationMs": 1749.15,
+      "value": 6,
+      "memory": {
+        "mainBytes": {
+          "rss": 169312256,
+          "heapTotal": 16924672,
+          "heapUsed": 12875032,
+          "external": 5415897,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 165344,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.087562,
+              "percentCPUUsage": 0.1398927542229025,
+              "idleWakeupsPerSecond": 2
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 100400,
+              "peakWorkingSetSize": 107536
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.466025,
+              "percentCPUUsage": 0.22702591479097842,
+              "idleWakeupsPerSecond": 62
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40432,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 353200,
+              "peakWorkingSetSize": 355952
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.774823,
+              "percentCPUUsage": 0.9261729699081377,
+              "idleWakeupsPerSecond": 57
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 156304,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764105,
+              "percentCPUUsage": 4.898944375824841,
+              "idleWakeupsPerSecond": 2
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 139328,
+              "peakWorkingSetSize": 180976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.085857,
+              "percentCPUUsage": 0.00961946801998426,
+              "idleWakeupsPerSecond": 6
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "candidate-six-originals-full-decode",
+      "durationMs": 316.48,
+      "value": {
+        "elements": 6,
+        "uniqueUrls": 6,
+        "pixels": 9374496,
+        "resourceTimings": []
+      },
+      "memory": {
+        "mainBytes": {
+          "rss": 171835392,
+          "heapTotal": 16924672,
+          "heapUsed": 12948328,
+          "external": 8575460,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 167808,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.103635,
+              "percentCPUUsage": 0.5072379155055811,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 129264,
+              "peakWorkingSetSize": 129296
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.54728,
+              "percentCPUUsage": 2.56427653981248,
+              "idleWakeupsPerSecond": 240
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 348480,
+              "peakWorkingSetSize": 360688
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.849633,
+              "percentCPUUsage": 2.360905103039101,
+              "idleWakeupsPerSecond": 9
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 156304,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0.0030612792360056934,
+              "idleWakeupsPerSecond": 13
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 160032,
+              "peakWorkingSetSize": 180976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.276805,
+              "percentCPUUsage": 6.026238634606342,
+              "idleWakeupsPerSecond": 3
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "template-view-dom",
+      "durationMs": 66.4,
+      "value": 20,
+      "memory": {
+        "mainBytes": {
+          "rss": 170901504,
+          "heapTotal": 17186816,
+          "heapUsed": 13085684,
+          "external": 8575460,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 166896,
+              "peakWorkingSetSize": 209680
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.108165,
+              "percentCPUUsage": 0.6782554013385438,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 136832,
+              "peakWorkingSetSize": 136832
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.569762,
+              "percentCPUUsage": 3.3650651100134708,
+              "idleWakeupsPerSecond": 135
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 331840,
+              "peakWorkingSetSize": 360688
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.891672,
+              "percentCPUUsage": 6.292227327835237,
+              "idleWakeupsPerSecond": 60
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 156304,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 160016,
+              "peakWorkingSetSize": 180976
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.288934,
+              "percentCPUUsage": 1.815338102792828,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "template-full-page-originals-full-decode",
+      "durationMs": 2082.56,
+      "value": {
+        "elements": 20,
+        "uniqueUrls": 20,
+        "pixels": 29702216,
+        "resourceTimings": []
+      },
+      "memory": {
+        "mainBytes": {
+          "rss": 214515712,
+          "heapTotal": 11157504,
+          "heapUsed": 8833812,
+          "external": 45758145,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 209504,
+              "peakWorkingSetSize": 227808
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.229028,
+              "percentCPUUsage": 0.5801775819685706,
+              "idleWakeupsPerSecond": 4
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 135008,
+              "peakWorkingSetSize": 142352
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.665836,
+              "percentCPUUsage": 0.4611842730565735,
+              "idleWakeupsPerSecond": 162
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 351696,
+              "peakWorkingSetSize": 382768
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.411023,
+              "percentCPUUsage": 2.4930383711636637,
+              "idleWakeupsPerSecond": 36
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 119040,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 147376,
+              "peakWorkingSetSize": 181264
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 4.480973,
+              "percentCPUUsage": 5.722142430602092,
+              "idleWakeupsPerSecond": 7
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "calendar-dom",
+      "durationMs": 141.34,
+      "value": {
+        "days": 35,
+        "renderedEvents": 9,
+        "labelledPlans": 300
+      },
+      "memory": {
+        "mainBytes": {
+          "rss": 212664320,
+          "heapTotal": 11157504,
+          "heapUsed": 8860428,
+          "external": 45758145,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 207680,
+              "peakWorkingSetSize": 227808
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.231438,
+              "percentCPUUsage": 0.17000444409957605,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 136208,
+              "peakWorkingSetSize": 142352
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.682086,
+              "percentCPUUsage": 1.1463763924064028,
+              "idleWakeupsPerSecond": 134
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 389536,
+              "peakWorkingSetSize": 394720
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.569078,
+              "percentCPUUsage": 11.150579205056932,
+              "idleWakeupsPerSecond": 42
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 118928,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 146336,
+              "peakWorkingSetSize": 181264
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 4.481039,
+              "percentCPUUsage": 0.004656150351327709,
+              "idleWakeupsPerSecond": 28
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "prompts-dom",
+      "durationMs": 99.71,
+      "value": 64,
+      "memory": {
+        "mainBytes": {
+          "rss": 212664320,
+          "heapTotal": 11157504,
+          "heapUsed": 8900264,
+          "external": 45758145,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 207680,
+              "peakWorkingSetSize": 227808
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.232793,
+              "percentCPUUsage": 0.13536057860403786,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 138064,
+              "peakWorkingSetSize": 142352
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.693522,
+              "percentCPUUsage": 1.142548855053351,
+              "idleWakeupsPerSecond": 260
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 400672,
+              "peakWorkingSetSize": 400672
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.641797,
+              "percentCPUUsage": 7.2654337639500834,
+              "idleWakeupsPerSecond": 50
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 118912,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 146336,
+              "peakWorkingSetSize": 181264
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 4.481039,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "content-list-100-return-warm",
+      "durationMs": 190.35,
+      "value": 100,
+      "memory": {
+        "mainBytes": {
+          "rss": 212533248,
+          "heapTotal": 11157504,
+          "heapUsed": 9067764,
+          "external": 46710537,
+          "arrayBuffers": 0
+        },
+        "rendererPid": 16775,
+        "processMetrics": [
+          {
+            "pid": 16764,
+            "type": "Browser",
+            "memory": {
+              "workingSetSize": 207552,
+              "peakWorkingSetSize": 227808
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 1.238316,
+              "percentCPUUsage": 0.28959593946957224,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16773,
+            "type": "GPU",
+            "memory": {
+              "workingSetSize": 127184,
+              "peakWorkingSetSize": 142352
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.711408,
+              "percentCPUUsage": 0.9377555942369398,
+              "idleWakeupsPerSecond": 236
+            }
+          },
+          {
+            "pid": 16774,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 40352,
+              "peakWorkingSetSize": 48544
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 0.080712,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16775,
+            "type": "Tab",
+            "memory": {
+              "workingSetSize": 441840,
+              "peakWorkingSetSize": 441840
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 2.849817,
+              "percentCPUUsage": 10.906173978693063,
+              "idleWakeupsPerSecond": 52
+            }
+          },
+          {
+            "pid": 16784,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 116544,
+              "peakWorkingSetSize": 215552
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 3.764202,
+              "percentCPUUsage": 0,
+              "idleWakeupsPerSecond": 0
+            }
+          },
+          {
+            "pid": 16833,
+            "type": "Utility",
+            "memory": {
+              "workingSetSize": 160240,
+              "peakWorkingSetSize": 181264
+            },
+            "cpu": {
+              "cumulativeCPUUsage": 4.576654,
+              "percentCPUUsage": 5.0130549671790785,
+              "idleWakeupsPerSecond": 16
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "workerTrace": {
+    "scope": "WorkerClient.call wrappers installed in the test entry ready callback before open-library UI. Original this binding, arguments, result and rejection preserved. Times include worker round trip; exclude controller queue wait before call. Stage is recorded at invocation; overlapping work may finish in another stage. No inputs or outputs recorded.",
+    "operations": [
+      {
+        "worker": "main",
+        "op": "bind",
+        "stage": "open-library-to-ready",
+        "startedMs": 127.45,
+        "durationMs": 199.04
+      },
+      {
+        "worker": "main",
+        "op": "seed",
+        "stage": "open-library-to-ready",
+        "startedMs": 346.2,
+        "durationMs": 4565.35
+      },
+      {
+        "worker": "main",
+        "op": "list",
+        "stage": "open-library-to-ready",
+        "startedMs": 4925.27,
+        "durationMs": 124.89
+      },
+      {
+        "worker": "main",
+        "op": "workspace",
+        "stage": "open-library-to-ready",
+        "startedMs": 5051.99,
+        "durationMs": 234.4
+      },
+      {
+        "worker": "main",
+        "op": "coverAssets",
+        "stage": "open-library-to-ready",
+        "startedMs": 5286.52,
+        "durationMs": 731.79
+      },
+      {
+        "worker": "main",
+        "op": "workspaceLibrary",
+        "stage": "open-library-to-ready",
+        "startedMs": 6018.61,
+        "durationMs": 743.98
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "open-library-to-ready",
+        "startedMs": 6951.44,
+        "durationMs": 2155.19
+      },
+      {
+        "worker": "main",
+        "op": "list",
+        "stage": "outside-timed-stage",
+        "startedMs": 9107.3,
+        "durationMs": 98.58
+      },
+      {
+        "worker": "main",
+        "op": "workspaceLibrary",
+        "stage": "outside-timed-stage",
+        "startedMs": 9205.92,
+        "durationMs": 952.76
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "outside-timed-stage",
+        "startedMs": 10159.69,
+        "durationMs": 289.88
+      },
+      {
+        "worker": "main",
+        "op": "workspace",
+        "stage": "content-list-dom",
+        "startedMs": 10450.33,
+        "durationMs": 247.22
+      },
+      {
+        "worker": "main",
+        "op": "coverAssets",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 10697.58,
+        "durationMs": 741.8
+      },
+      {
+        "worker": "main",
+        "op": "workspaceLibrary",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 11439.51,
+        "durationMs": 1021.25
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 12461.13,
+        "durationMs": 306.31
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 12767.96,
+        "durationMs": 125.67
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 12894.11,
+        "durationMs": 188.48
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13083.19,
+        "durationMs": 163.46
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13247.21,
+        "durationMs": 127.67
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13375.36,
+        "durationMs": 186.1
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13561.91,
+        "durationMs": 191.57
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13753.83,
+        "durationMs": 140.95
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 13895.26,
+        "durationMs": 204.12
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14099.86,
+        "durationMs": 112.73
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14213.19,
+        "durationMs": 122.46
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14336.04,
+        "durationMs": 121.49
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14457.97,
+        "durationMs": 110.54
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14569.02,
+        "durationMs": 103.57
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14673.06,
+        "durationMs": 162.33
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14835.79,
+        "durationMs": 109.7
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 14945.83,
+        "durationMs": 213.86
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15160.08,
+        "durationMs": 119.38
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15303.53,
+        "durationMs": 147.05
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15459.37,
+        "durationMs": 121.2
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15600.14,
+        "durationMs": 83.52
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15691.57,
+        "durationMs": 137.86
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15850.4,
+        "durationMs": 84.03
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 15942.49,
+        "durationMs": 84.04
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16034.03,
+        "durationMs": 92.47
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16151.67,
+        "durationMs": 86.95
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16244.01,
+        "durationMs": 92.35
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16343.95,
+        "durationMs": 90.71
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16441.05,
+        "durationMs": 137.51
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16586.28,
+        "durationMs": 105.11
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16700.99,
+        "durationMs": 91.28
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 16795.43,
+        "durationMs": 208.23
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17021.23,
+        "durationMs": 136.54
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17167.55,
+        "durationMs": 118.82
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17304.94,
+        "durationMs": 156.7
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17469.71,
+        "durationMs": 136.65
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17614.41,
+        "durationMs": 80.91
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17703.6,
+        "durationMs": 101.85
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17815.28,
+        "durationMs": 75.27
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17896.74,
+        "durationMs": 78.55
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 17982.42,
+        "durationMs": 77.93
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18065.93,
+        "durationMs": 80.45
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18153.82,
+        "durationMs": 79.55
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18242.8,
+        "durationMs": 82.52
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18331.43,
+        "durationMs": 102.23
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18440.97,
+        "durationMs": 73.41
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18520.55,
+        "durationMs": 80.51
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-thumbnails-full-decode",
+        "startedMs": 18607.68,
+        "durationMs": 78.76
+      },
+      {
+        "worker": "main",
+        "op": "readContent",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 18872.73,
+        "durationMs": 92.56
+      },
+      {
+        "worker": "main",
+        "op": "workspace",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 18968.66,
+        "durationMs": 159.8
+      },
+      {
+        "worker": "main",
+        "op": "coverAssets",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 19128.48,
+        "durationMs": 361.06
+      },
+      {
+        "worker": "main",
+        "op": "workspaceLibrary",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 19489.69,
+        "durationMs": 537.91
+      },
+      {
+        "worker": "main",
+        "op": "coverAssets",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 20032.47,
+        "durationMs": 413.98
+      },
+      {
+        "worker": "main",
+        "op": "readCover",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 20447.34,
+        "durationMs": 75.45
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-detail-six-candidates-dom",
+        "startedMs": 20546.67,
+        "durationMs": 120.69
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "candidate-six-originals-full-decode",
+        "startedMs": 20667.77,
+        "durationMs": 92.94
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "candidate-six-originals-full-decode",
+        "startedMs": 20761.14,
+        "durationMs": 85.28
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-view-dom",
+        "startedMs": 20915.38,
+        "durationMs": 112.1
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21029.24,
+        "durationMs": 101.22
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21131.82,
+        "durationMs": 103.79
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21237.57,
+        "durationMs": 71.71
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21309.62,
+        "durationMs": 110.33
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21422.19,
+        "durationMs": 120.25
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21544.2,
+        "durationMs": 106.22
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21652.3,
+        "durationMs": 128.78
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21783.34,
+        "durationMs": 117.37
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 21902.65,
+        "durationMs": 125.5
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22030.39,
+        "durationMs": 115.27
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22147.4,
+        "durationMs": 126.43
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22275.74,
+        "durationMs": 167.08
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22445.1,
+        "durationMs": 190.06
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22637.7,
+        "durationMs": 179.82
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "template-full-page-originals-full-decode",
+        "startedMs": 22819.25,
+        "durationMs": 159.49
+      },
+      {
+        "worker": "resource",
+        "op": "raster",
+        "stage": "content-list-100-return-warm",
+        "startedMs": 23321.72,
+        "durationMs": 117.81
+      }
+    ],
+    "summary": [
+      {
+        "worker": "resource",
+        "op": "raster",
+        "count": 70,
+        "totalMs": 10810.56,
+        "maxMs": 2155.19
+      },
+      {
+        "worker": "main",
+        "op": "seed",
+        "count": 1,
+        "totalMs": 4565.35,
+        "maxMs": 4565.35
+      },
+      {
+        "worker": "main",
+        "op": "workspaceLibrary",
+        "count": 4,
+        "totalMs": 3255.9,
+        "maxMs": 1021.25
+      },
+      {
+        "worker": "main",
+        "op": "coverAssets",
+        "count": 4,
+        "totalMs": 2248.63,
+        "maxMs": 741.8
+      },
+      {
+        "worker": "main",
+        "op": "workspace",
+        "count": 3,
+        "totalMs": 641.42,
+        "maxMs": 247.22
+      },
+      {
+        "worker": "main",
+        "op": "list",
+        "count": 2,
+        "totalMs": 223.47,
+        "maxMs": 124.89
+      },
+      {
+        "worker": "main",
+        "op": "bind",
+        "count": 1,
+        "totalMs": 199.04,
+        "maxMs": 199.04
+      },
+      {
+        "worker": "main",
+        "op": "readContent",
+        "count": 1,
+        "totalMs": 92.56,
+        "maxMs": 92.56
+      },
+      {
+        "worker": "main",
+        "op": "readCover",
+        "count": 1,
+        "totalMs": 75.45,
+        "maxMs": 75.45
+      }
+    ],
+    "byStage": [
+      {
+        "stage": "open-library-to-ready",
+        "summary": [
+          {
+            "worker": "main",
+            "op": "seed",
+            "count": 1,
+            "totalMs": 4565.35,
+            "maxMs": 4565.35
+          },
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 1,
+            "totalMs": 2155.19,
+            "maxMs": 2155.19
+          },
+          {
+            "worker": "main",
+            "op": "workspaceLibrary",
+            "count": 1,
+            "totalMs": 743.98,
+            "maxMs": 743.98
+          },
+          {
+            "worker": "main",
+            "op": "coverAssets",
+            "count": 1,
+            "totalMs": 731.79,
+            "maxMs": 731.79
+          },
+          {
+            "worker": "main",
+            "op": "workspace",
+            "count": 1,
+            "totalMs": 234.4,
+            "maxMs": 234.4
+          },
+          {
+            "worker": "main",
+            "op": "bind",
+            "count": 1,
+            "totalMs": 199.04,
+            "maxMs": 199.04
+          },
+          {
+            "worker": "main",
+            "op": "list",
+            "count": 1,
+            "totalMs": 124.89,
+            "maxMs": 124.89
+          }
+        ]
+      },
+      {
+        "stage": "outside-timed-stage",
+        "summary": [
+          {
+            "worker": "main",
+            "op": "workspaceLibrary",
+            "count": 1,
+            "totalMs": 952.76,
+            "maxMs": 952.76
+          },
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 1,
+            "totalMs": 289.88,
+            "maxMs": 289.88
+          },
+          {
+            "worker": "main",
+            "op": "list",
+            "count": 1,
+            "totalMs": 98.58,
+            "maxMs": 98.58
+          }
+        ]
+      },
+      {
+        "stage": "content-list-dom",
+        "summary": [
+          {
+            "worker": "main",
+            "op": "workspace",
+            "count": 1,
+            "totalMs": 247.22,
+            "maxMs": 247.22
+          }
+        ]
+      },
+      {
+        "stage": "content-list-100-thumbnails-full-decode",
+        "summary": [
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 48,
+            "totalMs": 5913.35,
+            "maxMs": 306.31
+          },
+          {
+            "worker": "main",
+            "op": "workspaceLibrary",
+            "count": 1,
+            "totalMs": 1021.25,
+            "maxMs": 1021.25
+          },
+          {
+            "worker": "main",
+            "op": "coverAssets",
+            "count": 1,
+            "totalMs": 741.8,
+            "maxMs": 741.8
+          }
+        ]
+      },
+      {
+        "stage": "content-detail-six-candidates-dom",
+        "summary": [
+          {
+            "worker": "main",
+            "op": "coverAssets",
+            "count": 2,
+            "totalMs": 775.04,
+            "maxMs": 413.98
+          },
+          {
+            "worker": "main",
+            "op": "workspaceLibrary",
+            "count": 1,
+            "totalMs": 537.91,
+            "maxMs": 537.91
+          },
+          {
+            "worker": "main",
+            "op": "workspace",
+            "count": 1,
+            "totalMs": 159.8,
+            "maxMs": 159.8
+          },
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 1,
+            "totalMs": 120.69,
+            "maxMs": 120.69
+          },
+          {
+            "worker": "main",
+            "op": "readContent",
+            "count": 1,
+            "totalMs": 92.56,
+            "maxMs": 92.56
+          },
+          {
+            "worker": "main",
+            "op": "readCover",
+            "count": 1,
+            "totalMs": 75.45,
+            "maxMs": 75.45
+          }
+        ]
+      },
+      {
+        "stage": "candidate-six-originals-full-decode",
+        "summary": [
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 2,
+            "totalMs": 178.22,
+            "maxMs": 92.94
+          }
+        ]
+      },
+      {
+        "stage": "template-view-dom",
+        "summary": [
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 1,
+            "totalMs": 112.1,
+            "maxMs": 112.1
+          }
+        ]
+      },
+      {
+        "stage": "template-full-page-originals-full-decode",
+        "summary": [
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 15,
+            "totalMs": 1923.32,
+            "maxMs": 190.06
+          }
+        ]
+      },
+      {
+        "stage": "content-list-100-return-warm",
+        "summary": [
+          {
+            "worker": "resource",
+            "op": "raster",
+            "count": 1,
+            "totalMs": 117.81,
+            "maxMs": 117.81
+          }
+        ]
+      }
+    ]
+  },
+  "electron": "44.9.0",
+  "node": "24.22.0"
+}
