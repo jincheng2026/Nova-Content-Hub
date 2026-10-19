@@ -1,0 +1,60 @@
+{
+  "sourceBaseline": "bc90a6d",
+  "scope": "Real React/Semi/Electron. UI probe bridge is synthetic except the separate collection native controller/file-library probe. Packaged startup and final App shell verification recorded separately.",
+  "results": [
+    {
+      "name": "daily",
+      "command": "node workbench/scripts/daily-publication-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-daily.log"
+    },
+    {
+      "name": "prompt",
+      "command": "node workbench/scripts/prompt-density-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-prompt.log"
+    },
+    {
+      "name": "growth",
+      "command": "node workbench/scripts/growth-pages-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-growth.log"
+    },
+    {
+      "name": "growing",
+      "command": "node workbench/scripts/growing-lists-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-growing.log"
+    },
+    {
+      "name": "gallery",
+      "command": "node workbench/scripts/cover-gallery-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-gallery.log"
+    },
+    {
+      "name": "calendar",
+      "command": "node workbench/scripts/semi-calendar-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-calendar.log"
+    },
+    {
+      "name": "template",
+      "command": "node workbench/scripts/template-density-ui-probe.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-template.log"
+    },
+    {
+      "name": "typecheck",
+      "command": "npm run typecheck:renderer --prefix workbench",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-typecheck.log"
+    },
+    {
+      "name": "unit",
+      "command": "node --test workbench/test/publication-model.test.mjs workbench/test/schedule-view.test.mjs workbench/test/daily-publication-wiring.test.mjs",
+      "exit": 0,
+      "log": "docs/verification/production/2026-10-19-semi-0323-unit.log"
+    }
+  ]
+}

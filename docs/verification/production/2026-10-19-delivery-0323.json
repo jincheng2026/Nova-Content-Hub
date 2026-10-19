@@ -1,0 +1,22 @@
+{
+  "version": "0.3.23",
+  "sourceCommit": "1f07fe6",
+  "directory": "/Users/mac/Downloads/自媒体工作台-0.3.23-同事交付-Mac苹果芯片",
+  "installer": "/Users/mac/Downloads/自媒体工作台-0.3.23-同事交付-Mac苹果芯片/自媒体工作台-0.3.23-Mac苹果芯片.dmg",
+  "bytes": 478763435,
+  "sha256": "9eb0fef211c1477c1bcfab54337562fae8e4e7851ccbb1f516bd62a35a39cc6b",
+  "files": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.23-Mac苹果芯片.dmg"
+  ],
+  "copiedByteExactly": true,
+  "checksumsVerified": true,
+  "templates": 20,
+  "prompts": 52,
+  "originalExampleCovers": 2,
+  "developerIdSigned": false,
+  "notarized": false,
+  "packagedNativeWorkflowReceipt": "docs/verification/production/2026-10-19-native-daily-0323-receipt.json",
+  "scope": "Final package and isolated durable workflows verified; installed user application remains 0.3.22 until save-and-quit handoff."
+}

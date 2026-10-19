@@ -1,0 +1,143 @@
+{
+  "passed": true,
+  "version": "0.3.23",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-vJwsFF/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "fixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/native-daily-0323/fixture-1ibZij",
+  "scope": "Actual packaged renderer/preload/IPC/worker and durable isolated library. Clipboard sink and export chooser replaced only to keep test output isolated; mutations and persistence use production code. No user library, messages or image generation.",
+  "subjects": [
+    {
+      "id": "3ffa3631-1c16-4058-aeee-511a5cf58e4f",
+      "planId": "68d22376-30bd-4f01-a8ae-aec0646bcf18",
+      "schedule": {
+        "precision": "instant",
+        "at": "2026-10-19T01:15:00.000Z",
+        "timezone": "America/Los_Angeles"
+      }
+    },
+    {
+      "id": "f7afffee-c9c7-4058-822a-7ca82f327d88",
+      "planId": "4ef327f7-361e-4bdc-8b63-ffbb783c4621",
+      "schedule": {
+        "precision": "local-minute",
+        "date": "2026-10-19",
+        "time": "12:00",
+        "timezone": "Asia/Shanghai"
+      }
+    },
+    {
+      "id": "5a7b4997-8d10-4729-8da2-958553a93369",
+      "planId": "4ef6e8ae-1555-4658-8196-dfc0bb0960bd",
+      "schedule": {
+        "precision": "local-minute",
+        "date": "2026-10-19",
+        "time": "20:00",
+        "timezone": null
+      }
+    },
+    {
+      "id": "e8bb0fca-0257-4389-938c-71c8a07d52b4",
+      "planId": "7f25dfa0-af60-4693-b497-6fdc633217f3",
+      "schedule": {
+        "precision": "date",
+        "date": "2026-10-19"
+      }
+    }
+  ],
+  "mutations": [
+    {
+      "op": "recordPublication",
+      "id": "3ffa3631-1c16-4058-aeee-511a5cf58e4f",
+      "editToken": "d94e0277924e3e538f88bbe8f48c11f1d24c7e046fce4ac1c51f4e464cd8665e",
+      "kind": "content",
+      "planId": "68d22376-30bd-4f01-a8ae-aec0646bcf18",
+      "schedule": {
+        "precision": "instant",
+        "at": "2026-10-19T14:07:38.600Z",
+        "timezone": "America/Los_Angeles"
+      },
+      "url": null
+    },
+    {
+      "op": "recordPublication",
+      "id": "f7afffee-c9c7-4058-822a-7ca82f327d88",
+      "editToken": "1b9fa5f43db1e233f0ddd483e2e61c009ff090c6b5bc40dee67821e1e898e7eb",
+      "kind": "content",
+      "planId": "4ef327f7-361e-4bdc-8b63-ffbb783c4621",
+      "schedule": {
+        "precision": "local-minute",
+        "date": "2026-10-19",
+        "time": "22:07",
+        "timezone": "Asia/Shanghai"
+      },
+      "url": null
+    },
+    {
+      "op": "recordPublication",
+      "id": "5a7b4997-8d10-4729-8da2-958553a93369",
+      "editToken": "6216ef69389d1a07c59e68fbf0bf70e0697a507ae6ee95bc3259d9df36ba969b",
+      "kind": "content",
+      "planId": "4ef6e8ae-1555-4658-8196-dfc0bb0960bd",
+      "schedule": {
+        "precision": "local-minute",
+        "date": "2026-10-19",
+        "time": "22:07",
+        "timezone": null
+      },
+      "url": null
+    },
+    {
+      "op": "recordPublication",
+      "id": "e8bb0fca-0257-4389-938c-71c8a07d52b4",
+      "editToken": "68dd21c7a534fe4d5f5e726db6ba12da1b0503387847150916671782a82b7e77",
+      "kind": "content",
+      "planId": "7f25dfa0-af60-4693-b497-6fdc633217f3",
+      "schedule": {
+        "precision": "date",
+        "date": "2026-10-19"
+      },
+      "url": null
+    },
+    {
+      "op": "correctPublication",
+      "id": "3ffa3631-1c16-4058-aeee-511a5cf58e4f",
+      "editToken": "c9566601bc8c8ceac4b92334e9c9ab511cd971feaba6965c522a66e9e0528974",
+      "kind": "content",
+      "publicationId": "2eedd428-1e25-43c1-bd18-09fcec7070d9",
+      "reason": "核对实际发布内容",
+      "text": "已核对的实际发布文案",
+      "schedule": {
+        "precision": "instant",
+        "at": "2026-10-19T14:07:38.600Z",
+        "timezone": "America/Los_Angeles"
+      },
+      "url": null
+    },
+    {
+      "op": "setPromptFavorite",
+      "id": "51b25805-76da-443f-b8c8-23e1ed697ff5",
+      "editToken": "37b40972ee0a5810137a5dd64208c9c3e07a7ce8f5896ad03be567592d940045",
+      "favorite": true
+    }
+  ],
+  "copiedTexts": [
+    "渠道专用文案 1\n请保留这一整段。"
+  ],
+  "checks": {
+    "directDayAction": true,
+    "openConfirmationNoWrite": true,
+    "recordExactlyOnce": true,
+    "originalPlanPrecisionAndTimezone": true,
+    "allFourSchedulePrecisions": true,
+    "planTextAndCoverSnapshot": true,
+    "copyExactPlanText": true,
+    "exportOriginalPlanImageBytes": true,
+    "preparationDoesNotMarkPublished": true,
+    "bodyAndUnrelatedContentBytes": true,
+    "reloadPersisted": true,
+    "correctionPreservesOriginal": true,
+    "promptFavoritePersistsThroughNativeChain": true
+  },
+  "favoritePromptId": "51b25805-76da-443f-b8c8-23e1ed697ff5",
+  "finalActivePublicationId": "15c8111c-83c6-46e5-8ed8-54f1810dc8d4",
+  "rendererErrors": []
+}

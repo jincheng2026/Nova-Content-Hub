@@ -1,0 +1,20 @@
+✔ collection rename preserves legacy fields and inactive channels while retaining edit and channel guards (3974.600542ms)
+✔ both worker prompt projections default old files without rewrites and expose durable favorite changes (6219.720375ms)
+✔ favorite command boundary requires a present boolean and finite fields before any write (690.305875ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (5192.5585ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1759.27225ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (850.354416ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (473.707334ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1185.812917ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.675708ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.349584ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (2887.651084ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (1960.720625ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14869.445709

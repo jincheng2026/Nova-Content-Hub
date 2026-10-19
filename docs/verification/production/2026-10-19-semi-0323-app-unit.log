@@ -1,0 +1,20 @@
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (2.491125ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (3.601875ms)
+✔ local minute records use the planned timezone across a date boundary (21.658458ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.191334ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.175875ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.195792ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.088834ms)
+✔ day views order known times and leave date-only time unknown (40.080417ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.775333ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.444875ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.104375ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.257334ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 152.36125
