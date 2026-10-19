@@ -1,0 +1,60 @@
+Command: Temporary copy of HEAD FIFO operation-queue.mts + foreground ordering test, then current queue test suite
+Cwd: /Users/mac/code/dashboard/Nova-Content-Hub
+Recovered verbatim tool stdout from: /Users/mac/.codex/sessions/2026/10/19/rollout-2026-10-19T18-19-51-01a153ac-bbb6-7c43-9e1e-6e7cc3c21472.jsonl
+Output chunks: 0c0626
+Final exit code: 0
+No command was rerun while creating this evidence file.
+
+✖ foreground save and read run after the active image and before queued images without overlap (2.0065ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 135.511292
+
+✖ failing tests:
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-queue-red-hJty0F/queue.test.mjs:29:1
+✖ foreground save and read run after the active image and before queued images without overlap (2.0065ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'image-1',
+  +   'image-2',
+  +   'image-3',
+      'save',
+      'read',
+  -   'image-2',
+  -   'image-3'
+    ]
+  
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-queue-red-hJty0F/queue.test.mjs:48:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'image-1', 'image-2', 'image-3', 'save', 'read' ],
+    expected: [ 'image-1', 'save', 'read', 'image-2', 'image-3' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+PASS regression red check: HEAD FIFO queue fails the foreground ordering test.
+✔ desktop operations finish in FIFO order without overlap (0.827583ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.793417ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.2945ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.230542ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.121792ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.700792ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 97.7645

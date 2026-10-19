@@ -1,0 +1,8 @@
+{"name":"open-library-to-ready","durationMs":14879.22,"value":{"app":"ready","loaded":"true","busy":"false"}}
+{"name":"content-list-dom","durationMs":241.7,"value":100}
+{"name":"content-list-100-thumbnails-full-decode","durationMs":4957.85,"value":{"elements":100,"uniqueUrls":50,"pixels":134450424,"resourceTimings":[]}}
+{"name":"search-input-to-one-row","durationMs":66.31,"value":"Capacity 100创作中"}
+{"name":"content-detail-six-candidates-dom","durationMs":1600.08,"value":6}
+{"name":"candidate-six-originals-full-decode","durationMs":652.1,"value":{"elements":6,"uniqueUrls":6,"pixels":9374496,"resourceTimings":[]}}
+{"name":"template-view-dom","durationMs":92.59,"value":20}
+[Error: Expected 40 images, got 20]

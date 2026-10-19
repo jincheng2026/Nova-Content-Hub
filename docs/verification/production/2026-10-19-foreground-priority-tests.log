@@ -1,0 +1,74 @@
+Command: node --test test/operation-queue.test.mjs test/covers.test.mjs test/worker-client-busy.test.mjs test/boundaries.test.mjs test/workspace.test.mjs
+Cwd: /Users/mac/code/dashboard/Nova-Content-Hub/workbench
+Recovered verbatim tool stdout from: /Users/mac/.codex/sessions/2026/10/19/rollout-2026-10-19T18-19-51-01a153ac-bbb6-7c43-9e1e-6e7cc3c21472.jsonl
+Output chunks: 43d59e, d35372, e42783, 29bd22, 23612a
+Final exit code: 0
+No command was rerun while creating this evidence file.
+
+✔ only exact top-level sender with no renderer arguments can invoke business (0.923209ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.54825ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.461541ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (29.599667ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.488ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (7181.947917ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (5804.582375ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (5243.544083ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (5022.738958ms)
+  ✔ failed (3290.66375ms)
+  ✔ superseded (2921.831875ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (11236.400041ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2143.406833ms)
+  ✔ after (2228.033ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (4372.2705ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1595.368ms)
+  ✔ true (1450.324625ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (3046.301583ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2522.172291ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (329.659875ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (317.801917ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2050.271709ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2479.36075ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (4362.264542ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1315.452625ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3296.444417ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (924.78575ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (618.904542ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2512.44975ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (2986.795875ms)
+✔ summary fallback preserves strict input integrity checks for execution (1236.213875ms)
+✔ unexpected errors during summary loading still propagate (1145.00625ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (443.1825ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (2925.773667ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (2971.29975ms)
+✔ folder-open failure keeps exported originals recoverable (1513.743917ms)
+✔ desktop operations finish in FIFO order without overlap (0.972708ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.317084ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.247709ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.187875ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.109167ms)
+✔ an image grant revoked while queued is checked again before any worker read (3.091166ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (19.143375ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (4.213334ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.450541ms)
+✔ readonly non-BUSY failures are returned once (0.203ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.2555ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (3721.207541ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1362.420666ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (763.16175ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (330.900041ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (894.080584ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (1.004917ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.562875ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (2420.484334ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (2195.222083ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 71187.5265

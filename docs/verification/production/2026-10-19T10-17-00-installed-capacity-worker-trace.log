@@ -1,0 +1,11 @@
+{"name":"open-library-to-ready","durationMs":5473.58,"value":{"app":"ready","loaded":"true","busy":"false"}}
+{"name":"content-list-dom","durationMs":227.14,"value":100}
+{"name":"content-list-100-thumbnails-full-decode","durationMs":4931.21,"value":{"elements":100,"uniqueUrls":50,"pixels":134450424,"resourceTimings":[]}}
+{"name":"search-input-to-one-row","durationMs":74.74,"value":"Capacity 100创作中"}
+{"name":"content-detail-six-candidates-dom","durationMs":1777.32,"value":6}
+{"name":"candidate-six-originals-full-decode","durationMs":277.97,"value":{"elements":6,"uniqueUrls":6,"pixels":9374496,"resourceTimings":[]}}
+{"name":"template-view-dom","durationMs":33.04,"value":20}
+{"name":"template-full-page-originals-full-decode","durationMs":1740.52,"value":{"elements":20,"uniqueUrls":20,"pixels":29702216,"resourceTimings":[]}}
+{"name":"calendar-dom","durationMs":154.34,"value":{"days":35,"renderedEvents":9,"labelledPlans":300}}
+{"name":"prompts-dom","durationMs":44.61,"value":64}
+{"name":"content-list-100-return-warm","durationMs":158.36,"value":100}

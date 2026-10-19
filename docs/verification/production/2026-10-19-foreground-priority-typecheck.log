@@ -1,0 +1,19 @@
+Command: npm run typecheck
+Cwd: /Users/mac/code/dashboard/Nova-Content-Hub/workbench
+Recovered verbatim tool stdout from: /Users/mac/.codex/sessions/2026/10/19/rollout-2026-10-19T18-19-51-01a153ac-bbb6-7c43-9e1e-6e7cc3c21472.jsonl
+Output chunks: 679ae8, 9a212a
+Final exit code: 0
+No command was rerun while creating this evidence file.
+
+
+> nova-content-hub-workbench@0.3.17 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.17 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.17 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+

@@ -1,0 +1,4 @@
+TypeError: window.webContents.getProcessMemoryInfo is not a function
+    at memory (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-capacity-Fi6MZz/app/workbench/dist/main/installed-capacity-entry.mjs:17:104)
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-capacity-Fi6MZz/app/workbench/dist/main/installed-capacity-entry.mjs:22:119)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-capacity-Fi6MZz/app/workbench/dist/main/desktop.mjs:400:5)

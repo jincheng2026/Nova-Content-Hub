@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "scope": "Isolated fresh-source Electron main with staged renderer; gated first raster and three queued image reads; foreground save/read through sandbox bridge. Four synthetic 32x24 PNGs verify scheduling only; this is not real-photo capacity or latency evidence.",
+  "events": [
+    "start:image-1",
+    "end:image-1",
+    "start:mutate",
+    "end:mutate",
+    "start:queryMutation",
+    "end:queryMutation",
+    "start:readContent",
+    "end:readContent",
+    "start:readContent",
+    "end:readContent",
+    "start:image-2",
+    "end:image-2",
+    "start:image-3",
+    "end:image-3",
+    "start:image-4",
+    "end:image-4",
+    "start:readContent",
+    "end:readContent"
+  ],
+  "images": 4,
+  "foregroundIPC": [
+    "nova:updateContent",
+    "nova:readContent",
+    "nova:readContent"
+  ],
+  "pending": false,
+  "electron": "44.9.0",
+  "fixture": {
+    "kind": "synthetic PNG",
+    "count": 4,
+    "width": 32,
+    "height": 24,
+    "channels": 3,
+    "purpose": "deterministic operation scheduling, file-byte hashing and save persistence verification",
+    "realPhotos": false,
+    "capacityEvidence": false,
+    "latencyEvidence": false
+  },
+  "sourceReceipt": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-foreground-priority-PoNDqS/receipt.json"
+}

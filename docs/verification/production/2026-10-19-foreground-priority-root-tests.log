@@ -1,0 +1,23 @@
+✔ desktop operations finish in FIFO order without overlap (0.895542ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.299625ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.234834ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.183375ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.116125ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.5665ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (1836.061083ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (786.049834ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (415.609041ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (240.408792ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (673.417834ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (1.044625ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.921917ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (1627.639375ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (1236.934125ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7031.544333

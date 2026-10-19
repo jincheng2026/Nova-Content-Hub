@@ -1,0 +1,17 @@
+{
+  "version": "0.3.18",
+  "demoInsideDmg": true,
+  "copyOpensAsLibrary": true,
+  "templates": 20,
+  "prompts": 52,
+  "content": "让创作更有条理",
+  "isExample": true,
+  "preferredTemplateId": "builtin-colleague-spatial-operation",
+  "candidates": 2,
+  "originalHashes": [
+    "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+    "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79"
+  ],
+  "source": "real WorkBuddy generation; original bytes retained",
+  "published": false
+}

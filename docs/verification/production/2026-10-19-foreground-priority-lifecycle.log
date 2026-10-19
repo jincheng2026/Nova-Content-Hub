@@ -1,0 +1,27 @@
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (23076.842208ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (23851.885833ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (29792.53975ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (19965.217417ms)
+✔ required build main and worker reject all five business writes before any business mutation (318.407375ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (25721.294458ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (21538.36225ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (22764.418875ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (19212.756917ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (21483.379667ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (19920.276125ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (19916.19375ms)
+✔ explicitly adopting another current library retires only the completed import pointer (24229.781542ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (20637.389667ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (17668.186042ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (2.232458ms)
+✔ only an owned stored publication URL is sent to the system browser (1305.493792ms)
+✔ invalid stored links and browser errors do not become successful opens (3853.274625ms)
+✔ reveal requests only the original bound directory and refuses replacements (803.127833ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 310255.002167

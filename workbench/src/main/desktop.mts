@@ -71,7 +71,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     let tray: Tray | null = null;
     let reminders: Reminders | undefined;
     let libraryWatcher: LibraryWatcher | undefined;
-    // shortcut: native dialogs also queue image reads; split only when dialogs can release library ownership safely.
+    // Keep library reads and writes serial: separate workers still share the same library lock.
     const runOperation = createOperationQueue();
     app.on('second-instance', () => resident?.show());
     app.on('activate', () => resident?.show());
@@ -93,7 +93,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url))}));
     protocol.handle('nova-content', async request => {
         if (request.method === 'GET' && controller.covers.allows(request.url)) {
-            try { const image = await runOperation(() => controller.covers.resource(request.url)); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
+            try { const image = await runOperation(() => controller.covers.resource(request.url), 'background'); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
         }
         const resource = staticResource(request.url, resources);
