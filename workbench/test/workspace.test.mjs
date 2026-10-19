@@ -65,7 +65,7 @@ test('required-mode workspace reads real contents, plan precision, cover counts,
     assert.equal(content.candidateCount, 1);
     assert.equal(content.selectedCandidateId, c.candidates[0].id);
     assert.equal(snapshot.contents.find(item => item.id === trash.id).deletedAt, trash.deletedAt);
-    assert.deepEqual(snapshot.prompts, [{id: prompt.id, title: prompt.title, body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: prompt.tags, enabled: false, editToken: prompt.editToken}]);
+    assert.deepEqual(snapshot.prompts, [{id: prompt.id, title: prompt.title, body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: prompt.tags, enabled: false, favorite: false, editToken: prompt.editToken}]);
     assert.deepEqual(snapshot.channels.find(item => item.id === 'bilibili'), {id: 'bilibili', name: 'B 站', enabled: false});
     assert.ok(snapshot.channels.some(item => item.enabled));
     assert.equal(JSON.stringify(snapshot).includes(f.root), false);

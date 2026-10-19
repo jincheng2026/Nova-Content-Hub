@@ -81,7 +81,7 @@ export function modelDefaults(kind) {
         promptCategories: [],
         customRatios: []
     };
-    if (kind === 'prompt') return {enabled: true};
+    if (kind === 'prompt') return {enabled: true, favorite: false};
     if (!['content', 'collection'].includes(kind)) return {};
     return {
         materials: [],
@@ -730,6 +730,13 @@ export function modelMethods(h) {
                 action: 'setPromptEnabled',
                 enabled
             }, token, options, 'prompt', meta => ({...meta, schemaVersion: 2, enabled}));
+        },
+        setPromptFavorite: (promptId, favorite, token, options) => {
+            invalid(typeof favorite === 'boolean', 'favorite must be boolean');
+            return mutate('update', promptId, {
+                action: 'setPromptFavorite',
+                favorite
+            }, token, options, 'prompt', meta => ({...meta, favorite}));
         },
         createCollection: (raw, options) => {
             const input = contentInput(raw, true, 'collection');

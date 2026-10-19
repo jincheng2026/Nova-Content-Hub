@@ -2229,6 +2229,7 @@ function validateBusinessMetadata(meta, kind) {
         for (const plan of meta.plans) if (plan.status === 'published') check(meta.publications.some(item => item.id === plan.publicationId && item.planId === plan.id), 'published plan receipt');
     }
     if (kind === 'prompt') {
+        check(!Object.hasOwn(meta, 'favorite') || typeof meta.favorite === 'boolean', 'favorite');
         check(string(meta.category, true) && string(meta.when, true) && string(meta.summary, true) && Array.isArray(meta.tags) && meta.tags.every(tag => string(tag)) && new Set(meta.tags).size === meta.tags.length, 'prompt fields');
         check(meta.builtinKey === null || string(meta.builtinKey), 'builtin key');
         check(meta.provenance === null || plain(meta.provenance), 'provenance');

@@ -154,7 +154,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
     const settings = library.readLibrarySettings();
     return {
         prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(prompt => {
-            return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true};
+            return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true, favorite: prompt.favorite ?? false};
         }),
         photos: [...library.listPhotos(), ...library.listPhotoTrash()].map(photo => ({
             ...entity(photo), assetHash: photo.assetHash, isOwnPhoto: photo.isOwnPhoto,
@@ -191,7 +191,7 @@ function target(input: WorkspaceMutation): {kind: WorkspaceObjectKind; id: strin
     if ('kind' in input) return {kind: input.kind, id: input.id};
     switch (input.op) {
         case 'createPrompt': return {kind: 'prompt', id: null};
-        case 'updatePrompt': case 'setPromptEnabled': case 'trashPrompt': case 'restorePrompt': return {kind: 'prompt', id: input.id};
+        case 'updatePrompt': case 'setPromptEnabled': case 'setPromptFavorite': case 'trashPrompt': case 'restorePrompt': return {kind: 'prompt', id: input.id};
         case 'updatePhoto': case 'trashPhoto': case 'restorePhoto': return {kind: 'photo', id: input.id};
         case 'deriveTemplate': case 'createTemplate': return {kind: 'template', id: null};
         case 'selectTemplateVersion': case 'addTemplateVersion': case 'trashTemplate': case 'restoreTemplate': return {kind: 'template', id: input.id};
@@ -231,6 +231,7 @@ async function mutate(library: WorkspaceCoreLibrary, pending: WorkspacePending):
             case 'createPrompt': return library.createPrompt({title: input.title, body: input.body, category: input.category, summary: input.summary, when: input.when, tags: input.tags}, options);
             case 'updatePrompt': return library.updatePrompt(input.id, {title: input.title, body: input.body, category: input.category, summary: input.summary, when: input.when, tags: input.tags}, input.editToken, options);
             case 'setPromptEnabled': return library.setPromptEnabled(input.id, input.enabled, input.editToken, options);
+            case 'setPromptFavorite': return library.setPromptFavorite(input.id, input.favorite, input.editToken, options);
             case 'trashPrompt': return library.trashPrompt(input.id, input.editToken, options);
             case 'restorePrompt': return library.restorePrompt(input.id, input.editToken, options);
             case 'updatePhoto': return library.updatePhoto(input.id, {title: input.title, isOwnPhoto: input.isOwnPhoto}, input.editToken, options);

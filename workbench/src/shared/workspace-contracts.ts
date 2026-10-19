@@ -27,6 +27,7 @@ export type WorkspaceMutation =
     | ({op: 'createPrompt'} & WorkspacePromptFields)
     | ({op: 'updatePrompt'} & WorkspaceReference & WorkspacePromptFields)
     | ({op: 'setPromptEnabled'; enabled: boolean} & WorkspaceReference)
+    | ({op: 'setPromptFavorite'; favorite: boolean} & WorkspaceReference)
     | ({op: 'trashPrompt' | 'restorePrompt' | 'trashPhoto' | 'restorePhoto' | 'trashTemplate' | 'restoreTemplate' | 'trashCollection' | 'restoreCollection'} & WorkspaceReference)
     | ({op: 'updatePhoto'; title: string; isOwnPhoto: boolean} & WorkspaceReference)
     | ({op: 'selectTemplateVersion'; version: number} & WorkspaceReference)
@@ -54,7 +55,7 @@ export type WorkspaceMutation =
     | {op: 'addCustomRatio' | 'removeCustomRatio'; editToken: string; ratio: string};
 
 export interface WorkspaceEntity extends WorkspaceReference { title: string; createdAt: string; updatedAt: string; deletedAt: string | null }
-export interface WorkspaceLibraryPrompt extends WorkspaceEntity, WorkspacePromptFields { enabled: boolean }
+export interface WorkspaceLibraryPrompt extends WorkspaceEntity, WorkspacePromptFields { enabled: boolean; favorite: boolean }
 export interface WorkspaceLibraryPhoto extends WorkspaceEntity { assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; originalName: string }
 export interface WorkspaceLibraryTemplate extends WorkspaceEntity, WorkspaceTemplateFields { builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[] }
 export interface WorkspaceLibraryPlan extends WorkspacePlan { text: string | null; textMode: 'explicit' | 'body'; coverChoice: WorkspaceCoverChoice; publicationId: string | null }

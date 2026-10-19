@@ -52,8 +52,8 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
             selectedCandidateId: content.selectedCover?.candidateId ?? null
         };
     });
-    const prompts = library.listPrompts().map(({id, title, body, category, summary, when, tags, enabled, editToken}) => {
-        return {id, title, body, category, summary, when, tags, enabled: enabled ?? true, editToken};
+    const prompts = library.listPrompts().map(({id, title, body, category, summary, when, tags, enabled, favorite, editToken}) => {
+        return {id, title, body, category, summary, when, tags, enabled: enabled ?? true, favorite: favorite ?? false, editToken};
     });
     const channels = library.readLibrarySettings().channels.map(({id, name, deletedAt}) => ({id, name, enabled: deletedAt === null}));
     return {contents, prompts, channels};

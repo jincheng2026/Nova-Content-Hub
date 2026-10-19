@@ -55,6 +55,7 @@ export function workspaceMutation(v: unknown): v is WorkspaceMutation {
         case 'createPrompt': return fields(v, ['op', ...promptFields]) && prompt(v);
         case 'updatePrompt': return fields(v, ['op', 'id', 'editToken', ...promptFields]) && ref(v) && prompt(v);
         case 'setPromptEnabled': return fields(v, ['op', 'id', 'editToken', 'enabled']) && ref(v) && bool(v.enabled);
+        case 'setPromptFavorite': return fields(v, ['op', 'id', 'editToken', 'favorite']) && ref(v) && bool(v.favorite);
         case 'trashPrompt': case 'restorePrompt': case 'trashPhoto': case 'restorePhoto': case 'trashCollection': case 'restoreCollection':
             return fields(v, ['op', 'id', 'editToken']) && ref(v);
         case 'trashTemplate': case 'restoreTemplate':

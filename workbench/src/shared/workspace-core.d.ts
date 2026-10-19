@@ -55,10 +55,11 @@ export interface WorkspaceCoreLibrary {
     trashContentUnavailableReference(id: string, referenceId: string, editToken: string, options: Options): Changed;
     listPrompts(): ReturnType<WorkspaceCoreLibrary['readPrompt']>[];
     listPromptTrash(): ReturnType<WorkspaceCoreLibrary['readPrompt']>[];
-    readPrompt(id: string): WorkspaceEntity & WorkspacePromptFields & {enabled?: boolean};
+    readPrompt(id: string): WorkspaceEntity & WorkspacePromptFields & {enabled?: boolean; favorite?: boolean};
     createPrompt(input: WorkspacePromptFields, options: Options): Changed;
     updatePrompt(id: string, input: WorkspacePromptFields, editToken: string, options: Options): Changed;
     setPromptEnabled(id: string, enabled: boolean, editToken: string, options: Options): Changed;
+    setPromptFavorite(id: string, favorite: boolean, editToken: string, options: Options): Changed;
     trashPrompt(id: string, editToken: string, options: Options): Changed;
     restorePrompt(id: string, editToken: string, options: Options): Changed;
     listPhotos(): WorkspaceLibraryPhoto[];

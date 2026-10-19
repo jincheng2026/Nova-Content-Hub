@@ -76,6 +76,7 @@ export interface WorkspacePrompt {
     when: string;
     tags: string[];
     enabled: boolean;
+    favorite: boolean;
     editToken: string
 }
 
