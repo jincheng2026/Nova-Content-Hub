@@ -1,0 +1,21 @@
+{
+  "version": "0.3.22",
+  "independentLaunchConfirmedByInstallTransaction": true,
+  "installTransactionPhase": "complete",
+  "installedWorkerRead": true,
+  "counts": {
+    "contents": 3,
+    "templates": 21,
+    "prompts": 54,
+    "collections": 1,
+    "activeCollections": 1,
+    "recycledCollections": 0
+  },
+  "appIndex": [
+    "/Applications/自媒体工作台.app"
+  ],
+  "userConfirmedUI": true,
+  "uiVerificationPending": null,
+  "workbuddyPluginVersion": "0.3.22",
+  "workbuddyRestartConfirmed": true
+}

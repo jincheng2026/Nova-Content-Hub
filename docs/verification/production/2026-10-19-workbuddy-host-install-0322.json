@@ -1,0 +1,229 @@
+{
+  "format": "nova-workbuddy-host-install-verification",
+  "recordedAt": "2026-10-19T13:01:32.452Z",
+  "version": "0.3.22",
+  "source": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "plugin": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-host-install-0322/backup-20261019T130131819Z",
+  "ok": true,
+  "sourceEntries": 625,
+  "sourceMatchesPackageFiles": true,
+  "packageFilesSha256": "786bc2c0457ca99623b5634a14e0bee91f469c866158414705aea8c534863dfa",
+  "sourceTreeSnapshotSha256": "b8574b784bdf7b2123f8c34f8da713a934417eab996fff78d09c8706364420ca",
+  "scope": {
+    "host": "workbuddy",
+    "installationOnly": true,
+    "sessionsCreated": false,
+    "messagesSent": false,
+    "directPluginRuntimeExecutions": 0,
+    "businessLibraryAccess": false,
+    "sourceModified": false
+  },
+  "commands": [
+    {
+      "at": "2026-10-19T13:01:34.678Z",
+      "command": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "marketplace",
+        "add",
+        "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "--name",
+        "nova-content-hub-auth-disabled-darwin-arm64"
+      ],
+      "status": 0,
+      "stdoutSha256": "3afcc2a6dd610ab39f5f7085581cec4ace0b1d17d1cccc6c35ac983778d45601",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutBytes": 186,
+      "stderrBytes": 0
+    },
+    {
+      "at": "2026-10-19T13:01:38.836Z",
+      "command": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "update",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "status": 0,
+      "stdoutSha256": "d4fdb23669d9df6c1028c6e2a8bc14bfde2fb3fbe37541c6b59c2bca1dd2ebd9",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdoutBytes": 234,
+      "stderrBytes": 0
+    }
+  ],
+  "retainedOlderCaches": [
+    {
+      "version": "0.2.0",
+      "payloadSha256": "b10fe54246a515fdea6c9470bdfab0c07cb6ed3a05fb0060b702c61421fc2167",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.0",
+      "payloadSha256": "21bd839d4f9514740e9fdf9689c2b00327567db0bdf0ffab46c2a55f3dd7516e",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.1",
+      "payloadSha256": "00c06037f72afe4731f3028a41747419bc1d7b1cbd968bd6875f8b65f3ee5474",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.10",
+      "payloadSha256": "594d26cfc540190ed642e526cfc0f6cbb3d727443e1a83dca5bf1a783af28252",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.11",
+      "payloadSha256": "3350613dfc17eb4e480a3f93823c8afbab3f5a166e4febb1999dba23b607a5fe",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.12",
+      "payloadSha256": "c985ccf0be11c0da29a2ce8d74316c962bbfe3e6f5067d15f4b26d59df2eda7e",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.13",
+      "payloadSha256": "9622048caa26c23edc01e5e9b66157ee041a2c8c2a2e2c24ead793ed2bba68e5",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.14",
+      "payloadSha256": "53201052a296a3c6c1dd5e8f5008254b3e88a9ce30a5cac3123a63aba8ae36b9",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.15",
+      "payloadSha256": "20773bc89fba67eb7ba87eb613eeebbbe19828ae1cf4a92944c990accaeafd98",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.17",
+      "payloadSha256": "6bec9468b48e758e0770f13318b012516067bcfc94a071646151dd4833b24c7f",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.18",
+      "payloadSha256": "82dd965149f7bea9ace1cd42025d0f3c6a1356a5e753dff694270ae84ac6a392",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.19",
+      "payloadSha256": "d86642dc8e2f2a265eb320c1e5e7105cb349a96d746bf12130175a9ad16c0f28",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.2",
+      "payloadSha256": "c4358014f34c588ad474b0c74bf7c9b2e9c9892c07583ef29e759e8539ce9b61",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.20",
+      "payloadSha256": "6da961808ecbf0d454a56f2ccfbd543a5afa82761ba41473f8e996aaf6a7443e",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.21",
+      "payloadSha256": "c972921900b285e13b008cd401124331c94a9de9afdf8d1651a9a297a48e9dc6",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.3",
+      "payloadSha256": "0f7580a8a22a7db0307c9b0708a9299f19c2a9965c2adf339fcbab4f7af0fb6a",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.4",
+      "payloadSha256": "6e5a7d73c355ace4f28768181f3dedb684617d2c6fec71a3e65b588e26ca10e2",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.5",
+      "payloadSha256": "03e42d805c4636b8753334e21191aea62ea7b4e8e2ef8f1b29eacf0b17280c9a",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.6",
+      "payloadSha256": "3845daa95b57bad0895cf9970d882405c91d64c6c6ba8d027a8ce09531b8b80f",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.7",
+      "payloadSha256": "b1a9d44c292281154d2df67dd677398236991e6a209ab0447245f4f2fb1acdff",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.8",
+      "payloadSha256": "ca9167620dfe2935322de94d9d309ef5e6467863e90b643b6f8fc84a6d331262",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    },
+    {
+      "version": "0.3.9",
+      "payloadSha256": "e1a14f250ffd5f206e97d365bce6f7a43c565fa9064c5ef51273d58c8722e110",
+      "unchanged": true,
+      "restoredFromExistingBackup": false
+    }
+  ],
+  "officialInstallerSubprocessExecutionAudited": false,
+  "unrelatedMetadataUnchanged": {
+    "settings.json": true,
+    "plugins/installed_plugins.json": true,
+    "plugins/known_marketplaces.json": true,
+    "plugins/configured-plugins.json": true
+  },
+  "unrelatedMetadataSha256": {
+    "settings.json": "5e560d91c1b43d13abb61c4ade0b27a012afbdf6500964bffabc1bdb53b35c13",
+    "plugins/installed_plugins.json": "76f5a1ce1c6ec8bf62738b17fcf6abb15f431ea62a1e0c667f9bbc25c391ea1e",
+    "plugins/known_marketplaces.json": "735b94bbb48c571577a653213856071b53d15473a1b3fad32ffd84ffa2929509",
+    "plugins/configured-plugins.json": "244f561a189bfe9cd47af41e09a5592b60c63d5878bb1fc34fa6329cef699c2d"
+  },
+  "readiness": {
+    "cover": {
+      "ready": true,
+      "skill": "nova-content-cover-execution"
+    },
+    "template": {
+      "ready": true,
+      "skill": "nova-content-template-execution"
+    }
+  },
+  "installed": {
+    "cache": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.22",
+    "version": "0.3.22",
+    "enabled": true,
+    "entries": 625,
+    "allowedHostMarkers": {},
+    "payloadDifferences": [],
+    "payloadMatchesSourceSeal": true,
+    "treeSha256": "b8574b784bdf7b2123f8c34f8da713a934417eab996fff78d09c8706364420ca"
+  },
+  "restartRequiredByOfficialCli": true,
+  "verifiedAt": "2026-10-19T13:01:45.213Z",
+  "restartCompleted": true,
+  "restartMethod": "CUA normal Quit WorkBuddy menu, observed isRunning=false; Finder selected /Applications/WorkBuddy.app and Open; observed isRunning=true and real loaded WorkBuddy UI. No new sessions or messages.",
+  "restartVerifiedAt": "2026-10-19T13:06:07.531Z"
+}
