@@ -1,0 +1,19 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (2.608667ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.50675ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.226ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.230792ms)
+✔ annotations use the actual contained image and reject letterboxing (0.120291ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.258333ms)
+(node:62953) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (10.896542ms)
+✔ automatic cover failures still report the error and refresh status (3.160167ms)
+✔ foreground operations and external-change refresh still scan the full workspace (4.669ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 397.241209

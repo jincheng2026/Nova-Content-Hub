@@ -1002,3 +1002,155 @@ Built experimental disabled plugin for darwin/arm64
 ✔ creation response loss verifies fixed original inode; failure never removes its directory (20860.363125ms)
 ✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (28492.913834ms)
 ✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (27127.373958ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (24509.253333ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (21800.748625ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (22969.260791ms)
+✔ explicitly adopting another current library retires only the completed import pointer (28246.259166ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (26431.609833ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (20803.808541ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (5.129208ms)
+✔ verified installation retains the complete previous app and confirms only installed startup (381.990167ms)
+✔ a completed local-channel journal can recover before an official-channel update (576.915541ms)
+✔ allowed product channels replace and restore each other with the same executable (286.973459ms)
+✔ unknown journal channels and incompatible executables preserve recovery evidence (690.3675ms)
+✔ unknown installed channels and mismatched incoming source or candidate channels are refused (478.588209ms)
+✔ throw copy or verification failure leaves old app intact (214.141667ms)
+✔ missing copy or verification failure leaves old app intact (240.4155ms)
+✔ hash copy or verification failure leaves old app intact (260.419084ms)
+✔ mode copy or verification failure leaves old app intact (282.250125ms)
+✔ source-signature copy or verification failure leaves old app intact (115.294959ms)
+✔ candidate-signature copy or verification failure leaves old app intact (209.430375ms)
+✔ internal symlinks survive copying; escaping links and unknown identities are refused (533.979875ms)
+✔ running target at check 1 is refused before replacement (106.114375ms)
+✔ running target at check 2 is refused before replacement (326.910417ms)
+✔ running-process query failure leaves previous app intact (129.704042ms)
+✔ failed publish restores old app; failed rollback retains recovery record and previous app (668.821541ms)
+✔ interrupted new rename is pending; recovery refuses a replaced previous identity (409.405625ms)
+✔ unknown transaction directory and target symlink are left untouched (271.469583ms)
+✔ native macOS process query distinguishes an unused app directory (603.262833ms)
+✔ initial installation and a subsequent confirmed update preserve separate backups (697.502375ms)
+✔ another live installation owner cannot have its staging directory archived (399.31125ms)
+✔ prepared journal recovers interruption between the old rename and published record (450.990916ms)
+✔ installing from the target itself is refused without touching it (104.159667ms)
+✔ native ditto copy retains framework-style symlinks and executable bits (412.775042ms)
+✔ same-process concurrent recovery cannot archive an active copy (369.840083ms)
+✔ an initialized private orphan before active publication does not block a later install (604.367416ms)
+✔ published initialized staging claim recovers without deleting its private directory (484.526334ms)
+✔ unknown active regular file and symlink are preserved without following them (350.53925ms)
+✔ exclusive claim publication refuses a concurrently created unknown empty directory (240.737292ms)
+✔ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (2834.362042ms)
+✔ a final marker followed by an actual open failure cannot publish an operation receipt (2340.077125ms)
+✔ query proves a lost restore response and pins the completed target before continuation (3259.189791ms)
+✔ partial backup and partial restored target are preserved and never overwritten (1689.436792ms)
+✔ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (4688.343459ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (514.964ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (528.918334ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (2848.785625ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (2087.345292ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (2071.868791ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (1955.303375ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (3095.750083ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.534292ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.424667ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (8037.189917ms)
+✔ desktop operations finish in FIFO order without overlap (1.769583ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.341167ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.581917ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (0.85ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (2.469416ms)
+✔ local minute records use the planned timezone across a date boundary (49.221375ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.238292ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.205542ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.624208ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.143584ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.114959ms)
+✔ save-before-quit only retries quit for an exact true response (3.225958ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (0.484625ms)
+✔ without a tray, dirty close still offers cancel, discard and save (0.423292ms)
+✔ day views order known times and leave date-only time unknown (19.330209ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.887208ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.47575ms)
+✔ installation copy supplies the selected host exact manifest or folder without manual path edits (77.105084ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (7944.867333ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (9005.031916ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (10987.426583ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (5906.858084ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (5641.437208ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (10378.433958ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (9612.721875ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (5643.219625ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (1182.399375ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (2.296166ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.639333ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.587875ms)
+✔ readonly non-BUSY failures are returned once (0.243792ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.335708ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (274.960666ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.363375ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (9691.526042ms)
+✔ full list records retain the same validated bytes and edit tokens as individual reads, including trash (3370.782917ms)
+✔ workspace projections do not reopen each already validated full record (4308.090625ms)
+✔ only an owned stored publication URL is sent to the system browser (3742.377584ms)
+✔ invalid stored links and browser errors do not become successful opens (9708.192166ms)
+✔ reveal requests only the original bound directory and refuses replacements (1717.191083ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (5900.645333ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (3270.611333ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (1400.067417ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (1105.377708ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (2209.489542ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (2.2525ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (3.699708ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (4342.607084ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (2820.330959ms)
+ℹ tests 234
+ℹ suites 0
+ℹ pass 234
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 433295.872
+
+> nova-content-hub-prototype@0.3.13 build:desktop
+> npm run build --prefix workbench -- --auth both
+
+
+> nova-content-hub-workbench@0.3.13 build
+> node scripts/build.mjs --auth both
+
+Built experimental required plugin for darwin/arm64
+Built experimental disabled plugin for darwin/arm64
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1961 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-required/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-l3lTtRDo.css                        365.88 kB │ gzip:  50.25 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-Dw7F8wX5.js                       1,069.26 kB │ gzip: 294.35 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 389ms
+Built experimental desktop auth-required for darwin/arm64; productionReady=false
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1961 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-disabled/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-l3lTtRDo.css                        365.88 kB │ gzip:  50.25 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-Dw7F8wX5.js                       1,069.26 kB │ gzip: 294.35 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 364ms
+Built experimental desktop auth-disabled for darwin/arm64; productionReady=false

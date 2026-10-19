@@ -1,0 +1,11 @@
+{
+  "version": "0.3.14",
+  "sourceCommit": "3697fb4",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.14-darwin-arm64-preview.dmg",
+  "delivery": "/Users/mac/Downloads/自媒体工作台-0.3.14-Mac苹果芯片/自媒体工作台-0.3.14-Mac苹果芯片.dmg",
+  "sha256": "d6e73b239b0ba5e2da21a6957b928a9238e94fc738949b07268b48b72b8d8d91",
+  "bytes": 381818584,
+  "sameInstallerAsInstalled": true,
+  "platform": "darwin-arm64",
+  "productionReady": false
+}
