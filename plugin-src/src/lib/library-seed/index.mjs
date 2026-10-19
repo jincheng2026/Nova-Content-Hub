@@ -2,10 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
+import {prepareColleagueBuiltins} from './colleague.mjs';
 
 const defaultBundle = fileURLToPath(new URL('../../../../', import.meta.url));
 const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const parse = file => JSON.parse(fs.readFileSync(file, 'utf8'));
+const promptContent = body => body.replace(/\r\n/g, '\n').trim();
 
 function sourceFile(root, relative) {
     if (typeof relative !== 'string' || !relative || /[\\\u0000-\u001f]/.test(relative) ||
@@ -43,13 +45,13 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
             const bytes = fs.readFileSync(file);
             const registered = generated.get(path.basename(file));
             if (!registered || registered.bytes !== bytes.length || registered.sha256 !== sha256(bytes)) throw new Error(`内置图片校验失败：${ref.id}`);
-            resources.set(ref.path, {file, purpose: 'template-reference', role: 'style'});
+            resources.set(ref.path, {file, assetHash: registered.sha256, purpose: 'template-reference', role: 'style'});
             references.add(ref.path);
         }
         for (const asset of definition.assets || []) {
             if (typeof asset.path !== 'string' || !asset.path.endsWith('.svg')) throw new Error('内置结构图定义无效');
             const file = sourceFile(bundleRoot, `plugin-src/resources/${asset.path}`);
-            resources.set(asset.path, {file, purpose: 'template-structure', role: 'structure'});
+            resources.set(asset.path, {file, assetHash: sha256(fs.readFileSync(file)), purpose: 'template-structure', role: 'structure'});
             structures.add(asset.path);
         }
         if (![definition.img, ...definition.shots].every(key => resources.has(key))) throw new Error('内置预览缺少对应资产');
@@ -61,11 +63,20 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
             !prompt.body.trim() || prompt.provenance?.origin !== 'original' || prompt.provenance?.license !== 'project-original') throw new Error('内置提示词定义无效');
         seenPrompts.add(prompt.id);
     }
+    const colleague = prepareColleagueBuiltins(relative => sourceFile(bundleRoot, relative));
+    prepared.push(...colleague.prepared);
+    const allPrompts = [...prompts.prompts, ...colleague.prompts];
     const templates = [];
     for (const {definition, resources} of prepared) {
         const installed = {};
         for (const [key, input] of resources) {
-            const asset = library.importAsset(input.file, {purpose: input.purpose});
+            let asset;
+            try { asset = library.readAsset(input.assetHash); }
+            catch (error) {
+                if (error.code !== 'CORRUPT') throw error;
+                asset = library.importAsset(input.file, {purpose: input.purpose});
+            }
+            if (asset.assetHash !== input.assetHash) throw Error('内置资源在预检后发生变化');
             installed[key] = {
                 assetHash: asset.assetHash,
                 bytes: asset.bytes,
@@ -83,10 +94,12 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
         templates.push({id: template.id, version: definition.version});
     }
     // A user edit or deletion remains authoritative; startup seeding never overwrites it.
-    const existingKeys = new Set([...library.listPrompts(), ...library.listPromptTrash()].map(item => item.builtinKey).filter(Boolean));
+    const existingPrompts = [...library.listPrompts(), ...library.listPromptTrash()];
+    const existingKeys = new Set(existingPrompts.map(item => item.builtinKey).filter(Boolean));
+    const existingBodies = new Set(existingPrompts.map(item => promptContent(library.readPrompt(item.id).body)));
     let createdPrompts = 0;
-    for (const prompt of prompts.prompts) {
-        if (existingKeys.has(prompt.id)) continue;
+    for (const prompt of allPrompts) {
+        if (existingKeys.has(prompt.id) || existingBodies.has(promptContent(prompt.body))) continue;
         const {title, body, category, when, summary, tags, provenance} = prompt;
         try {
             library.createPrompt({title, body, category, when, summary, tags, provenance, builtinKey: prompt.id});
@@ -95,12 +108,13 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
             if (error.code !== 'CONFLICT' || ![...library.listPrompts(), ...library.listPromptTrash()].some(item => item.builtinKey === prompt.id)) throw error;
         }
         existingKeys.add(prompt.id);
+        existingBodies.add(promptContent(prompt.body));
     }
     return {
         templates,
-        styleSamples: references.size,
-        structureSamples: structures.size,
-        prompts: prompts.prompts.length,
+        styleSamples: references.size + colleague.styleSamples,
+        structureSamples: structures.size + colleague.structureSamples,
+        prompts: allPrompts.length,
         createdPrompts
     };
 }

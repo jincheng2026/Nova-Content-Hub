@@ -64,3 +64,17 @@ test('macOS iconutil can decode the committed ICNS into the complete Retina icon
         assert.equal(image.hasAlpha, true);
     }
 });
+
+test('macOS tray artwork is a transparent monochrome glyph at normal and Retina sizes', async () => {
+    const directory = await checkAppIcons();
+    for (const [name, size] of [['trayTemplate.png', 18], ['trayTemplate@2x.png', 36]]) {
+        const {data, info} = await sharp(path.join(directory, name)).ensureAlpha().raw().toBuffer({resolveWithObject: true});
+        assert.equal(info.width, size); assert.equal(info.height, size);
+        let opaque = 0, transparent = 0;
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] === 0) {transparent++; continue;}
+            assert.equal(data[i], 255); assert.equal(data[i + 1], 255); assert.equal(data[i + 2], 255); opaque++;
+        }
+        assert(opaque > 0 && transparent > 0);
+    }
+});

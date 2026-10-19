@@ -266,8 +266,10 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     }});
     const syncLibraryWatcher = () => libraryWatcher?.bind(initializationError || controller.binding?.needsReselect ? null : controller.binding?.current ?? null);
     try {
-        const trayIcon = icon.resize({width: 18, height: 18});
-        trayIcon.addRepresentation({scaleFactor: 2, buffer: icon.resize({width: 36, height: 36}).toPNG()});
+        const traySource = nativeImage.createFromPath(icons.tray);
+        const trayIcon = traySource.resize({width: 18, height: 18});
+        trayIcon.addRepresentation({scaleFactor: 2, buffer: nativeImage.createFromPath(icons.trayRetina).resize({width: 36, height: 36}).toPNG()});
+        if (process.platform === 'darwin') trayIcon.setTemplateImage(true);
         tray = new Tray(trayIcon);
         tray.setToolTip('自媒体工作台');
         tray.setContextMenu(Menu.buildFromTemplate([

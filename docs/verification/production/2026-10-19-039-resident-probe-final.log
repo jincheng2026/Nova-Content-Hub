@@ -1,0 +1,19 @@
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+Resident renderer: Uncaught TypeError: Cannot read properties of null (reading 'disabled')
+Error: Script failed to execute, this normally means an error was thrown. Check the renderer console for the error.
+    at node:electron/js2c/sandbox_bundle:2:98605
+    at IpcRendererInternal.<anonymous> (node:electron/js2c/sandbox_bundle:2:93432)
+    at IpcRendererInternal.emit (node:electron/js2c/sandbox_bundle:2:35958)
+    at Object.onMessage (node:electron/js2c/sandbox_bundle:2:92646)
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28
+            child.once('close', code => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Resident ${phase} exited ${code}`)); });
+                                                                                                 ^
+
+Error: Resident save exited 1
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28:98)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

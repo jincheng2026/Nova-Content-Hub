@@ -4,6 +4,21 @@ export function scheduleDay(schedule: WorkspaceSchedule, timeZone?: string) {
   return schedule.precision === 'instant' ? new Intl.DateTimeFormat('sv-SE', {timeZone: timeZone ?? schedule.timezone, year: 'numeric', month: '2-digit', day: '2-digit'}).format(new Date(schedule.at)) : schedule.date;
 }
 
+export function scheduleMinute(schedule: WorkspaceSchedule, timeZone?: string) {
+  if (schedule.precision === 'date') return null;
+  if (schedule.precision === 'local-minute') return schedule.time;
+  return new Intl.DateTimeFormat('zh-CN', {timeZone: timeZone ?? schedule.timezone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).format(new Date(schedule.at));
+}
+
+export function scheduleForView(schedule: WorkspaceSchedule, timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone): WorkspaceSchedule {
+  return schedule.precision === 'instant' ? {...schedule, timezone: timeZone} : schedule;
+}
+
+export function compareSchedules(a: WorkspaceSchedule, b: WorkspaceSchedule, timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone) {
+  if (a.precision === 'instant' && b.precision === 'instant') return Date.parse(a.at) - Date.parse(b.at);
+  return scheduleDay(a, timeZone).localeCompare(scheduleDay(b, timeZone)) || (scheduleMinute(a, timeZone) ?? '99:99').localeCompare(scheduleMinute(b, timeZone) ?? '99:99');
+}
+
 export interface PublicationEntry {
   kind: WorkspaceKind;
   document: WorkspaceDocument;
@@ -21,7 +36,7 @@ export function publicationEntries(library: WorkspaceLibrarySnapshot, timeZone?:
   ];
   return documents.flatMap(({kind, document}) => document.plans.filter(plan => plan.status !== 'cancelled').map(plan => {
     const publication = plan.status === 'published' ? document.publications.find(item => item.planId === plan.id && !document.publicationEvents.some(event => event.targetId === item.id)) ?? null : null;
-    const schedule = publication?.schedule ?? plan.schedule;
+    const schedule = scheduleForView(publication?.schedule ?? plan.schedule, timeZone);
     return {kind, document, plan, publication, schedule, day: scheduleDay(schedule, timeZone), channel: publication?.channelName ?? library.settings.channels.find(item => item.id === plan.channelId)?.name ?? '原渠道已不可用'};
-  })).sort((a, b) => a.day.localeCompare(b.day));
+  })).sort((a, b) => compareSchedules(a.schedule, b.schedule, timeZone));
 }

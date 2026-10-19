@@ -1,0 +1,22 @@
+Resident save: controller.createLibrary started
+Resident save: builtin seed started
+Resident save: create elapsed 5002 ms; busy=true; current=true; seedPending=true
+Resident save: create elapsed 10004 ms; busy=true; current=true; seedPending=true
+Resident save: create elapsed 15005 ms; busy=true; current=true; seedPending=true
+Resident save: builtin seed finished in 16381 ms
+Resident save: controller.createLibrary finished in 16605 ms
+PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (save)
+Resident save: save-close completed with false
+PASS actual dirty renderer: cancelled quit and failed save retain draft and reset ordinary close to hide
+Resident save: save-close completed with true
+PASS actual save-before-quit commits the draft through the utility worker and exits
+Resident discard: controller.createLibrary started
+Resident discard: builtin seed started
+Resident discard: create elapsed 5002 ms; busy=true; current=true; seedPending=true
+Resident discard: create elapsed 10003 ms; busy=true; current=true; seedPending=true
+Resident discard: create elapsed 15004 ms; busy=true; current=true; seedPending=true
+Resident discard: builtin seed finished in 16151 ms
+Resident discard: controller.createLibrary finished in 16471 ms
+PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (discard)
+PASS explicit native quit can deliberately discard the dirty draft
+PASS standalone native resident probes; actual menu pointer clicks, Windows tray, login launch and production authorization were not tested.

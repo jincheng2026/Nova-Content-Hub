@@ -17,6 +17,8 @@ launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin
 
 ## 步骤
 
+从 `RUN` 所在 `bin` 的上一级插件根目录读取 `plugin-src/references/media-template.md` 及其中的封面设计检查指南。使用准确文字、参考角色和可观察的构图关系组织提示；候选差异服从已选模板与本次请求，不增加输出数量或外部调用权限。
+
 1. 运行 `RUN doctor`。若业务命令返回 `AUTH_NOT_CONFIGURED`，说明可信权益尚未接入并停止；保留原包配置。
 2. 运行 `RUN cover context --handoff <ID>`。读取实际返回的正文和输入文件。用宿主的看图能力打开每一张 style 与 own-photo
    图片，读取选入的资料；按 request 中固定的提示、尺寸策略、格式和数量执行。sizePolicy 为 `ratio-minimum` 时，pixels 是
@@ -28,7 +30,7 @@ launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin
    CLI 成功回执作为接单完成判据。只接单不代表生图成功。
 4. 使用当前宿主可用的图像生成能力，真实生成请求数量的图片。ratio-minimum 优先使用 pixels 或宿主明确支持的同比例尺寸；
    样张尺寸不代表工具支持该尺寸。需要编辑本地参考时按宿主图像工具要求先看图。把结果作为普通文件复制到 context 返回的 inbox，
-   用单层文件名，保持原始字节及工具自带标识。检查真实输出尺寸后再准备回执；尺寸不符时保留该产物，按原请求最多重新生成一批，
+   用单层文件名，保留工具返回的全部原字节、平台标识、水印和元数据，核对源文件与 inbox 副本的 SHA256 必须相同。逐张查看并检查真实输出尺寸后再准备回执；尺寸不符时保留该产物，按原请求最多重新生成一批，
    仍不符则报告失败。数量或内容不符时保留产物并说明问题，不裁切、拉伸或复用同图来凑数。向用户说明保留的可见平台标识。
 5. 计算每个收件文件的真实 SHA256，创建一份原始回执 JSON：
    `libraryId/contentId/requestId/attemptId/requestHash/resultId/files`，这些身份字段来自 context。resultId 使用新

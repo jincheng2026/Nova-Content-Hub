@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-19T04:59:49.104Z",
+  "version": "0.3.9",
+  "scope": "Installed native macOS app; synthetic explicit acceptance library",
+  "originalEntries": 999,
+  "originalEntriesUnchanged": true,
+  "nativeObservations": {
+    "settings": "Two-column personal profile + global assistant; no account; explicit update completed",
+    "templates": {
+      "builtinGroups": 20,
+      "colleagueGroups": 5,
+      "colleagueImages": [
+        19,
+        30,
+        23,
+        30,
+        25
+      ],
+      "personalPending": 1
+    },
+    "prompts": {
+      "visible": 54,
+      "builtins": 52,
+      "userExisting": 2,
+      "associatedTitle": "本机创作流程验收",
+      "returnToSavedBody": true
+    },
+    "content": {
+      "createdCollectionTitle": "连续创作流程验收合集",
+      "exactCollectionManagementFocus": true
+    },
+    "schedule": {
+      "monthAndWeek": true,
+      "knownTime": "02:59",
+      "dateOnlyLabel": "时间待定",
+      "existingPlanPreserved": true
+    },
+    "covers": {
+      "realCandidatesShown": 2,
+      "selectedCandidatePreserved": true,
+      "batchSummary": "第 1 批 · 2 张",
+      "newGenerationRequested": false
+    }
+  },
+  "notCovered": [
+    "No fresh model output for five new colleague styles",
+    "No new publication or correction/retraction in this round",
+    "No Windows/Intel device, signed distribution or native Codex send"
+  ]
+}

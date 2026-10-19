@@ -7,7 +7,7 @@ import {fileURLToPath} from 'node:url';
 import electron from 'electron';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
-const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-resident-probe-'));
+const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-resident-probe-')));
 try {
     const bundle = path.join(root, 'bundle');
     await fs.cp(path.join(workbench, 'dist-desktop/auth-disabled'), bundle, {recursive: true});

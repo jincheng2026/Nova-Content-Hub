@@ -1,0 +1,16 @@
+Error: Resident state timed out
+    at wait (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-resident-probe-LHOrWj/bundle/workbench/dist/main/resident-probe.mjs:33:27)
+    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-resident-probe-LHOrWj/bundle/workbench/dist/main/resident-probe.mjs:44:9)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-resident-probe-LHOrWj/bundle/workbench/dist/main/desktop.mjs:387:5)
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28
+            child.once('close', code => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Resident ${phase} exited ${code}`)); });
+                                                                                                 ^
+
+Error: Resident save exited 1
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28:98)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

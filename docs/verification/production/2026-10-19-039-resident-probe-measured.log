@@ -1,0 +1,33 @@
+Resident save: controller.createLibrary started
+Resident save: builtin seed started
+Resident save: create elapsed 5004 ms; busy=true; current=true; seedPending=true
+Resident save: create elapsed 10004 ms; busy=true; current=true; seedPending=true
+Resident save: create elapsed 15007 ms; busy=true; current=true; seedPending=true
+Resident save: builtin seed finished in 16264 ms
+Resident save: controller.createLibrary finished in 16511 ms
+PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (save)
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+true !== false
+
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-resident-probe-wfpWZx/bundle/workbench/dist/main/resident-probe.mjs:138:16)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-resident-probe-wfpWZx/bundle/workbench/dist/main/desktop.mjs:387:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28
+            child.once('close', code => { clearTimeout(timeout); code === 0 ? resolve() : reject(new Error(`Resident ${phase} exited ${code}`)); });
+                                                                                                 ^
+
+Error: Resident save exited 1
+    at ChildProcess.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/resident-probe.mjs:28:98)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-19T04:50:11.101Z",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "method": "Installed 0.3.9 Settings > update builtins native click",
+  "beforeEntries": 999,
+  "afterEntries": 1439,
+  "existingEntriesUnchanged": true,
+  "addedEntries": 440,
+  "counts": {
+    "模板": 21,
+    "提示词": 54,
+    "内容": 2,
+    "合集": 0
+  },
+  "originalContentEntries": 117,
+  "scope": "Synthetic acceptance library only; no real generation, publication or user library writes"
+}

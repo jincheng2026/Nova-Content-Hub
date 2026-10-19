@@ -14,36 +14,33 @@ const reminderLabels: Record<ReminderStatus['state'], string> = {
 };
 export function PreferencesPanel({busy, run}: {busy: boolean; run<T>(action: () => Promise<T>): Promise<T | undefined>}) {
     const [view, setView] = useState<PreferencesView | null>(null), [draft, setDraft] = useState<LocalPreferences | null>(null), [reminder, setReminder] = useState<ReminderStatus | null>(null), [notice, setNotice] = useState('');
-    useManagedDraftGuard(!!draft && !!view && JSON.stringify(draft) !== JSON.stringify(view.values));
+    const dirty = !!draft && !!view && JSON.stringify(draft) !== JSON.stringify(view.values);
+    useManagedDraftGuard(dirty);
     useEffect(() => {
         let active = true;
         void Promise.all([invoke('readPreferences'), invoke('readReminderStatus')]).then(([preferences, status]) => {
-            if (active) { setView(preferences); setDraft(preferences.values); setReminder(status); }
-        }, () => { if (active) setNotice('本机设置未能读取，原文件会保留。请重启后重新查看。'); });
-        return () => { active = false; };
+            if (active) {setView(preferences); setDraft(preferences.values); setReminder(status);}
+        }, () => {if (active) setNotice('本机设置未能读取，原文件会保留。请重启后重新查看。');});
+        return () => {active = false;};
     }, []);
-    async function refresh() { setReminder(await invoke('readReminderStatus')); }
-    return <section className="preferences-panel" aria-label="本机偏好与提醒"><Card title="本机偏好"><p className="muted">设置只保存在这台电脑。更改后点击保存才生效。</p>
-        {draft && view && <form className="management-form" onSubmit={event => { event.preventDefault(); void run(async () => {
+    async function refresh() {setReminder(await invoke('readReminderStatus'));}
+    return <section className="preferences-panel" aria-label="本机偏好与提醒"><Card title="本机偏好">
+        {draft && view && <form className="creator-preferences-form" onSubmit={event => {event.preventDefault(); void run(async () => {
             const saved = await invoke('savePreferences', draft);
             setView(saved); setDraft(saved.values);
             document.documentElement.dataset.reducedMotion = String(saved.values.reducedMotion);
             setNotice(['failed', 'mismatch', 'requires-approval'].includes(saved.login.state) ? '偏好已保存；开机启动尚未生效，请查看下方系统反馈。' : '本机偏好已保存。');
             await refresh();
-        }); }}>
-            <label className="check-label"><input type="checkbox" disabled={busy} checked={draft.reducedMotion} onChange={event => setDraft({...draft, reducedMotion: event.target.checked})}/>减少界面动画</label>
-            <label className="check-label"><input type="checkbox" disabled={busy} checked={draft.remindersEnabled} onChange={event => setDraft({...draft, remindersEnabled: event.target.checked})}/>每天提醒今天的待发布安排</label>
-            <label>每天提醒时间（使用本机当前时区）<input required type="time" disabled={busy || !draft.remindersEnabled} value={draft.reminderTime} onChange={event => setDraft({...draft, reminderTime: event.target.value})}/></label>
-            <label className="check-label"><input type="checkbox" disabled={busy || !view.login.supported} checked={draft.startAtLogin} onChange={event => setDraft({...draft, startAtLogin: event.target.checked})}/>登录电脑后自动打开工作台</label>
-            <p className="muted">系统开机启动反馈：{view.login.state === 'on' ? '已开启' : view.login.state === 'off' ? '已关闭' : view.login.state === 'unsupported' ? '当前平台不支持，未修改系统设置' : view.login.state === 'unavailable' ? '请先安装打包的桌面应用；开发运行模式不配置开机启动' : view.login.state === 'requires-approval' ? '等待你在系统登录项设置中批准' : view.login.state === 'mismatch' ? `系统实际为${view.login.enabled ? '开启' : '关闭'}，与保存的偏好不同；系统可能未批准此更改` : '读取或设置未成功，请到系统登录项设置中检查'}。</p>
-            <Button theme="solid" htmlType="submit" disabled={busy}>保存本机偏好</Button>
-            <Button disabled={busy} onClick={() => { setDraft({...view.values}); setNotice('已放弃尚未保存的本机偏好修改。'); }}>放弃修改</Button>
+        });}}>
+            <label className="creator-preference-row"><span>每天提醒<small>汇总今天待发布的内容与合集</small></span><input type="checkbox" disabled={busy} checked={draft.remindersEnabled} onChange={event => setDraft({...draft, remindersEnabled: event.target.checked})}/></label>
+            <label className="creator-preference-row"><span>提醒时间<small>使用本机当前时区</small></span><input required type="time" disabled={busy || !draft.remindersEnabled} value={draft.reminderTime} onChange={event => setDraft({...draft, reminderTime: event.target.value})}/></label>
+            <label className="creator-preference-row"><span>减少界面动画</span><input type="checkbox" disabled={busy} checked={draft.reducedMotion} onChange={event => setDraft({...draft, reducedMotion: event.target.checked})}/></label>
+            <label className="creator-preference-row"><span>开机启动<small>登录电脑后自动打开工作台</small></span><input type="checkbox" disabled={busy || !view.login.supported} checked={draft.startAtLogin} onChange={event => setDraft({...draft, startAtLogin: event.target.checked})}/></label>
+            <p className="creator-settings-hint" role="status">系统反馈：{view.login.state === 'on' ? '开机启动已开启' : view.login.state === 'off' ? '开机启动已关闭' : view.login.state === 'unsupported' ? '当前平台不支持开机启动，未修改系统设置' : view.login.state === 'unavailable' ? '请先安装打包的桌面应用；开发运行模式不配置开机启动' : view.login.state === 'requires-approval' ? '等待你在系统登录项设置中批准' : view.login.state === 'mismatch' ? `系统实际为${view.login.enabled ? '开启' : '关闭'}，与保存的偏好不同；系统可能未批准此更改` : '读取或设置未成功，请到系统登录项设置中检查'}。</p>
+            <div className="management-actions creator-preference-actions"><Button theme="solid" htmlType="submit" disabled={busy || !dirty}>保存偏好</Button><Button disabled={busy || !dirty} onClick={() => {setDraft({...view.values}); setNotice('已放弃尚未保存的本机偏好修改。');}}>放弃修改</Button><span>{dirty ? '有未保存修改' : '只保存在这台电脑'}</span></div>
         </form>}
         {notice && <p role="status">{notice}</p>}
-        <div style={{marginTop: 20}}><h3>原生通知</h3><p role="status">{reminder ? reminder.reason === 'storage-unavailable' ? '提醒记录无法安全读取或保存，已暂停提醒并保留原文件。' : reminderLabels[reminder.state] : '正在读取通知状态…'}{reminder?.lastDay ? ` 上次自动提醒记录：${reminder.lastDay}。` : ''}</p>
-            <div className="management-actions" style={{display: 'flex', gap: 12, flexWrap: 'wrap'}}><Button disabled={busy || !reminder?.supported} onClick={() => void run(async () => { setReminder(await invoke('testReminder')); })}>试发一条本机通知</Button><Button disabled={busy} onClick={() => void run(refresh)}>刷新通知状态</Button></div>
-        </div>
-        <p className="muted">只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。</p>
-        <p className="muted">通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。</p>
+        <p className="creator-settings-hint" role="status">{reminder ? reminder.reason === 'storage-unavailable' ? '提醒记录无法安全读取或保存，已暂停提醒并保留原文件。' : reminderLabels[reminder.state] : '正在读取通知状态…'}</p>
+        <details><summary>通知试发与使用说明</summary><p>{reminder?.lastDay ? `上次自动提醒记录：${reminder.lastDay}。` : '尚无自动提醒记录。'}</p><div className="management-actions"><Button disabled={busy || !reminder?.supported} onClick={() => void run(async () => {setReminder(await invoke('testReminder'));})}>试发一条通知</Button><Button disabled={busy} onClick={() => void run(refresh)}>刷新通知状态</Button></div><p>只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。</p><p>通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。</p></details>
     </Card></section>;
 }

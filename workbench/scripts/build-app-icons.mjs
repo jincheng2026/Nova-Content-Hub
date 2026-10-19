@@ -8,7 +8,7 @@ import sharp from 'sharp';
 
 const brand = fileURLToPath(new URL('../resources/brand/', import.meta.url));
 const master = 'nova-content-hub-icon-master.png';
-const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns'];
+const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
 const windowsSizes = [16, 20, 24, 32, 40, 48, 64, 128, 256];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 
@@ -54,7 +54,9 @@ export async function buildAppIcons() {
             'icon.png': pngs.get(512),
             'icon@2x.png': pngs.get(1024),
             'icon.ico': Buffer.concat([header, ...windowsSizes.map(size => pngs.get(size))]),
-            'icon.icns': await fs.readFile(path.join(temporary, 'icon.icns'))
+            'icon.icns': await fs.readFile(path.join(temporary, 'icon.icns')),
+            'trayTemplate.png': await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18"><path d="M3 15V3l12 12V3" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg>')).png().toBuffer(),
+            'trayTemplate@2x.png': await sharp(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 18 18"><path d="M3 15V3l12 12V3" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/></svg>')).png().toBuffer()
         };
         await fs.mkdir(output, {recursive: true});
         for (const [name, bytes] of Object.entries(assets)) await fs.writeFile(path.join(output, name), bytes);

@@ -15,6 +15,8 @@ description: 执行自媒体工作台的模板学习还原 handoff ID，查看�
 
 ## 生成与整批提交
 
+从 `RUN` 所在 `bin` 的上一级插件根目录读取 `plugin-src/references/media-template.md` 及其中的封面设计检查指南。拆解完成须满足“整组已查看、每条规则有实际原图 hash、未知可区分”；还原图只做客观检查，人工验收仍由工作台用户完成。
+
 4. 从整组参考提炼固定规则、可变规则和对应视觉证据。将 `规则证据.json` 写入 context.inbox，形状为：
    ```json
    {"fixed":["至少一条固定规则"],"variable":["可变内容"],"evidence":[{"sourceAssetHash":"固定输入摘要","ruleType":"fixed","ruleIndex":0,"observation":"这张图中支持该规则的可见事实"},{"sourceAssetHash":"固定输入摘要","ruleType":"variable","ruleIndex":0,"observation":"支持可变规则的可见事实"}]}

@@ -13,6 +13,8 @@ test('app icons use fixed bundled PNG/ICO paths and reject missing or damaged by
     await fs.cp(source, root, {recursive: true});
     assert.deepEqual(appIconPaths(root, 'darwin'), {
         png: path.join(root, 'icon.png'),
+        tray: path.join(root, 'trayTemplate.png'),
+        trayRetina: path.join(root, 'trayTemplate@2x.png'),
         window: path.join(root, 'icon.png')
     });
     assert.equal(appIconPaths(root, 'win32').window, path.join(root, 'icon.ico'));

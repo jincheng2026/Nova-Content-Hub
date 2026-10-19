@@ -18,6 +18,7 @@ dialog.showMessageBoxSync = () => { prompts += 1; return choice; };
 
 startDesktop({
     show: true,
+    onConsoleMessage: message => console.error('Resident renderer:', message),
     userData: path.join(root, 'machine'),
     dialogs: {backup: async () => null, destination: async () => destination, library: async () => destination},
     async ready({window, controller, release, tray}) {
@@ -26,15 +27,37 @@ startDesktop({
         assert.ok(tray && !tray.isDestroyed(), 'actual OS tray must exist');
         assert.ok(tray.getBounds().width > 0, 'actual OS tray must have a visible position');
         window.webContents.setBackgroundThrottling(false);
+        let saveCompletions = 0;
+        const execute = window.webContents.executeJavaScript.bind(window.webContents);
+        window.webContents.executeJavaScript = async <T,>(script: string, userGesture?: boolean): Promise<T> => {
+            const result: T = await execute(script, userGesture);
+            if (script.includes("new CustomEvent('nova-save-close'")) { saveCompletions += 1; console.log(`Resident ${phase}: save-close completed with ${JSON.stringify(result)}`); }
+            return result;
+        };
+        const timings: Record<string, number> = {};
+        const createLibrary = controller.createLibrary.bind(controller), seed = controller.covers.seed.bind(controller.covers);
+        controller.covers.seed = async () => {
+            const started = Date.now();
+            console.log(`Resident ${phase}: builtin seed started`);
+            try { return await seed(); }
+            finally { timings.seedMs = Date.now() - started; console.log(`Resident ${phase}: builtin seed finished in ${timings.seedMs} ms`); }
+        };
+        controller.createLibrary = async () => {
+            const started = Date.now();
+            console.log(`Resident ${phase}: controller.createLibrary started`);
+            const progress = setInterval(() => { console.log(`Resident ${phase}: create elapsed ${Date.now() - started} ms; busy=${controller.busy}; current=${!!controller.binding.current}; seedPending=${!!controller.binding.seedPending}`); }, 5000);
+            try { return await createLibrary(); }
+            finally { clearInterval(progress); timings.createLibraryMs = Date.now() - started; console.log(`Resident ${phase}: controller.createLibrary finished in ${timings.createLibraryMs} ms`); }
+        };
         const run = <T = unknown,>(script: string): Promise<T> => window.webContents.executeJavaScript(script);
-        const wait = async (condition: () => boolean | Promise<boolean>) => {
-            const end = Date.now() + 15000;
+        const wait = async (condition: () => boolean | Promise<boolean>, timeoutMs = 15000) => {
+            const end = Date.now() + timeoutMs;
             while (!await condition()) {
-                if (Date.now() > end) throw new Error('Resident state timed out');
+                if (Date.now() > end) throw new Error(`Resident state timed out: ${await run<string>('document.body.innerText.slice(0, 1600)')}`);
                 await new Promise(resolve => setTimeout(resolve, 25));
             }
         };
-        const idle = () => wait(() => run<boolean>(`!!document.querySelector('[data-busy="false"]') && !document.getElementById('refresh').disabled`));
+        const idle = (timeoutMs = 15000) => wait(() => run<boolean>(`!!document.querySelector('main[data-busy="false"]')`), timeoutMs);
         const click = async (id: string) => { await run(`document.getElementById(${JSON.stringify(id)}).click()`); await idle(); };
         const fill = async (id: string, value: string) => {
             await run(`(()=>{const el=document.getElementById(${JSON.stringify(id)});Object.getOwnPropertyDescriptor(el.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
@@ -43,7 +66,12 @@ startDesktop({
         const show = async () => { tray.emit('click'); await wait(() => window.isVisible()); };
         await wait(() => run<boolean>(`!!document.querySelector('[data-loaded="true"]')`));
         await idle();
-        await click('create-library');
+        await run(`document.getElementById('welcome-create-library').click()`);
+        // The full builtin catalog took 16 seconds to seed; keep its deadline separate from UI transitions.
+        await idle(45000);
+        await wait(() => run<boolean>(`!!document.querySelector('.creator-overview') && !document.querySelector('main[data-busy="true"]')`));
+        await click('nav-content');
+        await wait(() => run<boolean>(`!!document.getElementById('new-content')`));
         await click('new-content');
         await fill('content-title', 'resident draft');
         await fill('content-body', 'unsaved body survives hiding');
@@ -75,7 +103,7 @@ startDesktop({
             app.once('will-quit', () => {
                 try {
                     assert.equal(openLibrary(destination).listContents().length, 0);
-                    writeFileSync(path.join(root, 'receipt.json'), JSON.stringify({phase, discarded: true, prompts}));
+                    writeFileSync(path.join(root, 'receipt.json'), JSON.stringify({phase, discarded: true, prompts, timings}));
                     console.log('PASS explicit native quit can deliberately discard the dirty draft');
                 } catch (error) { console.error(error); app.exit(1); }
             });
@@ -97,8 +125,7 @@ startDesktop({
         await wait(() => run<boolean>(`document.getElementById('error').textContent.includes('resident probe save failure')`));
         assert.equal(window.isDestroyed(), false);
         assert.equal(await draft(), 'unsaved body survives hiding');
-        // Allow the save completion callback to reset the quit intent.
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await wait(() => saveCompletions === 1);
         window.close();
         assert.equal(window.isVisible(), false);
         assert.equal(prompts, 2);
@@ -110,7 +137,7 @@ startDesktop({
                 const contents = openLibrary(destination).listContents();
                 assert.equal(contents.length, 1);
                 assert.equal(openLibrary(destination).readContent(contents[0]!.id).body, 'unsaved body survives hiding');
-                writeFileSync(path.join(root, 'receipt.json'), JSON.stringify({phase, saved: true, prompts}));
+                writeFileSync(path.join(root, 'receipt.json'), JSON.stringify({phase, saved: true, prompts, timings}));
                 console.log('PASS actual save-before-quit commits the draft through the utility worker and exits');
             } catch (error) { console.error(error); app.exit(1); }
         });

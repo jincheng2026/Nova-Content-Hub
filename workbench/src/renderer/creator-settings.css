@@ -1,0 +1,60 @@
+.settings-dialog.creator-settings-dialog { inset:4vh 0 auto; width:min(1180px,95vw); max-width:1180px; max-height:92vh; padding:25px 28px; }
+.creator-settings-heading { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:24px; }
+.creator-settings-heading h2 { font-size:24px; color:var(--semi-color-text-0); }
+.creator-settings-heading p { color:var(--semi-color-text-2); font-size:13px; margin:5px 0 0; }
+.creator-settings-columns { display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:20px; align-items:start; }
+.creator-settings-column { display:grid; gap:18px; min-width:0; }
+.creator-settings-dialog .semi-card { background:var(--semi-color-bg-2); border-color:var(--semi-color-border); border-radius:13px; }
+.creator-settings-dialog .semi-card-header { padding:17px 21px; }
+.creator-settings-dialog .semi-card-header-title { font-size:16px; color:var(--semi-color-text-0); }
+.creator-settings-dialog .semi-card-body { padding:19px 21px; }
+.creator-settings-dialog .semi-button { font-size:13px; }
+.creator-settings-dialog p { font-size:13px; }
+.creator-settings-profile { display:grid; gap:14px; }
+.creator-profile-preview { display:flex; align-items:center; gap:17px; padding:0 0 18px; }
+.creator-profile-avatar { flex:none; display:grid; place-items:center; width:72px; height:72px; border-radius:14px; background:var(--semi-color-primary-light-default); color:var(--semi-color-primary); font-size:24px; overflow:hidden; }
+.creator-profile-avatar img { width:100%; height:100%; object-fit:contain; }
+.creator-profile-preview h3 { margin:0 0 6px; font-size:20px; color:var(--semi-color-text-0); }
+.creator-profile-preview p { color:var(--semi-color-text-2); line-height:1.8; margin:0; white-space:pre-wrap; overflow-wrap:anywhere; }
+.creator-profile-facts { display:grid; grid-template-columns:1fr 1fr; margin:0; padding:17px 0; gap:16px; border-top:1px solid var(--semi-color-border); }
+.creator-profile-facts dt { color:var(--semi-color-text-2); font-size:12px; margin-bottom:7px; }
+.creator-profile-facts dd { margin:0; color:var(--semi-color-text-1); font-size:14px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.creator-settings-photo-heading { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:13px 0 8px; border-top:1px solid var(--semi-color-border); }
+.creator-settings-photo-heading strong { font-size:14px; color:var(--semi-color-text-1); }
+.creator-settings-photo-heading .semi-button { font-size:12px; padding:0 7px; }
+.creator-settings-photos { display:flex; flex-wrap:wrap; gap:9px; }
+.creator-settings-photos>button { display:grid; place-items:center; width:67px; height:79px; border:1px solid var(--semi-color-border); border-radius:7px; padding:0; background:var(--semi-color-fill-0); color:var(--semi-color-text-3); font-size:11px; overflow:hidden; }
+.creator-settings-photos img { width:100%; height:100%; object-fit:contain; }
+.creator-settings-photos>p { margin:7px 0; color:var(--semi-color-text-3); font-size:12px; }
+.creator-settings-dialog .creator-settings-hint { font-size:12px; color:var(--semi-color-text-2); line-height:1.8; margin:11px 0 0; }
+.creator-settings-library { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.creator-settings-library strong { font-size:14px; color:var(--semi-color-text-0); overflow-wrap:anywhere; }
+.creator-settings-library p { color:var(--semi-color-text-2); font-size:12px; margin:7px 0 0; }
+.creator-settings-library .semi-button { flex:none; }
+.creator-settings-row { display:flex; align-items:center; justify-content:space-between; gap:15px; }
+.creator-settings-row label { margin:0; font-size:14px; font-weight:500; color:var(--semi-color-text-1); }
+.creator-settings-row select { max-width:180px; font-size:13px; }
+.creator-settings-check { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-top:19px; padding-top:15px; border-top:1px solid var(--semi-color-border); color:var(--semi-color-text-1); font-size:14px; }
+.creator-settings-check-status { font-size:12px!important; color:var(--semi-color-text-2); margin:8px 0; }
+.creator-settings-dialog details { border-bottom:0; border-top:1px solid var(--semi-color-border); padding:13px 0 0; margin-top:14px; }
+.creator-settings-dialog details summary { font-size:12px; font-weight:500; color:var(--semi-color-text-2); }
+.creator-settings-dialog details p,.creator-settings-dialog details li { font-size:12px; line-height:1.8; color:var(--semi-color-text-2); }
+.creator-settings-dialog .creator-settings-recovery { background:var(--semi-color-bg-2); border:1px solid var(--semi-color-border); padding:16px 18px; border-radius:10px; margin:0; }
+.creator-settings-dialog .creator-settings-recovery>section { margin-top:14px; }
+.creator-preferences-form { display:grid; gap:0; }
+.creator-preference-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:13px 0; margin:0; border-bottom:1px solid var(--semi-color-border); color:var(--semi-color-text-1); font-size:14px; font-weight:500; }
+.creator-preference-row>span { display:grid; gap:5px; }
+.creator-preference-row small { font-size:11px; font-weight:400; color:var(--semi-color-text-3); }
+.creator-preference-row input[type=checkbox] { width:17px; height:17px; flex:none; accent-color:var(--semi-color-primary); padding:0; }
+.creator-preference-row input[type=time] { width:112px; font-size:13px; padding:7px 8px; }
+.creator-preference-actions { margin-top:17px; align-items:center; }
+.creator-preference-actions>span { font-size:11px; color:var(--semi-color-text-3); }
+.creator-settings-notice { padding:11px 14px; border-radius:7px; background:var(--semi-color-primary-light-default); color:var(--semi-color-primary); margin:0 0 17px; }
+.creator-settings-dialog .management-form { gap:11px; }
+.creator-settings-dialog .management-form textarea { min-height:100px; }
+.creator-settings-dialog .management-form label { font-size:13px; }
+.creator-settings-dialog .setup-panel .management-actions { gap:7px; }
+.creator-settings-dialog .setup-panel .setup-version { font-size:12px; color:var(--semi-color-text-2); margin:0 0 11px; }
+.management-row[data-focused=true] { outline:2px solid var(--semi-color-primary); outline-offset:5px; border-radius:6px; }
+@media (max-width:920px) { .creator-settings-columns { grid-template-columns:1fr; } .settings-dialog.creator-settings-dialog { width:94vw; max-width:760px; } }
+@media (max-width:580px) { .settings-dialog.creator-settings-dialog { padding:20px 16px; } .creator-settings-heading h2 { font-size:21px; } .creator-settings-dialog .semi-card-body { padding:17px; } .creator-profile-facts { grid-template-columns:1fr; } .creator-settings-library { align-items:flex-start; flex-direction:column; } .creator-settings-row { align-items:flex-start; flex-direction:column; gap:10px; } .creator-settings-row select { width:100%; max-width:none; } }

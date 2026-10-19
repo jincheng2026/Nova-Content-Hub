@@ -18,6 +18,19 @@
 ：采用“信息结构与视觉风格分开”的组织方法，用于自媒体类型、区域关系和 AI
 流程表达。不移植其中未经本项目验证的流量、平台安全区或尺寸推荐；也不安装其初始化和供应商脚本。许可沿用该仓库 MIT。
 
+## huashu-design 方法吸收
+
+2026-10-19 核对记录见仓库研究文档；本轮采用固定提交 [alchaincyf/huashu-design · 798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7](https://github.com/alchaincyf/huashu-design/tree/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7) 的公开方法，针对本产品重写为 [封面设计检查](cover-design-review.md)。
+
+| 固定来源 | 本产品采用 | 取舍 |
+| --- | --- | --- |
+| [方向探索](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/references/directions.md) | 目标与真实参考先行，候选差异来自构图关系 | 用户已选参数直接沿用，数量服从请求 |
+| [风格库](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/references/design-styles.md) | 按输出媒介分析可观察的布局、文字与色彩角色 | HTML 风格不作为已验收封面模板 |
+| [品牌资产协议](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/references/brand-asset-protocol.md) | 真实素材有来源，品牌约束单独记录 | 样张中的品牌与人物身份不自动继承 |
+| [检查说明](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/README.md) | 分开记录客观失败与审美选择 | 技术校验与助手自评均不能代替用户验收 |
+
+该固定版本采用 [MIT](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/LICENSE)。本轮只重写方法，没有复制其代码、Skill 正文或实质性文档片段；后续若复制这些内容，应随附该版本完整版权与许可文本。该许可不自动覆盖上游引用的品牌、字体或第三方图片。本产品继续使用既有宿主能力，不引入其可选云调用、素材下载、CDN、代理设置或偏好写入机制；数据流背景见上游 [SECURITY.md](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/SECURITY.md)。
+
 ## 许可与来源声明
 
 - baoyu-cover-image：MIT，Copyright (c) 2026 Jim Liu。许可原文：[baoyu-MIT.txt](licenses/baoyu-MIT.txt)。

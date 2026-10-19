@@ -3,7 +3,7 @@ import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {exact} from '../shared/validation.ts';
 
-const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns'];
+const files = ['icon.png', 'icon@2x.png', 'icon.ico', 'icon.icns', 'trayTemplate.png', 'trayTemplate@2x.png'];
 
 export function appIconPaths(directory: string, platform: NodeJS.Platform = process.platform) {
     const manifest: unknown = JSON.parse(readFileSync(path.join(directory, 'manifest.json'), 'utf8'));
@@ -14,6 +14,8 @@ export function appIconPaths(directory: string, platform: NodeJS.Platform = proc
     }
     return {
         png: path.join(directory, 'icon.png'),
+        tray: path.join(directory, platform === 'darwin' ? 'trayTemplate.png' : 'icon.png'),
+        trayRetina: path.join(directory, platform === 'darwin' ? 'trayTemplate@2x.png' : 'icon@2x.png'),
         window: path.join(directory, platform === 'win32' ? 'icon.ico' : 'icon.png')
     };
 }

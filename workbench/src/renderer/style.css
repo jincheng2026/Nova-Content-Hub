@@ -35,3 +35,6 @@ label,select,.semi-button,.text-link{font-size:14px}.tag,.cell-note,.content-sta
 .calendar-plan{font-size:12px}.calendar-plan span{font-size:11px}.calendar-cell{min-height:136px}
 .setup-panel h3{margin-top:24px}.setup-panel ol{padding-left:22px;line-height:1.9}.setup-panel .management-actions{display:flex;gap:10px;flex-wrap:wrap}
 .cover-detail-pane[hidden]{display:none}
+
+/* Each workspace page owns its visible heading; keep the shared status bar compact. */
+.app-header{min-height:58px;padding:14px 0;align-items:center}.app-header .breadcrumb{margin:0}.app-header .visually-hidden{margin:0!important}
