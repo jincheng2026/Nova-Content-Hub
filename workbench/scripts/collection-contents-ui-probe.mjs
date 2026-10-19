@@ -72,10 +72,11 @@ async function probeMain(probeRoot) {
     const run = source => window.webContents.executeJavaScript(source).catch(error => {console.error('Browser assertion:', source); throw error;});
     const wait = condition => run(`new Promise((resolve,reject)=>{const end=Date.now()+15000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(-1600)));setTimeout(check,15)};check()})`);
     const click = selector => run(`document.querySelector(${JSON.stringify(selector)}).click()`);
-    const textClick = text => run(`[...document.querySelectorAll('button')].find(button=>button.textContent===${JSON.stringify(text)}).click()`);
+    const textClick = text => run(`[...document.querySelectorAll('button,.semi-dropdown-item')].find(button=>button.textContent===${JSON.stringify(text)}).click()`);
+    const chooseContentView = async text => {await run('[...document.querySelectorAll(".list-toolbar .semi-control")].find(el=>el.querySelector(".semi-control-label").textContent==="内容范围").querySelector(".semi-select").click()');await wait('[...document.querySelectorAll("[role=option]")].some(el=>el.textContent==='+JSON.stringify(text)+')');await run('[...document.querySelectorAll("[role=option]")].find(el=>el.textContent==='+JSON.stringify(text)+').click()');};
     const idle = '!document.querySelector("main[data-busy=true]")';
     const type = async (selector, value) => {await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});el.focus();el.select()})()`); window.webContents.insertText(value); await wait(`document.querySelector(${JSON.stringify(selector)}).value===${JSON.stringify(value)}`);};
-    const rows = () => run('[...document.querySelectorAll("#contents tbody tr")].map(row=>row.dataset.contentId)');
+    const rows = () => run('[...document.querySelectorAll("#contents tr[data-content-id]")].map(row=>row.dataset.contentId)');
     const openGroup = async id => {await click(`.content-collection-card[data-collection-id="${id}"]`); await wait(`document.querySelector('.collection-contents[data-collection-id="${id}"]') && ${idle}`);};
     const refresh = async () => {
         const previous = workspaceReads, end = Date.now() + 15000;
@@ -120,7 +121,7 @@ async function probeMain(probeRoot) {
         await textClick('← 返回全部内容'); await wait('document.querySelector(".content-collections")');
         await openGroup(group.id); assert.deepEqual(await rows(), [first.id, second.id]);
         assert.equal(await run('document.querySelector(".collection-contents").textContent.includes("制作封面")'), false);
-        await type('input[aria-label="搜索合集内的内容"]', '山海'); await wait('document.querySelectorAll("#contents tbody tr").length===1');
+        await type('input[aria-label="搜索合集内的内容"]', '山海'); await wait('document.querySelectorAll("#contents tr[data-content-id]").length===1');
         assert.deepEqual(await rows(), [first.id]);
         await click(`[data-content-id="${first.id}"] .content-title-link`); await wait('document.querySelector(".content-detail-page") && ' + idle);
         assert.equal(await run('!!document.querySelector(".cover-create-dialog[open]")'), false, 'row opens the single content without generation');
@@ -149,14 +150,14 @@ async function probeMain(probeRoot) {
         for (const field of ['body', 'channelIds', 'dateRange', 'plans', 'publications', 'coverVariants', 'candidates']) assert.deepEqual(renamed[field], baseline[field], 'rename preserves legacy ' + field);
         await click('#manage-collection-members'); await wait('document.querySelector(".members-editor-list")');
         await run(`document.querySelector('.members-editor-list input[aria-label="工作随笔"]').click()`);
-        await textClick('保存成员'); await wait('!document.querySelector("dialog") && document.querySelectorAll("#contents tbody tr").length===3 && ' + idle);
+        await textClick('保存成员'); await wait('!document.querySelector("dialog") && document.querySelectorAll("#contents tr[data-content-id]").length===3 && ' + idle);
         assert.deepEqual(library.readCollection(group.id).memberIds, [first.id, second.id, third.id]);
         await click(`[data-content-id="${second.id}"] .content-more`); await textClick('移出合集');
-        await wait('document.querySelectorAll("#contents tbody tr").length===2 && ' + idle);
+        await wait('document.querySelectorAll("#contents tr[data-content-id]").length===2 && ' + idle);
         assert.deepEqual(library.readCollection(group.id).memberIds, [first.id, third.id]);
         await fs.writeFile(path.join(probeRoot, 'collection-list.png'), (await window.webContents.capturePage()).toPNG());
         await textClick('← 返回全部内容'); await click('#library-menu'); await wait('document.querySelector(".library-manager-dialog[open]")');
-        await textClick('合集'); await run(`[...document.querySelectorAll('.management-row')].find(row=>row.textContent.includes('旅行收藏')).querySelector('button').click()`);
+        await textClick('合集'); await run(`[...document.querySelectorAll('.workspace-management .semi-table-tbody tr')].find(row=>row.textContent.includes('旅行收藏')).querySelector('button').click()`);
         await wait(`document.querySelector('.collection-contents[data-collection-id="${group.id}"]') && !document.querySelector('.library-manager-dialog[open]')`);
         for (const kind of ['members', 'name']) {
             await click(kind === 'members' ? '#manage-collection-members' : '#rename-collection');
@@ -172,7 +173,7 @@ async function probeMain(probeRoot) {
             const external = library.readCollection(group.id);
             await run('window.dispatchEvent(new Event("focus"))');
             await wait('document.getElementById("content-heading").textContent===' + JSON.stringify(external.title) + ' && ' + idle);
-            if (kind === 'members') await wait('document.querySelectorAll("#contents tbody tr").length===3');
+            if (kind === 'members') await wait('document.querySelectorAll("#contents tr[data-content-id]").length===3');
             else assert.equal(await run('document.querySelector("dialog form input").value'), '保留本地名称草稿');
             const previousWrites = writes.length;
             await textClick(kind === 'members' ? '保存成员' : '保存合集');
@@ -203,7 +204,7 @@ async function probeMain(probeRoot) {
         await openGroup(empty.id); await click('#trash-collection');
         await wait('document.querySelector(".content-collections") && ' + idle);
         assert.ok(library.readCollection(empty.id).deletedAt, 'the explicit recycle action returns to all content');
-        await click('#trash-view'); await wait(idle + ' && document.querySelector("#trash-view").classList.contains("semi-button-solid")');
+        await chooseContentView('回收站'); await wait(idle);
         assert.equal(await run('document.querySelectorAll(".content-collections [data-collection-id]").length'), 2, 'content trash shows recycled collections without any recycled single content');
         assert.equal(await run('document.body.innerText.includes("回收站为空")'), false, 'collections prevent an empty trash message');
         assert.equal(await run('document.querySelector(".content-list-count").textContent'), '共匹配 2 项（2 个合集 · 0 篇内容）');
@@ -238,9 +239,9 @@ async function probeMain(probeRoot) {
         await textClick('关闭'); await wait('!document.querySelector("dialog[open]")');
         await click(restoreEmpty); await wait(`!document.querySelector(${JSON.stringify(restoreEmpty)}) && ${idle}`);
         const trashedMember = library.readContent(first.id); library.trashContent(first.id, trashedMember.editToken);
-        await click('#active-view'); await wait(idle);
+        await chooseContentView('正常内容'); await wait(idle);
         assert.equal(await run(`!!document.querySelector('.content-collection-card[data-collection-id="${group.id}"]')`), false, 'all content never shows a recycled collection');
-        await click('#trash-view'); await wait(`document.querySelector('[data-content-id="${first.id}"]') && ${idle}`);
+        await chooseContentView('回收站'); await wait(`document.querySelector('[data-content-id="${first.id}"]') && ${idle}`);
         assert.equal(await run('document.querySelectorAll(".content-collections [data-collection-id]").length'), 1);
         assert.deepEqual(await rows(), [first.id], 'single contents and collections coexist in trash');
         assert.equal(await run('document.querySelector(".content-list-count").textContent'), '共匹配 2 项（1 个合集 · 1 篇内容）');
@@ -265,7 +266,7 @@ async function probeMain(probeRoot) {
         assert.deepEqual(library.readCollection(group.id).memberIds, beforeFailureGroup.memberIds, 'restore retains the original member references');
         assert.deepEqual(await Promise.all(contentFiles.map(file => fs.readFile(file))), beforeSuccessfulRestore, 'successful collection restore leaves all member JSON and body bytes unchanged');
         assert.equal(await run('document.querySelector(".content-list-count").textContent'), '共匹配 0 项（0 个合集 · 0 篇内容）');
-        await click('#active-view'); await wait(`document.querySelector('.content-collection-card[data-collection-id="${group.id}"]') && ${idle}`);
+        await chooseContentView('正常内容'); await wait(`document.querySelector('.content-collection-card[data-collection-id="${group.id}"]') && ${idle}`);
         await openGroup(empty.id);
         assert.equal(await run('document.querySelectorAll(".content-collections").length'), 0, 'group page never shows other collections');
 

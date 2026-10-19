@@ -5,6 +5,7 @@ import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
 import {PopupSelect} from './semi-controls.tsx';
 import type {CoverResults} from '../shared/cover-contracts.ts';
 import type {TemplateAssistantSetup, TemplateAttemptView, TemplateWorkflowResult, TemplateWorkflowView} from '../shared/template-contracts.ts';
+import {List} from './list-primitives.tsx';
 import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
 import type {WorkspaceRun} from './library-panels.tsx';
 import {invoke} from './client.ts';
@@ -63,7 +64,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         <p role="status" aria-live="polite">{loading ? '正在读取学习记录…' : notice}</p>
         {(!!attempts.length || !!selected) && <><label>学习历史<PopupSelect searchable aria-label="学习历史" value={selected || attempt?.attemptId || ''} disabled={busy} onChange={value => {setSelected(value); setConfirm(false);}}>{selected && !attempt && <option value={selected} disabled>原学习记录暂不可用，请重新选择</option>}{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</PopupSelect></label>
             {selected && !attempt && <p role="alert">原学习记录暂不可用，本次选择仍保留。请刷新记录或明确选择另一轮学习。</p>}
-            {attempt && <div className="template-attempt"><p>源版本 v{attempt.reference.sourceVersion || '?'} · {attempt.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {accepted ? '已记录人工验收' : statusNames[attempt.status]}</p>
+            {attempt && <List split={false}><List.Item><div className="template-attempt"><p>源版本 v{attempt.reference.sourceVersion || '?'} · {attempt.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {accepted ? '已记录人工验收' : statusNames[attempt.status]}</p>
                 {attempt.failure && <p role="alert">{attempt.failure.message}（{attempt.failure.code}）</p>}
                 {attempt.unavailable && <p role="alert">这次学习的历史证据暂不可读。记录已保留，请核验内容库完整性。</p>}
                 {!attempt.unavailable && !jobAccepted && !view?.builtin && <div className="management-actions">{live && <><Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('continueTemplateStudy', attempt.reference))}>{setup?.host !== attempt.host ? '用当前助手继续（保留原尝试）' : '继续打开助手'}</Button><Button disabled={unavailable} onClick={() => void update(() => invoke('cancelTemplateStudy', attempt.reference))}>取消本次尝试</Button></>}{!activeAttempt && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('retryTemplateStudy', attempt.reference))}>重新学习并还原</Button>}</div>}
@@ -71,7 +72,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
                 {attempt.result && <TemplateComparison key={attempt.attemptId} attempt={attempt}/>}
                 {attempt.result && !jobAccepted && !attempt.unavailable && !view?.builtin && <div className="template-accept">{activeAttempt && <p>请先完成或取消当前进行中的学习，再验收历史结果。</p>}<Checkbox className="semi-control-check" checked={confirm} disabled={unavailable || !sourceMatches || !!activeAttempt} onChange={event => setConfirm(event.target.checked === true)}>我已对照样张、规则证据和首张还原效果，确认可用于后续生成。</Checkbox><Button theme="solid" disabled={unavailable || !sourceMatches || !!activeAttempt || !confirm} onClick={() => view && void update(() => invoke('acceptTemplateStudy', {...attempt.reference, resultHash: attempt.result!.resultHash, editToken: view.editToken}))}>确认规则与还原效果，保存为新版本</Button></div>}
                 {accepted && <p>验收保存为 v{job?.acceptance?.acceptedTemplate.version}。{view?.currentVersion === job?.acceptance?.acceptedTemplate.version ? '当前版本已记录人工验收，可用于封面生成。' : '当前所选版本不同，此验收记录不会自动套用。'}</p>}
-            </div>}</>}
+            </div></List.Item></List>}</>}
         {view && !attempts.length && !selected && <p className="muted">尚未完成学习验收。手动导入的规则可继续使用，学习记录将在这里保留。</p>}
     </section>;
 }

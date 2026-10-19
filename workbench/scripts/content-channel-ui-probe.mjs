@@ -34,7 +34,7 @@ app.setPath('userData',path.join(probeRoot,'machine'));await app.whenReady();con
 win.webContents.on('console-message',event=>console.log('renderer:',event.message)); const run=source=>win.webContents.executeJavaScript(source);const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+5000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(0,600)));setTimeout(check,15)};check()})`);
 const channelLabels=id=>run(`[...document.querySelector('[data-content-id="'+${JSON.stringify(id)}+'"] .content-channel-list').children].map(item=>item.textContent)`);
 try{
-await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll("tbody tr").length === 5');
+await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll("tr[data-content-id]").length === 5');
 assert.deepEqual(await channelLabels('empty-metadata'),['抖音'],'empty metadata still shows its valid plan channel, deduplicated');
 assert.deepEqual(await channelLabels('explicit-metadata'),['小红书','抖音'],'explicit metadata and plan channels are merged without duplicates');
 assert.deepEqual(await channelLabels('historical-channel'),['原渠道已不可用'],'unavailable historical channel keeps its existing label');

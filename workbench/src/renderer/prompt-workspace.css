@@ -65,3 +65,7 @@
 @media(max-width:900px) { .prompt-library-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:800px) { .prompt-library-toolbar { flex-wrap:wrap; gap:13px; } .prompt-library-search { max-width:none; } .prompt-library-views { width:100%; justify-content:space-between; gap:14px; } .prompt-reference-fields { align-items:stretch; flex-direction:column; gap:5px; } .prompt-reference-fields>.semi-button { align-self:flex-start; } }
 @media(max-width:620px) { .prompt-library-grid { grid-template-columns:1fr; } .prompt-reference-picker>summary { gap:10px; padding:12px; } .prompt-reference-picker>summary>span:last-child { max-width:50%; } .prompt-editor-footer { align-items:flex-start; flex-direction:column; } .prompt-editor-footer>.semi-button { width:100%; } }
+
+.prompt-table-title { max-width:100%; justify-content:flex-start; }
+.prompt-table-title .semi-button-content { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.table-preview { color:var(--semi-color-text-2); font-size:12px; line-height:1.6; margin:4px 0; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }

@@ -20,7 +20,7 @@
 .creator-featured-cover img:not(.creator-image-backdrop) { position:relative; z-index:1; }
 .creator-featured-cover img.creator-image-backdrop { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:blur(22px); opacity:.28; transform:scale(1.15); z-index:0; }
 .creator-overview .creator-featured-cover { min-height:280px; border:0; border-radius:9px; }
-.creator-overview .creator-featured-cover>img:not(.creator-image-backdrop) { height:320px; }
+.creator-overview .creator-featured-cover img:not(.creator-image-backdrop) { height:320px; }
 .creator-overview .creator-featured-copy { padding:3px 0; }
 .creator-next-meta { display:flex; align-items:center; flex-wrap:wrap; gap:9px; color:var(--semi-color-text-2); font-size:12px; }
 .creator-next-meta>strong { color:var(--semi-color-text-0); font-size:14px; }
@@ -154,7 +154,7 @@
   .creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr); gap:18px; }
   .creator-overview .creator-featured-content { padding:18px; gap:17px; grid-template-columns:minmax(130px,.8fr) minmax(0,1.2fr); }
   .creator-overview .creator-featured-copy h3 { font-size:19px; }
-  .creator-overview .creator-featured-cover>img:not(.creator-image-backdrop) { height:300px; }
+  .creator-overview .creator-featured-cover img:not(.creator-image-backdrop) { height:300px; }
   .creator-next-meta { gap:7px; }
   .creator-overview .creator-body-excerpt { font-size:13px; padding:12px; -webkit-line-clamp:5; }
   .creator-overview .creator-featured-actions .semi-button { font-size:12px; padding:0 9px; }
@@ -165,7 +165,7 @@
   .creator-overview-heading .creator-week { margin-left:auto; }
   .creator-overview .creator-overview-side { grid-template-columns:1fr 1fr; align-items:start; }
   .creator-overview .creator-featured-content { grid-template-columns:minmax(150px,.7fr) minmax(0,1.3fr); }
-  .creator-overview .creator-featured-cover>img:not(.creator-image-backdrop) { height:290px; }
+  .creator-overview .creator-featured-cover img:not(.creator-image-backdrop) { height:290px; }
   .creator-overview .creator-template-shortcut { grid-column:1/-1; }
   .creator-schedule .creator-page-heading>.management-actions { justify-content:flex-start; }
 }
@@ -178,7 +178,7 @@
   .creator-overview .creator-overview-side { grid-template-columns:1fr; }
   .creator-overview .creator-featured-content { grid-template-columns:1fr; }
   .creator-overview .creator-featured-cover { min-height:180px; }
-  .creator-overview .creator-featured-cover>img:not(.creator-image-backdrop) { height:250px; }
+  .creator-overview .creator-featured-cover img:not(.creator-image-backdrop) { height:250px; }
   .creator-overview .creator-featured-actions { flex-direction:row; align-items:center; }
   .creator-queue-row { gap:8px; }
   .creator-queue-image { width:38px; height:42px; }
@@ -198,8 +198,8 @@
 
 /* The calendar is a day picker; the selected day is an executable list. */
 .daily-plan-filters { display:flex; align-items:center; gap:10px; padding:0 20px 12px; }
-.daily-plan-filters>.semi-input-wrapper { flex:1; min-width:150px; }
-.daily-plan-filters>.semi-select { min-width:125px; max-width:220px; }
+.daily-plan-filters>.semi-input-wrapper { flex:1 1 240px; min-width:0; }
+.daily-plan-filters .list-toolbar-filters>.semi-control { flex:0 0 150px; width:150px; min-width:0; }
 .schedule-day-detail { scroll-margin-top:20px; }
 .schedule-day-plans { display:block; padding:0 20px 12px; }
 .schedule-day-plans>.daily-plan-row { display:grid; grid-template-columns:82px minmax(80px,130px) minmax(0,1fr) auto auto; align-items:center; gap:12px; margin:0; padding:14px 0; border:0; border-bottom:1px solid var(--semi-color-border); border-radius:0; background:transparent; }
@@ -216,13 +216,13 @@
 @media(max-width:760px) {
   .daily-plan-filters { flex-wrap:wrap; padding:0 14px 12px; }
   .daily-plan-filters>.semi-input-wrapper { flex-basis:100%; }
-  .daily-plan-filters>.semi-select { flex:1; max-width:none; }
+  .daily-plan-filters .list-toolbar-filters>.semi-control { flex:1 1 0; width:auto; }
   .schedule-day-plans { padding:0 14px 10px; }
   .schedule-day-plans>.daily-plan-row { grid-template-columns:76px minmax(0,1fr) auto; gap:8px; padding:13px 0; }
   .daily-plan-row>.creator-channel { grid-column:2; max-width:100%; }
   .daily-plan-row>.daily-plan-title { grid-column:1/3; grid-row:2; }
   .daily-plan-row>.publication-status { grid-column:3; grid-row:1; }
-  .daily-plan-row>.semi-button { grid-column:3; grid-row:2; }
+  .daily-plan-row>.daily-plan-record,.daily-plan-row>.daily-plan-details { grid-column:3; grid-row:2; }
   .creator-queue-row { flex-wrap:wrap; gap:8px; }
   .creator-queue-row .creator-queue-title { min-width:130px; }
 }

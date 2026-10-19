@@ -19,8 +19,8 @@
 .cover-selected-preview { display: block; width: 100%; height: 52px; padding: 0; border: 0; border-radius: 5px; background: #f1f4f8; cursor: zoom-in; overflow: hidden; }
 .cover-selected-preview img { width: 100%; height: 100%; object-fit: contain; }
 .cover-artwork { position: relative; isolation: isolate; overflow: hidden; }
-.cover-artwork > .cover-artwork-backdrop { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(18px) brightness(.8); transform: scale(1.15); pointer-events: none; }
-.cover-artwork > .cover-artwork-original { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
+.cover-artwork .cover-artwork-backdrop { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; filter: blur(18px) brightness(.8); transform: scale(1.15); pointer-events: none; }
+.cover-artwork .cover-artwork-original { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 .cover-empty { text-align: center; padding: 46px 20px; border: 1px dashed #d9e0e9; border-radius: 8px; background: #fcfdff; }
 .cover-empty-mark { display: block; margin-bottom: 12px; font-size: 34px; color: #9eb1cb; }
 .cover-empty h4 { margin: 0 0 8px; font-size: 17px; font-weight: 600; }
