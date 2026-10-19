@@ -1,0 +1,20 @@
+{
+  "version": "0.3.24",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-MkDXdU/mac-arm64/自媒体工作台.app",
+  "sourceCommit": "86e253037f85d8a0fd1807c52f42481bcb7e68a1",
+  "qa": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-package-0324-6AcmGP",
+  "mounted": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/colleague-0324/mount",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.24-darwin-arm64-preview.dmg",
+  "dmgSha256": "7ec81aa8eb78d6ca3326b6a59e9b3ee9a419721d4fc10aa80d1acc171675cd3a",
+  "mountedAppMatchesArchivedBuild": true,
+  "adHocSignatureValid": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "sealedMarketplaceValid": true,
+  "templates": 20,
+  "prompts": 52,
+  "examples": 1,
+  "realExampleCovers": 2,
+  "appTestsAndProbesExcluded": true,
+  "sourceTreeSha256": "642e0c392d9bcd12378593cd72a9b5045572e7680f88c7b448a84b5971bc593f"
+}

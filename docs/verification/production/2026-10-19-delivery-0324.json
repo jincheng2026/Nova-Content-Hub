@@ -1,0 +1,14 @@
+{
+  "version": "0.3.24",
+  "directory": "/Users/mac/Downloads/自媒体工作台-0.3.24-同事交付-Mac苹果芯片",
+  "files": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.24-Mac苹果芯片.dmg"
+  ],
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-MkDXdU/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.24-darwin-arm64-preview.dmg",
+  "dmgSha256": "7ec81aa8eb78d6ca3326b6a59e9b3ee9a419721d4fc10aa80d1acc171675cd3a",
+  "packageChecksPassed": true,
+  "installed": false
+}
