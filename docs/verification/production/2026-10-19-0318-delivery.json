@@ -1,0 +1,13 @@
+{
+  "version": "0.3.18",
+  "sourceCommit": "ae3f186",
+  "delivery": "/Users/mac/Downloads/自媒体工作台-0.3.18-Mac苹果芯片/自媒体工作台-0.3.18-Mac苹果芯片.dmg",
+  "sha256": "30ccd223075c169fc9595d2bf3c5c793973c0a878f07bbe6e65bebab36a5e379",
+  "bytes": 481969870,
+  "platform": "darwin-arm64",
+  "demoInsideDmg": true,
+  "productionReady": false,
+  "installation": "verified complete",
+  "installedAppDigest": "64ec85a390db892d0ee25aebee381bd02be2d8538e4d469ccc5306a583a949d5",
+  "hostPluginsVersion": "0.3.18"
+}

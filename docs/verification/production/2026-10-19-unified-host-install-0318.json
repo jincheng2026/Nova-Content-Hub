@@ -1,0 +1,682 @@
+{
+  "format": "nova-unified-host-install-verification",
+  "recordedAt": "2026-10-19T10:50:33.583Z",
+  "source": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-host-install-0318/backup-20261019T104953806Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.18",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.18:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "sourceEntries": 642,
+  "sourceMatchesPackageFiles": true,
+  "packageFilesSha256": "118b95ab7adbceb240acd25b4687419e0b454dea24e8f54ca88f32d4e6f7e5fa",
+  "sourceTreeSnapshotSha256": "82dd965149f7bea9ace1cd42025d0f3c6a1356a5e753dff694270ae84ac6a392",
+  "initial": {
+    "codex": {
+      "newCacheExisted": false,
+      "retainedVersions": [
+        "0.3.0",
+        "0.3.1",
+        "0.3.10",
+        "0.3.11",
+        "0.3.12",
+        "0.3.13",
+        "0.3.14",
+        "0.3.15",
+        "0.3.17",
+        "0.3.2",
+        "0.3.3",
+        "0.3.4",
+        "0.3.5",
+        "0.3.6",
+        "0.3.7",
+        "0.3.8",
+        "0.3.9"
+      ]
+    },
+    "workbuddy": {
+      "newCacheExisted": false,
+      "retainedVersions": [
+        "0.2.0",
+        "0.3.0",
+        "0.3.1",
+        "0.3.10",
+        "0.3.11",
+        "0.3.12",
+        "0.3.13",
+        "0.3.14",
+        "0.3.15",
+        "0.3.17",
+        "0.3.2",
+        "0.3.3",
+        "0.3.4",
+        "0.3.5",
+        "0.3.6",
+        "0.3.7",
+        "0.3.8",
+        "0.3.9"
+      ]
+    }
+  },
+  "hosts": {
+    "codex": {
+      "cache": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.18",
+      "version": "0.3.18",
+      "entries": 641,
+      "allowedHostOmissions": [
+        {
+          "file": "node_modules/.bin/semver",
+          "reason": "Official Codex installer omits this unused relative symlink"
+        }
+      ],
+      "differences": [],
+      "readiness": {
+        "cover": {
+          "ready": true,
+          "skill": "nova-content-cover-execution"
+        },
+        "template": {
+          "ready": true,
+          "skill": "nova-content-template-execution"
+        }
+      },
+      "oldCacheRetained": [
+        {
+          "version": "0.3.0",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "3a0c29dfa1dd7b0456fc124e57187326d8a886d5a7a82cfbddbd35c8e239b052",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.1",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "12ca10b6608eef8a027cca113c959efb54fd43bde59b7b73c15714345eb5feb5",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.10",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.10",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "8f3abcc94bdd7d68499ba6e480de8e0a723410084251ee44e08e856af616ce31",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.11",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.11",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "3e028d489b4aafc654f295fe0398eb8a9e3896390602906d158ec099c7843b8a",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.12",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.12",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "4a56a0af42dc5383a4624f2ad0d81fa18ab7131a59f0c2013a1257ec0cd4fa3c",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.13",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.13",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "1a4a65bda95e8d6e4c3ffe306cd08d7e7afdb31c6030efeb6a69fdf99995501a",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.14",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.14",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "b9a1c842c7aa1d1f6dd920820025d66400805a5632da562b86b09a651b5f7bc4",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.15",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.15",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "a5cfbe85133ca1e81c562c4055c249c33251bbbee3e28e6cef136b31e37b61ca",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.17",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.17",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "d6db09d8d720908549c62b41eb39ce99f72233f6815cb053c79b030c3b8f6111",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.2",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.2",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "7af73601c54fde0c25e78a4c76c8c7eb7c3bc9493cb01a9ad5d4ce046c7eabde",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.3",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.3",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "8771a460770cf71883d64dd0a156277c6b2c9e446ec393fab75105cb94fa9a47",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.4",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.4",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "25f28ec31a4af8198ade08ad86d9a61b031860775a88ca91c2856617443cdcf3",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.5",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.5",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "762a141c25545ebd1e4b4049c1be790d2626853d1dcf8ed65f60bd1c11a28b9c",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.6",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.6",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "385b3cc62e4c41c1de9047ba1ff710642a8b6b55d5b484d969e48f22cfde2558",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.7",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.7",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "a97a30a6768b8d5e9c67251f34a3036ee06f5ddb75d6b75e1a7fd1fd466874f7",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.8",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.8",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "4a81c60d1f51c4fa468d468edefae8da58dfbe20f6fc8da6155aaa8160560022",
+          "hostBookkeeping": {}
+        },
+        {
+          "version": "0.3.9",
+          "path": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.9",
+          "payloadUnchanged": true,
+          "restoredFromBackup": true,
+          "beforeSha256": "5e9ddd3c0f69243ff62fdd9664397d9d99f6e719a8658bcf2060bb1535a44cc6",
+          "hostBookkeeping": {}
+        }
+      ],
+      "unrelatedMetadataUnchanged": {
+        "config.toml": true
+      },
+      "unrelatedMetadataSha256": {
+        "config.toml": "ab3ba67f6d4cfcb1dc9ddbf45a6750320dede2e09616a69d462c0886e7e9c0c6"
+      },
+      "cacheTreeSnapshotSha256": "cdce9b57ae7444a2289f054e68ae2a05c1f35c3b29877fa3f191d318c1938fac",
+      "productHooksTrustUnchanged": true,
+      "enabled": true
+    },
+    "workbuddy": {
+      "cache": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.18",
+      "version": "0.3.18",
+      "entries": 642,
+      "allowedHostOmissions": [],
+      "differences": [],
+      "readiness": {
+        "cover": {
+          "ready": true,
+          "skill": "nova-content-cover-execution"
+        },
+        "template": {
+          "ready": true,
+          "skill": "nova-content-template-execution"
+        }
+      },
+      "oldCacheRetained": [
+        {
+          "version": "0.2.0",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.2.0",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "2354c7c94eaaa417d031ce3973c76d1dc39ca10ebdb42f2c9a50c96585ba27d8",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "62e80b559dd23a184cf52a3af85e29d7285ff6c35fdfb97a922095302642c781",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "62e80b559dd23a184cf52a3af85e29d7285ff6c35fdfb97a922095302642c781",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.0",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.0",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "8496cbf619b309de626786c3c2536bb92d96506a8c09d9a1c56ad7ee959f4659",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "1a9b5c4df36251767fc4fcb75d2975b2a7f0dd27b3770c10f4e7879e3700d31a",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "1a9b5c4df36251767fc4fcb75d2975b2a7f0dd27b3770c10f4e7879e3700d31a",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.1",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.1",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "5a1b1df6b8d87380b70bc2ff1e7fee3b1052564787c8ab8471198d34266f519e",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "056726d70bcb4f60aa8fef0b0615567035c410d39a3216e7ac3b9718acd7ad21",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "056726d70bcb4f60aa8fef0b0615567035c410d39a3216e7ac3b9718acd7ad21",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.10",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.10",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "0aa1910735573fff501ac910c87d902504672b8641e6af8f2dd7817c92f8a631",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "c203f90fee7997293933af77abc678f53e0a667b5f5a2cbde4fbdb98af6da1e8",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "c203f90fee7997293933af77abc678f53e0a667b5f5a2cbde4fbdb98af6da1e8",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.11",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.11",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "efaabdeb803967c1015f6d7929efcc40623a73df9790c1604ca3e3642e09fd15",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "91816879517d1a24ef2e576a76c99e72ffada89683603d87f71e06403cd7bbd1",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "91816879517d1a24ef2e576a76c99e72ffada89683603d87f71e06403cd7bbd1",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.12",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.12",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "5a73101f87e482bc4839ac7bcef2b6b69c1cf24612d258ca2c0e90a55ec8a369",
+          "hostBookkeeping": {
+            ".in_use": {
+              "before": {
+                "directory": true
+              },
+              "after": {
+                "directory": true
+              }
+            },
+            ".orphaned_at": {
+              "before": {
+                "sha256": "46d43de1cfa976d7ed7ed82df9f0cd4977da5be5e576ff0df25e61352ee47b77",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "46d43de1cfa976d7ed7ed82df9f0cd4977da5be5e576ff0df25e61352ee47b77",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.13",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.13",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "08caff133a1fefdbe908a907b6e0b3012bd9d1b9a3a66e9a34480fe0a1837341",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "d49f86e213b882f2f35ca20fc7f4b7ed73acd1f43bc4446c13caf8358cff6c68",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "d49f86e213b882f2f35ca20fc7f4b7ed73acd1f43bc4446c13caf8358cff6c68",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.14",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.14",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "d3ae0760162488cf989c5c767fac4f731ef8f4e5cdc82b8eb06aab90a384c4dd",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "8525453e09da233755111b8de771812e28e83667cc31f4c784571d4652fc7f7c",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "8525453e09da233755111b8de771812e28e83667cc31f4c784571d4652fc7f7c",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.15",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.15",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "0b7143df03057932f19c7d6affc586263ce8347c50aa736769971b767343443c",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "b0b952cc1170f6317e8e87575f8341806b0a5b7c23688c468c5a881c4e65b771",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "b0b952cc1170f6317e8e87575f8341806b0a5b7c23688c468c5a881c4e65b771",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.17",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.17",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "6bec9468b48e758e0770f13318b012516067bcfc94a071646151dd4833b24c7f",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": null,
+              "after": {
+                "sha256": "43a568fcbdd595f6fc56dbcf99467444f5d2a6b893a3ada014ba820c704c93bb",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.2",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.2",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "040e3677883215411e5ad2bee44d38160070a3386fd46d2191ebe09b3a7b3e08",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "cb6ef55a08a758b5eb4e5966e29d0e0e1e77ce0f909a5d1fdcc257ce1e5eda9c",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "cb6ef55a08a758b5eb4e5966e29d0e0e1e77ce0f909a5d1fdcc257ce1e5eda9c",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.3",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.3",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "8a7c50cd8545b60825515b3c7bfcadee2948de4fb619577b15c71b21048daf12",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "358cedc65fb0be57056d6f7c65ea7de3a91d12365f1d32bbad94fb1a35d26a2d",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "358cedc65fb0be57056d6f7c65ea7de3a91d12365f1d32bbad94fb1a35d26a2d",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.4",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.4",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "f182d15c9cc521726ed3c55192bef3c87ab5d6dc7a26a8780df6772399005bd2",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "e0cbf03c73a493a1c567cc3af3dac1d4e9a9f9562d2c85038b33be44d64b2ef8",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "e0cbf03c73a493a1c567cc3af3dac1d4e9a9f9562d2c85038b33be44d64b2ef8",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.5",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.5",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "48d01a28667fa843cc76bf1f46aa8bc15f60b212d19723e2ed162eccecbc1f60",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "da2a9747a245a17e36c904555509574a85e833f24eac8e12fd6cb8824944c6ac",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "da2a9747a245a17e36c904555509574a85e833f24eac8e12fd6cb8824944c6ac",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.6",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.6",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "44a6e541d0704c8d33f1d46425b2f1fbcc37bbf75591973db832a4f1cdf4f1e5",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "c335a81c4f8356375accdfff8d69abf4ca304c38f8b2958b2943036ed034c472",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "c335a81c4f8356375accdfff8d69abf4ca304c38f8b2958b2943036ed034c472",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.7",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.7",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "725f20e3f994930a31e0fa8b8d26b3c218bddcb6627d42bb9d10d455c942cc3b",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "c38cd396063994d6d8976e947735ee3dc7c39b8a1c6e8d91cd8ec24e4462bb2f",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "c38cd396063994d6d8976e947735ee3dc7c39b8a1c6e8d91cd8ec24e4462bb2f",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.8",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.8",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "04a599d0abbdb7d7e1138fc9707395ed5fac92dca06cf3c6c8dbdfc51e79ae71",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "145cea4d16495ca144e3cd2d677165471396183a555ffee6714c7c07280fffab",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "145cea4d16495ca144e3cd2d677165471396183a555ffee6714c7c07280fffab",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        },
+        {
+          "version": "0.3.9",
+          "path": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.9",
+          "payloadUnchanged": true,
+          "restoredFromBackup": false,
+          "beforeSha256": "699c8af51e21887727124ac45a9c901994ed1c47fb1bb82ed502a865fa3c0bbc",
+          "hostBookkeeping": {
+            ".orphaned_at": {
+              "before": {
+                "sha256": "968f47580932255ccfa86b68c92ed3aa6e65ca622966e7cb5de853cc076a7995",
+                "bytes": 13,
+                "executable": false
+              },
+              "after": {
+                "sha256": "968f47580932255ccfa86b68c92ed3aa6e65ca622966e7cb5de853cc076a7995",
+                "bytes": 13,
+                "executable": false
+              }
+            }
+          }
+        }
+      ],
+      "unrelatedMetadataUnchanged": {
+        "settings.json": true,
+        "plugins/installed_plugins.json": true,
+        "plugins/known_marketplaces.json": true,
+        "plugins/configured-plugins.json": true
+      },
+      "unrelatedMetadataSha256": {
+        "settings.json": "5e560d91c1b43d13abb61c4ade0b27a012afbdf6500964bffabc1bdb53b35c13",
+        "plugins/installed_plugins.json": "76f5a1ce1c6ec8bf62738b17fcf6abb15f431ea62a1e0c667f9bbc25c391ea1e",
+        "plugins/known_marketplaces.json": "f40a6e29549b701bddc18baf169c1aebef1d52af70b9024a31d0830a777041ad",
+        "plugins/configured-plugins.json": "244f561a189bfe9cd47af41e09a5592b60c63d5878bb1fc34fa6329cef699c2d"
+      },
+      "cacheTreeSnapshotSha256": "82dd965149f7bea9ace1cd42025d0f3c6a1356a5e753dff694270ae84ac6a392",
+      "enabled": true
+    }
+  },
+  "ok": true,
+  "firstRuntimeExecutionPerformed": false,
+  "realGeneration": false,
+  "verificationRuntime": {
+    "execPath": "/Users/mac/.local/bin/node",
+    "version": "v24.20.0",
+    "pluginRuntimeUsed": false
+  },
+  "executionBoundary": {
+    "directPluginRuntimeExecutions": 0,
+    "directRunNodeExecutions": 0,
+    "directDoctorExecutions": 0,
+    "directHookExecutions": 0,
+    "officialInstallerSubprocessExecutionAudited": false
+  },
+  "scope": {
+    "installationOnly": true,
+    "sessionsCreated": false,
+    "messagesSent": false,
+    "imageGeneration": false,
+    "businessLibraryAccess": false,
+    "sourceModified": false
+  },
+  "verifiedAt": "2026-10-19T10:51:15.954Z"
+}
