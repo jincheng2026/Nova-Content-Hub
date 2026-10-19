@@ -41,7 +41,10 @@ export async function offerApplicationInstall(
     if (platform !== 'darwin' || !app.isPackaged || app.isInApplicationsFolder()) return 'continue';
     try {
         if (await installer.bundleIdentifier() !== formalIdentifier) return 'continue';
-        await installer.recover();
+        if (await installer.recover() === 'cleanup-pending') {
+            await dialog.showMessageBox({type: 'warning', message: '旧版本备份尚未完成归档', detail: '旧版本可能仍在使用，或磁盘归档尚未完成。请退出旧版本、确认磁盘空间后重试；原应用与恢复记录已保留。', buttons: ['继续使用当前工作台']}).catch(() => {});
+            return 'continue';
+        }
     }
     catch (error) {
         await dialog.showMessageBox({type: 'warning', message: '安装恢复需要检查', detail: `${error instanceof Error ? error.message : '无法验证安装记录'}\n已保留原应用和安装恢复目录。`, buttons: ['继续使用当前工作台']}).catch(() => {});

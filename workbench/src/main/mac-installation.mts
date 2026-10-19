@@ -10,6 +10,7 @@ const execute = promisify(execFile);
 const allowedIdentifiers = new Set(['com.novaisland.nova-content-hub', 'com.novaisland.nova-content-hub.local', 'com.novaisland.nova-content-hub.testing']);
 const transactionName = '.nova-content-hub-install';
 const activeTransactions = new Set<string>();
+const activePreviousVerifications = new Set<string>();
 const fingerprint = (entries: object) => createHash('sha256').update(JSON.stringify(entries)).digest('hex');
 interface Bundle {identifier: string; executable: string}
 interface Identity {dev: number; ino: number; digest: string}
@@ -24,9 +25,18 @@ interface Options {
     readBundle?: (app: string) => Promise<Bundle>;
     copy?: (source: string, candidate: string) => Promise<unknown>;
     rename?: (from: string, to: string) => Promise<unknown>;
+    archivePrevious?: (source: string, archive: string) => Promise<unknown>;
+    extractPrevious?: (archive: string, destination: string) => Promise<unknown>;
 }
 
+export type BackupArchiveResult = {status: 'not-needed' | 'not-complete'} | {status: 'deferred'; reason: string} | {
+    status: 'archived'; archive: string; receipt: string; archiveSha256: string; previous: Identity
+};
+
 export const macApplicationTarget = '/Applications/自媒体工作台.app';
+export function isMacInstallationBackupExecutable(executable: string): boolean {
+    return /^\/Applications\/\.nova-content-hub-install-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}\/(?:previous\.app|candidate\.app|previous\.retiring|\.verify-previous\/payload\/previous\.app)\/Contents\/MacOS\/[^/\\\x00-\x1f]+$/.test(executable);
+}
 export function macApplicationSource(execPath: string): string {
     const source = path.dirname(path.dirname(path.dirname(execPath)));
     if (!source.endsWith('.app') || path.dirname(execPath) !== path.join(source, 'Contents/MacOS')) throw Error('Unsupported application executable path');
@@ -160,13 +170,167 @@ async function assertParent(target: string) {
     if (!stat.isDirectory() || stat.isSymbolicLink() || await fs.realpath(parent) !== parent) throw Error('Unsafe Applications directory');
 }
 
-export async function recoverMacInstallation(options: Options): Promise<'none' | 'restored' | 'pending'> {
+async function privateArchiveHash(file: string) {
+    const handle = await fs.open(file, constants.O_RDONLY | constants.O_NOFOLLOW | constants.O_NONBLOCK);
+    try {
+        const before = await handle.stat();
+        if (!before.isFile() || before.uid !== process.getuid?.() || before.nlink !== 1 || before.mode & 0o077) throw Error('Unsafe previous application archive');
+        const hash = createHash('sha256'), buffer = Buffer.alloc(65536);
+        for (;;) { const {bytesRead} = await handle.read(buffer); if (!bytesRead) break; hash.update(buffer.subarray(0, bytesRead)); }
+        const after = await handle.stat(), named = await fs.lstat(file);
+        if (before.size !== after.size || before.mtimeMs !== after.mtimeMs || before.ctimeMs !== after.ctimeMs || named.isSymbolicLink() || named.dev !== before.dev || named.ino !== before.ino) throw Error('Previous application archive changed');
+        return hash.digest('hex');
+    } finally { await handle.close(); }
+}
+
+async function clearPreviousVerification(directory: string, options: Options) {
+    const scratch = path.join(directory, '.verify-previous');
+    if (activePreviousVerifications.has(scratch)) throw Error('Previous archive verification is still running');
+    if (await absent(scratch)) return;
+    const stat = await fs.lstat(scratch);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || stat.uid !== process.getuid?.() || stat.mode & 0o077) throw Error('Unknown previous verification directory');
+    if (await absent(path.join(scratch, 'owner.json'))) {
+        if ((await fs.readdir(scratch)).length) throw Error('Unknown nonempty previous verification directory');
+        await fs.rmdir(scratch); await syncDirectory(directory); return;
+    }
+    const {value: owner} = await privateJSON(path.join(scratch, 'owner.json'));
+    if (owner.format !== 'nova-mac-previous-verification-v1' || owner.dev !== stat.dev || owner.ino !== stat.ino || !Number.isSafeInteger(owner.ownerPid) || owner.ownerPid <= 0) throw Error('Unknown previous verification directory');
+    if (owner.ownerPid !== process.pid) {
+        let alive = true;
+        try { process.kill(owner.ownerPid, 0); } catch (error) { if ((error as NodeJS.ErrnoException).code === 'ESRCH') alive = false; }
+        if (alive) throw Error('Another previous archive verification owner may still be running');
+    }
+    if (await (options.running ?? isMacApplicationRunning)(path.join(scratch, 'payload/previous.app'))) throw Error('Previous verification application is still running');
+    const after = await fs.lstat(scratch);
+    if (after.dev !== owner.dev || after.ino !== owner.ino || after.isSymbolicLink()) throw Error('Previous verification directory changed');
+    if ((await fs.readdir(scratch)).some(name => !['owner.json', 'payload'].includes(name))) throw Error('Unknown previous verification contents');
+    const payload = path.join(scratch, 'payload');
+    if (!await absent(payload)) {
+        const content = await fs.lstat(payload);
+        if (!content.isDirectory() || content.isSymbolicLink()) throw Error('Unknown previous verification payload');
+        // Keep ownership evidence durable until all extracted application bytes are gone.
+        await fs.rm(payload, {recursive: true});
+        await syncDirectory(scratch);
+    }
+    await fs.unlink(path.join(scratch, 'owner.json'));
+    await syncDirectory(scratch);
+    await fs.rmdir(scratch);
+    await syncDirectory(directory);
+}
+
+async function verifyPreviousArchive(directory: string, previous: Identity, options: Options) {
+    const stat = await fs.lstat(directory);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || stat.uid !== process.getuid?.() || stat.mode & 0o077) throw Error('Unsafe previous archive directory');
+    const receipt = path.join(directory, 'receipt.json'), archive = path.join(directory, 'previous.app.zip');
+    const {value} = await privateJSON(receipt);
+    if (value.format !== 'nova-mac-previous-archive-v1' || !isDeepStrictEqual(value.previous, previous) || !/^[a-f0-9]{64}$/.test(value.archiveSha256) || await privateArchiveHash(archive) !== value.archiveSha256) throw Error('Previous application archive receipt mismatch');
+    const transaction = path.dirname(directory), scratch = path.join(transaction, '.verify-previous'), validation = path.join(scratch, 'payload');
+    await clearPreviousVerification(transaction, options);
+    if (activePreviousVerifications.has(scratch)) throw Error('Previous archive verification is still running');
+    activePreviousVerifications.add(scratch);
+    let created = false;
+    try {
+        await fs.mkdir(scratch, {mode: 0o700}); created = true;
+        const stat = await fs.lstat(scratch), handle = await fs.open(path.join(scratch, 'owner.json'), 'wx', 0o600);
+        try { await handle.writeFile(JSON.stringify({format: 'nova-mac-previous-verification-v1', dev: stat.dev, ino: stat.ino, ownerPid: process.pid}) + '\n'); await handle.sync(); } finally { await handle.close(); }
+        await syncDirectory(scratch); await syncDirectory(transaction);
+        await fs.mkdir(validation, {mode: 0o700});
+        await (options.extractPrevious ?? ((file, destination) => execute('/usr/bin/ditto', ['-x', '-k', file, destination], {timeout: 300000, maxBuffer: 1024 * 1024})))(archive, validation);
+        const restored = path.join(validation, 'previous.app');
+        if (fingerprint(await snapshotPackage(restored)) !== previous.digest) throw Error('Previous application archive round-trip mismatch');
+        await trustedBundle(restored, options, true);
+        await (options.verifySignature ?? sign)(restored);
+        if (fingerprint(await snapshotPackage(restored)) !== previous.digest || await privateArchiveHash(archive) !== value.archiveSha256) throw Error('Previous archive changed during verification');
+    } finally {
+        activePreviousVerifications.delete(scratch);
+        if (created) await clearPreviousVerification(transaction, options);
+    }
+    return {archive, receipt, archiveSha256: value.archiveSha256 as string};
+}
+
+export async function archiveCompletedMacBackup(options: Options, transaction?: string): Promise<BackupArchiveResult> {
+    let staging: string | undefined;
+    try {
+        await assertParent(options.target);
+        const directory = transaction ?? await activeTransaction(path.dirname(options.target));
+        if (!directory) return {status: 'not-needed'};
+        if (path.dirname(directory) !== path.dirname(options.target) || !/^\.nova-content-hub-install-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(path.basename(directory))) throw Error('Unknown backup transaction directory');
+        if (activeTransactions.has(directory)) throw Error('Installation is still running');
+        const stat = await fs.lstat(directory);
+        if (!stat.isDirectory() || stat.isSymbolicLink() || stat.uid !== process.getuid?.() || stat.mode & 0o077) throw Error('Unknown backup transaction identity');
+        const {value: claim} = await privateJSON(path.join(directory, 'claim.json'));
+        if (claim.format !== 'nova-mac-install-claim-v1' || claim.directory !== path.basename(directory) || claim.dev !== stat.dev || claim.ino !== stat.ino) throw Error('Unknown backup transaction identity');
+        const record = await readRecord(directory, options);
+        if (record.phase !== 'complete') return {status: 'not-complete'};
+        if (!record.previous) return {status: 'not-needed'};
+        const previous = path.join(directory, 'previous.app'), retiring = path.join(directory, 'previous.retiring');
+        const archived = path.join(directory, 'previous-backup'), running = options.running ?? isMacApplicationRunning;
+        if (!await absent(previous) && await running(previous)) return {status: 'deferred', reason: 'Previous application is still running'};
+        if (await absent(archived)) {
+            await matches(previous, record.previous);
+            staging = await fs.mkdtemp(path.join(directory, '.archive-previous-'));
+            const archive = path.join(staging, 'previous.app.zip');
+            await (options.archivePrevious ?? ((app, file) => execute('/usr/bin/ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', app, file], {timeout: 300000, maxBuffer: 1024 * 1024})))(previous, archive);
+            await fs.chmod(archive, 0o600);
+            const handle = await fs.open(archive, constants.O_RDONLY | constants.O_NOFOLLOW);
+            try { await handle.sync(); } finally { await handle.close(); }
+            const receipt = {format: 'nova-mac-previous-archive-v1', previous: record.previous, archiveSha256: await privateArchiveHash(archive)};
+            const saved = await fs.open(path.join(staging, 'receipt.json'), 'wx', 0o600);
+            try { await saved.writeFile(JSON.stringify(receipt) + '\n'); await saved.sync(); } finally { await saved.close(); }
+            await verifyPreviousArchive(staging, record.previous, options);
+            await matches(previous, record.previous);
+            await syncDirectory(staging);
+            // Publish the verified archive and its receipt together; an existing backup is never replaced.
+            if (!await absent(archived)) throw Error('Previous archive was published concurrently; retry verification');
+            await (options.rename ?? fs.rename)(staging, archived);
+            await syncDirectory(directory);
+        }
+        const verified = await verifyPreviousArchive(archived, record.previous, options);
+        if (!await absent(previous)) {
+            await matches(previous, record.previous);
+            if (!await absent(retiring)) throw Error('Unknown retiring application directory');
+            if (await running(previous)) return {status: 'deferred', reason: 'Previous application started while archiving'};
+            await fs.rename(previous, retiring);
+            await syncDirectory(directory);
+        }
+        if (!await absent(retiring)) {
+            const current = await fs.lstat(retiring);
+            if (!current.isDirectory() || current.isSymbolicLink() || current.dev !== record.previous.dev || current.ino !== record.previous.ino) throw Error('Retiring application identity changed');
+            const authorization = path.join(directory, 'previous-removal.json');
+            if (!await absent(authorization)) {
+                const {value} = await privateJSON(authorization);
+                if (value.format !== 'nova-mac-previous-removal-v1' || !isDeepStrictEqual(value.previous, record.previous) || value.archiveSha256 !== verified.archiveSha256 || value.birthtimeMs !== current.birthtimeMs) throw Error('Previous application removal authorization mismatch');
+            } else if (fingerprint(await snapshotPackage(retiring)) !== record.previous.digest) throw Error('Retiring application tree changed');
+            if (await running(retiring)) return {status: 'deferred', reason: 'Previous application is still running in its retirement directory'};
+            if (await absent(authorization)) {
+                const temporary = path.join(directory, `.previous-removal-${randomUUID()}`), handle = await fs.open(temporary, 'wx', 0o600);
+                try { await handle.writeFile(JSON.stringify({format: 'nova-mac-previous-removal-v1', previous: record.previous, archiveSha256: verified.archiveSha256, birthtimeMs: current.birthtimeMs}) + '\n'); await handle.sync(); } finally { await handle.close(); }
+                // An exclusive publication pins deletion authority before recursive removal can begin.
+                await fs.link(temporary, authorization); await fs.unlink(temporary); await syncDirectory(directory);
+            }
+            // The durable verified archive protects recovery if recursive removal is interrupted.
+            await fs.rm(retiring, {recursive: true});
+            await syncDirectory(directory);
+        }
+        return {status: 'archived', ...verified, previous: record.previous};
+    } catch (error) {
+        return {status: 'deferred', reason: error instanceof Error ? error.message : 'Previous backup archival failed'};
+    } finally {
+        if (staging) await fs.rm(staging, {recursive: true, force: true}).catch(() => {});
+    }
+}
+
+export async function recoverMacInstallation(options: Options): Promise<'none' | 'restored' | 'pending' | 'cleanup-pending'> {
     await assertParent(options.target);
     const directory = await activeTransaction(path.dirname(options.target));
     if (!directory) return 'none';
     if (activeTransactions.has(directory)) throw Error('Another installation is still running');
     const record = await readRecord(directory, options), previous = path.join(directory, 'previous.app');
-    if (record.phase === 'complete') { await releaseTransaction(directory); return 'none'; }
+    if (record.phase === 'complete') {
+        const backup = await archiveCompletedMacBackup(options, directory);
+        if (backup.status === 'deferred') return 'cleanup-pending';
+        await releaseTransaction(directory); return 'none';
+    }
     if (await absent(options.target)) {
         assertRecoveryOwner(record);
         if (record.previous && !await absent(previous)) {
@@ -210,8 +374,16 @@ export async function confirmMacInstallation(options: Options): Promise<boolean>
     const record = await readRecord(directory, options);
     if (!record.candidate) return false;
     await matches(options.target, record.candidate);
-    if (record.previous) await matches(path.join(directory, 'previous.app'), record.previous);
-    await writeRecord(directory, {...record, phase: 'complete'});
+    if (record.phase !== 'complete') {
+        if (record.previous) await matches(path.join(directory, 'previous.app'), record.previous);
+        await writeRecord(directory, {...record, phase: 'complete'});
+    }
+    const backup = await archiveCompletedMacBackup(options, directory);
+    if (backup.status === 'deferred') console.warn('Previous application backup retirement deferred:', backup.reason);
+    else {
+        try { await releaseTransaction(directory); }
+        catch (error) { console.warn('Completed installation claim release deferred:', error instanceof Error ? error.message : error); }
+    }
     return true;
 }
 
@@ -219,7 +391,9 @@ export async function installMacApplication(options: Options): Promise<{transact
     await assertParent(options.target);
     if (path.resolve(options.source) === path.resolve(options.target)) throw Error('Application source and installation target must differ');
     await trustedBundle(options.source, options);
-    if (await recoverMacInstallation(options) === 'pending') throw Error('上一次安装已完成复制，请从「应用程序」打开工作台；原应用仍保留在安装恢复目录。');
+    const recovery = await recoverMacInstallation(options);
+    if (recovery === 'pending') throw Error('上一次安装已完成复制，请从「应用程序」打开工作台；原应用仍保留在安装恢复目录。');
+    if (recovery === 'cleanup-pending') throw Error('旧版本备份尚未完成归档。请退出旧版本并确认磁盘空间后重试；原应用和恢复记录已保留。');
     const running = options.running ?? isMacApplicationRunning;
     if (await running(options.target)) throw Error('「应用程序」中的工作台正在运行，请先退出后重新安装。');
     const existed = !await absent(options.target);

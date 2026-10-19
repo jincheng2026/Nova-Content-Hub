@@ -3,7 +3,40 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {installMacApplication, recoverMacInstallation, confirmMacInstallation, isMacApplicationRunning} from '../src/main/mac-installation.mts';
+import {execFile, spawnSync} from 'node:child_process';
+import {promisify} from 'node:util';
+import {createHash} from 'node:crypto';
+import {snapshotPackage} from '../../plugin-src/src/lib/package-snapshot.mjs';
+import {archiveCompletedMacBackup, installMacApplication, recoverMacInstallation, confirmMacInstallation, isMacApplicationRunning, isMacInstallationBackupExecutable} from '../src/main/mac-installation.mts';
+
+const execute = promisify(execFile);
+const archive = (source, destination) => execute('/usr/bin/ditto', ['-c', '-k', '--sequesterRsrc', '--keepParent', source, destination]);
+
+function crashArchive(target, transaction, scenario) {
+    return spawnSync(process.execPath, ['--input-type=module', '--eval', `
+        import fs from 'node:fs/promises';
+        import path from 'node:path';
+        import {execFile} from 'node:child_process';
+        import {promisify} from 'node:util';
+        import {archiveCompletedMacBackup} from ${JSON.stringify(new URL('../src/main/mac-installation.mts', import.meta.url).href)};
+        const target = process.argv[1], directory = process.argv[2], scenario = process.argv[3];
+        const remove = fs.rm;
+        fs.rm = async (file, options) => {
+            const partial = scenario === 'retirement-rm' ? path.join(directory, 'previous.retiring') : path.join(directory, '.verify-previous/payload');
+            if (scenario !== 'after-extract' && file === partial) {
+                const app = scenario === 'retirement-rm' ? file : path.join(file, 'previous.app');
+                await fs.unlink(path.join(app, 'Contents/MacOS/Workbench'));
+                process.exit(24);
+            }
+            return remove(file, options);
+        };
+        await archiveCompletedMacBackup({source: target, target, bundleIdentifier: 'com.novaisland.nova-content-hub', executable: 'Workbench', running: async () => false,
+            verifySignature: async () => {}, readBundle: async app => ({identifier: await fs.readFile(path.join(app, 'Contents/Info.plist'), 'utf8'), executable: 'Workbench'}),
+            extractPrevious: async (archive, destination) => {await promisify(execFile)('/usr/bin/ditto', ['-x', '-k', archive, destination]); if (scenario === 'after-extract') process.exit(23);}
+        }, directory);
+        process.exit(1);
+    `, target, transaction, scenario], {encoding: 'utf8', timeout: 20000});
+}
 
 async function fixture(t, identifier = 'com.novaisland.nova-content-hub') {
     const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-install-')));
@@ -33,11 +66,234 @@ test('verified installation retains the complete previous app and confirms only 
     assert.equal((JSON.parse(await fs.readFile(path.join(result.transaction, 'record.json')))).phase, 'complete');
 });
 
+test('completed installation retires the launchable raw previous app into a recoverable archive', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t);
+    const installed = await installMacApplication(f.options);
+    assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true);
+    await assert.rejects(fs.lstat(path.join(installed.transaction, 'previous.app')), {code: 'ENOENT'});
+    assert.ok((await fs.stat(path.join(installed.transaction, 'previous-backup/previous.app.zip'))).isFile());
+});
+
+test('native previous-app archive round-trips the complete old tree and publishes a private hash receipt', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t);
+    await fs.symlink('Workbench', path.join(f.target, 'Contents/MacOS/link'));
+    const expected = await snapshotPackage(f.target), installed = await installMacApplication(f.options);
+    await confirmMacInstallation({...f.options, source: f.target});
+    const directory = path.join(installed.transaction, 'previous-backup');
+    assert.deepEqual((await fs.readdir(directory)).sort(), ['previous.app.zip', 'receipt.json']);
+    const receipt = JSON.parse(await fs.readFile(path.join(directory, 'receipt.json')));
+    const bytes = await fs.readFile(path.join(directory, 'previous.app.zip'));
+    assert.equal(receipt.archiveSha256, createHash('sha256').update(bytes).digest('hex'));
+    assert.equal(receipt.previous.digest, createHash('sha256').update(JSON.stringify(expected)).digest('hex'));
+    assert.equal((await fs.stat(path.join(directory, 'receipt.json'))).mode & 0o777, 0o600);
+    assert.equal((await fs.stat(path.join(directory, 'previous.app.zip'))).mode & 0o777, 0o600);
+    const restored = path.join(f.root, 'manual-restore');
+    await execute('/usr/bin/ditto', ['-x', '-k', path.join(directory, 'previous.app.zip'), restored]);
+    assert.deepEqual(await snapshotPackage(path.join(restored, 'previous.app')), expected);
+    assert.ok(f.calls.some(file => file.includes('/.verify-previous/payload/') && file.endsWith('/previous.app')));
+    assert.equal(await confirmMacInstallation({...f.options, source: f.target}), false, 'released completed claim needs no further confirmation');
+    assert.equal(await recoverMacInstallation(f.options), 'none');
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'archived');
+});
+
+for (const failure of ['write', 'roundtrip', 'signature', 'zip', 'receipt', 'publish', 'changed-previous', 'running', 'running-after-archive']) {
+    test(`completed backup ${failure} failure preserves old bytes and the retry claim without blocking confirmation`, {skip: process.platform !== 'darwin'}, async t => {
+        const f = await fixture(t), installed = await installMacApplication(f.options);
+        const previous = path.join(installed.transaction, 'previous.app');
+        const options = {...f.options, source: f.target};
+        if (failure === 'write') options.archivePrevious = async () => { throw Error('archive disk full'); };
+        if (failure === 'roundtrip') options.extractPrevious = async (_archive, destination) => f.options.copy(f.source, path.join(destination, 'previous.app'));
+        if (failure === 'signature') options.verifySignature = async () => { throw Error('old signature rejected'); };
+        if (failure === 'zip') options.archivePrevious = async (_source, file) => fs.writeFile(file, 'corrupt zip');
+        if (failure === 'receipt') await fs.mkdir(path.join(installed.transaction, 'previous-backup'), {mode: 0o700});
+        if (failure === 'publish') options.rename = async () => { throw Error('archive publication failed'); };
+        if (failure === 'changed-previous') options.archivePrevious = async (source, destination) => {
+            await archive(source, destination);
+            await fs.writeFile(path.join(source, 'Contents/MacOS/Workbench'), 'externally changed old');
+        };
+        if (failure === 'running') options.running = async app => app === previous;
+        if (failure === 'running-after-archive') { let checks = 0; options.running = async app => app === previous && ++checks > 1; }
+        assert.equal(await confirmMacInstallation(options), true);
+        assert.equal((JSON.parse(await fs.readFile(path.join(installed.transaction, 'record.json')))).phase, 'complete');
+        assert.equal(await f.old(), 'new');
+        assert.equal(await fs.readFile(path.join(previous, 'Contents/MacOS/Workbench'), 'utf8'), failure === 'changed-previous' ? 'externally changed old' : 'old');
+        assert.equal(await recoverMacInstallation(options), 'cleanup-pending');
+        assert.equal((await archiveCompletedMacBackup(options, installed.transaction)).status, 'deferred');
+        assert.ok((await fs.stat(path.join(path.dirname(f.target), '.nova-content-hub-install'))).isFile());
+        await assert.rejects(installMacApplication({...options, source: f.source}), /尚未完成归档/);
+        if (failure === 'write') {
+            assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true, 'later canonical startup retries cleanup');
+            await assert.rejects(fs.lstat(previous), {code: 'ENOENT'});
+        }
+    });
+}
+
+test('a published archive interrupted before raw retirement is verified and resumed', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    let checks = 0;
+    await confirmMacInstallation({...f.options, source: f.target, running: async file => file === path.join(installed.transaction, 'previous.app') && ++checks > 1});
+    assert.ok((await fs.stat(path.join(installed.transaction, 'previous-backup/receipt.json'))).isFile());
+    assert.equal(await recoverMacInstallation(f.options), 'none');
+    await assert.rejects(fs.lstat(path.join(installed.transaction, 'previous.app')), {code: 'ENOENT'});
+    assert.equal(await recoverMacInstallation(f.options), 'none');
+});
+
+test('retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree', {skip: process.platform !== 'darwin'}, async t => {
+    for (const changed of [false, true]) await t.test(String(changed), async t => {
+        const f = await fixture(t), installed = await installMacApplication(f.options);
+        await confirmMacInstallation({...f.options, source: f.target, running: async file => {
+            if (file.endsWith('/previous.retiring')) throw Error('interrupted before removal');
+            return false;
+        }});
+        const retiring = path.join(installed.transaction, 'previous.retiring');
+        assert.equal(await fs.readFile(path.join(retiring, 'Contents/MacOS/Workbench'), 'utf8'), 'old');
+        if (changed) await fs.writeFile(path.join(retiring, 'unrelated-user-file'), 'keep');
+        assert.equal(await recoverMacInstallation(f.options), changed ? 'cleanup-pending' : 'none');
+        if (changed) assert.equal(await fs.readFile(path.join(retiring, 'unrelated-user-file'), 'utf8'), 'keep');
+        else await assert.rejects(fs.lstat(retiring), {code: 'ENOENT'});
+        assert.ok((await fs.stat(path.join(installed.transaction, 'previous-backup/previous.app.zip'))).isFile());
+    });
+});
+
+test('archive corruption cannot authorize removal of a retained raw backup', {skip: process.platform !== 'darwin'}, async t => {
+    for (const file of ['previous.app.zip', 'receipt.json']) await t.test(file, async t => {
+        const f = await fixture(t), installed = await installMacApplication(f.options);
+        let checks = 0;
+        await confirmMacInstallation({...f.options, source: f.target, running: async app => app === path.join(installed.transaction, 'previous.app') && ++checks > 1});
+        await fs.writeFile(path.join(installed.transaction, 'previous-backup', file), 'corrupt');
+        assert.equal(await recoverMacInstallation(f.options), 'cleanup-pending');
+        assert.equal(await fs.readFile(path.join(installed.transaction, 'previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+        assert.equal(await f.old(), 'new');
+    });
+});
+
+test('explicit retirement refuses foreign paths and non-complete transactions without touching rollback material', async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'not-complete');
+    assert.equal((await archiveCompletedMacBackup(f.options, f.root)).status, 'deferred');
+    const claim = path.join(installed.transaction, 'claim.json'), bytes = await fs.readFile(claim);
+    await fs.writeFile(claim, '{}');
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'deferred');
+    await fs.writeFile(claim, bytes);
+    assert.equal(await fs.readFile(path.join(installed.transaction, 'previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+});
+
+test('a real process exit after extraction leaves a pinned scratch that the next archive call safely clears', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+    await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+    const child = crashArchive(f.target, installed.transaction, 'after-extract');
+    assert.equal(child.status, 23, child.stderr);
+    const scratch = path.join(installed.transaction, '.verify-previous'), owner = JSON.parse(await fs.readFile(path.join(scratch, 'owner.json')));
+    assert.equal(owner.ownerPid, child.pid);
+    assert.equal(await fs.readFile(path.join(scratch, 'payload/previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'archived');
+    await assert.rejects(fs.lstat(scratch), {code: 'ENOENT'});
+    await assert.rejects(fs.lstat(path.join(installed.transaction, 'previous.app')), {code: 'ENOENT'});
+    assert.equal((await fs.readdir(installed.transaction, {recursive: true})).some(file => file.endsWith('previous.app')), false);
+});
+
+test('a process exit during recursive raw removal resumes only with the pinned durable deletion authorization', {skip: process.platform !== 'darwin'}, async t => {
+    for (const corrupt of [false, true]) await t.test(String(corrupt), async t => {
+        const f = await fixture(t), installed = await installMacApplication(f.options);
+        const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+        await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+        const child = crashArchive(f.target, installed.transaction, 'retirement-rm');
+        assert.equal(child.status, 24, child.stderr);
+        const retiring = path.join(installed.transaction, 'previous.retiring');
+        await assert.rejects(fs.lstat(path.join(retiring, 'Contents/MacOS/Workbench')), {code: 'ENOENT'});
+        assert.equal(await fs.readFile(path.join(retiring, 'Contents/Info.plist'), 'utf8'), f.options.bundleIdentifier);
+        const authorizationFile = path.join(installed.transaction, 'previous-removal.json');
+        const authorization = JSON.parse(await fs.readFile(authorizationFile));
+        assert.deepEqual(authorization.previous, record.previous);
+        assert.equal((await fs.stat(authorizationFile)).mode & 0o777, 0o600);
+        const receipt = JSON.parse(await fs.readFile(path.join(installed.transaction, 'previous-backup/receipt.json')));
+        assert.equal(authorization.archiveSha256, receipt.archiveSha256);
+        if (corrupt) await fs.writeFile(authorizationFile, JSON.stringify({...authorization, archiveSha256: '0'.repeat(64)}));
+        assert.equal(await recoverMacInstallation(f.options), corrupt ? 'cleanup-pending' : 'none');
+        if (corrupt) assert.ok((await fs.stat(retiring)).isDirectory());
+        else await assert.rejects(fs.lstat(retiring), {code: 'ENOENT'});
+        assert.equal(await f.old(), 'new');
+        assert.ok((await fs.stat(path.join(installed.transaction, 'previous-backup/previous.app.zip'))).isFile());
+    });
+});
+
+test('scratch cleanup keeps owner.json through a process exit halfway through payload removal', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+    await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+    const child = crashArchive(f.target, installed.transaction, 'scratch-rm');
+    assert.equal(child.status, 24, child.stderr);
+    const scratch = path.join(installed.transaction, '.verify-previous');
+    const owner = JSON.parse(await fs.readFile(path.join(scratch, 'owner.json')));
+    assert.equal(owner.ownerPid, child.pid);
+    await assert.rejects(fs.lstat(path.join(scratch, 'payload/previous.app/Contents/MacOS/Workbench')), {code: 'ENOENT'});
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'archived');
+    await assert.rejects(fs.lstat(scratch), {code: 'ENOENT'});
+});
+
+test('an empty scratch left after owner unlink is safely retired while a nonempty unknown one remains protected', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+    await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+    const scratch = path.join(installed.transaction, '.verify-previous');
+    await fs.mkdir(scratch, {mode: 0o700});
+    assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'archived');
+    await assert.rejects(fs.lstat(scratch), {code: 'ENOENT'});
+});
+
+test('unknown, live-owned and running verification scratch directories are preserved until safely retryable', {skip: process.platform !== 'darwin'}, async t => {
+    for (const reason of ['unknown', 'live-owner', 'running-copy']) await t.test(reason, async t => {
+        const f = await fixture(t), installed = await installMacApplication(f.options);
+        const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+        await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+        const scratch = path.join(installed.transaction, '.verify-previous'), restored = path.join(scratch, 'payload/previous.app');
+        if (reason !== 'running-copy') {
+            await fs.mkdir(scratch, {mode: 0o700});
+            await fs.writeFile(path.join(scratch, 'unrelated'), 'keep');
+            if (reason === 'live-owner') {
+                const stat = await fs.stat(scratch);
+                await fs.writeFile(path.join(scratch, 'owner.json'), JSON.stringify({format: 'nova-mac-previous-verification-v1', dev: stat.dev, ino: stat.ino, ownerPid: process.ppid}), {mode: 0o600});
+            }
+        }
+        const result = await archiveCompletedMacBackup({...f.options, running: async file => reason === 'running-copy' && file === restored}, installed.transaction);
+        assert.equal(result.status, 'deferred');
+        assert.equal(await fs.readFile(path.join(installed.transaction, 'previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+        if (reason === 'running-copy') {
+            assert.equal(await fs.readFile(path.join(restored, 'Contents/MacOS/Workbench'), 'utf8'), 'old');
+            assert.equal((await archiveCompletedMacBackup(f.options, installed.transaction)).status, 'archived');
+            await assert.rejects(fs.lstat(scratch), {code: 'ENOENT'});
+        } else assert.equal(await fs.readFile(path.join(scratch, 'unrelated'), 'utf8'), 'keep');
+    });
+});
+
+test('same-process overlapping archive verification cannot clear an active scratch', {skip: process.platform !== 'darwin'}, async t => {
+    const f = await fixture(t), installed = await installMacApplication(f.options);
+    const recordFile = path.join(installed.transaction, 'record.json'), record = JSON.parse(await fs.readFile(recordFile));
+    await fs.writeFile(recordFile, JSON.stringify({...record, phase: 'complete'}));
+    const result = await archiveCompletedMacBackup({...f.options, extractPrevious: async (file, destination) => {
+        await execute('/usr/bin/ditto', ['-x', '-k', file, destination]);
+        const overlapping = await archiveCompletedMacBackup(f.options, installed.transaction);
+        assert.equal(overlapping.status, 'deferred'); assert.match(overlapping.reason, /verification is still running/);
+        assert.equal(await fs.readFile(path.join(destination, 'previous.app/Contents/MacOS/Workbench'), 'utf8'), 'old');
+    }}, installed.transaction);
+    assert.equal(result.status, 'archived');
+});
+
+test('only strict native transaction backup executable paths are rejected before desktop locking', async () => {
+    const transaction = '/Applications/.nova-content-hub-install-97266b36-93a4-46fd-9def-c6fd2db43c48';
+    for (const name of ['previous.app', 'candidate.app', 'previous.retiring', '.verify-previous/payload/previous.app']) assert.equal(isMacInstallationBackupExecutable(`${transaction}/${name}/Contents/MacOS/自媒体工作台`), true);
+    for (const file of ['/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台', '/Volumes/Installer/自媒体工作台.app/Contents/MacOS/自媒体工作台', '/repo/dev/previous.app/Contents/MacOS/自媒体工作台', `${transaction}-other/previous.app/Contents/MacOS/自媒体工作台`, `${transaction}/unrelated.app/Contents/MacOS/自媒体工作台`, `${transaction}/previous.app/Contents/MacOS/extra/path`]) assert.equal(isMacInstallationBackupExecutable(file), false, file);
+    const desktop = await fs.readFile(new URL('../src/main/desktop.mts', import.meta.url), 'utf8');
+    assert.ok(desktop.indexOf('isMacInstallationBackupExecutable(process.execPath)') < desktop.indexOf('app.requestSingleInstanceLock()'));
+});
+
 test('completed installation never restores an old backup after the user removes, moves or replaces the installed app', async t => {
     for (const action of ['remove', 'move', 'replace']) await t.test(action, async t => {
         const f = await fixture(t), result = await installMacApplication(f.options);
         assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true);
-        const previous = path.join(result.transaction, 'previous.app/Contents/MacOS/Workbench');
+        const previous = path.join(result.transaction, 'previous-backup/previous.app.zip');
+        const archivedBytes = await fs.readFile(previous);
         const recordFile = path.join(result.transaction, 'record.json'), record = await fs.readFile(recordFile);
         const moved = path.join(f.root, 'moved.app');
         if (action === 'remove') await fs.rm(f.target, {recursive: true});
@@ -47,7 +303,7 @@ test('completed installation never restores an old backup after the user removes
         if (action === 'replace') assert.equal(await f.old(), 'new');
         else await assert.rejects(fs.lstat(f.target), {code: 'ENOENT'});
         if (action !== 'remove') assert.equal(await fs.readFile(path.join(moved, 'Contents/MacOS/Workbench'), 'utf8'), 'new');
-        assert.equal(await fs.readFile(previous, 'utf8'), 'old');
+        assert.deepEqual(await fs.readFile(previous), archivedBytes);
         assert.deepEqual(await fs.readFile(recordFile), record);
         await assert.rejects(fs.lstat(path.join(path.dirname(f.target), '.nova-content-hub-install')), {code: 'ENOENT'});
         assert.equal(await recoverMacInstallation(f.options), 'none');

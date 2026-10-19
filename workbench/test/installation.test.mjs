@@ -108,3 +108,12 @@ test('an unavailable optional dialog does not prevent desktop startup', async ()
     assert.equal(await f.offer(), 'continue');
     assert.equal(f.installs(), 0);
 });
+
+test('deferred completed-backup cleanup preserves the current app without offering another replacement', async () => {
+    const f = fixture({exists: true, replacement: 0});
+    f.installer.recover = async () => 'cleanup-pending';
+    assert.equal(await f.offer(), 'continue');
+    assert.equal(f.prompts.length, 1);
+    assert.match(f.prompts[0].message, /旧版本备份尚未完成归档/);
+    assert.equal(f.conflicts.length, 0); assert.equal(f.installs(), 0); assert.equal(f.quits(), 0);
+});

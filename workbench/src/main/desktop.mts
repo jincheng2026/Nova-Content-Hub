@@ -22,6 +22,7 @@ import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
 import {launchWithAssistantRuntime} from './assistant-runtime.mts';
 import {confirmInstalledApplication, offerApplicationInstall} from './installation.mts';
+import {isMacInstallationBackupExecutable} from './mac-installation.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
@@ -52,6 +53,7 @@ app.setName('自媒体工作台');
 if (existsSync(existingUserData)) app.setPath('userData', existingUserData);
 
 export async function startDesktop({show = true, userData, marketRoot, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
+    if (process.platform === 'darwin' && isMacInstallationBackupExecutable(process.execPath)) { app.quit(); return; }
     if (userData) app.setPath('userData', userData);
     const resources = validateResources(JSON.parse(readFileSync(path.join(here, '../renderer-resources.json'), 'utf8')));
     const release = validateRelease(JSON.parse(readFileSync(path.join(here, '../release.json'), 'utf8')));
