@@ -5,6 +5,11 @@ import {fail, validateInput} from '../shared/validation.ts';
 import {localFileSelectionError, type LocalFileKind, type PhotoImportOptions} from '../shared/local-files.ts';
 
 export interface NativeLocalFiles {kind: LocalFileKind; sources: string[]; photo?: PhotoImportOptions}
+export async function externalExportParent(directory: string, library: string): Promise<string> {
+    const parent = await fs.realpath(directory), libraryRoot = await fs.realpath(library), relative = path.relative(libraryRoot, parent);
+    if (!relative || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)) fail('INVALID_DESTINATION', '请选择内容库之外的导出位置，避免修改内部素材。');
+    return parent;
+}
 export async function validateLocalFiles(input: unknown): Promise<NativeLocalFiles> {
     if (!isRecord(input) || !['material', 'template', 'photo'].includes(input.kind as string) || Object.keys(input).some(key => !['kind', 'sources', 'photo'].includes(key)) || !Array.isArray(input.sources) || input.sources.length < 1 || input.sources.length > (input.kind === 'template' ? 50 : 1)) fail('INVALID_FILES', '请选择允许数量的本机文件，文件夹不能直接导入。');
     const kind = input.kind as LocalFileKind;

@@ -1,0 +1,24 @@
+// Fresh renderer and native sources in a disposable copy; real IPC/workers and isolated libraries.
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {spawn, execFileSync} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import electron from 'electron';
+import {build} from 'vite';
+const workbench = fileURLToPath(new URL('../', import.meta.url));
+const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nch-detail-')));
+const bundle = path.join(root, 'bundle'), dist = path.join(bundle, 'workbench/dist');
+await fs.cp(path.join(workbench, 'dist-desktop/auth-disabled'), bundle, {recursive: true});
+await fs.cp(path.join(workbench, '../plugin-src/src/lib'), path.join(bundle, 'plugin-src/src/lib'), {recursive: true});
+execFileSync(process.execPath, [path.join(workbench, 'node_modules/typescript/bin/tsc'), '-p', path.join(workbench, 'tsconfig.native.json'), '--outDir', dist], {stdio: 'inherit'});
+await build({configFile: false, root: path.join(workbench, 'src/renderer'), base: './', oxc: {jsx: {runtime: 'automatic'}}, build: {outDir: path.join(dist, 'renderer'), emptyOutDir: true, modulePreload: false, target: 'chrome148'}});
+const mimes = {'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png'}, entries = {};
+for (const file of await fs.readdir(path.join(dist, 'renderer'), {recursive: true})) if ((await fs.stat(path.join(dist, 'renderer', file))).isFile()) entries[`/${file}`] = {file, mime: mimes[path.extname(file)]};
+await fs.writeFile(path.join(dist, 'renderer-resources.json'), JSON.stringify({format: 'nova-desktop-renderer-resources', schemaVersion: 1, entries}));
+await fs.copyFile(path.join(workbench, 'scripts/detail-read-entry.mjs'), path.join(dist, 'main/detail-read-entry.mjs'));
+const child = spawn(electron, [path.join(dist, 'main/detail-read-entry.mjs')], {cwd: bundle, env: {...process.env, ELECTRON_RUN_AS_NODE: '', NOVA_DETAIL_ROOT: root}, stdio: 'inherit'});
+const timer = setTimeout(() => child.kill('SIGKILL'), 120000);
+process.exitCode = await new Promise(resolve => child.once('exit', code => resolve(code ?? 1)));
+clearTimeout(timer);
+console.log('Detail probe evidence:', root);

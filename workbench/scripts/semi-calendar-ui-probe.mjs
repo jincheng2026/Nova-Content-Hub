@@ -24,7 +24,7 @@ window.library={contentDetails:[window.doc],collections:[window.collection],sett
 window.workspace={contents:[window.doc],channels:window.channels};window.original=JSON.stringify({library:window.library,workspace:window.workspace});window.calls=[];
 window.contentHub=new Proxy({},{get:(_,method)=>async input=>{window.calls.push({method,input});throw new Error('Unexpected native call');}});
 const root=createRoot(document.getElementById('root'));
-window.renderCalendar=(busy=false)=>root.render(<CalendarPage workspace={window.workspace} library={window.library} initialFocus={{kind:'content',id:'content-a',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
+window.renderCalendar=(busy=false)=>root.render(<CalendarPage workspace={{...window.workspace}} library={{...window.library}} initialFocus={{kind:'content',id:'content-a',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
 window.renderCalendar();
 `);
 await build({configFile:false, root, base:'./', resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}}, oxc:{jsx:{runtime:'automatic'}}, build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});

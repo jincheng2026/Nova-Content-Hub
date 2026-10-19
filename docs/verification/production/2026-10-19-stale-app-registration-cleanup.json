@@ -1,0 +1,78 @@
+{
+  "unregistered": [
+    {
+      "path": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-packaged-dmg-audit-TSVJfN/NovaContentHub-Testing.app",
+      "identifier": "com.novaisland.nova-content-hub.testing",
+      "filesUntouched": true,
+      "existed": true
+    },
+    {
+      "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/testing/mac-arm64/NovaContentHub-Testing.app",
+      "identifier": "com.novaisland.nova-content-hub.testing",
+      "filesUntouched": true,
+      "existed": true
+    },
+    {
+      "path": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-0314-preview-install-yQK5KT/自媒体工作台.app",
+      "identifier": "com.novaisland.nova-content-hub",
+      "filesUntouched": true,
+      "existed": true
+    },
+    {
+      "path": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-0315-preview-install-He2bU5/自媒体工作台.app",
+      "identifier": "com.novaisland.nova-content-hub",
+      "filesUntouched": true,
+      "existed": true
+    },
+    {
+      "path": "/Volumes/自媒体工作台 0.3.18-arm64/自媒体工作台.app",
+      "identifier": "com.novaisland.nova-content-hub",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/Volumes/自媒体工作台 0.3.18-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app",
+      "identifier": "com.novaisland.nova-content-hub.helper.GPU",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/Volumes/自媒体工作台 0.3.18-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app",
+      "identifier": "com.novaisland.nova-content-hub.helper.Plugin",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/Volumes/自媒体工作台 0.3.18-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app",
+      "identifier": "com.novaisland.nova-content-hub.helper.Renderer",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/Volumes/自媒体工作台 0.3.18-arm64/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app",
+      "identifier": "com.novaisland.nova-content-hub.helper",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/mac-arm64/自媒体工作台.app",
+      "identifier": "com.novaisland.nova-content-hub",
+      "filesUntouched": true,
+      "existed": true
+    },
+    {
+      "path": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-colleague-0319-tn1ilbna/mounted/自媒体工作台.app",
+      "identifier": "com.novaisland.nova-content-hub",
+      "filesUntouched": true,
+      "existed": false
+    },
+    {
+      "path": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-colleague-0319-tn1ilbna/自媒体工作台功能验收.app.disabled",
+      "identifier": "com.novaisland.nova-content-hub.qa0319",
+      "filesUntouched": true,
+      "existed": true
+    }
+  ],
+  "installedAppRetained": true,
+  "nativeRecoveryBackupsUntouched": true
+}

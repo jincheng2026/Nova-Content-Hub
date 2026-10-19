@@ -1,0 +1,13 @@
+{
+  "version": "0.3.20",
+  "installed": {
+    "transaction": "/Applications/.nova-content-hub-install-94fe61a4-41e6-4b87-8dd5-88ae479867d2",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "installedTreeMatchesBuild": true,
+  "previousTreePreserved": true,
+  "libraryUnchanged": true,
+  "phase": "complete",
+  "method": "Same production installMacApplication API, real native copy, signature+hash+rename checks; no installer stubs.",
+  "independentLaunchConfirmed": true
+}

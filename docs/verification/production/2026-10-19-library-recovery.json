@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "original": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "originalUntouched": true,
+  "emptyLockPreserved": true,
+  "evidence": "/Users/mac/Documents/自媒体工作台/恢复记录-20261019-12fb17ae/原内容库完整留存",
+  "destination": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019",
+  "contentCount": 3,
+  "restored": {
+    "backupId": "6b8beda2-9d7a-4615-a8b9-de0c5ccc501f",
+    "root": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019",
+    "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+    "recoveredMutations": [],
+    "interruptedAttempts": [],
+    "schemaVersion": 5,
+    "upgradeRequired": false,
+    "outcome": "committed"
+  },
+  "allowedExtra": [
+    "系统（别动）/恢复来源",
+    "系统（别动）/恢复来源/25fb7e9c-5fe2-47b8-a9df-146d584e95d1.json"
+  ],
+  "bindingChanged": true,
+  "openedThroughInstalledController": true,
+  "installedControllerVersion": "0.3.19",
+  "readWorkspaceSucceeded": true,
+  "originalStillUntouched": true,
+  "templateCount": 21,
+  "promptCount": 54
+}

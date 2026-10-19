@@ -1,0 +1,148 @@
+{
+  "recordedAt": "2026-10-19T12:43:59.011Z",
+  "scope": "Actual file-library and current Node worker operations, warm page cache after construction; no Electron IPC or cold-start claim. No generated-cover/photo assets in this metadata workload; built-in style images present.",
+  "bodyBytes": 2040,
+  "results": [
+    {
+      "contents": 100,
+      "plans": 200,
+      "collections": 10,
+      "trashedContents": 5,
+      "samples": [
+        {
+          "timings": {
+            "workspace": 184.02587499999936,
+            "coverAssets": 481.2620410000018,
+            "workspaceLibrary": 573.3032499999972
+          },
+          "payloadBytes": {
+            "workspace": 335730,
+            "coverAssets": 19743,
+            "workspaceLibrary": 912161
+          },
+          "totalMs": 1240.350833000004
+        },
+        {
+          "timings": {
+            "workspace": 174.59133299999667,
+            "coverAssets": 411.46079199999804,
+            "workspaceLibrary": 571.0693339999998
+          },
+          "payloadBytes": {
+            "workspace": 335730,
+            "coverAssets": 19743,
+            "workspaceLibrary": 912161
+          },
+          "totalMs": 1158.7556250000052
+        },
+        {
+          "timings": {
+            "workspace": 144.8044579999987,
+            "coverAssets": 401.5355420000051,
+            "workspaceLibrary": 613.1590829999986
+          },
+          "payloadBytes": {
+            "workspace": 335730,
+            "coverAssets": 19743,
+            "workspaceLibrary": 912161
+          },
+          "totalMs": 1161.0754159999997
+        }
+      ]
+    },
+    {
+      "contents": 500,
+      "plans": 1000,
+      "collections": 50,
+      "trashedContents": 25,
+      "samples": [
+        {
+          "timings": {
+            "workspace": 630.5182919999934,
+            "coverAssets": 1490.3213749999995,
+            "workspaceLibrary": 1080.859582999983
+          },
+          "payloadBytes": {
+            "workspace": 1390570,
+            "coverAssets": 19743,
+            "workspaceLibrary": 3746541
+          },
+          "totalMs": 3208.137625000003
+        },
+        {
+          "timings": {
+            "workspace": 377.120041999995,
+            "coverAssets": 456.03658300000825,
+            "workspaceLibrary": 763.9951250000158
+          },
+          "payloadBytes": {
+            "workspace": 1390570,
+            "coverAssets": 19743,
+            "workspaceLibrary": 3746541
+          },
+          "totalMs": 1602.999542000005
+        },
+        {
+          "timings": {
+            "workspace": 349.60808299999917,
+            "coverAssets": 452.52095800000825,
+            "workspaceLibrary": 761.173375000013
+          },
+          "payloadBytes": {
+            "workspace": 1390570,
+            "coverAssets": 19743,
+            "workspaceLibrary": 3746541
+          },
+          "totalMs": 1569.1464169999817
+        }
+      ]
+    },
+    {
+      "contents": 1000,
+      "plans": 2000,
+      "collections": 100,
+      "trashedContents": 50,
+      "samples": [
+        {
+          "timings": {
+            "workspace": 926.7050419999869,
+            "coverAssets": 1329.7549579999759,
+            "workspaceLibrary": 1414.624542000005
+          },
+          "payloadBytes": {
+            "workspace": 2709120,
+            "coverAssets": 19743,
+            "workspaceLibrary": 7289516
+          },
+          "totalMs": 3683.733416000032
+        },
+        {
+          "timings": {
+            "workspace": 610.1225830000476,
+            "coverAssets": 566.8834579999675,
+            "workspaceLibrary": 1025.1332500000135
+          },
+          "payloadBytes": {
+            "workspace": 2709120,
+            "coverAssets": 19743,
+            "workspaceLibrary": 7289516
+          },
+          "totalMs": 2214.561832999985
+        },
+        {
+          "timings": {
+            "workspace": 624.2695420000236,
+            "coverAssets": 574.1344590000226,
+            "workspaceLibrary": 1039.501249999972
+          },
+          "payloadBytes": {
+            "workspace": 2709120,
+            "coverAssets": 19743,
+            "workspaceLibrary": 7289516
+          },
+          "totalMs": 2249.6809999999823
+        }
+      ]
+    }
+  ]
+}

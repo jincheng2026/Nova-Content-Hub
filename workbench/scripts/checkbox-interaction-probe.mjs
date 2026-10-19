@@ -18,20 +18,20 @@ import '${workbench}/node_modules/@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import '${workbench}/src/renderer/style.css';
 import Checkbox from '${workbench}/node_modules/@douyinfe/semi-ui-19/lib/es/checkbox';
 import {CoverPanel} from '${workbench}/src/renderer/covers.tsx';
-import {CollectionEditor,ContentMetadataPanel} from '${workbench}/src/renderer/library-panels.tsx';
+import {MembersEditor,ContentMetadataPanel} from '${workbench}/src/renderer/library-panels.tsx';
 import {PreferencesPanel} from '${workbench}/src/renderer/preferences-panel.tsx';
 const image='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><rect width="300" height="400" fill="navy"/></svg>');
 const content={id:'content',title:'原生复选交互',body:'正文',editToken:'v1'};
 const candidates=['a','b'].map(id=>({id,requestId:'r',attemptId:'t',url:image,assetHash:id,originalName:id+'.png',accepted:false}));
 const details={...content,deletedAt:null,channelIds:['channel'],recordedDate:null,plannedDate:null,preferredTemplateId:null,isExample:false,materials:[{id:'material',originalName:'参考资料.txt',detectedType:'text/plain',bytes:10,availability:'available',assetHash:'material'}],coverVariants:[],candidates:candidates.map((c,i)=>({...c,favorite:i===0,note:'',displayNumber:'',variantId:null}))};
 const assets={templates:[{id:'template',version:1,name:'测试模板',description:'测试',samples:[{assetHash:'sample',url:image}]}],photos:[]};
-const library={contentDetails:[details],templates:assets.templates,photos:[],settings:{editToken:'s1',channels:[{id:'channel',name:'测试渠道',deletedAt:null}],defaults:{templateId:'template',photoId:'',coverCount:1},customRatios:[]}};
+const library={contentDetails:[details],templates:assets.templates,photos:[],collections:[{id:'col',title:'合集',editToken:'v1'}],settings:{editToken:'s1',channels:[{id:'channel',name:'测试渠道',deletedAt:null}],defaults:{templateId:'template',photoId:'',coverCount:1},customRatios:[]}};
 const cover={content,candidates,selectedCandidateId:null,jobs:[{id:'r',activeAttemptId:null,summary:{template:{id:'template',version:1},styleSampleCount:1,hasOwnPhoto:false,count:2,ratio:'3:4',sizePolicy:'ratio-minimum',pixels:{width:768,height:1024},outputFormat:'png'},attempts:[]}]};
 const ok=value=>({ok:true,value});window.calls=[];window.errors=[];window.addEventListener('error',e=>window.errors.push(e.message));window.clicks=[];document.addEventListener('click',e=>window.clicks.push({trusted:e.isTrusted,tag:e.target.tagName}),true);
 window.contentHub={listCoverAssets:async()=>ok(assets),readCover:async()=>ok(cover),mutateWorkspace:async input=>{window.calls.push(input);return ok({library})},readPreferences:async()=>ok({values:{remindersEnabled:false,reminderTime:'09:00',reducedMotion:false,startAtLogin:false},login:{state:'off',supported:true,enabled:false}}),readReminderStatus:async()=>ok({state:'disabled',supported:true})};
 const props={library,busy:false,refresh:async()=>{},run:async action=>{try{return await action()}catch(e){window.errors.push(e.message)}}};
 function Legacy(){const [checked,setChecked]=useState(true);return <label id="legacy"><Checkbox checked={checked} onChange={e=>setChecked(!!e.target.checked)}/><span>旧版外层标签</span></label>}
-function Fixture({kind}){if(kind==='legacy')return <Legacy/>;if(kind==='collection')return <CollectionEditor props={props} collection={{id:'col',title:'合集',body:'',editToken:'v1',channelIds:['channel'],dateRange:{start:null,end:null}}} close={()=>{}}/>;if(kind==='metadata')return <ContentMetadataPanel {...props} contentId="content"/>;if(kind==='preferences')return <PreferencesPanel {...props}/>;return <CoverPanel {...props} status={{currentName:'fixture',assistant:'codex'}} content={content} dirty={false} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover})} onContent={()=>{}}/>}
+function Fixture({kind}){if(kind==='legacy')return <Legacy/>;if(kind==='collection')return <MembersEditor props={props} collection={{id:'col',title:'合集',body:'',editToken:'v1',memberIds:['content'],channelIds:['channel'],dateRange:{start:null,end:null}}} close={()=>{}}/>;if(kind==='metadata')return <ContentMetadataPanel {...props} contentId="content"/>;if(kind==='preferences')return <PreferencesPanel {...props}/>;return <CoverPanel {...props} status={{currentName:'fixture',assistant:'codex'}} content={content} dirty={false} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover})} onContent={()=>{}}/>}
 const root=createRoot(document.getElementById('root'));window.mount=kind=>root.render(<Fixture key={kind} kind={kind}/>);window.mount('legacy');
 `);
   await build({configFile:false,root,base:'./',resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}},oxc:{jsx:{runtime:'automatic'}},build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -50,7 +50,7 @@ const root=createRoot(document.getElementById('root'));window.mount=kind=>root.r
       await nativeClick('#legacy .semi-checkbox-inner-display');assert.equal(await run('document.querySelector("#legacy input").checked'),false,'legacy visual-box native click double-activates and cannot toggle');console.log('REPRODUCED: legacy DOM input.click toggles, trusted visual-box click double-activates');
       await run('window.mount("cover")');await wait('document.querySelectorAll(".cover-result-card").length===2');
       await roundtrip('.cover-gallery-toolbar .checkbox');await roundtrip('.cover-card-title .checkbox');
-      await nativeClick('.cover-result-actions button:nth-child(3)');await wait('document.querySelector(".management-dialog[open]")');
+      await nativeClick('.cover-card-tools button[aria-label="候选备注与信息"]');await wait('document.querySelector(".management-dialog[open]")');
       await roundtrip('.management-dialog .checkbox',true);
       await run('document.querySelector(".management-dialog textarea").focus()');win.webContents.insertText('保留草稿');await flush();
       await run('[...document.querySelectorAll(".management-dialog button")].find(e=>e.textContent==="暂时收起").click()');await wait('document.querySelector(".management-resume")');
@@ -63,7 +63,7 @@ const root=createRoot(document.getElementById('root'));window.mount=kind=>root.r
       await run('window.mount("preferences")');await wait('document.querySelector("input[role=switch]")');
       await nativeClick('.creator-preference-row:first-child > span');assert.equal(await run('document.querySelector("input[role=switch]").checked'),true);await nativeClick('.creator-preference-row:first-child > span');assert.equal(await run('document.querySelector("input[role=switch]").checked'),false);
       assert.equal(await run('window.calls.length'),0);assert.deepEqual(await run('window.errors'),[]);assert.equal(await run('window.clicks.some(e=>e.trusted)'),true);
-      console.log('PASS trusted Electron box/text true→false→true roundtrips: favorites filter, compare, candidate favorite, template sample, own-photo, material, collection and content channels; minimized drafts keep filter usable; preference switches roundtrip. No real library writes.');app.exit(0);
+      console.log('PASS trusted Electron box/text true→false→true roundtrips: favorites filter, compare, candidate favorite, template sample, own-photo, material, collection members and content channels; minimized drafts keep filter usable; preference switches roundtrip. No real library writes.');app.exit(0);
     }catch(error){console.error(error);console.error(await run('JSON.stringify({text:document.body.textContent,errors:window.errors})'));app.exit(1)}
   }
   await fs.writeFile(path.join(root,'main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)})`);

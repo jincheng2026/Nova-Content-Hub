@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {FileMatcher} from 'app-builder-lib/out/fileMatcher.js';
 import {validateConfiguration} from 'app-builder-lib/out/util/config/config.js';
 import {DebugLogger} from 'builder-util';
-import {assertDistribution, assertProductionSigning, assertStage, installerConfig, parseOptions, testingEnvironment} from '../scripts/dist.mjs';
+import {archiveMacOutput, assertDistribution, assertProductionSigning, assertStage, installerConfig, parseOptions, testingEnvironment} from '../scripts/dist.mjs';
 
 const config = JSON.parse(fs.readFileSync(new URL('../../release.config.json', import.meta.url), 'utf8'));
 const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
@@ -89,6 +90,7 @@ test('packaging preserves runtime files, user data, and testing labels without c
         assert.match(built.directories.output, new RegExp(`release[/\\\\]${platform}-${arch}[/\\\\]testing$`));
         assert.ok(built.artifactName.includes(`${config.version}-${platform}-${arch}-testing`));
         assert.equal(built.appId, 'com.novaisland.nova-content-hub.testing');
+        assert.equal(built.productName, '自媒体工作台测试版');
         assert.equal(built.asar, false);
         assert.equal(built.publish, null);
         assert.equal(built.npmRebuild, false);
@@ -117,10 +119,11 @@ test('free preview uses the product identity and local builds keep their isolate
     for (const platform of ['darwin', 'win32']) for (const arch of ['arm64', 'x64']) {
         const built = installerConfig({...options, channel: 'preview', auth: 'disabled', platform, arch}, config.version);
         assert.equal(built.appId, 'com.novaisland.nova-content-hub');
+        assert.equal(built.productName, '自媒体工作台');
         assert.match(built.directories.app, /dist-desktop[/\\\\]auth-disabled$/);
         assert.match(built.directories.output, new RegExp(`release[/\\\\]${platform}-${arch}[/\\\\]preview$`));
         assert.ok(built.artifactName.includes(`${config.version}-${platform}-${arch}-preview`));
-        assert.match(built.extraMetadata.description, /free preview; no login required/);
+        assert.equal(built.extraMetadata.description, '自媒体工作台 · 内容整理、模板学习与封面制作');
         assert.equal(built.publish, null);
         assert.equal(built.mac.notarize, false);
         assert.equal(built.nsis.deleteAppDataOnUninstall, false);
@@ -128,6 +131,8 @@ test('free preview uses the product identity and local builds keep their isolate
         assert.deepEqual(built.win.target, [{target: 'nsis', arch: [arch]}]);
     }
     assert.equal(installerConfig({...options, channel: 'local', auth: 'disabled'}, config.version).appId, 'com.novaisland.nova-content-hub.local');
+    assert.equal(installerConfig({...options, channel: 'local', auth: 'disabled'}, config.version).productName, '自媒体工作台开发版');
+    assert.equal(installerConfig({...options, channel: 'production', auth: 'disabled'}, config.version).productName, '自媒体工作台');
 });
 
 test('pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources', async () => {
@@ -138,4 +143,33 @@ test('pinned builder schema and real file matcher accept runtime and exclude rel
     const included = name => matches(path.join(directory, name), {isDirectory: () => false});
     for (const name of ['package.json', 'workbench/package.json', 'workbench/dist/main/index.mjs', 'workbench/dist/main/worker.mjs', 'workbench/dist/release.json', 'workbench/dist/renderer/index.html', 'plugin-src/src/lib/file-library/index.mjs', 'plugin-src/src/bridge/native-handoff.mjs', 'plugin-src/resources/图库/image.png']) assert.ok(included(name), name);
     for (const name of ['workbench/dist/main/probe.mjs', 'workbench/dist/main/resident-probe.mjs', 'workbench/dist/main/cover-probe.mjs', 'workbench/dist/main/lifecycle-probe.mjs', 'workbench/dist/main/index.test.mjs', 'workbench/dist/main/index.mjs.map', 'workbench/scripts/dist.mjs', 'plugin-src/src/lib/test/unit.mjs', 'plugin-src/src/lib/file-library/index.test.mjs', 'runtime/node', 'release/electron-builder.json', 'package-lock.json']) assert.ok(!included(name), name);
+});
+
+test('validated macOS build copies are archived without changing bytes, symlinks, modes, DMGs or earlier builds', t => {
+    const output = fs.mkdtempSync(path.join(os.tmpdir(), 'nova-mac-output-'));
+    t.after(() => fs.rmSync(output, {recursive: true, force: true}));
+    const dmg = path.join(output, 'installer.dmg');
+    fs.writeFileSync(dmg, 'delivered disk image');
+    for (const arch of ['arm64', 'x64']) {
+        const name = arch === 'arm64' ? 'mac-arm64' : 'mac';
+        const raw = path.join(output, name);
+        const relative = path.join('自媒体工作台.app', 'Contents', 'MacOS');
+        const original = Buffer.from([0, 255, 127, 128, 42]);
+        fs.mkdirSync(path.join(raw, relative), {recursive: true});
+        fs.writeFileSync(path.join(raw, relative, 'workbench'), original, {mode: 0o755});
+        fs.symlinkSync('workbench', path.join(raw, relative, 'alias'));
+        const archived = archiveMacOutput(output, arch);
+        assert.equal(fs.existsSync(raw), false);
+        assert.equal(path.dirname(path.dirname(archived)), path.join(output, '.packaged-apps.noindex'));
+        assert.deepEqual(fs.readFileSync(path.join(archived, relative, 'workbench')), original);
+        assert.equal(fs.statSync(path.join(archived, relative, 'workbench')).mode & 0o777, 0o755);
+        assert.equal(fs.readlinkSync(path.join(archived, relative, 'alias')), 'workbench');
+        fs.mkdirSync(raw);
+        fs.writeFileSync(path.join(raw, 'next-build'), 'new bytes');
+        const next = archiveMacOutput(output, arch);
+        assert.notEqual(next, archived);
+        assert.deepEqual(fs.readFileSync(path.join(archived, relative, 'workbench')), original);
+        assert.equal(fs.readFileSync(path.join(next, 'next-build'), 'utf8'), 'new bytes');
+    }
+    assert.equal(fs.readFileSync(dmg, 'utf8'), 'delivered disk image');
 });

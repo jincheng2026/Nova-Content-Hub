@@ -79,15 +79,27 @@ export async function validateInstallerMarketplace(input, release, sealed) {
     return entries;
 }
 
+export function archiveMacOutput(output, arch) {
+    const name = arch === 'x64' ? 'mac' : `mac-${arch}`;
+    const source = path.join(output, name);
+    if (!fs.lstatSync(source).isDirectory()) throw Error('Packaged macOS output must be a directory');
+    // Keep validated build copies away from Spotlight without changing the delivered DMG.
+    const parent = path.join(output, '.packaged-apps.noindex');
+    fs.mkdirSync(parent, {recursive: true});
+    const archived = path.join(fs.mkdtempSync(path.join(parent, 'build-')), name);
+    fs.renameSync(source, archived);
+    return archived;
+}
+
 export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
     return {
         appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',
-        productName: '自媒体工作台',
+        productName: options.channel === 'local' ? '自媒体工作台开发版' : options.channel === 'testing' ? '自媒体工作台测试版' : '自媒体工作台',
         electronVersion: '44.9.0',
         directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},
-        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 free preview; no login required; non-production build', author: 'Nova Content Hub'},
+        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 · 内容整理、模板学习与封面制作', author: 'Nova Content Hub'},
         artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\${ext}`,
         publish: null,
         // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.
@@ -168,6 +180,7 @@ export async function distribute(args = process.argv.slice(2)) {
         ? path.join(builderConfig.directories.output, `mac${suffix}`, `${builderConfig.productName}.app`, 'Contents/Resources')
         : path.join(builderConfig.directories.output, `win${suffix}-unpacked`, 'resources');
     await validateInstallerMarketplace(path.join(resources, 'plugin-marketplace'), pluginRelease, sealedMarketplace);
+    if (options.platform === 'darwin') console.log(`Validated macOS build copy archived: ${archiveMacOutput(builderConfig.directories.output, options.arch)}`);
     console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);
 }
 

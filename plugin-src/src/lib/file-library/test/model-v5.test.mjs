@@ -218,6 +218,25 @@ test('portable settings, normalized ratios, channel identity, prompt disable and
     reject('INVALID_INPUT', () => f.lib.updateProfile({host: 'codex'}, s.editToken));
 });
 
+for (const kind of ['Content', 'Collection']) test(`${kind} retains unchanged inactive channels but validates changed channel links`, t => {
+    const {lib} = fixture(t), create = lib[`create${kind}`], update = lib[`update${kind}`], read = lib[`read${kind}`];
+    const original = create({title: 'original', body: 'retained', channelIds: ['douyin']});
+    lib.trashChannel('douyin', lib.readLibrarySettings().editToken);
+    const patch = {title: 'renamed', channelIds: original.channelIds};
+    const mutation = {mutationId: randomUUID()};
+    const renamed = update(original.id, patch, original.editToken, mutation);
+    assert.equal(renamed.title, 'renamed');
+    assert.equal(renamed.body, original.body);
+    assert.deepEqual(renamed.channelIds, original.channelIds);
+    assert.equal(update(original.id, patch, original.editToken, mutation).editToken, renamed.editToken);
+    reject('INVALID_INPUT', () => update(original.id, {...patch, title: 'different'}, original.editToken, mutation));
+    reject('CONFLICT', () => update(original.id, patch, original.editToken));
+    for (const channelIds of [['missing-channel'], ['douyin', 'wechat-official']]) reject('INVALID_INPUT', () => update(original.id, {channelIds}, renamed.editToken));
+    assert.equal(read(original.id).editToken, renamed.editToken);
+    reject('INVALID_INPUT', () => create({title: 'new', body: '', channelIds: ['douyin']}));
+    assert.deepEqual(update(original.id, {channelIds: []}, renamed.editToken).channelIds, []);
+});
+
 test('collections own body/materials/plan/publication and only reference content members', async t => {
     const f = fixture(t), a = await image(f);
     let c = f.lib.createContent({title: 'member', body: 'member body', recordedDate: '2026-08-01', isExample: true});

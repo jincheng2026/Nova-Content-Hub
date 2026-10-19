@@ -57,11 +57,11 @@ function ValidationInput({value, required, disabled, type = 'text', min, max}: P
   useEffect(() => {setInvalid('');}, [value]);
   return <><input className="semi-control-validation" aria-hidden="true" tabIndex={-1} type={type} value={value} required={required} disabled={disabled} min={min} max={max} step={type === 'datetime-local' ? 1 : undefined} onChange={() => {}} onInvalid={event => {event.preventDefault(); setInvalid(event.currentTarget.validity.valueMissing ? '请完成此项填写。' : '请检查填写格式或日期范围。'); event.currentTarget.parentElement?.querySelector<HTMLElement>('[role="combobox"], .semi-input')?.focus();}}/>{invalid && <span role="alert" className="semi-control-error">{invalid}</span>}</>;
 }
-export function PopupSelect({children, onChange, ...props}: ControlProps & {children: ReactNode}) {
+export function PopupSelect({children, onChange, searchable = false, ...props}: ControlProps & {children: ReactNode; searchable?: boolean}) {
   const select = useRef<Select<string>>(null);
   const {ref, popup, change, nameId, label, setOpen} = useControl(onChange, props.disabled, props.id, props['aria-label'], () => select.current?.close());
   const options = Children.toArray(children).filter(isValidElement<{value: string; disabled?: boolean; children?: ReactNode}>).map(option => ({value: option.props.value, disabled: option.props.disabled, label: option.props.children}));
-  return <span ref={ref} className="semi-control"><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} optionList={options} getPopupContainer={popup} onChange={value => {if (typeof value === 'string') change(value);}}/><ValidationInput {...props}/></span>;
+  return <span ref={ref} className="semi-control"><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} optionList={options} filter={searchable ? (input, option) => String(option.label ?? '').toLocaleLowerCase().includes(input.toLocaleLowerCase()) : false} virtualize={searchable ? {itemSize: 36, height: 252} : undefined} searchPlaceholder="搜索选项" emptyContent="没有匹配的选项" getPopupContainer={popup} onChange={value => {if (typeof value === 'string') change(value);}}/><ValidationInput {...props}/></span>;
 }
 export function CalendarDateInput({onChange, min, max, ...props}: ControlProps & {min?: string; max?: string}) {
   const picker = useRef<BaseDatePicker>(null);

@@ -3,9 +3,10 @@ import type {Attempt, Candidate, CoverJob, CoverView} from '../shared/cover-cont
 interface CandidateGroup {key: string; job: CoverJob | null; attempt: Attempt | null; candidates: Candidate[]; batchNumber?: number; latest?: boolean; label?: string}
 
 export function coverCandidateGroups({jobs, candidates}: Pick<CoverView, 'jobs' | 'candidates'>, favorites = new Set<string>(), onlyFavorites = false): CandidateGroup[] {
-  const groups: CandidateGroup[] = [], shown = new Set<string>();
+  const groups: CandidateGroup[] = [], shown = new Set<string>(), byAttempt = new Map<string, Candidate[]>();
+  for (const candidate of candidates) {const key = JSON.stringify([candidate.requestId, candidate.attemptId]), matches = byAttempt.get(key) ?? []; matches.push(candidate); byAttempt.set(key, matches);}
   for (const job of [...jobs].reverse()) for (const attempt of [...job.attempts].reverse()) {
-    const matches = candidates.filter(candidate => candidate.requestId === job.id && candidate.attemptId === attempt.attemptId && !shown.has(candidate.id));
+    const matches = (byAttempt.get(JSON.stringify([job.id, attempt.attemptId])) ?? []).filter(candidate => !shown.has(candidate.id));
     if (matches.length) {
       matches.forEach(candidate => shown.add(candidate.id));
       groups.push({key: JSON.stringify([job.id, attempt.attemptId]), job, attempt, candidates: matches});

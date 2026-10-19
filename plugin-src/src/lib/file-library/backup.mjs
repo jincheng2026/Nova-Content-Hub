@@ -271,7 +271,7 @@ export function backupMethods(h) {
                 source: {libraryId: initial.libraryId, schemaVersion: initial.schemaVersion},
                 startedAt,
                 completedAt: new Date().toISOString(),
-                toolVersion: '0.3.18',
+                toolVersion: '0.3.22',
                 platform: os.platform(),
                 consistency: 'stable-verified-copy',
                 excludedPaths: [EXCLUDED],

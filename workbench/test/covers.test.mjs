@@ -333,6 +333,49 @@ test('synthetic committed candidates show real bytes, manual selection/export, c
   const retry = await f.controller.retryCover({ contentId: f.content.id, requestId: job.id, attemptId }); const ref = { contentId: f.content.id, requestId: job.id, attemptId: retry.jobs[0].activeAttemptId }; await f.controller.cancelCover(ref);
   await assert.rejects(f.controller.continueCover(ref), { code: 'ATTEMPT_INACTIVE' });
 });
+for (const kind of ['cover', 'material']) test(`${kind} file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation`, async t => {
+  const f = await fixture(t);
+  f.bytes = await sharp({create: {width: 8, height: 6, channels: 3, background: '#da5829'}}).png().toBuffer();
+  await commitCandidate(f, (await f.start()).jobs[0]);
+  const content = f.library.readContent(f.content.id);
+  const attached = f.library.attachContentMaterial(content.id, {assetHash: f.asset.assetHash, originalName: 'reference.png', role: 'reference'}, content.editToken);
+  const input = kind === 'cover' ? {contentId: content.id, candidateId: content.candidates[0].id} : {contentId: content.id, materialId: attached.materials[0].id};
+  const exportFile = () => kind === 'cover' ? f.controller.exportCover(input) : f.controller.exportContentMaterial(input);
+  const libraryAlias = path.join(f.root, 'library alias'), contentAlias = path.join(f.root, 'content alias');
+  await fs.symlink(f.libraryRoot, libraryAlias, 'dir');
+  await fs.symlink(path.join(f.libraryRoot, '内容', content.id), contentAlias, 'dir');
+  const snapshot = async () => Promise.all((await fs.readdir(f.libraryRoot, {recursive: true})).sort().map(async name => {
+    const file = path.join(f.libraryRoot, name);
+    return [name, (await fs.stat(file)).isFile() ? await fs.readFile(file) : null];
+  }));
+  const before = await snapshot();
+  const destinations = [
+    path.join(f.libraryRoot, '内容库.json'),
+    path.join(f.libraryRoot, '内容', content.id, '内容.json'),
+    path.join(f.libraryRoot, '资产', 'sha256', f.asset.assetHash.slice(0, 2), f.asset.assetHash),
+    path.join(f.libraryRoot, 'new-export.png'),
+    path.join(libraryAlias, '内容库.json'),
+    path.join(contentAlias, '内容.json')
+  ];
+  for (const destination of destinations) {
+    f.controller.dialogs.export = async () => destination;
+    await assert.rejects(exportFile(), {code: 'INVALID_DESTINATION'}, destination);
+    assert.deepEqual(await snapshot(), before, 'rejection preserves every library file and creates no temporary file');
+  }
+  const outside = path.join(f.root, 'library-exports'), outsideAlias = path.join(f.root, 'export alias');
+  await fs.mkdir(outside); await fs.symlink(outside, outsideAlias, 'dir');
+  const target = path.join(outside, 'export.png'); await fs.writeFile(target, 'previous outside file');
+  f.controller.dialogs.export = async () => path.join(outsideAlias, 'export.png');
+  assert.deepEqual(await exportFile(), {exported: true});
+  assert.deepEqual(await fs.readFile(target), kind === 'cover' ? f.bytes : await fs.readFile(f.source));
+  assert.deepEqual(await fs.readdir(outside), ['export.png']);
+  assert.deepEqual(await snapshot(), before);
+  const rootBeforeCancel = (await fs.readdir(f.root, {recursive: true})).sort();
+  f.controller.dialogs.export = async () => null;
+  assert.deepEqual(await exportFile(), {exported: false});
+  assert.deepEqual((await fs.readdir(f.root, {recursive: true})).sort(), rootBeforeCancel, 'cancel creates nothing');
+  assert.deepEqual(await snapshot(), before);
+});
 test('unavailable historical snapshots do not hide healthy jobs, candidates or completed actions', async t => {
   const f = await fixture(t); const first = await f.start(), old = first.jobs[0];
   const oldReference = { contentId: f.content.id, requestId: old.id, attemptId: old.activeAttemptId };

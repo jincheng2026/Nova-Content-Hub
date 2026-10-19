@@ -66,3 +66,14 @@ test('annotation notes round-trip through the existing note field without losing
   const malformed = '【封面位置批注】\n1. (x=101%, y=0%) 错误\n【整体修改要求】\n不要丢掉';
   assert.deepEqual(readAnnotationNote(malformed), {points: [], overall: malformed});
 });
+
+
+test('large histories index exact attempt pairs without losing candidates', () => {
+  const jobs = Array.from({length: 300}, (_, i) => job(`job-${i}`, [attempt('shared')]));
+  const candidates = jobs.flatMap((item, i) => Array.from({length: 20}, (_, j) => candidate(`candidate-${i}-${j}`, item.id, 'shared')));
+  const groups = coverCandidateGroups({jobs, candidates});
+  assert.equal(groups.length, 300);
+  assert.equal(groups.flatMap(group => group.candidates).length, 6000);
+  assert.equal(groups[0].candidates[0].id, 'candidate-299-0');
+  assert.equal(groups.at(-1).candidates.at(-1).id, 'candidate-0-19');
+});

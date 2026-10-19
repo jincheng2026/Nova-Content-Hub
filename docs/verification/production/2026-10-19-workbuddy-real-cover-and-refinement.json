@@ -1,0 +1,180 @@
+{
+  "format": "nova-workbuddy-real-cover-and-refinement",
+  "schemaVersion": 1,
+  "verifiedAt": "2026-10-19T12:13:58.451Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.20",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.20:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "helperReadRoot": "/Users/mac/nch-wb-0320-n31uRZ/library",
+  "contentId": "1ed980db-5096-4832-b45f-50714fbfdaa1",
+  "realHostSubmission": {
+    "reportedBy": "main thread CUA observation",
+    "bothTasksManuallySubmittedInWorkBuddy": true,
+    "hostSessionWorkingDirectoryWasRecoveredLibrary": true,
+    "nativeHandoffAndRequestsPointedToTemporaryLibrary": true,
+    "launchURIExecutionTested": false,
+    "hostAutomaticLaunchTested": false,
+    "entireUserLibraryUnchangedClaimed": false
+  },
+  "workflow": {
+    "firstCommitted": true,
+    "secondCommitted": true,
+    "firstOriginalBytesUnchanged": true,
+    "annotationNotePreserved": true,
+    "originalReferenceAssetHash": "17784fb833cb87e802d54972ee6b7e1145547a96567b4f608da467cbc7076abd",
+    "originalNote": "【封面位置批注】\n1. (x=50%, y=86%) 删除画面底部额外出现的整行‘高效创作，有序生活’，不要替换为任何新文字。保留主标题‘让创作更有条理’及‘灵感’‘资料’‘封面’，其它布局、色彩和物件尽量不变。保留平台强制AI生成标识，不裁切、不涂抹水印。\n【整体修改要求】\n",
+    "fixedNormalizedAnnotationPoint": {
+      "x": 0.5,
+      "y": 0.86
+    },
+    "laterVisualCenterEstimate": {
+      "x": 0.5,
+      "y": 0.92
+    }
+  },
+  "results": {
+    "first": {
+      "status": "committed",
+      "requestId": "55ccfbfa-e3a3-4870-b83f-3317caf2d833",
+      "requestHash": "d2ac7028bd9a92efea301409386fd61e2e1ecfd3072edb6b1291269f255aa2a7",
+      "attemptId": "9dd49c52-e354-42bb-aab3-8076fc7e31ab",
+      "handoffId": "6153e1e6-ea48-4c26-9699-1fc0a1ca9a21",
+      "candidateId": "ae16aed6-1626-4822-95e7-cf3ac3079de4",
+      "resultId": "0f22829c-62ea-4bf0-92a7-a0d50adc5356",
+      "assetHash": "17784fb833cb87e802d54972ee6b7e1145547a96567b4f608da467cbc7076abd",
+      "bytes": 1124999,
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "originalCopy": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-real-0320/first-original.png",
+      "receiptSha256": "c973e1faee37dd5087ab2a0bb097a26fd1d3b1957e95ccf0284d77e58fdecf1b",
+      "receipt": {
+        "libraryId": "2d2e88ad-8deb-40e9-a092-f496cd48753c",
+        "contentId": "1ed980db-5096-4832-b45f-50714fbfdaa1",
+        "requestId": "55ccfbfa-e3a3-4870-b83f-3317caf2d833",
+        "attemptId": "9dd49c52-e354-42bb-aab3-8076fc7e31ab",
+        "requestHash": "d2ac7028bd9a92efea301409386fd61e2e1ecfd3072edb6b1291269f255aa2a7",
+        "resultId": "0f22829c-62ea-4bf0-92a7-a0d50adc5356",
+        "files": [
+          {
+            "name": "cover-linggan-ziliao-fengmian-768x1024.png",
+            "sha256": "17784fb833cb87e802d54972ee6b7e1145547a96567b4f608da467cbc7076abd"
+          }
+        ]
+      },
+      "validationReportSha256": "def15b6452eeb78d34334f9e9861d06f6e2005a7e66a1c0c5738b7997b38792c",
+      "decodedByInstalledCore": true,
+      "decodedInProductUI": true
+    },
+    "second": {
+      "status": "committed",
+      "requestId": "f4a3ec49-b449-4cd8-a559-002c9bc329fe",
+      "requestHash": "a2b9b86e5b39a2c5092864e4edd664ec390653ba17eff0e89f2389e6e13d56ba",
+      "attemptId": "daf1d943-ef91-470c-9203-8bcde001b44c",
+      "handoffId": "f2984ec8-529f-47eb-9a8c-2711bcd67da3",
+      "candidateId": "9c6fb7ce-8821-4974-bb68-237d9ec81ced",
+      "resultId": "52b9b103-d2df-427d-a79d-d8051ad9bbdf",
+      "assetHash": "a1177c9039015279df65465de2225bbed0412bd5e9b1cbc1965a164d4e34cec7",
+      "bytes": 1069717,
+      "dimensions": {
+        "width": 768,
+        "height": 1024
+      },
+      "originalCopy": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-real-0320/second-original.png",
+      "receiptSha256": "ba3d65488759de7d8ee170bc553a2011e8e0c3f6922083bb436bff0e42e3d678",
+      "receipt": {
+        "libraryId": "2d2e88ad-8deb-40e9-a092-f496cd48753c",
+        "contentId": "1ed980db-5096-4832-b45f-50714fbfdaa1",
+        "requestId": "f4a3ec49-b449-4cd8-a559-002c9bc329fe",
+        "attemptId": "daf1d943-ef91-470c-9203-8bcde001b44c",
+        "requestHash": "a2b9b86e5b39a2c5092864e4edd664ec390653ba17eff0e89f2389e6e13d56ba",
+        "resultId": "52b9b103-d2df-427d-a79d-d8051ad9bbdf",
+        "files": [
+          {
+            "name": "cover-annot-removed-slogan-768x1024.png",
+            "sha256": "a1177c9039015279df65465de2225bbed0412bd5e9b1cbc1965a164d4e34cec7"
+          }
+        ]
+      },
+      "validationReportSha256": "d4257dfead1f7518c86603300df47da3a67521dc3b447f99778576957068c8be",
+      "decodedByInstalledCore": true,
+      "decodedInProductUI": true
+    }
+  },
+  "visualReview": {
+    "first": {
+      "accepted": false,
+      "extraCaption": "高效创作，有序生活"
+    },
+    "second": {
+      "status": "targeted-change-confirmed-by-direct-original-image-view",
+      "removedCaption": "高效创作，有序生活",
+      "unrequestedCaptionRemoved": true,
+      "replacementCaptionVisible": false,
+      "mainTitlePreserved": "让创作更有条理",
+      "supportingLabelsPreserved": [
+        "灵感",
+        "资料",
+        "封面"
+      ],
+      "platformAIGenerationMarkVisible": true,
+      "layoutObjectsAndColorsVisuallyConsistent": true,
+      "pixelIdentityOutsideRequestedEditNotAsserted": true,
+      "productUIDecodeVerified": true,
+      "productUIFinalAcceptanceVerified": false
+    },
+    "productUIDecodeVerified": true,
+    "productUIFinalAcceptanceVerified": false,
+    "productUIFinalAcceptanceBoundary": "Targeted edit and actual packaged image decoding verified by main thread; user has not selected a final publication cover."
+  },
+  "boundaries": {
+    "helperOnlyReadTemporaryBusinessLibrary": true,
+    "helperSentNoHostMessages": true,
+    "installedControllerAndWorkerUsedForBusinessReads": true,
+    "boundedHashedReceiptsCopiedFromTemporaryAttempt": true,
+    "entireHostSessionFileAccessAudited": false,
+    "wholeUserLibraryMetadataUnchangedNotClaimed": true
+  },
+  "productUI": {
+    "version": "0.3.21",
+    "contentId": "1ed980db-5096-4832-b45f-50714fbfdaa1",
+    "candidateIds": [
+      "ae16aed6-1626-4822-95e7-cf3ac3079de4",
+      "9c6fb7ce-8821-4974-bb68-237d9ec81ced"
+    ],
+    "images": [
+      {
+        "width": 768,
+        "height": 1024
+      },
+      {
+        "width": 768,
+        "height": 1024
+      }
+    ],
+    "passed": true,
+    "scope": "Actual packaged renderer/preload/IPC/workers and nova-content asset protocol; real WorkBuddy candidate bytes decoded. Isolated machine binding, no user library changes.",
+    "imageURLsOmitted": true
+  },
+  "finalVisualAcceptance": {
+    "checkedBy": "main thread direct original image inspection",
+    "removedExtraCaption": true,
+    "retainedTitleAndThreeLabels": true,
+    "retainedMandatoryPlatformMark": true,
+    "originalCandidateUnchanged": true
+  },
+  "productUIDecodeVerified": true
+}

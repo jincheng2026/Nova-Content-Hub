@@ -15,6 +15,10 @@ export const skillNames = ['nova-content-template-study', 'nova-content-template
 export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution'];
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
 
+export function runtimeSourceFilter(input) {
+    return !['test', '.DS_Store', 'README.md'].includes(basename(input)) && input !== join(source, 'resources/builtin-templates/evidence');
+}
+
 export function hooksFor(host, events) {
     return {
         hooks: Object.fromEntries(events.map(event => [event, [{
@@ -66,7 +70,7 @@ async function validateSkills() {
 }
 
 async function manifests(dest, release, names, prefix = './skills') {
-    const description = `自媒体${names.length === 3 ? '不可执行预接入契约' : '封面实验执行与独立契约'}插件；prototype，productionReady=false；${release.pairId}`;
+    const description = `${names.length === 3 ? '自媒体模板契约插件' : '自媒体工作台配套插件 · 封面制作与模板学习'}；${release.pairId}`;
     const base = {name: release.appScope, version: release.version, description, author: {name: 'Nova Content Hub'}};
     for (const directory of ['bin', 'hooks', '.codex-plugin', '.codebuddy-plugin']) await mkdir(join(dest, directory), {recursive: true});
     await json(join(dest, '.codex-plugin/plugin.json'), {...base, skills: prefix + '/', hooks: './hooks/codex.json'});
@@ -136,6 +140,7 @@ export async function buildCover(mode) {
     if (!npmCLI || !fs.statSync(npmCLI).isFile()) throw new Error('Run this builder through npm so its Node/npm runtime is explicit.');
     const sourcePackage = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'));
     if (!sourcePackage.dependencies?.sharp || !/^\d+\.\d+\.\d+$/.test(sourcePackage.dependencies.sharp)) throw new Error('Pin the shared sharp runtime before building.');
+    const {devDependencies: _devDependencies, ...runtimePackage} = sourcePackage;
     const outputs = [];
     for (const base of releases) {
         const release = {
@@ -146,7 +151,7 @@ export async function buildCover(mode) {
         await rm(target, {recursive: true, force: true});
         await mkdir(join(target, 'cover-runtime'), {recursive: true});
         const bundled = await bundleNode(target);
-        await cp(join(source, 'src'), join(target, 'plugin-src/src'), {recursive: true, filter: input => !['test', '.DS_Store'].includes(basename(input))});
+        await cp(join(source, 'src'), join(target, 'plugin-src/src'), {recursive: true, filter: runtimeSourceFilter});
         // One release file serves both command spaces; compatibility paths never carry their own auth mode.
         await json(join(target, 'plugin-src/src/release.json'), release);
         await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true});
@@ -168,20 +173,19 @@ export async function buildCover(mode) {
             const bytes = await readFile(join(source, 'resources', relative));
             if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
         }
-        await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: input => !['test', '.DS_Store'].includes(basename(input))});
-        await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs'});
+        await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: runtimeSourceFilter});
+        await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs' && runtimeSourceFilter(input)});
         await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
         await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true});
         const legacySkill = join(target, 'cover-runtime/skills/nova-content-cover-execution/SKILL.md');
         await writeFile(legacySkill, (await readFile(legacySkill, 'utf8')).replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
-        await writeFile(join(target, 'cover-runtime/README.md'), '# 兼容封面入口\n\n`node cover-runtime/cli.mjs` 转发到唯一封面命令。[完整说明](../plugin-src/compat/cover-runtime/README.md)。\n');
-        await cp(join(source, 'README.md'), join(target, 'plugin-src/README.md'));
-        await writeFile(join(target, 'README.md'), '# 自媒体插件 · 实验包\n\n统一入口：macOS/Linux 使用 `bin/run-node doctor`，Windows 使用 `bin\\run-node.cmd doctor`。随包包含锁定 Node.js 24.20.0，无需安装 Node。包仅适用于 runtime/manifest.json 标记的系统和架构。契约校验使用 `contract`，真实文件执行使用 `cover` 和 `template`；required 模式停止业务读写。见 [运行时说明](runtime/README.md)、[插件说明](plugin-src/README.md)、[封面执行](cover-runtime/README.md) 和 [数据维护](plugin-src/src/lib/library-maintenance/README.md)。本包不代表商用发行就绪。\n');
-        await cp(join(source, 'runtime/README.md'), join(target, 'runtime/README.md'));
+        await writeFile(join(target, 'cover-runtime/README.md'), '# 封面制作\n\n请从工作台发起制作，再到所选助手完成生成，回工作台查看和选择结果。此目录是配套插件所需的兼容入口，请完整保留。\n');
+        await writeFile(join(target, 'README.md'), '# 自媒体工作台配套插件\n\n在工作台“配套插件与使用帮助”中点击“准备安装插件”，到 Codex 或 WorkBuddy 的插件页面添加本地市场，再安装、启用并确认插件权限。回工作台检查连接后，即可发起封面制作或模板学习。\n\n无需另外安装 Node。请完整保留此目录；升级应用后，如提示版本不匹配，请同时更新配套插件。封面由所选助手生成，可能使用已有的助手额度。\n');
+        await writeFile(join(target, 'runtime/README.md'), '# 配套运行时\n\n本目录包含插件所需的 Node.js 及其许可证，无需单独安装。请完整保留目录内容；如提示文件损坏或系统、芯片不匹配，请重新获取对应安装包。\n');
         await manifests(target, release, allSkillNames);
         await writeLaunchers(target);
         await json(join(target, 'package.json'), {
-            ...sourcePackage,
+            ...runtimePackage,
             scripts: {start: process.platform === 'win32' ? 'bin\\run-node.cmd doctor' : './bin/run-node doctor'}
         });
         await cp(join(root, 'package-lock.json'), join(target, 'package-lock.json'));

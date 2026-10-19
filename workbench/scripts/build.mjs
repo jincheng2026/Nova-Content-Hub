@@ -4,7 +4,7 @@ import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {build} from 'vite';
-import {buildCover} from '../../plugin-src/scripts/build.mjs';
+import {buildCover, runtimeSourceFilter} from '../../plugin-src/scripts/build.mjs';
 import {buildMarketplace} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {syncBridge} from '../../plugin-src/scripts/sync-bridge.mjs';
 import {checkAppIcons} from './build-app-icons.mjs';
@@ -94,7 +94,7 @@ for (const mode of modes) {
     for (const relative of ['plugin-src/src/lib', 'plugin-src/resources', 'plugin-src/src/bridge', 'plugin-src/src/content.mjs', 'plugin-src/references', 'plugin-src/schemas']) {
         const destination = path.join(target, relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
-        fs.cpSync(path.join(root, relative), destination, {recursive: true, filter: input => !['test', '.DS_Store'].includes(path.basename(input))});
+        fs.cpSync(path.join(root, relative), destination, {recursive: true, filter: runtimeSourceFilter});
     }
     const catalog = JSON.parse(fs.readFileSync(path.join(root, 'plugin-src/src/lib/browser-import/builtin-resources.json'), 'utf8'));
     if (catalog.format !== 'nova-browser-import-builtin-resources' || catalog.schemaVersion !== 1 || !catalog.entries || Object.keys(catalog.entries).length !== 72) throw new Error('Unsupported import resource catalog');
@@ -103,7 +103,7 @@ for (const mode of modes) {
         const bytes = fs.readFileSync(path.join(target, 'plugin-src/resources', relative));
         if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
     }
-    const {type: _type, ...runtimePackage} = packageJSON;
+    const {type: _type, devDependencies: _devDependencies, ...runtimePackage} = packageJSON;
     fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({
         ...runtimePackage,
         main: 'workbench/dist/main/index.mjs',

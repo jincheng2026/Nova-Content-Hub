@@ -1,0 +1,66 @@
+{
+  "renamed": [
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/incomplete-native-033-1792352361994.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/incomplete-native-033-1792352361994.app.disabled",
+      "entries": 773,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/before-033-1792352011947/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/before-033-1792352011947/自媒体工作台.app.disabled",
+      "entries": 1464,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-focus-fix-pl1tttac/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-focus-fix-pl1tttac/自媒体工作台.app.disabled",
+      "entries": 1464,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-031-6mc_5odv/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-031-6mc_5odv/自媒体工作台.app.disabled",
+      "entries": 1461,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-030-000148/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-030-000148/自媒体工作台.app.disabled",
+      "entries": 1461,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-repeat-fix-003701/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-19-before-repeat-fix-003701/自媒体工作台.app.disabled",
+      "entries": 1461,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-18-before-unified-6psae872/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/2026-10-18-before-unified-6psae872/自媒体工作台.app.disabled",
+      "entries": 1445,
+      "bytesPreserved": true
+    },
+    {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/before-032-1792347710787/自媒体工作台.app",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/mac-install-backups/before-032-1792347710787/自媒体工作台.app.disabled",
+      "entries": 1464,
+      "bytesPreserved": true
+    }
+  ],
+  "unregisteredTrash": [
+    "/Users/mac/.Trash/自媒体工作台.app",
+    "/Users/mac/.Trash/自媒体工作台 00-06-50-746.app",
+    "/Users/mac/.Trash/自媒体工作台 00-42-32-832.app",
+    "/Users/mac/.Trash/自媒体工作台 01-19-54-077.app",
+    "/Users/mac/.Trash/自媒体工作台 01-58-28-642.app",
+    "/Users/mac/.Trash/自媒体工作台 02-24-53-115.app",
+    "/Users/mac/.Trash/自媒体工作台 19.06.02.app",
+    "/Users/mac/.Trash/自媒体工作台 03-34-46-844.app",
+    "/Users/mac/.Trash/自媒体工作台 19.22.24.app",
+    "/Users/mac/.Trash/自媒体工作台 19.22.35.app"
+  ],
+  "originalAppPreserved": true,
+  "nativeRecoveryBackupsUntouched": true
+}

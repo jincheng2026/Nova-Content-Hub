@@ -253,8 +253,8 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('document.querySelector("#cover-photo .semi-select-selection-text").textContent==="我的本人照"');
       await click('#no-person','这次不放人物');
       await wait('document.querySelector("#cover-photo .semi-select-selection-text").textContent==="这次不放人物"');
-      await run('document.querySelector(".cover-advanced").open=true;document.querySelector(".cover-materials input").click()');
-      await wait('document.querySelector(".cover-materials input").checked');
+      await run('document.querySelector(".cover-advanced").open=true;document.querySelector(".cover-materials input[type=checkbox]").click()');
+      await wait('document.querySelector(".cover-materials input[type=checkbox]").checked');
       await click('#generate-cover','去 WorkBuddy 生成封面');
       await wait('window.generated && !document.querySelector(".cover-create-dialog") && document.getElementById("continue-cover")');
       assert.equal(await run('window.generated.input.photo'),null);

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useMemo, useRef, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
 import Input from '@douyinfe/semi-ui-19/lib/es/input';
@@ -10,18 +10,29 @@ import {publicationTime, recordingSchedule} from './publication-model.ts';
 import {invoke} from './client.ts';
 import {PopupSelect, CalendarDateInput, ClockTimeInput, UtcDateTimeInput} from './semi-controls.tsx';
 import './publication-workspace.css';
+import {PaginationBar} from './pagination-bar.tsx';
+import {compareSchedules} from '../shared/publication-view.ts';
 
 export interface PublicationFocus {kind: WorkspaceKind; id: string; planId?: string; day?: string}
 type PublicationSelection = {mode: 'plan' | 'record' | 'correct' | 'retract'; documentId: string; kind: WorkspaceKind; plan?: WorkspaceLibraryPlan; publication?: WorkspacePublication};
 
-export function PublicationPanel(props: WorkspaceManagementProps & {documentId: string | null; kind?: WorkspaceKind; selectedDay?: string; focusedPlanId?: string; newPlanRequest?: number}) {
+export function PublicationPanel(props: WorkspaceManagementProps & {documentId: string | null; kind?: WorkspaceKind; selectedDay?: string; focusedPlanId?: string; focusRequest?: PublicationFocus | null; newPlanRequest?: number}) {
   const kind = props.kind ?? 'content';
   const document = (kind === 'content' ? props.library?.contentDetails : props.library?.collections)?.find(item => item.id === props.documentId);
   const [dialog, setDialog] = useState<PublicationSelection | null>(null), {mutate, notice} = useWorkspaceMutation(props);
   useManagedDraftGuard(!!dialog);
+  const [planPage, setPlanPage] = useState(1), [historyPage, setHistoryPage] = useState(1), [query, setQuery] = useState(''), [status, setStatus] = useState('');
+  const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  const sortedPlans = useMemo(() => [...(document?.plans ?? [])].sort((a, b) => compareSchedules(a.schedule, b.schedule, timezone) || a.id.localeCompare(b.id)), [document, timezone]);
+  const matches = (channel: string | null | undefined, text: string | null | undefined) => `${channel ?? ''} ${text ?? ''}`.toLowerCase().includes(query.trim().toLowerCase());
+  const plans = sortedPlans.filter(plan => (!status || plan.status === status) && matches(props.library?.settings.channels.find(channel => channel.id === plan.channelId)?.name, plan.textMode === 'body' ? document?.body : plan.text));
+  const sortedHistory = useMemo(() => [...(document?.publications ?? [])].sort((a, b) => compareSchedules(b.schedule, a.schedule, timezone) || b.id.localeCompare(a.id)), [document, timezone]);
+  const history = sortedHistory.filter(item => matches(item.channelName, `${item.title ?? ''} ${item.text ?? ''}`));
+  const currentPlanPage = Math.min(planPage, Math.max(1, Math.ceil(plans.length / 10))), currentHistoryPage = Math.min(historyPage, Math.max(1, Math.ceil(history.length / 10)));
+  useEffect(() => {setQuery(''); setStatus(''); setHistoryPage(1); const index = sortedPlans.findIndex(plan => plan.id === props.focusedPlanId); setPlanPage(index < 0 ? 1 : Math.floor(index / 10) + 1);}, [props.documentId, document?.id, kind, props.focusedPlanId, props.focusRequest]);
   const focusRow = useRef<HTMLElement>(null);
   const disabled = props.busy || !!document?.deletedAt || !!dialog;
-  useEffect(() => { focusRow.current?.scrollIntoView({block: 'nearest'}); }, [props.focusedPlanId]);
+  useEffect(() => { focusRow.current?.scrollIntoView({block: 'nearest'}); }, [props.focusedPlanId, currentPlanPage, props.documentId, kind, query, status, sortedPlans]);
   useEffect(() => {
     if (props.newPlanRequest && document && !document.deletedAt && !dialog) setDialog({mode: 'plan', documentId: document.id, kind});
   }, [props.newPlanRequest]);
@@ -30,9 +41,10 @@ export function PublicationPanel(props: WorkspaceManagementProps & {documentId: 
     setDialog({...selection, documentId: document.id, kind});
   };
   return <div className="workspace-management publication-workspace">
+    {document && <div className="management-toolbar"><Input type="search" aria-label="搜索发布安排与历史" placeholder="搜索渠道或发布文字" value={query} onChange={value => {setQuery(value); setPlanPage(1); setHistoryPage(1);}}/><label>计划状态<PopupSelect aria-label="筛选计划状态" value={status} onChange={value => {setStatus(value); setPlanPage(1);}}><option value="">全部状态</option><option value="planned">待发布</option><option value="published">已记录发布</option><option value="cancelled">已取消</option></PopupSelect></label></div>}
     <Card><div className="publication-heading"><div><h3>发布计划</h3><p>安排渠道和时间，手动发布后回来记录结果。</p></div><Button theme="solid" disabled={disabled || !document} onClick={() => choose({mode: 'plan'})}>＋ 新增发布计划</Button></div>
       {document ? <><div className="publication-summary"><span>{document.plans.filter(plan => plan.status === 'planned').length} 条待发布</span><span>{document.publications.filter(item => !document.publicationEvents.some(event => event.targetId === item.id)).length} 条有效发布记录</span><span>仅保存到本机</span></div>{document.deletedAt && <p className="danger-note">这份内容在回收站中。恢复后可继续安排发布。</p>}
-        {document.plans.map(plan => {
+        {plans.slice((currentPlanPage - 1) * 10, currentPlanPage * 10).map(plan => {
           const channel = props.library?.settings.channels.find(item => item.id === plan.channelId);
           const choice = plan.coverChoice;
           const coverId = choice && ('candidateId' in choice ? choice.candidateId : document.coverVariants.find(item => item.id === choice.variantId)?.selectedCandidateId);
@@ -42,15 +54,20 @@ export function PublicationPanel(props: WorkspaceManagementProps & {documentId: 
             {cover?.url && <img className="publication-cover" src={cover.url} alt="计划使用的封面"/>}
             <div className="management-actions publication-plan-actions">{plan.status !== 'published' && <Button disabled={disabled} onClick={() => choose({mode: 'plan', plan})}>{plan.status === 'cancelled' ? '重新安排' : '编辑计划'}</Button>}{plan.status === 'planned' && <><Button theme="solid" disabled={disabled} onClick={() => choose({mode: 'record', plan})}>记录已发布</Button><Button theme="borderless" disabled={disabled} onClick={() => void mutate({op: 'cancelPublicationPlan', kind, id: document.id, editToken: document.editToken, planId: plan.id})}>取消计划</Button></>}</div>
           </article>;
-        })}{!document.plans.length && <div className="publication-empty"><strong>给这篇内容安排第一次发布</strong><p>选一个渠道和日期，也可以为每个渠道准备不同的文字与封面。</p><Button disabled={disabled} onClick={() => choose({mode: 'plan'})}>安排发布</Button></div>}</> : <p className="muted">{props.documentId ? '暂时无法读取这份内容，请从工作台重新读取内容库。' : '先保存内容，再安排发布。'}</p>}
+        })}<PaginationBar label="发布计划分页" total={plans.length} page={currentPlanPage} pageSize={10} onPageChange={setPlanPage} disabled={!!dialog}/>{document.plans.length > 0 && !plans.length && <p className="muted">没有匹配的发布计划，请调整搜索或状态。</p>}{!document.plans.length && <div className="publication-empty"><strong>给这篇内容安排第一次发布</strong><p>选一个渠道和日期，也可以为每个渠道准备不同的文字与封面。</p><Button disabled={disabled} onClick={() => choose({mode: 'plan'})}>安排发布</Button></div>}</> : <p className="muted">{props.documentId ? '暂时无法读取这份内容，请从工作台重新读取内容库。' : '先保存内容，再安排发布。'}</p>}
       <p className="creator-footnote">这里的操作不会自动发送内容，也不会修改平台上的帖子。</p><p role="status">{notice}</p>
     </Card>
-    {document && <Card><div className="publication-heading"><div><h3>实际发布历史</h3><p>保存发布时的文字、渠道、时间和封面。更正、撤销都会保留原记录。</p></div></div>{document.publications.map(publication => {
+    {document && <Card><div className="publication-heading"><div><h3>实际发布历史</h3><p>保存发布时的文字、渠道、时间和封面。更正、撤销都会保留原记录。</p></div></div>{history.slice((currentHistoryPage - 1) * 10, currentHistoryPage * 10).map(publication => {
       const event = document.publicationEvents.find(item => item.targetId === publication.id), cover = document.candidates.find(item => item.id === publication.coverCandidateId);
-      return <article className="publication-history" key={publication.id}><div className="publication-plan-heading"><strong>{publication.channelName ?? '渠道名称未记录'}</strong><span className={`publication-status ${event ? 'cancelled' : 'published'}`}>{event ? event.type === 'corrected' ? '已更正 · 原记录' : '已撤销 · 原记录' : '当前有效'}</span></div><p className="publication-plan-time">实际发布：{publicationTime(publication.schedule)}</p>{publication.url && <Button theme="borderless" disabled={props.busy} onClick={() => void props.run(() => invoke('openPublicationLink', {kind, id: document.id, publicationId: publication.id}))}>查看发布链接 ↗</Button>}<details><summary>查看发布时的内容快照</summary><h4>{publication.title ?? '标题未记录'}</h4><pre>{publication.text === '' ? '（当时发布了空文字）' : publication.text ?? '当时发布的文字未记录'}</pre>{cover?.url ? <img className="publication-history-cover" src={cover.url} alt="发布时记录的封面"/> : <p className="muted">{publication.coverCandidateId ? '当时已记录封面，图片暂不可预览。' : '当时未记录封面。'}</p>}{publication.recordedAt && <p className="muted">本机登记时间：{new Date(publication.recordedAt).toLocaleString('zh-CN')}（本机时区）</p>}</details>{event ? <p className="muted">{event.type === 'corrected' ? '更正' : '撤销'}原因：{event.reason} · {new Date(event.recordedAt).toLocaleString('zh-CN')}（本机时区）</p> : <div className="management-actions"><Button disabled={disabled} onClick={() => choose({mode: 'correct', publication})}>更正记录</Button><Button theme="borderless" disabled={disabled} onClick={() => choose({mode: 'retract', publication})}>撤销记录</Button></div>}</article>;
-    })}{!document.publications.length && <p className="publication-empty">还没有实际发布记录。在平台手动发布后，点击计划上的“记录已发布”。</p>}</Card>}
+      return <article className="publication-history" key={publication.id}><div className="publication-plan-heading"><strong>{publication.channelName ?? '渠道名称未记录'}</strong><span className={`publication-status ${event ? 'cancelled' : 'published'}`}>{event ? event.type === 'corrected' ? '已更正 · 原记录' : '已撤销 · 原记录' : '当前有效'}</span></div><p className="publication-plan-time">实际发布：{publicationTime(publication.schedule)}</p>{publication.url && <Button theme="borderless" disabled={props.busy} onClick={() => void props.run(() => invoke('openPublicationLink', {kind, id: document.id, publicationId: publication.id}))}>查看发布链接 ↗</Button>}<PublicationSnapshot publication={publication} coverUrl={cover?.url}/>{event ? <p className="muted">{event.type === 'corrected' ? '更正' : '撤销'}原因：{event.reason} · {new Date(event.recordedAt).toLocaleString('zh-CN')}（本机时区）</p> : <div className="management-actions"><Button disabled={disabled} onClick={() => choose({mode: 'correct', publication})}>更正记录</Button><Button theme="borderless" disabled={disabled} onClick={() => choose({mode: 'retract', publication})}>撤销记录</Button></div>}</article>;
+    })}<PaginationBar label="发布历史分页" total={history.length} page={currentHistoryPage} pageSize={10} onPageChange={setHistoryPage} disabled={!!dialog}/>{document.publications.length > 0 && !history.length && <p className="muted">没有匹配的发布记录。</p>}{!document.publications.length && <p className="publication-empty">还没有实际发布记录。在平台手动发布后，点击计划上的“记录已发布”。</p>}</Card>}
     {dialog && <PublicationEditor key={`${dialog.mode}:${dialog.documentId}:${dialog.plan?.id ?? dialog.publication?.id ?? ''}`} props={props} selection={dialog} initialDay={props.selectedDay ?? localDay(new Date())} close={() => setDialog(null)}/>}
   </div>;
+}
+
+function PublicationSnapshot({publication, coverUrl}: {publication: WorkspacePublication; coverUrl: string | null | undefined}) {
+  const [expanded, setExpanded] = useState(false);
+  return <details onToggle={event => setExpanded(event.currentTarget.open)}><summary>查看发布时的内容快照</summary>{expanded && <><h4>{publication.title ?? '标题未记录'}</h4><pre>{publication.text === '' ? '（当时发布了空文字）' : publication.text ?? '当时发布的文字未记录'}</pre>{coverUrl ? <img className="publication-history-cover" src={coverUrl} alt="发布时记录的封面"/> : <p className="muted">{publication.coverCandidateId ? '当时已记录封面，图片暂不可预览。' : '当时未记录封面。'}</p>}{publication.recordedAt && <p className="muted">本机登记时间：{new Date(publication.recordedAt).toLocaleString('zh-CN')}（本机时区）</p>}</>}</details>;
 }
 
 function ScheduleEditor({value, change, disabled}: {value: WorkspaceSchedule; change(value: WorkspaceSchedule): void; disabled: boolean}) {
@@ -97,7 +114,7 @@ function PublicationEditor({props, selection, initialDay, close}: {props: Worksp
     <fieldset disabled={props.busy || unavailable}><div className="management-form">
       {mode === 'plan' && <label>发布渠道<PopupSelect disabled={props.busy || unavailable} required value={channelId} onChange={setChannel}><option value="">请选择渠道</option>{channelId && !props.library?.settings.channels.some(item => item.id === channelId) && <option value={channelId} disabled>原渠道已不可用，请重新选择</option>}{props.library?.settings.channels.filter(item => !item.deletedAt || item.id === channelId).map(item => <option key={item.id} value={item.id} disabled={!!item.deletedAt}>{item.name}{item.deletedAt ? '（已停用，请重新选择）' : ''}</option>)}</PopupSelect></label>}
       {mode !== 'retract' && <ScheduleEditor value={schedule} change={setSchedule} disabled={props.busy || unavailable}/>}
-      {(mode === 'plan' || mode === 'correct') && <><label>{mode === 'correct' ? '实际发布的文字' : '准备发布的文字'}<TextArea disabled={props.busy || unavailable} className="semi-control-text management-body" value={text} onChange={value => setText(value)}/></label><p className="muted">留空表示这次发布空文字；不会自动改用正文。</p><label>{mode === 'correct' ? '实际发布的封面' : '计划使用的封面'}<PopupSelect disabled={props.busy || unavailable} value={cover} onChange={setCover}><option value="">这次不记录封面</option>{!knownCover && <option value={cover}>原记录的封面（暂不可用）</option>}{document.candidates.map((item, index) => <option key={item.id} value={`candidate:${item.id}`}>候选 {item.displayNumber || index + 1}{item.favorite ? ' · 收藏' : ''}</option>)}{document.coverVariants.map(item => <option key={item.id} value={`variant:${item.id}`}>{item.name} · {item.ratio}</option>)}</PopupSelect></label></>}
+      {(mode === 'plan' || mode === 'correct') && <><label>{mode === 'correct' ? '实际发布的文字' : '准备发布的文字'}<TextArea disabled={props.busy || unavailable} className="semi-control-text management-body" value={text} onChange={value => setText(value)}/></label><p className="muted">留空表示这次发布空文字；不会自动改用正文。</p><label>{mode === 'correct' ? '实际发布的封面' : '计划使用的封面'}<PopupSelect searchable disabled={props.busy || unavailable} value={cover} onChange={setCover}><option value="">这次不记录封面</option>{!knownCover && <option value={cover}>原记录的封面（暂不可用）</option>}{document.candidates.map((item, index) => <option key={item.id} value={`candidate:${item.id}`}>候选 {item.displayNumber || index + 1}{item.favorite ? ' · 收藏' : ''}</option>)}{document.coverVariants.map(item => <option key={item.id} value={`variant:${item.id}`}>{item.name} · {item.ratio}</option>)}</PopupSelect></label></>}
       {(mode === 'record' || mode === 'correct') && <label>实际发布链接（可留空）<Input className="semi-control-text" disabled={props.busy || unavailable} type="url" value={url} placeholder="https://…" onChange={(_, event) => setUrl(event.target.value)}/></label>}
       {(mode === 'correct' || mode === 'retract') && <label>{mode === 'correct' ? '更正原因' : '撤销原因'}<TextArea className="semi-control-text" disabled={props.busy || unavailable} required value={reason} onChange={value => setReason(value)}/></label>}
     </div></fieldset><p role="status">{notice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || unavailable || ((mode === 'correct' || mode === 'retract') && !reason.trim()) || (mode === 'plan' && !validChannel)}>{mode === 'record' ? '确认已经发布并保存记录' : mode === 'retract' ? '确认撤销这条记录' : '保存到本机'}</Button></form></ManagementDialog>;

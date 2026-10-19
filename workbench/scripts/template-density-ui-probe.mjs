@@ -62,8 +62,9 @@ async function probeMain(probeRoot){
  const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
  const click=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent.trim()===${JSON.stringify(text)}).click()`);
  try{
-  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===16');
+  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===12');
   assert.equal(await run('!!document.querySelector(".creator-template-sidebar")'),false,'configuration no longer consumes the gallery width');
+  await run('[...document.querySelectorAll(".creator-template-grid img")].forEach(image=>image.loading="eager")');await wait('[...document.querySelectorAll(".creator-template-grid img")].every(image=>image.complete&&image.naturalWidth>0)');
   for(const [width,columns] of [[1280,5],[1600,5],[1080,4],[900,3],[700,2]]){
    win.setSize(width,1000);await paint();
    assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-grid")).gridTemplateColumns.split(" ").length'),columns,width+' gallery columns');

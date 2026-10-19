@@ -1,0 +1,81 @@
+{
+  "at": "2026-10-19T12:45:06.598195+00:00",
+  "productionSourcesFrozen": true,
+  "scope": "Renderer list/picker scale only. Existing source 0.3.22 native recycle changes retained. No versions/packages/installations changed by A.",
+  "largeDto": {
+    "passed": true,
+    "screenshotDir": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growing-lists-shots-eTDJYY",
+    "search": {
+      "n": 20,
+      "median": 16.989291000000094,
+      "p95": 25.171540999999934,
+      "max": 26.30191600000012
+    },
+    "paging": {
+      "n": 20,
+      "median": 16.674332999999933,
+      "p95": 17.900458999999955,
+      "max": 19.031750000000102
+    },
+    "scope": "Real Electron React/Semi, synthetic DTO only; not native I/O latency",
+    "fixture": {
+      "contents": 10000,
+      "collections": 320,
+      "photos": 240,
+      "candidates": 145,
+      "templates": 300
+    },
+    "renderMs": 92.5,
+    "searchMs": 29.896332999999913,
+    "limits": {
+      "contentRows": 20,
+      "collectionCards": 12,
+      "memberRows": 20,
+      "photoRows": 12,
+      "candidateCards": 12,
+      "pickerOptions": "<20"
+    },
+    "checks": [
+      "pagination",
+      "title/body search",
+      "cross-page full member save",
+      "unknown member preserved and explicitly removable",
+      "snapshot token",
+      "cross-page comparison",
+      "virtualized searchable picker",
+      "direct jump to page 50"
+    ]
+  },
+  "verification": {
+    "rendererTypecheck": "passed",
+    "galleryUnit": "7 passed including 6000 candidates/300 exact attempt pairs",
+    "nativeCollection": "passed post-visual-markup rerun; actual React/Semi/native file persistence CAS/trash/missing/busy regression",
+    "galleryUi": "passed full React/Semi/Electron synthetic IPC and artwork",
+    "controlsUi": "passed Escape/portal/validation/busy and shared channels, rename retains stopped/missing IDs"
+  },
+  "screenshotsVisuallyInspected": [
+    "members-wide",
+    "members-narrow"
+  ],
+  "notChecked": [
+    "No physical image disk/network latency benchmark in DTO test",
+    "No real provider generation",
+    "No installed app rebuild/install by A"
+  ],
+  "sourceSha256": {
+    "workbench/src/renderer/library-panels.tsx": "d419ccd070ef64dbaca2b2ac4f642007ca245262c72821b2a6d76cc438dac345",
+    "workbench/src/renderer/content-list.tsx": "2c8fecb2017898ad530d33cb595eead0240b4f9642280bb97eff506da2c0f56a",
+    "workbench/src/renderer/collection-contents.tsx": "ca8ad783626c5667075fed1a60d5b108a5f1d4f446ea6539b0dc5c65a56d81e5",
+    "workbench/src/renderer/covers.tsx": "ee77fe099b6dc21e70fb637184e613b39ea1313a41266e02d7a38c7dcf85d432",
+    "workbench/src/renderer/cover-gallery.ts": "1b9dc65503cabae024a3283f15dc99be9b3a31f9bce47c42aceb55bfdc4198d4",
+    "workbench/src/renderer/semi-controls.tsx": "d15a272a9f18be114dcf0b1c68c4b19f6dabc5c6a08aeb6094e949befad2b339",
+    "workbench/src/renderer/pagination-bar.tsx": "3e987f65ed8a0fd9c7198a8a3a3ccfa15ebb0d7ec05cb3fe71e072f2554bacad",
+    "workbench/src/renderer/pagination-bar.css": "be5d2e8413c485d8ed0b451cab87163cee85158406c57dbf5f5f34529d09c758",
+    "workbench/scripts/growing-lists-ui-probe.mjs": "574ca075e76cc516b8146aa0c555adb135a292ed99edf09458db79b25eef2d56",
+    "workbench/scripts/collection-contents-ui-probe.mjs": "39a0978645940d71637ae5974ee02b27b7d3992acd3b6c9b73425521b70f98ee",
+    "workbench/scripts/cover-gallery-ui-probe.mjs": "8f30cc92558711172db6546712b864a8d78ad29ec6fbdbac5f9335cd9534ed96",
+    "workbench/scripts/semi-form-controls-probe.mjs": "23755517c1a2e80de48b085236089fd2b2f72f02d8ea9fe05c0009e3ed556a8e",
+    "workbench/test/cover-gallery.test.mjs": "96600139c0352183f55f34fd2fc3086baa3573f72b14d6204d07d9e0b721d35c"
+  },
+  "handoffNote": "A list source frozen. Main assigned B subsequent changes in library-panels mutation refresh and member Enter/invalid-selection handling, and name Collator optimization. sourceSha256 records A freeze snapshot; final integrated freeze hash belongs to main."
+}

@@ -1,4 +1,4 @@
-import {validateLocalFiles} from './local-files.mts';
+import {externalExportParent, validateLocalFiles} from './local-files.mts';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { randomUUID, createHash } from 'node:crypto';
@@ -174,13 +174,14 @@ export class Covers {
   async exportCover(input: { contentId: string; candidateId: string }) {
     const c = this.owner; validateInput('exportCover', input);
     return c.exclusive(async () => {
-      const raster = await c.worker.call('candidateRaster', { binding: c.current(), ...input });
+      const binding = c.current(), raster = await c.worker.call('candidateRaster', { binding, ...input });
       const ext = raster.mime.split('/')[1]; const destination = await c.dialogs.export?.(`封面.${ext}`);
       if (!destination) return { exported: false };
-      const temporary = path.join(path.dirname(destination), `.nova-export-${randomUUID()}`);
+      const parent = await externalExportParent(path.dirname(destination), binding.root);
+      const temporary = path.join(parent, `.nova-export-${randomUUID()}`);
       const fd = await fs.open(temporary, 'wx', 0o600);
       try { await fd.writeFile(raster.data); await fd.sync(); } finally { await fd.close(); }
-      await fs.rename(temporary, destination); return { exported: true };
+      await fs.rename(temporary, path.join(parent, path.basename(destination))); return { exported: true };
     });
   }
   async revealCoverFolder(input: {contentId: string}) {
@@ -191,8 +192,7 @@ export class Covers {
       if (!view.candidates.length) fail('NO_CANDIDATES', '还没有可导出的候选原图。');
       const chosen = await c.dialogs.maintenanceParent();
       if (!chosen) return {revealed: false};
-      const parent = await fs.realpath(chosen), libraryRoot = await fs.realpath(binding.root), relative = path.relative(libraryRoot, parent);
-      if (!relative || relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative)) fail('INVALID_DESTINATION', '请选择内容库之外的导出位置，避免修改内部素材。');
+      const parent = await externalExportParent(chosen, binding.root);
       const destination = await fs.mkdtemp(path.join(parent, 'Nova-封面原图-'));
       let firstFile = '';
       for (const [index, candidate] of view.candidates.entries()) {

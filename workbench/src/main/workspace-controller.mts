@@ -1,4 +1,4 @@
-import {validateLocalFiles} from './local-files.mts';
+import {externalExportParent, validateLocalFiles} from './local-files.mts';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs/promises';
@@ -112,15 +112,16 @@ export class WorkspaceController {
     async exportContentMaterial(input: WorkspaceMaterialReference) {
         this.validate('exportContentMaterial', input);
         return this.owner.exclusive(async () => {
-            const material = await this.owner.worker.call('workspaceMaterialBytes', {binding: this.owner.current(), reference: input});
+            const binding = this.owner.current(), material = await this.owner.worker.call('workspaceMaterialBytes', {binding, reference: input});
             const defaultName = path.basename(material.originalName).replace(/[<>:"/\\|?*\u0000-\u001f]/g, '_').slice(0, 180) || '资料';
             const destination = await this.owner.dialogs.export?.(defaultName);
             if (!destination) return {exported: false};
-            const temporary = path.join(path.dirname(destination), `.nova-material-${randomUUID()}`);
+            const parent = await externalExportParent(path.dirname(destination), binding.root);
+            const temporary = path.join(parent, `.nova-material-${randomUUID()}`);
             const handle = await fs.open(temporary, 'wx', 0o600);
             try {
                 try { await handle.writeFile(material.data); await handle.sync(); } finally { await handle.close(); }
-                await fs.rename(temporary, destination);
+                await fs.rename(temporary, path.join(parent, path.basename(destination)));
                 return {exported: true};
             } finally { await fs.unlink(temporary).catch(() => {}); }
         });

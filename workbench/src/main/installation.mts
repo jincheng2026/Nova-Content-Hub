@@ -4,23 +4,32 @@ import {confirmMacInstallation, installMacApplication, macApplicationSource, mac
 
 type InstallApp = Pick<App, 'isPackaged' | 'isInApplicationsFolder' | 'relaunch' | 'quit'>;
 interface Installer {
+    bundleIdentifier(): Promise<string>;
+    confirm(): Promise<unknown>;
     recover(): Promise<unknown>;
     exists(): Promise<boolean>;
     install(): Promise<{execPath: string}>;
 }
+const formalIdentifier = 'com.novaisland.nova-content-hub';
 async function macOptions() {
     const source = macApplicationSource(process.execPath), bundle = await readMacBundle(source);
     return {source, target: macApplicationTarget, bundleIdentifier: bundle.identifier, executable: bundle.executable};
 }
 const nativeInstaller: Installer = {
+    async bundleIdentifier() { return (await macOptions()).bundleIdentifier; },
+    async confirm() { return confirmMacInstallation(await macOptions()); },
     async recover() { return recoverMacInstallation(await macOptions()); },
     async exists() { try { await fs.lstat(macApplicationTarget); return true; } catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return false; throw error; } },
     async install() { return installMacApplication(await macOptions()); }
 };
 
-export async function confirmInstalledApplication(app: Pick<App, 'isPackaged' | 'isInApplicationsFolder'>) {
-    if (process.platform !== 'darwin' || !app.isPackaged || !app.isInApplicationsFolder()) return;
-    await confirmMacInstallation(await macOptions());
+export async function confirmInstalledApplication(
+    app: Pick<App, 'isPackaged' | 'isInApplicationsFolder'>,
+    platform: NodeJS.Platform = process.platform,
+    installer: Installer = nativeInstaller
+) {
+    if (platform !== 'darwin' || !app.isPackaged || !app.isInApplicationsFolder()) return;
+    if (await installer.bundleIdentifier() === formalIdentifier) await installer.confirm();
 }
 
 export async function offerApplicationInstall(
@@ -30,7 +39,10 @@ export async function offerApplicationInstall(
     installer: Installer = nativeInstaller
 ): Promise<'continue' | 'relaunching'> {
     if (platform !== 'darwin' || !app.isPackaged || app.isInApplicationsFolder()) return 'continue';
-    try { await installer.recover(); }
+    try {
+        if (await installer.bundleIdentifier() !== formalIdentifier) return 'continue';
+        await installer.recover();
+    }
     catch (error) {
         await dialog.showMessageBox({type: 'warning', message: '安装恢复需要检查', detail: `${error instanceof Error ? error.message : '无法验证安装记录'}\n已保留原应用和安装恢复目录。`, buttons: ['继续使用当前工作台']}).catch(() => {});
         return 'continue';

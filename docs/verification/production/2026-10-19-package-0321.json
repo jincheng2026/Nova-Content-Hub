@@ -1,0 +1,16 @@
+{
+  "version": "0.3.21",
+  "qa": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-final-0321-U1Lu8q",
+  "mountedAppMatchesArchivedBuild": true,
+  "adHocSignatureValid": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "sealedMarketplaceValid": true,
+  "templates": 20,
+  "prompts": 52,
+  "examples": 1,
+  "realExampleCovers": 2,
+  "appTestsAndProbesExcluded": true,
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-CE0Yan/mac-arm64/自媒体工作台.app",
+  "mounted": "/Volumes/自媒体工作台 0.3.21-arm64"
+}

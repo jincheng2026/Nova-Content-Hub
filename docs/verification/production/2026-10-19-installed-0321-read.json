@@ -1,0 +1,15 @@
+{
+  "version": "0.3.21",
+  "independentLaunchConfirmed": true,
+  "normalInstalledControllerRead": true,
+  "counts": {
+    "contents": 3,
+    "templates": 21,
+    "prompts": 54,
+    "collections": 1
+  },
+  "appIndex": [
+    "/Applications/自媒体工作台.app"
+  ],
+  "userConfirmedNormalStartupAndCollectionList": true
+}

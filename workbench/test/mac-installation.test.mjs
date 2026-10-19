@@ -33,6 +33,27 @@ test('verified installation retains the complete previous app and confirms only 
     assert.equal((JSON.parse(await fs.readFile(path.join(result.transaction, 'record.json')))).phase, 'complete');
 });
 
+test('completed installation never restores an old backup after the user removes, moves or replaces the installed app', async t => {
+    for (const action of ['remove', 'move', 'replace']) await t.test(action, async t => {
+        const f = await fixture(t), result = await installMacApplication(f.options);
+        assert.equal(await confirmMacInstallation({...f.options, source: f.target}), true);
+        const previous = path.join(result.transaction, 'previous.app/Contents/MacOS/Workbench');
+        const recordFile = path.join(result.transaction, 'record.json'), record = await fs.readFile(recordFile);
+        const moved = path.join(f.root, 'moved.app');
+        if (action === 'remove') await fs.rm(f.target, {recursive: true});
+        else await fs.rename(f.target, moved);
+        if (action === 'replace') await fs.cp(f.source, f.target, {recursive: true});
+        assert.equal(await recoverMacInstallation(f.options), 'none');
+        if (action === 'replace') assert.equal(await f.old(), 'new');
+        else await assert.rejects(fs.lstat(f.target), {code: 'ENOENT'});
+        if (action !== 'remove') assert.equal(await fs.readFile(path.join(moved, 'Contents/MacOS/Workbench'), 'utf8'), 'new');
+        assert.equal(await fs.readFile(previous, 'utf8'), 'old');
+        assert.deepEqual(await fs.readFile(recordFile), record);
+        await assert.rejects(fs.lstat(path.join(path.dirname(f.target), '.nova-content-hub-install')), {code: 'ENOENT'});
+        assert.equal(await recoverMacInstallation(f.options), 'none');
+    });
+});
+
 test('a completed local-channel journal can recover before an official-channel update', async t => {
     const f = await fixture(t, 'com.novaisland.nova-content-hub.local');
     const first = await installMacApplication(f.options);

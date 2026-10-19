@@ -42,7 +42,7 @@ async function probeMain(probeRoot) {
  try {
   await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".prompt-library-card").length===11');
   for (const [width,columns] of [[1280,4],[1600,4],[1100,3],[880,2],[600,1]]) {
-   win.setSize(width,1000);await paint();
+   win.setSize(width,1000);await wait(`innerWidth===${width}`);await paint();
    assert.equal(await run('getComputedStyle(document.querySelector(".prompt-library-grid")).gridTemplateColumns.split(" ").length'),columns,width+' columns');
    assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true,width+' has no page overflow');
    assert.equal(await run('[...document.querySelectorAll(".prompt-library-card")].every(card=>card.getBoundingClientRect().height<=180)'),true,'cards remain compact');

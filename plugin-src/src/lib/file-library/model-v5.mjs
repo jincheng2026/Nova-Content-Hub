@@ -243,10 +243,12 @@ export function modelMethods(h) {
 
     function editContent(input, kind) {
         return meta => {
-            if (input.channelIds) channels(input.channelIds);
+            const current = extendModel(meta, kind);
+            // Unchanged historical channel links remain valid after a channel is disabled.
+            if (input.channelIds && !isDeepStrictEqual(input.channelIds, current.channelIds)) channels(input.channelIds);
             if (input.preferredTemplateId) activeTemplate(input.preferredTemplateId);
             const {body, ...rest} = input;
-            return {...extendModel(meta, kind), ...rest};
+            return {...current, ...rest};
         };
     }
 

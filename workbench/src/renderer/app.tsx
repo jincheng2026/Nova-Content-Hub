@@ -13,6 +13,7 @@ import '@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import './style.css';
 import {CoverPanel } from './covers.tsx';
 import {ContentList} from './content-list.tsx';
+import {CollectionContents} from './collection-contents.tsx';
 import {AssistantSettings} from './assistant-settings.tsx';
 import {LibraryPanels, CollectionEditor, type LibraryPanelTab, ContentMetadataPanel, ContentMaterialPanel, hasManagedDrafts} from './library-panels.tsx';
 import {MaintenancePanel} from './maintenance-panel.tsx';
@@ -20,7 +21,7 @@ import {PreferencesPanel} from './preferences-panel.tsx';
 import {SetupPanel} from './setup-panel.tsx';
 import {BootstrapRecoveryPanel} from './bootstrap-panel.tsx';
 import {NavigationIcon} from './navigation-icon.tsx';
-import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
+import type {WorkspaceLibraryCollection, WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
 import {invoke} from './client.ts';
 import {CalendarPage, Overview, PromptsPage, TemplatesPage, pageNames} from './workspace-pages.tsx';
 import {PublicationPanel, type PublicationFocus} from './publication-panel.tsx';
@@ -59,6 +60,7 @@ function App() {
     const automaticRefresh = useRef<() => void>(() => {});
     const backgroundRefresh = useRef<Promise<unknown> | null>(null);
     const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
+    const workspaceAssets = useRef<{epoch: number; value: CoverResults['listCoverAssets']} | null>(null);
     const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);
     const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);
     const [contentQuery, setContentQuery] = useState('');
@@ -73,7 +75,9 @@ function App() {
     useEffect(() => {if (recoveryOpen) recoveryDialog.current?.showModal();}, [recoveryOpen]);
     const [libraryTab, setLibraryTab] = useState<'resources' | 'storage'>('resources');
     const [resourceTab, setResourceTab] = useState<LibraryPanelTab>('photos');
-    const [focusedCollectionId, setFocusedCollectionId] = useState<string | null>(null);
+    const [activeCollectionId, setActiveCollectionId] = useState<string | null>(null);
+    const lastCollection = useRef<WorkspaceLibraryCollection | null>(null);
+    const [collectionQuery, setCollectionQuery] = useState('');
     const [creatingCollection, setCreatingCollection] = useState(false);
     const [detailOpen, setDetailOpen] = useState(false);
     const [contentTab, setContentTab] = useState<'covers' | 'body' | 'materials' | 'publication'>('covers');
@@ -134,11 +138,15 @@ function App() {
         setWatchUnavailable(false);
         changesPending.current = false;
         setAssets(null);
+        workspaceAssets.current = null;
         setSelectedTemplate(null);
         setTemplatePicker(null);
         setPromptContentId(null);
         setCalendarFocus(null);
         setDetailOpen(false);
+        setActiveCollectionId(null);
+        lastCollection.current = null;
+        setCollectionQuery('');
         setContentTab('covers');
     };
     const refreshStatus = async () => {
@@ -151,6 +159,7 @@ function App() {
     };
     async function refreshWorkspace() {
         const epoch = epochRef.current;
+        workspaceAssets.current = null;
         let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;
         try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }
         catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }
@@ -158,6 +167,7 @@ function App() {
         setWorkspace(snapshot);
         setWorkspaceUnavailable(false);
         setAssets(coverAssets);
+        workspaceAssets.current = {epoch, value: coverAssets};
         setLibrary(detail);
     }
     useEffect(() => {
@@ -237,16 +247,18 @@ function App() {
         return complete;
     }
     async function readCoverAutomatically(contentId: string) {
-        // This read returns fresh assets and content; workspace scans belong to actions and change refreshes.
+        const epoch = epochRef.current;
+        // Actions and change refreshes already read these assets before the panel can read its cover.
         return backgroundAction(async () => {
-            if (baseRef.current?.id !== contentId) return;
-            const assets = await invoke('listCoverAssets');
+            if (epoch !== epochRef.current || baseRef.current?.id !== contentId) return;
+            const assets = workspaceAssets.current?.epoch === epoch ? workspaceAssets.current.value : await invoke('listCoverAssets');
             const cover = await invoke('readCover', {contentId});
+            if (epoch !== epochRef.current || baseRef.current?.id !== contentId) return;
             return {assets, cover};
         }, false);
     }
 
-    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false, background = false, refreshWorkspaceAfter = true}: {preserveError?: boolean; background?: boolean; refreshWorkspaceAfter?: boolean} = {}): Promise<T | undefined> {
+    async function nativeAction<T>(action: () => Promise<T>, {preserveError = false, background = false, refreshWorkspaceAfter = true, refreshWorkspaceOnSuccess = true}: {preserveError?: boolean; background?: boolean; refreshWorkspaceAfter?: boolean; refreshWorkspaceOnSuccess?: boolean} = {}): Promise<T | undefined> {
         if (!background && active.current) return;
         if (!background) { active.current = true; setActing(true); }
         if (!preserveError) setError('');
@@ -266,7 +278,7 @@ function App() {
                 const next = await refreshStatus();
                 if (next.currentName && refreshWorkspaceAfter) {
                     try {
-                        await refreshWorkspace();
+                        if (!succeeded || refreshWorkspaceOnSuccess) await refreshWorkspace();
                         if (succeeded && epoch === epochRef.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
                     } catch (failure) { report(failure, preserveError, epoch); }
                 }
@@ -374,11 +386,18 @@ function App() {
         });
     }
 
-    async function select(item: Content, template?: string, generate = false) {
+    async function select(item: Content, template?: string, generate = false, collectionId: string | null = null) {
         if (template) closeTemplatePicker();
         await guard(async () => {
             const epoch = epochRef.current;
-            await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setPage('content'); setDetailOpen(true); setContentTab('covers'); setCoverStartOpenKey(value => generate ? value + 1 : 0); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); if (template) setCoverStartOpenKey(value => value + 1); setTemplatePicker(null); } });
+            await nativeAction(async () => { const current = await invoke('readContent', {id: item.id}); if (epoch === epochRef.current) { load(current); setActiveCollectionId(collectionId); setPage('content'); setDetailOpen(true); setContentTab('covers'); setCoverStartOpenKey(value => generate ? value + 1 : 0); setSelectedTemplate(template ? {id: template, key: Date.now()} : null); if (template) setCoverStartOpenKey(value => value + 1); setTemplatePicker(null); } });
+        });
+    }
+
+    async function restoreCollection(item: WorkspaceLibraryCollection) {
+        if (busy || blocked) return;
+        await guard(async () => {
+            await nativeAction(() => invoke('mutateWorkspace', {op: 'restoreCollection', id: item.id, editToken: item.editToken}));
         });
     }
 
@@ -422,7 +441,7 @@ function App() {
     useLayoutEffect(() => { window.scrollTo(0, 0); }, [page]);
 
     async function navigate(next: Page) {
-        await guard(async () => { setPromptContentId(null); setPage(next); setCalendarFocus(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
+        await guard(async () => { setPromptContentId(null); setPage(next); setActiveCollectionId(null); setCalendarFocus(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
     }
     async function openContentPrompts() {
         const selectedId = baseRef.current?.id;
@@ -457,11 +476,16 @@ function App() {
             });
         });
     }
-    async function openLibraryResources(tab: LibraryPanelTab = 'photos', collectionId: string | null = null) {
+    async function openCollection(id: string) {
+        await guard(async () => {
+            setSettings(false); setLibraryOpen(false); setBase(null); setDraft(null); setDisk(null);
+            setActiveCollectionId(id); setCollectionQuery(''); setDetailOpen(false); setPage('content'); setCoverStartOpenKey(0);
+        });
+    }
+    async function openLibraryResources(tab: LibraryPanelTab = 'photos') {
         await guard(async () => {
             setSettings(false);
             setResourceTab(tab);
-            setFocusedCollectionId(collectionId);
             setLibraryTab('resources');
             setPhotoManagerEpoch(value => value + 1);
             setLibraryOpen(true);
@@ -501,6 +525,7 @@ function App() {
         if (template) closeTemplatePicker();
         await guard(async () => {
             setBase(null); setDraft({title: '未命名内容', body: ''}); setDisk(null); setSelectedTemplate(template ? {id: template, key: Date.now()} : null);
+            setActiveCollectionId(null);
             setContentTab('body'); setCoverStartOpenKey(0); setDetailOpen(true); setPage('content');
         });
     }
@@ -524,6 +549,10 @@ function App() {
         setLibraryOpen(false);
     }
     const task = status?.task;
+    const currentCollection = library?.collections.find(item => item.id === activeCollectionId);
+    const activeCollection = currentCollection ?? (lastCollection.current?.id === activeCollectionId ? lastCollection.current : null);
+    const collectionUnavailable = !!activeCollection && (!currentCollection || !!currentCollection.deletedAt);
+    useEffect(() => {lastCollection.current = currentCollection ?? (lastCollection.current?.id === activeCollectionId ? lastCollection.current : null);}, [currentCollection, activeCollectionId]);
     const busy = acting || !status || status.busy;
     const blocked = !!status?.pending || status?.creating|| !!status?.photoPending || !!status?.coverPending || !!status?.coverActionPending || !!status?.workspacePending || !!status?.templatePending || !!status?.maintenance.pending || !!status?.seedPending;
     let message = !status ? '正在打开工作空间…' : acting ? '正在处理。中断后请重新查询同一操作。' : task ? `${labels[task.status]} · 已记录 ${task.progress.steps || 0} 个步骤` : status.started ? '上次导入尚无已接受任务，请核验原目标。' : '可新建或打开内容库；从网页版迁移时，选择网页版导出的备份。';
@@ -605,17 +634,17 @@ function App() {
                 <li key={index}>{issue.code || '资源待补齐'}{issue.key ? ` · ${issue.key}` : ''}</li>)}</ul>
         </Card>
         </section>}
-        {libraryTab === 'resources' && (status?.currentName ? <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} initialTab={resourceTab} initialCollectionId={focusedCollectionId} library={library} assets={assets} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section> : <div className="blank-state"><p>先打开内容库，再管理照片、渠道和默认值。</p><Button onClick={() => setLibraryTab('storage')}>打开内容库</Button></div>)}</dialog>}
+        {libraryTab === 'resources' && (status?.currentName ? <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} initialTab={resourceTab} openCollection={id => void openCollection(id)} library={library} assets={assets} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section> : <div className="blank-state"><p>先打开内容库，再管理照片、渠道和默认值。</p><Button onClick={() => setLibraryTab('storage')}>打开内容库</Button></div>)}</dialog>}
         <p id="error" role="alert">{error}</p>
         {workspaceUnavailable && workspace && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
-        {!showPage && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或在内容库管理中检查原目录。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button>}</section>}
+        {!showPage && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <div className="actions"><Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button><Button id="open-recovered-library" disabled={busy || !!blocked} onClick={() => void guard(() => act('openLibrary'))}>打开其他内容库</Button></div>}</section>}
         {showPage && <>
-        {page === 'overview' && <Overview createContent={() => void newContent()} openTemplates={() => void navigate('templates')} openCalendar={focus => void openCalendarFocus(focus)} generate={item => void select(item, undefined, true)} workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={focus => void openCalendarFocus(focus)}/>}
+        {page === 'overview' && <Overview createContent={() => void newContent()} openTemplates={() => void navigate('templates')} openCalendar={focus => void openCalendarFocus(focus)} generate={item => void select(item, undefined, true)} workspace={workspace} library={library} busy={busy} open={item => void select(item)} openCollection={focus => void openCollection(focus.id)}/>}
         {page === 'templates' && <TemplatesPage key={libraryEpoch} library={library} run={nativeAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openLibraryResources('photos')}/>}
         {page === 'calendar' && <CalendarPage key={`${libraryEpoch}:${calendarFocus ? `${calendarFocus.kind}:${calendarFocus.id}:${calendarFocus.planId ?? ''}:${calendarFocus.day ?? ''}` : 'all'}`} initialFocus={calendarFocus} library={library} run={nativeAction} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
         {page === 'prompts' && <PromptsPage key={libraryEpoch} initialContentId={promptContentId} currentContentId={base && !base.deletedAt ? base.id : null} workspace={workspace} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={refreshWorkspace} openContentBody={openPromptContentBody} importPrompt={async () => await nativeAction(() => invoke('choosePromptDocument')) ?? null}/>}
-        {page === 'content' && (!detailOpen || !draft ? <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} createCollection={() => void guard(async () => {setCreatingCollection(true);})} openCollection={id => void openLibraryResources('collections', id)} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>← 返回内容列表</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
+        {page === 'content' && (!detailOpen || !draft ? activeCollection ? <CollectionContents key={`${libraryEpoch}:${activeCollection.id}`} collection={activeCollection} unavailable={collectionUnavailable} workspace={workspace} props={{library, busy: busy || !!blocked, run: nativeAction, refresh: refreshWorkspace}} query={collectionQuery} setQuery={setCollectionQuery} back={() => void guard(async () => {setActiveCollectionId(null);})} open={item => void select(item, undefined, false, activeCollection.id)}/> : <ContentList contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} createCollection={() => void guard(async () => {setCreatingCollection(true);})} openCollection={id => void openCollection(id)} restoreCollection={item => void restoreCollection(item)} open={(item, generate) => void select(item, undefined, generate)} recycle={item => void recycle(item)}/> : <section className="content-detail-page" aria-label="内容详情"><button className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>{activeCollection ? '← 返回合集' : '← 返回内容列表'}</button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先保存标题和正文，再制作封面。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme="solid" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <button key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</button>)}</div><div className="content-detail-panel">
         {contentTab === 'body' && <Card title="标题与正文"><p
             id="editor-dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
             htmlFor="content-title">标题</label><Input id="content-title" className="semi-control-text" disabled={busy || !!blocked} maxLength={500}

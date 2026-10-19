@@ -1,0 +1,15 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (0.815958ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.220375ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.219ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.2065ms)
+✔ annotations use the actual contained image and reject letterboxing (0.115792ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.224959ms)
+✔ large histories index exact attempt pairs without losing candidates (5.699125ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88.429333

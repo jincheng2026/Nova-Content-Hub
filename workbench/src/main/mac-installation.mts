@@ -166,6 +166,7 @@ export async function recoverMacInstallation(options: Options): Promise<'none' |
     if (!directory) return 'none';
     if (activeTransactions.has(directory)) throw Error('Another installation is still running');
     const record = await readRecord(directory, options), previous = path.join(directory, 'previous.app');
+    if (record.phase === 'complete') { await releaseTransaction(directory); return 'none'; }
     if (await absent(options.target)) {
         assertRecoveryOwner(record);
         if (record.previous && !await absent(previous)) {
@@ -192,7 +193,6 @@ export async function recoverMacInstallation(options: Options): Promise<'none' |
             throw error;
         }
         if (record.previous) await matches(previous, record.previous);
-        if (record.phase === 'complete') { await releaseTransaction(directory); return 'none'; }
         return 'pending';
     }
     assertRecoveryOwner(record);

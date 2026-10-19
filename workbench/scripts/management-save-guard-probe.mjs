@@ -15,7 +15,7 @@ import {createRoot} from 'react-dom/client';
 import '${workbench}/node_modules/@douyinfe/semi-ui-19/react19-adapter';
 import '${workbench}/node_modules/@douyinfe/semi-ui-19/lib/es/_base/base.css';
 import '${workbench}/src/renderer/style.css';
-import {LibraryPanels} from '${workbench}/src/renderer/library-panels.tsx';
+import {LibraryPanels, CollectionEditor, MembersEditor} from '${workbench}/src/renderer/library-panels.tsx';
 window.calls = []; window.errors = []; window.refreshes = 0;
 window.library = {
   photos: [{id:'photo-1',title:'原照片',isOwnPhoto:false,editToken:'photo-v1',availability:'available',deletedAt:null}],
@@ -28,8 +28,10 @@ window.contentHub = {mutateWorkspace: input => new Promise(resolve => {
   window.settle = ok => { window.settle = null; resolve(ok ? {ok:true,value:{library:window.library}} : {ok:false,error:{code:'CONFLICT',message:'隔离回执拒绝'}}); };
 })};
 function Probe({tab}) {
-  const [busy,setBusy] = useState(false);
+  const [busy,setBusy] = useState(false), [editor,setEditor] = useState(null);
   const run = async action => {setBusy(true);try {return await action();}catch(error){window.errors.push(error.message);}finally{setBusy(false);}};
+  const props={library:window.library,busy,run,refresh:async()=>{window.refreshes++;}};
+  if(tab==='collections') return <><button onClick={()=>setEditor('name')}>编辑</button><button onClick={()=>setEditor('members')}>管理内容</button>{editor==='name'&&<CollectionEditor collection={window.library.collections[0]} props={props} close={()=>setEditor(null)}/ >}{editor==='members'&&<MembersEditor collection={window.library.collections[0]} props={props} close={()=>setEditor(null)}/ >}</>;
   return <LibraryPanels library={window.library} assets={{photos:[],templates:[]}} initialTab={tab} busy={busy} run={run} refresh={async()=>{window.refreshes++;}}/>;
 }
 const root = createRoot(document.getElementById('root'));
@@ -67,7 +69,7 @@ async function probeMain(probeRoot) {
     const cases = [
       {tab:'photos',open:'管理',save:'保存照片设置',op:'updatePhoto',edit:async()=>{await type('dialog input','修改后的照片');await run('document.querySelector("dialog input[type=checkbox]").click()');}},
       {tab:'channels',open:'编辑',save:'保存渠道',op:'updateChannel',edit:async()=>{await type('dialog input','修改后的渠道');await type('dialog input[placeholder="如 3:4"]','3:4');}},
-      {tab:'collections',open:'编辑',save:'保存合集',op:'updateCollection',edit:async()=>{await type('dialog input','修改后的合集');await type('dialog textarea','修改后的正文');await run('document.querySelector("dialog input[type=checkbox]").click()');}},
+      {tab:'collections',open:'编辑',save:'保存合集',op:'updateCollection',edit:async()=>{await type('dialog input','修改后的合集');}},
       {tab:'collections',open:'管理内容',save:'保存成员',op:'setCollectionMembers',edit:async()=>{await run('document.querySelector("dialog input[type=checkbox]").click()');}}
     ];
     let count = 0;

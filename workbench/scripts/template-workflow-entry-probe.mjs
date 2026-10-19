@@ -26,7 +26,7 @@ window.contentHub = {
     window.reads++;
     const template = window.probe.library.templates.find(t => t.id === templateId);
     const requestId = 'request-' + templateId;
-    const attempts = [0, 1].map(i => ({attemptId: 'attempt-' + i, host: 'codex', status: 'cancelled', reference: {templateId, requestId, sourceVersion: 1, sourcePackageHash: template.versions[0].packageHash}}));
+    const attempts = [0, 1].map(i => ({attemptId: 'attempt' + i, host: 'codex', status: 'cancelled', reference: {templateId, requestId, sourceVersion: 1, sourcePackageHash: template.versions[0].packageHash}}));
     return {ok: true, value: {...template, templateId, jobs: template.builtin ? [] : [{id: requestId, attempts, activeAttemptId: null, acceptance: null}]}};
   },
   readTemplateAssistantSetup: async () => ({ok: true, value: {host: 'codex', ready: true}}),
@@ -63,7 +63,7 @@ createRoot(document.getElementById('root')).render(<Probe/>);
         const run = source => window.webContents.executeJavaScript(source);
         const wait = condition => run(`new Promise((resolve,reject)=>{const end=Date.now()+5000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}));setTimeout(check,10)};check()})`);
         async function click(selector) {
-            const point = await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});el.scrollIntoView({block:'center',behavior:'instant'});const r=el.getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2),disabled:el.disabled}})()`);
+            const point = await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});const details=el.closest('details');if(details)details.open=true;el.scrollIntoView({block:'center',behavior:'instant'});const r=el.getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2),disabled:el.disabled}})()`);
             assert.equal(point.disabled, false);
             window.webContents.sendInputEvent({type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1});
             window.webContents.sendInputEvent({type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1});
@@ -84,14 +84,16 @@ createRoot(document.getElementById('root')).render(<Probe/>);
         }
         try {
             await window.loadFile(path.join(probeRoot, 'dist/index.html'));
-            await wait('document.querySelectorAll(".creator-style-card").length === 16');
+            await wait('document.querySelectorAll(".creator-style-card").length === 12');
             if (reducedMotion) assert.equal(await run('matchMedia("(prefers-reduced-motion: reduce)").matches'), true);
             await click(trigger(0));
             await landed('参考模板 0');
             await run(`(()=>{const el=document.querySelector('.template-study-notes textarea');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(el,'保留我的补充要求');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
             await wait(`document.querySelector('.template-study-notes textarea')?.value === '保留我的补充要求'`);
-            await run(`(()=>{const el=document.querySelector('.template-workflow select');el.value='attempt-0';el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
-            await wait(`document.querySelector('.template-workflow select')?.value === 'attempt-0'`);
+            await run(`document.querySelector('.template-workflow .semi-select').click()`);
+            await wait(`[...document.querySelectorAll('[role=option]')].some(el=>el.textContent.includes('attempt0'))`);
+            await run(`[...document.querySelectorAll('[role=option]')].find(el=>el.textContent.includes('attempt0')).click()`);
+            await wait(`document.querySelector('.template-workflow .semi-select-selection')?.textContent.includes('attempt0')`);
             await click(trigger(0));
             await landed('参考模板 0');
             assert.equal(await run(`document.querySelector('.template-study-notes textarea').value`), '保留我的补充要求', 'repeat opening preserves the mounted notes');
@@ -106,11 +108,11 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             await click(trigger(0));
             await landed('参考模板 0');
             assert.equal(await run(`document.querySelector('.template-study-notes textarea').value`), '保留我的补充要求', 'collapse and reopen preserves notes');
-            assert.equal(await run(`document.querySelector('.template-workflow select').value`), 'attempt-0', 'collapse and reopen preserves history selection');
+            assert.equal(await run(`document.querySelector('.template-workflow .semi-select-selection').textContent.includes('attempt0')`), true, 'collapse and reopen preserves history selection');
             const reads = await run('window.reads');
-            await run(`document.querySelector('.creator-template-search').focus();scrollTo({top:0,behavior:'instant'});window.probe.refresh()`);
+            await run(`document.querySelector('.creator-template-search input').focus();scrollTo({top:0,behavior:'instant'});window.probe.refresh()`);
             await wait(`window.reads > ${reads} && !document.querySelector('.template-workflow [role=status]')?.textContent.includes('正在读取')`);
-            assert.equal(await run(`document.activeElement?.className`), 'creator-template-search', 'background refresh must retain focus');
+            assert.equal(await run(`document.activeElement?.closest('.creator-template-search') !== null`), true, 'background refresh must retain focus');
             assert.equal(await run('scrollY'), 0, 'background refresh must retain scroll');
             assert.equal(await run(`document.querySelector('.template-study-notes textarea').value`), '保留我的补充要求');
             await click(trigger(1));
@@ -123,16 +125,16 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             await click('.template-workflow-message button');
             await landed('参考模板 2 · 我的副本');
             assert.equal(await run('window.writes[0].sourceTemplateId'), 'template-2');
-            assert.equal(await run('document.querySelectorAll(".creator-style-card").length'), 17);
+            assert.equal(await run('document.querySelectorAll(".creator-style-card").length'), 12);
             assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'), true, 'derived template opens the personal learning controls');
             await collapse();
             assert.equal(await run('document.activeElement.id'), 'template-workflow-trigger-template-2');
             await click(trigger(0));
             await landed('参考模板 0');
-            await run(`(()=>{const el=document.querySelector('.creator-template-search');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,'不存在的模板');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
+            await run(`(()=>{const el=document.querySelector('.creator-template-search input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,'不存在的模板');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
             await wait('document.querySelectorAll(".creator-style-card").length === 0');
             await collapse();
-            assert.equal(await run('document.activeElement.className'), 'creator-template-search', 'a filtered original card falls back to search');
+            assert.equal(await run("!!document.activeElement.closest('.creator-template-search')"), true, 'a filtered original card falls back to search');
             console.log('PASS actual React/Semi/Electron: first open visible and focused; repeat/collapse/reopen keep notes and history; hidden controls cannot receive focus; another template and builtin copy target correctly; refresh preserves focus/scroll/notes; collapse restores card or search focus; reduced motion=' + reducedMotion);
             app.exit(0);
         } catch (error) {console.error(error); app.exit(1);}
