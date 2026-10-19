@@ -1,4 +1,4 @@
-import type {WorkspaceSchedule} from '../shared/workspace-contracts.ts';
+import type {WorkspaceSchedule, WorkspaceLibraryPlan, WorkspacePublication} from '../shared/workspace-contracts.ts';
 import {localDay} from './workspace-model.ts';
 
 export function recordingSchedule(planned: WorkspaceSchedule, now = new Date()): WorkspaceSchedule {
@@ -14,4 +14,14 @@ export function publicationTime(schedule: WorkspaceSchedule) {
   if (schedule.precision === 'date') return `${schedule.date} · 仅日期`;
   if (schedule.precision === 'local-minute') return `${schedule.date} ${schedule.time} · ${schedule.timezone ?? '时区未记录'}`;
   return `${new Intl.DateTimeFormat('sv-SE', {timeZone: schedule.timezone, dateStyle: 'short', timeStyle: 'medium', hourCycle: 'h23'}).format(new Date(schedule.at))} · ${schedule.timezone}（明确时刻）`;
+}
+
+export function publicationTitle(plan: Pick<WorkspaceLibraryPlan, 'id'> & Partial<Pick<WorkspaceLibraryPlan, 'textMode' | 'text'>>, document: {title: string; body: string}) {
+  const text = plan.textMode === 'body' ? document.body : plan.text ?? '';
+  return text.trim().split(/\r?\n/).find(line => line.trim())?.trim() || document.title || '未命名内容';
+}
+
+export function publicationRecordTitle(publication: Pick<WorkspacePublication, 'text' | 'title'>, fallbackTitle: string) {
+  if (publication.text === '') return `（空文字） · ${publication.title || fallbackTitle || '未命名内容'}`;
+  return publication.text?.trim().split(/\r?\n/).find(line => line.trim())?.trim() || publication.title || fallbackTitle || '未命名内容';
 }

@@ -44,3 +44,22 @@ test('different source timezones cannot put a later instant first and view proje
   assert.deepEqual(entries.map(entry => entry.day), ['2026-10-19', '2026-10-19']);
   assert.equal(document.plans[0].schedule.timezone, 'America/Los_Angeles');
 });
+
+test('cancelled plans are available only by explicit projection opt-in', () => {
+  const plan = {id: 'cancelled', status: 'cancelled', channelId: 'channel', schedule: {precision: 'date', date: '2026-10-19'}};
+  const document = {id: 'content', deletedAt: null, isExample: false, plans: [plan], publications: [], publicationEvents: []};
+  const library = {contentDetails: [document, {...document, id: 'example', isExample: true}], collections: [], settings: {channels: []}};
+  assert.equal(publicationEntries(library).length, 0);
+  assert.deepEqual(publicationEntries(library, 'Asia/Shanghai', true).map(entry => entry.plan), [plan]);
+});
+
+test('projection resolves first effective correction and excludes retracted snapshots', () => {
+  const schedule = {precision: 'date', date: '2026-10-19'};
+  const plans = ['corrected', 'retracted'].map(id => ({id, channelId: 'c', status: 'published', schedule}));
+  const publications = [{id: 'old', planId: 'corrected', schedule}, {id: 'new', planId: 'corrected', schedule: {...schedule, date: '2026-10-20'}, text: 'corrected'}, {id: 'later-duplicate', planId: 'corrected', schedule}, {id: 'removed', planId: 'retracted', schedule}];
+  const document = {id: 'd', deletedAt: null, isExample: false, plans, publications, publicationEvents: [{targetId: 'old', type: 'corrected'}, {targetId: 'removed', type: 'retracted'}]};
+  const entries = publicationEntries({contentDetails: [document], collections: [], settings: {channels: []}});
+  assert.equal(entries.find(entry => entry.plan.id === 'corrected').publication.id, 'new');
+  assert.equal(entries.find(entry => entry.plan.id === 'corrected').day, '2026-10-20');
+  assert.equal(entries.find(entry => entry.plan.id === 'retracted').publication, null);
+});

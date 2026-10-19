@@ -24,7 +24,7 @@ window.library={contentDetails:[window.doc],collections:[window.collection],sett
 window.workspace={contents:[window.doc],channels:window.channels};window.original=JSON.stringify({library:window.library,workspace:window.workspace});window.calls=[];
 window.contentHub=new Proxy({},{get:(_,method)=>async input=>{window.calls.push({method,input});throw new Error('Unexpected native call');}});
 const root=createRoot(document.getElementById('root'));
-window.renderCalendar=(busy=false)=>root.render(<CalendarPage workspace={{...window.workspace}} library={{...window.library}} initialFocus={{kind:'content',id:'content-a',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
+window.renderCalendar=(busy=false)=>root.render(<CalendarPage workspace={{...window.workspace}} library={{...window.library}} initialFocus={{kind:'content',id:'content-a',planId:'local-minute',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
 window.renderCalendar();
 `);
 await build({configFile:false, root, base:'./', resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}}, oxc:{jsx:{runtime:'automatic'}}, build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -42,12 +42,12 @@ async function probeMain(probeRoot) {
   try {
     await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".semi-calendar-month .semi-schedule-event").length === 4');
     assert.equal(await run('!!document.querySelector(".semi-datepicker")'),true,'uses actual Semi DatePicker');
-    assert.equal(await run('!!document.querySelector(".calendar-manager-heading .semi-select")'),true,'uses actual Semi Select');
+    assert.equal(await run('!!document.querySelector(".daily-plan-filters .semi-select")'),true,'uses actual Semi Select filters');
+    assert.equal(await run('!!document.querySelector("#calendar-publication-manager")'),false,'plan management is opened on demand');
     await run('document.querySelector(".schedule-subheading .semi-datepicker input").click()');await wait('document.querySelectorAll(".semi-datepicker-month [role=gridcell]").length > 0');
     await run('[...document.querySelectorAll(".semi-datepicker-month [role=gridcell]")].find(cell=>cell.getAttribute("title")==="2026-10-23").click()');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-10-23")');
     await run('[...document.querySelectorAll(".semi-schedule-day")].find(button=>button.getAttribute("aria-label").startsWith("选择 2026-10-19")).click()');
-    await run('document.querySelector(".calendar-manager-heading .semi-select").click()');await wait('[...document.querySelectorAll("[role=option]")].some(option=>option.textContent.includes("合集演示"))');
-    await run('[...document.querySelectorAll("[role=option]")].find(option=>option.textContent.includes("合集演示")).click()');await wait('document.querySelector(".calendar-manager-heading h3").textContent==="合集演示"');
+
 
     assert.equal(await run('document.querySelector(".semi-calendar-month-grid-row").textContent.startsWith("周一")'),true,'month starts Monday');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute] time").textContent'),'10:45');
@@ -71,7 +71,9 @@ async function probeMain(probeRoot) {
     assert.equal(await run('document.querySelector(".calendar-manager-heading h3").textContent'),'合集演示','event selects collection owner');
     assert.ok(await run('document.querySelector(".publication-plan.is-focused").textContent.includes("14:25")'),'event focuses original plan');
     await run('[...document.querySelectorAll(".semi-schedule-day")].find(button=>button.getAttribute("aria-label").startsWith("选择 2026-10-22")).click()');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-10-22")');
-    await clickText('为这一天新增计划 →');await wait('document.querySelector("dialog[open]")');
+    await clickText('为这一天新增计划 →');await wait('document.querySelector("dialog[aria-label=选择要发布的内容][open]")');
+    await run('document.querySelector("dialog .semi-select").click()');await wait('document.querySelectorAll("[role=option]").length>0');
+    await run('[...document.querySelectorAll("[role=option]")].find(option=>option.textContent.includes("分钟日程示例")).click()');await clickText('继续安排');await wait('document.querySelector("dialog[aria-label=新增发布计划][open]")');
     assert.ok(await run('[...document.querySelectorAll("dialog input")].some(input=>input.value === "2026-10-22")'),'new plan receives selected date');
     await clickText('关闭');await wait('!document.querySelector("dialog[open]")');
     await clickText('按月');await wait('document.querySelector(".semi-calendar-month")');
@@ -81,8 +83,8 @@ async function probeMain(probeRoot) {
     const distinctColors=await run('[...new Set([...document.querySelectorAll(".schedule-legend .creator-channel")].map(item=>getComputedStyle(item).getPropertyValue("--channel-color")))].length');assert.equal(distinctColors,2,'channel legend retains separate colors');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").style.getPropertyValue("--channel-color")'),'#ad245e','calendar uses saved channel color');
     assert.equal(await run('JSON.stringify({library:window.library,workspace:window.workspace}) === window.original'),true,'all UI actions preserve the original schedules and metadata');
-    await run('window.doc.title="更新后的标题";window.doc.plans[0].schedule.time="11:05";window.renderCalendar()');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("11:05")');
-    assert.ok(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("更新后的标题")'),'cached Semi event refreshes on changes');
+    await run('window.doc.title="更新后的标题";window.doc.body="更新后的计划首行";window.doc.plans[0].schedule.time="11:05";window.renderCalendar()');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("11:05")');
+    assert.ok(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("更新后的计划首行")'),'cached Semi event refreshes on changes');
     await run('window.renderCalendar(true)');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").disabled');
     assert.deepEqual(await run('window.calls'),[],'no business writes');
     console.log('PASS actual React/Semi/Electron: month/week Monday, exact minutes, machine-zone instant, unknown-time all-day row, collection plan focus, selected-day new plan, event refresh, busy guard, 1280 layout, no native writes');console.log('Screenshots:',path.join(probeRoot,'calendar-1280.png'),path.join(probeRoot,'calendar-week-1280.png'));app.exit(0);
