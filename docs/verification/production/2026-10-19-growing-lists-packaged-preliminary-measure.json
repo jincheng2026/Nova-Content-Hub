@@ -1,0 +1,1485 @@
+{
+  "at": "2026-10-19T12:53:34.696Z",
+  "passed": true,
+  "version": "0.3.22",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-9Iz3f8/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "fixture": {
+    "root": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/growth-performance-0322/packaged-fixture-G7oq84/library",
+    "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-growth-native-4Of1Xi/contents-1000",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "72464351"
+    },
+    "contents": 1000,
+    "active": 950,
+    "trash": 50,
+    "collections": 100,
+    "plans": 2000,
+    "templates": 20,
+    "prompts": 52,
+    "bodyBytes": 2040
+  },
+  "scope": "Actual resource renderer/preload/IPC/utility workers/startDesktop, isolated copied file library, OS warm page cache after fixture construction/copy; no large generated images; not cold start or an SLA. Controller/worker duration tracing adds small instrumentation overhead.",
+  "paged": false,
+  "initialRows": 950,
+  "counter": "当前显示 1050 项（100 个合集 · 950 篇内容）",
+  "targetId": "00114a5c-fc0f-4a9f-b126-1957dd6b7f16",
+  "groupId": "01fef7cf-1829-4f03-9a25-817b3183bd05",
+  "metrics": [
+    {
+      "name": "startup-to-loaded-idle-2raf",
+      "uiMs": 7350.4312500000015,
+      "controllerCounts": {
+        "status": 2,
+        "listContents": 2,
+        "readWorkspace": 2,
+        "listCoverAssets": 2,
+        "readWorkspaceLibrary": 1
+      },
+      "workerCounts": {
+        "list": 2,
+        "workspace": 2,
+        "coverAssets": 2,
+        "workspaceLibrary": 1
+      }
+    },
+    {
+      "name": "manual-refresh-1",
+      "uiMs": 4437.579458,
+      "foregroundIpcCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "controllerCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "workerCounts": {
+        "list": 1,
+        "workspace": 1,
+        "coverAssets": 1,
+        "workspaceLibrary": 1
+      }
+    },
+    {
+      "name": "manual-refresh-2",
+      "uiMs": 4665.348374999998,
+      "foregroundIpcCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "controllerCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "workerCounts": {
+        "list": 1,
+        "workspace": 1,
+        "coverAssets": 1,
+        "workspaceLibrary": 1
+      }
+    },
+    {
+      "name": "manual-refresh-3",
+      "uiMs": 4598.725833,
+      "foregroundIpcCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "controllerCounts": {
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "workerCounts": {
+        "list": 1,
+        "workspace": 1,
+        "coverAssets": 1,
+        "workspaceLibrary": 1
+      }
+    },
+    {
+      "name": "open-content-list",
+      "uiMs": 939.4122080000016,
+      "foregroundIpcCounts": {},
+      "controllerCounts": {},
+      "workerCounts": {}
+    },
+    {
+      "name": "open-specific-content",
+      "uiMs": 2973.100375000002,
+      "foregroundIpcCounts": {
+        "readContent": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1,
+        "readCover": 1
+      },
+      "controllerCounts": {
+        "readContent": 1,
+        "status": 2,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "workerCounts": {
+        "readContent": 1,
+        "workspace": 1,
+        "coverAssets": 1,
+        "workspaceLibrary": 1,
+        "readCover": 1
+      }
+    },
+    {
+      "name": "save-title-real-ui",
+      "uiMs": 3648.880541999999,
+      "foregroundIpcCounts": {
+        "updateContent": 1,
+        "listContents": 1,
+        "status": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1,
+        "readCover": 1
+      },
+      "controllerCounts": {
+        "updateContent": 1,
+        "listContents": 2,
+        "status": 3,
+        "readWorkspace": 2,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1,
+        "readContent": 1
+      },
+      "workerCounts": {
+        "mutate": 1,
+        "queryMutation": 1,
+        "readContent": 2,
+        "list": 2,
+        "workspace": 2,
+        "coverAssets": 1,
+        "workspaceLibrary": 1,
+        "readCover": 1
+      }
+    },
+    {
+      "name": "refresh-saved-content",
+      "uiMs": 4696.625249999997,
+      "foregroundIpcCounts": {
+        "readCover": 2,
+        "status": 2,
+        "readContent": 1,
+        "listContents": 1,
+        "readWorkspace": 1,
+        "listCoverAssets": 1,
+        "readWorkspaceLibrary": 1
+      },
+      "controllerCounts": {
+        "listCoverAssets": 2,
+        "readWorkspaceLibrary": 2,
+        "status": 3,
+        "readContent": 1,
+        "listContents": 1,
+        "readWorkspace": 1
+      },
+      "workerCounts": {
+        "coverAssets": 2,
+        "workspaceLibrary": 2,
+        "readCover": 2,
+        "readContent": 1,
+        "list": 1,
+        "workspace": 1
+      }
+    },
+    {
+      "name": "renderer-reload-to-loaded-idle-2raf",
+      "uiMs": 3523.6568340000013
+    },
+    {
+      "name": "save-collection-name-real-ui",
+      "uiMs": 8749.494124999997,
+      "foregroundIpcCounts": {
+        "mutateWorkspace": 1,
+        "readWorkspace": 2,
+        "listCoverAssets": 2,
+        "readWorkspaceLibrary": 2,
+        "status": 1,
+        "listContents": 1
+      },
+      "controllerCounts": {
+        "mutateWorkspace": 1,
+        "readWorkspace": 3,
+        "listCoverAssets": 2,
+        "readWorkspaceLibrary": 2,
+        "status": 2,
+        "listContents": 1
+      },
+      "workerCounts": {
+        "workspaceMutate": 1,
+        "workspaceRecover": 1,
+        "workspaceLibrary": 3,
+        "workspace": 3,
+        "coverAssets": 2,
+        "list": 1
+      }
+    }
+  ],
+  "calls": [
+    {
+      "phase": "startup",
+      "method": "status",
+      "ms": 0.1560830000016722
+    },
+    {
+      "phase": "startup",
+      "method": "listContents",
+      "ms": 674.5932080000002
+    },
+    {
+      "phase": "startup",
+      "method": "listContents",
+      "ms": 480.63937499999884
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspace",
+      "ms": 777.1587090000012
+    },
+    {
+      "phase": "startup",
+      "method": "listCoverAssets",
+      "ms": 1249.0002080000013
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspaceLibrary",
+      "ms": 1722.3631249999999
+    },
+    {
+      "phase": "startup",
+      "method": "status",
+      "ms": 0.09150000000045111
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspace",
+      "ms": 722.4794170000005
+    },
+    {
+      "phase": "startup",
+      "method": "listCoverAssets",
+      "ms": 635.5382919999975
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspaceLibrary",
+      "ms": 1093.0607500000006
+    },
+    {
+      "phase": "fixture-verification",
+      "method": "readWorkspaceLibrary",
+      "ms": 1353.569833999998
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "listContents",
+      "ms": 450.5642079999998
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "status",
+      "ms": 0.0553330000002461
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "readWorkspace",
+      "ms": 725.2875839999979
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "listCoverAssets",
+      "ms": 679.8535410000004
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "readWorkspaceLibrary",
+      "ms": 1051.6115839999984
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "listContents",
+      "ms": 438.070582999997
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "status",
+      "ms": 0.04987500000061118
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "readWorkspace",
+      "ms": 668.0044999999991
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "listCoverAssets",
+      "ms": 591.2305000000015
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "readWorkspaceLibrary",
+      "ms": 1030.3863750000019
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "listContents",
+      "ms": 428.8020830000023
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "status",
+      "ms": 0.06820800000059535
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "readWorkspace",
+      "ms": 596.5252500000024
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "listCoverAssets",
+      "ms": 524.8439999999973
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "readWorkspaceLibrary",
+      "ms": 1186.9244579999977
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readContent",
+      "ms": 249.88379200000054
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "status",
+      "ms": 0.11533300000155577
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readWorkspace",
+      "ms": 604.2535839999982
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "listCoverAssets",
+      "ms": 577.8630840000042
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readWorkspaceLibrary",
+      "ms": 1006.518415999999
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "status",
+      "ms": 0.03350000000500586
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "updateContent",
+      "ms": 673.7934170000008
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listContents",
+      "ms": 363.11204200000066
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "ms": 0.02108299999963492
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspace",
+      "ms": 583.2271249999976
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listCoverAssets",
+      "ms": 499.02454099999886
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspaceLibrary",
+      "ms": 1489.8226250000007
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "ms": 0.017958000004000496
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readContent",
+      "ms": 252.32829100000527
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listContents",
+      "ms": 429.40200000000186
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "ms": 0.02875000000494765
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspace",
+      "ms": 660.0041659999988
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "listCoverAssets",
+      "ms": 515.7204999999958
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readWorkspaceLibrary",
+      "ms": 1011.1033340000067
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "ms": 0.026333000001613982
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readContent",
+      "ms": 232.67945899999904
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "listContents",
+      "ms": 364.61412500000006
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "ms": 0.01433299999916926
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readWorkspace",
+      "ms": 582.4458339999983
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "listCoverAssets",
+      "ms": 547.0308329999971
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readWorkspaceLibrary",
+      "ms": 1025.6206669999956
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "ms": 0.01433299999916926
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "status",
+      "ms": 0.012584000003698748
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "listContents",
+      "ms": 438.24079200000415
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "readWorkspace",
+      "ms": 605.1107499999998
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "listCoverAssets",
+      "ms": 526.115208999996
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "readWorkspaceLibrary",
+      "ms": 962.5792910000018
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readContent",
+      "ms": 377.22524999999587
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "status",
+      "ms": 0.08991599999717437
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readWorkspace",
+      "ms": 681.8942920000045
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "listCoverAssets",
+      "ms": 562.8986249999944
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readWorkspaceLibrary",
+      "ms": 980.4584160000013
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "status",
+      "ms": 0.026124999996682163
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "mutateWorkspace",
+      "ms": 1547.5130409999983
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "ms": 618.6348749999961
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listCoverAssets",
+      "ms": 769.2664169999989
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspaceLibrary",
+      "ms": 987.8138749999998
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "status",
+      "ms": 0.03616699999838602
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "ms": 820.4987919999985
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listCoverAssets",
+      "ms": 970.018250000001
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspaceLibrary",
+      "ms": 1744.407499999994
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listContents",
+      "ms": 588.4961660000117
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "status",
+      "ms": 0.017791999998735264
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "ms": 963.6967080000031
+    },
+    {
+      "phase": "managed-save-verification",
+      "method": "listCoverAssets",
+      "ms": 1238.4075000000012
+    },
+    {
+      "phase": "managed-save-verification",
+      "method": "readWorkspaceLibrary"
+    }
+  ],
+  "workerCalls": [
+    {
+      "phase": "startup",
+      "op": "list",
+      "ms": 674.4690419999988
+    },
+    {
+      "phase": "startup",
+      "op": "list",
+      "ms": 480.6117089999989
+    },
+    {
+      "phase": "startup",
+      "op": "workspace",
+      "ms": 777.0551660000001
+    },
+    {
+      "phase": "startup",
+      "op": "coverAssets",
+      "ms": 1248.4077909999996
+    },
+    {
+      "phase": "startup",
+      "op": "workspaceLibrary",
+      "ms": 1721.086874999999
+    },
+    {
+      "phase": "startup",
+      "op": "workspace",
+      "ms": 722.4497079999983
+    },
+    {
+      "phase": "startup",
+      "op": "coverAssets",
+      "ms": 635.1812910000008
+    },
+    {
+      "phase": "startup",
+      "op": "workspaceLibrary",
+      "ms": 1092.3984999999993
+    },
+    {
+      "phase": "fixture-verification",
+      "op": "workspaceLibrary",
+      "ms": 1353.3294999999998
+    },
+    {
+      "phase": "manual-refresh-1",
+      "op": "list",
+      "ms": 450.5429589999985
+    },
+    {
+      "phase": "manual-refresh-1",
+      "op": "workspace",
+      "ms": 725.2720000000008
+    },
+    {
+      "phase": "manual-refresh-1",
+      "op": "coverAssets",
+      "ms": 679.4692500000019
+    },
+    {
+      "phase": "manual-refresh-1",
+      "op": "workspaceLibrary",
+      "ms": 1050.7609159999993
+    },
+    {
+      "phase": "manual-refresh-2",
+      "op": "list",
+      "ms": 438.0351660000015
+    },
+    {
+      "phase": "manual-refresh-2",
+      "op": "workspace",
+      "ms": 667.9827500000029
+    },
+    {
+      "phase": "manual-refresh-2",
+      "op": "coverAssets",
+      "ms": 590.9824169999993
+    },
+    {
+      "phase": "manual-refresh-2",
+      "op": "workspaceLibrary",
+      "ms": 1030.1447499999995
+    },
+    {
+      "phase": "manual-refresh-3",
+      "op": "list",
+      "ms": 428.76033299999835
+    },
+    {
+      "phase": "manual-refresh-3",
+      "op": "workspace",
+      "ms": 596.5037499999999
+    },
+    {
+      "phase": "manual-refresh-3",
+      "op": "coverAssets",
+      "ms": 524.6107499999998
+    },
+    {
+      "phase": "manual-refresh-3",
+      "op": "workspaceLibrary",
+      "ms": 1186.7617499999978
+    },
+    {
+      "phase": "open-specific-content",
+      "op": "readContent",
+      "ms": 249.79075000000012
+    },
+    {
+      "phase": "open-specific-content",
+      "op": "workspace",
+      "ms": 604.2382500000022
+    },
+    {
+      "phase": "open-specific-content",
+      "op": "coverAssets",
+      "ms": 577.6659589999981
+    },
+    {
+      "phase": "open-specific-content",
+      "op": "workspaceLibrary",
+      "ms": 1005.7962919999991
+    },
+    {
+      "phase": "open-specific-content",
+      "op": "readCover",
+      "ms": 203.51620900000125
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "mutate",
+      "ms": 257.0900830000028
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "queryMutation",
+      "ms": 200.0958329999994
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "readContent",
+      "ms": 197.95641700000124
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "list",
+      "ms": 363.1008329999968
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "workspace",
+      "ms": 583.2173750000002
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "coverAssets",
+      "ms": 498.93850000000384
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "workspaceLibrary",
+      "ms": 1489.5881660000014
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "readCover",
+      "ms": 230.30950000000303
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "readContent",
+      "ms": 252.32041700000264
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "list",
+      "ms": 429.37137500000244
+    },
+    {
+      "phase": "save-title-real-ui",
+      "op": "workspace",
+      "ms": 659.9742499999993
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "coverAssets",
+      "ms": 515.6297080000004
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "workspaceLibrary",
+      "ms": 1010.8493339999986
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "readCover",
+      "ms": 210.7231249999968
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "readContent",
+      "ms": 232.6634999999951
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "list",
+      "ms": 364.6012919999994
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "workspace",
+      "ms": 582.4305000000022
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "coverAssets",
+      "ms": 546.963291
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "workspaceLibrary",
+      "ms": 1025.3963340000046
+    },
+    {
+      "phase": "refresh-saved-content",
+      "op": "readCover",
+      "ms": 214.54745800000092
+    },
+    {
+      "phase": "renderer-reload",
+      "op": "list",
+      "ms": 438.22762499999953
+    },
+    {
+      "phase": "renderer-reload",
+      "op": "workspace",
+      "ms": 605.0999580000062
+    },
+    {
+      "phase": "renderer-reload",
+      "op": "coverAssets",
+      "ms": 525.9790000000066
+    },
+    {
+      "phase": "renderer-reload",
+      "op": "workspaceLibrary",
+      "ms": 962.3436250000013
+    },
+    {
+      "phase": "reopen-persisted",
+      "op": "readContent",
+      "ms": 377.1444999999949
+    },
+    {
+      "phase": "reopen-persisted",
+      "op": "workspace",
+      "ms": 681.8061670000025
+    },
+    {
+      "phase": "reopen-persisted",
+      "op": "coverAssets",
+      "ms": 562.6204159999979
+    },
+    {
+      "phase": "reopen-persisted",
+      "op": "workspaceLibrary",
+      "ms": 980.2744169999933
+    },
+    {
+      "phase": "reopen-persisted",
+      "op": "readCover",
+      "ms": 233.50175000000309
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspaceMutate",
+      "ms": 300.6017090000023
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspaceRecover",
+      "ms": 201.55845799999952
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspaceLibrary",
+      "ms": 1020.0056669999976
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspace",
+      "ms": 618.5801670000001
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "coverAssets",
+      "ms": 769.0516659999994
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspaceLibrary",
+      "ms": 987.6030410000021
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspace",
+      "ms": 820.4822910000003
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "coverAssets",
+      "ms": 969.9135830000014
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspaceLibrary",
+      "ms": 1744.1702500000029
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "list",
+      "ms": 588.4498339999991
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "op": "workspace",
+      "ms": 963.661500000002
+    },
+    {
+      "phase": "managed-save-verification",
+      "op": "coverAssets",
+      "ms": 1238.320583000008
+    },
+    {
+      "phase": "managed-save-verification",
+      "op": "workspaceLibrary"
+    }
+  ],
+  "ipcCalls": [
+    {
+      "phase": "startup",
+      "method": "status",
+      "started": 10914.2795,
+      "ms": 0.4915000000000873
+    },
+    {
+      "phase": "startup",
+      "method": "readPreferences",
+      "started": 10914.813,
+      "ms": 0.076666999999361
+    },
+    {
+      "phase": "startup",
+      "method": "listContents",
+      "started": 10915.167792,
+      "ms": 674.713416999999
+    },
+    {
+      "phase": "startup",
+      "method": "listContents",
+      "started": 10919.892459,
+      "ms": 1150.7288749999989
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspace",
+      "started": 11593.126459,
+      "ms": 1254.728083
+    },
+    {
+      "phase": "startup",
+      "method": "listCoverAssets",
+      "started": 11593.235875,
+      "ms": 2503.789166999999
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspaceLibrary",
+      "started": 11593.266834,
+      "ms": 4225.981374999999
+    },
+    {
+      "phase": "startup",
+      "method": "status",
+      "started": 12073.913875,
+      "ms": 3749.615
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspace",
+      "started": 15845.470792,
+      "ms": 722.8062500000015
+    },
+    {
+      "phase": "startup",
+      "method": "listCoverAssets",
+      "started": 15845.718292,
+      "ms": 1358.0881669999999
+    },
+    {
+      "phase": "startup",
+      "method": "readWorkspaceLibrary",
+      "started": 15845.744375,
+      "ms": 2451.0084589999988
+    },
+    {
+      "phase": "fixture-verification",
+      "method": "readWorkspaceLibrary",
+      "started": 18889.599167,
+      "ms": 1353.6418330000015
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "listContents",
+      "started": 20761.122667,
+      "ms": 450.60925000000134
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "status",
+      "started": 21255.794917,
+      "ms": 0.09254200000214041
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "readWorkspace",
+      "started": 21727.020834,
+      "ms": 725.4417080000021
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "listCoverAssets",
+      "started": 21727.264959,
+      "ms": 1405.1642500000016
+    },
+    {
+      "phase": "manual-refresh-1",
+      "method": "readWorkspaceLibrary",
+      "started": 21727.285375,
+      "ms": 2456.609375
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "listContents",
+      "started": 25237.090417,
+      "ms": 438.15799999999945
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "status",
+      "started": 26155.12225,
+      "ms": 0.09591699999873526
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "readWorkspace",
+      "started": 26610.64725,
+      "ms": 668.1694169999973
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "listCoverAssets",
+      "started": 26610.8375,
+      "ms": 1259.211292
+    },
+    {
+      "phase": "manual-refresh-2",
+      "method": "readWorkspaceLibrary",
+      "started": 26610.870459,
+      "ms": 2289.4719579999983
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "listContents",
+      "started": 29897.913125,
+      "ms": 428.87395900000047
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "status",
+      "started": 30739.707167,
+      "ms": 0.11008299999957671
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "readWorkspace",
+      "started": 31179.35025,
+      "ms": 596.6475419999988
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "listCoverAssets",
+      "started": 31179.498959,
+      "ms": 1121.3579160000008
+    },
+    {
+      "phase": "manual-refresh-3",
+      "method": "readWorkspaceLibrary",
+      "started": 31179.529959,
+      "ms": 2308.189333000002
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readContent",
+      "started": 35544.972125,
+      "ms": 250.0005420000016
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "status",
+      "started": 35795.376875,
+      "ms": 0.14962499999819556
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readWorkspace",
+      "started": 35829.111917,
+      "ms": 604.3736669999998
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "listCoverAssets",
+      "started": 35829.235375,
+      "ms": 1182.1047920000055
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readWorkspaceLibrary",
+      "started": 35829.254959,
+      "ms": 2188.558250000002
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "readCover",
+      "started": 38034.3535,
+      "ms": 203.6856670000052
+    },
+    {
+      "phase": "open-specific-content",
+      "method": "status",
+      "started": 38238.473709,
+      "ms": 0.0637910000004922
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "updateContent",
+      "started": 38289.980125,
+      "ms": 673.9167919999963
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listContents",
+      "started": 38964.10725,
+      "ms": 363.1542499999996
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "started": 39329.873125,
+      "ms": 0.05837500000052387
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspace",
+      "started": 39331.001584,
+      "ms": 583.3204160000023
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listCoverAssets",
+      "started": 39331.143042,
+      "ms": 1082.2001669999954
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspaceLibrary",
+      "started": 39331.168625,
+      "ms": 2571.9661669999987
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readCover",
+      "started": 41920.476167,
+      "ms": 230.42829199999687
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "started": 42151.171542,
+      "ms": 0.0408750000060536
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readContent",
+      "started": 42151.3885,
+      "ms": 252.34749999999622
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listContents",
+      "started": 42404.067042,
+      "ms": 429.46487499999785
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "status",
+      "started": 42835.528625,
+      "ms": 0.05070900000282563
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspace",
+      "started": 42836.478917,
+      "ms": 660.1317920000001
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "listCoverAssets",
+      "started": 42836.586709,
+      "ms": 1175.7128749999974
+    },
+    {
+      "phase": "save-title-real-ui",
+      "method": "readWorkspaceLibrary",
+      "started": 42836.614292,
+      "ms": 2186.7498750000013
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readCover",
+      "started": 45036.541334,
+      "ms": 210.82770799999707
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "started": 45247.58475,
+      "ms": 0.05237499999930151
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readContent",
+      "started": 45247.866584,
+      "ms": 232.7283329999991
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "listContents",
+      "started": 45480.933917,
+      "ms": 364.6735419999968
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "started": 45848.391125,
+      "ms": 0.04479200000059791
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readWorkspace",
+      "started": 45848.637084,
+      "ms": 582.5354159999988
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "listCoverAssets",
+      "started": 45848.762584,
+      "ms": 1129.4495000000024
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readWorkspaceLibrary",
+      "started": 45848.783667,
+      "ms": 2155.001333
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "readCover",
+      "started": 48020.55,
+      "ms": 214.59487499999523
+    },
+    {
+      "phase": "refresh-saved-content",
+      "method": "status",
+      "started": 48235.388709,
+      "ms": 0.0423750000045402
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "status",
+      "started": 48281.524209,
+      "ms": 0.0395829999979469
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "readPreferences",
+      "started": 48281.590334,
+      "ms": 0.028749999997671694
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "listContents",
+      "started": 48303.589625,
+      "ms": 438.28995900000155
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "readWorkspace",
+      "started": 48744.177334,
+      "ms": 605.2262499999997
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "listCoverAssets",
+      "started": 48744.294584,
+      "ms": 1131.2413329999981
+    },
+    {
+      "phase": "renderer-reload",
+      "method": "readWorkspaceLibrary",
+      "started": 48744.313292,
+      "ms": 2093.7335420000018
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readContent",
+      "started": 53460.647667,
+      "ms": 377.5060000000012
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "status",
+      "started": 54049.537917,
+      "ms": 0.1454169999997248
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readWorkspace",
+      "started": 54062.97875,
+      "ms": 682.3581249999988
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "listCoverAssets",
+      "started": 54063.207625,
+      "ms": 1244.7201669999995
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readWorkspaceLibrary",
+      "started": 54063.230167,
+      "ms": 2225.0869170000005
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "readCover",
+      "started": 56308.933167,
+      "ms": 233.5723749999961
+    },
+    {
+      "phase": "reopen-persisted",
+      "method": "status",
+      "started": 56561.962834,
+      "ms": 0.06595799999922747
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "mutateWorkspace",
+      "started": 59161.826167,
+      "ms": 1548.2955829999992
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "started": 60725.935042,
+      "ms": 618.978458000005
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listCoverAssets",
+      "started": 60726.360042,
+      "ms": 1387.8009579999998
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspaceLibrary",
+      "started": 60726.386209,
+      "ms": 2375.5420000000013
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "status",
+      "started": 63118.186209,
+      "ms": 0.08087499999965075
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "started": 63491.954875,
+      "ms": 820.6749589999963
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listCoverAssets",
+      "started": 63492.096792,
+      "ms": 1790.5010000000038
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspaceLibrary",
+      "started": 63492.118834,
+      "ms": 3534.850499999993
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listContents",
+      "started": 67503.267834,
+      "ms": 588.5846250000031
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "status",
+      "started": 68094.328209,
+      "ms": 0.0513749999954598
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspace",
+      "started": 68498.729834,
+      "ms": 963.8287910000072
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "listCoverAssets",
+      "started": 68498.967084,
+      "ms": 2202.0101250000007
+    },
+    {
+      "phase": "save-collection-name-real-ui",
+      "method": "readWorkspaceLibrary",
+      "started": 68499.005375
+    }
+  ],
+  "bytePreservation": {
+    "allOtherContentAndCollectionFiles": true,
+    "renamedCollectionOtherFields": true,
+    "body": true,
+    "publicationPlans": true,
+    "sourceFixtureUnchanged": true
+  },
+  "rendererErrors": []
+}

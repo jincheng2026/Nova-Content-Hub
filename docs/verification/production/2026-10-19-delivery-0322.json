@@ -1,0 +1,17 @@
+{
+  "version": "0.3.22",
+  "sourceCommit": "f9a1ea4",
+  "folder": "/Users/mac/Downloads/自媒体工作台-0.3.22-同事交付-Mac苹果芯片",
+  "files": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.22-Mac苹果芯片.dmg"
+  ],
+  "installerSha256": "d2dad1110f63af6c51455367aa3cc8c26a22ec8410a25d64d971179d90c5f0af",
+  "checksumVerified": true,
+  "templates": 20,
+  "prompts": 52,
+  "realExampleCovers": 2,
+  "developerIdSigned": false,
+  "notarized": false
+}
