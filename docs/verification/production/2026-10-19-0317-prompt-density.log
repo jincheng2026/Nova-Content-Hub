@@ -1,0 +1,19 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1943 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg/dist/index.html                                       0.21 kB │ gzip:   0.18 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg/dist/assets/index-BH7gZ4gf.css                      250.41 kB │ gzip:  36.21 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg/dist/assets/index-DhJizeT7.js                       509.66 kB │ gzip: 151.81 kB
+
+✓ built in 411ms
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS actual React/Semi/Electron: desktop 4 columns, responsive 3/2/1, <=180px cards, one-line usage, metadata fit/no overflow, explicit keyboard open/copy, multiline clipboard success/failure, required variables and dirty-close retention, disabled/busy guards. Synthetic library/clipboard IPC only.
+Screenshot: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg/prompts-1280.png
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-density-TYVJwg

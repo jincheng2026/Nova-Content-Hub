@@ -1,0 +1,184 @@
+✔ free preview is the default experience and restricted testing stays explicit (0.620041ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.466416ms)
+✔ release pairing, auth and toolchain fail closed (0.477958ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.444ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.267417ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (361.798167ms)
+✖ packaging preserves runtime files, user data, and testing labels without cloud publication (4.918041ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.33525ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (315.017459ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 909.159125
+
+✖ failing tests:
+
+test at workbench/test/distribution.test.mjs:86:1
+✖ packaging preserves runtime files, user data, and testing labels without cloud publication (4.918041ms)
+  AssertionError [ERR_ASSERTION]: The input was expected to not match the regular expression /npx|xattr|spctl|\/Applications/. Input:
+
+  "import fs from 'node:fs';\n" +
+    "import path from 'node:path';\n" +
+    "import {execFileSync} from 'node:child_process';\n" +
+    "import {fileURLToPath} from 'node:url';\n" +
+    "import {randomUUID} from 'node:crypto';\n" +
+    "import {isDeepStrictEqual} from 'node:util';\n" +
+    "import {buildDemoLibrary} from './build-demo-library.mjs';\n" +
+    "import {releaseModes} from '../../plugin-src/scripts/build.mjs';\n" +
+    "import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';\n" +
+    "import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';\n" +
+    "import {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';\n" +
+    '\n' +
+    "const workbench = fileURLToPath(new URL('../', import.meta.url));\n" +
+    "const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));\n" +
+    "const usage = 'Use npm run dist:local|dist:preview|dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';\n" +
+    "const channelAuth = {local: 'disabled', preview: 'disabled', testing: 'required', production: 'disabled'};\n" +
+    '\n' +
+    'export function parseOptions(args, host = process) {\n' +
+    "    const exportPayload = args[0] === '--export-payload';\n" +
+    '    if (exportPayload) args = args.slice(1);\n' +
+    '    const options = {};\n' +
+    '    if (args.length !== 8) throw new Error(usage);\n' +
+    '    for (let index = 0; index < args.length; index += 2) {\n' +
+    '        const key = args[index].slice(2);\n' +
+    "        if (!['--channel', '--auth', '--platform', '--arch'].includes(args[index]) || Object.hasOwn(options, key)) throw new Error(usage);\n" +
+    '        options[key] = args[index + 1];\n' +
+    '    }\n' +
+    "    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel] || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);\n" +
+    "    if (options.platform !== host.platform || options.arch !== host.arch) throw new Error('Use a native runner with matching process.platform and process.arch; cross-platform/architecture packaging is refused.');\n" +
+    '    if (exportPayload) {\n' +
+    "        if (options.platform !== 'darwin' || options.channel !== 'preview') throw Error('Native payload export is available only for free macOS preview builds');\n" +
+    '        options.exportPayload = true;\n' +
+    '    }\n' +
+    '    return options;\n' +
+    '}\n' +
+    '\n' +
+    'export function assertProductionSigning(platform, env) {\n' +
+    "    if (platform === 'darwin') {\n" +
+    "        const certificate = env.CSC_LINK && env.CSC_KEY_PASSWORD || env.CSC_NAME?.startsWith('Developer ID Application:');\n" +
+    '        const notarization = env.APPLE_API_KEY && env.APPLE_API_KEY_ID && env.APPLE_API_ISSUER || env.APPLE_ID && env.APPLE_APP_SPECIFIC_PASSWORD && env.APPLE_TEAM_ID;\n' +
+    "        if (!certificate || !notarization) throw new Error('Production requires a Developer ID signing certificate and notarization configuration.');\n" +
+    '    } else if (!(env.WIN_CSC_LINK && env.WIN_CSC_KEY_PASSWORD || env.CSC_LINK && env.CSC_KEY_PASSWORD)) {\n' +
+    "        throw new Error('Production requires Windows code-signing certificate configuration.');\n" +
+    '    }\n' +
+    '}\n' +
+    '\n' +
+    'export function assertDistribution(options, config, packageJSON, env = process.env) {\n' +
+    '    validateBuildConfig(config);\n' +
+    "    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel]) throw new Error('AUTH_MODE must be disabled for local/preview/production and required only for restricted testing.');\n" +
+    "    if (['preview', 'production'].includes(options.channel) && config.AUTH_MODE !== 'disabled') throw new Error('Free preview and production commands require AUTH_MODE=disabled in release.config.json.');\n" +
+    "    if (packageJSON.version !== config.version || packageJSON.devDependencies?.electron !== '44.9.0' || packageJSON.devDependencies?.['electron-builder'] !== '26.15.3') throw new Error('Installer version or pinned packaging toolchain mismatch.');\n" +
+    "    if (options.channel === 'production') {\n" +
+    '        assertProductionSigning(options.platform, env);\n' +
+    "        throw new Error('Production is blocked: full functional and native installer acceptance, signing/notarization verification and experimental release gates are incomplete; productionReady=false.');\n" +
+    '    }\n' +
+    '}\n' +
+    '\n' +
+    "export function assertStage(release, config, auth = 'required') {\n" +
+    '    validateRelease(release);\n' +
+    "    if (!['required', 'disabled'].includes(auth) || release.AUTH_MODE !== auth || Object.keys(config).some(key => release[key] !== (key === 'AUTH_MODE' ? auth : config[key]))) throw new Error('Desktop stage does not match release.config.json and the explicitly selected authentication mode.');\n" +
+    '}\n' +
+    '\n' +
+    'export function testingEnvironment(parent = process.env) {\n' +
+    '    const env = {...parent};\n' +
+    '    // Empty CSC_LINK is still a certificate path to builder; absence is the safe testing value.\n' +
+    '    for (const key of Object.keys(env)) if (/^(?:WIN_)?CSC_/i.test(key)) delete env[key];\n' +
+    "    env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';\n" +
+    '    return env;\n' +
+    '}\n' +
+    '\n' +
+    'export async function validateInstallerMarketplace(input, release, sealed) {\n' +
+    '    const entries = await snapshotPackage(input);\n' +
+    "    if (sealed && !isDeepStrictEqual(entries, sealed)) throw Error('Packaged marketplace changed from the sealed desktop stage');\n" +
+    '    const plugin = path.join(input, release.appScope);\n' +
+    '    const runtime = await validateRuntime(plugin, release);\n' +
+    "    const files = readJSON(path.join(input, 'package-files.json'));\n" +
+    "    if (files.format !== 'nova-content-marketplace-package-files' || files.schemaVersion !== 1 || !isDeepStrictEqual(files.release, readJSON(path.join(plugin, 'plugin-src/src/release.json'))) || !isDeepStrictEqual(files.entries, runtime)) throw Error('Marketplace package-files integrity mismatch');\n" +
+    "    if (!isDeepStrictEqual(entries, await snapshotPackage(input))) throw Error('Marketplace changed during installer validation');\n" +
+    '    return entries;\n' +
+    '}\n' +
+    '\n' +
+    'export function installerConfig(options, version) {\n' +
+    "    const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);\n" +
+    "    const icons = path.join(workbench, 'resources/brand/desktop');\n" +
+    '    return {\n' +
+    "        appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',\n" +
+    "        productName: '自媒体工作台',\n" +
+    "        electronVersion: '44.9.0',\n" +
+    '        directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},\n' +
+    "        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 free preview; no login required; non-production build', author: 'Nova Content Hub'},\n" +
+    '        artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\\${ext}`,\n' +
+    '        publish: null,\n' +
+    '        // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.\n' +
+    '        asar: false,\n' +
+    '        npmRebuild: false,\n' +
+    '        files: [\n' +
+    "            'package.json', 'workbench/package.json', 'workbench/dist/**/*',\n" +
+    "            'plugin-src/src/lib/**/*', 'plugin-src/src/bridge/**/*', 'plugin-src/src/content.mjs',\n" +
+    "            'plugin-src/resources/**/*', 'plugin-src/references/**/*', 'plugin-src/schemas/**/*',\n" +
+    "            '!**/{test,tests,__tests__,scripts,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',\n" +
+    "            '!**/*.map', '!**/.DS_Store', '!package-lock.json'\n" +
+    '        ],\n' +
+    "        // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.\n" +
+    "        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']}],\n" +
+    '        mac: {\n' +
+    "            target: [{target: 'dmg', arch: [options.arch]}],\n" +
+    "            icon: path.join(icons, 'icon.icns'),\n" +
+    "            category: 'public.app-category.productivity',\n" +
+    "            identity: '-', hardenedRuntime: false, notarize: false,\n" +
+    '            // Preserve sealed Node and plugin native libraries; the app and desktop sharp still get signed.\n' +
+    "            signIgnore: ['[/\\\\\\\\]Contents[/\\\\\\\\]Resources[/\\\\\\\\]plugin-marketplace(?:[/\\\\\\\\]|$)'],\n" +
+    "            minimumSystemVersion: '13.0'\n" +
+    '        },\n' +
+    '        dmg: {sign: false},\n' +
+    '        win: {\n' +
+    "            target: [{target: 'nsis', arch: [options.arch]}],\n" +
+    "            icon: path.join(icons, 'icon.ico'),\n" +
+    "            requestedExecutionLevel: 'asInvoker'\n" +
+    '        },\n' +
+    '        nsis: {\n' +
+    '            oneClick: true, perMachine: false, allowElevation: false,\n' +
+    '            packElevateHelper: false,\n' +
+    "            createDesktopShortcut: 'always', createStartMenuShortcut: true,\n" +
+    '            deleteAppDataOnUninstall: false, runAfterFinish: false\n' +
+    '        }\n' +
+    '    };\n' +
+    '}\n' +
+    '\n' +
+    'export async function distribute(args = process.argv.slice(2)) {\n' +
+    '    const options = parseOptions(args);\n' +
+    "    const packageJSON = readJSON(path.join(workbench, 'package.json'));\n" +
+    "    const config = readJSON(path.join(workbench, '../release.config.json'));\n" +
+    '    assertDistribution(options, config, packageJSON);\n' +
+    '    const npmCLI = process.env.npm_execpath;\n' +
+    "    if (!npmCLI || !fs.statSync(npmCLI).isFile()) throw new Error('Run distribution through npm with an explicit Node/npm runtime.');\n" +
+    "    for (const [name, version] of [['electron', '44.9.0'], ['electron-builder', '26.15.3']]) {\n" +
+    "        if (readJSON(path.join(workbench, 'node_modules', name, 'package.json')).version !== version) throw new Error(`Run npm ci --include=optional to install pinned ${name}.`);\n" +
+    '    }\n' +
+    '    const exportPayload = options.exportPayload === true;\n' +
+    '    const source = exportPayload ? sourceIdentity(path.dirname(workbench), npmCLI) : undefined;\n' +
+    "    execFileSync(process.execPath, [npmCLI, 'run', 'build', '--', '--auth', options.auth], {cwd: workbench, stdio: 'inherit'});\n" +
+    '    assertStage(readJSON(path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/dist/release.json`)), config, options.auth);\n' +
+    '    if (source) {\n' +
+    '        assertSourceUnchanged(source, sourceIdentity(path.dirname(workbench), npmCLI));\n' +
+    '        const parent = path.join'... 2966 more characters
+
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution.test.mjs:111:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "import fs from 'node:fs';\nimport path from 'node:path';\nimport {execFileSync} from 'node:child_process';\nimport {fileURLToPath} from 'node:url';\nimport {randomUUID} from 'node:crypto';\nimport {isDeepStrictEqual} from 'node:util';\nimport {buildDemoLibrary} from './build-demo-library.mjs';\nimport {releaseModes} from '../../plugin-src/scripts/build.mjs';\nimport {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';\nimport {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';\nimport {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';\n\nconst workbench = fileURLToPath(new URL('../', import.meta.url));\nconst readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));\nconst usage = 'Use npm run dist:local|dist:preview|dist:testing|dist:production -- --platform darwin|win32 --arch arm64|x64';\nconst channelAuth = {local: 'disabled', preview: 'disabled', testing: 'required', production: 'disabled'};\n\nexport function parseOptions(args, host = process) {\n    const exportPayload = args[0] === '--export-payload';\n    if (exportPayload) args = args.slice(1);\n    const options = {};\n    if (args.length !== 8) throw new Error(usage);\n    for (let index = 0; index < args.length; index += 2) {\n        const key = args[index].slice(2);\n        if (!['--channel', '--auth', '--platform', '--arch'].includes(args[index]) || Object.hasOwn(options, key)) throw new Error(usage);\n        options[key] = args[index + 1];\n    }\n    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel] || !['darwin', 'win32'].includes(options.platform) || !['arm64', 'x64'].includes(options.arch)) throw new Error(usage);\n    if (options.platform !== host.platform || options.arch !== host.arch) throw new Error('Use a native runner with matching process.platform and process.arch; cross-platform/architecture packaging is refused.');\n    if (exportPayload) {\n        if (options.platform !== 'darwin' || options.channel !== 'preview') throw Error('Native payload export is available only for free macOS preview builds');\n        options.exportPayload = true;\n    }\n    return options;\n}\n\nexport function assertProductionSigning(platform, env) {\n    if (platform === 'darwin') {\n        const certificate = env.CSC_LINK && env.CSC_KEY_PASSWORD || env.CSC_NAME?.startsWith('Developer ID Application:');\n        const notarization = env.APPLE_API_KEY && env.APPLE_API_KEY_ID && env.APPLE_API_ISSUER || env.APPLE_ID && env.APPLE_APP_SPECIFIC_PASSWORD && env.APPLE_TEAM_ID;\n        if (!certificate || !notarization) throw new Error('Production requires a Developer ID signing certificate and notarization configuration.');\n    } else if (!(env.WIN_CSC_LINK && env.WIN_CSC_KEY_PASSWORD || env.CSC_LINK && env.CSC_KEY_PASSWORD)) {\n        throw new Error('Production requires Windows code-signing certificate configuration.');\n    }\n}\n\nexport function assertDistribution(options, config, packageJSON, env = process.env) {\n    validateBuildConfig(config);\n    if (!Object.hasOwn(channelAuth, options.channel) || options.auth !== channelAuth[options.channel]) throw new Error('AUTH_MODE must be disabled for local/preview/production and required only for restricted testing.');\n    if (['preview', 'production'].includes(options.channel) && config.AUTH_MODE !== 'disabled') throw new Error('Free preview and production commands require AUTH_MODE=disabled in release.config.json.');\n    if (packageJSON.version !== config.version || packageJSON.devDependencies?.electron !== '44.9.0' || packageJSON.devDependencies?.['electron-builder'] !== '26.15.3') throw new Error('Installer version or pinned packaging toolchain mismatch.');\n    if (options.channel === 'production') {\n        assertProductionSigning(options.platform, env);\n        throw new Error('Production is blocked: full functional and native installer acceptance, signing/notarization verification and experimental release gates are incomplete; productionReady=false.');\n    }\n}\n\nexport function assertStage(release, config, auth = 'required') {\n    validateRelease(release);\n    if (!['required', 'disabled'].includes(auth) || release.AUTH_MODE !== auth || Object.keys(config).some(key => release[key] !== (key === 'AUTH_MODE' ? auth : config[key]))) throw new Error('Desktop stage does not match release.config.json and the explicitly selected authentication mode.');\n}\n\nexport function testingEnvironment(parent = process.env) {\n    const env = {...parent};\n    // Empty CSC_LINK is still a certificate path to builder; absence is the safe testing value.\n    for (const key of Object.keys(env)) if (/^(?:WIN_)?CSC_/i.test(key)) delete env[key];\n    env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';\n    return env;\n}\n\nexport async function validateInstallerMarketplace(input, release, sealed) {\n    const entries = await snapshotPackage(input);\n    if (sealed && !isDeepStrictEqual(entries, sealed)) throw Error('Packaged marketplace changed from the sealed desktop stage');\n    const plugin = path.join(input, release.appScope);\n    const runtime = await validateRuntime(plugin, release);\n    const files = readJSON(path.join(input, 'package-files.json'));\n    if (files.format !== 'nova-content-marketplace-package-files' || files.schemaVersion !== 1 || !isDeepStrictEqual(files.release, readJSON(path.join(plugin, 'plugin-src/src/release.json'))) || !isDeepStrictEqual(files.entries, runtime)) throw Error('Marketplace package-files integrity mismatch');\n    if (!isDeepStrictEqual(entries, await snapshotPackage(input))) throw Error('Marketplace changed during installer validation');\n    return entries;\n}\n\nexport function installerConfig(options, version) {\n    const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);\n    const icons = path.join(workbench, 'resources/brand/desktop');\n    return {\n        appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',\n        productName: '自媒体工作台',\n        electronVersion: '44.9.0',\n        directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},\n        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 free preview; no login required; non-production build', author: 'Nova Content Hub'},\n        artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\\${ext}`,\n        publish: null,\n        // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.\n        asar: false,\n        npmRebuild: false,\n        files: [\n            'package.json', 'workbench/package.json', 'workbench/dist/**/*',\n            'plugin-src/src/lib/**/*', 'plugin-src/src/bridge/**/*', 'plugin-src/src/content.mjs',\n            'plugin-src/resources/**/*', 'plugin-src/references/**/*', 'plugin-src/schemas/**/*',\n            '!**/{test,tests,__tests__,scripts,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',\n            '!**/*.map', '!**/.DS_Store', '!package-lock.json'\n        ],\n        // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.\n        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']}],\n        mac: {\n            target: [{target: 'dmg', arch: [options.arch]}],\n            icon: path.join(icons, 'icon.icns'),\n            category: 'public.app-category.productivity',\n            identity: '-', hardenedRuntime: false, notarize: false,\n            // Preserve sealed Node and plugin native libraries; the app and desktop sharp still get signed.\n            signIgnore: ['[/\\\\\\\\]Contents[/\\\\\\\\]Resources[/\\\\\\\\]plugin-marketplace(?:[/\\\\\\\\]|$)'],\n            minimumSystemVersion: '13.0'\n        },\n        dmg: {sign: false},\n        win: {\n            target: [{target: 'nsis', arch: [options.arch]}],\n            icon: path.join(icons, 'icon.ico'),\n            requestedExecutionLevel: 'asInvoker'\n        },\n        nsis: {\n            oneClick: true, perMachine: false, allowElevation: false,\n            packElevateHelper: false,\n            createDesktopShortcut: 'always', createStartMenuShortcut: true,\n            deleteAppDataOnUninstall: false, runAfterFinish: false\n        }\n    };\n}\n\nexport async function distribute(args = process.argv.slice(2)) {\n    const options = parseOptions(args);\n    const packageJSON = readJSON(path.join(workbench, 'package.json'));\n    const config = readJSON(path.join(workbench, '../release.config.json'));\n    assertDistribution(options, config, packageJSON);\n    const npmCLI = process.env.npm_execpath;\n    if (!npmCLI || !fs.statSync(npmCLI).isFile()) throw new Error('Run distribution through npm with an explicit Node/npm runtime.');\n    for (const [name, version] of [['electron', '44.9.0'], ['electron-builder', '26.15.3']]) {\n        if (readJSON(path.join(workbench, 'node_modules', name, 'package.json')).version !== version) throw new Error(`Run npm ci --include=optional to install pinned ${name}.`);\n    }\n    const exportPayload = options.exportPayload === true;\n    const source = exportPayload ? sourceIdentity(path.dirname(workbench), npmCLI) : undefined;\n    execFileSync(process.execPath, [npmCLI, 'run', 'build', '--', '--auth', options.auth], {cwd: workbench, stdio: 'inherit'});\n    assertStage(readJSON(path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/dist/release.json`)), config, options.auth);\n    if (source) {\n        assertSourceUnchanged(source, sourceIdentity(path.dirname(workbench), npmCLI));\n        const parent = path.join"... 2966 more characters,
+    expected: /npx|xattr|spctl|\/Applications/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }

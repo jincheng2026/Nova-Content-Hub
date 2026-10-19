@@ -1,0 +1,17 @@
+✔ free preview is the default experience and restricted testing stays explicit (0.827166ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.525292ms)
+✔ release pairing, auth and toolchain fail closed (0.4825ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.173167ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.243166ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (516.4855ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.824833ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.338958ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (436.556083ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1285.033291

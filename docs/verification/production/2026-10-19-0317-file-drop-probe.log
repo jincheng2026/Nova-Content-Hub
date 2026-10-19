@@ -1,0 +1,6 @@
+Preparing isolated native and renderer sources.
+DROP template via actual File objects after opening collapsed import area
+PASS template drop, invalid input + cancelled dialog preserve draft, confirmation persists one group
+PASS attachment drop/replacement confirms once, custom name and saved body retained; folder refused without navigation
+PASS photo drop imports local photo without automatically declaring ownership
+PASS receipt: {"passed":true,"template":true,"material":true,"photo":true,"draftRetained":true,"invalidRejected":true,"sourceVersion":"0.3.17","runtimeBaseVersion":"0.3.17","platform":"darwin","arch":"arm64","mechanism":"Electron CDP drag events with real native files","nativeDialogs":"stubbed cancel","finderGesture":"not exercised"}

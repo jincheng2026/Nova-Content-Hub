@@ -1,0 +1,11 @@
+{
+  "version": "0.3.16",
+  "sourceCommit": "d812e17",
+  "delivery": "/Users/mac/Downloads/自媒体工作台-0.3.16-Mac苹果芯片/自媒体工作台-0.3.16-Mac苹果芯片.dmg",
+  "sha256": "b21a393c526f8c746039de4f14fa102090f21d5392e36ef22a2b5a3f12a69507",
+  "bytes": 481954868,
+  "sameInstallerAsInstalled": true,
+  "platform": "darwin-arm64",
+  "demoInsideDmg": true,
+  "productionReady": false
+}

@@ -1,0 +1,13 @@
+✔ local file boundary rejects extra fields, paths, folders, symlinks, counts, types and size before importing (50.654458ms)
+(node:52063) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sandbox preload extracts File paths through webUtils only, refuses strings and non-native files (5.173833ms)
+✔ dropped and dialog files reuse real material/template/photo import and keep explicit attachment confirmation (4509.977333ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4855.478167

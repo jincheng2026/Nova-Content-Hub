@@ -1,0 +1,16 @@
+{
+  "passed": true,
+  "template": true,
+  "material": true,
+  "photo": true,
+  "draftRetained": true,
+  "invalidRejected": true,
+  "sourceVersion": "0.3.17",
+  "runtimeBaseVersion": "0.3.17",
+  "platform": "darwin",
+  "arch": "arm64",
+  "mechanism": "Electron CDP drag events with real native files",
+  "nativeDialogs": "stubbed cancel",
+  "finderGesture": "not exercised",
+  "checkedAt": "2026-10-19T09:45:53+00:00"
+}

@@ -1,0 +1,58 @@
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (58.912375ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (6763.06675ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (4750.726875ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (2527.2335ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (2849.89425ms)
+  ✔ failed (2924.342125ms)
+  ✔ superseded (3047.787791ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (8823.008708ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2343.086ms)
+  ✔ after (2261.0385ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (4604.777334ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1512.009916ms)
+  ✔ true (1446.317584ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (2958.838084ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2596.927ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (341.80775ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (380.418417ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2189.793208ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2620.495875ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (4812.354334ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2207.423042ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (5675.369791ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (951.924167ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (979.277ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (5155.939625ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (6855.739166ms)
+✔ summary fallback preserves strict input integrity checks for execution (2836.92125ms)
+✔ unexpected errors during summary loading still propagate (2295.345208ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (694.488166ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (6059.198667ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (4424.123917ms)
+✔ folder-open failure keeps exported originals recoverable (1264.921125ms)
+✔ local file boundary rejects extra fields, paths, folders, symlinks, counts, types and size before importing (49.738875ms)
+(node:32829) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sandbox preload extracts File paths through webUtils only, refuses strings and non-native files (4.507375ms)
+✔ dropped and dialog files reuse real material/template/photo import and keep explicit attachment confirmation (3765.279667ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (15.804666ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (4278.764417ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1039.378875ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (515.604083ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (332.605375ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (751.174042ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (1.096708ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (2.202292ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (2438.155417ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (1494.573292ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 83099.417791
