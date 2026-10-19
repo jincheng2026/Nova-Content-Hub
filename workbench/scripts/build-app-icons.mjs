@@ -27,12 +27,18 @@ export async function buildAppIcons() {
     const source = await fs.readFile(path.join(brand, master));
     const metadata = await sharp(source).metadata();
     if (!metadata.hasAlpha || metadata.width !== metadata.height || metadata.width < 1024) throw Error('Use the transparent square brand master, at least 1024px.');
-    // Tahoe masks opaque artwork; transparent legacy artwork gets an extra system plate.
+    // Dock.setIcon does not mask opaque images; keep the master's rounded silhouette on a transparent Mac grid.
     const alpha = await sharp(source).extractChannel('alpha').threshold(127).png().toBuffer();
     const {info: bounds} = await sharp(alpha).trim({background: '#000000', threshold: 1}).toBuffer({resolveWithObject: true});
     const edge = Math.max(bounds.width, bounds.height);
     const crop = {left: Math.round(-bounds.trimOffsetLeft + (bounds.width - edge) / 2), top: Math.round(-bounds.trimOffsetTop + (bounds.height - edge) / 2), width: edge, height: edge};
-    const macSource = await sharp(source).extract(crop).flatten({background: '#061b4e'}).ensureAlpha().png().toBuffer();
+    // Seal the interior and remove faint noise; libvips dilation grows the black exterior inward before softening the edge.
+    const macAlpha = await sharp(alpha).dilate(1).blur(0.8).extract(crop).greyscale().toBuffer();
+    const macRgb = await sharp(source).extract(crop).removeAlpha().png().toBuffer();
+    const macArtwork = await sharp(macRgb).joinChannel(macAlpha).png().toBuffer();
+    const macBody = await sharp(macArtwork).resize(824, 824).png().toBuffer();
+    const macSource = await sharp({create: {width: 1024, height: 1024, channels: 4, background: '#00000000'}})
+        .composite([{input: macBody, left: 100, top: 100}]).png().toBuffer();
     const macPngs = new Map();
     for (const size of [16, 32, 64, 128, 256, 512, 1024]) macPngs.set(size, await sharp(macSource).resize(size, size).ensureAlpha().png({compressionLevel: 9}).toBuffer());
     const pngs = new Map();

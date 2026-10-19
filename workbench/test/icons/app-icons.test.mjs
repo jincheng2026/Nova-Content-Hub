@@ -38,12 +38,20 @@ test('desktop icon containers preserve transparency and provide all Windows DPI 
     assert.equal(end, bytes.length);
 });
 
-test('macOS uses full-bleed opaque navy while the Windows PNG remains transparent', async () => {
+test('macOS keeps rounded opaque artwork inside an 824px body on a transparent 1024px canvas', async () => {
     const directory = await checkAppIcons();
     const {data, info} = await sharp(path.join(directory, 'icon-mac.png')).ensureAlpha().raw().toBuffer({resolveWithObject: true});
     assert.equal(info.width, 1024); assert.equal(info.height, 1024);
-    for (let i = 3; i < data.length; i += 4) assert.equal(data[i], 255, 'macOS artwork must have no transparent plate inset');
-    assert.deepEqual([...data.subarray(0, 4)], [6, 27, 78, 255]);
+    const alpha = (x, y) => data[(y * info.width + x) * 4 + 3];
+    for (let y = 0; y < 1024; y++) for (let x = 0; x < 1024; x++) {
+        if (x < 100 || x >= 924 || y < 100 || y >= 924) assert.equal(alpha(x, y), 0, 'Mac grid outside the body stays transparent');
+    }
+    for (const [x, y] of [[100, 100], [923, 100], [100, 923], [923, 923], [130, 130], [893, 130], [130, 893], [893, 893]]) {
+        assert.equal(alpha(x, y), 0, 'rounded body corners stay transparent without a system mask');
+    }
+    for (const [x, y] of [[512, 120], [512, 900], [115, 512], [910, 512], [512, 512], [300, 500], [700, 500]]) {
+        assert.equal(alpha(x, y), 255, 'the navy body and N stay opaque');
+    }
     const windows = await sharp(path.join(directory, 'icon@2x.png')).ensureAlpha().raw().toBuffer();
     assert.equal(windows[3], 0, 'Windows retains transparent rounded corners');
 });
@@ -68,14 +76,18 @@ test('macOS iconutil can decode the committed ICNS into the complete Retina icon
     const output = path.join(root, 'icon.iconset');
     execFileSync('/usr/bin/iconutil', ['-c', 'iconset', '-o', output, path.join(await checkAppIcons(), 'icon.icns')]);
     for (const size of [16, 32, 128, 256, 512]) for (const scale of [1, 2]) {
-        const image = await sharp(path.join(output, `icon_${size}x${size}${scale === 2 ? '@2x' : ''}.png`)).metadata();
-        assert.equal(image.width, size * scale);
-        assert.equal(image.height, size * scale);
-        assert.equal(image.hasAlpha, true);
+        const pixels = size * scale;
+        const {data, info} = await sharp(path.join(output, `icon_${size}x${size}${scale === 2 ? '@2x' : ''}.png`)).ensureAlpha().raw().toBuffer({resolveWithObject: true});
+        assert.equal(info.width, pixels);
+        assert.equal(info.height, pixels);
+        assert.equal(data[3], 0);
+        assert.equal(data[((pixels / 2) * pixels + pixels / 2) * 4 + 3], 255);
+        const expected = await sharp(path.join(await checkAppIcons(), 'icon-mac.png')).resize(pixels, pixels).ensureAlpha().raw().toBuffer();
+        for (let i = 3; i < data.length; i += 4) assert.equal(data[i], expected[i], `ICNS ${pixels}px keeps the rounded, inset alpha geometry`);
     }
     const retina = await sharp(path.join(output, 'icon_512x512@2x.png')).ensureAlpha().raw().toBuffer();
     const mac = await sharp(path.join(await checkAppIcons(), 'icon-mac.png')).ensureAlpha().raw().toBuffer();
-    assert.deepEqual(retina, mac, 'ICNS and the macOS Dock use the same full-bleed artwork');
+    assert.deepEqual(retina, mac, 'ICNS and the macOS Dock use the same transparent rounded artwork');
 });
 
 test('macOS tray artwork is a transparent monochrome glyph at normal and Retina sizes', async () => {

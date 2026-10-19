@@ -149,6 +149,8 @@ export async function distribute(args = process.argv.slice(2)) {
         console.log(`Fresh portable native payload for universal preview assembly: ${payload}`);
     }
     const builderConfig = installerConfig(options, config.version);
+    // Use checksums from the locked Electron package, retaining archive validation without a network-only checksum fetch.
+    builderConfig.electronDownload = {force: false, checksums: readJSON(path.join(workbench, 'node_modules/electron/checksums.json'))};
     if (options.platform === 'darwin' && options.channel === 'preview') {
         const demo = buildDemoLibrary();
         const appFolder = path.join(builderConfig.directories.output, options.arch === 'arm64' ? 'mac-arm64' : 'mac', '自媒体工作台.app');
