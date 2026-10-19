@@ -1,3 +1,4 @@
+import {FileDropzone} from './file-dropzone.tsx';
 import { useEffect, useRef, useState } from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
@@ -139,8 +140,9 @@ export function CalendarPage(props: Props & WorkspaceManagementProps & {initialC
 export function PromptsPage(props: Pick<Props, 'workspace'> & WorkspaceManagementProps & {initialContentId?: string | null; currentContentId?: string | null; openContentBody?(contentId: string): Promise<void>; importPrompt?(): Promise<{title: string; body: string} | null>}) {
   const {workspace, library, busy} = props;
   const [query, setQuery] = useState(''), [category, setCategory] = useState(''), [view, setView] = useState<'enabled' | 'all' | 'trash'>('enabled');
+  const [copyingId, setCopyingId] = useState<string | null>(null);
   const [selected, setSelected] = useState<Prompt | null>(null), [editing, setEditing] = useState<WorkspaceLibraryPrompt | null | undefined>(undefined), [imported, setImported] = useState<{title: string; body: string} | null>(null);
-  const {mutate, notice} = useWorkspaceMutation(props);
+  const {mutate, notice, setNotice} = useWorkspaceMutation(props);
   const [contentId, setContentId] = useState(props.initialContentId ?? '');
   const contents = workspace?.contents.filter(item => !item.deletedAt) ?? [];
   const context = contents.find(item => item.id === contentId) ?? null;
@@ -151,6 +153,14 @@ export function PromptsPage(props: Pick<Props, 'workspace'> & WorkspaceManagemen
   const categories = [...new Set([...(library?.settings.visiblePromptCategories ?? []), ...prompts.map(prompt => prompt.category)].filter(Boolean))];
   const matching = prompts.filter(prompt => (!category || prompt.category === category) && `${prompt.title} ${prompt.body} ${prompt.summary} ${prompt.when} ${prompt.tags.join(' ')}`.toLowerCase().includes(query.toLowerCase()));
   function addPrompt() { setImported(null); setEditing(null); }
+  async function copyCard(prompt: Prompt) {
+    if (busy || copyingId || view === 'trash' || !prompt.enabled) return;
+    if (promptFields(prompt.body).length) { setSelected(prompt); return; }
+    setCopyingId(prompt.id);
+    try { await invoke('copyPrompt', {text: prompt.body}); setNotice(`已复制“${prompt.title}”，可以粘贴到助手。`); }
+    catch { setNotice('复制失败，请打开提示词后手动复制。'); }
+    finally { setCopyingId(null); }
+  }
   return <section className="workspace-page prompt-workspace">
     <header className="creator-page-heading"><div><p className="eyebrow">PROMPT LIBRARY</p><h2>让好用的提示词，随时可用</h2><p>选择一条，填入你的情况，再复制给助手。</p></div><div className="management-actions">{props.importPrompt && <Button disabled={busy || !library} onClick={() => void props.importPrompt?.().then(value => { if (value) {setImported(value); setEditing(null);} })}>从文件导入</Button>}<Button theme="solid" disabled={busy || !library} onClick={addPrompt}>＋ 添加提示词</Button></div></header>
     {props.openContentBody && <div className="actions"><Button id="return-prompt-content-body" disabled={busy || !context} onClick={() => context && void props.openContentBody?.(context.id)}>返回关联内容正文</Button><span className="muted" role="status">{context ? `将打开：${context.title || '未命名内容'}` : contentId ? '关联内容已移入回收站或不再可用，请重新选择。' : '请先在“参考内容”中选择一篇已保存内容。'}</span></div>}
@@ -160,7 +170,8 @@ export function PromptsPage(props: Pick<Props, 'workspace'> & WorkspaceManagemen
     {notice && <p className="prompt-library-notice" role="status">{notice}</p>}
     <div className="prompt-library-grid">{matching.map(prompt => <article className={`prompt-library-card${!prompt.enabled ? ' is-disabled' : ''}`} key={prompt.id}>
       {library && <details className="prompt-card-menu"><summary aria-label={`管理提示词：${prompt.title}`}>•••</summary><div>{view !== 'trash' && <><button disabled={busy} onClick={() => {setImported(null); setEditing(library.prompts.find(item => item.id === prompt.id));}}>编辑提示词</button><button disabled={busy} onClick={() => void mutate({op: 'setPromptEnabled', id: prompt.id, editToken: prompt.editToken, enabled: !prompt.enabled})}>{prompt.enabled ? '停用提示词' : '启用提示词'}</button></>}<button disabled={busy} onClick={() => void mutate({op: view === 'trash' ? 'restorePrompt' : 'trashPrompt', id: prompt.id, editToken: prompt.editToken})}>{view === 'trash' ? '恢复提示词' : '移入回收站'}</button></div></details>}
-      <button className="prompt-library-use" onClick={() => setSelected(prompt)} disabled={busy || view === 'trash' || !prompt.enabled}><span className="prompt-card-category">{prompt.category || '未分类'}{!prompt.enabled ? ' · 已停用' : ''}</span><h3>{prompt.title}</h3><p>{prompt.when || prompt.summary || prompt.body.slice(0, 140)}</p><div className="prompt-library-tags">{prompt.tags.map(tag => <span key={tag}>#{tag}</span>)}</div><span className="prompt-use-footer"><span>{promptFields(prompt.body).length ? `${promptFields(prompt.body).length} 项待填写` : '无需填写变量'}</span><strong>{view === 'trash' ? '在菜单中恢复' : !prompt.enabled ? '在菜单中启用后使用' : promptFields(prompt.body).length ? '填写并使用 ↗' : '查看并复制 ↗'}</strong></span></button>
+      <button className="prompt-library-use" aria-label={`打开提示词：${prompt.title}`} onClick={() => setSelected(prompt)} disabled={busy || view === 'trash' || !prompt.enabled}><h3 title={prompt.title}>{prompt.title}</h3><p title={prompt.when || prompt.summary || prompt.body}>{prompt.when || prompt.summary || prompt.body.slice(0, 140)}</p><span className="prompt-card-metadata"><span className="prompt-card-category">{prompt.category || '未分类'}{!prompt.enabled ? ' · 已停用' : ''}</span><span>{promptFields(prompt.body).length ? `${promptFields(prompt.body).length} 项待填写` : '无需填写'}</span></span><span className="prompt-use-footer"><strong>{view === 'trash' ? '在菜单中恢复' : !prompt.enabled ? '在菜单中启用后使用' : '打开 →'}</strong></span></button>
+      {view !== 'trash' && prompt.enabled && <button className="prompt-card-copy" disabled={busy || !!copyingId} aria-label={`${promptFields(prompt.body).length ? '填写并复制' : '复制提示词'}：${prompt.title}`} onClick={() => void copyCard(prompt)}>{copyingId === prompt.id ? '复制中…' : promptFields(prompt.body).length ? '填写并复制' : '复制'}</button>}
     </article>)}</div>
     {!matching.length && <div className="prompt-library-empty"><span aria-hidden="true">✎</span><h3>{view === 'trash' ? '回收站为空' : prompts.length ? '没有找到匹配的提示词' : '把常用的好问题，存到这里'}</h3><p>{view === 'trash' ? '移入回收站的提示词，可以从卡片菜单恢复。' : prompts.length ? '换个关键词或分类试试。' : '直接粘贴已有文字，保存后就能反复使用。'}</p>{view !== 'trash' && !prompts.length && <Button theme="solid" disabled={busy || !library} onClick={addPrompt}>添加第一条提示词</Button>}</div>}
     {selected && <PromptDialog key={selected.id + selected.editToken} busy={busy} prompt={selected} unavailable={unavailable} content={context} close={() => setSelected(null)}/>}
@@ -220,12 +231,9 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
     workflowSection.current?.scrollIntoView({block: 'start', behavior: 'instant'});
   }, [workflowRequest]);
   const [managing, setManaging] = useState(false), [importing, setImporting] = useState<{template: WorkspaceLibraryTemplate | null; images: WorkspaceTemplateImage[]} | null>(null);
-  async function importImages(template: WorkspaceLibraryTemplate | null = null) {
-    if (busy || !library) return;
-    await props.run(async () => {
-      const images = await invoke('chooseTemplateImages');
-      if (images?.length) setImporting({template, images});
-    });
+  function importImages(template: WorkspaceLibraryTemplate | null = null) {
+    if (busy || !library || importing) return;
+    setImporting({template, images: []});
   }
   async function derive() {
     const source = library?.templates.find(template => template.id === workflowTemplateId);
@@ -243,8 +251,9 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
   const matching = assets?.templates.filter(template => (source === 'all' || (source === 'builtin' ? template.builtin : !template.builtin)) && `${template.name} ${template.description}`.toLowerCase().includes(query.toLowerCase())) ?? [];
   const defaults = library?.settings.defaults;
   return <section className="workspace-page creator-templates">
-    <header className="creator-page-heading"><div><p className="eyebrow">COVER STYLES</p><h2>选一种风格，开始下一张封面</h2><p>每组参考共同定义版式与气质，选好后再填入你的内容。</p></div><div className="management-actions"><Button disabled={busy || !library} onClick={props.managePhotos}>照片与默认设置</Button><Button disabled={busy || !library} onClick={() => setManaging(!managing)}>{managing ? '收起管理' : '版本与回收站'}</Button><Button theme="solid" disabled={busy || !library} onClick={() => void importImages()}>＋ 导入我的模板</Button></div></header>
-    {managing && <TemplateManagement {...props} addVersion={template => void importImages(template)}/>}
+    <header className="creator-page-heading"><div><p className="eyebrow">COVER STYLES</p><h2>选一种风格，开始下一张封面</h2><p>每组参考共同定义版式与气质，选好后再填入你的内容。</p></div><div className="management-actions"><Button disabled={busy || !library} onClick={props.managePhotos}>照片与默认设置</Button><Button disabled={busy || !library} onClick={() => setManaging(!managing)}>{managing ? '收起管理' : '版本与回收站'}</Button><Button theme="solid" disabled={busy || !library || !!importing} onClick={() => void importImages()}>＋ 导入我的模板</Button></div></header>
+    <details><summary>拖拽导入参考图</summary><FileDropzone kind="template" disabled={busy || !library || !!importing} run={props.run} buttonLabel="选择模板图片" onImported={images => setImporting({template: null, images})}/></details>
+    {managing && <TemplateManagement {...props} busy={busy || !!importing} addVersion={template => void importImages(template)}/>}
     <div className="creator-template-layout"><div className="creator-template-library">
       <div className="creator-template-toolbar"><div className="creator-template-tabs" aria-label="模板来源">{([['all', '全部模板'], ['mine', '我的模板'], ['builtin', '内置模板']] as const).map(([key, label]) => <button key={key} aria-pressed={source === key} className={source === key ? 'active' : ''} onClick={() => setSource(key)}>{label}<span>{assets?.templates.filter(template => key === 'all' || (key === 'builtin' ? template.builtin : !template.builtin)).length ?? 0}</span></button>)}</div><Input ref={templateSearch} className="creator-template-search semi-control-text" disabled={busy} type="search" aria-label="搜索模板" value={query} placeholder="搜索名称、风格或适用内容" onChange={setQuery}/></div>
       <div className="creator-template-grid">{matching.map(template => <article key={template.id} className="creator-style-card">
@@ -281,12 +290,5 @@ function TemplateImportDialog({props, template, initialImages, close}: {props: W
   const rules = rulesText.split(/\r?\n/).map(value => value.trim()).filter(Boolean);
   const nextVersion = template ? Math.max(...template.versions.map(item => item.version)) + 1 : 1;
   const invalidRules = rules.length > 100 || rules.some(rule => rule.length > 2000);
-  async function chooseAgain() {
-    if (props.busy) return;
-    await props.run(async () => {
-      const chosen = await invoke('chooseTemplateImages');
-      if (chosen?.length) { setImages(chosen); setSelectionNotice('已更新样张；名称、说明与固定规则仍保留。'); }
-    });
-  }
-  return <ManagementDialog title={template ? `为「${template.title}」添加 v${nextVersion}` : '确认导入我的模板'} busy={props.busy} dirty close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (images.length < 1 || images.length > 50 || invalidRules) return; const fields = {description, rules, styleAssetHashes: images.map(image => image.assetHash)}; void mutate(template ? {op: 'addTemplateVersion', id: template.id, editToken: template.editToken, version: nextVersion, ...fields} : {op: 'createTemplate', name: name.trim(), ...fields}, close); }}><fieldset disabled={props.busy}><div className="management-form"><p className="muted">{template ? '新版本会保留已有版本、封面与发布记录，保存后将选中新版本。' : '确认后新增一组模板，不覆盖已有模板。'} 导入的样张仅作为风格参考，生图效果仍需实际验收。</p><label>模板名称<Input className="semi-control-text" disabled={props.busy} required maxLength={200} readonly={!!template} value={name} onChange={setName} placeholder="例如：我的蓝白知识卡片"/></label><label>模板说明<TextArea className="semi-control-text" disabled={props.busy} maxLength={10000} value={description} onChange={setDescription} placeholder="描述这组模板适合什么内容、希望保留什么风格。"/></label><label>固定规则（可选，每行一条）<TextArea className="semi-control-text" disabled={props.busy} value={rulesText} onChange={setRulesText} placeholder="例如：标题保持两行以内\n背景使用浅色，重点词使用蓝色"/></label><p className={invalidRules ? 'danger-note' : 'muted'}>{invalidRules ? '最多填写 100 条固定规则，每条不超过 2000 字。' : '可以直接用自己的话描述，无需处理模板文件或格式。'}</p><div className="management-toolbar"><strong>已选 {images.length} / 50 张参考样张</strong><Button disabled={props.busy} onClick={() => void chooseAgain()}>重新选择样张</Button></div><p className="muted">可一次多选最多 50 张图片，单张不超过 64 MiB，总计不超过 256 MiB。这里的样张数量与之后生成的候选张数相互独立。</p><div className="template-import-grid">{images.map((image, index) => <figure key={image.assetHash}><img src={image.url} alt={`待导入样张 ${index + 1}：${image.originalName}`}/><figcaption><strong>{index + 1}. {image.originalName}</strong><span>{image.width} × {image.height}</span><Button disabled={props.busy} onClick={() => setImages(old => old.filter(item => item.assetHash !== image.assetHash))}>移除这张</Button></figcaption></figure>)}</div>{!images.length && <p className="danger-note">至少保留一张样张，或重新选择图片。</p>}</div></fieldset><p role="status" className="management-notice">{notice || selectionNotice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || !name.trim() || images.length < 1 || images.length > 50 || invalidRules}>{template ? `保存为 v${nextVersion}` : '确认新增模板'}</Button></form></ManagementDialog>;
+  return <ManagementDialog title={template ? `为「${template.title}」添加 v${nextVersion}` : '确认导入我的模板'} busy={props.busy} dirty close={close}><form className="management-form" onSubmit={event => { event.preventDefault(); if (images.length < 1 || images.length > 50 || invalidRules) return; const fields = {description, rules, styleAssetHashes: images.map(image => image.assetHash)}; void mutate(template ? {op: 'addTemplateVersion', id: template.id, editToken: template.editToken, version: nextVersion, ...fields} : {op: 'createTemplate', name: name.trim(), ...fields}, close); }}><fieldset disabled={props.busy}><div className="management-form"><p className="muted">{template ? '新版本会保留已有版本、封面与发布记录，保存后将选中新版本。' : '确认后新增一组模板，不覆盖已有模板。'} 导入的样张仅作为风格参考，生图效果仍需实际验收。</p><label>模板名称<Input className="semi-control-text" disabled={props.busy} required maxLength={200} readonly={!!template} value={name} onChange={setName} placeholder="例如：我的蓝白知识卡片"/></label><label>模板说明<TextArea className="semi-control-text" disabled={props.busy} maxLength={10000} value={description} onChange={setDescription} placeholder="描述这组模板适合什么内容、希望保留什么风格。"/></label><label>固定规则（可选，每行一条）<TextArea className="semi-control-text" disabled={props.busy} value={rulesText} onChange={setRulesText} placeholder="例如：标题保持两行以内\n背景使用浅色，重点词使用蓝色"/></label><p className={invalidRules ? 'danger-note' : 'muted'}>{invalidRules ? '最多填写 100 条固定规则，每条不超过 2000 字。' : '可以直接用自己的话描述，无需处理模板文件或格式。'}</p><div className="management-toolbar"><strong>已选 {images.length} / 50 张参考样张</strong></div><FileDropzone kind="template" disabled={props.busy} run={props.run} label={images.length ? "拖入图片，替换本次参考样张" : "将模板参考图拖到这里"} buttonLabel={images.length ? "重新选择样张" : "选择模板图片"} onImported={chosen => {setImages(chosen); setSelectionNotice("已更新样张；名称、说明与固定规则仍保留。");}}/><p className="muted">样张数量与之后生成的候选张数相互独立。重新选择会替换本次样张，名称、说明和规则保留。</p><div className="template-import-grid">{images.map((image, index) => <figure key={image.assetHash}><img src={image.url} alt={`待导入样张 ${index + 1}：${image.originalName}`}/><figcaption><strong>{index + 1}. {image.originalName}</strong><span>{image.width} × {image.height}</span><Button disabled={props.busy} onClick={() => setImages(old => old.filter(item => item.assetHash !== image.assetHash))}>移除这张</Button></figcaption></figure>)}</div>{!images.length && <p className="danger-note">至少保留一张样张，或重新选择图片。</p>}</div></fieldset><p role="status" className="management-notice">{notice || selectionNotice}</p><Button theme="solid" htmlType="submit" disabled={props.busy || !name.trim() || images.length < 1 || images.length > 50 || invalidRules}>{template ? `保存为 v${nextVersion}` : '确认新增模板'}</Button></form></ManagementDialog>;
 }

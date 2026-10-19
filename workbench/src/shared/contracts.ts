@@ -1,3 +1,4 @@
+import type {LocalFileKind, LocalFileResults, PhotoImportOptions} from './local-files.ts';
 import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, PhotoPending, CoverActionPending, Assistant} from './cover-contracts.ts';
 import type {WorkspaceInputs, WorkspaceResults, WorkspaceWorkerOperations, WorkspacePending, WorkspacePendingView} from './workspace-contracts.ts';
 import type {MaintenanceInputs, MaintenanceResults, MaintenanceWorkerOperations, MaintenancePending, MaintenanceStatus} from './maintenance-contracts.ts';
@@ -195,6 +196,7 @@ export type DesktopMethod = keyof DesktopResults;
 export type Reply<T> = { ok: true; value: T } | { ok: false; error: { code: string; message: string } };
 export type WorkspaceChange = 'changed' | 'unavailable';
 export type ContentHub = { [K in DesktopMethod]: (input?: DesktopInputs[K]) => Promise<Reply<DesktopResults[K]>> } & {
+    importLocalFiles<K extends LocalFileKind>(kind: K, files: File[], photo?: PhotoImportOptions): Promise<Reply<LocalFileResults[K]>>;
     onWorkspaceChanged(listener: (change: WorkspaceChange) => void): () => void;
 };
 

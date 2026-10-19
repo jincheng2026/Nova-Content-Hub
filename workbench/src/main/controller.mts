@@ -1,3 +1,4 @@
+import {validateLocalFiles} from './local-files.mts';
 import {Covers} from './covers.mts';
 import {TemplateController} from './template-controller.mts';
 import type {TemplateCallbacks} from './template-controller.mts';
@@ -53,6 +54,13 @@ export class DesktopController {
             const file = await this.dialogs.promptDocument?.();
             return file ? readPromptDocument(file) : null;
         });
+    }
+    async importLocalFiles(input: unknown) {
+        requireWrite(this.authMode);
+        const selection = await validateLocalFiles(input);
+        if (selection.kind === 'template') return this.workspace.chooseTemplateImages(undefined, selection.sources);
+        if (selection.kind === 'material') return this.workspace.chooseContentMaterial(undefined, selection.sources[0]);
+        return this.covers.choosePhoto(selection.photo!, selection.sources[0]);
     }
     covers: Covers;
     workspace: WorkspaceController;

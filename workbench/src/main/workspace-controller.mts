@@ -1,3 +1,4 @@
+import {validateLocalFiles} from './local-files.mts';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs/promises';
@@ -87,14 +88,15 @@ export class WorkspaceController {
         });
     }
 
-    async chooseContentMaterial(input?: undefined) {
+    async chooseContentMaterial(input?: undefined, selectedSource?: string) {
         this.validate('chooseContentMaterial', input);
         requireWrite(this.owner.authMode);
         return this.owner.exclusive(async () => {
             this.owner.noPending();
             const binding = await this.writable();
-            const source = await this.owner.dialogs.material?.();
+            const source = selectedSource ?? await this.owner.dialogs.material?.();
             if (!source) return null;
+            await validateLocalFiles({kind: 'material', sources: [source]});
             try { return this.decorateMaterial(await this.owner.worker.call('workspaceImportMaterial', {binding, source})); }
             catch (error) {
                 throw Object.assign(new Error('资料导入未完成。请选择64 MiB以内的PNG、JPEG、WebP、GIF或PDF；UTF-8 Markdown/文本限1 MiB。未建立内容附件，已导入原件可能作为未引用资产保留。'), {code: errorInfo(error).code});
@@ -124,14 +126,15 @@ export class WorkspaceController {
         });
     }
 
-    async chooseTemplateImages(input?: undefined) {
+    async chooseTemplateImages(input?: undefined, selectedSources?: string[]) {
         this.validate('chooseTemplateImages', input);
         requireWrite(this.owner.authMode);
         return this.owner.exclusive(async () => {
             this.owner.noPending();
             const binding = await this.writable();
-            const sources = await this.owner.dialogs.templateImages?.();
+            const sources = selectedSources ?? await this.owner.dialogs.templateImages?.();
             if (!sources) return null;
+            await validateLocalFiles({kind: 'template', sources});
             try {
                 const images = await this.owner.worker.call('workspaceImportTemplateImages', {binding, sources});
                 return images.map(image => ({...image, url: this.owner.covers.grant(image.assetHash)}));

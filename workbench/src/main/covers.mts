@@ -1,3 +1,4 @@
+import {validateLocalFiles} from './local-files.mts';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { randomUUID, createHash } from 'node:crypto';
@@ -47,10 +48,11 @@ export class Covers {
   }
   async retryBuiltins() { return this.owner.exclusive(async () => { await this.writable(); await this.seed(); }); }
   async listCoverAssets() { const c = this.owner; return c.exclusive(async () => { const result = await c.worker.call('coverAssets', { binding: c.current() }); return { templates: result.templates.map(t => ({ ...t, samples: t.samples.map(r => ({ ...r, url: this.grant(r.assetHash) })) })), photos: result.photos.map(p => this.photo(p)) }; }); }
-  async choosePhoto(input: { title: string; isOwnPhoto: boolean }) {
+  async choosePhoto(input: { title: string; isOwnPhoto: boolean }, selectedSource?: string) {
     const c = this.owner; validateInput('choosePhoto', input); requireWrite(c.authMode);
     return c.exclusive(async () => {
-      await this.writable(); const binding = c.current(); const source = await c.dialogs.photo?.(); if (!source) return null;
+      await this.writable(); const binding = c.current(); const source = selectedSource ?? await c.dialogs.photo?.(); if (!source) return null;
+      await validateLocalFiles({kind: 'photo', sources: [source], photo: input});
       const decoded = await c.worker.call('preflightPhoto', { source });
       await c.persist({ ...c.binding, photoPending: { source, expectedHash: decoded.assetHash, mutationId: randomUUID(), title: input.title, originalName: path.basename(source), isOwnPhoto: input.isOwnPhoto } });
       return this.finishPhoto(binding);

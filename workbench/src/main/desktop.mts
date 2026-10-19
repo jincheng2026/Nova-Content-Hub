@@ -331,6 +331,14 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     window.webContents.on('will-navigate', event => event.preventDefault());
     window.webContents.on('will-frame-navigate', event => event.preventDefault());
     window.webContents.on('will-attach-webview', event => event.preventDefault());
+    ipcMain.handle('nova:importLocalFiles', async (event, ...args) => {
+        try {
+            assertCaller(event, window?.webContents, []);
+            if (args.length !== 1) throw Object.assign(new Error('文件导入参数无效。'), {code: 'INVALID_FILES'});
+            if (initializationError) throw initializationError;
+            return {ok: true, value: await runOperation(() => controller.importLocalFiles(args[0])).finally(syncLibraryWatcher)};
+        } catch (error) { return {ok: false, error: errorInfo(error)}; }
+    });
     for (const method of CHANNELS) ipcMain.handle(`nova:${method}`, async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, args, method);

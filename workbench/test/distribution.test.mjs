@@ -108,7 +108,9 @@ test('packaging preserves runtime files, user data, and testing labels without c
     }
     const source = fs.readFileSync(new URL('../scripts/dist.mjs', import.meta.url), 'utf8');
     assert.match(source, /'--publish', 'never'/);
-    assert.doesNotMatch(source, /npx|xattr|spctl|\/Applications/);
+    assert.doesNotMatch(source, /npx|xattr|spctl/);
+    assert.deepEqual(source.match(/['"]\/Applications['"]/g), ["'/Applications'"], 'Applications is only the DMG drag-to-install link');
+    assert.match(source, /checksums: readJSON\(path.join\(workbench, 'node_modules\/electron\/checksums.json'\)\)/);
 });
 
 test('free preview uses the product identity and local builds keep their isolated identity', () => {

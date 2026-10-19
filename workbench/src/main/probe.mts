@@ -65,7 +65,7 @@ startDesktop({
         assert.deepEqual(await run('({ require: typeof require, process: typeof process, bridge: Object.keys(window.contentHub).sort() })'), {
             require: 'undefined',
             process: 'undefined',
-            bridge: [...CHANNELS, 'onWorkspaceChanged']
+            bridge: [...CHANNELS, 'onWorkspaceChanged', 'importLocalFiles']
         .sort() });
         if (process.env.NOVA_DESKTOP_PROBE_PHASE === 'import') {
             stage('opening library A from welcome');

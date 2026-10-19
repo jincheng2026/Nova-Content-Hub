@@ -1,8 +1,16 @@
 import type {ContentHub} from '../shared/contracts.ts';
 import type {IpcRendererEvent} from 'electron';
 
-const {contextBridge, ipcRenderer} = require('electron') as typeof import('electron');
+const {contextBridge, ipcRenderer, webUtils} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    importLocalFiles: async (kind, files, photo) => {
+        try {
+            if (!['material', 'template', 'photo'].includes(kind) || !Array.isArray(files) || files.length < 1 || files.length > (kind === 'template' ? 50 : 1)) throw new Error('请选择允许数量的本机文件。');
+            const sources = files.map(file => webUtils.getPathForFile(file));
+            if (sources.some(source => !source)) throw new Error('无法读取本机原文件，请使用选择文件按钮。');
+            return await ipcRenderer.invoke('nova:importLocalFiles', {kind, sources, ...(photo === undefined ? {} : {photo})});
+        } catch (error) { return {ok: false, error: {code: 'INVALID_FILES', message: error instanceof Error ? error.message : '无法读取本机文件，请重新选择。'}}; }
+    },
     onWorkspaceChanged: listener => {
         if (typeof listener !== 'function') throw new TypeError('Expected a workspace listener');
         const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'changed' || value === 'unavailable') listener(value); };

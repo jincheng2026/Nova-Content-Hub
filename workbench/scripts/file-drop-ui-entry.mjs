@@ -1,0 +1,64 @@
+// Copied into the temporary Electron main directory by file-drop-ui-probe.mjs.
+import {app} from 'electron';
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {startDesktop} from './desktop.mjs';
+const root = process.env.NOVA_DROP_PROBE_ROOT;
+if (!root || !path.isAbsolute(root)) throw new Error('Run file-drop-ui-probe.mjs.');
+const libraryRoot = path.join(root, 'library');
+startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {backup: async () => null, destination: async () => null, library: async () => libraryRoot, templateImages: async () => null, material: async () => null}, onConsoleMessage: message => console.log('renderer:', message), async ready({window}) {
+    const run = script => window.webContents.executeJavaScript(script);
+    const wait = condition => run(`new Promise((resolve,reject)=>{const end=Date.now()+45000;const next=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('Timed out: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(-1500)));setTimeout(next,30)};next()})`);
+    const snapshot = async () => {const reply = await run('window.contentHub.readWorkspaceLibrary()'); assert.equal(reply.ok,true,JSON.stringify(reply)); return reply.value;};
+    const idle = `document.querySelector('main[data-app="ready"][data-loaded="true"][data-busy="false"]')`;
+    const clickText = async (selector, text) => {await wait(`(()=>{const e=[...document.querySelectorAll(${JSON.stringify(selector)})].find(e=>e.textContent.trim()===${JSON.stringify(text)});return e&&!e.disabled})()`);return run(`[...document.querySelectorAll(${JSON.stringify(selector)})].find(e=>e.textContent.trim()===${JSON.stringify(text)}).click()`);};
+    const setValue = (selector, value) => run(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});Object.getOwnPropertyDescriptor(e instanceof HTMLTextAreaElement?HTMLTextAreaElement.prototype:HTMLInputElement.prototype,'value').set.call(e,${JSON.stringify(value)});e.dispatchEvent(new Event('input',{bubbles:true}));})()`);
+    window.webContents.debugger.attach('1.3');
+    const drop = async (selector, files) => {
+        const point = await run(`(()=>{const e=document.querySelector(${JSON.stringify(selector)});e.scrollIntoView({block:'center'});const r=e.getBoundingClientRect();return {x:r.x+r.width/2,y:r.y+r.height/2}})()`);
+        const data = {items: [], files, dragOperationsMask: 1};
+        for (const type of ['dragEnter','dragOver','drop']) await window.webContents.debugger.sendCommand('Input.dispatchDragEvent', {type, ...point, data});
+    };
+    try {
+        await wait(idle); await run(`document.getElementById('welcome-open-library').click()`); await wait(`${idle}&&document.getElementById('library-summary').textContent==='library'`);
+        await run(`document.getElementById('nav-templates').click()`); await wait(`document.querySelector('.creator-templates .file-dropzone')`);
+        assert.equal(await run(`document.querySelector('.creator-templates > details').open`), false);
+        await clickText('.creator-templates > details > summary', '拖拽导入参考图');
+        await wait(`document.querySelector('.creator-templates > details').open`);
+        console.log('DROP template via actual File objects after opening collapsed import area');
+        await drop('.creator-templates > details .file-dropzone', [path.join(root,'first.png'),path.join(root,'second.png')]);
+        await wait(`${idle}&&document.querySelector('dialog[aria-label="确认导入我的模板"][open] .template-import-grid img')`);
+        assert.equal(await run(`document.querySelectorAll('.template-import-grid img').length`), 2);
+        await setValue('dialog[aria-label="确认导入我的模板"] input', 'Draft template');
+        await setValue('dialog[aria-label="确认导入我的模板"] textarea', 'Keep my description');
+        await drop('dialog[aria-label="确认导入我的模板"] .file-dropzone', [path.join(root,'invalid.exe')]);
+        await wait(`document.querySelector('dialog[aria-label="确认导入我的模板"] .file-dropzone-notice').textContent.includes('不支持')`);
+        assert.equal(await run(`document.querySelector('dialog[aria-label="确认导入我的模板"] input').value`), 'Draft template');
+        assert.equal(await run(`document.querySelectorAll('.template-import-grid img').length`), 2);
+        await clickText('dialog[aria-label="确认导入我的模板"] .file-dropzone button','重新选择样张');
+        await wait(`${idle}&&document.querySelector('dialog[aria-label="确认导入我的模板"] .file-dropzone-notice').textContent.includes('已取消')`);
+        assert.equal(await run(`document.querySelector('dialog[aria-label="确认导入我的模板"] textarea').value`),'Keep my description');
+        await clickText('dialog[aria-label="确认导入我的模板"] button','确认新增模板');
+        await wait(`${idle}&&!document.querySelector('dialog[aria-label="确认导入我的模板"]')`);
+        assert.equal((await snapshot()).templates.filter(t=>t.title==='Draft template').length,1);
+        console.log('PASS template drop, invalid input + cancelled dialog preserve draft, confirmation persists one group');
+        await run(`document.getElementById('nav-content').click()`); await wait(`document.querySelector('.content-title-link')`); await run(`document.querySelector('.content-title-link').click()`); await wait(`document.querySelector('.content-detail-tabs')`); await clickText('.content-detail-tabs button','资料'); await wait(`document.querySelector('.content-detail-panel .file-dropzone')`);
+        await drop('.content-detail-panel .file-dropzone',[path.join(root,'notes.txt')]);
+        await wait(`${idle}&&document.querySelector('dialog[aria-label="确认添加内容资料"][open]')`);
+        assert.equal((await snapshot()).contentDetails.length,1);
+        const original=(await snapshot()).contentDetails[0]; assert.equal(original.materials.length,0);
+        await setValue('dialog[aria-label="确认添加内容资料"] input','Custom attachment name');
+        await drop('dialog[aria-label="确认添加内容资料"] .file-dropzone',[path.join(root,'first.png')]); await wait(`${idle}&&document.querySelector('dialog[aria-label="确认添加内容资料"] .material-image-preview')`);
+        assert.equal(await run(`document.querySelector('dialog[aria-label="确认添加内容资料"] input').value`),'Custom attachment name');
+        await clickText('dialog[aria-label="确认添加内容资料"] button','确认添加资料'); await wait(`${idle}&&!document.querySelector('dialog[aria-label="确认添加内容资料"]')`);
+        assert.equal((await snapshot()).contentDetails.find(c=>c.id===original.id).materials.filter(m=>!m.deletedAt).length,1); assert.equal((await snapshot()).contentDetails.find(c=>c.id===original.id).body,'Saved body');
+        await drop('.content-detail-panel .file-dropzone',[path.join(root,'folder')]); await wait(`document.querySelector('.content-detail-panel .file-dropzone-notice').textContent.includes('不支持')||document.querySelector('.content-detail-panel .file-dropzone-notice').textContent.includes('文件夹')||document.querySelector('.content-detail-panel .file-dropzone-notice').textContent.includes('为空')`);
+        assert.equal(await run('location.href'),'nova-content://app/index.html');
+        console.log('PASS attachment drop/replacement confirms once, custom name and saved body retained; folder refused without navigation');
+        await run(`document.getElementById('library-menu').click()`); await wait(`document.querySelector('.library-manager-dialog[open] .file-dropzone')`); await drop('.library-manager-dialog[open] .file-dropzone',[path.join(root,'second.png')]); await wait(`${idle}&&document.querySelector('.library-manager-dialog[open] .file-dropzone-notice').textContent.includes('照片已导入')`); assert.equal((await snapshot()).photos.length,1); assert.equal((await snapshot()).photos[0].isOwnPhoto,false);
+        console.log('PASS photo drop imports local photo without automatically declaring ownership');
+        await fs.writeFile(path.join(root,'receipt.json'),JSON.stringify({passed:true,template:true,material:true,photo:true,draftRetained:true,invalidRejected:true}));
+        window.destroy(); app.exit(0);
+    } catch(error) {console.error(error);await fs.writeFile(path.join(root,'failure.html'),await run('document.documentElement.outerHTML'));await fs.writeFile(path.join(root,'failure.png'),(await window.webContents.capturePage()).toPNG());app.exit(1);}
+}}).catch(error=>{console.error(error);app.exit(1)});

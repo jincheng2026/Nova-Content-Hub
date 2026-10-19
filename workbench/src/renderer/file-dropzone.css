@@ -1,0 +1,6 @@
+.file-dropzone{display:flex;flex-direction:column;align-items:center;gap:10px;border:1.5px dashed var(--semi-color-border);border-radius:14px;padding:24px 18px;margin:16px 0;background:var(--semi-color-fill-0);text-align:center;transition:background .15s,border-color .15s}
+.file-dropzone.is-dragging{background:var(--semi-color-primary-light-default);border-color:var(--semi-color-primary)}
+.file-dropzone-symbol{display:grid;place-items:center;width:36px;height:36px;border-radius:10px;background:var(--semi-color-fill-1);font-size:24px;color:var(--semi-color-primary)}
+.file-dropzone>p,.file-dropzone-notice{margin:0;color:var(--semi-color-text-2);font-size:12px;line-height:1.7;overflow-wrap:anywhere}
+.file-dropzone.is-disabled{opacity:.65}
+.file-dropzone .semi-button:focus-visible{outline:2px solid var(--semi-color-primary);outline-offset:3px}
