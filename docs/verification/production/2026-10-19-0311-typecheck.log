@@ -1,0 +1,12 @@
+
+> nova-content-hub-workbench@0.3.11 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.11 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.11 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+

@@ -1,0 +1,9 @@
+
+> nova-content-hub-workbench@0.3.12 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+src/renderer/covers.tsx(10,37): error TS2307: Cannot find module './cover-annotation.tsx' or its corresponding type declarations.
+src/renderer/covers.tsx(41,31): error TS2448: Block-scoped variable 'candidateDraft' used before its declaration.
+src/renderer/covers.tsx(41,31): error TS2454: Variable 'candidateDraft' is used before being assigned.
+src/renderer/covers.tsx(203,255): error TS7006: Parameter 'note' implicitly has an 'any' type.
+src/renderer/covers.tsx(203,357): error TS7006: Parameter 'note' implicitly has an 'any' type.

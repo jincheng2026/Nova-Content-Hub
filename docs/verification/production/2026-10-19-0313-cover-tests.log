@@ -1,0 +1,46 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (0.961125ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.234416ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.206167ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.209916ms)
+✔ annotations use the actual contained image and reject letterboxing (0.115166ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.26525ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (3826.292ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (2685.229459ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (2422.999292ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (2910.712833ms)
+  ✔ failed (3059.463125ms)
+  ✔ superseded (2978.037291ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (8949.150917ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2320.921416ms)
+  ✔ after (2216.033458ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (4537.595916ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1515.707333ms)
+  ✔ true (1591.682583ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (3107.863125ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2605.973ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (370.105666ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (368.360583ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2149.110708ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (4402.887916ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (4354.137209ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1212.739916ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3334.894459ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (978.598625ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (968.392709ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (3121.344375ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (4116.262167ms)
+✔ summary fallback preserves strict input integrity checks for execution (1281.998958ms)
+✔ unexpected errors during summary loading still propagate (1035.896ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (403.581625ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (2884.556459ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59558.433042

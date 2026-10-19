@@ -1,0 +1,33 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1900 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8/dist/assets/index-CzQnhBLp.css                      274.08 kB │ gzip:  35.34 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8/dist/assets/index-BlEGnABe.js                       821.33 kB │ gzip: 228.62 kB
+
+✓ built in 204ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Escape scenario: time portal
+Escape state: {"keys":[["Escape",27,true]],"active":"<li class=\"\" role=\"option\" aria-disabled=\"false\" tabindex=\"-1\">00</li>","alert":true,"popup":true}
+AssertionError [ERR_ASSERTION]: time portal: first Escape only closes popup
+
+true !== false
+
+    at probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8/probe-main.mjs:10:385) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+{"errors":[],"values":{"date":"","time":"09:17","utc":"2026-10-19T15:43:27.000Z","choice":"a","count":2}}
+e">25</li><li class="" role="option" aria-disabled="false">26</li><li class="" role="option" aria-disabled="false">27</li><li class="" role="option" aria-disabled="false">28</li><li class="" role="option" aria-disabled="false">29</li><li class="" role="option" aria-disabled="false">30</li><li class="" role="option" aria-disabled="false">31</li><li class="" role="option" aria-disabled="false">32</li><li class="" role="option" aria-disabled="false">33</li><li class="" role="option" aria-disabled="false">34</li><li class="" role="option" aria-disabled="false">35</li><li class="" role="option" aria-disabled="false">36</li><li class="" role="option" aria-disabled="false">37</li><li class="" role="option" aria-disabled="false">38</li><li class="" role="option" aria-disabled="false">39</li><li class="" role="option" aria-disabled="false">40</li><li class="" role="option" aria-disabled="false">41</li><li class="" role="option" aria-disabled="false">42</li><li class="" role="option" aria-disabled="false">43</li><li class="" role="option" aria-disabled="false">44</li><li class="" role="option" aria-disabled="false">45</li><li class="" role="option" aria-disabled="false">46</li><li class="" role="option" aria-disabled="false">47</li><li class="" role="option" aria-disabled="false">48</li><li class="" role="option" aria-disabled="false">49</li><li class="" role="option" aria-disabled="false">50</li><li class="" role="option" aria-disabled="false">51</li><li class="" role="option" aria-disabled="false">52</li><li class="" role="option" aria-disabled="false">53</li><li class="" role="option" aria-disabled="false">54</li><li class="" role="option" aria-disabled="false">55</li><li class="" role="option" aria-disabled="false">56</li><li class="" role="option" aria-disabled="false">57</li><li class="" role="option" aria-disabled="false">58</li><li class="" role="option" aria-disabled="false">59</li></ul></div></div></div></div></div></div></div></div></div></div></div></dialog></div>
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-jAjfC8

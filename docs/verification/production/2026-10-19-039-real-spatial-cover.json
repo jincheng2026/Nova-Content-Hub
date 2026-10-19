@@ -1,0 +1,106 @@
+{
+  "at": "2026-10-19T05:32:22.054Z",
+  "version": "0.3.9",
+  "scope": "Real native WorkBuddy generation from installed app; synthetic content and fictional face only",
+  "library": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/unified-native-acceptance/桌面封面验收库",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "contentId": "337fe6f7-b3d7-4dc7-9346-ffb4fed7b6af",
+  "requestId": "22d707ee-8b7a-4a7f-8f3d-a4338dadb62b",
+  "attemptId": "5b3e8d38-085b-4526-9716-142eed39fbf8",
+  "handoffId": "c2526f83-bf13-476c-af38-33bca5ceed65",
+  "requestHash": "ad3f9e07b01347f425e5b5670e42af6e5a9b5ba0c52423637eb5dc6af97cdaa2",
+  "template": {
+    "id": "builtin-colleague-spatial-operation",
+    "version": 1,
+    "packageHash": "3f996625e63772037fbd129c2f2bdc6b8ba398641e3e64d8330b7606f6b28cd5"
+  },
+  "styleInputs": 25,
+  "ownPhoto": {
+    "id": "6d03ee28-d4bd-4b3f-aec8-ab1922595830",
+    "assetHash": "e6cb57e33971c9b8eb2bdfbc5ea239ffe9f805af7076d91c674603c5d4b1f9fa"
+  },
+  "materials": 0,
+  "count": 2,
+  "ratio": "3:4",
+  "sizePolicy": "ratio-minimum",
+  "status": "committed",
+  "receiptHash": "af11d5d1cf6bcc6162273a31f714500d5e35c6d9f6183ac07db665ad15906fd5",
+  "reportHash": "a78b4ae564ef417ee168daa71a45c6bf6f83115a86a59b90a16d6137560c2cc3",
+  "decoded": true,
+  "files": [
+    {
+      "originalName": "candidate-01.png",
+      "format": "png",
+      "width": 768,
+      "height": 1024,
+      "assetHash": "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "bytes": 981287,
+      "decoded": true,
+      "candidateId": "218c9c9c-978e-4fb4-b8c6-40bb2c98792d",
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_写实摄影风格_银灰色影棚空间_暖黄色光_2026-10-19T05-26-06.png",
+      "allFiveCopiesIdentical": true
+    },
+    {
+      "originalName": "candidate-02.png",
+      "format": "png",
+      "width": 768,
+      "height": 1024,
+      "assetHash": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+      "bytes": 1028605,
+      "decoded": true,
+      "candidateId": "982618f9-3309-4260-b438-2666609ef785",
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_写实摄影风格_银灰色办公空间_亮黄色强_2026-10-19T05-27-09.png",
+      "allFiveCopiesIdentical": true
+    }
+  ],
+  "rawOutputs": [
+    {
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_写实摄影风格_画面中央是一位戴圆框眼镜_2026-10-19T05-24-57.png",
+      "preserved": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/cover-039-real/source-outputs/竖版3_4自媒体封面_写实摄影风格_画面中央是一位戴圆框眼镜_2026-10-19T05-24-57.png",
+      "sha256": "1545e2f66024902d227ad6388d26a7442cb78f172c19c94468d149831a40b233",
+      "bytes": 1012778
+    },
+    {
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_写实摄影风格_银灰色办公空间_亮黄色强_2026-10-19T05-27-09.png",
+      "preserved": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/cover-039-real/source-outputs/竖版3_4自媒体封面_写实摄影风格_银灰色办公空间_亮黄色强_2026-10-19T05-27-09.png",
+      "sha256": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+      "bytes": 1028605
+    },
+    {
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_写实摄影风格_银灰色影棚空间_暖黄色光_2026-10-19T05-26-06.png",
+      "preserved": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/cover-039-real/source-outputs/竖版3_4自媒体封面_写实摄影风格_银灰色影棚空间_暖黄色光_2026-10-19T05-26-06.png",
+      "sha256": "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "bytes": 981287
+    },
+    {
+      "source": "/tmp/cover-inputs/gen-current/竖版3_4自媒体封面_画面中央是一位戴圆框眼镜_短发_面带微_2026-10-19T05-23-28.png",
+      "preserved": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/cover-039-real/source-outputs/竖版3_4自媒体封面_画面中央是一位戴圆框眼镜_短发_面带微_2026-10-19T05-23-28.png",
+      "sha256": "b1cb82b4349c294d050ee5684dfeaf67a9774282370254c6d1ff6a2e2e627f9d",
+      "bytes": 1018270
+    }
+  ],
+  "originalFixtureEntriesUnchanged": 158,
+  "selection": null,
+  "quality": {
+    "mainTitle": "Both show 让创作更有条理",
+    "supportingText": "Both show 灵感·素材·封面",
+    "identity": "Visually resembles the fictional reference; identity accuracy not measured",
+    "layout": "Two distinct spatial-card/workstation compositions",
+    "limitation": "Small text remains on UI cards despite avoid-extra-text request; do not label fully accepted",
+    "platformMark": "Original WorkBuddy AI mark retained",
+    "accepted": false
+  },
+  "nativeSelectExportNotYetVerified": false,
+  "photoTestDeclarationMustRevoke": false,
+  "unrelatedUserDraftPreserved": true,
+  "nativeSelectExport": {
+    "appVersion": "0.3.10",
+    "selectedCandidateId": "982618f9-3309-4260-b438-2666609ef785",
+    "exportPath": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/cover-039-real/export/封面.png",
+    "sha256": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+    "old037ExportUnchanged": true
+  },
+  "photoTestDeclarationRevoked": true,
+  "hostReportedImageCalls": 5,
+  "observedRawFilesPreserved": 4
+}

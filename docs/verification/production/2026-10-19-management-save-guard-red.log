@@ -1,0 +1,22 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1651 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/dist/assets/index-BzVJ97Ax.css                      108.82 kB │ gzip:  18.53 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/dist/assets/index-D0LbKu2f.js                       382.69 kB │ gzip: 116.18 kB
+
+✓ built in 379ms
+AssertionError [ERR_ASSERTION]: updatePhoto rejection path locks every field while waiting
+    at assertLocked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/probe-main.mjs:21:12)
+    at async probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen/probe-main.mjs:45:7) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-management-save-guard-eMRJen

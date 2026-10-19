@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-19T07:23:32.209Z",
+  "version": "0.3.12",
+  "localAppEntries": 1839,
+  "previewAppEntries": 1839,
+  "differences": [
+    "Contents/Frameworks/自媒体工作台 Helper (GPU).app/Contents/Info.plist",
+    "Contents/Frameworks/自媒体工作台 Helper (GPU).app/Contents/MacOS/自媒体工作台 Helper (GPU)",
+    "Contents/Frameworks/自媒体工作台 Helper (Plugin).app/Contents/Info.plist",
+    "Contents/Frameworks/自媒体工作台 Helper (Plugin).app/Contents/MacOS/自媒体工作台 Helper (Plugin)",
+    "Contents/Frameworks/自媒体工作台 Helper (Renderer).app/Contents/Info.plist",
+    "Contents/Frameworks/自媒体工作台 Helper (Renderer).app/Contents/MacOS/自媒体工作台 Helper (Renderer)",
+    "Contents/Frameworks/自媒体工作台 Helper.app/Contents/Info.plist",
+    "Contents/Frameworks/自媒体工作台 Helper.app/Contents/MacOS/自媒体工作台 Helper",
+    "Contents/Info.plist",
+    "Contents/MacOS/自媒体工作台",
+    "Contents/Resources/app/package.json",
+    "Contents/_CodeSignature/CodeResources"
+  ],
+  "previewInstalled": false,
+  "scope": "Built preview vs local envelope only; native preview install pending"
+}

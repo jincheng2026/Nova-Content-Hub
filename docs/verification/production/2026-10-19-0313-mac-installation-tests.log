@@ -1,0 +1,37 @@
+✔ verified installation retains the complete previous app and confirms only installed startup (146.146375ms)
+✔ a completed local-channel journal can recover before an official-channel update (253.31025ms)
+✔ allowed product channels replace and restore each other with the same executable (102.206833ms)
+✔ unknown journal channels and incompatible executables preserve recovery evidence (186.144708ms)
+✔ unknown installed channels and mismatched incoming source or candidate channels are refused (123.308375ms)
+✔ throw copy or verification failure leaves old app intact (75.212209ms)
+✔ missing copy or verification failure leaves old app intact (106.6675ms)
+✔ hash copy or verification failure leaves old app intact (96.788958ms)
+✔ mode copy or verification failure leaves old app intact (56.817667ms)
+✔ source-signature copy or verification failure leaves old app intact (10.655208ms)
+✔ candidate-signature copy or verification failure leaves old app intact (63.740209ms)
+✔ internal symlinks survive copying; escaping links and unknown identities are refused (151.358542ms)
+✔ running target at check 1 is refused before replacement (9.931625ms)
+✔ running target at check 2 is refused before replacement (85.03375ms)
+✔ running-process query failure leaves previous app intact (7.131625ms)
+✔ failed publish restores old app; failed rollback retains recovery record and previous app (220.696666ms)
+✔ interrupted new rename is pending; recovery refuses a replaced previous identity (173.449166ms)
+✔ unknown transaction directory and target symlink are left untouched (22.709459ms)
+✔ native macOS process query distinguishes an unused app directory (926.132292ms)
+✔ initial installation and a subsequent confirmed update preserve separate backups (281.28425ms)
+✔ another live installation owner cannot have its staging directory archived (90.583584ms)
+✔ prepared journal recovers interruption between the old rename and published record (120.383875ms)
+✔ installing from the target itself is refused without touching it (11.674583ms)
+✔ native ditto copy retains framework-style symlinks and executable bits (105.515041ms)
+✔ same-process concurrent recovery cannot archive an active copy (124.048834ms)
+✔ an initialized private orphan before active publication does not block a later install (203.250792ms)
+✔ published initialized staging claim recovers without deleting its private directory (171.876375ms)
+✔ unknown active regular file and symlink are preserved without following them (49.203125ms)
+✔ exclusive claim publication refuses a concurrently created unknown empty directory (42.861708ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4157.738084

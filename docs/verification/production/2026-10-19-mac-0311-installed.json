@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-19T06:48:03.562Z",
+  "version": "0.3.11",
+  "app": "/Applications/自媒体工作台.app",
+  "builtApp": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64/自媒体工作台.app",
+  "installedTreeMatchesBuild": true,
+  "entries": 1839,
+  "counts": {
+    "files": 1335,
+    "links": 15,
+    "directories": 489
+  },
+  "appDigest": "d9a433bb71cc41dbcc2f91b8a2126edb2867dd926b8fa0f86d14870a9ab05463",
+  "pluginEntries": 638,
+  "pluginVersion": "0.3.11",
+  "nativeInstall": {
+    "method": "verified private ditto staging; retained old app; journaled rename publication; explicit relaunch",
+    "phase": "complete",
+    "transaction": "/Applications/.nova-content-hub-install-c70c8157-5511-4efb-a638-e20f6989a751",
+    "previousApplicationMatchesBefore": true
+  },
+  "libraryUnchanged": true,
+  "libraryDigest": "eb7ddc698f636a236331440c37541894285dca923286ae07086e564c8881fe05",
+  "codesignIntegrity": true,
+  "productionReady": false
+}

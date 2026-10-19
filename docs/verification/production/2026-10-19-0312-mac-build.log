@@ -1,0 +1,40 @@
+
+> nova-content-hub-workbench@0.3.12 dist:local
+> node scripts/dist.mjs --channel local --auth disabled --platform darwin --arch arm64
+
+
+> nova-content-hub-workbench@0.3.12 build
+> node scripts/build.mjs --auth disabled
+
+Built experimental disabled plugin for darwin/arm64
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1938 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-disabled/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-p5MYPbyz.css                        354.20 kB │ gzip:  48.20 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-PerntANo.js                       1,036.97 kB │ gzip: 285.66 kB
+
+✓ built in 362ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Built experimental desktop auth-disabled for darwin/arm64; productionReady=false
+  • electron-builder  version=26.15.3 os=25.4.0
+  • loaded configuration  file=/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/electron-builder.json
+  • skipped dependencies rebuild  reason=npmRebuild is set to false
+  • packaging       platform=darwin arch=arm64 electron=44.9.0 appOutDir=release/darwin-arm64/local/mac-arm64
+  • downloaded      label=electron progress=100%
+  • downloaded electron zip extracted successfully  output=/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local/mac-arm64
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • searching for node modules  pm=npm searchDir=/Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled
+  • asar usage is disabled — this is strongly not recommended  solution=enable asar and use asarUnpack to unpack files that must be externally available
+  • signing         file=release/darwin-arm64/local/mac-arm64/自媒体工作台.app platform=darwin type=distribution identityName=- identityHash=none provisioningProfile=none
+  • skipped macOS notarization  reason=`notarize` options were set explicitly `false`
+  • building        target=DMG arch=arm64 file=release/darwin-arm64/local/Nova-Content-Hub-0.3.12-darwin-arm64-local.dmg
+  • building block map  blockMapFile=release/darwin-arm64/local/Nova-Content-Hub-0.3.12-darwin-arm64-local.dmg.blockmap
+Non-production local installer: /Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/local; AUTH_MODE=disabled, experimental=true, productionReady=false. No login required.
