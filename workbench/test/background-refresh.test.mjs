@@ -21,6 +21,7 @@ function fixture() {
     const calls = [];
     const item = {id: 'content', title: 'saved', body: 'saved body', editToken: 'original'};
     const context = vm.createContext({
+        useMemo: calculate => calculate(),
         useState(initial) {
             const index = cursor++;
             if (!(index in slots)) slots[index] = initial;

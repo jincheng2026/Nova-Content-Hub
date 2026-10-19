@@ -17,6 +17,7 @@ function fixture() {
     const library = {editToken: 'snapshot'};
     let slots = appSlots, cursor = 0, failure;
     const context = vm.createContext({
+        useMemo: calculate => calculate(),
         useState(initial) {const i = cursor++; if (!(i in slots)) slots[i] = initial; const target = slots; return [target[i], value => {target[i] = typeof value === 'function' ? value(target[i]) : value;}];},
         useRef(initial) {const i = cursor++; return slots[i] ??= {current: initial};},
         useEffect() {}, useLayoutEffect() {}, errorInfo, document: {hidden: false}, hasManagedDrafts: () => false,
