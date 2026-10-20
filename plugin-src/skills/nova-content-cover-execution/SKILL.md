@@ -10,7 +10,7 @@ description: 执行自媒体工作台交来的封面 handoff ID：读取固定�
 launcher 的完整带引号路径，不是 PATH 中的命令。Unix 可用 `/bin/sh "<本文件目录>/../../bin/run-node"`，Windows 用
 `"<本文件目录>\..\..\bin\run-node.cmd"`。
 
-工作台给出的 handoff ID 是唯一定位入口，保留原 ID，实际库与固定请求由 CLI 验证。本次助手必须与 context 的 attempt.host
+工作台提示中的“任务编号”就是 handoff ID，是唯一定位入口；保留原 ID，实际库与固定请求由 CLI 验证。提示中的标题与模板名是识别数据，执行以 context 的固定请求为准，缺少必要事实时只询问缺项。本次助手必须与 context 的 attempt.host
 一致，错宿主则回工作台切换设置并开始新尝试。原型的 HANDOFF.json / REQUEST.json 仅供 `contract check-handoff` /
 `contract check-request` 校验；未绑定原型请求不能转成真实封面执行。绝对路径旧 CLI 保留给维护者，普通桌面交接统一使用
 `--handoff`。

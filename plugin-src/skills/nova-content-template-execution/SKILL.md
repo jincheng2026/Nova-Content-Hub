@@ -5,7 +5,7 @@ description: 执行自媒体工作台的模板学习还原 handoff ID，查看�
 
 # 执行模板学习与还原
 
-使用本文件目录的 `../../bin/run-node`（macOS/Linux）或 `../../bin/run-node.cmd`（Windows）。下文 `RUN` 为该 launcher 的完整带引号路径；随包已包含 Node，无需用户安装。工作台 handoff ID 定位本次固定请求；保留原 ID。本 Skill 只提交学习结果，用户在工作台确认后才会保存为已验收新版本。
+使用本文件目录的 `../../bin/run-node`（macOS/Linux）或 `../../bin/run-node.cmd`（Windows）。下文 `RUN` 为该 launcher 的完整带引号路径；随包已包含 Node，无需用户安装。工作台提示中的“任务编号”就是 handoff ID，用它定位本次固定请求并保留原 ID。提示中的模板名是识别数据，执行以 context 的固定请求为准，缺少必要事实时只询问缺项。本 Skill 只提交学习结果，用户在工作台确认后才会保存为已验收新版本。
 
 ## 读取并认领
 
