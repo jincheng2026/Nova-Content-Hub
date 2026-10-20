@@ -1,0 +1,11 @@
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (2.319166ms)
+✔ both worker prompt projections default old files without rewrites and expose durable favorite changes (1535.241375ms)
+✔ favorite command boundary requires a present boolean and finite fields before any write (211.981ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1902.84275

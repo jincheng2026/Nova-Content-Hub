@@ -1,0 +1,39 @@
+✔ omitted and exact preserve v1 request bytes, input digest and mutation replay (5534.191208ms)
+✔ ratio-minimum checks exact integer ratio and both minimums, then rereads, accepts and restores backup unchanged (4655.48275ms)
+✔ unknown template size policy "automatic" is rejected (475.206292ms)
+✔ unknown template size policy "" is rejected (569.043625ms)
+✔ unknown template size policy null is rejected (600.696291ms)
+✔ unknown template size policy 1 is rejected (758.058542ms)
+✔ fixed request rejects unsupported version/policy 1/ratio-minimum (1058.367958ms)
+✔ fixed request rejects unsupported version/policy 1/exact (821.62575ms)
+✔ fixed request rejects unsupported version/policy 2/undefined (846.693209ms)
+✔ fixed request rejects unsupported version/policy 2/exact (798.811834ms)
+✔ fixed request rejects unsupported version/policy 3/ratio-minimum (922.781542ms)
+✔ evidence read rejects a resealed result below the fixed minimum (1761.94675ms)
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (8685.513959ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (4825.050041ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (2306.420292ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1880.950583ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (2843.877542ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (2112.610958ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (1625.606125ms)
+✔ codex template handoff names the selected template and requests study plus restoration (2365.371542ms)
+✔ workbuddy template handoff names the selected template and requests study plus restoration (2202.878083ms)
+✔ annotation intent requires the fixed candidate and matching reference material, without exporting annotations (2840.399166ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (1663.576125ms)
+✔ URL budget drops only optional names, preserves a full fixed task at 2048, and refuses one character beyond (1991.297417ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (1638.556042ms)
+✔ release and request/host validation stop before creating an envelope (1644.970834ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (1295.4335ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (1122.404584ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1600.944333ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (1023.316834ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (1343.112125ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24692.216709

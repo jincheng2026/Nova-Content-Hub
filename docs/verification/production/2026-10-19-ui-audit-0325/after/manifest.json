@@ -1,0 +1,1333 @@
+{
+  "scope": "Frozen current source renderer Vite production build with immutable packaged v0.3.24 preload, native IPC and worker; disposable seeded file library. No OS automation, user library, assistant sessions, clipboard, generation or paid provider calls.",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/after-resources",
+  "fixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/fixture-vyEbbg",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "subjects": [
+    {
+      "id": "3539d54d-15da-4635-8ada-7cec537acbf9",
+      "title": "用 AI 整理一周灵感，找回创作节奏"
+    },
+    {
+      "id": "7c5e5c1c-ccc9-4d56-87cb-b31c4046a210",
+      "title": "把旅行照片写成一篇有温度的游记"
+    },
+    {
+      "id": "c12db7ae-1ec3-47cc-b465-002e9c679567",
+      "title": "小团队如何排好一周内容日程"
+    }
+  ],
+  "collection": {
+    "id": "8169834d-581a-4bc4-8b3f-0eafdb562598",
+    "title": "秋日创作周 · 内容策划"
+  },
+  "captures": [
+    {
+      "name": "01-overview",
+      "description": "修复后总览：同一 3 篇内容与 1 个合集",
+      "selector": ".creator-overview",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/after/screenshots/01-overview.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "一2",
+            "id": "",
+            "aria": "2026-10-19，2 条安排"
+          },
+          {
+            "text": "二0",
+            "id": "",
+            "aria": "2026-10-20，0 条安排"
+          },
+          {
+            "text": "三1",
+            "id": "",
+            "aria": "2026-10-21，1 条安排"
+          },
+          {
+            "text": "四0",
+            "id": "",
+            "aria": "2026-10-22，0 条安排"
+          },
+          {
+            "text": "五0",
+            "id": "",
+            "aria": "2026-10-23，0 条安排"
+          },
+          {
+            "text": "六0",
+            "id": "",
+            "aria": "2026-10-24，0 条安排"
+          },
+          {
+            "text": "日0",
+            "id": "",
+            "aria": "2026-10-25，0 条安排"
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "打开 用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "复制文案",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看日程 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选一张封面把旅行照片写成一篇有温度的游记1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备内容封面小团队如何排好一周内容日程1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤小团队如何排好一周内容日程待做封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤把旅行照片写成一篇有温度的游记待选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏已选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▧为内容找个好风格浏览模板，准备下一张封面↗",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月19日星期一\n今天 0/2 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n下一条\n09:15\n抖音\n今天\n用 AI 整理一周灵感，找回创作节奏\n\n用 AI 整理一周灵感，找回创作节奏\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n复制文案\n下载图片\n记录已发布\n打开内容\n今天\n2 条待发布\n查看日程 →\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n记录已发布\n明天 10-20\n\n暂无发布安排\n\n要处理\n2 项\n选一张封面\n把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面\n小团队如何排好一周内容日程\n1 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-featured-cover",
+            "height": 320,
+            "scrollHeight": 344,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "02-settings-common",
+      "description": "修复后常用设置，与帮助排查分开",
+      "selector": ".creator-settings-dialog",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/after/screenshots/02-settings-common.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "一2",
+            "id": "",
+            "aria": "2026-10-19，2 条安排"
+          },
+          {
+            "text": "二0",
+            "id": "",
+            "aria": "2026-10-20，0 条安排"
+          },
+          {
+            "text": "三1",
+            "id": "",
+            "aria": "2026-10-21，1 条安排"
+          },
+          {
+            "text": "四0",
+            "id": "",
+            "aria": "2026-10-22，0 条安排"
+          },
+          {
+            "text": "五0",
+            "id": "",
+            "aria": "2026-10-23，0 条安排"
+          },
+          {
+            "text": "六0",
+            "id": "",
+            "aria": "2026-10-24，0 条安排"
+          },
+          {
+            "text": "日0",
+            "id": "",
+            "aria": "2026-10-25，0 条安排"
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "打开 用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "复制文案",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看日程 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选一张封面把旅行照片写成一篇有温度的游记1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备内容封面小团队如何排好一周内容日程1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤小团队如何排好一周内容日程待做封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤把旅行照片写成一篇有温度的游记待选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏已选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▧为内容找个好风格浏览模板，准备下一张封面↗",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭设置",
+            "id": "close-settings",
+            "aria": null
+          },
+          {
+            "text": "重新检查",
+            "id": "recheck-assistant",
+            "aria": null
+          },
+          {
+            "text": "管理内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开文件夹 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "更新内置资源",
+            "id": "update-builtins",
+            "aria": null
+          },
+          {
+            "text": "准备安装插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开 Codex",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "检查插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存偏好",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "放弃修改",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加照片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理渠道",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月19日星期一\n今天 0/2 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n下一条\n09:15\n抖音\n今天\n用 AI 整理一周灵感，找回创作节奏\n\n用 AI 整理一周灵感，找回创作节奏\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n复制文案\n下载图片\n记录已发布\n打开内容\n今天\n2 条待发布\n查看日程 →\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n记录已发布\n明天 10-20\n\n暂无发布安排\n\n要处理\n2 项\n选一张封面\n把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面\n小团队如何排好一周内容日程\n1 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n全局助手\n交给哪个 AI 助手\n交给哪个 AI 助手\nCodex（默认）\n\n制作封面和学习模板时，统一交给这里选择的助手。\n\n检查连接\n重新检查\n\n请先安装并启用工作台配套插件。\n\n模板学习与还原：配套模板执行能力尚未准备好，请安装并启用插件。\n\n内容库\n秋日创作库\n\n正文、封面、模板与照片都保存在这里。\n\n管理内容库\n打开文件夹 →\n内置模板与提示词\n\n补充新风格和提示词，保留已有修改与删除。\n\n更新内置资源\n\n配套插件与版本\n\n自媒体工作台 0.3.24 · macOS · ARM64\n\nCodex：需要安装或启用配套插件。\n\n准备安装插件\n打开 Codex\n检查插件\n\n当前安装没有配套插件，请获取包含插件的完整安装包。\n\n本机偏好\n每天提醒\n汇总今天待发布的内容与合集\n提醒时间\n使用本机当前时区\n提醒时间使用本机当前时区\n减少界面动画\n开机启动\n登录电脑后自动打开工作台\n\n系统反馈：请先安装打包的桌面应用；开发运行模式不配置开机启动。\n\n保存偏好\n放弃修改\n只保存在这台电脑\n\n每天提醒尚未开启。\n\n编辑\n个人信息\n我\n添加你的昵称\n\n介绍你自己，让创作更有自己的风格。\n\n自媒体方向\n待填写\n目标读者\n待填写\n我的照片\n＋ 添加照片\n管理\n\n还没有照片，可以先添加一张。\n\n照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。\n\n发布渠道\n5 个可用渠道\n\n渠道统一用于内容归档、封面和发布日程。\n\n管理渠道\n抖音\n小红书\n视频号\n公众号\nB 站",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-featured-cover",
+            "height": 320,
+            "scrollHeight": 344,
+            "top": 0
+          },
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1333,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "03-settings-help",
+      "description": "设置帮助与排查页，所有原说明仍可查看",
+      "selector": ".creator-settings-help",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/after/screenshots/03-settings-help.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "一2",
+            "id": "",
+            "aria": "2026-10-19，2 条安排"
+          },
+          {
+            "text": "二0",
+            "id": "",
+            "aria": "2026-10-20，0 条安排"
+          },
+          {
+            "text": "三1",
+            "id": "",
+            "aria": "2026-10-21，1 条安排"
+          },
+          {
+            "text": "四0",
+            "id": "",
+            "aria": "2026-10-22，0 条安排"
+          },
+          {
+            "text": "五0",
+            "id": "",
+            "aria": "2026-10-23，0 条安排"
+          },
+          {
+            "text": "六0",
+            "id": "",
+            "aria": "2026-10-24，0 条安排"
+          },
+          {
+            "text": "日0",
+            "id": "",
+            "aria": "2026-10-25，0 条安排"
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "打开 用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "复制文案",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看日程 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选一张封面把旅行照片写成一篇有温度的游记1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备内容封面小团队如何排好一周内容日程1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤小团队如何排好一周内容日程待做封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤把旅行照片写成一篇有温度的游记待选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏已选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▧为内容找个好风格浏览模板，准备下一张封面↗",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭设置",
+            "id": "close-settings",
+            "aria": null
+          },
+          {
+            "text": "保存诊断文件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "试发一条通知",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "刷新通知状态",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新检查本机连接",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新连接内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "导出脱敏诊断",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看插件文件",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月19日星期一\n今天 0/2 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n下一条\n09:15\n抖音\n今天\n用 AI 整理一周灵感，找回创作节奏\n\n用 AI 整理一周灵感，找回创作节奏\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n复制文案\n下载图片\n记录已发布\n打开内容\n今天\n2 条待发布\n查看日程 →\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n记录已发布\n明天 10-20\n\n暂无发布安排\n\n要处理\n2 项\n选一张封面\n把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面\n小团队如何排好一周内容日程\n1 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n交接范围与照片使用\n\n检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。\n\n本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中确认执行。\n\n遇到问题：导出诊断\n\n只包含版本、系统、数量和有限错误码，不含目录路径、正文、照片或凭据。保存到本机后，由你决定是否分享。\n\n保存诊断文件\n通知试发与使用说明\n\n每天提醒尚未开启。\n\n尚无自动提醒记录。\n\n试发一条通知\n刷新通知状态\n\n只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。\n\n通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。\n\n内容库连接排错与恢复\n本机内容库连接恢复\n\n工作台把“连接哪个内容库”保存在本机。连接记录损坏时，可以先保留旧记录，再重新选择原内容库；不会删除内容库、正文、照片或业务文件，也不会改变登录或使用权限。\n\n本机连接记录可读取。如内容库需要恢复，请使用“备份与恢复”。\n\n重新检查本机连接\n重新连接内容库\n导出脱敏诊断\n插件怎么安装\n点击“准备安装插件”，工作台会复制 Codex 需要的完整安装位置，并打开助手。\n在助手的插件页面选择添加本地市场，粘贴刚复制的位置即可，无需查找文件或修改路径。\n找到 Nova Content Hub，按助手提示安装、启用并确认插件权限，然后回这里检查插件。\n查看插件文件\n\n选择助手在“常用设置 → 全局助手”中调整。封面由助手生成，可能使用你已有的助手额度；打开助手不代表已经生成成功。\n\n安装与升级\n升级前，在“内容库 → 备份与维护”备份你的内容库。\nmacOS：退出工作台，将新版本拖入“应用程序”。Windows：退出工作台，运行新版本安装程序。\n保留原内容库文件夹，重新打开工作台后继续使用；如配套插件有更新，一并安装再检查连接。\n\n请选择与你系统及芯片匹配的安装包。内容库独立于应用安装目录；更换或卸载应用时不要删除内容库。\n\nmacOS 提示无法打开或应用损坏\n\n先保留安装包，核对下载来源、系统及芯片版本。如系统允许，可在“系统设置 → 隐私与安全性”查看原始拦截提示并选择系统提供的打开入口；仍无法打开时请提供提示原文与下方诊断。\n\n此安装包尚未完成 Apple Developer ID 签名与公证。请保留系统保护设置；损坏提示也可能来自下载不完整。",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-featured-cover",
+            "height": 320,
+            "scrollHeight": 344,
+            "top": 0
+          },
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1337,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "04-calendar-month",
+      "description": "修复后日程按月视图",
+      "selector": ".schedule-board",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/after/screenshots/04-calendar-month.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "今天",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "‹",
+            "id": "",
+            "aria": "上个月"
+          },
+          {
+            "text": "›",
+            "id": "",
+            "aria": "下个月"
+          },
+          {
+            "text": "按月",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按周",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-09-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-09-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-09-30，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-10-01，0 条发布安排"
+          },
+          {
+            "text": "2",
+            "id": "",
+            "aria": "选择 2026-10-02，0 条发布安排"
+          },
+          {
+            "text": "3",
+            "id": "",
+            "aria": "选择 2026-10-03，0 条发布安排"
+          },
+          {
+            "text": "4",
+            "id": "",
+            "aria": "选择 2026-10-04，0 条发布安排"
+          },
+          {
+            "text": "5",
+            "id": "",
+            "aria": "选择 2026-10-05，0 条发布安排"
+          },
+          {
+            "text": "6",
+            "id": "",
+            "aria": "选择 2026-10-06，0 条发布安排"
+          },
+          {
+            "text": "7",
+            "id": "",
+            "aria": "选择 2026-10-07，0 条发布安排"
+          },
+          {
+            "text": "8",
+            "id": "",
+            "aria": "选择 2026-10-08，0 条发布安排"
+          },
+          {
+            "text": "9",
+            "id": "",
+            "aria": "选择 2026-10-09，0 条发布安排"
+          },
+          {
+            "text": "10",
+            "id": "",
+            "aria": "选择 2026-10-10，0 条发布安排"
+          },
+          {
+            "text": "11",
+            "id": "",
+            "aria": "选择 2026-10-11，0 条发布安排"
+          },
+          {
+            "text": "12",
+            "id": "",
+            "aria": "选择 2026-10-12，0 条发布安排"
+          },
+          {
+            "text": "13",
+            "id": "",
+            "aria": "选择 2026-10-13，0 条发布安排"
+          },
+          {
+            "text": "14",
+            "id": "",
+            "aria": "选择 2026-10-14，0 条发布安排"
+          },
+          {
+            "text": "15",
+            "id": "",
+            "aria": "选择 2026-10-15，0 条发布安排"
+          },
+          {
+            "text": "16",
+            "id": "",
+            "aria": "选择 2026-10-16，0 条发布安排"
+          },
+          {
+            "text": "17",
+            "id": "",
+            "aria": "选择 2026-10-17，0 条发布安排"
+          },
+          {
+            "text": "18",
+            "id": "",
+            "aria": "选择 2026-10-18，0 条发布安排"
+          },
+          {
+            "text": "19",
+            "id": "",
+            "aria": "选择 2026-10-19，2 条发布安排"
+          },
+          {
+            "text": "20",
+            "id": "",
+            "aria": "选择 2026-10-20，0 条发布安排"
+          },
+          {
+            "text": "21",
+            "id": "",
+            "aria": "选择 2026-10-21，1 条发布安排"
+          },
+          {
+            "text": "22",
+            "id": "",
+            "aria": "选择 2026-10-22，0 条发布安排"
+          },
+          {
+            "text": "23",
+            "id": "",
+            "aria": "选择 2026-10-23，0 条发布安排"
+          },
+          {
+            "text": "24",
+            "id": "",
+            "aria": "选择 2026-10-24，0 条发布安排"
+          },
+          {
+            "text": "25",
+            "id": "",
+            "aria": "选择 2026-10-25，0 条发布安排"
+          },
+          {
+            "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "时间待定视频号小团队如何排好一周内容日程",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "26",
+            "id": "",
+            "aria": "选择 2026-10-26，0 条发布安排"
+          },
+          {
+            "text": "27",
+            "id": "",
+            "aria": "选择 2026-10-27，0 条发布安排"
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-10-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-10-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-10-30，0 条发布安排"
+          },
+          {
+            "text": "31",
+            "id": "",
+            "aria": "选择 2026-10-31，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-11-01，0 条发布安排"
+          },
+          {
+            "text": "为这一天新增计划 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 2026 年 10 月\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n28\n29\n30\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n09:15\n用 AI 整理一周灵感，找回创作节奏\n时间待定\n小团队如何排好一周内容日程\n20:00\n把旅行照片写成一篇有温度的游记\n26\n27\n28\n29\n30\n31\n1\n今天 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": []
+      }
+    },
+    {
+      "name": "05-calendar-daylist-all",
+      "description": "日程当天列表的全部安排筛选，展示含已取消选项",
+      "selector": ".schedule-day-detail",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/after/screenshots/05-calendar-daylist-all.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "今天",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "‹",
+            "id": "",
+            "aria": "上个月"
+          },
+          {
+            "text": "›",
+            "id": "",
+            "aria": "下个月"
+          },
+          {
+            "text": "按月",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按周",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-09-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-09-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-09-30，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-10-01，0 条发布安排"
+          },
+          {
+            "text": "2",
+            "id": "",
+            "aria": "选择 2026-10-02，0 条发布安排"
+          },
+          {
+            "text": "3",
+            "id": "",
+            "aria": "选择 2026-10-03，0 条发布安排"
+          },
+          {
+            "text": "4",
+            "id": "",
+            "aria": "选择 2026-10-04，0 条发布安排"
+          },
+          {
+            "text": "5",
+            "id": "",
+            "aria": "选择 2026-10-05，0 条发布安排"
+          },
+          {
+            "text": "6",
+            "id": "",
+            "aria": "选择 2026-10-06，0 条发布安排"
+          },
+          {
+            "text": "7",
+            "id": "",
+            "aria": "选择 2026-10-07，0 条发布安排"
+          },
+          {
+            "text": "8",
+            "id": "",
+            "aria": "选择 2026-10-08，0 条发布安排"
+          },
+          {
+            "text": "9",
+            "id": "",
+            "aria": "选择 2026-10-09，0 条发布安排"
+          },
+          {
+            "text": "10",
+            "id": "",
+            "aria": "选择 2026-10-10，0 条发布安排"
+          },
+          {
+            "text": "11",
+            "id": "",
+            "aria": "选择 2026-10-11，0 条发布安排"
+          },
+          {
+            "text": "12",
+            "id": "",
+            "aria": "选择 2026-10-12，0 条发布安排"
+          },
+          {
+            "text": "13",
+            "id": "",
+            "aria": "选择 2026-10-13，0 条发布安排"
+          },
+          {
+            "text": "14",
+            "id": "",
+            "aria": "选择 2026-10-14，0 条发布安排"
+          },
+          {
+            "text": "15",
+            "id": "",
+            "aria": "选择 2026-10-15，0 条发布安排"
+          },
+          {
+            "text": "16",
+            "id": "",
+            "aria": "选择 2026-10-16，0 条发布安排"
+          },
+          {
+            "text": "17",
+            "id": "",
+            "aria": "选择 2026-10-17，0 条发布安排"
+          },
+          {
+            "text": "18",
+            "id": "",
+            "aria": "选择 2026-10-18，0 条发布安排"
+          },
+          {
+            "text": "19",
+            "id": "",
+            "aria": "选择 2026-10-19，2 条发布安排"
+          },
+          {
+            "text": "20",
+            "id": "",
+            "aria": "选择 2026-10-20，0 条发布安排"
+          },
+          {
+            "text": "21",
+            "id": "",
+            "aria": "选择 2026-10-21，1 条发布安排"
+          },
+          {
+            "text": "22",
+            "id": "",
+            "aria": "选择 2026-10-22，0 条发布安排"
+          },
+          {
+            "text": "23",
+            "id": "",
+            "aria": "选择 2026-10-23，0 条发布安排"
+          },
+          {
+            "text": "24",
+            "id": "",
+            "aria": "选择 2026-10-24，0 条发布安排"
+          },
+          {
+            "text": "25",
+            "id": "",
+            "aria": "选择 2026-10-25，0 条发布安排"
+          },
+          {
+            "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "时间待定视频号小团队如何排好一周内容日程",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "26",
+            "id": "",
+            "aria": "选择 2026-10-26，0 条发布安排"
+          },
+          {
+            "text": "27",
+            "id": "",
+            "aria": "选择 2026-10-27，0 条发布安排"
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-10-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-10-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-10-30，0 条发布安排"
+          },
+          {
+            "text": "31",
+            "id": "",
+            "aria": "选择 2026-10-31，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-11-01，0 条发布安排"
+          },
+          {
+            "text": "为这一天新增计划 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 2026 年 10 月\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n28\n29\n30\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n09:15\n用 AI 整理一周灵感，找回创作节奏\n时间待定\n小团队如何排好一周内容日程\n20:00\n把旅行照片写成一篇有温度的游记\n26\n27\n28\n29\n30\n31\n1\n今天 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n全部安排（含已取消）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": []
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readSetup",
+    "nova:readPreferences",
+    "nova:readReminderStatus",
+    "nova:readAssistantSetup",
+    "nova:readTemplateAssistantSetup",
+    "nova:readBootstrapRecovery"
+  ],
+  "version": "0.3.24",
+  "finished": true,
+  "fixtureWritesAfterInit": [],
+  "rendererBuild": [
+    {
+      "file": "index.html",
+      "sha256": "a8bb42cc32370f61e0bd4ed00d1e09dab2265d81a5d4cc4b508f8e26f21faaf5"
+    },
+    {
+      "file": "assets/index-CT3G-ful.js",
+      "sha256": "0bfca1523d15bbf5da2e9087092f5348aea6e941c9f68e4c3bb493da53d438fb"
+    },
+    {
+      "file": "assets/index-YW973LwC.css",
+      "sha256": "02f7d977698ecc5b0173a70bbe572a51a15d86a2a1344596b8b398948f0dfbd8"
+    },
+    {
+      "file": "assets/nova-content-hub-icon-512-A1Ow6cZT.png",
+      "sha256": "f155826434eae92952db43bf649eb8f9db8c3edd8eb31601f6749df9b272db99"
+    }
+  ],
+  "captureMetadata": {
+    "cssViewport": true,
+    "deviceScaleFactor": 2,
+    "pngPixels": "2880x2000 for 1440x1000 CSS; 2200x1800 for 1100x900 CSS",
+    "artifactType": "real Electron webContents.capturePage PNG"
+  },
+  "coverage": {
+    "captures": 5,
+    "noGeneration": true,
+    "noAssistantLaunch": true,
+    "noClipboard": true,
+    "noUserLibrary": true,
+    "noWriteActionsDuringNavigation": true
+  }
+}

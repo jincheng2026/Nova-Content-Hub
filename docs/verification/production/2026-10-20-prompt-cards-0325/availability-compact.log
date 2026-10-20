@@ -1,0 +1,18 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2061 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-availability-8woaGo/dist/index.html                                       0.16 kB │ gzip:   0.14 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-availability-8woaGo/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-availability-8woaGo/dist/assets/index-GG37O6JS.css                      336.86 kB │ gzip:  47.57 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-prompt-availability-8woaGo/dist/assets/index-cxsS_dIA.js                       581.13 kB │ gzip: 170.70 kB
+
+✓ built in 494ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS actual Electron/React/Semi: disabled cards blocked with enable guidance; editing/explicit enable/trash/restore preserved; live disabled/trashed/missing snapshots block filling and copying while retaining draft; re-enable resumes; required variables, multiline copy, reference opt in and dirty-close confirmation preserved.
+PASS external editor recovery: stale draft retained; stale/deleted/missing saves blocked; reload confirmation can cancel; busy flow preserves draft while minimized; confirmed reload resets all fields and token; only explicit save sends fresh token.

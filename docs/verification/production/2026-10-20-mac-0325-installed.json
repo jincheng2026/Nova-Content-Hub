@@ -1,0 +1,33 @@
+{
+  "version": "0.3.25",
+  "previousVersion": "0.3.23",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-XVTsBD/mac-arm64/自媒体工作台.app",
+  "target": "/Applications/自媒体工作台.app",
+  "library": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019",
+  "ok": true,
+  "recordedAt": "2026-10-20T03:30:24.267Z",
+  "sourceTreeSha256": "a4bda0338d0570e17f4bed21d76450af66db8dd421d027d659c75492f73a2142",
+  "previousTreeSha256": "1a6d319cae5ec05b6a83301558812fdf19660f1d209859f248aafbb2fffe4533",
+  "libraryBeforeSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "libraryBeforeEntries": 1639,
+  "sourceChosenExplicitly": true,
+  "appRunningBeforeInstall": false,
+  "helperOpenedOrQuitApp": false,
+  "method": "Installed production installMacApplication API, native copy, signature, complete-tree and transactional rename checks",
+  "phase": "awaiting-independent-launch",
+  "userSaveAndQuitRequiredBeforeInvocation": true,
+  "installed": {
+    "transaction": "/Applications/.nova-content-hub-install-4bfcdc6b-f820-4503-a5f6-18e724efb955",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "installedTreeSha256": "a4bda0338d0570e17f4bed21d76450af66db8dd421d027d659c75492f73a2142",
+  "preservedPreviousTreeSha256": "1a6d319cae5ec05b6a83301558812fdf19660f1d209859f248aafbb2fffe4533",
+  "libraryAfterSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "libraryAfterEntries": 1639,
+  "installedTreeMatchesBuild": true,
+  "previousTreePreserved": true,
+  "libraryUnchangedDuringUpgrade": true,
+  "sourceArchiveUnchanged": true,
+  "appRunningAfterInstall": false,
+  "verifiedAt": "2026-10-20T03:30:36.725Z"
+}

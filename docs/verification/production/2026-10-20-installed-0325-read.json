@@ -1,0 +1,18 @@
+{
+  "version": "0.3.25",
+  "ok": true,
+  "method": "Actual installed worker reads current bound user library; no GUI or business mutation",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "counts": {
+    "contents": 3,
+    "collections": 1,
+    "templates": 21,
+    "prompts": 54
+  },
+  "promptFavoriteBooleans": true,
+  "businessTreeBeforeSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "businessTreeAfterSha256": "1305bd917385d40ded716860e160624819d6b016a8f98e94d638bb24880eded8",
+  "businessBytesUnchanged": true,
+  "excludedOperationalLeaseDirectory": "系统（别动）/库锁",
+  "guiStartupAccepted": false
+}

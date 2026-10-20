@@ -1,0 +1,7375 @@
+{
+  "scope": "Actual immutable packaged v0.3.24 renderer, preload, native IPC and worker; disposable seeded file library. No OS automation, user library, assistant sessions, clipboard, generation or paid provider calls.",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-MkDXdU/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "fixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/fixture-vyEbbg",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "subjects": [
+    {
+      "id": "3539d54d-15da-4635-8ada-7cec537acbf9",
+      "title": "用 AI 整理一周灵感，找回创作节奏"
+    },
+    {
+      "id": "7c5e5c1c-ccc9-4d56-87cb-b31c4046a210",
+      "title": "把旅行照片写成一篇有温度的游记"
+    },
+    {
+      "id": "c12db7ae-1ec3-47cc-b465-002e9c679567",
+      "title": "小团队如何排好一周内容日程"
+    }
+  ],
+  "collection": {
+    "id": "8169834d-581a-4bc4-8b3f-0eafdb562598",
+    "title": "秋日创作周 · 内容策划"
+  },
+  "captures": [
+    {
+      "name": "01-overview",
+      "description": "工作空间总览：真实 3 篇内容、1 个合集与发布安排",
+      "selector": ".creator-overview",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/01-overview.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "一2",
+            "id": "",
+            "aria": "2026-10-19，2 条安排"
+          },
+          {
+            "text": "二0",
+            "id": "",
+            "aria": "2026-10-20，0 条安排"
+          },
+          {
+            "text": "三1",
+            "id": "",
+            "aria": "2026-10-21，1 条安排"
+          },
+          {
+            "text": "四0",
+            "id": "",
+            "aria": "2026-10-22，0 条安排"
+          },
+          {
+            "text": "五0",
+            "id": "",
+            "aria": "2026-10-23，0 条安排"
+          },
+          {
+            "text": "六0",
+            "id": "",
+            "aria": "2026-10-24，0 条安排"
+          },
+          {
+            "text": "日0",
+            "id": "",
+            "aria": "2026-10-25，0 条安排"
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "打开 用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "复制文案",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看日程 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选一张封面把旅行照片写成一篇有温度的游记1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备内容封面小团队如何排好一周内容日程1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤小团队如何排好一周内容日程待做封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤把旅行照片写成一篇有温度的游记待选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏已选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▧为内容找个好风格浏览模板，准备下一张封面↗",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月19日星期一\n今天 0/2 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n下一条\n09:15\n抖音\n今天\n用 AI 整理一周灵感，找回创作节奏\n\n用 AI 整理一周灵感，找回创作节奏\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n复制文案\n下载图片\n记录已发布\n打开内容\n今天\n2 条待发布\n查看日程 →\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n记录已发布\n明天 10-20\n\n暂无发布安排\n\n要处理\n2 项\n选一张封面把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面小团队如何排好一周内容日程\n1 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-featured-cover",
+            "height": 320,
+            "scrollHeight": 344,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "02-templates",
+      "description": "内置模板目录与实际封面预览",
+      "selector": "#nav-templates",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/02-templates.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "照片与默认设置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "版本与回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 导入我的模板",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选择模板图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 Agent工作流 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：Agent工作流"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-agent",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 AI工具实测 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：AI工具实测"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-ai-tool",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 大头短标题 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：大头短标题"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-big-head",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 AI大白话 · 助手同框风 的 19 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：AI大白话 · 助手同框风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-assistant-scene",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 秋芝 · 大头动作风 的 30 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：秋芝 · 大头动作风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-big-head-action",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 Seven研究社 · 蓝紫新闻拼贴 的 23 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：Seven研究社 · 蓝紫新闻拼贴"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-news-collage",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 鹿一家 · 橙绿生活海报 的 30 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：鹿一家 · 橙绿生活海报"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-orange-green-life",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 科技姐聊AI · 空间操作风 的 25 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：科技姐聊AI · 空间操作风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-spatial-operation",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 对比评测 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：对比评测"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-comparison",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 观点金句 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：观点金句"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-geometry",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 人物访谈 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：人物访谈"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-interview",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 生活双图叙事 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：生活双图叙事"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-life-story",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 模板\n\n模板\n本机保存\n刷新\n\nCOVER STYLES\n\n选一种风格，开始下一张封面\n\n每组参考共同定义版式与气质，选好后再填入你的内容。\n\n照片与默认设置\n版本与回收站\n＋ 导入我的模板\n拖拽导入参考图\n模板来源\n全部模板\n使用这个模板\nAgent工作流\n2 张 · 内置\n•••\n使用这个模板\nAI工具实测\n2 张 · 内置\n•••\n使用这个模板\n大头短标题\n2 张 · 内置\n•••\n使用这个模板\nAI大白话 · 助手同框风\n19 张 · 内置\n•••\n使用这个模板\n秋芝 · 大头动作风\n30 张 · 内置\n•••\n使用这个模板\nSeven研究社 · 蓝紫新闻拼贴\n23 张 · 内置\n•••\n使用这个模板\n鹿一家 · 橙绿生活海报\n30 张 · 内置\n•••\n使用这个模板\n科技姐聊AI · 空间操作风\n25 张 · 内置\n•••\n使用这个模板\n对比评测\n2 张 · 内置\n•••\n使用这个模板\n观点金句\n2 张 · 内置\n•••\n使用这个模板\n人物访谈\n2 张 · 内置\n•••\n使用这个模板\n生活双图叙事\n2 张 · 内置\n•••\n共 20 项 · 1–12 项\n上一页\n1\n2\n下一页\n跳至\n页\n\n一组可保存 1–50 张参考。参考数量与生成候选数量分别设置；原图只从你的内容库读取。",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "03-content-list",
+      "description": "内容列表与合集入口",
+      "selector": "#contents",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/03-content-list.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建合集",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建内容",
+            "id": "new-content",
+            "aria": null
+          },
+          {
+            "text": "秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面小团队如何排好一周内容日程创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：小团队如何排好一周内容日程"
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n＋ 新建合集\n＋ 新建内容\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n共 1 项 · 1–1 项\n上一页\n1\n下一页\n跳至\n页\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n小团队如何排好一周内容日程\n创作中\n\t\n视频号\n\t2026-10-21\n时间待定\n\t\n待做封面\n\t已发 0/1\n\t\n制作封面\n•••\n\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 3 项 · 1–3 项\n上一页\n1\n下一页\n跳至\n页\n\n共匹配 4 项（1 个合集 · 3 篇内容）",
+        "scroll": []
+      }
+    },
+    {
+      "name": "04-collection-contents",
+      "description": "合集中的单篇内容与整理入口",
+      "selector": ".collection-contents",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/04-collection-contents.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回全部内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理内容",
+            "id": "manage-collection-members",
+            "aria": null
+          },
+          {
+            "text": "重命名",
+            "id": "rename-collection",
+            "aria": null
+          },
+          {
+            "text": "回收合集",
+            "id": "trash-collection",
+            "aria": null
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n← 返回全部内容\n秋日创作周 · 内容策划\n\n集中整理同一主题的内容，点击内容进入单篇详情。\n\n管理内容\n重命名\n回收合集\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页\n\n共匹配 2 篇内容",
+        "scroll": []
+      }
+    },
+    {
+      "name": "05-collection-manage",
+      "description": "合集成员管理弹窗：勾选内容加入或移出",
+      "selector": ".members-editor-form",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/05-collection-manage.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回全部内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理内容",
+            "id": "manage-collection-members",
+            "aria": null
+          },
+          {
+            "text": "重命名",
+            "id": "rename-collection",
+            "aria": null
+          },
+          {
+            "text": "回收合集",
+            "id": "trash-collection",
+            "aria": null
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "暂时收起",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存成员",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n← 返回全部内容\n秋日创作周 · 内容策划\n\n集中整理同一主题的内容，点击内容进入单篇详情。\n\n管理内容\n重命名\n回收合集\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页\n\n共匹配 2 篇内容\n\n管理「秋日创作周 · 内容策划」的内容\n暂时收起\n关闭\n\n勾选内容加入合集；取消勾选只移出合集，内容本身仍保留。跨页和筛选会保留全部选择。\n\n成员筛选\n成员筛选\n全部\n排序\n排序\n最近更新\n每页\n每页\n20 条\n\n已选 2 篇 · 匹配 3 篇\n\n选择\t内容\t最近更新\n\n\t小团队如何排好一周内容日程\n\n# 本周内容安排 周一整理选题，周三分享方法，周末回顾反馈。 每个渠道保留自己的标题与文案，让一篇内容有清楚的发布节奏。\n\n\t2026/10/19\n\n\t把旅行照片写成一篇有温度的游记\n\n# 城市慢行，记录一段秋天 从清晨街角的小店开始，用照片记下路上的颜色和声音。 真正动人的游记，往往来自一个具体的瞬间。\n\n\t2026/10/19\n\n\t用 AI 整理一周灵感，找回创作节奏\n\n# 从灵感到成稿，只留三个动作 周末回看收集的片段，挑出一个真正想分享的问题。 ## 先整理，再表达 把零散记录归为「真实经历」「实用方法」「读者问题」三类，让 AI 帮忙梳理脉络，再用自己的语\n\n\t2026/10/19\n共 3 项 · 1–3 项\n上一页\n1\n下一页\n跳至\n页\n保存成员",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "data-table members-editor-list",
+            "height": 420,
+            "scrollHeight": 448,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "06-content-body",
+      "description": "内容详情的正文编辑区",
+      "selector": ".content-detail-tabs",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/06-content-body.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回内容列表",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "make-content-cover",
+            "aria": null
+          },
+          {
+            "text": "封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "正文",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存内容",
+            "id": "save-content",
+            "aria": null
+          },
+          {
+            "text": "将当前草稿另存内容",
+            "id": "save-as-content",
+            "aria": null
+          },
+          {
+            "text": "用提示词继续创作",
+            "id": "open-content-prompts",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n用 AI 整理一周灵感，找回创作节奏\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n封面\n正文\n资料\n发布计划\n标题与正文\n\n已保存\n\n标题\n正文\n保存内容\n将当前草稿另存内容\n用提示词继续创作",
+        "scroll": []
+      }
+    },
+    {
+      "name": "07-content-cover",
+      "description": "已选封面、候选图与制作入口",
+      "selector": ".content-detail-tabs",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/07-content-cover.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回内容列表",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "正文",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开原图文件夹",
+            "id": "open-cover-folder",
+            "aria": null
+          },
+          {
+            "text": "刷新结果",
+            "id": "refresh-cover",
+            "aria": null
+          },
+          {
+            "text": "再生成一批",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "安排发布 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载原图",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "并排比较（0）",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "01历史已选定",
+            "id": "",
+            "aria": "放大候选 01"
+          },
+          {
+            "text": "⋯",
+            "id": "",
+            "aria": "候选备注与信息"
+          },
+          {
+            "text": "已选",
+            "id": "",
+            "aria": "当前封面"
+          },
+          {
+            "text": "批注",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "收藏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n用 AI 整理一周灵感，找回创作节奏\n\n正文、封面和发布安排，都在这一篇内容里。\n\n封面\n正文\n资料\n发布计划\n封面作品\n\n共 1 张候选，按批次保留。已选好本篇封面。\n\n打开原图文件夹\n刷新结果\n再生成一批\n当前选用\n用 AI 整理一周灵感，找回创作节奏\n安排发布 →\n下载原图\n只看收藏\n收藏优先 · 已勾选 0 / 4 张\n并排比较（0）\n01\n历史\n已选定\n候选 01\n比较\n⋯\n已选\n批注\n收藏\n下载\n共 1 项 · 1–1 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless cover-result-image cover-artwork",
+            "height": 300,
+            "scrollHeight": 323,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "08-cover-create-dialog",
+      "description": "制作封面弹窗，仅打开，未执行生成",
+      "selector": "dialog[open]",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/08-cover-create-dialog.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回内容列表",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "正文",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开原图文件夹",
+            "id": "open-cover-folder",
+            "aria": null
+          },
+          {
+            "text": "刷新结果",
+            "id": "refresh-cover",
+            "aria": null
+          },
+          {
+            "text": "再生成一批",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "安排发布 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载原图",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "并排比较（0）",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "01历史已选定",
+            "id": "",
+            "aria": "放大候选 01"
+          },
+          {
+            "text": "⋯",
+            "id": "",
+            "aria": "候选备注与信息"
+          },
+          {
+            "text": "已选",
+            "id": "",
+            "aria": "当前封面"
+          },
+          {
+            "text": "批注",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "收藏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "暂时收起",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "Agent工作流2 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "AI工具实测2 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "大头短标题2 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "AI大白话 · 助手同框风19 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "秋芝 · 大头动作风30 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "Seven研究社 · 蓝紫新闻拼贴23 张样张 · 内置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "上一页",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下一页",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "放大整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "这次不放人物 · 已选",
+            "id": "no-person",
+            "aria": null
+          },
+          {
+            "text": "选择照片文件",
+            "id": "choose-photo",
+            "aria": null
+          },
+          {
+            "text": "去 Codex 生成封面",
+            "id": "generate-cover",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n用 AI 整理一周灵感，找回创作节奏\n\n正文、封面和发布安排，都在这一篇内容里。\n\n封面\n正文\n资料\n发布计划\n封面作品\n\n共 1 张候选，按批次保留。已选好本篇封面。\n\n打开原图文件夹\n刷新结果\n再生成一批\n当前选用\n用 AI 整理一周灵感，找回创作节奏\n安排发布 →\n下载原图\n只看收藏\n收藏优先 · 已勾选 0 / 4 张\n并排比较（0）\n01\n历史\n已选定\n候选 01\n比较\n⋯\n已选\n批注\n收藏\n下载\n共 1 项 · 1–1 项\n上一页\n1\n下一页\n跳至\n页\n制作封面\n\n当前助手：Codex · 可在全局设置中修改\n\n暂时收起\nAgent工作流 · 2 张参考\n本篇内容\n用 AI 整理一周灵感，找回创作节奏\n\n# 从灵感到成稿，只留三个动作\n\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n## 先整理，再表达\n\n把零散记录归为「真实经历」「实用方法」「读者问题」三类，让 AI 帮忙梳理脉络，再用自己的语言补上细节。\n\n## 给下一次创作留个入口\n\n每篇结束时记下一个尚未讲完的点，下次打开文档就有方向。\n\n直接使用已保存的标题与正文\n\n样张只参考风格，生成结果会回到封面作品中。\n\n模板组\n刷新\n更换模板组 · Agent工作流\n整组样张 · 已选 2 / 2 张\n人物参考\n这次不放人物 · 已选\n或选择我的本人照片\n或选择我的本人照片\n这次不放人物\n从本机添加本人照片\n生成张数\n封面比例\n封面比例\n3:4\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n补充要求与资料 · 默认不带资料\n\n使用已保存的内容和本次选择。收起窗口会保留设置。\n\n生成由 Codex 执行，完成后回这里选图。\n去 Codex 生成封面",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless cover-result-image cover-artwork",
+            "height": 300,
+            "scrollHeight": 323,
+            "top": 0
+          },
+          {
+            "tag": "DIV",
+            "class": "cover-create-body",
+            "height": 765,
+            "scrollHeight": 817,
+            "top": 0
+          },
+          {
+            "tag": "DIV",
+            "class": "cover-style-preview cover-artwork",
+            "height": 298,
+            "scrollHeight": 320,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "09-content-materials",
+      "description": "内容附件、记录日期与适用渠道",
+      "selector": ".content-detail-tabs",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/09-content-materials.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回内容列表",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "make-content-cover",
+            "aria": null
+          },
+          {
+            "text": "封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "正文",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选择资料文件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存内容资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "放弃修改并重新读取",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n用 AI 整理一周灵感，找回创作节奏\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n封面\n正文\n资料\n发布计划\n内容资料附件\n\n附上图片、文字或 PDF，方便创作时参考。只有在制作封面时明确勾选的资料，才会进入本次请求。\n\n＋\n将内容资料拖到这里\n\n每次 1 份 · PNG、JPEG、WebP、GIF、PDF、Markdown 或 TXT · 文字最多 1 MiB，其他最多 64 MiB\n\n选择资料文件\n原文件保留在本机，不会自动发送给助手。\n\n支持 PNG、JPEG、WebP、GIF、Markdown、TXT 和 PDF；单份最多 64 MiB，文字最多 1 MiB。\n\n资料\t操作\n暂无数据\n共 0 项 · 0–0 项\n上一页\n下一页\n跳至\n页\n\n还没有资料。添加后可预览、导出，并自行决定是否供这次封面使用。\n\n移除只解除这份内容的资料关联，库中的源资产和本机原文件都会保留。\n\n内容资料\n记录日期\n记录日期\n期望发布日期\n期望发布日期\n\n期望日期是内容资料；具体渠道与发布安排在日程中管理。\n\n偏好模板\n偏好模板\n使用工作空间默认值\n适用渠道 · 已选 0 个\n抖音\n小红书\n视频号\n公众号\nB 站\n共 5 项 · 1–5 项\n上一页\n1\n下一页\n跳至\n页\n标记为示例内容\n\n保存内容资料\n放弃修改并重新读取",
+        "scroll": []
+      }
+    },
+    {
+      "name": "10-content-publication",
+      "description": "单篇内容的渠道发布计划与历史",
+      "selector": ".content-detail-tabs",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/10-content-publication.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "← 返回内容列表",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "make-content-cover",
+            "aria": null
+          },
+          {
+            "text": "封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "正文",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "在日程中查看 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增发布计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备发布与计划详情",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n已选封面\n已保存\n用 AI 整理一周灵感，找回创作节奏\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n封面\n正文\n资料\n发布计划\n\n这篇内容在各个渠道的计划和发布历史，都保存在这里。\n\n在日程中查看 →\n筛选计划状态\n全部状态\n发布计划\n\n安排渠道和时间，手动发布后回来记录结果。\n\n＋ 新增发布计划\n1 条待发布\n0 条有效发布记录\n仅保存到本机\n18:15\n2026-10-18\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n准备发布与计划详情\n共 1 项 · 1–1 项\n上一页\n1\n下一页\n跳至\n页\n\n这里的操作不会自动发送内容，也不会修改平台上的帖子。\n\n实际发布历史\n\n保存发布时的文字、渠道、时间和封面。更正、撤销都会保留原记录。\n\n暂无数据\n共 0 项 · 0–0 项\n上一页\n下一页\n跳至\n页\n\n还没有实际发布记录。在平台手动发布后，点击计划上的“记录已发布”。",
+        "scroll": []
+      }
+    },
+    {
+      "name": "11-calendar-month",
+      "description": "按月显示多渠道发布计划",
+      "selector": ".schedule-board",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/11-calendar-month.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "今天",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "‹",
+            "id": "",
+            "aria": "上个月"
+          },
+          {
+            "text": "›",
+            "id": "",
+            "aria": "下个月"
+          },
+          {
+            "text": "按月",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按周",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-09-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-09-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-09-30，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-10-01，0 条发布安排"
+          },
+          {
+            "text": "2",
+            "id": "",
+            "aria": "选择 2026-10-02，0 条发布安排"
+          },
+          {
+            "text": "3",
+            "id": "",
+            "aria": "选择 2026-10-03，0 条发布安排"
+          },
+          {
+            "text": "4",
+            "id": "",
+            "aria": "选择 2026-10-04，0 条发布安排"
+          },
+          {
+            "text": "5",
+            "id": "",
+            "aria": "选择 2026-10-05，0 条发布安排"
+          },
+          {
+            "text": "6",
+            "id": "",
+            "aria": "选择 2026-10-06，0 条发布安排"
+          },
+          {
+            "text": "7",
+            "id": "",
+            "aria": "选择 2026-10-07，0 条发布安排"
+          },
+          {
+            "text": "8",
+            "id": "",
+            "aria": "选择 2026-10-08，0 条发布安排"
+          },
+          {
+            "text": "9",
+            "id": "",
+            "aria": "选择 2026-10-09，0 条发布安排"
+          },
+          {
+            "text": "10",
+            "id": "",
+            "aria": "选择 2026-10-10，0 条发布安排"
+          },
+          {
+            "text": "11",
+            "id": "",
+            "aria": "选择 2026-10-11，0 条发布安排"
+          },
+          {
+            "text": "12",
+            "id": "",
+            "aria": "选择 2026-10-12，0 条发布安排"
+          },
+          {
+            "text": "13",
+            "id": "",
+            "aria": "选择 2026-10-13，0 条发布安排"
+          },
+          {
+            "text": "14",
+            "id": "",
+            "aria": "选择 2026-10-14，0 条发布安排"
+          },
+          {
+            "text": "15",
+            "id": "",
+            "aria": "选择 2026-10-15，0 条发布安排"
+          },
+          {
+            "text": "16",
+            "id": "",
+            "aria": "选择 2026-10-16，0 条发布安排"
+          },
+          {
+            "text": "17",
+            "id": "",
+            "aria": "选择 2026-10-17，0 条发布安排"
+          },
+          {
+            "text": "18",
+            "id": "",
+            "aria": "选择 2026-10-18，0 条发布安排"
+          },
+          {
+            "text": "19",
+            "id": "",
+            "aria": "选择 2026-10-19，2 条发布安排"
+          },
+          {
+            "text": "20",
+            "id": "",
+            "aria": "选择 2026-10-20，0 条发布安排"
+          },
+          {
+            "text": "21",
+            "id": "",
+            "aria": "选择 2026-10-21，1 条发布安排"
+          },
+          {
+            "text": "22",
+            "id": "",
+            "aria": "选择 2026-10-22，0 条发布安排"
+          },
+          {
+            "text": "23",
+            "id": "",
+            "aria": "选择 2026-10-23，0 条发布安排"
+          },
+          {
+            "text": "24",
+            "id": "",
+            "aria": "选择 2026-10-24，0 条发布安排"
+          },
+          {
+            "text": "25",
+            "id": "",
+            "aria": "选择 2026-10-25，0 条发布安排"
+          },
+          {
+            "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "时间待定视频号小团队如何排好一周内容日程",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "26",
+            "id": "",
+            "aria": "选择 2026-10-26，0 条发布安排"
+          },
+          {
+            "text": "27",
+            "id": "",
+            "aria": "选择 2026-10-27，0 条发布安排"
+          },
+          {
+            "text": "28",
+            "id": "",
+            "aria": "选择 2026-10-28，0 条发布安排"
+          },
+          {
+            "text": "29",
+            "id": "",
+            "aria": "选择 2026-10-29，0 条发布安排"
+          },
+          {
+            "text": "30",
+            "id": "",
+            "aria": "选择 2026-10-30，0 条发布安排"
+          },
+          {
+            "text": "31",
+            "id": "",
+            "aria": "选择 2026-10-31，0 条发布安排"
+          },
+          {
+            "text": "1",
+            "id": "",
+            "aria": "选择 2026-11-01，0 条发布安排"
+          },
+          {
+            "text": "为这一天新增计划 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 2026 年 10 月\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n28\n29\n30\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n09:15\n用 AI 整理一周灵感，找回创作节奏\n时间待定\n小团队如何排好一周内容日程\n20:00\n把旅行照片写成一篇有温度的游记\n26\n27\n28\n29\n30\n31\n1\n今天 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n有效安排\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": []
+      }
+    },
+    {
+      "name": "12-calendar-week",
+      "description": "按周显示明确时刻、本地时间与日期计划",
+      "selector": ".is-week",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/12-calendar-week.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "今天",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "‹",
+            "id": "",
+            "aria": "上一周"
+          },
+          {
+            "text": "›",
+            "id": "",
+            "aria": "下一周"
+          },
+          {
+            "text": "按月",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按周",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "周一19",
+            "id": "",
+            "aria": "选择 2026-10-19，2 条发布安排"
+          },
+          {
+            "text": "周二20",
+            "id": "",
+            "aria": "选择 2026-10-20，0 条发布安排"
+          },
+          {
+            "text": "周三21",
+            "id": "",
+            "aria": "选择 2026-10-21，1 条发布安排"
+          },
+          {
+            "text": "周四22",
+            "id": "",
+            "aria": "选择 2026-10-22，0 条发布安排"
+          },
+          {
+            "text": "周五23",
+            "id": "",
+            "aria": "选择 2026-10-23，0 条发布安排"
+          },
+          {
+            "text": "周六24",
+            "id": "",
+            "aria": "选择 2026-10-24，0 条发布安排"
+          },
+          {
+            "text": "周日25",
+            "id": "",
+            "aria": "选择 2026-10-25，0 条发布安排"
+          },
+          {
+            "text": "时间待定视频号小团队如何排好一周内容日程",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "为这一天新增计划 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n今天 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n有效安排\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "13-calendar-daylist",
+      "description": "当天安排列表，保留不同精度的发布时间",
+      "selector": ".schedule-day-detail",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/13-calendar-daylist.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "今天",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "‹",
+            "id": "",
+            "aria": "上一周"
+          },
+          {
+            "text": "›",
+            "id": "",
+            "aria": "下一周"
+          },
+          {
+            "text": "按月",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按周",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新增计划",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "周一19",
+            "id": "",
+            "aria": "选择 2026-10-19，2 条发布安排"
+          },
+          {
+            "text": "周二20",
+            "id": "",
+            "aria": "选择 2026-10-20，0 条发布安排"
+          },
+          {
+            "text": "周三21",
+            "id": "",
+            "aria": "选择 2026-10-21，1 条发布安排"
+          },
+          {
+            "text": "周四22",
+            "id": "",
+            "aria": "选择 2026-10-22，0 条发布安排"
+          },
+          {
+            "text": "周五23",
+            "id": "",
+            "aria": "选择 2026-10-23，0 条发布安排"
+          },
+          {
+            "text": "周六24",
+            "id": "",
+            "aria": "选择 2026-10-24，0 条发布安排"
+          },
+          {
+            "text": "周日25",
+            "id": "",
+            "aria": "选择 2026-10-25，0 条发布安排"
+          },
+          {
+            "text": "时间待定视频号小团队如何排好一周内容日程",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "为这一天新增计划 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n今天 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n有效安排\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n上一页\n1\n下一页\n跳至\n页",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "14-prompts",
+      "description": "内置提示词与自建灵感整理提示词列表",
+      "selector": ".prompt-library-table",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/14-prompts.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页",
+        "scroll": []
+      }
+    },
+    {
+      "name": "15-prompt-editor",
+      "description": "提示词编辑器与可选分类说明",
+      "selector": ".prompt-simple-editor",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/15-prompt-editor.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "暂时收起",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存修改",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页\n编辑提示词\n暂时收起\n关闭\n标题\n可选，留空时使用正文第一行\n提示词正文\n\n保存会更新这条提示词，正文中的换行会原样保留。\n\n分类与说明 可选\n321 字 · 正文原样保存\n保存修改",
+        "scroll": []
+      }
+    },
+    {
+      "name": "16-prompt-detail",
+      "description": "提示词使用详情与变量填写",
+      "selector": "dialog[open]",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/16-prompt-detail.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭",
+            "id": "",
+            "aria": "关闭提示词"
+          },
+          {
+            "text": "复制完整提示词",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页\n渠道改写\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n关闭\n提示词预览\n\n填写后实时更新，复制的就是这段完整内容。\n\n本次参考内容\n\n本次未关联内容。可关闭窗口，在提示词页选择一篇已保存内容。\n\n填入你的情况\n\n本次填写仅留在窗口中，不修改保存的提示词或内容。\n\n当前内容\n\n原正文及来源说明\n\n目标渠道\n\n准备发布的渠道和内容形式\n\n已填 0 / 2 项\n复制完整提示词",
+        "scroll": [
+          {
+            "tag": "TEXTAREA",
+            "class": "semi-input-textarea semi-input-textarea-readonly",
+            "height": 240,
+            "scrollHeight": 270,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "17-settings",
+      "description": "助手设置、偏好及接入说明",
+      "selector": "dialog[open]",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/17-settings.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "关闭设置",
+            "id": "close-settings",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加照片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开文件夹 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "更新内置资源",
+            "id": "update-builtins",
+            "aria": null
+          },
+          {
+            "text": "准备安装插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开 Codex",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "检查插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看插件文件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存诊断文件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新检查",
+            "id": "recheck-assistant",
+            "aria": null
+          },
+          {
+            "text": "保存偏好",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "放弃修改",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "试发一条通知",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "刷新通知状态",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新检查本机连接",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新连接内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "导出脱敏诊断",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n编辑\n个人信息\n我\n添加你的昵称\n\n介绍你自己，让创作更有自己的风格。\n\n自媒体方向\n待填写\n目标读者\n待填写\n我的照片\n＋ 添加照片\n管理\n\n还没有照片，可以先添加一张。\n\n照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。\n\n内容库\n秋日创作库\n\n正文、封面、模板与照片都保存在这里。\n\n管理内容库\n打开文件夹 →\n内置模板与提示词\n\n补充新风格和提示词，保留已有修改与删除。\n\n更新内置资源\n\n配套插件与版本\n\n自媒体工作台 0.3.24 · macOS · ARM64\n\nCodex：需要安装或启用配套插件。\n\n准备安装插件\n打开 Codex\n检查插件\n插件怎么安装\n安装与升级\nmacOS 提示无法打开或应用损坏\n遇到问题：导出诊断\n发布渠道\n5 个可用渠道\n\n渠道统一用于内容归档、封面和发布日程。\n\n管理渠道\n抖音\n小红书\n视频号\n公众号\nB 站\n全局助手\n交给哪个 AI 助手\n交给哪个 AI 助手\nCodex（默认）\n\n制作封面和学习模板时，统一交给这里选择的助手。\n\n检查连接\n重新检查\n\n请先安装并启用工作台配套插件。\n\n模板学习与还原：配套模板执行能力尚未准备好，请安装并启用插件。\n\n交接范围与照片使用\n本机偏好\n每天提醒\n汇总今天待发布的内容与合集\n提醒时间\n使用本机当前时区\n提醒时间使用本机当前时区\n减少界面动画\n开机启动\n登录电脑后自动打开工作台\n\n系统反馈：请先安装打包的桌面应用；开发运行模式不配置开机启动。\n\n保存偏好\n放弃修改\n只保存在这台电脑\n\n每天提醒尚未开启。\n\n通知试发与使用说明\n内容库连接排错与恢复",
+        "scroll": [
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1310,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "18-library-resources",
+      "description": "内容库资料与默认值：发布渠道",
+      "selector": "#library-panels",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/18-library-resources.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "关闭",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料与默认值",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "备份与维护",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "我的照片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "个人资料",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "生成默认值",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "合集",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "分类与比例",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "新建渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用渠道",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n内容库管理\n\n秋日创作库\n\n关闭\n资料与默认值\n备份与维护\n我的照片\n个人资料\n渠道\n生成默认值\n合集\n分类与比例\n\n发布渠道\n\n渠道用于归档和安排，不会连接或自动发布到平台。\n\n新建渠道\n名称与说明\t操作\n\n抖音\n\n3:4\n\n\t\n编辑\n停用渠道\n\n\n公众号\n\n47:20\n\n\t\n编辑\n停用渠道\n\n\n视频号\n\n3:4\n\n\t\n编辑\n停用渠道\n\n\n小红书\n\n1:1\n\n\t\n编辑\n停用渠道\n\n\nB 站\n\n16:9\n\n\t\n编辑\n停用渠道\n共 5 项 · 1–5 项\n上一页\n1\n下一页\n跳至\n页\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页",
+        "scroll": [
+          {
+            "tag": "DIALOG",
+            "class": "library-manager-dialog",
+            "height": 898,
+            "scrollHeight": 1070,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "19-backup-maintenance",
+      "description": "备份与维护主屏，未执行任何维护写入",
+      "selector": "section[aria-label=\"备份与维护\"]",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/19-backup-maintenance.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "关闭",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "资料与默认值",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "备份与维护",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "新建内容库",
+            "id": "create-library",
+            "aria": null
+          },
+          {
+            "text": "打开内容库",
+            "id": "open-library",
+            "aria": null
+          },
+          {
+            "text": "在文件管理器中查看",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "检查当前内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "导出脱敏诊断",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "备份当前内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "检查一份备份",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "从备份恢复到新文件夹",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "升级旧版内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选择网页版备份",
+            "id": "backup",
+            "aria": null
+          },
+          {
+            "text": "选择新库位置",
+            "id": "destination",
+            "aria": null
+          },
+          {
+            "text": "导入并打开",
+            "id": "import",
+            "aria": null
+          },
+          {
+            "text": "继续导入",
+            "id": "resume",
+            "aria": null
+          },
+          {
+            "text": "查询状态",
+            "id": "refresh",
+            "aria": null
+          },
+          {
+            "text": "查看内容",
+            "id": "list",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "停用",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "移入回收站",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n内容库管理\n\n秋日创作库\n\n关闭\n资料与默认值\n备份与维护\n当前内容库\n\n秋日创作库\n\n新建内容库\n打开内容库\n在文件管理器中查看\n检查当前内容库\n\n检查内容、图片和保存记录是否完整，保留全部原文件。检查期间请稍候；如有异常，可导出诊断或从备份恢复。\n\n检查当前内容库\n导出脱敏诊断\n备份与恢复\n\n把本机内容库完整备份到另一个位置。恢复时自动建立新文件夹，原内容库和原备份都会保留。\n\n备份当前内容库\n检查一份备份\n从备份恢复到新文件夹\n升级旧版内容库\n\n备份时选择存放位置，工作台会自动建立备份文件夹。检查或恢复时，选择之前生成的整个备份文件夹；恢复还需选择新副本的存放位置。\n\n旧版内容库升级说明\n从网页版迁移\n选择网页版备份\n选择新库位置\n\n选择网页版导出的备份文件，导入到独立新库。桌面版备份请使用上方“从备份恢复到新文件夹”。\n\n网页版备份：未选择 新内容库：未选择\n\n导入并打开\n继续导入\n查询状态\n查看内容\n\n可新建或打开内容库；从网页版迁移时，选择网页版导出的备份。\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n收藏\t提示词\t分类\t状态\t操作\n\n☆\n\t\n按目标渠道重写同一篇内容\n\n有一篇成熟内容，准备换一个渠道表达\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把读者反馈变成可回应的问题\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把复盘变成下一次小实验\n\n复盘结论很多，想确定下一次只验证什么\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把模糊想法变成读者问题\n\n脑中只有一个大词，写起来容易空泛\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把内容转成封面生图简报\n\n要做封面图，但不知道该让画面表达什么\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把书面稿改得好说好听\n\n文字能看懂，但念出来绕口或像在读报告\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把信息排成逐页图文\n\n要做多页图文，希望每页都有明确用途\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把选题排成短视频节奏\n\n准备拍短视频，需要把口播和画面配起来\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n把专业概念讲给新手听\n\n内容有专业词，想让第一次接触的人也跟得上\n\n\t表达打磨\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n拆解参考作品的有效选择\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从根本目的重想选题\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n\t选题判断\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n从长内容提炼一则独立短内容\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n\t渠道改写\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n搭一份能兑现主张的正文结构\n\n材料不少，但写出来像资料堆积\n\n\t内容结构\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n第一性原理\n\n方案已经打了很多补丁，想推倒从本质重来\n\n\t解决问题\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n反向拆解\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n复利总结三条标准\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n\t工作流与工具\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n横纵分析法（深度研究）\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n\t学习\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n红黄绿灯放权\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n\t思考与决策\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查标题和封面是否说同一件事\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n\t标题与封面\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n\n\n☆\n\t\n检查读者看完能不能行动\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n\t发布与复盘\t可用\t\n填写并复制\n编辑\n停用\n移入回收站\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页",
+        "scroll": [
+          {
+            "tag": "DIALOG",
+            "class": "library-manager-dialog",
+            "height": 898,
+            "scrollHeight": 1145,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "20-overview-narrow",
+      "description": "1100×900 窄窗口下总览布局",
+      "selector": ".creator-overview",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/20-overview-narrow.png",
+      "viewport": [
+        1100,
+        900
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "一2",
+            "id": "",
+            "aria": "2026-10-19，2 条安排"
+          },
+          {
+            "text": "二0",
+            "id": "",
+            "aria": "2026-10-20，0 条安排"
+          },
+          {
+            "text": "三1",
+            "id": "",
+            "aria": "2026-10-21，1 条安排"
+          },
+          {
+            "text": "四0",
+            "id": "",
+            "aria": "2026-10-22，0 条安排"
+          },
+          {
+            "text": "五0",
+            "id": "",
+            "aria": "2026-10-23，0 条安排"
+          },
+          {
+            "text": "六0",
+            "id": "",
+            "aria": "2026-10-24，0 条安排"
+          },
+          {
+            "text": "日0",
+            "id": "",
+            "aria": "2026-10-25，0 条安排"
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "打开 用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "复制文案",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "下载图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看日程 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "把旅行照片写成一篇有温度的游记",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "记录已发布",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选一张封面把旅行照片写成一篇有温度的游记1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "准备内容封面小团队如何排好一周内容日程1 ›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤小团队如何排好一周内容日程待做封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▤把旅行照片写成一篇有温度的游记待选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏已选封面 · 已发 0/1›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "▧为内容找个好风格浏览模板，准备下一张封面↗",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月19日星期一\n今天 0/2 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n下一条\n09:15\n抖音\n今天\n用 AI 整理一周灵感，找回创作节奏\n\n用 AI 整理一周灵感，找回创作节奏\n周末回看收集的片段，挑出一个真正想分享的问题。\n\n复制文案\n下载图片\n记录已发布\n打开内容\n今天\n2 条待发布\n查看日程 →\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n记录已发布\n明天 10-20\n\n暂无发布安排\n\n要处理\n2 项\n选一张封面把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面小团队如何排好一周内容日程\n1 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-featured-cover",
+            "height": 311,
+            "scrollHeight": 334,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "21-template-workflow",
+      "description": "模板学习与还原面板，仅查看，不启动助手",
+      "selector": "#template-learning-workflow",
+      "file": "docs/verification/production/2026-10-19-ui-audit-0325/screenshots/21-template-workflow.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "照片与默认设置",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "版本与回收站",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 导入我的模板",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "选择模板图片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 Agent工作流 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：Agent工作流"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-agent",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 AI工具实测 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：AI工具实测"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-ai-tool",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 大头短标题 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：大头短标题"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-big-head",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 AI大白话 · 助手同框风 的 19 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：AI大白话 · 助手同框风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-assistant-scene",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 秋芝 · 大头动作风 的 30 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：秋芝 · 大头动作风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-big-head-action",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 Seven研究社 · 蓝紫新闻拼贴 的 23 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：Seven研究社 · 蓝紫新闻拼贴"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-news-collage",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 鹿一家 · 橙绿生活海报 的 30 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：鹿一家 · 橙绿生活海报"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-orange-green-life",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 科技姐聊AI · 空间操作风 的 25 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：科技姐聊AI · 空间操作风"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-colleague-spatial-operation",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 对比评测 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：对比评测"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-comparison",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 观点金句 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：观点金句"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-geometry",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 人物访谈 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：人物访谈"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-interview",
+            "aria": null
+          },
+          {
+            "text": "",
+            "id": "",
+            "aria": "预览 生活双图叙事 的 2 张参考样张"
+          },
+          {
+            "text": "使用这个模板",
+            "id": "",
+            "aria": "使用模板：生活双图叙事"
+          },
+          {
+            "text": "查看整组样张",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "学习与还原",
+            "id": "template-workflow-trigger-builtin-life-story",
+            "aria": null
+          },
+          {
+            "text": "收起",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "刷新学习结果",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "复制为我的模板再学习",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 模板\n\n模板\n本机保存\n刷新\n\nCOVER STYLES\n\n选一种风格，开始下一张封面\n\n每组参考共同定义版式与气质，选好后再填入你的内容。\n\n照片与默认设置\n版本与回收站\n＋ 导入我的模板\n拖拽导入参考图\n模板来源\n全部模板\n使用这个模板\nAgent工作流\n2 张 · 内置\n•••\n\n深蓝等距空间里的四步协作链路，保留人工验收。\n\nv4 · 内置 · 可直接使用\n\n查看整组样张\n学习与还原\n使用这个模板\nAI工具实测\n2 张 · 内置\n•••\n使用这个模板\n大头短标题\n2 张 · 内置\n•••\n使用这个模板\nAI大白话 · 助手同框风\n19 张 · 内置\n•••\n使用这个模板\n秋芝 · 大头动作风\n30 张 · 内置\n•••\n使用这个模板\nSeven研究社 · 蓝紫新闻拼贴\n23 张 · 内置\n•••\n使用这个模板\n鹿一家 · 橙绿生活海报\n30 张 · 内置\n•••\n使用这个模板\n科技姐聊AI · 空间操作风\n25 张 · 内置\n•••\n使用这个模板\n对比评测\n2 张 · 内置\n•••\n使用这个模板\n观点金句\n2 张 · 内置\n•••\n使用这个模板\n人物访谈\n2 张 · 内置\n•••\n使用这个模板\n生活双图叙事\n2 张 · 内置\n•••\n共 20 项 · 1–12 项\n上一页\n1\n2\n下一页\n跳至\n页\n\n一组可保存 1–50 张参考。参考数量与生成候选数量分别设置；原图只从你的内容库读取。\n\n收起\n模板学习与还原\nAgent工作流 · 学习与还原\n\n学习整组样张，先还原第 1 张验收。规则与还原图提交后，由你确认并保存为新版本。\n\n刷新学习结果\n\n内置模板需要先复制为自己的模板，再学习并还原。\n\n复制为我的模板再学习\n\n尚未完成学习验收。手动导入的规则可继续使用，学习记录将在这里保留。",
+        "scroll": [
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          },
+          {
+            "tag": "BUTTON",
+            "class": "semi-button semi-button-primary semi-button-borderless creator-reference-stack",
+            "height": 293,
+            "scrollHeight": 315,
+            "top": 0
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readContent",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readCover",
+    "nova:status",
+    "nova:readSetup",
+    "nova:readPreferences",
+    "nova:readReminderStatus",
+    "nova:readBootstrapRecovery",
+    "nova:readAssistantSetup",
+    "nova:readTemplateAssistantSetup",
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readContent",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readCover",
+    "nova:status",
+    "nova:readTemplateWorkflow",
+    "nova:readTemplateAssistantSetup"
+  ],
+  "version": "0.3.24",
+  "finished": true,
+  "fixtureWritesAfterInit": [],
+  "rendererBuild": [
+    {
+      "file": "assets/index-BgLNX1HY.css",
+      "sha256": "9d17581d6dc4f9e2c2d2173308ca53ba7d6a5811264fb212d89b965e8eba61fc"
+    },
+    {
+      "file": "assets/index-DsxdzwMs.js",
+      "sha256": "b8516816b3f9164ca2c096172c62ecaa6c64e18655cc7a701696fdf8669a2d87"
+    },
+    {
+      "file": "assets/nova-content-hub-icon-512-A1Ow6cZT.png",
+      "sha256": "f155826434eae92952db43bf649eb8f9db8c3edd8eb31601f6749df9b272db99"
+    },
+    {
+      "file": "index.html",
+      "sha256": "fa5749002db0254b0fba6d8c8607f45ca5763909543f45c56ad0fc46abcae5c4"
+    }
+  ],
+  "captureMetadata": {
+    "cssViewport": true,
+    "deviceScaleFactor": 2,
+    "pngPixels": "2880x2000 for 1440x1000 CSS; 2200x1800 for 1100x900 CSS",
+    "artifactType": "real Electron webContents.capturePage PNG"
+  },
+  "coverage": {
+    "captures": 21,
+    "noGeneration": true,
+    "noAssistantLaunch": true,
+    "noClipboard": true,
+    "noUserLibrary": true,
+    "noWriteActionsDuringNavigation": true
+  }
+}

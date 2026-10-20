@@ -1,0 +1,120 @@
+{
+  "baseCommit": "033fef6",
+  "scope": "Actual React 19, Semi UI and isolated Electron component probes using synthetic bridge data. No real library, installation, OS preferences or AI provider execution.",
+  "verification": [
+    {
+      "command": "npm run typecheck:renderer --prefix workbench",
+      "result": "passed"
+    },
+    {
+      "command": "node --test workbench/test/schedule-view.test.mjs workbench/test/publication-model.test.mjs",
+      "result": "11 passed, 0 failed"
+    },
+    {
+      "command": "node workbench/scripts/overview-layout-ui-probe.mjs",
+      "result": "passed: 1440/1100/900 long titles, missing and actual img covers, placeholder/row geometry bounds",
+      "log": "/tmp/nova-overview-final2.log"
+    },
+    {
+      "command": "node workbench/scripts/creator-settings-ui-probe.mjs",
+      "result": "passed: 1440/1100/900, global assistant priority, unified help, install/export/notification controls, help-tab draft retention, dirty-close guard, builtin task guards, profile mark/avatar preservation, undeclared photo import, preference save",
+      "log": "/tmp/nova-settings-final3.log"
+    },
+    {
+      "command": "node workbench/scripts/semi-calendar-ui-probe.mjs",
+      "result": "passed: 1440/1100/900 month time/title and event-slot bounds, week alignment, three time precisions, read-only actions, default/all/cancelled same source for calendar and day rows, workspace-without-library fallback",
+      "log": "/tmp/nova-calendar-frozen.log"
+    },
+    {
+      "command": "node workbench/scripts/daily-publication-ui-probe.mjs",
+      "result": "passed: 3 precisions/original zone, record confirmation and exact mutation count, effective history, explicit empty/no cover, draft/CAS/recycle guards, 10k bounded list, 1280/560 layouts",
+      "log": "/tmp/nova-daily-frozen.log"
+    },
+    {
+      "command": "git diff --check",
+      "result": "passed"
+    }
+  ],
+  "redEvidence": [
+    {
+      "log": "/tmp/nova-overview-red.log",
+      "result": "failed placeholder vertical labels and image/title row geometry at 1440 before fix"
+    },
+    {
+      "log": "/tmp/nova-calendar-slot-red2.log",
+      "result": "failed month event-slot bounds at 1440 before fix"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "overview-missing-cover-1440.png",
+      "sha256": "923f824c479f92ab9336717f998e499212bde5cb624810ddf2fe8945b62d8374"
+    },
+    {
+      "file": "overview-images-900.png",
+      "sha256": "7790046fe7358373c9d53b6a82ac4e2053501d5b204ba70fa7d7865871b60327"
+    },
+    {
+      "file": "settings-1440.png",
+      "sha256": "d312b784fd28fb7f1065a311cee4e347928e3c6a22030de1761d194b0d9d3037"
+    },
+    {
+      "file": "settings-help-900.png",
+      "sha256": "91eeb12e9b58d708330a2ff51fb1c00440c5ec25d708e62a3e18335dc93399f3"
+    },
+    {
+      "file": "calendar-month-1440.png",
+      "sha256": "731cf98752526368d15fb2bb7049216a52de51509b4c99a2d374a848818f7ddb"
+    },
+    {
+      "file": "calendar-week-1280.png",
+      "sha256": "3b7b727f098f6519b307ce31fdc305733002700b630c6f3266c37a00e99ebfcd"
+    }
+  ],
+  "sourceSha256": {
+    "workbench/src/renderer/assistant-settings.tsx": "94c8d5873455f467922b39118fbe3ae9e540b2974dca555b211639084ad3301c",
+    "workbench/src/renderer/creator-pages.css": "453a226540c7e5d2e0d117fe89db8b34a4cb05fc7568cafb8a7cfba6cda14d28",
+    "workbench/src/renderer/creator-settings.css": "c4957e68f0d0269a2052618d05d662f8c86e3a6a54d1460b758b4cb3e965a18c",
+    "workbench/src/renderer/preferences-panel.tsx": "6bc7c17e62f5b3acdd71c0fa2420c0a0df5abdda78adca5e2e88314426f3aa27",
+    "workbench/src/renderer/semi-calendar.css": "7cc0c115cba3cff9b0dee8fb62f33fbd5c48d74289cb967b76f937accb0d392a",
+    "workbench/src/renderer/setup-panel.tsx": "e76adf16454675b3f31d5d2b159627aa54a899bc8677921c069b22c229962dc8",
+    "workbench/src/renderer/workspace-pages.tsx": "dd2a2be739c94c3038eeaafe38e15171d9b8a572745164ac51901fa8d36bfb91",
+    "workbench/scripts/creator-settings-ui-probe.mjs": "16221b18a30f5679b725a8009ba228b0e89490800aed3b2d5bafb25fca582c3f",
+    "workbench/scripts/overview-layout-ui-probe.mjs": "093b4d846fc8c2baae6d2d278bb11c2e884d40af869ba7a704374712ea62c4b9",
+    "workbench/scripts/semi-calendar-ui-probe.mjs": "1f197cfe82aa6cb932e06528a80abec9001c8a070d547dda4b2bb0a62e1649df"
+  },
+  "notVerified": [
+    "Packaged/installed application after these source changes",
+    "Real OS install, diagnostic filesystem export, native notifications, startup-at-login",
+    "Real user library recovery or AI handoff execution"
+  ],
+  "incrementalVerification": [
+    {
+      "change": "P2 reminder status: common settings and help share the same storage-unavailable-first status text. No normal-state screenshot changes.",
+      "changedFiles": [
+        "workbench/src/renderer/preferences-panel.tsx",
+        "workbench/scripts/creator-settings-ui-probe.mjs"
+      ],
+      "redEvidence": {
+        "command": "node workbench/scripts/creator-settings-ui-probe.mjs",
+        "result": "failed before fix: help did not show the storage preservation warning after testReminder returned failed + storage-unavailable",
+        "log": "/tmp/nova-settings-storage-red.log"
+      },
+      "verification": [
+        {
+          "command": "npm run typecheck:renderer --prefix workbench",
+          "result": "passed"
+        },
+        {
+          "command": "node workbench/scripts/creator-settings-ui-probe.mjs",
+          "result": "passed, including failed + storage-unavailable assertions in both common settings and help",
+          "log": "/tmp/nova-settings-storage-green.log"
+        },
+        {
+          "command": "git diff --check",
+          "result": "passed"
+        }
+      ]
+    }
+  ]
+}

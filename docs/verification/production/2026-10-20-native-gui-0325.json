@@ -1,0 +1,40 @@
+{
+  "version": "0.3.25",
+  "verifiedAt": "2026-10-20T03:36:14.799966+00:00",
+  "target": "/Applications/自媒体工作台.app",
+  "method": "Native computer-use getApp and accessibility observations after replacement, with separate executable-path and installed-worker checks",
+  "observed": {
+    "startup": "Original bound user library loaded into overview",
+    "settingsVersion": "0.3.25 · macOS · ARM64",
+    "assistant": "WorkBuddy",
+    "coverReady": true,
+    "templateReady": true,
+    "helpTabSwitch": true,
+    "promptGridVisible": true,
+    "promptsTotal": 54,
+    "firstPageRange": [
+      1,
+      20
+    ],
+    "secondPageRange": [
+      21,
+      40
+    ],
+    "actualPageTwoClick": true
+  },
+  "businessWritesByAgent": false,
+  "hostTaskStarted": false,
+  "providerGenerationRun": false,
+  "workbuddyHostReloadVerified": false,
+  "backup": {
+    "transaction": "/Applications/.nova-content-hub-install-4bfcdc6b-f820-4503-a5f6-18e724efb955",
+    "previousAppExists": false,
+    "archiveExists": true
+  },
+  "notes": [
+    "Native control resolved the formal installed app on this run, unlike earlier attempts.",
+    "User changed the app surface during the attempted return to page one; agent stopped sending actions and left the user on page two.",
+    "Spotlight identifier query returned no rows, so it was not used as evidence of a unique search icon.",
+    "Original save-and-quit installation receipt remains historical; this is the separate subsequent launch observation."
+  ]
+}

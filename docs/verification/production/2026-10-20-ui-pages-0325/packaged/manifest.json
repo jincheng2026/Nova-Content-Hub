@@ -1,0 +1,1247 @@
+{
+  "scope": "Actual packaged v0.3.25 renderer/preload/native IPC/worker resources started via startDesktop with Electron 44.9.0; no installation or DMG acceptance; disposable seeded file library. No OS automation, user library, assistant sessions, clipboard, generation or paid provider calls.",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-XVTsBD/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "fixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/packaged-0325-fixture-iaGtuf",
+  "viewport": {
+    "width": 1440,
+    "height": 1000
+  },
+  "subjects": [
+    {
+      "id": "3539d54d-15da-4635-8ada-7cec537acbf9",
+      "title": "用 AI 整理一周灵感，找回创作节奏"
+    },
+    {
+      "id": "7c5e5c1c-ccc9-4d56-87cb-b31c4046a210",
+      "title": "把旅行照片写成一篇有温度的游记"
+    },
+    {
+      "id": "c12db7ae-1ec3-47cc-b465-002e9c679567",
+      "title": "小团队如何排好一周内容日程"
+    }
+  ],
+  "collection": {
+    "id": "8169834d-581a-4bc4-8b3f-0eafdb562598",
+    "title": "秋日创作周 · 内容策划"
+  },
+  "captures": [
+    {
+      "name": "01-prompts",
+      "description": "Packaged 0.3.25: 20 prompt cards, four columns; next page and return verified",
+      "selector": ".prompt-library-grid",
+      "file": "docs/verification/production/2026-10-20-ui-pages-0325/packaged/screenshots/01-prompts.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "从文件导入",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加提示词",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "返回关联内容正文",
+            "id": "return-prompt-content-body",
+            "aria": null
+          },
+          {
+            "text": "使用当前已保存内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "按目标渠道重写同一篇内容",
+            "id": "",
+            "aria": "打开提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：按目标渠道重写同一篇内容"
+          },
+          {
+            "text": "把读者反馈变成可回应的问题",
+            "id": "",
+            "aria": "打开提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把读者反馈变成可回应的问题"
+          },
+          {
+            "text": "把复盘变成下一次小实验",
+            "id": "",
+            "aria": "打开提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把复盘变成下一次小实验"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把复盘变成下一次小实验"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把复盘变成下一次小实验"
+          },
+          {
+            "text": "把模糊想法变成读者问题",
+            "id": "",
+            "aria": "打开提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把模糊想法变成读者问题"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把模糊想法变成读者问题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把模糊想法变成读者问题"
+          },
+          {
+            "text": "把内容转成封面生图简报",
+            "id": "",
+            "aria": "打开提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把内容转成封面生图简报"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把内容转成封面生图简报"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把内容转成封面生图简报"
+          },
+          {
+            "text": "把书面稿改得好说好听",
+            "id": "",
+            "aria": "打开提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把书面稿改得好说好听"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把书面稿改得好说好听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把书面稿改得好说好听"
+          },
+          {
+            "text": "把信息排成逐页图文",
+            "id": "",
+            "aria": "打开提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把信息排成逐页图文"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把信息排成逐页图文"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把信息排成逐页图文"
+          },
+          {
+            "text": "把选题排成短视频节奏",
+            "id": "",
+            "aria": "打开提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把选题排成短视频节奏"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把选题排成短视频节奏"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把选题排成短视频节奏"
+          },
+          {
+            "text": "把专业概念讲给新手听",
+            "id": "",
+            "aria": "打开提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：把专业概念讲给新手听"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把专业概念讲给新手听"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：把专业概念讲给新手听"
+          },
+          {
+            "text": "拆解参考作品的有效选择",
+            "id": "",
+            "aria": "打开提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：拆解参考作品的有效选择"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：拆解参考作品的有效选择"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：拆解参考作品的有效选择"
+          },
+          {
+            "text": "从根本目的重想选题",
+            "id": "",
+            "aria": "打开提示词：从根本目的重想选题"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从根本目的重想选题"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：从根本目的重想选题"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从根本目的重想选题"
+          },
+          {
+            "text": "从长内容提炼一则独立短内容",
+            "id": "",
+            "aria": "打开提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：从长内容提炼一则独立短内容"
+          },
+          {
+            "text": "搭一份能兑现主张的正文结构",
+            "id": "",
+            "aria": "打开提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：搭一份能兑现主张的正文结构"
+          },
+          {
+            "text": "第一性原理",
+            "id": "",
+            "aria": "打开提示词：第一性原理"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：第一性原理"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：第一性原理"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：第一性原理"
+          },
+          {
+            "text": "反向拆解",
+            "id": "",
+            "aria": "打开提示词：反向拆解"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：反向拆解"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：反向拆解"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：反向拆解"
+          },
+          {
+            "text": "复利总结三条标准",
+            "id": "",
+            "aria": "打开提示词：复利总结三条标准"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：复利总结三条标准"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：复利总结三条标准"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：复利总结三条标准"
+          },
+          {
+            "text": "横纵分析法（深度研究）",
+            "id": "",
+            "aria": "打开提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：横纵分析法（深度研究）"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：横纵分析法（深度研究）"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：横纵分析法（深度研究）"
+          },
+          {
+            "text": "红黄绿灯放权",
+            "id": "",
+            "aria": "打开提示词：红黄绿灯放权"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：红黄绿灯放权"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：红黄绿灯放权"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：红黄绿灯放权"
+          },
+          {
+            "text": "检查标题和封面是否说同一件事",
+            "id": "",
+            "aria": "打开提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查标题和封面是否说同一件事"
+          },
+          {
+            "text": "检查读者看完能不能行动",
+            "id": "",
+            "aria": "打开提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "☆",
+            "id": "",
+            "aria": "收藏提示词：检查读者看完能不能行动"
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：检查读者看完能不能行动"
+          },
+          {
+            "text": "填写并复制",
+            "id": "",
+            "aria": "填写并复制：检查读者看完能不能行动"
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 提示词\n\n提示词\n本机保存\n刷新\n\nPROMPT LIBRARY\n\n让好用的提示词，随时可用\n\n选择一条，填入你的情况，再复制给助手。\n\n从文件导入\n＋ 添加提示词\n返回关联内容正文\n请先在“参考内容”中选择一篇已保存内容。\n提示词分类\n全部分类\n提示词状态\n全部状态\n提示词收藏\n全部收藏状态\n提示词范围\n正常提示词\n参考内容\n可选\n暂不关联内容\n按目标渠道重写同一篇内容\n☆\n•••\n\n有一篇成熟内容，准备换一个渠道表达\n\n渠道改写\n可用\n2 项待填\n填写并复制\n把读者反馈变成可回应的问题\n☆\n•••\n\n收到评论或私信摘要，想判断该回复什么、该补哪篇内容\n\n发布与复盘\n可用\n2 项待填\n填写并复制\n把复盘变成下一次小实验\n☆\n•••\n\n复盘结论很多，想确定下一次只验证什么\n\n发布与复盘\n可用\n2 项待填\n填写并复制\n把模糊想法变成读者问题\n☆\n•••\n\n脑中只有一个大词，写起来容易空泛\n\n选题判断\n可用\n2 项待填\n填写并复制\n把内容转成封面生图简报\n☆\n•••\n\n要做封面图，但不知道该让画面表达什么\n\n标题与封面\n可用\n2 项待填\n填写并复制\n把书面稿改得好说好听\n☆\n•••\n\n文字能看懂，但念出来绕口或像在读报告\n\n表达打磨\n可用\n2 项待填\n填写并复制\n把信息排成逐页图文\n☆\n•••\n\n要做多页图文，希望每页都有明确用途\n\n内容结构\n可用\n2 项待填\n填写并复制\n把选题排成短视频节奏\n☆\n•••\n\n准备拍短视频，需要把口播和画面配起来\n\n内容结构\n可用\n2 项待填\n填写并复制\n把专业概念讲给新手听\n☆\n•••\n\n内容有专业词，想让第一次接触的人也跟得上\n\n表达打磨\n可用\n2 项待填\n填写并复制\n拆解参考作品的有效选择\n☆\n•••\n\n有一份可参考的作品，想学方法而不是照搬措辞\n\n选题判断\n可用\n2 项待填\n填写并复制\n从根本目的重想选题\n☆\n•••\n\n跟风选题越做越累，想确认这篇内容究竟为什么存在\n\n选题判断\n可用\n2 项待填\n填写并复制\n从长内容提炼一则独立短内容\n☆\n•••\n\n已有长文或长视频文字稿，想复用其中一个完整观点\n\n渠道改写\n可用\n2 项待填\n填写并复制\n搭一份能兑现主张的正文结构\n☆\n•••\n\n材料不少，但写出来像资料堆积\n\n内容结构\n可用\n2 项待填\n填写并复制\n第一性原理\n☆\n•••\n\n方案已经打了很多补丁，想推倒从本质重来\n\n解决问题\n可用\n1 项待填\n填写并复制\n反向拆解\n☆\n•••\n\n看到一个很牛的作品或页面，想知道它好在哪、怎么学\n\n学习\n可用\n2 项待填\n填写并复制\n复利总结三条标准\n☆\n•••\n\n任务做完了，想让 AI 真的学到东西而不是走过场\n\n工作流与工具\n可用\n1 项待填\n填写并复制\n横纵分析法（深度研究）\n☆\n•••\n\n想用半小时把一个陌生的公司、产品或领域摸清楚\n\n学习\n可用\n1 项待填\n填写并复制\n红黄绿灯放权\n☆\n•••\n\n要交给 AI 一段时间的自主权，又怕它乱来\n\n思考与决策\n可用\n3 项待填\n填写并复制\n检查标题和封面是否说同一件事\n☆\n•••\n\n标题、封面和正文都有了，担心吸引人却接不住预期\n\n标题与封面\n可用\n2 项待填\n填写并复制\n检查读者看完能不能行动\n☆\n•••\n\n内容看着有道理，但读者可能不知道下一步怎么做\n\n发布与复盘\n可用\n2 项待填\n填写并复制\n共 53 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n跳至\n页",
+        "scroll": []
+      },
+      "sha256": "b6362aa5687af6178356435b4da595abbc2d5e9f14a2d7b7f11a7675eda0eee0"
+    },
+    {
+      "name": "02-content",
+      "description": "Packaged 0.3.25: single-page counts and collection art boundaries",
+      "selector": "#contents",
+      "file": "docs/verification/production/2026-10-20-ui-pages-0325/packaged/screenshots/02-content.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建合集",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建内容",
+            "id": "new-content",
+            "aria": null
+          },
+          {
+            "text": "秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面小团队如何排好一周内容日程创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：小团队如何排好一周内容日程"
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n＋ 新建合集\n＋ 新建内容\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n共 1 项 · 1–1 项\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n小团队如何排好一周内容日程\n创作中\n\t\n视频号\n\t2026-10-21\n时间待定\n\t\n待做封面\n\t已发 0/1\n\t\n制作封面\n•••\n\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 3 项 · 1–3 项\n\n共匹配 4 项（1 个合集 · 3 篇内容）",
+        "scroll": []
+      },
+      "sha256": "882ba5191ce0ef41d409f9719e95133cfdff051ed43d201c97d0b728f685ecd7"
+    },
+    {
+      "name": "03-settings-common",
+      "description": "Packaged 0.3.25 common settings, release and matched market available",
+      "selector": "dialog[open]",
+      "file": "docs/verification/production/2026-10-20-ui-pages-0325/packaged/screenshots/03-settings-common.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建合集",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建内容",
+            "id": "new-content",
+            "aria": null
+          },
+          {
+            "text": "秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面小团队如何排好一周内容日程创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：小团队如何排好一周内容日程"
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "关闭设置",
+            "id": "close-settings",
+            "aria": null
+          },
+          {
+            "text": "重新检查",
+            "id": "recheck-assistant",
+            "aria": null
+          },
+          {
+            "text": "管理内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开文件夹 →",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "更新内置资源",
+            "id": "update-builtins",
+            "aria": null
+          },
+          {
+            "text": "准备安装插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开 Codex",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "检查插件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "保存偏好",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "放弃修改",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "编辑",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 添加照片",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "管理渠道",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n＋ 新建合集\n＋ 新建内容\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n共 1 项 · 1–1 项\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n小团队如何排好一周内容日程\n创作中\n\t\n视频号\n\t2026-10-21\n时间待定\n\t\n待做封面\n\t已发 0/1\n\t\n制作封面\n•••\n\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 3 项 · 1–3 项\n\n共匹配 4 项（1 个合集 · 3 篇内容）\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n全局助手\n交给哪个 AI 助手\n交给哪个 AI 助手\nCodex（默认）\n\n制作封面和学习模板时，统一交给这里选择的助手。\n\n检查连接\n重新检查\n\n请先安装并启用工作台配套插件。\n\n模板学习与还原：配套模板执行能力尚未准备好，请安装并启用插件。\n\n内容库\n秋日创作库\n\n正文、封面、模板与照片都保存在这里。\n\n管理内容库\n打开文件夹 →\n内置模板与提示词\n\n补充新风格和提示词，保留已有修改与删除。\n\n更新内置资源\n\n配套插件与版本\n\n自媒体工作台 0.3.25 · macOS · ARM64\n\nCodex：需要安装或启用配套插件。\n\n准备安装插件\n打开 Codex\n检查插件\n本机偏好\n每天提醒\n汇总今天待发布的内容与合集\n提醒时间\n使用本机当前时区\n提醒时间使用本机当前时区\n减少界面动画\n开机启动\n登录电脑后自动打开工作台\n\n系统反馈：请先安装打包的桌面应用；开发运行模式不配置开机启动。\n\n保存偏好\n放弃修改\n只保存在这台电脑\n\n每天提醒尚未开启。\n\n编辑\n个人信息\n我\n添加你的昵称\n\n介绍你自己，让创作更有自己的风格。\n\n自媒体方向\n待填写\n目标读者\n待填写\n我的照片\n＋ 添加照片\n管理\n\n还没有照片，可以先添加一张。\n\n照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。\n\n发布渠道\n5 个可用渠道\n\n渠道统一用于内容归档、封面和发布日程。\n\n管理渠道\n抖音\n小红书\n视频号\n公众号\nB 站",
+        "scroll": [
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1333,
+            "top": 0
+          }
+        ]
+      },
+      "sha256": "512fb25c25e7130a0644fad7241aa86c36a38096a705baaf2e27e0399c4e8a7f"
+    },
+    {
+      "name": "04-settings-help",
+      "description": "Packaged 0.3.25 help and troubleshooting retained",
+      "selector": ".creator-settings-help",
+      "file": "docs/verification/production/2026-10-20-ui-pages-0325/packaged/screenshots/04-settings-help.png",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "ui": {
+        "buttons": [
+          {
+            "text": "总览",
+            "id": "nav-overview",
+            "aria": null
+          },
+          {
+            "text": "模板",
+            "id": "nav-templates",
+            "aria": null
+          },
+          {
+            "text": "内容",
+            "id": "nav-content",
+            "aria": null
+          },
+          {
+            "text": "日程",
+            "id": "nav-calendar",
+            "aria": null
+          },
+          {
+            "text": "提示词",
+            "id": "nav-prompts",
+            "aria": null
+          },
+          {
+            "text": "内容库",
+            "id": "library-menu",
+            "aria": null
+          },
+          {
+            "text": "设置",
+            "id": "open-settings",
+            "aria": null
+          },
+          {
+            "text": "刷新",
+            "id": "refresh-workspace",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建合集",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "＋ 新建内容",
+            "id": "new-content",
+            "aria": null
+          },
+          {
+            "text": "秋日创作周 · 内容策划 合集2 篇内容›",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "封面小团队如何排好一周内容日程创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "制作封面",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：小团队如何排好一周内容日程"
+          },
+          {
+            "text": "封面把旅行照片写成一篇有温度的游记创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：把旅行照片写成一篇有温度的游记"
+          },
+          {
+            "text": "用 AI 整理一周灵感，找回创作节奏创作中",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "打开内容",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "•••",
+            "id": "",
+            "aria": "更多操作：用 AI 整理一周灵感，找回创作节奏"
+          },
+          {
+            "text": "关闭设置",
+            "id": "close-settings",
+            "aria": null
+          },
+          {
+            "text": "保存诊断文件",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "试发一条通知",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "刷新通知状态",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新检查本机连接",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "重新连接内容库",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "导出脱敏诊断",
+            "id": "",
+            "aria": null
+          },
+          {
+            "text": "查看插件文件",
+            "id": "",
+            "aria": null
+          }
+        ],
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n＋ 新建合集\n＋ 新建内容\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n共 1 项 · 1–1 项\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\n小团队如何排好一周内容日程\n创作中\n\t\n视频号\n\t2026-10-21\n时间待定\n\t\n待做封面\n\t已发 0/1\n\t\n制作封面\n•••\n\n\n封面\n把旅行照片写成一篇有温度的游记\n创作中\n\t\n小红书\n\t2026-10-19\n20:00\n\t\n待选封面\n\t已发 0/1\n\t\n打开内容\n•••\n\n\n用 AI 整理一周灵感，找回创作节奏\n创作中\n\t\n抖音\n\t2026-10-18\n18:15\n\t\n已选封面\n\t已发 0/1\n\t\n打开内容\n•••\n共 3 项 · 1–3 项\n\n共匹配 4 项（1 个合集 · 3 篇内容）\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n交接范围与照片使用\n\n检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。\n\n本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中确认执行。\n\n遇到问题：导出诊断\n\n只包含版本、系统、数量和有限错误码，不含目录路径、正文、照片或凭据。保存到本机后，由你决定是否分享。\n\n保存诊断文件\n通知试发与使用说明\n\n每天提醒尚未开启。\n\n尚无自动提醒记录。\n\n试发一条通知\n刷新通知状态\n\n只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。\n\n通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。\n\n内容库连接排错与恢复\n本机内容库连接恢复\n\n工作台把“连接哪个内容库”保存在本机。连接记录损坏时，可以先保留旧记录，再重新选择原内容库；不会删除内容库、正文、照片或业务文件，也不会改变登录或使用权限。\n\n本机连接记录可读取。如内容库需要恢复，请使用“备份与恢复”。\n\n重新检查本机连接\n重新连接内容库\n导出脱敏诊断\n插件怎么安装\n点击“准备安装插件”，工作台会复制 Codex 需要的完整安装位置，并打开助手。\n在助手的插件页面选择添加本地市场，粘贴刚复制的位置即可，无需查找文件或修改路径。\n找到 Nova Content Hub，按助手提示安装、启用并确认插件权限，然后回这里检查插件。\n查看插件文件\n\n选择助手在“常用设置 → 全局助手”中调整。封面由助手生成，可能使用你已有的助手额度；打开助手不代表已经生成成功。\n\n安装与升级\n升级前，在“内容库 → 备份与维护”备份你的内容库。\nmacOS：退出工作台，将新版本拖入“应用程序”。Windows：退出工作台，运行新版本安装程序。\n保留原内容库文件夹，重新打开工作台后继续使用；如配套插件有更新，一并安装再检查连接。\n\n请选择与你系统及芯片匹配的安装包。内容库独立于应用安装目录；更换或卸载应用时不要删除内容库。\n\nmacOS 提示无法打开或应用损坏\n\n先保留安装包，核对下载来源、系统及芯片版本。如系统允许，可在“系统设置 → 隐私与安全性”查看原始拦截提示并选择系统提供的打开入口；仍无法打开时请提供提示原文与下方诊断。\n\n此安装包尚未完成 Apple Developer ID 签名与公证。请保留系统保护设置；损坏提示也可能来自下载不完整。",
+        "scroll": [
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1337,
+            "top": 0
+          }
+        ]
+      },
+      "sha256": "739dd606bb16730b0d0a6010fee13af5cdca49f0d260c7add4fd1582d2051e41"
+    }
+  ],
+  "geometry": [
+    {
+      "phase": "01-prompts",
+      "name": "packaged-prompt-grid",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "columns": 4,
+      "cards": 20,
+      "failures": []
+    },
+    {
+      "phase": "01-prompts",
+      "name": "pagination-bounds-and-small-total",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "items": [
+        {
+          "label": "提示词分页",
+          "total": 53,
+          "width": 1172,
+          "scrollWidth": 1172,
+          "quickJump": true
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "02-content",
+      "name": "packaged-content-single-page-counts-art",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "rows": 3,
+      "counts": [
+        "共 1 项 · 1–1 项",
+        "共 3 项 · 1–3 项"
+      ],
+      "art": {
+        "width": 56,
+        "height": 60
+      },
+      "images": [
+        {
+          "width": 54,
+          "height": 58
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "02-content",
+      "name": "pagination-bounds-and-small-total",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "items": [
+        {
+          "label": "合集列表分页",
+          "total": 1,
+          "width": 1172,
+          "scrollWidth": 1172,
+          "quickJump": false
+        },
+        {
+          "label": "内容列表分页",
+          "total": 3,
+          "width": 1170,
+          "scrollWidth": 1170,
+          "quickJump": false
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "03-settings-common",
+      "name": "pagination-bounds-and-small-total",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "items": [
+        {
+          "label": "合集列表分页",
+          "total": 1,
+          "width": 1172,
+          "scrollWidth": 1172,
+          "quickJump": false
+        },
+        {
+          "label": "内容列表分页",
+          "total": 3,
+          "width": 1170,
+          "scrollWidth": 1170,
+          "quickJump": false
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "04-settings-help",
+      "name": "pagination-bounds-and-small-total",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "items": [
+        {
+          "label": "合集列表分页",
+          "total": 1,
+          "width": 1172,
+          "scrollWidth": 1172,
+          "quickJump": false
+        },
+        {
+          "label": "内容列表分页",
+          "total": 3,
+          "width": 1170,
+          "scrollWidth": 1170,
+          "quickJump": false
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "errors": [],
+  "blocked": [],
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readSetup",
+    "nova:readSetup",
+    "nova:readPreferences",
+    "nova:readReminderStatus",
+    "nova:readAssistantSetup",
+    "nova:readTemplateAssistantSetup",
+    "nova:readBootstrapRecovery"
+  ],
+  "sourceFixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/fixture-vyEbbg",
+  "version": "0.3.25",
+  "setup": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "version": "0.3.25",
+    "mode": "disabled",
+    "experimental": true,
+    "assistant": {
+      "host": "codex",
+      "ready": false,
+      "skill": null,
+      "reason": "skill-missing"
+    },
+    "market": {
+      "state": "available",
+      "name": "nova-content-hub-auth-disabled-darwin-arm64"
+    },
+    "entitlement": "disabled-experimental"
+  },
+  "promptPaging": {
+    "first": [
+      "a4f95d22-8a4a-4db5-86b3-43a526e09f63",
+      "a159d9e7-c46d-4f02-9d6d-0515cd2e03bd",
+      "6717c33a-a08d-41ee-a70d-bdf88ff12354",
+      "bde26426-32eb-4dd4-8456-ebbb03d967fa",
+      "f700ff42-330d-49e0-88f3-e7d002380bda",
+      "38120432-c3ba-4abd-ab41-f4e8b8b398df",
+      "e781197c-8ff9-4f95-b9f1-202bfa27da37",
+      "89cec701-3212-4f22-978b-0b9d8ae2ae2e",
+      "561e1a75-af9d-4a8d-8f9e-a33de84ff6d5",
+      "b7aa2d75-56df-4f95-a015-87f252c3d596",
+      "e5776cd4-acaf-47e7-88dd-bff7a7704fb3",
+      "c2ad33a2-eab9-4e0d-875d-7022760cc2fb",
+      "37af25fd-46ce-4d8f-8ef5-5704bedbf423",
+      "5248fdfc-9913-4fd7-a1b0-e844738bb87c",
+      "e05a718d-8b39-4251-93a4-4bcf76d0506b",
+      "8228b23a-1832-4284-aa01-22c6873d7b32",
+      "af38e6e3-9bd1-4eda-add6-0667d6df60e9",
+      "f838bfc1-909a-4547-9dfd-3e4278c2ab5e",
+      "52c6b738-b008-4343-9593-cf59b287cdea",
+      "764553c7-bee8-4221-8a6a-6f0303ee8440"
+    ],
+    "second": [
+      "3276ab6b-795d-4c78-9a55-7d1cbf90caeb",
+      "e3090afc-4bba-4650-8e22-483cbb5b0d71",
+      "62448dcc-93ab-4943-bca6-30156ad7f870",
+      "f0015ed2-acc1-4439-8c91-e2f53d29e645",
+      "9f7920c6-6257-4ab1-aca2-3170d7feb948",
+      "6169ca0b-2ec7-40f9-b7d8-3b6ab4e352dc",
+      "ba511b01-bef9-42f6-98a4-0d65e682f9cd",
+      "c3ea9cc3-a900-4bfd-bc5f-0a6e7bc0b584",
+      "6100bb80-4df6-4752-ba79-788885779683",
+      "0b2e37c1-c9b8-4947-b240-be33b058902f",
+      "be550c03-68f1-49bd-93c0-17a4ee4af5de",
+      "c977030d-3cfd-4994-bc49-c980bd0fb213",
+      "716ae075-bcda-4680-b1fb-15c26c41401c",
+      "9f692fec-7414-4bdc-b406-727b26de1b53",
+      "dc76d6d2-88df-4dad-96d9-cf46c9d88909",
+      "ccace550-10e6-4f89-aee6-8aebd3198c17",
+      "81c70522-a464-4f0c-bc3b-0be2d215b6c0",
+      "31de3a16-642e-4c05-8558-29b44f119d42",
+      "1424afa2-0ebf-403e-a032-7cae143b78b3",
+      "58c33f49-f3ff-4e45-8636-6e030880e543"
+    ],
+    "distinct": true
+  },
+  "freezeSourceHashMatches": true,
+  "packagedRendererHashes": {
+    "assets/index-CK_BqUOl.css": "0e1d64f1ce479fca8918ecd617ad3928aac5ec0182e34a6a4cf4d6852e3a58a2",
+    "assets/index-s2pZyVCA.js": "31c4836e962eb24ebaf5ba9499e0836fb93d0ee56be9c2a43eb88185f647a932",
+    "assets/nova-content-hub-icon-512-A1Ow6cZT.png": "f155826434eae92952db43bf649eb8f9db8c3edd8eb31601f6749df9b272db99",
+    "index.html": "a26eeceebd5acb62c1214376213d9d68d1cf9ebff27cc8977fcca711c37a46f2"
+  },
+  "freezeRendererHashes": {
+    "assets/index-CK_BqUOl.css": "0e1d64f1ce479fca8918ecd617ad3928aac5ec0182e34a6a4cf4d6852e3a58a2",
+    "assets/index-s2pZyVCA.js": "31c4836e962eb24ebaf5ba9499e0836fb93d0ee56be9c2a43eb88185f647a932",
+    "assets/nova-content-hub-icon-512-A1Ow6cZT.png": "f155826434eae92952db43bf649eb8f9db8c3edd8eb31601f6749df9b272db99",
+    "index.html": "a26eeceebd5acb62c1214376213d9d68d1cf9ebff27cc8977fcca711c37a46f2"
+  },
+  "rendererBundleMatchesFreeze": true,
+  "packagedResourceHashes": {
+    "workbench/dist/release.json": "50dbeb246eb8da4fd62114369edf5c9ad06e556eae855762166156510d44d8bb",
+    "workbench/dist/renderer-resources.json": "4bd866f7d1aafa04bd5af46f256e95f93eca85d0f6c2ae1df49f62727e6c144d",
+    "workbench/dist/main/desktop.mjs": "d72a6529392652b9d837095277d9f1e020c0a68a1c4b63345a9be48e8bf4bc51",
+    "workbench/dist/preload/index.cjs": "3d502ed0c9d3ec8a5d066da7c8a047523ebaff617b12280869eb72e5c90ccda7",
+    "plugin-src/src/lib/file-library/index.mjs": "70c2329aa9b52e2198dced8bb60fc27d5059bf8d0f0aa852ad466221259cd4cf"
+  },
+  "verifiedAt": "2026-10-20T03:26:22.403Z",
+  "finished": true,
+  "fixtureWritesAfterInit": [],
+  "notes": [
+    "Actual v0.3.25 packaged resource tree started via startDesktop under Electron 44.9.0; app not installed. No WorkBuddy changes.",
+    "Fresh disposable fixture is a copy of the original synthetic audit library, excluding only its lock; original fixture and lock unchanged.",
+    "All non-read IPC blocked. Prompt next-page and previous-page clicks changed only renderer pagination state.",
+    "Visible images get one capturePage render before bounded decode waiting so hidden-window lazy loading starts.",
+    "Earlier probe-only startup queue and lazy-render failures are retained under .local-probes/ui-audit-0325/packaged-smoke-attempts.json and packaged-attempt2-failure.json.",
+    "All four renderer output files exactly match the frozen current-source production build by SHA256; current renderer source hashes also match freeze."
+  ],
+  "verification": {
+    "screenshots": 4,
+    "geometryChecks": 6,
+    "geometryFailures": 0,
+    "promptPagingDistinct": true,
+    "releaseAndSetupVersion": "0.3.25",
+    "pluginMarket": "available",
+    "rendererBundleMatchesFreeze": true,
+    "sourceRendererHashesMatch": true,
+    "consoleOrStepErrors": 0,
+    "blockedOperations": 0,
+    "all4ScreenshotsVisuallyInspected": true
+  }
+}

@@ -1,0 +1,110 @@
+{
+  "status": "PASS",
+  "widths": [
+    1440,
+    1100,
+    900,
+    560
+  ],
+  "containers": [
+    1000,
+    560,
+    380,
+    280
+  ],
+  "geometry": [
+    {
+      "nav": {
+        "left": 555,
+        "right": 885,
+        "top": 796.359375,
+        "bottom": 916.859375,
+        "width": 330,
+        "height": 120.5
+      },
+      "list": {
+        "left": 555,
+        "right": 873,
+        "top": 836.859375,
+        "bottom": 904.859375,
+        "width": 318,
+        "height": 68
+      },
+      "quick": {
+        "left": 770.15625,
+        "right": 873,
+        "top": 872.859375,
+        "bottom": 904.859375,
+        "width": 102.84375,
+        "height": 32
+      },
+      "input": {
+        "left": 803.71875,
+        "right": 853.71875,
+        "top": 873.859375,
+        "bottom": 903.859375,
+        "width": 50,
+        "height": 30
+      },
+      "inputStyle": {
+        "border": "0px",
+        "padding": "0px 6px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "items": [
+        {
+          "left": 651.3125,
+          "right": 706.15625,
+          "top": 836.859375,
+          "bottom": 868.859375,
+          "width": 54.84375,
+          "height": 32
+        },
+        {
+          "left": 710.15625,
+          "right": 742.15625,
+          "top": 836.859375,
+          "bottom": 868.859375,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 746.15625,
+          "right": 778.15625,
+          "top": 836.859375,
+          "bottom": 868.859375,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 782.15625,
+          "right": 814.15625,
+          "top": 836.859375,
+          "bottom": 868.859375,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 818.15625,
+          "right": 873,
+          "top": 836.859375,
+          "bottom": 868.859375,
+          "width": 54.84375,
+          "height": 32
+        }
+      ],
+      "fits": true,
+      "count": "共 42 项 · 21–40 项"
+    }
+  ],
+  "checks": [
+    "zero/single/multi/large totals",
+    "12/20 page sizes",
+    "upper/lower clamp",
+    "Enter/Space/quickjump",
+    "previous/next",
+    "disabled",
+    "no form submission",
+    "no bridge calls or data mutations"
+  ]
+}
