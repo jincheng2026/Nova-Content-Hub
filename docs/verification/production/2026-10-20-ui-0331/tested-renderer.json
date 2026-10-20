@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-20T06:57:05.399Z",
+  "source": "cbf203437b10d5d41dc3b53480b51b46286eb9f6",
+  "releaseVersion": "0.3.30",
+  "path": "workbench/dist-desktop/auth-disabled/workbench/dist/renderer",
+  "preservedCopy": ".local-probes/ui-0331/tested-renderer",
+  "treeSha256": "5403fb3b45a2afae767284c37c9380943f119c94f208fe00a1e705b451e3b761",
+  "tree": {
+    "assets": {
+      "directory": true
+    },
+    "assets/index-B05NniOI.css": {
+      "sha256": "bd4eea7944769450af6d695750b675ef3d6d6246afce3604287727df05185595",
+      "bytes": 505882,
+      "executable": false
+    },
+    "assets/index-JikdFVSz.js": {
+      "sha256": "110b1bb3e0eaacb776cf5ed7707a372eb2e3b236ab767063eb79e8c3b51d1244",
+      "bytes": 1333899,
+      "executable": false
+    },
+    "assets/nova-content-hub-icon-512-A1Ow6cZT.png": {
+      "sha256": "f155826434eae92952db43bf649eb8f9db8c3edd8eb31601f6749df9b272db99",
+      "bytes": 263833,
+      "executable": false
+    },
+    "index.html": {
+      "sha256": "88f7d7a2289b745caca30fca2baca4d72823a5c44e4a123b7b980fe1a33c32ee",
+      "bytes": 385,
+      "executable": false
+    }
+  }
+}

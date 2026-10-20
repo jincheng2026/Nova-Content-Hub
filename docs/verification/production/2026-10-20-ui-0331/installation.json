@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-20T07:03:05.019Z",
+  "version": "0.3.31",
+  "sourceCommit": "4c230eb3a4175d2c4fbb1c3311cdce2a36c9abfd",
+  "target": "/Applications/自媒体工作台.app",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0331-4c230eb/mac-arm64/自媒体工作台.app",
+  "treeSha256": "35fcb8ed2d8f69d2cd59241355b2bc8010f9078ddc62888bb5c122680134b6fc",
+  "installedEqualsArchivedBuild": true,
+  "library": {
+    "entries": 1781,
+    "beforeSha256": "773cc2bb6ee2d7d669f97d58d68825447005e5ca80561582e9476210db765527",
+    "afterSha256": "773cc2bb6ee2d7d669f97d58d68825447005e5ca80561582e9476210db765527",
+    "unchanged": true
+  },
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-786c019d-2a7c-427d-839b-049b87d341ee",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "phase": "installed-awaiting-native-launch",
+  "scope": "Product transactional Mac installer; complete tree/signature verification with old app recovery retained. Actual native binding used for read-only before/after library fingerprint; no business mutation or generation."
+}

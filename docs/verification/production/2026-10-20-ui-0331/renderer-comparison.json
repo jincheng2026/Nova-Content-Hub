@@ -1,0 +1,11 @@
+{
+  "uiSourceCommit": "cbf203437b10d5d41dc3b53480b51b46286eb9f6",
+  "metadataOnlyFreezeDiff": true,
+  "freshFrozenBuildEqualsPackaged": true,
+  "testedBuildVersion": "0.3.30",
+  "packagedVersion": "0.3.31",
+  "byteIdenticalToTested": true,
+  "testedTreeSha256": "5403fb3b45a2afae767284c37c9380943f119c94f208fe00a1e705b451e3b761",
+  "packagedTreeSha256": "5403fb3b45a2afae767284c37c9380943f119c94f208fe00a1e705b451e3b761",
+  "differentPaths": []
+}

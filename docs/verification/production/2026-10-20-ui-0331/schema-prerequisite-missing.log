@@ -1,0 +1,188 @@
+✖ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (1.654083ms)
+✖ independent schemas and runtime reject malformed envelopes and nested requests (0.382917ms)
+✖ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (0.494ms)
+✖ host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content (0.403084ms)
+✖ required browser simulation and runtime flags never authorize a real content-bearing launch (0.342333ms)
+✖ actual packaged check-handoff validates both modes without echoing project content or executing (0.335542ms)
+✖ bundled native hook context is minimal guidance and cannot acknowledge business success (0.306417ms)
+✖ all fifteen self-media designs build bounded requests accepted by the packaged CLI (0.349833ms)
+✖ both delivered bundles include actual AI reference bytes and their reproducible prompts (1.126ms)
+✔ independent design schema rejects invalid nested design, reference and review records (20.332084ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 1
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 161.015459
+
+✖ failing tests:
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:47:1
+✖ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (1.654083ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:49:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:60:1
+✖ independent schemas and runtime reject malformed envelopes and nested requests (0.382917ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:61:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:97:1
+✖ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (0.494ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:98:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:119:1
+✖ host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content (0.403084ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:120:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:156:1
+✖ required browser simulation and runtime flags never authorize a real content-bearing launch (0.342333ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-required/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:157:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-required/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:166:1
+✖ actual packaged check-handoff validates both modes without echoing project content or executing (0.335542ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-required/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:168:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-required/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:185:1
+✖ bundled native hook context is minimal guidance and cannot acknowledge business success (0.306417ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:186:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:203:1
+✖ all fifteen self-media designs build bounded requests accepted by the packaged CLI (0.349833ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+      at readFileSync (node:fs:484:20)
+      at read (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:12:22)
+      at workspace (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:26:128)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:204:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/build-config.js'
+  }
+
+test at plugin-src/tests/integration/handoff-schema.test.mjs:235:1
+✖ both delivered bundles include actual AI reference bytes and their reproducible prompts (1.126ms)
+  Error: ENOENT: no such file or directory, open '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/图库/AI参考/geometry-v3.png'
+      at Object.openSync (node:fs:622:18)
+      at readFileSync (node:fs:488:35)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/plugin-src/tests/integration/handoff-schema.test.mjs:240:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/dist-prototype/auth-disabled/图库/AI参考/geometry-v3.png'
+  }

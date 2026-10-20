@@ -1,0 +1,74 @@
+{
+  "recordedAt": "2026-10-20T07:27:39.447Z",
+  "version": "0.3.31",
+  "method": "CUA native app accessibility and screenshots; observations only, no DOM injection",
+  "application": "/Applications/自媒体工作台.app",
+  "originalLibrary": {
+    "displayName": "内容库-恢复-20261019",
+    "contents": 4,
+    "collections": 1,
+    "readAfterInstall": true,
+    "readAfterNativeQuitRestart": true
+  },
+  "settings": {
+    "profileAndChannelsFirst": true,
+    "actualHost": "workbuddy",
+    "appVersion": "0.3.31",
+    "pairedPluginReady": true
+  },
+  "covers": {
+    "title": "本机创作流程验收",
+    "candidates": 3,
+    "priorSelectedCoverRetained": true,
+    "newCodexCandidateVisible": true,
+    "imageAreaNoNumbersOrBadges": true,
+    "metadataAndActionsOutsideImage": true
+  },
+  "calendar": {
+    "selected": "2026-10-21",
+    "count": 1,
+    "sourceTitle": "给创作留点空间",
+    "ordinaryLargeDateClickKeptHeaderVisible": true,
+    "dayListFiveColumnsVisible": true,
+    "expandedPublicationPanelDocumentIdentity": true,
+    "expandedPublicationPlanRows": 2,
+    "expandedPanelFiveColumnsAndFixedActionsVisible": true
+  },
+  "prompt": {
+    "title": "【验收】三步整理发布文案",
+    "semiDropdownActualOptionsVisible": true,
+    "customDraftInput": "验收分类",
+    "clearedBackToOriginalEmpty": true,
+    "closedWithoutSave": true,
+    "persistedCardStillUnclassified": true,
+    "physicalIme": false
+  },
+  "about": {
+    "name": "自媒体工作台",
+    "version": "0.3.31 (0.3.31)",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "projectIconVisible": true
+  },
+  "finder": {
+    "name": "自媒体工作台",
+    "kind": "应用程序(Apple芯片)",
+    "version": "0.3.31",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "bytes": 672867112,
+    "displaySize": "672.9 MB",
+    "diskSize": "676.3 MB",
+    "createdLocal": "2026-10-20 15:00",
+    "modifiedLocal": "2026-10-20 15:00",
+    "projectIconVisible": true
+  },
+  "dock": {
+    "verified": false,
+    "reason": "CUA getApp(com.apple.dock) timed out; no alternative UI automation used"
+  },
+  "normalQuitAndRestart": true,
+  "forceTerminated": false,
+  "actualViewportNumericCoordinatesMeasured": false,
+  "screenshotStorage": "Actual screenshots are inline in conversation tool results; no local screenshot file claimed",
+  "otherPlatformSystemUIVerified": false,
+  "newImageGenerationOn0331": false
+}

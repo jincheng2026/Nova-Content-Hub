@@ -1,0 +1,93 @@
+{
+  "recordedAt": "2026-10-20T07:01:53.665Z",
+  "version": "0.3.31",
+  "sourceCommit": "4c230eb3a4175d2c4fbb1c3311cdce2a36c9abfd",
+  "frozenRoot": "/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub",
+  "frozenCheckoutClean": true,
+  "buildSource": "/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-LesTO5/mac-arm64/自媒体工作台.app",
+  "buildDmg": "/Users/mac/.codex/worktrees/ui-0331-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.31-darwin-arm64-preview.dmg",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0331-4c230eb/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.31-darwin-arm64-preview.dmg",
+  "sourceTreeSha256": "35fcb8ed2d8f69d2cd59241355b2bc8010f9078ddc62888bb5c122680134b6fc",
+  "sourceDmgSha256": "880bc6a0e4a1aab35d07b90c6434c208fc9fee47fea4542d5f37fcb92b308258",
+  "entries": 1817,
+  "archivedCopyEqualsIsolatedBuild": true,
+  "dmgTreeEqualsArchived": true,
+  "pairedMarketplaceVerified": true,
+  "testedIndexSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+  "engineeringTestsAndProbesExcluded": true,
+  "adHocSignatureVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "releaseIdentity": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.31",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.31:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "company": {
+    "author": {
+      "name": "杭州新岛橙灵智能科技有限责任公司"
+    },
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "CFBundleDisplayName": "自媒体工作台",
+    "CFBundleVersion": "0.3.31",
+    "CFBundleShortVersionString": "0.3.31"
+  },
+  "actualProperties": {
+    "dmgBytes": 478799022,
+    "dmgModifiedAt": "2026-10-20T07:01:37.073Z",
+    "appFileBytes": 672866819,
+    "appModifiedAt": "2026-10-20T07:00:06.967Z"
+  },
+  "demo": {
+    "templates": 20,
+    "prompts": 52,
+    "contents": 1,
+    "candidates": 2,
+    "originalHashes": [
+      "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79"
+    ],
+    "plans": 0,
+    "publications": 0
+  },
+  "deliveryDirectory": "/Users/mac/Downloads/自媒体工作台-0.3.31-同事交付-Mac苹果芯片",
+  "deliveryFiles": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.31-Mac苹果芯片.dmg"
+  ],
+  "userBusinessLibraryReadOrWritten": false,
+  "installed": false,
+  "nativeAppLaunched": false,
+  "finderAndAboutUIVerified": false,
+  "platformAcceptance": {
+    "darwin-arm64": "built and package verified; installation, native run, Finder/About pending",
+    "darwin-x64": "not built or tested",
+    "win32-x64": "not built or tested",
+    "win32-arm64": "not included; not built or tested"
+  },
+  "rendererComparison": {
+    "uiSourceCommit": "cbf203437b10d5d41dc3b53480b51b46286eb9f6",
+    "metadataOnlyFreezeDiff": true,
+    "freshFrozenBuildEqualsPackaged": true,
+    "testedBuildVersion": "0.3.30",
+    "packagedVersion": "0.3.31",
+    "byteIdenticalToTested": true,
+    "testedTreeSha256": "5403fb3b45a2afae767284c37c9380943f119c94f208fe00a1e705b451e3b761",
+    "packagedTreeSha256": "5403fb3b45a2afae767284c37c9380943f119c94f208fe00a1e705b451e3b761",
+    "differentPaths": []
+  },
+  "uiSourceCommit": "cbf203437b10d5d41dc3b53480b51b46286eb9f6",
+  "metadataOnlyFreezeDiff": true
+}

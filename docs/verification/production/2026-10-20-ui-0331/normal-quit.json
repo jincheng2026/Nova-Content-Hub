@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-10-20T07:22:04.373Z",
+  "version": "0.3.31",
+  "normalQuit": true,
+  "forceTerminated": false,
+  "notRunning": true,
+  "libraryRootLocks": [],
+  "entries": 1781,
+  "afterQuitSha256": "773cc2bb6ee2d7d669f97d58d68825447005e5ca80561582e9476210db765527",
+  "equalsPreInstallLibrary": true,
+  "scope": "Exact bytes after install, UI reads and temporary unsaved category input cleared back to original; no business files saved during acceptance"
+}

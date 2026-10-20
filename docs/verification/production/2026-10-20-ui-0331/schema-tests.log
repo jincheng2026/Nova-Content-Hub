@@ -1,0 +1,18 @@
+✔ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (238.234209ms)
+✔ independent schemas and runtime reject malformed envelopes and nested requests (65.487125ms)
+✔ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (41.573875ms)
+✔ host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content (22.634083ms)
+✔ required browser simulation and runtime flags never authorize a real content-bearing launch (31.3285ms)
+✔ actual packaged check-handoff validates both modes without echoing project content or executing (263.088834ms)
+✔ bundled native hook context is minimal guidance and cannot acknowledge business success (154.5145ms)
+✔ all fifteen self-media designs build bounded requests accepted by the packaged CLI (1800.985875ms)
+✔ both delivered bundles include actual AI reference bytes and their reproducible prompts (153.1745ms)
+✔ independent design schema rejects invalid nested design, reference and review records (4.687333ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2982.827166

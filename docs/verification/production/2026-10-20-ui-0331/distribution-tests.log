@@ -1,0 +1,23 @@
+✔ native channels preserve only the sealed marketplace during macOS signing (1.15025ms)
+✔ native markets retain the fixed full tree and auth-specific runtime after packaging (472.540458ms)
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (234.734333ms)
+✔ source inventory and runtime are validated before their tree can be sealed (152.793292ms)
+✔ free preview is the default experience and restricted testing stays explicit (0.591625ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.447833ms)
+✔ release pairing, auth and toolchain fail closed (0.474458ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.186333ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.198125ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (594.686375ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.255041ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.317791ms)
+✔ all installer channels and universal builds preserve company, copyright and product identity (424.524667ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (4.211667ms)
+✔ validated macOS build copies are archived without changing bytes, symlinks, modes, DMGs or earlier builds (9.085083ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1438.495833
