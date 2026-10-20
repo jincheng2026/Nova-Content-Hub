@@ -199,5 +199,5 @@
 
 .cover-composition-references { padding: 16px 0; border-bottom: 1px solid #e8edf5; }
 .cover-composition-references > p { font-size: 13px; color: #718097; }
-.cover-composition-references .cover-sample-grid.image-list { display: block; }
+.cover-composition-references .cover-sample-grid.image-list { display: block; max-height: 240px; overflow: auto; }
 .cover-composition-references .semi-list-items { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
