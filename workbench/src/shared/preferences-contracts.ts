@@ -1,5 +1,4 @@
 export interface LocalPreferences {
-    reducedMotion: boolean;
     remindersEnabled: boolean;
     reminderTime: string;
     startAtLogin: boolean;

@@ -190,7 +190,6 @@ function App() {
         void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(failure => {if (epochRef.current === epoch) report(failure);});
     }, []);
 
-    useEffect(() => { void invoke('readPreferences').then(value => { document.documentElement.dataset.reducedMotion = String(value.values.reducedMotion); }, () => {}); }, []);
     useEffect(() => { const show = () => { void navigate('calendar'); }; window.addEventListener('nova-show-calendar', show); return () => window.removeEventListener('nova-show-calendar', show); });
 
     async function refreshEditor() {

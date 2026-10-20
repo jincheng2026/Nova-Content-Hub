@@ -25,7 +25,7 @@ else if(method==='readWorkspaceLibrary')value=library;
 else if(method==='listCoverAssets')value=assets;
 else if(method==='readContent')value=content;
 else if(method==='readCover')value={content,candidates:[],jobs:[],selectedCandidateId:null};
-else if(method==='readPreferences')value={values:{reducedMotion:${!process.argv.includes('--system-reduced-motion')},remindersEnabled:false,reminderTime:'08:30',startAtLogin:false},login:{supported:true,enabled:false,state:'off'}};
+else if(method==='readPreferences')value={values:{remindersEnabled:false,reminderTime:'08:30',startAtLogin:false},login:{supported:true,enabled:false,state:'off'}};
 else if(method==='readAssistantSetup'||method==='readTemplateAssistantSetup')value={host,ready:true};
 else if(method==='readReminderStatus')value={supported:true,state:'disabled',reason:'none',lastDay:null};
 else if(method==='readBootstrapRecovery')value={state:'ready',canReset:false};
@@ -45,6 +45,8 @@ async function main(root,systemReducedMotion){
  const settle=()=>run('new Promise(resolve=>setTimeout(resolve,250))');
  const wait=condition=>run(`new Promise((resolve,reject)=>{let end=Date.now()+4000;function check(){if(${condition})return resolve();if(Date.now()>end)return reject(Error('Timeout '+${JSON.stringify(condition)}));setTimeout(check,20)}check()})`);
  const mouse=async selector=>{
+  // Native input needs window focus; other fixture windows can steal it between steps.
+  win.focus();win.webContents.focus();
   await run(`document.querySelector(${JSON.stringify(selector)})?.scrollIntoView({block:'center',behavior:'instant'})`);await settle();
   const point=await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});if(!el)throw Error('Missing '+${JSON.stringify(selector)});const r=el.getBoundingClientRect(),x=Math.round(r.x+r.width/2),y=Math.round(r.y+r.height/2);return {x,y,reachable:el.contains(document.elementFromPoint(x,y))}})()`);
   assert.equal(point.reachable,true,'native mouse can reach '+selector); console.log('Mouse',selector);
@@ -53,14 +55,22 @@ async function main(root,systemReducedMotion){
  const button=async text=>{await run(`(()=>{const el=[...document.querySelectorAll('button')].find(el=>el.textContent.trim()===${JSON.stringify(text)});if(!el)throw Error('Missing button '+${JSON.stringify(text)});el.dataset.probeButton='target';})()`);await mouse('[data-probe-button=target]');await run('document.querySelectorAll("[data-probe-button]").forEach(el=>delete el.dataset.probeButton)');};
  const select=async(selector,text)=>{await mouse(selector);await wait('!!document.querySelector(".semi-select-option")');await run(`(()=>{const el=[...document.querySelectorAll('.semi-select-option')].find(el=>el.textContent.trim()===${JSON.stringify(text)});if(!el)throw Error('Missing option '+${JSON.stringify(text)});el.dataset.probeOption='target';})()`);await mouse('[data-probe-option=target]');await wait('!document.querySelector(".semi-select-option")');};
  try {
-  await win.loadFile(path.join(root,'dist/index.html')); if(systemReducedMotion){win.webContents.debugger.attach('1.3');await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});}
+  await win.loadFile(path.join(root,'dist/index.html'));win.webContents.debugger.attach('1.3');await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:systemReducedMotion?'reduce':'no-preference'}]});
 await run(`window.events=[];['mousedown','mouseup','click','focusin','focusout','scroll'].forEach(type=>document.addEventListener(type,e=>{window.events.push({type,target:e.target.id||e.target.className,text:e.target.textContent?.slice(0,40),trusted:e.isTrusted});},true));`);await wait('document.querySelector("#nav-content:not(:disabled)")');
-  if(systemReducedMotion){assert.equal(await run('matchMedia("(prefers-reduced-motion: reduce)").matches'),true);assert.equal(await run('document.documentElement.dataset.reducedMotion'),'false');}
+  assert.equal(await run('document.documentElement.hasAttribute("data-reduced-motion")'),false);
+  assert.equal(await run('matchMedia("(prefers-reduced-motion: reduce)").matches'),systemReducedMotion);
+  if(systemReducedMotion){
+   const motion=await run(`new Promise((resolve,reject)=>{const style=document.createElement('style'),node=document.createElement('span');style.textContent='@keyframes nova-motion-probe{from{opacity:.9}to{opacity:1}}';node.style.animation='nova-motion-probe 1s linear';document.head.append(style);const timer=setTimeout(()=>{node.remove();style.remove();reject(Error('Reduced motion must still emit animationend'));},2000);node.addEventListener('animationend',()=>{clearTimeout(timer);resolve({duration:parseFloat(getComputedStyle(node).animationDuration),name:getComputedStyle(node).animationName});node.remove();style.remove();},{once:true});document.body.append(node);})`);
+   assert.deepEqual(motion,{duration:0.00001,name:'nova-motion-probe'});
+  }
   await mouse('#nav-content');await button('制作封面');await wait('document.querySelector(".cover-create-dialog[open]")');
   await select('#cover-photo','合成本人照');assert.match(await run('document.querySelector("#cover-photo").textContent'),/合成本人照/);
   await select('#cover-ratio','1:1');assert.match(await run('document.querySelector(".cover-size-hint").textContent'),/1:1/);
   await select('.cover-create-dialog .cover-composition-references .semi-page-switch .semi-select','每页条数：50');assert.match(await run('document.querySelector(".cover-create-dialog .cover-composition-references .semi-page-switch").textContent'),/50/);
   await button('暂时收起');await button('设置');await wait('document.querySelector(".creator-settings-dialog[open]")');
+  assert.equal(await run('document.querySelector(".preferences-panel").textContent.includes("减少界面动画")'),false);
+  assert.equal(await run('document.querySelectorAll(".preferences-panel .semi-switch").length'),2);
+  if(systemReducedMotion)assert.equal(await run('parseFloat(getComputedStyle(document.querySelector(".preferences-panel .semi-switch")).transitionDuration)'),0.00001);
   await select('#assistant','WorkBuddy');await wait('window.calls.some(c=>c.method==="setAssistant"&&c.input.host==="workbuddy")');
   await fs.writeFile(path.join(root,'settings-selected.png'),(await win.webContents.capturePage()).toPNG());
   await button('关闭设置');await button('发布计划');await button('＋ 新增发布计划');await wait('document.querySelector(".management-dialog[open]")');
@@ -75,7 +85,7 @@ await run(`window.events=[];['mousedown','mouseup','click','focusin','focusout',
   await escape();assert.equal(await run('!!document.querySelector(".management-dialog [role=alert]")'),true);await button('放弃填写并关闭');
   assert.deepEqual(await run('window.unexpected'),[]);
   console.log('PASS full production App/CSS, native mouse: cover photo/ratio/page-size and global assistant, date/time selections, popup Escape and dirty-dialog Escape');
-  await fs.writeFile(path.join(root,'result.json'),JSON.stringify({passed:true,reducedMotion:systemReducedMotion?'system-media':'application-preference',scope:'Production App and complete CSS; synthetic IPC; native mouse events; no installed app or user library access'},null,2));
+  await fs.writeFile(path.join(root,'result.json'),JSON.stringify({passed:true,reducedMotion:systemReducedMotion?'system-media':'default',scope:'Production App and complete CSS; synthetic IPC; native mouse events; no installed app or user library access'},null,2));
   app.exit(0);
  }catch(error){console.error(error);console.error(await run('JSON.stringify({events:window.events.slice(-35),photo:document.querySelector("#cover-photo")?.textContent,unexpected:window.unexpected,body:document.body.innerText.slice(-1500),dialogs:[...document.querySelectorAll("dialog")].map(d=>({class:d.className,open:d.open,modal:d.matches(":modal")})),portals:[...document.querySelectorAll(".semi-dialog-popup-host")].map(el=>el.outerHTML.slice(0,1000))})'));await fs.writeFile(path.join(root,'failure.png'),(await win.webContents.capturePage()).toPNG());app.exit(1);}
 }

@@ -83,8 +83,13 @@ export class Preferences {
     async initialize() {
         const stored = await readLocalRecord(this.file);
         if (stored !== null) {
-            if (!exact(stored, ['version', 'values']) || stored.version !== 1 || !localPreferences(stored.values)) fail('PREFERENCES_UNAVAILABLE', '本机偏好记录损坏，原文件已保留。');
-            this.values = {...stored.values};
+            if (!exact(stored, ['version', 'values']) || stored.version !== 1) fail('PREFERENCES_UNAVAILABLE', '本机偏好记录损坏，原文件已保留。');
+            // Read the retired field only for compatibility; opening settings never rewrites the file.
+            const values = exact(stored.values, ['reducedMotion', 'remindersEnabled', 'reminderTime', 'startAtLogin']) && typeof stored.values.reducedMotion === 'boolean'
+                ? {remindersEnabled: stored.values.remindersEnabled, reminderTime: stored.values.reminderTime, startAtLogin: stored.values.startAtLogin}
+                : stored.values;
+            if (!localPreferences(values)) fail('PREFERENCES_UNAVAILABLE', '本机偏好记录损坏，原文件已保留。');
+            this.values = {...values};
         }
         this.initialized = true;
     }

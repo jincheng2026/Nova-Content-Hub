@@ -8,7 +8,7 @@ export function TemplatePreview({template, disabled, preview}: {template: Templa
   useEffect(() => {setActive(0); setBrowsing(false);}, [template.id, template.version]);
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!browsing || disabled || samples.length < 2 || motion.matches || document.documentElement.dataset.reducedMotion === 'true') return;
+    if (!browsing || disabled || samples.length < 2 || motion.matches) return;
     let changes = 0;
     // A short preview stops by itself; idle cards never keep animation timers alive.
     const timer = window.setInterval(() => {
@@ -17,11 +17,9 @@ export function TemplatePreview({template, disabled, preview}: {template: Templa
     }, 1400);
     const stop = () => {window.clearInterval(timer); setBrowsing(false);};
     const visibility = () => {if (document.hidden) stop();};
-    const preference = new MutationObserver(() => {if (document.documentElement.dataset.reducedMotion === 'true') stop();});
-    preference.observe(document.documentElement, {attributes: true, attributeFilter: ['data-reduced-motion']});
     document.addEventListener('visibilitychange', visibility);
     motion.addEventListener('change', stop);
-    return () => {window.clearInterval(timer); preference.disconnect(); document.removeEventListener('visibilitychange', visibility); motion.removeEventListener('change', stop);};
+    return () => {window.clearInterval(timer); document.removeEventListener('visibilitychange', visibility); motion.removeEventListener('change', stop);};
   }, [browsing, disabled, samples.length]);
   return <div className="creator-template-preview" onPointerEnter={event => {if (event.pointerType !== 'touch') setBrowsing(true);}} onPointerLeave={() => setBrowsing(false)} onFocus={() => setBrowsing(true)} onBlur={event => {if (!event.currentTarget.contains(event.relatedTarget)) setBrowsing(false);}}>
     <Button theme="borderless" className="creator-reference-stack" disabled={disabled} onClick={preview} aria-label={`预览 ${template.name} 的 ${samples.length} 张参考样张`}>

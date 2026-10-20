@@ -3,6 +3,7 @@ import {createPortal} from 'react-dom';
 import Tabs from '@douyinfe/semi-ui-19/lib/es/tabs';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
+import Typography from '@douyinfe/semi-ui-19/lib/es/typography';
 import {invoke} from './client.ts';
 import {hasManagedDrafts, ProfileForm} from './library-panels.tsx';
 import {ASSISTANTS} from '../shared/cover-contracts.ts';
@@ -25,13 +26,13 @@ interface SettingsProps {
   status: Status | null; busy: boolean; blocked: boolean;
   run<T>(action: () => Promise<T>): Promise<T | undefined>; close(): void;
   library?: WorkspaceLibrarySnapshot | null; assets?: CoverResults['listCoverAssets'] | null;
-  refresh?(): Promise<void>; managePhotos?(): void; manageLibrary?(): void; manageChannels?(): void;
+  refresh?(confirmed?: WorkspaceLibrarySnapshot): Promise<void>; managePhotos?(): void; manageLibrary?(): void; manageChannels?(): void;
   preferences?: ReactNode; setup?: ReactNode; recovery?: ReactNode; children?: ReactNode;
 }
 export function AssistantSettings({status, busy, blocked, run, close, library = null, assets = null, refresh, managePhotos, manageLibrary, manageChannels, preferences, setup: setupPanel, recovery, children}: SettingsProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [tab, setTab] = useState('settings'), [helpActions, setHelpActions] = useState<HTMLDivElement | null>(null), [helpGuides, setHelpGuides] = useState<HTMLDivElement | null>(null);
-  const [closeNotice, setCloseNotice] = useState(''), [editingProfile, setEditingProfile] = useState(false);
+  const [closeNotice, setCloseNotice] = useState(''), [editingProfile, setEditingProfile] = useState(false), [showAllPhotos, setShowAllPhotos] = useState(false);
   const requestClose = () => { if (hasManagedDrafts()) setCloseNotice('有尚未保存的设置或编辑，请先保存，或在对应表单中明确放弃修改。'); else close(); };
   const [setup, setSetup] = useState<AssistantSetup | null>(null);
   const [templateSetup, setTemplateSetup] = useState<TemplateAssistantSetup | null>(null);
@@ -50,6 +51,9 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
   const profile = library?.settings.profile;
   const photos = assets?.photos.filter(photo => library?.photos.some(item => item.id === photo.id && !item.deletedAt)) ?? [];
   const avatar = photos.find(photo => photo.assetHash === profile?.avatarAssetHash && photo.availability === 'available')?.url;
+  const profileMarks = [...['自媒体方向', '目标读者'].filter(key => !profile?.marks.some(mark => mark.key === key)).map(key => ({key, value: '待填写'})), ...(profile?.marks ?? [])];
+  const textOverflow = {expandable: true, collapsible: true, expandText: '查看全部', collapseText: '收起'};
+  const finishProfile = () => {setEditingProfile(false); setCloseNotice('');};
   const settingsProps = {library, busy: busy || blocked, run, refresh: refresh ?? (async () => {})};
   function openResource(action?: () => void) {
     if (!action) return;
@@ -60,13 +64,15 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
     <header className="creator-settings-heading"><div><h2 id="settings-title">设置</h2><p>免费体验 · 资料保存在你的本机内容库</p></div><Button id="close-settings" onClick={requestClose}>关闭设置</Button></header>
     {closeNotice && <p className="creator-settings-notice" role="alert">{closeNotice}</p>}
     <SettingsHelpTarget.Provider value={{actions: helpActions, guides: helpGuides}}><Tabs activeKey={tab} onChange={setTab} keepDOM lazyRender={false} tabPaneMotion={false} aria-label="设置与帮助"><Tabs.TabPane itemKey="settings" tab="常用设置"><div className="creator-settings-columns" hidden={tab !== 'settings'}>
-      <section className="creator-settings-profile" aria-label="个人信息"><Card title="个人信息" headerExtraContent={<Button disabled={busy || blocked || !library || !refresh} onClick={() => {if (editingProfile && hasManagedDrafts()) {setCloseNotice('个人信息有未保存修改，请先保存，或选择“放弃修改并重新读取”。'); return;} setCloseNotice(''); setEditingProfile(!editingProfile);}}>{editingProfile ? '返回预览' : '编辑'}</Button>}>
-        <div className="creator-profile-preview"><span className="creator-profile-avatar">{avatar ? <img src={avatar} alt="个人头像"/> : <span aria-hidden="true">{profile?.name?.slice(0, 1) || '我'}</span>}</span><div><h3>{profile?.name || '添加你的昵称'}</h3><p>{profile?.intro || '介绍你自己，让创作更有自己的风格。'}</p></div></div>
-        <dl className="creator-profile-facts"><div><dt>自媒体方向</dt><dd>{profile?.marks.find(mark => mark.key === '自媒体方向')?.value || '待填写'}</dd></div><div><dt>目标读者</dt><dd>{profile?.marks.find(mark => mark.key === '目标读者')?.value || '待填写'}</dd></div></dl>
+      <section className="creator-settings-profile" aria-label="个人信息"><Card title="个人信息" headerExtraContent={<Button disabled={busy || blocked || !library || !refresh} onClick={() => {if (editingProfile && hasManagedDrafts()) {setCloseNotice('个人信息有未保存修改，请先保存，或选择“取消修改”。'); return;} setCloseNotice(''); setEditingProfile(!editingProfile);}}>{editingProfile ? '返回预览' : '编辑'}</Button>}>
+        {editingProfile && library ? <ProfileForm props={settingsProps} embedded onSaved={finishProfile} onCancel={finishProfile}/> : <>
+          <div className="creator-profile-preview"><span className="creator-profile-avatar">{avatar ? <img src={avatar} alt="个人头像"/> : <span aria-hidden="true">{profile?.name?.slice(0, 1) || '我'}</span>}</span><div><Typography.Title heading={3} ellipsis={{...textOverflow, rows: 2}}>{profile?.name || '添加你的昵称'}</Typography.Title><Typography.Paragraph className="creator-profile-intro" ellipsis={{...textOverflow, rows: 3}}>{profile?.intro || '介绍你自己，让创作更有自己的风格。'}</Typography.Paragraph></div></div>
+          <dl className="creator-profile-facts">{profileMarks.map((mark, index) => <div key={index}><dt><Typography.Paragraph ellipsis={{...textOverflow, rows: 2}}>{mark.key}</Typography.Paragraph></dt><dd><Typography.Paragraph ellipsis={{...textOverflow, rows: 3}}>{mark.value || '待填写'}</Typography.Paragraph></dd></div>)}</dl>
+        </>}
         <div className="creator-settings-photo-heading"><strong>我的照片</strong><div className="management-actions"><Button theme="borderless" disabled={busy || blocked || !library || !refresh} onClick={() => void run(async () => {await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); await refresh?.();})}>＋ 添加照片</Button><Button theme="borderless" disabled={busy || blocked || !managePhotos} onClick={() => openResource(managePhotos)}>管理</Button></div></div>
-        <div className="creator-settings-photos">{photos.slice(0, 5).map(photo => <button key={photo.id} disabled={busy || blocked || !managePhotos} onClick={() => openResource(managePhotos)} aria-label={`管理照片：${photo.title}${photo.isOwnPhoto ? '，已声明为本人' : '，未声明为本人'}`}>{photo.url && photo.availability === 'available' ? <img src={photo.url} alt={photo.title}/> : <span>原图不可用</span>}</button>)}{!photos.length && <p>还没有照片，可以先添加一张。</p>}</div><p className="creator-settings-hint">照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。</p>
+        <div className="creator-settings-photos">{(showAllPhotos ? photos : photos.slice(0, 5)).map(photo => <button key={photo.id} disabled={busy || blocked || !managePhotos} onClick={() => openResource(managePhotos)} aria-label={`管理照片：${photo.title}${photo.isOwnPhoto ? '，已声明为本人' : '，未声明为本人'}`}>{photo.url && photo.availability === 'available' ? <img src={photo.url} alt={photo.title}/> : <span>原图不可用</span>}</button>)}{!photos.length && <p>还没有照片，可以先添加一张。</p>}</div>{photos.length > 5 && <Button className="creator-settings-photo-toggle" theme="borderless" aria-expanded={showAllPhotos} onClick={() => setShowAllPhotos(!showAllPhotos)}>{showAllPhotos ? '收起照片' : `查看全部 ${photos.length} 张照片`}</Button>}<p className="creator-settings-hint">照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。</p>
         {!library && <p className="creator-settings-hint">打开内容库后，即可保存个人信息与照片。</p>}
-      </Card>{editingProfile && library && <ProfileForm props={settingsProps}/>}</section>
+      </Card></section>
       <Card className="creator-settings-channels" title="发布渠道"><div className="creator-settings-library"><div><strong>{library ? `${library.settings.channels.filter(channel => !channel.deletedAt).length} 个可用渠道` : '打开内容库后设置渠道'}</strong><p>渠道统一用于内容归档、封面和发布日程。</p></div><Button disabled={busy || blocked || !library || !manageChannels} onClick={() => openResource(manageChannels)}>管理渠道</Button></div><div className="creator-channel-preview">{library?.settings.channels.filter(channel => !channel.deletedAt).map(channel => <span key={channel.id} style={{color: channel.ink, background: channel.bg}}>{channel.name}</span>)}</div>{library && !library.settings.channels.some(channel => !channel.deletedAt) && <p className="creator-settings-hint">还没有可用渠道，可添加你自己的发布渠道。</p>}</Card>
       <Card className="creator-settings-assistant" title="全局助手"><div className="creator-settings-row"><label htmlFor="assistant">交给哪个 AI 助手</label><PopupSelect id="assistant" value={host} disabled={busy || blocked || !status} onChange={value => {const host = value as Assistant; void run(() => invoke('setAssistant', {host}));}}>{ASSISTANTS.map(host => <option key={host} value={host}>{host === 'codex' ? 'Codex（默认）' : 'WorkBuddy'}</option>)}</PopupSelect></div><p className="creator-settings-hint">制作封面和学习模板时，统一交给这里选择的助手。</p>
         <div className="creator-settings-check"><span>检查连接</span><Button id="recheck-assistant" disabled={busy} onClick={() => void run(async () => {try {const [next, template] = await Promise.all([invoke('readAssistantSetup'), invoke('readTemplateAssistantSetup')]); setSetup(next); setTemplateSetup(template); setCheckFailed(false);} catch (error) {setCheckFailed(true); throw error;}})}>重新检查</Button></div>

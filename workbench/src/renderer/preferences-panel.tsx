@@ -32,13 +32,11 @@ export function PreferencesPanel({busy, run}: {busy: boolean; run<T>(action: () 
         {draft && view && <form className="creator-preferences-form" onSubmit={event => {event.preventDefault(); void run(async () => {
             const saved = await invoke('savePreferences', draft);
             setView(saved); setDraft(saved.values);
-            document.documentElement.dataset.reducedMotion = String(saved.values.reducedMotion);
             setNotice(['failed', 'mismatch', 'requires-approval'].includes(saved.login.state) ? '偏好已保存；开机启动尚未生效，请查看下方系统反馈。' : '本机偏好已保存。');
             await refresh();
         });}}>
             <label className="creator-preference-row"><span>每天提醒<small>汇总今天待发布的内容与合集</small></span><Switch disabled={busy} checked={draft.remindersEnabled} onChange={remindersEnabled => setDraft({...draft, remindersEnabled})}/></label>
             <label className="creator-preference-row"><span>提醒时间<small>使用本机当前时区</small></span><ClockTimeInput required disabled={busy || !draft.remindersEnabled} value={draft.reminderTime} onChange={reminderTime => setDraft({...draft, reminderTime})}/></label>
-            <label className="creator-preference-row"><span>减少界面动画</span><Switch disabled={busy} checked={draft.reducedMotion} onChange={reducedMotion => setDraft({...draft, reducedMotion})}/></label>
             <label className="creator-preference-row"><span>开机启动<small>登录电脑后自动打开工作台</small></span><Switch disabled={busy || !view.login.supported} checked={draft.startAtLogin} onChange={startAtLogin => setDraft({...draft, startAtLogin})}/></label>
             <p className="creator-settings-hint" role="status">系统反馈：{view.login.state === 'on' ? '开机启动已开启' : view.login.state === 'off' ? '开机启动已关闭' : view.login.state === 'unsupported' ? '当前平台不支持开机启动，未修改系统设置' : view.login.state === 'unavailable' ? '请先安装打包的桌面应用；开发运行模式不配置开机启动' : view.login.state === 'requires-approval' ? '等待你在系统登录项设置中批准' : view.login.state === 'mismatch' ? `系统实际为${view.login.enabled ? '开启' : '关闭'}，与保存的偏好不同；系统可能未批准此更改` : '读取或设置未成功，请到系统登录项设置中检查'}。</p>
             <div className="management-actions creator-preference-actions"><Button theme="solid" htmlType="submit" disabled={busy || !dirty}>保存偏好</Button><Button disabled={busy || !dirty} onClick={() => {setDraft({...view.values}); setNotice('已放弃尚未保存的本机偏好修改。');}}>放弃修改</Button><span>{dirty ? '有未保存修改' : '只保存在这台电脑'}</span></div>

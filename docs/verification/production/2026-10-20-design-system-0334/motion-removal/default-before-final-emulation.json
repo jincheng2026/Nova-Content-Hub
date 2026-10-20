@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "reducedMotion": "default",
+  "scope": "Production App and complete CSS; synthetic IPC; native mouse events; no installed app or user library access"
+}

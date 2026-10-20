@@ -79,23 +79,22 @@ async function probeMain(probeRoot){
   await win.setSize(1280,1000);await paint();
   await run('document.querySelector(".creator-template-thumbnails button:nth-child(2)").click()');
   assert.equal(await run('document.querySelector(".creator-template-original").alt'),'参考模板 0参考样张 2','thumbnail selects the front reference');
-  console.log('Motion before isolated cycling check:',await run('JSON.stringify({system:matchMedia("(prefers-reduced-motion: reduce)").matches,app:document.documentElement.dataset.reducedMotion})'));
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.originalMatchMedia=window.matchMedia; window.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}}); window.originalSetInterval=window.setInterval; window.intervalStarts=0; window.setInterval=(fn,ms)=>{window.intervalStarts++; return window.originalSetInterval(fn,ms===1400?40:ms);}; window.frontChanges=0; window.frontObserver=new MutationObserver(()=>window.frontChanges++); window.frontObserver.observe(document.querySelector(".creator-stack-sheets"),{childList:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
+  assert.equal(await run('document.documentElement.hasAttribute("data-reduced-motion")'),false);
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.originalMatchMedia=window.matchMedia; window.mockMotion={matches:false,addEventListener(type,listener){window.motionChanged=listener;},removeEventListener(){window.motionChanged=null;}}; window.matchMedia=()=>window.mockMotion; window.originalSetInterval=window.setInterval; window.intervalStarts=0; window.setInterval=(fn,ms)=>{window.intervalStarts++; return window.originalSetInterval(fn,ms===1400?40:ms);}; window.frontChanges=0; window.frontObserver=new MutationObserver(()=>window.frontChanges++); window.frontObserver.observe(document.querySelector(".creator-stack-sheets"),{childList:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
   await run('new Promise(resolve=>setTimeout(resolve,350))');
   assert.equal(await run('window.intervalStarts'),1,'hover/focus starts one bounded timer');
   assert.equal(await run('window.frontChanges'),4,'automatic preview ends after four changes');
   await run('new Promise(resolve=>setTimeout(resolve,150))');
   assert.equal(await run('window.frontChanges'),4,'automatic preview does not loop while idle');
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"})); document.documentElement.dataset.reducedMotion="true"');
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
+  await wait('!!window.motionChanged');
+  await run('window.mockMotion.matches=true; window.motionChanged()');
   await run('new Promise(resolve=>setTimeout(resolve,30))');
   const stopped=await run('window.frontChanges');
   await run('new Promise(resolve=>setTimeout(resolve,180))');
-  assert.equal(await run('window.frontChanges'),stopped,'enabling the app preference stops active cycling');
+  assert.equal(await run('window.frontChanges'),stopped,'enabling system reduced-motion stops active cycling');
   const starts=await run('window.intervalStarts');
   await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
-  await run('new Promise(resolve=>setTimeout(resolve,100))');
-  assert.equal(await run('window.intervalStarts'),starts,'app reduced-motion disables automatic cycling');
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.documentElement.dataset.reducedMotion="false"; window.matchMedia=()=>({matches:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
   await run('new Promise(resolve=>setTimeout(resolve,100))');
   assert.equal(await run('window.intervalStarts'),starts,'system reduced-motion disables automatic cycling');
   await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.setInterval=window.originalSetInterval; window.matchMedia=window.originalMatchMedia; window.frontObserver.disconnect()');
@@ -113,7 +112,7 @@ async function probeMain(probeRoot){
   assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'),true,'personal template learning controls retained');
   await run('(()=>{const input=document.querySelector(".creator-templates .list-toolbar-search input");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,"没有匹配的模板");input.dispatchEvent(new Event("input",{bubbles:true}));})()');await wait('document.querySelectorAll(".creator-style-card").length===0');await click('收起');await wait('document.activeElement===document.querySelector(".creator-templates .list-toolbar-search input")');assert.equal(await run('document.activeElement.getAttribute("aria-label")'),'搜索模板','removed trigger returns focus to the real shared search input');
   assert.deepEqual(await run('window.writes'),[],'gallery and configuration entry make no business writes');
-  console.log('PASS actual React/Semi/Electron: responsive 4/3/2 columns, bounded fanned multi-image previews and thumbnails, automatic cycling stops after four changes, live app/system reduced-motion, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
+  console.log('PASS actual React/Semi/Electron: responsive 4/3/2 columns, bounded fanned multi-image previews and thumbnails, automatic cycling stops after four changes, live system reduced-motion, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
   console.log('Screenshots:',path.join(probeRoot,'templates-1280.png'),path.join(probeRoot,'templates-1600.png'));app.exit(0);
  }catch(error){console.error(error);app.exit(1);}
 }

@@ -1,0 +1,22 @@
+Mouse #nav-content
+Mouse [data-probe-button=target]
+Mouse #cover-photo
+Mouse [data-probe-option=target]
+Mouse #cover-ratio
+Mouse [data-probe-option=target]
+Mouse .cover-create-dialog .cover-composition-references .semi-page-switch .semi-select
+Mouse [data-probe-option=target]
+Mouse [data-probe-button=target]
+Mouse [data-probe-button=target]
+Mouse #assistant
+Mouse [data-probe-option=target]
+Mouse [data-probe-button=target]
+Mouse [data-probe-button=target]
+Mouse [data-probe-button=target]
+Mouse .management-dialog .semi-datepicker-input
+Mouse [data-probe-day=target]
+Mouse .management-dialog .semi-timepicker input
+Mouse [data-probe-minute=target]
+Mouse [data-probe-button=target]
+PASS full production App/CSS, native mouse: cover photo/ratio/page-size and global assistant, date/time selections, popup Escape and dirty-dialog Escape
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dialog-controls-R3OZI5

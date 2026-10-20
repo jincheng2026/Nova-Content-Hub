@@ -1,0 +1,6 @@
+Mouse .management-dialog .semi-datepicker-input
+Mouse [data-probe-day=target]
+Mouse .management-dialog .semi-timepicker input
+Mouse [data-probe-minute=target]
+PASS focused native date to time and popup Escape
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-date-time-lyYWo6

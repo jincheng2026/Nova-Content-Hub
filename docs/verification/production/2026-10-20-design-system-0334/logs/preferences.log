@@ -1,0 +1,11 @@
+✔ retired motion field accepts either saved boolean without changing reminder/login settings or the file (36.59925ms)
+✔ current settings round-trip and new saves reject the retired field (2.018666ms)
+✔ legacy compatibility still rejects invalid and unexpected fields while preserving the original file (4.870459ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 162.985708

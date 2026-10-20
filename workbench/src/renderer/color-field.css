@@ -3,7 +3,7 @@
 .color-field-value { display:flex; align-items:center; gap:9px; }
 .color-field-value>span { width:26px; height:26px; flex:none; border:1px solid var(--semi-color-border); border-radius:5px; }
 .color-field-presets { display:flex; flex-wrap:wrap; gap:7px; }
-.color-field-presets .color-field-swatch { width:25px; min-width:25px; height:25px; padding:0; border:1px solid #cdd4dd; border-radius:5px; color:#fff; text-shadow:0 1px 3px #000; }
+.color-field-presets .color-field-swatch { width:25px; min-width:25px; height:25px; padding:0; border:1px solid var(--surface-line); border-radius:5px; color:#fff; text-shadow:0 1px 3px #000; }
 .color-field-presets .color-field-swatch[aria-pressed=true] { outline:2px solid var(--semi-color-primary); outline-offset:2px; }
 .color-field details { font-size:13px; }
 .color-field summary { cursor:pointer; color:var(--semi-color-primary); }
