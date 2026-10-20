@@ -11,6 +11,6 @@
   "finderModifiedAt": "2026-10-20 17:58",
   "archiveObserved": true,
   "installedObserved": true,
-  "nativeAboutObserved": false,
-  "nativeStartup": "WAITING_MACOS_DOCUMENTS_FOLDER_PERMISSION"
+  "nativeAboutObserved": true,
+  "nativeStartup": "PASS_AFTER_USER_ALLOWED_DOCUMENTS"
 }

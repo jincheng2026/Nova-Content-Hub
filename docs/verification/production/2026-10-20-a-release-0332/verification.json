@@ -60,7 +60,7 @@
     "evidence": "integrated-independent-ui/",
     "scope": "Real React/Semi/Electron, synthetic IPC; root independent rerun after completed-dialog integration"
   },
-  "finalPerformanceAndDeliveryStatus": "BUILT_EXPORTED_INSTALLED_PLUGIN_PAIRED_AWAITING_TCC_DOCUMENTS_PERMISSION",
+  "finalPerformanceAndDeliveryStatus": "NATIVE_LAUNCH_QUIT_REOPEN_AND_INTEGRITY_PASS_WITH_DOCUMENTED_UI_SELECTION_GAP",
   "selectionBugfixStatus": {
     "sourceCommit": "ee8d08f",
     "status": "TARGETED_PASS",
@@ -122,10 +122,31 @@
   "mainMerge": "LOCAL_FAST_FORWARD_COMPLETE",
   "remotePushed": false,
   "nativeFirstLaunch": {
-    "status": "WAITING_MACOS_PERMISSION",
+    "status": "PASS_AFTER_USER_ALLOWED_DOCUMENTS",
     "process": 53886,
     "evidence": "tccd AUTHREQ_PROMPTING at 2026-10-20 18:01:42 for kTCCServiceSystemPolicyDocumentsFolder; new ad hoc signature no longer matches old code requirement",
     "userAskedToAllow": true,
-    "permissionBypassed": false
+    "permissionBypassed": false,
+    "userConfirmedAllow": true,
+    "transactionPhase": "complete",
+    "originalContents": 4,
+    "originalCollections": 1,
+    "existingCandidateImagesObserved": 2,
+    "nativeAboutVersion": "0.3.32",
+    "copyrightObserved": true,
+    "independentReopen": "PASS",
+    "reopenContents": 4,
+    "reopenCollections": 1,
+    "nativeAboutObserved": true,
+    "newProviderGenerationRun": false,
+    "templatePageCountObserved": 21
+  },
+  "installedSelectionObservation": {
+    "favoriteDefaultUnchecked": true,
+    "favoriteCheckedCountUpdated": true,
+    "ratioMenuOpened": true,
+    "ratioValueChangeConfirmed": false,
+    "limit": "CUA accessibility selection did not establish a changed value; component tests passed separately. Do not claim installed ratio bug fixed.",
+    "favoriteSourceCountObserved": 1
   }
 }
