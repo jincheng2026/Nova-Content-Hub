@@ -1,0 +1,21 @@
+Adding marketplace...
+✔ Marketplace 'nova-content-hub-auth-disabled-darwin-arm64' added successfully
+{
+  "name": "nova-content-hub-auth-disabled-darwin-arm64",
+  "type": "directory"
+}
+
+Updating plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...
+✔ Successfully updated plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.
+
+node:path:1339
+      validateString(arg, 'path');
+      ^
+
+TypeError [ERR_INVALID_ARG_TYPE]: The "path" argument must be of type string. Received undefined
+    at Object.join (node:path:1339:7)
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:6:148 {
+  code: 'ERR_INVALID_ARG_TYPE'
+}
+
+Node.js v24.20.0

@@ -1,0 +1,12 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-20 12:30:54.219 Df tccd[44551:b4338e5] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder
+	cdhash H"d4e285475134206af1d64dd9eb6e6a0548cf26e4"
+	cdhash H"b651d4a204f8d7974b86d4ea6fe07b5143b21317"
+2026-10-20 12:30:54.222 Df tccd[44551:b4338e5] [com.apple.TCC:access] REQUEST: tccd_uid=501, sender_pid=77724, sender_uid=0, sender_auid=-1, function=TCCAccessRequest, msgID=77724.151
+2026-10-20 12:30:54.222 Df tccd[44551:b4338e5] [com.apple.TCC:access] AUTHREQ_CTX: msgID=77724.151, function=TCCAccessRequest, service=kTCCServiceSystemPolicyDocumentsFolder, preflight=no, query=1, client_dict=(null), daemon_dict=<private>
+2026-10-20 12:30:54.222 Df tccd[44551:b4338e5] [com.apple.TCC:access] AUTHREQ_ATTRIBUTION: msgID=77724.151, attribution={accessing={TCCDProcess: identifier=com.novaisland.nova-content-hub, pid=68176, auid=501, euid=501, binary_path=/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台}, requesting={TCCDProcess: identifier=com.apple.sandboxd, pid=77724, auid=0, euid=0, binary_path=/usr/libexec/sandboxd}, },
+2026-10-20 12:30:54.223 Df tccd[44551:b4338e5] [com.apple.TCC:access] AUTHREQ_SUBJECT: msgID=77724.151, subject=com.novaisland.nova-content-hub,
+2026-10-20 12:30:54.224 Df tccd[44551:b4338e5] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder
+	cdhash H"d4e285475134206af1d64dd9eb6e6a0548cf26e4"
+	cdhash H"b651d4a204f8d7974b86d4ea6fe07b5143b21317"
+2026-10-20 12:30:54.226 Df tccd[44551:b4338e5] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=77724.151, service=kTCCServiceSystemPolicyDocumentsFolder, subject=Sub:{com.novaisland.nova-content-hub}Resp:{TCCDProcess: identifier=com.novaisland.nova-content-hub, pid=68176, auid=501, euid=501, binary_path=/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台},

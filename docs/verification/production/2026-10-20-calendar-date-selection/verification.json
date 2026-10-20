@@ -1,0 +1,27 @@
+{
+  "sourceCommit": "ce88f71280a79b1253ea499aaf0dc62f573903e1",
+  "version": "0.3.27",
+  "sourceProductChange": "DatePicker autoSwitchDate=false; Calendar markWeekend=false",
+  "sourceCalendarRegression": {
+    "executorExit": 0,
+    "rootIndependentExit": 0,
+    "nativePointerInSyntheticElectron": true,
+    "actualInstalledAppInteractionCompleted": false
+  },
+  "typecheckNativeExit": 0,
+  "typecheckRendererExit": 0,
+  "relatedHandoffTests": {
+    "passed": 150,
+    "failed": 0
+  },
+  "isolatedInstallerBuildExit": 0,
+  "dmgAndTreeValidationExit": 0,
+  "transactionalCopyExit": 0,
+  "userLibraryEntries": 1719,
+  "userLibraryPreserved": true,
+  "pairedInstalledAssistantSkills": 4,
+  "nativeStartupStatus": "waiting macOS DocumentsFolder access prompt; old application recovery retained",
+  "fullRepositoryVerifyRerun": false,
+  "realAssistantGenerationRerun": false,
+  "overallProductionGoalCompleted": false
+}

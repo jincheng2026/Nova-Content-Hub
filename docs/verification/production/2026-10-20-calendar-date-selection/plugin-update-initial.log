@@ -1,0 +1,37 @@
+{
+  "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+  "installedRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "alreadyAdded": true
+}
+
+{
+  "pluginId": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "name": "nova-content-hub",
+  "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+  "version": "0.3.27",
+  "installedPath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.27",
+  "authPolicy": "ON_INSTALL"
+}
+
+Adding marketplace...
+✔ Marketplace 'nova-content-hub-auth-disabled-darwin-arm64' added successfully
+{
+  "name": "nova-content-hub-auth-disabled-darwin-arm64",
+  "type": "directory"
+}
+
+Updating plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64...
+✔ Successfully updated plugin: nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64. Run /reload-plugins to apply now, or start a new session.
+
+file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/assistant-skill.mjs:10
+const notReady = () => Object.assign(new Error('所选助手的配套执行 Skill 尚未安装、启用或校验未通过，请在助手中检查插件后重试。'), { code: 'NOT_READY' });
+                                     ^
+
+Error: 所选助手的配套执行 Skill 尚未安装、启用或校验未通过，请在助手中检查插件后重试。
+    at notReady (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/assistant-skill.mjs:10:38)
+    at installedAssistantSkill (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/assistant-skill.mjs:102:15)
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:16:122 {
+  code: 'NOT_READY'
+}
+
+Node.js v24.20.0

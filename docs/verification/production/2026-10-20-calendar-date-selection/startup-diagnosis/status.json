@@ -1,0 +1,14 @@
+{
+  "status": "pending-os-documents-permission",
+  "appVersion": "0.3.27",
+  "appProcessRunning": true,
+  "cuaAppInspection": "two getApp and screenshot calls timed out; global inventory and System Settings remain responsive",
+  "installationTransaction": "published, previous.app retained",
+  "systemEvidence": "tccd existing code requirement did not match; DocumentsFolder AUTHREQ_PROMPTING for current app process",
+  "sampleEvidence": "two samples show main JS thread blocked in uv_fs_open/open/__open; renderer idle normally",
+  "exactBlockingFilePathObserved": false,
+  "permissionOrBindingChangedByAgent": false,
+  "forcedAppTermination": false,
+  "nativeCalendarChecksCompleted": false,
+  "userActionRequested": "Allow the macOS DocumentsFolder prompt for the updated workbench"
+}

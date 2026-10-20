@@ -1,0 +1,27 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2062 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/dist/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/dist/assets/index-CXAaz08y.css                        382.52 kB │ gzip:  50.80 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/dist/assets/index-svR0VTxJ.js                       1,042.48 kB │ gzip: 285.77 kB
+
+✓ built in 421ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+renderer: %cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+PASS actual React/Semi/Electron: date picker month/year browsing, year panel, outside cancellation, cross-month/week date selection, matching weekend computed backgrounds; month/week Monday, exact minutes, machine-zone instant, unknown-time all-day row, collection plan focus, selected-day new plan, event refresh, busy guard, 1440/1100/900 month slots and horizontal bounds, default/all/cancelled filters shared by calendar/day rows plus workspace fallback, no native writes
+Screenshots: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/calendar-1280.png /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v/calendar-week-1280.png
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-coyL8v
