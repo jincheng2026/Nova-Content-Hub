@@ -60,8 +60,13 @@
     "evidence": "integrated-independent-ui/",
     "scope": "Real React/Semi/Electron, synthetic IPC; root independent rerun after completed-dialog integration"
   },
-  "finalPerformanceAndDeliveryStatus": "PENDING",
-  "selectionBugfixStatus": "IN_PROGRESS",
+  "finalPerformanceAndDeliveryStatus": "SOURCE_READY_FOR_FRESH_NATIVE_BUILD",
+  "selectionBugfixStatus": {
+    "sourceCommit": "ee8d08f",
+    "status": "TARGETED_PASS",
+    "scope": "Short-menu interaction improvement; original state-reset cause not stably reproduced; actual component selection/reselection/refresh/request payload checked",
+    "evidence": "../2026-10-20-selection-0332/"
+  },
   "performance": {
     "sourceCommit": "689446e4113ac898ea167d03590679898e1a1744",
     "targetedChecks": [
@@ -85,5 +90,12 @@
     },
     "evidence": "../2026-10-20-performance-0332/",
     "limits": "One final synthetic Electron sample, not universal faster-than-reference claim; full suite not rerun per user instruction"
+  },
+  "decodeConclusionCache": {
+    "sourceCommit": "d1ab02661969ed6656e99ce2d71790d3cad22684",
+    "targetedPass": 14,
+    "nativeTypecheck": "PASS",
+    "performanceMatrixRepeated": false,
+    "evidence": "../2026-10-20-performance-0332/"
   }
 }
