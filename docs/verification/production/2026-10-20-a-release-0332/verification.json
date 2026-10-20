@@ -6,7 +6,8 @@
     "tests": 1077,
     "pass": 1075,
     "fail": 0,
-    "skipped": 2
+    "skipped": 2,
+    "scope": "A-group product before additional parallel-dialog and performance changes; historical pass, not final delivery proof"
   },
   "conditionalIntegrations": [
     {
@@ -43,5 +44,46 @@
     "scope": "Real Electron sandbox/preload/IPC, utilityProcess/sharp, isolated temporary libraries, invalid binding/release, CSP, import lost acknowledgement/status and second-process reopen",
     "diagnosticHistory": "Three preserved probe failures: shared raw-worker competition, short recovery budget, stale UI layout assertion. Probe-only corrections preserve strict rejection and fail-closed content controls; no product changes.",
     "evidence": "../2026-10-20-a-group-0332/native-probe-fix/README.md"
+  },
+  "integratedPrePerformanceVerify": {
+    "command": "npm run verify",
+    "sourceCommit": "ea355a41764b495e3254e050c3f3ae889d742540",
+    "status": "INTERRUPTED_FOR_NEW_PERFORMANCE_SCOPE",
+    "exitCode": 143,
+    "reason": "Interrupted when performance scope was added. User later explicitly stopped repeated broad testing; final validation is targeted checks and package/install verification.",
+    "log": "logs/integrated-pre-performance-verify-interrupted.log"
+  },
+  "integratedIndependentRendererProbes": {
+    "sourceCommit": "ea355a41764b495e3254e050c3f3ae889d742540",
+    "count": 3,
+    "status": "PASS",
+    "evidence": "integrated-independent-ui/",
+    "scope": "Real React/Semi/Electron, synthetic IPC; root independent rerun after completed-dialog integration"
+  },
+  "finalPerformanceAndDeliveryStatus": "PENDING",
+  "selectionBugfixStatus": "IN_PROGRESS",
+  "performance": {
+    "sourceCommit": "689446e4113ac898ea167d03590679898e1a1744",
+    "targetedChecks": [
+      16,
+      25,
+      46,
+      2
+    ],
+    "targetedStatus": "PASS",
+    "typecheck": "PASS",
+    "quickStatus": "All seven functional stages completed; exit1 due two diagnostic gallery budgets",
+    "quickFirstImagesMs": {
+      "content": 347,
+      "templates": 651,
+      "gallery": 1435
+    },
+    "quickWarmImagesMs": {
+      "content": 61,
+      "templates": 559,
+      "gallery": 1776
+    },
+    "evidence": "../2026-10-20-performance-0332/",
+    "limits": "One final synthetic Electron sample, not universal faster-than-reference claim; full suite not rerun per user instruction"
   }
 }

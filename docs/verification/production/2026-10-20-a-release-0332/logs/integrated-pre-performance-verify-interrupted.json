@@ -1,0 +1,14 @@
+{
+  "status": "INTERRUPTED_FOR_NEW_PERFORMANCE_SCOPE",
+  "ownedRoot": 76434,
+  "stoppedProcessIds": [
+    76434,
+    76455,
+    82215,
+    82241,
+    82270,
+    82309
+  ],
+  "log": "/tmp/nch-0332-integrated-verify.log",
+  "reason": "Avoid regression I/O competition during controlled performance baseline; final complete suite will run after performance fix."
+}

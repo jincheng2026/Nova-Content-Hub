@@ -1,0 +1,12 @@
+{
+  "sourceCommit": "da3c709a2685d2a84621d301df67e513c402b7e4",
+  "version": "0.3.32",
+  "buildExitCode": 0,
+  "dmgSha256": "539d7eadda75763664dafc22609cabefb35ed0eecd32fb7408a80c1de3770709",
+  "dmgBytes": 478809805,
+  "status": "SUPERSEDED_CANDIDATE_NOT_DELIVERED",
+  "reason": "User approved completed prompt/handoff and help layout changes for same unreleased version before final freeze/tag/distribution. New source identity and fresh native payload build required.",
+  "tagCreated": false,
+  "installed": false,
+  "exportedForDistribution": false
+}

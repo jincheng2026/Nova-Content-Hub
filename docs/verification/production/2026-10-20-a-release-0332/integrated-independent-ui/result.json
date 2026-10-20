@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "checks": [
+    "A1-A3 real Semi multi-select, zero/all, disabled/missing history channels, daily/calendar scope, summary reset, external hidden/cancelled focus, 24-row paging, ordinary selection viewport and details, dirty publication protected while channels change",
+    "A7 actual template switch guard, collapsed notes retained, background refresh, failed submit retains, mid-submit edits retained, success baseline/discard and switch",
+    "A4 actual ContentList date/local-minute/instant across midnight, library and missing-library fallback"
+  ],
+  "ipc": "synthetic only"
+}
