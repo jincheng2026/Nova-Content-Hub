@@ -196,3 +196,8 @@
 @media (max-width: 680px) { .cover-annotation-layout { grid-template-columns: 1fr; flex: none; } .cover-annotation-stage { height: min(48vh, 380px); } .cover-annotation-notes { max-height: 240px; } .cover-result-actions { gap: 3px; } .cover-result-actions .semi-button { padding: 0 5px; font-size: 12px; } }
 
 .cover-candidate-number small { margin-left: 5px; font-size: 10px; font-weight: 400; color: #74829a; }
+
+.cover-composition-references { padding: 16px 0; border-bottom: 1px solid #e8edf5; }
+.cover-composition-references > p { font-size: 13px; color: #718097; }
+.cover-composition-references .cover-sample-grid.image-list { display: block; }
+.cover-composition-references .semi-list-items { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
