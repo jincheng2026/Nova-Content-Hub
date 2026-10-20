@@ -6,8 +6,14 @@ import type { DesktopController } from './controller.mts';
 import type { CoverStart, CoverReference, CoverView, Photo, CoverPending, CoverInput, Assistant, AssistantSetup, CoverContext, CoverActionPending } from '../shared/cover-contracts.ts';
 import type { LibraryBinding, Worker } from '../shared/contracts.ts';
 import { requireWrite, validateInput, fail } from '../shared/validation.ts';
+type ImageResource = {data: Buffer<ArrayBuffer>; mime: string} | null;
+type ImageRequest = {url: string; resolve(value: ImageResource): void; reject(reason: unknown): void};
 export class Covers {
-  reader: Worker; reading: Promise<void> = Promise.resolve();
+  reader: Worker;
+  private images = new Map<string, Promise<ImageResource>>();
+  private imageQueue: ImageRequest[] = [];
+  private readingImages = false;
+  get reading(): Promise<void> { return Promise.allSettled([...this.images.values()]).then(() => {}); }
   owner: DesktopController; epoch = randomUUID(); grants = new Map<string, string>();
   launch?: (binding: LibraryBinding, reference: CoverReference & { requestHash: string; host: Assistant }) => Promise<void>;
   setup: (host: Assistant) => Promise<AssistantSetup>;
@@ -27,15 +33,44 @@ export class Covers {
   revoke() { this.epoch = randomUUID(); this.grants.clear(); }
   grant(hash: string) { const url = `nova-content://assets/${this.epoch}/${hash}`; this.grants.set(url, hash); return url; }
   allows(url: string) { return this.grants.has(url); }
-  resource(url: string) { const next = this.reading.then(() => this.readResource(url)); this.reading = next.then(() => {}, () => {}); return next; }
-  async readResource(url: string) {
-    const assetHash = this.grants.get(url); if (!assetHash) return null;
-    const epoch = this.epoch, binding = this.owner.current();
-    const result = await this.reader.call('raster', { binding, assetHash });
-    if (epoch !== this.epoch || this.grants.get(url) !== assetHash) return null;
-    const bytes = Buffer.from(result.data);
-    if (createHash('sha256').update(bytes).digest('hex') !== assetHash || !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(result.mime)) fail('CORRUPT', '图片内容校验失败。');
-    return { data: bytes, mime: result.mime };
+  resource(url: string): Promise<ImageResource> {
+    if (!this.allows(url)) return Promise.resolve(null);
+    const pending = this.images.get(url); if (pending) return pending;
+    const next = new Promise<ImageResource>((resolve, reject) => this.imageQueue.push({url, resolve, reject}));
+    this.images.set(url, next);
+    const clear = () => {if (this.images.get(url) === next) this.images.delete(url);};
+    void next.then(clear, clear);
+    if (!this.readingImages) {this.readingImages = true; setImmediate(() => void this.readImages());}
+    return next;
+  }
+  private async readImages() {
+    try {
+      while (this.imageQueue.length) {
+        const batch = this.imageQueue.splice(0, 2).filter(request => {
+          if (this.allows(request.url)) return true;
+          request.resolve(null); return false;
+        });
+        if (!batch.length) continue;
+        const epoch = this.epoch, hashes = batch.map(request => this.grants.get(request.url)!);
+        try {
+          const binding = this.owner.current();
+          const result = await this.reader.call('rasterBatch', {binding, assetHashes: hashes});
+          if (result.length !== batch.length) fail('CORRUPT', '图片批次长度不一致。');
+          for (const [i, request] of batch.entries()) {
+            try {
+              if (epoch !== this.epoch || this.grants.get(request.url) !== hashes[i]) {request.resolve(null); continue;}
+              let item = result[i]!;
+              if (!item.ok && item.error.code === 'BUSY') item = {ok: true, value: await this.reader.call('raster', {binding, assetHash: hashes[i]!})};
+              if (epoch !== this.epoch || this.grants.get(request.url) !== hashes[i]) {request.resolve(null); continue;}
+              if (!item.ok) throw Object.assign(new Error(item.error.message), {code: item.error.code});
+              const bytes = Buffer.from(item.value.data);
+              if (createHash('sha256').update(bytes).digest('hex') !== hashes[i] || !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(item.value.mime)) fail('CORRUPT', '图片内容校验失败。');
+              request.resolve({data: bytes, mime: item.value.mime});
+            } catch (error) {if (epoch !== this.epoch) request.resolve(null); else request.reject(error);}
+          }
+        } catch (error) {batch.forEach(request => epoch !== this.epoch ? request.resolve(null) : request.reject(error));}
+      }
+    } finally {this.readingImages = false;}
   }
   photo(photo: Photo): Photo { return { ...photo, url: photo.availability === 'available' && photo.assetHash ? this.grant(photo.assetHash) : null }; }
   decorate(view: CoverView) { return { ...view, candidates: view.candidates.map(c => ({ ...c, url: this.grant(c.assetHash) })) }; }

@@ -1,0 +1,122 @@
+READY_FIXTURE /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/fixture.json
+Renderer script new Promise((resolve,reject)=>{const end=Date.now()+90000;function poll(){if(document.querySelector('main[data-app="ready"][data-loaded="true"][data-busy="false"]')&&(document.querySelector(".creator-overview") && document.querySelector(".creator-featured img")))return resolve(true);if(Date.now()>end)return reject(Error('Timeout '+"document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]')&&(document.querySelector(\".creator-overview\") && document.querySelector(\".creator-featured img\"))"+' / '+document.body.innerText.slice(-800)));setTimeout(poll,10)}poll()})
+[Error: Timeout document.querySelector('main[data-app="ready"][data-loaded="true"][data-busy="false"]')&&(document.querySelector(".creator-overview") && document.querySelector(".creator-featured img")) / 自媒体工作台
+内容创作工作空间
+工作空间
+免费体验
+总览
+模板
+内容
+日程
+提示词
+内容库
+设置
+library-100
+
+资料保存在你的本机
+
+工作空间 / 总览
+
+总览
+本机保存
+刷新
+10月20日星期二
+今天 0/100 已发
+一
+0
+二
+100
+三
+0
+四
+0
+五
+0
+六
+0
+日
+0
+▧
+本次不记录封面
+打开内容，继续制作
+下一条
+09:00
+抖音
+今天
+Perf 065
+
+Synthetic publication
+
+复制文案
+记录已发布
+打开内容
+今天
+100 条待发布
+查看日程 →
+09:00
+抖音
+Synthetic publication
+记录已发布
+09:00
+抖音
+Synthetic publication
+记录已发布
+09:00
+抖音
+Synthetic publication
+记录已发布
+09:00
+抖音
+Synthetic publication
+记录已发布
+09:00
+抖音
+Synthetic publication
+记录已发布
+查看今天全部 100 条安排 →
+明天 10-21
+
+暂无发布安排
+
+要处理
+0 项
+✓
+
+当前没有待处理事项
+
+内容项目
+100 篇 · 0 个合集
+Perf 065
+已选封面 · 已发 0/1
+›
+Perf 089
+已选封面 · 已发 0/1
+›
+Perf 024
+已选封面 · 已发 0/1
+›
+Perf 005
+已选封面 · 已发 0/1
+›
+▧
+为内容找个好风格浏览模板，准备下一张封面
+↗]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: performance sample must complete: /Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-20-performance-0332/baseline/plans-100-trial-0.json
+
+1 !== 0
+
+    at file:///Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-20-performance-0332/probe-source/run-performance.mjs:25:358
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

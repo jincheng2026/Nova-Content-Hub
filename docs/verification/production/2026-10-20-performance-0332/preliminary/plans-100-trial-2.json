@@ -1,0 +1,3412 @@
+{
+  "passed": true,
+  "config": {
+    "plans": 100,
+    "trial": 2
+  },
+  "samples": [
+    {
+      "name": "fresh-process-open-overview",
+      "domReadyMs": 3209.05,
+      "firstVisibleDecodedMs": 3672.83,
+      "decodeAfterReadyMs": 463.78,
+      "images": {
+        "elements": 6,
+        "uniqueUrls": 2,
+        "naturalPixels": 9331200,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 14,
+      "nativeSettledMs": 5201.85
+    },
+    {
+      "name": "first-visit-content",
+      "domReadyMs": 69.79,
+      "firstVisibleDecodedMs": 201.66,
+      "decodeAfterReadyMs": 131.87,
+      "images": {
+        "elements": 9,
+        "uniqueUrls": 3,
+        "naturalPixels": 13996800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 4,
+      "nativeSettledMs": 516.64
+    },
+    {
+      "name": "first-visit-templates",
+      "domReadyMs": 22.68,
+      "firstVisibleDecodedMs": 1166.38,
+      "decodeAfterReadyMs": 1143.7,
+      "images": {
+        "elements": 20,
+        "uniqueUrls": 10,
+        "naturalPixels": 27953872,
+        "images": [
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2687.51
+    },
+    {
+      "name": "return-after-open-overview",
+      "domReadyMs": 4.51,
+      "firstVisibleDecodedMs": 16.48,
+      "decodeAfterReadyMs": 11.97,
+      "images": {
+        "elements": 6,
+        "uniqueUrls": 2,
+        "naturalPixels": 9331200,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 174.6
+    },
+    {
+      "name": "first-visit-gallery",
+      "domReadyMs": 1631.8,
+      "firstVisibleDecodedMs": 2199.18,
+      "decodeAfterReadyMs": 567.38,
+      "images": {
+        "elements": 14,
+        "uniqueUrls": 6,
+        "naturalPixels": 21772800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 15,
+      "nativeSettledMs": 2356.77
+    },
+    {
+      "name": "warm-1-content",
+      "domReadyMs": 45.51,
+      "firstVisibleDecodedMs": 59.21,
+      "decodeAfterReadyMs": 13.7,
+      "images": {
+        "elements": 9,
+        "uniqueUrls": 3,
+        "naturalPixels": 13996800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 217.4
+    },
+    {
+      "name": "warm-1-templates",
+      "domReadyMs": 12.98,
+      "firstVisibleDecodedMs": 1145.79,
+      "decodeAfterReadyMs": 1132.81,
+      "images": {
+        "elements": 20,
+        "uniqueUrls": 10,
+        "naturalPixels": 27953872,
+        "images": [
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2521.13
+    },
+    {
+      "name": "warm-1-overview",
+      "domReadyMs": 3.64,
+      "firstVisibleDecodedMs": 241.76,
+      "decodeAfterReadyMs": 238.12,
+      "images": {
+        "elements": 6,
+        "uniqueUrls": 2,
+        "naturalPixels": 9331200,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 4,
+      "nativeSettledMs": 400.05
+    },
+    {
+      "name": "warm-1-gallery",
+      "domReadyMs": 1628.37,
+      "firstVisibleDecodedMs": 2189.67,
+      "decodeAfterReadyMs": 561.3,
+      "images": {
+        "elements": 14,
+        "uniqueUrls": 6,
+        "naturalPixels": 21772800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 19,
+      "nativeSettledMs": 2360.04
+    },
+    {
+      "name": "warm-2-content",
+      "domReadyMs": 35.44,
+      "firstVisibleDecodedMs": 61.27,
+      "decodeAfterReadyMs": 25.83,
+      "images": {
+        "elements": 9,
+        "uniqueUrls": 3,
+        "naturalPixels": 13996800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 221.14
+    },
+    {
+      "name": "warm-2-templates",
+      "domReadyMs": 12.87,
+      "firstVisibleDecodedMs": 1224.27,
+      "decodeAfterReadyMs": 1211.4,
+      "images": {
+        "elements": 20,
+        "uniqueUrls": 10,
+        "naturalPixels": 27953872,
+        "images": [
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2589.51
+    },
+    {
+      "name": "warm-2-overview",
+      "domReadyMs": 3.71,
+      "firstVisibleDecodedMs": 250.89,
+      "decodeAfterReadyMs": 247.18,
+      "images": {
+        "elements": 6,
+        "uniqueUrls": 2,
+        "naturalPixels": 9331200,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 4,
+      "nativeSettledMs": 408.97
+    },
+    {
+      "name": "warm-2-gallery",
+      "domReadyMs": 1649.55,
+      "firstVisibleDecodedMs": 2214.13,
+      "decodeAfterReadyMs": 564.58,
+      "images": {
+        "elements": 14,
+        "uniqueUrls": 6,
+        "naturalPixels": 21772800,
+        "images": [
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 19,
+      "nativeSettledMs": 2369.92
+    },
+    {
+      "name": "complete-builtin-group-preview",
+      "domReadyMs": 42.73,
+      "firstVisibleDecodedMs": 214.79,
+      "decodeAfterReadyMs": 172.06,
+      "images": {
+        "elements": 21,
+        "uniqueUrls": 10,
+        "naturalPixels": 29507632,
+        "images": [
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 185,
+            "renderedHeight": 247
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 58,
+      "nativeSettledMs": 3256.77
+    }
+  ],
+  "trace": [
+    {
+      "scope": "main",
+      "op": "bind",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 210.58
+    },
+    {
+      "scope": "main",
+      "op": "seed",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 1469.98
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 102.98
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 223.62
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 467.19
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 639.21
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 265.83,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 266.64,
+      "bytes": 1110362
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 106.85
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 104.86,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 105.58,
+      "bytes": 1110860
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 180.27
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 460.91
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 662.25
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 106.55,
+      "bytes": 1110663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 107.2,
+      "bytes": 1110663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 113.28,
+      "bytes": 1110706
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 114.09,
+      "bytes": 1110706
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 119.85,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 120.93,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 112.04,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 113.07,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 134.47,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 136.03,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 94.99,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 95.34,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 93.33,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 93.64,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 95.81,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 96.06,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 94.33,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 94.66,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 115.38,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 115.66,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 128.16,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 129.58,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 121.09,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 122.44,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 115.56,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 116.92,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 120.74,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 122.55,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 122.96,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 124.64,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 132.94,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 134.54,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 127.22,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 128.56,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 127.8,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 129.16,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 143.41,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 145.04,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 129.86,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 131.73,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 124.94,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 126.3,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 116.58,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 118.01,
+      "bytes": 2267168
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "first-visit-gallery",
+      "durationMs": 105.22
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "first-visit-gallery",
+      "durationMs": 192.53
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "first-visit-gallery",
+      "durationMs": 495.19
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "first-visit-gallery",
+      "durationMs": 675.7
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "first-visit-gallery",
+      "durationMs": 67.94
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 118.3,
+      "bytes": 1109969
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 119.01,
+      "bytes": 1109969
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 97.68,
+      "bytes": 1110242
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 98.64,
+      "bytes": 1110242
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 110.88,
+      "bytes": 1110705
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 111.7,
+      "bytes": 1110705
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 100.66,
+      "bytes": 1110467
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 101.53,
+      "bytes": 1110467
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 105.6,
+      "bytes": 1110744
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 106.41,
+      "bytes": 1110744
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 133.42,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 134.43,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 123.57,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 124.61,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 115.81,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 117.25,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 95.56,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 95.92,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 93.48,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 93.75,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 91.53,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 91.76,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 91.99,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 92.32,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 119.5,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 119.83,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 119.98,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 121.5,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 114.23,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 115.69,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 122.27,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 123.62,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 119.38,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 121.17,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 119.2,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 120.61,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 111.18,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 112.77,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 113.73,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 115.24,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 111.82,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 113.25,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 142.3,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 143.9,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 116.06,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 117.84,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 121.22,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 122.51,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 116.52,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 117.97,
+      "bytes": 2267168
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-overview",
+      "durationMs": 106.08,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-overview",
+      "durationMs": 106.78,
+      "bytes": 1110362
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-overview",
+      "durationMs": 108.87,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-overview",
+      "durationMs": 109.65,
+      "bytes": 1110860
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 110.32,
+      "bytes": 1110663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 110.95,
+      "bytes": 1110663
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "warm-1-gallery",
+      "durationMs": 73.21
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 100.72,
+      "bytes": 1110706
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 101.36,
+      "bytes": 1110706
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "warm-1-gallery",
+      "durationMs": 185.2
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "warm-1-gallery",
+      "durationMs": 433.43
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "warm-1-gallery",
+      "durationMs": 581.26
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "warm-1-gallery",
+      "durationMs": 82.85
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 99.39,
+      "bytes": 1109969
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 100.08,
+      "bytes": 1109969
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 96.65,
+      "bytes": 1110242
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 97.52,
+      "bytes": 1110242
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 113.82,
+      "bytes": 1110705
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 114.62,
+      "bytes": 1110705
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 110.61,
+      "bytes": 1110467
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 111.37,
+      "bytes": 1110467
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 112.76,
+      "bytes": 1110744
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 113.55,
+      "bytes": 1110744
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 114.56,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 115.63,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 126.3,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 127.31,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 116.82,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 118.06,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 109.32,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 109.67,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 97.97,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 98.31,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 93.58,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 93.88,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 105.28,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 105.73,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 131.77,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 132.08,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 137.19,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 138.82,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 140.3,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 141.73,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 120.48,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 122.86,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 127.29,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 128.95,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 112.71,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 114.35,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 118.15,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 119.87,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 112.18,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 113.66,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 120.86,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 122.39,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 117.98,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 119.6,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 118.25,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 120.14,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 109.51,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 110.83,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 127.81,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 129.28,
+      "bytes": 2267168
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-overview",
+      "durationMs": 104.97,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-overview",
+      "durationMs": 105.64,
+      "bytes": 1110362
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-overview",
+      "durationMs": 114.85,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-overview",
+      "durationMs": 115.71,
+      "bytes": 1110860
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 102.82,
+      "bytes": 1110663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 103.5,
+      "bytes": 1110663
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "warm-2-gallery",
+      "durationMs": 76.86
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 104.2,
+      "bytes": 1110706
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 104.94,
+      "bytes": 1110706
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "warm-2-gallery",
+      "durationMs": 184.26
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "warm-2-gallery",
+      "durationMs": 436.63
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "warm-2-gallery",
+      "durationMs": 614.73
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "warm-2-gallery",
+      "durationMs": 73.96
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 103.77,
+      "bytes": 1109969
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 104.41,
+      "bytes": 1109969
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 99.85,
+      "bytes": 1110242
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 100.86,
+      "bytes": 1110242
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 121.79,
+      "bytes": 1110705
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 122.55,
+      "bytes": 1110705
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 105.72,
+      "bytes": 1110467
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 106.61,
+      "bytes": 1110467
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 100.59,
+      "bytes": 1110744
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 101.37,
+      "bytes": 1110744
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 111.89,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 112.92,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 118.29,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.29,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 132.63,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 133.98,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 86.84,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 87.26,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 101.06,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 101.43,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 94.16,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 94.42,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 92.15,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 92.52,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.25,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.54,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 130.79,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 132.35,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 115.17,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 116.41,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.95,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 121.24,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 118.85,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 120.67,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.46,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 120.92,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 117.01,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 118.68,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 124.42,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 125.77,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 128.01,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 129.45,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 112.02,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 113.74,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 121.54,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 123.46,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 112.27,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 113.61,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 115.85,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 117.31,
+      "bytes": 2267168
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 164.2,
+      "bytes": 261046
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 164.98,
+      "bytes": 261046
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 129.92,
+      "bytes": 265964
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 131.35,
+      "bytes": 265964
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 118.77,
+      "bytes": 240788
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 119.14,
+      "bytes": 240788
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 111.04,
+      "bytes": 263316
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 111.37,
+      "bytes": 263316
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 106.48,
+      "bytes": 178788
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 106.76,
+      "bytes": 178788
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 101.04,
+      "bytes": 254026
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 101.38,
+      "bytes": 254026
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 101.14,
+      "bytes": 241034
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 101.45,
+      "bytes": 241034
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 106.04,
+      "bytes": 383944
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 106.47,
+      "bytes": 383944
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 109.94,
+      "bytes": 223499
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 110.21,
+      "bytes": 223499
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 96.29,
+      "bytes": 181877
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 96.55,
+      "bytes": 181877
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.15,
+      "bytes": 197051
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.47,
+      "bytes": 197051
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 109,
+      "bytes": 188523
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 109.38,
+      "bytes": 188523
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.24,
+      "bytes": 241889
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.6,
+      "bytes": 241889
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 105.72,
+      "bytes": 236355
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 106.05,
+      "bytes": 236355
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 103.18,
+      "bytes": 233074
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 103.46,
+      "bytes": 233074
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 126.7,
+      "bytes": 254747
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 127.02,
+      "bytes": 254747
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 103.87,
+      "bytes": 229808
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 104.19,
+      "bytes": 229808
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.14,
+      "bytes": 267207
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.57,
+      "bytes": 267207
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.58,
+      "bytes": 167426
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.84,
+      "bytes": 167426
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.67,
+      "bytes": 224995
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.01,
+      "bytes": 224995
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.43,
+      "bytes": 259896
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.74,
+      "bytes": 259896
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 87.34,
+      "bytes": 222281
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 87.64,
+      "bytes": 222281
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 98.63,
+      "bytes": 208442
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 98.92,
+      "bytes": 208442
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.54,
+      "bytes": 223426
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.93,
+      "bytes": 223426
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.79,
+      "bytes": 251087
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 90.11,
+      "bytes": 251087
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.54,
+      "bytes": 261087
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.94,
+      "bytes": 261087
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.23,
+      "bytes": 241496
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.56,
+      "bytes": 241496
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 88.6,
+      "bytes": 238147
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 88.91,
+      "bytes": 238147
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.17,
+      "bytes": 174826
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.48,
+      "bytes": 174826
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 663.44
+    }
+  ],
+  "electron": "44.9.0",
+  "platform": "darwin",
+  "arch": "arm64"
+}

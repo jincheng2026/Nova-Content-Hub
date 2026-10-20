@@ -46,6 +46,7 @@ export interface WorkspaceCoreLibrary {
     importAsset(source: string, input: {purpose: 'template-reference' | 'material'}): {assetHash: string};
     readAsset(assetHash: string): {assetHash: string; bytes: number; detectedType: string; data: Uint8Array};
     listContents(): WorkspaceCoreDocument[];
+    listAllContents(): WorkspaceCoreDocument[];
     listTrash(): WorkspaceCoreDocument[];
     readContent(id: string): WorkspaceCoreDocument;
     updateContent(id: string, input: {recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; channelIds: string[]; isExample: boolean}, editToken: string, options: Options): Changed;

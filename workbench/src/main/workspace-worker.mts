@@ -1,3 +1,4 @@
+import {boundReader} from './bound-reader.mts';
 import path from 'node:path';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
@@ -173,7 +174,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
         collections: [...library.listCollections(), ...library.listCollectionTrash()].map(collection => {
             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
         }),
-        contentDetails: [...library.listContents(), ...library.listTrash()].map(content => {
+        contentDetails: library.listAllContents().map(content => {
             return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
         }),
         settings: {
@@ -321,7 +322,7 @@ export async function executeWorkspace(op: keyof WorkspaceWorkerOperations, args
     if (op === 'workspaceMutate') requireWrite(mode);
     const pending = op === 'workspaceLibrary' ? null : args.pending as WorkspacePending;
     if (pending && (pending.binding.libraryId !== binding.libraryId || pending.binding.rootIdentity.dev !== binding.rootIdentity.dev || pending.binding.rootIdentity.ino !== binding.rootIdentity.ino)) fail('CONFLICT', '待处理操作绑定的内容库已改变，已保留原记录。');
-    const library = openLibrary(binding.root, {expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity}) as unknown as WorkspaceCoreLibrary;
+    const library = (op === 'workspaceLibrary' ? boundReader(binding) : openLibrary(binding.root, {expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity})) as unknown as WorkspaceCoreLibrary;
     if (op === 'workspaceLibrary') return workspaceLibrary(library);
     if (op === 'workspaceMutate') return mutate(library, pending!);
     const found = receipt(library, pending!);

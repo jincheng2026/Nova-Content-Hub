@@ -1,0 +1,3712 @@
+{
+  "passed": true,
+  "config": {
+    "plans": 100,
+    "trial": 1
+  },
+  "samples": [
+    {
+      "name": "fresh-process-open-overview",
+      "domReadyMs": 3149.37,
+      "firstVisibleDecodedMs": 3724.74,
+      "decodeAfterReadyMs": 575.37,
+      "images": {
+        "scope": "page",
+        "elements": 6,
+        "uniqueUrls": 3,
+        "uniqueAssetHashes": 3,
+        "naturalPixels": 9331200,
+        "uniqueUrlPixels": 4665600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 16,
+      "nativeSettledMs": 5249.37
+    },
+    {
+      "name": "first-visit-content",
+      "domReadyMs": 74.21,
+      "firstVisibleDecodedMs": 671.1,
+      "decodeAfterReadyMs": 596.89,
+      "images": {
+        "scope": "page",
+        "elements": 9,
+        "uniqueUrls": 8,
+        "uniqueAssetHashes": 8,
+        "naturalPixels": 13996800,
+        "uniqueUrlPixels": 12441600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "assetHash": "735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "assetHash": "3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "assetHash": "5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "assetHash": "7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 20,
+      "nativeSettledMs": 1436.36
+    },
+    {
+      "name": "first-visit-templates",
+      "domReadyMs": 28.12,
+      "firstVisibleDecodedMs": 1180.8,
+      "decodeAfterReadyMs": 1152.68,
+      "images": {
+        "scope": "page",
+        "elements": 20,
+        "uniqueUrls": 10,
+        "uniqueAssetHashes": 10,
+        "naturalPixels": 27953872,
+        "uniqueUrlPixels": 13976936,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2705.14
+    },
+    {
+      "name": "return-after-open-overview",
+      "domReadyMs": 6.16,
+      "firstVisibleDecodedMs": 25.41,
+      "decodeAfterReadyMs": 19.25,
+      "images": {
+        "scope": "page",
+        "elements": 6,
+        "uniqueUrls": 3,
+        "uniqueAssetHashes": 3,
+        "naturalPixels": 9331200,
+        "uniqueUrlPixels": 4665600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 185.22
+    },
+    {
+      "name": "first-visit-gallery",
+      "domReadyMs": 1496.11,
+      "firstVisibleDecodedMs": 1761.11,
+      "decodeAfterReadyMs": 265,
+      "images": {
+        "scope": "page",
+        "elements": 14,
+        "uniqueUrls": 6,
+        "uniqueAssetHashes": 6,
+        "naturalPixels": 21772800,
+        "uniqueUrlPixels": 9331200,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 9,
+      "nativeSettledMs": 1918.86
+    },
+    {
+      "name": "warm-1-content",
+      "domReadyMs": 41.99,
+      "firstVisibleDecodedMs": 58.79,
+      "decodeAfterReadyMs": 16.8,
+      "images": {
+        "scope": "page",
+        "elements": 9,
+        "uniqueUrls": 8,
+        "uniqueAssetHashes": 8,
+        "naturalPixels": 13996800,
+        "uniqueUrlPixels": 12441600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "assetHash": "735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "assetHash": "3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "assetHash": "5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "assetHash": "7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 216.58
+    },
+    {
+      "name": "warm-1-templates",
+      "domReadyMs": 14.85,
+      "firstVisibleDecodedMs": 1184.09,
+      "decodeAfterReadyMs": 1169.24,
+      "images": {
+        "scope": "page",
+        "elements": 20,
+        "uniqueUrls": 10,
+        "uniqueAssetHashes": 10,
+        "naturalPixels": 27953872,
+        "uniqueUrlPixels": 13976936,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2700.5
+    },
+    {
+      "name": "warm-1-overview",
+      "domReadyMs": 7.41,
+      "firstVisibleDecodedMs": 346.91,
+      "decodeAfterReadyMs": 339.5,
+      "images": {
+        "scope": "page",
+        "elements": 6,
+        "uniqueUrls": 3,
+        "uniqueAssetHashes": 3,
+        "naturalPixels": 9331200,
+        "uniqueUrlPixels": 4665600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 6,
+      "nativeSettledMs": 506.03
+    },
+    {
+      "name": "warm-1-gallery",
+      "domReadyMs": 2132.22,
+      "firstVisibleDecodedMs": 2885.63,
+      "decodeAfterReadyMs": 753.41,
+      "images": {
+        "scope": "page",
+        "elements": 14,
+        "uniqueUrls": 6,
+        "uniqueAssetHashes": 6,
+        "naturalPixels": 21772800,
+        "uniqueUrlPixels": 9331200,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 29,
+      "nativeSettledMs": 3043.43
+    },
+    {
+      "name": "warm-2-content",
+      "domReadyMs": 40.89,
+      "firstVisibleDecodedMs": 100.23,
+      "decodeAfterReadyMs": 59.34,
+      "images": {
+        "scope": "page",
+        "elements": 9,
+        "uniqueUrls": 8,
+        "uniqueAssetHashes": 8,
+        "naturalPixels": 13996800,
+        "uniqueUrlPixels": 12441600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "assetHash": "735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "assetHash": "3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "assetHash": "5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "assetHash": "7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 47,
+            "renderedHeight": 63
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 258.21
+    },
+    {
+      "name": "warm-2-templates",
+      "domReadyMs": 14.09,
+      "firstVisibleDecodedMs": 1184.11,
+      "decodeAfterReadyMs": 1170.02,
+      "images": {
+        "scope": "page",
+        "elements": 20,
+        "uniqueUrls": 10,
+        "uniqueAssetHashes": 10,
+        "naturalPixels": 27953872,
+        "uniqueUrlPixels": 13976936,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+            "width": 734,
+            "height": 978,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+            "width": 1084,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 253,
+            "renderedHeight": 337
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+            "width": 1086,
+            "height": 1448,
+            "renderedWidth": 220,
+            "renderedHeight": 293
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 40,
+      "nativeSettledMs": 2707.51
+    },
+    {
+      "name": "warm-2-overview",
+      "domReadyMs": 7.2,
+      "firstVisibleDecodedMs": 18.16,
+      "decodeAfterReadyMs": 10.96,
+      "images": {
+        "scope": "page",
+        "elements": 6,
+        "uniqueUrls": 3,
+        "uniqueAssetHashes": 3,
+        "naturalPixels": 9331200,
+        "uniqueUrlPixels": 4665600,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 267,
+            "renderedHeight": 368
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 232,
+            "renderedHeight": 320
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "assetHash": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "assetHash": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 43,
+            "renderedHeight": 57
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 0,
+      "nativeSettledMs": 171.53
+    },
+    {
+      "name": "warm-2-gallery",
+      "domReadyMs": 1483.51,
+      "firstVisibleDecodedMs": 1704.7,
+      "decodeAfterReadyMs": 221.19,
+      "images": {
+        "scope": "page",
+        "elements": 14,
+        "uniqueUrls": 6,
+        "uniqueAssetHashes": 6,
+        "naturalPixels": 21772800,
+        "uniqueUrlPixels": 9331200,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 46,
+            "renderedHeight": 60
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 40,
+            "renderedHeight": 52
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "assetHash": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "assetHash": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "assetHash": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "assetHash": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "assetHash": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 259,
+            "renderedHeight": 345
+          },
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "assetHash": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a",
+            "width": 1080,
+            "height": 1440,
+            "renderedWidth": 225,
+            "renderedHeight": 300
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 9,
+      "nativeSettledMs": 1862.58
+    },
+    {
+      "name": "complete-builtin-group-preview",
+      "domReadyMs": 14.53,
+      "firstVisibleDecodedMs": 32.49,
+      "decodeAfterReadyMs": 17.96,
+      "images": {
+        "scope": "active-modal",
+        "elements": 1,
+        "uniqueUrls": 1,
+        "uniqueAssetHashes": 1,
+        "naturalPixels": 1553760,
+        "uniqueUrlPixels": 1553760,
+        "images": [
+          {
+            "url": "nova-content://assets/0908500e-bbd2-4848-916a-52c5b782742f/5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+            "width": 1079,
+            "height": 1440,
+            "renderedWidth": 185,
+            "renderedHeight": 247
+          }
+        ],
+        "resources": [],
+        "viewport": {
+          "width": 1440,
+          "height": 968,
+          "dpr": 2
+        }
+      },
+      "operationCount": 58,
+      "nativeSettledMs": 3212.46
+    }
+  ],
+  "trace": [
+    {
+      "scope": "main",
+      "op": "bind",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 240.14
+    },
+    {
+      "scope": "main",
+      "op": "seed",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 1469.15
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 119.71
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 180.26
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 440
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 592.76
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 262.37,
+      "bytes": 1110391
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 263.16,
+      "bytes": 1110391
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 105.12
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 119.49,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 120.18,
+      "bytes": 1110860
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 107.63,
+      "bytes": 1111065
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 108.3,
+      "bytes": 1111065
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 177.83
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 436.17
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 620.26
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 119.16,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 119.79,
+      "bytes": 1110362
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 109.76,
+      "bytes": 1110706
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 110.64,
+      "bytes": 1110706
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 113.73,
+      "bytes": 1110422
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 114.51,
+      "bytes": 1110422
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 118.16,
+      "bytes": 1110506
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 118.95,
+      "bytes": 1110506
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 105.61,
+      "bytes": 1110590
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 106.48,
+      "bytes": 1110590
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 101.78,
+      "bytes": 1109969
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 102.62,
+      "bytes": 1109969
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 125.21,
+      "bytes": 1110655
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 126.02,
+      "bytes": 1110655
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 105.24,
+      "bytes": 1110358
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 106.09,
+      "bytes": 1110358
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 111.85,
+      "bytes": 1110623
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 112.62,
+      "bytes": 1110623
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-content",
+      "durationMs": 109.01,
+      "bytes": 1110627
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-content",
+      "durationMs": 109.76,
+      "bytes": 1110627
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 131.35,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 132.46,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 117.04,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 118.11,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 122.86,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 124.19,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 92.16,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 92.57,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 92.02,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 92.28,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 95.64,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 95.88,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 96.59,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 96.88,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 126.58,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 126.9,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 125.34,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 126.75,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 114.47,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 115.67,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 119.33,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 120.75,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 115.13,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 116.58,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 144.62,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 146.05,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 116.51,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 118.13,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 139.27,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 140.68,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 126.85,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 128.28,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 122.94,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 124.6,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 121.32,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 123.16,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 111.92,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 113.23,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-templates",
+      "durationMs": 113.27,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-templates",
+      "durationMs": 114.84,
+      "bytes": 2267168
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "first-visit-gallery",
+      "durationMs": 70.05
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "first-visit-gallery",
+      "durationMs": 183.87
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "first-visit-gallery",
+      "durationMs": 454.15
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "first-visit-gallery",
+      "durationMs": 618.68
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "first-visit-gallery",
+      "durationMs": 69.82
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 127.65,
+      "bytes": 1110135
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 128.32,
+      "bytes": 1110135
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "first-visit-gallery",
+      "durationMs": 109.66,
+      "bytes": 1110551
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "first-visit-gallery",
+      "durationMs": 110.53,
+      "bytes": 1110551
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 136.16,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 137.22,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 115.89,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 117.01,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 116.65,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 118,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 103.89,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 104.29,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 97.38,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 97.72,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 92.15,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 92.42,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 99.23,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 99.64,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 120.28,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 120.55,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 134.93,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 136.52,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 122,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 123.35,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 122.4,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 123.83,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 120.88,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 122.32,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 121.69,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 123.17,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 142.18,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 143.76,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 122.68,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 124.16,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 121.25,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 122.65,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 122.45,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 124.06,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 125.73,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 127.72,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 112.72,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 114.12,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-templates",
+      "durationMs": 136.02,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-templates",
+      "durationMs": 137.49,
+      "bytes": 2267168
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-overview",
+      "durationMs": 106.41,
+      "bytes": 1110391
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-overview",
+      "durationMs": 107.02,
+      "bytes": 1110391
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-overview",
+      "durationMs": 104.6,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-overview",
+      "durationMs": 105.38,
+      "bytes": 1110860
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-overview",
+      "durationMs": 102.01,
+      "bytes": 1111065
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-overview",
+      "durationMs": 102.85,
+      "bytes": 1111065
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 118.49,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 119.12,
+      "bytes": 1110362
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "warm-1-gallery",
+      "durationMs": 80.39
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 115.75,
+      "bytes": 1110706
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 116.44,
+      "bytes": 1110706
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 163.9,
+      "bytes": 1110422
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 164.55,
+      "bytes": 1110422
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "warm-1-gallery",
+      "durationMs": 187.68
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "warm-1-gallery",
+      "durationMs": 465.13
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "warm-1-gallery",
+      "durationMs": 628.16
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 118.18,
+      "bytes": 1110506
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 118.82,
+      "bytes": 1110506
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "warm-1-gallery",
+      "durationMs": 98.03
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 100.61,
+      "bytes": 1110590
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 101.26,
+      "bytes": 1110590
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 104.58,
+      "bytes": 1109969
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 105.19,
+      "bytes": 1109969
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 111.85,
+      "bytes": 1110655
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 112.73,
+      "bytes": 1110655
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 102.06,
+      "bytes": 1110358
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 102.83,
+      "bytes": 1110358
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 103.79,
+      "bytes": 1110623
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 104.59,
+      "bytes": 1110623
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 100.75,
+      "bytes": 1110627
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 101.61,
+      "bytes": 1110627
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 109.88,
+      "bytes": 1110135
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 110.65,
+      "bytes": 1110135
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-1-gallery",
+      "durationMs": 97.6,
+      "bytes": 1110551
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-1-gallery",
+      "durationMs": 98.39,
+      "bytes": 1110551
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 115.28,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 116.3,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 114.16,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 115.28,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 130.04,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 131.41,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 85.67,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 86.03,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 92.12,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 92.38,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 93.84,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 94.1,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 105.56,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 105.86,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 136.44,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 136.7,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 146.77,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 148.23,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 119.96,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 121.47,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 121.08,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 122.44,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 127.17,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 128.89,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 154.34,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 155.8,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 125.55,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 127.29,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 123.26,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 124.88,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 137.44,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 138.86,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 120.58,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 122.19,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 134.19,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 135.98,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 134.25,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 135.69,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-templates",
+      "durationMs": 117.89,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-templates",
+      "durationMs": 119.3,
+      "bytes": 2267168
+    },
+    {
+      "scope": "main",
+      "op": "readContent",
+      "stage": "warm-2-gallery",
+      "durationMs": 97.77
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "warm-2-gallery",
+      "durationMs": 196.76
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "warm-2-gallery",
+      "durationMs": 442.22
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "warm-2-gallery",
+      "durationMs": 595.53
+    },
+    {
+      "scope": "main",
+      "op": "readCover",
+      "stage": "warm-2-gallery",
+      "durationMs": 66.48
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 101.49,
+      "bytes": 1110135
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 102.14,
+      "bytes": 1110135
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 98.97,
+      "bytes": 1110551
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 99.77,
+      "bytes": 1110551
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 112.32,
+      "bytes": 1813384
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 113.4,
+      "bytes": 1813384
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 135.04,
+      "bytes": 1504474
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 136.12,
+      "bytes": 1504474
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 120.97,
+      "bytes": 2069113
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 122.34,
+      "bytes": 2069113
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 109.75,
+      "bytes": 218663
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 110.1,
+      "bytes": 218663
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 151.35,
+      "bytes": 183786
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 151.62,
+      "bytes": 183786
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 158.93,
+      "bytes": 130580
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 159.24,
+      "bytes": 130580
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 134.14,
+      "bytes": 233621
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 134.49,
+      "bytes": 233621
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.31,
+      "bytes": 197638
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.61,
+      "bytes": 197638
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 130.49,
+      "bytes": 2349287
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 132.33,
+      "bytes": 2349287
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 133.09,
+      "bytes": 1930317
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 134.35,
+      "bytes": 1930317
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 119.48,
+      "bytes": 2154609
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 120.8,
+      "bytes": 2154609
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 127.51,
+      "bytes": 2305658
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 129.07,
+      "bytes": 2305658
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 122.73,
+      "bytes": 2228845
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 124.16,
+      "bytes": 2228845
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 122.92,
+      "bytes": 2520387
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 124.63,
+      "bytes": 2520387
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 129.09,
+      "bytes": 2154232
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 130.51,
+      "bytes": 2154232
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 114.42,
+      "bytes": 2194037
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 115.77,
+      "bytes": 2194037
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 123.76,
+      "bytes": 2561297
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 125.46,
+      "bytes": 2561297
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 124.04,
+      "bytes": 2894533
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 125.91,
+      "bytes": 2894533
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 124.47,
+      "bytes": 2046739
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 125.93,
+      "bytes": 2046739
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "warm-2-gallery",
+      "durationMs": 125.28,
+      "bytes": 2267168
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "warm-2-gallery",
+      "durationMs": 126.8,
+      "bytes": 2267168
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 114.76,
+      "bytes": 261046
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 114.99,
+      "bytes": 261046
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 116.49,
+      "bytes": 265964
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 116.83,
+      "bytes": 265964
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 132.78,
+      "bytes": 240788
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 133.09,
+      "bytes": 240788
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 117.18,
+      "bytes": 263316
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 117.65,
+      "bytes": 263316
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 94.02,
+      "bytes": 178788
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 94.29,
+      "bytes": 178788
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.07,
+      "bytes": 254026
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.38,
+      "bytes": 254026
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.33,
+      "bytes": 241034
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 91.67,
+      "bytes": 241034
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 104.05,
+      "bytes": 383944
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 104.49,
+      "bytes": 383944
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 111.79,
+      "bytes": 223499
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 112.18,
+      "bytes": 223499
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.45,
+      "bytes": 181877
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.76,
+      "bytes": 181877
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.39,
+      "bytes": 197051
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.69,
+      "bytes": 197051
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.88,
+      "bytes": 188523
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 93.14,
+      "bytes": 188523
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 121.5,
+      "bytes": 241889
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 121.83,
+      "bytes": 241889
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 94.43,
+      "bytes": 236355
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 94.76,
+      "bytes": 236355
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 111.79,
+      "bytes": 233074
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 112.17,
+      "bytes": 233074
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 115.05,
+      "bytes": 254747
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 115.45,
+      "bytes": 254747
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.53,
+      "bytes": 229808
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 92.87,
+      "bytes": 229808
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 104.13,
+      "bytes": 267207
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 104.5,
+      "bytes": 267207
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 95.96,
+      "bytes": 167426
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 96.22,
+      "bytes": 167426
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 90.58,
+      "bytes": 224995
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 90.87,
+      "bytes": 224995
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 113.48,
+      "bytes": 259896
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 113.83,
+      "bytes": 259896
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 88.1,
+      "bytes": 222281
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 88.5,
+      "bytes": 222281
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 116.48,
+      "bytes": 208442
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 116.89,
+      "bytes": 208442
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.39,
+      "bytes": 223426
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 102.85,
+      "bytes": 223426
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.39,
+      "bytes": 251087
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 89.74,
+      "bytes": 251087
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 96.3,
+      "bytes": 261087
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 96.69,
+      "bytes": 261087
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 97.79,
+      "bytes": 241496
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 98.11,
+      "bytes": 241496
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 100.45,
+      "bytes": 238147
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 100.77,
+      "bytes": 238147
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 108.28,
+      "bytes": 174826
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 108.56,
+      "bytes": 174826
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "complete-builtin-group-preview",
+      "durationMs": 656.18
+    }
+  ],
+  "electron": "44.9.0",
+  "platform": "darwin",
+  "arch": "arm64"
+}

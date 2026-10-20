@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "scope": "Production core validates every synthetic document before Electron timing; all explicit plan covers and exact image-bank hashes checked. No provider or user library.",
+  "checks": [
+    {
+      "plans": 100,
+      "contents": 100,
+      "candidateReferences": 600,
+      "selectedCoverUniqueHashes": 24,
+      "templates": 20
+    },
+    {
+      "plans": 1000,
+      "contents": 100,
+      "candidateReferences": 600,
+      "selectedCoverUniqueHashes": 24,
+      "templates": 20
+    }
+  ]
+}

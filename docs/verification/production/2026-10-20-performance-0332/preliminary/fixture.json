@@ -1,0 +1,1505 @@
+{
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl",
+  "images": [
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-00.jpg",
+      "bytes": 1110860,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "cee4f832dbfb4e71164693c70c4a8313f0fd781713d82c6a142c39cc7accb4ba"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-01.jpg",
+      "bytes": 1110358,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "dfacf21f6624a4d8389462888498e59224a2e0747d271e2cf98c020c804b645c"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-02.jpg",
+      "bytes": 1110422,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "3dc121fb7507fb67519649c4ab0e0ba35c2b26df4742198188264f144f8bf636"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-03.jpg",
+      "bytes": 1110276,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "02e8683da1656c351cbaf5f6f1da13884241652584def3b95a2581d6be305389"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-04.jpg",
+      "bytes": 1110506,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "5810d25827929af78713a5d9586194df28271e7725069cc4c5fbf2d8ae5c8f87"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-05.jpg",
+      "bytes": 1111065,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "78ceed1bd4431c5723413d2b7b331590cd115774c7c6b03e6c7b42bef6f780be"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-06.jpg",
+      "bytes": 1110362,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "735122ce82e8eb4ef5a9f110a2b1b7ed7864c46a3bd8c4ee6fc9853307e98647"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-07.jpg",
+      "bytes": 1109969,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "79f3a6dbb91eaabee53f7e655b4094c947b8d5d04ab392b323223016b6d6c964"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-08.jpg",
+      "bytes": 1110242,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "63c6124acadc9ebeca666531c4ecf9e34c90bd44d36b9d843fc26bec46b66141"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-09.jpg",
+      "bytes": 1110705,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "4743b90e653536ffd9c0e4889112287fa756ca7ed8e0fd40d853d6860c3ee8b6"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-10.jpg",
+      "bytes": 1110467,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "cd8455c93dedb855ff5c5434bc428a72e793067749d648ce79cfb099c5992d8c"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-11.jpg",
+      "bytes": 1110744,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "d21bb23527964abdfc184e95c99b869b5e74ee92eb2b8f3e9650f1d79eacb571"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-12.jpg",
+      "bytes": 1110663,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "7b15ca14a6189fd8acc945031126bb98270f20f5c6de1093bd96defc4be75b3d"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-13.jpg",
+      "bytes": 1110590,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "7e9f91789d5fa60dabcb9f148f58491053bbdec70329a3a867b4b276cb5bd2ee"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-14.jpg",
+      "bytes": 1110955,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "6ff5d68dece4a0ad1a51b71ef969994b8aeef877052aae1d0e0c48df41972ca3"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-15.jpg",
+      "bytes": 1110655,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "391e68c96265e5ed01ec8e2669060d6ce341336cdad5c0942d3c57d107d1bbce"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-16.jpg",
+      "bytes": 1110610,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "cf3eab746a111b99dc51d4832fab35de33d14c436457d311dfe3a35cbc113c8d"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-17.jpg",
+      "bytes": 1110391,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "016e7fdc2b67329eef6989a04b9f70aa2216c45206c738710ae8bb2d9fa40be0"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-18.jpg",
+      "bytes": 1110706,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "b2ab5e60ef4e609fae8a17775f3ebae9052fc4ef46397f862f4b99a2de96dd55"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-19.jpg",
+      "bytes": 1110623,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "1bfa5aff36d07a6c4fda9334ed093735707841c7dafb9e02b96f80155c2d8b1d"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-20.jpg",
+      "bytes": 1110627,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "00f8bf9798d221378547f5b1b6dccd0c5cb802bbad80cc57da6b6e51355a5875"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-21.jpg",
+      "bytes": 1110135,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "c8d28595e94fa40ecad1a64d8df7f842c6aa629ad9ddae4761be031e65b33fa4"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-22.jpg",
+      "bytes": 1110551,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "b4481995dd279ea22600687cd2122c6929014e40a8676ac1c2a0f4c256dced5a"
+    },
+    {
+      "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/images/synthetic-23.jpg",
+      "bytes": 1110644,
+      "width": 1080,
+      "height": 1440,
+      "sha256": "821a100f4c88ca19fb2802c32fb5387fe7980970029e84b09d84b3f01bc92107"
+    }
+  ],
+  "fixtures": [
+    {
+      "plans": 100,
+      "library": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/library-100",
+      "firstId": "b6e6b175-f6cf-442f-b99b-3a0fa7bf6177",
+      "contents": 100,
+      "candidateReferences": 600,
+      "uniqueSyntheticImages": 24
+    },
+    {
+      "plans": 1000,
+      "library": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/library-1000",
+      "firstId": "b6e6b175-f6cf-442f-b99b-3a0fa7bf6177",
+      "contents": 100,
+      "candidateReferences": 600,
+      "uniqueSyntheticImages": 24
+    }
+  ],
+  "templateGroups": [
+    {
+      "id": "builtin-agent",
+      "sampleCount": 2,
+      "bytes": 3671065,
+      "resources": {
+        "图库/AI参考/agent-v2.png": {
+          "assetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+          "bytes": 1813384,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/agent-group-v4.png": {
+          "assetHash": "da2af3996ec8a20744112064b410cb8286c4ea4d229317c5f00f47357ce462d5",
+          "bytes": 1851479,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/agent-v2-source.svg": {
+          "assetHash": "303488c850ff164cd2e6c5ce6a2b0b4583e52b95159a972c25460e8589c945e3",
+          "bytes": 3086,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/agent-v2-reference.svg": {
+          "assetHash": "746bdbfe3e575a143f3539c445a4b17e94d7d15b17bbdaec97825798e08e86e8",
+          "bytes": 3116,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-ai-tool",
+      "sampleCount": 2,
+      "bytes": 3212915,
+      "resources": {
+        "图库/AI参考/ai-tool-v2.png": {
+          "assetHash": "c4bf20c25469aa4f8f21acf61b37dca35c471cc561f8a5fedf8d31f210e703fb",
+          "bytes": 1504474,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/ai-tool-group-v4.png": {
+          "assetHash": "d1f11eda0529a40cbdaaef9012f3cf0eac889c8f5fa1071a0b2ea983da9c23f1",
+          "bytes": 1702773,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/ai-tool-v2-source.svg": {
+          "assetHash": "04d530311db586cd0b7368d6c6fd355e6de4049ef415e8dc089ad6725f732206",
+          "bytes": 2826,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/ai-tool-v2-reference.svg": {
+          "assetHash": "dd7ef95f1bba41350d8d62341f8bd8ce646e65295d419d03fbb65ab3dd95e144",
+          "bytes": 2842,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-big-head",
+      "sampleCount": 2,
+      "bytes": 3887820,
+      "resources": {
+        "图库/AI参考/big-head-v3.png": {
+          "assetHash": "743ddd033a4263eb85dd7be83b29e42f3ca7383d0c3c753e5fd1190b125d1d70",
+          "bytes": 2069113,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/big-head-group-v4.png": {
+          "assetHash": "c6bd1f84f9c23abec61d6cd3fabdf4097571203e54fa3a2bc6aea563ae7f438c",
+          "bytes": 1815292,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/big-head-v3-source.svg": {
+          "assetHash": "0139fcb32fb9dc5d612b5943d1843b1d25d0d64cd8bc017ede885832626feed4",
+          "bytes": 1706,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/big-head-v3-reference.svg": {
+          "assetHash": "2488e88fd888153b652fe521123b7c45afb904e991dde55c2473c0135d25730d",
+          "bytes": 1709,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-colleague-assistant-scene",
+      "sampleCount": 19,
+      "bytes": 4092892,
+      "resources": {
+        "sources/项目/02_内容素材/对标封面/AI大白话/K01.jpg": {
+          "assetHash": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24",
+          "bytes": 218663,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K02.jpg": {
+          "assetHash": "4c48ef2c54247844a8a7629fa84ca87db64c9baccfe10176901a549587df6402",
+          "bytes": 204668,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K03.jpg": {
+          "assetHash": "837c686eb9cbd934af23a72b07138fe12a01b0f262e4a84dbe5a79d0bc90eda3",
+          "bytes": 113265,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K04.jpg": {
+          "assetHash": "145f8141fe192996f7078e794b367c2ef1ffb8a880797cf1cae21d97de4adf37",
+          "bytes": 125996,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K05.jpg": {
+          "assetHash": "c2c32dac179e2035abb3da2339b2df72b5924feba431b0d723ef5932ed59cdd8",
+          "bytes": 164977,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K06.jpg": {
+          "assetHash": "67e4d2b4a6c0d26591e18845af3fd3e7ce4f1a630df1b3c8bea47e179d27cd9e",
+          "bytes": 155005,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K07.jpg": {
+          "assetHash": "03172ddf04c9b0724b5947c67a3f93e98021b26d90fad734a51fd94e566bf466",
+          "bytes": 190595,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K08.jpg": {
+          "assetHash": "3d96fab000a776ed87bb2682963551be3a539b45f420e75524b25eea0f216095",
+          "bytes": 238107,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K09.jpg": {
+          "assetHash": "e96d05e8947936cd4155dd54eef51ef838335c682dd416a2331a63a132937faf",
+          "bytes": 214843,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K10.jpg": {
+          "assetHash": "35b5b0401bca7fbdfab4671b73f705657108b6b48346868dba96202eede45424",
+          "bytes": 227041,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K11.jpg": {
+          "assetHash": "a919aa7c25abee35b8a177ad11f56718fa5e3b20a4a4708cd266f9488c63a6ff",
+          "bytes": 208044,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K12.jpg": {
+          "assetHash": "8016483070352270741c1a89b9364d68f29bca4fa86ec554c7d19c9d04ecd4e4",
+          "bytes": 293095,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K13.jpg": {
+          "assetHash": "dbe4fe0ca9a5441c4c4bbfa06f7b7051baf5087c25c5e66f75b6a14cb2507e26",
+          "bytes": 318509,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K14.jpg": {
+          "assetHash": "d0854b9aa97551422f599ef5d008500547c8025bad7630b534b04664387eaf11",
+          "bytes": 240369,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K15.jpg": {
+          "assetHash": "d30792d250e1cb8fd843cc7b306c33c993fd581236c196416f76ec4ae28d048d",
+          "bytes": 279584,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K16.jpg": {
+          "assetHash": "545341d0f2186fe00ba771ccda721763b432f7b4201b0e4c9634d5a659640f34",
+          "bytes": 277247,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K17.jpg": {
+          "assetHash": "5e53268827ca3d30f4c5e115151a49db8c875919d3d972bff888d0008c3f753c",
+          "bytes": 174717,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K18.jpg": {
+          "assetHash": "5e240094080499c7bb032b370ccadb434612323141e9ce8a93d6ae15cceceaef",
+          "bytes": 149167,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/K19.jpg": {
+          "assetHash": "4eb30e965a87885723f980031d5fd258c7301c39789f3ef37da42ac485b927fd",
+          "bytes": 267048,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/VI拆解.md": {
+          "assetHash": "185b0e6f2829888f5bab2bcc3c501293b5afe90c36ee6ab0284ab34446242a83",
+          "bytes": 31920,
+          "detectedType": "text/plain",
+          "role": "structure"
+        },
+        "sources/项目/02_内容素材/对标封面/AI大白话/风格.json": {
+          "assetHash": "91e2759f38ba6a3d2ebab4f7938be42373c98944fa82e42dccf74f186fddc1aa",
+          "bytes": 32,
+          "detectedType": "application/json",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-colleague-big-head-action",
+      "sampleCount": 30,
+      "bytes": 7015043,
+      "resources": {
+        "sources/项目/02_内容素材/对标封面/秋芝/K01.jpg": {
+          "assetHash": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5",
+          "bytes": 183786,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K02.jpg": {
+          "assetHash": "34a61cd517f008d564842c138b571495f7b2d17d323412771fc56a1f146575d5",
+          "bytes": 261046,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K03.jpg": {
+          "assetHash": "530a23aa386e1b5a3f1ec5ab9f186f632fab23f39ffebccd7dce770882d3695e",
+          "bytes": 265964,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K04.jpg": {
+          "assetHash": "15150ad1524dded0e254ab2161b360e6f31b2a77fa3a64fadca8c995ffe5f700",
+          "bytes": 240788,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K05.jpg": {
+          "assetHash": "fdf0673510b5c43b9202c6ee0fe87b2d2d4461a1610cac71e13fa6213e31ab94",
+          "bytes": 263316,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K06.jpg": {
+          "assetHash": "31c8bde6e31069d7ab7e2abeea61792ef30f6e8f5ba72caf7f66e598803d29c1",
+          "bytes": 178788,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K07.jpg": {
+          "assetHash": "a79c47491e88cd31937931fd17bfef0e8edb4c191870c7f8bdbc7caf48c94466",
+          "bytes": 254026,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K08.jpg": {
+          "assetHash": "10c5bce590e83e0bdd08b35c3e8f14399ff58a1383df5a7c60158a578581a5df",
+          "bytes": 241034,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K09.jpg": {
+          "assetHash": "7635bff4ede1d922a3a0d005812e2c7d289d8452808a1d53434e13af02f06b7e",
+          "bytes": 383944,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K10.jpg": {
+          "assetHash": "8d6ef18d834a0ab9d928e0603e4f524e1c77229b63110e12d66ace3d903d8f13",
+          "bytes": 223499,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K11.jpg": {
+          "assetHash": "2e2b1edee3f8c81a292609504d3efbad4fb0c2382edeb3de2423623fb64133d2",
+          "bytes": 181877,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K12.jpg": {
+          "assetHash": "3297afb6a4ce7fefce175b122cadf077ae4291fe4c580cd9fbdc069b19719b1d",
+          "bytes": 197051,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K13.jpg": {
+          "assetHash": "84026690564001aae1dd4ab21572198e9fe6e1ca98a660fb67a785ae80f8e6bc",
+          "bytes": 188523,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K14.jpg": {
+          "assetHash": "37af844ba39b8e3c86692f7c502ee5e2c74771c858ccbff588cc7d9d40b0974c",
+          "bytes": 241889,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K15.jpg": {
+          "assetHash": "9aac3e195c42c80e27fbaaff9c5302e37f2d83e9a0aa45a0c237cdf0bd19986a",
+          "bytes": 236355,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K16.jpg": {
+          "assetHash": "273a20d906c9fdcc24ee5da53e83592b74ef051b3b84434d1eeb2039d20d68e3",
+          "bytes": 233074,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K17.jpg": {
+          "assetHash": "6b334c5ba9badc76b0fcd3d5a2df4a5181dc36cb91e933439dad89ae498f7011",
+          "bytes": 254747,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K18.jpg": {
+          "assetHash": "a75793b7a3335f1a590b7c2d828a5cb00ac34937026e696ed5be6b0302f0713c",
+          "bytes": 229808,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K19.jpg": {
+          "assetHash": "536750e5463fab35c4230698efd450b7006a68b5580877120bbe251df03d9f74",
+          "bytes": 267207,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K20.jpg": {
+          "assetHash": "8585e5af7d52e9c3fcbc4998de4eb0e0b9e623b515399fcc7f413074e2d0cf1f",
+          "bytes": 167426,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K21.jpg": {
+          "assetHash": "d8f368b4b1c95086764cd9ef1893d7190ca8a9c77357adceed4b767370191db1",
+          "bytes": 224995,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K22.jpg": {
+          "assetHash": "c3bd62d335b1edeec19321bcb6abdcbaebd94c29bba27dfcb23d83c395518edf",
+          "bytes": 259896,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K23.jpg": {
+          "assetHash": "24383c75a654bcf9c8a04f0398fd33bfd74a82f539d60a3c0702f0a14111b78a",
+          "bytes": 222281,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K24.jpg": {
+          "assetHash": "53107d4909c2a235d927611912bba3f191d2565481f00d84b6b217137add06e3",
+          "bytes": 208442,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K25.jpg": {
+          "assetHash": "5a35c50895f0bd9eb04c9437bb083e17a4a61c07053265b62874b373cbefded0",
+          "bytes": 223426,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K26.jpg": {
+          "assetHash": "8c845745c65252c84c7bad5222cbb991528635c0610aef2322a6adfc18e5fe5b",
+          "bytes": 251087,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K27.jpg": {
+          "assetHash": "f622ed6492c469776a3d4026e285c2cc884bace0c1b9d4ab7e7c74da53b6159b",
+          "bytes": 261087,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K28.jpg": {
+          "assetHash": "065666edd9ad0e4693543dfc7f1c071fbbd893f8883b386e9ab66319a7925a10",
+          "bytes": 241496,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K29.jpg": {
+          "assetHash": "90199f58b2a114fb1296672ca86f42d5f10e704df10b00b14b549dff84f6d044",
+          "bytes": 238147,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/K30.jpg": {
+          "assetHash": "44030f9cd64ce6be743c9cecaeaefb139b3d58e32d59b606b3262daf34a14ef8",
+          "bytes": 174826,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/VI拆解.md": {
+          "assetHash": "ff3c3d42ce90f514373e2eeafa27a1a4bd00156bce8bad5c8c8d895fbee125b6",
+          "bytes": 15177,
+          "detectedType": "text/plain",
+          "role": "structure"
+        },
+        "sources/项目/02_内容素材/对标封面/秋芝/风格.json": {
+          "assetHash": "9fb297ad79e9490ddda9c2d76dbdb71400e09e4c928b51a3aa8f969506f6703c",
+          "bytes": 35,
+          "detectedType": "application/json",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-colleague-news-collage",
+      "sampleCount": 23,
+      "bytes": 5162864,
+      "resources": {
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K01.jpg": {
+          "assetHash": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0",
+          "bytes": 130580,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K02.jpg": {
+          "assetHash": "6f1d09074e692fca9d795158bb5e7a744b414d5e9ec3dbbf7c51f39f478192cd",
+          "bytes": 186281,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K03.jpg": {
+          "assetHash": "1a4bd522bf474fadf8c910eb5e0156445a3c8cdd5fd7ecfeb7388371205cc1cc",
+          "bytes": 206060,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K04.jpg": {
+          "assetHash": "cb7a9b106e47990f6d8a402b872212b55b8c595ece900dcf8e484fdacddb2213",
+          "bytes": 161574,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K05.jpg": {
+          "assetHash": "9d181681453ea7eedc59900d725da9b0ee6d9e733979d07407894d89cfc085e9",
+          "bytes": 205188,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K06.jpg": {
+          "assetHash": "f83ea75e6c566c44976a4499fd59fb1f045abfd9cdc745d5465ac8ccf49104dc",
+          "bytes": 232589,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K07.jpg": {
+          "assetHash": "f3b262a4e3cc164f2389644d8f3555a8e147834d7119b9da14a29b125889ff98",
+          "bytes": 289633,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K08.jpg": {
+          "assetHash": "4b08f388f3ad79886581871f4945a7b9afa781a3905bc595f0e4dd67b981750a",
+          "bytes": 231261,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K09.jpg": {
+          "assetHash": "5e0f1e65400329bf4e9865ca654d306730e12eb96b8691a5c19d89d2d834bc22",
+          "bytes": 275536,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K10.jpg": {
+          "assetHash": "4f59264184fda1db776237c0f3bdfb97c0e94b7bc6c254e245f2bb87b1e08866",
+          "bytes": 241641,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K11.jpg": {
+          "assetHash": "7a6de5259e6a79b02c468c1ccae50f37d96396bafa2b0aa5fac541516244e570",
+          "bytes": 263626,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K12.jpg": {
+          "assetHash": "71c3d8e5d96a6a13ea665b3d78fe45d70fc0e8281e7f6f67fd0049a8b84a5c6b",
+          "bytes": 238275,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K13.jpg": {
+          "assetHash": "d07f3a3d3c7f130bcc8c74cfd734ee027d5ceea348046c5232a1a6ed9469bebd",
+          "bytes": 270405,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K14.jpg": {
+          "assetHash": "3dbfa5d76f6307ba7245216ca5d46645f859ff3a7f2aefb89232caa0734e5187",
+          "bytes": 277133,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K15.jpg": {
+          "assetHash": "92e26cf5b6422e33fe683471876b646ea9071cacca74fa2a6e4109aad4f28bb0",
+          "bytes": 288569,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K16.jpg": {
+          "assetHash": "91900e6c86a2690783e39944ee03fdb514bc159e03894e6051134aec48f73383",
+          "bytes": 251508,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K17.jpg": {
+          "assetHash": "0bac98c08d3c489e69c8d8959d2e6dc9612b60c2e758505ef5554108fb47c5f8",
+          "bytes": 283845,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K18.jpg": {
+          "assetHash": "1953865e3a967256d61c35eb0baae221656e07743c13d0015de3567fcb60c47d",
+          "bytes": 180814,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K19.jpg": {
+          "assetHash": "86cf70396c08e10a73fccc805714df9dd6e0395d6392ac1c550d386f56fa21e5",
+          "bytes": 169074,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K20.jpg": {
+          "assetHash": "b2f0995f157fae8fd441233a4bc82dffb412369c3c9348d494db790d9ce95788",
+          "bytes": 121485,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K21.jpg": {
+          "assetHash": "a39b2987bcf382be59f490b05008efd51dde8bbbac53beff6f085f58b1f2f8c2",
+          "bytes": 246369,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K22.jpg": {
+          "assetHash": "9267ba2c2c6726dcf464a42449e104ea323fdd2a4d7ed84737750e4e7d983de5",
+          "bytes": 183802,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/K23.jpg": {
+          "assetHash": "32f72330a27d708b2c85c794c856b0a36d8f6106655f38da48c19661aff4b790",
+          "bytes": 196826,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/Seven研究社/VI拆解.md": {
+          "assetHash": "d58a31e46067e1d73b7f9698380306a53f42d345b69a7605dfc26f5d460a36aa",
+          "bytes": 30790,
+          "detectedType": "text/plain",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-colleague-orange-green-life",
+      "sampleCount": 30,
+      "bytes": 9028848,
+      "resources": {
+        "sources/项目/02_内容素材/对标封面/鹿一家/K01.jpg": {
+          "assetHash": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227",
+          "bytes": 233621,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K02.jpg": {
+          "assetHash": "8b42bf4149c63f59b26e79b3dae7f7905800f90b509e3e6ec3cacb436c012443",
+          "bytes": 314550,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K03.jpg": {
+          "assetHash": "85f95df96033ad8f9757cf1b6f32396cf469fc78e2ca86a1d19ee9526aed9a7d",
+          "bytes": 302044,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K04.jpg": {
+          "assetHash": "2fbbcfa031cd902667e9b76417efd09ccdd871733337b092bed6da6263b1d8f1",
+          "bytes": 278284,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K05.jpg": {
+          "assetHash": "9e6f2fda1cb90706fa4372a6465f3de6c815232721a208fa41ddc1abe2da9eab",
+          "bytes": 299052,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K06.jpg": {
+          "assetHash": "574658cc5e0747be47a3558d6d3efbb85449d89db1196be7007f3297319d6c67",
+          "bytes": 372064,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K07.jpg": {
+          "assetHash": "670dfea578eb8f9c6e9bfb127d29c02d47c8d3870bb5528cbc9370b66a94d077",
+          "bytes": 309069,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K08.jpg": {
+          "assetHash": "5b242c1d77a59e25ee051f0e97ac14d71e61d80a439be368c364573d7056caa2",
+          "bytes": 264301,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K09.jpg": {
+          "assetHash": "086c7411a73972c9a3f2b73106751b78b396732802559e344602ccbf13ff253e",
+          "bytes": 331882,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K10.jpg": {
+          "assetHash": "fc521302d6f261040ba730ff4cd876246a650d0aa7ae1f728969b304ff73ad8a",
+          "bytes": 323682,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K11.jpg": {
+          "assetHash": "c4ddd0bfbf446d338be760db5667ed00410fa24fc2095178cff8cb9fc01aebff",
+          "bytes": 290657,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K12.jpg": {
+          "assetHash": "580827650db703b212c55b7b3fee5971219aa2f5bf42fdfdb4f4f2208719e8a1",
+          "bytes": 272614,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K13.jpg": {
+          "assetHash": "164a103e83d60576fb6f6fed5d0f1d043abb19042e4636f099533e833797493e",
+          "bytes": 246448,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K14.jpg": {
+          "assetHash": "64c4a685e0e3a9c74f5152a1e3ce8389c17df8de3c56b68c758cd385fc44d6d4",
+          "bytes": 302328,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K15.jpg": {
+          "assetHash": "c1a4a77c09866e92d234e2b51c60d761dc68368e8d6a4a2a9a3617a0b2aca1ae",
+          "bytes": 327164,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K16.jpg": {
+          "assetHash": "a82fd19a3dfb267cf315bb0719bbdfe11a4b7176f03580bc07565db26ff064a3",
+          "bytes": 179454,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K17.jpg": {
+          "assetHash": "3963d97a6c725eaa16ce37e062e6c3f03474b7f7d7f17d7fa18ffdc11b462a8b",
+          "bytes": 270638,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K18.jpg": {
+          "assetHash": "924edd499ccaff554ec2a4ed78834d5b7b2aa1c6a2c1997213287bb97b5b27b4",
+          "bytes": 349869,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K19.jpg": {
+          "assetHash": "2fd1993edf7b308061cd30e71bd0df274da07510ff0a16c9423a71f64147891c",
+          "bytes": 334134,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K20.jpg": {
+          "assetHash": "3ca6f3ae0d038d2713712c0f7c04929affb91c06cb6b3d9090c5ae291b6f73ae",
+          "bytes": 218055,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K21.jpg": {
+          "assetHash": "d44451003f0c2741d53f6667c38ddbbc09176467ec5a0f155624382970a4b84e",
+          "bytes": 255178,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K22.jpg": {
+          "assetHash": "75dfa5032bc154e7b223bf5e0bcab6f6d909c1b90050e7508fda81e11775741c",
+          "bytes": 489208,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K23.jpg": {
+          "assetHash": "957569ec7cd89521b9df6233ffb4ed55f218ec2f84790f5c2dc7dd0a85d07548",
+          "bytes": 355985,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K24.jpg": {
+          "assetHash": "c944ade11006a2378ce2d92e2dcafab43772c528cc7ac375f996d0a31c40e661",
+          "bytes": 237125,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K25.jpg": {
+          "assetHash": "721cc2f842a0f4e8745a0896aa3e25af104f54d0d77be4c6719b64768fb575f1",
+          "bytes": 420622,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K26.jpg": {
+          "assetHash": "6a9743cbef0ecad94075d673776ce13fcc93988a9ce313e99265c03060ffccd5",
+          "bytes": 307692,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K27.jpg": {
+          "assetHash": "c75b9c4eb33f21bd8491b86c42f1c4f086a0b7fa24864002f007cf1001e325f7",
+          "bytes": 279585,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K28.jpg": {
+          "assetHash": "0db279f2bdcbfef8b516cd3342108bcdf01858c9d4bf96bfb3bd2d051c59df58",
+          "bytes": 355932,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K29.jpg": {
+          "assetHash": "78adbda83e8989a98c5ecafbbe75f51ec94b79f11a3ab9636f28a2e0818720bd",
+          "bytes": 263626,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/K30.jpg": {
+          "assetHash": "e4ac84b7eb1a9ada7d565553147d9a08511a0b8d30225c30e40d89d19bf92356",
+          "bytes": 235139,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/VI拆解.md": {
+          "assetHash": "604b6631861e85386cc6f5ea0403ef776ec69460b213e8ad32010bfaaabb0586",
+          "bytes": 8814,
+          "detectedType": "text/plain",
+          "role": "structure"
+        },
+        "sources/项目/02_内容素材/对标封面/鹿一家/风格.json": {
+          "assetHash": "2aa4568e9958ba7a99f58a4e95a07c6c2c5ca7894e3cf505a472c70b5e158394",
+          "bytes": 32,
+          "detectedType": "application/json",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-colleague-spatial-operation",
+      "sampleCount": 25,
+      "bytes": 4201365,
+      "resources": {
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K01.webp": {
+          "assetHash": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b",
+          "bytes": 197638,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K02.webp": {
+          "assetHash": "ea931f56614c263d21141416506a8dc5732fb24f6260fb74318d9bab28b920b8",
+          "bytes": 195118,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K03.jpg": {
+          "assetHash": "fb8243a3a63eb069c0c5762baed2bcca43436c43d7204402a65a4b892c056f87",
+          "bytes": 84782,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K04.jpg": {
+          "assetHash": "083cbbe0af5126ff5a1fa0aaf6eaae48600bcb509ce3d75d987675ca16d51e5c",
+          "bytes": 88300,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K05.jpg": {
+          "assetHash": "83d42eeec8fbd1ab4474d835316b29aa5694531e5ab0d35d0723b0535b27ec8d",
+          "bytes": 106789,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K06.jpg": {
+          "assetHash": "e64a9dc75fa0ce7452c94dd3771be39e1cb1a952d924a81e1232d335c144f129",
+          "bytes": 89419,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K07.webp": {
+          "assetHash": "efcf38cfa0c2f6dc81d41faeb80a34d56373d592a41a4bd2ae9142853c21acdf",
+          "bytes": 211076,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K08.webp": {
+          "assetHash": "40f1f5611ae267423ba7065e94e4bf767c993ce4cf148ef745a827fb2a0140a3",
+          "bytes": 238912,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K09.jpg": {
+          "assetHash": "4f4a122a8c257fa3bb4da81214edf46baae350693b7361d87be7bdfc1447fcb0",
+          "bytes": 61163,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K10.jpg": {
+          "assetHash": "c10a316f7b2138d2e17e9bf222cfc23cd802a6107bf4f6a20511d5fd1875f544",
+          "bytes": 73826,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K11.jpg": {
+          "assetHash": "1ff1ec51525e967b1b78fa79485480ce3ccc3252041bbb5c51a12a4acf2ec197",
+          "bytes": 59677,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K12.jpg": {
+          "assetHash": "00149d4d1ef1f19a09b23761222514938cc7ad0e09c80f0b4431b4fa6f49e0aa",
+          "bytes": 83719,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K13.jpg": {
+          "assetHash": "23a7e58b29d4f773a6c92e469ad5b4f52e0647bfc18f36cddd3e471fe950e22e",
+          "bytes": 69362,
+          "detectedType": "image/jpeg",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K14.webp": {
+          "assetHash": "eb36c369f3cabf0a69df24a25efb03d3d13a0d010f489176014b86d653b99c33",
+          "bytes": 213912,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K15.webp": {
+          "assetHash": "5e06f69fbc8db7e6285fb90d12c4b5c58e2faa6a336e04b7b5e5304235a7043f",
+          "bytes": 234522,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K16.webp": {
+          "assetHash": "80cfaac2f32bc5de2ff00b4b0f2a43a767278e7ffa2d2e38f40affb377e436f7",
+          "bytes": 266684,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K17.webp": {
+          "assetHash": "2ec6e74d075fe41b4f0860385b0d18cd2e65a1a3e06e0d49056bc7e8263c6f55",
+          "bytes": 233348,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K18.webp": {
+          "assetHash": "472d44b37daea04be1a60ca9c0a694942b766da6eddcc4d39b6600c911f10348",
+          "bytes": 181742,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K19.webp": {
+          "assetHash": "d67f4e6567129d6155ecd25d52ba8819fb2b1211f5757bde37f0cb88859885f2",
+          "bytes": 215416,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K20.webp": {
+          "assetHash": "2362ca32243ac0fe8f96f2436630379d2d3cf04c7f8ee3e1a3e26512df0821f8",
+          "bytes": 181094,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K21.webp": {
+          "assetHash": "732b2a782a3cfe73d60a0d0a26b4e3ab6f93b52dfbeb8ef6f57413be8c5e09e5",
+          "bytes": 179868,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K22.webp": {
+          "assetHash": "01674f7e6c6153d75e9871724d5ad03c0e90e1d5f09a7890ab39b703e119d556",
+          "bytes": 186606,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K23.webp": {
+          "assetHash": "96cb26060e309d5ec18f6735d4fae6f85b8ed4c2e042c5c64498a632c86fa790",
+          "bytes": 238098,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K24.webp": {
+          "assetHash": "e868c6ede6c781051192a5ab91145dd860443a03692db4ae36b1290c0eb1cfdf",
+          "bytes": 270610,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/K25.webp": {
+          "assetHash": "a73796cb5921d5ebc72888516fb71796edb59071b52bd507196a77720f75a42e",
+          "bytes": 223104,
+          "detectedType": "image/webp",
+          "role": "style"
+        },
+        "sources/项目/02_内容素材/对标封面/科技姐聊AI/VI拆解.md": {
+          "assetHash": "d36c94cbc4f03ca3169d224a266ee0208e8087161165dbaccc2068fd35787963",
+          "bytes": 16580,
+          "detectedType": "text/plain",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-comparison",
+      "sampleCount": 2,
+      "bytes": 4709784,
+      "resources": {
+        "图库/AI参考/comparison-v3.png": {
+          "assetHash": "44eecd4254537344315497c1c2545065e71e6f3f186a1da37d46fb06a5fa1a2b",
+          "bytes": 2349287,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/comparison-group-v4.png": {
+          "assetHash": "845ce661844459baf8a82573fd2edad85cdd9d7b7769999196de1ef376a8e124",
+          "bytes": 2355465,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/comparison-v2-source.svg": {
+          "assetHash": "410868e87fb10eaf4f421153eb80ef77202bd791831a2c589b2e0c532835798a",
+          "bytes": 2507,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/comparison-v2-reference.svg": {
+          "assetHash": "c2b3a32719a37bc7a51b4b6bd287ab4f0638898ec89ea1dd1f43bae444e7fb91",
+          "bytes": 2525,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-geometry",
+      "sampleCount": 2,
+      "bytes": 3815652,
+      "resources": {
+        "图库/AI参考/geometry-v3.png": {
+          "assetHash": "27ce2ac010b99ef62d4fc05ccbfede7b30f7a48d8c05620b15b86b44e39cfe00",
+          "bytes": 1930317,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/geometry-group-v4.png": {
+          "assetHash": "8dcf82de5d74b83d32d92a04942400be26321716db010f6d6f261743bd4e8100",
+          "bytes": 1882022,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/geometry-v2-source.svg": {
+          "assetHash": "d80ccbc72bd69153c5af090268b2ce9fd58d37df3da539fc6f34a69a4057a2d0",
+          "bytes": 1643,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/geometry-v2-reference.svg": {
+          "assetHash": "dd25eefa6df1b1af43fad6b7dffa1dbcbb8b53ae400ea440651adcf8e8486805",
+          "bytes": 1670,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-interview",
+      "sampleCount": 2,
+      "bytes": 4325986,
+      "resources": {
+        "图库/AI参考/interview-v2.png": {
+          "assetHash": "eb0858494089b5f9e6df8a880883831ea79a243117c2efbccb5ef48f18c3b66e",
+          "bytes": 2154609,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/interview-group-v4.png": {
+          "assetHash": "e8208112cad532292d910f9c977122a9f7ad99e56443c882d076975a87c1ddf6",
+          "bytes": 2167062,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/interview-v2-source.svg": {
+          "assetHash": "ab2b93baf76607a4c85ba127631dacfa9cdc342667f5ff2dcab0f06062f8f9e0",
+          "bytes": 2162,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/interview-v2-reference.svg": {
+          "assetHash": "93da57f4ff6eefea69ff31de5f469514eb0bd8106900e74d48f91d45481872f1",
+          "bytes": 2153,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-life-story",
+      "sampleCount": 2,
+      "bytes": 4793609,
+      "resources": {
+        "图库/AI参考/life-story-v3.png": {
+          "assetHash": "a86b9b970b7653c8ac0c1d8f8910ca33d2f98e52c87794e842bb34ab6156f7f1",
+          "bytes": 2305658,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/life-story-group-v4.png": {
+          "assetHash": "8310a04611c0d9c8fee47ad2786383799df178873c9a31607f6db4054057fab5",
+          "bytes": 2484021,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/life-story-v3-source.svg": {
+          "assetHash": "73782dc3caf2cf3ef4e5aef21942141da5ecf8707127c81ca602bc6756eea276",
+          "bytes": 1962,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/life-story-v3-reference.svg": {
+          "assetHash": "3049d9ed76d730b5cdf4040705c559fd0afc7ee32456e7c97db4d66cdf779d9c",
+          "bytes": 1968,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-lifestyle",
+      "sampleCount": 2,
+      "bytes": 4413960,
+      "resources": {
+        "图库/AI参考/lifestyle-v2.png": {
+          "assetHash": "c801a7554a3fd22a7dbeadaccd07b4d25a14067eb477659768754e03b53faf97",
+          "bytes": 2228845,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/lifestyle-group-v4.png": {
+          "assetHash": "bfa11d302a33d21fd440576e8fb541aa9fb7bed88f97135641c5e34acb989551",
+          "bytes": 2180601,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/lifestyle-v2-source.svg": {
+          "assetHash": "48422f2674731270632e1a13986cdf6424e5e1c175eed5a69cadf85191c458b4",
+          "bytes": 2248,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/lifestyle-v2-reference.svg": {
+          "assetHash": "45c49f21ca668e958ccc1077fd275bb41a88b589cc517158375e0d9e989f780c",
+          "bytes": 2266,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-magazine",
+      "sampleCount": 2,
+      "bytes": 5276338,
+      "resources": {
+        "图库/AI参考/magazine-v3.png": {
+          "assetHash": "c441f9b13de938dfa7e316432013f303005e6f90faaf71f00ce4ecc06eedbbee",
+          "bytes": 2520387,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/magazine-group-v4.png": {
+          "assetHash": "c910bab287382824461253abfbc69f0a920f471afea2e6b9b67c24a4384f44cf",
+          "bytes": 2751220,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/magazine-v2-source.svg": {
+          "assetHash": "77c44855f4e7915610a3eb3bff1717bb21a2a653fc67a1a1a5316a261c5f0de4",
+          "bytes": 2349,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/magazine-v2-reference.svg": {
+          "assetHash": "9219e1128b9e856dc0bbeba35514915e727cd1d7714bdac26a035cfbd0e8870a",
+          "bytes": 2382,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-neon",
+      "sampleCount": 2,
+      "bytes": 4462801,
+      "resources": {
+        "图库/AI参考/neon-v3.png": {
+          "assetHash": "e93143665c1db169404e47e837a92b8ea20091a02f09a3a83d5cbc587e6b3a6e",
+          "bytes": 2154232,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/neon-group-v4.png": {
+          "assetHash": "e71dfcf9f6129c7fbaeda38091532aeaf506585e972aeda5337d6299d90942f0",
+          "bytes": 2298873,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/neon-v2-source.svg": {
+          "assetHash": "95cf1787d0daab1ebdd40a5e90d9d9cdc11eeb7b8b6260000c0e2a19326b1353",
+          "bytes": 4841,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/neon-v2-reference.svg": {
+          "assetHash": "12d7d466eba214c3ce370f8c784dac7222654cfdfdc6a417e7774ad069d93f74",
+          "bytes": 4855,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-news",
+      "sampleCount": 2,
+      "bytes": 4678231,
+      "resources": {
+        "图库/AI参考/news-v2.png": {
+          "assetHash": "32b30a18e5cc198f2632a795207dc7e240abd95abc0a45bc6e252af960870502",
+          "bytes": 2194037,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/news-group-v4.png": {
+          "assetHash": "5c406b07be7c8ee05edcce87849432a3861b7a77f441250707b7ac2dbc79363c",
+          "bytes": 2478390,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/news-v2-source.svg": {
+          "assetHash": "20125909f8fc7e3e8ab8b6d5b6a8951c7c88109b6dae7400ac73086b11a81502",
+          "bytes": 2896,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/news-v2-reference.svg": {
+          "assetHash": "90203c51317e7ef5e5668d8f7e00d617b1855ff2c33531cc5f315bd6e542b2eb",
+          "bytes": 2908,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-notes",
+      "sampleCount": 2,
+      "bytes": 5177846,
+      "resources": {
+        "图库/AI参考/notes-v3.png": {
+          "assetHash": "42b42e93ce5be581ec865cf43bb4a2bd8d3467386a82fe2e71bdc5c49d4cba75",
+          "bytes": 2561297,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/notes-group-v4.png": {
+          "assetHash": "4fb6db11d503807c351f74f5004d3918481bb70b4bfb027763c4dc119d893315",
+          "bytes": 2508057,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/notes-v2-source.svg": {
+          "assetHash": "9adc55f159db9039d42c7426a047a83aa5d2f5af9621ad89e8c2dd01dda3f225",
+          "bytes": 54240,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/notes-v2-reference.svg": {
+          "assetHash": "32b78826163aef60bac0b6016cc3882498edf7635b095ced2717ce30718d5bdf",
+          "bytes": 54252,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-paper",
+      "sampleCount": 2,
+      "bytes": 5791729,
+      "resources": {
+        "图库/AI参考/paper-v3.png": {
+          "assetHash": "a5b67cfb16fe35092f0713c3517d2dbc6547610aa0751a80e60174cbfe9fb8dc",
+          "bytes": 2894533,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/paper-group-v4.png": {
+          "assetHash": "e390d57e1d9231727229b79b54b1c9823fed461b0acff899b8f6269baae7e97c",
+          "bytes": 2885236,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/paper-v2-source.svg": {
+          "assetHash": "5a62db2f7eca08260c67a8c9a93e07b3ee92c8774c4bcf19b8ad52f67f20e2d2",
+          "bytes": 5968,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/paper-v2-reference.svg": {
+          "assetHash": "b08c57d07c0b504a4defc3792fe2464bc018212440ce4eded0012f29758c3b49",
+          "bytes": 5992,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-product",
+      "sampleCount": 2,
+      "bytes": 4055065,
+      "resources": {
+        "图库/AI参考/product-v2.png": {
+          "assetHash": "3fe7215f52c0cecf41b1c7a03025561f820dd4531eaea8398779aac8f8313982",
+          "bytes": 2046739,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/product-group-v4.png": {
+          "assetHash": "4e38e89d3aaace9e8131a989466cc017a6c16298b44bdc0232f485c58a601486",
+          "bytes": 2002921,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/product-v2-source.svg": {
+          "assetHash": "18d19445a2c595fa00b58acb971c2a61c0d0a39016e00f85c151a4593948b4ed",
+          "bytes": 2698,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/product-v2-reference.svg": {
+          "assetHash": "29d7a6363cae1b4996ff94c1d229790c9583f9426b8acce8bc513d8b47367545",
+          "bytes": 2707,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    },
+    {
+      "id": "builtin-tech-collage",
+      "sampleCount": 2,
+      "bytes": 4426014,
+      "resources": {
+        "图库/AI参考/tech-collage-v3.png": {
+          "assetHash": "3161ee8b78141f387abcd49241a5c60b6216bf47eb831b253f60b83f322b0739",
+          "bytes": 2267168,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/AI参考/tech-collage-group-v4.png": {
+          "assetHash": "bee68d3508965fb49cde2dcef775183ba8e796bbbf2c847b4784654148fd92fd",
+          "bytes": 2153941,
+          "detectedType": "image/png",
+          "role": "style"
+        },
+        "图库/内置模板/tech-collage-v3-source.svg": {
+          "assetHash": "a1f1b5ab18aac0f291d70e6962da2a7b5614c69cca46053f140ec098b54cf94b",
+          "bytes": 2449,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        },
+        "图库/内置模板/tech-collage-v3-reference.svg": {
+          "assetHash": "54c3b9511b4f341cd0a7705c8b690498e776cbcd1461b7acb83eea87742d9b58",
+          "bytes": 2456,
+          "detectedType": "image/svg+xml",
+          "role": "structure"
+        }
+      }
+    }
+  ],
+  "construction": "Fresh library and complete public builtins via production APIs; one content with six candidates/selected cover/plan via mutation APIs; 99 synthetic metadata clones and 900 extra synthetic plans offline; every object then validated through production listContents(). Preparation excluded from all navigation timings.",
+  "cache": "Synthetic images were generated before measurement; OS page cache is not purged. Fresh Electron processes have independent userData and Chromium image caches."
+}

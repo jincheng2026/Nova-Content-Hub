@@ -1,0 +1,60 @@
+(node:4779) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (13.057459ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (35.497333ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (8.944458ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (4.664875ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (38.636833ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (2.314459ms)
+✔ navigation and new draft survive a paused focus refresh (3.067292ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.016125ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.955959ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.058333ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.382708ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.680708ms)
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (3.060666ms)
+(node:4781) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ detail reads reuse the successful workspace assets without a duplicate asset scan (34.701959ms)
+✔ explicit workspace refresh and library switch replace the shared assets (3.046ms)
+✔ a failed workspace asset refresh cannot publish a retained stale snapshot (2.732583ms)
+✔ late cover results are discarded after changing content or switching library (50.520875ms)
+(node:4782) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (6.390583ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.479792ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.90425ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.929667ms)
+✔ editor reconciliation failure also keeps the fallback full read (0.709833ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (0.502041ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (4.90475ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (6.037791ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (2.058541ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (15.719833ms)
+✔ local minute records use the planned timezone across a date boundary (78.732917ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.6ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.260667ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.469125ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (1.369875ms)
+✔ successive raster reads reuse one bound library opening while returning the original bytes (308.233209ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (435.104916ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (440.243333ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (385.093209ms)
+✔ a warm raster read still recovers a durable pending content transaction (426.321125ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (229.85875ms)
+✔ a thousand local schedules resolve the default timezone at most once per projection (25.312917ms)
+✔ the next projection observes a changed system timezone without modifying saved instant schedules (79.08875ms)
+✔ mixed date, local minute, and repeated DST instants keep existing projected ordering (1.366875ms)
+✔ day views order known times and leave date-only time unknown (98.46625ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.344916ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.552375ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.139875ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.154083ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2696.904

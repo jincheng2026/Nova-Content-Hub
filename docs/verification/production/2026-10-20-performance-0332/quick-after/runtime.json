@@ -1,0 +1,8 @@
+{
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl",
+  "bundle": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/bundle-1792487914524",
+  "sourceIdentity": "d90d175af36f2582328ad1ae94f57f9cefc60daa1a015d36e10948b139150c9e",
+  "fixtureOnlyReuse": true,
+  "sourceRevision": "ea355a41764b495e3254e050c3f3ae889d742540",
+  "scope": "Fresh source build to independent temp outputs, real Electron/native IPC/raster validation; synthetic library only; OS cache not purged"
+}

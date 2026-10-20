@@ -36,7 +36,7 @@ test('a readonly BUSY retries the pinned request, occupying the single pending s
 
 test('every allowed readonly operation stops after three extra attempts and explains temporary contention', async t => {
     const f = fixture(t, () => busy);
-    for (const op of ['workspace', 'list', 'readContent', 'workspaceLibrary', 'coverAssets', 'readCover', 'raster']) {
+    for (const op of ['workspace', 'list', 'readContent', 'workspaceLibrary', 'coverAssets', 'readCover', 'raster', 'rasterBatch']) {
         const before = f.requests.length;
         const rejected = assert.rejects(f.client.call(op, args), error => error.code === 'BUSY' && /暂时.*占用/.test(error.message));
         t.mock.timers.tick(79);

@@ -1,0 +1,6 @@
+{
+  "stage": "fixture construction before any Electron timing",
+  "result": "terminated own slow per-object synthetic API constructor to shorten feedback loop; no navigation measurement collected",
+  "exitCode": 143,
+  "productChanges": false
+}

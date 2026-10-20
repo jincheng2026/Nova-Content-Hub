@@ -1,3 +1,5 @@
+import {boundReader, forgetBoundReader} from './bound-reader.mts';
+import {errorInfo} from '../shared/contracts.ts';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +11,7 @@ import { coverInput, coverPending, photoPending, fingerprint, coverReference } f
 import type { LibraryBinding, Content } from '../shared/contracts.ts';
 import type { CoverView, Photo, CoverWorkerOperations, CoverPending } from '../shared/cover-contracts.ts';
 const schemas = {
-  seed: ['binding'], coverAssets: ['binding'], preflightPhoto: ['source'], importPhoto: ['binding', 'pending'], raster: ['binding', 'assetHash'],
+  seed: ['binding'], coverAssets: ['binding'], preflightPhoto: ['source'], importPhoto: ['binding', 'pending'], raster: ['binding', 'assetHash'], rasterBatch: ['binding', 'assetHashes'],
   inspectCoverInput: ['binding', 'contentId', 'input', 'editToken'], findCoverRequest: ['binding', 'fingerprint'], createCoverRequest: ['binding', 'pending'], createCoverAttempt: ['binding', 'pending'], findCoverAttempt: ['binding', 'pending'], handoffContext: ['binding', 'reference'], coverContext: ['binding', 'reference'], readCover: ['binding', 'contentId'],
   selectCover: ['binding', 'contentId', 'candidateId', 'editToken', 'mutationId'], cancelCover: ['binding', 'reference', 'mutationId'], candidateRaster: ['binding', 'contentId', 'candidateId'],
 } satisfies Record<keyof CoverWorkerOperations, string[]>;
@@ -72,6 +74,7 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
   if (!exact(raw, schemas[op]) || Object.entries(raw).some(([key, v]) => {
     if (key === 'binding') return !libraryBinding(v) || !absolute(v.root);
     if (key === 'source') return !absolute(v);
+    if (key === 'assetHashes') return !Array.isArray(v) || v.length < 1 || v.length > 2 || !Array.from(v).every(token) || new Set(v).size !== v.length;
     if (key === 'pending') return op === 'importPhoto' ? !photoPending(v) || !absolute(v.source) : !coverPending(v);
     if (key === 'input') return !coverInput(v);
     if (key === 'fingerprint') return !fingerprint(v);
@@ -81,9 +84,20 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
   if (['seed', 'importPhoto', 'createCoverRequest', 'createCoverAttempt', 'selectCover', 'cancelCover', 'handoffContext'].includes(op)) requireWrite(mode);
   if (op === 'preflightPhoto') return validateImportedRaster(sourceBytes(raw.source as string));
   const binding = raw.binding as unknown as LibraryBinding;
-  const library = openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  if (op === 'raster' || op === 'rasterBatch') {
+    try {
+      const library = boundReader(binding);
+      if (op === 'raster') return await raster(library, raw.assetHash as string);
+      // File reads/locks stay synchronous in one worker; only two full raster
+      // decodes overlap. One bad image must not fail the other batch member.
+      return await Promise.all((raw.assetHashes as string[]).map(async assetHash => {
+        try { return {ok: true as const, value: await raster(library, assetHash)}; }
+        catch (error) { forgetBoundReader(); return {ok: false as const, error: {code: errorInfo(error).code, message: '图片读取未完成。'}}; }
+      }));
+    } catch (error) { forgetBoundReader(); throw error; }
+  }
+  const library = ['coverAssets', 'readCover'].includes(op) ? boundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
   if (op === 'seed') { installBuiltins(library); return; }
-  if (op === 'raster') return raster(library, raw.assetHash as string);
   if (op === 'importPhoto') {
     const p = raw.pending as unknown as import('../shared/cover-contracts.ts').PhotoPending;
     const receipt = library.queryMutation(p.mutationId);

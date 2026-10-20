@@ -1,0 +1,95 @@
+{
+  "passed": false,
+  "error": "Error: Timeout document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]')&&(document.querySelector(\".creator-overview\") && document.querySelector(\".creator-featured img\")) / 自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary-100\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月20日星期二\n今天 0/100 已发\n一\n0\n二\n100\n三\n0\n四\n0\n五\n0\n六\n0\n日\n0\n▧\n本次不记录封面\n打开内容，继续制作\n下一条\n09:00\n抖音\n今天\nPerf 065\n\nSynthetic publication\n\n复制文案\n记录已发布\n打开内容\n今天\n100 条待发布\n查看日程 →\n09:00\n抖音\nSynthetic publication\n记录已发布\n09:00\n抖音\nSynthetic publication\n记录已发布\n09:00\n抖音\nSynthetic publication\n记录已发布\n09:00\n抖音\nSynthetic publication\n记录已发布\n09:00\n抖音\nSynthetic publication\n记录已发布\n查看今天全部 100 条安排 →\n明天 10-21\n\n暂无发布安排\n\n要处理\n0 项\n✓\n\n当前没有待处理事项\n\n内容项目\n100 篇 · 0 个合集\nPerf 065\n已选封面 · 已发 0/1\n›\nPerf 089\n已选封面 · 已发 0/1\n›\nPerf 024\n已选封面 · 已发 0/1\n›\nPerf 005\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗",
+  "samples": [],
+  "trace": [
+    {
+      "scope": "main",
+      "op": "bind",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 261.36
+    },
+    {
+      "scope": "main",
+      "op": "seed",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 1561.05
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 145.64
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 190.03
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 424.32
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 571.15
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 300.46,
+      "bytes": 1110362
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 301.22,
+      "bytes": 1110362
+    },
+    {
+      "scope": "main",
+      "op": "list",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 100.38
+    },
+    {
+      "scope": "raster",
+      "op": "raster",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 103.99,
+      "bytes": 1110860
+    },
+    {
+      "scope": "protocol",
+      "op": "resource",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 104.69,
+      "bytes": 1110860
+    },
+    {
+      "scope": "main",
+      "op": "workspace",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 171.91
+    },
+    {
+      "scope": "main",
+      "op": "coverAssets",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 410.92
+    },
+    {
+      "scope": "main",
+      "op": "workspaceLibrary",
+      "stage": "fresh-process-open-overview",
+      "durationMs": 578.49
+    }
+  ]
+}

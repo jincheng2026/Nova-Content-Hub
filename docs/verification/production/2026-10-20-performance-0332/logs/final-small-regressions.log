@@ -1,0 +1,24 @@
+✔ successive raster reads reuse one bound library opening while returning the original bytes (401.069166ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (286.236084ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (273.861ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (339.62125ms)
+✔ a warm raster read still recovers a durable pending content transaction (464.845791ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (277.194125ms)
+✔ two-image batches isolate bad images and reject an unbounded batch (242.218584ms)
+✔ image requests merge in flight, cap batches at two, drain before writers, and discard revoked work (149.159917ms)
+✔ a thousand local schedules resolve the default timezone at most once per projection (22.633292ms)
+✔ the next projection observes a changed system timezone without modifying saved instant schedules (28.799833ms)
+✔ mixed date, local minute, and repeated DST instants keep existing projected ordering (0.793542ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (2.956458ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.74525ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.570083ms)
+✔ readonly non-BUSY failures are returned once (0.330042ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.305667ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2920.490958

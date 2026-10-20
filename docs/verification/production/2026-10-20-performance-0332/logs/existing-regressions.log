@@ -1,0 +1,73 @@
+(node:1933) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (14.752958ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (21.035125ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.165ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.302375ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.518375ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.02025ms)
+✔ navigation and new draft survive a paused focus refresh (2.111834ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.195083ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.881625ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.83325ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.559834ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.769625ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (3424.835459ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (3347.889083ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (2988.37675ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (3112.254666ms)
+  ✔ failed (3605.22225ms)
+  ✔ superseded (3988.629667ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (10707.274167ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2662.325208ms)
+  ✔ after (3084.217542ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (5747.250792ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (2310.855666ms)
+  ✔ true (1920.024167ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (4231.591583ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (3034.328125ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (341.542541ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (415.18875ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2456.076042ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2562.912667ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (4577.107584ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1447.286666ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (4057.89675ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (948.646792ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (686.676417ms)
+
+Interrupted while running:
+
+⚠ workbench/test/covers.test.mjs (workbench/test/covers.test.mjs:1:1)
+⚠ workbench/test/daily-publication-wiring.test.mjs (workbench/test/daily-publication-wiring.test.mjs:1:1)
+⚠ workbench/test/managed-refresh.test.mjs (workbench/test/managed-refresh.test.mjs:1:1)
+✖ workbench/test/covers.test.mjs (53236.161833ms)
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (2.653583ms)
+(node:1936) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (3.554833ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.083084ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.158959ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.974167ms)
+✔ editor reconciliation failure also keeps the fallback full read (5.556ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (1.4165ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (2.814208ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (7.34525ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.47925ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 1
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 53249.762333
+
+✖ failing tests:
+
+test at workbench/test/covers.test.mjs:1:1
+✖ workbench/test/covers.test.mjs (53236.161833ms)
+  'Promise resolution is still pending but the event loop has already resolved'

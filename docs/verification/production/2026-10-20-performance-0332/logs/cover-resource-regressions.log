@@ -1,0 +1,10 @@
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (677.830875ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2238.689708ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3118.813667

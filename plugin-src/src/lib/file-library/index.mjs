@@ -775,7 +775,7 @@ function library(root, initialInfo, rootIdentity) {
                 fail('CORRUPT', `Unexpected object directory: ${name}`);
             }
             return result(snapshot(root, name, kind), name, undefined, kind);
-        }).filter(item => (item.deletedAt !== null) === deleted));
+        }).filter(item => deleted === undefined || (item.deletedAt !== null) === deleted));
     }
 
     function mutate(operation, contentId, input, expectedToken, options = {}, kind = 'content', edit, forcedId, currentRevision = false) {
@@ -999,6 +999,7 @@ function library(root, initialInfo, rootIdentity) {
             durability: process.platform === 'win32' ? 'process-crash/file-fsync' : 'process-crash/file-and-directory-fsync'
         }),
         listContents: () => list(false),
+        listAllContents: () => list(undefined).sort((a, b) => Number(a.deletedAt !== null) - Number(b.deletedAt !== null)),
         listTrash: () => list(true),
         readContent: contentId => locked(() => result(snapshot(root, id(contentId)), contentId)),
         trashContent: (contentId, token, options) => mutate('trash', contentId, {}, token, options, 'content', meta => {

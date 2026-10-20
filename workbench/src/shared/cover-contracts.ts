@@ -1,4 +1,4 @@
-import type { Content, LibraryBinding } from './contracts.ts';
+import type { Content, LibraryBinding, Reply } from './contracts.ts';
 export const ASSISTANTS = ['codex', 'workbuddy'] as const;
 export type Assistant = typeof ASSISTANTS[number];
 export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-content-cover-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured' }
@@ -41,6 +41,7 @@ export interface CoverWorkerOperations {
   preflightPhoto: { args: { source: string }; result: { assetHash: string } };
   importPhoto: { args: { binding: LibraryBinding; pending: PhotoPending }; result: Photo };
   raster: { args: { binding: LibraryBinding; assetHash: string }; result: { data: Uint8Array; mime: string } };
+  rasterBatch: { args: { binding: LibraryBinding; assetHashes: string[] }; result: Reply<{data: Uint8Array; mime: string}>[] };
   inspectCoverInput: { args: { binding: LibraryBinding; contentId: string; input: CoverInput; editToken: string }; result: Fingerprint };
   findCoverRequest: { args: { binding: LibraryBinding; fingerprint: Fingerprint }; result: RequestResult | null };
   createCoverRequest: { args: { binding: LibraryBinding; pending: CoverPending }; result: RequestResult };

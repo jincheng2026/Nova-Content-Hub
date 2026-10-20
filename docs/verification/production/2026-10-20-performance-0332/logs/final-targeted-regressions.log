@@ -1,0 +1,33 @@
+✔ successive raster reads reuse one bound library opening while returning the original bytes (523.1635ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (501.284041ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (529.193084ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (620.719625ms)
+✔ a warm raster read still recovers a durable pending content transaction (631.811417ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (345.951083ms)
+✔ two-image batches isolate bad images and reject an unbounded batch (439.503ms)
+✔ image requests merge in flight, cap batches at two, drain before writers, and discard revoked work (257.37775ms)
+✔ a thousand local schedules resolve the default timezone at most once per projection (12.827542ms)
+✔ the next projection observes a changed system timezone without modifying saved instant schedules (34.055125ms)
+✔ mixed date, local minute, and repeated DST instants keep existing projected ordering (0.824708ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (3.094ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.744041ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.57ms)
+✔ readonly non-BUSY failures are returned once (0.2385ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.983958ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (2396.875541ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (683.77925ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (427.775917ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (233.033916ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (291.394167ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.626083ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.257042ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (1022.506959ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (635.639875ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6037.676333

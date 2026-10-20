@@ -43,6 +43,7 @@ declare module '*file-library/index.mjs' {
         readPrompt(id: string): import('./contracts.ts').WorkspacePrompt;
 
         listContents(): ReturnType<Library['readContent']>[];
+        listAllContents(): ReturnType<Library['readContent']>[];
 
         listTrash(): ReturnType<Library['readContent']>[];
 

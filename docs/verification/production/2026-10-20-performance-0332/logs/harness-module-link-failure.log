@@ -1,0 +1,32 @@
+READY_FIXTURE /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/fixture.json
+App threw an error during load
+Error [ERR_MODULE_NOT_FOUND]: Cannot find package 'smol-toml' imported from /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-real-performance-OEMMdl/bundle/workbench/dist/main/assistant-skill.mjs
+    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:331:9)
+    at packageResolve (node:internal/modules/esm/resolve:797:25)
+    at moduleResolve (node:internal/modules/esm/resolve:886:18)
+    at defaultResolve (node:internal/modules/esm/resolve:1019:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:705:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:725:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:763:56)
+    at #resolve (node:internal/modules/esm/loader:687:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:607:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:276:33)
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: performance sample must complete: /Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-20-performance-0332/baseline/plans-100-trial-0.json
+
+1 !== 0
+
+    at file:///Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-20-performance-0332/probe-source/run-performance.mjs:24:358
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

@@ -1,0 +1,294 @@
+{
+  "summary": {
+    "groups": 23,
+    "images": 34,
+    "widthRange": [
+      600,
+      900
+    ],
+    "heightRange": [
+      855,
+      1710
+    ],
+    "byteRange": [
+      103978,
+      366747
+    ],
+    "medianBytes": 224412.0,
+    "totalBytes": 8013255
+  },
+  "images": [
+    {
+      "templateId": "qinzi-caoyuan",
+      "image": "亲子草原贴纸/原图-1.jpg",
+      "width": 900,
+      "height": 1350,
+      "bytes": 281493,
+      "sha256": "925a48509133214cc296b99c367ad300e7538ad7ce70ed747829f9a64e3e5c8f"
+    },
+    {
+      "templateId": "yanxue-lvbiaoqian",
+      "image": "研学实拍绿标签/原图-1.jpg",
+      "width": 790,
+      "height": 1130,
+      "bytes": 184940,
+      "sha256": "934a392d744b38a85bbf5e4e67df6ad75893e5db4513c83344fbafd38abca9b3"
+    },
+    {
+      "templateId": "fengjing-jiantie",
+      "image": "风景剪贴大标题/原图-1.jpg",
+      "width": 900,
+      "height": 1395,
+      "bytes": 332354,
+      "sha256": "f05a808415087a4e2023ec38d16553bd3839d1928b3cbd809049128d05d0b670"
+    },
+    {
+      "templateId": "fengjing-jiantie",
+      "image": "风景剪贴大标题/原图-2.jpg",
+      "width": 900,
+      "height": 1548,
+      "bytes": 281567,
+      "sha256": "888ea11bfaf8466e3114c61adb28ab9ddcbf1ac52fab7cc491962a9b32d13f5b"
+    },
+    {
+      "templateId": "jianbian-bolang",
+      "image": "渐变大字波浪边/原图-1.jpg",
+      "width": 790,
+      "height": 1240,
+      "bytes": 221615,
+      "sha256": "148f4677fbae3630855d980c39f9c1c6808af4201efdd1d8b96b75f94d1f537c"
+    },
+    {
+      "templateId": "wangge-shejiao",
+      "image": "网格纸社交风/原图-1.jpg",
+      "width": 790,
+      "height": 1264,
+      "bytes": 223973,
+      "sha256": "cb7463cabc5ab79e891e6e57724217185d3d3205c57e9755f9dd22db8cb8c51b"
+    },
+    {
+      "templateId": "chunri-shouhui",
+      "image": "春日手绘花/原图-1.jpg",
+      "width": 900,
+      "height": 1674,
+      "bytes": 224780,
+      "sha256": "55fdc684fb8451fd829fcc344ec394225b27b1325456195dd316d39d37ed1aa0"
+    },
+    {
+      "templateId": "bianping-chahua",
+      "image": "扁平插画潮流/原图-1.jpg",
+      "width": 600,
+      "height": 1110,
+      "bytes": 118914,
+      "sha256": "817ebb0c2a477686d71ae53e1b8668b54a4fc6e1f8760fc95b4c8390a8eb67ee"
+    },
+    {
+      "templateId": "qingxin-shouxie",
+      "image": "清新手写风景/原图-1.jpg",
+      "width": 790,
+      "height": 1146,
+      "bytes": 206310,
+      "sha256": "3149b8dae9f4debb022654c68c38d0403c10d91d7aa286c6393a049a02a18dbd"
+    },
+    {
+      "templateId": "qingxin-shouxie",
+      "image": "清新手写风景/原图-2.jpg",
+      "width": 900,
+      "height": 1620,
+      "bytes": 198103,
+      "sha256": "cf0472709d89ae7e5dc3d599a1d9e8315c92a41268e99e50ec9c49da7d2054fd"
+    },
+    {
+      "templateId": "huwai-heizi-tuya",
+      "image": "户外黑字涂鸦/原图-1.jpg",
+      "width": 900,
+      "height": 1278,
+      "bytes": 343535,
+      "sha256": "22c70c17ac13957efd2d7c16e0f43206feaa5145a63a62acc60918cd26ff169c"
+    },
+    {
+      "templateId": "dapian-maobi",
+      "image": "大片配毛笔大字/原图-1.jpg",
+      "width": 790,
+      "height": 1280,
+      "bytes": 131107,
+      "sha256": "1bebc4172635575dfdc979e8a2455460a1389ec17b8adb8d2a288bafb9d5611d"
+    },
+    {
+      "templateId": "dapian-maobi",
+      "image": "大片配毛笔大字/原图-2.jpg",
+      "width": 900,
+      "height": 1404,
+      "bytes": 320282,
+      "sha256": "a800a80501765b40c13ae7fcc25a80d07fe0afbd6193181b9b64d5d226867b91"
+    },
+    {
+      "templateId": "dapian-maobi",
+      "image": "大片配毛笔大字/原图-3.jpg",
+      "width": 790,
+      "height": 1146,
+      "bytes": 103978,
+      "sha256": "790a8ee9ecb2ea744fbd7634dce126183e2b644ac533ca615ff12b153a660ae0"
+    },
+    {
+      "templateId": "dapian-maobi",
+      "image": "大片配毛笔大字/原图-4.jpg",
+      "width": 750,
+      "height": 1088,
+      "bytes": 201841,
+      "sha256": "fe06d7fa3ae099bb7098d8b5f4669e172abc2d2a47ae247b83675f543f34c1ef"
+    },
+    {
+      "templateId": "dapian-xieti",
+      "image": "大片粗斜体字/原图-1.jpg",
+      "width": 790,
+      "height": 1090,
+      "bytes": 171257,
+      "sha256": "cb607c9746da201603c6e39de8365b5ec910dd42c7e5550cfd15bcb175720708"
+    },
+    {
+      "templateId": "dapian-xieti",
+      "image": "大片粗斜体字/原图-2.jpg",
+      "width": 790,
+      "height": 1264,
+      "bytes": 184234,
+      "sha256": "5e8d6b12c6a323b497f494e7bbf8d2ecbb10a09c6ed3129fb134e22c304a7c39"
+    },
+    {
+      "templateId": "shufa-guofeng",
+      "image": "书法题字国风/原图-1.jpg",
+      "width": 790,
+      "height": 1422,
+      "bytes": 111435,
+      "sha256": "bdbaa1c7dcd666e49a2b079d7ec38feba92319f27ae84ac9b2fc5ddb83e29f27"
+    },
+    {
+      "templateId": "shufa-guofeng",
+      "image": "书法题字国风/原图-2.jpg",
+      "width": 900,
+      "height": 1200,
+      "bytes": 167586,
+      "sha256": "c94d17ac83029d9bc53d88e1d39799abee7e8eab06b9f012ee746285f9079c3d"
+    },
+    {
+      "templateId": "lanse-sizhi",
+      "image": "蓝色撕纸拼贴/原图-1.jpg",
+      "width": 900,
+      "height": 1647,
+      "bytes": 326510,
+      "sha256": "c7bc5ee07d95595a0cced68093ebd891adbd8e1406d83b59e54bcc524fb5353c"
+    },
+    {
+      "templateId": "lanse-sizhi",
+      "image": "蓝色撕纸拼贴/原图-2.jpg",
+      "width": 900,
+      "height": 1530,
+      "bytes": 319278,
+      "sha256": "f7925a5735f8a9cd672980bb3f75060ac23f95724ab8316f03cdd6d2702e6c04"
+    },
+    {
+      "templateId": "lanse-sizhi",
+      "image": "蓝色撕纸拼贴/原图-3.jpg",
+      "width": 900,
+      "height": 1620,
+      "bytes": 310419,
+      "sha256": "554c925563d692f4864c21ac9a360bcda2b9bf46591aa5010935bc9c92c6144c"
+    },
+    {
+      "templateId": "lanhong-zhinan",
+      "image": "蓝红撞色指南/原图-1.jpg",
+      "width": 900,
+      "height": 1602,
+      "bytes": 274071,
+      "sha256": "132ca9c2d4aa96aec2bcf35e921c2858b7a659173c83477c6278a33b706e37f9"
+    },
+    {
+      "templateId": "huise-zhouzhi",
+      "image": "灰色皱纸拼贴/原图-1.jpg",
+      "width": 900,
+      "height": 1170,
+      "bytes": 204406,
+      "sha256": "8e82d4b896c293c901d629c89d75c21e70d2b5544fc57d471332fe6403a8fc54"
+    },
+    {
+      "templateId": "heidi-chengbian",
+      "image": "黑底橙边城市/原图-1.jpg",
+      "width": 900,
+      "height": 1710,
+      "bytes": 366747,
+      "sha256": "8fc18f9a7deadc7d9f50059708348e22ec280c2fa060cd1e4e65c0c3a9fa6c62"
+    },
+    {
+      "templateId": "fugu-chuangkou",
+      "image": "复古窗口拼贴/原图-1.jpg",
+      "width": 900,
+      "height": 1152,
+      "bytes": 214527,
+      "sha256": "85fab08351c879178807cf8933efe37a04a6497a1a2093a7468d8df3a382c89a"
+    },
+    {
+      "templateId": "fugu-lv-jianbao",
+      "image": "复古绿剪报/原图-1.jpg",
+      "width": 900,
+      "height": 1665,
+      "bytes": 288861,
+      "sha256": "6312520a951fe2e91775c40506c033cfa14e6da0e13050aa8f48350c45c8b5c4"
+    },
+    {
+      "templateId": "liti-jiantie",
+      "image": "立体剪贴街景/原图-1.jpg",
+      "width": 900,
+      "height": 1440,
+      "bytes": 319378,
+      "sha256": "426943016bc9ea886ca328d05b69381cadce500973a637a479af2da801c38287"
+    },
+    {
+      "templateId": "chengse-dazi",
+      "image": "橙色城市大字/原图-1.jpg",
+      "width": 900,
+      "height": 1665,
+      "bytes": 257949,
+      "sha256": "6ac8e603822db089ccb4d368b4ea02eb488661c9cd5a75ee78f5018df3f3aee1"
+    },
+    {
+      "templateId": "hongse-xiqing",
+      "image": "红色喜庆拼贴/原图-1.jpg",
+      "width": 900,
+      "height": 1350,
+      "bytes": 256888,
+      "sha256": "d570a821416b1839618b3895227fe7a23315dec76260e7f1b462c23959d60c62"
+    },
+    {
+      "templateId": "lvse-gonglue",
+      "image": "绿色攻略卡片/原图-1.jpg",
+      "width": 750,
+      "height": 855,
+      "bytes": 140534,
+      "sha256": "b1908d42d1de4eed20dec821d2b9cbe370256bbb00212ce6b655f8c694cd3791"
+    },
+    {
+      "templateId": "sekuai-kapian",
+      "image": "色块卡片详情页/原图-1.jpg",
+      "width": 750,
+      "height": 1252,
+      "bytes": 274723,
+      "sha256": "ba28ceb5cfc61569dd3280061d7411331a7c8be742f82e29dd5731e0eab43edd"
+    },
+    {
+      "templateId": "sekuai-kapian",
+      "image": "色块卡片详情页/原图-2.jpg",
+      "width": 790,
+      "height": 1264,
+      "bytes": 224044,
+      "sha256": "d23b32d3b46839e7dade9f3a3b4bbd54d68997eff9cc9b9ae40d13497e1d416b"
+    },
+    {
+      "templateId": "sekuai-kapian",
+      "image": "色块卡片详情页/原图-3.jpg",
+      "width": 900,
+      "height": 1273,
+      "bytes": 225616,
+      "sha256": "c6b885f1724591c63b4714728054fc45eb5654911c8d58cbf4964be6bb1ee1c3"
+    }
+  ]
+}

@@ -117,7 +117,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url))}));
     protocol.handle('nova-content', async request => {
         if (request.method === 'GET' && controller.covers.allows(request.url)) {
-            try { const image = await runOperation(() => controller.covers.resource(request.url), 'background'); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
+            try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
         }
         const resource = staticResource(request.url, resources);
@@ -148,11 +148,17 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
     };
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
-    const controller = new DesktopController({
+    const controller: DesktopController = new DesktopController({
         copyText: text => clipboard.writeText(text),
         openPublicationURL: url => shell.openExternal(url),
         revealFolder: root => shell.showItemInFolder(root),
-        resourceWorker,
+        resourceWorker: {call: (op, args) => {
+            const epoch = controller.covers.epoch;
+            return runOperation(() => {
+                if (epoch !== controller.covers.epoch) throw Object.assign(new Error('图片所属内容库已切换。'), {code: 'CANCELLED'});
+                return resourceWorker!.call(op, args);
+            }, 'background');
+        }},
         store: new BindingStore(path.join(app.getPath('userData'), 'machine-binding.json')),
         worker,
         authMode: release.AUTH_MODE,

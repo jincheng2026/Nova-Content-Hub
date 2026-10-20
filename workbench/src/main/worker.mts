@@ -1,3 +1,4 @@
+import {boundReader} from './bound-reader.mts';
 import {isCoverOperation, executeCover} from './cover-worker.mts';
 import {isTemplateOperation, executeTemplate} from './template-worker.mts';
 import {isWorkspaceOperation, executeWorkspace} from './workspace-worker.mts';
@@ -29,7 +30,7 @@ const bound = (binding: LibraryBinding) => openLibrary(binding.root, {
     expectedRootIdentity: binding.rootIdentity
 });
 function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
-    const contents = [...library.listContents(), ...library.listTrash()].map(content => {
+    const contents = library.listAllContents().map(content => {
         return {
             ...projection(content),
             createdAt: content.createdAt,
@@ -125,7 +126,8 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
         } else library = openLibrary(args.destination as string);
         return bindingOf(library);
     }
-    const library = bound(args.binding as unknown as LibraryBinding);
+    const binding = args.binding as unknown as LibraryBinding;
+    const library = ['workspace', 'list', 'readContent'].includes(op as string) ? boundReader(binding) : bound(binding);
     if (op === 'workspace') return workspace(library);
     if (op === 'list') return (args.view === 'trash' ? library.listTrash() : library.listContents()).map(projection);
     if (op === 'readContent') return projection(library.readContent(args.id as string));

@@ -10,12 +10,13 @@ export function scheduleMinute(schedule: WorkspaceSchedule, timeZone?: string) {
   return new Intl.DateTimeFormat('zh-CN', {timeZone: timeZone ?? schedule.timezone, hour: '2-digit', minute: '2-digit', hourCycle: 'h23'}).format(new Date(schedule.at));
 }
 
-export function scheduleForView(schedule: WorkspaceSchedule, timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone): WorkspaceSchedule {
-  return schedule.precision === 'instant' ? {...schedule, timezone: timeZone} : schedule;
+export function scheduleForView(schedule: WorkspaceSchedule, timeZone?: string): WorkspaceSchedule {
+  return schedule.precision === 'instant' ? {...schedule, timezone: timeZone === undefined ? new Intl.DateTimeFormat().resolvedOptions().timeZone : timeZone} : schedule;
 }
 
-export function compareSchedules(a: WorkspaceSchedule, b: WorkspaceSchedule, timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone) {
+export function compareSchedules(a: WorkspaceSchedule, b: WorkspaceSchedule, timeZone?: string) {
   if (a.precision === 'instant' && b.precision === 'instant') return Date.parse(a.at) - Date.parse(b.at);
+  if (timeZone === undefined && (a.precision === 'instant' || b.precision === 'instant')) timeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
   return scheduleDay(a, timeZone).localeCompare(scheduleDay(b, timeZone)) || (scheduleMinute(a, timeZone) ?? '99:99').localeCompare(scheduleMinute(b, timeZone) ?? '99:99');
 }
 
@@ -30,6 +31,8 @@ export interface PublicationEntry {
 }
 
 export function publicationEntries(library: WorkspaceLibrarySnapshot, timeZone?: string, includeCancelled = false): PublicationEntry[] {
+  // Resolve once per projection, and only when an instant actually needs a view timezone.
+  let viewTimeZone = timeZone;
   const channels = new Map(library.settings.channels.map(channel => [channel.id, channel.name]));
   const documents = [
     ...library.contentDetails.filter(item => !item.deletedAt && !item.isExample).map(document => ({kind: 'content' as const, document})),
@@ -41,7 +44,9 @@ export function publicationEntries(library: WorkspaceLibrarySnapshot, timeZone?:
     for (const publication of document.publications) if (publication.planId && !superseded.has(publication.id) && !currentRecords.has(publication.planId)) currentRecords.set(publication.planId, publication);
     return document.plans.filter(plan => includeCancelled || plan.status !== 'cancelled').map(plan => {
     const publication = plan.status === 'published' ? currentRecords.get(plan.id) ?? null : null;
-    const schedule = scheduleForView(publication?.schedule ?? plan.schedule, timeZone);
-    return {kind, document, plan, publication, schedule, day: scheduleDay(schedule, timeZone), channel: publication?.channelName ?? channels.get(plan.channelId) ?? '原渠道已不可用'};
-  });}).sort((a, b) => compareSchedules(a.schedule, b.schedule, timeZone));
+    const original = publication?.schedule ?? plan.schedule;
+    if (original.precision === 'instant' && viewTimeZone === undefined) viewTimeZone = new Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const schedule = scheduleForView(original, viewTimeZone);
+    return {kind, document, plan, publication, schedule, day: scheduleDay(schedule, viewTimeZone), channel: publication?.channelName ?? channels.get(plan.channelId) ?? '原渠道已不可用'};
+  });}).sort((a, b) => compareSchedules(a.schedule, b.schedule, viewTimeZone));
 }
