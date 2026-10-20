@@ -14,7 +14,7 @@ function useControl(onChange: (value: string) => void, disabled?: boolean, id?: 
     const dialog = ref.current?.closest('dialog');
     if (!dialog) return;
     const escape = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || (event.target as Element).closest('dialog') !== dialog) return;
+      if (event.key !== 'Escape' || event.isComposing || event.keyCode === 229 || (event.target as Element).closest('dialog') !== dialog) return;
       if (!open && !ref.current?.contains(event.target as Node)) return;
       // Closed Semi triggers also swallow Escape; let the native dialog handle it.
       event.stopPropagation();
@@ -62,6 +62,19 @@ export function PopupSelect({children, onChange, searchable = false, ...props}: 
   const {ref, popup, change, nameId, label, setOpen} = useControl(onChange, props.disabled, props.id, props['aria-label'], () => select.current?.close());
   const options = Children.toArray(children).filter(isValidElement<{value: string; disabled?: boolean; children?: ReactNode}>).map(option => ({value: option.props.value, disabled: option.props.disabled, label: option.props.children}));
   return <span ref={ref} className="semi-control"><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} optionList={options} filter={searchable ? (input, option) => String(option.label ?? '').toLocaleLowerCase().includes(input.toLocaleLowerCase()) : false} virtualize={searchable ? {itemSize: 36, height: 252} : undefined} searchPlaceholder="搜索选项" emptyContent="没有匹配的选项" getPopupContainer={popup} onChange={value => {if (typeof value === 'string') change(value);}}/><ValidationInput {...props}/></span>;
+}
+export function PopupCreatableSelect({options, onChange, placeholder = '选择已有分类或直接输入', ...props}: ControlProps & {options: string[]; placeholder?: string}) {
+  const select = useRef<Select<string>>(null);
+  const {ref, popup, change, nameId, label, setOpen} = useControl(onChange, props.disabled, props.id, props['aria-label'], () => select.current?.close());
+  // Semi caches created entries; filter keeps only saved options and the current draft visible.
+  return <span ref={ref} className="semi-control semi-control-creatable" onKeyDownCapture={event => {
+    // IME keys edit candidate text before Semi handles selection or dismissal.
+    if (event.nativeEvent.isComposing || event.keyCode === 229) {event.stopPropagation(); return;}
+    if (event.key === 'Enter') event.preventDefault();
+  }} onKeyPressCapture={event => {if (event.key === 'Enter') {if (!event.nativeEvent.isComposing && event.keyCode !== 229) event.preventDefault(); event.stopPropagation();}}}><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} value={props.value || undefined} placeholder={placeholder} filter={(input, option) => (options.includes(String(option.value)) || option.value === props.value) && String(option.label).toLocaleLowerCase().includes(input.toLocaleLowerCase())} allowCreate showClear autoClearSearchValue={false} defaultActiveFirstOption={false} inputProps={{composition: true, 'aria-label': label}} optionList={options.filter(Boolean).map(value => ({value, label: value}))} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} getPopupContainer={popup} onSearch={(value, event) => {
+    // Semi also calls onSearch while closing; only actual edits belong to the draft.
+    if (event?.type === 'change' || event?.type === 'compositionend') change(value);
+  }} onChange={value => {if (typeof value === 'string' || value === undefined) change(value ?? '');}}/><ValidationInput {...props}/></span>;
 }
 export function CalendarDateInput({onChange, min, max, ...props}: ControlProps & {min?: string; max?: string}) {
   const picker = useRef<BaseDatePicker>(null);

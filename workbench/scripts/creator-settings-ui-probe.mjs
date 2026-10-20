@@ -55,7 +55,9 @@ assert.equal(await run('document.querySelectorAll(".creator-settings-dialog deta
 for(const width of [1440,1100,900]) {
  await win.setSize(width,1100);await run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
  assert.equal(await run('document.querySelector("dialog").scrollWidth<=document.querySelector("dialog").clientWidth'),true,'settings bounded');
- assert.equal(await run('document.querySelector(".creator-settings-assistant").getBoundingClientRect().top<=document.querySelector(".creator-settings-profile").getBoundingClientRect().top'),true,'global assistant is prominent');
+ assert.equal(await run('document.querySelector(".creator-settings-profile").getBoundingClientRect().top<=document.querySelector(".creator-settings-assistant").getBoundingClientRect().top'),true,'personal information comes first');
+ assert.equal(await run('document.querySelector(".creator-settings-channels").getBoundingClientRect().top<=document.querySelector(".creator-settings-assistant").getBoundingClientRect().top'),true,'publishing channels come before assistant setup');
+ assert.deepEqual(await run('[...document.querySelector(".creator-settings-columns").children].slice(0,2).map(el=>el.classList.contains("creator-settings-profile")?"profile":el.classList.contains("creator-settings-channels")?"channels":"other")'),['profile','channels'],'DOM and visual priority agree');
  await fs.writeFile(path.join(probeRoot,`settings-${width}.png`),(await win.webContents.capturePage()).toPNG());
 }
 await tab('帮助与排查');await wait('!document.querySelector(".creator-settings-help").hidden');

@@ -1,0 +1,10 @@
+AssertionError [ERR_ASSERTION]: source title visible beside repeated plan text
+    at probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-calendar-pagination-YuKcTo/probe-main.mjs:38:10) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '相同发布文案',
+  expected: /春日散步 · 西湖篇/,
+  operator: 'match',
+  diff: 'simple'
+}
+Evidence: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-calendar-pagination-YuKcTo

@@ -1,0 +1,118 @@
+{
+  "before": {
+    "viewport": {
+      "width": 1440,
+      "height": 1004
+    },
+    "scroll": {
+      "x": 0,
+      "y": 0,
+      "height": 1072
+    },
+    "resume": {
+      "x": 15,
+      "y": 1013.171875,
+      "width": 81.125,
+      "height": 32,
+      "top": 1013.171875,
+      "right": 96.125,
+      "bottom": 1045.171875,
+      "left": 15
+    },
+    "center": {
+      "x": 55.5625,
+      "y": 1029.171875
+    },
+    "hit": null,
+    "hitIsResume": false,
+    "dialogs": [
+      {
+        "open": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "hosts": [
+      {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "pointerEvents": "none",
+        "childCount": 0
+      }
+    ]
+  },
+  "after": {
+    "viewport": {
+      "width": 1440,
+      "height": 1004
+    },
+    "scroll": {
+      "x": 0,
+      "y": 41,
+      "height": 1072
+    },
+    "resume": {
+      "x": 15,
+      "y": 972.171875,
+      "width": 81.125,
+      "height": 32,
+      "top": 972.171875,
+      "right": 96.125,
+      "bottom": 1004.171875,
+      "left": 15
+    },
+    "center": {
+      "x": 55.5625,
+      "y": 988.171875
+    },
+    "hit": "<span class=\"semi-button-content\" x-semi-prop=\"children\">继续编辑</span>",
+    "hitIsResume": true,
+    "dialogs": [
+      {
+        "open": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        }
+      }
+    ],
+    "hosts": [
+      {
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "width": 0,
+          "height": 0,
+          "top": 0,
+          "right": 0,
+          "bottom": 0,
+          "left": 0
+        },
+        "pointerEvents": "none",
+        "childCount": 0
+      }
+    ]
+  }
+}

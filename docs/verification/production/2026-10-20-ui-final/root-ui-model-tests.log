@@ -1,0 +1,18 @@
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (2.655125ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (1.489541ms)
+✔ both worker prompt projections default old files without rewrites and expose durable favorite changes (2077.091209ms)
+✔ favorite command boundary requires a present boolean and finite fields before any write (288.13175ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (5.502875ms)
+✔ local minute records use the planned timezone across a date boundary (76.170666ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.171375ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.452875ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.423959ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.335209ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2678.987792

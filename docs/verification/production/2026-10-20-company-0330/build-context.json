@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-20T06:25:27.529Z",
+  "sourceCommit": "7d1eb85783356ed83aab7601c91eed1faca75e79",
+  "frozenRoot": "/Users/mac/.codex/worktrees/company-0330-build/Nova-Content-Hub",
+  "platform": "darwin",
+  "arch": "arm64",
+  "node": "v24.20.0",
+  "nodeArchive": "node-v24.20.0-darwin-arm64.tar.gz",
+  "nodeArchiveSha256": "40e5607e5ecb3db9192723776da2d75d966260fc74a7a9e731c1bd67dda96bc8",
+  "nodeArchiveVerifiedUsing": "plugin-src/scripts/bundled-node.mjs verifyArchive",
+  "commands": [
+    {
+      "command": "npm ci",
+      "scope": "frozen root",
+      "exitCode": 0
+    },
+    {
+      "command": "npm ci",
+      "scope": "frozen workbench",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run check",
+      "scope": "frozen root",
+      "exitCode": 0
+    },
+    {
+      "command": "node --test workbench/test/distribution.test.mjs workbench/test/distribution-integrity.test.mjs",
+      "scope": "frozen root",
+      "tests": 15,
+      "passed": 15,
+      "failed": 0,
+      "exitCode": 0
+    }
+  ],
+  "dependencyAudit": {
+    "root": "0 vulnerabilities",
+    "workbench": "8 moderate severity vulnerabilities; existing pinned dependencies retained"
+  }
+}

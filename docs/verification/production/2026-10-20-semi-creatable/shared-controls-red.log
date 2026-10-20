@@ -1,0 +1,35 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2049 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb/dist/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb/dist/assets/index-CaadV7Tx.css                        346.58 kB │ gzip:  43.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb/dist/assets/index-B6pD5IF9.js                       1,041.55 kB │ gzip: 286.37 kB
+
+✓ built in 542ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS: native Escape closes Select/date/time/UTC popups before dirty dialog, from trigger and portal focus
+PASS: real Select/DatePicker/TimePicker portals, hit testing, empty dates, local-minute, UTC seconds/date roundtrip, explicit busy lock and required focus
+PASS: small window bottom Select/TimePicker hit testing, close button access, one shared host and clean modal unmount
+PASS: explicit Codex + WorkBuddy, global bridge selection, dynamic shared channel settings and manager callback
+AssertionError [ERR_ASSERTION]: closed modal popup host does not block resume
+
+false !== true
+
+    at probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb/probe-main.mjs:32:1118) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+{"errors":[],"values":{"date":"2026-10-20","time":"09:25","utc":"2026-10-21T15:43:27.000Z","choice":"b","count":3}}
+me" value="09:00"></span></label><label>这次发布的时区（留空表示未记录）<div class="semi-input-wrapper semi-control-text semi-input-wrapper-default"><input class="semi-input semi-input-default" placeholder="本机时区：Asia/Shanghai" type="text" value="Asia/Shanghai"></div></label></div></fieldset><label>准备发布的文字<div class="semi-control-text management-body semi-input-textarea-wrapper"><textarea rows="4" cols="20" class="semi-input-textarea">正文</textarea></div></label><p class="muted">留空表示这次发布空文字；不会自动改用正文。</p><label>计划使用的封面<span class="semi-control"><span id="_r_1h_" class="semi-control-label">计划使用的封面</span><div role="combobox" aria-disabled="false" aria-expanded="false" aria-controls="semi-select-yyxitvg" aria-haspopup="listbox" aria-label="selected" aria-labelledby="_r_1h_" class="semi-select semi-select-single semi-select-filterable" id="5rya26v" tabindex="0" aria-activedescendant="5rya26v-option-0" data-popupid="ht8urbw"><div class="semi-select-selection"><div class="semi-select-content-wrapper"><span class="semi-select-selection-text" x-semi-prop="placeholder">这次不记录封面</span></div></div><div class="semi-select-arrow" x-semi-prop="arrowIcon"><span role="img" aria-label="" class="semi-icon semi-icon-default semi-icon-chevron_down"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" focusable="false" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.08 7.6a1.5 1.5 0 0 1 2.12 0l5.66 5.65 5.66-5.65a1.5 1.5 0 1 1 2.12 2.12l-6.72 6.72a1.5 1.5 0 0 1-2.12 0L4.08 9.72a1.5 1.5 0 0 1 0-2.12Z" fill="currentColor"></path></svg></span></div></div><input class="semi-control-validation" aria-hidden="true" tabindex="-1" type="text" value=""></span></label></div></fieldset><p role="status"></p><button class="semi-button semi-button-primary semi-button-solid" type="submit" aria-disabled="false"><span class="semi-button-content" x-semi-prop="children">保存到本机</span></button></form><div class="semi-dialog-popup-host"></div></dialog></div></div>
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-form-controls-4IP1Jb

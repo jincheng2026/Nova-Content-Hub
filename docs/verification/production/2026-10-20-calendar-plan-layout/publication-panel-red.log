@@ -1,0 +1,13 @@
+AssertionError [ERR_ASSERTION]: expanded PublicationPanel has five aligned column labels
+
+0 !== 5
+
+    at probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-calendar-pagination-IrmGGO/probe-main.mjs:44:10) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 0,
+  expected: 5,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+Evidence: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-calendar-pagination-IrmGGO
