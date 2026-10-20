@@ -1,0 +1,20 @@
+{
+  "sources": [
+    {
+      "originalRepositoryPath": ".local-probes/final-convergence-20261020/verify-artifacts.mjs",
+      "archivedSource": "verify-artifacts.mjs.txt",
+      "sha256": "68a1116b5f61f29782992dd5e716fa7d5e866c7b745e4800a3e141b3d6cb6f1d",
+      "restoreAtOriginalPathBeforeRunning": true,
+      "recoveredFromOriginalSessionToolCalls": true
+    },
+    {
+      "originalRepositoryPath": ".local-probes/final-convergence-20261020/installed-readonly.mjs",
+      "archivedSource": "installed-readonly.mjs.txt",
+      "sha256": "9ceffba111bbf1aaaaf01e45613af671cce38b1c96888c81bc8aec928cdea002",
+      "restoreAtOriginalPathBeforeRunning": true,
+      "recoveredFromOriginalSessionToolCalls": true
+    }
+  ],
+  "cleanup": "User confirmed manual cleanup of .local-probes during this review. Source scripts restored as archived text only; temporary fixtures were not recreated. Original screenshot and fingerprint receipts remain historical observations.",
+  "rerunRequirements": "Restore script at original path and prepare a new synthetic fixture; old local fixture paths no longer exist."
+}

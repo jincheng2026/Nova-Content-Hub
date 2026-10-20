@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "target": "/Applications/自媒体工作台.app",
+  "method": "Native computer-use full-path app selection, accessibility tree and screenshot",
+  "scope": "Read-only navigation in the already-running canonical installed app; distinct from isolated Electron probes",
+  "observed": {
+    "settingsVersion": "0.3.25 · macOS · ARM64",
+    "initialPage": "内容",
+    "overviewPlaceholderTextOnSeparateLines": true,
+    "overviewRecentRowsVisuallySeparated": true,
+    "globalAssistant": "WorkBuddy",
+    "coverSetupReportsReady": true,
+    "templateSetupReportsReady": true,
+    "preferencesHaveNoPendingEdits": true,
+    "autostartSystemFeedback": "开机启动已关闭",
+    "settingsClosedAfterObservation": true,
+    "returnedToInitialContentList": true
+  },
+  "boundaries": {
+    "businessMutationRequested": false,
+    "preferencesChanged": false,
+    "clipboardWritten": false,
+    "appQuitOrReinstalled": false,
+    "hostOpenedOrReloaded": false,
+    "generationRequested": false,
+    "entireBusinessLibraryFingerprintAudited": false,
+    "readyStatusDoesNotProveHostReloadOrExecution": true
+  },
+  "notes": [
+    "Bundle-identifier selection was ambiguous because local recoverable/build app copies exist; exact /Applications path selected the running canonical app successfully.",
+    "First navigation click did not change the page; a second click with fresh accessibility state opened overview. This single observation does not establish a reproducible focus defect.",
+    "No user-library screenshot or private body content was copied into repository evidence. Sanitized synthetic screenshots are stored separately."
+  ],
+  "recordedOn": "2026-10-20"
+}

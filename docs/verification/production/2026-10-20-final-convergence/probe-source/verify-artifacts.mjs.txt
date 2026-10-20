@@ -1,0 +1,63 @@
+import fs from 'node:fs/promises';
+import {createReadStream} from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {snapshotPackage} from '../../plugin-src/src/lib/package-snapshot.mjs';
+import {validateInstallerMarketplace} from '../../workbench/scripts/dist.mjs';
+
+const evidence = path.resolve('docs/verification/production');
+const read = async file => JSON.parse(await fs.readFile(path.join(evidence, file), 'utf8'));
+const pkg = await read('2026-10-20-package-0325.json');
+const delivery = await read('2026-10-20-delivery-0325.json');
+const target = '/Applications/自媒体工作台.app';
+const built = await snapshotPackage(pkg.source);
+const installed = await snapshotPackage(target);
+assert.deepEqual(installed, built, 'Installed application changed from archived build');
+const treeSha256 = createHash('sha256').update(JSON.stringify(installed)).digest('hex');
+assert.equal(treeSha256, pkg.sourceTreeSha256);
+execFileSync('/usr/bin/codesign', ['--verify', '--deep', '--strict', target], {stdio: 'pipe'});
+const resources = path.join(target, 'Contents/Resources');
+const release = JSON.parse(await fs.readFile(path.join(resources, 'app/workbench/dist/release.json'), 'utf8'));
+assert.equal(release.version, '0.3.25');
+assert.equal(release.AUTH_MODE, 'disabled');
+assert.equal(release.productionReady, false);
+const market = path.join(resources, 'plugin-marketplace');
+const pluginRelease = JSON.parse(await fs.readFile(path.join(market, 'nova-content-hub/plugin-src/src/release.json'), 'utf8'));
+assert.deepEqual(pluginRelease, {...release, format: 'nova-content-plugin-release'});
+await validateInstallerMarketplace(market, pluginRelease);
+const excluded = Object.keys(installed).filter(file => /(?:^|\/)(?:tests?|__tests__)\/|(?:\.test|\.spec)\.|probe\.mjs$/.test(file));
+assert.deepEqual(excluded, []);
+const files = (await fs.readdir(delivery.directory)).sort();
+assert.deepEqual(files, [...delivery.files].sort());
+const hashFile = async file => {
+    const hash = createHash('sha256');
+    for await (const bytes of createReadStream(file)) hash.update(bytes);
+    return hash.digest('hex');
+};
+const deliveryDmg = path.join(delivery.directory, files.find(file => file.endsWith('.dmg')));
+const sourceDmgSha256 = await hashFile(delivery.dmg);
+const deliveryDmgSha256 = await hashFile(deliveryDmg);
+assert.equal(sourceDmgSha256, pkg.dmgSha256);
+assert.equal(deliveryDmgSha256, pkg.dmgSha256);
+const checksums = await fs.readFile(path.join(delivery.directory, 'SHA256SUMS.txt'), 'utf8');
+assert.ok(checksums.includes(deliveryDmgSha256));
+const report = {
+    recordedAt: new Date().toISOString(),
+    sourceHead: execFileSync('git', ['rev-parse', 'HEAD'], {encoding: 'utf8'}).trim(),
+    packagedSourceCommit: pkg.sourceCommit,
+    scope: 'Read-only current installed/build/delivery bytes and paired marketplace validation; no reinstall, business-library access, host launch or generation.',
+    target, source: pkg.source, entries: Object.keys(installed).length,
+    version: release.version, treeSha256, installedEqualsArchivedBuild: true,
+    adHocSignatureVerified: true, developerIdSigned: false, notarized: false,
+    pairedMarketplaceVerified: true, engineeringTestsAndProbesExcluded: true,
+    releaseIdentity: {prototype: release.prototype, experimental: release.experimental, productionReady: release.productionReady, authMode: release.AUTH_MODE},
+    deliveryDirectory: delivery.directory, deliveryFiles: files,
+    sourceDmgSha256, deliveryDmgSha256, deliveryMatchesPreviousReceipt: true,
+    userBusinessLibraryReadOrWritten: false
+};
+const out = path.join(evidence, '2026-10-20-final-convergence');
+await fs.mkdir(out, {recursive: true});
+await fs.writeFile(path.join(out, 'artifacts.json'), JSON.stringify(report, null, 2) + '\n');
+console.log(JSON.stringify(report, null, 2));

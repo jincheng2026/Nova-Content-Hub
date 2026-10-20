@@ -1,0 +1,10 @@
+CAPTURE 01-installed-overview
+CAPTURE 02-installed-calendar-month
+CAPTURE 03-installed-month-events
+CAPTURE 04-installed-calendar-week
+CAPTURE 05-installed-day-list
+CAPTURE 06-installed-settings-top
+CAPTURE 07-installed-settings-lower
+CAPTURE 08-installed-help-top
+CAPTURE 09-installed-help-lower
+PASS installed-resource isolated read IPC: figures 6/8 geometry and settings/day/week screenshots; fixture fingerprints unchanged

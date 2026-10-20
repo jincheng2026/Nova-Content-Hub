@@ -1,0 +1,102 @@
+{
+  "scope": "Actual React/Semi/Electron component probes compiled current source to temporary directories, using synthetic in-memory bridge and isolated userData; no installed-resource IPC mutation or real business generation proof.",
+  "probes": [
+    {
+      "probe": "overview",
+      "command": "node workbench/scripts/overview-layout-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "docs/verification/production/2026-10-20-final-convergence/logs/overview-component.log",
+      "logSha256": "cfe5b95647391bde6bdeee0bed208b762d69cdf8fda2d7abb5c3daeefc6a0e56",
+      "scriptSha256": "093b4d846fc8c2baae6d2d278bb11c2e884d40af869ba7a704374712ea62c4b9",
+      "fixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-overview-layout-JQl0rX",
+      "screenshots": [
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-1100.png",
+          "sha256": "e94b04619d1b7042200c4a730e403c16fa08882cd7bc32c845511309795aba0e"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-1440.png",
+          "sha256": "2cdae9ca58121198e3f4dd9d7d786a1747a8d3bc2e419dfa58bf372bf2e4d2a3"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-900.png",
+          "sha256": "5596894db0abda6b0185dd7e4e33fec5e960732f44deed97c4426ddcf7c3f55e"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-images-1100.png",
+          "sha256": "6b35f4f010ad98dad5118f0797a125b1ee767e77163dfe80ebf7e6b67e2d9211"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-images-1440.png",
+          "sha256": "bce40c7198e1c03592b926dbaf7bc2b3076a41a0c6ab18c791789489b2fb0cba"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/overview/overview-images-900.png",
+          "sha256": "71a4b21a30e4a483d12749143c52e704c8099ff0df67e5b42e1151a29540817d"
+        }
+      ]
+    },
+    {
+      "probe": "calendar",
+      "command": "node workbench/scripts/semi-calendar-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "docs/verification/production/2026-10-20-final-convergence/logs/calendar-component.log",
+      "logSha256": "adc334700b61cee7d8b0fad016a874038478ffe03a24a3525d612b6447444093",
+      "scriptSha256": "1f197cfe82aa6cb932e06528a80abec9001c8a070d547dda4b2bb0a62e1649df",
+      "fixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-rwPa3A",
+      "screenshots": [
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/calendar/calendar-1280.png",
+          "sha256": "da02429854988b8cdf0eee0338c0fcb4bbfa14000c47c012cb8e1240f984f790"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/calendar/calendar-month-1100.png",
+          "sha256": "59d4a2602605c955b815ae92caa90413a2887f4ba49d80703eadf1e1eb4a63c4"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/calendar/calendar-month-1440.png",
+          "sha256": "8c0de46411815ee013c1c93860b27e778eb3af0826c4a8b771e57118d7907aec"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/calendar/calendar-month-900.png",
+          "sha256": "4fabbbb9717088ef9ebb9cff09f5d85a95fc37200f20eb274cbe5cb4120e4657"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/calendar/calendar-week-1280.png",
+          "sha256": "e9c7e28479faf5f31e2ed6dd844ad37d758289ea0cc341a5b51352a37813e181"
+        }
+      ]
+    },
+    {
+      "probe": "settings",
+      "command": "node workbench/scripts/creator-settings-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "docs/verification/production/2026-10-20-final-convergence/logs/settings-component.log",
+      "logSha256": "0fc981709da1e32becbc5394eea27e3f1dd239c7f2f0cdf81f2861a97a11723f",
+      "scriptSha256": "16221b18a30f5679b725a8009ba228b0e89490800aed3b2d5bafb25fca582c3f",
+      "fixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-settings-check-uycnPB",
+      "screenshots": [
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/settings/settings-1100.png",
+          "sha256": "9da25a2981afca93c8f2771c235218ceb0ca5c66c31ac4b1f5a467f05fd7c4eb"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/settings/settings-1440.png",
+          "sha256": "3c2a15bf3ac4144cc8c9b0db925f8d4e8a507618d9861119cee714e33c7f63af"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/settings/settings-900.png",
+          "sha256": "0cc104ec924b04215eda6377c814df691f466afbbd6cff54f3c08e408fb778c2"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/settings/settings-current.png",
+          "sha256": "4e49af65bc2df82b4eca076db0aafe140766bc5f23defc7d34fe4dc5eb6aacc4"
+        },
+        {
+          "file": "docs/verification/production/2026-10-20-final-convergence/component-screenshots/settings/settings-help-900.png",
+          "sha256": "befdeb5a861c286745ebd1fa8a35c80ffa1bf28d8bcb6de21b37b297867de39d"
+        }
+      ]
+    }
+  ]
+}

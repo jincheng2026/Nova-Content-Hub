@@ -1,0 +1,998 @@
+{
+  "scope": "Installed /Applications resource tree run through startDesktop in a separate Electron process with isolated userData and a byte-identical synthetic file library copy. Real renderer/preload/IPC/worker reads; no real user library, assistant launch, clipboard, generation, paid provider, notification test, install or migration actions.",
+  "resources": "/Applications/自媒体工作台.app/Contents/Resources",
+  "sourceFixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/ui-audit-0325/fixture-vyEbbg/秋日创作库",
+  "fixture": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/final-convergence-20261020/fixture-KPXAZL/秋日创作库",
+  "sourceBefore": {
+    "files": 612,
+    "sha256": "d0eb7a6fa60fb6ea0f5379462c4ea37f64d1ac8cbd4aaecf6de14a7430146a1e"
+  },
+  "fixtureBefore": {
+    "files": 612,
+    "sha256": "d0eb7a6fa60fb6ea0f5379462c4ea37f64d1ac8cbd4aaecf6de14a7430146a1e"
+  },
+  "viewport": [
+    1440,
+    1000
+  ],
+  "subjects": [
+    {
+      "id": "3539d54d-15da-4635-8ada-7cec537acbf9",
+      "title": "用 AI 整理一周灵感，找回创作节奏"
+    },
+    {
+      "id": "7c5e5c1c-ccc9-4d56-87cb-b31c4046a210",
+      "title": "把旅行照片写成一篇有温度的游记"
+    },
+    {
+      "id": "c12db7ae-1ec3-47cc-b465-002e9c679567",
+      "title": "小团队如何排好一周内容日程"
+    }
+  ],
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readSetup",
+    "nova:readPreferences",
+    "nova:readReminderStatus",
+    "nova:readAssistantSetup",
+    "nova:readTemplateAssistantSetup",
+    "nova:readBootstrapRecovery"
+  ],
+  "blocked": [],
+  "captures": [
+    {
+      "name": "01-installed-overview",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/01-installed-overview.png",
+      "selector": ".creator-overview",
+      "sha256": "a4bac730c566ebac6d57ef881537d3f2e91283b8bada1689a0c4084f84f8dd4e",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月20日星期二\n今天 0/0 已发\n一\n2\n二\n0\n三\n1\n四\n0\n五\n0\n六\n0\n日\n0\n▧\n本次不记录封面\n打开内容，继续制作\n下一条\n时间待定\n视频号\n明天\n小团队如何排好一周内容日程\n\n小团队如何排好一周内容日程\n周一整理选题，周三分享方法，周末回顾反馈。\n\n复制文案\n记录已发布\n打开内容\n今天\n暂无安排\n查看日程 →\n\n今天尚未安排，另有 2 条逾期计划需核对。\n\n明天 10-21\n\n下一条已在上方。\n\n要处理\n3 项\n选一张封面\n把旅行照片写成一篇有温度的游记\n1 ›\n准备内容封面\n小团队如何排好一周内容日程\n1 ›\n核对逾期计划\n发布后补记实际记录\n2 ›\n内容项目\n3 篇 · 1 个合集\n▤\n秋日创作周 · 内容策划 合集\n2 篇内容\n›\n▤\n小团队如何排好一周内容日程\n待做封面 · 已发 0/1\n›\n▤\n把旅行照片写成一篇有温度的游记\n待选封面 · 已发 0/1\n›\n用 AI 整理一周灵感，找回创作节奏\n已选封面 · 已发 0/1\n›\n▧\n为内容找个好风格浏览模板，准备下一张封面\n↗",
+        "scroll": []
+      }
+    },
+    {
+      "name": "02-installed-calendar-month",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/02-installed-calendar-month.png",
+      "selector": ".semi-calendar-month",
+      "sha256": "1fdbdd804dc6c8e064ccf8479426c7e9c09f2cd3443e9e8b60ad40d1738a5af7",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 2026 年 10 月\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n28\n29\n30\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n09:15\n用 AI 整理一周灵感，找回创作节奏\n时间待定\n小团队如何排好一周内容日程\n20:00\n把旅行照片写成一篇有温度的游记\n26\n27\n28\n29\n30\n31\n1\n今天 0 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n\n这一天没有发布安排。\n\n共 0 项 · 0–0 项",
+        "scroll": []
+      }
+    },
+    {
+      "name": "03-installed-month-events",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/03-installed-month-events.png",
+      "selector": ".semi-calendar-month [data-plan-id]",
+      "sha256": "cfa2a67e4fcc728b9e04fde2bdbfa9fab8bee09df8894b461b506be9509b93fa",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 2026 年 10 月\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n周一\n周二\n周三\n周四\n周五\n周六\n周日\n28\n29\n30\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24\n25\n09:15\n用 AI 整理一周灵感，找回创作节奏\n时间待定\n小团队如何排好一周内容日程\n20:00\n把旅行照片写成一篇有温度的游记\n26\n27\n28\n29\n30\n31\n1\n今天 0 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n\n这一天没有发布安排。\n\n共 0 项 · 0–0 项",
+        "scroll": []
+      }
+    },
+    {
+      "name": "04-installed-calendar-week",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/04-installed-calendar-week.png",
+      "selector": ".semi-calendar-week",
+      "sha256": "9ae17bd5a57f912f0a0568f640f9df4dd3ed132d06924f816e2130c9d27c91d2",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n今天 0 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n\n这一天没有发布安排。\n\n共 0 项 · 0–0 项",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "05-installed-day-list",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/05-installed-day-list.png",
+      "selector": ".schedule-day-detail",
+      "sha256": "f67ea17ace5b0d08db4e0ca0ede6207f112da9cef64adfb59d98026fc76c5031",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n2026-10-19 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "06-installed-settings-top",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/06-installed-settings-top.png",
+      "selector": ".creator-settings-dialog",
+      "sha256": "1a5676a24f65718d5a977b735a2944a3f23e398739eaf1165f39af0f013dc276",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n2026-10-19 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n全局助手\n交给哪个 AI 助手\n交给哪个 AI 助手\nCodex（默认）\n\n制作封面和学习模板时，统一交给这里选择的助手。\n\n检查连接\n重新检查\n\n正在检查助手与配套插件…\n\n模板学习与还原：正在检查…\n\n内容库\n秋日创作库\n\n正文、封面、模板与照片都保存在这里。\n\n管理内容库\n打开文件夹 →\n内置模板与提示词\n\n补充新风格和提示词，保留已有修改与删除。\n\n更新内置资源\n\n配套插件与版本\n\n正在读取安装信息…\n\n重新读取安装信息\n本机偏好\n\n正在读取通知状态…\n\n编辑\n个人信息\n我\n添加你的昵称\n\n介绍你自己，让创作更有自己的风格。\n\n自媒体方向\n待填写\n目标读者\n待填写\n我的照片\n＋ 添加照片\n管理\n\n还没有照片，可以先添加一张。\n\n照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。\n\n发布渠道\n5 个可用渠道\n\n渠道统一用于内容归档、封面和发布日程。\n\n管理渠道\n抖音\n小红书\n视频号\n公众号\nB 站",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          },
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1039,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "07-installed-settings-lower",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/07-installed-settings-lower.png",
+      "selector": ".creator-settings-profile",
+      "sha256": "380ced7dd8ee2cfd01831b5a63090600e717c7d612919f8674cfbdeefc7342e9",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n2026-10-19 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n全局助手\n交给哪个 AI 助手\n交给哪个 AI 助手\nCodex（默认）\n\n制作封面和学习模板时，统一交给这里选择的助手。\n\n检查连接\n重新检查\n\n正在检查助手与配套插件…\n\n模板学习与还原：正在检查…\n\n内容库\n秋日创作库\n\n正文、封面、模板与照片都保存在这里。\n\n管理内容库\n打开文件夹 →\n内置模板与提示词\n\n补充新风格和提示词，保留已有修改与删除。\n\n更新内置资源\n\n配套插件与版本\n\n正在读取安装信息…\n\n重新读取安装信息\n本机偏好\n\n正在读取通知状态…\n\n编辑\n个人信息\n我\n添加你的昵称\n\n介绍你自己，让创作更有自己的风格。\n\n自媒体方向\n待填写\n目标读者\n待填写\n我的照片\n＋ 添加照片\n管理\n\n还没有照片，可以先添加一张。\n\n照片保存在本机。用于人物参考前，请在照片管理中确认本人声明。\n\n发布渠道\n5 个可用渠道\n\n渠道统一用于内容归档、封面和发布日程。\n\n管理渠道\n抖音\n小红书\n视频号\n公众号\nB 站",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          },
+          {
+            "tag": "DIALOG",
+            "class": "leave-dialog settings-dialog creator-settings-dialog",
+            "height": 918,
+            "scrollHeight": 1039,
+            "top": 121
+          }
+        ]
+      }
+    },
+    {
+      "name": "08-installed-help-top",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/08-installed-help-top.png",
+      "selector": ".creator-settings-help",
+      "sha256": "7bc2870606f6fcbf9668aa33d2911c91c7c95523dcab3dec33826bd9e8b727ec",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n2026-10-19 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n交接范围与照片使用\n\n检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。\n\n本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中确认执行。\n\n遇到问题：导出诊断\n\n只包含版本、系统、数量和有限错误码，不含目录路径、正文、照片或凭据。保存到本机后，由你决定是否分享。\n\n保存诊断文件\n通知试发与使用说明\n\n正在读取通知状态…\n\n尚无自动提醒记录。\n\n试发一条通知\n刷新通知状态\n\n只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。\n\n通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。\n\n内容库连接排错与恢复\n本机内容库连接恢复\n\n工作台把“连接哪个内容库”保存在本机。连接记录损坏时，可以先保留旧记录，再重新选择原内容库；不会删除内容库、正文、照片或业务文件，也不会改变登录或使用权限。\n\n重新检查本机连接\n重新连接内容库\n导出脱敏诊断",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    },
+    {
+      "name": "09-installed-help-lower",
+      "file": "docs/verification/production/2026-10-20-final-convergence/screenshots/09-installed-help-lower.png",
+      "selector": ".creator-settings-help",
+      "sha256": "405cb9c056960485adda3946dd9d30b02c08dbe26d7439ba9ac04991c0fb42cd",
+      "ui": {
+        "text": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\n秋日创作库\n\n资料保存在你的本机\n\n工作空间 / 日程\n\n日程\n本机保存\n刷新\n日程 10-19 — 10-25\n\n按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。\n\n今天\n‹\n›\n按月\n按周\n＋ 新增计划\n抖音\n小红书\n视频号\n查看日期\n10月\n周一\n19\n周二\n20\n周三\n21\n周四\n22\n周五\n23\n周六\n24\n周日\n25\n时间待定\n时间待定\n小团队如何排好一周内容日程\n01:00\n02:00\n03:00\n04:00\n05:00\n06:00\n07:00\n08:00\n09:00\n10:00\n11:00\n12:00\n13:00\n14:00\n15:00\n16:00\n17:00\n18:00\n19:00\n20:00\n21:00\n22:00\n23:00\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n2026-10-19 2 条安排\n为这一天新增计划 →\n筛选发布渠道\n全部渠道\n筛选发布状态\n未取消（待发布＋已记录）\n09:15\n抖音\n用 AI 整理一周灵感，找回创作节奏\n待发布\n记录已发布\n\n\n20:00\n小红书\n把旅行照片写成一篇有温度的游记\n待发布\n记录已发布\n共 2 项 · 1–2 项\n\n设置\n\n免费体验 · 资料保存在你的本机内容库\n\n关闭设置\n常用设置\n帮助与排查\n交接范围与照片使用\n\n检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。\n\n本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中确认执行。\n\n遇到问题：导出诊断\n\n只包含版本、系统、数量和有限错误码，不含目录路径、正文、照片或凭据。保存到本机后，由你决定是否分享。\n\n保存诊断文件\n通知试发与使用说明\n\n正在读取通知状态…\n\n尚无自动提醒记录。\n\n试发一条通知\n刷新通知状态\n\n只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。\n\n通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。\n\n内容库连接排错与恢复\n本机内容库连接恢复\n\n工作台把“连接哪个内容库”保存在本机。连接记录损坏时，可以先保留旧记录，再重新选择原内容库；不会删除内容库、正文、照片或业务文件，也不会改变登录或使用权限。\n\n重新检查本机连接\n重新连接内容库\n导出脱敏诊断",
+        "scroll": [
+          {
+            "tag": "DIV",
+            "class": "semi-calendar-week semi-schedule-calendar is-week",
+            "height": 620,
+            "scrollHeight": 1526,
+            "top": 0
+          }
+        ]
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "phase": "overview",
+      "name": "figure-6-placeholder-and-recent-no-overlap",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "labels": [
+        {
+          "left": 355.2265625,
+          "right": 401.2265625,
+          "top": 291.6484375,
+          "bottom": 343.6484375,
+          "width": 46,
+          "height": 52
+        },
+        {
+          "left": 331.8125,
+          "right": 424.6328125,
+          "top": 357.6484375,
+          "bottom": 377.6484375,
+          "width": 92.8203125,
+          "height": 20
+        },
+        {
+          "left": 318.5546875,
+          "right": 437.8984375,
+          "top": 386.6484375,
+          "bottom": 406.6484375,
+          "width": 119.34375,
+          "height": 20
+        }
+      ],
+      "rows": [
+        {
+          "box": {
+            "left": 980.015625,
+            "right": 1389,
+            "top": 573.59375,
+            "bottom": 652.59375,
+            "width": 408.984375,
+            "height": 79
+          },
+          "image": {
+            "left": 980.015625,
+            "right": 1025.015625,
+            "top": 590.09375,
+            "bottom": 635.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 1036.015625,
+            "right": 1371.8046875,
+            "top": 587.59375,
+            "bottom": 611.59375,
+            "width": 335.7890625,
+            "height": 24
+          }
+        },
+        {
+          "box": {
+            "left": 980.015625,
+            "right": 1389,
+            "top": 652.59375,
+            "bottom": 727.59375,
+            "width": 408.984375,
+            "height": 75
+          },
+          "image": {
+            "left": 980.015625,
+            "right": 1025.015625,
+            "top": 667.09375,
+            "bottom": 712.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 1036.015625,
+            "right": 1371.8046875,
+            "top": 666.59375,
+            "bottom": 686.59375,
+            "width": 335.7890625,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 980.015625,
+            "right": 1389,
+            "top": 727.59375,
+            "bottom": 802.59375,
+            "width": 408.984375,
+            "height": 75
+          },
+          "image": {
+            "left": 980.015625,
+            "right": 1025.015625,
+            "top": 742.09375,
+            "bottom": 787.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 1036.015625,
+            "right": 1371.8046875,
+            "top": 741.59375,
+            "bottom": 761.59375,
+            "width": 335.7890625,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 980.015625,
+            "right": 1389,
+            "top": 802.59375,
+            "bottom": 876.59375,
+            "width": 408.984375,
+            "height": 74
+          },
+          "image": {
+            "left": 980.015625,
+            "right": 1025.015625,
+            "top": 817.09375,
+            "bottom": 862.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 1036.015625,
+            "right": 1371.8046875,
+            "top": 816.59375,
+            "bottom": 836.59375,
+            "width": 335.7890625,
+            "height": 20
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "overview",
+      "name": "figure-6-placeholder-and-recent-no-overlap",
+      "viewport": [
+        1100,
+        1000
+      ],
+      "labels": [
+        {
+          "left": 297.609375,
+          "right": 343.609375,
+          "top": 284.546875,
+          "bottom": 336.546875,
+          "width": 46,
+          "height": 52
+        },
+        {
+          "left": 274.1953125,
+          "right": 367.015625,
+          "top": 350.546875,
+          "bottom": 370.546875,
+          "width": 92.8203125,
+          "height": 20
+        },
+        {
+          "left": 260.9375,
+          "right": 380.28125,
+          "top": 379.546875,
+          "bottom": 399.546875,
+          "width": 119.34375,
+          "height": 20
+        }
+      ],
+      "rows": [
+        {
+          "box": {
+            "left": 770.0703125,
+            "right": 1091.7734375,
+            "top": 573.59375,
+            "bottom": 652.59375,
+            "width": 321.703125,
+            "height": 79
+          },
+          "image": {
+            "left": 770.0703125,
+            "right": 815.0703125,
+            "top": 590.09375,
+            "bottom": 635.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 826.0703125,
+            "right": 1074.578125,
+            "top": 587.59375,
+            "bottom": 611.59375,
+            "width": 248.5078125,
+            "height": 24
+          }
+        },
+        {
+          "box": {
+            "left": 770.0703125,
+            "right": 1091.7734375,
+            "top": 652.59375,
+            "bottom": 727.59375,
+            "width": 321.703125,
+            "height": 75
+          },
+          "image": {
+            "left": 770.0703125,
+            "right": 815.0703125,
+            "top": 667.09375,
+            "bottom": 712.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 826.0703125,
+            "right": 1074.578125,
+            "top": 666.59375,
+            "bottom": 686.59375,
+            "width": 248.5078125,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 770.0703125,
+            "right": 1091.7734375,
+            "top": 727.59375,
+            "bottom": 802.59375,
+            "width": 321.703125,
+            "height": 75
+          },
+          "image": {
+            "left": 770.0703125,
+            "right": 815.0703125,
+            "top": 742.09375,
+            "bottom": 787.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 826.0703125,
+            "right": 1074.578125,
+            "top": 741.59375,
+            "bottom": 761.59375,
+            "width": 248.5078125,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 770.0703125,
+            "right": 1091.7734375,
+            "top": 802.59375,
+            "bottom": 876.59375,
+            "width": 321.703125,
+            "height": 74
+          },
+          "image": {
+            "left": 770.0703125,
+            "right": 815.0703125,
+            "top": 817.09375,
+            "bottom": 862.09375,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 826.0703125,
+            "right": 1074.578125,
+            "top": 816.59375,
+            "bottom": 836.59375,
+            "width": 248.5078125,
+            "height": 20
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "overview",
+      "name": "figure-6-placeholder-and-recent-no-overlap",
+      "viewport": [
+        960,
+        1000
+      ],
+      "labels": [
+        {
+          "left": 321.7734375,
+          "right": 367.7734375,
+          "top": 284.546875,
+          "bottom": 336.546875,
+          "width": 46,
+          "height": 52
+        },
+        {
+          "left": 298.359375,
+          "right": 391.1796875,
+          "top": 350.546875,
+          "bottom": 370.546875,
+          "width": 92.8203125,
+          "height": 20
+        },
+        {
+          "left": 285.1015625,
+          "right": 404.4453125,
+          "top": 379.546875,
+          "bottom": 399.546875,
+          "width": 119.34375,
+          "height": 20
+        }
+      ],
+      "rows": [
+        {
+          "box": {
+            "left": 603,
+            "right": 915,
+            "top": 837.578125,
+            "bottom": 916.578125,
+            "width": 312,
+            "height": 79
+          },
+          "image": {
+            "left": 603,
+            "right": 648,
+            "top": 854.078125,
+            "bottom": 899.078125,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 659,
+            "right": 897.8046875,
+            "top": 851.578125,
+            "bottom": 875.578125,
+            "width": 238.8046875,
+            "height": 24
+          }
+        },
+        {
+          "box": {
+            "left": 603,
+            "right": 915,
+            "top": 916.578125,
+            "bottom": 991.578125,
+            "width": 312,
+            "height": 75
+          },
+          "image": {
+            "left": 603,
+            "right": 648,
+            "top": 931.078125,
+            "bottom": 976.078125,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 659,
+            "right": 897.8046875,
+            "top": 930.578125,
+            "bottom": 950.578125,
+            "width": 238.8046875,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 603,
+            "right": 915,
+            "top": 991.578125,
+            "bottom": 1066.578125,
+            "width": 312,
+            "height": 75
+          },
+          "image": {
+            "left": 603,
+            "right": 648,
+            "top": 1006.078125,
+            "bottom": 1051.078125,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 659,
+            "right": 897.8046875,
+            "top": 1005.578125,
+            "bottom": 1025.578125,
+            "width": 238.8046875,
+            "height": 20
+          }
+        },
+        {
+          "box": {
+            "left": 603,
+            "right": 915,
+            "top": 1066.578125,
+            "bottom": 1140.578125,
+            "width": 312,
+            "height": 74
+          },
+          "image": {
+            "left": 603,
+            "right": 648,
+            "top": 1081.078125,
+            "bottom": 1126.078125,
+            "width": 45,
+            "height": 45
+          },
+          "title": {
+            "left": 659,
+            "right": 897.8046875,
+            "top": 1080.578125,
+            "bottom": 1100.578125,
+            "width": 238.8046875,
+            "height": 20
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "calendar-month",
+      "name": "figure-8-month-event-time-title-and-slot-bounds",
+      "viewport": [
+        1440,
+        1000
+      ],
+      "events": [
+        {
+          "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+          "time": {
+            "left": 246,
+            "right": 278.8984375,
+            "top": 694.390625,
+            "bottom": 712.390625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 283.8984375,
+            "right": 402.3046875,
+            "top": 694.390625,
+            "bottom": 712.390625,
+            "width": 118.40625,
+            "height": 18
+          },
+          "box": {
+            "left": 239,
+            "right": 406.3046875,
+            "top": 691.390625,
+            "bottom": 715.390625,
+            "width": 167.3046875,
+            "height": 24
+          },
+          "slot": {
+            "left": 239,
+            "right": 406.3046875,
+            "top": 691.390625,
+            "bottom": 715.390625,
+            "width": 167.3046875,
+            "height": 24
+          }
+        },
+        {
+          "text": "时间待定视频号小团队如何排好一周内容日程",
+          "time": {
+            "left": 580.6171875,
+            "right": 625.5859375,
+            "top": 694.390625,
+            "bottom": 712.390625,
+            "width": 44.96875,
+            "height": 18
+          },
+          "title": {
+            "left": 630.5859375,
+            "right": 736.921875,
+            "top": 694.390625,
+            "bottom": 712.390625,
+            "width": 106.3359375,
+            "height": 18
+          },
+          "box": {
+            "left": 573.6171875,
+            "right": 740.921875,
+            "top": 691.390625,
+            "bottom": 715.390625,
+            "width": 167.3046875,
+            "height": 24
+          },
+          "slot": {
+            "left": 573.6171875,
+            "right": 740.921875,
+            "top": 691.390625,
+            "bottom": 715.390625,
+            "width": 167.3046875,
+            "height": 24
+          }
+        },
+        {
+          "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+          "time": {
+            "left": 246,
+            "right": 278.8984375,
+            "top": 718.390625,
+            "bottom": 736.390625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 283.8984375,
+            "right": 402.3046875,
+            "top": 718.390625,
+            "bottom": 736.390625,
+            "width": 118.40625,
+            "height": 18
+          },
+          "box": {
+            "left": 239,
+            "right": 406.3046875,
+            "top": 715.390625,
+            "bottom": 739.390625,
+            "width": 167.3046875,
+            "height": 24
+          },
+          "slot": {
+            "left": 239,
+            "right": 406.3046875,
+            "top": 715.390625,
+            "bottom": 739.390625,
+            "width": 167.3046875,
+            "height": 24
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "calendar-month",
+      "name": "figure-8-month-event-time-title-and-slot-bounds",
+      "viewport": [
+        1100,
+        1000
+      ],
+      "events": [
+        {
+          "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+          "time": {
+            "left": 216,
+            "right": 248.8984375,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 253.8984375,
+            "right": 328.8359375,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 74.9375,
+            "height": 18
+          },
+          "box": {
+            "left": 209,
+            "right": 332.8359375,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 123.8359375,
+            "height": 24
+          },
+          "slot": {
+            "left": 209,
+            "right": 332.8359375,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 123.8359375,
+            "height": 24
+          }
+        },
+        {
+          "text": "时间待定视频号小团队如何排好一周内容日程",
+          "time": {
+            "left": 463.671875,
+            "right": 508.640625,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 44.96875,
+            "height": 18
+          },
+          "title": {
+            "left": 513.640625,
+            "right": 576.5078125,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 62.8671875,
+            "height": 18
+          },
+          "box": {
+            "left": 456.671875,
+            "right": 580.5078125,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 123.8359375,
+            "height": 24
+          },
+          "slot": {
+            "left": 456.671875,
+            "right": 580.5078125,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 123.8359375,
+            "height": 24
+          }
+        },
+        {
+          "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+          "time": {
+            "left": 216,
+            "right": 248.8984375,
+            "top": 578.890625,
+            "bottom": 596.890625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 253.8984375,
+            "right": 328.8359375,
+            "top": 578.890625,
+            "bottom": 596.890625,
+            "width": 74.9375,
+            "height": 18
+          },
+          "box": {
+            "left": 209,
+            "right": 332.8359375,
+            "top": 575.890625,
+            "bottom": 599.890625,
+            "width": 123.8359375,
+            "height": 24
+          },
+          "slot": {
+            "left": 209,
+            "right": 332.8359375,
+            "top": 575.890625,
+            "bottom": 599.890625,
+            "width": 123.8359375,
+            "height": 24
+          }
+        }
+      ],
+      "failures": []
+    },
+    {
+      "phase": "calendar-month",
+      "name": "figure-8-month-event-time-title-and-slot-bounds",
+      "viewport": [
+        960,
+        1000
+      ],
+      "events": [
+        {
+          "text": "09:15抖音用 AI 整理一周灵感，找回创作节奏",
+          "time": {
+            "left": 216,
+            "right": 248.8984375,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 253.8984375,
+            "right": 313.6796875,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 59.78125,
+            "height": 18
+          },
+          "box": {
+            "left": 209,
+            "right": 317.6796875,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 108.6796875,
+            "height": 24
+          },
+          "slot": {
+            "left": 209,
+            "right": 317.6796875,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 108.6796875,
+            "height": 24
+          }
+        },
+        {
+          "text": "时间待定视频号小团队如何排好一周内容日程",
+          "time": {
+            "left": 433.359375,
+            "right": 478.328125,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 44.96875,
+            "height": 18
+          },
+          "title": {
+            "left": 483.328125,
+            "right": 531.0390625,
+            "top": 554.890625,
+            "bottom": 572.890625,
+            "width": 47.7109375,
+            "height": 18
+          },
+          "box": {
+            "left": 426.359375,
+            "right": 535.0390625,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 108.6796875,
+            "height": 24
+          },
+          "slot": {
+            "left": 426.359375,
+            "right": 535.0390625,
+            "top": 551.890625,
+            "bottom": 575.890625,
+            "width": 108.6796875,
+            "height": 24
+          }
+        },
+        {
+          "text": "20:00小红书把旅行照片写成一篇有温度的游记",
+          "time": {
+            "left": 216,
+            "right": 248.8984375,
+            "top": 578.890625,
+            "bottom": 596.890625,
+            "width": 32.8984375,
+            "height": 18
+          },
+          "title": {
+            "left": 253.8984375,
+            "right": 313.6796875,
+            "top": 578.890625,
+            "bottom": 596.890625,
+            "width": 59.78125,
+            "height": 18
+          },
+          "box": {
+            "left": 209,
+            "right": 317.6796875,
+            "top": 575.890625,
+            "bottom": 599.890625,
+            "width": 108.6796875,
+            "height": 24
+          },
+          "slot": {
+            "left": 209,
+            "right": 317.6796875,
+            "top": 575.890625,
+            "bottom": 599.890625,
+            "width": 108.6796875,
+            "height": 24
+          }
+        }
+      ],
+      "failures": []
+    }
+  ],
+  "errors": [
+    {
+      "phase": "settings-help",
+      "error": "Error: ENOENT: no such file or directory, scandir '/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/final-convergence-20261020/fixture-KPXAZL/秋日创作库/系统（别动）/库锁'",
+      "stack": "Error: ENOENT: no such file or directory, scandir '/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/final-convergence-20261020/fixture-KPXAZL/秋日创作库/系统（别动）/库锁'"
+    }
+  ],
+  "componentProbeBoundary": "Separate overview/calendar/settings probes compile current source only into temporary directories with synthetic bridges. Their UI assertions do not prove installed IPC mutations.",
+  "version": "0.3.25",
+  "statusLabels": [
+    "全部渠道",
+    "未取消（待发布＋已记录）"
+  ],
+  "fixtureCancelledPlanCount": 0,
+  "cancelledFilterEvidence": "Synthetic component calendar probe supplies a cancelled plan and asserts default/all/cancelled filtering on calendar and day rows; no installed fixture mutation was introduced.",
+  "sourceAfter": {
+    "files": 612,
+    "sha256": "d0eb7a6fa60fb6ea0f5379462c4ea37f64d1ac8cbd4aaecf6de14a7430146a1e"
+  }
+}

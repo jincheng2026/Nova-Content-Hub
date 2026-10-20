@@ -1,0 +1,38 @@
+{
+  "version": "0.3.25",
+  "recordedOn": "2026-10-20",
+  "scope": "Evidence references and hashes; not overall production acceptance",
+  "evidence": [
+    {
+      "file": "artifacts.json",
+      "sha256": "bf18dcf91eeda0d392570bcc3331dc034fc13af59aa3a5415afa7b0cf63f6281"
+    },
+    {
+      "file": "installed-manifest.json",
+      "sha256": "01b8fec7206c28bb480233fa5cb97a8a2465cb6e3478530eecb19ce48d96dce6"
+    },
+    {
+      "file": "component-probes.json",
+      "sha256": "4a8c5748eb1377d66d5e8ebcd28ca01b5356ec4ab222bf94777ffd93c441f085"
+    },
+    {
+      "file": "native-observation.json",
+      "sha256": "d8f7aec930aecb43656a0ed42a8177bbb4b4448b74affcd85e37ee0866463bb9"
+    },
+    {
+      "file": "verification.json",
+      "sha256": "ec06fb228295dec47324d0ae641860e0c274ef86e8d1e380dd5e636fe051d9d3"
+    }
+  ],
+  "fullVerificationStatus": "passed-with-two-explicit-skips",
+  "humanTemplateAcceptance": "pending",
+  "latestHostExecution": "pending",
+  "fullVerificationSummary": {
+    "tests": 1050,
+    "pass": 1048,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 2,
+    "todo": 0
+  }
+}

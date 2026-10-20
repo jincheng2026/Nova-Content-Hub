@@ -1,0 +1,151 @@
+{
+  "recordedAt": "2026-10-20T03:57:58.008314+00:00",
+  "command": "npm run verify",
+  "exitCode": 0,
+  "summary": {
+    "tests": 1050,
+    "pass": 1048,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 2,
+    "todo": 0
+  },
+  "groups": [
+    {
+      "tests": 148,
+      "suites": 0,
+      "pass": 148,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 6465.158667,
+      "group": "prototype"
+    },
+    {
+      "tests": 430,
+      "suites": 0,
+      "pass": 430,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 173960.897542,
+      "group": "file-library"
+    },
+    {
+      "tests": 14,
+      "suites": 0,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 73772.437291,
+      "group": "seed-resources"
+    },
+    {
+      "tests": 58,
+      "suites": 0,
+      "pass": 56,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 2,
+      "todo": 0,
+      "duration_ms": 20406.07875,
+      "group": "plugin"
+    },
+    {
+      "tests": 19,
+      "suites": 0,
+      "pass": 19,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 1333.6685,
+      "group": "integration"
+    },
+    {
+      "tests": 14,
+      "suites": 0,
+      "pass": 14,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 20126.859834,
+      "group": "cover"
+    },
+    {
+      "tests": 5,
+      "suites": 0,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 20143.761916,
+      "group": "maintenance"
+    },
+    {
+      "tests": 35,
+      "suites": 0,
+      "pass": 35,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 121346.032875,
+      "group": "browser-import"
+    },
+    {
+      "tests": 11,
+      "suites": 0,
+      "pass": 11,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 523.669041,
+      "group": "image-validation"
+    },
+    {
+      "tests": 5,
+      "suites": 0,
+      "pass": 5,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 1469.368084,
+      "group": "icons"
+    },
+    {
+      "tests": 311,
+      "suites": 0,
+      "pass": 311,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 433178.232834,
+      "group": "desktop"
+    }
+  ],
+  "skipLines": [
+    "﹣ real pinned Node runs outside the repo without PATH, rejects damage, and cleans failed extraction (0.147458ms) # SKIP",
+    "﹣ real native market and simulated host cache run fixed Node from an unrelated cwd (0.158583ms) # SKIP"
+  ],
+  "nativeAndRendererTypecheck": {
+    "command": "npm run typecheck:desktop",
+    "exitCode": 0,
+    "log": "typecheck.log"
+  },
+  "bothModeDesktopBuildsCompleted": true,
+  "warnings": [
+    "Vite reports chunks above 500 kB; no cold-cache or arbitrary large-library performance acceptance is inferred."
+  ],
+  "scope": "Local repository regression and builds, not real host execution, new installation or production readiness.",
+  "logSha256": "bebfab7f68750f6a2cffb036f8464318498d7bccadb82305baed662191789598"
+}
