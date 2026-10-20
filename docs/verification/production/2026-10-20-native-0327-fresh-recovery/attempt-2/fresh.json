@@ -1,0 +1,77 @@
+{
+  "phase": "fresh",
+  "startedAt": "2026-10-20T04:41:29.910Z",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-in0Rr0",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:readBootstrapRecovery",
+    "nova:status",
+    "nova:createLibrary",
+    "nova:readWorkspaceLibrary",
+    "nova:createContent",
+    "nova:mutateWorkspace"
+  ],
+  "failures": [
+    {
+      "message": "AssertionError [ERR_ASSERTION]: mutateWorkspace: {\"ok\":false,\"error\":{\"code\":\"INVALID_INPUT\",\"message\":\"文件操作未完成，请查询状态后继续；原文件和任务现场会保留。\"}}\n\nfalse !== true\n",
+      "stack": "AssertionError [ERR_ASSERTION]: mutateWorkspace: {\"ok\":false,\"error\":{\"code\":\"INVALID_INPUT\",\"message\":\"文件操作未完成，请查询状态后继续；原文件和任务现场会保留。\"}}\n\nfalse !== true\n\n    at call (file:///Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-20-native-0327-fresh-recovery/entry.mjs:55:97)\n    at async ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-20-native-0327-fresh-recovery/entry.mjs:65:30)\n    at async startDesktop (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/desktop.mjs:405:5)"
+    }
+  ],
+  "checks": [],
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.27",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.27:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-in0Rr0/machine",
+  "pid": 73712,
+  "bootstrap": {
+    "state": "ready",
+    "reasonCode": "none",
+    "canReset": false,
+    "confirmationToken": null,
+    "backupName": null
+  },
+  "freshStatus": {
+    "assistant": "codex",
+    "photoPending": false,
+    "coverActionPending": false,
+    "coverPending": false,
+    "seedPending": false,
+    "workspacePending": null,
+    "templatePending": null,
+    "maintenance": {
+      "pending": null,
+      "receipt": null,
+      "health": null
+    },
+    "busy": false,
+    "sourceName": null,
+    "destinationName": null,
+    "inspection": null,
+    "started": false,
+    "currentName": null,
+    "needsReselect": false,
+    "pending": null,
+    "creating": false,
+    "creationMissing": false,
+    "task": null
+  },
+  "initialCounts": {
+    "templates": 20,
+    "prompts": 52,
+    "contents": 0
+  }
+}

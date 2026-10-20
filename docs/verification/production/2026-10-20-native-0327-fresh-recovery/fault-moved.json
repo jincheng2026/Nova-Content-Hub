@@ -1,0 +1,78 @@
+{
+  "phase": "fault-moved",
+  "startedAt": "2026-10-20T04:43:50.497Z",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:readBootstrapRecovery",
+    "nova:listContents",
+    "nova:inspectLibraryHealth",
+    "nova:readWorkspaceLibrary"
+  ],
+  "failures": [],
+  "checks": [
+    "Startup with valid binding but absent original root: ROOT_MISSING and failed read; exact binding bytes and moved library bytes preserved; no reset"
+  ],
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.27",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.27:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/machine",
+  "pid": 74971,
+  "bootstrap": {
+    "state": "ready",
+    "reasonCode": "none",
+    "canReset": false,
+    "confirmationToken": null,
+    "backupName": null
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/合成内容库",
+    "libraryId": "ef8789a2-57c4-4245-ab0a-6242867064c6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "73465737"
+    }
+  },
+  "movedHealth": {
+    "checkedAt": "2026-10-20T04:43:51.096Z",
+    "state": "blocked",
+    "root": "missing",
+    "complete": false,
+    "checked": {
+      "objects": 0,
+      "assets": 0,
+      "transactions": 0,
+      "requests": 0
+    },
+    "issues": [
+      {
+        "scope": "root",
+        "code": "ROOT_MISSING",
+        "availability": "unavailable"
+      }
+    ]
+  },
+  "movedRead": {
+    "ok": false,
+    "error": {
+      "code": "IO_ERROR",
+      "message": "文件操作未完成，请查询状态后继续；原文件和任务现场会保留。"
+    }
+  },
+  "passed": true,
+  "finishedAt": "2026-10-20T04:43:51.995Z"
+}

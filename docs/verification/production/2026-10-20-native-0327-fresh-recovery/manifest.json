@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-20T04:47:55.680Z",
+  "status": "partial-unresolved-active-move",
+  "overallRecoveryAccepted": false,
+  "coreEvidenceAccepted": true,
+  "coreManifest": "core-manifest.json",
+  "activeMoveEvidence": "active-move.json",
+  "activeMoveExitCode": 2,
+  "observationSamples": 7,
+  "idleBeforeAndAfterSamples": 5,
+  "consecutiveFinalIdleSamples": 3,
+  "lastHealthElapsedMs": 4860,
+  "liveOwner": {
+    "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+    "host": "MichaelMacBook-Pro.local",
+    "pid": 76062,
+    "alive": true
+  },
+  "dataPreserved": true,
+  "installedResourceModulesUnchanged": true,
+  "modulesAfter": {
+    "workbench/dist/release.json": "230d72a5085abffef0465e9318824ce826ba315af5c1bcc038d868798a6c3b5d",
+    "workbench/dist/main/desktop.mjs": "d72a6529392652b9d837095277d9f1e020c0a68a1c4b63345a9be48e8bf4bc51",
+    "workbench/dist/main/controller.mjs": "272bef9d98a103901ce064fda427db8292aa7cffce950edbbdea1812496ff96e",
+    "workbench/dist/main/worker.mjs": "8beb6726627834ad8bd6e05fe7541e7fc7d144b1fdd74f430aea4b3644e335da",
+    "workbench/dist/main/maintenance-worker.mjs": "d7775d5b19aab436baa13847422ec73cda7ab37522074ce22a998178fd10dc2a",
+    "workbench/dist/main/maintenance-controller.mjs": "718331f15e15615ce879fd03c38817c4d48f105e4b5847eb27334180fbb21153",
+    "workbench/dist/main/workspace-controller.mjs": "f697d9fc7d8df5f87ca759e71475947606233d1b333dacdb048c7aaae42ce087",
+    "workbench/dist/preload/index.cjs": "3d502ed0c9d3ec8a5d066da7c8a047523ebaff617b12280869eb72e5c90ccda7",
+    "plugin-src/src/lib/file-library/index.mjs": "70c2329aa9b52e2198dced8bb60fc27d5059bf8d0f0aa852ad466221259cd4cf",
+    "plugin-src/src/lib/file-library/backup.mjs": "16f407d482db3927e0ae82e0ebea747a864fac4406581242914f1335b86309f3"
+  },
+  "processCleanup": "Own probe app exited only after unresolved receipt was saved; owner liveness recorded during every sample, no recovery claim from cleanup.",
+  "artifacts": {
+    "README.md": {
+      "bytes": 5958,
+      "sha256": "8a0c09993bafde2f71d8b730b8f917438b5c9e2f15279acfeecb8a1a003c6f73"
+    },
+    "active-move.json": {
+      "bytes": 13384,
+      "sha256": "32e8ffd314b3956d05e6a2729469b3f17fd389dd154b140fab8f6be8a122e26c"
+    },
+    "active-move.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "active-move.mjs": {
+      "bytes": 5655,
+      "sha256": "dde0855ec2ecdc4f0169063e3f1653b3a5a1119a8a3dabc9c6e24e85977274c7"
+    },
+    "core-manifest.json": {
+      "bytes": 3820,
+      "sha256": "5d00ee3bdcd0f754bbe8e9dff9b695294259b4341bbe303907d6d5655af5bab7"
+    },
+    "entry.mjs": {
+      "bytes": 13274,
+      "sha256": "891d5ad82040b639deeb377667103742a25c2249f83d0a9c08b179c65907c2f0"
+    },
+    "fault-moved.json": {
+      "bytes": 2180,
+      "sha256": "57856b3745359f4c365f6153008981d8f1472ce0e23feb62c5713960444113b6"
+    },
+    "fault-moved.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fresh.json": {
+      "bytes": 191528,
+      "sha256": "2789c059ca9061a2cea10e1cce95aee9513a746c1c31584721fc6d25cf7c5b0e"
+    },
+    "fresh.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "reopen-recover.json": {
+      "bytes": 5009,
+      "sha256": "f8feef4e3822dc924e89fa1dc3c112deba1b39955130303f0db3499782406f54"
+    },
+    "reopen-recover.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "restored-reopen.json": {
+      "bytes": 62288,
+      "sha256": "86938768f005f1b02efdaa1838a8f6ec3b982bbc0972bcf2d8afe39deada736c"
+    },
+    "restored-reopen.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run.log": {
+      "bytes": 360,
+      "sha256": "105037edaf1a251dd36041136b5990c69003e08b07c1a5e8bfd6bdbce7992558"
+    },
+    "run.mjs": {
+      "bytes": 3838,
+      "sha256": "4c0d2b3646fee015a7a10d0ecc4ae640f3c9c8e99725b694eb70c57c9dde4378"
+    },
+    "startup.sample.txt": {
+      "bytes": 222061,
+      "sha256": "ffe5cd30bfbb0c339fc697fb0e8025631d20080c706dd4e8ca0fe91b74c24d0a"
+    },
+    "summarize.mjs": {
+      "bytes": 2666,
+      "sha256": "8bd60f947df5dae01caddec35a67463f577ef2b6f26f3e14714a6e48ff28930d"
+    }
+  }
+}

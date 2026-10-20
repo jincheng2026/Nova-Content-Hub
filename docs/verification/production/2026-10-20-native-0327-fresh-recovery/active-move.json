@@ -1,0 +1,459 @@
+{
+  "scope": "Additional active-directory-move observation, installed modules via hidden development Electron; no lock deletion, worker restart, reset or product edit during observations.",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm",
+  "startedAt": "2026-10-20T04:45:25.121Z",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:inspectLibraryHealth",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:inspectLibraryHealth",
+    "nova:inspectLibraryHealth",
+    "nova:inspectLibraryHealth",
+    "nova:listContents",
+    "nova:inspectLibraryHealth",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:inspectLibraryHealth",
+    "nova:inspectLibraryHealth",
+    "nova:inspectLibraryHealth",
+    "nova:inspectLibraryHealth",
+    "nova:readWorkspaceLibrary"
+  ],
+  "events": [
+    {
+      "action": "move",
+      "at": "2026-10-20T04:45:27.186Z",
+      "active": [
+        {
+          "label": "ipc:nova:readWorkspace",
+          "startedAt": "2026-10-20T04:45:27.010Z"
+        },
+        {
+          "label": "ipc:nova:listCoverAssets",
+          "startedAt": "2026-10-20T04:45:27.010Z"
+        },
+        {
+          "label": "ipc:nova:readWorkspaceLibrary",
+          "startedAt": "2026-10-20T04:45:27.011Z"
+        },
+        {
+          "label": "worker:main:workspace",
+          "startedAt": "2026-10-20T04:45:27.183Z"
+        },
+        {
+          "label": "ipc:nova:inspectLibraryHealth",
+          "startedAt": "2026-10-20T04:45:27.184Z"
+        }
+      ]
+    },
+    {
+      "action": "return",
+      "at": "2026-10-20T04:45:27.225Z",
+      "active": []
+    }
+  ],
+  "samples": [
+    {
+      "at": "2026-10-20T04:45:27.226Z",
+      "elapsedMs": 1,
+      "activeBefore": [],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:27.225Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:27.480Z",
+      "elapsedMs": 255,
+      "activeBefore": [],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:27.479Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:28.483Z",
+      "elapsedMs": 1258,
+      "activeBefore": [
+        {
+          "label": "ipc:nova:listContents",
+          "startedAt": "2026-10-20T04:45:27.544Z"
+        },
+        {
+          "label": "worker:main:list",
+          "startedAt": "2026-10-20T04:45:27.544Z"
+        }
+      ],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:28.482Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:31.313Z",
+      "elapsedMs": 4088,
+      "activeBefore": [
+        {
+          "label": "ipc:nova:readWorkspace",
+          "startedAt": "2026-10-20T04:45:28.483Z"
+        },
+        {
+          "label": "worker:main:workspace",
+          "startedAt": "2026-10-20T04:45:28.483Z"
+        },
+        {
+          "label": "ipc:nova:listCoverAssets",
+          "startedAt": "2026-10-20T04:45:28.483Z"
+        },
+        {
+          "label": "ipc:nova:readWorkspaceLibrary",
+          "startedAt": "2026-10-20T04:45:28.483Z"
+        }
+      ],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:31.311Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:31.569Z",
+      "elapsedMs": 4344,
+      "activeBefore": [],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:31.567Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:31.828Z",
+      "elapsedMs": 4603,
+      "activeBefore": [],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:31.827Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    },
+    {
+      "at": "2026-10-20T04:45:32.085Z",
+      "elapsedMs": 4860,
+      "activeBefore": [],
+      "activeAfter": [],
+      "health": {
+        "checkedAt": "2026-10-20T04:45:32.082Z",
+        "state": "blocked",
+        "root": "matched",
+        "complete": false,
+        "checked": {
+          "objects": 0,
+          "assets": 0,
+          "transactions": 0,
+          "requests": 0
+        },
+        "issues": [
+          {
+            "scope": "root",
+            "code": "LOCK_BUSY",
+            "availability": "unverified"
+          }
+        ]
+      },
+      "lock": {
+        "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+        "names": [
+          "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+        ],
+        "owners": [
+          {
+            "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+            "host": "MichaelMacBook-Pro.local",
+            "pid": 76062,
+            "alive": true
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "pid": 76044,
+  "version": "0.3.27",
+  "target": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af",
+    "libraryId": "ef8789a2-57c4-4245-ab0a-6242867064c6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "73471222"
+    }
+  },
+  "before": {
+    "files": 573,
+    "sha256": "73db0a79efc3a4508b6ba6c7b633f59445f5dbcbcdb640449df9653247ac6847"
+  },
+  "initialHealth": {
+    "checkedAt": "2026-10-20T04:45:27.010Z",
+    "state": "healthy",
+    "root": "matched",
+    "complete": true,
+    "checked": {
+      "objects": 74,
+      "assets": 195,
+      "transactions": 75,
+      "requests": 0
+    },
+    "issues": []
+  },
+  "lockBeforeMove": {
+    "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+    "names": [
+      "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+    ],
+    "owners": [
+      {
+        "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+        "host": "MichaelMacBook-Pro.local",
+        "pid": 76062,
+        "alive": true
+      }
+    ]
+  },
+  "inProgressHealth": {
+    "checkedAt": "2026-10-20T04:45:27.189Z",
+    "state": "blocked",
+    "root": "missing",
+    "complete": false,
+    "checked": {
+      "objects": 0,
+      "assets": 0,
+      "transactions": 0,
+      "requests": 0
+    },
+    "issues": [
+      {
+        "scope": "root",
+        "code": "ROOT_MISSING",
+        "availability": "unavailable"
+      }
+    ]
+  },
+  "after": {
+    "files": 573,
+    "sha256": "73db0a79efc3a4508b6ba6c7b633f59445f5dbcbcdb640449df9653247ac6847"
+  },
+  "finalRead": {
+    "ok": false,
+    "error": {
+      "code": "BUSY",
+      "message": "内容库暂时被其他操作占用，请稍后刷新；原文件和草稿会保留。"
+    }
+  },
+  "finalLock": {
+    "directory": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-R8qJUm/Nova-恢复的内容库-2026-10-20T04-44-07-701Z-2429e52d-32a1-4b04-820c-8a00a824e6af/系统（别动）/库锁",
+    "names": [
+      "cc97aa0b-7734-4516-be33-fe41b3d87fb5.json"
+    ],
+    "owners": [
+      {
+        "token": "cc97aa0b-7734-4516-be33-fe41b3d87fb5",
+        "host": "MichaelMacBook-Pro.local",
+        "pid": 76062,
+        "alive": true
+      }
+    ]
+  },
+  "activeAfterRead": [],
+  "recoveredWithinBound": false,
+  "conclusion": "Unresolved active-move lock: no reset/deletion/restart performed during observation",
+  "finishedAt": "2026-10-20T04:45:33.474Z"
+}

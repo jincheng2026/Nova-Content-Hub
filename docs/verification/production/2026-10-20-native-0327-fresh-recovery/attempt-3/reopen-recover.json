@@ -1,0 +1,106 @@
+{
+  "phase": "reopen-recover",
+  "startedAt": "2026-10-20T04:42:38.345Z",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-jwp19M",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:readBootstrapRecovery",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspaceLibrary",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:inspectLibraryHealth",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:readWorkspaceLibrary",
+    "nova:inspectLibraryHealth"
+  ],
+  "failures": [
+    {
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'blocked'\n- 'healthy'\n",
+      "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'blocked'\n- 'healthy'\n\n    at ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-20-native-0327-fresh-recovery/entry.mjs:90:84)\n    at async startDesktop (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/desktop.mjs:405:5)"
+    }
+  ],
+  "checks": [],
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.27",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.27:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-jwp19M/machine",
+  "pid": 74324,
+  "bootstrap": {
+    "state": "ready",
+    "reasonCode": "none",
+    "canReset": false,
+    "confirmationToken": null,
+    "backupName": null
+  },
+  "persistence": {
+    "savedContentId": "f523749e-4e39-4cf4-ae43-c6f70be6fc32",
+    "libraryId": "3d634faa-2e7f-42dd-b972-e7bfe4a43fcc",
+    "identicalBusinessProjection": true,
+    "identicalFileBytes": true
+  },
+  "movedHealth": {
+    "checkedAt": "2026-10-20T04:42:39.962Z",
+    "state": "blocked",
+    "root": "missing",
+    "complete": false,
+    "checked": {
+      "objects": 0,
+      "assets": 0,
+      "transactions": 0,
+      "requests": 0
+    },
+    "issues": [
+      {
+        "scope": "root",
+        "code": "ROOT_MISSING",
+        "availability": "unavailable"
+      }
+    ]
+  },
+  "movedRead": {
+    "ok": false,
+    "error": {
+      "code": "IO_ERROR",
+      "message": "文件操作未完成，请查询状态后继续；原文件和任务现场会保留。"
+    }
+  },
+  "returnedHealth": {
+    "checkedAt": "2026-10-20T04:42:40.196Z",
+    "state": "blocked",
+    "root": "matched",
+    "complete": false,
+    "checked": {
+      "objects": 0,
+      "assets": 0,
+      "transactions": 0,
+      "requests": 0
+    },
+    "issues": [
+      {
+        "scope": "root",
+        "code": "LOCK_BUSY",
+        "availability": "unverified"
+      }
+    ]
+  }
+}

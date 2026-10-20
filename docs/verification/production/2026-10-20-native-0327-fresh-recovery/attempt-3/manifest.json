@@ -1,0 +1,40 @@
+{
+  "scope": "Repository Electron 44.9.0 development host (app.isPackaged=false), actual installed /Applications/自媒体工作台.app 0.3.27 resource modules, hidden startDesktop, real renderer/preload/IPC/utility worker, isolated os.tmpdir userData and synthetic library. File dialogs return only probe paths. Not Finder launch or real user-library/TCC/manual UI acceptance.",
+  "at": "2026-10-20T04:42:18.668Z",
+  "resources": "/Applications/自媒体工作台.app/Contents/Resources",
+  "electron": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0327-fresh-jwp19M",
+  "installedHashesBefore": {
+    "workbench/dist/release.json": "230d72a5085abffef0465e9318824ce826ba315af5c1bcc038d868798a6c3b5d",
+    "workbench/dist/main/desktop.mjs": "d72a6529392652b9d837095277d9f1e020c0a68a1c4b63345a9be48e8bf4bc51",
+    "workbench/dist/main/controller.mjs": "272bef9d98a103901ce064fda427db8292aa7cffce950edbbdea1812496ff96e",
+    "workbench/dist/main/worker.mjs": "8beb6726627834ad8bd6e05fe7541e7fc7d144b1fdd74f430aea4b3644e335da",
+    "workbench/dist/main/maintenance-worker.mjs": "d7775d5b19aab436baa13847422ec73cda7ab37522074ce22a998178fd10dc2a",
+    "workbench/dist/main/maintenance-controller.mjs": "718331f15e15615ce879fd03c38817c4d48f105e4b5847eb27334180fbb21153",
+    "workbench/dist/main/workspace-controller.mjs": "f697d9fc7d8df5f87ca759e71475947606233d1b333dacdb048c7aaae42ce087",
+    "workbench/dist/preload/index.cjs": "3d502ed0c9d3ec8a5d066da7c8a047523ebaff617b12280869eb72e5c90ccda7",
+    "plugin-src/src/lib/file-library/index.mjs": "70c2329aa9b52e2198dced8bb60fc27d5059bf8d0f0aa852ad466221259cd4cf",
+    "plugin-src/src/lib/file-library/backup.mjs": "16f407d482db3927e0ae82e0ebea747a864fac4406581242914f1335b86309f3"
+  },
+  "phases": [
+    {
+      "phase": "fresh",
+      "code": 0,
+      "signal": null,
+      "pid": 74148
+    },
+    {
+      "phase": "reopen-recover",
+      "code": 1,
+      "signal": null,
+      "pid": 74324
+    }
+  ],
+  "limits": [
+    "No Finder/LaunchServices packaged launch, TCC permission, real user library, external host, generation, clipboard, notification test, or reinstall",
+    "Moved-library recovery covered; malformed binding reset and crash-during-maintenance recovery not exercised"
+  ],
+  "passed": false,
+  "error": "AssertionError [ERR_ASSERTION]: reopen-recover failed\n\n1 !== 0\n",
+  "finishedAt": "2026-10-20T04:42:40.252Z"
+}
