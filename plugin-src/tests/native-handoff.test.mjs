@@ -135,20 +135,50 @@ for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requi
     let content = f.library.registerContentCandidate(f.content.id, {assetHash: f.asset.assetHash, requestId: 'legacy-request', attemptId: 'legacy-attempt'}, f.library.readContent(f.content.id).editToken);
     const candidate = content.candidates[0];
     content = f.library.attachContentMaterial(content.id, {assetHash: candidate.assetHash, originalName: `候选修改参考-${candidate.id}.png`, role: 'reference'}, content.editToken);
+    content = f.library.attachContentMaterial(content.id, {assetHash: f.asset.assetHash, originalName: '收藏构图参考-private-annotation-layout', role: 'reference'}, content.editToken);
     const photo = f.library.createPhoto({title: 'PRIVATE_PHOTO_TITLE', originalName: 'PRIVATE_PHOTO.png', assetHash: f.asset.assetHash, isOwnPhoto: true});
     const prompt = `以所附候选原图（${candidate.id}）为基础，按以下批注修改；保持未要求修改的内容与布局。\n【封面位置批注】\nPRIVATE_ANNOTATION`;
     for (const matching of [false, true]) {
-        const {request} = f.library.createCoverRequest(content.id, {...Object.fromEntries(['styleAssetHashes', 'pixels', 'ratio', 'count', 'outputFormat'].map(key => [key, f.request[key]])), photo: {id: photo.id, assetHash: photo.assetHash}, template: {id: f.template.id, version: 1}, scope: 'cover-only', materialIds: matching ? [content.materials[0].id] : [], prompt}, f.library.readContent(content.id).editToken);
+        const {request} = f.library.createCoverRequest(content.id, {...Object.fromEntries(['styleAssetHashes', 'pixels', 'ratio', 'count', 'outputFormat'].map(key => [key, f.request[key]])), photo: {id: photo.id, assetHash: photo.assetHash}, template: {id: f.template.id, version: 1}, scope: 'cover-only', materialIds: [content.materials[1].id, ...(matching ? [content.materials[0].id] : [])], prompt}, f.library.readContent(content.id).editToken);
         const {attempt} = f.library.createCoverAttempt(content.id, request.requestId, {host});
         const task = {...f.task, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId};
         const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, options);
         const text = new URL(prepared.url).searchParams.get('prompt');
         assert.equal(text.startsWith(`按已保存的位置批注修改「${content.title}」的封面`), matching);
+        assert.match(text, /资料0；构图参考1；/);
+        assert.equal(text.includes('原图参考1；'), matching);
         assert.ok(text.includes(`任务编号：${prepared.id}`));
         assert.equal(text.includes('$nova-content-cover-execution'), host === 'codex');
         assert.equal(new URL(prepared.url).searchParams.get('skills'), host === 'workbuddy' ? options.installedSkill : null);
         for (const privateValue of ['PRIVATE_ANNOTATION', candidate.id, candidate.assetHash, content.materials[0].originalName, photo.id, photo.title, photo.originalName]) assert.ok(!text.includes(privateValue));
     }
+});
+
+for (const host of ['codex', 'workbuddy']) test(`${host} composition references are separately counted fixed inputs and all selected hashes are required for claim`, async t => {
+    let materials;
+    const f = await fixture(t, host, {}, {async configure({library, parent, content}) {
+        let current = content;
+        for (let i = 0; i < 4; i++) {
+            const file = path.join(parent, `composition-${i}.png`);
+            fs.writeFileSync(file, await sharp({create: {width: 24, height: 32, channels: 3, background: {r: 30 + i, g: 90, b: 150}}}).png().toBuffer());
+            const asset = library.importAsset(file, {purpose: 'material'});
+            current = library.attachContentMaterial(current.id, {assetHash: asset.assetHash, originalName: `收藏构图参考-PRIVATE-${i}`, role: i === 2 ? 'text' : 'reference'}, current.editToken);
+        }
+        materials = current.materials;
+        return {materialIds: materials.slice(0, 3).map(item => item.id), photo: null};
+    }});
+    const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
+    const text = new URL(prepared.url).searchParams.get('prompt');
+    assert.match(text, /不放人物；样张1；资料1；构图参考2；生成要求已保存/);
+    assert.ok(!text.includes('原图参考')); assert.ok(!text.includes('PRIVATE'));
+    const found = readNativeHandoff(f.directory, prepared.id, release), context = found.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
+    assert.deepEqual(context.request, f.request);
+    assert.deepEqual(context.request.materials.map(item => item.id).sort(), materials.slice(0, 3).map(item => item.id).sort());
+    assert.ok(!context.inputs.some(item => item.assetHash === materials[3].assetHash));
+    for (const input of context.inputs) assert.deepEqual(fs.readFileSync(input.path), Buffer.from(f.library.readAsset(input.assetHash).data));
+    const hashes = [...new Set(context.inputs.map(item => item.assetHash))];
+    for (const composition of materials.slice(0, 2)) failure('INVALID_INPUT', () => found.library.claimCoverAttempt(f.content.id, f.task.requestId, f.task.attemptId, {host, readAssetHashes: hashes.filter(hash => hash !== composition.assetHash)}));
+    assert.equal(found.library.claimCoverAttempt(f.content.id, f.task.requestId, f.task.attemptId, {host, readAssetHashes: hashes}).attempt.status, 'claimed');
 });
 
 test('hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact', async t => {

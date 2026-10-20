@@ -98,12 +98,13 @@ function hostURL(host, id, root, options, kind, library, context) {
     const candidateId = kind === 'cover' && /^以所附候选原图（([0-9a-f-]{36})）为基础，按以下批注修改；/.exec(request.prompt)?.[1];
     const candidate = candidateId && context.content.candidates.find(item => item.id === candidateId);
     const refinement = candidate && request.materials.some(item => item.role === 'reference' && item.assetHash === candidate.assetHash && item.originalName === `候选修改参考-${candidateId}.png`);
+    const compositions = kind === 'cover' ? request.materials.filter(item => item.role === 'reference' && item.originalName.startsWith('收藏构图参考-')).length : 0;
     const summary = value => Array.from(value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/gu, ' ').replace(/\$/g, '＄').replace(/`/g, '｀').trim()).slice(0, 48);
     const title = kind === 'cover' ? summary(request.title) : [];
     const name = template.deletedAt ? [] : summary(template.name);
     const requirements = kind === 'template'
         ? `要求：参考图${request.styleAssetHashes.length}张；首张还原1张；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.restore.width}×${request.restore.height}；${request.restore.outputFormat}；补充说明${request.notes.trim() ? '有' : '无'}。`
-        : `要求：${request.count}张；${request.ratio}；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.pixels.width}×${request.pixels.height}；${request.outputFormat}；${request.photo ? '本人照已选' : '不放人物'}；样张${request.styleAssetHashes.length}；资料${request.materials.length - (refinement ? 1 : 0)}；${refinement ? '原图参考1；' : ''}生成要求${request.prompt.trim() ? '已保存' : '无'}。`;
+        : `要求：${request.count}张；${request.ratio}；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.pixels.width}×${request.pixels.height}；${request.outputFormat}；${request.photo ? '本人照已选' : '不放人物'}；样张${request.styleAssetHashes.length}；资料${request.materials.length - compositions - (refinement ? 1 : 0)}；${compositions ? `构图参考${compositions}；` : ''}${refinement ? '原图参考1；' : ''}生成要求${request.prompt.trim() ? '已保存' : '无'}。`;
     const readFirst = '先按任务编号读取完整请求、正文及全部已选图片和资料，核对后生成；完整请求为准。';
     const prompt = () => {
         const intent = kind === 'template'
