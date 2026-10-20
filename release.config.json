@@ -2,7 +2,7 @@
   "AUTH_MODE": "disabled",
   "prototype": true,
   "appScope": "nova-content-hub",
-  "version": "0.3.31",
+  "version": "0.3.32",
   "protocolVersion": 1,
   "productId": "nova-content-hub"
 }

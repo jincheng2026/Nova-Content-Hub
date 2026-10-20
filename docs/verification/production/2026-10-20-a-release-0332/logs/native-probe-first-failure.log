@@ -1,0 +1,85 @@
+
+> nova-content-hub-prototype@0.3.32 probe:desktop
+> npm run probe --prefix workbench
+
+
+> nova-content-hub-workbench@0.3.32 probe
+> node scripts/probe.mjs
+
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/desktop.mjs:43:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/release.json'
+}
+PASS auth-required: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/desktop.mjs:42:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/renderer-resources.json'
+}
+PASS auth-required: missing renderer-resources.json refuses startup
+Starting Electron probe phase: import
+PROBE 2026-10-20T08:12:44.394Z required/import: waiting for initial renderer idle
+PROBE 2026-10-20T08:12:44.481Z required/import: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-20T08:12:44.482Z required/import: opening library A from welcome
+PROBE 2026-10-20T08:12:45.137Z required/import: library A summary loaded; navigating to content
+PROBE 2026-10-20T08:12:45.197Z required/import: library A content row rendered; opening saved body
+PROBE 2026-10-20T08:12:46.031Z required/import: library A body verified; opening import manager
+React business status loaded; clicking backup/destination/import
+PROBE 2026-10-20T08:12:46.930Z required/import: backup and destination selected; importing B
+PASS saved A editor cleared before import/resume adopts B; lost selection/status cannot submit A identifiers
+PROBE 2026-10-20T08:13:11.066Z required/import: import B adopted; editing fixture and removing source backup
+PROBE 2026-10-20T08:13:11.284Z required/import: refreshing imported content through manager
+PROBE 2026-10-20T08:13:12.756Z required/import: imported content table rendered; checking text-only data
+PROBE 2026-10-20T08:13:12.756Z required/import: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-20T08:13:12.886Z required/import: all import probe assertions passed
+PASS Electron 44.9.0: auth-required/import, React/Semi rendered, no CSP violation; real utility process + sharp, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PROBE 2026-10-20T08:13:14.066Z required/reopen: waiting for initial renderer idle
+PROBE 2026-10-20T08:13:14.195Z required/reopen: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-20T08:13:14.196Z required/reopen: checking reopened binding and edited content without source backup
+PROBE 2026-10-20T08:13:15.307Z required/reopen: refreshing imported content through manager
+PROBE 2026-10-20T08:13:16.783Z required/reopen: imported content table rendered; checking text-only data
+PROBE 2026-10-20T08:13:17.318Z required/reopen: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-20T08:13:17.322Z required/reopen: failure; capturing bounded diagnostics before exit
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  Comparison {
++   code: 'BUSY'
+-   code: 'INVALID_INPUT'
+  }
+
+    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/probe.mjs:184:13)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-RgFEaG/auth-required/workbench/dist/main/desktop.mjs:433:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: [Error],
+  expected: [Object],
+  operator: 'rejects',
+  diff: 'simple'
+}
+Saved Electron failure diagnostic: /Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-18-unified-directory-import-1792483960327-required-probe-failure-reopen.json
+Saved Electron failure diagnostic: /Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/docs/verification/production/2026-10-18-unified-directory-import-1792483960327-required-probe-failure-reopen.png
+file:///Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/workbench/scripts/probe.mjs:33
+            if (failure) reject(failure); else code === expected ? resolve() : reject(new Error(`Electron ${phase} probe closed with code ${code}, signal ${signal}, expected ${expected}`));
+                                                                                      ^
+
+Error: Electron reopen probe closed with code 1, signal null, expected 0
+    at ChildProcess.<anonymous> (file:///Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/workbench/scripts/probe.mjs:33:87)
+    at ChildProcess.wrapper (node:events:639:12)
+    at ChildProcess.emit (node:events:514:28)
+    at maybeClose (node:internal/child_process:1141:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:306:5)
+
+Node.js v24.20.0

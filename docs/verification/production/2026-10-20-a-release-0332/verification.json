@@ -1,0 +1,47 @@
+{
+  "version": "0.3.32",
+  "fullVerify": {
+    "command": "npm run verify",
+    "exitCode": 0,
+    "tests": 1077,
+    "pass": 1075,
+    "fail": 0,
+    "skipped": 2
+  },
+  "conditionalIntegrations": [
+    {
+      "command": "NOVA_BUNDLED_NODE_INTEGRATION=1 node --test --test-name-pattern='^real pinned Node runs outside' plugin-src/tests/bundled-node.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    {
+      "command": "NOVA_MARKETPLACE_INTEGRATION=1 node --test --test-name-pattern='^real native market and simulated host cache' plugin-src/tests/marketplace.test.mjs",
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    }
+  ],
+  "independentRendererProbes": {
+    "count": 3,
+    "status": "PASS",
+    "scope": "Actual React/Semi/Electron and App listeners with synthetic IPC; no user library access"
+  },
+  "runtimeAudit": {
+    "command": "npm audit --omit=dev --json",
+    "vulnerabilities": 0
+  },
+  "nativeProbe": {
+    "command": "npm run probe:desktop",
+    "exitCode": 0,
+    "modes": [
+      "required/import",
+      "required/reopen",
+      "disabled/import",
+      "disabled/reopen"
+    ],
+    "scope": "Real Electron sandbox/preload/IPC, utilityProcess/sharp, isolated temporary libraries, invalid binding/release, CSP, import lost acknowledgement/status and second-process reopen",
+    "diagnosticHistory": "Three preserved probe failures: shared raw-worker competition, short recovery budget, stale UI layout assertion. Probe-only corrections preserve strict rejection and fail-closed content controls; no product changes.",
+    "evidence": "../2026-10-20-a-group-0332/native-probe-fix/README.md"
+  }
+}
