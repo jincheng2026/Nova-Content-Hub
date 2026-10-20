@@ -30,6 +30,7 @@ const SYSTEM = '系统（别动）';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const jsonBytes = value => Buffer.from(`${JSON.stringify(value, null, 2)}\n`);
 let testHook;
+const finishedLocks = new Map();
 
 export class LibraryError extends Error {
     constructor(code, message, details = {}) {
@@ -267,8 +268,50 @@ function ioError(error) {
 function acquire(root, reader = read, listNames = fs.readdirSync, assertIdentity = () => {}) {
     const lock = path.join(root, SYSTEM, '库锁');
     directory(path.dirname(lock));
+    for (const [finishedToken, entry] of finishedLocks) {
+        if (entry.root !== root) continue;
+        try {
+            entry.cleanup(true);
+            finishedLocks.delete(finishedToken);
+        } catch {} // A moved or changed identity must retain its lock until the original returns.
+    }
+    if (finishedLocks.size >= 256) fail('LOCK_UNCERTAIN', 'Too many unfinished lock releases; restore the original libraries before opening another');
+    const rootIdentity = fs.lstatSync(root, {bigint: true});
+    const libraryId = parse(read(path.join(root, '内容库.json')), '内容库.json').libraryId;
     const token = randomUUID();
     const tokenName = `${token}.json`;
+    const ownerBytes = jsonBytes({token, host: os.hostname(), pid: process.pid});
+    let lockIdentity, removed = false;
+    const cleanup = (exactOwner = false) => {
+        const check = (sameLock = true) => {
+            directory(root);
+            const current = fs.lstatSync(root, {bigint: true});
+            if (current.dev !== rootIdentity.dev || current.ino !== rootIdentity.ino ||
+                exactOwner && parse(read(path.join(root, '内容库.json')), '内容库.json').libraryId !== libraryId) fail('CONFLICT', 'Lock library identity changed');
+            directory(lock);
+            const currentLock = fs.lstatSync(lock, {bigint: true});
+            if (sameLock && (!lockIdentity || currentLock.dev !== lockIdentity.dev || currentLock.ino !== lockIdentity.ino)) fail('CONFLICT', 'Lock directory identity changed');
+        };
+        check(false);
+        const names = fs.readdirSync(lock);
+        if (names.length) {
+            if (!names.includes(tokenName)) {
+                if (exactOwner) fail('LOCK_UNCERTAIN', 'Lock owner changed before release');
+                return;
+            }
+            if (exactOwner && (names.length !== 1 || !read(path.join(lock, tokenName)).equals(ownerBytes))) fail('LOCK_UNCERTAIN', 'Lock owner changed before release');
+            check();
+            fs.unlinkSync(path.join(lock, tokenName));
+        }
+        check();
+        fs.rmdirSync(lock);
+        removed = true;
+        finishedLocks.delete(token);
+        syncDirectory(path.dirname(lock));
+    };
+    const deferCleanup = () => {
+        if (lockIdentity && !removed) finishedLocks.set(token, {root, cleanup});
+    };
     for (let attempt = 0; attempt < 2; attempt++) {
         assertIdentity();
         safePath(lock, true);
@@ -319,9 +362,10 @@ function acquire(root, reader = read, listNames = fs.readdirSync, assertIdentity
             continue;
         }
         try {
+            lockIdentity = fs.lstatSync(lock, {bigint: true});
             hook('beforeOwnerWrite', {token});
             assertIdentity();
-            writeNew(path.join(lock, tokenName), jsonBytes({token, host: os.hostname(), pid: process.pid}));
+            writeNew(path.join(lock, tokenName), ownerBytes);
             hook('afterOwnerWrite', {token});
             assertIdentity();
             syncDirectory(path.dirname(lock));
@@ -329,14 +373,9 @@ function acquire(root, reader = read, listNames = fs.readdirSync, assertIdentity
             // Clean up only while the approved identity still matches; otherwise retain the uncertain lock.
             try {
                 assertIdentity();
-                try {
-                    fs.unlinkSync(path.join(lock, tokenName));
-                } catch (cleanupError) {
-                    if (cleanupError.code !== 'ENOENT') throw cleanupError;
-                }
-                fs.rmdirSync(lock);
-                syncDirectory(path.dirname(lock));
+                cleanup();
             } catch (cleanupError) {
+                deferCleanup();
                 throw new LibraryError('LOCK_UNCERTAIN', 'Lock initialization failed and its cleanup could not be confirmed', {
                     cause: cleanupError,
                     initializationError: ioError(error)
@@ -345,21 +384,16 @@ function acquire(root, reader = read, listNames = fs.readdirSync, assertIdentity
             throw error;
         }
         return () => {
-            directory(lock);
-            hook('beforeRelease', {token});
-            assertIdentity();
             try {
-                fs.unlinkSync(path.join(lock, tokenName));
+                directory(lock);
+                hook('beforeRelease', {token});
+                assertIdentity();
+                cleanup();
             } catch (error) {
-                if (error.code === 'ENOENT') return;
+                if (error.code === 'ENOTEMPTY') return;
+                deferCleanup();
                 throw error;
             }
-            try {
-                fs.rmdirSync(lock);
-            } catch (error) {
-                if (error.code !== 'ENOTEMPTY' && error.code !== 'ENOENT') throw error;
-            }
-            syncDirectory(path.dirname(lock));
         };
     }
     fail('BUSY', 'Library lock changed; retry');
