@@ -1,0 +1,4 @@
+7662be609eca88e487206710e286bfef0e7af59d9107efe14ba8c7c59567dac4  docs/verification/production/2026-10-20-a-group-0332/native-probe-fix/third-disabled-import-failure.json
+fc8d10155acb9c2d42cf4f20260e962d477c0ac47d9ccad43fd6ceee40ae8fbd  docs/verification/production/2026-10-20-a-group-0332/native-probe-fix/third-disabled-import-failure.png
+ad94478144b5c8f09342659068797919c12a81c805e8ae0e4757f1fdf3b8d301  docs/verification/production/2026-10-20-a-group-0332/native-probe-fix/third-failure-stale-ui-expectation.log
+146cb8ff9d37da819953dfb4ecf5bd2b66d2def20ea6daa1d9db4285ebc794fd  docs/verification/production/2026-10-20-a-group-0332/native-probe-fix/third-run-required.png

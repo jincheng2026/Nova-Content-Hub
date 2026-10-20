@@ -32,3 +32,5 @@ The three probes resolve this checkout relative to their own source location. Th
 - `ui/calendar-pagination/result.json`: 121 plans at sizes 20/50/100, 101st plan, 107-plan and 107-history pagination, search/channel/status across the full dataset, zero/single page, busy controls, deep focus consumed once, content/collection identity and 1440/1100/760/560 layouts. This is the previous pagination probe adapted to the top multi-select and made checkout-relative.
 
 No real user-library acceptance, final frozen package acceptance, Intel Mac/Windows hardware acceptance or real assistant/provider launch is claimed here.
+
+Supplemental 0.3.32 native probe correction and both-mode import/reopen acceptance: [native-probe-fix/README.md](native-probe-fix/README.md), with original and intermediate failures archived, final native logs/screenshots, and exact scope in [native-probe-fix/result.json](native-probe-fix/result.json).

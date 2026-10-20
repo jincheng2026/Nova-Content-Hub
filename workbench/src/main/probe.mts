@@ -126,9 +126,10 @@ startDesktop({
                     return status();
                 };
                 await click('resume');
-                await wait(`document.querySelector('[data-busy="false"][data-loaded="false"]')`);
+                await wait(`document.querySelector('[data-busy="false"][data-loaded="false"]')`, 45000);
                 assert.equal(await run("document.getElementById('content-body') === null"), true);
-                assert.equal(await run("document.querySelector('.content-library-page #new-content')?.disabled"), true);
+                assert.equal(await run("document.getElementById('retry-workspace') !== null"), true);
+                assert.equal(await run("document.querySelectorAll('.content-library-page #new-content, #content-title, #content-body, #save-content').length"), 0);
                 controller.resumeImport = resume;
                 controller.status = status;
                 await click('refresh');
@@ -187,13 +188,19 @@ startDesktop({
             assert.equal(await run('globalThis.untrustedExecuted === true'), false);
         }
         stage('checking worker binding, release pair, static MIME, URL and CSP boundaries');
-        await assert.rejects(worker.call('list', {
-            binding: {
-                root: destination,
-                libraryId: 'not-a-library-id',
-                rootIdentity: {dev: '0', ino: '0'}
-            }, view: 'active'
-        }), {code: 'INVALID_INPUT'});
+        // Renderer background reads may still occupy the app worker after its UI is idle.
+        const boundaryWorker = new WorkerClient(() => utilityProcess.fork(fileURLToPath(new URL('./worker.mjs', import.meta.url)), [release.pairId], {stdio: 'ignore'}));
+        try {
+            await assert.rejects(boundaryWorker.call('list', {
+                binding: {
+                    root: destination,
+                    libraryId: 'not-a-library-id',
+                    rootIdentity: {dev: '0', ino: '0'}
+                }, view: 'active'
+            }), {code: 'INVALID_INPUT'});
+        } finally {
+            boundaryWorker.stop();
+        }
         const wrongWorker = new WorkerClient(() => utilityProcess.fork(fileURLToPath(new URL('./worker.mjs', import.meta.url)), ['wrong-pair'], {stdio: 'ignore'}));
         try {
             await assert.rejects(wrongWorker.call('inspect', {source: path.join(root, 'source.json')}), {code: 'RELEASE_MISMATCH'});

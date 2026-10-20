@@ -20,10 +20,12 @@ async function launch(bundle, entry, phase, data, expected = 0) {
             stdio: 'inherit'
         });
         let failure;
+        // Import exercises open, import, and lost-ack recovery, each with a 45-second UI budget.
+        const phaseTimeout = phase === 'import' ? 180000 : 60000;
         const timeout = setTimeout(() => {
-            failure = new Error(`Electron ${phase} probe exceeded 60 seconds`);
+            failure = new Error(`Electron ${phase} probe exceeded ${phaseTimeout / 1000} seconds`);
             child.kill('SIGKILL');
-        }, 60000);
+        }, phaseTimeout);
         child.once('error', error => {
             failure = error;
             if (child.pid) child.kill('SIGKILL');

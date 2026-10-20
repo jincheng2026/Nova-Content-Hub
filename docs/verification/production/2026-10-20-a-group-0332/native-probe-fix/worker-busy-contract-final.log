@@ -1,0 +1,13 @@
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (4.380542ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (2.3295ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.705417ms)
+✔ readonly non-BUSY failures are returned once (0.238959ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.256167ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 127.670041

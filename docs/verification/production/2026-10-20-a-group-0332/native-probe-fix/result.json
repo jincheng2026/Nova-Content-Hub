@@ -1,0 +1,64 @@
+{
+  "status": "PASS",
+  "release": "0.3.32",
+  "scope": "test-only probe correction; product WorkerClient/queues/renderer unchanged",
+  "commands": [
+    {
+      "command": "node --test workbench/test/worker-client-busy.test.mjs",
+      "exitCode": 0,
+      "passed": 5
+    },
+    {
+      "command": "node docs/verification/production/2026-10-20-a-group-0332/native-probe-fix/minimal-shared-worker-repro.mjs",
+      "exitCode": 1,
+      "purpose": "intentionally red deterministic demonstration of shared pending slot before fix"
+    },
+    {
+      "command": "npm run typecheck:native --prefix workbench",
+      "exitCode": 0
+    },
+    {
+      "command": "node workbench/node_modules/typescript/bin/tsc -p workbench/tsconfig.native.json",
+      "exitCode": 0
+    },
+    {
+      "command": "node --check workbench/scripts/probe.mjs",
+      "exitCode": 0
+    },
+    {
+      "command": "npm run probe:desktop",
+      "exitCode": 0,
+      "phases": [
+        "auth-required/import",
+        "auth-required/reopen",
+        "auth-disabled/import",
+        "auth-disabled/reopen"
+      ]
+    }
+  ],
+  "strictAssertions": [
+    "INVALID_INPUT from independent correctly paired worker",
+    "RELEASE_MISMATCH from wrong pair",
+    "missing release/resource table refuses startup in both auth modes",
+    "sandboxed React/Semi and exact bridge",
+    "unloaded recovery has retry-workspace and no title/body/create/save controls",
+    "lost acknowledgement clears old editor and preserves binding rules",
+    "reopen preserves identities and later edits without source backup",
+    "registered MIME/URL/CSP and text-only malicious titles"
+  ],
+  "failedAttempts": [
+    "original-failure.log",
+    "second-failure-after-isolation.log",
+    "third-failure-stale-ui-expectation.log"
+  ],
+  "finalEvidence": [
+    "native-probe-after.log",
+    "final-required.png",
+    "final-disabled.png"
+  ],
+  "notVerified": [
+    "installed final application",
+    "system dialogs or human acceptance",
+    "Intel Mac or Windows native hardware"
+  ]
+}

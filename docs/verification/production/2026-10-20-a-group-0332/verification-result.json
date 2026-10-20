@@ -54,5 +54,6 @@
     "installed app and real user library",
     "Intel Mac and Windows hardware",
     "real provider or assistant launches"
-  ]
+  ],
+  "supplementalNativeProbe": "native-probe-fix/result.json"
 }
