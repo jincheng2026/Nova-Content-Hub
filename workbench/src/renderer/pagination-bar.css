@@ -8,7 +8,7 @@
 /* Global form inputs must not add a second box inside Semi's fixed-height jumper. */
 .pagination-bar .semi-page-quickjump input.semi-input { width:100%; min-width:0; padding:0 6px !important; border:0 !important; border-radius:0; background:transparent !important; box-shadow:none !important; }
 .pagination-bar .semi-page-item:focus-visible { outline:2px solid var(--semi-color-focus-border); outline-offset:2px; }
-.members-toolbar { display: grid; grid-template-columns: minmax(180px, 1fr) repeat(3, minmax(110px, auto)); gap: 12px; align-items: end; }
+.members-toolbar { display: grid; grid-template-columns: minmax(180px, 1fr) repeat(2, minmax(110px, auto)); gap: 12px; align-items: end; }
 .members-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .members-table th, .members-table td { padding: 12px 8px; border-bottom: 1px solid var(--semi-color-border); text-align: left; overflow-wrap: anywhere; }
 .members-table th:first-child { width: 52px; }
@@ -22,3 +22,6 @@
 .members-save-bar { position: sticky; bottom: -24px; padding: 12px 0; background: var(--semi-color-bg-0); z-index: 2; }
 .members-save-bar p:empty { display: none; }
 @media (max-width: 760px) { .members-toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); } .members-toolbar > label:first-child { grid-column: 1 / -1; } }
+
+.pagination-bar .semi-page-switch { flex:none; margin-left:4px; }
+.pagination-bar-single .semi-page-item { display:none; }

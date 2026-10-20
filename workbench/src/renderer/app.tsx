@@ -64,13 +64,13 @@ function App() {
     const workspaceAssets = useRef<{epoch: number; value: CoverResults['listCoverAssets']} | null>(null);
     const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);
     const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);
-    const [templateContentQuery, setTemplateContentQuery] = useState(''), [templateContentPage, setTemplateContentPage] = useState(1);
+    const [templateContentQuery, setTemplateContentQuery] = useState(''), [templateContentPage, setTemplateContentPage] = useState(1), [templateContentPageSize, setTemplateContentPageSize] = useState(20);
     const templateContents = useMemo(() => {
         if (!templatePicker) return [];
         const query = templateContentQuery.trim().toLocaleLowerCase();
         return workspace?.contents.filter(item => !item.deletedAt && (!query || `${item.title} ${item.body}`.toLocaleLowerCase().includes(query))) ?? [];
     }, [workspace, templateContentQuery, templatePicker]);
-    const currentTemplateContentPage = Math.min(templateContentPage, Math.max(1, Math.ceil(templateContents.length / 20)));
+    const currentTemplateContentPage = Math.min(templateContentPage, Math.max(1, Math.ceil(templateContents.length / templateContentPageSize)));
     useEffect(() => setTemplateContentPage(1), [templateContentQuery]);
     const [contentQuery, setContentQuery] = useState('');
     const templateDialog = useRef<HTMLDialogElement>(null);
@@ -692,7 +692,7 @@ function App() {
         </div></section>)}
         </>}
         {recoveryOpen && <dialog ref={recoveryDialog} className="library-manager-dialog" aria-labelledby="retained-recovery-title" onCancel={event => {event.preventDefault(); setRecoveryOpen(false);}}><div className="dialog-heading"><div><h2 id="retained-recovery-title">继续处理待确认操作</h2><p>原编辑窗口与填写内容保持打开。处理后关闭此窗口，返回继续编辑。</p></div><Button disabled={acting} onClick={() => setRecoveryOpen(false)}>返回编辑</Button></div><p className="manager-error" role="alert">{error}</p><section className="library-manager" aria-label="待确认操作">{recoveryCards}{!blocked && <p role="status">待确认操作已处理，可以返回原编辑窗口。</p>}</section></dialog>}
-        {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={closeTemplatePicker} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 选择已有内容，或新建并保存后制作封面。</p></div><Button onClick={closeTemplatePicker}>关闭</Button></div><div className="actions"><Button theme="solid" disabled={busy || blocked} onClick={() => void newContent(templatePicker.id)}>用此模板新建内容</Button></div><ListToolbar search={{label: '搜索使用模板的内容', placeholder: '搜索内容标题或正文', value: templateContentQuery, change: setTemplateContentQuery, disabled: busy}}/><DataTable className="template-content-list" rows={templateContents.slice((currentTemplateContentPage - 1) * 20, currentTemplateContentPage * 20)} total={templateContents.length} page={currentTemplateContentPage} pageSize={20} onPageChange={setTemplateContentPage} disabled={busy || !!blocked} label="模板使用内容分页" rowKey="id" onRow={item => ({'data-template-content-id': item?.id})} columns={[
+        {templatePicker && <dialog ref={templateDialog} className="template-content-dialog" onCancel={closeTemplatePicker} aria-labelledby="template-content-title"><div className="dialog-heading"><div><h2 id="template-content-title">为哪篇内容使用模板？</h2><p>{templatePicker.name} · 选择已有内容，或新建并保存后制作封面。</p></div><Button onClick={closeTemplatePicker}>关闭</Button></div><div className="actions"><Button theme="solid" disabled={busy || blocked} onClick={() => void newContent(templatePicker.id)}>用此模板新建内容</Button></div><ListToolbar search={{label: '搜索使用模板的内容', placeholder: '搜索内容标题或正文', value: templateContentQuery, change: setTemplateContentQuery, disabled: busy}}/><DataTable className="template-content-list" rows={templateContents.slice((currentTemplateContentPage - 1) * templateContentPageSize, currentTemplateContentPage * templateContentPageSize)} total={templateContents.length} page={currentTemplateContentPage} pageSize={templateContentPageSize} onPageSizeChange={setTemplateContentPageSize} onPageChange={setTemplateContentPage} disabled={busy || !!blocked} label="模板使用内容分页" rowKey="id" onRow={item => ({'data-template-content-id': item?.id})} columns={[
             {title: '内容', key: 'title', width: '30%', render: (_, item) => <strong>{item.title}{item.id === base?.id ? ' · 当前打开的内容' : ''}</strong>},
             {title: '正文预览', key: 'body', width: '45%', render: (_, item) => <p className="template-content-preview">{item.body.slice(0, 90) || '正文待补充'}</p>},
             {title: '操作', key: 'actions', width: 120, render: (_, item) => <Button theme="solid" disabled={busy || !!blocked} onClick={() => void select(item, templatePicker.id)}>使用此内容</Button>}
