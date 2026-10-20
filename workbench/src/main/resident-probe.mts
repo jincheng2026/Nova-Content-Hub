@@ -100,7 +100,7 @@ startDesktop({
         console.log(`PASS actual native tray: hide preserves dirty renderer; tray click, macOS activation and second process restore the same window (${phase})`);
         if (phase === 'discard') {
             choice = 1;
-            app.once('will-quit', () => {
+            app.once('quit', () => {
                 try {
                     assert.equal(openLibrary(destination).listContents().length, 0);
                     writeFileSync(path.join(root, 'receipt.json'), JSON.stringify({phase, discarded: true, prompts, timings}));
@@ -132,7 +132,7 @@ startDesktop({
         await show();
         controller.createContent = create;
         console.log('PASS actual dirty renderer: cancelled quit and failed save retain draft and reset ordinary close to hide');
-        app.once('will-quit', () => {
+        app.once('quit', () => {
             try {
                 const contents = openLibrary(destination).listContents();
                 assert.equal(contents.length, 1);
