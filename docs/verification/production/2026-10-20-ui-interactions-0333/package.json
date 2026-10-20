@@ -1,0 +1,83 @@
+{
+  "recordedAt": "2026-10-20T12:04:29.175Z",
+  "version": "0.3.33",
+  "sourceCommit": "939df901ef1f0d5255a422d65298ba2cef63c737",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0333-939df90/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.33-darwin-arm64-preview.dmg",
+  "dmgSha256": "ab36105eaf4b5d452254e95bdaff1017c08175c6fd6e6ce5622f66da4d5519e1",
+  "treeSha256": "765b16040005c5ae16b48ac18473768744a413a8ca954afa31fcca1db6d91da6",
+  "entries": 1818,
+  "deliveryDirectory": "/Users/mac/Downloads/自媒体工作台-0.3.33-同事交付-Mac苹果芯片",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.33",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.33:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "archivedBuildEqualsDmg": true,
+  "pairedMarketplaceVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "companyMetadataVerified": true,
+  "engineeringFilesExcluded": true,
+  "nativeArtifact": {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/native-payloads/939df901ef1f0d5255a422d65298ba2cef63c737/darwin-arm64-ui-interactions",
+    "manifestSha256": "86d75d56817ec85f8535b41a607765d2ac0b5f4e76882a9553867fc0ef68c092",
+    "source": {
+      "commit": "939df901ef1f0d5255a422d65298ba2cef63c737",
+      "locks": {
+        "package-lock.json": "400a9aa4c7a68cb552d17aae279e9708a2a0c1febfd83df1fb60063ae88338ff",
+        "workbench/package-lock.json": "6a6ba62c20b13cec4ca13ee9de3b57d9f07df6fc51a9918f79a786775da33d3b",
+        "plugin-src/runtime/node-release.json": "4190437ee5a8f0006365ddcd276b8c3a7a6b3ac3b17761271952ec28b6255c7b"
+      },
+      "config": {
+        "AUTH_MODE": "disabled",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.3.33",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub"
+      },
+      "toolchain": {
+        "node": "v24.20.0",
+        "npm": "11.19.0",
+        "electron": "44.9.0",
+        "builder": "26.15.3",
+        "sharp": "0.35.5"
+      }
+    },
+    "nativeFiles": [
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib",
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libvk_swiftshader.dylib",
+      "Contents/MacOS/自媒体工作台",
+      "Contents/Resources/app/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+      "Contents/Resources/app/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+      "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+      "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib"
+    ]
+  },
+  "demo": {
+    "templates": 20,
+    "prompts": 52,
+    "contents": 1,
+    "originalHashes": [
+      "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79"
+    ]
+  },
+  "actualProperties": {
+    "dmgBytes": 478809787,
+    "dmgModifiedAt": "2026-10-20T12:04:13.611Z"
+  },
+  "userLibraryAccessed": false
+}
