@@ -1,0 +1,49 @@
+
+> nova-content-hub-prototype@0.3.28 check
+> node plugin-src/scripts/sync-bridge.mjs --check && node --check workbench/prototype/app.js && node --check plugin-src/src/lib/browser-import/legacy/core.js && node --check workbench/prototype/data.js && node --check workbench/prototype/shared/handoff.js && node --check workbench/prototype/shared/zip.js && node plugin-src/scripts/generate-templates.mjs --check
+
+Verified 15 v4 template groups (11 general / 4 AI), 36 preserved and 6 new SVG structure assets, 30 PNG visual references and 45 legacy definitions.
+
+> nova-content-hub-prototype@0.3.28 build:desktop
+> npm run build --prefix workbench -- --auth both
+
+
+> nova-content-hub-workbench@0.3.28 build
+> node scripts/build.mjs --auth both
+
+Built experimental required plugin for darwin/arm64
+Built experimental disabled plugin for darwin/arm64
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2093 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-required/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-Dke6KyH_.css                        503.70 kB │ gzip:  67.25 kB
+dist-desktop/auth-required/workbench/dist/renderer/assets/index-Ca49Xh-l.js                       1,331.03 kB │ gzip: 367.59 kB
+
+✓ built in 969ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Built experimental desktop auth-required for darwin/arm64; productionReady=false
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2093 modules transformed.
+rendering chunks...
+computing gzip size...
+dist-desktop/auth-disabled/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-Dke6KyH_.css                        503.70 kB │ gzip:  67.25 kB
+dist-desktop/auth-disabled/workbench/dist/renderer/assets/index-Ca49Xh-l.js                       1,331.03 kB │ gzip: 367.59 kB
+
+✓ built in 409ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Built experimental desktop auth-disabled for darwin/arm64; productionReady=false

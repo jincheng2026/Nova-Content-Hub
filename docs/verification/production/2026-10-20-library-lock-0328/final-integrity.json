@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-20T05:17:48.121Z",
+  "candidateVersion": "0.3.28",
+  "candidateEntries": 1817,
+  "candidateAppMatchesPackageAndNative": true,
+  "candidateDmgSha256": "ed3bf6c88e6b4eb0a9c54f5df295b0ada1c448ec744c8dab2e7aef5d3f53e054",
+  "currentApplicationVersion": "0.3.27",
+  "currentInstallationPhase": "published",
+  "recoveryCopyRetained": true,
+  "candidateInstalled": false,
+  "userLibraryReadOrWritten": false,
+  "hostCacheUpdated": false
+}

@@ -1,0 +1,192 @@
+✖ a returned library recovers a finished release failure without reclaiming an operation still in flight (752.731666ms)
+✖ initialization cleanup retries only its original empty directory after the root returns (406.566584ms)
+✖ initialization cleanup retries only its original owner after the root returns (392.999916ms)
+✖ deferred cleanup retains a same-ID clone and recovers only when the original root returns (481.433208ms)
+✖ deferred cleanup refuses a copied lock directory inside the original root (443.576333ms)
+✖ deferred cleanup requires the exact library and owner, never just a live matching PID (555.710334ms)
+✖ a primary error survives a failed release and committed writes keep their receipt after recovery (460.710125ms)
+✖ a temporarily absent original lock keeps its deferred cleanup proof (645.526917ms)
+✖ deferred release proofs have a fixed capacity without eviction, and recovery runs before the capacity check (38736.0725ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 0
+ℹ fail 9
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42947.639875
+
+✖ failing tests:
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:23:1
+✖ a returned library recovers a finished release failure without reclaiming an operation still in flight (752.731666ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'blocked'
+  - 'healthy'
+  
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:41:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'blocked',
+    expected: 'healthy',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:46:62
+✖ initialization cleanup retries only its original empty directory after the root returns (406.566584ms)
+  Error [LibraryError]: Empty or malformed lock; inspect it manually, never reclaim by age
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:285:21)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:58:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'LOCK_UNCERTAIN'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:46:62
+✖ initialization cleanup retries only its original owner after the root returns (392.999916ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:58:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:62:1
+✖ deferred cleanup retains a same-ID clone and recovers only when the original root returns (481.433208ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:75:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:78:1
+✖ deferred cleanup refuses a copied lock directory inside the original root (443.576333ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:94:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:97:1
+✖ deferred cleanup requires the exact library and owner, never just a live matching PID (555.710334ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:116:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:119:1
+✖ a primary error survives a failed release and committed writes keep their receipt after recovery (460.710125ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:127:32)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:145:1
+✖ a temporarily absent original lock keeps its deferred cleanup proof (645.526917ms)
+  Error [LibraryError]: Library locked by a live process (including reused PIDs)
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:44:11)
+      at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:300:17)
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:690:23)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:720:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:967:29)
+      at openLibrary (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/index.mjs:1224:16)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:157:22)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'BUSY'
+  }
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:161:1
+✖ deferred release proofs have a fixed capacity without eviction, and recovery runs before the capacity check (38736.0725ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/run_main:107
+      triggerUncaughtException(
+      ^
+  
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/[eval1]:19:16
+      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+      at async node:internal/modules/esm/loader:223:26
+      at async ModuleLoader.executeModuleJob (node:internal/modules/esm/loader:220:20)
+      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: [Function (anonymous)],
+    operator: 'throws',
+    diff: 'simple'
+  }
+  
+  Node.js v24.20.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-red-45uixz9u/file-library/test/lock-recovery.test.mjs:191:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

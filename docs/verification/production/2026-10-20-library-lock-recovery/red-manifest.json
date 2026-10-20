@@ -1,0 +1,22 @@
+{
+  "mode": "red",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-recovery-red-a8EPAA",
+  "installed": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "copiedApp": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-recovery-red-a8EPAA/app",
+  "electron": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "at": "2026-10-20T04:49:57.615Z",
+  "scope": "Full frozen installed 0.3.27 app resource copy in os.tmpdir. Development Electron app.isPackaged=false. Green overlays only source file-library/index.mjs. No new package/version/install claim; no real app/TCC/config/library access.",
+  "overlay": null,
+  "changedPaths": [],
+  "installedEntries": 585,
+  "copiedEntries": 585,
+  "process": {
+    "pid": 78811,
+    "code": 2,
+    "signal": null
+  },
+  "copiedAppUnchangedAfterRun": true,
+  "installedAppUnchanged": true,
+  "expectedOutcomeVerified": true,
+  "finishedAt": "2026-10-20T04:50:35.319Z"
+}

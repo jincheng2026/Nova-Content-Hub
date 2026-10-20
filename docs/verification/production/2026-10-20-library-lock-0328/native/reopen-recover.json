@@ -1,0 +1,175 @@
+{
+  "phase": "reopen-recover",
+  "startedAt": "2026-10-20T05:15:05.509Z",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:readSetup",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readBootstrapRecovery",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspaceLibrary",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:openLibrary",
+    "nova:readWorkspaceLibrary",
+    "nova:backupLibrary",
+    "nova:verifyLibraryBackup",
+    "nova:restoreLibraryBackup",
+    "nova:openLibrary",
+    "nova:listContents",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:inspectLibraryHealth"
+  ],
+  "failures": [],
+  "checks": [
+    "Separate process reopens all content, plan, manual publication and original bytes",
+    "After fault process exits and original folder returns, native openLibrary recovers without reset",
+    "Native backupLibrary → verifyLibraryBackup → restoreLibraryBackup",
+    "All source/backup/restored business bytes match; one provenance addition; same libraryId and independent target inode",
+    "Restored library opens through native openLibrary and is healthy"
+  ],
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.28",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.28:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf/machine",
+  "pid": 6213,
+  "setup": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "version": "0.3.28",
+    "mode": "disabled",
+    "experimental": true,
+    "assistant": {
+      "host": "codex",
+      "ready": false,
+      "skill": null,
+      "reason": "skill-missing"
+    },
+    "market": {
+      "state": "available",
+      "name": "nova-content-hub-auth-disabled-darwin-arm64"
+    },
+    "entitlement": "disabled-experimental"
+  },
+  "bootstrap": {
+    "state": "ready",
+    "reasonCode": "none",
+    "canReset": false,
+    "confirmationToken": null,
+    "backupName": null
+  },
+  "persistence": {
+    "savedContentId": "7d21e8fa-5cc9-458b-863d-171b0389009f",
+    "libraryId": "9ae22caf-a27a-4c61-962c-a0ab055a70f7",
+    "identicalBusinessProjection": true,
+    "identicalFileBytes": true
+  },
+  "backup": {
+    "kind": "backup",
+    "destinationName": "Nova-内容库备份-2026-10-20T05-15-11-070Z-e7462c50-f281-44fb-a4b0-6c4859e4b7bd",
+    "counts": {
+      "files": 572,
+      "directories": 340,
+      "bytes": 97023852
+    },
+    "recovered": false,
+    "upgradeRequired": false,
+    "interruptedAttempts": 0
+  },
+  "verifiedBackup": {
+    "kind": "verify",
+    "destinationName": "Nova-内容库备份-2026-10-20T05-15-11-070Z-e7462c50-f281-44fb-a4b0-6c4859e4b7bd",
+    "counts": {
+      "files": 572,
+      "directories": 340,
+      "bytes": 97023852
+    },
+    "recovered": false,
+    "upgradeRequired": false,
+    "interruptedAttempts": 0
+  },
+  "restore": {
+    "kind": "restore",
+    "destinationName": "Nova-恢复的内容库-2026-10-20T05-15-19-696Z-2265db97-1c57-4451-88c2-1e02c7102bda",
+    "counts": {
+      "files": 572,
+      "directories": 340,
+      "bytes": 97023852
+    },
+    "recovered": false,
+    "upgradeRequired": false,
+    "interruptedAttempts": 0
+  },
+  "restoredByteEvidence": {
+    "sourceFiles": 572,
+    "backupFiles": 572,
+    "restoredFiles": 573,
+    "sourceTreeSha256": "bb8c1c29ab9dbe135af4d5413343a9070aeeba0dc42092479ede2e423c8736d6",
+    "backupTreeSha256": "bb8c1c29ab9dbe135af4d5413343a9070aeeba0dc42092479ede2e423c8736d6",
+    "extra": [
+      {
+        "path": "系统（别动）/恢复来源/4c3b1fb3-46b9-4d6f-818d-728e5a22009a.json",
+        "bytes": 392,
+        "sha256": "0d3f452851f4a365c9ed26bd9bd208fd343004c8951433a4eba5600d26547329"
+      }
+    ],
+    "provenance": {
+      "format": "nova-content-library-restore",
+      "schemaVersion": 1,
+      "backupId": "a6d28c78-a4eb-4c4e-ae12-411780988bb4",
+      "treeHash": "110451ad4d248dbc3dfef6f68314faa64cc027caef1f841a288b1bf938eeb0cd",
+      "libraryId": "9ae22caf-a27a-4c61-962c-a0ab055a70f7",
+      "restoredAt": "2026-10-20T05:15:24.463Z",
+      "recoveredMutations": [],
+      "interruptionMutations": [],
+      "interruptedAttempts": []
+    }
+  },
+  "restoredBinding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf/Nova-恢复的内容库-2026-10-20T05-15-19-696Z-2265db97-1c57-4451-88c2-1e02c7102bda",
+    "libraryId": "9ae22caf-a27a-4c61-962c-a0ab055a70f7",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "73748850"
+    }
+  },
+  "restoreHealth": {
+    "checkedAt": "2026-10-20T05:15:33.252Z",
+    "state": "healthy",
+    "root": "matched",
+    "complete": true,
+    "checked": {
+      "objects": 74,
+      "assets": 195,
+      "transactions": 75,
+      "requests": 0
+    },
+    "issues": []
+  },
+  "passed": true,
+  "finishedAt": "2026-10-20T05:15:34.192Z"
+}

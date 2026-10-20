@@ -1,0 +1,90 @@
+{
+  "at": "2026-10-20T05:12:11.676Z",
+  "command": "npm run verify",
+  "exitCode": 0,
+  "sourceCodeReferenceCommit": "4a166abf1a092ebb2e673e97733e51d82babcc97",
+  "sourceVersion": "0.3.27 with the unreleased lock recovery patch; frozen installed 0.3.27 unchanged",
+  "node": "v24.20.0",
+  "groups": [
+    {
+      "tests": 150,
+      "passed": 150,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 439,
+      "passed": 439,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 64,
+      "passed": 62,
+      "failed": 0,
+      "skipped": 2
+    },
+    {
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 14,
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 35,
+      "passed": 35,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 5,
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "tests": 311,
+      "passed": 311,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 1067,
+    "passed": 1065,
+    "failed": 0,
+    "skipped": 2
+  },
+  "builtDesktopModes": [
+    "required",
+    "disabled"
+  ],
+  "productCodeSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+  "regressionTestSha256": "91a9cba41d2520903c4efcd18a199b8c640789da78abc143986d814a3a1c6c70",
+  "logSha256": "9776013d12f131dc0c884773822349502d35eae64749ff6029df8c940340153d",
+  "scope": "Source tests and development builds. Native single-file overlay is separately recorded. No installer or actual user-window/TCC/host acceptance from this command."
+}

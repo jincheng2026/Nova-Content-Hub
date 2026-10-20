@@ -1,0 +1,97 @@
+{
+  "phase": "fault-moved",
+  "startedAt": "2026-10-20T05:15:04.269Z",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf",
+  "appIsPackaged": false,
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:readSetup",
+    "nova:listContents",
+    "nova:readBootstrapRecovery",
+    "nova:inspectLibraryHealth",
+    "nova:readWorkspaceLibrary"
+  ],
+  "failures": [],
+  "checks": [
+    "Startup with valid binding but absent original root: ROOT_MISSING and failed read; exact binding bytes and moved library bytes preserved; no reset"
+  ],
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.28",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.28:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf/machine",
+  "pid": 6186,
+  "setup": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "version": "0.3.28",
+    "mode": "disabled",
+    "experimental": true,
+    "assistant": {
+      "host": "codex",
+      "ready": false,
+      "skill": null,
+      "reason": "skill-missing"
+    },
+    "market": {
+      "state": "available",
+      "name": "nova-content-hub-auth-disabled-darwin-arm64"
+    },
+    "entitlement": "disabled-experimental"
+  },
+  "bootstrap": {
+    "state": "ready",
+    "reasonCode": "none",
+    "canReset": false,
+    "confirmationToken": null,
+    "backupName": null
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf/合成内容库",
+    "libraryId": "9ae22caf-a27a-4c61-962c-a0ab055a70f7",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "73743310"
+    }
+  },
+  "movedHealth": {
+    "checkedAt": "2026-10-20T05:15:04.845Z",
+    "state": "blocked",
+    "root": "missing",
+    "complete": false,
+    "checked": {
+      "objects": 0,
+      "assets": 0,
+      "transactions": 0,
+      "requests": 0
+    },
+    "issues": [
+      {
+        "scope": "root",
+        "code": "ROOT_MISSING",
+        "availability": "unavailable"
+      }
+    ]
+  },
+  "movedRead": {
+    "ok": false,
+    "error": {
+      "code": "IO_ERROR",
+      "message": "文件操作未完成，请查询状态后继续；原文件和任务现场会保留。"
+    }
+  },
+  "passed": true,
+  "finishedAt": "2026-10-20T05:15:05.113Z"
+}

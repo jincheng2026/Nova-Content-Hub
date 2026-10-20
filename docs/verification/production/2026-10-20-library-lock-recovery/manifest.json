@@ -1,0 +1,107 @@
+{
+  "at": "2026-10-20T04:58:28.503Z",
+  "scope": "Native red/green contrast under repository Electron app.isPackaged=false. Both report frozen release version 0.3.27; green is a single source-file overlay in a disposable app copy, not an installed release.",
+  "scenarios": {
+    "red": {
+      "manifest": "red-manifest.json",
+      "nativeReceipt": "red-native.json",
+      "exitCode": 2,
+      "changedPaths": [],
+      "overlay": null,
+      "samples": 20,
+      "lastHealthElapsedMs": 4858,
+      "mainWorkerPid": 78828,
+      "ownerAliveAtEverySample": true,
+      "businessFiles": 572,
+      "businessBytesUnchanged": true,
+      "bindingBytesUnchanged": true,
+      "readRecovered": false
+    },
+    "green": {
+      "manifest": "green-manifest.json",
+      "nativeReceipt": "green-native.json",
+      "exitCode": 0,
+      "changedPaths": [
+        "plugin-src/src/lib/file-library/index.mjs"
+      ],
+      "overlay": {
+        "relative": "plugin-src/src/lib/file-library/index.mjs",
+        "bytes": 127467,
+        "sha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+        "frozenSha256": "70c2329aa9b52e2198dced8bb60fc27d5059bf8d0f0aa852ad466221259cd4cf"
+      },
+      "samples": 1,
+      "lastHealthElapsedMs": 198,
+      "mainWorkerPid": 83457,
+      "ownerAliveAtEverySample": true,
+      "businessFiles": 572,
+      "businessBytesUnchanged": true,
+      "bindingBytesUnchanged": true,
+      "readRecovered": true
+    }
+  },
+  "passed": true,
+  "installedFrozenTreeEqualBetweenModes": true,
+  "artifacts": {
+    "README.md": {
+      "bytes": 5422,
+      "sha256": "5fdb009f53678bbe04214fdca0b57f181ac413875a4cf74292b7e27cda8749ab"
+    },
+    "green-installed-tree.json": {
+      "bytes": 109263,
+      "sha256": "f606018786c3d55b79511dda415f66284aeb76e4b1cc0af8ace2a907175a194c"
+    },
+    "green-manifest.json": {
+      "bytes": 1346,
+      "sha256": "daeb5b78e6494192469972a45b03736f0ba0ef3c2686f0e9a88c0758d5d81282"
+    },
+    "green-native.json": {
+      "bytes": 231321,
+      "sha256": "39671d13ed4e817b957cd7f0dfad8dab1cb8bcece2a90cde819c602a6cdfc657"
+    },
+    "green-overlay-index.mjs.txt": {
+      "bytes": 127467,
+      "sha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1"
+    },
+    "green-run.log": {
+      "bytes": 191,
+      "sha256": "82d3cc9dfa7691a9aa1ac650c27628702e5f90bbf036f80b21a66a8d0e99035d"
+    },
+    "green.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-entry.mjs": {
+      "bytes": 8210,
+      "sha256": "b67a6a3ef51d6b5cfa0654ff51a2b2436e938d6156b8ac2c4219cee09695a4ba"
+    },
+    "red-installed-tree.json": {
+      "bytes": 109263,
+      "sha256": "f606018786c3d55b79511dda415f66284aeb76e4b1cc0af8ace2a907175a194c"
+    },
+    "red-manifest.json": {
+      "bytes": 1037,
+      "sha256": "da5a130bbf5d930dcfb647e211b25107e639d1724fb8c49a710b89c19967cf36"
+    },
+    "red-native.json": {
+      "bytes": 28975,
+      "sha256": "3fffa62627232adf134d6d03bac19e42d76374e6241254b550fe9dbd3b788cd2"
+    },
+    "red-run.log": {
+      "bytes": 187,
+      "sha256": "8929f3c362abed4c98556c5d03ea1d3c600cd028d5781bc4edd1577556a7d2cb"
+    },
+    "red.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run.mjs": {
+      "bytes": 4248,
+      "sha256": "d42ea754494c5e67225443f4e4e7e0db4a22a427d961d7f8347c91b276993598"
+    },
+    "summarize.mjs": {
+      "bytes": 3068,
+      "sha256": "25bd6b2d4481e5ecb75a0cdc8130663f301a95e1208d553d12dbaff2c5b97b53"
+    }
+  }
+}

@@ -1,0 +1,222 @@
+{
+  "passed": true,
+  "scope": "Actual packaged candidate 0.3.28 modules loaded directly, no copied/overlaid product resources. Hidden repository Electron app.isPackaged=false with new os.tmpdir userData/synthetic library; true renderer/preload/IPC/utility worker. Not Finder/LaunchServices/TCC/manual GUI or real-user acceptance.",
+  "appEntries": 1817,
+  "appTreeSha256": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "indexSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+  "processExitCodes": [
+    {
+      "phase": "fresh",
+      "code": 0
+    },
+    {
+      "phase": "fault-moved",
+      "code": 0
+    },
+    {
+      "phase": "reopen-recover",
+      "code": 0
+    },
+    {
+      "phase": "restored-reopen",
+      "code": 0
+    },
+    {
+      "phase": "active-move",
+      "code": 0
+    }
+  ],
+  "phases": {
+    "fresh": {
+      "checks": [
+        "Empty machine bootstrap and native createLibrary with seed install",
+        "20 templates and 52 nonempty prompt bodies readable",
+        "Native createContent + savePublicationPlan + manual recordPublication",
+        "Healthy complete native diagnostic"
+      ],
+      "setup": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "version": "0.3.28",
+        "mode": "disabled",
+        "experimental": true,
+        "assistant": {
+          "host": "codex",
+          "ready": false,
+          "skill": null,
+          "reason": "skill-missing"
+        },
+        "market": {
+          "state": "available",
+          "name": "nova-content-hub-auth-disabled-darwin-arm64"
+        },
+        "entitlement": "disabled-experimental"
+      }
+    },
+    "fault-moved": {
+      "checks": [
+        "Startup with valid binding but absent original root: ROOT_MISSING and failed read; exact binding bytes and moved library bytes preserved; no reset"
+      ],
+      "setup": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "version": "0.3.28",
+        "mode": "disabled",
+        "experimental": true,
+        "assistant": {
+          "host": "codex",
+          "ready": false,
+          "skill": null,
+          "reason": "skill-missing"
+        },
+        "market": {
+          "state": "available",
+          "name": "nova-content-hub-auth-disabled-darwin-arm64"
+        },
+        "entitlement": "disabled-experimental"
+      }
+    },
+    "reopen-recover": {
+      "checks": [
+        "Separate process reopens all content, plan, manual publication and original bytes",
+        "After fault process exits and original folder returns, native openLibrary recovers without reset",
+        "Native backupLibrary → verifyLibraryBackup → restoreLibraryBackup",
+        "All source/backup/restored business bytes match; one provenance addition; same libraryId and independent target inode",
+        "Restored library opens through native openLibrary and is healthy"
+      ],
+      "setup": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "version": "0.3.28",
+        "mode": "disabled",
+        "experimental": true,
+        "assistant": {
+          "host": "codex",
+          "ready": false,
+          "skill": null,
+          "reason": "skill-missing"
+        },
+        "market": {
+          "state": "available",
+          "name": "nova-content-hub-auth-disabled-darwin-arm64"
+        },
+        "entitlement": "disabled-experimental"
+      }
+    },
+    "restored-reopen": {
+      "checks": [
+        "Third independent process reopens restored library, same binding/identity/content/plan/manual publication and exact bytes"
+      ],
+      "setup": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "version": "0.3.28",
+        "mode": "disabled",
+        "experimental": true,
+        "assistant": {
+          "host": "codex",
+          "ready": false,
+          "skill": null,
+          "reason": "skill-missing"
+        },
+        "market": {
+          "state": "available",
+          "name": "nova-content-hub-auth-disabled-darwin-arm64"
+        },
+        "entitlement": "disabled-experimental"
+      }
+    }
+  },
+  "restore": {
+    "sourceFiles": 572,
+    "backupFiles": 572,
+    "restoredFiles": 573,
+    "originalBytesPreserved": true,
+    "oneRestoreProvenanceAddition": true
+  },
+  "activeMove": {
+    "samples": 1,
+    "lastHealthElapsedMs": 178,
+    "originalOwnerPid": 6600,
+    "originalOwnerAliveThroughout": true,
+    "mainWorkerPidUnchanged": true,
+    "businessFiles": 573,
+    "businessTreeSha256": "c493b2023b60aafa40c1e07c9826d2170699f6664ae28f0b5cdade29b958e6b7",
+    "businessAndBindingBytesPreserved": true,
+    "readRecovered": true
+  },
+  "files": {
+    "README.md": {
+      "bytes": 4628,
+      "sha256": "d15071bc23b15c1d7d2f188802cf3b24e46ed65194fc54542d0084302bbf0d39"
+    },
+    "active-move.json": {
+      "bytes": 230748,
+      "sha256": "a3dd569c23fd27f2a635131a455cdd4f5fb0d110f4b29589775dfa205f01bbe5"
+    },
+    "active-move.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "active-move.mjs": {
+      "bytes": 7074,
+      "sha256": "66b973c33a9fddbec33886606e28e320064a3321b632ca91feab2a26913dc9b8"
+    },
+    "candidate-tree-before.json": {
+      "bytes": 369120,
+      "sha256": "0fdfc4b64730cc496f67466a3c808eb0c2d6aebe1f1f792a2eb946bb66b68dc4"
+    },
+    "entry.mjs": {
+      "bytes": 13369,
+      "sha256": "671c23cd4ab263cc3afa3e3d87eaea67b396b653b479bf0326940840cc807aef"
+    },
+    "fault-moved.json": {
+      "bytes": 2625,
+      "sha256": "ea52c12458a6280c44e770890d3c257c3ac03ff14c555e7316b7c9872bf40885"
+    },
+    "fault-moved.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fresh.json": {
+      "bytes": 191973,
+      "sha256": "dfc938a4bb3a14383cf44e6afe14c88404cc173fa22896fa4fb554b7a20adb78"
+    },
+    "fresh.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest.json": {
+      "bytes": 2393,
+      "sha256": "2bc0461a5292dac43f80f0948d0efbe163fa510c00df4e8510d8ee5fd427eea0"
+    },
+    "reopen-recover.json": {
+      "bytes": 5454,
+      "sha256": "e6d1dc832dfdd4415c9b3e06a78770f0d402d161c369186bff2999f0486307df"
+    },
+    "reopen-recover.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "restored-reopen.json": {
+      "bytes": 62733,
+      "sha256": "50ab46ba6b9a391cc84ec8c911d6445a37a5b3dda0ab44328db63cf59f61653e"
+    },
+    "restored-reopen.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run.log": {
+      "bytes": 440,
+      "sha256": "71465f37281f815aa89c1f65ca48a431d1006121503abbd2c190b94d4d3f4ab3"
+    },
+    "run.mjs": {
+      "bytes": 4760,
+      "sha256": "ffca70411b85a064c7bb4a4fb31057b354ba2bbb9d77207926e6de6f11974d94"
+    },
+    "verify.mjs": {
+      "bytes": 3247,
+      "sha256": "4f1ba23c6b0ef7dfe38de594dbf97f9728935c2f4910572e852acfce8661b82a"
+    }
+  }
+}

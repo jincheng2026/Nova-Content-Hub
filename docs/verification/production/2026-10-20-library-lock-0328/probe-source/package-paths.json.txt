@@ -1,0 +1,5 @@
+{
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0328-6b739b3/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.28-darwin-arm64-preview.dmg",
+  "sourceCommit": "6b739b385e01931bd26962f229c853da2317a37c"
+}

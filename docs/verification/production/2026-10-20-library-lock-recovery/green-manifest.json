@@ -1,0 +1,29 @@
+{
+  "mode": "green",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-recovery-green-J42U2h",
+  "installed": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "copiedApp": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-lock-recovery-green-J42U2h/app",
+  "electron": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "at": "2026-10-20T04:55:44.966Z",
+  "scope": "Full frozen installed 0.3.27 app resource copy in os.tmpdir. Development Electron app.isPackaged=false. Green overlays only source file-library/index.mjs. No new package/version/install claim; no real app/TCC/config/library access.",
+  "overlay": {
+    "relative": "plugin-src/src/lib/file-library/index.mjs",
+    "bytes": 127467,
+    "sha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+    "frozenSha256": "70c2329aa9b52e2198dced8bb60fc27d5059bf8d0f0aa852ad466221259cd4cf"
+  },
+  "changedPaths": [
+    "plugin-src/src/lib/file-library/index.mjs"
+  ],
+  "installedEntries": 585,
+  "copiedEntries": 585,
+  "process": {
+    "pid": 83334,
+    "code": 0,
+    "signal": null
+  },
+  "copiedAppUnchangedAfterRun": true,
+  "installedAppUnchanged": true,
+  "expectedOutcomeVerified": true,
+  "finishedAt": "2026-10-20T04:57:24.439Z"
+}

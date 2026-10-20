@@ -1,0 +1,54 @@
+{
+  "at": "2026-10-20T05:14:39.747Z",
+  "candidate": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0328-6b739b3/mac-arm64/自媒体工作台.app",
+  "resources": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0328-6b739b3/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-native-0328-package-gwYppf",
+  "electron": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "scope": "Actual packaged candidate 0.3.28 modules loaded directly, no copied/overlaid product resources. Hidden repository Electron app.isPackaged=false with new os.tmpdir userData/synthetic library; true renderer/preload/IPC/utility worker. Not Finder/LaunchServices/TCC/manual GUI or real-user acceptance.",
+  "sourceCommit": "6b739b385e01931bd26962f229c853da2317a37c",
+  "phases": [
+    {
+      "phase": "fresh",
+      "pid": 5966,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "phase": "fault-moved",
+      "pid": 6186,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "phase": "reopen-recover",
+      "pid": 6213,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "phase": "restored-reopen",
+      "pid": 6525,
+      "code": 0,
+      "signal": null
+    },
+    {
+      "phase": "active-move",
+      "pid": 6593,
+      "code": 0,
+      "signal": null
+    }
+  ],
+  "limits": [
+    "No real /Applications 0.3.27 app or user library, TCC change, host task, cache update, clipboard, generation, notification permission, install or version/source mutation",
+    "Host setup is observed read-only; .27 installed plugin cache may not match .28 candidate",
+    "Resource-worker continuity, native foreign-owner/clone protection and crash-during-maintenance are not independently covered here"
+  ],
+  "appEntries": 1817,
+  "appTreeSha256Before": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "matchesParentPackageReceiptBefore": true,
+  "indexSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1",
+  "passed": true,
+  "appTreeSha256After": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "appTreeUnchanged": true,
+  "finishedAt": "2026-10-20T05:15:47.581Z"
+}

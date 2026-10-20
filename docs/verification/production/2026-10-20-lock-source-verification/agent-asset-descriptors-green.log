@@ -1,0 +1,15 @@
+✔ batch descriptors validate and deduplicate every hash, lock once and expose no asset buffers (176.424209ms)
+✔ missing, changed, oversized and invalid-type stored assets are omitted without hiding unsafe paths (187.086292ms)
+✔ batch descriptors propagate lock, recovery and I/O failures (188.775625ms)
+✔ batch descriptors recheck root after reading assets (182.644042ms)
+✔ batch descriptors recheck root during descriptor after reading assets (137.400792ms)
+✔ batch descriptors recheck descriptor after reading assets (149.282583ms)
+✔ batch descriptors recheck malformed descriptor after reading assets (161.383583ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1251.377375

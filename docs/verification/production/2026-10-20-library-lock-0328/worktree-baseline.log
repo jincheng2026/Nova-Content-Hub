@@ -1,0 +1,22 @@
+
+> nova-content-hub-prototype@0.3.27 check
+> node plugin-src/scripts/sync-bridge.mjs --check && node --check workbench/prototype/app.js && node --check plugin-src/src/lib/browser-import/legacy/core.js && node --check workbench/prototype/data.js && node --check workbench/prototype/shared/handoff.js && node --check workbench/prototype/shared/zip.js && node plugin-src/scripts/generate-templates.mjs --check
+
+Verified 15 v4 template groups (11 general / 4 AI), 36 preserved and 6 new SVG structure assets, 30 PNG visual references and 45 legacy definitions.
+✔ a returned library recovers a finished release failure without reclaiming an operation still in flight (540.110125ms)
+✔ initialization cleanup retries only its original empty directory after the root returns (297.9225ms)
+✔ initialization cleanup retries only its original owner after the root returns (289.883625ms)
+✔ deferred cleanup retains a same-ID clone and recovers only when the original root returns (376.530667ms)
+✔ deferred cleanup refuses a copied lock directory inside the original root (319.772542ms)
+✔ deferred cleanup requires the exact library and owner, never just a live matching PID (438.326625ms)
+✔ a primary error survives a failed release and committed writes keep their receipt after recovery (440.281042ms)
+✔ a temporarily absent original lock keeps its deferred cleanup proof (396.73875ms)
+✔ deferred release proofs have a fixed capacity without eviction, and recovery runs before the capacity check (25546.915666ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28725.706875

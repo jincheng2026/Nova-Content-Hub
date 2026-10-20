@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-20T05:14:43.656Z",
+  "previous": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0327-ce88f71/mac-arm64/自媒体工作台.app/Contents/Resources/app",
+  "candidate": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0328-6b739b3/mac-arm64/自媒体工作台.app/Contents/Resources/app",
+  "pathsCompared": 63,
+  "unchangedNativeMainFiles": 30,
+  "changedRuntimePaths": [
+    "plugin-src/src/lib/file-library/index.mjs"
+  ],
+  "scope": "App native-main/plugin-src runtime files only; full candidate DMG/signature/marketplace checked separately. Byte comparison is not an executed test."
+}

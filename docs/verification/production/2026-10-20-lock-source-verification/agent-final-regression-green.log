@@ -1,0 +1,17 @@
+✔ a returned library recovers a finished release failure without reclaiming an operation still in flight (313.327292ms)
+✔ initialization cleanup retries only its original empty directory after the root returns (155.413708ms)
+✔ initialization cleanup retries only its original owner after the root returns (165.691167ms)
+✔ deferred cleanup retains a same-ID clone and recovers only when the original root returns (218.37625ms)
+✔ deferred cleanup refuses a copied lock directory inside the original root (153.641ms)
+✔ deferred cleanup requires the exact library and owner, never just a live matching PID (167.790916ms)
+✔ a primary error survives a failed release and committed writes keep their receipt after recovery (365.23575ms)
+✔ a temporarily absent original lock keeps its deferred cleanup proof (182.577292ms)
+✔ deferred release proofs have a fixed capacity without eviction, and recovery runs before the capacity check (10159.1405ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11959.618

@@ -1,0 +1,10 @@
+{
+  "verify-package.mjs": {
+    "bytes": 4692,
+    "sha256": "368b793dffc2b44fe6c9a7076d691775952046c5973f9b150e16336a326e616f"
+  },
+  "package-paths.json": {
+    "bytes": 380,
+    "sha256": "3e4b90fe0722157d1545c4d9ed2c0c14bb60f48ba40c5d0a0937b201a6d0215c"
+  }
+}
