@@ -60,7 +60,7 @@
     "evidence": "integrated-independent-ui/",
     "scope": "Real React/Semi/Electron, synthetic IPC; root independent rerun after completed-dialog integration"
   },
-  "finalPerformanceAndDeliveryStatus": "WAITING_FAVORITE_SCOPE_FINAL_NATIVE_BUILD",
+  "finalPerformanceAndDeliveryStatus": "BUILT_EXPORTED_INSTALLED_PLUGIN_PAIRED_AWAITING_TCC_DOCUMENTS_PERMISSION",
   "selectionBugfixStatus": {
     "sourceCommit": "ee8d08f",
     "status": "TARGETED_PASS",
@@ -116,5 +116,16 @@
     },
     "evidence": "../2026-10-20-favorite-composition/",
     "realProviderGeneration": false
+  },
+  "frozenSourceCommit": "43957b0962f860b66a1d8f9b347e26af840540cf",
+  "tag": "v0.3.32-preview-mac-arm64",
+  "mainMerge": "LOCAL_FAST_FORWARD_COMPLETE",
+  "remotePushed": false,
+  "nativeFirstLaunch": {
+    "status": "WAITING_MACOS_PERMISSION",
+    "process": 53886,
+    "evidence": "tccd AUTHREQ_PROMPTING at 2026-10-20 18:01:42 for kTCCServiceSystemPolicyDocumentsFolder; new ad hoc signature no longer matches old code requirement",
+    "userAskedToAllow": true,
+    "permissionBypassed": false
   }
 }

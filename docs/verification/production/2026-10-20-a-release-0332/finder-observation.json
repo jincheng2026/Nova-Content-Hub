@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-20T18:08:00+08:00",
+  "method": "CUA Finder Get Info AX and screenshot, separately for archived and installed app",
+  "name": "自媒体工作台",
+  "iconObserved": true,
+  "architectureLabel": "应用程序(Apple芯片)",
+  "version": "0.3.32",
+  "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+  "finderBytes": 672897446,
+  "finderDiskSize": "676.4 MB",
+  "finderModifiedAt": "2026-10-20 17:58",
+  "archiveObserved": true,
+  "installedObserved": true,
+  "nativeAboutObserved": false,
+  "nativeStartup": "WAITING_MACOS_DOCUMENTS_FOLDER_PERMISSION"
+}
