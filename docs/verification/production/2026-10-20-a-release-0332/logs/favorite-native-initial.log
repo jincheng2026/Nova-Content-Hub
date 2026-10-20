@@ -1,0 +1,75 @@
+✔ all browser intents start naturally and preserve complete data without unrelated image instructions (5.369333ms)
+✔ each request kind controls its own intent and retains host skill activation and resume routing (3.673666ms)
+✔ long links preserve the same intent and request file, while full copy retains all data (6.427958ms)
+✔ display names are bounded data and required auth or unsupported resume remain refused (0.369291ms)
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (5.803167ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (206.816791ms)
+✔ browser image requests preserve visible selected requirements in JSON and long attachment fallback (7.842666ms)
+✔ browser requirement summaries admit only positive safe integer count and a two-integer pixel tuple (19.261042ms)
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (9512.407791ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (4989.022584ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (2627.915167ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (2968.931583ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (5031.686375ms)
+✔ bundled codex exact context restores selected photo, materials and requirements after retry/host change (11475.671292ms)
+✔ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (10985.986875ms)
+✔ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (12537.278083ms)
+✔ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (12067.934875ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (2149.735ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (2266.320375ms)
+✔ codex exact template handoff names the selected template and requests study plus restoration (2823.852792ms)
+✔ codex ratio-minimum template handoff names the selected template and requests study plus restoration (2179.940666ms)
+✔ workbuddy exact template handoff names the selected template and requests study plus restoration (2146.121417ms)
+✔ workbuddy ratio-minimum template handoff names the selected template and requests study plus restoration (2664.251959ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, without exporting annotations (3359.626ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, without exporting annotations (3841.192334ms)
+✔ codex composition references are separately counted fixed inputs and all selected hashes are required for claim (4212.908375ms)
+✖ workbuddy composition references are separately counted fixed inputs and all selected hashes are required for claim (3702.470542ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (2043.968125ms)
+✔ empty display names and deleted templates keep a natural cover prompt (2623.265833ms)
+✔ URL budget drops only optional names, preserves a full fixed task at 2048, and refuses one character beyond (3050.837917ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (3044.166583ms)
+✔ release and request/host validation stop before creating an envelope (3052.898708ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (2720.474625ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (1661.462208ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (2832.703542ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (2516.083833ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (2984.478167ms)
+✔ codex exact shows every selected requirement and restores exact input bytes and roles across retry and host change (12708.54225ms)
+✔ codex ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (10250.924708ms)
+✔ workbuddy exact shows every selected requirement and restores exact input bytes and roles across retry and host change (7455.514417ms)
+✔ workbuddy ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (5168.003375ms)
+✔ execution Skills require actual complete input reads and a visible checklist before claim and generation (1.08475ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 41
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91637.940375
+
+✖ failing tests:
+
+test at plugin-src/tests/native-handoff.test.mjs:157:44
+✖ workbuddy composition references are separately counted fixed inputs and all selected hashes are required for claim (3702.470542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      '36129c4f-d504-4fa1-b9f5-ffedb11f7657',
+  +   '5fa500ea-58e8-4a9a-ac67-2b04e83ca618',
+      'e8e34da5-4e3f-4664-adeb-d60f03ab5649',
+  -   '5fa500ea-58e8-4a9a-ac67-2b04e83ca618'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/a-group-release/Nova-Content-Hub/plugin-src/tests/native-handoff.test.mjs:176:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '36129c4f-d504-4fa1-b9f5-ffedb11f7657', '5fa500ea-58e8-4a9a-ac67-2b04e83ca618', 'e8e34da5-4e3f-4664-adeb-d60f03ab5649' ],
+    expected: [ '36129c4f-d504-4fa1-b9f5-ffedb11f7657', 'e8e34da5-4e3f-4664-adeb-d60f03ab5649', '5fa500ea-58e8-4a9a-ac67-2b04e83ca618' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,10 @@
+✔ codex composition references are separately counted fixed inputs and all selected hashes are required for claim (1741.517292ms)
+✔ workbuddy composition references are separately counted fixed inputs and all selected hashes are required for claim (1638.773667ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3528.982125

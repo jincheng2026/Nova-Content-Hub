@@ -60,7 +60,7 @@
     "evidence": "integrated-independent-ui/",
     "scope": "Real React/Semi/Electron, synthetic IPC; root independent rerun after completed-dialog integration"
   },
-  "finalPerformanceAndDeliveryStatus": "SOURCE_READY_FOR_FRESH_NATIVE_BUILD",
+  "finalPerformanceAndDeliveryStatus": "WAITING_FAVORITE_SCOPE_FINAL_NATIVE_BUILD",
   "selectionBugfixStatus": {
     "sourceCommit": "ee8d08f",
     "status": "TARGETED_PASS",
@@ -97,5 +97,24 @@
     "nativeTypecheck": "PASS",
     "performanceMatrixRepeated": false,
     "evidence": "../2026-10-20-performance-0332/"
+  },
+  "favoriteComposition": {
+    "rendererCommit": "c243386",
+    "nativeCommit": "ad7bfef",
+    "rendererProbe": "PASS",
+    "rendererTypecheck": "PASS",
+    "nativeFullTargetedRun": {
+      "tests": 42,
+      "pass": 41,
+      "fail": 1,
+      "onlyFailure": "New test compared selected material IDs in incidental order; assertion corrected to compare sorted sets"
+    },
+    "correctedNewHostCases": {
+      "pass": 2,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "evidence": "../2026-10-20-favorite-composition/",
+    "realProviderGeneration": false
   }
 }
