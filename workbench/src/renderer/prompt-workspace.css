@@ -1,12 +1,12 @@
 .prompt-library-toolbar { display:flex; align-items:center; justify-content:space-between; gap:22px; border-bottom:1px solid #e3e9f2; padding:0 0 17px; }
 .prompt-library-views { display:flex; align-items:center; gap:25px; }
 .prompt-library-views>button { padding:8px 0; border:0; background:none; color:#8292a9; font-size:13px; }
-.prompt-library-views>button.active { color:#326bd8; font-weight:600; }
+.prompt-library-views>button.active { color:var(--semi-color-primary); font-weight:600; }
 .prompt-library-search { max-width:330px; background:#fff; border-color:#dfe6f0; font-size:13px; }
 .prompt-workspace .prompt-library-search.semi-input-wrapper { padding:0; height:34px; }
 .prompt-workspace .prompt-library-search .semi-input { height:32px; line-height:32px; margin:0; padding:0 12px; border:0; box-shadow:none; background:transparent; text-align:left; }
-.prompt-reference-picker { padding:0; border:1px solid #e1e8f2; border-radius:8px; background:#f9fbfe; }
-.prompt-reference-picker:last-child { border:1px solid #e1e8f2; }
+.prompt-reference-picker { padding:0; border:1px solid var(--surface-line); border-radius:8px; background:var(--surface-inset); }
+.prompt-reference-picker:last-child { border:1px solid var(--surface-line); }
 .prompt-reference-picker>summary { display:flex; align-items:center; justify-content:space-between; gap:20px; list-style:none; color:#6b809e; padding:13px 17px; font-size:13px; font-weight:400; }
 .prompt-reference-picker>summary::-webkit-details-marker { display:none; }
 .prompt-reference-picker>summary>span:first-child { display:flex; align-items:center; gap:8px; flex:none; }
@@ -20,16 +20,16 @@
 .prompt-reference-fields>.semi-button { margin-bottom:9px; font-size:13px; }
 .prompt-reference-picker>p { font-size:13px; color:#7b8da7; margin:7px 17px 15px; }
 .prompt-category-filter { display:flex; align-items:center; flex-wrap:wrap; gap:8px; }
-.prompt-category-filter>button { border:1px solid transparent; background:none; padding:7px 12px; border-radius:6px; color:#7c8ea7; font-size:13px; }
-.prompt-category-filter>button.active { border-color:#dbe6f9; color:#326bd8; background:#edf3ff; }
+.prompt-category-filter>button { border:1px solid transparent; background:none; padding:7px 12px; border-radius:999px; color:var(--semi-color-text-2); font-size:13px; }
+.prompt-category-filter>button.active { border-color:#dbe6f9; color:var(--semi-color-primary); background:var(--semi-color-primary-light-default); }
 .prompt-category-filter span { color:#91a6c6; margin-left:5px; font-size:13px; }
 .prompt-library-grid.image-list { display:block; }
 .prompt-library-grid.image-list .semi-list-items { grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
-.prompt-library-card.semi-card { min-width:0; border-radius:10px; border-color:var(--semi-color-border); transition:border-color .15s,box-shadow .15s; }
-.prompt-library-card.semi-card:hover { border-color:var(--semi-color-primary-light-active); box-shadow:0 5px 17px #2d4b7608; }
+.prompt-library-card.semi-card { min-width:0; border-radius:18px; border-color:var(--semi-color-border); background:var(--surface-card); transition:border-color .18s,box-shadow .18s; }
+.prompt-library-card.semi-card:hover { border-color:var(--semi-color-primary-light-active); box-shadow:var(--surface-shadow-hover); }
 .prompt-library-card>.semi-card-body { box-sizing:border-box; min-height:172px; padding:16px; display:flex; flex-direction:column; }
 .prompt-card-heading { display:flex; align-items:flex-start; gap:4px; min-width:0; }
-.prompt-card-category { min-width:0; max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#7190ba; background:#f0f5fd; border-radius:4px; padding:3px 7px; font-size:12px; }
+.prompt-card-category { min-width:0; max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#7190ba; background:#f0f5fd; border-radius:999px; padding:3px 8px; font-size:12px; }
 .prompt-card-heading>.semi-button:not(.prompt-library-use) { flex:none; width:28px; padding:0; }
 .prompt-card-favorite[aria-pressed=true] { color:var(--semi-color-warning); }
 .prompt-workspace .prompt-library-use.semi-button { display:block; flex:1; min-width:0; width:auto; height:auto; min-height:44px; padding:0; text-align:left; white-space:normal; justify-content:flex-start; }
@@ -42,7 +42,7 @@
 .prompt-use-footer>.semi-button { flex:none; }
 .prompt-library-card.is-disabled .prompt-card-category { color:var(--semi-color-text-2); background:var(--semi-color-fill-0); }
 .prompt-library-card.is-disabled .prompt-library-use h3 { color:var(--semi-color-text-2); }
-.prompt-library-empty { display:grid; justify-items:center; text-align:center; background:#fff; border:1px solid #e2e9f2; border-radius:11px; padding:46px 25px; }
+.prompt-library-empty { display:grid; justify-items:center; text-align:center; background:#fff; border:1px solid var(--surface-line); border-radius:11px; padding:46px 25px; }
 .prompt-library-empty>span { font-size:32px; color:#acbed8; }
 .prompt-library-empty h3 { font-size:16px; color:#6a819f; margin:14px 0 0; }
 .prompt-library-empty p { font-size:13px; color:#8293ab; margin:8px 0 21px; }
@@ -56,8 +56,8 @@
 .prompt-dialog .prompt-preview>.semi-input-textarea { box-sizing:border-box; display:block; height:100%; min-height:0; max-height:none; font-size:14px; line-height:1.8; overflow:auto; resize:none; }
 @media(max-width:680px) { .prompt-dialog .prompt-preview { height:250px; } }
 .prompt-simple-editor .prompt-editor-help { color:#8192aa; font-size:13px; line-height:1.8; margin:0; }
-.prompt-optional-fields { padding:0; border:1px solid #e2e9f2; border-radius:8px; background:#fafcff; }
-.prompt-optional-fields:last-child { border:1px solid #e2e9f2; }
+.prompt-optional-fields { padding:0; border:1px solid var(--surface-line); border-radius:8px; background:var(--surface-inset); }
+.prompt-optional-fields:last-child { border:1px solid var(--surface-line); }
 .prompt-optional-fields>summary { padding:13px 15px; color:#7287a4; font-size:13px; font-weight:500; }
 .prompt-optional-fields>summary>span { color:#9aa8bc; font-size:13px; font-weight:400; margin-left:8px; }
 .prompt-optional-fields>div { padding:0 15px 15px; }

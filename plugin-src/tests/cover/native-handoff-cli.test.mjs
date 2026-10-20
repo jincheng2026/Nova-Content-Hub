@@ -204,10 +204,13 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
         const {attempt} = f.library.createCoverAttempt(content.id, request.requestId, {host: currentHost, reason: currentHost === host ? 'initial' : 'host-change'});
         const task = {contentId: content.id, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId, host: currentHost};
         const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, {installedSkill: 'nova-content-cover-execution'});
-        const text = new URL(prepared.url).searchParams.get('prompt');
+        const text = prepared.prompt;
         assert.match(text, /4张；3:4；(?:精确|至少)768×1024；png/);
         assert.ok(text.includes(sizePolicy === 'exact' ? '本人照已选' : '不放人物'));
-        assert.match(text, /样张1；资料2；生成要求已保存/);
+        assert.match(text, /样张1；资料2/);
+        assert.ok(text.includes(request.prompt), 'the complete supplemental input is readable before CLI context resolution');
+        if (!prepared.requiresPaste) assert.equal(new URL(prepared.url).searchParams.get('prompt'), text);
+        else assert.equal(new URL(prepared.url).searchParams.has('prompt'), false, 'long input uses complete copy, never a locator-only task');
         const context = run(f.home, ['cover', 'context', '--handoff', prepared.id]);
         assert.equal(context.ok, true, context.message);
         assert.deepEqual(context.result.request, request);

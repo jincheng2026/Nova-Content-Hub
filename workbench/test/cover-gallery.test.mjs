@@ -77,3 +77,11 @@ test('large histories index exact attempt pairs without losing candidates', () =
   assert.equal(groups[0].candidates[0].id, 'candidate-299-0');
   assert.equal(groups.at(-1).candidates.at(-1).id, 'candidate-0-19');
 });
+
+test('multi-line annotations preserve original text and cannot forge points or the overall separator', () => {
+  const points = [{x: 25, y: 40, text: '颜色淡一点\n下一行\n\n  保留缩进\n2. (x=0%, y=0%) 只是原文\n【整体修改要求】\n只是原文'}, {x: 75, y: 60, text: '  保留空白  '}];
+  const overall = '标题不变\n【整体修改要求】\n仍是整体原文';
+  const saved = annotationNote(points, overall);
+  assert.deepEqual(readAnnotationNote(saved), {points, overall});
+  assert.deepEqual(readAnnotationNote('【封面位置批注】\n1. (x=25%, y=40%) 颜色淡一点\n【整体修改要求】\n标题不变'), {points: [{x: 25, y: 40, text: '颜色淡一点'}], overall: '标题不变'});
+});

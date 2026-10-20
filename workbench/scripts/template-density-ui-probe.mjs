@@ -1,4 +1,4 @@
-// Dense template gallery in actual React/Semi/Electron; synthetic library and IPC only.
+// Layered template gallery in actual React/Semi/Electron; synthetic library and IPC only.
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
@@ -62,20 +62,43 @@ async function probeMain(probeRoot){
  const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
  const click=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent.trim()===${JSON.stringify(text)}).click()`);
  try{
-  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===12');
+  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===16');
   assert.equal(await run('!!document.querySelector(".creator-template-sidebar")'),false,'configuration no longer consumes the gallery width');
   await run('[...document.querySelectorAll(".creator-template-grid img")].forEach(image=>image.loading="eager")');await wait('[...document.querySelectorAll(".creator-template-grid img")].every(image=>image.complete&&image.naturalWidth>0)');
-  for(const [width,columns] of [[1280,5],[1600,5],[1080,4],[900,3],[700,2]]){
+  for(const [width,columns] of [[1280,4],[1600,4],[1080,3],[900,3],[700,2]]){
    win.setSize(width,1000);await paint();
    assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-grid .semi-list-items")).gridTemplateColumns.split(" ").length'),columns,width+' gallery columns');
    assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true,width+' has no page overflow');
    assert.equal(await run(`(()=>{const grid=document.querySelector('.creator-template-grid').getBoundingClientRect(),library=document.querySelector('.creator-template-library').getBoundingClientRect();return Math.abs(grid.width-library.width)<1;})()`),true,'gallery fills available workspace width');
-   assert.equal(await run(`(()=>{const first=document.querySelector('.creator-style-card'),frame=first.querySelector('.creator-reference-stack').getBoundingClientRect();return Math.abs(frame.width/frame.height-.75)<.01&&first.getBoundingClientRect().height<450;})()`),true,'concise cards retain reachable actions');
+   assert.equal(await run(`(()=>{const first=document.querySelector('.creator-style-card'),frame=first.querySelector('.creator-reference-stack').getBoundingClientRect();return Math.abs(frame.width/frame.height-.75)<.01&&first.getBoundingClientRect().height<550;})()`),true,'layered cards retain reachable actions');
    if(width>=1280)await fs.writeFile(path.join(probeRoot,'templates-'+width+'.png'),(await win.webContents.capturePage()).toPNG());
   }
   assert.equal(await run(`([...document.querySelectorAll('.creator-template-original')].every(el=>getComputedStyle(el).objectFit==='contain'))`),true,'all original image previews stay uncropped');
-  assert.equal(await run(`getComputedStyle(document.querySelector('.creator-reference-backdrop')).filter.includes('blur(')`),true,'preview uses blurred original backdrop');
-  assert.equal(await run('document.querySelectorAll(".creator-stack-sheet,.creator-sample-strip,.creator-style-description").length'),0,'gallery keeps only the original image and concise caption');
+  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-stack-sheet").length'),3,'front and two fanned references');
+  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-template-thumbnails img").length'),4,'bounded thumbnail strip');
+  await win.setSize(1280,1000);await paint();
+  await run('document.querySelector(".creator-template-thumbnails button:nth-child(2)").click()');
+  assert.equal(await run('document.querySelector(".creator-template-original").alt'),'参考模板 0参考样张 2','thumbnail selects the front reference');
+  console.log('Motion before isolated cycling check:',await run('JSON.stringify({system:matchMedia("(prefers-reduced-motion: reduce)").matches,app:document.documentElement.dataset.reducedMotion})'));
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.originalMatchMedia=window.matchMedia; window.matchMedia=()=>({matches:false,addEventListener(){},removeEventListener(){}}); window.originalSetInterval=window.setInterval; window.intervalStarts=0; window.setInterval=(fn,ms)=>{window.intervalStarts++; return window.originalSetInterval(fn,ms===1400?40:ms);}; window.frontChanges=0; window.frontObserver=new MutationObserver(()=>window.frontChanges++); window.frontObserver.observe(document.querySelector(".creator-stack-sheets"),{childList:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
+  await run('new Promise(resolve=>setTimeout(resolve,350))');
+  assert.equal(await run('window.intervalStarts'),1,'hover/focus starts one bounded timer');
+  assert.equal(await run('window.frontChanges'),4,'automatic preview ends after four changes');
+  await run('new Promise(resolve=>setTimeout(resolve,150))');
+  assert.equal(await run('window.frontChanges'),4,'automatic preview does not loop while idle');
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"})); document.documentElement.dataset.reducedMotion="true"');
+  await run('new Promise(resolve=>setTimeout(resolve,30))');
+  const stopped=await run('window.frontChanges');
+  await run('new Promise(resolve=>setTimeout(resolve,180))');
+  assert.equal(await run('window.frontChanges'),stopped,'enabling the app preference stops active cycling');
+  const starts=await run('window.intervalStarts');
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
+  await run('new Promise(resolve=>setTimeout(resolve,100))');
+  assert.equal(await run('window.intervalStarts'),starts,'app reduced-motion disables automatic cycling');
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.documentElement.dataset.reducedMotion="false"; window.matchMedia=()=>({matches:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
+  await run('new Promise(resolve=>setTimeout(resolve,100))');
+  assert.equal(await run('window.intervalStarts'),starts,'system reduced-motion disables automatic cycling');
+  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.setInterval=window.originalSetInterval; window.matchMedia=window.originalMatchMedia; window.frontObserver.disconnect()');
   assert.equal(await run(`(()=>{const wrapper=document.querySelector('.creator-templates .list-toolbar-search'),input=wrapper.querySelector('input'),a=wrapper.getBoundingClientRect(),b=input.getBoundingClientRect(),style=getComputedStyle(input);return Math.abs((a.top+a.height/2)-(b.top+b.height/2))<1&&style.textAlign==='left'&&parseFloat(style.paddingTop)===0&&parseFloat(style.paddingBottom)===0;})()`),true,'search text is vertically centered and left aligned');
   await run('document.querySelector(".creator-template-use").focus()');await wait('getComputedStyle(document.querySelector(".creator-template-use")).opacity==="1"');
   assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'),'1','keyboard focus reveals the use action');
@@ -90,7 +113,7 @@ async function probeMain(probeRoot){
   assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'),true,'personal template learning controls retained');
   await run('(()=>{const input=document.querySelector(".creator-templates .list-toolbar-search input");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,"没有匹配的模板");input.dispatchEvent(new Event("input",{bubbles:true}));})()');await wait('document.querySelectorAll(".creator-style-card").length===0');await click('收起');await wait('document.activeElement===document.querySelector(".creator-templates .list-toolbar-search input")');assert.equal(await run('document.activeElement.getAttribute("aria-label")'),'搜索模板','removed trigger returns focus to the real shared search input');
   assert.deepEqual(await run('window.writes'),[],'gallery and configuration entry make no business writes');
-  console.log('PASS actual React/Semi/Electron: full-width 5-column image gallery, responsive 4/3/2 columns, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped blurred originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
+  console.log('PASS actual React/Semi/Electron: responsive 4/3/2 columns, bounded fanned multi-image previews and thumbnails, automatic cycling stops after four changes, live app/system reduced-motion, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
   console.log('Screenshots:',path.join(probeRoot,'templates-1280.png'),path.join(probeRoot,'templates-1600.png'));app.exit(0);
  }catch(error){console.error(error);app.exit(1);}
 }

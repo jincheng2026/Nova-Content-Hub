@@ -190,6 +190,11 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('document.querySelectorAll(".cover-annotation-note").length===2');
       await click('.cover-annotation-note button','删除位置 2');
       await wait('document.querySelectorAll(".cover-annotation-note").length===1 && document.querySelectorAll(".cover-annotation-canvas button.cover-annotation-marker").length===1');
+      const secondAnnotation = '颜色淡一点\n保留原有文字';
+      await click('.management-dialog button','添加中心位置批注');
+      await enter('#annotation-point-text',secondAnnotation);
+      await click('.cover-annotation-popover button','确认批注');
+      await wait('document.querySelectorAll(".cover-annotation-note").length===2');
       await enter('#annotation-overall','保留人物和配色');
       await paint();
       await fs.writeFile(path.join(screenshots,'annotation-wide.png'),(await window.webContents.capturePage()).toPNG());
@@ -204,10 +209,17 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.mutations.at(-1).note.includes("x=50%, y=")'),true);
       await click('.cover-result-card:first-child button','批注');
       await wait('document.querySelector(".cover-annotation-note-edit span")?.textContent==="标题放大，保留完整边界"');
+      assert.deepEqual(await run('[...document.querySelectorAll(".cover-annotation-note-edit span")].map(el=>el.textContent)'),['标题放大，保留完整边界',secondAnnotation],'saved and reopened points retain every original line');
+      const savedAnnotation = await run('window.mutations.at(-1).note');
       await click('.management-dialog button','按批注修改');
       await wait('document.querySelector(".cover-refinement-confirm")');
       assert.equal(await run('window.generated??null'),null,'opening confirmation never starts generation');
       assert.equal(await run('document.querySelector(".cover-refinement-confirm").textContent.includes("当前助手：WorkBuddy")'),true);
+      assert.equal(await run('document.querySelector(".cover-refinement-confirm pre").textContent'),savedAnnotation,'confirmation shows the exact saved note, including both locations and overall requirements');
+      assert.equal((savedAnnotation.match(/^\d+\. \(x=/gm)||[]).length,2);
+      assert.ok(savedAnnotation.includes('颜色淡一点\n  保留原有文字') && savedAnnotation.includes('【整体修改要求】\n保留人物和配色'));
+      await run('document.querySelector(".cover-refinement-confirm").scrollIntoView({block:"center"})'); await paint();
+      await fs.writeFile(path.join(screenshots,'annotation-confirmation.png'),(await window.webContents.capturePage()).toPNG());
       await run('window.failGenerateOnce=true');
       await click('.management-dialog button','确认并去 WorkBuddy 修改');
       await wait('window.probeError && !document.querySelector(".management-dialog button.semi-button-disabled")');
@@ -222,6 +234,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.generated.input.prompt.includes("【本次补充要求】") && window.generated.input.prompt.includes("本篇额外要求")'),true);
       assert.equal(await run('window.generated.input.prompt.includes("根据当前标题与正文创作封面")'),false);
       assert.equal(await run('window.generated.input.prompt.includes("x=50%, y=") && window.generated.input.prompt.includes("标题放大")'),true);
+      assert.ok((await run('window.generated.input.prompt')).includes(savedAnnotation),'generation carries the exact visible confirmation note');
       assert.equal(await run('window.generated.editToken===window.mutations.at(-1).editToken'),false,'generation uses token returned after reference attachment');
       assert.equal(await run('window.mutations.filter(item=>item.op==="attachMaterial").length'),1,'retry reuses the attached reference');
       assert.equal(await run('window.mutations.findLast(item=>item.op==="attachMaterial").assetHash'),'new-landscape');

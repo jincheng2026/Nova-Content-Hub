@@ -10,6 +10,8 @@ Object.assign(explanations, {
 });
 const retryableReads = new Set<WorkerOperation>(['workspace', 'list', 'readContent', 'workspaceLibrary', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
 const busyDelays = [80, 240, 600];
+const boundedReads = new Set<WorkerOperation>([...retryableReads, 'query']);
+const readTimeoutMs = 15_000;
 
 interface Child {
     on(event: 'message', listener: (message: unknown) => void): unknown;
@@ -26,7 +28,7 @@ export class WorkerClient implements Worker {
     child: Child | null = null;
     sequence = 0;
     stopped = false;
-    pending: { id: number; timer?: ReturnType<typeof setTimeout>; resolve(value: unknown): void; reject(error: unknown): void } | null = null;
+    pending: { id: number; timer?: ReturnType<typeof setTimeout>; deadline?: ReturnType<typeof setTimeout>; timeout?: Error; resolve(value: unknown): void; reject(error: unknown): void } | null = null;
 
     constructor(spawn: () => Child) {
         this.spawn = spawn;
@@ -38,7 +40,7 @@ export class WorkerClient implements Worker {
         if (!this.child) {
             const child = this.child = this.spawn();
             child.on('message', message => {
-                if (!isRecord(message) || !this.pending || message.id !== this.pending.id) return;
+                if (this.child !== child || !isRecord(message) || !this.pending || this.pending.timeout || message.id !== this.pending.id) return;
                 const pending = this.pending;
                 if (message.ok === true) pending.resolve(message.value);
                 else {
@@ -50,12 +52,12 @@ export class WorkerClient implements Worker {
                 if (this.child !== child) return;
                 this.child = null;
                 if (this.pending) {
-                    this.pending.reject(Object.assign(new Error('文件工作进程已退出。请查询磁盘任务，再继续导入。'), {code: 'WORKER_EXIT'}));
+                    this.pending.reject(this.pending.timeout ?? Object.assign(new Error('文件工作进程已退出。请查询磁盘任务，再继续导入。'), {code: 'WORKER_EXIT'}));
                     this.pending = null;
                 }
             };
             child.on('exit', failed);
-            child.on('error', failed);
+            child.on('error', () => {if (!this.pending?.timeout) failed();});
         }
         return new Promise((resolve, reject) => {
             const request = {id: ++this.sequence, op, args: structuredClone(args)};
@@ -68,6 +70,7 @@ export class WorkerClient implements Worker {
                 id: request.id,
                 resolve: value => {
                     clearTimeout(this.pending?.timer);
+                    clearTimeout(this.pending?.deadline);
                     this.pending = null;
                     resolve(value as WorkerOperations[K]['result']);
                 },
@@ -77,10 +80,18 @@ export class WorkerClient implements Worker {
                         return;
                     }
                     clearTimeout(this.pending?.timer);
+                    clearTimeout(this.pending?.deadline);
                     this.pending = null;
                     reject(error);
                 }
             };
+            if (boundedReads.has(op)) this.pending.deadline = setTimeout(() => {
+                if (this.pending?.id !== request.id) return;
+                this.pending.timeout = Object.assign(new Error('本机资料读取超时，已停止本次读取；已保存资料与待核验操作保留，请点击刷新重试。'), {code: 'READ_TIMEOUT'});
+                clearTimeout(this.pending.timer);
+                // Keep the slot until exit proves the old process no longer owns a library lock.
+                this.child?.kill();
+            }, readTimeoutMs);
             send();
         });
     }

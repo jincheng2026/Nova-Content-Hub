@@ -27,7 +27,7 @@
 .creator-queue-list .semi-list-item { padding:0; display:block; }
 .creator-queue-day { width:100%; }
 .creator-templates .creator-template-grid.image-list { display:block; }
-.creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(5,minmax(0,1fr)); gap:24px 18px; }
+.creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px 20px; }
 .creator-style-card>.semi-card-body { padding:0; }
 .content-collections.image-list { display:block; }
 .content-collections.image-list .semi-list-items { grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); }
@@ -36,8 +36,8 @@
 .cover-template-grid.image-list .semi-list-items { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); }
 .management-photo-list .semi-card-body { padding:14px; }
 .daily-plan-title.semi-button .semi-button-content,.creator-queue-title.semi-button .semi-button-content { display:block; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-@media(max-width:1199px) { .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(4,minmax(0,1fr)); } }
-@media(max-width:999px) { .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:1199px) { .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:899px) { .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:759px) {
  .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); }
  .schedule-day-plans .daily-plan-row { grid-template-columns:76px minmax(0,1fr) auto; gap:8px; padding:13px 0; }

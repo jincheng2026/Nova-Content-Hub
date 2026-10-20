@@ -42,15 +42,16 @@ export function imageAnnotationPoint(clientX: number, clientY: number, rect: {le
 }
 const annotationHeader = '【封面位置批注】';
 export function annotationNote(points: CoverAnnotation[], overall: string): string {
-  return `${annotationHeader}\n${points.map((point, index) => `${index + 1}. (x=${point.x}%, y=${point.y}%) ${point.text.replace(/\n/g, ' ')}`).join('\n')}\n【整体修改要求】\n${overall}`;
+  return `${annotationHeader}\n${points.map((point, index) => `${index + 1}. (x=${point.x}%, y=${point.y}%) ${point.text.replace(/\n/g, '\n  ')}`).join('\n')}\n【整体修改要求】\n${overall}`;
 }
 export function readAnnotationNote(note: string): {points: CoverAnnotation[]; overall: string} {
   if (!note.startsWith(annotationHeader + '\n')) return {points: [], overall: note};
   const separator = '\n【整体修改要求】\n', split = note.indexOf(separator);
   if (split < 0) return {points: [], overall: note};
   const lines = note.slice(annotationHeader.length + 1, split).split('\n').filter(Boolean), points: CoverAnnotation[] = [];
+  for (let i = lines.length - 1; i > 0; i--) if (lines[i].startsWith('  ')) { lines[i - 1] += '\n' + lines[i].slice(2); lines.splice(i, 1); }
   for (const line of lines) {
-    const match = /^\d+\. \(x=(\d+(?:\.\d+)?)%, y=(\d+(?:\.\d+)?)%\) (.*)$/.exec(line);
+    const match = /^\d+\. \(x=(\d+(?:\.\d+)?)%, y=(\d+(?:\.\d+)?)%\) (.*)$/s.exec(line);
     if (!match || Number(match[1]) > 100 || Number(match[2]) > 100) return {points: [], overall: note};
     points.push({x: Number(match[1]), y: Number(match[2]), text: match[3]});
   }

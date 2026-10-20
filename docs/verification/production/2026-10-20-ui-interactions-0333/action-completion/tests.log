@@ -1,0 +1,59 @@
+(node:12296) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (40.681ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (9.822166ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.836542ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.164292ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.2005ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.441584ms)
+✔ navigation and new draft survive a paused focus refresh (2.02575ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (0.893959ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.883959ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.856041ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.051667ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.586875ms)
+(node:12297) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (3.989917ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (2.246209ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (1.430375ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (1.111208ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (1.085875ms)
+✔ managed notes/publication drafts use App navigation and native close guards (1.358417ms)
+✔ a background workspace read cannot delay a confirmed save or overwrite edits typed afterward (2.203292ms)
+(node:12298) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save applies its confirmed snapshot before one background refresh (4.031417ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.314667ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.032791ms)
+✔ a background refresh failure retains the acknowledged save and permits an explicit refresh retry (1.496292ms)
+✔ editor reconciliation failure keeps one deferred full read and the committed snapshot (4.281625ms)
+✔ explicit management reload reuses the freshly read snapshot (1.921625ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (5.076083ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (2.148541ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.284375ms)
+✔ a committed management action releases its controls before a delayed full-library refresh (2.303125ms)
+✔ explicit panel refresh callbacks share the nonblocking background path (1.484583ms)
+✔ desktop operations finish in FIFO order without overlap (1.173834ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.632667ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.285417ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.208ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.119583ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.3775ms)
+✔ close rejects new work immediately and drains active and both accepted queues, including failures (0.365459ms)
+✔ closing an idle queue resolves and never reopens it (0.079875ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (30.033458ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (2.746625ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.550416ms)
+✔ readonly non-BUSY failures are returned once (1.546958ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.355959ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (8.631667ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.307042ms)
+ℹ tests 45
+ℹ suites 0
+ℹ pass 45
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 236.94625

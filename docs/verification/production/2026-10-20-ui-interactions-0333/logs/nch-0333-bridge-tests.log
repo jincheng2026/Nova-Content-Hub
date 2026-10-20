@@ -1,0 +1,19 @@
+✔ all browser intents start naturally and preserve complete data without unrelated image instructions (6.753375ms)
+✔ each request kind controls its own intent and retains host skill activation and resume routing (4.707333ms)
+✔ long links switch to full visible copy without truncating source input (10.803917ms)
+✔ display names are bounded data and required auth or unsupported resume remain refused (0.420667ms)
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (7.951542ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (428.648667ms)
+✔ browser image requests preserve visible selected requirements in JSON and long attachment fallback (10.3265ms)
+✔ browser requirement summaries admit only positive safe integer count and a two-integer pixel tuple (38.691416ms)
+✔ all browser intents and request kinds expose original input outside the JSON with safe fences (2.157541ms)
+✔ browser full-copy action opens the validated Skill link only after copying successfully (2.707667ms)
+✔ long Codex continuation keeps its original session while the full prompt is copied (1.098041ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 575.887541

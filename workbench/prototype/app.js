@@ -3229,7 +3229,7 @@
         const sources = W.requestReferenceSources(req);
         return downloadSources(sources, req.requestId || req.templateId + '-v' + req.templateVersion + '-本次参考');
     };
-    let activeHandoff = null;
+    let activeHandoff = null, activeHandoffLink = null;
 
     function handoffInfo(task = null, options = {}) {
         if (task && task.host !== D.SETTINGS.host) {
@@ -3252,17 +3252,18 @@
             });
         }
         activeHandoff = envelope;
+        activeHandoffLink = bridge.ok && bridge.requiresPaste ? bridge.url : null;
         const text = window.NCHHandoff.prompt(envelope, {intent: options.intent}), canLaunch = !FEATURE_AUTH && bridge.ok;
         const referenceCount = envelope.request?.references.length || 0;
         const ownPhotoCount = (envelope.request?.references || []).filter(r => W.photoById(r.id)).length;
-        const prepare = `${bridge.requiresAttachment ? '<div class="handoff-required" role="alert"><b>必须先下载 HANDOFF.json 并在助手中附上</b><p>这次内容超过链接容量，链接只有简短说明，完整请求在交接文件中。</p><button class="btn" data-act="handoff-download">下载 HANDOFF.json</button></div>' : ''}${referenceCount ? `<p>本次 ${referenceCount} 张参考，其中本人照片 ${ownPhotoCount} 张。下载 ZIP，解压后将全部图片附给助手；包内文件名与请求中的稳定 ID 对应。</p><button class="btn" data-act="reference-export" data-scope="handoff">导出本次全部参考图 ZIP</button>` : ''}`;
+        const prepare = `${bridge.requiresPaste ? '<div class="handoff-required" role="alert"><b>完整提示词超过链接容量</b><p>点击“复制完整提示词并打开助手”后，将剪贴板内容粘贴到助手输入框；没有删减任何要求。</p></div>' : ''}${bridge.requiresAttachment ? '<div class="handoff-required" role="alert"><b>必须先下载 HANDOFF.json 并在助手中附上</b><p>这次内容超过链接容量，链接只有简短说明，完整请求在交接文件中。</p><button class="btn" data-act="handoff-download">下载 HANDOFF.json</button></div>' : ''}${referenceCount ? `<p>本次 ${referenceCount} 张参考，其中本人照片 ${ownPhotoCount} 张。下载 ZIP，解压后将全部图片附给助手；包内文件名与请求中的稳定 ID 对应。</p><button class="btn" data-act="reference-export" data-scope="handoff">导出本次全部参考图 ZIP</button>` : ''}`;
         const alternate = `<div class="ops wrap-actions">${canLaunch ? '<button class="btn s" data-act="host-copy">复制交接文本</button>' : ''}${!bridge.requiresAttachment ? '<button class="btn s" data-act="handoff-download">下载 HANDOFF.json</button>' : ''}<a class="btn s" href="${esc(window.NCHHandoff.homeUrl(envelope.target.host))}" target="_blank" rel="noopener noreferrer">仅打开${esc(H(envelope.target.host))}首页</a>${ownPhotoCount ? '<button class="btn s" data-act="photo-export" data-scope="handoff">单独导出本人照片参考版</button>' : ''}</div>`;
-        const technical = `<p>目标：${esc(H(envelope.target.host))} · ${envelope.target.mode === 'resume' ? '回原会话' : '新会话'}${task ? ` · 任务 ${esc(task.id)}` : ''}${envelope.sourceTaskId ? ` · 来源任务 ${esc(envelope.sourceTaskId)}` : ''}</p>${!bridge.ok ? `<p>${esc(bridge.code)}：${esc(bridge.message || '')}</p>` : ''}${bridge.ok ? `<label>协议链接实际预填文本<textarea class="inp code" id="protocol-prompt" readonly>${esc(bridge.prompt)}</textarea></label>` : ''}<label>完整交接文本（供复制；不代表已通过链接传入）<textarea class="inp code" id="host-text" readonly>${esc(text)}</textarea></label><details><summary>交接 JSON · schema 1</summary><pre class="code">${esc(JSON.stringify(envelope, null, 2))}</pre></details>`;
+        const technical = `<p>目标：${esc(H(envelope.target.host))} · ${envelope.target.mode === 'resume' ? '回原会话' : '新会话'}${task ? ` · 任务 ${esc(task.id)}` : ''}${envelope.sourceTaskId ? ` · 来源任务 ${esc(envelope.sourceTaskId)}` : ''}</p>${!bridge.ok ? `<p>${esc(bridge.code)}：${esc(bridge.message || '')}</p>` : ''}<details><summary>交接 JSON · schema 1</summary><pre class="code">${esc(JSON.stringify(envelope, null, 2))}</pre></details>`;
         modal({
             title: `交接到${H(envelope.target.host)}`,
             wide: true,
-            body: `<p>准备好资料后，在 ${esc(H(envelope.target.host))} 中确认发送。图片与附件不会随链接传入，浏览器不能确认助手接单或执行。</p>${FEATURE_AUTH ? '<p class="handoff-required" role="alert">此构建要求真实授权；鉴权演示不能授权执行。当前仅支持复制或下载交接内容。</p>' : ''}${!bridge.ok && !FEATURE_AUTH ? `<p role="alert">${esc(bridge.message || '请使用复制或下载方式继续。')}</p>` : ''}${prepare ? `<section class="handoff-prepare"><h4>交接前准备</h4>${prepare}</section>` : ''}<details class="task-secondary"><summary>其他交接方式</summary>${alternate}<details class="task-secondary"><summary>技术详情与完整交接内容</summary>${technical}</details></details>`,
-            actions: `${canLaunch ? `<a class="btn p" href="${esc(bridge.url)}" target="_blank" rel="noopener noreferrer">打开${esc(H(envelope.target.host))}继续</a>` : '<button class="btn p" data-act="host-copy">复制交接文本</button>'}<button class="btn" data-close>关闭</button>`
+            body: `<p>准备好资料后，在 ${esc(H(envelope.target.host))} 中确认发送。图片与附件不会随链接传入，浏览器不能确认助手接单或执行。</p>${FEATURE_AUTH ? '<p class="handoff-required" role="alert">此构建要求真实授权；鉴权演示不能授权执行。当前仅支持复制或下载交接内容。</p>' : ''}${!bridge.ok && !FEATURE_AUTH ? `<p role="alert">${esc(bridge.message || '请使用复制或下载方式继续。')}</p>` : ''}<label>完整提示词预览<textarea class="inp code" id="host-text" readonly>${esc(text)}</textarea></label>${bridge.ok && !bridge.requiresPaste ? `<label>链接预填内容<textarea class="inp code" id="protocol-prompt" readonly>${esc(bridge.prompt)}</textarea></label>` : ''}${prepare ? `<section class="handoff-prepare"><h4>交接前准备</h4>${prepare}</section>` : ''}<details class="task-secondary"><summary>其他交接方式</summary>${alternate}<details class="task-secondary"><summary>技术详情与完整交接内容</summary>${technical}</details></details>`,
+            actions: `${canLaunch && bridge.requiresPaste ? '<button class="btn p" data-act="handoff-copy-open">复制完整提示词并打开助手</button>' : canLaunch ? `<a class="btn p" href="${esc(bridge.url)}" target="_blank" rel="noopener noreferrer">打开${esc(H(envelope.target.host))}继续</a>` : '<button class="btn p" data-act="host-copy">复制交接文本</button>'}<button class="btn" data-close>关闭</button>`
         });
 
     }
@@ -3422,6 +3423,10 @@
     A['check-run'] = () => {
         S.page = 'check';
         render();
+    };
+    A['handoff-copy-open'] = async () => {
+        if (!activeHandoff || !activeHandoffLink || FEATURE_AUTH) return;
+        if (await copy($('#host-text')?.value || '', '已复制完整提示词，请在助手输入框粘贴后确认发送')) window.location.href = activeHandoffLink;
     };
     A['host-copy'] = () => copy($('#host-text')?.value || '', '已复制交接文本，尚未发送到宿主');
     A['intake'] = el => {
@@ -4076,7 +4081,7 @@
         'pw-kw', 'pw-cat', 'pw-tag', 'pw-filter', 'pw-copy', 'pw-pick', 'pw-fill-copy', 'pw-raw-copy', 'pw-reset', 'pw-select', 'pw-clear', 'pw-fav', 'pw-fav-one', 'pw-off-view', 'pw-goto', 'pw-cat-menu',
         'new-prompt-ok', 'pw-save-copy', 'pw-paste', 'pw-example', 'pw-variable', 'pw-variable-ok', 'pw-file', 'pw-directory', 'pw-batch-back', 'pw-batch-save', 'pw-see-miss', 'pw-folder', 'pw-rename', 'pw-del', 'new-prompt', 'pw-import', 'edit-account', 'files', 'ie', 'pub-add', 'pub-edit', 'pub-free', 'edit-proj', 'new-project', 'new-template', 'new-collection', 'collection-members', 'rename', 'del-project', 'use-tpl', 'use-target',
         'zoom', 'dl', 'copy-img', 'copy-text', 'cmp', 'cmp-clear', 'cand-sel', 'old-batch', 'versions', 'mat-more', 'det-more', 'tpl-more', 'task-open', 'task-fix', 'tpl-task',
-        'open-folder', 'in-folder', 'refind', 'bind', 'bind-ok', 'new-lib', 'check-run', 'diagnostic-handoff', 'cp', 'host-copy', 'handoff-download', 'project-handoff', 'task-bridge', 'open-host', 'howto', 'plugin-settings', 'plugin-command', 'request-list', 'request-download',
+        'open-folder', 'in-folder', 'refind', 'bind', 'bind-ok', 'new-lib', 'check-run', 'diagnostic-handoff', 'cp', 'host-copy', 'handoff-copy-open', 'handoff-download', 'project-handoff', 'task-bridge', 'open-host', 'howto', 'plugin-settings', 'plugin-command', 'request-list', 'request-download',
         'backup-export', 'backup-import', 'trash', 'lib-more', 'builtin-list', 'auth-demo', 'auth-set', 'refresh', 'logout', 'logout-ok', 'motion',
         'project-cover-tasks', 'project-tasks', 'task-pick', 'task-picker-go', 'template-step', 'photo-export', 'reference-export', 'tpl-browse', 'cv-person', 'cv-brief', 'cv-title', 'cv-size', 'cv-add', 'cv-add-no', 'cv-wh', 'cv-n', 'cv-nc', 'cv-cnt', 'cv-kw', 'cv-own', 'cv-tpl', 'cv-new', 'cv-ref', 'cv-pixels', 'make-cover', 'rules-import', 'template-history'
     ]);

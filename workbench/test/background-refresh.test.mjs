@@ -193,9 +193,8 @@ test('queued foreground write and coalesced change refresh stay mutually exclusi
     release();
     await write;
     assert.equal(writes, 1);
-    assert.equal(f.render().pendingRefresh, true);
-    // React schedules its acting=false effect; the hook harness calls the same scheduler directly.
-    f.render().refresh();
+    // Completion starts the one coalesced refresh immediately after releasing the write lock.
+    assert.equal(f.render().pendingRefresh, false);
     await new Promise(resolve => setImmediate(resolve));
     assert.equal(f.render().pendingRefresh, false);
     assert.equal(f.calls.filter(method => method === 'listContents').length, 2);

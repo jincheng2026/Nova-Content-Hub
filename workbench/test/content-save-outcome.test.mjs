@@ -35,7 +35,7 @@ test('confirmed create remains saved when list refresh fails; retry refresh cann
   f.fail(''); await f.render().save();
   assert.equal(f.calls.filter(c=>c.method==='createContent').length,1);assert.equal(f.calls.filter(c=>c.method==='updateContent').length,1);
 });
-for(const method of ['updateContent','listContents','readWorkspace'])test(`edits during ${method} keep the new draft and prevent leave/close success`,async()=>{
+for(const method of ['updateContent','listContents'])test(`edits during ${method} keep the new draft and prevent leave/close success`,async()=>{
   const f=fixture();f.render().load({...disk,title:'old',body:'old'});f.render().setDraft(draft); const release=f.pause(method);
   const saving=f.render().save();await new Promise(resolve=>setImmediate(resolve));f.render().setDraft({...draft,body:'typed while saving'});f.render();release();
   assert.equal(await saving,false);const state=f.render();assert.equal(state.draft.body,'typed while saving');assert.equal(state.base.editToken,'committed-token');assert.equal(state.dirty,true);
@@ -57,4 +57,11 @@ test('managed notes/publication drafts use App navigation and native close guard
   const start=source.indexOf('        const prevent = (event: BeforeUnloadEvent) =>');const end=source.indexOf('        window.addEventListener',start);
   const prevent=vm.runInNewContext(stripTypeScriptTypes(source.slice(start,end))+';prevent', {dirtyRef:{current:false},hasManagedDrafts:()=>true});
   const event={preventDefault(){this.prevented=true;}};prevent(event);assert.equal(event.prevented,true);assert.equal(event.returnValue,'');
+});
+
+test('a background workspace read cannot delay a confirmed save or overwrite edits typed afterward', async () => {
+  const f=fixture();f.render().load({...disk,title:'old',body:'old'});f.render().setDraft(draft);const release=f.pause('readWorkspace');
+  assert.equal(await f.render().save(),true);
+  f.render().setDraft({...draft,body:'typed after save'});f.render();release();await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(f.render().draft.body,'typed after save');assert.equal(f.render().dirty,true);assert.equal(f.render().base.editToken,'committed-token');
 });

@@ -15,7 +15,7 @@ import {PaginationBar} from './pagination-bar.tsx';
 import {ColorField} from './color-field.tsx';
 const titleOrder = new Intl.Collator('zh-CN', {numeric: true});
 export type WorkspaceRun = <T>(action: () => Promise<T>, options?: {refreshWorkspaceOnSuccess?: boolean}) => Promise<T | undefined>;
-export interface WorkspaceManagementProps { library: WorkspaceLibrarySnapshot | null; busy: boolean; run: WorkspaceRun; refresh(): Promise<void> }
+export interface WorkspaceManagementProps { library: WorkspaceLibrarySnapshot | null; busy: boolean; run: WorkspaceRun; refresh(confirmed?: WorkspaceLibrarySnapshot): Promise<void> }
 export function useWorkspaceMutation({busy, run, refresh}: Pick<WorkspaceManagementProps, 'busy' | 'run' | 'refresh'>) {
   const [notice, setNotice] = useState('');
   const submitting = useRef(false);
@@ -28,7 +28,8 @@ export function useWorkspaceMutation({busy, run, refresh}: Pick<WorkspaceManagem
       catch (error) { setNotice('操作未确认完成。请查看上方错误与恢复入口；编辑内容仍保留。'); throw error; }
       setNotice('已保存到本机内容库。');
       done?.(saved);
-      await refresh();
+      try { await refresh(saved); }
+      catch (error) { setNotice('已保存到本机，界面刷新未完成；请点击刷新重试。'); throw error; }
       return true;
     }, {refreshWorkspaceOnSuccess: false});} finally {submitting.current = false;}
   }
@@ -42,7 +43,7 @@ export function useManagedDraftGuard(dirty: boolean) {
 }
 async function reloadManagedWorkspace(props: WorkspaceManagementProps, apply: (library: WorkspaceLibrarySnapshot) => void) {
   if (props.busy) return;
-  await props.run(async () => { const library = await invoke('readWorkspaceLibrary'); apply(library); await props.refresh(); }, {refreshWorkspaceOnSuccess: false});
+  await props.run(async () => { const library = await invoke('readWorkspaceLibrary'); apply(library); await props.refresh(library); }, {refreshWorkspaceOnSuccess: false});
 }
 export function ManagementDialog({title, close, busy, dirty, children}: {title: string; close(): void; busy: boolean; dirty?: boolean; children: ReactNode}) {
   const dialog = useRef<HTMLDialogElement>(null), identity = useRef(Symbol('editor'));
