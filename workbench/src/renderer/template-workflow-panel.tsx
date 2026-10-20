@@ -1,3 +1,4 @@
+import {useManagedDraftGuard} from './library-panels.tsx';
 import {useEffect, useRef, useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
@@ -15,9 +16,12 @@ export interface TemplateWorkflowPanelProps {templateId: string; library: Worksp
 const statusNames = {created: '待助手处理', claimed: '助手已认领', committed: '待人工验收', failed: '失败', cancelled: '已取消', superseded: '已被后续尝试替代'};
 export function TemplateWorkflowPanel({templateId, library, assets, busy, run, refresh, onDerive}: TemplateWorkflowPanelProps) {
     const [view, setView] = useState<TemplateWorkflowView | null>(null), [setup, setSetup] = useState<TemplateAssistantSetup | null>(null), [notes, setNotes] = useState(''), [selected, setSelected] = useState(''), [confirm, setConfirm] = useState(false), [notice, setNotice] = useState(''), [loading, setLoading] = useState(false);
+    const [submittedNotes, setSubmittedNotes] = useState('');
+    const notesDirty = notes !== submittedNotes;
+    useManagedDraftGuard(notesDirty);
     const viewRef = useRef(view);
     viewRef.current = view;
-    useEffect(() => {setNotes(''); setView(null); setSelected(''); setConfirm(false); setNotice('');}, [templateId]);
+    useEffect(() => {setNotes(''); setSubmittedNotes(''); setView(null); setSelected(''); setConfirm(false); setNotice('');}, [templateId]);
     useEffect(() => {
         let cancelled = false;
         setLoading(true);
@@ -36,12 +40,13 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
     const jobAccepted = !!job?.acceptance;
     const sourceMatches = attempt?.reference.sourceVersion === view?.currentVersion && attempt?.reference.sourcePackageHash === template?.versions.find(v => v.version === view?.currentVersion)?.packageHash;
     const unavailable = !view || busy || loading || !!view.deletedAt;
-    async function update(action: () => Promise<TemplateWorkflowResult>) {
+    async function update(action: () => Promise<TemplateWorkflowResult>, submitted?: string) {
         if (unavailable) return;
         await run(async () => {
             try {
                 const result = await action();
                 setView(result.view); setConfirm(false);
+                if (submitted !== undefined) setSubmittedNotes(submitted);
                 setNotice(result.launchRequested ? '已请求打开助手；提交后点击“刷新学习结果”查看。' : '模板操作已保存。');
                 await refresh();
             } catch (error) {
@@ -59,7 +64,8 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         {view?.builtin ? <div className="template-workflow-message"><p>内置模板需要先复制为自己的模板，再学习并还原。</p>{onDerive && <Button disabled={busy} onClick={() => void onDerive()}>复制为我的模板再学习</Button>}</div> : <>
             <p className="muted">本次使用全局助手：{setup?.host === 'workbuddy' ? 'WorkBuddy' : 'Codex'}。{setup && !setup.ready ? '模板执行能力尚未准备好，请在设置中检查配套插件。' : '助手选择可在左下角设置中调整。'}</p>
             <label className="template-study-notes">补充要求（可选）<TextArea className="semi-control-text" maxLength={10_000} value={notes} disabled={unavailable} placeholder="比如：重点还原标题层级与留白关系" onChange={setNotes}/></label>
-            {!activeAttempt && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}))}>{attempts.length ? '开始新一轮学习并还原' : '学习整组并还原首张'}</Button>}{activeAttempt && attempt?.attemptId !== activeAttempt.attemptId && <Button disabled={busy} onClick={() => {setSelected(activeAttempt.attemptId); setConfirm(false);}}>查看当前进行中的学习</Button>}
+            {notesDirty && <Button disabled={busy} onClick={() => setNotes(submittedNotes)}>放弃未提交的补充要求</Button>}
+            {!activeAttempt && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}), notes)}>{attempts.length ? '开始新一轮学习并还原' : '学习整组并还原首张'}</Button>}{activeAttempt && attempt?.attemptId !== activeAttempt.attemptId && <Button disabled={busy} onClick={() => {setSelected(activeAttempt.attemptId); setConfirm(false);}}>查看当前进行中的学习</Button>}
         </>}
         <p role="status" aria-live="polite">{loading ? '正在读取学习记录…' : notice}</p>
         {(!!attempts.length || !!selected) && <><label>学习历史<PopupSelect searchable aria-label="学习历史" value={selected || attempt?.attemptId || ''} disabled={busy} onChange={value => {setSelected(value); setConfirm(false);}}>{selected && !attempt && <option value={selected} disabled>原学习记录暂不可用，请重新选择</option>}{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</PopupSelect></label>

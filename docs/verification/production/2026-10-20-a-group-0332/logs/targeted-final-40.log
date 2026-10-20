@@ -1,0 +1,54 @@
+(node:38859) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (7.385375ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (18.793ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.7125ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.231125ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.282625ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.101083ms)
+✔ navigation and new draft survive a paused focus refresh (1.566834ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (0.993084ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.845625ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.819ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.062042ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.6605ms)
+(node:38860) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (2.246292ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (2.236292ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (0.970958ms)
+✔ edits during readWorkspace keep the new draft and prevent leave/close success (4.027583ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (2.13525ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (1.464583ms)
+✔ managed notes/publication drafts use App navigation and native close guards (1.208458ms)
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (1.309375ms)
+(node:38862) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (2.262958ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (0.962625ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (0.673042ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.610125ms)
+✔ editor reconciliation failure also keeps the fallback full read (1.028125ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (0.568042ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (0.618792ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (3.825167ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (0.819833ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (13.728416ms)
+✔ local minute records use the planned timezone across a date boundary (12.896833ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.169875ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.153334ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.207875ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.09025ms)
+✔ day views order known times and leave date-only time unknown (31.665917ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.610917ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.435583ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.118375ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.2815ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 139.507291

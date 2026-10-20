@@ -10,6 +10,7 @@ import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
 import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
 import Calendar from '@douyinfe/semi-ui-19/lib/es/calendar';
 import DatePicker from '@douyinfe/semi-ui-19/lib/es/datePicker';
+import Select from '@douyinfe/semi-ui-19/lib/es/select';
 import LocaleProvider from '@douyinfe/semi-ui-19/lib/es/locale/localeProvider';
 import zhCN from '@douyinfe/semi-ui-19/lib/es/locale/source/zh_CN';
 import './semi-calendar.css';
@@ -108,31 +109,20 @@ export function CalendarPage(props: Props & WorkspaceManagementProps & {initialC
   const [dayPage, setDayPage] = useState(1), [dayPageSize, setDayPageSize] = useState(20);
   useEffect(() => setDayPage(1), [selected]);
   const [mode, setMode] = useState<'month' | 'week'>('month'), [notice, setNotice] = useState('');
-  const [query, setQuery] = useState(''), [channel, setChannel] = useState(''), [status, setStatus] = useState('');
+  const [query, setQuery] = useState(''), [channelIds, setChannelIds] = useState<string[] | null>(null), [status, setStatus] = useState('');
   const [details, setDetails] = useState(false), [creating, setCreating] = useState(false), [contentId, setContentId] = useState(''), [dialog, setDialog] = useState<PublicationSelection | null>(null);
   const consumedFocus = useRef<CalendarFocus | null>(null);
   const rowFocus = useRef<HTMLElement>(null);
   const positionedFocus = useRef<PublicationFocus | null>(null);
-  useEffect(() => {
-    const request = props.initialFocus;
-    if (!request || request === consumedFocus.current) return;
-    consumedFocus.current = request;
-    if (request.day) setSelected(request.day);
-    if (request.id) {
-      setFocus({...request, action: request.action === 'record' ? undefined : request.action}); setQuery(''); setChannel(''); setStatus('');
-      if (!request.day) {const entry = scheduled(workspace, library, timezone).find(item => item.kind === request.kind && item.content.id === request.id && (!request.planId || item.plan.id === request.planId)); if (entry) setSelected(entry.day);}
-      if (request.action === 'history' || !request.planId) setDetails(true);
-    }
-    if (request.action === 'record' && request.id) openRecord(request);
-    requestAnimationFrame(() => window.document.getElementById('schedule-day-detail')?.scrollIntoView({block: 'start'}));
-  }, [props.initialContentId, props.initialFocus]);
   const date = dayDate(selected), today = localDay(new Date());
   const first = new Date(date.getFullYear(), date.getMonth(), 1, 12);
   const start = mode === 'month' ? shiftDay(localDay(first), -(first.getDay() + 6) % 7) : shiftDay(selected, -(date.getDay() + 6) % 7);
   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const allPlans = useMemo(() => scheduled(workspace, library, timezone, true), [workspace, library, timezone]);
-  const plans = useMemo(() => allPlans.filter(entry => (status === 'all' || (status ? entry.plan.status === status : entry.plan.status !== 'cancelled')) && (!channel || entry.plan.channelId === channel) && `${entry.content.title} ${entry.title} ${entry.channel}`.toLowerCase().includes(query.trim().toLowerCase())), [allPlans, status, channel, query]);
-  const selectedPlans = useMemo(() => plans.filter(item => item.day === selected), [plans, selected]);
+  const channelPlans = useMemo(() => allPlans.filter(entry => channelIds === null || channelIds.includes(entry.plan.channelId)), [allPlans, channelIds]);
+  const plans = useMemo(() => channelPlans.filter(entry => entry.plan.status !== 'cancelled'), [channelPlans]);
+  const dayPlans = useMemo(() => channelPlans.filter(item => item.day === selected), [channelPlans, selected]);
+  const selectedPlans = useMemo(() => dayPlans.filter(entry => (status === 'all' || (status ? entry.plan.status === status : entry.plan.status !== 'cancelled')) && `${entry.content.title} ${entry.title} ${entry.channel}`.toLowerCase().includes(query.trim().toLowerCase())), [dayPlans, status, query]);
   const currentDayPage = Math.min(dayPage, Math.max(1, Math.ceil(selectedPlans.length / dayPageSize)));
   const plansByDay = useMemo(() => {
     const grouped = new Map<string, (typeof plans)[number][]>(), end = shiftDay(start, mode === 'month' ? 41 : 6);
@@ -140,11 +130,33 @@ export function CalendarPage(props: Props & WorkspaceManagementProps & {initialC
     return grouped;
   }, [plans, start, mode]);
   const channels = library?.settings.channels ?? workspace?.channels ?? [];
-  const visibleChannelIds = new Set([...plansByDay.values()].flatMap(entries => entries.map(entry => entry.plan.channelId)));
-  const visibleChannels = channels.filter(channel => visibleChannelIds.has(channel.id));
+  const channelOptions = useMemo(() => {
+    const options = channels.map(channel => ({value: channel.id, label: `${channel.name}${('deletedAt' in channel ? channel.deletedAt : !channel.enabled) ? '（已停用）' : ''}`}));
+    for (const entry of allPlans) if (!options.some(option => option.value === entry.plan.channelId)) options.push({value: entry.plan.channelId, label: `原渠道已不可用（${entry.plan.channelId}）`});
+    return options;
+  }, [channels, allPlans]);
+  useEffect(() => {
+    const request = props.initialFocus;
+    if (!request || request === consumedFocus.current) return;
+    consumedFocus.current = request;
+    if (!canChangeDay()) return;
+    const entry = request.id ? allPlans.find(item => item.kind === request.kind && item.content.id === request.id && (!request.planId || item.plan.id === request.planId)) : undefined;
+    selectDay(entry?.day ?? request.day ?? selected);
+    setQuery(''); setStatus(entry?.plan.status === 'cancelled' ? 'all' : '');
+    if (entry && channelIds !== null && !channelIds.includes(entry.plan.channelId)) {
+      setChannelIds([...channelIds, entry.plan.channelId]);
+      setNotice('已补选目标发布安排的渠道，便于定位。');
+    }
+    if (request.id) {
+      setFocus({...request, action: request.action === 'record' ? undefined : request.action});
+      if (request.action === 'history' || !request.planId) setDetails(true);
+      if (request.action === 'record') openRecord(request);
+    }
+    requestAnimationFrame(() => window.document.getElementById('schedule-day-detail')?.scrollIntoView({block: 'start'}));
+  }, [props.initialContentId, props.initialFocus, allPlans]);
   const documents = library?.contentDetails.filter(item => !item.deletedAt && !item.isExample) ?? [];
   const hasDocuments = documents.length > 0;
-  useEffect(() => {setDayPage(1);}, [query, channel, status]);
+  useEffect(() => {setDayPage(1);}, [query, channelIds, status]);
   useEffect(() => {
     if (!focus?.planId || positionedFocus.current === focus) return;
     const index = selectedPlans.findIndex(entry => entry.kind === focus.kind && entry.content.id === focus.id && entry.plan.id === focus.planId);
@@ -153,19 +165,27 @@ export function CalendarPage(props: Props & WorkspaceManagementProps & {initialC
     if (currentDayPage !== page) {setDayPage(page); return;}
     if (rowFocus.current) {rowFocus.current.scrollIntoView({block: 'nearest'}); positionedFocus.current = focus;}
   }, [focus, selectedPlans, currentDayPage, dayPageSize]);
-  function move(direction: number) { if (mode === 'month') { const next = new Date(date.getFullYear(), date.getMonth() + direction, 1, 12); setSelected(localDay(next)); } else setSelected(shiftDay(selected, direction * 7)); }
+  function move(direction: number) { if (mode === 'month') { const next = new Date(date.getFullYear(), date.getMonth() + direction, 1, 12); selectDay(localDay(next)); } else selectDay(shiftDay(selected, direction * 7)); }
   function openRecord(next: PublicationFocus) {
     const document = (next.kind === 'content' ? library?.contentDetails : library?.collections)?.find(item => item.id === next.id);
     const plan = document?.plans.find(item => item.id === next.planId);
     if (!document || document.deletedAt || plan?.status !== 'planned') {setNotice('原计划已变化或暂不可用，请重新核对。'); return;}
     setDialog({mode: 'record', kind: next.kind, documentId: document.id, plan});
   }
+  function canChangeDay() {
+    if (hasManagedDrafts()) {setNotice('还有未保存的发布填写，请先返回编辑窗口保存或明确关闭。'); return false;}
+    return true;
+  }
   function selectDay(day: string) {
-    positionedFocus.current = focus;
+    if (!canChangeDay()) return false;
+    positionedFocus.current = null;
+    setFocus(null); setDetails(false); setDialog(null); setCreating(false);
     setSelected(day); setDayPage(1);
+    return true;
   }
   function showDayPlans(day: string) {
-    selectDay(day);
+    if (!selectDay(day)) return;
+    setQuery(''); setStatus('');
     requestAnimationFrame(() => window.document.getElementById('schedule-day-detail')?.scrollIntoView({block: 'start'}));
   }
   function manage(next?: PublicationFocus) {
@@ -195,10 +215,10 @@ export function CalendarPage(props: Props & WorkspaceManagementProps & {initialC
     if (entries.length <= 3) continue;
     events.push({key: `day-summary:${day}:${entries.length}:${busy}`, allDay: true, start: dayDate(day), children: <Button theme="borderless" className="semi-schedule-event schedule-day-more" disabled={busy} aria-label={`查看 ${day} 全部 ${entries.length} 条安排`} onClick={event => {event.stopPropagation(); showDayPlans(day);}}>查看全部 {entries.length} 条安排 →</Button>});
   }
-  return <section className="workspace-page calendar-workspace creator-schedule"><header className="creator-page-heading"><div><h2>日程 <span>{mode === 'month' ? `${date.getFullYear()} 年 ${date.getMonth() + 1} 月` : `${start.slice(5)} — ${shiftDay(start, 6).slice(5)}`}</span></h2><p>按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。</p></div><div className="management-actions"><Button disabled={busy} onClick={() => setSelected(today)}>今天</Button><Button disabled={busy} onClick={() => move(-1)} aria-label={mode === 'month' ? '上个月' : '上一周'}>‹</Button><Button disabled={busy} onClick={() => move(1)} aria-label={mode === 'month' ? '下个月' : '下一周'}>›</Button><div className="schedule-mode" aria-label="日程视图">{(['month', 'week'] as const).map(value => <Button key={value} disabled={busy} theme={mode === value ? 'solid' : 'borderless'} aria-pressed={mode === value} onClick={() => setMode(value)}>{value === 'month' ? '按月' : '按周'}</Button>)}</div><Button theme="solid" disabled={busy || !hasDocuments} onClick={() => manage()}>＋ 新增计划</Button></div></header>
-    <div className="schedule-subheading"><div className="schedule-legend" aria-label="渠道图例">{visibleChannels.map(channel => <span key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}>{channel.name}</span>)}</div><label>查看日期<DatePicker aria-label="日程日期" type="date" autoSwitchDate={false} format="yyyy-MM-dd" value={date} showClear={false} disabled={busy} onChange={value => {if (value instanceof Date) selectDay(localDay(value));}}/></label></div>
+  return <section className="workspace-page calendar-workspace creator-schedule"><header className="creator-page-heading"><div><h2>日程 <span>{mode === 'month' ? `${date.getFullYear()} 年 ${date.getMonth() + 1} 月` : `${start.slice(5)} — ${shiftDay(start, 6).slice(5)}`}</span></h2><p>按渠道安排发布，发布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。</p></div><div className="management-actions"><Button disabled={busy} onClick={() => selectDay(today)}>今天</Button><Button disabled={busy} onClick={() => move(-1)} aria-label={mode === 'month' ? '上个月' : '上一周'}>‹</Button><Button disabled={busy} onClick={() => move(1)} aria-label={mode === 'month' ? '下个月' : '下一周'}>›</Button><div className="schedule-mode" aria-label="日程视图">{(['month', 'week'] as const).map(value => <Button key={value} disabled={busy} theme={mode === value ? 'solid' : 'borderless'} aria-pressed={mode === value} onClick={() => setMode(value)}>{value === 'month' ? '按月' : '按周'}</Button>)}</div><Button theme="solid" disabled={busy || !hasDocuments} onClick={() => manage()}>＋ 新增计划</Button></div></header>
+    <div className="schedule-subheading"><div className="schedule-legend"><label><span id="calendar-channel-label">发布渠道</span><Select multiple showClear aria-labelledby="calendar-channel-label" disabled={busy} value={channelIds ?? channelOptions.map(option => option.value)} optionList={channelOptions} placeholder="未选择渠道" maxTagCount={2} onChange={value => {positionedFocus.current = focus; setChannelIds(Array.isArray(value) ? value.map(String) : []);}}/></label><Button theme="borderless" disabled={busy || channelIds === null} onClick={() => {positionedFocus.current = focus; setChannelIds(null);}}>恢复全部渠道</Button><span>{channelIds === null ? '全部渠道（含后续新增）' : `已选 ${channelIds.length} 个渠道`}</span></div><label>查看日期<DatePicker aria-label="日程日期" type="date" autoSwitchDate={false} format="yyyy-MM-dd" value={date} showClear={false} disabled={busy} onChange={value => {if (value instanceof Date) selectDay(localDay(value));}}/></label></div>
     <section className="creator-panel schedule-board semi-schedule-board"><div className="schedule-scroll"><LocaleProvider locale={{...zhCN, Calendar: {...zhCN.Calendar, allDay: '时间待定'}}}><Calendar className={`semi-schedule-calendar is-${mode}`} mode={mode} displayValue={date} events={events} weekStartsOn={1} height={620} minEventHeight={44} showCurrTime={false} markWeekend={false} renderTimeDisplay={hour => `${String(hour).padStart(2, '0')}:00`} renderDateDisplay={value => {const day = localDay(value); return <Button theme="borderless" className={`semi-schedule-day${day === selected ? ' is-selected' : ''}`} disabled={busy} aria-pressed={day === selected} aria-label={`选择 ${day}，${plansByDay.get(day)?.length ?? 0} 条发布安排`} onClick={event => {event.stopPropagation(); selectDay(day);}}>{mode === 'week' && <span>周{['日', '一', '二', '三', '四', '五', '六'][value.getDay()]}</span>}<strong>{value.getDate()}</strong></Button>;}} onClick={(_, value) => {if (!busy) selectDay(localDay(value));}} onMoreClick={(_, value) => {if (!busy) showDayPlans(localDay(value));}}/></LocaleProvider></div></section>
-    <section className="creator-panel schedule-day-detail" id="schedule-day-detail"><div className="creator-panel-heading"><h3>{selected === today ? '今天' : selected}的发布计划 <span>{selectedPlans.length} 条安排</span></h3><Button theme="borderless" disabled={busy || !hasDocuments} onClick={() => manage()}>为这一天新增计划 →</Button></div><ListToolbar className="daily-plan-filters" search={{label: '搜索发布计划', placeholder: '搜索发布标题、内容或渠道', value: query, change: setQuery, disabled: busy || !!dialog}}><PopupSelect aria-label="筛选发布渠道" disabled={busy || !!dialog} value={channel} onChange={setChannel}><option value="">全部渠道</option>{channels.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</PopupSelect><PopupSelect aria-label="筛选发布状态" disabled={busy || !!dialog} value={status} onChange={setStatus}><option value="">未取消（待发布＋已记录）</option><option value="all">全部安排（含已取消）</option><option value="planned">待发布</option><option value="published">已记录</option><option value="cancelled">已取消</option></PopupSelect></ListToolbar><div className="daily-plan-columns" aria-hidden="true"><span>时间</span><span>渠道</span><span>内容标题 / 发布文案</span><span>状态</span><span>操作</span></div><DataTable className="schedule-day-plans compact-data-table" rows={selectedPlans.slice((currentDayPage - 1) * dayPageSize, currentDayPage * dayPageSize)} total={selectedPlans.length} page={currentDayPage} pageSize={dayPageSize} onPageSizeChange={value => {positionedFocus.current = focus; setDayPageSize(value);}} disabled={busy || !!dialog} onPageChange={value => {positionedFocus.current = focus; setDayPage(value);}} label="当天安排分页" rowKey={entry => entry ? `${entry.kind}:${entry.content.id}:${entry.plan.id}` : ''} showHeader={false} columns={[{key: 'publication', render: (_, entry) => planCard(entry)}]} empty={<p className="creator-queue-empty">这一天没有发布安排。</p>}/></section><p role="status">{notice}</p>{details && focus && <CalendarManagement {...props} busy={busy || !!dialog} selectedDay={selected} focus={focus} close={() => {if (hasManagedDrafts()) {setNotice('请先保存或明确关闭尚未完成的发布编辑。'); return;} setDetails(false);}}/>}{creating && <ManagementDialog title="选择要发布的内容" busy={busy} dirty={false} close={() => setCreating(false)}><p className="muted">选一篇已保存的内容，继续为 {selected} 安排发布。</p><label>发布内容<PopupSelect searchable aria-label="选择发布内容" value={contentId} disabled={busy} onChange={setContentId}><option value="">请选择内容</option>{contentId && !documents.some(item => item.id === contentId) && <option value={contentId} disabled>原内容暂不可用，请重新选择</option>}{documents.map(item => <option key={item.id} value={item.id}>{item.title || '未命名内容'}</option>)}</PopupSelect></label><Button theme="solid" disabled={busy || !documents.some(item => item.id === contentId)} onClick={() => {setCreating(false); setDialog({mode: 'plan', kind: 'content', documentId: contentId});}}>继续安排</Button></ManagementDialog>}{dialog && <PublicationEditor key={`${dialog.mode}:${dialog.kind}:${dialog.documentId}:${dialog.plan?.id ?? ''}`} props={props} selection={dialog} initialDay={selected} close={() => setDialog(null)}/>}</section>;
+    <section className="creator-panel schedule-day-detail" id="schedule-day-detail"><div className="creator-panel-heading"><h3>{selected === today ? '今天' : selected}的发布计划 <span>{dayPlans.length} 条总计 · 匹配 {selectedPlans.length} 条安排</span></h3><Button theme="borderless" disabled={busy || !hasDocuments} onClick={() => manage()}>为这一天新增计划 →</Button></div><ListToolbar className="daily-plan-filters" search={{label: '搜索发布计划', placeholder: '搜索发布标题、内容或渠道', value: query, change: setQuery, disabled: busy || !!dialog}}><PopupSelect aria-label="筛选发布状态" disabled={busy || !!dialog} value={status} onChange={setStatus}><option value="">未取消（待发布＋已记录）</option><option value="all">全部安排（含已取消）</option><option value="planned">待发布</option><option value="published">已记录</option><option value="cancelled">已取消</option></PopupSelect></ListToolbar><div className="daily-plan-columns" aria-hidden="true"><span>时间</span><span>渠道</span><span>内容标题 / 发布文案</span><span>状态</span><span>操作</span></div><DataTable className="schedule-day-plans compact-data-table" rows={selectedPlans.slice((currentDayPage - 1) * dayPageSize, currentDayPage * dayPageSize)} total={selectedPlans.length} page={currentDayPage} pageSize={dayPageSize} onPageSizeChange={value => {positionedFocus.current = focus; setDayPageSize(value);}} disabled={busy || !!dialog} onPageChange={value => {positionedFocus.current = focus; setDayPage(value);}} label="当天安排分页" rowKey={entry => entry ? `${entry.kind}:${entry.content.id}:${entry.plan.id}` : ''} showHeader={false} columns={[{key: 'publication', render: (_, entry) => planCard(entry)}]} empty={<div className="creator-queue-empty"><p>{channelIds?.length === 0 ? '尚未选择渠道。' : dayPlans.length ? '没有匹配的当天安排。' : '这一天在所选渠道中没有发布安排。'}</p><Button disabled={busy} onClick={() => {positionedFocus.current = focus; setQuery(''); setStatus(''); setChannelIds(null);}}>清除筛选并恢复全部渠道</Button></div>}/></section><p role="status">{notice}</p>{details && focus && <CalendarManagement {...props} busy={busy || !!dialog} selectedDay={selected} focus={focus} close={() => {if (hasManagedDrafts()) {setNotice('请先保存或明确关闭尚未完成的发布编辑。'); return;} setDetails(false);}}/>}{creating && <ManagementDialog title="选择要发布的内容" busy={busy} dirty={false} close={() => setCreating(false)}><p className="muted">选一篇已保存的内容，继续为 {selected} 安排发布。</p><label>发布内容<PopupSelect searchable aria-label="选择发布内容" value={contentId} disabled={busy} onChange={setContentId}><option value="">请选择内容</option>{contentId && !documents.some(item => item.id === contentId) && <option value={contentId} disabled>原内容暂不可用，请重新选择</option>}{documents.map(item => <option key={item.id} value={item.id}>{item.title || '未命名内容'}</option>)}</PopupSelect></label><Button theme="solid" disabled={busy || !documents.some(item => item.id === contentId)} onClick={() => {setCreating(false); setDialog({mode: 'plan', kind: 'content', documentId: contentId});}}>继续安排</Button></ManagementDialog>}{dialog && <PublicationEditor key={`${dialog.mode}:${dialog.kind}:${dialog.documentId}:${dialog.plan?.id ?? ''}`} props={props} selection={dialog} initialDay={selected} close={() => setDialog(null)}/>}</section>;
 }
 
 export function PromptsPage(props: Pick<Props, 'workspace'> & WorkspaceManagementProps & {initialContentId?: string | null; currentContentId?: string | null; openContentBody?(contentId: string): Promise<void>; importPrompt?(): Promise<{title: string; body: string} | null>}) {
@@ -284,7 +304,10 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
   const [workflowExpanded, setWorkflowExpanded] = useState(false);
   const [workflowRequest, setWorkflowRequest] = useState(0);
   const workflowSection = useRef<HTMLElement>(null), workflowReturnId = useRef<string | null>(null), templateSearch = useRef<HTMLInputElement>(null);
+  const [workflowNotice, setWorkflowNotice] = useState('');
   function openWorkflow(templateId: string, fromCard = false) {
+    if (templateId !== workflowTemplateId && hasManagedDrafts()) {setWorkflowNotice('补充要求尚未提交，请先开始学习，或放弃补充要求后再切换模板。'); return;}
+    setWorkflowNotice('');
     if (fromCard) workflowReturnId.current = templateId;
     setWorkflowTemplateId(templateId);
     setWorkflowExpanded(true);
@@ -338,7 +361,7 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
       <p className="creator-footnote">一组可保存 1–50 张参考。参考数量与生成候选数量分别设置；原图只从你的内容库读取。</p>
     </div></div>
     {preview && <dialog ref={dialog} className="image-preview" onCancel={() => setPreview(null)} aria-label={preview.name}><div className="dialog-heading"><div><h2>{preview.name}</h2><p>{preview.samples.length} 张风格样张 · 同一模板组 · v{preview.version}</p></div><Button onClick={() => setPreview(null)}>关闭预览</Button></div><p className="creator-preview-description">{preview.description}</p><div className="preview-grid">{preview.samples.map((sample, index) => <img key={sample.assetHash} src={sample.url} alt={`${preview.name}样张 ${index + 1}`}/>)}</div></dialog>}
-    {workflowTemplateId && <section id="template-learning-workflow" aria-label="模板学习与还原" hidden={!workflowExpanded} tabIndex={-1} ref={workflowSection}><Card title="模板学习与还原" headerExtraContent={<Button disabled={busy} onClick={closeWorkflow}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card></section>}
+    <p role="status">{workflowNotice}</p>{workflowTemplateId && <section id="template-learning-workflow" aria-label="模板学习与还原" hidden={!workflowExpanded} tabIndex={-1} ref={workflowSection}><Card title="模板学习与还原" headerExtraContent={<Button disabled={busy} onClick={closeWorkflow}>收起</Button>}><TemplateWorkflowPanel templateId={workflowTemplateId} library={library} assets={assets} busy={busy} run={props.run} refresh={props.refresh} onDerive={derive}/></Card></section>}
     {importing && <TemplateImportDialog props={props} template={importing.template} initialImages={importing.images} close={() => setImporting(null)}/>}
   </section>;
 }

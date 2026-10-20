@@ -1,0 +1,58 @@
+{
+  "status": "PASS",
+  "productBase": "3bedeb8",
+  "commands": [
+    {
+      "command": "npm ci",
+      "exitCode": 0
+    },
+    {
+      "command": "npm ci --prefix workbench",
+      "exitCode": 0
+    },
+    {
+      "command": "node --test workbench/test/background-refresh.test.mjs workbench/test/managed-refresh.test.mjs workbench/test/daily-publication-wiring.test.mjs workbench/test/publication-model.test.mjs workbench/test/schedule-view.test.mjs",
+      "exitCode": 0,
+      "passed": 33,
+      "scope": "baseline before changes"
+    },
+    {
+      "command": "node --test workbench/test/*.test.mjs",
+      "exitCode": 0,
+      "passed": 314,
+      "scope": "existing desktop suite started during first implementation pass before new content-save-outcome.test.mjs existed"
+    },
+    {
+      "command": "node --test workbench/test/content-save-outcome.test.mjs workbench/test/background-refresh.test.mjs workbench/test/managed-refresh.test.mjs workbench/test/daily-publication-wiring.test.mjs workbench/test/publication-model.test.mjs workbench/test/schedule-view.test.mjs",
+      "exitCode": 0,
+      "passed": 40,
+      "scope": "final source"
+    },
+    {
+      "command": "npm run typecheck --prefix workbench",
+      "exitCode": 0,
+      "scope": "final source"
+    },
+    {
+      "command": "NOVA_PROBE_EVIDENCE_DIR=\"$PWD/docs/verification/production/2026-10-20-a-group-0332/ui\" node docs/verification/production/2026-10-20-a-group-0332/probe-source/a-group-ui-probe.mjs",
+      "exitCode": 0,
+      "scope": "actual React/Semi renderer inside native Electron with synthetic IPC only"
+    },
+    {
+      "command": "NOVA_PROBE_EVIDENCE_DIR=\"$PWD/docs/verification/production/2026-10-20-a-group-0332/ui\" node docs/verification/production/2026-10-20-a-group-0332/probe-source/app-draft-ui-probe.mjs",
+      "exitCode": 0,
+      "scope": "actual React/Semi renderer inside native Electron with synthetic IPC only"
+    },
+    {
+      "command": "NOVA_PROBE_EVIDENCE_DIR=\"$PWD/docs/verification/production/2026-10-20-a-group-0332/ui\" node docs/verification/production/2026-10-20-a-group-0332/probe-source/calendar-pagination-ui-probe.mjs",
+      "exitCode": 0,
+      "scope": "actual React/Semi renderer inside native Electron with synthetic IPC only"
+    }
+  ],
+  "untested": [
+    "final frozen 0.3.32 build and package (owned by main thread)",
+    "installed app and real user library",
+    "Intel Mac and Windows hardware",
+    "real provider or assistant launches"
+  ]
+}

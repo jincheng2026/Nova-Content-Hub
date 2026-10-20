@@ -1,0 +1,45 @@
+(node:31584) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (6.985792ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (6.70075ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.419958ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.397166ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.145917ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (0.937042ms)
+✔ navigation and new draft survive a paused focus refresh (1.651708ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (0.769875ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.703792ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.764583ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.039834ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.585917ms)
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (6.675708ms)
+(node:31586) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (7.759125ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.029291ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (0.7775ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.860583ms)
+✔ editor reconciliation failure also keeps the fallback full read (1.644042ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (0.77425ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (0.631375ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (6.173667ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.033ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (11.143291ms)
+✔ local minute records use the planned timezone across a date boundary (34.290542ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.181083ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.210542ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.220542ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.17825ms)
+✔ day views order known times and leave date-only time unknown (54.165416ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.576542ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.396417ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.106292ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.239709ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 240.067167

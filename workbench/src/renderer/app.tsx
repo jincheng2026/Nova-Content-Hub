@@ -299,6 +299,11 @@ function App() {
         }
     }
 
+    function retainDraftAsNew() {
+        setBase(null);
+        setDisk(null);
+    }
+
     async function save(): Promise<boolean> {
         if (!draft || disk) return false;
         const submitted = {...draft};
@@ -318,12 +323,13 @@ function App() {
                 setDisk(item);
                 setBase(item);
             }
-            setContents(await invoke('listContents', {view}));
             savedContent.current = item;
+            try { setContents(await invoke('listContents', {view})); }
+            catch (failure) { setError(`内容已保存，列表刷新未完成，请点击刷新重试。${errorInfo(failure).message}`); }
             setCoverRefresh(n => n + 1);
-            return unchangedDraft && item.title === submitted.title && item.body === submitted.body;
+            return draftRef.current?.title === submitted.title && draftRef.current?.body === submitted.body && item.title === submitted.title && item.body === submitted.body;
         });
-        return result === true;
+        return result === true && draftRef.current?.title === submitted.title && draftRef.current?.body === submitted.body;
     }
 
     useEffect(() => {
@@ -671,16 +677,13 @@ function App() {
                                              disabled={busy || !dirty || blocked || !!disk || !!base?.deletedAt}
                                              onClick={() => void save()}>保存内容</Button><Button id="save-as-content"
                                                                                                   disabled={busy || blocked}
-                                                                                                  onClick={() => {
-                                                                                                      setBase(null);
-                                                                                                      setDisk(null);
-                                                                                                  }}>将当前草稿另存内容</Button><Button id="open-content-prompts" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void openContentPrompts()}>用提示词继续创作</Button>
+                                                                                                  onClick={retainDraftAsNew}>将当前草稿另存内容</Button><Button id="open-content-prompts" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void openContentPrompts()}>用提示词继续创作</Button>
             </div>
             {disk && <section id="conflict" role="alert"><h3>磁盘版本与本地草稿</h3><p>磁盘标题：{disk.title}</p>
                 <pre id="disk-body">{disk.body}</pre>
                 <p>本地草稿：{draft.title}</p>
                 <pre id="local-body">{draft.body}</pre>
-                <Button id="keep-draft" onClick={() => setDisk(disk)}>保留当前草稿</Button><Button id="discard-draft"
+                <Button id="keep-draft" disabled={busy || !!blocked} onClick={retainDraftAsNew}>保留草稿并准备另存（需保存）</Button><Button id="discard-draft"
                                                                                                    disabled={!!status?.pending}
                                                                                                    onClick={() => load(disk)}>明确放弃草稿并载入磁盘</Button>
             </section>}</Card>}

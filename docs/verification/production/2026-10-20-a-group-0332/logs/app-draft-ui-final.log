@@ -1,0 +1,2 @@
+PASS ["A7 actual App.navigate, real registered beforeunload and nova-save-close listeners block collapsed learning notes; explicit discard allows navigation","A5 actual App native save-close event: confirmed commit + list failure returns true, refresh retry no duplicate create, editing during finally read returns false with draft, retry updates original token","A6 actual conflict UI prepares a new document, user saves explicitly, original external token/body untouched"]
+Evidence: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-app-draft-3GmQ9T
