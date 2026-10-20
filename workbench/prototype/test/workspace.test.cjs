@@ -638,7 +638,7 @@ test('a legacy task can carry its project summary into a new assistant without i
     assert.equal(next.handoff.request, null);
     assert.equal(next.sourceTaskId, old.id);
     assert.equal(next.handoff.context.project.id, old.pid);
-    assert.match(next.handoff.context.project.summary, /浏览器附件/);
+    assert.match(next.handoff.context.project.summary, /附件与图片另附/);
     assert.equal(next.conv, '');
 });
 test('context-only transfer preserves all original context and source without borrowing another project', () => {

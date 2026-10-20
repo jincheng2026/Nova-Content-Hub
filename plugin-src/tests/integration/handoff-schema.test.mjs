@@ -132,6 +132,10 @@ test('host URLs encode content, require explicit resume targets and fall back to
         const u = new URL(output.url);
         assert.equal(u.protocol, host + ':');
         assert.ok(u.searchParams.get('prompt').includes('标题包含 & ? # 中文'));
+        const prompt = u.searchParams.get('prompt');
+        assert.deepEqual(JSON.parse(prompt.slice(prompt.indexOf('\n\n') + 2)), e);
+        assert.match(prompt.split('\n')[0], /标题包含 & \? # 中文.*确认下一步/);
+        assert.doesNotMatch(prompt, /风格样张|本人照片/);
         assert.equal(u.searchParams.get('cwd'), null);
         assert.equal(u.searchParams.get('path'), null);
         assert.equal(made.task.state, 'handoff');

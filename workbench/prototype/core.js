@@ -836,7 +836,7 @@
                     project: p ? {
                         id: p.id,
                         name: p.name,
-                        summary: options.summary || `内容：${p.name}；渠道：${p.channels.join('、') || '未指定'}；附件 ${p.files.length} 个；物料 ${p.materials.length} 个${p.materials.length > 16 ? '（本次仅列前16个物料引用）' : ''}。浏览器附件与图片须另行导出。`
+                        summary: options.summary || `渠道：${p.channels.join('、') || '未指定'}；附件 ${p.files.length} 个；物料 ${p.materials.length} 个${p.materials.length > 16 ? '（仅列前16个物料引用）' : ''}。附件与图片另附。`
                     } : options.summary ? {
                         id: 'workspace-context',
                         name: '工作区交接',
