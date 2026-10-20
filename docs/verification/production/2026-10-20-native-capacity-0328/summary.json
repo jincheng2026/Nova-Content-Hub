@@ -1,0 +1,678 @@
+{
+  "passed": true,
+  "targetReached": true,
+  "scope": "Actual candidate 0.3.28 modules, repository Electron hidden app.isPackaged=false, evolving fresh real-disk synthetic library. Process-cold means first native library read in a new process; OS caches not flushed. No production SLA claim.",
+  "preparationBlocks": [
+    {
+      "receipt": "manifest.json",
+      "measuredMs": 180942.66312500002,
+      "requestedBudgetMs": 180000,
+      "overshootMs": 942.663125000021,
+      "note": "Budget checked between complete public-API object groups; final operation/inventory completion adds 942.7ms beyond the first soft guard; no transaction interrupted"
+    },
+    {
+      "receipt": "block-2/manifest.json",
+      "measuredMs": 129757.4565,
+      "requestedBudgetMs": 180000,
+      "note": "Separate explicitly authorized block after installation I/O ended"
+    }
+  ],
+  "ioOverlapReview": {
+    "firstMeasurementsFinishedAt": "2026-10-20T05:29:33.149Z",
+    "parentInstallLogCreatedAt": "2026-10-20T05:29:11.655Z",
+    "parentInstallReceiptRecordedAt": "2026-10-20T05:29:28.409Z",
+    "firstBlock535MayOverlapInstallIo": true,
+    "firstBlock535UseForPureLatencyComparison": false,
+    "correction": "Parent approximate 05:31 notice was incorrect; filesystem log creation and installation receipt show the last 535 stage may overlap actual installation. Preserve its correctness results, exclude its latency as an uncontended baseline.",
+    "secondBlockExplicitlyReleasedByParent": true,
+    "secondBlockMeasurementsBeforeRootCopy": true,
+    "actualPauseMs": 0,
+    "rootReadOnlyCopyInterval": [
+      "2026-10-20T05:36:56.842Z",
+      "2026-10-20T05:36:59.117Z"
+    ],
+    "thumbnailIoContended": true,
+    "thumbnailNotIncludedInLatencySamples": true,
+    "thumbnailContendedReason": "Parent reported additional standard backup/verify/restore diagnostic scan in 05:38 UTC; separate hidden-paint observation only"
+  },
+  "candidateTreeEntries": 1817,
+  "candidateTreeSha256": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "candidateTreeUnchangedInBothBlocks": true,
+  "stages": [
+    {
+      "receipt": "native-100.json",
+      "target": 100,
+      "actualContents": 100,
+      "collections": 5,
+      "plans": 200,
+      "candidates": 100,
+      "selectedContents": 100,
+      "candidateUniqueAssetHashes": [
+        "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+      ],
+      "assets": 195,
+      "assetBytes": 96199827,
+      "diskFiles": 2702,
+      "diskBytes": 103126661,
+      "bodyBytes": 268288,
+      "longBodies": 1,
+      "preparationMs": 68011.474667,
+      "processColdReadMs": 1068.7999999523163,
+      "warmReadMs": [
+        914.2999999523163,
+        967.8999998569489
+      ],
+      "warmMedianMs": 941.0999999046326,
+      "warmRangeMs": [
+        914.2999999523163,
+        967.8999998569489
+      ],
+      "threeReadMedianMs": 967.8999998569489,
+      "threeReadRangeMs": [
+        914.2999999523163,
+        1068.7999999523163
+      ],
+      "dtoBytes": 613977,
+      "warmOpenMs": null,
+      "listIpcMs": 148.39999985694885,
+      "rendererFilterMs": 0.5,
+      "listAndFilterMs": 148.89999985694885,
+      "readLastMs": 103.59999990463257,
+      "readLastBodyBytes": 65536,
+      "saveBodyBytesBefore": 2048,
+      "saveMs": 486.19999980926514,
+      "readBackMs": 132.09999990463257,
+      "saveDifference": {
+        "changed": [
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/内容.json",
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/正文.md"
+        ],
+        "added": [
+          "系统（别动）/事务/已提交/dc52333e-a5ec-4c17-b288-9e2dd8289e2a/.COMMITTED-73d8c2a0-9e55-4689-a1ea-e70e524f469d",
+          "系统（别动）/事务/已提交/dc52333e-a5ec-4c17-b288-9e2dd8289e2a/COMMITTED",
+          "系统（别动）/事务/已提交/dc52333e-a5ec-4c17-b288-9e2dd8289e2a/captured-0",
+          "系统（别动）/事务/已提交/dc52333e-a5ec-4c17-b288-9e2dd8289e2a/captured-1",
+          "系统（别动）/事务/已提交/dc52333e-a5ec-4c17-b288-9e2dd8289e2a/intent.json"
+        ],
+        "deleted": [],
+        "unchangedExistingFiles": 2700,
+        "allOtherBusinessBytesUnchanged": true,
+        "bindingBytesUnchanged": true,
+        "bodyChangedAndReadBack": true
+      },
+      "ui": [
+        {
+          "action": "open-content-page",
+          "ms": 2501.2878330000003,
+          "dom": {
+            "rows": 20,
+            "nodes": 840
+          }
+        },
+        {
+          "action": "page-size",
+          "size": 20,
+          "ms": 0.2738329999992857,
+          "dom": {
+            "rows": 20,
+            "nodes": 840
+          }
+        },
+        {
+          "action": "next-page",
+          "size": 20,
+          "ms": 35.37541599999895,
+          "dom": {
+            "rows": 20,
+            "nodes": 840
+          }
+        }
+      ],
+      "uiFailure": {
+        "message": "Error: UI timeout: [...document.querySelectorAll('[role=option]')].some(x=>x.textContent.trim().startsWith(\"50\"))",
+        "stack": "Error: UI timeout: [...document.querySelectorAll('[role=option]')].some(x=>x.textContent.trim().startsWith(\"50\"))"
+      },
+      "uiSkipped": null,
+      "consoleErrors": [],
+      "desktopReadyMsFromEntry": null
+    },
+    {
+      "receipt": "native-300.json",
+      "target": 300,
+      "actualContents": 300,
+      "collections": 15,
+      "plans": 600,
+      "candidates": 100,
+      "selectedContents": 100,
+      "candidateUniqueAssetHashes": [
+        "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+      ],
+      "assets": 195,
+      "assetBytes": 96199827,
+      "diskFiles": 5397,
+      "diskBytes": 109813306,
+      "bodyBytes": 804889,
+      "longBodies": 3,
+      "preparationMs": 54131.653000000006,
+      "processColdReadMs": 1426.5,
+      "warmReadMs": [
+        920.6000001430511,
+        974
+      ],
+      "warmMedianMs": 947.3000000715256,
+      "warmRangeMs": [
+        920.6000001430511,
+        974
+      ],
+      "threeReadMedianMs": 974,
+      "threeReadRangeMs": [
+        920.6000001430511,
+        1426.5
+      ],
+      "dtoBytes": 1366495,
+      "warmOpenMs": 1711.0999999046326,
+      "listIpcMs": 257.09999990463257,
+      "rendererFilterMs": 2.799999952316284,
+      "listAndFilterMs": 259.89999985694885,
+      "readLastMs": 158.19999980926514,
+      "readLastBodyBytes": 65536,
+      "saveBodyBytesBefore": 2073,
+      "saveMs": 555,
+      "readBackMs": 140.20000004768372,
+      "saveDifference": {
+        "changed": [
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/内容.json",
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/正文.md"
+        ],
+        "added": [
+          "系统（别动）/事务/已提交/64202cfe-eec8-447d-a73b-36588d7361ed/.COMMITTED-e51a7234-4dfe-40d9-b379-e159dea2cca5",
+          "系统（别动）/事务/已提交/64202cfe-eec8-447d-a73b-36588d7361ed/COMMITTED",
+          "系统（别动）/事务/已提交/64202cfe-eec8-447d-a73b-36588d7361ed/captured-0",
+          "系统（别动）/事务/已提交/64202cfe-eec8-447d-a73b-36588d7361ed/captured-1",
+          "系统（别动）/事务/已提交/64202cfe-eec8-447d-a73b-36588d7361ed/intent.json"
+        ],
+        "deleted": [],
+        "unchangedExistingFiles": 5395,
+        "allOtherBusinessBytesUnchanged": true,
+        "bindingBytesUnchanged": true,
+        "bodyChangedAndReadBack": true
+      },
+      "ui": [
+        {
+          "action": "open-content-page",
+          "ms": 3160.8298749999994,
+          "dom": {
+            "rows": 20,
+            "nodes": 942
+          }
+        },
+        {
+          "action": "page-size",
+          "size": 20,
+          "ms": 17.646167000000787,
+          "dom": {
+            "rows": 20,
+            "nodes": 942
+          }
+        },
+        {
+          "action": "next-page",
+          "size": 20,
+          "ms": 38.11774999999943,
+          "dom": {
+            "rows": 20,
+            "nodes": 942
+          }
+        }
+      ],
+      "uiFailure": {
+        "message": "Error: UI timeout: [...document.querySelectorAll('[role=option]')].some(x=>x.textContent.trim().startsWith(\"50\"))",
+        "stack": "Error: UI timeout: [...document.querySelectorAll('[role=option]')].some(x=>x.textContent.trim().startsWith(\"50\"))"
+      },
+      "uiSkipped": null,
+      "consoleErrors": [],
+      "desktopReadyMsFromEntry": 1036.216375
+    },
+    {
+      "receipt": "native-1000.json",
+      "target": 1000,
+      "actualContents": 535,
+      "collections": 15,
+      "plans": 1070,
+      "candidates": 100,
+      "selectedContents": 100,
+      "candidateUniqueAssetHashes": [
+        "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+      ],
+      "assets": 195,
+      "assetBytes": 96199827,
+      "diskFiles": 8457,
+      "diskBytes": 117410598,
+      "bodyBytes": 1413170,
+      "longBodies": 5,
+      "preparationMs": 58799.535458000006,
+      "processColdReadMs": 1527.4000000953674,
+      "warmReadMs": [
+        1763.9000000953674,
+        1180.8000001907349
+      ],
+      "warmMedianMs": 1472.3500001430511,
+      "warmRangeMs": [
+        1180.8000001907349,
+        1763.9000000953674
+      ],
+      "threeReadMedianMs": 1527.4000000953674,
+      "threeReadRangeMs": [
+        1180.8000001907349,
+        1763.9000000953674
+      ],
+      "dtoBytes": 2214007,
+      "warmOpenMs": 1755.4000000953674,
+      "listIpcMs": 407,
+      "rendererFilterMs": 7.5,
+      "listAndFilterMs": 414.5,
+      "readLastMs": 216.29999995231628,
+      "readLastBodyBytes": 2048,
+      "saveBodyBytesBefore": 2098,
+      "saveMs": 877.7999999523163,
+      "readBackMs": 284.09999990463257,
+      "saveDifference": {
+        "changed": [
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/内容.json",
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/正文.md"
+        ],
+        "added": [
+          "系统（别动）/事务/已提交/bba5ca72-aaff-4a43-a1a4-b26cf2d2154e/.COMMITTED-511630a4-a7f0-4243-92e1-fcfd80cba718",
+          "系统（别动）/事务/已提交/bba5ca72-aaff-4a43-a1a4-b26cf2d2154e/COMMITTED",
+          "系统（别动）/事务/已提交/bba5ca72-aaff-4a43-a1a4-b26cf2d2154e/captured-0",
+          "系统（别动）/事务/已提交/bba5ca72-aaff-4a43-a1a4-b26cf2d2154e/captured-1",
+          "系统（别动）/事务/已提交/bba5ca72-aaff-4a43-a1a4-b26cf2d2154e/intent.json"
+        ],
+        "deleted": [],
+        "unchangedExistingFiles": 8455,
+        "allOtherBusinessBytesUnchanged": true,
+        "bindingBytesUnchanged": true,
+        "bodyChangedAndReadBack": true
+      },
+      "ui": [],
+      "uiFailure": null,
+      "uiSkipped": "Two previous UI probe failures; core native measurements retained without a third selector attempt",
+      "consoleErrors": [],
+      "desktopReadyMsFromEntry": 969.6645839999999
+    },
+    {
+      "receipt": "block-2/native-1000.json",
+      "target": 1000,
+      "actualContents": 1000,
+      "collections": 50,
+      "plans": 2000,
+      "candidates": 100,
+      "selectedContents": 100,
+      "candidateUniqueAssetHashes": [
+        "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+      ],
+      "assets": 195,
+      "assetBytes": 96199827,
+      "diskFiles": 14822,
+      "diskBytes": 133192204,
+      "bodyBytes": 2682956,
+      "longBodies": 10,
+      "preparationMs": 129757.4565,
+      "processColdReadMs": 1984,
+      "warmReadMs": [
+        2330.7000000476837,
+        1545.7999999523163
+      ],
+      "warmMedianMs": 1938.25,
+      "warmRangeMs": [
+        1545.7999999523163,
+        2330.7000000476837
+      ],
+      "threeReadMedianMs": 1984,
+      "threeReadRangeMs": [
+        1545.7999999523163,
+        2330.7000000476837
+      ],
+      "dtoBytes": 4000286,
+      "warmOpenMs": 2274.5,
+      "listIpcMs": 707.5999999046326,
+      "rendererFilterMs": 1.9000000953674316,
+      "listAndFilterMs": 709.5,
+      "readLastMs": 388,
+      "readLastBodyBytes": 65536,
+      "saveBodyBytesBefore": 2124,
+      "saveMs": 1415.2000000476837,
+      "readBackMs": 454.59999990463257,
+      "saveDifference": {
+        "changed": [
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/内容.json",
+          "内容/aaebbc3a-6695-418a-b637-01dadbef9209/正文.md"
+        ],
+        "added": [
+          "系统（别动）/事务/已提交/44db27b7-f3e9-4380-9b60-4a310e10eff9/.COMMITTED-b35fcc38-bbba-4150-835c-fab1718390de",
+          "系统（别动）/事务/已提交/44db27b7-f3e9-4380-9b60-4a310e10eff9/COMMITTED",
+          "系统（别动）/事务/已提交/44db27b7-f3e9-4380-9b60-4a310e10eff9/captured-0",
+          "系统（别动）/事务/已提交/44db27b7-f3e9-4380-9b60-4a310e10eff9/captured-1",
+          "系统（别动）/事务/已提交/44db27b7-f3e9-4380-9b60-4a310e10eff9/intent.json"
+        ],
+        "deleted": [],
+        "unchangedExistingFiles": 14820,
+        "allOtherBusinessBytesUnchanged": true,
+        "bindingBytesUnchanged": true,
+        "bodyChangedAndReadBack": true
+      },
+      "ui": [
+        {
+          "action": "open-content-page",
+          "ms": 5736.450541999999,
+          "dom": {
+            "rows": 20,
+            "nodes": 995,
+            "images": 1,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "page-size",
+          "size": 20,
+          "ms": 258.5868750000009,
+          "dom": {
+            "rows": 20,
+            "nodes": 995,
+            "images": 1,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "next-page",
+          "size": 20,
+          "ms": 35.05045799999789,
+          "dom": {
+            "rows": 20,
+            "nodes": 995,
+            "images": 0,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "page-size",
+          "size": 50,
+          "ms": 55.27404100000058,
+          "dom": {
+            "rows": 50,
+            "nodes": 1895,
+            "images": 1,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "next-page",
+          "size": 50,
+          "ms": 71.29358299999876,
+          "dom": {
+            "rows": 50,
+            "nodes": 1895,
+            "images": 0,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "page-size",
+          "size": 100,
+          "ms": 97.1810000000005,
+          "dom": {
+            "rows": 100,
+            "nodes": 3395,
+            "images": 1,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "next-page",
+          "size": 100,
+          "ms": 132.3157910000009,
+          "dom": {
+            "rows": 100,
+            "nodes": 3395,
+            "images": 0,
+            "decodedImages": 0
+          }
+        },
+        {
+          "action": "search-tail-record",
+          "query": "CAPACITY-000002",
+          "ms": 55.37749999999869,
+          "dom": {
+            "rows": 1,
+            "nodes": 183,
+            "images": 1,
+            "decodedImages": 0
+          }
+        }
+      ],
+      "uiFailure": null,
+      "uiSkipped": null,
+      "consoleErrors": [],
+      "desktopReadyMsFromEntry": 524.7240419999999
+    }
+  ],
+  "asset": {
+    "sha256": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+    "bytes": 1813384,
+    "uniqueCandidateImages": 1,
+    "references": 100,
+    "alreadyPresentSeedAsset": true
+  },
+  "thumbnail": {
+    "scope": "Separate bounded read-only hidden-renderer image observation after benchmark; capturePage requests paint without showing a user window or changing lazy-loading attributes. Not latency benchmark or diverse-image load proof.",
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla",
+    "appIsPackaged": false,
+    "startedAt": "2026-10-20T05:39:14.883Z",
+    "calls": [
+      "nova:status",
+      "nova:readPreferences",
+      "nova:listContents",
+      "nova:listContents",
+      "nova:readWorkspace",
+      "nova:listCoverAssets",
+      "nova:readWorkspaceLibrary",
+      "nova:status",
+      "nova:readWorkspace",
+      "nova:listCoverAssets",
+      "nova:readWorkspaceLibrary"
+    ],
+    "errors": [],
+    "phase": "paint",
+    "beforePaint": [
+      {
+        "src": "nova-content://assets/c9af9bbf-75af-4f49-8070-17d26e708bb9/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+        "loading": "lazy",
+        "complete": false,
+        "naturalWidth": 0,
+        "naturalHeight": 0,
+        "rect": {
+          "x": 252,
+          "y": 302.59375,
+          "width": 47,
+          "height": 54
+        }
+      }
+    ],
+    "paintSha256": "1f770cfef448fd157519e20f250655b784f22a824018ec07fb1ff0cc95aeb495",
+    "decodeObservation": {
+      "decoded": false,
+      "limit": "5s after capturePage; no forcing eager loading or showing window"
+    },
+    "afterPaint": [
+      {
+        "src": "nova-content://assets/c9af9bbf-75af-4f49-8070-17d26e708bb9/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+        "loading": "lazy",
+        "complete": false,
+        "naturalWidth": 1086,
+        "naturalHeight": 1448,
+        "rect": {
+          "x": 252,
+          "y": 302.59375,
+          "width": 47,
+          "height": 62.6640625
+        }
+      }
+    ],
+    "renderedImages": 1,
+    "finishedAt": "2026-10-20T05:39:27.931Z",
+    "completed": true
+  },
+  "rendererAllRequestedChecksPassed": true,
+  "limits": [
+    "No real user library/app/TCC/cache/host changes, no image generation or imported large image set",
+    "100 manual candidate references reuse one existing true seed PNG; no claim of 100 distinct images or all 1000 contents carrying images",
+    "Full projection IPC followed by renderer-side substring filtering; no server-side query/index API introduced",
+    "One save per stage; only that content and new transaction files may differ; other existing business bytes and binding must match"
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 8150,
+      "sha256": "d176e021badc58f999a721981f13263d8714b7a3542cc608c45b26e2dc35e670"
+    },
+    "attempt-100-ui/executed-native-300.mjs": {
+      "bytes": 10065,
+      "sha256": "23e21b091cf759ac24484130643dabe2586117c18c94587ad35b20699d070124"
+    },
+    "attempt-100-ui/executed-native.mjs": {
+      "bytes": 9894,
+      "sha256": "9f8fc42ad8ba332a55d50671889761b18c8d0f89a07de198a5ca7e4cc188baed"
+    },
+    "attempt-100-ui/original-receipt.json": {
+      "bytes": 80186,
+      "sha256": "1f2c2149d04fc3ec7c74542c2ae68bdf0558eb8a6578192637ef44112efc4416"
+    },
+    "block-2/manifest.json": {
+      "bytes": 2266,
+      "sha256": "d42dcd02da612943a08c4efabf3e8b1668d19e2cd3abd3798dc0fcbc8aba3595"
+    },
+    "block-2/native-1000.json": {
+      "bytes": 81121,
+      "sha256": "1bcc327dc4805a072dbc75d6c88eafc018803807142a6cb4e4d8346c7cf47215"
+    },
+    "block-2/native.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "block-2/prepare-1000.json": {
+      "bytes": 1139,
+      "sha256": "f67849641823b6f846920e5ba23e9967b8973ca01ce66f8eb0538fc578925c69"
+    },
+    "block-2/prepare.log": {
+      "bytes": 963,
+      "sha256": "fc8a01c6e85a56c903e7d90ca5852cf2fe0e02a6eb5d89f8081a6b7b0153ad56"
+    },
+    "candidate-tree-before.json": {
+      "bytes": 369120,
+      "sha256": "0fdfc4b64730cc496f67466a3c808eb0c2d6aebe1f1f792a2eb946bb66b68dc4"
+    },
+    "continue.log": {
+      "bytes": 1913,
+      "sha256": "488e9b46f929fb2fb8086329e73bfea8a79aaa4e2239f2185a3b2e8485d9221f"
+    },
+    "continue.mjs": {
+      "bytes": 3055,
+      "sha256": "c2716d09d062d7fe4557259bf83ff3cb2f3fa4963edcc233edad0b3668612222"
+    },
+    "manifest.json": {
+      "bytes": 2939,
+      "sha256": "eb92704c766e2254fe06f332d721118d18c31b0a26e02dc5846e5cd7e978f559"
+    },
+    "native-100.json": {
+      "bytes": 80186,
+      "sha256": "1f2c2149d04fc3ec7c74542c2ae68bdf0558eb8a6578192637ef44112efc4416"
+    },
+    "native-100.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-1000.json": {
+      "bytes": 15118,
+      "sha256": "7dcd71230bb0bd4f364e51ca16bb83bad3d3b68ade8bc1af50dd15671692a8ef"
+    },
+    "native-1000.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-300.json": {
+      "bytes": 80562,
+      "sha256": "df88efc7bda1992e80ddee518e37992ea1382eafc68d83943be3ca685a51e011"
+    },
+    "native-300.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native.mjs": {
+      "bytes": 11800,
+      "sha256": "cd18c0dc291d499b55076388345d8ed203e04ef4cd0411341214ddbed6592686"
+    },
+    "prepare-100.json": {
+      "bytes": 1132,
+      "sha256": "114a6b3b790c968086e0c25d3fe3f2de0eb447e2813261155d77225a5e3ed043"
+    },
+    "prepare-100.log": {
+      "bytes": 956,
+      "sha256": "27b11768fd65597a5d39068f7c90605691d20714136dfdfaa9e8e3a2a9130fa8"
+    },
+    "prepare-1000.json": {
+      "bytes": 1153,
+      "sha256": "56f01388f86ba53bb6652671f92731ef8fa9342ee84ca4b1aef21863193636e4"
+    },
+    "prepare-1000.log": {
+      "bytes": 977,
+      "sha256": "88f18a80b77cb11405dd0985f1cf12d899d15593dd9be35481d3a40662671d90"
+    },
+    "prepare-300.json": {
+      "bytes": 1147,
+      "sha256": "9bf5df6239a30adc4b2e4849e734ffa42f48ae643ce47288ce87bab8ed052699"
+    },
+    "prepare-300.log": {
+      "bytes": 971,
+      "sha256": "c93b3d21be08389458f6f0b9aa4afdb7bf739a01d456b833772b538f17dffd32"
+    },
+    "prepare.mjs": {
+      "bytes": 4477,
+      "sha256": "9a28ffad223c17ff598bfa19c3f9c080195113c95d96be52dfb83aeae04e59e0"
+    },
+    "report.mjs": {
+      "bytes": 6978,
+      "sha256": "bbeb3c0a4a6c877ec19928e51231fc60e6316338c8f1234082159eb4e3768941"
+    },
+    "run.log": {
+      "bytes": 2424,
+      "sha256": "6fd5700c5120ed1c0ae1415ef335ddd15cf0a52fef55bdf6641254ef4411c42b"
+    },
+    "run.mjs": {
+      "bytes": 4684,
+      "sha256": "688b3c9d7d67ccc8735375f3507ab41475c59a26a91343f2b1ef1933b59dad83"
+    },
+    "thumbnail-attempt-1/executed.mjs": {
+      "bytes": 4003,
+      "sha256": "c14afdae5482750b1c725451eae1550fe1613ff85242cddd4fa07d925979a6a9"
+    },
+    "thumbnail-attempt-1/receipt.json": {
+      "bytes": 957,
+      "sha256": "c34011c2d056fea0693f36d1d984efe4b17d8df0a35e3c7e9c6c7efc0e4dd070"
+    },
+    "thumbnail-hidden-paint.png": {
+      "bytes": 267085,
+      "sha256": "1f770cfef448fd157519e20f250655b784f22a824018ec07fb1ff0cc95aeb495"
+    },
+    "thumbnail.json": {
+      "bytes": 1836,
+      "sha256": "8ad7baa4cf126d707c3b82508bac98bf2d74d5651c0017009ea45c55bf7354af"
+    },
+    "thumbnail.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "thumbnail.mjs": {
+      "bytes": 4258,
+      "sha256": "85ba6aa4624b08f75eab4ba9aad950ba10c80b24d9f1f250e371d446dfadc180"
+    }
+  }
+}

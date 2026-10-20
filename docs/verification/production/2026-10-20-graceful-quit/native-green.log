@@ -1,0 +1,2 @@
+PASS actual desktop quit at release empty-lock window: accepted foreground/background drained, late image rejected, two idle workers stopped, no lock remains
+PASS actual desktop quit at initialize empty-lock window: accepted foreground/background drained, late image rejected, two idle workers stopped, no lock remains

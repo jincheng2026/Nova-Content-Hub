@@ -1,0 +1,40 @@
+{
+  "target": 100,
+  "actualContents": 100,
+  "actualCollections": 5,
+  "plans": 200,
+  "templates": 20,
+  "prompts": 52,
+  "shortBodyBytes": 2048,
+  "longBodyBytes": 65536,
+  "longBodyCount": 1,
+  "bodyBytes": 268288,
+  "preparationMs": 68011.474667,
+  "budgetMs": 180000,
+  "budgetReached": false,
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla/library",
+    "libraryId": "af23f4d1-bf4b-4377-9f4f-7b8465648a5f",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "73756203"
+    }
+  },
+  "saveId": "aaebbc3a-6695-418a-b637-01dadbef9209",
+  "candidates": 100,
+  "selectedContents": 100,
+  "candidateUniqueAssetHashes": [
+    "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+  ],
+  "candidateReferencesReuseExistingSeedAsset": true,
+  "referenceAssetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+  "lastId": "cbc7d23a-15e8-4e53-83f6-99251a5fcdc2",
+  "lastTitle": "CAPACITY-000100",
+  "disk": {
+    "files": 2702,
+    "bytes": 103126661,
+    "assets": 195,
+    "assetBytes": 96199827,
+    "directories": 949
+  }
+}

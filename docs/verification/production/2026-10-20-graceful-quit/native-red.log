@@ -1,0 +1,19 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: worker releases its exact lock before exit
+
+true !== false
+
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/graceful-quit-probe.mjs:129:20
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: true,
+  expected: false,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

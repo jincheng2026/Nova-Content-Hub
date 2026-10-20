@@ -1,0 +1,36 @@
+✔ desktop operations finish in FIFO order without overlap (0.894959ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.3985ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.334417ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.245292ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.150708ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.547292ms)
+✖ close rejects new work immediately and drains active and both accepted queues, including failures (0.643792ms)
+✖ closing an idle queue resolves and never reopens it (0.1455ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 122.016
+
+✖ failing tests:
+
+test at workbench/test/operation-queue.test.mjs:90:1
+✖ close rejects new work immediately and drains active and both accepted queues, including failures (0.643792ms)
+  TypeError: run.close is not a function
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/operation-queue.test.mjs:99:25)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at workbench/test/operation-queue.test.mjs:113:1
+✖ closing an idle queue resolves and never reopens it (0.1455ms)
+  TypeError: run.close is not a function
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/operation-queue.test.mjs:115:15)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

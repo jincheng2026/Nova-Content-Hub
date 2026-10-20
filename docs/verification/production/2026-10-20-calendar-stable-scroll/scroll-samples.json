@@ -1,0 +1,290 @@
+[
+  {
+    "label": "small calendar cross-month empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "switch month to week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "small calendar cross-week empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "switch week to month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "small calendar day with plans",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar day with plans",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar repeated day",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar empty cell",
+    "before": {
+      "x": 0,
+      "y": 150.5
+    },
+    "after": {
+      "x": 0,
+      "y": 150.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar restores day with plans",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "next main month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "previous main month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar return after month navigation",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "next main week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "previous main week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "week header day with plans",
+    "before": {
+      "x": 0,
+      "y": 18.5
+    },
+    "after": {
+      "x": 0,
+      "y": 18.5
+    },
+    "calls": []
+  },
+  {
+    "label": "week header empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "week header restores plan day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "refresh plans while empty day selected",
+    "before": {
+      "x": 0,
+      "y": 80
+    },
+    "after": {
+      "x": 0,
+      "y": 80
+    },
+    "calls": []
+  },
+  {
+    "label": "select planned day after refresh",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "refresh selected day plans",
+    "before": {
+      "x": 0,
+      "y": 80
+    },
+    "after": {
+      "x": 0,
+      "y": 80
+    },
+    "calls": []
+  },
+  {
+    "label": "reselect planned day resets pagination in place",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "leave previously focused day",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "return to previously focused day",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "refresh does not restore old focused page",
+    "before": {
+      "x": 0,
+      "y": 80
+    },
+    "after": {
+      "x": 0,
+      "y": 80
+    },
+    "calls": []
+  }
+]

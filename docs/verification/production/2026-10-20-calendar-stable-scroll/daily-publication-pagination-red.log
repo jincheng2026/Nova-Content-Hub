@@ -1,0 +1,230 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2062 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-daily-publication-UHsOec/dist/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-daily-publication-UHsOec/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-daily-publication-UHsOec/dist/assets/index-Cqgecjn2.css                        444.33 kB │ gzip:  58.61 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-daily-publication-UHsOec/dist/assets/index-DlgSH-Sl.js                       1,075.04 kB │ gzip: 294.65 kB
+
+✓ built in 494ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Browser script: new Promise((resolve,reject)=>{const end=Date.now()+10000;const check=()=>{if(document.querySelector(".schedule-day-plans .schedule-plan").dataset.planId==="bulk-00000")return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+"document.querySelector(\".schedule-day-plans .schedule-plan\").dataset.planId===\"bulk-00000\""+' / '+document.body.innerText.slice(-1000)));setTimeout(check,20)};check()})
+[Error: State timeout: document.querySelector(".schedule-day-plans .schedule-plan").dataset.planId==="bulk-00000" / 布完成后记录实际结果。明确时刻按本机时区显示；本地时间保留原时区。
+
+今天
+‹
+›
+按月
+按周
+＋ 新增计划
+测试渠道
+查看日期
+周一
+周二
+周三
+周四
+周五
+周六
+周日
+28
+29
+30
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+查看全部 10001 条安排 →
+26
+27
+28
+29
+30
+31
+1
+2026-10-19 10001 条安排
+为这一天新增计划 →
+筛选发布渠道
+全部渠道
+筛选发布状态
+未取消（待发布＋已记录）
+时间待定
+测试渠道
+计划标题 9980
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9981
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9982
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9983
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9984
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9985
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9986
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9987
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9988
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9989
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9990
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9991
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9992
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9993
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9994
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9995
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9996
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9997
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9998
+待发布
+记录已发布
+
+
+时间待定
+测试渠道
+计划标题 9999
+待发布
+记录已发布
+共 10001 项 · 9981–10000 项
+上一页
+1
+...
+497
+498
+499
+500
+501
+下一页
+每页条数：20
+跳至
+页
+
+还有未保存的发布填写，请先返回编辑窗口保存或明确关闭。]
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-daily-publication-UHsOec

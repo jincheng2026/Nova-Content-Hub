@@ -1,0 +1,21 @@
+{
+  "started": "2026-10-20T05:36:56.842Z",
+  "finished": "2026-10-20T05:36:59.117Z",
+  "recoveryDirectory": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f",
+  "copy": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/原始内容库完整副本",
+  "entries": 1718,
+  "sha256": "665663b5778188ca982c5d8faaf72c3c16d33a0d6e9216d796512212fe54d385",
+  "sourceUnchanged": true,
+  "independentCopyExact": true,
+  "emptyLockIncluded": true,
+  "sourceLock": {
+    "dev": 16777231,
+    "ino": 73790094,
+    "mode": 16832,
+    "size": 64,
+    "birthtime": "2026-10-20T05:28:53.670Z",
+    "mtime": "2026-10-20T05:28:53.670Z",
+    "ctime": "2026-10-20T05:28:53.670Z"
+  },
+  "scope": "Full independent preservation; source only read, no lock removal or library binding change."
+}

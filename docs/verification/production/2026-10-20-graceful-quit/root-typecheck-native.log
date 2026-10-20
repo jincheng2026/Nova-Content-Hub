@@ -1,0 +1,4 @@
+
+> nova-content-hub-workbench@0.3.28 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+

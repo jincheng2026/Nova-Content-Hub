@@ -1,0 +1,19 @@
+
+> nova-content-hub-workbench@0.3.29 dist:preview
+> node scripts/dist.mjs --channel preview --auth disabled --platform darwin --arch arm64
+
+
+> nova-content-hub-workbench@0.3.29 build
+> node scripts/build.mjs --auth disabled
+
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+Error: Node runtime download exceeded deadline
+    at Timeout._onTimeout (file:///Users/mac/.codex/worktrees/stable-calendar-0329/Nova-Content-Hub/plugin-src/scripts/bundled-node.mjs:54:55)
+    at listOnTimeout (node:internal/timers:685:17)
+    at process.processTimers (node:internal/timers:618:7)
+
+Node.js v24.20.0
+Command failed: /Users/mac/.local/bin/node /Users/mac/.local/lib/node_modules/npm/bin/npm-cli.js run build -- --auth disabled

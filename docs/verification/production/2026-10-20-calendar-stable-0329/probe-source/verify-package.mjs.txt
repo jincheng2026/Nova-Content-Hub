@@ -1,0 +1,48 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {snapshotPackage} from '../../plugin-src/src/lib/package-snapshot.mjs';
+import {validateInstallerMarketplace} from '../../workbench/scripts/dist.mjs';
+import {exportColleagueDelivery} from '../../workbench/scripts/export-colleague-delivery.mjs';
+
+const repo=path.resolve(import.meta.dirname,'../..'), [source,dmg,sourceCommit]=process.argv.slice(2);
+assert.match(sourceCommit,/^[a-f0-9]{40}$/);
+assert.ok(source.endsWith('/mac-arm64/自媒体工作台.app'));
+assert.ok(dmg.endsWith('/Nova-Content-Hub-0.3.29-darwin-arm64-preview.dmg'));
+const out=path.join(repo,'docs/verification/production/2026-10-20-calendar-stable-0329');
+await fs.mkdir(out,{recursive:true});
+const temp=await fs.mkdtemp(path.join(os.tmpdir(),'nova-0328-package-')), mount=path.join(temp,'mount');
+await fs.mkdir(mount);
+const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+const built=await snapshotPackage(source);
+execFileSync('/usr/bin/codesign',['--verify','--deep','--strict',source]);
+const resources=path.join(source,'Contents/Resources');
+const release=JSON.parse(await fs.readFile(path.join(resources,'app/workbench/dist/release.json'),'utf8'));
+assert.equal(release.version,'0.3.29');assert.equal(release.AUTH_MODE,'disabled');assert.equal(release.productionReady,false);
+const market=path.join(resources,'plugin-marketplace');
+const pluginRelease=JSON.parse(await fs.readFile(path.join(market,'nova-content-hub/plugin-src/src/release.json'),'utf8'));
+assert.deepEqual(pluginRelease,{...release,format:'nova-content-plugin-release'});
+await validateInstallerMarketplace(market,pluginRelease);
+const testedIndexSha256='04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1';
+for(const target of [path.join(resources,'app/plugin-src/src/lib/file-library/index.mjs'),path.join(market,'nova-content-hub/plugin-src/src/lib/file-library/index.mjs')])assert.equal(hash(await fs.readFile(target)),testedIndexSha256,'Packaged shared lock implementation matches reviewed native-tested source');
+assert.deepEqual(Object.keys(built).filter(x=>/(?:^|\/)(?:tests?|__tests__)\/|(?:\.test|\.spec)\.|probe\.mjs$/.test(x)),[]);
+let mounted=false;
+try {
+ execFileSync('/usr/bin/hdiutil',['attach',dmg,'-readonly','-nobrowse','-mountpoint',mount,'-plist'],{stdio:'pipe'});mounted=true;
+ assert.deepEqual(await snapshotPackage(path.join(mount,'自媒体工作台.app')),built,'DMG app equals archived build');
+ const demo=path.join(temp,'AI自媒体示例库');await fs.cp(path.join(mount,'AI自媒体示例库'),demo,{recursive:true});
+ const {openLibrary}=await import(path.join(resources,'app/plugin-src/src/lib/file-library/index.mjs'));
+ const lib=openLibrary(demo),contents=lib.listContents();
+ assert.equal(lib.listTemplates().length,20);assert.equal(lib.listPrompts().length,52);assert.equal(contents.length,1);
+ const content=lib.readContent(contents[0].id),provenance=JSON.parse(await fs.readFile(path.join(resources,'app/plugin-src/resources/builtin-examples/provenance.json'),'utf8'));
+ assert.equal(content.isExample,true);assert.equal(content.candidates.length,2);assert.deepEqual(content.candidates.map(x=>x.assetHash),provenance.hashes);assert.equal(content.plans.length,0);assert.equal(content.publications.length,0);
+ const directory='/Users/mac/Downloads/自媒体工作台-0.3.29-同事交付-Mac苹果芯片';
+ await exportColleagueDelivery(dmg,directory);
+ const files=(await fs.readdir(directory)).sort();assert.equal(files.length,3);
+ const sourceDmgSha256=hash(await fs.readFile(dmg));assert.equal(hash(await fs.readFile(path.join(directory,files.find(x=>x.endsWith('.dmg'))))),sourceDmgSha256);
+ const receipt={recordedAt:new Date().toISOString(),version:release.version,sourceCommit,source,dmg,sourceTreeSha256:hash(JSON.stringify(built)),sourceDmgSha256,entries:Object.keys(built).length,dmgTreeEqualsArchived:true,pairedMarketplaceVerified:true,testedIndexSha256,engineeringTestsAndProbesExcluded:true,adHocSignatureVerified:true,developerIdSigned:false,notarized:false,releaseIdentity:release,demo:{templates:20,prompts:52,contents:1,candidates:2,originalHashes:provenance.hashes,plans:0,publications:0},deliveryDirectory:directory,deliveryFiles:files,userBusinessLibraryReadOrWritten:false};
+ await fs.writeFile(path.join(out,'package.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({status:'PASS',source,directory,sourceDmgSha256}));
+} finally {if(mounted)execFileSync('/usr/bin/hdiutil',['detach',mount],{stdio:'pipe'});}

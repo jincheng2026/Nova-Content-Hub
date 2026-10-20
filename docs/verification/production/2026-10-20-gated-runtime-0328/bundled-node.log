@@ -1,0 +1,9 @@
+✔ real pinned Node runs outside the repo without PATH, rejects damage, and cleans failed extraction (5923.686666ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6020.347375

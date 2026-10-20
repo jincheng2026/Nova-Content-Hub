@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-10-20T05:57:00.622Z",
+  "worktree": "/Users/mac/.codex/worktrees/stable-calendar-0329/Nova-Content-Hub",
+  "sourceCommit": "2b8e9a1a88d39be7becbd1e20785ba230244bed6",
+  "rootAndWorkbenchNpmCiExitCode": 0,
+  "firstBuild": {
+    "exitCode": 1,
+    "cause": "Pinned Node network download exceeded deadline",
+    "log": "package-build-network-failure.log"
+  },
+  "retry": {
+    "sameOfficialPinnedArchive": true,
+    "node": "24.20.0",
+    "archiveSha256": "40e5607e5ecb3db9192723776da2d75d966260fc74a7a9e731c1bd67dda96bc8",
+    "verifiedByExistingCachedArchive": true,
+    "codeOrChecksumPolicyChanged": false
+  }
+}

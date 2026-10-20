@@ -1,0 +1,148 @@
+{
+  "recordedAt": "2026-10-20T05:59:10.259Z",
+  "nativeFiles": [
+    {
+      "path": "main/application-menu.mjs",
+      "sha256": "4b3dc6b574e95e0eef9a3cf9a90fb0decd921cc3029fe5ca1c3efad540b75c5c"
+    },
+    {
+      "path": "main/assistant-runtime.mjs",
+      "sha256": "e91aacac249041e6c0b3c74c59386b92c89890453f78c62f7485ccaecc7ba746"
+    },
+    {
+      "path": "main/assistant-skill.mjs",
+      "sha256": "9397d58c2c54845bb429cd29f44a31dbc28ec19d76ed2db70bb135950fa1721b"
+    },
+    {
+      "path": "main/bindings.mjs",
+      "sha256": "5ad82b5ef7704628e49a39faac8c0ecc60703305457da622d91aa256ff9065cb"
+    },
+    {
+      "path": "main/bootstrap-recovery.mjs",
+      "sha256": "54471c68fbb2549cfc90492a60a89efaa48f5594546bc358743ea3d110f920da"
+    },
+    {
+      "path": "main/boundary.mjs",
+      "sha256": "a2a6ffd45248aef2829587d9b1a975f38dcea2454b48a5d63617537792a7ea92"
+    },
+    {
+      "path": "main/branding.mjs",
+      "sha256": "2ad2204e4fc13b301cbce08001f38dca98312191cde9b4e1949189eb94dd1c6c"
+    },
+    {
+      "path": "main/controller.mjs",
+      "sha256": "272bef9d98a103901ce064fda427db8292aa7cffce950edbbdea1812496ff96e"
+    },
+    {
+      "path": "main/cover-worker.mjs",
+      "sha256": "42580112e164571d822b7ffb6318b0f76ee4e35a18bdd802b5eac784d334ce54"
+    },
+    {
+      "path": "main/covers.mjs",
+      "sha256": "9fc8f1c7f837eb2cd448faea692f30058451fa94fc2e85b15d470b50273d427e"
+    },
+    {
+      "path": "main/desktop.mjs",
+      "sha256": "6597c1a4d17af5b8b7c462747898fc772c5829da69ccea679c52e4590a4e2a88"
+    },
+    {
+      "path": "main/document-import.mjs",
+      "sha256": "9e3c40265071f374e60793072843121115328e25c417840290cc9e55048840d8"
+    },
+    {
+      "path": "main/index.mjs",
+      "sha256": "1978cedcc18e9e0f7a5698c52fd79330488d151818d20ffaa10ff313340b1eea"
+    },
+    {
+      "path": "main/installation.mjs",
+      "sha256": "dae7a993ad3e033c5d02e18ae1418d7f588440728d9303dec15b176a61cd943a"
+    },
+    {
+      "path": "main/library-watch.mjs",
+      "sha256": "15779d9747158b018f2a07b83f9289091e8a49e0f01f47c2c58c0f15d32fb1ba"
+    },
+    {
+      "path": "main/local-files.mjs",
+      "sha256": "412583c4d5e2ebf5a7c3e1d5ac5a5bb831131ce22372f266db8b2dcb46e07321"
+    },
+    {
+      "path": "main/mac-installation.mjs",
+      "sha256": "e7c3ba7b53f03721428a06443c0a48ae1f053d9c0620b2fc8637907f3460ef44"
+    },
+    {
+      "path": "main/maintenance-controller.mjs",
+      "sha256": "718331f15e15615ce879fd03c38817c4d48f105e4b5847eb27334180fbb21153"
+    },
+    {
+      "path": "main/maintenance-worker.mjs",
+      "sha256": "d7775d5b19aab436baa13847422ec73cda7ab37522074ce22a998178fd10dc2a"
+    },
+    {
+      "path": "main/operation-queue.mjs",
+      "sha256": "9625495004895b72746e0bf1bfe784215d330959e22884b312ba31a4b75ad67d"
+    },
+    {
+      "path": "main/preferences.mjs",
+      "sha256": "7de0151cf6deb799c4443d99b1663ae8c72a4a69dc7e587be3ed52e49d40d112"
+    },
+    {
+      "path": "main/reminders.mjs",
+      "sha256": "cb90d6216e6edee3950078d059632d0a799ad943da1163ad3ce2764faa87878d"
+    },
+    {
+      "path": "main/resident.mjs",
+      "sha256": "a9e21c8835c491a0518286723c40d0d340dd32ae5943807079fd2fef2b267260"
+    },
+    {
+      "path": "main/setup.mjs",
+      "sha256": "32cab9f15284b98db36dbf14267259d4e4ffccbe02d08e362ec1433fc2b24a6f"
+    },
+    {
+      "path": "main/template-controller.mjs",
+      "sha256": "b37e71c74d8358c914750b6f25dca93bbfc47c3b8c91cedc2cb6d0567822d443"
+    },
+    {
+      "path": "main/template-worker.mjs",
+      "sha256": "ec4f20721a2fb6445c3a6ac93215b00eb9fd63c6ad028059b11354dbef7a28ca"
+    },
+    {
+      "path": "main/worker-client.mjs",
+      "sha256": "657e85fd5b3448a0b1046996551d8d8806a1f1c0ea53be9d17deafcedfd5b4b2"
+    },
+    {
+      "path": "main/worker.mjs",
+      "sha256": "8beb6726627834ad8bd6e05fe7541e7fc7d144b1fdd74f430aea4b3644e335da"
+    },
+    {
+      "path": "main/workspace-controller.mjs",
+      "sha256": "f697d9fc7d8df5f87ca759e71475947606233d1b333dacdb048c7aaae42ce087"
+    },
+    {
+      "path": "main/workspace-worker.mjs",
+      "sha256": "c15e7f80c34fed70705ce5ae65df5966a220e223e37d4e75d2b05b5ef0844f13"
+    }
+  ],
+  "nativeAllIdenticalToFinalTestedSourceBuild": true,
+  "renderer": {
+    "sameManifest": true,
+    "files": [
+      {
+        "file": "assets/index-BCH5CdUo.js",
+        "equal": true
+      },
+      {
+        "file": "assets/index-Dke6KyH_.css",
+        "equal": true
+      },
+      {
+        "file": "assets/nova-content-hub-icon-512-A1Ow6cZT.png",
+        "equal": true
+      },
+      {
+        "file": "index.html",
+        "equal": true
+      }
+    ]
+  },
+  "scope": "Candidate actual runtime compared to final auth-disabled source build used in native/resident tests; metadata/release pairing separately checked."
+}

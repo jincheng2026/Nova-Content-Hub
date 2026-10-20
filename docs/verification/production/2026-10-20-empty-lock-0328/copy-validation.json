@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-10-20T05:39:00.006Z",
+  "version": "0.3.28",
+  "work": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/仅验证的工作副本",
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/工作副本标准备份",
+  "restored": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/工作副本标准恢复",
+  "originalPreserved": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/原始内容库完整副本",
+  "actualLibraryUntouched": true,
+  "workCopyOpenReadAndBackupBusinessBytesUnchanged": true,
+  "standardBackupVerified": true,
+  "standardRestoreOpens": true,
+  "counts": {
+    "contents": 4,
+    "templates": 21,
+    "prompts": 54
+  },
+  "scope": "Only a copied empty lock isolated in copied tree; production packaged shared core opens/reads/backs up/verifies/restores the independent working copy. Restoration may add provenance and is not a byte-identical clone claim. Actual original binding/lock/data untouched."
+}

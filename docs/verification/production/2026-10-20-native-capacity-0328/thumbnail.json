@@ -1,0 +1,59 @@
+{
+  "scope": "Separate bounded read-only hidden-renderer image observation after benchmark; capturePage requests paint without showing a user window or changing lazy-loading attributes. Not latency benchmark or diverse-image load proof.",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla",
+  "appIsPackaged": false,
+  "startedAt": "2026-10-20T05:39:14.883Z",
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary"
+  ],
+  "errors": [],
+  "phase": "paint",
+  "beforePaint": [
+    {
+      "src": "nova-content://assets/c9af9bbf-75af-4f49-8070-17d26e708bb9/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+      "loading": "lazy",
+      "complete": false,
+      "naturalWidth": 0,
+      "naturalHeight": 0,
+      "rect": {
+        "x": 252,
+        "y": 302.59375,
+        "width": 47,
+        "height": 54
+      }
+    }
+  ],
+  "paintSha256": "1f770cfef448fd157519e20f250655b784f22a824018ec07fb1ff0cc95aeb495",
+  "decodeObservation": {
+    "decoded": false,
+    "limit": "5s after capturePage; no forcing eager loading or showing window"
+  },
+  "afterPaint": [
+    {
+      "src": "nova-content://assets/c9af9bbf-75af-4f49-8070-17d26e708bb9/8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+      "loading": "lazy",
+      "complete": false,
+      "naturalWidth": 1086,
+      "naturalHeight": 1448,
+      "rect": {
+        "x": 252,
+        "y": 302.59375,
+        "width": 47,
+        "height": 62.6640625
+      }
+    }
+  ],
+  "renderedImages": 1,
+  "finishedAt": "2026-10-20T05:39:27.931Z",
+  "completed": true
+}

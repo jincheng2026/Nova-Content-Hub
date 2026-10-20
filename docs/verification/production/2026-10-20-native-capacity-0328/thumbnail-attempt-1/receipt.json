@@ -1,0 +1,30 @@
+{
+  "scope": "Separate bounded read-only hidden-renderer image observation after benchmark; capturePage requests paint without showing a user window or changing lazy-loading attributes. Not latency benchmark or diverse-image load proof.",
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla",
+  "appIsPackaged": false,
+  "startedAt": "2026-10-20T05:38:04.690Z",
+  "calls": [
+    "nova:status",
+    "nova:readPreferences",
+    "nova:listContents",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:listContents",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary"
+  ],
+  "errors": [
+    {
+      "message": "Error: UI wait timeout",
+      "stack": "Error: UI wait timeout"
+    }
+  ]
+}

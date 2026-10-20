@@ -1,0 +1,259 @@
+[
+  {
+    "label": "small calendar cross-month empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "switch month to week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "small calendar cross-week empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "switch week to month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "small calendar day with plans",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar day with plans",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar repeated day",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar empty cell",
+    "before": {
+      "x": 0,
+      "y": 150.5
+    },
+    "after": {
+      "x": 0,
+      "y": 150.5
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar restores day with plans",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "next main month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "previous main month",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "large calendar return after month navigation",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "next main week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "previous main week",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "week header day with plans",
+    "before": {
+      "x": 0,
+      "y": 18.5
+    },
+    "after": {
+      "x": 0,
+      "y": 18.5
+    },
+    "calls": []
+  },
+  {
+    "label": "week header empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "week header restores plan day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 0
+    },
+    "calls": []
+  },
+  {
+    "label": "refresh plans while empty day selected",
+    "before": {
+      "x": 0,
+      "y": 80
+    },
+    "after": {
+      "x": 0,
+      "y": 80
+    },
+    "calls": []
+  },
+  {
+    "label": "select planned day after refresh",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 110.5
+    },
+    "calls": []
+  },
+  {
+    "label": "refresh selected day plans",
+    "before": {
+      "x": 0,
+      "y": 80
+    },
+    "after": {
+      "x": 0,
+      "y": 80
+    },
+    "calls": []
+  },
+  {
+    "label": "reselect planned day resets pagination in place",
+    "before": {
+      "x": 0,
+      "y": 110.5
+    },
+    "after": {
+      "x": 0,
+      "y": 313.5
+    },
+    "calls": [
+      {
+        "target": "schedule-plan daily-plan-row planned is-focused",
+        "stack": "Error\n    at HTMLElement.scrollIntoView (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:16:257301)\n    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:16:246825\n    at xl (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:95243)\n    at Ru (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:118488)\n    at Lu (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:118261)\n    at Ru (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:118534)\n    at mf (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:133110)\n    at pf (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:132891)\n    at df (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:132622)\n    at of (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-semi-calendar-check-vOgLeD/dist/assets/index-CSRbxke8.js:8:130345)"
+      }
+    ]
+  }
+]

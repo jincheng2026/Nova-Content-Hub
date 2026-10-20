@@ -1,0 +1,22 @@
+✔ desktop operations finish in FIFO order without overlap (0.934708ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.289ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.266333ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.173375ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.111208ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.356791ms)
+✔ close rejects new work immediately and drains active and both accepted queues, including failures (0.509083ms)
+✔ closing an idle queue resolves and never reopens it (0.094458ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.707542ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.168583ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.135333ms)
+✔ save-before-quit only retries quit for an exact true response (5.937042ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (0.908916ms)
+✔ without a tray, dirty close still offers cancel, discard and save (1.283459ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 145.172208

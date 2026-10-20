@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-20T05:39:47.217Z",
+  "operation": "reversible-same-volume-empty-directory-isolation",
+  "from": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019/系统（别动）/库锁",
+  "to": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/原库空锁原始现场",
+  "preservedIdentity": {
+    "dev": 16777231,
+    "ino": 73790094
+  },
+  "fullOriginalCopy": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/2026-10-20-empty-lock-3fb28c51-2237-4817-929c-505101a73f4f/原始内容库完整副本",
+  "checkedNoActualAppOrKnownBusinessCLI": true,
+  "openLibraryFiles": 0,
+  "sourceEntries": 1718,
+  "afterEntries": 1717,
+  "businessFilesUnchanged": true,
+  "bindingUnchanged": true,
+  "descriptorSha256": "60aa1b3398aed4cb72896052dc252b9a44b1b57bc1d287eca2a7bfc5c1fe6273",
+  "afterSha256": "ef0616cf7e5dc013f963d1295db16e27aed277f1707d7b9be0185f1ae8d92c31",
+  "historicalOwner": "unknown",
+  "safetyBoundary": "Maintenance under saved/quit and repair authorization. No automatic age/PID reclamation; original empty inode retained outside library, no deletion. Relies on cooperative writers stopped and no same-user external malicious replacement; Node lstat/rename is not inode-conditional atomic isolation.",
+  "rollback": "Only if original lock path remains absent and quarantined inode/emptiness match: rename back; never overwrite any new lock or owner."
+}

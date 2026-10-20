@@ -1,0 +1,63 @@
+{
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla",
+  "candidate": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0328-6b739b3/mac-arm64/自媒体工作台.app",
+  "at": "2026-10-20T05:33:02.570Z",
+  "preparationBudgetMs": 180000,
+  "scope": "Explicit additional bounded preparation block on the same evolving synthetic disk library after installation I/O has ended; new native process, no cache flush. Earlier 535-stage receipts remain unchanged.",
+  "appTreeSha256Before": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "prepareProcess": {
+    "code": 0,
+    "signal": null,
+    "pid": 15634
+  },
+  "prepared": {
+    "target": 1000,
+    "actualContents": 1000,
+    "actualCollections": 50,
+    "plans": 2000,
+    "templates": 20,
+    "prompts": 52,
+    "shortBodyBytes": 2048,
+    "longBodyBytes": 65536,
+    "longBodyCount": 10,
+    "bodyBytes": 2682956,
+    "preparationMs": 129757.4565,
+    "budgetMs": 180000,
+    "budgetReached": false,
+    "binding": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-capacity-0328-Ro8Vla/library",
+      "libraryId": "af23f4d1-bf4b-4377-9f4f-7b8465648a5f",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "73756203"
+      }
+    },
+    "saveId": "aaebbc3a-6695-418a-b637-01dadbef9209",
+    "candidates": 100,
+    "selectedContents": 100,
+    "candidateUniqueAssetHashes": [
+      "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa"
+    ],
+    "candidateReferencesReuseExistingSeedAsset": true,
+    "referenceAssetHash": "8ff3a2aaa7c2ac9930cfbf0fe5dd60974eb078bde0dcd919b4286afc9471d2aa",
+    "lastId": "210298f6-19e3-47a5-8c0c-594e9cbfddb3",
+    "lastTitle": "CAPACITY-001000",
+    "disk": {
+      "files": 14822,
+      "bytes": 133192204,
+      "assets": 195,
+      "assetBytes": 96199827,
+      "directories": 4687
+    }
+  },
+  "nativeProcess": {
+    "code": 0,
+    "signal": null,
+    "pid": 17137
+  },
+  "targetReached": true,
+  "measurementsCompleted": true,
+  "appTreeSha256After": "f2bfdd284a08820c448c21f2a4eab0ed0767a2c8b79201720d25c5b4b4dd7fdd",
+  "appTreeUnchanged": true,
+  "finishedAt": "2026-10-20T05:35:43.020Z"
+}

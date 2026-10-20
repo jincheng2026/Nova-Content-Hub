@@ -1,0 +1,3 @@
+probe desktop ready
+probe renderer idle
+probe worker paused at empty lock

@@ -1,0 +1,21 @@
+node:internal/errors:986
+  const err = new Error(message);
+              ^
+
+Error: Command failed: /Users/mac/.local/bin/codebuddy plugin add nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64
+error: unknown command 'add'
+
+    at genericNodeError (node:internal/errors:986:15)
+    at wrappedFn (node:internal/errors:540:14)
+    at checkExecSyncError (node:child_process:942:11)
+    at execFileSync (node:child_process:978:15)
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/stable-0329/finish-plugins.mjs:3:256 {
+  status: 1,
+  signal: null,
+  output: [ null, '', "error: unknown command 'add'\n" ],
+  pid: 44094,
+  stdout: '',
+  stderr: "error: unknown command 'add'\n"
+}
+
+Node.js v24.20.0

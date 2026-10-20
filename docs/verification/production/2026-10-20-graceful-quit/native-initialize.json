@@ -1,0 +1,22 @@
+{
+  "quitEvents": 2,
+  "stops": 2,
+  "stoppedPending": 0,
+  "workerCalls": [
+    "list",
+    "mutate",
+    "queryMutation",
+    "readContent",
+    "list",
+    "list"
+  ],
+  "foreground": 1,
+  "foregroundReads": 1,
+  "background": 2,
+  "saved": true,
+  "rebound": 0,
+  "refreshed": 0,
+  "lateStatus": 404,
+  "lockRemoved": true,
+  "fixtureOnly": true
+}

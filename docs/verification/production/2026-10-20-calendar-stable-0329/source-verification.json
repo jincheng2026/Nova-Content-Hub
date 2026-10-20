@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-20T05:55:54.328Z",
+  "functionalCommit": "e6ebd06",
+  "residentProbeCommit": "8056c2b",
+  "candidateCommit": "2b8e9a1a88d39be7becbd1e20785ba230244bed6",
+  "desktop": {
+    "tests": 313,
+    "pass": 313,
+    "fail": 0,
+    "skip": 0,
+    "exitCode": 0,
+    "log": "../2026-10-20-graceful-quit/root-desktop-tests.log"
+  },
+  "functionalSourceSha256": {
+    "workbench/src/main/desktop.mts": "63e9ef90f23008ba29600e02bdbeccc4960146b6b41802fb20d2a07072ad713a",
+    "workbench/src/main/operation-queue.mts": "fe5c7e5e98a86a787e7a1e7ef5c7426b24992ade48c635188ea51d4922a885fe",
+    "workbench/src/renderer/workspace-pages.tsx": "fbaadb0f794b54ce80fbcb2e43036f7790a23fc779cd45bc6eebb04259254b75",
+    "workbench/src/renderer/publication-panel.tsx": "0a882be041234d1732a02d7ba32d9008181b062dbd6ee2e8bbbbf7fda2c4b57c"
+  },
+  "scope": "Full desktop command ran under 0.3.28 number plus final fixes; 0.3.29 changes only six metadata files/eight lines. Not a fresh full-repository verify under 0.3.29."
+}

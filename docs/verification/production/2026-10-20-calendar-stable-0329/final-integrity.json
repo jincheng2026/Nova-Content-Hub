@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-10-20T06:08:16.998Z",
+  "version": "0.3.29",
+  "installedAndArchivedAppEqual": true,
+  "appEntries": 1817,
+  "appTreeSha256": "8cd84cfaedce6c334e8ab20bd6f216a08961cfdacda23bd67669c482399a3e99",
+  "dmgSha256": "3f9264f81d4a930c627ac1f52da6f513ea054da8fbd8775d8811f01b174106c0",
+  "deliveredDmgEqual": true,
+  "deliveryFiles": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.29-Mac苹果芯片.dmg"
+  ],
+  "signatureVerified": true,
+  "developerIdAndNotarization": false,
+  "transactionPhase": "complete",
+  "actualOriginalBindingAndRootIdentityPreserved": true,
+  "businessByteComparisonScope": "Exact comparison before/after installation as recorded; no claim that later human edits must leave live business bytes unchanged.",
+  "skills": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    }
+  ],
+  "actualStartupAndCalendarObserved": true,
+  "actualUserQuitRestartVerified": false,
+  "activeHostConversationReloaded": false,
+  "newRealGenerationRun": false
+}

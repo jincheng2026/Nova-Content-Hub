@@ -1,0 +1,31 @@
+{
+  "samples": 24,
+  "stable": true,
+  "programmaticScrollCalls": 0,
+  "labels": [
+    "small calendar cross-month empty day",
+    "switch month to week",
+    "small calendar cross-week empty day",
+    "switch week to month",
+    "small calendar day with plans",
+    "large calendar day with plans",
+    "large calendar repeated day",
+    "large calendar empty cell",
+    "large calendar restores day with plans",
+    "next main month",
+    "previous main month",
+    "large calendar return after month navigation",
+    "next main week",
+    "previous main week",
+    "week header day with plans",
+    "week header empty day",
+    "week header restores plan day",
+    "refresh plans while empty day selected",
+    "select planned day after refresh",
+    "refresh selected day plans",
+    "reselect planned day resets pagination in place",
+    "leave previously focused day",
+    "return to previously focused day",
+    "refresh does not restore old focused page"
+  ]
+}

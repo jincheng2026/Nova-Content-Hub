@@ -1,0 +1,13 @@
+[
+  {
+    "label": "small calendar cross-month empty day",
+    "before": {
+      "x": 0,
+      "y": 0
+    },
+    "after": {
+      "x": 0,
+      "y": 205.5
+    }
+  }
+]

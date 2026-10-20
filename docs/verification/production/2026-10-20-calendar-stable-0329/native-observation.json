@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-10-20T06:05:02.986Z",
+  "version": "0.3.29",
+  "actualApplication": "/Applications/自媒体工作台.app",
+  "installationTransactionPhase": "complete",
+  "library": "Original currently bound user library; binding unchanged during installation",
+  "overviewObserved": {
+    "contents": 4,
+    "collections": 1,
+    "readable": true
+  },
+  "observedActions": [
+    {
+      "action": "Enter calendar",
+      "selected": "2026-10-20",
+      "plans": 0
+    },
+    {
+      "action": "Click large-calendar date",
+      "selected": "2026-10-21",
+      "plans": 1,
+      "headerRemainsAtOriginalViewport": true
+    },
+    {
+      "action": "Open small calendar and browse next month",
+      "popupMonth": "2026-11",
+      "businessDateRemains": "2026-10-21",
+      "largeCalendarMonthRemains": "2026-10"
+    },
+    {
+      "action": "Choose small-calendar day",
+      "selected": "2026-11-07",
+      "largeCalendarMonth": "2026-11",
+      "plans": 0,
+      "headerRemainsAtOriginalViewport": true
+    }
+  ],
+  "measurementBoundary": "Actual CUA accessibility and inline screenshots; viewport preservation visually compared, exact scroll-coordinate assertions belong to separate 24-sample synthetic React/Semi probe. No injected actual-user DOM scripts or business write/record actions.",
+  "actualUserQuitAndReopenVerified": false,
+  "quitAttempt": "CUA rejected Cmd-Q because user changed the application; re-read showed user actively using calendar and plan details. No force quit or further interfering actions.",
+  "isolatedNativeQuitAndResidentSaveDiscardPassed": true,
+  "pluginDiskPairingPassed": true,
+  "activeHostConversationReloaded": false,
+  "newRealGenerationRun": false
+}

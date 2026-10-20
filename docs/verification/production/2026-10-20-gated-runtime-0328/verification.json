@@ -1,0 +1,46 @@
+{
+  "at": "2026-10-20T05:24:07.969Z",
+  "sourceVersion": "0.3.28",
+  "sourceCodeReferenceCommit": "6b739b385e01931bd26962f229c853da2317a37c",
+  "node": "v24.20.0",
+  "cases": [
+    {
+      "name": "real pinned Node runs outside",
+      "command": "NOVA_BUNDLED_NODE_INTEGRATION=1 node --test --test-name-pattern=^real\\ pinned\\ Node\\ runs\\ outside plugin-src/tests/bundled-node.test.mjs",
+      "exitCode": 0,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "log": "bundled-node.log",
+      "logSha256": "3f7a6d6b347b1d319093f67ec515c363cb5f7f71cb637c76314a85e8129d39a8"
+    },
+    {
+      "name": "real native market and simulated host cache",
+      "command": "NOVA_MARKETPLACE_INTEGRATION=1 node --test --test-name-pattern=^real\\ native\\ market\\ and\\ simulated\\ host\\ cache plugin-src/tests/marketplace.test.mjs",
+      "exitCode": 0,
+      "tests": 1,
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "log": "marketplace.log",
+      "logSha256": "a8d79d10b8a8038066e011cb1221bfc62bb21db8e04e02eeac67824c1560beb7"
+    }
+  ],
+  "modes": [
+    {
+      "mode": "required",
+      "pairId": "nova-content-hub@0.3.28:p1:required",
+      "indexSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1"
+    },
+    {
+      "mode": "disabled",
+      "pairId": "nova-content-hub@0.3.28:p1:disabled",
+      "indexSha256": "04c38d8bf75a47eb3c659a175084a9dcc754a54f28613a8a5dd73b3b351ab3a1"
+    }
+  ],
+  "passed": true,
+  "actualHostCacheUpdated": false,
+  "businessGenerationStarted": false,
+  "scope": "The two previously gated cases were explicitly enabled and run sequentially. Marketplace uses temporary simulated host cache. This does not rerun or rewrite the historical full verify result and does not prove real host session readiness."
+}
