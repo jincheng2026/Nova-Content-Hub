@@ -5,9 +5,11 @@ import os from 'node:os';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {FileMatcher} from 'app-builder-lib/out/fileMatcher.js';
+import {AppInfo} from 'app-builder-lib/out/appInfo.js';
 import {validateConfiguration} from 'app-builder-lib/out/util/config/config.js';
 import {DebugLogger} from 'builder-util';
 import {archiveMacOutput, assertDistribution, assertProductionSigning, assertStage, installerConfig, parseOptions, testingEnvironment} from '../scripts/dist.mjs';
+import {universalInstallerConfig} from '../scripts/dist-universal.mjs';
 
 const config = JSON.parse(fs.readFileSync(new URL('../../release.config.json', import.meta.url), 'utf8'));
 const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
@@ -133,6 +135,32 @@ test('free preview uses the product identity and local builds keep their isolate
     assert.equal(installerConfig({...options, channel: 'local', auth: 'disabled'}, config.version).appId, 'com.novaisland.nova-content-hub.local');
     assert.equal(installerConfig({...options, channel: 'local', auth: 'disabled'}, config.version).productName, '自媒体工作台开发版');
     assert.equal(installerConfig({...options, channel: 'production', auth: 'disabled'}, config.version).productName, '自媒体工作台');
+});
+
+test('all installer channels and universal builds preserve company, copyright and product identity', async () => {
+    const company = '杭州新岛橙灵智能科技有限责任公司';
+    const copyright = `© 2026 ${company}`;
+    const builds = [];
+    for (const [channel, auth, name] of [['local', 'disabled', '自媒体工作台开发版'], ['testing', 'required', '自媒体工作台测试版'], ['preview', 'disabled', '自媒体工作台'], ['production', 'disabled', '自媒体工作台']]) {
+        for (const [platform, arch] of [['darwin', 'arm64'], ['darwin', 'x64'], ['win32', 'arm64'], ['win32', 'x64']]) {
+            const built = installerConfig({channel, auth, platform, arch}, config.version);
+            assert.equal(built.productName, name);
+            builds.push(built);
+        }
+    }
+    const universal = universalInstallerConfig('/shell', '/out', config.version);
+    assert.equal(universal.productName, '自媒体工作台');
+    builds.push(universal);
+    for (const built of builds) {
+        assert.equal(built.copyright, copyright);
+        const appInfo = new AppInfo({config: built, metadata: {...pkg, ...built.extraMetadata}});
+        assert.equal(appInfo.companyName, company);
+        assert.equal(appInfo.copyright, copyright);
+        assert.equal(appInfo.version, config.version);
+        assert.match(built.mac.icon, /resources[/\\\\]brand[/\\\\]desktop[/\\\\]icon\.icns$/);
+        assert.match(built.win.icon, /resources[/\\\\]brand[/\\\\]desktop[/\\\\]icon\.ico$/);
+        await validateConfiguration(built, new DebugLogger(false));
+    }
 });
 
 test('pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources', async () => {

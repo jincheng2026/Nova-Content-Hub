@@ -1,0 +1,86 @@
+## workbench/node_modules/app-builder-lib/out/packager.js
+262:         this._devMetadata = await (0, builder_util_1.orNullIfFileNotExist)((0, packageMetadata_1.readPackageJson)(devPackageFile));
+263:         const devMetadata = this.devMetadata;
+264:         const configuration = await (0, config_1.getConfig)(projectDir, configPath, configFromOptions, new lazy_val_1.Lazy(() => Promise.resolve(devMetadata)));
+265:         builder_util_1.log.debug({ config: getSafeEffectiveConfig(configuration) }, "effective config");
+266:         this._appDir = await (0, config_1.computeDefaultAppDirectory)(projectDir, configuration.directories.app);
+267:         this.isTwoPackageJsonProjectLayoutUsed = this._appDir !== projectDir;
+268:         const appPackageFile = this.isTwoPackageJsonProjectLayoutUsed ? path.join(this.appDir, "package.json") : devPackageFile;
+269:         // tslint:disable:prefer-conditional-expression
+270:         if (this.devMetadata != null && !this.isTwoPackageJsonProjectLayoutUsed) {
+271:             this._metadata = this.devMetadata;
+272:         }
+273:         else {
+274:             this._metadata = await this.readProjectMetadataIfTwoPackageStructureOrPrepacked(appPackageFile);
+275:         }
+276:         this._originalMetadata = (0, builder_util_runtime_1.deepAssign)({}, this._metadata);
+277:         (0, builder_util_runtime_1.deepAssign)(this._metadata, configuration.extraMetadata);
+278:         if (this.isTwoPackageJsonProjectLayoutUsed) {
+279:             builder_util_1.log.debug({ devPackageFile, appPackageFile }, "two package.json structure is used");
+280:         }
+281:         (0, packageMetadata_1.checkMetadata)(this.metadata, this.devMetadata, appPackageFile, devPackageFile);
+282:         await (0, config_1.validateConfiguration)(configuration, this.debugLogger);
+283:         this._configuration = configuration;
+284:         this._devMetadata = devMetadata;
+## workbench/node_modules/app-builder-lib/out/appInfo.js
+90:     get companyName() {
+91:         const author = this.info.metadata.author || this.notNullDevMetadata.author;
+92:         return author == null ? null : author.name;
+93:     }
+94:     get id() {
+129:     get copyright() {
+130:         const copyright = this.info.config.copyright;
+131:         if (copyright != null) {
+132:             return (0, macroExpander_1.expandMacro)(copyright, null, this);
+133:         }
+134:         return `Copyright © ${new Date().getFullYear()} ${this.companyName || this.productName}`;
+135:     }
+## workbench/node_modules/app-builder-lib/out/macPackager.js
+396:         const activeOpts = (_a = this._activePackConfig) !== null && _a !== void 0 ? _a : this.platformSpecificBuildOptions;
+397:         appPlist.CFBundleShortVersionString = activeOpts.bundleShortVersion || appInfo.version;
+398:         appPlist.CFBundleVersion = activeOpts.bundleVersion || appInfo.buildVersion;
+399:         (0, builder_util_1.use)(this.platformSpecificBuildOptions.category || this.config.category, it => (appPlist.LSApplicationCategoryType = it));
+400:         appPlist.NSHumanReadableCopyright = appInfo.copyright;
+## workbench/node_modules/app-builder-lib/out/winPackager.js
+137:         const files = [];
+138:         const versionStrings = {
+139:             FileDescription: appInfo.productName,
+140:             ProductName: appInfo.productName,
+141:             LegalCopyright: appInfo.copyright,
+142:         };
+143:         if (internalName != null) {
+144:             versionStrings.InternalName = internalName;
+145:             versionStrings.OriginalFilename = "";
+146:         }
+147:         if (appInfo.companyName != null) {
+148:             versionStrings.CompanyName = appInfo.companyName;
+149:         }
+## workbench/node_modules/app-builder-lib/scheme.json
+9162:     "copyright": {
+9163:       "default": "Copyright © year ${author}",
+9164:       "description": "The human-readable copyright line for the app.",
+9165:       "type": [
+9166:         "null",
+9167:         "string"
+9168:       ]
+9169:     },
+## workbench/node_modules/electron/electron.d.ts
+1669:      */
+1670:     resolveProxy(url: string): Promise<string>;
+1671:     /**
+1672:      * Set the about panel options. This will override the values defined in the app's
+1673:      * `.plist` file on macOS. See the Apple docs for more details. On Linux, values
+1674:      * must be set in order to be shown; there are no defaults.
+1675:      *
+1676:      * If you do not set `credits` but still wish to surface them in your app, AppKit
+1677:      * will look for a file named "Credits.html", "Credits.rtf", and "Credits.rtfd", in
+1678:      * that order, in the bundle returned by the NSBundle class method main. The first
+1679:      * file found is used, and if none is found, the info area is left blank. See Apple
+1680:      * documentation for more information.
+1681:      */
+1682:     setAboutPanelOptions(options: AboutPanelOptionsOptions): void;
+1973:     /**
+1974:      * Show the app's about panel options. These options can be overridden with
+1975:      * `app.setAboutPanelOptions(options)`. This function runs asynchronously.
+1976:      */
+1977:     showAboutPanel(): void;
