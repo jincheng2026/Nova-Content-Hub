@@ -3,6 +3,7 @@ import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import Switch from '@douyinfe/semi-ui-19/lib/es/switch';
 import {invoke} from './client.ts';
+import {SettingsHelp} from './assistant-settings.tsx';
 import {ClockTimeInput} from './semi-controls.tsx';
 import {useManagedDraftGuard} from './library-panels.tsx';
 import type {LocalPreferences, PreferencesView, ReminderStatus} from '../shared/preferences-contracts.ts';
@@ -17,6 +18,7 @@ const reminderLabels: Record<ReminderStatus['state'], string> = {
 export function PreferencesPanel({busy, run}: {busy: boolean; run<T>(action: () => Promise<T>): Promise<T | undefined>}) {
     const [view, setView] = useState<PreferencesView | null>(null), [draft, setDraft] = useState<LocalPreferences | null>(null), [reminder, setReminder] = useState<ReminderStatus | null>(null), [notice, setNotice] = useState('');
     const dirty = !!draft && !!view && JSON.stringify(draft) !== JSON.stringify(view.values);
+    const reminderStatus = reminder ? reminder.reason === 'storage-unavailable' ? '提醒记录无法安全读取或保存，已暂停提醒并保留原文件。' : reminderLabels[reminder.state] : '正在读取通知状态…';
     useManagedDraftGuard(dirty);
     useEffect(() => {
         let active = true;
@@ -42,7 +44,7 @@ export function PreferencesPanel({busy, run}: {busy: boolean; run<T>(action: () 
             <div className="management-actions creator-preference-actions"><Button theme="solid" htmlType="submit" disabled={busy || !dirty}>保存偏好</Button><Button disabled={busy || !dirty} onClick={() => {setDraft({...view.values}); setNotice('已放弃尚未保存的本机偏好修改。');}}>放弃修改</Button><span>{dirty ? '有未保存修改' : '只保存在这台电脑'}</span></div>
         </form>}
         {notice && <p role="status">{notice}</p>}
-        <p className="creator-settings-hint" role="status">{reminder ? reminder.reason === 'storage-unavailable' ? '提醒记录无法安全读取或保存，已暂停提醒并保留原文件。' : reminderLabels[reminder.state] : '正在读取通知状态…'}</p>
-        <details><summary>通知试发与使用说明</summary><p>{reminder?.lastDay ? `上次自动提醒记录：${reminder.lastDay}。` : '尚无自动提醒记录。'}</p><div className="management-actions"><Button disabled={busy || !reminder?.supported} onClick={() => void run(async () => {setReminder(await invoke('testReminder'));})}>试发一条通知</Button><Button disabled={busy} onClick={() => void run(refresh)}>刷新通知状态</Button></div><p>只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。</p><p>通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。</p></details>
+        <p className="creator-settings-hint" role="status">{reminderStatus}</p>
+        <SettingsHelp title="通知试发与使用说明"><p role="status">{reminderStatus}</p><p>{reminder?.lastDay ? `上次自动提醒记录：${reminder.lastDay}。` : '尚无自动提醒记录。'}</p><div className="management-actions"><Button disabled={busy || !reminder?.supported} onClick={() => void run(async () => {setReminder(await invoke('testReminder'));})}>试发一条通知</Button><Button disabled={busy} onClick={() => void run(refresh)}>刷新通知状态</Button></div><p>只有开启提醒后，工作台才会在设定时间汇总当天待发布的内容与合集；通知显示数量，点击返回工作台。试发使用固定文字，不读取内容，也不占用当天自动提醒。</p><p>通知能力可用不代表系统已授予显示权限。请在系统通知设置中允许此应用；专注模式可能隐藏通知。应用须保持运行，睡眠或退出期间无法准时提醒，恢复运行后仅检查当天安排。托盘不可用时，关闭窗口会退出应用。这里不会自动发布内容。</p></SettingsHelp>
     </Card></section>;
 }

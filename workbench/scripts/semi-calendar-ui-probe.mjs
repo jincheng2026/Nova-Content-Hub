@@ -18,13 +18,13 @@ import {CalendarPage} from '${workbench}/src/renderer/workspace-pages.tsx';
 const plan=(id,schedule,channelId='custom-channel')=>({id,schedule,channelId,status:'planned',textMode:'body',coverChoice:null});
 const makeDocument=(id,title,plans)=>({id,title,body:'合成验收正文',editToken:'token-1',channelIds:['custom-channel'],plans,deletedAt:null,isExample:false,candidates:[],coverVariants:[],publications:[],publicationEvents:[],candidateCount:0,selectedCandidateId:null});
 window.doc=makeDocument('content-a','分钟日程示例',[plan('local-minute',{precision:'local-minute',date:'2026-10-19',time:'10:45',timezone:'America/New_York'}),plan('date-only',{precision:'date',date:'2026-10-19'}),plan('instant',{precision:'instant',at:'2026-10-19T08:35:00Z',timezone:'America/New_York'})]);
-window.collection=makeDocument('collection-a','合集演示',[plan('collection-minute',{precision:'local-minute',date:'2026-10-20',time:'14:25',timezone:null},'second-channel')]);window.collection.memberIds=['content-a'];
+window.collection=makeDocument('collection-a','合集演示',[plan('collection-minute',{precision:'local-minute',date:'2026-10-20',time:'14:25',timezone:null},'second-channel')]);window.collection.memberIds=['content-a'];window.doc.plans.push({...plan('cancelled',{precision:'date',date:'2026-10-20'},'second-channel'),status:'cancelled'});
 window.channels=[{id:'custom-channel',name:'演示自定义渠道',ink:'#ad245e',bg:'#fff0f5'},{id:'second-channel',name:'另一个渠道',ink:'#36784e',bg:'#edf8f0'}];
 window.library={contentDetails:[window.doc],collections:[window.collection],settings:{channels:window.channels}};
 window.workspace={contents:[window.doc],channels:window.channels};window.original=JSON.stringify({library:window.library,workspace:window.workspace});window.calls=[];
 window.contentHub=new Proxy({},{get:(_,method)=>async input=>{window.calls.push({method,input});throw new Error('Unexpected native call');}});
 const root=createRoot(document.getElementById('root'));
-window.renderCalendar=(busy=false)=>root.render(<CalendarPage workspace={{...window.workspace}} library={{...window.library}} initialFocus={{kind:'content',id:'content-a',planId:'local-minute',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
+window.renderCalendar=(busy=false,useLibrary=true)=>root.render(<CalendarPage workspace={{...window.workspace}} library={useLibrary?{...window.library}:null} initialFocus={{kind:'content',id:'content-a',planId:'local-minute',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
 window.renderCalendar();
 `);
 await build({configFile:false, root, base:'./', resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}}, oxc:{jsx:{runtime:'automatic'}}, build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -41,6 +41,22 @@ async function probeMain(probeRoot) {
   const clickText=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent.trim()===${JSON.stringify(text)}).click()`);
   try {
     await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".semi-calendar-month .semi-schedule-event").length === 4');
+    for (const width of [1440,1100,900]) {
+      await win.setSize(width,1000);await run('document.querySelector(".creator-page-heading").scrollIntoView({block:"start"});new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+      await fs.writeFile(path.join(probeRoot,`calendar-month-${width}.png`),(await win.webContents.capturePage()).toPNG());
+      assert.equal(await run(`(()=>{return [...document.querySelectorAll('.semi-calendar-month .semi-schedule-event:not(.schedule-day-more)')].every(button=>{const time=button.querySelector('time').getBoundingClientRect(),title=button.querySelector('strong').getBoundingClientRect(),box=button.getBoundingClientRect();const slot=button.closest('.semi-calendar-event-item').getBoundingClientRect();return time.right<=title.left+1&&title.right<=box.right+1&&title.width>5&&box.height<=slot.height+1;});})()`),true,`month time/title bounded at ${width}`);
+    }
+    await win.setSize(1280,1000);
+    await run('[...document.querySelectorAll(".semi-schedule-day")].find(button=>button.getAttribute("aria-label").startsWith("选择 2026-10-20")).click()');
+    const chooseStatus=async text=>{await run(`[...document.querySelectorAll('.daily-plan-filters .semi-select')].at(-1).click()`);await wait('document.querySelectorAll("[role=option]").length>0');await run(`[...document.querySelectorAll('[role=option]')].find(option=>option.textContent===${JSON.stringify(text)}).click()`);};
+    assert.equal(await run('document.querySelectorAll(".schedule-day-plans [data-plan-id=cancelled]").length'),0,'default excludes cancelled');
+    await chooseStatus('全部安排（含已取消）');await wait('document.querySelector(".schedule-day-plans [data-plan-id=cancelled]")&&document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
+    assert.equal(await run('document.querySelectorAll(".schedule-day-plans .daily-plan-row").length'),2,'all includes cancelled in selected day');
+    await chooseStatus('已取消');await wait('document.querySelectorAll(".schedule-day-plans .daily-plan-row").length===1');
+    assert.equal(await run('document.querySelectorAll(".semi-calendar-month .semi-schedule-event").length'),1,'cancelled filter applies to calendar too');
+    await chooseStatus('未取消（待发布＋已记录）');await wait('!document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
+    await run('[...document.querySelectorAll(".semi-schedule-day")].find(button=>button.getAttribute("aria-label").startsWith("选择 2026-10-19")).click()');
+
     assert.equal(await run('!!document.querySelector(".semi-datepicker")'),true,'uses actual Semi DatePicker');
     assert.equal(await run('!!document.querySelector(".daily-plan-filters .semi-select")'),true,'uses actual Semi Select filters');
     assert.equal(await run('!!document.querySelector("#calendar-publication-manager")'),false,'plan management is opened on demand');
@@ -86,8 +102,11 @@ async function probeMain(probeRoot) {
     await run('window.doc.title="更新后的标题";window.doc.body="更新后的计划首行";window.doc.plans[0].schedule.time="11:05";window.renderCalendar()');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("11:05")');
     assert.ok(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("更新后的计划首行")'),'cached Semi event refreshes on changes');
     await run('window.renderCalendar(true)');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").disabled');
+    await run('window.renderCalendar(false,false)');await wait('!document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").disabled');
+    await chooseStatus('全部安排（含已取消）');await wait('document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
+    await chooseStatus('未取消（待发布＋已记录）');await wait('!document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
     assert.deepEqual(await run('window.calls'),[],'no business writes');
-    console.log('PASS actual React/Semi/Electron: month/week Monday, exact minutes, machine-zone instant, unknown-time all-day row, collection plan focus, selected-day new plan, event refresh, busy guard, 1280 layout, no native writes');console.log('Screenshots:',path.join(probeRoot,'calendar-1280.png'),path.join(probeRoot,'calendar-week-1280.png'));app.exit(0);
+    console.log('PASS actual React/Semi/Electron: month/week Monday, exact minutes, machine-zone instant, unknown-time all-day row, collection plan focus, selected-day new plan, event refresh, busy guard, 1440/1100/900 month slots and horizontal bounds, default/all/cancelled filters shared by calendar/day rows plus workspace fallback, no native writes');console.log('Screenshots:',path.join(probeRoot,'calendar-1280.png'),path.join(probeRoot,'calendar-week-1280.png'));app.exit(0);
   } catch(error) {console.error(error);app.exit(1);}
 }
 await fs.writeFile(path.join(root,'probe-main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)});`);

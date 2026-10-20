@@ -19,6 +19,7 @@ import {PreferencesPanel} from '${workbench}/src/renderer/preferences-panel.tsx'
 import {SetupPanel} from '${workbench}/src/renderer/setup-panel.tsx';
 window.calls=[]; window.closeCount=0; window.channelOpens=0; window.currentAssistant="codex";
 window.lib={settings:{editToken:'settings-1', profile:{name:'创作者',intro:'分享创作经验',avatarAssetHash:null,marks:[{key:'品牌色',value:'蓝色'}]},channels:[{id:'custom',name:'我的专属渠道',ink:'#345678',bg:'#eeeeee',deletedAt:null}]},photos:[],contentDetails:[],collections:[],templates:[],prompts:[]};
+window.reminderResult={supported:true,state:'sent',lastDay:null,reason:'none'};
 window.preferences={values:{reducedMotion:false,remindersEnabled:false,reminderTime:'08:30',startAtLogin:false},login:{supported:true,enabled:false,state:'off'}};
 window.contentHub=new Proxy({}, {get:(_,method)=>async input=>{window.calls.push({method,input});let value;
 if(method==='readAssistantSetup')value={host:window.currentAssistant,ready:true};
@@ -30,7 +31,9 @@ else if(method==='readSetup')value={platform:'darwin',arch:'arm64',version:'0.3.
 else if(method==='mutateWorkspace'){window.lib.settings.profile=input.profile;window.lib.settings.editToken='settings-2';value={library:window.lib};}
 else if(method==='savePreferences'){window.preferences.values=input;value=window.preferences;}
 else if(method==='readWorkspaceLibrary')value=window.lib;
-else if(method==='choosePhoto' || method==='retryBuiltins')value=null;
+else if(method==='exportDiagnostics')value={exported:true,name:'合成诊断.json'};
+else if(method==='testReminder')value=window.reminderResult;
+else if(method==='choosePhoto' || method==='retryBuiltins' || method==='copyPluginMarketLocation' || method==='openSetupTarget')value=null;
 else throw new Error('Unexpected method: '+method);
 return {ok:true,value:structuredClone(value)};}});
 window.fixtureStatus={assistant:'codex',currentName:'隔离验收库'};
@@ -42,11 +45,32 @@ async function probeMain(probeRoot){
 const {app,BrowserWindow}=await import('electron');const {default:assert}=await import('node:assert/strict');const {default:path}=await import('node:path');const {default:fs}=await import('node:fs/promises');
 app.setPath('userData',path.join(probeRoot,'machine'));await app.whenReady();const win=new BrowserWindow({show:true,width:1440,height:1100,webPreferences:{contextIsolation:true,nodeIntegration:false}});
 win.webContents.on('console-message', event=>console.log('renderer:', event.message)); const run=source=>win.webContents.executeJavaScript(source).catch(error=>{console.log('Failed source:',source);throw error;});const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+6000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(0,900)));setTimeout(check,15)};check()})`);
+const tab=text=>run(`[...document.querySelectorAll('[role=tab]')].find(el=>el.textContent===${JSON.stringify(text)}).click()`);
 const click=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent===${JSON.stringify(text)}).click()`);
 try{
 await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelector("dialog[open]") && document.body.innerText.includes("配套插件已连接") && document.querySelector(".creator-preferences-form")');
 assert.equal(await run('getComputedStyle(document.querySelector(".creator-settings-columns")).gridTemplateColumns.split(" ").length'),2);
-assert.equal(await run('document.querySelector(".creator-settings-recovery").open'),false);
+assert.equal(await run('document.querySelector(".creator-settings-help").hidden'),true);
+assert.equal(await run('document.querySelectorAll(".creator-settings-dialog details").length'),0,'all settings help has one shared entry');
+for(const width of [1440,1100,900]) {
+ await win.setSize(width,1100);await run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+ assert.equal(await run('document.querySelector("dialog").scrollWidth<=document.querySelector("dialog").clientWidth'),true,'settings bounded');
+ assert.equal(await run('document.querySelector(".creator-settings-assistant").getBoundingClientRect().top<=document.querySelector(".creator-settings-profile").getBoundingClientRect().top'),true,'global assistant is prominent');
+ await fs.writeFile(path.join(probeRoot,`settings-${width}.png`),(await win.webContents.capturePage()).toPNG());
+}
+await tab('帮助与排查');await wait('!document.querySelector(".creator-settings-help").hidden');
+assert.ok(await run('document.querySelector(".creator-settings-help").textContent.includes("连接恢复入口")'),'recovery retained');
+await click('保存诊断文件');await wait('window.calls.some(call=>call.method==="exportDiagnostics")');
+await click('复制安装位置并打开助手');await wait('window.calls.some(call=>call.method==="copyPluginMarketLocation")&&window.calls.some(call=>call.method==="openSetupTarget")');
+await click('试发一条通知');await wait('window.calls.some(call=>call.method==="testReminder")');
+await run('window.reminderResult={supported:true,state:"failed",lastDay:null,reason:"storage-unavailable"}');await click('试发一条通知');
+await wait('document.querySelector(".creator-settings-help").textContent.includes("提醒记录无法安全读取或保存，已暂停提醒并保留原文件。")');
+assert.equal(await run('(()=>{const card=[...document.querySelectorAll(".creator-settings-help .semi-card")].find(card=>card.textContent.includes("通知试发与使用说明"));return card.querySelector("[role=status]").textContent;})()'),'提醒记录无法安全读取或保存，已暂停提醒并保留原文件。','storage failure takes priority over notification permission guidance in help');
+assert.equal(await run('[...document.querySelectorAll(".preferences-panel .creator-settings-hint[role=status]")].at(-1).textContent'),'提醒记录无法安全读取或保存，已暂停提醒并保留原文件。','both settings tabs show the same reason-first status');
+await run('window.reminderResult={supported:true,state:"sent",lastDay:null,reason:"none"}');await click('试发一条通知');
+
+await fs.writeFile(path.join(probeRoot,'settings-help-900.png'),(await win.webContents.capturePage()).toPNG());
+await tab('常用设置');await win.setSize(1440,1100);
 await run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))'); await fs.writeFile('/tmp/nova-creator-settings-probe.png',(await win.webContents.capturePage()).toPNG());
 await run('document.getElementById("update-builtins").click()');await wait('window.calls.some(call=>call.method==="retryBuiltins")');
 await run('window.updateStatus({...window.fixtureStatus, pending:{}})');await wait('document.getElementById("update-builtins").disabled');
@@ -58,13 +82,14 @@ await run('window.updateStatus(window.fixtureStatus)');await wait('document.getE
 await run('document.getElementById("assistant").click()');await wait('document.querySelectorAll(".semi-select-option").length===2');assert.deepEqual(await run('[...document.querySelectorAll(".semi-select-option")].map(option=>option.textContent)'),['Codex（默认）','WorkBuddy']);await run('[...document.querySelectorAll(".semi-select-option")].find(option=>option.textContent==="WorkBuddy").click()');await wait('window.calls.some(call=>call.method==="setAssistant"&&call.input.host==="workbuddy")');await run('document.getElementById("assistant").click()');await wait('document.querySelectorAll(".semi-select-option").length===2');await run('[...document.querySelectorAll(".semi-select-option")].find(option=>option.textContent==="Codex（默认）").click()');await wait('window.calls.some(call=>call.method==="setAssistant"&&call.input.host==="codex")');assert.match(await run('document.querySelector(".creator-channel-preview").textContent'),/我的专属渠道/);await click('管理渠道');assert.equal(await run('window.channelOpens'),1);await fs.writeFile(path.join(probeRoot,'settings-current.png'),(await win.webContents.capturePage()).toPNG());
 await click('编辑');await wait('document.querySelectorAll(".creator-settings-profile input").length >= 3');
 await run('document.querySelectorAll(".creator-settings-profile input")[1].focus()');win.webContents.insertText('知识分享');await wait('document.querySelectorAll(".creator-settings-profile input")[1].value === "知识分享"');
+await tab('帮助与排查');await tab('常用设置');assert.equal(await run('document.querySelectorAll(".creator-settings-profile input")[1].value'),'知识分享','help switch retains draft');
 const beforeUpdate = await run('window.calls.filter(call=>call.method==="retryBuiltins").length');await run('document.getElementById("update-builtins").click()');assert.equal(await run('window.calls.filter(call=>call.method==="retryBuiltins").length'),beforeUpdate);
 await run('document.getElementById("close-settings").click()');await wait('document.querySelector(".creator-settings-notice")');assert.equal(await run('window.closeCount'),0);
 await click('保存个人信息');await wait('window.calls.some(call=>call.method === "mutateWorkspace")');
 assert.deepEqual(await run('window.lib.settings.profile.marks'),[{key:'品牌色',value:'蓝色'},{key:'自媒体方向',value:'知识分享'}]);assert.equal(await run('window.lib.settings.profile.avatarAssetHash'),null);
 await click('＋ 添加照片');await wait('window.calls.some(call=>call.method === "choosePhoto")');assert.equal(await run('window.calls.find(call=>call.method === "choosePhoto").input.isOwnPhoto'),false);
 await run('document.querySelector(".creator-preference-row .semi-switch").click()');await wait('!Array.from(document.querySelectorAll("button")).find(button=>button.textContent==="保存偏好").disabled');await click('保存偏好');await wait('window.calls.some(call=>call.method === "savePreferences")');assert.equal(await run('window.preferences.values.remindersEnabled'),true);
-console.log('PASS: settings two-column layout, collapsed recovery, dirty-close guard, profile mark preservation, unclaimed photo import, preference save, both explicit assistants and one shared channel-manager entry');app.exit(0);
+console.log('PASS: settings compact priority rows 1440/1100/900, unified help/diagnostic/install/notification actions, draft-preserving help tabs, dirty-close guard, profile mark preservation, unclaimed photo import, preference save, both explicit assistants and one shared channel-manager entry');console.log('Screenshots:',probeRoot);app.exit(0);
 }catch(error){console.error(error);app.exit(1);}}
 await fs.writeFile(path.join(root,'probe-main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)});`);
 const child=spawn(electron,[path.join(root,'probe-main.mjs')],{stdio:'inherit',env:{...process.env,ELECTRON_RUN_AS_NODE:''}});const code=await new Promise(resolve=>child.on('exit',resolve));console.log('Probe fixture:',root);process.exitCode=code??1;

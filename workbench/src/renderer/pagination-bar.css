@@ -1,5 +1,13 @@
-.pagination-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 0; color: var(--semi-color-text-2); font-size: 13px; }
-.pagination-bar > div, .pagination-bar .semi-page { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.pagination-bar { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; min-width:0; max-width:100%; padding:12px 0; color:var(--semi-color-text-2); font-size:13px; }
+.pagination-bar > [role=status] { flex:none; }
+.pagination-bar > .semi-page { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:4px; flex:0 1 auto; min-width:0; max-width:100%; margin:0 0 0 auto; padding:0; list-style:none; }
+.pagination-bar .semi-page-item { flex:none; margin:0; }
+.pagination-bar .semi-page-prev,.pagination-bar .semi-page-next { padding:0 6px; }
+.pagination-bar .semi-page-quickjump { flex:none; gap:4px; margin-left:8px; white-space:nowrap; }
+.pagination-bar .semi-page-quickjump-input-number { flex:none; width:52px; max-width:52px; margin:0; }
+/* Global form inputs must not add a second box inside Semi's fixed-height jumper. */
+.pagination-bar .semi-page-quickjump input.semi-input { width:100%; min-width:0; padding:0 6px !important; border:0 !important; border-radius:0; background:transparent !important; box-shadow:none !important; }
+.pagination-bar .semi-page-item:focus-visible { outline:2px solid var(--semi-color-focus-border); outline-offset:2px; }
 .members-toolbar { display: grid; grid-template-columns: minmax(180px, 1fr) repeat(3, minmax(110px, auto)); gap: 12px; align-items: end; }
 .members-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
 .members-table th, .members-table td { padding: 12px 8px; border-bottom: 1px solid var(--semi-color-border); text-align: left; overflow-wrap: anywhere; }
@@ -9,8 +17,8 @@
 .members-table .member-preview { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .members-editor-list { max-height: min(42vh, 420px); overflow: auto; }
 .members-editor-form > fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.members-editor-list > .pagination-bar { padding-right:12px; }
 .members-editor-list th { position: sticky; top: 0; z-index: 1; background: var(--semi-color-bg-0); }
 .members-save-bar { position: sticky; bottom: -24px; padding: 12px 0; background: var(--semi-color-bg-0); z-index: 2; }
 .members-save-bar p:empty { display: none; }
 @media (max-width: 760px) { .members-toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); } .members-toolbar > label:first-child { grid-column: 1 / -1; } }
-.pagination-bar .semi-page { max-width: 100%; min-width: 0; }

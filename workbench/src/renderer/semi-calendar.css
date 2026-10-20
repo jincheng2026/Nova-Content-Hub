@@ -29,3 +29,10 @@
 .creator-schedule .semi-calendar-week .semi-calendar-all-day-skeleton li { flex:1 1 0; min-width:0; }
 .creator-schedule .semi-calendar-week .semi-calendar-event-allday { height:48px; padding:2px 3px; }
 .creator-schedule .semi-calendar-week .semi-calendar-all-day .semi-schedule-event { flex-direction:column; align-items:stretch; justify-content:center; gap:2px; padding:3px 6px; font-size:11px; line-height:17px; }
+/* Month events occupy Semi's 24px slots, independently of the week view's minimum height. */
+.creator-schedule .semi-calendar-month .semi-schedule-event.semi-button { box-sizing:border-box; height:100%; min-height:0; padding:1px 4px; line-height:18px; }
+.creator-schedule .semi-calendar-month .semi-schedule-event-meta { flex:0 1 auto; overflow:hidden; }
+.creator-schedule .semi-calendar-month .semi-schedule-event strong { flex:1 1 0; }
+.creator-schedule .semi-calendar-month .semi-schedule-event time { flex:0 1 auto; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+
+.creator-schedule .semi-schedule-event.cancelled { opacity:.55; text-decoration:line-through; }

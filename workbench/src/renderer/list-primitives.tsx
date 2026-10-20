@@ -12,7 +12,7 @@ export function ListToolbar({search, children, actions, className = ''}: {search
 
 type DataTableProps<T extends object> = Pick<TableProps<T>, 'columns' | 'rowKey' | 'empty' | 'onRow' | 'showHeader' | 'rowSelection' | 'expandedRowKeys' | 'expandedRowRender' | 'onExpand' | 'hideExpandedColumn' | 'scroll'> & {rows: T[]; total: number; page: number; pageSize: number; onPageChange(page: number): void; label: string; className?: string; disabled?: boolean; id?: string};
 export function DataTable<T extends object>({rows, total, page, pageSize, onPageChange, label, className = '', disabled, id, ...table}: DataTableProps<T>) {
-  return <div className={`data-table ${className}`} id={id}><div className="data-table-scroll"><Table<T> {...table} rowKey={table.rowKey ?? 'id'} dataSource={rows} pagination={false} size="small" keepDOM={false}/></div><PaginationBar total={total} page={page} pageSize={pageSize} onPageChange={onPageChange} label={label} disabled={disabled}/></div>;
+  return <div className={`data-table ${className}`} id={id}><div className="data-table-scroll"><Table<T> {...table} expandIcon={table.hideExpandedColumn ? false : undefined} rowKey={table.rowKey ?? 'id'} dataSource={rows} pagination={false} size="small" keepDOM={false}/></div><PaginationBar total={total} page={page} pageSize={pageSize} onPageChange={onPageChange} label={label} disabled={disabled}/></div>;
 }
 
 export function ImageList({children, className = ''}: {children: ReactNode; className?: string}) {

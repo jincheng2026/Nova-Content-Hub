@@ -43,7 +43,8 @@
  .schedule-day-plans .daily-plan-row { grid-template-columns:76px minmax(0,1fr) auto; gap:8px; padding:13px 0; }
 }
 
-.content-title-link.semi-button,.content-collection-card.semi-button { height:auto; white-space:normal; padding:0; }
+.content-title-link.semi-button,.content-collection-card.semi-button { height:auto; white-space:normal; }
+.content-title-link.semi-button { padding:0; justify-content:flex-start; }
 .content-title-link.semi-button .semi-button-content,.content-collection-card.semi-button .semi-button-content,.creator-week .semi-button-content,.creator-attention .semi-button-content,.creator-recent .semi-button-content,.creator-template-shortcut .semi-button-content { display:contents; }
 .content-row-actions>.semi-button { height:auto; min-height:32px; }
 .content-table-wrap .semi-table { min-width:820px; }
