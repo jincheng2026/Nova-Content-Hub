@@ -52,6 +52,9 @@
   },
   "activeConversationReloaded": false,
   "realGenerationRunOnThisVersion": false,
-  "uiStartupAccepted": false,
-  "uiStartupPendingReason": "macOS Documents permission prompt after ad hoc identity change"
+  "uiStartupAcceptedAtInitialIntegrityCheck": false,
+  "startupAcceptanceReference": {
+    "path": "startup-acceptance.json",
+    "accepted": true
+  }
 }

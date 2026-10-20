@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-20T12:13:44.188Z",
+  "version": "0.3.33",
+  "nativeStartup": true,
+  "libraryLoaded": true,
+  "ratioSelection": {
+    "selected": "16:9",
+    "pixels": "1376x774",
+    "restored": "3:4"
+  },
+  "nativeAbout": {
+    "version": "0.3.33",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司"
+  },
+  "normalQuitAndReopen": true,
+  "userLibrary": {
+    "entries": 1938,
+    "beforeSha256": "162a5fbf243bfd3e8bc972772df7af00981cedad9b932810c77dc6e64af5aaf1",
+    "afterSha256": "162a5fbf243bfd3e8bc972772df7af00981cedad9b932810c77dc6e64af5aaf1",
+    "unchangedAcrossAcceptance": true,
+    "installationBaselineDiffersBecauseOfInterveningUserEdits": true
+  },
+  "scope": "Installed app, real native UI; ratio restored, no generation or business mutation. New baseline captured before quit because user edited the library after installation."
+}

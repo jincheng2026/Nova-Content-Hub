@@ -16,9 +16,10 @@
     "allocatedDisplay": "676.4 MB"
   },
   "startup": {
-    "accepted": false,
+    "accepted": true,
     "reason": "macOS TCC Documents access prompting due ad hoc signature change",
-    "userQuestionPending": true
+    "userQuestionPending": false,
+    "resultReference": "startup-acceptance.json"
   },
   "systemEvidence": [
     "installed/final-app-finder.png",
