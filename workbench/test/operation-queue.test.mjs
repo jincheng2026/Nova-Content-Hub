@@ -86,3 +86,33 @@ test('an image grant revoked while queued is checked again before any worker rea
     await blocker;
     assert.equal(await image, null);
 });
+
+test('close rejects new work immediately and drains active and both accepted queues, including failures', async () => {
+    const run = createOperationQueue(), events = [], failure = new Error('accepted failure');
+    let release;
+    const active = run(() => new Promise(resolve => { release = () => { events.push('active'); resolve(); }; }), 'background');
+    await Promise.resolve();
+    const background = run(() => { events.push('background'); return 'image'; }, 'background');
+    const failedBackground = assert.rejects(run(() => { events.push('failed-background'); return Promise.reject(failure); }, 'background'), error => error === failure);
+    const failed = assert.rejects(run(() => { events.push('failed'); throw failure; }), error => error === failure);
+    const foreground = run(() => { events.push('foreground'); return 'saved'; });
+    let drained = false;
+    const closing = run.close();
+    assert.equal(run.close(), closing, 'repeated close shares the same drain');
+    void closing.then(() => { drained = true; });
+    await assert.rejects(run(() => assert.fail('late foreground ran')), {code: 'WORKER_STOPPED'});
+    await assert.rejects(run(() => assert.fail('late image ran'), 'background'), {code: 'WORKER_STOPPED'});
+    assert.equal(drained, false);
+    release();
+    await Promise.all([active, failed, foreground, background, failedBackground, closing]);
+    assert.equal(drained, true);
+    assert.deepEqual(events, ['active', 'failed', 'foreground', 'background', 'failed-background']);
+    assert.equal(await foreground, 'saved');
+    assert.equal(await background, 'image');
+});
+
+test('closing an idle queue resolves and never reopens it', async () => {
+    const run = createOperationQueue();
+    await run.close();
+    await assert.rejects(run(() => 'late'), {code: 'WORKER_STOPPED'});
+});

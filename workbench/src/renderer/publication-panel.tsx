@@ -39,8 +39,12 @@ export function PublicationPanel(props: WorkspaceManagementProps & {documentId: 
   const currentPlanPage = Math.min(planPage, Math.max(1, Math.ceil(plans.length / planPageSize))), currentHistoryPage = Math.min(historyPage, Math.max(1, Math.ceil(history.length / historyPageSize)));
   useEffect(() => {setQuery(''); setStatus(''); setHistoryPage(1); const index = sortedPlans.findIndex(plan => plan.id === props.focusedPlanId); setPlanPage(index < 0 ? 1 : Math.floor(index / planPageSize) + 1);}, [props.documentId, document?.id, kind, props.focusedPlanId, props.focusRequest]);
   const focusRow = useRef<HTMLElement>(null);
+  const focusPositioned = useRef(false);
   const disabled = props.busy || !!document?.deletedAt || !!dialog;
-  useEffect(() => { focusRow.current?.scrollIntoView({block: 'nearest'}); }, [props.focusedPlanId, currentPlanPage, props.documentId, kind, query, status, sortedPlans]);
+  useEffect(() => {focusPositioned.current = false;}, [props.focusedPlanId, props.documentId, kind, props.focusRequest]);
+  useEffect(() => {
+    if (!focusPositioned.current && focusRow.current) {focusRow.current.scrollIntoView({block: 'nearest'}); focusPositioned.current = true;}
+  }, [props.focusedPlanId, currentPlanPage, props.documentId, kind, props.focusRequest, sortedPlans]);
   useEffect(() => {
     if (props.newPlanRequest && kind === 'content' && document && !document.deletedAt && !dialog) setDialog({mode: 'plan', documentId: document.id, kind});
   }, [props.newPlanRequest]);

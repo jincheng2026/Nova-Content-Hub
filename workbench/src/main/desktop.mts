@@ -73,12 +73,34 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     let tray: Tray | null = null;
     let reminders: Reminders | undefined;
     let libraryWatcher: LibraryWatcher | undefined;
+    let quitting = false, quitReady = false;
+    let resumeReminders: (() => void) | undefined;
     // Keep library reads and writes serial: separate workers still share the same library lock.
     const runOperation = createOperationQueue();
     app.on('second-instance', () => resident?.show());
     app.on('activate', () => resident?.show());
     app.on('window-all-closed', () => app.quit());
-    app.on('will-quit', () => { libraryWatcher?.close(); reminders?.dispose(); tray?.destroy(); worker?.stop(); resourceWorker?.stop(); });
+    app.on('will-quit', event => {
+        if (quitReady) return;
+        event.preventDefault();
+        if (quitting) return;
+        quitting = true;
+        // will-quit follows the resident draft-save guard; accepted writes must release their locks before worker termination.
+        const drained = runOperation.close();
+        libraryWatcher?.close();
+        reminders?.dispose();
+        if (resumeReminders) {
+            powerMonitor.removeListener('resume', resumeReminders);
+            powerMonitor.removeListener('unlock-screen', resumeReminders);
+        }
+        void drained.then(() => {
+            worker?.stop();
+            resourceWorker?.stop();
+            tray?.destroy();
+            quitReady = true;
+            app.quit();
+        });
+    });
     await app.whenReady();
     Menu.setApplicationMenu(Menu.buildFromTemplate(applicationMenu(process.platform, app.getName())));
     const icon = nativeImage.createFromPath(icons.png);
@@ -263,10 +285,11 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             cancelId: 2
         }));
     libraryWatcher = new LibraryWatcher({notify: change => {
+        if (quitting) return;
         if (!window.isDestroyed() && !window.webContents.isDestroyed() && window.webContents.getURL() === PAGE) window.webContents.send('nova:workspace-changed', change);
         if (change === 'changed') void reminders?.refresh(true);
     }});
-    const syncLibraryWatcher = () => libraryWatcher?.bind(initializationError || controller.binding?.needsReselect ? null : controller.binding?.current ?? null);
+    const syncLibraryWatcher = () => { if (!quitting) libraryWatcher?.bind(initializationError || controller.binding?.needsReselect ? null : controller.binding?.current ?? null); };
     try {
         const traySource = nativeImage.createFromPath(icons.tray);
         const trayIcon = traySource.resize({width: 18, height: 18});
@@ -324,11 +347,10 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         }
     });
     controller.services = {preferences, reminders, setup, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
-    preferences.onSaved = () => { void reminders?.refresh(true); };
-    const resumeReminders = () => { void reminders?.refresh(true); };
+    preferences.onSaved = () => { if (!quitting) void reminders?.refresh(true); };
+    resumeReminders = () => { if (!quitting) void reminders?.refresh(true); };
     powerMonitor.on('resume', resumeReminders);
     powerMonitor.on('unlock-screen', resumeReminders);
-    app.once('will-quit', () => { powerMonitor.removeListener('resume', resumeReminders); powerMonitor.removeListener('unlock-screen', resumeReminders); });
     window.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
     window.webContents.on('will-navigate', event => event.preventDefault());
     window.webContents.on('will-frame-navigate', event => event.preventDefault());
@@ -347,7 +369,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
-                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
+                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
             };
         } catch (error) {
             return {

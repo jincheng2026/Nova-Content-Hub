@@ -23,8 +23,10 @@ window.channels=[{id:'custom-channel',name:'演示自定义渠道',ink:'#ad245e'
 window.library={contentDetails:[window.doc],collections:[window.collection],settings:{channels:window.channels}};
 window.workspace={contents:[window.doc],channels:window.channels};window.original=JSON.stringify({library:window.library,workspace:window.workspace});window.calls=[];
 window.contentHub=new Proxy({},{get:(_,method)=>async input=>{window.calls.push({method,input});throw new Error('Unexpected native call');}});
+window.scrollCalls=[];const nativeScroll=HTMLElement.prototype.scrollIntoView;HTMLElement.prototype.scrollIntoView=function(options){window.scrollCalls.push({target:this.id||this.className,stack:new Error().stack});return nativeScroll.call(this,options);};
 const root=createRoot(document.getElementById('root'));
-window.renderCalendar=(busy=false,useLibrary=true)=>root.render(<CalendarPage workspace={{...window.workspace}} library={useLibrary?{...window.library}:null} initialFocus={{kind:'content',id:'content-a',planId:'local-minute',day:'2026-10-19'}} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
+window.initialFocus={kind:'content',id:'content-a',planId:'local-minute',day:'2026-10-19'};
+window.renderCalendar=(busy=false,useLibrary=true)=>root.render(<CalendarPage workspace={{...window.workspace}} library={useLibrary?{...window.library}:null} initialFocus={window.initialFocus} busy={busy} open={()=>{}} run={fn=>fn()} refresh={async()=>{}}/>);
 window.renderCalendar();
 `);
 await build({configFile:false, root, base:'./', resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}}, oxc:{jsx:{runtime:'automatic'}}, build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -40,11 +42,19 @@ async function probeMain(probeRoot) {
   const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+6000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}+' / '+document.body.innerText.slice(0,700)));setTimeout(check,20)};check()})`);
   const clickText=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent.trim()===${JSON.stringify(text)}).click()`);
   const settle=()=>run('new Promise(resolve=>setTimeout(resolve,100))');
-  const click=async selector=>{
+  const scrollSamples=[];
+  const scrollPosition=()=>run('({x:window.scrollX,y:window.scrollY})');
+  const stable=async (label,action)=>{
+    await run('window.scrollCalls=[]');const before=await scrollPosition();await action();await settle();const after=await scrollPosition();
+    scrollSamples.push({label,before,after,calls:await run('window.scrollCalls')});
+    await fs.writeFile(path.join(probeRoot,'scroll-samples.json'),JSON.stringify(scrollSamples,null,2));
+    assert.deepEqual(after,before,label+' preserves reading position');
+  };
+  const click=async (selector,stableLabel)=>{
     await run(`document.querySelector(${JSON.stringify(selector)}).scrollIntoView({block:'center'})`);await settle();
     const point=await run(`(()=>{const r=document.querySelector(${JSON.stringify(selector)}).getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)};})()`);
-    win.webContents.sendInputEvent({type:'mouseDown',...point,button:'left',clickCount:1});
-    win.webContents.sendInputEvent({type:'mouseUp',...point,button:'left',clickCount:1});await settle();
+    const input=async()=>{win.webContents.sendInputEvent({type:'mouseDown',...point,button:'left',clickCount:1});win.webContents.sendInputEvent({type:'mouseUp',...point,button:'left',clickCount:1});await settle();};
+    if(stableLabel)await stable(stableLabel,input);else await input();
   };
   const snapshot=()=>run(`JSON.stringify({heading:document.querySelector('.creator-page-heading h2').textContent,day:document.querySelector('.schedule-day-detail h3').textContent,input:document.querySelector('.schedule-subheading input').value,selected:document.querySelector('.semi-schedule-day.is-selected')?.getAttribute('aria-label')})`);
   const equalWeekendBackground=async mode=>{
@@ -89,27 +99,45 @@ async function probeMain(probeRoot) {
     assert.equal(await snapshot(),beforeBrowse,'closing without selecting cancels browsing');
     await click('.schedule-subheading .semi-datepicker input');await wait('document.querySelectorAll(".semi-datepicker-month [role=gridcell]").length > 0');
     if(await run(`[...document.querySelectorAll('.semi-datepicker-month [role=gridcell]')].some(el=>el.title==='2026-11-23')`) === false)await click('button[aria-label="Next month"]');
-    await click('.semi-datepicker-month [role=gridcell][title="2026-11-23"]');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-11-23")');
+    await click('.semi-datepicker-month [role=gridcell][title="2026-11-23"]','small calendar cross-month empty day');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-11-23")');
     assert.match(await run('document.querySelector(".creator-page-heading h2").textContent'),/2026 年 11 月/,'date click updates main month');
     await click('.schedule-subheading .semi-datepicker input');await wait('document.querySelectorAll(".semi-datepicker-month [role=gridcell]").length > 0');
     assert.equal(await run('document.querySelector(".schedule-subheading input").value'),'2026-11-23','reopened picker retains selected date');
     await click('.creator-page-heading h2');
-    await clickText('按周');await wait('document.querySelector(".semi-calendar-week")');
+    await stable('switch month to week',()=>clickText('按周'));await wait('document.querySelector(".semi-calendar-week")');
     const beforeWeek=await snapshot();await click('.schedule-subheading .semi-datepicker input');await click('button[aria-label="Next month"]');assert.equal(await snapshot(),beforeWeek,'week view ignores browsing');
-    await click('.semi-datepicker-month [role=gridcell][title="2026-12-16"]');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-12-16")');
+    await click('.semi-datepicker-month [role=gridcell][title="2026-12-16"]','small calendar cross-week empty day');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-12-16")');
     assert.match(await run('document.querySelector(".creator-page-heading h2").textContent'),/12-14 — 12-20/,'date click updates main week');
-    await clickText('按月');await click('.schedule-subheading .semi-datepicker input');await click('button[aria-label="Previous month"]');await click('button[aria-label="Previous month"]');await click('.semi-datepicker-month [role=gridcell][title="2026-10-19"]');
+    await stable('switch week to month',()=>clickText('按月'));await click('.schedule-subheading .semi-datepicker input');await click('button[aria-label="Previous month"]');await click('button[aria-label="Previous month"]');await click('.semi-datepicker-month [role=gridcell][title="2026-10-19"]','small calendar day with plans');
     await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("3 条安排")');
     await equalWeekendBackground('month');
-
-
-
+    await run('window.calendarNode=document.querySelector(".semi-calendar-month")');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-20"]','large calendar day with plans');
+    await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("1 条安排")');
+    assert.equal(await run('document.querySelector(".schedule-day-plans [data-plan-id=collection-minute]")!==null'),true,'day selection updates plan rows in place');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-20"]','large calendar repeated day');
+    await run(`document.querySelector('.semi-schedule-day[aria-label^="选择 2026-10-21"]').closest('li').setAttribute('data-probe-blank','true')`);
+    await click('[data-probe-blank]','large calendar empty cell');
+    await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-10-21")');
+    assert.equal(await run('document.querySelectorAll(".schedule-day-plans .daily-plan-row").length'),0,'empty day clears plan rows');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','large calendar restores day with plans');
+    assert.equal(await run('window.calendarNode===document.querySelector(".semi-calendar-month")'),true,'date selection preserves calendar DOM');
+    await click('button[aria-label="下个月"]','next main month');
+    await click('button[aria-label="上个月"]','previous main month');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','large calendar return after month navigation');
     assert.equal(await run('document.querySelector(".semi-calendar-month-grid-row").textContent.startsWith("周一")'),true,'month starts Monday');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute] time").textContent'),'10:45');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=date-only] time").textContent'),'时间待定');
     const instantClock=await run('new Intl.DateTimeFormat("zh-CN",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(new Date(window.doc.plans[2].schedule.at))');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=instant] time").textContent'),instantClock,'instant is shown in machine timezone');
     await clickText('按周');await wait('document.querySelectorAll(".semi-calendar-week .semi-schedule-event").length === 4');
+    await click('button[aria-label="下一周"]','next main week');
+    await click('button[aria-label="上一周"]','previous main week');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-20"]','week header day with plans');
+    await wait('document.querySelector(".schedule-day-plans [data-plan-id=collection-minute]")');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-21"]','week header empty day');
+    await wait('document.querySelectorAll(".schedule-day-plans .daily-plan-row").length===0');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','week header restores plan day');
     await equalWeekendBackground('week');
     assert.equal(await run('document.querySelector(".semi-calendar-week-grid-row").textContent.startsWith("周一")'),true,'week starts Monday');
     assert.equal(await run('document.querySelector(".semi-calendar-all-day .semi-calendar-tag").textContent'),'时间待定');
@@ -123,7 +151,9 @@ async function probeMain(probeRoot) {
     assert.ok(Math.abs(minuteTop/gridHeight-10.75/24)<.002,'10:45 minute position is preserved');
     await run('document.querySelector(".creator-page-heading").scrollIntoView({block:"start"});new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
     await fs.writeFile(path.join(probeRoot,'calendar-week-1280.png'),(await win.webContents.capturePage()).toPNG());
-    await run('document.querySelector("[data-plan-id=collection-minute]").click()');await wait('document.querySelector(".publication-plan.is-focused")');
+    await run('window.scrollTo(0,0)');const beforeManager=await scrollPosition();
+    await run('document.querySelector("[data-plan-id=collection-minute]").click()');await wait('document.querySelector(".publication-plan.is-focused")');await settle();
+    assert.ok((await scrollPosition()).y>beforeManager.y,'explicit plan detail navigates to management');
     assert.equal(await run('document.querySelector(".calendar-manager-heading h3").textContent'),'合集演示','event selects collection owner');
     assert.ok(await run('document.querySelector(".publication-plan.is-focused").textContent.includes("14:25")'),'event focuses original plan');
     await run('[...document.querySelectorAll(".semi-schedule-day")].find(button=>button.getAttribute("aria-label").startsWith("选择 2026-10-22")).click()');await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-10-22")');
@@ -139,7 +169,10 @@ async function probeMain(probeRoot) {
     const distinctColors=await run('[...new Set([...document.querySelectorAll(".schedule-legend .creator-channel")].map(item=>getComputedStyle(item).getPropertyValue("--channel-color")))].length');assert.equal(distinctColors,2,'channel legend retains separate colors');
     assert.equal(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").style.getPropertyValue("--channel-color")'),'#ad245e','calendar uses saved channel color');
     assert.equal(await run('JSON.stringify({library:window.library,workspace:window.workspace}) === window.original'),true,'all UI actions preserve the original schedules and metadata');
-    await run('window.doc.title="更新后的标题";window.doc.body="更新后的计划首行";window.doc.plans[0].schedule.time="11:05";window.renderCalendar()');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("11:05")');
+    await run('window.scrollTo(0,80);window.calendarNode=document.querySelector(".semi-calendar-month")');
+    await stable('refresh plans while empty day selected',()=>run('window.doc.title="更新后的标题";window.doc.body="更新后的计划首行";window.doc.plans[0].schedule.time="11:05";window.renderCalendar()'));await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("11:05")');
+    assert.equal(await run('window.calendarNode===document.querySelector(".semi-calendar-month")'),true,'plan refresh preserves calendar DOM');
+    assert.ok(await run('document.querySelector(".schedule-day-detail h3").textContent.includes("2026-10-22")'),'plan refresh preserves selected empty day');
     assert.ok(await run('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").textContent.includes("更新后的计划首行")'),'cached Semi event refreshes on changes');
     await run('window.renderCalendar(true)');await wait('document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").disabled');
     assert.equal(await run('document.querySelector(".schedule-subheading input").disabled'),true,'busy disables date input');
@@ -147,7 +180,25 @@ async function probeMain(probeRoot) {
     await run('window.renderCalendar(false,false)');await wait('!document.querySelector(".semi-calendar-month [data-plan-id=local-minute]").disabled');
     await chooseStatus('全部安排（含已取消）');await wait('document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
     await chooseStatus('未取消（待发布＋已记录）');await wait('!document.querySelector(".semi-calendar-month [data-plan-id=cancelled]")');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','select planned day after refresh');
+    await run('window.scrollTo(0,80)');
+    await stable('refresh selected day plans',()=>run('window.doc.plans[0].schedule.time="11:15";window.renderCalendar()'));
+    await wait('document.querySelector(".schedule-day-plans [data-plan-id=local-minute] time").textContent==="11:15"');
+    await run('window.doc.plans.push(...Array.from({length:22},(_,i)=>({...window.doc.plans[1],id:"overflow-"+i})));window.initialFocus={kind:"content",id:"content-a",planId:"overflow-21",day:"2026-10-19"};window.scrollTo(0,0);window.renderCalendar()');
+    await wait('document.querySelector(".schedule-day-detail h3").textContent.includes("25 条安排")');await wait('document.querySelector(".schedule-day-plans .is-focused")?.dataset.planId==="overflow-21"');await settle();
+    assert.ok((await scrollPosition()).y>0,'explicit cross-page focus still navigates to day plans');
+    await run('window.scrollTo(0,0);document.querySelector(".schedule-day-more").click()');await settle();
+    assert.ok((await scrollPosition()).y>0,'explicit view-all navigates to day plans');
+    await run('document.querySelector(".schedule-day-plans .semi-page-next").click()');await wait('document.querySelector(".schedule-day-plans nav [role=status]").textContent.includes("21–25")');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','reselect planned day resets pagination in place');
+    await wait('document.querySelector(".schedule-day-plans nav [role=status]").textContent.includes("1–20")');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-20"]','leave previously focused day');
+    await click('.semi-schedule-day[aria-label^="选择 2026-10-19"]','return to previously focused day');
+    await wait('document.querySelector(".schedule-day-plans nav [role=status]").textContent.includes("1–20")');
+    await run('window.scrollTo(0,80)');await stable('refresh does not restore old focused page',()=>run('window.renderCalendar()'));
+    assert.ok(await run('document.querySelector(".schedule-day-plans nav [role=status]").textContent.includes("1–20")'),'refresh preserves manually chosen day page');
     assert.deepEqual(await run('window.calls'),[],'no business writes');
+    console.log('PASS stable scroll:',scrollSamples.length,'native date/day, repeat/blank day, month/week navigation and refresh samples; explicit plan details, cross-page focus and view-all retain navigation');
     console.log('PASS actual React/Semi/Electron: date picker month/year browsing, year panel, outside cancellation, cross-month/week date selection, matching weekend computed backgrounds; month/week Monday, exact minutes, machine-zone instant, unknown-time all-day row, collection plan focus, selected-day new plan, event refresh, busy guard, 1440/1100/900 month slots and horizontal bounds, default/all/cancelled filters shared by calendar/day rows plus workspace fallback, no native writes');console.log('Screenshots:',path.join(probeRoot,'calendar-1280.png'),path.join(probeRoot,'calendar-week-1280.png'));app.exit(0);
   } catch(error) {console.error(error);app.exit(1);}
 }
