@@ -101,13 +101,17 @@ function hostURL(host, id, root, options, kind, library, context) {
     const summary = value => Array.from(value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/gu, ' ').replace(/\$/g, '＄').replace(/`/g, '｀').trim()).slice(0, 48);
     const title = kind === 'cover' ? summary(request.title) : [];
     const name = template.deletedAt ? [] : summary(template.name);
+    const requirements = kind === 'template'
+        ? `要求：参考图${request.styleAssetHashes.length}张；首张还原1张；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.restore.width}×${request.restore.height}；${request.restore.outputFormat}；补充说明${request.notes.trim() ? '有' : '无'}。`
+        : `要求：${request.count}张；${request.ratio}；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.pixels.width}×${request.pixels.height}；${request.outputFormat}；${request.photo ? '本人照已选' : '不放人物'}；样张${request.styleAssetHashes.length}；资料${request.materials.length - (refinement ? 1 : 0)}；${refinement ? '原图参考1；' : ''}生成要求${request.prompt.trim() ? '已保存' : '无'}。`;
+    const readFirst = '先按任务编号读取完整请求、正文及全部已选图片和资料，核对后生成；完整请求为准。';
     const prompt = () => {
         const intent = kind === 'template'
             ? `学习${name.length ? `「${name.join('')}」模板的整组参考图` : '这组模板参考图'}，整理规则并还原首张样图，交回工作台验收。`
             : refinement
                 ? `按已保存的位置批注修改${title.length ? `「${title.join('')}」的封面` : '原封面'}，生成新候选并交回工作台。`
                 : `照${name.length ? `「${name.join('')}」模板` : '已选模板'}，给${title.length ? `「${title.join('')}」` : '这篇内容'}生成封面候选，并交回工作台。`;
-        return [intent, `任务编号：${id}`, ...(host === 'codex' ? ['$' + skill] : [])].join('\n');
+        return [intent, requirements, readFirst, `任务编号：${id}`, ...(host === 'codex' ? ['$' + skill] : [])].join('\n');
     };
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {

@@ -1,0 +1,48 @@
+✔ all browser intents start naturally and preserve complete data without unrelated image instructions (17.286ms)
+✔ each request kind controls its own intent and retains host skill activation and resume routing (8.33775ms)
+✔ long links preserve the same intent and request file, while full copy retains all data (8.9925ms)
+✔ display names are bounded data and required auth or unsupported resume remain refused (0.386791ms)
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (13.607833ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (1055.501292ms)
+✔ browser image requests preserve visible selected requirements in JSON and long attachment fallback (20.764125ms)
+✔ browser requirement summaries admit only positive safe integer count and a two-integer pixel tuple (31.749709ms)
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (11606.272666ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (4127.43425ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (2093.000625ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (2176.311792ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (3621.552959ms)
+✔ bundled codex exact context restores selected photo, materials and requirements after retry/host change (6763.148ms)
+✔ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (6236.087958ms)
+✔ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (6876.353ms)
+✔ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (4532.0165ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (1948.176417ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (1570.232916ms)
+✔ codex exact template handoff names the selected template and requests study plus restoration (1262.1045ms)
+✔ codex ratio-minimum template handoff names the selected template and requests study plus restoration (1349.527666ms)
+✔ workbuddy exact template handoff names the selected template and requests study plus restoration (1172.000583ms)
+✔ workbuddy ratio-minimum template handoff names the selected template and requests study plus restoration (1158.767708ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, without exporting annotations (1990.868375ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, without exporting annotations (1694.419834ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (716.378166ms)
+✔ empty display names and deleted templates keep a natural cover prompt (1256.985459ms)
+✔ URL budget drops only optional names, preserves a full fixed task at 2048, and refuses one character beyond (1434.79725ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (1074.791666ms)
+✔ release and request/host validation stop before creating an envelope (1055.18925ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (1500.586958ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (745.597042ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1846.477083ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (1193.05175ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (1216.241334ms)
+✔ codex exact shows every selected requirement and restores exact input bytes and roles across retry and host change (5490.716792ms)
+✔ codex ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (5447.481791ms)
+✔ workbuddy exact shows every selected requirement and restores exact input bytes and roles across retry and host change (5297.26525ms)
+✔ workbuddy ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (4665.629583ms)
+✔ execution Skills require actual complete input reads and a visible checklist before claim and generation (1.489ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51607.1495

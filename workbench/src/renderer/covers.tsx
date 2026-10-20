@@ -17,6 +17,7 @@ import type { Content, Status } from '../shared/contracts.ts';
 import type { WorkspaceLibrarySnapshot, WorkspaceContentDetails, WorkspaceCandidate } from '../shared/workspace-contracts.ts';
 interface Props { arrangePublication?(): void; startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; readAutomatically(contentId: string): Promise<{assets: CoverResults['listCoverAssets']; cover: CoverView} | undefined>; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
 const attemptLabels: Record<Attempt['status'], string> = { created: '待接单', claimed: '已接单', committed: '已入库', failed: '失败', cancelled: '已取消', superseded: '已替换' };
+const defaultCoverPrompt = '根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。';
 const launchNotice = '已请求系统打开助手。请在助手中确认执行；接单与结果将显示在这里。';
 function CoverArtwork({url, alt}: {url: string; alt: string}) {
   return <><img className="cover-artwork-backdrop" src={url} alt="" aria-hidden="true" loading="lazy"/><img className="cover-artwork-original" src={url} alt={alt} loading="lazy"/></>;
@@ -49,7 +50,7 @@ export function CoverPanel({ arrangePublication, startOpenKey, library, refresh:
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [comparing, setComparing] = useState(false);
   const [annotationDraft, setAnnotationDraft] = useState<(WorkspaceCandidate & {editToken: string; url: string}) | null>(null);
-  const [prompt, setPrompt] = useState('根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。');
+  const [prompt, setPrompt] = useState(defaultCoverPrompt);
   const [notice, setNotice] = useState('');
   const [metadata, setMetadata] = useState<WorkspaceContentDetails | null>(null);
   const [candidateDraft, setCandidateDraft] = useState<(WorkspaceCandidate & {editToken: string}) | null>(null);
@@ -102,7 +103,7 @@ export function CoverPanel({ arrangePublication, startOpenKey, library, refresh:
   useEffect(() => {
     initialized.current = null;
     touched.current = { template: false, photo: false, count: false };
-    setTemplateId(''); setSamples([]); setPhotoId(''); setMaterialIds([]); setCount(1); setRatio('3:4'); setCustomRatio(false); setCompareIds([]); setComparing(false); setOnlyFavorites(false); setAnnotationDraft(null); setCandidateDraft(null); setCover(null); setNotice('');
+    setPrompt(defaultCoverPrompt); setTemplateId(''); setSamples([]); setPhotoId(''); setMaterialIds([]); setCount(1); setRatio('3:4'); setCustomRatio(false); setCompareIds([]); setComparing(false); setOnlyFavorites(false); setAnnotationDraft(null); setCandidateDraft(null); setCover(null); setNotice('');
   }, [content?.id]);
   useEffect(() => {
     // A supplied null snapshot is still loading; an omitted prop keeps the standalone panel usable.
@@ -162,7 +163,7 @@ export function CoverPanel({ arrangePublication, startOpenKey, library, refresh:
   const annotationSummary = currentCover?.jobs.find(job => job.id === annotationCandidate?.requestId)?.summary;
   const refinementRatio = annotationSummary?.ratio ?? ratio;
   const refinementPixels = annotationSummary?.pixels ?? ratioPixels(refinementRatio);
-  const refinementDisabled = !!liveJob || !!content?.deletedAt || !template || invalidTemplate || invalidPhoto || !samples.length || !refinementPixels;
+  const refinementDisabled = !!liveJob || !!content?.deletedAt || !template || invalidTemplate || invalidPhoto || invalidMaterialIds.length > 0 || !samples.length || !refinementPixels;
   async function refineCandidate(note: string) {
     if (!content || !annotationDraft || !annotationCandidate || !template || refinementDisabled) return;
     const fresh = await saveCandidate({...annotationDraft, note});
@@ -179,7 +180,7 @@ export function CoverPanel({ arrangePublication, startOpenKey, library, refresh:
       if (alive.current) { setMetadata(nextMetadata); setAnnotationDraft(old => old ? {...old, note, editToken: nextMetadata.editToken} : old); }
     }
     if (!material) throw new Error('没有找到本次原图参考，请刷新后继续。');
-    await openCoverTask(() => invoke('generateCover', {contentId: content.id, editToken: referenceEditToken, input: {template: {id: template.id, version: template.version}, styleAssetHashes: samples, photo: photoId ? {id: selectedPhoto!.id, assetHash: selectedPhoto!.assetHash!} : null, materialIds: [material.id], prompt: `以所附候选原图（${annotationCandidate.id}）为基础，按以下批注修改；保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n${note}`, pixels: refinementPixels!, sizePolicy: annotationSummary?.sizePolicy ?? 'ratio-minimum', ratio: refinementRatio, count: 1, outputFormat: 'png', scope: 'cover-only'}}));
+    await openCoverTask(() => invoke('generateCover', {contentId: content.id, editToken: referenceEditToken, input: {template: {id: template.id, version: template.version}, styleAssetHashes: samples, photo: photoId ? {id: selectedPhoto!.id, assetHash: selectedPhoto!.assetHash!} : null, materialIds: [...new Set([...materialIds, material.id])], prompt: `以所附候选原图（${annotationCandidate.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n${note}${prompt.trim() && prompt !== defaultCoverPrompt ? `\n【本次补充要求】\n${prompt}` : ''}`, pixels: refinementPixels!, sizePolicy: annotationSummary?.sizePolicy ?? 'ratio-minimum', ratio: refinementRatio, count: 1, outputFormat: 'png', scope: 'cover-only'}}));
     if (alive.current) setAnnotationDraft(null);
     await refreshWorkspace?.();
   }
@@ -246,7 +247,7 @@ export function CoverPanel({ arrangePublication, startOpenKey, library, refresh:
       <div className="cover-dialog-footer"><div>{dirty ? <p role="alert">请先收起窗口，保存标题与正文后继续。</p> : liveJob ? <p>已有一批正在生成，可收起窗口后继续任务。</p> : blocked ? <p role="alert">请收起窗口，先处理工作台中的恢复提示。</p> : <p>使用已保存的内容和本次选择。收起窗口会保留设置。</p>}<span>生成由 {assistant} 执行，完成后回这里选图。{assistant === 'WorkBuddy' ? '原图可能包含助手平台标识。' : ''}</span>{notice && <p role="status">{notice}</p>}</div><Button id="generate-cover" theme="solid" disabled={generationDisabled} onClick={() => void run(generate)}>去 {assistant} 生成封面</Button></div>
     </dialog>}
     {comparing && currentCover && <ManagementDialog title="并排比较封面" busy={busy} dirty={false} close={() => setComparing(false)}><p>每张原图完整显示，可直接选用或收藏。最多比较 4 张。</p><div className="cover-compare-grid" style={{gridTemplateColumns: `repeat(${Math.max(2, compareCandidates.length)}, minmax(200px, 1fr))`}}>{compareCandidates.map(candidate => { const details = candidateMetadata.get(candidate.id), selected = currentCover.selectedCandidateId === candidate.id; return <article key={candidate.id}><div className="cover-compare-image cover-artwork"><CoverArtwork url={candidate.url} alt={candidate.originalName}/></div><strong>候选 {details?.displayNumber || candidateNumbers.get(candidate.id)}</strong><div className="cover-result-actions"><Button theme="solid" disabled={!enabled || dirty || hasCandidateDraft || selected} onClick={() => void run(async () => apply(await invoke('selectCover', {contentId: currentCover.content.id, candidateId: candidate.id, editToken: currentCover.content.editToken})))}>{selected ? '当前封面' : '选为封面'}</Button><Button aria-pressed={details?.favorite ?? false} disabled={!enabled || dirty || !details || !metadata || hasCandidateDraft} onClick={() => { if (details && metadata) void run(() => saveCandidate({...details, favorite: !details.favorite, editToken: metadata.editToken})); }}>{details?.favorite ? '已收藏' : '收藏'}</Button></div>{details?.note && <p>{details.note}</p>}</article>; })}</div></ManagementDialog>}
-    {annotationDraft && content && <CoverAnnotationEditor candidate={annotationDraft} busy={busy} disabled={!enabled || dirty} refinementDisabled={refinementDisabled} assistant={assistant} referenceSummary={`本次模板：${template?.name || '未选择可用模板'}（${samples.length} 张样张）；人物参考：${photoId ? selectedPhoto?.title || '原照片不可用' : '这次不放人物'}；比例：${refinementRatio}。需要更换模板或照片时，先收起批注，在“再生成一批”中调整设置。`} close={() => setAnnotationDraft(null)} save={async note => { await saveCandidate({...annotationDraft, note}); setAnnotationDraft(null); }} refine={refineCandidate} run={run}/>}
+    {annotationDraft && content && <CoverAnnotationEditor candidate={annotationDraft} busy={busy} disabled={!enabled || dirty} refinementDisabled={refinementDisabled} assistant={assistant} referenceSummary={`本次模板：${template?.name || '未选择可用模板'}（${samples.length} 张样张）；人物参考：${photoId ? selectedPhoto?.title || '原照片不可用' : '这次不放人物'}；补充资料：${materialIds.length} 份；额外要求：${prompt.trim() && prompt !== defaultCoverPrompt ? '有' : '无'}；比例：${refinementRatio}。需要更换模板或照片时，先收起批注，在“再生成一批”中调整设置。`} close={() => setAnnotationDraft(null)} save={async note => { await saveCandidate({...annotationDraft, note}); setAnnotationDraft(null); }} refine={refineCandidate} run={run}/>}
     {candidateDraft && content && <ManagementDialog title="候选备注与信息" busy={busy} close={() => setCandidateDraft(null)}><form className="management-form" onSubmit={event => {
       event.preventDefault();
       void run(() => saveCandidate(candidateDraft, true));

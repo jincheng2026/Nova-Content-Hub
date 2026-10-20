@@ -1,0 +1,50 @@
+{
+  "widths": [
+    {
+      "width": 1440,
+      "clientWidth": 1178,
+      "scrollWidth": 1178,
+      "columns": "554px 554px",
+      "overflow": []
+    },
+    {
+      "width": 1100,
+      "clientWidth": 1043,
+      "scrollWidth": 1043,
+      "columns": "486.5px 486.5px",
+      "overflow": []
+    },
+    {
+      "width": 900,
+      "clientWidth": 758,
+      "scrollWidth": 758,
+      "columns": "702px",
+      "overflow": []
+    },
+    {
+      "width": 580,
+      "clientWidth": 543,
+      "scrollWidth": 543,
+      "columns": "511.195px",
+      "overflow": []
+    },
+    {
+      "width": 390,
+      "clientWidth": 365,
+      "scrollWidth": 365,
+      "columns": "332.594px",
+      "overflow": []
+    }
+  ],
+  "checks": [
+    "collapsed guides; no nested cards",
+    "five widths without dialog overflow",
+    "diagnostic fixture export and inline feedback",
+    "notification action and storage-unavailable feedback",
+    "keyboard Enter expands guide",
+    "plugin installation actions",
+    "recovery disabled on healthy state; explicit confirmation required; fixture-only reset",
+    "tab retains profile draft and dirty close guard"
+  ],
+  "rendererErrors": []
+}

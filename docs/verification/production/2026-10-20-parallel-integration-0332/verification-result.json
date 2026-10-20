@@ -1,0 +1,83 @@
+{
+  "status": "PASS",
+  "integrationBase": "da3c709a2685d2a84621d301df67e513c402b7e4",
+  "sourcePatchSHA256": "a621ea3ce4ba6182cb24ec8c0726d5c153afd147e2937570872c25981d73f00e",
+  "scope": "15-file completed-dialog integration plus minimal browser summary security fix; no changes to version, A-group renderer files or native probe fix",
+  "commands": [
+    {
+      "command": "git apply --check /tmp/nch-0332-completed-dialogs.patch",
+      "exitCode": 0
+    },
+    {
+      "command": "git apply /tmp/nch-0332-completed-dialogs.patch",
+      "exitCode": 0
+    },
+    {
+      "command": "node --test plugin-src/tests/bridge.test.mjs",
+      "exitCode": 1,
+      "scope": "new malicious count/pixels regression before security fix; 7 pass, 1 expected failure",
+      "log": "logs/browser-summary-security-red.log"
+    },
+    {
+      "command": "node --test plugin-src/tests/bridge.test.mjs",
+      "exitCode": 0,
+      "passed": 8,
+      "scope": "after fix",
+      "log": "logs/browser-summary-security-green.log"
+    },
+    {
+      "command": "node --test plugin-src/tests/bridge.test.mjs plugin-src/tests/native-handoff.test.mjs plugin-src/tests/cover/native-handoff-cli.test.mjs",
+      "exitCode": 0,
+      "passed": 40,
+      "log": "logs/handoff-cli-final.log"
+    },
+    {
+      "command": "node --test plugin-src/tests/contract.test.mjs plugin-src/tests/integration/handoff-schema.test.mjs workbench/test/cover-gallery.test.mjs workbench/test/covers.test.mjs workbench/test/cover-read-refresh.test.mjs workbench/test/setup-market-location.test.mjs workbench/test/content-save-outcome.test.mjs workbench/test/background-refresh.test.mjs workbench/test/managed-refresh.test.mjs workbench/test/daily-publication-wiring.test.mjs workbench/test/publication-model.test.mjs workbench/test/schedule-view.test.mjs",
+      "exitCode": 0,
+      "passed": 114,
+      "log": "logs/contracts-cover-a-regression.log"
+    },
+    {
+      "command": "node plugin-src/scripts/sync-bridge.mjs --check",
+      "exitCode": 0,
+      "log": "logs/sync-bridge-check-final.log"
+    },
+    {
+      "command": "npm run typecheck --prefix workbench",
+      "exitCode": 0,
+      "log": "logs/typecheck-final.log"
+    },
+    {
+      "command": "node workbench/scripts/cover-gallery-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "logs/cover-gallery-ui.log"
+    },
+    {
+      "command": "node docs/verification/production/2026-10-20-parallel-integration-0332/probe-source/cover-gallery-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "logs/cover-gallery-ui-final.log"
+    },
+    {
+      "command": "node docs/verification/production/2026-10-20-parallel-integration-0332/probe-source/help-layout-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "logs/help-layout-ui.log"
+    },
+    {
+      "command": "NOVA_PROBE_EVIDENCE_DIR=\"$PWD/docs/verification/production/2026-10-20-parallel-integration-0332/ui/a-regression\" node docs/verification/production/2026-10-20-a-group-0332/probe-source/app-draft-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "logs/a-app-ui-final.log"
+    }
+  ],
+  "evidence": {
+    "helpLayout": "ui/help-layout/checks.json",
+    "coverGallery": "logs/cover-gallery-ui-final.log",
+    "aAppGuard": "ui/a-regression/app-draft/result.json"
+  },
+  "notVerified": [
+    "real image generation or complete input reading by an external assistant",
+    "real assistant URL launch/provider consumption",
+    "installed final application and system dialogs",
+    "Intel Mac or Windows native hardware",
+    "final complete verify/build/packaging (release owner)"
+  ]
+}
