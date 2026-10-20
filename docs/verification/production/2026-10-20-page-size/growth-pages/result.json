@@ -1,0 +1,1 @@
+{"status":"PASS","exitCode":0,"checks":["prompts/templates size slicing","plan size resets with fresh focus requests","calendar size slicing","dynamic focus pages","trashed content/collection can change sizes and pages while mutation buttons stay disabled","existing search/history/overview checks"]}

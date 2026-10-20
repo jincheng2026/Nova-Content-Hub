@@ -1,0 +1,44 @@
+(node:33534) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (13.50925ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (9.678917ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.35325ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.490583ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.059541ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.132958ms)
+✔ navigation and new draft survive a paused focus refresh (1.609042ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.007125ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.923625ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (0.757334ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.090583ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.607333ms)
+(node:33535) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (15.44775ms)
+✔ automatic cover failures still report the error and refresh status (2.594209ms)
+✔ foreground operations and external-change refresh still scan the full workspace (4.35775ms)
+(node:33536) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ detail reads reuse the successful workspace assets without a duplicate asset scan (18.630334ms)
+✔ explicit workspace refresh and library switch replace the shared assets (2.646209ms)
+✔ a failed workspace asset refresh cannot publish a retained stale snapshot (2.5475ms)
+✔ late cover results are discarded after changing content or switching library (12.475625ms)
+(node:33537) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (6.611334ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (11.685208ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (0.715125ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.61625ms)
+✔ editor reconciliation failure also keeps the fallback full read (3.690292ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (1.590125ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (0.900541ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (4.762834ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.631459ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 200.360125

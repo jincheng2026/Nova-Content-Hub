@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-20T04:16:43.760Z",
+  "version": "0.3.26",
+  "sourceCommit": "dd41d715ee87f4125b6455122e1f6c4571048e9f",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0326-dd41d71/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.26-darwin-arm64-preview.dmg",
+  "sourceTreeSha256": "bb780771ef09546ea16357f7590a6010bf153214bab23c76a8745c6c195d642f",
+  "sourceDmgSha256": "73cac78add73d61d10bbc4ec62550f08ca9960a8932274a10e460dd0e7ac163b",
+  "entries": 1817,
+  "dmgTreeEqualsArchived": true,
+  "pairedMarketplaceVerified": true,
+  "engineeringTestsAndProbesExcluded": true,
+  "adHocSignatureVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "releaseIdentity": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.26",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.26:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "demo": {
+    "templates": 20,
+    "prompts": 52,
+    "contents": 1,
+    "candidates": 2,
+    "originalHashes": [
+      "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79"
+    ],
+    "plans": 0,
+    "publications": 0
+  },
+  "deliveryDirectory": "/Users/mac/Downloads/自媒体工作台-0.3.26-同事交付-Mac苹果芯片",
+  "deliveryFiles": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.26-Mac苹果芯片.dmg"
+  ],
+  "userBusinessLibraryReadOrWritten": false
+}

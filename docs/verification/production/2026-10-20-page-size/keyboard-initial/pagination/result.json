@@ -1,0 +1,475 @@
+{
+  "status": "PASS",
+  "widths": [
+    1440,
+    1100,
+    960,
+    560
+  ],
+  "containers": [
+    1000,
+    560,
+    380,
+    280
+  ],
+  "geometry": [
+    {
+      "nav": {
+        "left": 555,
+        "right": 885,
+        "top": 735.3671875,
+        "bottom": 855.8671875,
+        "width": 330,
+        "height": 120.5
+      },
+      "list": {
+        "left": 555,
+        "right": 873,
+        "top": 775.8671875,
+        "bottom": 843.8671875,
+        "width": 318,
+        "height": 68
+      },
+      "quick": {
+        "left": 770.15625,
+        "right": 873,
+        "top": 811.8671875,
+        "bottom": 843.8671875,
+        "width": 102.84375,
+        "height": 32
+      },
+      "input": {
+        "left": 803.71875,
+        "right": 853.71875,
+        "top": 812.8671875,
+        "bottom": 842.8671875,
+        "width": 50,
+        "height": 30
+      },
+      "inputStyle": {
+        "border": "0px",
+        "padding": "0px 6px",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      "items": [
+        {
+          "left": 566.15625,
+          "right": 621,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 54.84375,
+          "height": 32
+        },
+        {
+          "left": 625,
+          "right": 657,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 661,
+          "right": 693,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 697,
+          "right": 729,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 733,
+          "right": 765,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 769,
+          "right": 801,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 805,
+          "right": 837,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 841,
+          "right": 873,
+          "top": 775.8671875,
+          "bottom": 807.8671875,
+          "width": 32,
+          "height": 32
+        },
+        {
+          "left": 560.9453125,
+          "right": 615.7890625,
+          "top": 811.8671875,
+          "bottom": 843.8671875,
+          "width": 54.84375,
+          "height": 32
+        }
+      ],
+      "fits": true,
+      "count": "共 154 项 · 21–40 项"
+    }
+  ],
+  "keyboardTrace": [
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-select semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-select semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "keydown",
+      "key": "ArrowDown",
+      "keyCode": 40,
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "keyup",
+      "key": "ArrowDown",
+      "keyCode": 40,
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：50"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：50"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-select semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-active",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-active",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": " ",
+      "keyCode": 32,
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": " ",
+      "keyCode": 32,
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-active",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-active",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-input semi-input-default",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-input semi-input-default",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-input semi-input-default",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-input semi-input-default",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-all-disabled",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-all-disabled",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-all-disabled",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-all-disabled",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-button semi-button-primary semi-button-light",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-button semi-button-primary semi-button-light",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-select semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-portal-inner",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-portal-inner",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-select semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-select semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-portal-inner",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-portal-inner",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-select semi-select-open semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "true",
+      "option": "每页条数：20"
+    },
+    {
+      "type": "focusout",
+      "trusted": true,
+      "target": "semi-select semi-select-focus semi-select-single",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "focusin",
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keydown",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item",
+      "focused": true,
+      "expanded": "false"
+    },
+    {
+      "type": "keyup",
+      "key": "Enter",
+      "keyCode": 13,
+      "trusted": true,
+      "target": "semi-page-item semi-page-item-active",
+      "focused": true,
+      "expanded": "false"
+    }
+  ],
+  "checks": [
+    "zero/single/multi/large totals",
+    "20/50/100 size changes including last page and real pointer/keyboard selection",
+    "upper/lower clamp",
+    "Enter/Space/quickjump",
+    "previous/next",
+    "disabled",
+    "no form submission",
+    "no bridge calls or data mutations"
+  ]
+}

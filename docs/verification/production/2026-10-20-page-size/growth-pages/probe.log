@@ -1,0 +1,27 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2062 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growth-pages-bDusae/dist/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growth-pages-bDusae/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growth-pages-bDusae/dist/assets/index-Cqgecjn2.css                        444.33 kB │ gzip:  58.61 kB
+../../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growth-pages-bDusae/dist/assets/index-BHwjMhTl.js                       1,122.49 kB │ gzip: 308.84 kB
+
+✓ built in 422ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+DTO initial prompts 2500: 183 ms
+DTO render templates: 13 ms; DOM 543, images 40
+DTO render publication: 36 ms; DOM 690, images 0
+Plan pagination 20 interactions (DTO to committed DOM + 2 RAF, includes bridge polling): p50=25ms, p95=34ms, max=34ms
+Publication search 20 interactions (DTO to committed DOM + 2 RAF, includes bridge polling): p50=17ms, p95=18ms, max=24ms
+DTO render workflow: 25 ms; DOM 71, images 2
+DTO render calendar: 47 ms; DOM 1190, images 0
+Calendar day pagination 20 interactions (DTO to committed DOM + 2 RAF, includes bridge polling): p50=25ms, p95=27ms, max=32ms
+DTO render overview: 14 ms; DOM 261, images 2
+PASS growth pages actual React/Semi/Electron: 2500 prompts, 1000 templates/content picker, 1234 plans/history, 2000 cover choices, 1000 learning histories/50 lazy evidence images and 5000 offscreen events; pagination/search reset/deep focus/document reset/invalid reference/lazy snapshots/visible event aggregation/full-day entry; no native writes. DTO rendering only.
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-growth-pages-bDusae

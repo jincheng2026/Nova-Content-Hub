@@ -1,0 +1,24 @@
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (861.543959ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (726.95025ms)
+✔ codex template handoff names the selected template and requests study plus restoration (1220.977417ms)
+✔ workbuddy template handoff names the selected template and requests study plus restoration (1242.080209ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, without exporting annotations (1991.736208ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, without exporting annotations (1534.235334ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (693.888417ms)
+✔ empty display names and deleted templates keep a natural cover prompt (971.130875ms)
+✔ URL budget drops only optional names, preserves a full fixed task at 2048, and refuses one character beyond (1580.550792ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (2378.99375ms)
+✔ release and request/host validation stop before creating an envelope (1335.910166ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (902.811375ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (802.160791ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1397.40875ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (811.862833ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (798.78ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19472.50275

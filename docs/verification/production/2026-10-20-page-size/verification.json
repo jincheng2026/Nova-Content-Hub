@@ -1,0 +1,28 @@
+{
+  "sourceCommit": "dd41d715ee87f4125b6455122e1f6c4571048e9f",
+  "version": "0.3.26",
+  "rootTypechecksExit": 0,
+  "rootNativeTests": {
+    "passed": 28,
+    "failed": 0
+  },
+  "rootNativeHandoffTests": {
+    "passed": 16,
+    "failed": 0
+  },
+  "rootFinalPaginationExit": 0,
+  "executingAgentProbeReceipts": {
+    "pagination/result.json": "PASS",
+    "template-selection/result.json": "PASS",
+    "growth-pages/result.json": "PASS",
+    "keyboard-run-1/pagination/result.json": "PASS",
+    "growing-lists/result.json": true,
+    "keyboard-initial/pagination/result.json": "PASS",
+    "keyboard-run-3/pagination/result.json": "PASS",
+    "keyboard-run-2/pagination/result.json": "PASS",
+    "root-final/pagination/result.json": "PASS"
+  },
+  "review": "Astra found and executor fixed trashed-document read-only pagination disabling; no remaining blockers in 9 renderer files and 20 callers",
+  "fullRepositoryVerifyRerun": false,
+  "userBusinessLibraryReadOrWritten": false
+}
