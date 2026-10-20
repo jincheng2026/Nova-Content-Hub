@@ -24,3 +24,5 @@ node docs/verification/production/2026-10-20-performance-0332/probe-source/run-p
 快速复跑可指定 `NCH_PERF_RUNTIME=<已有合成runtime绝对路径>`（只复用fixture，仍fresh构建）、`NCH_PERF_EVIDENCE=<新证据绝对路径>`、`NCH_PERF_QUICK=1 NCH_PERF_PLANS=1000`。`runtime.json`/`source-files.json`/`build-files.json`记录真实源码和输出SHA，HEAD辅助标识不会掩盖dirty源码。
 
 原始诊断保留：preliminary与before-viewport-968仅为旧口径定位；baseline按正确视口采到5个完整进程后依用户要求终止（不算完整矩阵通过）；quick-after仅①②半实现，quick-before-queue-revoke-guard为最后队列撤销门禁前版本。最终有效快检只认quick-final。reference由Astra独立记录安装旅游应用0.4.1，非新源码版本冒充。所有新进程结果均非OS冷缓存；最终未再扩矩阵、未重跑完整verify。
+
+追加：worker仅缓存128条`assetHash → validatedMime`验证结论，每次命中仍完整读取当前原图并校验SHA/root/锁/type；冷图完整解码后再次读验，失败不缓存。独立冷hash换根与生产同一ESM sharp实例的metadata计数、缓存后同size/mtime篡改回归已通过，相关14/14及native typecheck均exit0（logs/mime-cache-*）。未重跑性能探针；上述quick-final数值来自此追加之前，未宣称图库全库投影成本已消失。

@@ -52,12 +52,21 @@ function view(library: Library, contentId: string): CoverView {
     return { id: job.id, requestHash: job.requestHash, inputHash: job.inputHash, activeAttemptId: job.activeAttemptId, summary, attempts: job.attempts.map(a => ({ attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure })) };
   }), candidates: (current.candidates || []).map(c => ({ id: c.id, assetHash: c.assetHash, originalName: c.originalName, requestId: c.requestId, attemptId: c.attemptId, accepted: c.accepted, url: '' })), selectedCandidateId: current.selectedCover?.candidateId ?? null };
 }
+// Only cache the conclusion for immutable bytes, never bytes or library authority.
+const validatedMimes = new Map<string, string>();
 async function raster(library: Library, assetHash: string) {
-  const asset = library.readAsset(assetHash); const decoded = await validateImportedRaster(Buffer.from(asset.data));
+  const asset = library.readAsset(assetHash), cached = validatedMimes.get(assetHash);
+  if (cached !== undefined) {
+    if (asset.detectedType !== cached) fail('INVALID_IMAGE', '图片类型或摘要不一致。');
+    return {data: asset.data, mime: cached};
+  }
+  const decoded = await validateImportedRaster(Buffer.from(asset.data));
   // Reopen after full decode so a replaced root cannot authorize old bytes.
   library.readAsset(assetHash);
   const mime = `image/${decoded.format}`;
   if (!['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(mime) || decoded.assetHash !== assetHash || asset.detectedType !== mime) fail('INVALID_IMAGE', '图片类型或摘要不一致。');
+  if (validatedMimes.size >= 128) validatedMimes.delete(validatedMimes.keys().next().value!);
+  validatedMimes.set(assetHash, mime);
   return { data: asset.data, mime };
 }
 function findAttempt(library: Library, pending: CoverPending) {

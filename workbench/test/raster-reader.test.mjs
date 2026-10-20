@@ -10,11 +10,11 @@ import {execute} from '../src/main/worker.mts';
 import {createLibrary, openLibrary, __testing} from '../../plugin-src/src/lib/file-library/index.mjs';
 process.env.NODE_ENV = 'test';
 
-async function fixture(t) {
+async function fixture(t, background = '#53acde') {
     const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nch-raster-reader-'));
     t.after(async () => {__testing.setHook(undefined); await fs.rm(root, {recursive: true, force: true});});
     const libraryRoot = path.join(root, 'library'), library = createLibrary(libraryRoot);
-    const bytes = await sharp({create: {width: 32, height: 24, channels: 3, background: '#53acde'}}).png().toBuffer();
+    const bytes = await sharp({create: {width: 32, height: 24, channels: 3, background}}).png().toBuffer();
     const source = path.join(root, 'original.png'); await fs.writeFile(source, bytes);
     const asset = library.importAsset(source, {purpose: 'generated-cover'});
     const binding = {root: library.info.root, libraryId: library.info.libraryId, rootIdentity: library.info.rootIdentity};
@@ -37,6 +37,19 @@ test('a warm raster read rejects same-size bytes with restored mtime', async t =
     assert.equal((await fs.stat(file)).size, stat.size);
     await assert.rejects(f.read(), {code: 'CORRUPT'});
     await fs.writeFile(file, f.bytes); assert.deepEqual(Buffer.from((await f.read()).data), f.bytes);
+});
+
+test('validated MIME hits skip sharp metadata while current-byte tampering is still refused', async t => {
+    const decoder = (await import('../../node_modules/sharp/dist/index.mjs')).default;
+    const f = await fixture(t, '#c0ffee'), metadata = decoder.prototype.metadata; let calls = 0;
+    t.mock.method(decoder.prototype, 'metadata', function (...args) {calls++; return Reflect.apply(metadata, this, args);});
+    assert.deepEqual(Buffer.from((await f.read()).data), f.bytes); assert.ok(calls > 0);
+    const coldCalls = calls;
+    assert.deepEqual(Buffer.from((await f.read()).data), f.bytes); assert.equal(calls, coldCalls);
+    const file = path.join(f.libraryRoot, '资产', 'sha256', f.asset.assetHash.slice(0, 2), f.asset.assetHash), stat = await fs.stat(file);
+    const altered = Buffer.from(f.bytes); altered[altered.length - 1] ^= 1;
+    await fs.writeFile(file, altered); await fs.utimes(file, stat.atime, stat.mtime);
+    await assert.rejects(f.read(), {code: 'CORRUPT'}); assert.equal(calls, coldCalls);
 });
 
 test('a warm reader rejects a cloned root at the same path and accepts its explicit new binding', async t => {
@@ -72,8 +85,9 @@ test('a warm raster read still recovers a durable pending content transaction', 
 });
 
 test('root replacement during asynchronous raster decode is rejected by the second asset read', async t => {
-    const f = await fixture(t); await f.read();
+    const f = await fixture(t, '#45b68e');
     const reading = f.read();
+    // This independent hash has never been decoded: the cold path must still recheck the root.
     // execute(raster) synchronously obtains original bytes before awaiting sharp decode.
     // Replacement happens while decode is pending, so only the post-decode reread catches it.
     const old = path.join(f.root, 'old'); fsSync.renameSync(f.libraryRoot, old); fsSync.cpSync(old, f.libraryRoot, {recursive: true});
