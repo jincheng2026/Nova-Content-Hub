@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-21T04:39:17.330Z",
+  "version": "0.3.35",
+  "sourceCommit": "56893f2f7092da527aa2b285ee7cbc4d1feeb743",
+  "target": "/Applications/自媒体工作台.app",
+  "nativeUI": true,
+  "checks": [
+    "original bound library loaded",
+    "all default groups: five colleague plus one existing custom",
+    "builtin source select changed to exact five groups",
+    "actual rounded real image edges and three distinct layers",
+    "original group preview 25 complete rectangular images",
+    "import images/folder and name; advanced optional notes collapsed; closed empty draft",
+    "existing content opened; two original generated cover images visible with rounded corners",
+    "generation shares template deck; builtin filter five while custom selection retained",
+    "about native AX: version0.3.35(0.3.35), confirmed company copyright",
+    "normal Cmd-Q exit observed and ps confirmed no main process",
+    "reopened and original library loaded again"
+  ],
+  "noBusinessMutation": true,
+  "noAssistantLaunch": true,
+  "noGenerationRun": true,
+  "library": {
+    "entries": 1956,
+    "sha256": "78b360bffa8821b65454a05407e8ae01130106d7f281b4370a972b585f5a7e3c",
+    "unchanged": true
+  },
+  "systemPermissionPromptObserved": false,
+  "scope": "Actual installed darwin-arm64 only; no new generated or template-study output, publication or cross-platform validation."
+}

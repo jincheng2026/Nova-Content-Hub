@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-21T04:39:17.334Z",
+  "version": "0.3.35",
+  "archive": {
+    "app": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0335-56893f2/mac-arm64/自媒体工作台.app",
+    "screenshot": "installed/finder-archive.png"
+  },
+  "installed": {
+    "app": "/Applications/自媒体工作台.app",
+    "screenshot": "installed/finder-installed.png"
+  },
+  "observed": {
+    "name": "自媒体工作台",
+    "icon": "confirmed N icon",
+    "kind": "应用程序(Apple芯片)",
+    "version": "0.3.35",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "finderBytes": 672951127,
+    "modified": "2026-10-21 12:24"
+  },
+  "scope": "Actual Finder Get Info observation for both archived final and installed apps; Finder byte presentation is separate from summed file bytes."
+}
