@@ -1,2 +1,16 @@
-There has been no change in the accessibility tree for Window: "".
-The focused UI element is 1 对话框 Secondary Actions: Raise
+Window: "", App: 自媒体工作台.
+0 对话框 Secondary Actions: Raise
+	1 图像 自媒体工作台图标
+	2 text 自媒体工作台 版本0.3.36 (0.3.36)
+	3 滚动区
+		4 文本 © 2026 杭州新岛橙灵智能科技有限责任公司
+	5 关闭按钮
+	6 缩放按钮 (disabled)
+7 menu bar
+	8 自媒体工作台
+	9 文件
+	10 编辑
+	11 显示
+	12 窗口
+
+The focused UI element is 0 对话框 Secondary Actions: Raise

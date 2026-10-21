@@ -11,9 +11,7 @@
   "finalAndInstalledMetadataMatch": true,
   "evidence": [
     "installed/finder-archive.png",
-    "installed/finder-installed.png",
-    "installed/finder-archive-ax.txt",
-    "installed/finder-installed-ax.txt"
+    "installed/finder-installed.png"
   ],
   "about": {
     "version": "0.3.36 (0.3.36)",

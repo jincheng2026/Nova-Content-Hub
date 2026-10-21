@@ -1,2 +1,0 @@
-There has been no change in the accessibility tree for Window: "“自媒体工作台”简介".
-The focused UI element is 262 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
