@@ -1,0 +1,724 @@
+{
+  "format": "nova-colleague-template-documents",
+  "schemaVersion": 1,
+  "templates": [
+    {
+      "templateId": "builtin-colleague-assistant-scene",
+      "documents": [
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/VI拆解.md",
+          "sourceSha256": "185b0e6f2829888f5bab2bcc3c501293b5afe90c36ee6ab0284ab34446242a83",
+          "normalizedPath": "templates/builtin-colleague-assistant-scene/visual-identity.md",
+          "normalizedSha256": "185b0e6f2829888f5bab2bcc3c501293b5afe90c36ee6ab0284ab34446242a83"
+        },
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/风格.json",
+          "sourceSha256": "91e2759f38ba6a3d2ebab4f7938be42373c98944fa82e42dccf74f186fddc1aa",
+          "normalizedPath": "templates/builtin-colleague-assistant-scene/style.json",
+          "normalizedSha256": "91e2759f38ba6a3d2ebab4f7938be42373c98944fa82e42dccf74f186fddc1aa"
+        }
+      ],
+      "images": [
+        {
+          "filename": "K01.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K01.jpg",
+          "sha256": "e027026a8318c0fa515a188f827e19b1e053a212f8bf808f3e9771604ef7ee24"
+        },
+        {
+          "filename": "K02.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K02.jpg",
+          "sha256": "4c48ef2c54247844a8a7629fa84ca87db64c9baccfe10176901a549587df6402"
+        },
+        {
+          "filename": "K03.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K03.jpg",
+          "sha256": "837c686eb9cbd934af23a72b07138fe12a01b0f262e4a84dbe5a79d0bc90eda3"
+        },
+        {
+          "filename": "K04.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K04.jpg",
+          "sha256": "145f8141fe192996f7078e794b367c2ef1ffb8a880797cf1cae21d97de4adf37"
+        },
+        {
+          "filename": "K05.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K05.jpg",
+          "sha256": "c2c32dac179e2035abb3da2339b2df72b5924feba431b0d723ef5932ed59cdd8"
+        },
+        {
+          "filename": "K06.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K06.jpg",
+          "sha256": "67e4d2b4a6c0d26591e18845af3fd3e7ce4f1a630df1b3c8bea47e179d27cd9e"
+        },
+        {
+          "filename": "K07.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K07.jpg",
+          "sha256": "03172ddf04c9b0724b5947c67a3f93e98021b26d90fad734a51fd94e566bf466"
+        },
+        {
+          "filename": "K08.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K08.jpg",
+          "sha256": "3d96fab000a776ed87bb2682963551be3a539b45f420e75524b25eea0f216095"
+        },
+        {
+          "filename": "K09.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K09.jpg",
+          "sha256": "e96d05e8947936cd4155dd54eef51ef838335c682dd416a2331a63a132937faf"
+        },
+        {
+          "filename": "K10.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K10.jpg",
+          "sha256": "35b5b0401bca7fbdfab4671b73f705657108b6b48346868dba96202eede45424"
+        },
+        {
+          "filename": "K11.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K11.jpg",
+          "sha256": "a919aa7c25abee35b8a177ad11f56718fa5e3b20a4a4708cd266f9488c63a6ff"
+        },
+        {
+          "filename": "K12.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K12.jpg",
+          "sha256": "8016483070352270741c1a89b9364d68f29bca4fa86ec554c7d19c9d04ecd4e4"
+        },
+        {
+          "filename": "K13.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K13.jpg",
+          "sha256": "dbe4fe0ca9a5441c4c4bbfa06f7b7051baf5087c25c5e66f75b6a14cb2507e26"
+        },
+        {
+          "filename": "K14.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K14.jpg",
+          "sha256": "d0854b9aa97551422f599ef5d008500547c8025bad7630b534b04664387eaf11"
+        },
+        {
+          "filename": "K15.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K15.jpg",
+          "sha256": "d30792d250e1cb8fd843cc7b306c33c993fd581236c196416f76ec4ae28d048d"
+        },
+        {
+          "filename": "K16.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K16.jpg",
+          "sha256": "545341d0f2186fe00ba771ccda721763b432f7b4201b0e4c9634d5a659640f34"
+        },
+        {
+          "filename": "K17.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K17.jpg",
+          "sha256": "5e53268827ca3d30f4c5e115151a49db8c875919d3d972bff888d0008c3f753c"
+        },
+        {
+          "filename": "K18.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K18.jpg",
+          "sha256": "5e240094080499c7bb032b370ccadb434612323141e9ce8a93d6ae15cceceaef"
+        },
+        {
+          "filename": "K19.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/AI大白话/K19.jpg",
+          "sha256": "4eb30e965a87885723f980031d5fd258c7301c39789f3ef37da42ac485b927fd"
+        }
+      ]
+    },
+    {
+      "templateId": "builtin-colleague-big-head-action",
+      "documents": [
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/VI拆解.md",
+          "sourceSha256": "ff3c3d42ce90f514373e2eeafa27a1a4bd00156bce8bad5c8c8d895fbee125b6",
+          "normalizedPath": "templates/builtin-colleague-big-head-action/visual-identity.md",
+          "normalizedSha256": "ff3c3d42ce90f514373e2eeafa27a1a4bd00156bce8bad5c8c8d895fbee125b6"
+        },
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/风格.json",
+          "sourceSha256": "9fb297ad79e9490ddda9c2d76dbdb71400e09e4c928b51a3aa8f969506f6703c",
+          "normalizedPath": "templates/builtin-colleague-big-head-action/style.json",
+          "normalizedSha256": "9fb297ad79e9490ddda9c2d76dbdb71400e09e4c928b51a3aa8f969506f6703c"
+        }
+      ],
+      "images": [
+        {
+          "filename": "K01.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K01.jpg",
+          "sha256": "5bc12b31d4f0c7472c2c028dec18a57e1a290cb0c60d2b2c8226963a500abec5"
+        },
+        {
+          "filename": "K02.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K02.jpg",
+          "sha256": "34a61cd517f008d564842c138b571495f7b2d17d323412771fc56a1f146575d5"
+        },
+        {
+          "filename": "K03.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K03.jpg",
+          "sha256": "530a23aa386e1b5a3f1ec5ab9f186f632fab23f39ffebccd7dce770882d3695e"
+        },
+        {
+          "filename": "K04.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K04.jpg",
+          "sha256": "15150ad1524dded0e254ab2161b360e6f31b2a77fa3a64fadca8c995ffe5f700"
+        },
+        {
+          "filename": "K05.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K05.jpg",
+          "sha256": "fdf0673510b5c43b9202c6ee0fe87b2d2d4461a1610cac71e13fa6213e31ab94"
+        },
+        {
+          "filename": "K06.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K06.jpg",
+          "sha256": "31c8bde6e31069d7ab7e2abeea61792ef30f6e8f5ba72caf7f66e598803d29c1"
+        },
+        {
+          "filename": "K07.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K07.jpg",
+          "sha256": "a79c47491e88cd31937931fd17bfef0e8edb4c191870c7f8bdbc7caf48c94466"
+        },
+        {
+          "filename": "K08.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K08.jpg",
+          "sha256": "10c5bce590e83e0bdd08b35c3e8f14399ff58a1383df5a7c60158a578581a5df"
+        },
+        {
+          "filename": "K09.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K09.jpg",
+          "sha256": "7635bff4ede1d922a3a0d005812e2c7d289d8452808a1d53434e13af02f06b7e"
+        },
+        {
+          "filename": "K10.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K10.jpg",
+          "sha256": "8d6ef18d834a0ab9d928e0603e4f524e1c77229b63110e12d66ace3d903d8f13"
+        },
+        {
+          "filename": "K11.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K11.jpg",
+          "sha256": "2e2b1edee3f8c81a292609504d3efbad4fb0c2382edeb3de2423623fb64133d2"
+        },
+        {
+          "filename": "K12.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K12.jpg",
+          "sha256": "3297afb6a4ce7fefce175b122cadf077ae4291fe4c580cd9fbdc069b19719b1d"
+        },
+        {
+          "filename": "K13.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K13.jpg",
+          "sha256": "84026690564001aae1dd4ab21572198e9fe6e1ca98a660fb67a785ae80f8e6bc"
+        },
+        {
+          "filename": "K14.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K14.jpg",
+          "sha256": "37af844ba39b8e3c86692f7c502ee5e2c74771c858ccbff588cc7d9d40b0974c"
+        },
+        {
+          "filename": "K15.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K15.jpg",
+          "sha256": "9aac3e195c42c80e27fbaaff9c5302e37f2d83e9a0aa45a0c237cdf0bd19986a"
+        },
+        {
+          "filename": "K16.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K16.jpg",
+          "sha256": "273a20d906c9fdcc24ee5da53e83592b74ef051b3b84434d1eeb2039d20d68e3"
+        },
+        {
+          "filename": "K17.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K17.jpg",
+          "sha256": "6b334c5ba9badc76b0fcd3d5a2df4a5181dc36cb91e933439dad89ae498f7011"
+        },
+        {
+          "filename": "K18.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K18.jpg",
+          "sha256": "a75793b7a3335f1a590b7c2d828a5cb00ac34937026e696ed5be6b0302f0713c"
+        },
+        {
+          "filename": "K19.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K19.jpg",
+          "sha256": "536750e5463fab35c4230698efd450b7006a68b5580877120bbe251df03d9f74"
+        },
+        {
+          "filename": "K20.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K20.jpg",
+          "sha256": "8585e5af7d52e9c3fcbc4998de4eb0e0b9e623b515399fcc7f413074e2d0cf1f"
+        },
+        {
+          "filename": "K21.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K21.jpg",
+          "sha256": "d8f368b4b1c95086764cd9ef1893d7190ca8a9c77357adceed4b767370191db1"
+        },
+        {
+          "filename": "K22.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K22.jpg",
+          "sha256": "c3bd62d335b1edeec19321bcb6abdcbaebd94c29bba27dfcb23d83c395518edf"
+        },
+        {
+          "filename": "K23.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K23.jpg",
+          "sha256": "24383c75a654bcf9c8a04f0398fd33bfd74a82f539d60a3c0702f0a14111b78a"
+        },
+        {
+          "filename": "K24.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K24.jpg",
+          "sha256": "53107d4909c2a235d927611912bba3f191d2565481f00d84b6b217137add06e3"
+        },
+        {
+          "filename": "K25.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K25.jpg",
+          "sha256": "5a35c50895f0bd9eb04c9437bb083e17a4a61c07053265b62874b373cbefded0"
+        },
+        {
+          "filename": "K26.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K26.jpg",
+          "sha256": "8c845745c65252c84c7bad5222cbb991528635c0610aef2322a6adfc18e5fe5b"
+        },
+        {
+          "filename": "K27.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K27.jpg",
+          "sha256": "f622ed6492c469776a3d4026e285c2cc884bace0c1b9d4ab7e7c74da53b6159b"
+        },
+        {
+          "filename": "K28.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K28.jpg",
+          "sha256": "065666edd9ad0e4693543dfc7f1c071fbbd893f8883b386e9ab66319a7925a10"
+        },
+        {
+          "filename": "K29.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K29.jpg",
+          "sha256": "90199f58b2a114fb1296672ca86f42d5f10e704df10b00b14b549dff84f6d044"
+        },
+        {
+          "filename": "K30.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/秋芝/K30.jpg",
+          "sha256": "44030f9cd64ce6be743c9cecaeaefb139b3d58e32d59b606b3262daf34a14ef8"
+        }
+      ]
+    },
+    {
+      "templateId": "builtin-colleague-spatial-operation",
+      "documents": [
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/VI拆解.md",
+          "sourceSha256": "d36c94cbc4f03ca3169d224a266ee0208e8087161165dbaccc2068fd35787963",
+          "normalizedPath": "templates/builtin-colleague-spatial-operation/visual-identity.md",
+          "normalizedSha256": "d36c94cbc4f03ca3169d224a266ee0208e8087161165dbaccc2068fd35787963"
+        }
+      ],
+      "images": [
+        {
+          "filename": "K01.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K01.webp",
+          "sha256": "4a8725b6eccf2247a5a315ef89cda1f34a7dc7648fe8bd9f63e1dfd01840b06b"
+        },
+        {
+          "filename": "K02.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K02.webp",
+          "sha256": "ea931f56614c263d21141416506a8dc5732fb24f6260fb74318d9bab28b920b8"
+        },
+        {
+          "filename": "K03.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K03.jpg",
+          "sha256": "fb8243a3a63eb069c0c5762baed2bcca43436c43d7204402a65a4b892c056f87"
+        },
+        {
+          "filename": "K04.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K04.jpg",
+          "sha256": "083cbbe0af5126ff5a1fa0aaf6eaae48600bcb509ce3d75d987675ca16d51e5c"
+        },
+        {
+          "filename": "K05.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K05.jpg",
+          "sha256": "83d42eeec8fbd1ab4474d835316b29aa5694531e5ab0d35d0723b0535b27ec8d"
+        },
+        {
+          "filename": "K06.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K06.jpg",
+          "sha256": "e64a9dc75fa0ce7452c94dd3771be39e1cb1a952d924a81e1232d335c144f129"
+        },
+        {
+          "filename": "K07.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K07.webp",
+          "sha256": "efcf38cfa0c2f6dc81d41faeb80a34d56373d592a41a4bd2ae9142853c21acdf"
+        },
+        {
+          "filename": "K08.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K08.webp",
+          "sha256": "40f1f5611ae267423ba7065e94e4bf767c993ce4cf148ef745a827fb2a0140a3"
+        },
+        {
+          "filename": "K09.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K09.jpg",
+          "sha256": "4f4a122a8c257fa3bb4da81214edf46baae350693b7361d87be7bdfc1447fcb0"
+        },
+        {
+          "filename": "K10.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K10.jpg",
+          "sha256": "c10a316f7b2138d2e17e9bf222cfc23cd802a6107bf4f6a20511d5fd1875f544"
+        },
+        {
+          "filename": "K11.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K11.jpg",
+          "sha256": "1ff1ec51525e967b1b78fa79485480ce3ccc3252041bbb5c51a12a4acf2ec197"
+        },
+        {
+          "filename": "K12.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K12.jpg",
+          "sha256": "00149d4d1ef1f19a09b23761222514938cc7ad0e09c80f0b4431b4fa6f49e0aa"
+        },
+        {
+          "filename": "K13.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K13.jpg",
+          "sha256": "23a7e58b29d4f773a6c92e469ad5b4f52e0647bfc18f36cddd3e471fe950e22e"
+        },
+        {
+          "filename": "K14.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K14.webp",
+          "sha256": "eb36c369f3cabf0a69df24a25efb03d3d13a0d010f489176014b86d653b99c33"
+        },
+        {
+          "filename": "K15.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K15.webp",
+          "sha256": "5e06f69fbc8db7e6285fb90d12c4b5c58e2faa6a336e04b7b5e5304235a7043f"
+        },
+        {
+          "filename": "K16.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K16.webp",
+          "sha256": "80cfaac2f32bc5de2ff00b4b0f2a43a767278e7ffa2d2e38f40affb377e436f7"
+        },
+        {
+          "filename": "K17.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K17.webp",
+          "sha256": "2ec6e74d075fe41b4f0860385b0d18cd2e65a1a3e06e0d49056bc7e8263c6f55"
+        },
+        {
+          "filename": "K18.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K18.webp",
+          "sha256": "472d44b37daea04be1a60ca9c0a694942b766da6eddcc4d39b6600c911f10348"
+        },
+        {
+          "filename": "K19.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K19.webp",
+          "sha256": "d67f4e6567129d6155ecd25d52ba8819fb2b1211f5757bde37f0cb88859885f2"
+        },
+        {
+          "filename": "K20.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K20.webp",
+          "sha256": "2362ca32243ac0fe8f96f2436630379d2d3cf04c7f8ee3e1a3e26512df0821f8"
+        },
+        {
+          "filename": "K21.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K21.webp",
+          "sha256": "732b2a782a3cfe73d60a0d0a26b4e3ab6f93b52dfbeb8ef6f57413be8c5e09e5"
+        },
+        {
+          "filename": "K22.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K22.webp",
+          "sha256": "01674f7e6c6153d75e9871724d5ad03c0e90e1d5f09a7890ab39b703e119d556"
+        },
+        {
+          "filename": "K23.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K23.webp",
+          "sha256": "96cb26060e309d5ec18f6735d4fae6f85b8ed4c2e042c5c64498a632c86fa790"
+        },
+        {
+          "filename": "K24.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K24.webp",
+          "sha256": "e868c6ede6c781051192a5ab91145dd860443a03692db4ae36b1290c0eb1cfdf"
+        },
+        {
+          "filename": "K25.webp",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/科技姐聊AI/K25.webp",
+          "sha256": "a73796cb5921d5ebc72888516fb71796edb59071b52bd507196a77720f75a42e"
+        }
+      ]
+    },
+    {
+      "templateId": "builtin-colleague-orange-green-life",
+      "documents": [
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/VI拆解.md",
+          "sourceSha256": "604b6631861e85386cc6f5ea0403ef776ec69460b213e8ad32010bfaaabb0586",
+          "normalizedPath": "templates/builtin-colleague-orange-green-life/visual-identity.md",
+          "normalizedSha256": "604b6631861e85386cc6f5ea0403ef776ec69460b213e8ad32010bfaaabb0586"
+        },
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/风格.json",
+          "sourceSha256": "2aa4568e9958ba7a99f58a4e95a07c6c2c5ca7894e3cf505a472c70b5e158394",
+          "normalizedPath": "templates/builtin-colleague-orange-green-life/style.json",
+          "normalizedSha256": "2aa4568e9958ba7a99f58a4e95a07c6c2c5ca7894e3cf505a472c70b5e158394"
+        }
+      ],
+      "images": [
+        {
+          "filename": "K01.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K01.jpg",
+          "sha256": "1966cfae06713e7af94a7321e87f7558ecc150a4cd4e64b9596012fb2b62a227"
+        },
+        {
+          "filename": "K02.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K02.jpg",
+          "sha256": "8b42bf4149c63f59b26e79b3dae7f7905800f90b509e3e6ec3cacb436c012443"
+        },
+        {
+          "filename": "K03.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K03.jpg",
+          "sha256": "85f95df96033ad8f9757cf1b6f32396cf469fc78e2ca86a1d19ee9526aed9a7d"
+        },
+        {
+          "filename": "K04.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K04.jpg",
+          "sha256": "2fbbcfa031cd902667e9b76417efd09ccdd871733337b092bed6da6263b1d8f1"
+        },
+        {
+          "filename": "K05.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K05.jpg",
+          "sha256": "9e6f2fda1cb90706fa4372a6465f3de6c815232721a208fa41ddc1abe2da9eab"
+        },
+        {
+          "filename": "K06.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K06.jpg",
+          "sha256": "574658cc5e0747be47a3558d6d3efbb85449d89db1196be7007f3297319d6c67"
+        },
+        {
+          "filename": "K07.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K07.jpg",
+          "sha256": "670dfea578eb8f9c6e9bfb127d29c02d47c8d3870bb5528cbc9370b66a94d077"
+        },
+        {
+          "filename": "K08.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K08.jpg",
+          "sha256": "5b242c1d77a59e25ee051f0e97ac14d71e61d80a439be368c364573d7056caa2"
+        },
+        {
+          "filename": "K09.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K09.jpg",
+          "sha256": "086c7411a73972c9a3f2b73106751b78b396732802559e344602ccbf13ff253e"
+        },
+        {
+          "filename": "K10.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K10.jpg",
+          "sha256": "fc521302d6f261040ba730ff4cd876246a650d0aa7ae1f728969b304ff73ad8a"
+        },
+        {
+          "filename": "K11.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K11.jpg",
+          "sha256": "c4ddd0bfbf446d338be760db5667ed00410fa24fc2095178cff8cb9fc01aebff"
+        },
+        {
+          "filename": "K12.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K12.jpg",
+          "sha256": "580827650db703b212c55b7b3fee5971219aa2f5bf42fdfdb4f4f2208719e8a1"
+        },
+        {
+          "filename": "K13.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K13.jpg",
+          "sha256": "164a103e83d60576fb6f6fed5d0f1d043abb19042e4636f099533e833797493e"
+        },
+        {
+          "filename": "K14.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K14.jpg",
+          "sha256": "64c4a685e0e3a9c74f5152a1e3ce8389c17df8de3c56b68c758cd385fc44d6d4"
+        },
+        {
+          "filename": "K15.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K15.jpg",
+          "sha256": "c1a4a77c09866e92d234e2b51c60d761dc68368e8d6a4a2a9a3617a0b2aca1ae"
+        },
+        {
+          "filename": "K16.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K16.jpg",
+          "sha256": "a82fd19a3dfb267cf315bb0719bbdfe11a4b7176f03580bc07565db26ff064a3"
+        },
+        {
+          "filename": "K17.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K17.jpg",
+          "sha256": "3963d97a6c725eaa16ce37e062e6c3f03474b7f7d7f17d7fa18ffdc11b462a8b"
+        },
+        {
+          "filename": "K18.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K18.jpg",
+          "sha256": "924edd499ccaff554ec2a4ed78834d5b7b2aa1c6a2c1997213287bb97b5b27b4"
+        },
+        {
+          "filename": "K19.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K19.jpg",
+          "sha256": "2fd1993edf7b308061cd30e71bd0df274da07510ff0a16c9423a71f64147891c"
+        },
+        {
+          "filename": "K20.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K20.jpg",
+          "sha256": "3ca6f3ae0d038d2713712c0f7c04929affb91c06cb6b3d9090c5ae291b6f73ae"
+        },
+        {
+          "filename": "K21.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K21.jpg",
+          "sha256": "d44451003f0c2741d53f6667c38ddbbc09176467ec5a0f155624382970a4b84e"
+        },
+        {
+          "filename": "K22.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K22.jpg",
+          "sha256": "75dfa5032bc154e7b223bf5e0bcab6f6d909c1b90050e7508fda81e11775741c"
+        },
+        {
+          "filename": "K23.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K23.jpg",
+          "sha256": "957569ec7cd89521b9df6233ffb4ed55f218ec2f84790f5c2dc7dd0a85d07548"
+        },
+        {
+          "filename": "K24.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K24.jpg",
+          "sha256": "c944ade11006a2378ce2d92e2dcafab43772c528cc7ac375f996d0a31c40e661"
+        },
+        {
+          "filename": "K25.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K25.jpg",
+          "sha256": "721cc2f842a0f4e8745a0896aa3e25af104f54d0d77be4c6719b64768fb575f1"
+        },
+        {
+          "filename": "K26.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K26.jpg",
+          "sha256": "6a9743cbef0ecad94075d673776ce13fcc93988a9ce313e99265c03060ffccd5"
+        },
+        {
+          "filename": "K27.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K27.jpg",
+          "sha256": "c75b9c4eb33f21bd8491b86c42f1c4f086a0b7fa24864002f007cf1001e325f7"
+        },
+        {
+          "filename": "K28.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K28.jpg",
+          "sha256": "0db279f2bdcbfef8b516cd3342108bcdf01858c9d4bf96bfb3bd2d051c59df58"
+        },
+        {
+          "filename": "K29.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K29.jpg",
+          "sha256": "78adbda83e8989a98c5ecafbbe75f51ec94b79f11a3ab9636f28a2e0818720bd"
+        },
+        {
+          "filename": "K30.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/鹿一家/K30.jpg",
+          "sha256": "e4ac84b7eb1a9ada7d565553147d9a08511a0b8d30225c30e40d89d19bf92356"
+        }
+      ]
+    },
+    {
+      "templateId": "builtin-colleague-news-collage",
+      "documents": [
+        {
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/VI拆解.md",
+          "sourceSha256": "d58a31e46067e1d73b7f9698380306a53f42d345b69a7605dfc26f5d460a36aa",
+          "normalizedPath": "templates/builtin-colleague-news-collage/visual-identity.md",
+          "normalizedSha256": "d58a31e46067e1d73b7f9698380306a53f42d345b69a7605dfc26f5d460a36aa"
+        }
+      ],
+      "images": [
+        {
+          "filename": "K01.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K01.jpg",
+          "sha256": "d292c57b306103409dff0c9a5391fab0f8115f609ab10f08dfe8e5d690ead3f0"
+        },
+        {
+          "filename": "K02.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K02.jpg",
+          "sha256": "6f1d09074e692fca9d795158bb5e7a744b414d5e9ec3dbbf7c51f39f478192cd"
+        },
+        {
+          "filename": "K03.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K03.jpg",
+          "sha256": "1a4bd522bf474fadf8c910eb5e0156445a3c8cdd5fd7ecfeb7388371205cc1cc"
+        },
+        {
+          "filename": "K04.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K04.jpg",
+          "sha256": "cb7a9b106e47990f6d8a402b872212b55b8c595ece900dcf8e484fdacddb2213"
+        },
+        {
+          "filename": "K05.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K05.jpg",
+          "sha256": "9d181681453ea7eedc59900d725da9b0ee6d9e733979d07407894d89cfc085e9"
+        },
+        {
+          "filename": "K06.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K06.jpg",
+          "sha256": "f83ea75e6c566c44976a4499fd59fb1f045abfd9cdc745d5465ac8ccf49104dc"
+        },
+        {
+          "filename": "K07.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K07.jpg",
+          "sha256": "f3b262a4e3cc164f2389644d8f3555a8e147834d7119b9da14a29b125889ff98"
+        },
+        {
+          "filename": "K08.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K08.jpg",
+          "sha256": "4b08f388f3ad79886581871f4945a7b9afa781a3905bc595f0e4dd67b981750a"
+        },
+        {
+          "filename": "K09.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K09.jpg",
+          "sha256": "5e0f1e65400329bf4e9865ca654d306730e12eb96b8691a5c19d89d2d834bc22"
+        },
+        {
+          "filename": "K10.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K10.jpg",
+          "sha256": "4f59264184fda1db776237c0f3bdfb97c0e94b7bc6c254e245f2bb87b1e08866"
+        },
+        {
+          "filename": "K11.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K11.jpg",
+          "sha256": "7a6de5259e6a79b02c468c1ccae50f37d96396bafa2b0aa5fac541516244e570"
+        },
+        {
+          "filename": "K12.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K12.jpg",
+          "sha256": "71c3d8e5d96a6a13ea665b3d78fe45d70fc0e8281e7f6f67fd0049a8b84a5c6b"
+        },
+        {
+          "filename": "K13.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K13.jpg",
+          "sha256": "d07f3a3d3c7f130bcc8c74cfd734ee027d5ceea348046c5232a1a6ed9469bebd"
+        },
+        {
+          "filename": "K14.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K14.jpg",
+          "sha256": "3dbfa5d76f6307ba7245216ca5d46645f859ff3a7f2aefb89232caa0734e5187"
+        },
+        {
+          "filename": "K15.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K15.jpg",
+          "sha256": "92e26cf5b6422e33fe683471876b646ea9071cacca74fa2a6e4109aad4f28bb0"
+        },
+        {
+          "filename": "K16.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K16.jpg",
+          "sha256": "91900e6c86a2690783e39944ee03fdb514bc159e03894e6051134aec48f73383"
+        },
+        {
+          "filename": "K17.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K17.jpg",
+          "sha256": "0bac98c08d3c489e69c8d8959d2e6dc9612b60c2e758505ef5554108fb47c5f8"
+        },
+        {
+          "filename": "K18.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K18.jpg",
+          "sha256": "1953865e3a967256d61c35eb0baae221656e07743c13d0015de3567fcb60c47d"
+        },
+        {
+          "filename": "K19.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K19.jpg",
+          "sha256": "86cf70396c08e10a73fccc805714df9dd6e0395d6392ac1c550d386f56fa21e5"
+        },
+        {
+          "filename": "K20.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K20.jpg",
+          "sha256": "b2f0995f157fae8fd441233a4bc82dffb412369c3c9348d494db790d9ce95788"
+        },
+        {
+          "filename": "K21.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K21.jpg",
+          "sha256": "a39b2987bcf382be59f490b05008efd51dde8bbbac53beff6f085f58b1f2f8c2"
+        },
+        {
+          "filename": "K22.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K22.jpg",
+          "sha256": "9267ba2c2c6726dcf464a42449e104ea323fdd2a4d7ed84737750e4e7d983de5"
+        },
+        {
+          "filename": "K23.jpg",
+          "sourcePath": "sources/项目/02_内容素材/对标封面/Seven研究社/K23.jpg",
+          "sha256": "32f72330a27d708b2c85c794c856b0a36d8f6106655f38da48c19661aff4b790"
+        }
+      ]
+    }
+  ]
+}

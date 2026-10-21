@@ -1,0 +1,10 @@
+✔ codex annotation intent requires the fixed candidate and matching reference material, with every annotation visible (3253.362625ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, with every annotation visible (2134.368625ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5528.575875

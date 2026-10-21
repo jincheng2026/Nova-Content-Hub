@@ -101,6 +101,16 @@ assert.equal(files.filter(item => item.sourcePath.startsWith(`${promptRoot}/`)).
 for (const name of ['_分类顺序.md', '_格式说明.md']) retain(`${promptRoot}/${name}`);
 const catalog = {format: 'nova-colleague-library', schemaVersion: 1, version: 1, source: '内容工作台学员版_代码交接包 2/封面工作台/内容工作台', authorization: '用户授权复用模板和提示词；图片仅作风格参考，不作为用户身份资料', templates, prompts, files};
 outputs.set('catalog.json', Buffer.from(`${JSON.stringify(catalog, null, 2)}\n`));
+const canonical = {format: 'nova-colleague-template-documents', schemaVersion: 1, templates: templates.map(template => {
+    const documents = template.assets.map(asset => {
+        const normalizedPath = `templates/${template.id}/${asset.path.endsWith('VI拆解.md') ? 'visual-identity.md' : 'style.json'}`;
+        outputs.set(normalizedPath, outputs.get(asset.path));
+        return {sourcePath: asset.path, sourceSha256: asset.sha256, normalizedPath, normalizedSha256: asset.sha256};
+    });
+    return {templateId: template.id, documents, images: template.referenceImages.map(image => ({filename: path.posix.basename(image.path), sourcePath: image.path, sha256: image.sha256}))};
+})};
+assert.equal(canonical.templates.reduce((count, template) => count + template.documents.length, 0), 8);
+outputs.set('templates/index.json', Buffer.from(`${JSON.stringify(canonical, null, 2)}\n`));
 for (const [relative, bytes] of outputs) {
     const target = path.join(destination, relative);
     if (check) assert.ok(fs.readFileSync(target).equals(bytes), `资源与授权来源不同：${relative}`);

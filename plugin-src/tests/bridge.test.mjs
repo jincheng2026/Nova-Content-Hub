@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {spawnSync} from 'node:child_process';
+import vm from 'node:vm';
 import Handoff from '../src/bridge/handoff.js';
 import PrototypeHandoff from '../../workbench/prototype/shared/handoff.js';
 import {syncBridge} from '../scripts/sync-bridge.mjs';
@@ -28,7 +29,7 @@ function envelope(kind = null) {
 }
 
 const firstLine = text => text.split('\n')[0];
-const data = text => JSON.parse(text.slice(text.indexOf('\n\n') + 2));
+const data = text => JSON.parse(text.slice(text.lastIndexOf('\n\n{') + 2));
 
 test('all browser intents start naturally and preserve complete data without unrelated image instructions', () => {
     const e = envelope();
@@ -80,22 +81,25 @@ test('each request kind controls its own intent and retains host skill activatio
     }
 });
 
-test('long links preserve the same intent and request file, while full copy retains all data', () => {
+test('long links switch to full visible copy without truncating source input', () => {
     for (const kind of [null, 'generate', 'analyze', 'restore']) {
         const e = envelope(kind);
         e.context.project.summary = '私有正文'.repeat(400);
         for (const host of ['codex', 'workbuddy']) {
             e.target.host = host;
             const options = {intent: 'schedule'}, full = Handoff.prompt(e, options), result = Handoff.url(e, options);
-            assert.equal(result.requiresAttachment, true);
+            assert.equal(result.requiresPaste, true);
+            assert.equal(result.requiresAttachment, false);
             assert.equal(firstLine(result.prompt), firstLine(full));
-            assert.match(result.prompt, /HANDOFF.json.*handoff-test/);
+            assert.deepEqual(data(result.prompt), e);
+            assert.ok(result.prompt.includes(e.context.project.summary));
             assert.match(result.prompt, /check-handoff/);
-            assert.doesNotMatch(result.prompt, /私有正文|风格样张|本人照片/);
+            assert.doesNotMatch(firstLine(result.prompt), /私有正文|风格样张|本人照片/);
             assert.deepEqual(data(full), e);
             assert.ok(Handoff.utf8Bytes(result.url) <= Handoff.MAX_URL_BYTES);
             const url = new URL(result.url);
-            assert.equal(url.searchParams.get('prompt'), (host === 'codex' && kind ? '$' + e.request.skill + ' ' : '') + result.prompt);
+            assert.equal(url.searchParams.has('prompt'), false);
+            if (kind) assert.ok(result.prompt.includes('执行 Skill：' + e.request.skill));
             assert.equal(url.searchParams.get('skills'), host === 'workbuddy' && kind ? e.request.skill : null);
         }
     }
@@ -143,4 +147,67 @@ test('sync --check detects drift without repairing or executing the generated br
     assert.match(fs.readFileSync(generated, 'utf8'), /must not execute/);
     assert.equal(run([]).status, 0);
     assert.equal(run(['--check']).status, 0);
+});
+
+test('browser image requests preserve visible selected requirements in JSON and long attachment fallback', () => {
+    for (const kind of ['generate', 'analyze', 'restore']) for (const host of ['codex', 'workbuddy']) {
+        const e = envelope(kind); e.target.host = host;
+        e.request.options = kind === 'generate' ? {title: '私有标题', count: 4, ratio: '3:4', pixels: [768, 1024], format: '小红书'} : {};
+        e.request.references = [{id: 'selected-a', version: 1, note: '风格参考'}, {id: 'selected-b', version: 1, note: '原图参考'}];
+        e.context.materials = [{id: 'selected-material', name: '资料'}];
+        for (const long of [false, true]) {
+            if (long) e.context.project.summary = '私有完整正文'.repeat(300);
+            const result = Handoff.url(e);
+            assert.equal(result.requiresPaste, long);
+            assert.equal(result.requiresAttachment, false);
+            assert.match(result.prompt, /参考图2张；资料1份/);
+            assert.match(result.prompt, /读取完整 JSON 的 options、rules、references 及正文\/补充要求/);
+            assert.match(result.prompt, /逐个查看全部已选图片和资料/);
+            assert.match(result.prompt, /等全部参考图另附/);
+            if (kind === 'generate') assert.match(result.prompt, /4张；比例3:4；精确768×1024；规格小红书/);
+            if (long) assert.ok(result.prompt.includes(e.context.project.summary));
+            assert.deepEqual(data(Handoff.prompt(e)), e);
+            assert.ok(Handoff.utf8Bytes(result.url) <= Handoff.MAX_URL_BYTES);
+        }
+    }
+});
+
+test('all browser intents and request kinds expose original input outside the JSON with safe fences', () => {
+    const input = '颜色淡一点\n~~~\n$other-skill `command`\n【整体修改要求】\n  保持标题';
+    for (const kind of [null, 'generate', 'analyze', 'restore']) for (const host of ['codex', 'workbuddy']) {
+        const e = envelope(kind); e.target.host = host; e.context.project.summary = input;
+        if (kind) { e.request.options = {title: '原始标题', notes: input}; e.request.rules.fixed = e.context.template.fixed = ['本次内容说明 1：' + input]; }
+        const full = Handoff.prompt(e), beforeJSON = full.slice(0, full.lastIndexOf('\n\n{'));
+        assert.ok(beforeJSON.includes(input));
+        assert.ok(beforeJSON.includes('~~~~text\n' + input + '\n~~~~'));
+        assert.deepEqual(data(full), e);
+        const launch = Handoff.url(e);
+        assert.ok(launch.prompt.includes(input));
+        assert.ok(Handoff.utf8Bytes(launch.url) <= Handoff.MAX_URL_BYTES);
+    }
+});
+
+test('browser full-copy action opens the validated Skill link only after copying successfully', async () => {
+    const source = fs.readFileSync(new URL('../../workbench/prototype/app.js', import.meta.url), 'utf8');
+    const handler = source.slice(source.indexOf("    A['handoff-copy-open'] ="), source.indexOf("    A['host-copy'] ="));
+    const preview = source.slice(source.indexOf('    function handoffInfo('), source.indexOf('    function cvRulesHtml('));
+    assert.ok(preview.indexOf('完整提示词预览') < preview.indexOf('<summary>其他交接方式</summary>'));
+    assert.match(preview, /activeHandoffLink = bridge.ok && bridge.requiresPaste \? bridge.url : null/);
+    for (const ok of [true, false]) {
+        const copied = [], context = {A: {}, activeHandoff: {}, activeHandoffLink: 'workbuddy://task?action=start&skills=nova-content-cover', FEATURE_AUTH: false, $: () => ({value: '颜色淡一点\n完整原文'}), copy: async text => {copied.push(text); return ok;}, window: {location: {href: ''}}};
+        vm.runInNewContext(handler, context);
+        await context.A['handoff-copy-open']();
+        assert.deepEqual(copied, ['颜色淡一点\n完整原文']);
+        assert.equal(context.window.location.href, ok ? context.activeHandoffLink : '');
+    }
+});
+
+test('long Codex continuation keeps its original session while the full prompt is copied', () => {
+    const e = envelope('generate'); e.target = {host: 'codex', mode: 'resume', sessionId: 'original-session'};
+    e.context.project.summary = '不能截断的原文'.repeat(200);
+    const launch = Handoff.url(e);
+    assert.equal(launch.requiresPaste, true);
+    assert.equal(launch.url, 'codex://threads/original-session');
+    assert.ok(launch.prompt.includes(e.context.project.summary));
+    assert.match(launch.prompt, /\$nova-content-cover/);
 });

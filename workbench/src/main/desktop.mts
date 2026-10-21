@@ -1,4 +1,4 @@
-import {prepareNativeHandoff, nativeHandoffDirectory} from '../../../plugin-src/src/bridge/native-handoff.mjs';
+import {prepareNativeHandoff, nativeHandoffDirectory, openNativeHandoff} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
 import {app, BrowserWindow, clipboard, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray, powerMonitor} from 'electron';
@@ -147,6 +147,17 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         try { return {host, ready: true, skill: installedAssistantSkill(host, release, {capability: 'template'}), reason: 'available'}; }
         catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
     };
+    const openPreparedHandoff = (handoff: {url: string; prompt: string; requiresPaste: boolean}) => openNativeHandoff(handoff, {
+        async copyText(text: string) {
+            await clipboard.writeText(text);
+            if (await clipboard.readText() !== text) throw Object.assign(new Error('完整提示词复制失败，请回工作台重试；任务仍保留。'), {code: 'COPY_FAILED'});
+        },
+        async confirmPaste(text: string) {
+            const result = await dialog.showMessageBox(window, {type: 'info', message: '完整提示词已复制，请在助手输入框粘贴后确认发送', detail: `内容超过系统链接容量，未截断任何要求。下面是将要粘贴的完整提示词：\n\n${text}`, buttons: ['打开助手后粘贴', '取消'], defaultId: 0, cancelId: 1, noLink: true});
+            return result.response === 0;
+        },
+        openExternal: (url: string) => shell.openExternal(url)
+    });
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
     const controller = new DesktopController({
         copyText: text => clipboard.writeText(text),
@@ -166,7 +177,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             const installedSkill = setup.skill;
             await launchWithAssistantRuntime(host, release, assistantMarketRoot, async () => {
                 const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, {templateId, requestId, attemptId, requestHash, host}, release, {kind: 'template', installedSkill});
-                await shell.openExternal(handoff.url);
+                await openPreparedHandoff(handoff);
             }, {capability: 'template'});
         },
         launch: async (binding, reference) => {
@@ -175,7 +186,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             const installedSkill = setup.skill;
             await launchWithAssistantRuntime(reference.host, release, assistantMarketRoot, async () => {
                 const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill});
-                await shell.openExternal(handoff.url);
+                await openPreparedHandoff(handoff);
             });
         },
         dialogs: dialogs ?? {

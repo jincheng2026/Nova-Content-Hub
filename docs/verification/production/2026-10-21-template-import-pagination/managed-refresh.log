@@ -1,0 +1,20 @@
+(node:12081) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save performs its explicit workspace refresh exactly once, and refreshes status (3.382875ms)
+✔ managed save callback supplies the exact receipt object ID alongside the compatible snapshot argument (0.811375ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.059833ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (0.974583ms)
+✔ an explicit refresh failure triggers the finally retry instead of suppressing reconciliation (0.625208ms)
+✔ editor reconciliation failure also keeps the fallback full read (0.739209ms)
+✔ explicit management reload reads the selected object and performs only one full refresh (0.548042ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (0.56125ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (4.666333ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.613917ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 142.151417

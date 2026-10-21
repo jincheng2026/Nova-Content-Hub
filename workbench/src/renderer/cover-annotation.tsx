@@ -8,16 +8,17 @@ import type {WorkspaceCandidate} from '../shared/workspace-contracts.ts';
 interface Props {
   candidate: WorkspaceCandidate & {url: string}; busy: boolean; disabled: boolean; refinementDisabled: boolean;
   assistant: string; referenceSummary: string; close(): void;
-  save(note: string): Promise<void>; refine(note: string): Promise<void>;
+  save(note: string): Promise<void>; refine(note: string): Promise<void>; refinementPrompt(note: string): string;
   run<T>(action: () => Promise<T>): Promise<T | undefined>;
 }
-export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisabled, assistant, referenceSummary, close, save, refine, run}: Props) {
+export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisabled, refinementPrompt, assistant, referenceSummary, close, save, refine, run}: Props) {
   const [initial] = useState(() => readAnnotationNote(candidate.note));
   const [points, setPoints] = useState(initial.points), [overall, setOverall] = useState(initial.overall), [confirming, setConfirming] = useState(false);
   const [editor, setEditor] = useState<{point: CoverAnnotation; index: number | null} | null>(null);
   const [natural, setNatural] = useState({width: 0, height: 0}), [stageSize, setStageSize] = useState({width: 0, height: 0});
   const stage = useRef<HTMLDivElement>(null), image = useRef<HTMLImageElement>(null);
   const note = annotationNote(points, overall), hasInstructions = !!overall.trim() || points.some(point => point.text.trim());
+  const fullPrompt = refinementPrompt(note), refinementTooLong = fullPrompt.length > 10000;
   const valid = note.length <= 10000 && points.every(point => !!point.text.trim());
   const scale = natural.width && natural.height ? Math.min(Math.max(0, stageSize.width - 32) / natural.width, Math.max(0, stageSize.height - 32) / natural.height) : 0;
   const imageWidth = natural.width * scale, imageHeight = natural.height * scale;
@@ -36,7 +37,7 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
   function editPoint(point: CoverAnnotation, index: number | null) { setEditor({point: {...point}, index}); setConfirming(false); }
   function confirmPoint() {
     if (!editor || !editor.point.text.trim()) return;
-    const next = editor.index === null ? [...points, {...editor.point, text: editor.point.text.trim()}] : points.map((point, index) => index === editor.index ? {...editor.point, text: editor.point.text.trim()} : point);
+    const next = editor.index === null ? [...points, {...editor.point, text: editor.point.text}] : points.map((point, index) => index === editor.index ? {...editor.point, text: editor.point.text} : point);
     if (annotationNote(next, overall).length > 10000) return;
     setPoints(next); setEditor(null);
   }
@@ -59,8 +60,9 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
           <div className="cover-toolbar"><Button theme="solid" disabled={disabled || !editor.point.text.trim() || annotationNote(editor.index === null ? [...points, editor.point] : points.map((point, index) => index === editor.index ? editor.point : point), overall).length > 10000} onClick={confirmPoint}>确认批注</Button><Button disabled={busy} onClick={() => setEditor(null)}>取消</Button></div>
         </div>}
       </div><div className="cover-annotation-notes"><h3>已确认的位置批注（{points.length}）</h3>{!points.length && <p>点击原图中需要修改的地方，填写后确认。</p>}{points.map((point, index) => <div className="cover-annotation-note" key={index}><button type="button" className="cover-annotation-note-edit" disabled={disabled || !!editor} aria-label={`编辑位置 ${index + 1} 批注`} onClick={() => editPoint(point, index)}><strong>位置 {index + 1}</strong><span>{point.text}</span></button><Button theme="borderless" disabled={disabled || !!editor} onClick={() => { setPoints(old => old.filter((_, i) => i !== index)); setConfirming(false); }}>删除位置 {index + 1}</Button></div>)}<label htmlFor="annotation-overall">整体修改要求（可选）<TextArea id="annotation-overall" value={overall} disabled={disabled} maxLength={9000} placeholder="可留空，例如：保留人物和配色" onChange={value => { setOverall(value); setConfirming(false); }}/></label><p>{points.length} / 20 个位置 · {note.length} / 10000 字</p>{!valid && <p role="alert">请将总字数控制在 10000 字内。</p>}</div></div>
-      <div className="cover-toolbar"><Button disabled={disabled || points.length >= 20 || !!editor} onClick={() => editPoint({x: 50, y: 50, text: ''}, null)}>添加中心位置批注</Button><Button htmlType="submit" disabled={disabled || !valid || !!editor}>保存批注</Button><Button theme="solid" disabled={disabled || refinementDisabled || !valid || !hasInstructions || !!editor} onClick={() => setConfirming(true)}>按批注修改</Button></div>
-      {confirming && <div className="cover-refinement-confirm" role="region" aria-label="确认本次封面修改"><h3>确认本次修改</h3><p>参考上方这张原图与 {points.length} 个位置批注。{referenceSummary}</p><p>当前助手：{assistant}。将保存批注，添加这张原图作为内容参考资料，生成 1 张新候选；已有封面继续保留。</p><Button theme="solid" disabled={disabled || refinementDisabled || !valid || !hasInstructions || !!editor} onClick={() => void run(() => refine(note))}>确认并去 {assistant} 修改</Button><Button disabled={busy} onClick={() => setConfirming(false)}>继续调整批注</Button></div>}
+      {refinementTooLong && <p role="alert">批注、补充要求与定位说明合计 {fullPrompt.length} 字，超过 10000 字。请调整后再修改；原输入仍保留，也可以单独保存批注。</p>}
+      <div className="cover-toolbar"><Button disabled={disabled || points.length >= 20 || !!editor} onClick={() => editPoint({x: 50, y: 50, text: ''}, null)}>添加中心位置批注</Button><Button htmlType="submit" disabled={disabled || !valid || !!editor}>保存批注</Button><Button theme="solid" disabled={disabled || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor} onClick={() => setConfirming(true)}>按批注修改</Button></div>
+      {confirming && <div className="cover-refinement-confirm" role="region" aria-label="确认本次封面修改"><h3>确认本次修改</h3><pre style={{whiteSpace: 'pre-wrap'}}>{fullPrompt}</pre><p>参考上方这张原图与 {points.length} 个位置批注。{referenceSummary}</p><p>当前助手：{assistant}。将保存批注，添加这张原图作为内容参考资料，生成 1 张新候选；已有封面继续保留。</p><Button theme="solid" disabled={disabled || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor} onClick={() => void run(() => refine(note))}>确认并去 {assistant} 修改</Button><Button disabled={busy} onClick={() => setConfirming(false)}>继续调整批注</Button></div>}
     </form>
   </ManagementDialog>;
 }

@@ -770,7 +770,8 @@ test('every AI entry uses the current assistant and cross-host launch preserves 
     const count = D.TASKS.length;
     ui.A['task-bridge']({dataset: {id: task.id}});
     assert.match(modal(), /交接到Codex/);
-    assert.match(modal(), /codex:\/\/new\?prompt=/);
+    assert.match(modal(), /复制完整提示词并打开助手/);
+    assert.match(nodes.get('#layer').children.at(-1).querySelector('#host-text').value, /\$nova-content-template-study/);
     assert.equal(D.TASKS.length, count + 1);
     const transferred = D.TASKS.at(-1);
     assert.equal(transferred.host, 'codex');
@@ -1163,27 +1164,23 @@ test('actual builtin cover selection shows source design, changed-title referenc
     assert.match(evidence, /已选组内样张 1 · 共同风格与构图差异/);
     for (const rule of t.fixed) assert.ok(evidence.includes(rule));
 });
-test('long handoff separates actual URI prefill from the complete text available for copying', () => {
+test('long handoff exposes complete original requirements and an explicit copy-open action', () => {
     const {ui, W, D, nodes} = load();
     W.setHost('workbuddy');
-    const t = D.TEMPLATES[0];
-    W.rules(t, {fixed: Array(5).fill('长'.repeat(500)), varies: [], evidence: [{sourceIndex: 0, rule: '对应原图'}]});
+    const t = D.TEMPLATES[0], original = '颜色淡一点\n' + '长'.repeat(500);
+    W.rules(t, {fixed: Array(5).fill(original), varies: [], evidence: [{sourceIndex: 0, rule: '对应原图'}]});
     ui.A['analyze-template']({dataset: {id: t.id}});
     const task = D.TASKS.at(-1);
     ui.A['task-bridge']({dataset: {id: task.id}});
-    const mm = nodes.get('#layer').children.at(-1), html = mm.innerHTML, actual = mm.querySelector('#protocol-prompt'),
-        full = mm.querySelector('#host-text');
-    assert.ok(actual);
+    const mm = nodes.get('#layer').children.at(-1), html = mm.innerHTML, full = mm.querySelector('#host-text');
+    assert.equal(mm.querySelector('#protocol-prompt'), null);
     assert.ok(full);
-    assert.match(html, /协议链接实际预填文本/);
-    assert.match(html, /完整交接文本（供复制；不代表已通过链接传入）/);
-    assert.match(actual.value, /请等待我附上交接 JSON/);
-    assert.match(html, /下载 HANDOFF.json 并在助手中附上/);
-    assert.ok(full.value.length > actual.value.length);
-    assert.ok(!actual.value.includes('长'.repeat(500)));
-    assert.ok(full.value.includes('长'.repeat(500)));
-    const link = html.match(/href="(workbuddy:\/\/task\?action=start&amp;prompt=[^"]+)"/)[1].replaceAll('&amp;', '&');
-    assert.equal(new URL(link).searchParams.get('prompt'), actual.value);
+    assert.match(html, /完整提示词预览/);
+    assert.match(html, /复制完整提示词并打开助手/);
+    assert.match(html, /完整提示词超过链接容量/);
+    assert.ok(full.value.includes(original));
+    assert.ok(full.value.indexOf(original) < full.value.lastIndexOf('\n\n{'));
+    assert.match(full.value, /执行 Skill：nova-content-template-study/);
     assert.equal(task.state, 'handoff');
 });
 test('actual intake and scheduling actions carry distinct intent and only relevant planning context', () => {
@@ -1233,9 +1230,10 @@ test('every general handoff keeps the same natural intent in its link and full c
         for (const [action, dataset, expected] of actions) {
             ui.A[action]({dataset});
             const m = nodes.get('#layer').children.at(-1), full = m.querySelector('#host-text').value,
-                actual = m.querySelector('#protocol-prompt').value;
+                actual = m.querySelector('#protocol-prompt')?.value;
             assert.match(full.split('\n')[0], expected, action);
-            assert.equal(actual.split('\n')[0], full.split('\n')[0], action);
+            if (actual) assert.equal(actual.split('\n')[0], full.split('\n')[0], action);
+            else { assert.match(m.innerHTML, /复制完整提示词并打开助手/); assert.match(m.innerHTML, /完整提示词超过链接容量/); }
             assert.doesNotMatch(full, /风格样张|生成指定数量|本人照片|全部参考图/);
             if (action === 'pw-ask-ai') {
                 assert.match(full, /待分析数据|本次未携带正文/);
@@ -1251,7 +1249,7 @@ test('prompt metadata handoff preserves short bodies, omits whole oversized bodi
     const {ui, D, nodes} = load(), p = D.PROMPTS[0];
     const summary = () => {
         const full = nodes.get('#layer').children.at(-1).querySelector('#host-text').value;
-        return JSON.parse(full.slice(full.indexOf('\n\n') + 2)).context.project.summary;
+        return JSON.parse(full.slice(full.lastIndexOf('\n\n{') + 2)).context.project.summary;
     };
     p.body = '第一行原文\r\n$other-skill\n{{变量}}\t正文末尾';
     let original = JSON.stringify(D.PROMPTS);
@@ -2527,7 +2525,7 @@ test('template current step does not advance old requests and keeps historical t
     assert.match(flow, /data-act="restore-import"/);
 });
 
-test('handoff footer has one main action while ZIP and mandatory long JSON attachment live in preparation', () => {
+test('handoff footer has one complete-copy action while references stay in preparation', () => {
     const app = load(), {ui, W, D, nodes} = app, p = D.PROJECTS.find(p => p.kind === '内容'),
         t = D.TEMPLATES.find(W.isBuiltinTemplate);
     ui.startCover(p, t, ['方图'], 1, '准备与主入口', Array.from(W.styleReferences(t, p), a => a.id));
@@ -2538,7 +2536,9 @@ test('handoff footer has one main action while ZIP and mandatory long JSON attac
     assert.equal((m.innerHTML.match(/data-act="reference-export"/g) || []).length, 1);
     assert.match(m.innerHTML, /其他交接方式/);
     assert.match(m.innerHTML, /技术详情与完整交接内容/);
-    assert.match(m.innerHTML, /必须先下载 HANDOFF.json 并在助手中附上/);
+    assert.match(m.innerHTML, /完整提示词超过链接容量/);
+    assert.match(foot, /复制完整提示词并打开助手/);
+    assert.ok(m.querySelector('#host-text').value.includes('准备与主入口'));
 });
 
 test('new task viewing and selection stay read-only under required auth while handoff preserves the existing gate', () => {

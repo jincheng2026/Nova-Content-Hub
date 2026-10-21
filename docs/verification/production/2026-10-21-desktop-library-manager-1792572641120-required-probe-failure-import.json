@@ -1,0 +1,287 @@
+{
+  "at": "2026-10-21T08:51:56.231Z",
+  "mode": "required",
+  "phase": "import",
+  "failure": {
+    "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  Comparison {\n+   code: 'BUSY'\n-   code: 'INVALID_INPUT'\n  }\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  Comparison {\n+   code: 'BUSY'\n-   code: 'INVALID_INPUT'\n  }\n\n    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zx5Fe5/auth-required/workbench/dist/main/probe.mjs:166:13)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zx5Fe5/auth-required/workbench/dist/main/desktop.mjs:445:5)"
+  },
+  "timeline": [
+    {
+      "at": "2026-10-21T08:51:00.687Z",
+      "stage": "waiting for initial renderer idle"
+    },
+    {
+      "at": "2026-10-21T08:51:00.771Z",
+      "stage": "initial renderer idle; checking sandbox and exact bridge"
+    },
+    {
+      "at": "2026-10-21T08:51:00.775Z",
+      "stage": "opening library A from welcome"
+    },
+    {
+      "at": "2026-10-21T08:51:02.317Z",
+      "stage": "library A summary loaded; navigating to content"
+    },
+    {
+      "at": "2026-10-21T08:51:02.365Z",
+      "stage": "library A content row rendered; opening saved body"
+    },
+    {
+      "at": "2026-10-21T08:51:06.037Z",
+      "stage": "library A body verified; exercising retained legacy import bridge"
+    },
+    {
+      "at": "2026-10-21T08:51:54.079Z",
+      "stage": "import B adopted; editing fixture and removing source backup"
+    },
+    {
+      "at": "2026-10-21T08:51:54.511Z",
+      "stage": "loading current library UI and checking desktop storage manager"
+    },
+    {
+      "at": "2026-10-21T08:51:56.066Z",
+      "stage": "imported content table rendered; checking text-only data"
+    },
+    {
+      "at": "2026-10-21T08:51:56.066Z",
+      "stage": "checking worker binding, release pair, static MIME, URL and CSP boundaries"
+    },
+    {
+      "at": "2026-10-21T08:51:56.072Z",
+      "stage": "failure; capturing bounded diagnostics before exit"
+    }
+  ],
+  "consoleMessages": [],
+  "binding": {
+    "version": 1,
+    "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zx5Fe5/data-required/source.json",
+    "sourceHash": "6f8b40c8691a219fec01ad505616f0eb9c17aed9c74c6cbeee0f192a7c986b74",
+    "destination": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zx5Fe5/data-required/library",
+    "started": true,
+    "importId": "ff0b7e45-9718-40d6-9a88-02b23a828824",
+    "libraryId": "71eb8c46-f0f4-4269-8f06-d05185ef1ff4",
+    "current": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-Zx5Fe5/data-required/library",
+      "libraryId": "71eb8c46-f0f4-4269-8f06-d05185ef1ff4",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "75687712"
+      }
+    },
+    "pending": null,
+    "workspacePending": null,
+    "templatePending": null,
+    "maintenancePending": null,
+    "creation": null,
+    "needsReselect": false
+  },
+  "controllerBusy": false,
+  "renderer": {
+    "url": "nova-content://app/index.html",
+    "main": {
+      "app": "ready",
+      "loaded": "true",
+      "busy": "false"
+    },
+    "error": "",
+    "library": "library",
+    "heading": "内容",
+    "dialogs": [],
+    "nav": [
+      {
+        "id": "nav-overview",
+        "current": null,
+        "disabled": false
+      },
+      {
+        "id": "nav-templates",
+        "current": null,
+        "disabled": false
+      },
+      {
+        "id": "nav-content",
+        "current": "page",
+        "disabled": false
+      },
+      {
+        "id": "nav-calendar",
+        "current": null,
+        "disabled": false
+      },
+      {
+        "id": "nav-prompts",
+        "current": null,
+        "disabled": false
+      }
+    ],
+    "rowCount": 2,
+    "contentPage": true,
+    "contentDetail": false,
+    "buttons": [
+      {
+        "id": "refresh-workspace",
+        "disabled": false
+      },
+      {
+        "id": "new-content",
+        "disabled": false
+      }
+    ],
+    "pageText": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n＋ 新建合集\n＋ 新建内容\n内容范围\n正常内容\n内容状态\n全部状态\n内容列表排序\n最近更新\n▤\n合集 合集\n2 篇内容\n›\n共 1 项 · 1–1 项\n每页条数：20\n内容\t渠道\t计划时间\t封面状态\t发布进度\t操作\n\n封面\nsecond\n已有发布记录\n\t\n抖音\n小红书\n\t2026-10-19\n19:00\n\t\n待选封面\n\t已发 1/2\n\t\n打开内容\n•••\n\n\n封面\n<script>globalThis.untrustedExecuted=true</script>\n已有发布记录\n\t\n抖音\n小红书\n\t2026-10-19\n19:00\n\t\n待选封面\n\t已发 1/2\n\t\n打开内容\n•••\n共 2 项 · 1–2 项\n每页条数：20\n\n共匹配 3 项（1 个合集 · 2 篇内容）"
+  },
+  "backend": {
+    "status": {
+      "assistant": "codex",
+      "photoPending": false,
+      "coverActionPending": false,
+      "coverPending": false,
+      "seedPending": false,
+      "workspacePending": null,
+      "templatePending": null,
+      "maintenance": {
+        "pending": null,
+        "receipt": null,
+        "health": null
+      },
+      "busy": true,
+      "sourceName": "source.json",
+      "destinationName": "library",
+      "inspection": {
+        "counts": {
+          "contents": 2,
+          "collections": 1,
+          "templates": 1,
+          "photos": 1,
+          "prompts": 1,
+          "plans": 4,
+          "publications": 2,
+          "archivedTasks": 1,
+          "trash": 6
+        },
+        "warnings": [
+          {
+            "code": "UNRESOLVED_ASSETS",
+            "message": "部分图片或附件只有引用。导入时会核对内置资源，缺失文件会保留记录并明确提示，不自动读取备份里的本机路径。"
+          },
+          {
+            "code": "UNKNOWN_PUBLISHED_TEXT",
+            "message": "旧备份没有冻结发布时的文案；历史文案会标记未知。"
+          },
+          {
+            "code": "MACHINE_STATE_NOT_TRUSTED",
+            "message": "助手安装、信任和演示授权不作为正式状态导入。"
+          }
+        ]
+      },
+      "started": true,
+      "currentName": "library",
+      "needsReselect": false,
+      "pending": null,
+      "creating": false,
+      "creationMissing": false,
+      "task": {
+        "status": "committed",
+        "progress": {
+          "steps": 62,
+          "resources": 22,
+          "counts": {
+            "contents": {
+              "active": 2,
+              "trash": 1
+            },
+            "collections": {
+              "active": 1,
+              "trash": 0
+            },
+            "photos": {
+              "active": 1,
+              "trash": 1
+            },
+            "prompts": {
+              "active": 1,
+              "trash": 1
+            },
+            "templates": 1,
+            "plans": 6,
+            "publications": 3,
+            "materials": {
+              "active": 4,
+              "trash": 4
+            },
+            "candidates": {
+              "available": 4,
+              "unavailable": 0
+            },
+            "resources": {
+              "available": 16,
+              "unavailable": 6,
+              "unsupported": 0
+            }
+          }
+        },
+        "issues": [
+          {
+            "code": "OWNERSHIP_CONFIRMATION_REQUIRED",
+            "key": "photo/mine",
+            "defaultRequested": true
+          },
+          {
+            "key": "template/template/shot/1",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/first/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/second/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-content/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-photo",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          }
+        ],
+        "targetChanged": false,
+        "descriptorChanged": false
+      }
+    },
+    "contents": {
+      "error": "Error: 当前操作仍在进行，请稍候或查询状态。"
+    },
+    "rendererContents": {
+      "ok": true,
+      "value": [
+        {
+          "id": "8dace1e2-d6e3-4d7f-a8c1-8c6d276a1559",
+          "title": "second",
+          "body": "edited after import <script>globalThis.untrustedExecuted=true</script>",
+          "editToken": "1f0a7d88b543a63a6001c349232532ade2160574d645f468599a3cd4d316efc2",
+          "deletedAt": null
+        },
+        {
+          "id": "c5acd777-d059-4ea5-bebd-6c031f174f8d",
+          "title": "<script>globalThis.untrustedExecuted=true</script>",
+          "body": "",
+          "editToken": "fc43fea0a86e528ef3f4f0b93d93a8ed2c7e38e268774d1c0697eff2cbec6096",
+          "deletedAt": null
+        }
+      ]
+    }
+  }
+}

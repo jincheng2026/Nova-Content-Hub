@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {validateImage} from '../image-validation/index.mjs';
+import {templateContextDocuments} from './template-context-documents.mjs';
 
 const HOSTS = ['codex', 'workbuddy'];
 const LIVE = ['created', 'claimed'];
@@ -432,6 +433,7 @@ export function coverJobMethods(h) {
         return locked(() => {
             const current = content(id(contentId)), {job, attempt} = find(current, requestId, attemptId);
             const {request, bodyBytes} = requestPackage(contentId, job);
+            const pkg = templatePackage(root, request.template.id, request.template.version, request.template.packageHash);
             const handoff = handoffPackage(contentId, job, attempt);
             const dir = requestDir(contentId, requestId);
             const inbox = path.join(attemptDir(contentId, requestId, attemptId), 'inbox');
@@ -444,6 +446,7 @@ export function coverJobMethods(h) {
                 body: bodyBytes.toString('utf8'),
                 bodyBytes,
                 inbox,
+                ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}),
                 inputs: request.inputs.map(entry => ({...entry, path: path.join(dir, '输入', entry.assetHash)}))
             };
         });

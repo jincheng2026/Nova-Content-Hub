@@ -3,6 +3,7 @@ import path from 'node:path';
 import os from 'node:os';
 import {randomUUID, createHash} from 'node:crypto';
 import {validRelease} from '../content.mjs';
+import Handoff from './handoff.js';
 import {openLibrary} from '../lib/file-library/index.mjs';
 
 const MAX_BYTES = 64 * 1024;
@@ -101,13 +102,20 @@ function hostURL(host, id, root, options, kind, library, context) {
     const summary = value => Array.from(value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/gu, ' ').replace(/\$/g, '＄').replace(/`/g, '｀').trim()).slice(0, 48);
     const title = kind === 'cover' ? summary(request.title) : [];
     const name = template.deletedAt ? [] : summary(template.name);
+    const requirements = kind === 'template'
+        ? `要求：参考图${request.styleAssetHashes.length}张；首张还原1张；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.restore.width}×${request.restore.height}；${request.restore.outputFormat}。`
+        : `要求：${request.count}张；${request.ratio}；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.pixels.width}×${request.pixels.height}；${request.outputFormat}；${request.photo ? '本人照已选' : '不放人物'}；样张${request.styleAssetHashes.length}；资料${request.materials.length - (refinement ? 1 : 0)}；${refinement ? '原图参考1。' : ''}`;
+    const refinementPrefix = `以所附候选原图（${candidateId}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n`;
+    const visiblePrompt = refinement && request.prompt.startsWith(refinementPrefix) ? request.prompt.slice(refinementPrefix.length) : request.prompt;
+    const userInput = kind === 'template' ? Handoff.inputBlock('模板补充说明', request.notes) : (title.join('') === request.title ? '' : Handoff.inputBlock('封面标题', request.title)) + Handoff.inputBlock(refinement ? '批注（x/y自左上角按宽高%）' : '生成要求', visiblePrompt);
+    const readFirst = '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。';
     const prompt = () => {
         const intent = kind === 'template'
             ? `学习${name.length ? `「${name.join('')}」模板的整组参考图` : '这组模板参考图'}，整理规则并还原首张样图，交回工作台验收。`
             : refinement
-                ? `按已保存的位置批注修改${title.length ? `「${title.join('')}」的封面` : '原封面'}，生成新候选并交回工作台。`
+                ? `基于原图按批注修改${title.length ? `「${title.join('')}」的封面` : '原封面'}，保留未要求修改的内容与布局，交回新候选。`
                 : `照${name.length ? `「${name.join('')}」模板` : '已选模板'}，给${title.length ? `「${title.join('')}」` : '这篇内容'}生成封面候选，并交回工作台。`;
-        return [intent, `任务编号：${id}`, ...(host === 'codex' ? ['$' + skill] : [])].join('\n');
+        return [intent, requirements + userInput, readFirst, `任务编号：${id}`, ...(host === 'codex' ? ['$' + skill] : [])].join('\n');
     };
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
@@ -117,12 +125,15 @@ function hostURL(host, id, root, options, kind, library, context) {
     url.searchParams.set(host === 'workbuddy' ? 'cwd' : 'path', root);
     url.searchParams.set('prompt', prompt());
     // Names are optional display hints; the fixed handoff and Skill must remain complete.
-    while (url.href.length > 2048 && (title.length || name.length)) {
-        (title.length >= name.length ? title : name).pop();
+    while (url.href.length > 2048 && name.length) {
+        name.pop();
         url.searchParams.set('prompt', prompt());
     }
+    const requiresPaste = url.href.length > 2048;
+    const text = prompt();
+    if (requiresPaste) url.searchParams.delete('prompt');
     if (url.href.length > 2048) refuse('INVALID_HANDOFF', '助手交接链接超过系统长度限制，请使用路径较短的内容库。');
-    return url.href;
+    return {url: url.href, prompt: text, requiresPaste};
 }
 
 export async function prepareNativeHandoff(directory, binding, task, release, options) {
@@ -131,7 +142,7 @@ export async function prepareNativeHandoff(directory, binding, task, release, op
     const kind = options?.kind === undefined ? 'cover' : options.kind;
     taskFor(task, kind);
     const {library, context} = contextFor(binding, task, true, kind);
-    const id = randomUUID(), url = hostURL(task.host, id, binding.root, options, kind, library, context);
+    const id = randomUUID(), launch = hostURL(task.host, id, binding.root, options, kind, library, context);
     const before = directoryStat(directory, true);
     const envelope = {
         format: 'nova-content-native-handoff',
@@ -159,7 +170,15 @@ export async function prepareNativeHandoff(directory, binding, task, release, op
     if (!sameEntry(before, directoryStat(directory))) refuse('CONFLICT', '本机交接目录已经被替换。');
     contextFor(binding, task, true, kind);
     // shortcut: path checks do not provide atomic openat semantics; re-audit before supporting shared/untrusted appData.
-    return {id, url};
+    return {id, ...launch};
+}
+
+export async function openNativeHandoff(handoff, {copyText, confirmPaste, openExternal}) {
+    if (handoff.requiresPaste) {
+        await copyText(handoff.prompt);
+        if (!await confirmPaste(handoff.prompt)) refuse('HANDOFF_CANCELLED', '已取消打开助手；完整提示词仍在剪贴板，固定请求保留，可稍后继续。');
+    }
+    await openExternal(handoff.url);
 }
 
 export function readNativeHandoff(directory, id, release) {

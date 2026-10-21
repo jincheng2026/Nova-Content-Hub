@@ -37,7 +37,7 @@ startDesktop({
             assert.equal(reply.ok, true, JSON.stringify(reply));
             return reply.value;
         };
-        const wait = (condition: string, timeout = 10000) => run(`new Promise((resolve, reject) => { const end = Date.now() + ${timeout}; const check = () => { if (${condition}) return resolve(true); if (Date.now() > end) return reject(new Error('Renderer business state did not settle: ' + ${JSON.stringify(condition)} + ' / ' + document.getElementById('status')?.textContent + ' / ' + document.getElementById('error')?.textContent)); setTimeout(check, 25); }; check(); })`);
+        const wait = (condition: string, timeout = 10000) => run(`new Promise((resolve, reject) => { const end = Date.now() + ${timeout}; const check = () => { if (${condition}) return resolve(true); if (Date.now() > end) return reject(new Error('Renderer business state did not settle: ' + ${JSON.stringify(condition)} + ' / ' + document.getElementById('error')?.textContent)); setTimeout(check, 25); }; check(); })`);
         const click = (id: string) => wait(`(() => { const button = document.getElementById(${JSON.stringify(id)}); const modal = document.querySelector('dialog[open]'); if (!button || button.disabled || !button.getClientRects().length || getComputedStyle(button).visibility !== 'visible' || modal && !modal.contains(button)) return false; button.click(); return true; })()`);
         const idle = 'document.querySelector(\'main[data-app="ready"][data-loaded="true"][data-busy="false"]\')';
         const openManager = async () => {
@@ -46,7 +46,7 @@ startDesktop({
                 await wait('document.querySelector(".library-manager-dialog[open]")');
             }
             await run('[...document.querySelectorAll(".library-manager-dialog[open] .manager-tabs button")].find(button => button.textContent.trim() === "备份与维护").click()');
-            await wait('document.querySelector(".library-manager-dialog[open] #backup")');
+            await wait('document.querySelector(".library-manager-dialog[open] #current-library")');
         };
         const closeManager = async () => {
             await run('[...document.querySelectorAll(".library-manager-dialog[open] > .dialog-heading button")].find(button => button.textContent.trim() === "关闭").click()');
@@ -93,53 +93,28 @@ startDesktop({
                     return result;
                 };
             }
-            stage('library A body verified; opening import manager');
-            await openManager();
-            assert.deepEqual(await run(`(() => { const style = getComputedStyle(document.getElementById('backup')); return {background: style.backgroundColor, primary: style.getPropertyValue('--semi-color-primary').trim()}; })()`), {background: 'rgb(50, 107, 216)', primary: '#326bd8'});
-            await fs.writeFile(path.join(root, 'workbench.png'), (await window.webContents.capturePage()).toPNG());
-            console.log('React business status loaded; clicking backup/destination/import');
-            await click('backup');
-            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('selection').textContent.includes('source.json')`);
-            await click('destination');
-            await wait(`document.querySelector('[data-busy="false"]') && !document.getElementById('import').disabled`);
-            stage('backup and destination selected; importing B');
-            await click('import');
+            stage('library A body verified; exercising retained legacy import bridge');
+            await bridge('chooseBackup');
+            await bridge('chooseDestination');
             if (release.AUTH_MODE === 'disabled') {
-                await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成')`, 45000);
-                assert.equal(await run("document.getElementById('content-body') === null"), true);
+                await assert.rejects(controller.importBackup(), {code: 'WORKER_EXIT'});
                 assert.equal(controller.binding.current?.root, initialRoot);
                 assert.ok((await bridge('listContents')).some(item => item.id === initialId));
-                stage('lost import acknowledgement kept binding A; resuming B with lost status');
-                const resume = controller.resumeImport.bind(controller);
-                const status = controller.status.bind(controller);
-                let lostStatus = 0;
-                controller.resumeImport = async () => {
-                    await resume();
-                    lostStatus = 1;
-                    throw Object.assign(new Error('selection response lost after commit'), {code: 'WORKER_EXIT'});
-                };
-                controller.status = async () => {
-                    if (lostStatus) {
-                        lostStatus -= 1;
-                        throw Object.assign(new Error('status read failed'), {code: 'IO_ERROR'});
-                    }
-                    return status();
-                };
-                await click('resume');
-                await wait(`document.querySelector('[data-busy="false"][data-loaded="false"]')`);
-                assert.equal(await run("document.getElementById('content-body') === null"), true);
-                assert.equal(await run("document.querySelector('.content-library-page #new-content')?.disabled"), true);
-                controller.resumeImport = resume;
-                controller.status = status;
-                await click('refresh');
+                assert.equal((await bridge('status')).task?.status, 'committed');
+                await click('refresh-workspace');
+                await wait(idle);
+                await openManager();
+                await click('resume-import');
+                await wait("document.getElementById('content-body') === null");
+                // Adopting B also seeds its built-ins; editor invalidation must precede that work.
+                await wait(`${idle} && document.getElementById('content-body') === null`, 45000);
+                assert.equal(await run('document.getElementById("error").textContent'), '');
+            } else {
+                await bridge('importBackup');
             }
-
-            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成') && !document.getElementById('list').disabled`, 45000);
-            assert.equal(await run('document.getElementById("error").textContent'), '');
             assert.equal((await bridge('status')).task?.status, 'committed');
-            assert.equal(await run("document.getElementById('content-body') === null"), true);
             assert.equal((await bridge('listContents')).some(item => item.id === initialId), false);
-            console.log('PASS saved A editor cleared before import/resume adopts B; lost selection/status cannot submit A identifiers');
+            console.log('PASS retained legacy import bridge; lost import acknowledgement preserves A until resume adopts B');
             stage('import B adopted; editing fixture and removing source backup');
             const list = await bridge('listContents');
             assert.ok(list.some(item => item.title === malicious));
@@ -166,12 +141,27 @@ startDesktop({
             const contents: Content[] = await bridge('listContents');
             assert.equal(contents.find(item => item.id === identity.contentId)?.body, `edited after import ${malicious}`);
         }
-        stage('refreshing imported content through manager');
+        stage('loading current library UI and checking desktop storage manager');
+        await new Promise<void>(resolve => {
+            window.webContents.once('did-finish-load', () => resolve());
+            window.webContents.reload();
+        });
+        await wait(`${idle} && document.getElementById('library-summary').textContent === 'library'`);
         await openManager();
-        await click('refresh');
-        await wait(`${idle} && !document.getElementById('list').disabled`);
-        await click('list');
-        await wait(idle);
+        const manager = await run<{text: string; current: string; buttons: {text: string; disabled: boolean}[]}>(`(() => {
+            const manager = document.querySelector('.library-manager-dialog[open]');
+            return {text: manager.textContent, current: manager.querySelector('#current-library').textContent,
+                buttons: [...manager.querySelectorAll('button')].map(button => ({text: button.textContent.trim(), disabled: button.disabled}))};
+        })()`);
+        assert.doesNotMatch(manager.text, /网页版|迁移/);
+        assert.equal(manager.current, 'library');
+        for (const label of ['新建内容库', '打开内容库', '在文件管理器中查看', '备份当前内容库', '检查一份备份', '从备份恢复到新文件夹', '升级旧版内容库']) {
+            assert.ok(manager.buttons.some(button => button.text === label && !button.disabled), `Missing enabled desktop library action: ${label}`);
+        }
+        window.showInactive();
+        await run('new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))');
+        await fs.writeFile(path.join(root, 'workbench.png'), (await window.webContents.capturePage()).toPNG());
+        window.hide();
         await closeManager();
         await click('nav-content');
         await wait(`${idle} && document.querySelectorAll('#contents tr[data-content-id]').length > 0 && document.getElementById('contents').textContent.includes(${JSON.stringify(malicious)})`);
@@ -187,6 +177,11 @@ startDesktop({
             assert.equal(await run('globalThis.untrustedExecuted === true'), false);
         }
         stage('checking worker binding, release pair, static MIME, URL and CSP boundaries');
+        const workerIdleDeadline = Date.now() + 10000;
+        while (worker.pending) {
+            assert.ok(Date.now() < workerIdleDeadline, 'Renderer background reads did not release the worker');
+            await new Promise(resolve => setTimeout(resolve, 25));
+        }
         await assert.rejects(worker.call('list', {
             binding: {
                 root: destination,
@@ -231,7 +226,7 @@ startDesktop({
                 catch (error) { backendState[key] = {error: String(error)}; }
             };
             const [renderer, backend, screenshot] = await Promise.allSettled([
-                bounded(() => run(`({url: location.href, main: {...document.querySelector('main')?.dataset}, error: document.getElementById('error')?.textContent, status: document.getElementById('status')?.textContent, library: document.getElementById('library-summary')?.textContent, heading: document.querySelector('h1')?.textContent, dialogs: [...document.querySelectorAll('dialog')].map(dialog => ({open: dialog.open, label: dialog.getAttribute('aria-labelledby') || dialog.getAttribute('aria-label'), text: dialog.textContent.slice(0, 2000)})), nav: [...document.querySelectorAll('.app-navigation nav button')].map(button => ({id: button.id, current: button.getAttribute('aria-current'), disabled: button.disabled})), rowCount: document.querySelectorAll('#contents tr[data-content-id]').length, contentPage: !!document.querySelector('.content-library-page'), contentDetail: !!document.querySelector('.content-detail-page'), buttons: [...document.querySelectorAll('#welcome-open-library, #new-content, #refresh-workspace')].map(button => ({id: button.id, disabled: button.disabled})), pageText: document.body.innerText.slice(0, 12000)})`)),
+                bounded(() => run(`({url: location.href, main: {...document.querySelector('main')?.dataset}, error: document.getElementById('error')?.textContent, library: document.getElementById('library-summary')?.textContent, heading: document.querySelector('h1')?.textContent, dialogs: [...document.querySelectorAll('dialog')].map(dialog => ({open: dialog.open, label: dialog.getAttribute('aria-labelledby') || dialog.getAttribute('aria-label'), text: dialog.textContent.slice(0, 2000)})), nav: [...document.querySelectorAll('.app-navigation nav button')].map(button => ({id: button.id, current: button.getAttribute('aria-current'), disabled: button.disabled})), rowCount: document.querySelectorAll('#contents tr[data-content-id]').length, contentPage: !!document.querySelector('.content-library-page'), contentDetail: !!document.querySelector('.content-detail-page'), buttons: [...document.querySelectorAll('#welcome-open-library, #new-content, #refresh-workspace')].map(button => ({id: button.id, disabled: button.disabled})), pageText: document.body.innerText.slice(0, 12000)})`)),
                 bounded(async () => {
                     await readDiagnostic('status', () => controller.status());
                     await readDiagnostic('contents', () => controller.listContents({view: 'active'}));

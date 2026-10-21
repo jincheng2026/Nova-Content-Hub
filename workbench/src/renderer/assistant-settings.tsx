@@ -13,10 +13,12 @@ import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
 import {PopupSelect} from './semi-controls.tsx';
 import './creator-settings.css';
 
-const SettingsHelpTarget = createContext<HTMLElement | null>(null);
-export function SettingsHelp({title, children}: {title: string; children: ReactNode}) {
-  const target = useContext(SettingsHelpTarget);
-  return target ? createPortal(<Card title={title}>{children}</Card>, target) : null;
+const SettingsHelpTarget = createContext<{actions: HTMLElement | null; guides: HTMLElement | null}>({actions: null, guides: null});
+export function SettingsHelp({title, kind = 'guide', className = '', children}: {title: string; kind?: 'action' | 'recovery' | 'guide'; className?: string; children: ReactNode}) {
+  const targets = useContext(SettingsHelpTarget);
+  const target = kind === 'guide' ? targets.guides : targets.actions;
+  if (!target) return null;
+  return createPortal(kind === 'guide' ? <details className="creator-settings-help-guide"><summary>{title}</summary><div className="creator-settings-help-guide-body">{children}</div></details> : kind === 'recovery' ? <section className="creator-settings-help-recovery" aria-label={title}>{children}</section> : <Card className={className} title={title}>{children}</Card>, target);
 }
 
 interface SettingsProps {
@@ -28,7 +30,7 @@ interface SettingsProps {
 }
 export function AssistantSettings({status, busy, blocked, run, close, library = null, assets = null, refresh, managePhotos, manageLibrary, manageChannels, preferences, setup: setupPanel, recovery, children}: SettingsProps) {
   const dialog = useRef<HTMLDialogElement>(null);
-  const [tab, setTab] = useState('settings'), [helpTarget, setHelpTarget] = useState<HTMLDivElement | null>(null);
+  const [tab, setTab] = useState('settings'), [helpActions, setHelpActions] = useState<HTMLDivElement | null>(null), [helpGuides, setHelpGuides] = useState<HTMLDivElement | null>(null);
   const [closeNotice, setCloseNotice] = useState(''), [editingProfile, setEditingProfile] = useState(false);
   const requestClose = () => { if (hasManagedDrafts()) setCloseNotice('有尚未保存的设置或编辑，请先保存，或在对应表单中明确放弃修改。'); else close(); };
   const [setup, setSetup] = useState<AssistantSetup | null>(null);
@@ -57,7 +59,7 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
   return <dialog ref={dialog} className="leave-dialog settings-dialog creator-settings-dialog" onCancel={event => {event.preventDefault(); requestClose();}} aria-labelledby="settings-title">
     <header className="creator-settings-heading"><div><h2 id="settings-title">设置</h2><p>免费体验 · 资料保存在你的本机内容库</p></div><Button id="close-settings" onClick={requestClose}>关闭设置</Button></header>
     {closeNotice && <p className="creator-settings-notice" role="alert">{closeNotice}</p>}
-    <SettingsHelpTarget.Provider value={helpTarget}><Tabs activeKey={tab} onChange={setTab} keepDOM lazyRender={false} tabPaneMotion={false} aria-label="设置与帮助"><Tabs.TabPane itemKey="settings" tab="常用设置"><div className="creator-settings-columns" hidden={tab !== 'settings'}>
+    <SettingsHelpTarget.Provider value={{actions: helpActions, guides: helpGuides}}><Tabs activeKey={tab} onChange={setTab} keepDOM lazyRender={false} tabPaneMotion={false} aria-label="设置与帮助"><Tabs.TabPane itemKey="settings" tab="常用设置"><div className="creator-settings-columns" hidden={tab !== 'settings'}>
       <section className="creator-settings-profile" aria-label="个人信息"><Card title="个人信息" headerExtraContent={<Button disabled={busy || blocked || !library || !refresh} onClick={() => {if (editingProfile && hasManagedDrafts()) {setCloseNotice('个人信息有未保存修改，请先保存，或选择“放弃修改并重新读取”。'); return;} setCloseNotice(''); setEditingProfile(!editingProfile);}}>{editingProfile ? '返回预览' : '编辑'}</Button>}>
         <div className="creator-profile-preview"><span className="creator-profile-avatar">{avatar ? <img src={avatar} alt="个人头像"/> : <span aria-hidden="true">{profile?.name?.slice(0, 1) || '我'}</span>}</span><div><h3>{profile?.name || '添加你的昵称'}</h3><p>{profile?.intro || '介绍你自己，让创作更有自己的风格。'}</p></div></div>
         <dl className="creator-profile-facts"><div><dt>自媒体方向</dt><dd>{profile?.marks.find(mark => mark.key === '自媒体方向')?.value || '待填写'}</dd></div><div><dt>目标读者</dt><dd>{profile?.marks.find(mark => mark.key === '目标读者')?.value || '待填写'}</dd></div></dl>
@@ -75,7 +77,7 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
       {preferences}
       <Card className="creator-settings-library-card" title="内容库"><div className="creator-settings-library"><div><strong>{status?.currentName || '尚未打开内容库'}</strong><p>正文、封面、模板与照片都保存在这里。</p></div><Button disabled={busy || !manageLibrary} onClick={() => openResource(manageLibrary)}>管理内容库</Button></div>{status?.currentName && <><Button theme="borderless" disabled={busy} onClick={() => void run(() => invoke('revealLibraryFolder'))}>打开文件夹 →</Button><div className="creator-settings-check"><div><strong>内置模板与提示词</strong><p className="creator-settings-hint">补充新风格和提示词，保留已有修改与删除。</p></div><Button id="update-builtins" disabled={builtinsBlocked} onClick={() => {if (hasManagedDrafts()) {setCloseNotice('请先保存或放弃当前填写，再更新内置资源。'); return;} setBuiltinNotice('正在更新内置资源，请稍候…'); void run(async () => {try {await invoke('retryBuiltins'); setBuiltinNotice('内置模板与提示词已更新，已有修改和删除均已保留。');} catch (error) {setBuiltinNotice('更新尚未完成，原有内容保留；请处理工作台恢复提示后继续。'); throw error;}});}}>{status.seedPending ? '继续更新' : '更新内置资源'}</Button></div><p role="status">{builtinNotice}</p></>}</Card>
       {setupPanel}
-      {(recovery || children) && <SettingsHelp title="内容库连接排错与恢复">{recovery}{children}</SettingsHelp>}
-    </div></Tabs.TabPane><Tabs.TabPane itemKey="help" tab="帮助与排查"><div className="creator-settings-help" ref={setHelpTarget} hidden={tab !== 'help'}/></Tabs.TabPane></Tabs></SettingsHelpTarget.Provider>
+      {(recovery || children) && <SettingsHelp kind="recovery" title="内容库连接排错与恢复">{recovery}{children}</SettingsHelp>}
+    </div></Tabs.TabPane><Tabs.TabPane itemKey="help" tab="帮助与排查"><div className="creator-settings-help" hidden={tab !== 'help'}><section aria-labelledby="settings-troubleshoot-title"><div className="creator-settings-help-heading"><h3 id="settings-troubleshoot-title">常用排查</h3><p>先检查状态，再按需要导出诊断或恢复连接。</p></div><div className="creator-settings-help-actions" ref={setHelpActions}/></section><section aria-labelledby="settings-guides-title"><div className="creator-settings-help-heading"><h3 id="settings-guides-title">使用说明</h3><p>按需展开查看操作步骤与注意事项。</p></div><div className="creator-settings-help-guides" ref={setHelpGuides}/></section></div></Tabs.TabPane></Tabs></SettingsHelpTarget.Provider>
   </dialog>;
 }

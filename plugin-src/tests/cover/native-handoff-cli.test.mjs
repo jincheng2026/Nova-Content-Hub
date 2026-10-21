@@ -182,3 +182,50 @@ test('cancel and fail use the same fixed handoff; inactive claim does not create
     assert.equal(run(f.home, ['cover', 'cancel', '--handoff', id]).ok, true);
     assert.equal(f.library.readContent(f.task.contentId).coverJobs[0].attempts.length, 2);
 });
+
+for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'ratio-minimum']) test(`bundled ${host} ${sizePolicy} context restores selected photo, materials and requirements after retry/host change`, async t => {
+    const f = await fixture(t), original = f.library.readCoverContext(f.task.contentId, f.task.requestId, f.task.attemptId);
+    const picture = path.join(f.home, 'own.png');
+    fs.writeFileSync(picture, await sharp({create: {width: 24, height: 32, channels: 3, background: '#ffcc66'}}).png().toBuffer());
+    const photoAsset = f.library.importAsset(picture, {purpose: 'photo'}), photo = f.library.createPhoto({title: '本人照', originalName: 'own.png', assetHash: photoAsset.assetHash, isOwnPhoto: true});
+    let content = f.library.readContent(f.task.contentId);
+    for (const [name, bytes] of [['selected.txt', Buffer.from('Selected private requirements\n')], ['selected.pdf', Buffer.from('%PDF-1.4\nSelected private PDF\n%%EOF')], ['unselected.txt', Buffer.from('unselected private material')]]) {
+        const file = path.join(f.home, name); fs.writeFileSync(file, bytes);
+        const asset = f.library.importAsset(file, {purpose: 'material'});
+        content = f.library.attachContentMaterial(content.id, {assetHash: asset.assetHash, originalName: name, role: 'reference'}, content.editToken);
+    }
+    const {request} = f.library.createCoverRequest(content.id, {
+        template: {id: original.request.template.id, version: 1}, styleAssetHashes: original.request.styleAssetHashes,
+        photo: sizePolicy === 'exact' ? {id: photo.id, assetHash: photo.assetHash} : null,
+        materialIds: content.materials.slice(0, 2).map(item => item.id), prompt: 'PRIVATE full supplemental requirements\n保留标题原文。',
+        pixels: {width: 768, height: 1024}, ratio: '3:4', count: 4, outputFormat: 'png', sizePolicy, scope: 'cover-only'
+    }, content.editToken);
+    for (const currentHost of [host, host === 'codex' ? 'workbuddy' : 'codex']) {
+        const {attempt} = f.library.createCoverAttempt(content.id, request.requestId, {host: currentHost, reason: currentHost === host ? 'initial' : 'host-change'});
+        const task = {contentId: content.id, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId, host: currentHost};
+        const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, {installedSkill: 'nova-content-cover-execution'});
+        const text = prepared.prompt;
+        assert.match(text, /4张；3:4；(?:精确|至少)768×1024；png/);
+        assert.ok(text.includes(sizePolicy === 'exact' ? '本人照已选' : '不放人物'));
+        assert.match(text, /样张1；资料2/);
+        assert.ok(text.includes(request.prompt), 'the complete supplemental input is readable before CLI context resolution');
+        if (!prepared.requiresPaste) assert.equal(new URL(prepared.url).searchParams.get('prompt'), text);
+        else assert.equal(new URL(prepared.url).searchParams.has('prompt'), false, 'long input uses complete copy, never a locator-only task');
+        const context = run(f.home, ['cover', 'context', '--handoff', prepared.id]);
+        assert.equal(context.ok, true, context.message);
+        assert.deepEqual(context.result.request, request);
+        assert.equal(context.result.body, '# Private request\r\n');
+        assert.equal(createHash('sha256').update(fs.readFileSync(context.result.templatePackagePath)).digest('hex'), request.template.packageHash);
+        assert.ok(Array.isArray(context.result.templateDocuments));
+        assert.ok(Array.isArray(context.result.templateImageSources));
+        assert.deepEqual(new Set(context.result.templateImageSources.map(item => item.assetHash)), new Set(request.styleAssetHashes));
+        assert.equal(context.result.inputs.filter(item => item.role === 'own-photo').length, sizePolicy === 'exact' ? 1 : 0);
+        assert.equal(context.result.inputs.filter(item => item.role === 'material').length, 2);
+        assert.ok(!context.result.inputs.some(item => item.assetHash === content.materials[2].assetHash));
+        for (const item of context.result.inputs) assert.deepEqual(fs.readFileSync(item.path), Buffer.from(f.library.readAsset(item.assetHash).data));
+        const hashes = [...new Set(context.result.inputs.map(item => item.assetHash))];
+        assert.equal(run(f.home, ['cover', 'claim', '--handoff', prepared.id, '--stdin'], {host: currentHost, readAssetHashes: hashes.slice(1)}).code, 'INVALID_INPUT');
+        assert.equal(run(f.home, ['cover', 'claim', '--handoff', prepared.id, '--stdin'], {host: currentHost, readAssetHashes: hashes}).ok, true);
+        assert.equal(run(f.home, ['cover', 'fail', '--handoff', prepared.id, '--stdin'], {code: 'SYNTHETIC_STOP', message: 'No provider called'}).ok, true);
+    }
+});

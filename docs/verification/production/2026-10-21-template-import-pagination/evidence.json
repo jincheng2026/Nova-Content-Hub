@@ -1,0 +1,40 @@
+{
+  "scope": "Source React/Semi/Electron components using synthetic data and IPC; no installed-app, production, real external assistant or cross-platform acceptance",
+  "platform": "Darwin",
+  "architecture": "arm64",
+  "red": {
+    "import": "saved import closed dialog without opening learning workflow",
+    "pagination": "rounded popup inner wrapper radius 0px and overflow visible"
+  },
+  "green": {
+    "density": "1280/1600/1080/900/700 widths, long/short names, no samples, hover/focus identical geometry; current source does not reproduce old screenshot unequal cards",
+    "import": "receipt objectId with same-name decoy, failed save retains draft, disabled while busy, readiness gates explicit start, no automatic external send, multiline source input preserved",
+    "pagination": "pointer and native keyboard 20/50/100 choices, page and modal, first/last option hover clipped at rounded corners",
+    "managedCallback": "10 unit tests pass; callback snapshot compatibility and receipt objectId verified",
+    "existingWorkflow": "repeat/collapse/reopen preserves notes/history, focus and scroll, switch template and builtin copy, search focus fallback"
+  },
+  "commands": [
+    "node workbench/scripts/template-density-ui-probe.mjs",
+    "node workbench/scripts/semi-template-inputs-ui-probe.mjs",
+    "node workbench/scripts/pagination-ui-probe.mjs",
+    "node --test workbench/test/managed-refresh.test.mjs",
+    "node workbench/scripts/template-workflow-entry-probe.mjs"
+  ],
+  "notRun": [
+    "package/install/real library/real assistant",
+    "Intel Mac or Windows native acceptance"
+  ],
+  "verificationByMainThread": {
+    "typecheck": "npm run typecheck --prefix workbench: exit 0",
+    "rendererBuild": "real renderer Vite build: exit 0; 2093 modules; existing chunk-size warning",
+    "templateWorkspaceUnit": "templates.test.mjs + workspace.test.mjs: 18/18 PASS",
+    "managedRefreshUnit": "independent 10/10 PASS",
+    "importProbe": "independent PASS"
+  },
+  "nativeKeyboardFocus": {
+    "prior": "Two independent main-thread runs failed immediate win.isFocused assertion although document.hasFocus was true",
+    "probeCorrection": "On macOS request application focus once, show/focus window, wait up to 5 seconds for native isFocused; retain native-focus assertion and trusted keyboard events/assertions",
+    "final": "Single run after correction PASS, including native keyboard and page/modal pointer coverage",
+    "finalFixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dp5cEI"
+  }
+}

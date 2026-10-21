@@ -33,6 +33,8 @@
 
 ## 许可与来源声明
 
+2026-10-21 另核对 [pyang5166/gbro-cover-design 固定提交 8d1a0a5487e9ee6539b2b0a471b58469aadfedd6](https://github.com/pyang5166/gbro-cover-design/tree/8d1a0a5487e9ee6539b2b0a471b58469aadfedd6)。本项目只吸收“内容关系先于构图、固定与变量分层、标题逐字核对”的方法并按既有请求重写；未复制其示例、风格文件或脚本，也不沿用固定 3:4、默认本人脸或三轮问卷。若未来实质复制其材料，应保留该固定版本的 MIT 版权与许可文本。
+
 - baoyu-cover-image：MIT，Copyright (c) 2026 Jim Liu。许可原文：[baoyu-MIT.txt](licenses/baoyu-MIT.txt)。
 - OpenAI imagegen：Apache-2.0。许可原文：[openai-Apache-2.0.txt](licenses/openai-Apache-2.0.txt)。
 - Anthropic canvas-design：Apache-2.0。许可原文：[anthropic-Apache-2.0.txt](licenses/anthropic-Apache-2.0.txt)。

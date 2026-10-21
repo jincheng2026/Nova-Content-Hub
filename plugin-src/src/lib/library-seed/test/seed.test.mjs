@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {fileURLToPath} from 'node:url';
+import {spawnSync} from 'node:child_process';
+import {createHash} from 'node:crypto';
 import {createLibrary, openLibrary} from '../../file-library/index.mjs';
 import {installBuiltins} from '../index.mjs';
 import {prepareColleagueBuiltins} from '../colleague.mjs';
@@ -14,6 +16,31 @@ const templateCatalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-sr
 const promptCatalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-src/resources/builtin-prompts/catalog.json'), 'utf8'));
 const colleagueCatalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-src/resources/colleague-library/catalog.json'), 'utf8'));
 const sourceRoot = path.join(project, 'plugin-src/resources/colleague-library');
+
+test('five canonical VI copies, three style copies and named source index preserve every source byte', () => {
+    assert.equal(fs.existsSync(path.join(sourceRoot, 'templates/index.json')), true);
+    const index = JSON.parse(fs.readFileSync(path.join(sourceRoot, 'templates/index.json')));
+    assert.equal(index.templates.length, 5);
+    assert.equal(index.templates.reduce((n, item) => n + item.documents.length, 0), 8);
+    for (const item of index.templates) {
+        const definition = colleagueCatalog.templates.find(template => template.id === item.templateId);
+        assert.ok(definition);
+        for (const document of item.documents) {
+            const source = fs.readFileSync(path.join(sourceRoot, document.sourcePath));
+            const canonical = fs.readFileSync(path.join(sourceRoot, document.normalizedPath));
+            assert.deepEqual(canonical, source);
+            assert.equal(createHash('sha256').update(source).digest('hex'), document.sourceSha256);
+            assert.equal(document.normalizedSha256, document.sourceSha256);
+        }
+        for (const image of item.images) {
+            const reference = definition.referenceImages.find(ref => ref.path === image.sourcePath);
+            assert.equal(image.sha256, reference.sha256);
+            assert.equal(image.filename, path.basename(image.sourcePath));
+        }
+    }
+    assert.equal(createHash('sha256').update(fs.readFileSync(path.join(sourceRoot, 'catalog.json'))).digest('hex'), 'cca95885158964de646c510fce2c78fc19adc1031f496d6fde7cd89726560f16');
+    assert.equal(spawnSync(process.execPath, [path.join(project, 'plugin-src/scripts/import-colleague-resources.mjs'), path.join(sourceRoot, 'sources'), '--check'], {encoding: 'utf8'}).status, 0);
+});
 
 function fixture(t) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nch-builtin-seed-'));

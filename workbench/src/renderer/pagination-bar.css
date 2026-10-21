@@ -25,3 +25,6 @@
 
 .pagination-bar .semi-page-switch { flex:none; margin-left:4px; }
 .pagination-bar-single .semi-page-item { display:none; }
+
+/* Options must follow the popup radius when selected or hovered. */
+.semi-page-select-dropdown { border-radius:var(--semi-border-radius-medium); overflow:hidden; }

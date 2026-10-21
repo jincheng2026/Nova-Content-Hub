@@ -1,9 +1,15 @@
 * text=auto eol=lf
 plugin-src/resources/图库/** -text
 plugin-src/resources/assets/** -text
+# Source documents and their canonical copies participate in byte-for-byte SHA256 checks.
+plugin-src/resources/colleague-library/sources/** -text whitespace=-blank-at-eol,-blank-at-eof
+plugin-src/resources/colleague-library/templates/*/visual-identity.md -text whitespace=-blank-at-eol,-blank-at-eof
+plugin-src/resources/colleague-library/templates/*/style.json -text
 workbench/resources/brand/** -text
 workbench/prototype/brand/** -text
 docs/verification/** -text
+# Captured tool output retains the original formatter's whitespace.
+docs/verification/**/*.log whitespace=-blank-at-eol,-blank-at-eof
 *.png -text
 *.jpg -text
 *.icns -text

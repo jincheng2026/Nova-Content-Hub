@@ -1,0 +1,28 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2043 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/dist/assets/index-BTAl7Kzy.css                      336.41 kB │ gzip:  46.27 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/dist/assets/index-_6Bn9W4n.js                       742.04 kB │ gzip: 215.19 kB
+
+✓ built in 342ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+AssertionError [ERR_ASSERTION]: page-size dropdown clips rectangular option backgrounds at its rounded border: {"radius":"0px","overflow":"visible","tag":"DIV"}
+    at chooseSize (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/probe-main.mjs:35:13)
+    at async probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg/probe-main.mjs:41:95) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+Evidence: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-pagination-ui-dvhpEg

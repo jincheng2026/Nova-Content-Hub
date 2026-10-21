@@ -3,6 +3,7 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {validateImage, validateImportedRaster} from '../image-validation/index.mjs';
+import {templateContextDocuments} from './template-context-documents.mjs';
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const HASH = /^[a-f0-9]{64}$/;
@@ -71,7 +72,7 @@ export function templateJobMethods(h) {
         if (claimed && attempt.status !== 'claimed') fail('ATTEMPT_NOT_CLAIMED', 'Claim the attempt before submitting');
     }
     const payloadFields = ['protocol', 'libraryId', 'templateId', 'template', 'templateDefinition', 'templateResources', 'styleAssetHashes', 'inputs', 'restore', 'notes'];
-    function requestPackage(tid, job) {
+    function requestPackage(tid, job, includePackage = false) {
         const raw = read(path.join(requestDir(tid, job.id), '请求.json'));
         if (hash(raw) !== job.requestHash) fail('CORRUPT', 'Template request checksum mismatch');
         let request;
@@ -96,7 +97,8 @@ export function templateJobMethods(h) {
         }
         const first = request.inputs[0];
         if (!exact(request.restore, ['sourceAssetHash', 'width', 'height', 'outputFormat']) || request.restore.sourceAssetHash !== first.assetHash || request.restore.width !== first.width || request.restore.height !== first.height || request.restore.outputFormat !== 'png') fail('CORRUPT', 'Invalid first-reference restore target');
-        return {...request, requestHash: job.requestHash};
+        const fixed = {...request, requestHash: job.requestHash};
+        return includePackage ? {request: fixed, pkg} : fixed;
     }
     function handoffPackage(tid, job, attempt) {
         const raw = read(path.join(attemptDir(tid, job.id, attempt.attemptId), '交接.json'));
@@ -199,7 +201,7 @@ export function templateJobMethods(h) {
 
     function readTemplateContext(tid, rid, aid) {
         return locked(() => {
-            const meta = current(tid), {job, attempt} = find(meta, rid, aid), request = requestPackage(tid, job);
+            const meta = current(tid), {job, attempt} = find(meta, rid, aid), {request, pkg} = requestPackage(tid, job, true);
             const results = [];
             for (const j of meta.templateJobs || []) for (const a of j.attempts) if (a.status === 'committed') {
                 try {
@@ -209,7 +211,7 @@ export function templateJobMethods(h) {
                     results.push({requestId: j.id, attemptId: a.attemptId, unavailable: true, failure: {code: error.code || 'IO_ERROR', message: error.message}, result: null, report: null});
                 }
             }
-            return {...response(meta, rid, aid), handoff: handoffPackage(tid, job, attempt), inbox: path.join(attemptDir(tid, rid, aid), 'inbox'), inputs: request.inputs.map(entry => ({...entry, path: path.join(requestDir(tid, rid), '输入', entry.assetHash)})), results};
+            return {...response(meta, rid, aid), handoff: handoffPackage(tid, job, attempt), inbox: path.join(attemptDir(tid, rid, aid), 'inbox'), ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}), inputs: request.inputs.map(entry => ({...entry, path: path.join(requestDir(tid, rid), '输入', entry.assetHash)})), results};
         });
     }
 

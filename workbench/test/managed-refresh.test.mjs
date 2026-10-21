@@ -7,7 +7,7 @@ import {errorInfo} from '../src/shared/contracts.ts';
 
 // Execute the actual App action and management hooks; JSX/native IPC are outside this unit test.
 const appSource = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
-const appActions = appSource.slice(appSource.indexOf('function App() {'), appSource.indexOf('    const task = status?.task;')) + '\nreturn {nativeAction, backgroundAction, refreshWorkspace, refreshEditor, refreshStatus, load, setDraft, draft, error, status, workspace, acting};}';
+const appActions = appSource.slice(appSource.indexOf('function App() {'), appSource.indexOf('    const currentCollection = library?.collections.find')) + '\nreturn {nativeAction, backgroundAction, refreshWorkspace, refreshEditor, refreshStatus, load, setDraft, draft, error, status, workspace, acting};}';
 const managementSource = await fs.readFile(new URL('../src/renderer/library-panels.tsx', import.meta.url), 'utf8');
 const mutation = managementSource.slice(managementSource.indexOf('export function useWorkspaceMutation'), managementSource.indexOf('const managedDrafts')).replace('export ', '');
 const reload = managementSource.slice(managementSource.indexOf('async function reloadManagedWorkspace'), managementSource.indexOf('export function ManagementDialog'));
@@ -25,7 +25,7 @@ function fixture() {
             calls.push({method, input});
             if (failure?.method === method && failure.times-- > 0) throw Object.assign(new Error(failure.code), {code: failure.code});
             if (method === 'status') return {currentName: 'fixture', busy: false, pending: null};
-            if (method === 'mutateWorkspace') return {library};
+            if (method === 'mutateWorkspace') return {library, objectId: 'saved-object'};
             if (method === 'readWorkspaceLibrary') return library;
             if (method === 'readContent') return item;
             return {version: 1};
@@ -46,6 +46,11 @@ test('successful managed save performs its explicit workspace refresh exactly on
     assertScans(f, 1); assert.equal(f.count('status'), 1); assert.equal(saved, f.library);
     assert.deepEqual(f.calls.find(call => call.method === 'mutateWorkspace').input, input);
     assert.equal(f.render().acting, false);
+});
+test('managed save callback supplies the exact receipt object ID alongside the compatible snapshot argument', async () => {
+    const f = fixture(); let saved, objectId;
+    await f.hook().mutate(input, (library, id) => {saved = library; objectId = id;});
+    assert.equal(saved, f.library); assert.equal(objectId, 'saved-object');
 });
 for (const code of ['CONFLICT', 'COMMIT_UNCERTAIN']) test(`${code} preserves the editor and still refreshes status plus the workspace`, async () => {
     const f = fixture(); let closed = false; f.render().load(f.item); f.render().setDraft({title: 'draft', body: 'keep me'}); f.fail('mutateWorkspace', code);

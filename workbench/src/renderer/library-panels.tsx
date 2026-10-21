@@ -6,7 +6,7 @@ import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
 import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
 import Input from '@douyinfe/semi-ui-19/lib/es/input';
 import Card from '@douyinfe/semi-ui-19/lib/es/card';
-import type {WorkspaceLibrarySnapshot, WorkspaceMutation, WorkspaceLibraryCollection, WorkspaceLibraryPhoto, WorkspaceChannelFields, WorkspaceMaterialImport} from '../shared/workspace-contracts.ts';
+import type {WorkspaceLibrarySnapshot, WorkspaceMutation, WorkspaceLibraryCollection, WorkspaceLibraryPhoto, WorkspaceChannelFields, WorkspaceMaterialImport, WorkspaceMutationResult} from '../shared/workspace-contracts.ts';
 import type {CoverResults} from '../shared/cover-contracts.ts';
 import {invoke} from './client.ts';
 import {PopupSelect, CalendarDateInput, CoverCountInput} from './semi-controls.tsx';
@@ -19,15 +19,15 @@ export interface WorkspaceManagementProps { library: WorkspaceLibrarySnapshot | 
 export function useWorkspaceMutation({busy, run, refresh}: Pick<WorkspaceManagementProps, 'busy' | 'run' | 'refresh'>) {
   const [notice, setNotice] = useState('');
   const submitting = useRef(false);
-  async function mutate(input: WorkspaceMutation, done?: (library: WorkspaceLibrarySnapshot) => void) {
+  async function mutate(input: WorkspaceMutation, done?: (library: WorkspaceLibrarySnapshot, objectId: string) => void) {
     if (busy || submitting.current) return;
     submitting.current = true;
     try {return await run(async () => {
-      let saved: WorkspaceLibrarySnapshot;
-      try { saved = (await invoke('mutateWorkspace', input)).library; }
+      let saved: WorkspaceMutationResult;
+      try { saved = await invoke('mutateWorkspace', input); }
       catch (error) { setNotice('操作未确认完成。请查看上方错误与恢复入口；编辑内容仍保留。'); throw error; }
       setNotice('已保存到本机内容库。');
-      done?.(saved);
+      done?.(saved.library, saved.objectId);
       await refresh();
       return true;
     }, {refreshWorkspaceOnSuccess: false});} finally {submitting.current = false;}
