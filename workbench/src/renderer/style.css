@@ -59,7 +59,7 @@ label,select,.semi-button,.text-link{font-size:14px}.tag,.cell-note,.content-sta
 .app-header{min-height:58px;padding:14px 0;align-items:center}.app-header .breadcrumb{margin:0}.app-header .visually-hidden{margin:0!important}
 
 /* Keep the existing guarded navigation on actual Semi buttons. */
-.app-navigation .nav-item.semi-button { height:auto; justify-content:flex-start; white-space:normal; }
+.app-navigation .nav-item.semi-button { color:var(--semi-color-text-0); height:auto; justify-content:flex-start; white-space:normal; }
 .app-navigation .nav-item.semi-button .semi-button-content { display:contents; }
 .content-detail-tabs>.semi-button { height:auto; }
 .back-to-contents.semi-button { height:auto; justify-content:flex-start; }
@@ -82,7 +82,7 @@ label,select,.semi-button,.text-link{font-size:14px}.tag,.cell-note,.content-sta
 .semi-popover-wrapper,.semi-dropdown,.semi-select-option-list,.semi-datepicker-container,.semi-timepicker-panel { color:var(--semi-color-text-0); background:#fff; border-color:var(--surface-line); }
 .semi-modal-content { border-radius:24px; background:#fff; box-shadow:0 30px 80px rgba(0,0,0,.25); }
 .semi-modal-mask { background:rgba(0,0,0,.35); backdrop-filter:blur(6px); }
-.app-navigation .nav-item.active { background:#fff; color:#0071E3; box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.035); }
+.app-navigation .nav-item.semi-button.active { background:#fff; color:#0071E3; box-shadow:0 1px 2px rgba(0,0,0,.04),0 4px 14px rgba(0,0,0,.035); }
 
 .semi-button-primary.semi-button-light { color:var(--semi-color-text-0); }
 .content-title-link.semi-button-primary { color:var(--semi-color-text-0); }
