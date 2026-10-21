@@ -1,2 +1,2 @@
 // Generated browser prototype; never a real production entitlement.
-window.NCH_BUILD = Object.freeze({"AUTH_MODE":"disabled","prototype":true,"appScope":"nova-content-hub","version":"0.3.38","protocolVersion":1,"productId":"nova-content-hub","authMode":"disabled","pairId":"nova-content-hub@0.3.38:p1:disabled","bundleId":"nova-content-hub@0.3.38:p1:disabled"});
+window.NCH_BUILD = Object.freeze({"AUTH_MODE":"disabled","prototype":true,"appScope":"nova-content-hub","version":"0.3.39","protocolVersion":1,"productId":"nova-content-hub","authMode":"disabled","pairId":"nova-content-hub@0.3.39:p1:disabled","bundleId":"nova-content-hub@0.3.39:p1:disabled"});

@@ -49,7 +49,7 @@ export function validateTemplateJobs(meta, fail) {
 }
 
 export function templateJobMethods(h) {
-    const {root, libraryId, locked, mutate, replayTemplateMutation, snapshot, result, metadata, hash, jsonBytes, read, safePath, directory, ensureDirectory, immutableFile, readAssetInternal, assetPath, hook, inputFields, objectId, id, checkedHash, templatePackage, normalizePackage, installTemplatePackage, assertRootIdentity, fail} = h;
+    const {root, libraryId, locked, mutate, replayTemplateMutation, snapshot, result, metadata, hash, jsonBytes, read, safePath, directory, ensureDirectory, immutableFile, readAssetInternal, assetPath, hook, inputFields, objectId, id, checkedHash, templatePackage, normalizePackage, installTemplatePackage, assertRootIdentity, finderMetadataFile, fail} = h;
     const requestDir = (tid, rid) => path.join(root, '模板', objectId('template', tid), '学习任务', id(rid));
     const attemptDir = (tid, rid, aid) => path.join(requestDir(tid, rid), '尝试', id(aid));
     const current = tid => result(snapshot(root, objectId('template', tid), 'template'), tid, undefined, 'template');
@@ -317,6 +317,7 @@ export function templateJobMethods(h) {
                 evidenceFor: (job, attempt) => verifyEvidence(tid, job, attempt),
                 requestFor: job => requestPackage(tid, job), receiptDirectory: (job, attempt) => receiptDir(tid, job, attempt),
                 safePath, directory, assertRootIdentity, hook, catalogEntries: () => fs.readdirSync(path.join(root, '模板')).filter(name => {
+                    if (finderMetadataFile(path.join(root, '模板'), name)) return false;
                     if (name === '模板目录.md' || /^\.staging-/.test(name)) return false;
                     objectId('template', name);
                     return !!safePath(path.join(root, '模板', name, '模板.json'), true);

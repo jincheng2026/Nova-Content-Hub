@@ -1,0 +1,148 @@
+{
+  "measurements": [
+    {
+      "viewport": [
+        1280,
+        860
+      ],
+      "body": {
+        "x": 21,
+        "y": 104.9453125,
+        "width": 1238,
+        "height": 663.8125,
+        "bottom": 768.7578125
+      },
+      "title": {
+        "x": 956,
+        "y": 146.7421875,
+        "width": 286,
+        "height": 90,
+        "bottom": 236.7421875
+      },
+      "photo": {
+        "x": 955,
+        "y": 491.9296875,
+        "width": 288,
+        "height": 32,
+        "bottom": 523.9296875
+      },
+      "count": {
+        "x": 1106,
+        "y": 355.3359375,
+        "width": 115,
+        "height": 30,
+        "bottom": 385.3359375
+      },
+      "ratio": {
+        "x": 955,
+        "y": 354.3359375,
+        "width": 139,
+        "height": 32,
+        "bottom": 386.3359375
+      },
+      "generate": {
+        "x": 1059,
+        "y": 788.375,
+        "width": 180,
+        "height": 32,
+        "bottom": 820.375
+      },
+      "required": 0,
+      "columns": 5
+    },
+    {
+      "viewport": [
+        960,
+        680
+      ],
+      "body": {
+        "x": 21,
+        "y": 104.9453125,
+        "width": 918,
+        "height": 483.8125,
+        "bottom": 588.7578125
+      },
+      "title": {
+        "x": 656,
+        "y": 146.7421875,
+        "width": 266,
+        "height": 90,
+        "bottom": 236.7421875
+      },
+      "photo": {
+        "x": 655,
+        "y": 491.9296875,
+        "width": 268,
+        "height": 32,
+        "bottom": 523.9296875
+      },
+      "count": {
+        "x": 796,
+        "y": 355.3359375,
+        "width": 105,
+        "height": 30,
+        "bottom": 385.3359375
+      },
+      "ratio": {
+        "x": 655,
+        "y": 354.3359375,
+        "width": 129,
+        "height": 32,
+        "bottom": 386.3359375
+      },
+      "generate": {
+        "x": 739,
+        "y": 608.375,
+        "width": 180,
+        "height": 32,
+        "bottom": 640.375
+      },
+      "required": 0,
+      "columns": 3
+    }
+  ],
+  "images": [
+    {
+      "width": 135.7421875,
+      "height": 181.3203125,
+      "ratio": 0.7486187845303868,
+      "fit": "contain",
+      "frame": {
+        "width": 136,
+        "height": 181.328125
+      }
+    },
+    {
+      "width": 136,
+      "height": 85,
+      "ratio": 1.6,
+      "fit": "contain",
+      "frame": {
+        "width": 136,
+        "height": 181.328125
+      }
+    }
+  ],
+  "cards": [
+    {
+      "body": 156.0078125,
+      "gap": 12
+    },
+    {
+      "body": 156,
+      "gap": 12
+    },
+    {
+      "body": 156,
+      "gap": 12
+    },
+    {
+      "body": 156,
+      "gap": 12
+    },
+    {
+      "body": 156,
+      "gap": 12
+    }
+  ]
+}

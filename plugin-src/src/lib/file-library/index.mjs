@@ -212,6 +212,12 @@ function safePath(target, missingLast = false) {
     return fs.lstatSync(absolute);
 }
 
+function finderMetadataFile(parent, name, stat = safePath) {
+    if (name !== '.DS_Store') return false;
+    if (!stat(path.join(parent, name)).isFile()) fail('UNSAFE_PATH', 'Finder metadata must be a regular file');
+    return true;
+}
+
 function templateReportIndex(root, name) {
     if (name !== '模板目录.md') return false;
     if (!safePath(path.join(root, '模板', name)).isFile()) fail('UNSAFE_PATH', 'Template report index must be a regular file');
@@ -758,6 +764,7 @@ function library(root, initialInfo, rootIdentity) {
 
     function list(deleted, kind = 'content') {
         return locked(() => fs.readdirSync(path.join(root, KINDS[kind].directory)).sort().filter(name => {
+            if (finderMetadataFile(path.join(root, KINDS[kind].directory), name)) return false;
             if (kind === 'template' && templateReportIndex(root, name)) return false;
             if (kind === 'template' && STAGING.test(name)) {
                 directory(path.join(root, '模板', name));
@@ -917,7 +924,7 @@ function library(root, initialInfo, rootIdentity) {
             snapshot, result, metadata, hash, jsonBytes, read, safePath, directory,
             ensureDirectory, immutableFile, readAssetInternal, assetPath, hook,
             inputFields, id, objectId, checkedHash, templatePackage, normalizePackage,
-            installTemplatePackage, fail,
+            installTemplatePackage, finderMetadataFile, fail,
             replayTemplateMutation: (templateId, input, expectedToken, options = {}) => {
                 if (!object(options) || Object.keys(options).some(key => key !== 'mutationId')) fail('INVALID_INPUT', 'Only mutationId is accepted as an option');
                 if (options.mutationId === undefined) return null;
@@ -973,6 +980,7 @@ function library(root, initialInfo, rootIdentity) {
             LibraryError,
         }),
         ...modelMethods({
+            finderMetadataFile,
             root,
             locked,
             mutate,
@@ -1011,6 +1019,7 @@ function library(root, initialInfo, rootIdentity) {
         readContent: contentId => locked(() => result(snapshot(root, id(contentId)), contentId)),
         trashContent: (contentId, token, options) => mutate('trash', contentId, {}, token, options, 'content', meta => {
             for (const name of fs.readdirSync(path.join(root, '合集'))) {
+                if (finderMetadataFile(path.join(root, '合集'), name)) continue;
                 const collection = metadata(snapshot(root, name, 'collection')[0], name, 'collection');
                 if (collection.deletedAt === null && collection.memberIds.includes(contentId)) fail('INVALID_STATE', 'Remove content from its collection before trashing');
             }
@@ -1274,7 +1283,7 @@ export function openLibrary(root, options) {
 // Diagnosis shares validators, but never opens a recovering business handle.
 export function inspectLibraryHealth(root, options) {
     return inspectHealth(root, options, {
-        canonicalRoot, safePath, acquire, KINDS, SYSTEM, UUID, STAGING,
+        canonicalRoot, safePath, finderMetadataFile, acquire, KINDS, SYSTEM, UUID, STAGING,
         exact, validRootIdentity, metadata, objectId, hash, jsonBytes, parse, date, fail,
         snapshot, transaction, templatePackage, readAssetInternal, unregisteredTemplate,
         modelMethods, coverJobMethods, templateJobMethods, result, checkedHash, id, inputFields, LibraryError,
@@ -1546,6 +1555,7 @@ function businessMethods(root, locked, mutate, list) {
         return meta => {
             if (input.builtinKey) {
                 for (const name of fs.readdirSync(path.join(root, '提示词'))) {
+                    if (finderMetadataFile(path.join(root, '提示词'), name)) continue;
                     const old = metadata(snapshot(root, name, 'prompt')[0], name, 'prompt');
                     if (old.id !== meta.id && old.builtinKey === input.builtinKey) fail('CONFLICT', 'Prompt builtinKey already exists, including trash');
                 }
@@ -2328,6 +2338,7 @@ function validateRestoredLibrary(root, info) {
     for (const [kind, spec] of Object.entries(KINDS)) {
         if (info.schemaVersion < 5 && ['workspace', 'collection'].includes(kind)) continue;
         for (const name of fs.readdirSync(path.join(root, spec.directory)).sort()) {
+            if (finderMetadataFile(path.join(root, spec.directory), name)) continue;
             if (kind === 'template' && (templateReportIndex(root, name) || STAGING.test(name))) continue;
             objectId(kind, name);
             if (kind === 'template' && !safePath(path.join(root, spec.directory, name, spec.files[0]), true)) {
@@ -2399,6 +2410,7 @@ function prepareRestoredLibrary(root, backup) {
     const interruptedAttempts = [], mutations = [];
     for (const kind of ['content', ...(info.schemaVersion >= 5 ? ['template'] : [])]) {
         for (const objectIdValue of fs.readdirSync(path.join(root, KINDS[kind].directory)).sort()) {
+            if (finderMetadataFile(path.join(root, KINDS[kind].directory), objectIdValue)) continue;
             if (kind === 'template' && (templateReportIndex(root, objectIdValue) || STAGING.test(objectIdValue) || !safePath(path.join(root, '模板', objectIdValue, '模板.json'), true))) continue;
             const before = snapshot(root, objectIdValue, kind), meta = metadata(before[0], objectIdValue, kind);
             const jobs = kind === 'template' ? meta.templateJobs : meta.coverJobs;

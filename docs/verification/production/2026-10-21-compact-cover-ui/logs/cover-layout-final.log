@@ -1,0 +1,18 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2068 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-layout-fwqNlp/dist/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-layout-fwqNlp/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-layout-fwqNlp/dist/assets/index-Bn5JxnYZ.css                        392.71 kB │ gzip:  53.97 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-layout-fwqNlp/dist/assets/index-CdWDpv5M.js                       1,458.81 kB │ gzip: 718.46 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 582ms
+PASS: first-screen basics 1280x860/960x680, collapsed optional sections, retained selections, portrait/landscape contain, readable samples/favorites, compact cards, wide details and no writes
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-layout-fwqNlp

@@ -1,0 +1,28 @@
+Isolated baseline index from HEAD, absolute imports to current unchanged collaborators; no real library or UI.
+✖ Finder metadata in object directories does not corrupt lists or health and remains unchanged (814.4945ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 879.090708
+
+✖ failing tests:
+
+test at ../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/os-metadata.test.mjs:15:1
+✖ Finder metadata in object directories does not corrupt lists or health and remains unchanged (814.4945ms)
+  Error [LibraryError]: Invalid object directory ID
+      at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:45:11)
+      at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:769:17
+      at Array.filter (<anonymous>)
+      at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:760:91
+      at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:735:21)
+      at list (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:760:16)
+      at Object.listContents (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/index.mjs:1008:29)
+      at TestContext.<anonymous> (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-os-metadata-baseline-KIp63V/os-metadata.test.mjs:18:28)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25) {
+    code: 'CORRUPT'
+  }

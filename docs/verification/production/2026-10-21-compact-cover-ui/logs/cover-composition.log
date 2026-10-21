@@ -1,0 +1,18 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2037 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-RckB9U/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-RckB9U/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-RckB9U/dist/assets/index-DKICD04k.css                      336.02 kB │ gzip:  45.26 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-RckB9U/dist/assets/index-CHeP9gYd.js                       781.01 kB │ gzip: 225.99 kB
+
+✓ built in 361ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS: empty/default, bounded cross-content/collection favorites, explicit references, partial-failure retry/dedup/CAS, cancellation, fresh invalidation and image-error protection
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-RckB9U

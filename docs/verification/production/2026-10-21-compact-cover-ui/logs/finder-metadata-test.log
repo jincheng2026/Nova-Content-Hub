@@ -1,0 +1,17 @@
+✔ Finder metadata in object directories does not corrupt lists or health and remains unchanged (273.913083ms)
+✔ Finder metadata also permits prompt uniqueness/settings and collection membership checks (367.181125ms)
+✔ template report catalog ignores only ordinary Finder metadata and leaves it unchanged (303.891541ms)
+✔ .DS_Store as directory is not silently ignored by object lists or health (187.503875ms)
+✔ .DS_Store as symlink is not silently ignored by object lists or health (181.075417ms)
+✔ .DS_Store.backup as file is not silently ignored by object lists or health (171.830416ms)
+✔ unknown-object as directory is not silently ignored by object lists or health (175.528666ms)
+✔ upgrade and backup restore preserve ordinary Finder metadata and usable objects (1252.323959ms)
+✔ Finder metadata exceptions do not relax transaction layouts or nonempty initialization (120.975584ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3104.955417

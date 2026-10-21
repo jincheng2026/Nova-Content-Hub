@@ -175,6 +175,10 @@ export function inspectHealth(selectedRoot, options, h) {
             const entries = attempt('structure', 'STRUCTURE_INVALID', kind, undefined, () => names(parent)) || [];
             if (kind === 'workspace' && !entries.includes('default')) add('object', unknownPending || pending.has('workspace:default') ? 'TRANSACTION_PENDING' : 'OBJECT_INVALID', unknownPending || pending.has('workspace:default') ? 'unverified' : 'unavailable', kind, 'default');
             for (const id of entries) {
+                if (id === '.DS_Store') {
+                    attempt('structure', 'STRUCTURE_INVALID', kind, undefined, () => h.finderMetadataFile(parent, id, stat));
+                    continue;
+                }
                 if (h.STAGING.test(id)) {add('object', 'STAGING_UNVERIFIED', 'unverified', kind); continue;}
                 if (!attempt('structure', 'STRUCTURE_INVALID', kind, undefined, () => h.objectId(kind, id))) continue;
                 count('objects');

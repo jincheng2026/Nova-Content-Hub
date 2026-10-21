@@ -1,0 +1,591 @@
+
+> nova-content-hub-workbench@0.3.39 test
+> node --test test/*.test.mjs
+
+✔ Chinese macOS menu retains native editing, window and application roles (1.689583ms)
+✔ Windows and Linux keep editing and exit without macOS application actions (0.250334ms)
+✔ codex cover: verified doctor must finish before envelope creation and external open (286.906709ms)
+✔ codex template: verified doctor must finish before envelope creation and external open (372.351292ms)
+✔ workbuddy cover: verified doctor must finish before envelope creation and external open (395.0735ms)
+✔ workbuddy template: verified doctor must finish before envelope creation and external open (447.2695ms)
+✔ tampered executable, launcher, CLI and other payload bytes refuse before spawn, even with cache self-resealing (688.312875ms)
+✔ missing files, wrong release, root/file symlinks, and extra or escaping payload entries refuse before spawn (429.05925ms)
+✔ trusted app inventory must be an ordinary bounded file with exact release and schema (517.819792ms)
+✔ only Codex may omit the exact trusted semver link; present changes never qualify (790.173584ms)
+✔ runtime error, timeout, malformed/oversized or business-bound output never creates an envelope or opens the host (400.123333ms)
+✔ required mode never executes and successful launches do not cache verification across replacements (409.94325ms)
+✔ WorkBuddy allows bounded non-executable in-use markers across live and ended host stages (403.768125ms)
+✔ only WorkBuddy permits validated host markers; trusted inventories cannot declare them (632.536125ms)
+✔ WorkBuddy permits only bounded atomic-write temporary names and exact platform identity data (348.599ms)
+✔ invalid names, marker schemas and excessive host metadata refuse before spawn (5479.226042ms)
+✔ host metadata cannot hide executable files, symlinks, hardlinks, subdirectories, or changed payload (1059.660542ms)
+✔ host marker changes during verification fail closed without retrying doctor or launch (908.815125ms)
+✔ cover: failed preflight can continue the same fixed attempt without business writes (581.2955ms)
+✔ template: failed preflight can continue the same fixed attempt without business writes (439.32775ms)
+✔ real fixed Node and shipped launcher doctor are read-only and complete before launch (9250.451875ms)
+✔ codex: only exact installed enabled native release is accepted (61.518875ms)
+✔ codex: explicit config homes never fall back to a different installed host home (12.399625ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (57.565958ms)
+✔ codex: Skill symlinks and oversized metadata refuse (35.383125ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (16.582917ms)
+✔ workbuddy: only exact installed enabled native release is accepted (29.177917ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (37.938083ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (58.030917ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (65.902208ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (42.255959ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (35.038542ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (85.169375ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (138.115666ms)
+(node:22676) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (59.52025ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (20.897667ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (4.521625ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (7.569875ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.930958ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (3.908583ms)
+✔ navigation and new draft survive a paused focus refresh (6.259917ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (2.559208ms)
+✔ paused editor read preserves a draft typed while its result was in flight (3.694041ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.787958ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.656042ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (1.330958ms)
+✔ only exact top-level sender with no renderer arguments can invoke business (0.948208ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.523667ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.470625ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (39.073459ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (1.154042ms)
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (201.774458ms)
+✔ the pre-seal source filter removes engineering material while keeping all built-in resources valid (50374.256875ms)
+✔ the writable example preserves both real covers, fictional-person disclosure and built-in library (36508.701209ms)
+✔ delivery export contains only the copied Mac installer, user guide and checksum, without overwriting (49.838334ms)
+✔ collection rename preserves legacy fields and inactive channels while retaining edit and channel guards (4205.824167ms)
+(node:22681) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (12.421333ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (7.766333ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (53.983542ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (5.065666ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (40.302792ms)
+✔ managed notes/publication drafts use App navigation and native close guards (2.594708ms)
+✔ a background workspace read cannot delay a confirmed save or overwrite edits typed afterward (4.068625ms)
+✔ persisted accepted task is recovered after worker exit and fresh application; resume uses exact task (268.24ms)
+✔ committed retries never replay import and reject changed source or replaced library (153.250833ms)
+✔ source must still match the preview before launching, and failed pre-reservation can be reselected (181.846792ms)
+✔ a restart finds the accepted disk task even when both operation response and recovery query were lost (287.635916ms)
+✔ replaced committed target cannot be listed or resumed (238.63725ms)
+✔ startup and user status queries share one disk query instead of colliding in the worker (181.949666ms)
+✔ browser backup and published snapshot candidates remain visible without invented generation records (0.992208ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.245666ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.23975ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.541167ms)
+✔ annotations use the actual contained image and reject letterboxing (1.322917ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.517625ms)
+✔ large histories index exact attempt pairs without losing candidates (19.621334ms)
+✔ multi-line annotations preserve original text and cannot forge points or the overall separator (0.180375ms)
+(node:22709) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (11.139708ms)
+✔ automatic cover failures still report the error and refresh status (3.657667ms)
+✔ foreground operations and external-change refresh still scan the full workspace (16.951708ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (11620.523833ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (10927.836792ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (12263.932333ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (12172.393084ms)
+  ✔ failed (11451.781458ms)
+  ✔ superseded (11694.511375ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (35324.083875ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (8604.192542ms)
+  ✔ after (8276.012041ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (16885.995584ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (4149.143583ms)
+  ✔ true (2864.507166ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (7014.307708ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (7786.922041ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (646.005542ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (879.723875ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (6354.401542ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (9293.434542ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (13128.189958ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (4363.801292ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (9025.62275ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (2423.262417ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (2017.422ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (5861.642ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (4811.212292ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (4859.505ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (6621.043083ms)
+✔ summary fallback preserves strict input integrity checks for execution (3025.68975ms)
+✔ unexpected errors during summary loading still propagate (2244.92375ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (912.260583ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (6313.252208ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (6269.806542ms)
+✔ folder-open failure keeps exported originals recoverable (3375.332375ms)
+✖ overview cover selection opens existing covers and keeps generation as a separate intent (6.872208ms)
+(node:22718) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ detail reads reuse the successful workspace assets without a duplicate asset scan (28.029041ms)
+✔ explicit workspace refresh and library switch replace the shared assets (3.178959ms)
+✔ a failed workspace asset refresh cannot publish a retained stale snapshot (2.391292ms)
+✔ late cover results are discarded after changing content or switching library (10.049875ms)
+✔ native channels preserve only the sealed marketplace during macOS signing (1.652375ms)
+✔ native markets retain the fixed full tree and auth-specific runtime after packaging (4289.92075ms)
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (3544.720208ms)
+✔ source inventory and runtime are validated before their tree can be sealed (1841.319292ms)
+✔ free preview is the default experience and restricted testing stays explicit (0.559541ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.415ms)
+✔ release pairing, auth and toolchain fail closed (0.434ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.146583ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.467916ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (702.347042ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.324625ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.388333ms)
+✔ all installer channels and universal builds preserve company, copyright and product identity (414.218417ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (3.43075ms)
+✔ validated macOS build copies are archived without changing bytes, symlinks, modes, DMGs or earlier builds (227.144125ms)
+✔ only packaged macOS apps outside Applications offer installation (0.759375ms)
+✔ development, testing and unknown source identities never recover or prompt for the formal application (0.130292ms)
+✔ only the installed formal macOS app confirms its installation journal (0.298ms)
+✔ skipping installation still recovers interrupted publication before offering install (0.595791ms)
+✔ successful verified publication explicitly relaunches installed executable with safe args (1.988875ms)
+✔ copy and relaunch failures continue without a false success (0.697375ms)
+✔ replacement is explicit and cancel performs no installation (0.116541ms)
+✔ confirmed replacement permits verified installation (0.098167ms)
+✔ running app and unknown recovery records produce a native notice without installation (0.761417ms)
+✔ an unavailable optional dialog does not prevent desktop startup (0.206083ms)
+✔ deferred completed-backup cleanup preserves the current app without offering another replacement (0.116792ms)
+✔ business changes coalesce into fixed notifications without reading event paths (22.137ms)
+✔ locks, transactions, scratch and temporary paths do not refresh the UI (23.842667ms)
+✔ continuous writes have a bounded maximum delay (22.885916ms)
+✔ identical bindings preserve native handles; unbind and close cancel stale callbacks (11.2995ms)
+✔ native failures notify once and only rearm the pinned library on a periodic check (36.075291ms)
+✔ notification failures cannot escape binding, recovery or debounce callbacks (19.369041ms)
+✔ silent root removal is detected and restoration of the same inode can rearm (53.991708ms)
+✔ a same-ID clone never rearms under the old binding; successful rebind clears unavailable immediately (33.002792ms)
+✔ descriptor identity, format, size and readability are checked before watching and while idle (67.743625ms)
+✔ descriptor changes during the bounded read are rejected (18.897291ms)
+✔ linked descriptors and root ancestors are rejected (60.336333ms)
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (44985.901583ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (35281.359875ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (26503.235083ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (30886.292792ms)
+✔ required build main and worker reject all five business writes before any business mutation (786.722541ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (27284.984125ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (20779.703791ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (17987.567708ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (14581.904083ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (13723.44275ms)
+✔ pending content blocks import-result rebinding; unfinished import blocks new content and changing library (13557.81775ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (12271.4315ms)
+✔ explicitly adopting another current library retires only the completed import pointer (15342.053833ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (14408.49975ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (13811.330584ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (3.547583ms)
+✔ local file boundary rejects extra fields, paths, folders, symlinks, counts, types and size before importing (66.165083ms)
+(node:22736) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sandbox preload extracts File paths through webUtils only, refuses strings and non-native files (3.123042ms)
+✔ dropped and dialog files reuse real material/template/photo import and keep explicit attachment confirmation (4597.247833ms)
+✔ template folders expand only first-level raster files and reject links and count overflow (574.773584ms)
+✔ verified installation retains the complete previous app and confirms only installed startup (1320.107458ms)
+✔ completed installation retires the launchable raw previous app into a recoverable archive (1352.37575ms)
+✔ native previous-app archive round-trips the complete old tree and publishes a private hash receipt (1814.948125ms)
+Previous application backup retirement deferred: archive disk full
+✔ completed backup write failure preserves old bytes and the retry claim without blocking confirmation (1295.60225ms)
+Previous application backup retirement deferred: Previous application archive round-trip mismatch
+✔ completed backup roundtrip failure preserves old bytes and the retry claim without blocking confirmation (1774.8295ms)
+Previous application backup retirement deferred: old signature rejected
+✔ completed backup signature failure preserves old bytes and the retry claim without blocking confirmation (3650.22425ms)
+Previous application backup retirement deferred: Command failed: /usr/bin/ditto -x -k /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-KW2hSd/Applications/.nova-content-hub-install-b17e0b54-6c60-4804-848b-29e9b5be7098/.archive-previous-tK3mHf/previous.app.zip /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-KW2hSd/Applications/.nova-content-hub-install-b17e0b54-6c60-4804-848b-29e9b5be7098/.verify-previous/payload
+ditto: Couldn't read PKZip signature
+
+✔ completed backup zip failure preserves old bytes and the retry claim without blocking confirmation (1469.678209ms)
+Previous application backup retirement deferred: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-xssUtB/Applications/.nova-content-hub-install-38e44cd1-005c-4751-90b6-98877543aa46/previous-backup/receipt.json'
+✔ completed backup receipt failure preserves old bytes and the retry claim without blocking confirmation (588.786458ms)
+Previous application backup retirement deferred: archive publication failed
+✔ completed backup publish failure preserves old bytes and the retry claim without blocking confirmation (2547.645916ms)
+Previous application backup retirement deferred: Application recovery identity mismatch
+✔ completed backup changed-previous failure preserves old bytes and the retry claim without blocking confirmation (1158.975625ms)
+Previous application backup retirement deferred: Previous application is still running
+✔ completed backup running failure preserves old bytes and the retry claim without blocking confirmation (419.214791ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ completed backup running-after-archive failure preserves old bytes and the retry claim without blocking confirmation (1399.070958ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ a published archive interrupted before raw retirement is verified and resumed (1757.42375ms)
+Previous application backup retirement deferred: interrupted before removal
+▶ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree
+  ✔ false (1688.944833ms)
+Previous application backup retirement deferred: interrupted before removal
+  ✔ true (2491.487875ms)
+✔ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree (4181.146958ms)
+Previous application backup retirement deferred: Previous application started while archiving
+▶ archive corruption cannot authorize removal of a retained raw backup
+  ✔ previous.app.zip (1820.620959ms)
+Previous application backup retirement deferred: Previous application started while archiving
+  ✔ receipt.json (2014.54325ms)
+✔ archive corruption cannot authorize removal of a retained raw backup (3835.825917ms)
+✔ explicit retirement refuses foreign paths and non-complete transactions without touching rollback material (563.049083ms)
+✔ a real process exit after extraction leaves a pinned scratch that the next archive call safely clears (3029.404583ms)
+▶ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization
+  ✔ false (2074.852417ms)
+  ✔ true (2017.734416ms)
+✔ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization (4093.596958ms)
+✔ scratch cleanup keeps owner.json through a process exit halfway through payload removal (1762.932791ms)
+✔ an empty scratch left after owner unlink is safely retired while a nonempty unknown one remains protected (1517.055042ms)
+▶ unknown, live-owned and running verification scratch directories are preserved until safely retryable
+  ✔ unknown (558.12675ms)
+  ✔ live-owner (578.826416ms)
+  ✔ running-copy (1946.200916ms)
+✔ unknown, live-owned and running verification scratch directories are preserved until safely retryable (3083.95475ms)
+✔ same-process overlapping archive verification cannot clear an active scratch (1602.831ms)
+✔ only strict native transaction backup executable paths are rejected before desktop locking (1.135875ms)
+▶ completed installation never restores an old backup after the user removes, moves or replaces the installed app
+  ✔ remove (1083.807958ms)
+  ✔ move (1138.322708ms)
+  ✔ replace (1177.122583ms)
+✔ completed installation never restores an old backup after the user removes, moves or replaces the installed app (3399.948667ms)
+✔ a completed local-channel journal can recover before an official-channel update (1312.333667ms)
+✔ allowed product channels replace and restore each other with the same executable (356.172125ms)
+✔ unknown journal channels and incompatible executables preserve recovery evidence (839.382958ms)
+✔ unknown installed channels and mismatched incoming source or candidate channels are refused (427.1965ms)
+✔ throw copy or verification failure leaves old app intact (193.443333ms)
+✔ missing copy or verification failure leaves old app intact (209.320875ms)
+✔ hash copy or verification failure leaves old app intact (238.337041ms)
+✔ mode copy or verification failure leaves old app intact (253.624917ms)
+✔ source-signature copy or verification failure leaves old app intact (176.489ms)
+✔ candidate-signature copy or verification failure leaves old app intact (175.353417ms)
+✔ internal symlinks survive copying; escaping links and unknown identities are refused (420.317708ms)
+✔ running target at check 1 is refused before replacement (70.157291ms)
+✔ running target at check 2 is refused before replacement (414.349958ms)
+✔ running-process query failure leaves previous app intact (74.680833ms)
+✔ failed publish restores old app; failed rollback retains recovery record and previous app (621.707416ms)
+✔ interrupted new rename is pending; recovery refuses a replaced previous identity (294.41825ms)
+✔ unknown transaction directory and target symlink are left untouched (192.541666ms)
+✔ native macOS process query distinguishes an unused app directory (623.502ms)
+✔ initial installation and a subsequent confirmed update preserve separate backups (534.996416ms)
+✔ another live installation owner cannot have its staging directory archived (335.35375ms)
+✔ prepared journal recovers interruption between the old rename and published record (396.287208ms)
+✔ installing from the target itself is refused without touching it (133.782917ms)
+✔ native ditto copy retains framework-style symlinks and executable bits (330.367916ms)
+✔ same-process concurrent recovery cannot archive an active copy (425.987584ms)
+✔ an initialized private orphan before active publication does not block a later install (752.742875ms)
+✔ published initialized staging claim recovers without deleting its private directory (329.435208ms)
+✔ unknown active regular file and symlink are preserved without following them (151.074625ms)
+✔ exclusive claim publication refuses a concurrently created unknown empty directory (112.985458ms)
+✔ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (3038.901291ms)
+✔ a final marker followed by an actual open failure cannot publish an operation receipt (2381.964792ms)
+✔ query proves a lost restore response and pins the completed target before continuation (5017.537792ms)
+✔ partial backup and partial restored target are preserved and never overwritten (2145.019375ms)
+✔ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (4706.201125ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (520.45975ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (501.026334ms)
+(node:22785) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save applies its confirmed snapshot before one background refresh (4.259167ms)
+✔ managed save callback supplies the exact receipt object ID alongside the compatible snapshot argument (0.650458ms)
+✔ CONFLICT preserves the editor and still refreshes status plus the workspace (1.42575ms)
+✔ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.4625ms)
+✔ a background refresh failure retains the acknowledged save and permits an explicit refresh retry (1.655541ms)
+✔ editor reconciliation failure keeps one deferred full read and the committed snapshot (1.476791ms)
+✔ explicit management reload reuses the freshly read snapshot (0.608458ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (1.014ms)
+✔ queued managed success clears only a background BUSY marker: BUSY (0.9675ms)
+✔ queued managed success clears only a background BUSY marker: CONFLICT (1.536292ms)
+✔ a committed management action releases its controls before a delayed full-library refresh (1.700291ms)
+✔ explicit panel refresh callbacks share the nonblocking background path (0.896875ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (2704.451625ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (2052.333583ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (4268.045584ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (2303.680167ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (2657.999417ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.983583ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.507458ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (7902.995417ms)
+✔ desktop operations finish in FIFO order without overlap (1.028375ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.666125ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.347583ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.32625ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.186958ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.485125ms)
+✔ close rejects new work immediately and drains active and both accepted queues, including failures (0.356208ms)
+✔ closing an idle queue resolves and never reopens it (0.084625ms)
+✔ retired motion field accepts either saved boolean without changing reminder/login settings or the file (137.954667ms)
+✔ current settings round-trip and new saves reject the retired field (23.195625ms)
+✔ legacy compatibility still rejects invalid and unexpected fields while preserving the original file (82.658125ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (1.071167ms)
+✔ both worker prompt projections default old files without rewrites and expose durable favorite changes (7898.13775ms)
+✔ favorite command boundary requires a present boolean and finite fields before any write (877.062625ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (5.607208ms)
+✔ local minute records use the planned timezone across a date boundary (79.268875ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.350083ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.394ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.368958ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.147916ms)
+✔ successive raster reads reuse one bound library opening while returning the original bytes (1939.3485ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (1387.20825ms)
+✔ validated MIME hits skip sharp metadata while current-byte tampering is still refused (1261.772083ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (1364.5935ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (1354.867208ms)
+✔ a warm raster read still recovers a durable pending content transaction (1465.328334ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (937.912542ms)
+✔ two-image batches isolate bad images and reject an unbounded batch (984.888667ms)
+✔ image requests merge in flight, cap batches at two, drain before writers, and discard revoked work (559.219834ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.677125ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.146083ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.11625ms)
+✔ save-before-quit only retries quit for an exact true response (3.223292ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (0.37275ms)
+✔ without a tray, dirty close still offers cancel, discard and save (0.377291ms)
+✔ a thousand local schedules resolve the default timezone at most once per projection (11.430916ms)
+✔ the next projection observes a changed system timezone without modifying saved instant schedules (9.631958ms)
+✔ mixed date, local minute, and repeated DST instants keep existing projected ordering (0.686667ms)
+✔ day views order known times and leave date-only time unknown (19.387292ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.589667ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.718542ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.256084ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.187583ms)
+✔ installation copy supplies the selected host exact manifest or folder without manual path edits (88.992458ms)
+✔ both catalogs retain default, legacy and derived custom facts; ordinary reads never write Markdown (3686.403583ms)
+✔ explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories (2665.956083ms)
+✔ historical report scope is labelled without changing notes or splitting colleague groups (2.664584ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (9129.020333ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (9754.018166ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (8830.4175ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (7240.026417ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (7604.037583ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (8255.914584ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (7938.496125ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (6752.982375ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (820.250125ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (2.214ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (1.692833ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.483917ms)
+✔ readonly non-BUSY failures are returned once (0.539583ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.325708ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (3.433792ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.371625ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (239.376541ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.385666ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (11868.233833ms)
+✔ full list records retain the same validated bytes and edit tokens as individual reads, including trash (3695.017666ms)
+✔ workspace projections do not reopen each already validated full record (4538.8295ms)
+✔ only an owned stored publication URL is sent to the system browser (3842.845458ms)
+✔ invalid stored links and browser errors do not become successful opens (8496.569417ms)
+✔ reveal requests only the original bound directory and refuses replacements (1611.418834ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (7211.69ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1908.846084ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (1170.440666ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (594.088167ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1115.726542ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.585084ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.333708ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (3795.365416ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (3050.783875ms)
+ℹ tests 346
+ℹ suites 0
+ℹ pass 345
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 303488.551583
+
+✖ failing tests:
+
+test at test/daily-publication-wiring.test.mjs:5:1
+✖ overview cover selection opens existing covers and keeps generation as a separate intent (6.872208ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /<CoverPanel arrangePublication=\{\(\) => void changeContentTab\('publication'\)\}/. Input:
+  
+  "import {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';\n" +
+    "import {createRoot} from 'react-dom/client';\n" +
+    "import '@douyinfe/semi-ui-19/react19-adapter';\n" +
+    "import Banner from '@douyinfe/semi-ui-19/lib/es/banner';\n" +
+    "import Button from '@douyinfe/semi-ui-19/lib/es/button';\n" +
+    "import Card from '@douyinfe/semi-ui-19/lib/es/card';\n" +
+    "import Typography from '@douyinfe/semi-ui-19/lib/es/typography';\n" +
+    "import Input from '@douyinfe/semi-ui-19/lib/es/input';\n" +
+    "import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';\n" +
+    "import LocaleProvider from '@douyinfe/semi-ui-19/lib/es/locale/localeProvider';\n" +
+    "import zhCN from '@douyinfe/semi-ui-19/lib/es/locale/source/zh_CN';\n" +
+    "import '@douyinfe/semi-ui-19/lib/es/_base/base.css';\n" +
+    "import './style.css';\n" +
+    "import {DataTable, ListToolbar} from './list-primitives.tsx';\n" +
+    "import {CoverPanel } from './covers.tsx';\n" +
+    "import {ContentList} from './content-list.tsx';\n" +
+    "import {CollectionContents} from './collection-contents.tsx';\n" +
+    "import {AssistantSettings} from './assistant-settings.tsx';\n" +
+    "import {LibraryPanels, CollectionEditor, type LibraryPanelTab, ContentMetadataPanel, ContentMaterialPanel, hasManagedDrafts} from './library-panels.tsx';\n" +
+    "import {MaintenancePanel} from './maintenance-panel.tsx';\n" +
+    "import {PreferencesPanel} from './preferences-panel.tsx';\n" +
+    "import {SetupPanel} from './setup-panel.tsx';\n" +
+    "import {BootstrapRecoveryPanel} from './bootstrap-panel.tsx';\n" +
+    "import {NavigationIcon} from './navigation-icon.tsx';\n" +
+    "import type {WorkspaceLibraryCollection, WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';\n" +
+    "import {invoke} from './client.ts';\n" +
+    "import {CalendarPage, Overview, PromptsPage, TemplatesPage, pageNames} from './workspace-pages.tsx';\n" +
+    "import {PublicationPanel, type PublicationFocus, type CalendarFocus} from './publication-panel.tsx';\n" +
+    "import type {Page} from './workspace-pages.tsx';\n" +
+    "import type {CoverResults, TemplateGroup} from '../shared/cover-contracts.ts';\n" +
+    "import { errorInfo} from '../shared/contracts.ts';\n" +
+    'import type {\n' +
+    '    Content,\n' +
+    '    DesktopResults,\n' +
+    '    Status,\n' +
+    '    Draft,\n' +
+    '    PendingView,\n' +
+    '    View\n' +
+    "} from '../shared/contracts.ts';\n" +
+    '\n' +
+    'function App() {\n' +
+    "    const [page, setPage] = useState<Page>('overview');\n" +
+    "    const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);\n" +
+    '    const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);\n' +
+    '    const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);\n' +
+    '    const [watchUnavailable, setWatchUnavailable] = useState(false);\n' +
+    '    const changesPending = useRef(false);\n' +
+    '    const automaticRefresh = useRef<() => void>(() => {});\n' +
+    '    const backgroundRefresh = useRef<Promise<unknown> | null>(null);\n' +
+    "    const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);\n" +
+    "    const workspaceAssets = useRef<{epoch: number; value: CoverResults['listCoverAssets']} | null>(null);\n" +
+    '    const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);\n' +
+    '    const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);\n' +
+    "    const [templateContentQuery, setTemplateContentQuery] = useState(''), [templateContentPage, setTemplateContentPage] = useState(1), [templateContentPageSize, setTemplateContentPageSize] = useState(20);\n" +
+    '    const templateContents = useMemo(() => {\n' +
+    '        if (!templatePicker) return [];\n' +
+    '        const query = templateContentQuery.trim().toLocaleLowerCase();\n' +
+    '        return workspace?.contents.filter(item => !item.deletedAt && (!query || `${item.title} ${item.body}`.toLocaleLowerCase().includes(query))) ?? [];\n' +
+    '    }, [workspace, templateContentQuery, templatePicker]);\n' +
+    '    const currentTemplateContentPage = Math.min(templateContentPage, Math.max(1, Math.ceil(templateContents.length / templateContentPageSize)));\n' +
+    '    useEffect(() => setTemplateContentPage(1), [templateContentQuery]);\n' +
+    "    const [contentQuery, setContentQuery] = useState('');\n" +
+    '    const templateDialog = useRef<HTMLDialogElement>(null);\n' +
+    '    useEffect(() => { if (templatePicker) templateDialog.current?.showModal(); }, [templatePicker]);\n' +
+    '    const [libraryEpoch, setLibraryEpoch] = useState(0);\n' +
+    '    const epochRef = useRef(0);\n' +
+    '    const [libraryOpen, setLibraryOpen] = useState(false);\n' +
+    '    const libraryDialog = useRef<HTMLDialogElement>(null);\n' +
+    '    const recoveryDialog = useRef<HTMLDialogElement>(null);\n' +
+    '    const [recoveryOpen, setRecoveryOpen] = useState(false);\n' +
+    '    useEffect(() => {if (recoveryOpen) recoveryDialog.current?.showModal();}, [recoveryOpen]);\n' +
+    "    const [libraryTab, setLibraryTab] = useState<'resources' | 'storage'>('resources');\n" +
+    "    const [resourceTab, setResourceTab] = useState<LibraryPanelTab>('photos');\n" +
+    '    const [activeCollectionId, setActiveCollectionId] = useState<string | null>(null);\n' +
+    '    const lastCollection = useRef<WorkspaceLibraryCollection | null>(null);\n' +
+    "    const [collectionQuery, setCollectionQuery] = useState('');\n" +
+    '    const [creatingCollection, setCreatingCollection] = useState(false);\n' +
+    '    const [detailOpen, setDetailOpen] = useState(false);\n' +
+    "    const [contentTab, setContentTab] = useState<'covers' | 'body' | 'materials' | 'publication'>('covers');\n" +
+    '    const [coverStartOpenKey, setCoverStartOpenKey] = useState(0);\n' +
+    '    useEffect(() => { if (libraryOpen) libraryDialog.current?.showModal(); }, [libraryOpen]);\n' +
+    '    const [photoManagerEpoch, setPhotoManagerEpoch] = useState(0);\n' +
+    '    const [promptContentId, setPromptContentId] = useState<string | null>(null);\n' +
+    '    const [calendarFocus, setCalendarFocus] = useState<CalendarFocus | null>(null);\n' +
+    '    const [settings, setSettings] = useState(false);\n' +
+    '    const [coverRefresh, setCoverRefresh] = useState(0);\n' +
+    '    const [status, setStatus] = useState<Status | null>(null);\n' +
+    '    const [contents, setContents] = useState<Content[] | null>(null);\n' +
+    "    const [failure, setFailure] = useState<{message: string; backgroundBusyEpoch?: number}>({message: ''});\n" +
+    '    const error = failure.message;\n' +
+    '    const setError = (message: string) => setFailure({message});\n' +
+    '    const [acting, setActing] = useState(false);\n' +
+    '    const active = useRef(false);\n' +
+    "    const [view, setView] = useState<View>('active');\n" +
+    '    const [base, setBase] = useState<Content | null>(null);\n' +
+    '    const baseRef = useRef(base);\n' +
+    '    baseRef.current = base;\n' +
+    '    const [draft, setDraft] = useState<Draft | null>(null);\n' +
+    '    const draftRef = useRef(draft);\n' +
+    '    draftRef.current = draft;\n' +
+    '    const [disk, setDisk] = useState<Content | null>(null);\n' +
+    '    const [pending, setPending] = useState<PendingView | null>(null);\n' +
+    '    const [leaving, setLeaving] = useState<((saved?: boolean) => Promise<void>) | null>(null);\n' +
+    '    const savedContent = useRef<Content | null>(null);\n' +
+    '    const leaveDialog = useRef<HTMLDialogElement>(null);\n' +
+    '    useEffect(() => {\n' +
+    '        if (leaving && leaveDialog.current && !leaveDialog.current.open) leaveDialog.current.showModal();\n' +
+    '    }, [leaving]);\n' +
+    '    const dirty = !!draft && (!base || draft.title !== base.title || draft.body !== base.body);\n' +
+    '    const dirtyRef = useRef(false);\n' +
+    '    dirtyRef.current = dirty;\n' +
+    '    const report = (failure: unknown, preserveError = false, epoch = epochRef.current) => {\n' +
+    '        const value = errorInfo(failure);\n' +
+    "        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || value.code === 'BUSY') ? previous : {\n" +
+    '            message: `${value.message}（${value.code}）`,\n' +
+    "            ...(preserveError && value.code === 'BUSY' ? {backgroundBusyEpoch: epoch} : {})\n" +
+    '        });\n' +
+    '    };\n' +
+    '    const load = (item: Content) => {\n' +
+    '        setBase(item);\n' +
+    '        setDraft({title: item.title, body: item.body});\n' +
+    '        setDisk(null);\n' +
+    '    };\n' +
+    '    const clearEditor = () => {\n' +
+    '        epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;\n' +
+    '        setDraft(null);\n' +
+    '        draftRef.current = null;\n' +
+    '        setDisk(null);\n' +
+    '        savedContent.current = null;\n' +
+    '        setContents(null);\n' +
+    '        setWorkspace(null);\n' +
+    '        setLibrary(null);\n' +
+    '        setWorkspaceUnavailable(false);\n' +
+    '        setWatchUnavailable(false);\n' +
+    '        changesPending.current = false;\n' +
+    '        setAssets(null);\n' +
+    '        workspaceAssets.current = null;\n' +
+    '        setSelectedTemplate(null);\n' +
+    '        setTemplatePicker(null);\n' +
+    '        setPromptContentId(null);\n' +
+    '        setCalendarFocus(null);\n' +
+    '        setDetailOpen(false);\n' +
+    '        setActiveCollectionId(null);\n' +
+    '        lastCollection.current = null;\n' +
+    "        setCollectionQuery('');\n" +
+    "        setContentTab('covers');\n" +
+    '    };\n' +
+    '    const refreshStatus = async () => {\n' +
+    '        const epoch = epochRef.current;\n' +
+    "        const next = await invoke('status');\n" +
+    '        if (epoch !== epochRef.current) return next;\n' +
+    '        setStatus(next);\n' +
+    '        setPending(next.pending);\n' +
+    '        return next;\n' +
+    '    };\n' +
+    '    async function refreshWorkspace(confirmed?: WorkspaceLibrarySnapshot) {\n' +
+    '        if (confirmed) setLibrary(confirmed);\n' +
+    "        // Explicit panel refreshes must not keep a completed action's global busy lock.\n" +
+    '        if (confirmed || active.current && !backgroundRefresh.current) {\n' +
+    '            changesPending.current = true;\n' +
+    '            return;\n' +
+    '        }\n' +
+    '        const epoch = epochRef.current;\n' +
+    '        workspaceAssets.current = null;\n' +
+    "        let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;\n" +
+    "        try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }\n" +
+    '        catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }\n' +
+    '        if (epoch !== epochRef.current) return;\n' +
+    '        setWorkspace(snapshot);\n' +
+    '        setWorkspaceUnavailable(false);\n' +
+    '        setAssets(coverAssets);\n' +
+    '        workspaceAssets.current = {epoch, value: coverAssets};\n' +
+    '        setLibrary(detail);\n' +
+    '    }\n' +
+    '    useEffect(() => {\n' +
+    '        const epoch = epochRef.current;\n' +
+    "        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epo"... 47204 more characters
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/daily-publication-wiring.test.mjs:9:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "import {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';\nimport {createRoot} from 'react-dom/client';\nimport '@douyinfe/semi-ui-19/react19-adapter';\nimport Banner from '@douyinfe/semi-ui-19/lib/es/banner';\nimport Button from '@douyinfe/semi-ui-19/lib/es/button';\nimport Card from '@douyinfe/semi-ui-19/lib/es/card';\nimport Typography from '@douyinfe/semi-ui-19/lib/es/typography';\nimport Input from '@douyinfe/semi-ui-19/lib/es/input';\nimport TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';\nimport LocaleProvider from '@douyinfe/semi-ui-19/lib/es/locale/localeProvider';\nimport zhCN from '@douyinfe/semi-ui-19/lib/es/locale/source/zh_CN';\nimport '@douyinfe/semi-ui-19/lib/es/_base/base.css';\nimport './style.css';\nimport {DataTable, ListToolbar} from './list-primitives.tsx';\nimport {CoverPanel } from './covers.tsx';\nimport {ContentList} from './content-list.tsx';\nimport {CollectionContents} from './collection-contents.tsx';\nimport {AssistantSettings} from './assistant-settings.tsx';\nimport {LibraryPanels, CollectionEditor, type LibraryPanelTab, ContentMetadataPanel, ContentMaterialPanel, hasManagedDrafts} from './library-panels.tsx';\nimport {MaintenancePanel} from './maintenance-panel.tsx';\nimport {PreferencesPanel} from './preferences-panel.tsx';\nimport {SetupPanel} from './setup-panel.tsx';\nimport {BootstrapRecoveryPanel} from './bootstrap-panel.tsx';\nimport {NavigationIcon} from './navigation-icon.tsx';\nimport type {WorkspaceLibraryCollection, WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';\nimport {invoke} from './client.ts';\nimport {CalendarPage, Overview, PromptsPage, TemplatesPage, pageNames} from './workspace-pages.tsx';\nimport {PublicationPanel, type PublicationFocus, type CalendarFocus} from './publication-panel.tsx';\nimport type {Page} from './workspace-pages.tsx';\nimport type {CoverResults, TemplateGroup} from '../shared/cover-contracts.ts';\nimport { errorInfo} from '../shared/contracts.ts';\nimport type {\n    Content,\n    DesktopResults,\n    Status,\n    Draft,\n    PendingView,\n    View\n} from '../shared/contracts.ts';\n\nfunction App() {\n    const [page, setPage] = useState<Page>('overview');\n    const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);\n    const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);\n    const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);\n    const [watchUnavailable, setWatchUnavailable] = useState(false);\n    const changesPending = useRef(false);\n    const automaticRefresh = useRef<() => void>(() => {});\n    const backgroundRefresh = useRef<Promise<unknown> | null>(null);\n    const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);\n    const workspaceAssets = useRef<{epoch: number; value: CoverResults['listCoverAssets']} | null>(null);\n    const [selectedTemplate, setSelectedTemplate] = useState<{id: string; key: number} | null>(null);\n    const [templatePicker, setTemplatePicker] = useState<TemplateGroup | null>(null);\n    const [templateContentQuery, setTemplateContentQuery] = useState(''), [templateContentPage, setTemplateContentPage] = useState(1), [templateContentPageSize, setTemplateContentPageSize] = useState(20);\n    const templateContents = useMemo(() => {\n        if (!templatePicker) return [];\n        const query = templateContentQuery.trim().toLocaleLowerCase();\n        return workspace?.contents.filter(item => !item.deletedAt && (!query || `${item.title} ${item.body}`.toLocaleLowerCase().includes(query))) ?? [];\n    }, [workspace, templateContentQuery, templatePicker]);\n    const currentTemplateContentPage = Math.min(templateContentPage, Math.max(1, Math.ceil(templateContents.length / templateContentPageSize)));\n    useEffect(() => setTemplateContentPage(1), [templateContentQuery]);\n    const [contentQuery, setContentQuery] = useState('');\n    const templateDialog = useRef<HTMLDialogElement>(null);\n    useEffect(() => { if (templatePicker) templateDialog.current?.showModal(); }, [templatePicker]);\n    const [libraryEpoch, setLibraryEpoch] = useState(0);\n    const epochRef = useRef(0);\n    const [libraryOpen, setLibraryOpen] = useState(false);\n    const libraryDialog = useRef<HTMLDialogElement>(null);\n    const recoveryDialog = useRef<HTMLDialogElement>(null);\n    const [recoveryOpen, setRecoveryOpen] = useState(false);\n    useEffect(() => {if (recoveryOpen) recoveryDialog.current?.showModal();}, [recoveryOpen]);\n    const [libraryTab, setLibraryTab] = useState<'resources' | 'storage'>('resources');\n    const [resourceTab, setResourceTab] = useState<LibraryPanelTab>('photos');\n    const [activeCollectionId, setActiveCollectionId] = useState<string | null>(null);\n    const lastCollection = useRef<WorkspaceLibraryCollection | null>(null);\n    const [collectionQuery, setCollectionQuery] = useState('');\n    const [creatingCollection, setCreatingCollection] = useState(false);\n    const [detailOpen, setDetailOpen] = useState(false);\n    const [contentTab, setContentTab] = useState<'covers' | 'body' | 'materials' | 'publication'>('covers');\n    const [coverStartOpenKey, setCoverStartOpenKey] = useState(0);\n    useEffect(() => { if (libraryOpen) libraryDialog.current?.showModal(); }, [libraryOpen]);\n    const [photoManagerEpoch, setPhotoManagerEpoch] = useState(0);\n    const [promptContentId, setPromptContentId] = useState<string | null>(null);\n    const [calendarFocus, setCalendarFocus] = useState<CalendarFocus | null>(null);\n    const [settings, setSettings] = useState(false);\n    const [coverRefresh, setCoverRefresh] = useState(0);\n    const [status, setStatus] = useState<Status | null>(null);\n    const [contents, setContents] = useState<Content[] | null>(null);\n    const [failure, setFailure] = useState<{message: string; backgroundBusyEpoch?: number}>({message: ''});\n    const error = failure.message;\n    const setError = (message: string) => setFailure({message});\n    const [acting, setActing] = useState(false);\n    const active = useRef(false);\n    const [view, setView] = useState<View>('active');\n    const [base, setBase] = useState<Content | null>(null);\n    const baseRef = useRef(base);\n    baseRef.current = base;\n    const [draft, setDraft] = useState<Draft | null>(null);\n    const draftRef = useRef(draft);\n    draftRef.current = draft;\n    const [disk, setDisk] = useState<Content | null>(null);\n    const [pending, setPending] = useState<PendingView | null>(null);\n    const [leaving, setLeaving] = useState<((saved?: boolean) => Promise<void>) | null>(null);\n    const savedContent = useRef<Content | null>(null);\n    const leaveDialog = useRef<HTMLDialogElement>(null);\n    useEffect(() => {\n        if (leaving && leaveDialog.current && !leaveDialog.current.open) leaveDialog.current.showModal();\n    }, [leaving]);\n    const dirty = !!draft && (!base || draft.title !== base.title || draft.body !== base.body);\n    const dirtyRef = useRef(false);\n    dirtyRef.current = dirty;\n    const report = (failure: unknown, preserveError = false, epoch = epochRef.current) => {\n        const value = errorInfo(failure);\n        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || value.code === 'BUSY') ? previous : {\n            message: `${value.message}（${value.code}）`,\n            ...(preserveError && value.code === 'BUSY' ? {backgroundBusyEpoch: epoch} : {})\n        });\n    };\n    const load = (item: Content) => {\n        setBase(item);\n        setDraft({title: item.title, body: item.body});\n        setDisk(null);\n    };\n    const clearEditor = () => {\n        epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;\n        setDraft(null);\n        draftRef.current = null;\n        setDisk(null);\n        savedContent.current = null;\n        setContents(null);\n        setWorkspace(null);\n        setLibrary(null);\n        setWorkspaceUnavailable(false);\n        setWatchUnavailable(false);\n        changesPending.current = false;\n        setAssets(null);\n        workspaceAssets.current = null;\n        setSelectedTemplate(null);\n        setTemplatePicker(null);\n        setPromptContentId(null);\n        setCalendarFocus(null);\n        setDetailOpen(false);\n        setActiveCollectionId(null);\n        lastCollection.current = null;\n        setCollectionQuery('');\n        setContentTab('covers');\n    };\n    const refreshStatus = async () => {\n        const epoch = epochRef.current;\n        const next = await invoke('status');\n        if (epoch !== epochRef.current) return next;\n        setStatus(next);\n        setPending(next.pending);\n        return next;\n    };\n    async function refreshWorkspace(confirmed?: WorkspaceLibrarySnapshot) {\n        if (confirmed) setLibrary(confirmed);\n        // Explicit panel refreshes must not keep a completed action's global busy lock.\n        if (confirmed || active.current && !backgroundRefresh.current) {\n            changesPending.current = true;\n            return;\n        }\n        const epoch = epochRef.current;\n        workspaceAssets.current = null;\n        let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;\n        try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }\n        catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }\n        if (epoch !== epochRef.current) return;\n        setWorkspace(snapshot);\n        setWorkspaceUnavailable(false);\n        setAssets(coverAssets);\n        workspaceAssets.current = {epoch, value: coverAssets};\n        setLibrary(detail);\n    }\n    useEffect(() => {\n        const epoch = epochRef.current;\n        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epo"... 47204 more characters,
+    expected: /<CoverPanel arrangePublication=\{\(\) => void changeContentTab\('publication'\)\}/,
+    operator: 'match',
+    diff: 'simple'
+  }

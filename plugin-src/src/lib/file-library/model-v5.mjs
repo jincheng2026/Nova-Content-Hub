@@ -167,6 +167,7 @@ function coverChoice(value, meta) {
 export function modelMethods(h) {
     const {
         root,
+        finderMetadataFile,
         locked,
         mutate,
         list,
@@ -629,6 +630,7 @@ export function modelMethods(h) {
             }
             const categories = [...s.promptCategories];
             for (const name of fs.readdirSync(path.join(root, '提示词'))) {
+                if (finderMetadataFile(path.join(root, '提示词'), name)) continue;
                 const p = readObject('prompt', name);
                 if (p.deletedAt === null && p.category && !categories.includes(p.category)) categories.push(p.category);
             }

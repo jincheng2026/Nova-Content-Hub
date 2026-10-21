@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-10-21T11:47:36.779Z",
+  "status": "PASS",
+  "counts": {
+    "templates": 23,
+    "contents": 5,
+    "prompts": 54,
+    "photos": 2,
+    "collections": 1
+  },
+  "libraryEntries": 2135,
+  "librarySha256": "af0c67f39f297c0effed016e4f73e228935cc4e946f3e42840908360643aecca",
+  "unchanged": true,
+  "scope": "Read lists only against existing original binding; no business write, generation, repair or cleanup. Exact Finder file kept."
+}

@@ -1,0 +1,27 @@
+
+> nova-content-hub-prototype@0.3.39 test:seeds
+> node --test plugin-src/tests/resources/*.test.mjs plugin-src/src/lib/library-seed/test/*.test.mjs
+
+✔ five canonical VI copies, three style copies and named source index preserve every source byte (174.50825ms)
+✔ all bundled groups and prompts install, reopen and seed again without overwriting user facts (53735.420042ms)
+✔ an existing library receives only missing colleague resources and preserves edits, trash and historic packages (46863.635958ms)
+✔ tampered colleague source is rejected during preflight (242.587084ms)
+✔ batch verification waits for the complete colleague source preflight (297.209917ms)
+✔ a missing bundled colleague source stops preflight before any writes (274.981333ms)
+✔ a missing asset is imported, but a tampered same-hash asset is never overwritten (1967.074083ms)
+✔ stored assets changed after the batch are revalidated by template installation (2197.301833ms)
+✔ root replacement after the batch stops installation before any write to the clone (2663.483417ms)
+✔ source bytes changing after preflight still fail the import hash comparison (437.412416ms)
+✔ same-version package conflicts are still rejected after batch verification (2341.432709ms)
+✔ bundle resource links cannot read a file outside the packaged resource root (282.152458ms)
+✔ catalog has a supported version and 26 uniquely identified prompts (0.540208ms)
+✔ every prompt has usable metadata and original project provenance (0.957167ms)
+✔ variables use complete, simple placeholders without a duplicated variable schema (0.469084ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111579.565958

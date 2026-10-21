@@ -6,5 +6,6 @@ test('overview cover selection opens existing covers and keeps generation as a s
   const app = fs.readFileSync(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
   assert.match(app, /selectCover=\{item => void select\(item\)\}/);
   assert.match(app, /generate=\{item => void select\(item, undefined, true\)\}/);
-  assert.match(app, /<CoverPanel arrangePublication=\{\(\) => void changeContentTab\('publication'\)\}/);
+  const coverPanel = app.match(/<CoverPanel\b[\s\S]*?\/>/)?.[0] ?? '';
+  assert.match(coverPanel, /\barrangePublication=\{\(\) => void changeContentTab\('publication'\)\}/);
 });
