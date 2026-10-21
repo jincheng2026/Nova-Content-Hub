@@ -27,6 +27,8 @@
 
 首个候选的真实安装暴露侧栏未选中项继承 Semi 蓝字。视觉探针改用与产品一致的真实 Semi Button 后得到 red；对公共侧栏颜色加正确 specificity 后 green，选中蓝/未选中近黑。保留 preflight-3953098/ 原候选记录，最终交付重新冻结构建；不改按钮处理器和导航保护。
 
+封面作品实拍另发现 borderless 图片按钮被根 .semi-button 胶囊圆角裁为椭圆；根按钮恢复12px，胶囊仅用于 light/solid 操作按钮。真实 Semi 图片按钮形状断言通过。第二候选记录保留于 preflight-dd09ac0/。
+
 ## 交付状态
 
 待冻结构建、安装后原生页面与 Finder 核验。当前交付目标仅 darwin-arm64 preview；Intel Mac/Windows 未在本轮原生验收。按用户选择使用临时签名，不作 Developer ID、公证或全平台生产可用声明。

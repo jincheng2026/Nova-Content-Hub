@@ -1,0 +1,1 @@
+第二个预检候选，冻结dd09ac0b34852c2b508b6ea28d4f9366b1daf066。侧栏已修正；随后实际封面作品截图发现 borderless 图片按钮仍继承根 .semi-button 999px 圆角。此候选不作为最终交付。镜像保留为 Nova-Content-Hub-0.3.34-darwin-arm64-preview-preflight-dd09ac0.dmg，下载目录已标记预检请勿分发。随后仅将根按钮圆角归回12px，真实 light/solid 操作按钮继续用胶囊；原图不被裁为椭圆。

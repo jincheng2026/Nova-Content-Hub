@@ -1,0 +1,9 @@
+Executable=/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0334-dd09ac0/mac-arm64/自媒体工作台.app/Contents/MacOS/自媒体工作台
+Identifier=com.novaisland.nova-content-hub
+Format=app bundle with Mach-O thin (arm64)
+CodeDirectory v=20400 size=440 flags=0x2(adhoc) hashes=3+7 location=embedded
+Signature=adhoc
+Info.plist entries=32
+TeamIdentifier=not set
+Sealed Resources version=2 rules=13 files=1059
+Internal requirements count=0 size=12
