@@ -1,0 +1,17 @@
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (6055.118792ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (2635.130542ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1449.428166ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1373.226ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (2437.4075ms)
+✔ bundled codex exact context restores selected photo, materials and requirements after retry/host change (6864.032708ms)
+✔ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (4402.210416ms)
+✔ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (4335.467ms)
+✔ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (4272.785042ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 35529.012708

@@ -39,7 +39,7 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {backu
         await clickText('dialog[aria-label="确认导入我的模板"] .file-dropzone button','重新选择样张');
         await wait(`${idle}&&document.querySelector('dialog[aria-label="确认导入我的模板"] .file-dropzone-notice').textContent.includes('已取消')`);
         assert.equal(await run(`document.querySelector('dialog[aria-label="确认导入我的模板"] textarea').value`),'Keep my description');
-        await clickText('dialog[aria-label="确认导入我的模板"] button','确认新增模板');
+        await clickText('dialog[aria-label="确认导入我的模板"] button','导入并拆解风格');
         await wait(`${idle}&&!document.querySelector('dialog[aria-label="确认导入我的模板"]')`);
         assert.equal((await snapshot()).templates.filter(t=>t.title==='Draft template').length,1);
         console.log('PASS template drop, invalid input + cancelled dialog preserve draft, confirmation persists one group');

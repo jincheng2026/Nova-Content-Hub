@@ -409,6 +409,19 @@ test('execution Skills require actual complete input reads and a visible checkli
         assert.match(text, /读取失败时停止/);
         assert.match(text, /实际生图 prompt 必须/);
         assert.match(text, /不能仅凭跳转首句生图/);
+        assert.match(text, /templatePackagePath/);
+        assert.match(text, /templateDocuments/);
+        assert.match(text, /templateImageSources/);
+        assert.match(text, /直到 EOF/);
+        assert.match(text, /stdout 保存为临时 JSON 文件/);
+        assert.match(text, /不作为图片传给生图工具/);
+        if (kind === 'cover') {
+            assert.match(text, /新创或换标题封面/);
+            assert.match(text, /内置同事模板直接沿用完整 VI/);
+            assert.match(text, /主要原图实际作为构图参考传入/);
+            assert.match(text, /material\.role=reference 的原候选为主要编辑输入/);
+            assert.match(text, /模板 VI 仅约束既有风格/);
+        }
         assert.ok(text.indexOf('主动回显核对清单') < text.indexOf(`RUN ${kind} claim`));
     }
 });

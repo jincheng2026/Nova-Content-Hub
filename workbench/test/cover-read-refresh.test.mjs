@@ -6,7 +6,7 @@ import {stripTypeScriptTypes} from 'node:module';
 import {errorInfo} from '../src/shared/contracts.ts';
 
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
-const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const task = status?.task;')) + `
+const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const currentCollection = library?.collections.find')) + `
     return {nativeAction, readCoverAutomatically, refreshStatus, load, draft, disk, error,
         refresh: () => {changesPending.current = true; automaticRefresh.current();}};
 }`;
@@ -55,7 +55,9 @@ test('automatic cover failures still report the error and refresh status', async
 
 test('foreground operations and external-change refresh still scan the full workspace', async () => {
     const f = fixture();
+    await f.render().refreshStatus();
     await f.render().nativeAction(async () => {});
+    await new Promise(resolve => setImmediate(resolve));
     for (const method of ['status', 'readWorkspace', 'listCoverAssets', 'readWorkspaceLibrary']) assert.ok(f.calls.includes(method));
     f.calls.length = 0;
     f.render().refresh();

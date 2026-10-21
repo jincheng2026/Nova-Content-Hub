@@ -46,11 +46,19 @@ startDesktop({
                 await wait('document.querySelector(".library-manager-dialog[open]")');
             }
             await run('[...document.querySelectorAll(".library-manager-dialog[open] .manager-tabs button")].find(button => button.textContent.trim() === "备份与维护").click()');
-            await wait('document.querySelector(".library-manager-dialog[open] #backup")');
+            await wait('document.querySelector(".library-manager-dialog[open] #current-library")');
         };
         const closeManager = async () => {
             await run('[...document.querySelectorAll(".library-manager-dialog[open] > .dialog-heading button")].find(button => button.textContent.trim() === "关闭").click()');
             await wait('!document.querySelector(".library-manager-dialog[open]")');
+        };
+        const openSavedEditor = async () => {
+            await click('nav-content');
+            await wait(`${idle} && document.querySelector('#contents tr[data-content-id] .content-title-link')`);
+            await run('document.querySelector("#contents tr[data-content-id] .content-title-link").click()');
+            await wait(`${idle} && document.querySelector('.content-detail-tabs')`);
+            await run('[...document.querySelectorAll(".content-detail-tabs button")].find(button => button.textContent === "正文").click()');
+            await wait(`document.getElementById('content-body')?.value === 'Library A saved body' && document.getElementById('dirty-state').textContent === '已保存'`);
         };
         try {
         stage('waiting for initial renderer idle');
@@ -81,34 +89,37 @@ startDesktop({
             await wait(`document.getElementById('content-body')?.value === 'Library A saved body' && document.getElementById('dirty-state').textContent === '已保存'`);
             const initialId = (await bridge('listContents'))[0]!.id;
             const initialRoot = controller.binding.current?.root;
-            if (release.AUTH_MODE === 'disabled') {
-                const call = worker.call.bind(worker);
-                let lost = false;
-                worker.call = async (op, args) => {
-                    const result = await call(op, args);
-                    if (op === 'import' && !lost) {
-                        lost = true;
-                        throw Object.assign(new Error('import response lost'), {code: 'WORKER_EXIT'});
-                    }
-                    return result;
-                };
-            }
-            stage('library A body verified; opening import manager');
+            stage('preparing an interrupted legacy selection with no accepted task');
+            await bridge('chooseBackup');
+            await bridge('chooseDestination');
+            await controller.persist({...controller.binding, started: true});
+            await window.loadURL(window.webContents.getURL());
+            await wait(idle, 45000);
+            await openSavedEditor();
+            const call = worker.call.bind(worker);
+            let lost = false;
+            worker.call = async (op, args) => {
+                const result = await call(op, args);
+                if (op === 'import' && !lost) {
+                    lost = true;
+                    throw Object.assign(new Error('import response lost'), {code: 'WORKER_EXIT'});
+                }
+                return result;
+            };
+            stage('library A body verified; retrying the original unaccepted import through recovery');
             await openManager();
-            assert.deepEqual(await run(`(() => { const style = getComputedStyle(document.getElementById('backup')); return {background: style.backgroundColor, primary: style.getPropertyValue('--semi-color-primary').trim()}; })()`), {background: 'rgb(50, 107, 216)', primary: '#326bd8'});
-            await fs.writeFile(path.join(root, 'workbench.png'), (await window.webContents.capturePage()).toPNG());
-            console.log('React business status loaded; clicking backup/destination/import');
-            await click('backup');
-            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('selection').textContent.includes('source.json')`);
-            await click('destination');
-            await wait(`document.querySelector('[data-busy="false"]') && !document.getElementById('import').disabled`);
-            stage('backup and destination selected; importing B');
-            await click('import');
+            assert.equal((await bridge('status')).task, null);
+            await click('resume-import');
+            await wait("document.getElementById('content-body') === null");
+            await wait(idle, 45000);
+            assert.match(await run<string>('document.getElementById("error").textContent'), /WORKER_EXIT/);
+            assert.equal(controller.binding.current?.root, initialRoot);
+            assert.equal((await bridge('status')).task?.status, 'committed');
+            assert.ok((await bridge('listContents')).some(item => item.id === initialId));
+            await closeManager();
+            await openSavedEditor();
+            await openManager();
             if (release.AUTH_MODE === 'disabled') {
-                await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成')`, 45000);
-                assert.equal(await run("document.getElementById('content-body') === null"), true);
-                assert.equal(controller.binding.current?.root, initialRoot);
-                assert.ok((await bridge('listContents')).some(item => item.id === initialId));
                 stage('lost import acknowledgement kept binding A; resuming B with lost status');
                 const resume = controller.resumeImport.bind(controller);
                 const status = controller.status.bind(controller);
@@ -125,17 +136,25 @@ startDesktop({
                     }
                     return status();
                 };
-                await click('resume');
+                await click('resume-import');
+                await wait("document.getElementById('content-body') === null");
                 await wait(`document.querySelector('[data-busy="false"][data-loaded="false"]')`, 45000);
                 assert.equal(await run("document.getElementById('content-body') === null"), true);
                 assert.equal(await run("document.getElementById('retry-workspace') !== null"), true);
                 assert.equal(await run("document.querySelectorAll('.content-library-page #new-content, #content-title, #content-body, #save-content').length"), 0);
                 controller.resumeImport = resume;
                 controller.status = status;
-                await click('refresh');
+                await closeManager();
+                await click('retry-workspace');
+            } else {
+                stage('lost import acknowledgement kept binding A; resuming B through recovery');
+                await click('resume-import');
+                await wait("document.getElementById('content-body') === null");
+                await wait(idle, 45000);
+                await closeManager();
             }
-
-            await wait(`document.querySelector('[data-busy="false"]') && document.getElementById('status').textContent.includes('导入已完成') && !document.getElementById('list').disabled`, 45000);
+            await wait(`${idle} && document.getElementById('content-body') === null`, 45000);
+            await fs.writeFile(path.join(root, 'workbench.png'), (await window.webContents.capturePage()).toPNG());
             assert.equal(await run('document.getElementById("error").textContent'), '');
             assert.equal((await bridge('status')).task?.status, 'committed');
             assert.equal(await run("document.getElementById('content-body') === null"), true);
@@ -167,13 +186,13 @@ startDesktop({
             const contents: Content[] = await bridge('listContents');
             assert.equal(contents.find(item => item.id === identity.contentId)?.body, `edited after import ${malicious}`);
         }
-        stage('refreshing imported content through manager');
+        stage('refreshing imported content through storage manager');
         await openManager();
-        await click('refresh');
-        await wait(`${idle} && !document.getElementById('list').disabled`);
-        await click('list');
-        await wait(idle);
+        await click('query-import');
+        await wait(idle, 45000);
         await closeManager();
+        await click('refresh-workspace');
+        await wait(idle, 45000);
         await click('nav-content');
         await wait(`${idle} && document.querySelectorAll('#contents tr[data-content-id]').length > 0 && document.getElementById('contents').textContent.includes(${JSON.stringify(malicious)})`);
         stage('imported content table rendered; checking text-only data');

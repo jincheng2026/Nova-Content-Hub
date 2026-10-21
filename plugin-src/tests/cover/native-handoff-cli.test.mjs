@@ -215,6 +215,10 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
         assert.equal(context.ok, true, context.message);
         assert.deepEqual(context.result.request, request);
         assert.equal(context.result.body, '# Private request\r\n');
+        assert.equal(createHash('sha256').update(fs.readFileSync(context.result.templatePackagePath)).digest('hex'), request.template.packageHash);
+        assert.ok(Array.isArray(context.result.templateDocuments));
+        assert.ok(Array.isArray(context.result.templateImageSources));
+        assert.deepEqual(new Set(context.result.templateImageSources.map(item => item.assetHash)), new Set(request.styleAssetHashes));
         assert.equal(context.result.inputs.filter(item => item.role === 'own-photo').length, sizePolicy === 'exact' ? 1 : 0);
         assert.equal(context.result.inputs.filter(item => item.role === 'material').length, 2);
         assert.ok(!context.result.inputs.some(item => item.assetHash === content.materials[2].assetHash));

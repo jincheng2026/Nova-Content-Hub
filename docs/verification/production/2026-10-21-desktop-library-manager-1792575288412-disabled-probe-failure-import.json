@@ -1,0 +1,258 @@
+{
+  "at": "2026-10-21T09:37:59.292Z",
+  "mode": "disabled",
+  "phase": "import",
+  "failure": {
+    "message": "Renderer business state did not settle: document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]') && document.getElementById('content-body') === null / ",
+    "stack": "Error: Renderer business state did not settle: document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]') && document.getElementById('content-body') === null / "
+  },
+  "timeline": [
+    {
+      "at": "2026-10-21T09:36:29.879Z",
+      "stage": "waiting for initial renderer idle"
+    },
+    {
+      "at": "2026-10-21T09:36:29.931Z",
+      "stage": "initial renderer idle; checking sandbox and exact bridge"
+    },
+    {
+      "at": "2026-10-21T09:36:29.934Z",
+      "stage": "opening library A from welcome"
+    },
+    {
+      "at": "2026-10-21T09:37:00.637Z",
+      "stage": "library A summary loaded; navigating to content"
+    },
+    {
+      "at": "2026-10-21T09:37:00.683Z",
+      "stage": "library A content row rendered; opening saved body"
+    },
+    {
+      "at": "2026-10-21T09:37:06.037Z",
+      "stage": "library A body verified; exercising retained legacy import bridge"
+    },
+    {
+      "at": "2026-10-21T09:37:56.286Z",
+      "stage": "failure; capturing bounded diagnostics before exit"
+    }
+  ],
+  "consoleMessages": [],
+  "binding": {
+    "version": 1,
+    "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-FrMbhn/data-disabled/source.json",
+    "sourceHash": "6f8b40c8691a219fec01ad505616f0eb9c17aed9c74c6cbeee0f192a7c986b74",
+    "destination": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-FrMbhn/data-disabled/library",
+    "started": true,
+    "importId": "20f9b298-509b-4e00-86e3-ecfae72f847a",
+    "libraryId": "119885c0-676b-4f20-bfd1-5cc55b1aed26",
+    "current": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-FrMbhn/data-disabled/library",
+      "libraryId": "119885c0-676b-4f20-bfd1-5cc55b1aed26",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "75933900"
+      }
+    },
+    "pending": null,
+    "workspacePending": null,
+    "templatePending": null,
+    "maintenancePending": null,
+    "creation": null,
+    "needsReselect": false,
+    "seedPending": true
+  },
+  "controllerBusy": true,
+  "renderer": {
+    "url": "nova-content://app/index.html",
+    "main": {
+      "app": "ready",
+      "loaded": "true",
+      "busy": "true"
+    },
+    "error": "",
+    "library": "library",
+    "heading": "内容",
+    "dialogs": [
+      {
+        "open": true,
+        "label": "library-manager-title",
+        "text": "内容库管理library关闭资料与默认值备份与维护当前内容库library新建内容库打开内容库在文件管理器中查看上次导入记录原备份：source.json · 原目标：library。原文件与当前内容库保留。上次导入已完成，可明确打开原导入结果。打开原导入结果重新查询原导入原任务有 7 项待确认，缺失资料记录继续保留。检查当前内容库检查内容、图片和保存记录是否完整，保留全部原文件。检查期间请稍候；如有异常，可导出诊断或从备份恢复。检查当前内容库导出脱敏诊断备份与恢复把本机内容库完整备份到另一个位置。恢复时自动建立新文件夹，原内容库和原备份都会保留。备份当前内容库检查一份备份从备份恢复到新文件夹升级旧版内容库备份时选择存放位置，工作台会自动建立备份文件夹。检查或恢复时，选择之前生成的整个备份文件夹；恢复还需选择新副本的存放位置。旧版内容库升级说明旧库升级支持第4版：先完整备份，再恢复到独立的新文件夹，只升级这个副本。原库正文、图片和业务记录保留；备份期间会取得原库协调锁。第1至3版需先用兼容工具升到第4版。"
+      }
+    ],
+    "nav": [
+      {
+        "id": "nav-overview",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-templates",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-content",
+        "current": "page",
+        "disabled": true
+      },
+      {
+        "id": "nav-calendar",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-prompts",
+        "current": null,
+        "disabled": true
+      }
+    ],
+    "rowCount": 0,
+    "contentPage": false,
+    "contentDetail": false,
+    "buttons": [
+      {
+        "id": "refresh-workspace",
+        "disabled": true
+      }
+    ],
+    "pageText": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n正在处理本机资料，请稍候…\n刷新\n内容库管理\n\nlibrary\n\n关闭\n资料与默认值\n备份与维护\n当前内容库\n\nlibrary\n\n新建内容库\n打开内容库\n在文件管理器中查看\n上次导入记录\n\n原备份：source.json · 原目标：library。原文件与当前内容库保留。\n\n上次导入已完成，可明确打开原导入结果。\n\n打开原导入结果\n重新查询原导入\n\n原任务有 7 项待确认，缺失资料记录继续保留。\n\n检查当前内容库\n\n检查内容、图片和保存记录是否完整，保留全部原文件。检查期间请稍候；如有异常，可导出诊断或从备份恢复。\n\n检查当前内容库\n导出脱敏诊断\n备份与恢复\n\n把本机内容库完整备份到另一个位置。恢复时自动建立新文件夹，原内容库和原备份都会保留。\n\n备份当前内容库\n检查一份备份\n从备份恢复到新文件夹\n升级旧版内容库\n\n备份时选择存放位置，工作台会自动建立备份文件夹。检查或恢复时，选择之前生成的整个备份文件夹；恢复还需选择新副本的存放位置。\n\n旧版内容库升级说明\n正在打开你的内容库…\n\n正在读取本机内容、模板与发布安排，请稍候。"
+  },
+  "backend": {
+    "status": {
+      "assistant": "codex",
+      "photoPending": false,
+      "coverActionPending": false,
+      "coverPending": false,
+      "seedPending": true,
+      "workspacePending": null,
+      "templatePending": null,
+      "maintenance": {
+        "pending": null,
+        "receipt": null,
+        "health": null
+      },
+      "busy": true,
+      "sourceName": "source.json",
+      "destinationName": "library",
+      "inspection": {
+        "counts": {
+          "contents": 2,
+          "collections": 1,
+          "templates": 1,
+          "photos": 1,
+          "prompts": 1,
+          "plans": 4,
+          "publications": 2,
+          "archivedTasks": 1,
+          "trash": 6
+        },
+        "warnings": [
+          {
+            "code": "UNRESOLVED_ASSETS",
+            "message": "部分图片或附件只有引用。导入时会核对内置资源，缺失文件会保留记录并明确提示，不自动读取备份里的本机路径。"
+          },
+          {
+            "code": "UNKNOWN_PUBLISHED_TEXT",
+            "message": "旧备份没有冻结发布时的文案；历史文案会标记未知。"
+          },
+          {
+            "code": "MACHINE_STATE_NOT_TRUSTED",
+            "message": "助手安装、信任和演示授权不作为正式状态导入。"
+          }
+        ]
+      },
+      "started": true,
+      "currentName": "library",
+      "needsReselect": false,
+      "pending": null,
+      "creating": false,
+      "creationMissing": false,
+      "task": {
+        "status": "committed",
+        "progress": {
+          "steps": 62,
+          "resources": 22,
+          "counts": {
+            "contents": {
+              "active": 2,
+              "trash": 1
+            },
+            "collections": {
+              "active": 1,
+              "trash": 0
+            },
+            "photos": {
+              "active": 1,
+              "trash": 1
+            },
+            "prompts": {
+              "active": 1,
+              "trash": 1
+            },
+            "templates": 1,
+            "plans": 6,
+            "publications": 3,
+            "materials": {
+              "active": 4,
+              "trash": 4
+            },
+            "candidates": {
+              "available": 4,
+              "unavailable": 0
+            },
+            "resources": {
+              "available": 16,
+              "unavailable": 6,
+              "unsupported": 0
+            }
+          }
+        },
+        "issues": [
+          {
+            "code": "OWNERSHIP_CONFIRMATION_REQUIRED",
+            "key": "photo/mine",
+            "defaultRequested": true
+          },
+          {
+            "key": "template/template/shot/1",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/first/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/second/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-content/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-photo",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          }
+        ],
+        "targetChanged": false,
+        "descriptorChanged": false
+      }
+    },
+    "contents": {
+      "error": "Error: 当前操作仍在进行，请稍候或查询状态。"
+    },
+    "capture": {
+      "error": "Error: Failure diagnostic timed out after 3 seconds"
+    }
+  }
+}

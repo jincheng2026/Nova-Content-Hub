@@ -1,0 +1,362 @@
+[
+  {
+    "width": 1440,
+    "columns": 3,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 240,
+        "right": 696,
+        "top": 453,
+        "bottom": 813,
+        "width": 456,
+        "height": 360
+      },
+      {
+        "title": "要处理",
+        "left": 712,
+        "right": 997,
+        "top": 453,
+        "bottom": 813,
+        "width": 285,
+        "height": 360
+      },
+      {
+        "title": "内容项目",
+        "left": 1013,
+        "right": 1412,
+        "top": 453,
+        "bottom": 813,
+        "width": 399,
+        "height": 360
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "columns": 3,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 240,
+        "right": 632,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 392,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 648,
+        "right": 893,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 245,
+        "height": 407.1875
+      },
+      {
+        "title": "内容项目",
+        "left": 909,
+        "right": 1252,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 343,
+        "height": 407.1875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 1440,
+    "columns": 3,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 240,
+        "right": 696,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 456,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 712,
+        "right": 997,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 285,
+        "height": 407.1875
+      },
+      {
+        "title": "内容项目",
+        "left": 1013,
+        "right": 1412,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 399,
+        "height": 407.1875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 1800,
+    "columns": 3,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 326,
+        "right": 857.1953125,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 531.1953125,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 873.1953125,
+        "right": 1205.1953125,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 332,
+        "height": 407.1875
+      },
+      {
+        "title": "内容项目",
+        "left": 1221.1953125,
+        "right": 1686,
+        "top": 453,
+        "bottom": 860.1875,
+        "width": 464.8046875,
+        "height": 407.1875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 1100,
+    "columns": 2,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 208,
+        "right": 719.1953125,
+        "top": 495.7734375,
+        "bottom": 902.9609375,
+        "width": 511.1953125,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 735.1953125,
+        "right": 1075.9921875,
+        "top": 495.7734375,
+        "bottom": 902.9609375,
+        "width": 340.796875,
+        "height": 407.1875
+      },
+      {
+        "title": "内容项目",
+        "left": 208,
+        "right": 1075.9921875,
+        "top": 918.9609375,
+        "bottom": 1311.7578125,
+        "width": 867.9921875,
+        "height": 392.796875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 900,
+    "columns": 2,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 176,
+        "right": 588.796875,
+        "top": 188.96875,
+        "bottom": 596.15625,
+        "width": 412.796875,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 604.796875,
+        "right": 880,
+        "top": 188.96875,
+        "bottom": 596.15625,
+        "width": 275.203125,
+        "height": 407.1875
+      },
+      {
+        "title": "内容项目",
+        "left": 176,
+        "right": 880,
+        "top": 612.15625,
+        "bottom": 1003.953125,
+        "width": 704,
+        "height": 391.796875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 760,
+    "columns": 1,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 176,
+        "right": 740,
+        "top": 143.171875,
+        "bottom": 550.359375,
+        "width": 564,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 176,
+        "right": 740,
+        "top": 566.359375,
+        "bottom": 926.15625,
+        "width": 564,
+        "height": 359.796875
+      },
+      {
+        "title": "内容项目",
+        "left": 176,
+        "right": 740,
+        "top": 942.15625,
+        "bottom": 1334.953125,
+        "width": 564,
+        "height": 392.796875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 440,
+    "columns": 1,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 131,
+        "right": 427,
+        "top": 394.0625,
+        "bottom": 801.25,
+        "width": 296,
+        "height": 407.1875
+      },
+      {
+        "title": "要处理",
+        "left": 131,
+        "right": 427,
+        "top": 817.25,
+        "bottom": 1178.046875,
+        "width": 296,
+        "height": 360.796875
+      },
+      {
+        "title": "内容项目",
+        "left": 131,
+        "right": 427,
+        "top": 1194.046875,
+        "bottom": 1586.84375,
+        "width": 296,
+        "height": 392.796875
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 1280,
+    "columns": 3,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 240,
+        "right": 632,
+        "top": 358.6953125,
+        "bottom": 718.6953125,
+        "width": 392,
+        "height": 360
+      },
+      {
+        "title": "要处理",
+        "left": 648,
+        "right": 893,
+        "top": 358.6953125,
+        "bottom": 718.6953125,
+        "width": 245,
+        "height": 360
+      },
+      {
+        "title": "内容项目",
+        "left": 909,
+        "right": 1252,
+        "top": 358.6953125,
+        "bottom": 718.6953125,
+        "width": 343,
+        "height": 360
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  },
+  {
+    "width": 760,
+    "columns": 1,
+    "panels": [
+      {
+        "title": "今天",
+        "left": 176,
+        "right": 740,
+        "top": 420.09375,
+        "bottom": 632.984375,
+        "width": 564,
+        "height": 212.890625
+      },
+      {
+        "title": "要处理",
+        "left": 176,
+        "right": 740,
+        "top": 648.984375,
+        "bottom": 776.78125,
+        "width": 564,
+        "height": 127.796875
+      },
+      {
+        "title": "内容项目",
+        "left": 176,
+        "right": 740,
+        "top": 792.78125,
+        "bottom": 1000.375,
+        "width": 564,
+        "height": 207.59375
+      }
+    ],
+    "scrolling": 0,
+    "clippedButtons": 0,
+    "overflow": false
+  }
+]

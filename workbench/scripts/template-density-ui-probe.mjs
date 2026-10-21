@@ -16,7 +16,7 @@ import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/
 import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/lib/es/_base/base.css'))};
 import ${JSON.stringify(path.join(workbench, 'src/renderer/style.css'))};
 import {TemplatesPage} from ${JSON.stringify(path.join(workbench, 'src/renderer/workspace-pages.tsx'))};
-const templates = Array.from({length: 16}, (_, i) => ({id: 'template-' + i, title: '参考模板 ' + i, name: '参考模板 ' + i, description: '整组参考样张，保留完整横竖画面和所有文字。这是一段刻意很长的说明，用来核对密集卡片仍然保持两行摘要，完整内容可在整组预览里阅读。', builtin: i > 1, version: 1, currentVersion: 1, versions: [{version: 1, packageHash: 'hash-' + i}], editToken: 'token-' + i, deletedAt: null, rules: [], accepted: false, aiTested: false, samples: Array.from({length: i === 0 ? 6 : 2},(_,n)=>({assetHash:'sample-'+i+'-'+n,url:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+((n+i)%2?640:300)+'" height="400"><rect width="100%" height="100%" fill="'+((n+i)%2?'#6d557e':'#476d8b')+'"/><rect x="8" y="8" width="'+((n+i)%2?624:284)+'" height="384" stroke="white" fill="none" stroke-width="5"/><text x="50%" y="50%" fill="white" font-size="24" text-anchor="middle">完整原图 '+(n+1)+'</text></svg>')}))}));
+const templates = Array.from({length: 16}, (_, i) => ({id: 'template-' + i, title: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, name: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, description: '整组参考样张，保留完整横竖画面和所有文字。这是一段刻意很长的说明，用来核对密集卡片仍然保持两行摘要，完整内容可在整组预览里阅读。', builtin: i > 1, version: 1, currentVersion: 1, versions: [{version: 1, packageHash: 'hash-' + i}], editToken: 'token-' + i, deletedAt: null, rules: [], accepted: false, aiTested: false, samples: Array.from({length: i === 15 ? 0 : i === 0 ? 6 : 2},(_,n)=>({assetHash:'sample-'+i+'-'+n,url:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+((n+i)%2?640:300)+'" height="400"><rect width="100%" height="100%" fill="'+((n+i)%2?'#6d557e':'#476d8b')+'"/><rect x="8" y="8" width="'+((n+i)%2?624:284)+'" height="384" stroke="white" fill="none" stroke-width="5"/><text x="50%" y="50%" fill="white" font-size="24" text-anchor="middle">完整原图 '+(n+1)+'</text></svg>')}))}));
 let pendingCopy = null;
 window.reads = 0; window.writes = [];
 window.contentHub = {
@@ -62,57 +62,47 @@ async function probeMain(probeRoot){
  const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
  const click=text=>run(`[...document.querySelectorAll('button')].find(button=>button.textContent.trim()===${JSON.stringify(text)}).click()`);
  try{
-  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===16');
+  await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===10');
+  await run('document.querySelector(".creator-template-library .semi-select").click()');await wait('document.querySelector(".semi-select-option")');await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent==="全部模板").click()');
+  await run('document.querySelector(".pagination-bar .semi-page-switch .semi-select").click()');await wait('document.querySelector(".semi-select-option")');await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent.includes("20")).click()');await wait('document.querySelectorAll(".creator-style-card").length===16');
   assert.equal(await run('!!document.querySelector(".creator-template-sidebar")'),false,'configuration no longer consumes the gallery width');
   await run('[...document.querySelectorAll(".creator-template-grid img")].forEach(image=>image.loading="eager")');await wait('[...document.querySelectorAll(".creator-template-grid img")].every(image=>image.complete&&image.naturalWidth>0)');
-  for(const [width,columns] of [[1280,4],[1600,4],[1080,3],[900,3],[700,2]]){
+  for(const [width,columns] of [[1280,5],[1600,5],[1080,4],[900,3],[700,2]]){
    win.setSize(width,1000);await paint();
    assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-grid .semi-list-items")).gridTemplateColumns.split(" ").length'),columns,width+' gallery columns');
    assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true,width+' has no page overflow');
+   assert.equal(await run(`(()=>{const cards=[...document.querySelectorAll('.creator-style-card')];const box=el=>({width:el.offsetWidth,height:el.offsetHeight});const first=box(cards[0]);return cards.every(card=>Math.abs(box(card).height-first.height)<1&&Math.abs(box(card).width-first.width)<1&&Math.abs(box(card.querySelector('.creator-template-art')).height-box(cards[0].querySelector('.creator-template-art')).height)<1);})()`),true,width+' long and short titles preserve identical card and art geometry');
    assert.equal(await run(`(()=>{const grid=document.querySelector('.creator-template-grid').getBoundingClientRect(),library=document.querySelector('.creator-template-library').getBoundingClientRect();return Math.abs(grid.width-library.width)<1;})()`),true,'gallery fills available workspace width');
    assert.equal(await run(`(()=>{const first=document.querySelector('.creator-style-card'),frame=first.querySelector('.creator-reference-stack').getBoundingClientRect();return Math.abs(frame.width/frame.height-.75)<.01&&first.getBoundingClientRect().height<550;})()`),true,'layered cards retain reachable actions');
    if(width>=1280)await fs.writeFile(path.join(probeRoot,'templates-'+width+'.png'),(await win.webContents.capturePage()).toPNG());
   }
   assert.equal(await run(`([...document.querySelectorAll('.creator-template-original')].every(el=>getComputedStyle(el).objectFit==='contain'))`),true,'all original image previews stay uncropped');
   assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-stack-sheet").length'),3,'front and two fanned references');
-  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-template-thumbnails img").length'),4,'bounded thumbnail strip');
+  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-template-thumbnails img").length'),3,'bounded thumbnail strip');
   await win.setSize(1280,1000);await paint();
   await run('document.querySelector(".creator-template-thumbnails button:nth-child(2)").click()');
   assert.equal(await run('document.querySelector(".creator-template-original").alt'),'参考模板 0参考样张 2','thumbnail selects the front reference');
-  assert.equal(await run('document.documentElement.hasAttribute("data-reduced-motion")'),false);
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.originalMatchMedia=window.matchMedia; window.mockMotion={matches:false,addEventListener(type,listener){window.motionChanged=listener;},removeEventListener(){window.motionChanged=null;}}; window.matchMedia=()=>window.mockMotion; window.originalSetInterval=window.setInterval; window.intervalStarts=0; window.setInterval=(fn,ms)=>{window.intervalStarts++; return window.originalSetInterval(fn,ms===1400?40:ms);}; window.frontChanges=0; window.frontObserver=new MutationObserver(()=>window.frontChanges++); window.frontObserver.observe(document.querySelector(".creator-stack-sheets"),{childList:true}); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
-  await run('new Promise(resolve=>setTimeout(resolve,350))');
-  assert.equal(await run('window.intervalStarts'),1,'hover/focus starts one bounded timer');
-  assert.equal(await run('window.frontChanges'),4,'automatic preview ends after four changes');
-  await run('new Promise(resolve=>setTimeout(resolve,150))');
-  assert.equal(await run('window.frontChanges'),4,'automatic preview does not loop while idle');
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
-  await wait('!!window.motionChanged');
-  await run('window.mockMotion.matches=true; window.motionChanged()');
-  await run('new Promise(resolve=>setTimeout(resolve,30))');
-  const stopped=await run('window.frontChanges');
-  await run('new Promise(resolve=>setTimeout(resolve,180))');
-  assert.equal(await run('window.frontChanges'),stopped,'enabling system reduced-motion stops active cycling');
-  const starts=await run('window.intervalStarts');
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerover",{bubbles:true,pointerType:"mouse"}))');
-  await run('new Promise(resolve=>setTimeout(resolve,100))');
-  assert.equal(await run('window.intervalStarts'),starts,'system reduced-motion disables automatic cycling');
-  await run('document.querySelector(".creator-reference-stack").dispatchEvent(new PointerEvent("pointerout",{bubbles:true,pointerType:"mouse"})); document.activeElement.blur(); window.setInterval=window.originalSetInterval; window.matchMedia=window.originalMatchMedia; window.frontObserver.disconnect()');
   assert.equal(await run(`(()=>{const wrapper=document.querySelector('.creator-templates .list-toolbar-search'),input=wrapper.querySelector('input'),a=wrapper.getBoundingClientRect(),b=input.getBoundingClientRect(),style=getComputedStyle(input);return Math.abs((a.top+a.height/2)-(b.top+b.height/2))<1&&style.textAlign==='left'&&parseFloat(style.paddingTop)===0&&parseFloat(style.paddingBottom)===0;})()`),true,'search text is vertically centered and left aligned');
+  const geometryBefore=await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`);
+  const hover=await run(`(()=>{const r=document.querySelector('.creator-template-art').getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`);
+  win.webContents.sendInputEvent({type:'mouseMove',...hover});await paint();
+  assert.deepEqual(await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`),geometryBefore,'hover preserves flow geometry while the design-standard visual lift remains allowed');
   await run('document.querySelector(".creator-template-use").focus()');await wait('getComputedStyle(document.querySelector(".creator-template-use")).opacity==="1"');
   assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'),'1','keyboard focus reveals the use action');
+  assert.deepEqual(await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`),geometryBefore,'keyboard focus preserves card geometry');
+  assert.equal(await run('document.querySelectorAll(".creator-no-reference").length'),1,'empty reference occupies the same fixed art frame');
   await run('document.querySelector(".creator-template-use").click()');assert.equal(await run('window.usedTemplate'),'template-0','primary use action remains connected');
   await click('照片与默认设置');assert.equal(await run('window.configurationOpened'),1,'uses existing configuration callback');
   await run('document.querySelector(".creator-reference-stack").click()');await wait('document.querySelector(".image-preview[open]")');
   assert.equal(await run('document.querySelectorAll(".image-preview .preview-grid img").length'),6,'group preview includes all six original references');
   assert.equal(await run('document.querySelector(".creator-preview-description").textContent'),await run('window.probe.library.templates[0].description'),'full description remains accessible');
   await click('关闭预览');await wait('!document.querySelector(".image-preview")');
-  await run('document.querySelector(".creator-template-details").open=true;document.querySelector(".creator-style-actions button:last-child").click()');await wait('document.querySelector(".template-workflow h3")?.textContent==="参考模板 0 · 学习与还原"');
+  await run('document.getElementById("template-workflow-trigger-template-0").click()');await wait('document.querySelector(".template-workflow h3")?.textContent==="参考模板 0 · AI拆解风格"');
   assert.equal(await run('document.activeElement.id'),'template-learning-workflow','learning and restore still focus their own workflow');
   assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'),true,'personal template learning controls retained');
   await run('(()=>{const input=document.querySelector(".creator-templates .list-toolbar-search input");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,"没有匹配的模板");input.dispatchEvent(new Event("input",{bubbles:true}));})()');await wait('document.querySelectorAll(".creator-style-card").length===0');await click('收起');await wait('document.activeElement===document.querySelector(".creator-templates .list-toolbar-search input")');assert.equal(await run('document.activeElement.getAttribute("aria-label")'),'搜索模板','removed trigger returns focus to the real shared search input');
   assert.deepEqual(await run('window.writes'),[],'gallery and configuration entry make no business writes');
-  console.log('PASS actual React/Semi/Electron: responsive 4/3/2 columns, bounded fanned multi-image previews and thumbnails, automatic cycling stops after four changes, live system reduced-motion, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
+  console.log('PASS actual React/Semi/Electron: responsive 5/4/3/2 columns, equal flow geometry for long titles and empty samples, fanned previews and thumbnails, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
   console.log('Screenshots:',path.join(probeRoot,'templates-1280.png'),path.join(probeRoot,'templates-1600.png'));app.exit(0);
  }catch(error){console.error(error);app.exit(1);}
 }

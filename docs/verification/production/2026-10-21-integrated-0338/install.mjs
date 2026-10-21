@@ -1,0 +1,28 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {snapshotPackage} from '../../../../plugin-src/src/lib/package-snapshot.mjs';
+
+const repo=path.resolve(import.meta.dirname,'../../../..'),out=import.meta.dirname;
+const pkg=JSON.parse(await fs.readFile(path.join(out,'package.json'),'utf8'));
+const target='/Applications/自媒体工作台.app';
+const {isMacApplicationRunning,installMacApplication}=await import(path.join(pkg.source,'Contents/Resources/app/workbench/dist/main/mac-installation.mjs'));
+assert.equal(await isMacApplicationRunning(target),false,'Save and quit the existing app before replacement');
+const bindingFile='/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json';
+const binding=JSON.parse(await fs.readFile(bindingFile,'utf8'));
+assert.ok(path.isAbsolute(binding.current.root));
+assert.equal(JSON.parse(await fs.readFile(path.join(binding.current.root,'内容库.json'),'utf8')).libraryId,binding.current.libraryId,'Use only the actual current native binding');
+const digest=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
+const before=await snapshotPackage(binding.current.root),source=await snapshotPackage(pkg.source);
+const baseline=JSON.parse(await fs.readFile('/tmp/nova-release-0338-before.json','utf8'));
+assert.deepEqual(binding.current,baseline.current,'Original native binding must remain selected before installation');
+assert.equal(digest(before),baseline.librarySha256,'Library changed since verified backup; review before replacing app');
+assert.equal(digest(source),pkg.treeSha256);
+const installation=await installMacApplication({source:pkg.source,target,bundleIdentifier:'com.novaisland.nova-content-hub',executable:'自媒体工作台'});
+const installed=await snapshotPackage(target);assert.deepEqual(installed,source);
+const after=await snapshotPackage(binding.current.root);assert.deepEqual(after,before,'User library bytes and entries preserved');
+assert.deepEqual(JSON.parse(await fs.readFile(bindingFile,'utf8')).current,binding.current);
+const receipt={recordedAt:new Date().toISOString(),version:'0.3.38',sourceCommit:pkg.sourceCommit,target,source:pkg.source,treeSha256:digest(installed),installedEqualsArchivedBuild:true,libraryRecoveryDirectory:baseline.backup,library:{entries:Object.keys(before).length,beforeSha256:digest(before),afterSha256:digest(after),bindingSha256:digest(binding.current),unchanged:true},installation,phase:'installed-awaiting-native-launch',scope:'Product transactional Mac installer; complete tree/signature verification with old app recovery retained. Actual native binding used for read-only before/after library fingerprint; no business mutation or generation.'};
+await fs.writeFile(path.join(out,'installation.json'),JSON.stringify(receipt,null,2)+'\n');
+console.log(JSON.stringify({status:'PASS',version:receipt.version,target,libraryUnchanged:true,transaction:installation.transaction}));

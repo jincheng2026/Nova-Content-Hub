@@ -1,0 +1,17 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2064 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-QQkoot/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-QQkoot/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-QQkoot/dist/assets/index-fW7dmR17.css                      371.82 kB │ gzip:  50.68 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-QQkoot/dist/assets/index-DQfixc9I.js                       770.73 kB │ gzip: 222.69 kB
+
+✓ built in 370ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS: simple import; filename prefill; folded extras; saved group retained after launch failure; same-ID continue/cancel; real status; human confirmation/CAS reset; save-only; duplicate names; discard; five source groups; multiple-copy picker; legacy hidden; builtin reuse/new copy before start. Screenshots: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-QQkoot

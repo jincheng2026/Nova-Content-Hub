@@ -6,7 +6,7 @@ import {stripTypeScriptTypes} from 'node:module';
 import {errorInfo} from '../src/shared/contracts.ts';
 
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
-const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const task = status?.task;')) + `
+const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const currentCollection = library?.collections.find')) + `
     return {readCoverAutomatically, refreshWorkspace, clearEditor, load, draft, error};
 }`;
 function fixture() {

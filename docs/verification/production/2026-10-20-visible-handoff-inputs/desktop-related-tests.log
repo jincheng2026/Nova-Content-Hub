@@ -1,0 +1,62 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (1.249ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.519834ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.440542ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.293625ms)
+✔ annotations use the actual contained image and reject letterboxing (0.146334ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.75125ms)
+✔ large histories index exact attempt pairs without losing candidates (13.710333ms)
+✔ multi-line annotations preserve original text and cannot forge points or the overall separator (0.163458ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (6802.86975ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (5860.19125ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (5696.288083ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (7692.036083ms)
+  ✔ failed (6176.335167ms)
+  ✔ superseded (5604.771958ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (19474.102375ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2486.613333ms)
+  ✔ after (3178.278125ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (5665.45725ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1551.478125ms)
+  ✔ true (1661.364583ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (3213.494958ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (3104.236333ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (579.895792ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (467.248125ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2376.074625ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (2961.135416ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (10615.258875ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2565.128958ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (8078.944792ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (2643.656292ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (2247.179916ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (8401.6505ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (8150.002ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (6133.665458ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (10223.372375ms)
+✔ summary fallback preserves strict input integrity checks for execution (4714.347208ms)
+✔ unexpected errors during summary loading still propagate (4698.526792ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (1354.666958ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (8385.010417ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (6297.164917ms)
+✔ folder-open failure keeps exported originals recoverable (3218.877125ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (1.635541ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (4826.029334ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (5269.537167ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (4980.607167ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (3820.109333ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (5021.201333ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (4930.854083ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (4040.985625ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (3603.401ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (569.440667ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 144224.732125

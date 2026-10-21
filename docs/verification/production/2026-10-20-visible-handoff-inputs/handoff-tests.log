@@ -1,0 +1,46 @@
+✔ all browser intents start naturally and preserve complete data without unrelated image instructions (19.432541ms)
+✔ each request kind controls its own intent and retains host skill activation and resume routing (5.503375ms)
+✔ long links switch to full visible copy without truncating source input (11.424334ms)
+✔ display names are bounded data and required auth or unsupported resume remain refused (0.3475ms)
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (6.309916ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (364.860584ms)
+✔ browser image requests preserve visible selected requirements in JSON and long attachment fallback (23.83175ms)
+✔ all browser intents and request kinds expose original input outside the JSON with safe fences (4.347ms)
+✔ browser full-copy action opens the validated Skill link only after copying successfully (9.058125ms)
+✔ long Codex continuation keeps its original session while the full prompt is copied (2.498834ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (1183.787416ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (1433.233625ms)
+✔ codex exact template handoff names the selected template and requests study plus restoration (1830.211125ms)
+✔ codex ratio-minimum template handoff names the selected template and requests study plus restoration (1377.774ms)
+✔ workbuddy exact template handoff names the selected template and requests study plus restoration (1494.161625ms)
+✔ workbuddy ratio-minimum template handoff names the selected template and requests study plus restoration (2235.81625ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, with every annotation visible (2976.348ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, with every annotation visible (2653.391333ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (933.191625ms)
+✔ empty display names and deleted templates keep a natural cover prompt (1157.007125ms)
+✔ URL budget preserves full input at 2048 and switches to complete copy one byte beyond (2128.74325ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (1114.362667ms)
+✔ release and request/host validation stop before creating an envelope (913.134833ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (1545.220458ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (1339.60125ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1940.948417ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (1635.605416ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (897.986333ms)
+✔ codex exact shows every selected requirement and restores exact input bytes and roles across retry and host change (6510.0625ms)
+✔ codex ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (6304.536667ms)
+✔ workbuddy exact shows every selected requirement and restores exact input bytes and roles across retry and host change (7632.123291ms)
+✔ workbuddy ratio-minimum shows every selected requirement and restores exact input bytes and roles across retry and host change (6965.596959ms)
+✔ execution Skills require actual complete input reads and a visible checklist before claim and generation (0.915833ms)
+✔ codex copies long complete requirements without a locator-only fallback (1244.437167ms)
+✔ workbuddy copies long complete requirements without a locator-only fallback (977.742208ms)
+✔ direct native handoff never touches the clipboard or paste confirmation (0.238584ms)
+✔ codex template notes keep all 10000 characters in the visible copy path (1177.03675ms)
+✔ workbuddy template notes keep all 10000 characters in the visible copy path (1039.335083ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 60890.438916

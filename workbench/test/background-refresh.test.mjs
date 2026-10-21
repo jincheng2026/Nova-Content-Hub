@@ -7,7 +7,7 @@ import {errorInfo} from '../src/shared/contracts.ts';
 
 // Run the actual App hooks and actions, stopping before UI rendering and Electron mounting.
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
-const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const task = status?.task;')) + `
+const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const currentCollection = library?.collections.find')) + `
     return {nativeAction, refreshStatus, refreshWorkspace, load, clearEditor, setDraft,
         refresh: () => {changesPending.current = true; automaticRefresh.current();},
         select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,

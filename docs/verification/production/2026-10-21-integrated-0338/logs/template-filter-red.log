@@ -1,0 +1,85 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2064 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B/dist/assets/index-fW7dmR17.css                      371.82 kB │ gzip:  50.68 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B/dist/assets/index-CaZyC-Cx.js                       770.72 kB │ gzip: 222.69 kB
+
+✓ built in 464ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+AssertionError [ERR_ASSERTION]: working copies do not double card count
+
+1 !== 5
+
+    at probeMain (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B/main.mjs:20:390) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 5,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+隔离验证
+
+COVER STYLES
+
+封面模板
+
+把喜欢的版式与气质存成一组参考，为下一张封面找到风格。
+
+5 组内置风格
+3 组我的模板
+0 张照片
+照片与默认设置
+版本与回收站
+＋ 导入我的模板
+拖拽导入参考图
+模板来源
+我的模板
+整组 1 张
+用此风格生成
+系统样张0工作副本
+1 张 · 我的模板
+工作版本
+系统样张0工作副本的工作版本
+系统样张0工作副本 · v1
+查看拆解
+•••
+共 1 项 · 1–1 项
+每页条数：10
+
+一组可保存 1–50 张参考。参考数量与生成候选数量分别设置；原图只从你的内容库读取。
+
+模板已保留。助手尚未成功打开，请在下方继续当前任务；若未建立任务，可重新发起AI拆解。
+
+收起
+AI拆解风格
+系统样张0工作副本 · AI拆解风格
+
+AI分析整组样张，并还原第 1 张供你对照。结果回传后，由你确认规则与效果，再保存为新版本。
+
+刷新拆解结果
+等待助手接单
+
+已建立任务，等待助手领取。可继续打开助手；连接失败时可使用工作台的复制提示词入口。
+
+本次使用全局助手：Codex。助手选择可在左下角设置中调整。
+
+补充要求（可选）
+
+拆解历史
+拆解历史
+源版本 v1 · Codex · 等待助手接单 · attempt-
+
+源版本 v1 · Codex · 等待助手接单
+
+继续打开助手
+取消本次尝试
+Fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-onboarding-Qp6w9B

@@ -1,0 +1,19 @@
+(node:66473) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (3.3135ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (3.750291ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (1.101958ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (0.684625ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (1.401125ms)
+✔ managed notes/publication drafts use App navigation and native close guards (1.557875ms)
+✔ a background workspace read cannot delay a confirmed save or overwrite edits typed afterward (4.137334ms)
+✔ full list records retain the same validated bytes and edit tokens as individual reads, including trash (872.790625ms)
+✔ workspace projections do not reopen each already validated full record (902.4655ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1960.406292

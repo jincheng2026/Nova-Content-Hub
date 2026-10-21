@@ -10,7 +10,7 @@ import {createLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const repository = path.resolve(workbench, '..');
 const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-workbench-probe-')));
-const snapshotPrefix = `2026-10-18-unified-directory-import-${Date.now()}`;
+const snapshotPrefix = `2026-10-21-desktop-library-manager-${Date.now()}`;
 
 async function launch(bundle, entry, phase, data, expected = 0) {
     await new Promise((resolve, reject) => {
@@ -66,7 +66,7 @@ try {
         for (const phase of ['import', 'reopen']) await launch(bundle, entry, phase, data);
         await fs.copyFile(path.join(data, 'workbench.png'), path.join(repository, 'docs/verification/production', `${snapshotPrefix}-${mode}.png`));
     }
-    console.log('PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi + utility-process/sharp import; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.');
+    console.log('PASS: both standalone auth packages copied outside the repository; real Electron sandbox/preload/IPC + React/Semi desktop storage manager without web migration UI + retained legacy utility-process/sharp import bridge; second-process reopen preserves identities and later edits after source removal. System dialogs and human UI acceptance were not exercised.');
 } finally {
     try {
         for (const mode of ['required', 'disabled']) {

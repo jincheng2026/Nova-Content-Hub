@@ -49,10 +49,15 @@ async function probeMain(probeRoot,baseline){
  for(const pageSize of [20,50,100]){await render({total:pageSize*3,page:99,pageSize});assert.match((await geometry())[0].count,new RegExp((pageSize*2+1)+'–'+pageSize*3));assert.equal(await run('document.querySelector("[aria-current=page]").textContent'),'3','legal upper clamp');await render({page:-2});assert.equal(await run('document.querySelector("[aria-current=page]").textContent'),'1','legal lower clamp');}
  const waitFor=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+3000;const check=()=>{if(${condition})return resolve();if(Date.now()>end)return reject(Error('Keyboard precondition '+${JSON.stringify(condition)}+'; '+JSON.stringify(window.keyboardTrace)));setTimeout(check,15)};check()})`);
  const press=value=>{win.webContents.sendInputEvent({type:'keyDown',keyCode:value});win.webContents.sendInputEvent({type:'keyUp',keyCode:value});};
+ const popupContexts=new Set();
  const chooseSize=async(size,label='验收分页',keyboard=false)=>{
    const trigger='nav[aria-label="'+label+'"] .semi-page-switch .semi-select';
    if(keyboard){
-     win.show();win.focus();win.webContents.focus();await waitFor('document.hasFocus()');assert.equal(win.isFocused(),true,'native window focused before keyboard');
+     win.show();if(process.platform==='darwin')app.focus({steal:true});win.focus();
+     const focusDeadline=Date.now()+5000;
+     while(!win.isFocused()&&Date.now()<focusDeadline)await new Promise(resolve=>setTimeout(resolve,25));
+     assert.equal(win.isFocused(),true,'native window focused before keyboard');
+     win.webContents.focus();await waitFor('document.hasFocus()');
      await run(`(()=>{const el=document.querySelector(${JSON.stringify(trigger)});el.scrollIntoView({block:'center'});el.focus();})()`);
      await waitFor(`document.activeElement===document.querySelector(${JSON.stringify(trigger)})`);
      press('Enter');await waitFor(`document.querySelector(${JSON.stringify(trigger)}).getAttribute('aria-expanded')==='true'`);
@@ -64,6 +69,18 @@ async function probeMain(probeRoot,baseline){
      await run(`document.querySelector(${JSON.stringify(trigger)}).scrollIntoView({block:'center'})`);await settle();
      const b=await run(`(()=>{const r=document.querySelector(${JSON.stringify(trigger)}).getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`);
      win.webContents.sendInputEvent({type:'mouseDown',button:'left',clickCount:1,...b});win.webContents.sendInputEvent({type:'mouseUp',button:'left',clickCount:1,...b});await settle();
+     await shot('page-size-popup');
+     const popup=await run(`(()=>{const el=document.querySelector('.semi-page-select-dropdown'),style=getComputedStyle(el);return {radius:style.borderRadius,overflow:style.overflow,tag:el.tagName};})()`);
+     assert.ok(parseFloat(popup.radius)>0&&['hidden','clip'].includes(popup.overflow),'page-size dropdown clips rectangular option backgrounds at its rounded border: '+JSON.stringify(popup));
+     const context=label==='合集成员分页'?'dialog':'page';
+     if(!popupContexts.has(context)){
+       popupContexts.add(context);
+       for(const [index,edge] of [[0,'first'],[2,'last']]){
+         const point=await run(`(()=>{const el=document.querySelectorAll('.semi-page-select-dropdown .semi-select-option')[${index}],r=el.getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`);
+         win.webContents.sendInputEvent({type:'mouseMove',...point});await settle();await shot('size-popup-'+context+'-'+edge+'-hover');
+         assert.equal(await run(`(()=>{const el=document.querySelector('.semi-page-select-dropdown'),r=el.getBoundingClientRect();return !el.contains(document.elementFromPoint(r.left+.25,r.top+.25))&&!el.contains(document.elementFromPoint(r.right-.25,r.bottom-.25));})()`),true,context+' option hover cannot hit or paint outside rounded corners');
+       }
+     }
      const pos=await run(`(()=>{const o=[...document.querySelectorAll('.semi-select-option')].find(e=>e.textContent.includes('${size}')&&e.getBoundingClientRect().height);if(!o)throw Error('No size option ${size}');const r=o.getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`);
      win.webContents.sendInputEvent({type:'mouseDown',button:'left',clickCount:1,...pos});win.webContents.sendInputEvent({type:'mouseUp',button:'left',clickCount:1,...pos});
    }
@@ -78,7 +95,7 @@ async function probeMain(probeRoot,baseline){
  await render({page:1});await run('document.querySelector(".semi-page-next").click()');await settle();assert.equal(await run('window.currentPage'),2,'next');await run('document.querySelector(".semi-page-prev").click()');await settle();assert.equal(await run('window.currentPage'),1,'previous');
  await render({mode:'controls',disabled:true,page:2});const before=await run('window.events.length');await key('[aria-label="Page 3"]','Enter');await run('document.querySelector(".semi-page-next").click()');await settle();assert.equal(await run('window.events.length'),before,'disabled never changes');assert.equal(await run('document.querySelector(".pagination-bar .semi-page-quickjump input").disabled'),true);assert.equal(await run('[...document.querySelectorAll(".pagination-bar li")].every(e=>e.tabIndex===-1)'),true,'disabled pages outside tab order');await run('document.querySelector(".semi-page-switch .semi-select").click()');await settle();assert.equal(await run('document.querySelectorAll(".semi-select-option").length'),0,'disabled size cannot open');assert.equal(await run('window.currentPageSize'),20);await shot('disabled');
  await render({mode:'members',disabled:false});await chooseSize(100,'合集成员分页');assert.equal(await run('document.querySelectorAll("[data-member-id]").length'),100,'modal size choice can receive real pointer events');await chooseSize(20,'合集成员分页');await run('document.querySelector("dialog").style.width="380px"');await settle();await run('document.querySelector(".members-editor-list").scrollTop=100000');await settle();await shot('members-dialog-380');const memberBox=(await geometry())[0];assert.ok(memberBox.fits&&memberBox.nav.width<=332,'actual member dialog pagination bounded');await key('[aria-label="Page 2"]','Enter');assert.match((await geometry())[0].count,/21–40/,'actual members next page');await run('document.querySelector(".members-editor-list").scrollTop=100000');await settle();await shot('members-dialog-page2');
- assert.equal(await run('window.calls.length'),0,'no bridge calls');assert.equal(await run('window.dataUnchanged()'),true,'no data mutations');await fs.writeFile(path.join(probeRoot,'result.json'),JSON.stringify({status:'PASS',widths:[1440,1100,960,560],containers:[1000,560,380,280],geometry:await geometry(),keyboardTrace:await run('window.keyboardTrace'),checks:['zero/single/multi/large totals','20/50/100 size changes including last page and real pointer/keyboard selection','upper/lower clamp','Enter/Space/quickjump','previous/next','disabled','no form submission','no bridge calls or data mutations']},null,2));console.log('PASS React/Semi/Electron pagination. Evidence:',probeRoot);app.exit(0);
+ assert.equal(await run('window.calls.length'),0,'no bridge calls');assert.equal(await run('window.dataUnchanged()'),true,'no data mutations');await fs.writeFile(path.join(probeRoot,'result.json'),JSON.stringify({status:'PASS',widths:[1440,1100,960,560],containers:[1000,560,380,280],geometry:await geometry(),keyboardTrace:await run('window.keyboardTrace'),checks:['rounded popup clips first/last hovered options in page and dialog','zero/single/multi/large totals','20/50/100 size changes including last page and real pointer/keyboard selection','upper/lower clamp','Enter/Space/quickjump','previous/next','disabled','no form submission','no bridge calls or data mutations']},null,2));console.log('PASS React/Semi/Electron pagination. Evidence:',probeRoot);app.exit(0);
  }catch(error){console.error(error);console.log('Evidence:',probeRoot);app.exit(1);}
 }
 await fs.writeFile(path.join(root,'probe-main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)},${baseline});`);

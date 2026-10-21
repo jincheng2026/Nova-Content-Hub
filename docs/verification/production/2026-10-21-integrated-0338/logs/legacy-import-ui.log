@@ -1,0 +1,26 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2097 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-import-recovery-ui-yyLjjA/dist/index.html                                         0.12 kB │ gzip:   0.13 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-import-recovery-ui-yyLjjA/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-import-recovery-ui-yyLjjA/dist/assets/app-BBYL9aWk.css                          514.25 kB │ gzip:  67.60 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-import-recovery-ui-yyLjjA/dist/assets/index-Bys_M3z3.js                           3.59 kB │ gzip:   1.73 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-import-recovery-ui-yyLjjA/dist/assets/app-W47zva-I.js                         1,353.21 kB │ gzip: 373.95 kB
+
+✓ built in 602ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Renderer: %cElectron Security Warning (Insecure Content-Security-Policy) font-weight: bold; This renderer process has either no Content Security
+  Policy set or a policy with "unsafe-eval" enabled. This exposes users of
+  this app to unnecessary security risks.
+
+For more information and help, consult
+https://electronjs.org/docs/tutorial/security.
+This warning will not show up
+once the app is packaged.
+PASS synthetic actual App: visible legacy recovery, editor cleared on adoption, changed-target guard, no-task revalidates and retries only the original source/destination.

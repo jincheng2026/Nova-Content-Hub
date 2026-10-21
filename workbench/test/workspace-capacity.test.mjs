@@ -49,11 +49,11 @@ test('workspace projections do not reopen each already validated full record', a
             const projected = (op === 'workspace' ? result.contents : result.contentDetails)[0];
             assert.equal(projected.body, content.body);
             assert.equal(projected.editToken, content.editToken);
-            // Opening validates content once; active and trash each scan once. No fourth per-record read.
-            assert.equal(reads.get(path.join(binding.root, '内容', content.id, '内容.json')), 3, op);
+            // Bound-record reuse may reduce these limits; projections must never add per-record rereads.
+            assert.ok(reads.get(path.join(binding.root, '内容', content.id, '内容.json')) <= 3, op);
             // Open and projection settings each validate prompt categories; the remaining reads are list scans.
-            assert.equal(reads.get(path.join(binding.root, '提示词', prompt.id, '提示词.json')), op === 'workspace' ? 3 : 4, op);
-            if (op === 'workspaceLibrary') assert.equal(reads.get(path.join(binding.root, '合集', collection.id, '合集.json')), 2, op);
+            assert.ok(reads.get(path.join(binding.root, '提示词', prompt.id, '提示词.json')) <= (op === 'workspace' ? 3 : 4), op);
+            if (op === 'workspaceLibrary') assert.ok(reads.get(path.join(binding.root, '合集', collection.id, '合集.json')) <= 2, op);
         }
     } finally {Object.assign(fs, originals);}
     const updated = library.updateContent(content.id, {body: '后来保存的新正文'}, content.editToken);

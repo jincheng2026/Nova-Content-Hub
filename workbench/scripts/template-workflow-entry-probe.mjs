@@ -60,7 +60,7 @@ createRoot(document.getElementById('root')).render(<Probe/>);
         if (reducedMotion) app.commandLine.appendSwitch('force-prefers-reduced-motion', 'reduce');
         await app.whenReady();
         const window = new BrowserWindow({show: false, width: 1280, height: 800, webPreferences: {contextIsolation: true, nodeIntegration: false}});
-        const run = source => window.webContents.executeJavaScript(source);
+        const run = source => window.webContents.executeJavaScript(source).catch(error => {console.error("Failed browser script:", source); throw error;});
         const wait = condition => run(`new Promise((resolve,reject)=>{const end=Date.now()+5000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}));setTimeout(check,10)};check()})`);
         async function click(selector) {
             const point = await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});const details=el.closest('details');if(details)details.open=true;el.scrollIntoView({block:'center',behavior:'instant'});const r=el.getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2),disabled:el.disabled}})()`);
@@ -68,7 +68,7 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             window.webContents.sendInputEvent({type: 'mouseDown', x: point.x, y: point.y, button: 'left', clickCount: 1});
             window.webContents.sendInputEvent({type: 'mouseUp', x: point.x, y: point.y, button: 'left', clickCount: 1});
         }
-        const trigger = index => `.creator-style-card:nth-child(${index + 1}) .creator-style-actions button:last-child`;
+        const trigger = index => `#template-workflow-trigger-template-${index}`;
         async function landed(title) {
             await wait(`document.querySelector('.template-workflow h3')?.textContent === ${JSON.stringify(title + ' · 学习与还原')} && !document.querySelector('.template-workflow [role=status]')?.textContent.includes('正在读取')`);
             assert.equal(await run(`document.activeElement?.id`), 'template-learning-workflow', 'opening must focus the named workflow region');
@@ -84,7 +84,7 @@ createRoot(document.getElementById('root')).render(<Probe/>);
         }
         try {
             await window.loadFile(path.join(probeRoot, 'dist/index.html'));
-            await wait('document.querySelectorAll(".creator-style-card").length === 12');
+            await wait('document.querySelectorAll(".creator-style-card").length === 16');
             if (reducedMotion) assert.equal(await run('matchMedia("(prefers-reduced-motion: reduce)").matches'), true);
             await click(trigger(0));
             await landed('参考模板 0');
@@ -110,9 +110,9 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             assert.equal(await run(`document.querySelector('.template-study-notes textarea').value`), '保留我的补充要求', 'collapse and reopen preserves notes');
             assert.equal(await run(`document.querySelector('.template-workflow .semi-select-selection').textContent.includes('attempt0')`), true, 'collapse and reopen preserves history selection');
             const reads = await run('window.reads');
-            await run(`document.querySelector('.creator-template-search input').focus();scrollTo({top:0,behavior:'instant'});window.probe.refresh()`);
+            await run(`document.querySelector('.creator-templates .list-toolbar-search input').focus();scrollTo({top:0,behavior:'instant'});window.probe.refresh()`);
             await wait(`window.reads > ${reads} && !document.querySelector('.template-workflow [role=status]')?.textContent.includes('正在读取')`);
-            assert.equal(await run(`document.activeElement?.closest('.creator-template-search') !== null`), true, 'background refresh must retain focus');
+            assert.equal(await run(`document.activeElement?.closest('.list-toolbar-search') !== null`), true, 'background refresh must retain focus');
             assert.equal(await run('scrollY'), 0, 'background refresh must retain scroll');
             assert.equal(await run(`document.querySelector('.template-study-notes textarea').value`), '保留我的补充要求');
             await click(trigger(1));
@@ -125,16 +125,16 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             await click('.template-workflow-message button');
             await landed('参考模板 2 · 我的副本');
             assert.equal(await run('window.writes[0].sourceTemplateId'), 'template-2');
-            assert.equal(await run('document.querySelectorAll(".creator-style-card").length'), 12);
+            assert.equal(await run('document.querySelectorAll(".creator-style-card").length'), 17);
             assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'), true, 'derived template opens the personal learning controls');
             await collapse();
             assert.equal(await run('document.activeElement.id'), 'template-workflow-trigger-template-2');
             await click(trigger(0));
             await landed('参考模板 0');
-            await run(`(()=>{const el=document.querySelector('.creator-template-search input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,'不存在的模板');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
+            await run(`(()=>{const el=document.querySelector('.creator-templates .list-toolbar-search input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(el,'不存在的模板');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
             await wait('document.querySelectorAll(".creator-style-card").length === 0');
             await collapse();
-            assert.equal(await run("!!document.activeElement.closest('.creator-template-search')"), true, 'a filtered original card falls back to search');
+            assert.equal(await run("!!document.activeElement.closest('.list-toolbar-search')"), true, 'a filtered original card falls back to search');
             console.log('PASS actual React/Semi/Electron: first open visible and focused; repeat/collapse/reopen keep notes and history; hidden controls cannot receive focus; another template and builtin copy target correctly; refresh preserves focus/scroll/notes; collapse restores card or search focus; reduced motion=' + reducedMotion);
             app.exit(0);
         } catch (error) {console.error(error); app.exit(1);}

@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-10-21T10:04:36.784Z",
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/release-0338-2c81771e-b6c2-46d7-aba9-f65b61c56da5",
+  "libraryEntries": 2071,
+  "librarySha256": "397eedd04a6081aec0cf23888c1aa9478470d8740abf62ba2611237c9acdb018",
+  "bindingSha256": "3a20e71a28ced5bbd7087576627e9b83e5ba824119201dd12fd83b387487e0b9",
+  "libraryBackupVerified": true,
+  "version": "0.3.38",
+  "existingAppVersion": "0.3.37",
+  "appQuitNormally": true,
+  "scope": "Read-only snapshot of the actual native binding; independent private copy verified before replacement. Library body and binding contents are not included in this record."
+}

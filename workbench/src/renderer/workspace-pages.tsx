@@ -344,7 +344,7 @@ export function TemplatesPage(props: WorkspaceManagementProps & { assets: CoverR
   }
   async function startStudy(templateId: string, confirmed?: WorkspaceLibrarySnapshot) {
     setWorkflowNotice('');
-    setSource('mine');
+    if (confirmed) setSource('mine');
     showWorkflow(templateId);
     try {
       if (confirmed) await props.refresh(confirmed);

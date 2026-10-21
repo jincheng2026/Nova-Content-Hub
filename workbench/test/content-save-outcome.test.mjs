@@ -7,7 +7,9 @@ import {errorInfo} from '../src/shared/contracts.ts';
 
 // Execute App's real save/leave state without JSX or a native content library.
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
-const compiled = stripTypeScriptTypes(source.slice(source.indexOf('function App() {'), source.indexOf('    const task = status?.task;')) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, draft, base, disk, error, dirty};}');
+const appStart = source.indexOf('function App() {'), layoutStart = source.indexOf('    const currentCollection =');
+assert.ok(appStart >= 0 && layoutStart > appStart, 'App logic boundary must exist before compiling the save fixture');
+const compiled = stripTypeScriptTypes(source.slice(appStart, layoutStart) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, draft, base, disk, error, dirty};}');
 function fixture() {
   const slots = [], calls = []; let cursor = 0, failure = '', pause, committed, managed = false;
   const context = vm.createContext({

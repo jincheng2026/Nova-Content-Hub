@@ -44,7 +44,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
     app.setPath('userData',path.join(probeRoot,'machine'));
     await app.whenReady();
     const window=new BrowserWindow({show:false,width:1280,height:900,webPreferences:{contextIsolation:true,nodeIntegration:false}});
-    const run=source=>window.webContents.executeJavaScript(source);
+    const run=source=>window.webContents.executeJavaScript(source).catch(error=>{throw new Error('Renderer probe failed: '+source, {cause:error});});
     const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+4000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}));setTimeout(check,15)};check()})`);
     const click=(selector,text)=>run(`(()=>{const button=[...document.querySelectorAll(${JSON.stringify(selector)})].find(el=>el.textContent===${JSON.stringify(text)});if(!button||button.disabled)throw new Error('Missing enabled button: '+${JSON.stringify(text)});button.click()})()`);
     const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
@@ -139,6 +139,26 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('document.querySelectorAll(".cover-materials input:checked").length'),0,'materials require explicit selection');
       await run('document.querySelector(".cover-advanced").open=true;document.querySelectorAll(".cover-materials input[type=checkbox]")[0].click();document.querySelectorAll(".cover-materials input[type=checkbox]")[1].click()');
       await wait('document.querySelectorAll(".cover-materials input:checked").length===2');
+      await enter('#cover-prompt','补'.repeat(8000));
+      await click('.cover-create-dialog button','暂时收起');
+      await wait('!document.querySelector(".cover-create-dialog")');
+      await click('.cover-result-card:first-child button','批注');
+      await wait('document.getElementById("annotation-overall")');
+      await enter('#annotation-overall','改'.repeat(3000));
+      const beforeOversized = await run('window.mutations.length');
+      assert.equal(await run(`[...document.querySelectorAll('.management-dialog button')].find(button=>button.textContent==='按批注修改').disabled`),true,'8000 supplemental characters plus 3000 annotation characters cannot start refinement');
+      assert.equal(await run(`[...document.querySelectorAll('.management-dialog [role=alert]')].some(el=>el.textContent.includes('10000'))`),true,'combined budget has a visible explanation');
+      await run(`[...document.querySelectorAll('.management-dialog button')].find(button=>button.textContent==='按批注修改').click()`);
+      assert.equal(await run('window.mutations.length'),beforeOversized,'oversized refinement cannot save notes or attach references');
+      assert.equal(await run('window.generated??null'),null);
+      assert.equal(await run('document.getElementById("annotation-overall").value.length'),3000,'the original annotation is not truncated');
+      await click('.management-dialog button','关闭');
+      await click('.management-dialog button','放弃填写并关闭');
+      await wait('!document.querySelector(".management-dialog")');
+      await click('.cover-toolbar button','再生成一批');
+      await wait('document.querySelector(".cover-create-dialog[open]")');
+      assert.equal(await run('document.getElementById("cover-prompt").value.length'),8000,'the original supplemental prompt is not truncated');
+      assert.equal(await run('document.getElementById("cover-prompt").maxLength'),10000,'normal generation uses the same backend budget');
       await enter('#cover-prompt','本篇额外要求：标题保留“旅行”二字；只用已选资料。');
       await click('.cover-create-dialog button','暂时收起');
       await wait('!document.querySelector(".cover-create-dialog")');
@@ -215,7 +235,9 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('document.querySelector(".cover-refinement-confirm")');
       assert.equal(await run('window.generated??null'),null,'opening confirmation never starts generation');
       assert.equal(await run('document.querySelector(".cover-refinement-confirm").textContent.includes("当前助手：WorkBuddy")'),true);
-      assert.equal(await run('document.querySelector(".cover-refinement-confirm pre").textContent'),savedAnnotation,'confirmation shows the exact saved note, including both locations and overall requirements');
+      const confirmedPrompt = await run('document.querySelector(".cover-refinement-confirm pre").textContent');
+      assert.ok(confirmedPrompt.includes(savedAnnotation),'confirmation shows the exact saved note, including both locations and overall requirements');
+      assert.ok(confirmedPrompt.includes('本篇额外要求：标题保留“旅行”二字；只用已选资料。'),'confirmation also shows the supplemental prompt');
       assert.equal((savedAnnotation.match(/^\d+\. \(x=/gm)||[]).length,2);
       assert.ok(savedAnnotation.includes('颜色淡一点\n  保留原有文字') && savedAnnotation.includes('【整体修改要求】\n保留人物和配色'));
       await run('document.querySelector(".cover-refinement-confirm").scrollIntoView({block:"center"})'); await paint();
@@ -234,7 +256,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.generated.input.prompt.includes("【本次补充要求】") && window.generated.input.prompt.includes("本篇额外要求")'),true);
       assert.equal(await run('window.generated.input.prompt.includes("根据当前标题与正文创作封面")'),false);
       assert.equal(await run('window.generated.input.prompt.includes("x=50%, y=") && window.generated.input.prompt.includes("标题放大")'),true);
-      assert.ok((await run('window.generated.input.prompt')).includes(savedAnnotation),'generation carries the exact visible confirmation note');
+      assert.equal(await run('window.generated.input.prompt'),confirmedPrompt,'generation carries exactly the complete visible confirmation prompt');
       assert.equal(await run('window.generated.editToken===window.mutations.at(-1).editToken'),false,'generation uses token returned after reference attachment');
       assert.equal(await run('window.mutations.filter(item=>item.op==="attachMaterial").length'),1,'retry reuses the attached reference');
       assert.equal(await run('window.mutations.findLast(item=>item.op==="attachMaterial").assetHash'),'new-landscape');
@@ -253,7 +275,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('document.getElementById("generate-cover").disabled');
       await enter('#cover-custom-ratio','2:3');
       await wait('!document.getElementById("generate-cover").disabled');
-      assert.equal(await run('document.querySelector(".cover-template-browser").open'),false,'chosen template keeps composer concise');
+      assert.equal(await run('document.querySelector(".cover-template-selection").textContent.startsWith("已选模板：")'),true,'chosen template is identified in the current compact selector');
       assert.equal(await run('document.querySelector(".cover-advanced").open'),false);
       assert.equal(await run('(()=>{const button=document.getElementById("generate-cover");return getComputedStyle(button.querySelector("span")).color===getComputedStyle(button).color;})()'),true,'footer helper text styling preserves action contrast');
       assert.equal(await run('document.querySelectorAll(".cover-sample-grid input:checked").length'),2);
@@ -267,7 +289,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
         assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true,'page avoids horizontal overflow');
         assert.equal(await run('(()=>{const el=document.querySelector(".cover-create-dialog"),r=el.getBoundingClientRect();return r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight;})()'),true,'composer fits viewport');
         assert.equal(await run('document.querySelector(".cover-create-settings").scrollWidth<=document.querySelector(".cover-create-settings").clientWidth'),true,'settings avoid horizontal overflow');
-        assert.equal(await run('(()=>{const frame=document.querySelector(".cover-style-preview"),image=frame.querySelector(".cover-artwork-original"),a=frame.getBoundingClientRect(),b=image.getBoundingClientRect();return b.width<=a.width&&b.height<=a.height;})()'),true,'full-image element remains inside preview frame');
+        assert.equal(await run('(()=>{const frame=document.querySelector(".cover-template-choice.is-selected .creator-stack-sheet.sheet-0"),image=frame.querySelector("img"),a=frame.getBoundingClientRect(),b=image.getBoundingClientRect();return b.width<=a.width&&b.height<=a.height&&getComputedStyle(image).objectFit==="contain";})()'),true,'full-image element remains inside selected template frame');
       }
       await fs.writeFile(path.join(screenshots,'composer-narrow.png'),(await window.webContents.capturePage()).toPNG());
       await run('document.getElementById("cover-photo").click()');
@@ -320,7 +342,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('document.getElementById("cover-prompt").value'),'根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。');
       assert.equal(await run('document.getElementById("cover-count").value'),'2');
       assert.equal(await run('document.querySelectorAll(".cover-sample-grid input:checked").length'),2);
-      console.log('PASS isolated real React/Semi/Electron: five-column continuous 3:4 gallery and compact selected row, exact-id folder export/cancellation, all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
+      console.log('PASS isolated real React/Semi/Electron: five-column continuous 3:4 gallery and compact selected row, exact-id folder export/cancellation, all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, 8000+3000 combined prompt budget blocks all writes without truncation, exact full-prompt confirmation, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
       console.log('Screenshots: '+screenshots);
       app.exit(0);
     }catch(error){console.error(error);app.exit(1);}

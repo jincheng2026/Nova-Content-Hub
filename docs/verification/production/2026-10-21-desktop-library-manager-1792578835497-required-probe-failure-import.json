@@ -1,0 +1,266 @@
+{
+  "at": "2026-10-21T10:34:32.301Z",
+  "mode": "required",
+  "phase": "import",
+  "failure": {
+    "message": "Renderer business state did not settle: (() => { const button = document.getElementById(\"refresh-workspace\"); const modal = document.querySelector('dialog[open]'); if (!button || button.disabled || !button.getClientRects().length || getComputedStyle(button).visibility !== 'visible' || modal && !modal.contains(button)) return false; button.click(); return true; })() / undefined / 当前操作仍在进行，请稍候或查询状态。（BUSY）",
+    "stack": "Error: Renderer business state did not settle: (() => { const button = document.getElementById(\"refresh-workspace\"); const modal = document.querySelector('dialog[open]'); if (!button || button.disabled || !button.getClientRects().length || getComputedStyle(button).visibility !== 'visible' || modal && !modal.contains(button)) return false; button.click(); return true; })() / undefined / 当前操作仍在进行，请稍候或查询状态。（BUSY）"
+  },
+  "timeline": [
+    {
+      "at": "2026-10-21T10:33:58.632Z",
+      "stage": "waiting for initial renderer idle"
+    },
+    {
+      "at": "2026-10-21T10:33:58.695Z",
+      "stage": "initial renderer idle; checking sandbox and exact bridge"
+    },
+    {
+      "at": "2026-10-21T10:33:58.698Z",
+      "stage": "opening library A from welcome"
+    },
+    {
+      "at": "2026-10-21T10:33:58.982Z",
+      "stage": "library A summary loaded; navigating to content"
+    },
+    {
+      "at": "2026-10-21T10:33:59.244Z",
+      "stage": "library A content row rendered; opening saved body"
+    },
+    {
+      "at": "2026-10-21T10:33:59.362Z",
+      "stage": "library A body verified; exercising retained legacy import bridge"
+    },
+    {
+      "at": "2026-10-21T10:34:32.207Z",
+      "stage": "failure; capturing bounded diagnostics before exit"
+    }
+  ],
+  "consoleMessages": [],
+  "binding": {
+    "version": 1,
+    "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-0KwKSE/data-required/source.json",
+    "sourceHash": "6f8b40c8691a219fec01ad505616f0eb9c17aed9c74c6cbeee0f192a7c986b74",
+    "destination": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-0KwKSE/data-required/library",
+    "started": true,
+    "importId": "2e6736cd-171c-479d-ae51-6c8b5a02081a",
+    "libraryId": "e951e26a-463c-4d24-b57b-61cda22279b0",
+    "current": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-0KwKSE/data-required/initial/library",
+      "libraryId": "69c8d79f-a386-4603-a20d-10de62498d07",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "76182982"
+      }
+    },
+    "pending": null,
+    "workspacePending": null,
+    "templatePending": null,
+    "maintenancePending": null,
+    "creation": null,
+    "needsReselect": false
+  },
+  "controllerBusy": false,
+  "renderer": {
+    "url": "nova-content://app/index.html",
+    "main": {
+      "app": "ready",
+      "loaded": "true",
+      "busy": "false"
+    },
+    "error": "当前操作仍在进行，请稍候或查询状态。（BUSY）",
+    "library": "library",
+    "heading": "内容详情",
+    "dialogs": [],
+    "nav": [
+      {
+        "id": "nav-overview",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-templates",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-content",
+        "current": "page",
+        "disabled": true
+      },
+      {
+        "id": "nav-calendar",
+        "current": null,
+        "disabled": true
+      },
+      {
+        "id": "nav-prompts",
+        "current": null,
+        "disabled": true
+      }
+    ],
+    "rowCount": 0,
+    "contentPage": false,
+    "contentDetail": true,
+    "buttons": [
+      {
+        "id": "refresh-workspace",
+        "disabled": true
+      }
+    ],
+    "pageText": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容详情\n本机保存\n刷新\n\n当前操作仍在进行，请稍候或查询状态。（BUSY）\n\n← 返回内容列表\n待做封面\n已保存\nLibrary A saved editor\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n封面\n正文\n资料\n发布计划\n标题与正文\n\n已保存\n\n标题\n正文\n保存内容\n将当前草稿另存内容\n用提示词继续创作"
+  },
+  "backend": {
+    "status": {
+      "assistant": "codex",
+      "photoPending": false,
+      "coverActionPending": false,
+      "coverPending": false,
+      "seedPending": false,
+      "workspacePending": null,
+      "templatePending": null,
+      "maintenance": {
+        "pending": null,
+        "receipt": null,
+        "health": null
+      },
+      "busy": false,
+      "sourceName": "source.json",
+      "destinationName": "library",
+      "inspection": {
+        "counts": {
+          "contents": 2,
+          "collections": 1,
+          "templates": 1,
+          "photos": 1,
+          "prompts": 1,
+          "plans": 4,
+          "publications": 2,
+          "archivedTasks": 1,
+          "trash": 6
+        },
+        "warnings": [
+          {
+            "code": "UNRESOLVED_ASSETS",
+            "message": "部分图片或附件只有引用。导入时会核对内置资源，缺失文件会保留记录并明确提示，不自动读取备份里的本机路径。"
+          },
+          {
+            "code": "UNKNOWN_PUBLISHED_TEXT",
+            "message": "旧备份没有冻结发布时的文案；历史文案会标记未知。"
+          },
+          {
+            "code": "MACHINE_STATE_NOT_TRUSTED",
+            "message": "助手安装、信任和演示授权不作为正式状态导入。"
+          }
+        ]
+      },
+      "started": true,
+      "currentName": "library",
+      "needsReselect": false,
+      "pending": null,
+      "creating": false,
+      "creationMissing": false,
+      "task": {
+        "status": "committed",
+        "progress": {
+          "steps": 62,
+          "resources": 22,
+          "counts": {
+            "contents": {
+              "active": 2,
+              "trash": 1
+            },
+            "collections": {
+              "active": 1,
+              "trash": 0
+            },
+            "photos": {
+              "active": 1,
+              "trash": 1
+            },
+            "prompts": {
+              "active": 1,
+              "trash": 1
+            },
+            "templates": 1,
+            "plans": 6,
+            "publications": 3,
+            "materials": {
+              "active": 4,
+              "trash": 4
+            },
+            "candidates": {
+              "available": 4,
+              "unavailable": 0
+            },
+            "resources": {
+              "available": 16,
+              "unavailable": 6,
+              "unsupported": 0
+            }
+          }
+        },
+        "issues": [
+          {
+            "code": "OWNERSHIP_CONFIRMATION_REQUIRED",
+            "key": "photo/mine",
+            "defaultRequested": true
+          },
+          {
+            "key": "template/template/shot/1",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/first/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "project/second/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-content/file/missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-photo",
+            "code": "REFERENCE_UNAVAILABLE",
+            "status": "unavailable"
+          },
+          {
+            "key": "trash/recycled-missing",
+            "code": "MISSING_BYTES",
+            "status": "unavailable"
+          }
+        ],
+        "targetChanged": false,
+        "descriptorChanged": false
+      }
+    },
+    "contents": [
+      {
+        "id": "1bf93f36-d16d-4f45-8ff6-d67b5e158242",
+        "title": "Library A saved editor",
+        "body": "Library A saved body",
+        "editToken": "8d3f0675393fa306f0f191d3e59031e32e8d87f8a9bc74eeba6fe326ac045acf",
+        "deletedAt": null
+      }
+    ],
+    "rendererContents": {
+      "ok": true,
+      "value": [
+        {
+          "id": "1bf93f36-d16d-4f45-8ff6-d67b5e158242",
+          "title": "Library A saved editor",
+          "body": "Library A saved body",
+          "editToken": "8d3f0675393fa306f0f191d3e59031e32e8d87f8a9bc74eeba6fe326ac045acf",
+          "deletedAt": null
+        }
+      ]
+    }
+  }
+}

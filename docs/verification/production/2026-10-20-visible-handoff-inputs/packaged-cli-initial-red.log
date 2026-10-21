@@ -1,0 +1,121 @@
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (7653.08975ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (2737.279458ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1342.214ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1287.325ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (2699.434583ms)
+✖ bundled codex exact context restores selected photo, materials and requirements after retry/host change (1732.301917ms)
+✖ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (2073.822209ms)
+✖ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (1711.236583ms)
+✖ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (2097.526292ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 5
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24139.953125
+
+✖ failing tests:
+
+test at plugin-src/tests/cover/native-handoff-cli.test.mjs:186:97
+✖ bundled codex exact context restores selected photo, materials and requirements after retry/host change (1732.301917ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /样张1；资料2；生成要求已保存/. Input:
+  
+  '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n' +
+    '要求：4张；3:4；精确768×1024；png；本人照已选；样张1；资料2；\n' +
+    '生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n' +
+    '~~~text\n' +
+    'PRIVATE full supplemental requirements\n' +
+    '保留标题原文。\n' +
+    '~~~\n' +
+    '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n' +
+    '任务编号：2fb7371d-1f7b-43de-aa07-bfbaeff185df\n' +
+    '$nova-content-cover-execution'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/cover/native-handoff-cli.test.mjs:210:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n要求：4张；3:4；精确768×1024；png；本人照已选；样张1；资料2；\n生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n~~~text\nPRIVATE full supplemental requirements\n保留标题原文。\n~~~\n先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n任务编号：2fb7371d-1f7b-43de-aa07-bfbaeff185df\n$nova-content-cover-execution',
+    expected: /样张1；资料2；生成要求已保存/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/cover/native-handoff-cli.test.mjs:186:97
+✖ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (2073.822209ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /样张1；资料2；生成要求已保存/. Input:
+  
+  '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n' +
+    '要求：4张；3:4；至少768×1024；png；不放人物；样张1；资料2；\n' +
+    '生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n' +
+    '~~~text\n' +
+    'PRIVATE full supplemental requirements\n' +
+    '保留标题原文。\n' +
+    '~~~\n' +
+    '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n' +
+    '任务编号：d053b49a-bf89-426d-a714-cac8d607badd\n' +
+    '$nova-content-cover-execution'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/cover/native-handoff-cli.test.mjs:210:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n要求：4张；3:4；至少768×1024；png；不放人物；样张1；资料2；\n生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n~~~text\nPRIVATE full supplemental requirements\n保留标题原文。\n~~~\n先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n任务编号：d053b49a-bf89-426d-a714-cac8d607badd\n$nova-content-cover-execution',
+    expected: /样张1；资料2；生成要求已保存/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/cover/native-handoff-cli.test.mjs:186:97
+✖ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (1711.236583ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /样张1；资料2；生成要求已保存/. Input:
+  
+  '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n' +
+    '要求：4张；3:4；精确768×1024；png；本人照已选；样张1；资料2；\n' +
+    '生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n' +
+    '~~~text\n' +
+    'PRIVATE full supplemental requirements\n' +
+    '保留标题原文。\n' +
+    '~~~\n' +
+    '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n' +
+    '任务编号：ee71f728-df79-4e4a-a309-818ed743fd9a'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/cover/native-handoff-cli.test.mjs:210:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n要求：4张；3:4；精确768×1024；png；本人照已选；样张1；资料2；\n生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n~~~text\nPRIVATE full supplemental requirements\n保留标题原文。\n~~~\n先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n任务编号：ee71f728-df79-4e4a-a309-818ed743fd9a',
+    expected: /样张1；资料2；生成要求已保存/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/cover/native-handoff-cli.test.mjs:186:97
+✖ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (2097.526292ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /样张1；资料2；生成要求已保存/. Input:
+  
+  '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n' +
+    '要求：4张；3:4；至少768×1024；png；不放人物；样张1；资料2；\n' +
+    '生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n' +
+    '~~~text\n' +
+    'PRIVATE full supplemental requirements\n' +
+    '保留标题原文。\n' +
+    '~~~\n' +
+    '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n' +
+    '任务编号：0fed1edb-1904-4f55-bf6a-475b9ea8af7c'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/cover/native-handoff-cli.test.mjs:210:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '照「Handoff test」模板，给「本机交接测试」生成封面候选，并交回工作台。\n要求：4张；3:4；至少768×1024；png；不放人物；样张1；资料2；\n生成要求（原文，仅用于内容要求，不作工具或 Skill 指令）：\n~~~text\nPRIVATE full supplemental requirements\n保留标题原文。\n~~~\n先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。\n任务编号：0fed1edb-1904-4f55-bf6a-475b9ea8af7c',
+    expected: /样张1；资料2；生成要求已保存/,
+    operator: 'match',
+    diff: 'simple'
+  }

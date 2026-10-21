@@ -1,0 +1,26 @@
+[
+  {
+    "name": "codex-short",
+    "urlLength": 1951,
+    "requiresPaste": false,
+    "promptLength": 310
+  },
+  {
+    "name": "codex-long",
+    "urlLength": 144,
+    "requiresPaste": true,
+    "promptLength": 3911
+  },
+  {
+    "name": "workbuddy-short",
+    "urlLength": 1970,
+    "requiresPaste": false,
+    "promptLength": 280
+  },
+  {
+    "name": "workbuddy-long",
+    "urlLength": 197,
+    "requiresPaste": true,
+    "promptLength": 3881
+  }
+]
