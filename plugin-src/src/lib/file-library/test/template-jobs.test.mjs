@@ -116,3 +116,39 @@ test('evidence read rejects a resealed result below the fixed minimum', async t 
     fs.writeFileSync(metaFile, json(meta));
     assert.throws(() => f.lib.readTemplateContext(f.template.id, request.requestId, c.attempt.attemptId), {code: 'CORRUPT'});
 });
+
+test('Markdown projection failure preserves durable commit and acceptance; replay rebuilds missing reports', async t => {
+    const f = await fixture(t), {request} = await f.create(undefined), c = start(f, request);
+    const nativeRename = fs.renameSync;
+    fs.renameSync = function(source, destination) {
+        if (String(destination).endsWith('.md')) throw Object.assign(Error('report disk failure'), {code: 'EIO'});
+        return nativeRename.call(this, source, destination);
+    };
+    let committed, accepted;
+    const acceptInput = () => ({requestId: request.requestId, attemptId: c.attempt.attemptId, requestHash: request.requestHash, resultHash: committed.result.resultHash, sourceVersion: 1, sourcePackageHash: request.template.packageHash});
+    const acceptanceMutation = {mutationId: randomUUID()}; let originalToken;
+    try {
+        committed = await c.commit(1086, 1448);
+        assert.ok(committed.reportWarnings.length > 0);
+        assert.equal(f.lib.readTemplate(f.template.id).templateJobs[0].attempts[0].status, 'committed');
+        originalToken = f.lib.readTemplate(f.template.id).editToken;
+        accepted = f.lib.acceptTemplateResult(f.template.id, acceptInput(), originalToken, acceptanceMutation);
+        assert.ok(accepted.reportWarnings.length > 0); assert.equal(accepted.template.currentVersion, 2);
+    } finally {fs.renameSync = nativeRename;}
+    const replay = await f.lib.commitTemplateAttempt(f.template.id, request.requestId, c.attempt.attemptId, c.receipt);
+    assert.deepEqual(replay.reportWarnings, []);
+    const home = path.join(f.root, '模板', f.template.id), report = path.join(path.dirname(committed.result.restore.path), '学习结果.md');
+    assert.match(fs.readFileSync(report, 'utf8'), /人工验收：已验收/);
+    assert.match(fs.readFileSync(report, 'utf8'), new RegExp(committed.result.resultHash));
+    fs.unlinkSync(path.join(home, '模板目录.md'));
+    const replayAccept = f.lib.acceptTemplateResult(f.template.id, acceptInput(), originalToken, acceptanceMutation);
+    assert.deepEqual(replayAccept.reportWarnings, []);
+    assert.match(fs.readFileSync(path.join(home, '模板目录.md'), 'utf8'), /版本 2/);
+    assert.equal(openLibrary(f.root).readTemplate(f.template.id).templateJobs[0].acceptance.resultHash, committed.result.resultHash);
+    fs.writeFileSync(path.join(home, `.nova-report-${randomUUID()}`), 'interrupted report projection');
+    assert.equal(openLibrary(f.root).listTemplates().length, 1, 'interrupted report scratch never becomes a root object ID');
+    const backup = path.join(f.parent, 'report-backup'), restored = path.join(f.parent, 'report-restored');
+    backupLibrary(f.root, backup); verifyBackup(backup); restoreBackup(backup, restored);
+    assert.equal(openLibrary(restored).listTemplates().length, 1);
+
+});

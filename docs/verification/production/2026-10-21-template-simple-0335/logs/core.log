@@ -1,0 +1,40 @@
+✔ omitted and exact preserve v1 request bytes, input digest and mutation replay (7067.54375ms)
+✔ ratio-minimum checks exact integer ratio and both minimums, then rereads, accepts and restores backup unchanged (6052.75775ms)
+✔ unknown template size policy "automatic" is rejected (750.822459ms)
+✔ unknown template size policy "" is rejected (863.315667ms)
+✔ unknown template size policy null is rejected (913.181042ms)
+✔ unknown template size policy 1 is rejected (693.887917ms)
+✔ fixed request rejects unsupported version/policy 1/ratio-minimum (1116.412042ms)
+✔ fixed request rejects unsupported version/policy 1/exact (993.841208ms)
+✔ fixed request rejects unsupported version/policy 2/undefined (914.717708ms)
+✔ fixed request rejects unsupported version/policy 2/exact (977.6045ms)
+✔ fixed request rejects unsupported version/policy 3/ratio-minimum (991.814041ms)
+✔ evidence read rejects a resealed result below the fixed minimum (1740.5595ms)
+✔ Markdown projection failure preserves durable commit and acceptance; replay rebuilds missing reports (4444.123125ms)
+✔ all bundled groups and prompts install, reopen and seed again without overwriting user facts (34310.381917ms)
+✔ an existing library receives only missing colleague resources and preserves edits, trash and historic packages (19669.60225ms)
+✔ tampered colleague source is rejected during preflight (103.594833ms)
+✔ batch verification waits for the complete colleague source preflight (148.632166ms)
+✔ a missing bundled colleague source stops preflight before any writes (115.771584ms)
+✔ a missing asset is imported, but a tampered same-hash asset is never overwritten (1150.978125ms)
+✔ stored assets changed after the batch are revalidated by template installation (1171.154167ms)
+✔ root replacement after the batch stops installation before any write to the clone (1279.739584ms)
+✔ source bytes changing after preflight still fail the import hash comparison (227.333333ms)
+✔ same-version package conflicts are still rejected after batch verification (1087.594292ms)
+✔ bundle resource links cannot read a file outside the packaged resource root (126.855416ms)
+✔ local file boundary rejects extra fields, paths, folders, symlinks, counts, types and size before importing (55.691375ms)
+(node:35114) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sandbox preload extracts File paths through webUtils only, refuses strings and non-native files (12.631542ms)
+✔ dropped and dialog files reuse real material/template/photo import and keep explicit attachment confirmation (3976.1455ms)
+✔ template folders expand only first-level raster files and reject links and count overflow (475.644833ms)
+✔ both catalogs retain default, legacy and derived custom facts; ordinary reads never write Markdown (2934.35025ms)
+✔ explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories (1874.230542ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 59521.306375

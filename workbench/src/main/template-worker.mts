@@ -73,7 +73,7 @@ async function verifyReplay(library: TemplateCoreLibrary, p: TemplatePending) {
         library.cancelTemplateAttempt(p.reference.templateId, p.reference.requestId, p.reference.attemptId, {mutationId: p.mutationId});
     } else {
         const {templateId, editToken, ...input} = p.input;
-        library.acceptTemplateResult(templateId, input, editToken, {mutationId: p.mutationId});
+        return library.acceptTemplateResult(templateId, input, editToken, {mutationId: p.mutationId});
     }
 }
 export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: unknown, mode: 'required' | 'disabled'): Promise<TemplateWorkerOperations[keyof TemplateWorkerOperations]['result']> {
@@ -86,7 +86,7 @@ export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: u
     const p = raw.pending as unknown as TemplatePending;
     if (op === 'templateRecover') {
         const found = receipt(library, p);
-        if (found) {await verifyReplay(library, p); return {found: true, conflict: false, request: null, reference: attemptReference(found, p)};}
+        if (found) {const replay = await verifyReplay(library, p); return {found: true, conflict: false, request: null, reference: attemptReference(found, p), reportWarnings: replay?.reportWarnings};}
         const request = p.action === 'start' ? receipt(library, p, true) : null;
         if (request && p.action === 'start') await library.createTemplateRequest(p.input.templateId, {version: p.input.version, notes: p.input.notes, ...(p.sizePolicy ? {sizePolicy: p.sizePolicy} : {})}, p.input.editToken, {mutationId: p.requestMutationId});
         const current = library.readTemplate(idOf(p));
@@ -107,11 +107,11 @@ export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: u
         return {requestId: result.request.requestId, requestHash: result.request.requestHash, sourceVersion: result.request.template.version, sourcePackageHash: result.request.template.packageHash};
     }
     const existing = receipt(library, p);
-    if (existing) {await verifyReplay(library, p); return {reference: attemptReference(existing, p)};}
+    if (existing) {const replay = await verifyReplay(library, p); return {reference: attemptReference(existing, p), reportWarnings: replay?.reportWarnings};}
     if (p.action === 'accept') {
         const {templateId, editToken, ...input} = p.input;
-        library.acceptTemplateResult(templateId, input, editToken, {mutationId: p.mutationId});
-        return {reference: null};
+        const accepted = library.acceptTemplateResult(templateId, input, editToken, {mutationId: p.mutationId});
+        return {reference: null, reportWarnings: accepted.reportWarnings};
     }
     if (p.action === 'cancel') {
         const c = context(library, p.reference);

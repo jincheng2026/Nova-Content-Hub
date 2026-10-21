@@ -1,3 +1,4 @@
+import {templateReports} from './template-reports.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -306,6 +307,25 @@ export function templateJobMethods(h) {
         return {result: {...resultValue, resultHash: attempt.resultHash, rules, restore: {...restore, path: path.join(dir, '还原.png')}}, report};
     }
 
+    function rebuildTemplateReports(tid) {
+        return locked(() => {
+            const meta = current(tid);
+            return templateReports({root, template: meta,
+                packageFor: entry => templatePackage(root, tid, entry.version, entry.packageHash),
+                evidenceFor: (job, attempt) => verifyEvidence(tid, job, attempt),
+                requestFor: job => requestPackage(tid, job), receiptDirectory: (job, attempt) => receiptDir(tid, job, attempt),
+                safePath, directory, assertRootIdentity, hook, catalogEntries: () => fs.readdirSync(path.join(root, '模板')).filter(name => {
+                    if (name === '模板目录.md' || /^\.staging-/.test(name)) return false;
+                    objectId('template', name);
+                    return !!safePath(path.join(root, '模板', name, '模板.json'), true);
+                }).map(name => current(name))});
+        });
+    }
+    function withReports(tid, value) {
+        try {return {...value, reportWarnings: rebuildTemplateReports(tid).warnings};}
+        catch (error) {return {...value, reportWarnings: [`Markdown报告待重建（${error.code || 'IO_ERROR'}）`]};}
+    }
+
     async function commitTemplateAttempt(tid, rid, aid, raw, options = {}) {
         objectId('template', tid); id(rid); id(aid);
         const {receipt, bytes: receiptBytes, receiptHash} = receiptInput(raw, tid, rid, aid);
@@ -313,7 +333,7 @@ export function templateJobMethods(h) {
         options = {mutationId: receipt.mutationId};
         const mutation = {action: 'commitTemplateAttempt', requestId: rid, attemptId: aid, receiptHash};
         const previous = replay(tid, mutation, undefined, options);
-        if (previous) {const {job, attempt} = find(previous, rid, aid); return {template: projection(previous), requestId: rid, attemptId: aid, ...verifyEvidence(tid, job, attempt, receiptHash)};}
+        if (previous) {const {job, attempt} = find(previous, rid, aid); return withReports(tid, {template: projection(previous), requestId: rid, attemptId: aid, ...verifyEvidence(tid, job, attempt, receiptHash)});}
         const prepared = locked(() => {
             const meta = current(tid), {job, attempt} = find(meta, rid, aid);
             if (receipt.host !== attempt.host || receipt.requestHash !== job.requestHash) fail('INVALID_INPUT', 'Submission host or request mismatch');
@@ -323,7 +343,7 @@ export function templateJobMethods(h) {
             const inbox = path.join(attemptDir(tid, rid, aid), 'inbox');
             return {request, rulesBytes: stableBytes(path.join(inbox, receipt.rulesFile), 256 * 1024), imageBytes: stableBytes(path.join(inbox, receipt.restoreFile), 64 * 1024 * 1024)};
         });
-        if (prepared.done) return prepared.done;
+        if (prepared.done) return withReports(tid, prepared.done);
         rulesInput(prepared.rulesBytes, prepared.request);
         if (prepared.request.styleAssetHashes.includes(hash(prepared.imageBytes))) fail('REFERENCE_REUSED', 'A reference image cannot be submitted as a generated restoration');
         hook('templateBeforeDecode', {templateId: tid, requestId: rid, attemptId: aid});
@@ -355,7 +375,7 @@ export function templateJobMethods(h) {
             return meta;
         }, options);
         const {job, attempt} = find(updated, rid, aid);
-        return {template: projection(updated), requestId: rid, attemptId: aid, ...verifyEvidence(tid, job, attempt, receiptHash)};
+        return withReports(tid, {template: projection(updated), requestId: rid, attemptId: aid, ...verifyEvidence(tid, job, attempt, receiptHash)});
     }
 
     function acceptTemplateResult(tid, raw, token, options) {
@@ -392,7 +412,7 @@ export function templateJobMethods(h) {
             return {...meta, versions: [...meta.versions, entry], currentVersion: version};
         }, options, token);
         const {job} = find(updated, input.requestId);
-        return {template: projection(updated), acceptance: job.acceptance};
+        return withReports(tid, {template: projection(updated), acceptance: job.acceptance});
     }
 
     if (h.validationTemplate) {
@@ -415,5 +435,5 @@ export function templateJobMethods(h) {
         }
         return {};
     }
-    return {createTemplateRequest, createTemplateAttempt, readTemplateContext, claimTemplateAttempt, commitTemplateAttempt, failTemplateAttempt, cancelTemplateAttempt, acceptTemplateResult};
+    return {createTemplateRequest, createTemplateAttempt, readTemplateContext, claimTemplateAttempt, commitTemplateAttempt, failTemplateAttempt, cancelTemplateAttempt, acceptTemplateResult, rebuildTemplateReports};
 }

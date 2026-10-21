@@ -57,7 +57,8 @@ export type WorkspaceMutation =
 export interface WorkspaceEntity extends WorkspaceReference { title: string; createdAt: string; updatedAt: string; deletedAt: string | null }
 export interface WorkspaceLibraryPrompt extends WorkspaceEntity, WorkspacePromptFields { enabled: boolean; favorite: boolean }
 export interface WorkspaceLibraryPhoto extends WorkspaceEntity { assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; originalName: string }
-export interface WorkspaceLibraryTemplate extends WorkspaceEntity, WorkspaceTemplateFields { builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[] }
+export interface TemplateCatalogFields {catalogStatus: 'default' | 'legacy' | 'custom'; derivedFrom: {id: string; version: number} | null; designNotes: string}
+export interface WorkspaceLibraryTemplate extends WorkspaceEntity, WorkspaceTemplateFields, TemplateCatalogFields { builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[] }
 export interface WorkspaceLibraryPlan extends WorkspacePlan { text: string | null; textMode: 'explicit' | 'body'; coverChoice: WorkspaceCoverChoice; publicationId: string | null }
 export interface WorkspacePublication {
     id: string; planId: string; channelId: string; schedule: WorkspaceSchedule; url: string | null;
@@ -95,7 +96,9 @@ export interface WorkspaceRecovery { pending: WorkspacePendingView | null; resul
 export interface WorkspaceInputs {
     openPublicationLink: WorkspacePublicationReference;
     revealLibraryFolder: undefined;
+    revealTemplateFolder: {templateId: string};
     chooseTemplateImages: undefined;
+    chooseTemplateFolder: undefined;
     chooseContentMaterial: undefined;
     readContentMaterial: WorkspaceMaterialReference;
     exportContentMaterial: WorkspaceMaterialReference;
@@ -108,7 +111,9 @@ export interface WorkspaceInputs {
 export interface WorkspaceResults {
     openPublicationLink: {opened: true};
     revealLibraryFolder: {revealed: true};
+    revealTemplateFolder: {revealed: true; reportWarnings?: string[]};
     chooseTemplateImages: WorkspaceTemplateImage[] | null;
+    chooseTemplateFolder: WorkspaceTemplateImage[] | null;
     chooseContentMaterial: WorkspaceMaterialImport | null;
     readContentMaterial: WorkspaceMaterialImport;
     exportContentMaterial: {exported: boolean};
@@ -119,6 +124,7 @@ export interface WorkspaceResults {
     abandonWorkspaceMutation: void;
 }
 export interface WorkspaceWorkerOperations {
+    workspaceTemplateFolder: {args: {binding: LibraryBinding; templateId: string}; result: {folder: string; reportWarnings: string[]}};
     workspaceImportMaterial: {args: {binding: LibraryBinding; source: string}; result: WorkspaceMaterialImport};
     workspaceReadMaterial: {args: {binding: LibraryBinding; reference: WorkspaceMaterialReference}; result: WorkspaceMaterialImport};
     workspaceMaterialBytes: {args: {binding: LibraryBinding; reference: WorkspaceMaterialReference}; result: {data: Uint8Array; detectedType: string; originalName: string}};

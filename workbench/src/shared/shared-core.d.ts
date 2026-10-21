@@ -23,6 +23,7 @@ declare module '*file-library/index.mjs' {
         readAsset(hash: string): { assetHash: string; bytes: number; detectedType: string; data: Uint8Array };
         importAsset(source: string, options: { purpose: 'photo' }): { assetHash: string };
         listTemplates(): (import('./template-core.d.ts').TemplateCoreDocument)[];
+        rebuildTemplateReports(id: string): {warnings: string[]};
         readTemplate(id: string, version?: number): import('./template-core.d.ts').TemplateCoreDocument & { definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
         inspectCoverInput(id: string, input: import('./cover-contracts.ts').CoverInput, token: string): import('./cover-contracts.ts').Fingerprint;
         findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;

@@ -1,26 +1,9 @@
 .creator-templates .creator-template-layout { grid-template-columns:minmax(0,1fr); }
-.creator-templates .creator-template-grid { grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px 20px; align-items:start; }
+.creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px 20px; align-items:start; }
 .creator-templates .creator-template-library { gap:18px; }
 .creator-templates .creator-style-card { border:1px solid var(--surface-line); border-radius:18px; background:#fff; overflow:visible; box-shadow:var(--surface-shadow); transition:transform .18s,box-shadow .18s; }
 .creator-templates .creator-style-card:hover,.creator-templates .creator-style-card:focus-within { transform:translateY(-4px) scale(1.015); box-shadow:var(--surface-shadow-hover); }
 .creator-templates .creator-template-art { position:relative; }
-.creator-templates .creator-template-preview { min-width:0; }
-.creator-templates .creator-reference-stack { position:relative; display:block; width:100%; height:auto; aspect-ratio:3/4; padding:10% 13% 7%; border:0; border-radius:17px 17px 0 0; background:linear-gradient(145deg,#FAFAFC,#EFEFF1); isolation:isolate; overflow:hidden; }
-.creator-templates .creator-reference-stack .semi-button-content { display:contents; }
-.creator-templates .creator-stack-sheets { display:block; position:relative; width:100%; height:100%; margin:0; }
-.creator-templates .creator-stack-sheet { display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:contain; border:0; border-radius:10px; background:transparent; box-shadow:none; filter:drop-shadow(0 10px 9px rgba(0,0,0,.2)); transition:transform .36s cubic-bezier(.2,.7,.3,1); }
-.creator-templates .creator-stack-sheet.sheet-2 { transform:translate(-7%,-9%) rotate(-6deg) scale(.9); }
-.creator-templates .creator-stack-sheet.sheet-1 { transform:translate(7%,-5%) rotate(5deg) scale(.95); }
-.creator-templates .creator-stack-sheet.sheet-0 { position:relative; transform:none; }
-.creator-templates .creator-template-preview:hover .sheet-2,.creator-templates .creator-template-preview:focus-within .sheet-2 { transform:translate(-16%,-9%) rotate(-11deg) scale(.9); }
-.creator-templates .creator-template-preview:hover .sheet-1,.creator-templates .creator-template-preview:focus-within .sheet-1 { transform:translate(16%,-5%) rotate(10deg) scale(.95); }
-.creator-templates .creator-sample-count { position:absolute; bottom:10px; left:10px; padding:3px 8px; border:1px solid rgba(255,255,255,.9); border-radius:999px; background:rgba(255,255,255,.92); backdrop-filter:blur(8px); color:var(--semi-color-text-0); font-size:12px; line-height:18px; }
-.creator-templates .creator-stack-preview-label { position:absolute; bottom:13px; right:12px; color:var(--semi-color-text-2); font-size:12px; }
-.creator-template-thumbnails { display:flex; align-items:center; gap:5px; height:40px; margin:12px 15px 0; }
-.creator-template-thumbnails>.semi-button { width:28px; min-width:0; height:36px; padding:0; border:1px solid var(--surface-line); border-radius:6px; overflow:hidden; color:var(--semi-color-text-2); font-size:12px; }
-.creator-template-thumbnails>.semi-button[aria-pressed=true] { border-color:#0071E3; box-shadow:0 0 0 2px #E8F1FC; }
-.creator-template-thumbnails .semi-button-content { display:contents; }
-.creator-template-thumbnails img { width:100%; height:100%; object-fit:contain; }
 .creator-templates .creator-template-use { position:absolute; bottom:62px; left:13px; right:13px; width:calc(100% - 26px); opacity:0; pointer-events:none; transition:opacity .15s; }
 .creator-templates .creator-template-art:hover .creator-template-use,.creator-templates .creator-template-art:focus-within .creator-template-use { opacity:1; pointer-events:auto; }
 .creator-templates .creator-style-card-body { position:relative; padding:12px 36px 18px 15px; }
@@ -35,10 +18,9 @@
 .creator-templates .creator-style-actions { justify-content:flex-start; }
 .creator-templates .creator-template-detail-body .semi-button { padding:0; height:30px; font-size:13px; }
 .creator-preview-description { color:var(--semi-color-text-2); white-space:pre-wrap; overflow-wrap:anywhere; }
-.creator-no-reference { display:grid; height:100%; align-items:center; font-size:13px; color:var(--semi-color-text-2); }
-@media(max-width:1199px) { .creator-templates .creator-template-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media(max-width:899px) { .creator-templates .creator-template-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media(max-width:759px) { .creator-templates .creator-template-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 14px; } }
-@media(max-width:440px) { .creator-templates .creator-template-grid { grid-template-columns:1fr; } }
+@media(max-width:1199px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); } }
+@media(max-width:899px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:759px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 14px; } }
+@media(max-width:440px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:1fr; } }
 @media(hover:none) { .creator-templates .creator-template-use { opacity:1; pointer-events:auto; } }
-@media(prefers-reduced-motion:reduce) { .creator-templates .creator-stack-sheet { transition-duration:.01ms; } .creator-templates .creator-template-preview:hover .sheet-1,.creator-templates .creator-template-preview:focus-within .sheet-1 { transform:translate(7%,-5%) rotate(5deg) scale(.95); } .creator-templates .creator-template-preview:hover .sheet-2,.creator-templates .creator-template-preview:focus-within .sheet-2 { transform:translate(-7%,-9%) rotate(-6deg) scale(.9); } .creator-templates .creator-style-card:hover,.creator-templates .creator-style-card:focus-within { transform:none; } }
+@media(prefers-reduced-motion:reduce) { .creator-templates .creator-style-card:hover,.creator-templates .creator-style-card:focus-within { transform:none; } }

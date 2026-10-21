@@ -64,9 +64,10 @@ export class TemplateController {
         await this.requireAssistant(context.host);
         await this.callbacks.launchTemplate(binding, {...reference, host: context.host});
     }
-    async complete(reference: TemplateReference | null, launch: boolean): Promise<TemplateWorkflowResult> {
+    async complete(reference: TemplateReference | null, launch: boolean, reportWarnings?: string[]): Promise<TemplateWorkflowResult> {
         const {binding, pending} = this.bound();
         const view = this.decorate(await this.owner.worker.call('templateRead', {binding, templateId: templateId(pending)}));
+        if (reportWarnings?.length) view.reportWarnings = reportWarnings;
         await this.owner.persist({...this.owner.binding, templatePending: null});
         this.pendingView = null;
         const live = reference && view.jobs.some(j => j.id === reference.requestId && j.activeAttemptId === reference.attemptId && j.attempts.some(a => a.attemptId === reference.attemptId && ['created', 'claimed'].includes(a.status)));
@@ -78,7 +79,7 @@ export class TemplateController {
         const request = this.bound();
         this.pendingView = {mutationId: request.pending.mutationId, action: request.pending.action, templateId: templateId(request.pending), state: 'uncertain'};
         const result = await this.owner.worker.call('templateRecover', request);
-        if (result.found) return {pending: null, result: await this.complete(result.reference, false)};
+        if (result.found) return {pending: null, result: await this.complete(result.reference, false, result.reportWarnings)};
         if (request.pending.action === 'start' && result.request) {
             const {requestId, requestHash, sourcePackageHash} = result.request;
             await this.owner.persist({...this.owner.binding, templatePending: {...request.pending, request: {requestId, requestHash, sourcePackageHash}}});
@@ -90,7 +91,7 @@ export class TemplateController {
         try {
             let request = this.bound();
             const previous = await this.owner.worker.call('templateRecover', request);
-            if (previous.found) return this.complete(previous.reference, true);
+            if (previous.found) return this.complete(previous.reference, true, previous.reportWarnings);
             if (previous.conflict) fail('CONFLICT', '固定模板版本已改变，原学习意图保留。请先核验或放弃这次操作。');
             if (request.pending.action === 'start') {
                 await this.requireAssistant(request.pending.host);
@@ -100,7 +101,7 @@ export class TemplateController {
                 request = this.bound();
             } else if (request.pending.action === 'attempt') await this.requireAssistant(request.pending.host);
             const result = await this.owner.worker.call('templateMutate', request);
-            return this.complete(result.reference, true);
+            return this.complete(result.reference, true, result.reportWarnings);
         } catch (error) {
             // A failed response may follow a durable write; preserve the exact intent until receipt lookup succeeds.
             if (this.owner.binding.templatePending) try {await this.recover();} catch {}

@@ -1,11 +1,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {createHash} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import {prepareColleagueBuiltins} from './colleague.mjs';
 
 const defaultBundle = fileURLToPath(new URL('../../../../', import.meta.url));
-const sha256 = bytes => createHash('sha256').update(bytes).digest('hex');
 const parse = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const promptContent = body => body.replace(/\r\n/g, '\n').trim();
 
@@ -25,38 +23,9 @@ function sourceFile(root, relative) {
 
 // bundleRoot comes from the packaged app, never from renderer input.
 export function installBuiltins(library, bundleRoot = defaultBundle) {
-    const catalog = parse(sourceFile(bundleRoot, 'plugin-src/resources/builtin-templates/catalog.json'));
     const prompts = parse(sourceFile(bundleRoot, 'plugin-src/resources/builtin-prompts/catalog.json'));
-    const registry = parse(sourceFile(bundleRoot, 'plugin-src/resources/assets/ai-reference-prompts/generated-files.json'));
-    if (catalog.schema !== 1 || !Array.isArray(catalog.templates) || prompts.format !== 'nova-content-prompts' ||
-        prompts.schemaVersion !== 1 || !Array.isArray(prompts.prompts) || !Array.isArray(registry)) throw new Error('内置目录格式不兼容');
-    const generated = new Map(registry.map(item => [item.file, item]));
-    const prepared = [];
-    const references = new Set();
-    const structures = new Set();
-    // Preflight every source before the first write so a missing/bad bundled image is clear.
-    for (const definition of catalog.templates) {
-        if (!/^builtin-[a-z0-9-]+$/.test(definition.id) || !Number.isSafeInteger(definition.version) || definition.version < 1 ||
-            !Array.isArray(definition.generatedReferences) || !definition.generatedReferences.length) throw new Error('内置模板定义无效');
-        const resources = new Map();
-        for (const ref of definition.generatedReferences) {
-            if (!ref.path.endsWith('.png')) throw new Error('内置风格样张必须为实际 PNG');
-            const file = sourceFile(bundleRoot, `plugin-src/resources/${ref.path}`);
-            const bytes = fs.readFileSync(file);
-            const registered = generated.get(path.basename(file));
-            if (!registered || registered.bytes !== bytes.length || registered.sha256 !== sha256(bytes)) throw new Error(`内置图片校验失败：${ref.id}`);
-            resources.set(ref.path, {file, assetHash: registered.sha256, purpose: 'template-reference', role: 'style'});
-            references.add(ref.path);
-        }
-        for (const asset of definition.assets || []) {
-            if (typeof asset.path !== 'string' || !asset.path.endsWith('.svg')) throw new Error('内置结构图定义无效');
-            const file = sourceFile(bundleRoot, `plugin-src/resources/${asset.path}`);
-            resources.set(asset.path, {file, assetHash: sha256(fs.readFileSync(file)), purpose: 'template-structure', role: 'structure'});
-            structures.add(asset.path);
-        }
-        if (![definition.img, ...definition.shots].every(key => resources.has(key))) throw new Error('内置预览缺少对应资产');
-        prepared.push({definition, resources});
-    }
+    if (prompts.format !== 'nova-content-prompts' ||
+        prompts.schemaVersion !== 1 || !Array.isArray(prompts.prompts)) throw new Error('内置目录格式不兼容');
     const seenPrompts = new Set();
     for (const prompt of prompts.prompts) {
         if (!/^builtin-prompt-[a-z0-9-]+$/.test(prompt.id) || seenPrompts.has(prompt.id) || typeof prompt.body !== 'string' ||
@@ -64,7 +33,7 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
         seenPrompts.add(prompt.id);
     }
     const colleague = prepareColleagueBuiltins(relative => sourceFile(bundleRoot, relative));
-    prepared.push(...colleague.prepared);
+    const prepared = colleague.prepared;
     const allPrompts = [...prompts.prompts, ...colleague.prompts];
     const assetDescriptors = library.readAssetDescriptors(prepared.flatMap(({resources}) => [...resources.values()].map(input => input.assetHash)));
     const templates = [];
@@ -108,8 +77,8 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
     }
     return {
         templates,
-        styleSamples: references.size + colleague.styleSamples,
-        structureSamples: structures.size + colleague.structureSamples,
+        styleSamples: colleague.styleSamples,
+        structureSamples: colleague.structureSamples,
         prompts: allPrompts.length,
         createdPrompts
     };

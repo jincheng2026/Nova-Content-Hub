@@ -95,7 +95,8 @@ export function workspaceDesktopInput(method: string, input: unknown): boolean |
     if (method === 'openPublicationLink') return exact(input, ['kind', 'id', 'publicationId']) && ['content', 'collection'].includes(input.kind as string) && uuid(input.id) && uuid(input.publicationId);
     if (method === 'mutateWorkspace') return workspaceMutation(input);
     if (method === 'readContentMaterial' || method === 'exportContentMaterial') return workspaceMaterialReference(input);
-    if (['revealLibraryFolder', 'chooseTemplateImages', 'chooseContentMaterial', 'readWorkspaceLibrary', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation'].includes(method)) return input === undefined;
+    if (method === 'revealTemplateFolder') return fields(input, ['templateId']) && template(input.templateId);
+    if (['revealLibraryFolder', 'chooseTemplateFolder', 'chooseTemplateImages', 'chooseContentMaterial', 'readWorkspaceLibrary', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation'].includes(method)) return input === undefined;
     return undefined;
 }
 export function workspaceMaterialReference(input: unknown): input is import('./workspace-contracts.ts').WorkspaceMaterialReference {

@@ -1,3 +1,4 @@
+import {templateCatalogFields} from './template-catalog.mts';
 import {boundReader} from './bound-reader.mts';
 import path from 'node:path';
 import fs from 'node:fs';
@@ -15,7 +16,7 @@ import type {
 } from '../shared/workspace-contracts.ts';
 import {TEMPLATE_IMPORT_LIMITS} from '../shared/workspace-contracts.ts';
 
-export const isWorkspaceOperation = (op: unknown): op is keyof WorkspaceWorkerOperations => typeof op === 'string' && ['workspaceLibrary', 'workspaceMutate', 'workspaceRecover', 'workspaceImportTemplateImages', 'workspaceImportMaterial', 'workspaceReadMaterial', 'workspaceMaterialBytes'].includes(op);
+export const isWorkspaceOperation = (op: unknown): op is keyof WorkspaceWorkerOperations => typeof op === 'string' && ['workspaceTemplateFolder', 'workspaceLibrary', 'workspaceMutate', 'workspaceRecover', 'workspaceImportTemplateImages', 'workspaceImportMaterial', 'workspaceReadMaterial', 'workspaceMaterialBytes'].includes(op);
 const absolute = (source: unknown): source is string => typeof source === 'string' && source.length <= 32_768 && path.isAbsolute(source) && !source.includes('\0');
 const rasterTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 const materialExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.md', '.markdown', '.txt', '.pdf'];
@@ -164,7 +165,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
         templates: [...library.listTemplates(), ...library.listTemplateTrash()].map(template => {
             const pkg = library.readTemplate(template.id, template.currentVersion);
             return {
-                ...entity(template), builtin: template.builtin === true, currentVersion: template.currentVersion,
+                ...entity(template), ...templateCatalogFields(template, pkg.definition), builtin: template.builtin === true, currentVersion: template.currentVersion,
                 versions: template.versions.map(({version, packageHash}) => ({version, packageHash})),
                 description: typeof pkg.definition.desc === 'string' ? pkg.definition.desc : '',
                 rules: Array.isArray(pkg.definition.rules) ? pkg.definition.rules.filter((rule): rule is string => typeof rule === 'string') : [],
@@ -298,6 +299,16 @@ async function mutate(library: WorkspaceCoreLibrary, pending: WorkspacePending):
 }
 
 export async function executeWorkspace(op: keyof WorkspaceWorkerOperations, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkspaceWorkerOperations[keyof WorkspaceWorkerOperations]['result']> {
+    if (op === 'workspaceTemplateFolder') {
+        if (!exact(args, ['binding', 'templateId']) || !libraryBinding(args.binding) || !absolute(args.binding.root) || typeof args.templateId !== 'string' || !/^(?:[0-9a-f-]{36}|builtin-[a-z0-9]+(?:-[a-z0-9]+)*)$/.test(args.templateId)) fail('INVALID_INPUT', '模板文件夹请求无效。');
+        const library = openLibrary(args.binding.root, {expectedLibraryId: args.binding.libraryId, expectedRootIdentity: args.binding.rootIdentity});
+        library.readTemplate(args.templateId);
+        let reportWarnings: string[];
+        try {reportWarnings = library.rebuildTemplateReports(args.templateId).warnings;} catch {reportWarnings = ['Markdown报告待重建；模板原件和学习记录均已保留。'];}
+        const folder = path.join(args.binding.root, '模板', args.templateId);
+        for (const part of [path.join(args.binding.root, '模板'), folder]) {const stat = fs.lstatSync(part); if (!stat.isDirectory() || stat.isSymbolicLink()) fail('UNSAFE_PATH', '模板文件夹位置已改变。');}
+        return {folder, reportWarnings};
+    }
     if (op === 'workspaceImportMaterial' || op === 'workspaceReadMaterial' || op === 'workspaceMaterialBytes') {
         const importing = op === 'workspaceImportMaterial';
         if (!exact(args, importing ? ['binding', 'source'] : ['binding', 'reference']) || !libraryBinding(args.binding) || !absolute(args.binding.root) || (importing ? !absolute(args.source) || !materialExtensions.includes(path.extname(args.source as string).toLowerCase()) : !workspaceMaterialReference(args.reference))) fail('INVALID_INPUT', '资料操作拒绝额外、路径或无效字段。');

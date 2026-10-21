@@ -27,3 +27,13 @@ export async function validateLocalFiles(input: unknown): Promise<NativeLocalFil
     if (error) fail('INVALID_FILES', error);
     return {kind, sources, ...(kind === 'photo' ? {photo: input.photo as PhotoImportOptions} : {})};
 }
+
+export async function templateFolderImages(source: string): Promise<string[]> {
+    if (!path.isAbsolute(source) || source.includes('\0') || source.length > 32768) fail('INVALID_FILES', '请选择本机图片文件夹。');
+    const info = await fs.lstat(source);
+    if (!info.isDirectory() || info.isSymbolicLink() || await fs.realpath(source) !== source) fail('INVALID_FILES', '请选择普通文件夹，不能使用符号链接。');
+    const entries = await fs.readdir(source, {withFileTypes: true});
+    const sources = entries.filter(entry => /\.(png|jpe?g|webp|gif)$/i.test(entry.name)).map(entry => path.join(source, entry.name)).sort();
+    await validateLocalFiles({kind: 'template', sources});
+    return sources;
+}

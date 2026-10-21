@@ -37,7 +37,7 @@ let report, durationMs;
 try { const start = performance.now(); report = installBuiltins(library); durationMs = performance.now() - start; }
 finally { __testing.setHook(undefined); fs.readFileSync = original; fs.openSync = originalOpen; fs.closeSync = originalClose; }
 assert.equal(report.createdPrompts, 0, 'Fixture must already contain all builtins');
-assert.equal(report.templates.length, 20);
+assert.equal(report.templates.length, 5);
 assert.deepEqual(await snapshotPackage(source), before, 'Source library changed');
 assert.deepEqual(await snapshotPackage(target), before, 'Repeat seed changed library bytes');
 const result = {at: new Date().toISOString(), scope: 'Current Node core, copied prepared library, warm page cache; not Electron latency proof', root, fixture: {entries: Object.keys(before).length, digest: createHash('sha256').update(JSON.stringify(before)).digest('hex')}, durationMs, locks, reads, readTimeMs: times, unchanged: true, lockBudget: Number.isFinite(budget) ? budget : null, passed: locks <= budget};

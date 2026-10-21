@@ -6,7 +6,7 @@ import path from 'node:path';
 import vm from 'node:vm';
 import {stripTypeScriptTypes} from 'node:module';
 import sharp from 'sharp';
-import {validateLocalFiles} from '../src/main/local-files.mts';
+import {templateFolderImages, validateLocalFiles} from '../src/main/local-files.mts';
 import {localFileSelectionError} from '../src/shared/local-files.ts';
 import {DesktopController} from '../src/main/controller.mts';
 import {BindingStore} from '../src/main/bindings.mts';
@@ -67,4 +67,16 @@ test('dropped and dialog files reuse real material/template/photo import and kee
     controller.authMode = 'required';
     await assert.rejects(controller.importLocalFiles({kind: 'material', sources: [image]}), {code: 'AUTH_NOT_CONFIGURED'});
     await assert.rejects(controller.importLocalFiles({kind: 'material', sources: [path.join(parent, 'missing.png')]}), {code: 'AUTH_NOT_CONFIGURED'}, 'authorization rejects before filesystem inspection');
+});
+
+test('template folders expand only first-level raster files and reject links and count overflow', async t => {
+    const {parent, image} = await fixture(t), folder = path.join(await fs.realpath(parent), 'references');
+    await fs.mkdir(folder); await fs.copyFile(image, path.join(folder, 'b.png')); await fs.copyFile(image, path.join(folder, 'a.png'));
+    await fs.writeFile(path.join(folder, 'notes.md'), 'source notes'); await fs.mkdir(path.join(folder, 'nested'));
+    await fs.copyFile(image, path.join(folder, 'nested', 'child.png'));
+    assert.deepEqual((await templateFolderImages(folder)).map(file => path.basename(file)), ['a.png', 'b.png']);
+    await fs.symlink(image, path.join(folder, 'link.png')); await assert.rejects(templateFolderImages(folder), {code: 'INVALID_FILES'});
+    await fs.unlink(path.join(folder, 'link.png'));
+    for (let i = 0; i < 49; i++) await fs.copyFile(image, path.join(folder, `${i}.png`));
+    await assert.rejects(templateFolderImages(folder), {code: 'INVALID_FILES'});
 });

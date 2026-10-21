@@ -5,12 +5,30 @@
 .template-workflow select {display: block; max-width: 100%; margin-top: 8px;}
 .template-attempt {display: grid; gap: 16px; border-top: 1px solid var(--semi-color-border); padding-top: 16px;}
 .template-comparison, .template-rules {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
-.template-comparison figure, .template-evidence-samples figure {margin: 0;}
-.template-comparison img {display: block; width: 100%; max-height: 480px; object-fit: contain; background: var(--semi-color-fill-0); border-radius: 14px;}
-.template-comparison figcaption, .template-evidence-samples figcaption {padding: 8px 0; color: var(--semi-color-text-2);}
+.template-comparison figure, .template-evidence-samples figure {display: flex; flex-direction: column; align-items: center; margin: 0; min-width: 0;}
+.template-comparison img {display: block; width: auto; height: auto; max-width: 100%; max-height: 480px; object-fit: contain; background: var(--semi-color-fill-0); border-radius: 14px;}
+.template-comparison figcaption, .template-evidence-samples figcaption {align-self: stretch; padding: 8px 0; color: var(--semi-color-text-2);}
 .template-evidence-samples {display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 12px; padding-top: 12px;}
-.template-evidence-samples img {width: 100%; height: 140px; object-fit: contain;}
+.template-evidence-samples img {width: auto; height: auto; max-width: 100%; max-height: 140px; object-fit: contain; border-radius: 10px;}
 .template-rules li {overflow-wrap: anywhere;}
 .template-accept {padding: 16px; background: var(--semi-color-fill-0); border-radius: 14px;}
 .template-accept label {display: flex; align-items: flex-start; gap: 8px;}
 @media (max-width: 700px) {.template-comparison, .template-rules {grid-template-columns: 1fr;}}
+
+.template-study-progress {padding: 16px; border: 1px solid var(--semi-color-border); border-radius: 12px; background: var(--semi-color-fill-0);}
+.template-study-progress strong {display: block; margin-bottom: 8px;}
+.template-study-progress p {color: var(--semi-color-text-1);}
+.template-study-entry {margin: 12px 0;}
+.template-study-entry .semi-button {width: 100%;}
+.template-import-extras {padding: 14px 16px; border: 1px solid var(--semi-color-border); border-radius: 12px;}
+.template-import-extras summary {cursor: pointer; font-weight: 600;}
+.template-import-extras[open] > .management-form {margin-top: 16px;}
+.template-import-form .template-import-grid figcaption {overflow-wrap: anywhere;}
+.template-import-form > fieldset {min-width: 0; margin: 0; padding: 0; border: 0;}
+.template-import-form .file-dropzone {min-height: 0; padding: 16px; gap: 6px;}
+.template-import-form .file-dropzone-symbol {display: none;}
+.template-import-form .template-import-grid {max-height: 240px;}
+.template-import-form .template-import-grid img {max-height: 120px;}
+
+.template-group-choice {display: grid; gap: 6px; margin-top: 12px; font-size: 13px;}
+.template-source-notes {white-space: pre-wrap; overflow-wrap: anywhere; max-height: 320px; overflow: auto;}

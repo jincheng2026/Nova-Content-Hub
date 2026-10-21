@@ -125,6 +125,8 @@ export class DesktopController {
     retryTemplateMutation(input?: undefined) { return this.templates.retryTemplateMutation(input); }
     abandonTemplateMutation(input?: undefined) { return this.templates.abandonTemplateMutation(input); }
 
+    chooseTemplateFolder(input?: undefined) { return this.workspace.chooseTemplateFolder(input); }
+    revealTemplateFolder(input: {templateId: string}) { return this.workspace.revealTemplateFolder(input); }
     chooseTemplateImages(input?: undefined) { return this.workspace.chooseTemplateImages(input); }
     chooseContentMaterial(input?: undefined) { return this.workspace.chooseContentMaterial(input); }
     readContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.readContentMaterial(input); }

@@ -212,6 +212,12 @@ function safePath(target, missingLast = false) {
     return fs.lstatSync(absolute);
 }
 
+function templateReportIndex(root, name) {
+    if (name !== '模板目录.md') return false;
+    if (!safePath(path.join(root, '模板', name)).isFile()) fail('UNSAFE_PATH', 'Template report index must be a regular file');
+    return true;
+}
+
 function directory(target) {
     if (!safePath(target).isDirectory()) fail('UNSAFE_PATH', `Not a directory: ${target}`);
 }
@@ -752,6 +758,7 @@ function library(root, initialInfo, rootIdentity) {
 
     function list(deleted, kind = 'content') {
         return locked(() => fs.readdirSync(path.join(root, KINDS[kind].directory)).sort().filter(name => {
+            if (kind === 'template' && templateReportIndex(root, name)) return false;
             if (kind === 'template' && STAGING.test(name)) {
                 directory(path.join(root, '模板', name));
                 return false;
@@ -2321,7 +2328,7 @@ function validateRestoredLibrary(root, info) {
     for (const [kind, spec] of Object.entries(KINDS)) {
         if (info.schemaVersion < 5 && ['workspace', 'collection'].includes(kind)) continue;
         for (const name of fs.readdirSync(path.join(root, spec.directory)).sort()) {
-            if (kind === 'template' && STAGING.test(name)) continue;
+            if (kind === 'template' && (templateReportIndex(root, name) || STAGING.test(name))) continue;
             objectId(kind, name);
             if (kind === 'template' && !safePath(path.join(root, spec.directory, name, spec.files[0]), true)) {
                 unregisteredTemplate(read(path.join(root, spec.directory, name, '未登记.json')), name);
@@ -2392,7 +2399,7 @@ function prepareRestoredLibrary(root, backup) {
     const interruptedAttempts = [], mutations = [];
     for (const kind of ['content', ...(info.schemaVersion >= 5 ? ['template'] : [])]) {
         for (const objectIdValue of fs.readdirSync(path.join(root, KINDS[kind].directory)).sort()) {
-            if (kind === 'template' && (STAGING.test(objectIdValue) || !safePath(path.join(root, '模板', objectIdValue, '模板.json'), true))) continue;
+            if (kind === 'template' && (templateReportIndex(root, objectIdValue) || STAGING.test(objectIdValue) || !safePath(path.join(root, '模板', objectIdValue, '模板.json'), true))) continue;
             const before = snapshot(root, objectIdValue, kind), meta = metadata(before[0], objectIdValue, kind);
             const jobs = kind === 'template' ? meta.templateJobs : meta.coverJobs;
             const live = (jobs || []).flatMap(job => job.attempts.filter(attempt => ['created', 'claimed'].includes(attempt.status)).map(attempt => ({

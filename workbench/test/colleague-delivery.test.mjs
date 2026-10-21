@@ -29,7 +29,7 @@ test('the pre-seal source filter removes engineering material while keeping all 
     for (const relative of ['plugin-src/skills/nova-content-cover-execution/SKILL.md', 'plugin-src/runtime/LICENSE', 'plugin-src/resources/builtin-examples/provenance.json']) assert.equal(runtimeSourceFilter(path.join(project, relative)), true);
     const lib = createLibrary(path.join(parent, 'library'));
     installBuiltins(lib, path.join(parent, 'bundle'));
-    assert.equal(lib.listTemplates().length, 20);
+    assert.equal(lib.listTemplates().length, 5);
     assert.equal(lib.listPrompts().length, 52);
     const catalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-src/src/lib/browser-import/builtin-resources.json'), 'utf8'));
     for (const [relative, entry] of Object.entries(catalog.entries)) {
@@ -42,7 +42,7 @@ test('the pre-seal source filter removes engineering material while keeping all 
 test('the writable example preserves both real covers, fictional-person disclosure and built-in library', t => {
     const directory = buildDemoLibrary(temporary(t));
     const library = openLibrary(directory);
-    assert.equal(library.listTemplates().length, 20);
+    assert.equal(library.listTemplates().length, 5);
     assert.equal(library.listPrompts().length, 52);
     const [item] = library.listContents();
     const content = library.readContent(item.id);
@@ -70,7 +70,7 @@ test('delivery export contains only the copied Mac installer, user guide and che
     assert.deepEqual(fs.readFileSync(path.join(output, deliveredName)), fs.readFileSync(source));
     assert.equal(fs.readFileSync(path.join(output, 'SHA256SUMS.txt'), 'utf8'), `${hash(fs.readFileSync(source))}  ${deliveredName}\n`);
     const guide = fs.readFileSync(path.join(output, '安装与使用.txt'), 'utf8');
-    assert.match(guide, /20 个模板、52 条提示词/);
+    assert.match(guide, /5 组同事模板、52 条提示词/);
     assert.match(guide, /尚未完成 Apple Developer ID 正式签名与公证/);
     assert.doesNotMatch(guide, /productionReady|源代码|probe|commit|研发|测试/);
     await assert.rejects(exportColleagueDelivery(source, output), /exist/i);

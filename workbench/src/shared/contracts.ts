@@ -249,6 +249,7 @@ export interface Worker {
 
 export interface Dialogs {
     promptDocument?(): Promise<string | null>;
+    templateFolder?(): Promise<string | null>;
     templateImages?(): Promise<string[] | null>;
     material?(): Promise<string | null>;
     maintenanceParent?(): Promise<string | null>;

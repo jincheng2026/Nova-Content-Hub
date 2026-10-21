@@ -52,6 +52,8 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     readWorkspace: () => ipcRenderer.invoke('nova:readWorkspace'),
     readWorkspaceLibrary: () => ipcRenderer.invoke('nova:readWorkspaceLibrary'),
     openPublicationLink: input => ipcRenderer.invoke('nova:openPublicationLink', input),
+    chooseTemplateFolder: () => ipcRenderer.invoke('nova:chooseTemplateFolder'),
+    revealTemplateFolder: (input) => ipcRenderer.invoke('nova:revealTemplateFolder', input),
     revealLibraryFolder: () => ipcRenderer.invoke('nova:revealLibraryFolder'),
     mutateWorkspace: input => ipcRenderer.invoke('nova:mutateWorkspace', input),
     recoverWorkspaceMutation: () => ipcRenderer.invoke('nova:recoverWorkspaceMutation'),

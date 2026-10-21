@@ -197,6 +197,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         },
         dialogs: dialogs ?? {
             async promptDocument() { const selected = await dialog.showOpenDialog(window, { title: '选择提示词文件', properties: ['openFile'], filters: [{ name: 'Markdown 或文本', extensions: ['md', 'markdown', 'txt'] }] }); return selected.canceled ? null : selected.filePaths[0] ?? null; },
+            async templateFolder() {const selected = await dialog.showOpenDialog(window, {title: '选择同一模板的图片文件夹（仅第一层，最多50张）', properties: ['openDirectory']}); return selected.canceled ? null : selected.filePaths[0] ?? null;},
             async templateImages() {
                 const selected = await dialog.showOpenDialog(window, {title: '选择同一模板组的风格样张（最多50张，共256 MiB）', properties: ['openFile', 'multiSelections'], filters: [{name: 'PNG、JPEG、WebP 或 GIF 图片', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif']}]});
                 return selected.canceled ? null : selected.filePaths;

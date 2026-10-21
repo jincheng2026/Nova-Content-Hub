@@ -9,7 +9,7 @@ export interface TemplateRules {fixed: string[]; variable: string[]; evidence: {
 export interface TemplateAcceptance {requestId: string; attemptId: string; requestHash: string; resultHash: string; sourceTemplate: {id: string; version: number; packageHash: string}; acceptedTemplate: {id: string; version: number; packageHash: string}; acceptedAt: string}
 export interface TemplateAttemptView extends Attempt {reference: TemplateReference; result: {resultHash: string; rules: TemplateRules; restore: Raster} | null; samples: Raster[]; unavailable: boolean}
 export interface TemplateJobView {id: string; activeAttemptId: string | null; acceptance: TemplateAcceptance | null; attempts: TemplateAttemptView[]}
-export interface TemplateWorkflowView {templateId: string; title: string; editToken: string; currentVersion: number; builtin: boolean; deletedAt: string | null; jobs: TemplateJobView[]}
+export interface TemplateWorkflowView {reportWarnings?: string[]; templateId: string; title: string; editToken: string; currentVersion: number; builtin: boolean; deletedAt: string | null; jobs: TemplateJobView[]}
 export interface TemplateWorkflowResult {view: TemplateWorkflowView; launchRequested: boolean}
 type Bound = {binding: Pick<LibraryBinding, 'libraryId' | 'rootIdentity'>; mutationId: string};
 export type TemplatePending = Bound & (
@@ -48,8 +48,8 @@ export interface TemplateRequestIdentity {requestId: string; requestHash: string
 export interface TemplateWorkerOperations {
     templateRead: {args: {binding: LibraryBinding; templateId: string}; result: TemplateWorkflowView};
     templateRequest: {args: {binding: LibraryBinding; pending: TemplatePending}; result: TemplateRequestIdentity};
-    templateMutate: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {reference: TemplateReference | null}};
-    templateRecover: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {found: boolean; conflict: boolean; request: TemplateRequestIdentity | null; reference: TemplateReference | null}};
+    templateMutate: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {reference: TemplateReference | null; reportWarnings?: string[]}};
+    templateRecover: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {reportWarnings?: string[]; found: boolean; conflict: boolean; request: TemplateRequestIdentity | null; reference: TemplateReference | null}};
     templateHandoff: {args: {binding: LibraryBinding; reference: TemplateReference}; result: {host: Assistant}};
 }
 export interface TemplateWorker {call<K extends keyof TemplateWorkerOperations>(op: K, args: TemplateWorkerOperations[K]['args']): Promise<TemplateWorkerOperations[K]['result']>}

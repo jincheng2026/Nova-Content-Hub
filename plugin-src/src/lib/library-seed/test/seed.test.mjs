@@ -29,34 +29,21 @@ test('all bundled groups and prompts install, reopen and seed again without over
             readAsset() { assert.fail('seed must batch asset verification'); },
             readAssetDescriptors(hashes) {
                 batchReads++;
-                assert.equal(hashes.length, 195, 'batch covers the complete preflight, including colleague resources');
+                assert.equal(hashes.length, 135, 'batch covers the complete preflight, including colleague resources');
                 return lib.readAssetDescriptors(hashes);
             }
         };
     }
     const report = installBuiltins(batched(library));
     assert.equal(batchReads, 1);
-    assert.equal(report.templates.length, 20);
-    assert.equal(report.styleSamples, 157);
-    assert.equal(report.structureSamples, 38);
+    assert.equal(report.templates.length, 5);
+    assert.equal(report.styleSamples, 127);
+    assert.deepEqual(report.templates.map(template => template.id).sort(), ['builtin-colleague-assistant-scene', 'builtin-colleague-big-head-action', 'builtin-colleague-news-collage', 'builtin-colleague-orange-green-life', 'builtin-colleague-spatial-operation']);
+    assert.equal(report.structureSamples, 8);
     assert.equal(report.createdPrompts, 52);
-    assert.equal(library.listTemplates().length, 20);
+    assert.equal(library.listTemplates().length, 5);
     assert.equal(library.listPrompts().length, 52);
     assert.equal(library.listPhotos().length, 0, 'style sample people are never installed as the user');
-    for (const definition of templateCatalog.templates) {
-        const template = library.readTemplate(definition.id, definition.version);
-        assert.deepEqual(template.definition, definition);
-        const style = Object.values(template.resources).filter(ref => ref.role === 'style');
-        assert.equal(style.length, 2);
-        for (const ref of definition.generatedReferences) {
-            const bound = template.resources[ref.path];
-            assert.equal(bound.role, 'style');
-            const asset = library.readAsset(bound.assetHash);
-            assert.equal(asset.decoded, false);
-            assert.equal(asset.detectedType, 'image/png');
-            assert.ok(asset.data.equals(fs.readFileSync(path.join(project, 'plugin-src/resources', ref.path))));
-        }
-    }
     for (const definition of colleagueCatalog.templates) {
         const template = library.readTemplate(definition.id, definition.version);
         assert.deepEqual(template.definition, definition);
@@ -84,7 +71,7 @@ test('all bundled groups and prompts install, reopen and seed again without over
     const edited = library.updatePrompt(firstPrompt.id, {body: '用户自己的修改\n保留这份正文。'}, firstPrompt.editToken);
     const secondPrompt = library.listPrompts().find(item => item.builtinKey === promptCatalog.prompts[1].id);
     library.trashPrompt(secondPrompt.id, secondPrompt.editToken);
-    const firstTemplate = library.readTemplate(templateCatalog.templates[0].id);
+    const firstTemplate = library.readTemplate(colleagueCatalog.templates[0].id);
     const trashedTemplate = library.trashTemplate(firstTemplate.id, firstTemplate.editToken);
     const reopened = openLibrary(library.info.root);
     const again = installBuiltins({...batched(reopened), importAsset() { assert.fail('repeat installation must reuse verified immutable assets'); }});
@@ -93,7 +80,7 @@ test('all bundled groups and prompts install, reopen and seed again without over
     assert.equal(reopened.listPrompts().length, 51);
     assert.equal(reopened.listPromptTrash().length, 1);
     assert.equal(reopened.readPrompt(edited.id).body, edited.body);
-    assert.equal(reopened.listTemplates().length, 19);
+    assert.equal(reopened.listTemplates().length, 4);
     assert.equal(reopened.listTemplateTrash().length, 1);
     assert.equal(reopened.readTemplate(firstTemplate.id).deletedAt, trashedTemplate.deletedAt);
 });
@@ -126,6 +113,13 @@ test('an existing library receives only missing colleague resources and preserve
     assert.equal(library.readPrompt(oldPrompt.id).body, '用户保留的旧版修改');
     assert.equal(library.readPrompt(sameBody.id).builtinKey, null, 'custom ownership is not taken over');
     for (const [id, hash] of originalHashes) assert.equal(library.readTemplate(id).packageHash, hash);
+    const sourceTemplate = library.readTemplate(colleagueCatalog.templates[0].id);
+    const custom = library.createTemplate({name: '用户工作副本', definition: sourceTemplate.definition, resources: sourceTemplate.resources, derivedFrom: {id: sourceTemplate.id, version: sourceTemplate.currentVersion}});
+    library.addTemplateVersion(custom.id, {version: 2, definition: {...sourceTemplate.definition, userRule: '保留历史'}, resources: sourceTemplate.resources}, custom.editToken);
+    const beforeCustom = library.readTemplate(custom.id);
+    assert.equal(installBuiltins(library).templates.length, 5);
+    assert.equal(library.listTemplates().length, 21, 'old 20 and custom template remain');
+    assert.deepEqual(library.readTemplate(custom.id), beforeCustom, 'custom metadata, versions and exact package history remain');
     const newPrompt = library.listPrompts().find(item => item.builtinKey === colleagueCatalog.prompts[1].id);
     library.trashPrompt(newPrompt.id, newPrompt.editToken);
     const newTemplate = library.readTemplate(colleagueCatalog.templates[0].id);
@@ -162,32 +156,29 @@ test('batch verification waits for the complete colleague source preflight', t =
 
 function incompleteBundle(parent) {
     const bundle = path.join(parent, 'bundle');
-    for (const relative of ['plugin-src/resources/builtin-templates/catalog.json', 'plugin-src/resources/builtin-prompts/catalog.json', 'plugin-src/resources/assets/ai-reference-prompts/generated-files.json']) {
-        const target = path.join(bundle, relative);
-        fs.mkdirSync(path.dirname(target), {recursive: true});
-        fs.copyFileSync(path.join(project, relative), target);
+    for (const relative of ['plugin-src/resources/builtin-prompts/catalog.json', 'plugin-src/resources/colleague-library/catalog.json']) {
+        const target = path.join(bundle, relative); fs.mkdirSync(path.dirname(target), {recursive: true}); fs.copyFileSync(path.join(project, relative), target);
     }
-    const relative = path.join('plugin-src/resources', templateCatalog.templates[0].generatedReferences[0].path);
+    const relative = `plugin-src/resources/colleague-library/${colleagueCatalog.files[0].path}`;
     fs.mkdirSync(path.dirname(path.join(bundle, relative)), {recursive: true});
     return {bundle, relative};
 }
 
-test('a corrupt bundled PNG stops preflight before any template or prompt is written', t => {
-    const {parent, library} = fixture(t);
-    const {bundle, relative} = incompleteBundle(parent);
-    fs.writeFileSync(path.join(bundle, relative), 'not the registered PNG');
-    assert.throws(() => installBuiltins({...library, readAssetDescriptors() { assert.fail('batch must wait for all source preflight'); }}, bundle), /图片校验失败/);
-    assert.equal(library.listTemplates().length, 0);
-    assert.equal(library.listPrompts().length, 0);
+test('a missing bundled colleague source stops preflight before any writes', t => {
+    const {parent, library} = fixture(t), bundle = path.join(parent, 'bundle');
+    for (const relative of ['plugin-src/resources/builtin-prompts/catalog.json', 'plugin-src/resources/colleague-library/catalog.json']) {
+        const target = path.join(bundle, relative); fs.mkdirSync(path.dirname(target), {recursive: true}); fs.copyFileSync(path.join(project, relative), target);
+    }
+    assert.throws(() => installBuiltins(library, bundle));
+    assert.equal(library.listTemplates().length, 0); assert.equal(library.listPrompts().length, 0);
 });
 
 function installFirstTemplate(library) {
-    const definition = templateCatalog.templates[0], resources = {};
-    for (const [refs, role, purpose] of [[definition.generatedReferences, 'style', 'template-reference'], [definition.assets, 'structure', 'template-structure']]) {
-        for (const ref of refs) {
-            const asset = library.importAsset(path.join(project, 'plugin-src/resources', ref.path), {purpose});
-            resources[ref.path] = {assetHash: asset.assetHash, bytes: asset.bytes, detectedType: asset.detectedType, role};
-        }
+    const prepared = prepareColleagueBuiltins(relative => path.join(project, relative)).prepared[0];
+    const {definition} = prepared, resources = {};
+    for (const [key, input] of prepared.resources) {
+        const asset = library.importAsset(input.file, {purpose: input.purpose});
+        resources[key] = {assetHash: asset.assetHash, bytes: asset.bytes, detectedType: asset.detectedType, role: input.role};
     }
     library.installBuiltinTemplate({id: definition.id, name: definition.name, version: definition.version, definition, resources});
     return {definition, resources};

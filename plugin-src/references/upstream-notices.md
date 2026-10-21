@@ -31,6 +31,12 @@
 
 该固定版本采用 [MIT](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/LICENSE)。本轮只重写方法，没有复制其代码、Skill 正文或实质性文档片段；后续若复制这些内容，应随附该版本完整版权与许可文本。该许可不自动覆盖上游引用的品牌、字体或第三方图片。本产品继续使用既有宿主能力，不引入其可选云调用、素材下载、CDN、代理设置或偏好写入机制；数据流背景见上游 [SECURITY.md](https://github.com/alchaincyf/huashu-design/blob/798c4235ebff03d5c45e3c8affdf5e9d18f9dfa7/SECURITY.md)。
 
+## gbro 与本地 cover-vi 的方法吸收
+
+2026-10-21 完整核对 [pyang5166/gbro-cover-design 固定提交 8d1a0a5](https://github.com/pyang5166/gbro-cover-design/tree/8d1a0a5487e9ee6539b2b0a471b58469aadfedd6)，研究记录见仓库 `docs/research/2026-10-21-gbro-cover-design.md`。仅重写其空间接触关系、前中后景、标题层级与缺项集中询问的方法，纳入 [封面设计检查](cover-design-review.md)。该上游为 MIT；未复制正文、代码、风格文件或样图，不安装其配置，不将默认 3:4、正脸照、固定问答轮数或约 10% 边距变为本项目全局要求。实际比例、人物、标题、数量继续服从固定请求。
+
+用户提供的本地交接包 `cover-vi` 是独立来源；吸收逐图证据、适用分支、例外、置信度与失败边界的研究组织方法，未执行其脚本或复制其 `study.json` 真源模型。本项目沿用固定请求、规则证据和用户人工验收；同事的历史拆解资料与本次 AI 提交结果分别标识，不互相冒充。
+
 ## 许可与来源声明
 
 - baoyu-cover-image：MIT，Copyright (c) 2026 Jim Liu。许可原文：[baoyu-MIT.txt](licenses/baoyu-MIT.txt)。

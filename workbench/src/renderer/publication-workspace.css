@@ -21,7 +21,7 @@
 .publication-history details { padding: 14px; border: 1px solid var(--semi-color-border); border-radius: 9px; background: var(--semi-color-fill-0); }
 .publication-history summary { cursor: pointer; }
 .publication-history pre { max-height: 320px; overflow: auto; white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; line-height: 1.8; }
-.publication-history-cover { width: 160px; max-height: 210px; object-fit: contain; border-radius: 8px; }
+.publication-history-cover { width: auto; height: auto; max-width: 160px; max-height: 210px; object-fit: contain; border-radius: min(8px,4%); }
 .calendar-workspace .creator-page-heading { margin-bottom: 24px; }
 .calendar-workspace .calendar-cell.selected { box-shadow: inset 0 0 0 2px var(--semi-color-primary); }
 .calendar-workspace .calendar-selection { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; color: var(--semi-color-text-2); font-size: 13px; }

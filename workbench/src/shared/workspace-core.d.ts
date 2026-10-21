@@ -31,7 +31,7 @@ export interface WorkspaceCorePublicationSnapshot {
     };
     body: string | null;
 }
-export interface WorkspaceCoreTemplate extends WorkspaceEntity {builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[]}
+export interface WorkspaceCoreTemplate extends WorkspaceEntity {derivedFrom?: {id: string; version: number} | null; builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[]}
 type Options = {mutationId: string};
 type Changed = Pick<WorkspaceEntity, 'id' | 'editToken'>;
 type RecordInput = {planId: string; schedule: WorkspaceSchedule; url: string | null};

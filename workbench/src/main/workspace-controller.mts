@@ -1,4 +1,4 @@
-import {externalExportParent, validateLocalFiles} from './local-files.mts';
+import {externalExportParent, templateFolderImages, validateLocalFiles} from './local-files.mts';
 import {randomUUID} from 'node:crypto';
 import path from 'node:path';
 import fs from 'node:fs/promises';
@@ -16,7 +16,7 @@ export interface WorkspaceOwner {
     binding: WorkspaceBinding;
     authMode: 'required' | 'disabled';
     worker: WorkspaceWorker;
-    dialogs: {templateImages?(): Promise<string[] | null>; material?(): Promise<string | null>; export?(defaultName: string): Promise<string | null>};
+    dialogs: {templateFolder?(): Promise<string | null>; templateImages?(): Promise<string[] | null>; material?(): Promise<string | null>; export?(defaultName: string): Promise<string | null>};
     covers: {grant(assetHash: string): string};
     openPublicationURL?: (url: string) => Promise<void>;
     revealFolder?: (root: string) => void;
@@ -127,13 +127,36 @@ export class WorkspaceController {
         });
     }
 
-    async chooseTemplateImages(input?: undefined, selectedSources?: string[]) {
+    async chooseTemplateFolder(input?: undefined) {
+        this.validate('chooseTemplateFolder', input); requireWrite(this.owner.authMode);
+        return this.chooseTemplateImages(undefined, undefined, true);
+    }
+
+    async revealTemplateFolder(input: {templateId: string}): Promise<{revealed: true; reportWarnings?: string[]}> {
+        this.validate('revealTemplateFolder', input);
+        return this.owner.exclusive(async () => {
+            if (!this.owner.revealFolder) fail('NOT_READY', '此安装尚未配置文件管理器入口。');
+            const binding = this.owner.current();
+            const {folder, reportWarnings} = await this.owner.worker.call('workspaceTemplateFolder', {binding, templateId: input.templateId});
+            const info = await fs.lstat(binding.root, {bigint: true});
+            if (await fs.realpath(binding.root) !== binding.root || !info.isDirectory() || info.isSymbolicLink() || String(info.dev) !== binding.rootIdentity.dev || String(info.ino) !== binding.rootIdentity.ino) fail('LIBRARY_NOT_READY', '内容库原目录已改变，请重新连接后再查看。');
+            for (const part of [path.join(binding.root, '模板'), folder]) {
+                const stat = await fs.lstat(part);
+                if (!stat.isDirectory() || stat.isSymbolicLink()) fail('UNSAFE_PATH', '模板文件夹位置已改变。');
+            }
+            try {this.owner.revealFolder(folder);} catch {fail('FOLDER_OPEN_FAILED', '系统未能显示模板文件夹，请稍后重试。');}
+            return {revealed: true, reportWarnings};
+        });
+    }
+
+    async chooseTemplateImages(input?: undefined, selectedSources?: string[], folderSelection = false) {
         this.validate('chooseTemplateImages', input);
         requireWrite(this.owner.authMode);
         return this.owner.exclusive(async () => {
             this.owner.noPending();
             const binding = await this.writable();
-            const sources = selectedSources ?? await this.owner.dialogs.templateImages?.();
+            const folder = folderSelection ? await this.owner.dialogs.templateFolder?.() : null;
+            const sources = folderSelection ? folder ? await templateFolderImages(folder) : null : selectedSources ?? await this.owner.dialogs.templateImages?.();
             if (!sources) return null;
             await validateLocalFiles({kind: 'template', sources});
             try {
