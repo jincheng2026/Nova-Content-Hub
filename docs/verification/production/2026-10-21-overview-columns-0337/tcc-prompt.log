@@ -1,0 +1,8 @@
+Timestamp               Ty Process[PID:TID]
+2026-10-21 14:14:19.996 Df tccd[44551:b74486a] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder
+	cdhash H"cd69ad7aad3b68856bf1c6710c3bce14a10d00d8"
+	cdhash H"7cde8fbe018dd9678ee78453f9936d821f2ff271"
+2026-10-21 14:14:20.000 Df tccd[44551:b7455a9] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder
+	cdhash H"cd69ad7aad3b68856bf1c6710c3bce14a10d00d8"
+	cdhash H"7cde8fbe018dd9678ee78453f9936d821f2ff271"
+2026-10-21 14:14:20.002 Df tccd[44551:b7455a9] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=44530.203, service=kTCCServiceSystemPolicyDocumentsFolder, subject=Sub:{com.novaisland.nova-content-hub}Resp:{TCCDProcess: identifier=com.novaisland.nova-content-hub, pid=37917, auid=501, euid=501, binary_path=/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台},

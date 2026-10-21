@@ -1,0 +1,32 @@
+{
+  "recordedAt": "2026-10-21T06:19:36.795924+00:00",
+  "version": "0.3.37",
+  "sourceCommit": "7519d92c34f30013106911408b447756945dca9e",
+  "target": "/Applications/自媒体工作台.app",
+  "platform": "darwin",
+  "arch": "arm64",
+  "built": true,
+  "installed": true,
+  "nativeAcceptanceComplete": false,
+  "status": "waiting-for-macos-document-folder-permission",
+  "evidence": "tcc-prompt.log",
+  "observation": "macOS rejected old temporary code requirement and is prompting for SystemPolicyDocumentsFolder. Two native UI reads timed out while permission is pending; not treated as an application regression or completed startup acceptance.",
+  "userQuestionPending": true,
+  "libraryUnchangedDuringInstallation": true,
+  "librarySha256": "78b360bffa8821b65454a05407e8ae01130106d7f281b4370a972b585f5a7e3c",
+  "pluginsVersion": "0.3.37",
+  "generationRun": false,
+  "businessWrites": false,
+  "pending": [
+    "user allows macOS Documents folder access",
+    "installed three-column overview and all-project/day navigation verification",
+    "normal quit and reopen",
+    "completed transaction and final-integrity check"
+  ],
+  "unverified": [
+    "Developer ID signing and notarization",
+    "Intel Mac native runtime",
+    "Windows native runtime",
+    "real AI generation on this version"
+  ]
+}
