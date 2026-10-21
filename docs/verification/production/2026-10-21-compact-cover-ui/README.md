@@ -2,6 +2,20 @@
 
 用户反馈：详情浮层太窄、模板卡片下半部留白过大、竖向样张被放进宽而矮的框，生成窗口基础设置过于分散，需要滚动。要求基础填写不超过五项，完整展示原图，保留现有排版与生成能力。
 
+## 最终状态（用户允许系统访问后）
+
+已完成 0.3.39 Apple Silicon Mac 的打包、安装与原生启动验收，本地 tag `v0.3.39-preview-mac-arm64` 指向冻结源码 `f3e54c7d8646f4eea6cd8dce74931cf562f6f4fe`；没有重构建、改签或移动 tag。源码后的本节/截图提交仅补验收记录，工作区最终保持干净，未向远端推送。
+
+用户亲自允许文稿访问后，CUA 实际检查总览、模板、内容、日程、提示词和设置。原来的 CORRUPT 提示消失；模板卡片下方紧凑且同排对齐，宽详情显示同事 VI 全文并滚动至末尾，整组 19 张预览关闭后回到原阅读层。见 `system/native-templates.*`、`native-template-wide-details.*`、`native-template-details-end.*`、`native-template-samples-preview.*` 和 `native-details-preview-return.*`。
+
+实际内容的制作封面窗口首屏可见标题、模板、比例、张数和本人照片；整组样张与两张收藏参考展开后按纵图完整显示，主操作固定在底部。只打开、滚动和关闭，没有编辑标题、保存设置、选择候选或触发生图；见 `system/native-cover-composer.*`、`native-cover-samples-scrolled.*` 与 `native-cover-favorites.*`。实际设置显示 `0.3.39 · macOS · ARM64`、WorkBuddy 配套插件已连接、封面/模板助手均准备好。
+
+已用 Cmd+Q 正常退出，精确进程检查确认 installed main process 不再运行，然后从安装路径重开；原库 5 篇内容、1 个合集和原计划正常加载。见 `system/normal-quit-process.json`、`native-reopened-overview.*` 和 `native-acceptance.json`。
+
+严格 `final-integrity.mjs` 未带待授权参数，退出 0：事务 **complete**、`systemPermissionPending=false`，安装/归档/DMG 应用树一致，两端配套插件匹配，原绑定与用户库 **2135** 个条目不变，摘要仍为 `af0c67f39f297c0effed016e4f73e228935cc4e946f3e42840908360643aecca`。见当前 `final-integrity.json` 与 `logs/final-integrity-accepted.log`。下文等待系统授权是较早中间状态，保留作现场记录，不代表当前仍待授权。
+
+真实助手生图、Intel Mac、Windows、正式 Developer ID 与公证仍未验收；本次是临时签名预览，不能据此宣称全平台或正式生产通过。
+
 ## 设计与范围
 
 - 生成弹层采用左模板、右基础设置，标题、比例、人物照片与张数首屏可见；模板计入后共五个基础项，已有默认值沿用。
@@ -23,7 +37,7 @@
 
 ## 发布边界
 
-本轮版本 0.3.39，计划冻结后单独构建 darwin-arm64 临时签名预览，保留 0.3.38 的 tag 与安装包。打包、安装、系统展示及退出重开结果在实际执行后记录。Intel Mac、Windows、真实助手生图、Developer ID 与公证不计入已验收范围。
+本轮版本 0.3.39，已独立构建 darwin-arm64 临时签名预览，保留 0.3.38 的 tag 与安装包；最终打包、安装、系统展示及退出重开结果见顶部最终状态。Intel Mac、Windows、真实助手生图、Developer ID 与公证不计入已验收范围。
 
 ## 升级前发现的原库兼容问题
 

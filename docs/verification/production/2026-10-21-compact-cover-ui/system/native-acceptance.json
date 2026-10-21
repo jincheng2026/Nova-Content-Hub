@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-10-21T12:15:32.203648+00:00",
+  "version": "0.3.39",
+  "platform": "darwin-arm64",
+  "installationPath": "/Applications/自媒体工作台.app",
+  "nativeUiObserved": true,
+  "originalLibraryLoaded": true,
+  "pages": [
+    "overview",
+    "templates",
+    "content",
+    "calendar",
+    "prompts",
+    "settings"
+  ],
+  "compactCoverComposerObserved": true,
+  "titleRatioCountPhotoVisibleOnFirstScreen": true,
+  "templateReadingEndObserved": true,
+  "nestedPreviewReturnObserved": true,
+  "sampleAndFavoritePortraitsObserved": true,
+  "normalQuitExactProcessStopped": true,
+  "reopenedOriginalLibrary": true,
+  "settingsVersionAndAssistantReadyObserved": true,
+  "businessWritesPerformed": false,
+  "realGenerationPerformed": false,
+  "scope": "Read-only native installed acceptance using existing user library; no title edits, candidate selection, settings save, resource update or generation. Library bytes and binding verified separately by strict final-integrity."
+}

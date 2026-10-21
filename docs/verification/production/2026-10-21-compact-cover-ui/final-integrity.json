@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-21T11:58:19.302Z",
+  "recordedAt": "2026-10-21T12:14:15.108Z",
   "version": "0.3.39",
   "sourceCommit": "f3e54c7d8646f4eea6cd8dce74931cf562f6f4fe",
   "installedAndArchivedAppEqual": true,
@@ -15,9 +15,9 @@
   "signatureVerified": true,
   "developerIdSigned": false,
   "notarized": false,
-  "transactionPhase": "published",
-  "installationConfirmedByApp": false,
-  "systemPermissionPending": true,
+  "transactionPhase": "complete",
+  "installationConfirmedByApp": true,
+  "systemPermissionPending": false,
   "nativeBindingPreserved": true,
   "userLibrary": {
     "entries": 2135,
