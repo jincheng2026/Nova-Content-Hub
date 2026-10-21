@@ -57,7 +57,7 @@ export type WorkspaceMutation =
 export interface WorkspaceEntity extends WorkspaceReference { title: string; createdAt: string; updatedAt: string; deletedAt: string | null }
 export interface WorkspaceLibraryPrompt extends WorkspaceEntity, WorkspacePromptFields { enabled: boolean; favorite: boolean }
 export interface WorkspaceLibraryPhoto extends WorkspaceEntity { assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; originalName: string }
-export interface TemplateCatalogFields {catalogStatus: 'default' | 'legacy' | 'custom'; derivedFrom: {id: string; version: number} | null; designNotes: string}
+export interface TemplateCatalogFields {catalogStatus: 'default' | 'legacy' | 'custom'; derivedFrom: {id: string; version: number} | null; designNotes: string; sourceScopeWarning?: string | null}
 export interface WorkspaceLibraryTemplate extends WorkspaceEntity, WorkspaceTemplateFields, TemplateCatalogFields { builtin: boolean; currentVersion: number; versions: {version: number; packageHash: string}[] }
 export interface WorkspaceLibraryPlan extends WorkspacePlan { text: string | null; textMode: 'explicit' | 'body'; coverChoice: WorkspaceCoverChoice; publicationId: string | null }
 export interface WorkspacePublication {

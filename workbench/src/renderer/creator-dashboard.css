@@ -11,8 +11,7 @@
 .creator-overview-heading .creator-week>button.is-today { border-color:var(--semi-color-primary); background:var(--semi-color-primary-light-default); }
 .creator-overview-heading .creator-week strong { font-size:17px; color:var(--semi-color-text-0); }
 .creator-overview-heading .creator-week>button>span { font-size:12px; }
-.creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1.55fr) minmax(285px,1fr); gap:22px; }
-.creator-overview .creator-overview-main,.creator-overview .creator-overview-side { gap:20px; }
+.creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1fr); gap:22px; }
 .creator-overview .creator-panel { border-color:var(--semi-color-border); border-radius:20px; }
 .creator-overview .creator-panel-heading h3 { color:var(--semi-color-text-0); font-size:16px; }
 .creator-channel { --channel-color:#416dac; --channel-background:#edf3fc; display:inline-flex; align-items:center; width:fit-content; padding:3px 7px; border:1px solid color-mix(in srgb,var(--channel-color) 18%,transparent); border-radius:5px; background:var(--channel-background); color:var(--channel-color); font-size:12px; font-style:normal; line-height:1.4; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis; }
@@ -132,14 +131,12 @@
   .creator-overview-heading h2 { font-size:24px; }
   .creator-today-progress { min-width:130px; }
   .creator-overview-heading .creator-week>button { display:grid; justify-items:center; height:auto; width:36px; }
-  .creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr); gap:18px; }
+  .creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1fr); gap:18px; }
   .creator-schedule .creator-page-heading { align-items:flex-start; flex-wrap:wrap; }
 }
 @media (max-width:980px) {
   .creator-overview .creator-overview-layout { grid-template-columns:1fr; }
   .creator-overview-heading .creator-week { margin-left:auto; }
-  .creator-overview .creator-overview-side { grid-template-columns:1fr 1fr; align-items:start; }
-  .creator-overview .creator-template-shortcut { grid-column:1/-1; }
   .creator-schedule .creator-page-heading>.management-actions { justify-content:flex-start; }
 }
 @media (max-width:700px) {
@@ -148,7 +145,6 @@
   .creator-today-progress { margin-left:0; max-width:none; }
   .creator-overview-heading .creator-week { width:100%; justify-content:space-between; }
   .creator-overview-heading .creator-week>button { display:grid; justify-items:center; height:auto; width:calc((100% - 36px)/7); }
-  .creator-overview .creator-overview-side { grid-template-columns:1fr; }
   .creator-queue-row { gap:8px; }
   .creator-queue-image { width:38px; height:42px; }
   .creator-queue-status { font-size:11px; }
@@ -205,8 +201,8 @@
 .creator-featured-cover.semi-button { grid-column:2; grid-row:1; align-self:center; width:100%; height:280px; min-height:0; padding:0; overflow:hidden; border-radius:14px; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.08); color:#fff; box-shadow:0 12px 32px rgba(0,0,0,.2); }
 .creator-featured-cover .semi-button-content { display:contents; }
 .creator-featured-cover img { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:min(10px,4%); margin:auto; }
-.creator-featured-placeholder { display:grid; gap:12px; padding:24px; white-space:normal; }
-.creator-featured-placeholder strong { font-size:15px; }.creator-featured-placeholder small { font-size:13px; }
+.creator-featured-content:not(.has-cover) { grid-template-columns:minmax(0,1fr); min-height:0; }
+.creator-featured-cover-note { margin:12px 0 0; font-size:13px; color:#fff; }
 .creator-featured-copy { grid-column:1; grid-row:1; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; min-width:0; }
 .creator-next-meta { display:flex; align-items:center; flex-wrap:wrap; gap:10px; color:#fff; font-size:13px; }
 .creator-next-meta>strong { font-size:13px; font-weight:500; }.creator-next-meta time { font-size:18px; font-weight:600; }

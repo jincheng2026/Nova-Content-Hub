@@ -60,6 +60,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         await run(async () => {const [next, assistant] = await Promise.all([invoke('readTemplateWorkflow', {templateId}), invoke('readTemplateAssistantSetup')]); setView(next); setSetup(assistant); setConfirm(false); setNotice('已读取当前拆解记录。');});
     }
     return <section className="template-workflow" aria-label="AI拆解与人工确认">
+        {(template?.sourceScopeWarning ?? asset?.sourceScopeWarning) && <p className="template-source-scope" role="note">{template?.sourceScopeWarning ?? asset?.sourceScopeWarning}</p>}
         <div className="management-toolbar"><div><h3>{view?.title ?? template?.title ?? asset?.name ?? '模板'} · AI拆解风格</h3><p>AI分析整组样张，并还原第 1 张供你对照。结果回传后，由你确认规则与效果，再保存为新版本。</p></div><Button disabled={busy || loading} onClick={() => void reload()}>刷新拆解结果</Button></div>
         {attempt && <div className="template-study-progress" role="status" aria-live="polite"><strong>{accepted ? '已确认' : statusNames[attempt.status]}</strong><p>{accepted ? '规则与首张还原效果已经你确认并保存。' : attempt.status === 'created' ? '已建立任务，等待助手领取。可继续打开助手；连接失败时可使用工作台的复制提示词入口。' : attempt.status === 'claimed' ? '助手已领取任务。具体分析进度由助手展示，这里只在收到结果后更新。' : attempt.status === 'committed' ? '请对照原样张、规则证据与首张还原图，再勾选确认。回传结果尚未经过你的确认。' : '历史任务与已回传证据仍保留。'}</p></div>}
         {view?.builtin ? <div className="template-workflow-message"><p>AI拆解会自动创建或复用这组风格的工作副本，内置样张与历史记录会保留。</p>{onDerive && <Button disabled={busy} onClick={() => void onDerive()}>AI拆解风格</Button>}</div> : <>

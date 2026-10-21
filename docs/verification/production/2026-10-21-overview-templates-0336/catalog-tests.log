@@ -1,0 +1,11 @@
+✔ both catalogs retain default, legacy and derived custom facts; ordinary reads never write Markdown (752.354125ms)
+✔ explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories (676.438334ms)
+✔ historical report scope is labelled without changing notes or splitting colleague groups (3.378125ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1732.786

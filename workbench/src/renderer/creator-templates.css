@@ -1,5 +1,5 @@
 .creator-templates .creator-template-layout { grid-template-columns:minmax(0,1fr); }
-.creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px 20px; align-items:start; }
+.creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(5,minmax(0,1fr)); gap:24px 16px; align-items:start; }
 .creator-templates .creator-template-library { gap:18px; }
 .creator-templates .creator-style-card { border:1px solid var(--surface-line); border-radius:18px; background:#fff; overflow:visible; box-shadow:var(--surface-shadow); transition:transform .18s,box-shadow .18s; }
 .creator-templates .creator-style-card:hover,.creator-templates .creator-style-card:focus-within { transform:translateY(-4px) scale(1.015); box-shadow:var(--surface-shadow-hover); }
@@ -9,17 +9,16 @@
 .creator-templates .creator-style-card-body { position:relative; padding:12px 36px 18px 15px; }
 .creator-templates .creator-style-card h3 { margin:0 0 6px; font-size:15px; font-weight:600; color:var(--semi-color-text-0); overflow-wrap:anywhere; }
 .creator-templates .creator-template-group-count { font-size:12px; color:var(--semi-color-text-2); }
-.creator-templates .creator-template-details { position:absolute; right:10px; top:8px; margin:0; padding:0; border:0; z-index:4; }
-.creator-templates .creator-template-details>summary { display:grid; place-items:center; width:28px; height:28px; list-style:none; border-radius:50%; color:var(--semi-color-text-2); font-size:12px; }
-.creator-templates .creator-template-details>summary::-webkit-details-marker { display:none; }
-.creator-templates .creator-template-details[open] { z-index:5; }
-.creator-templates .creator-template-detail-body { position:absolute; top:32px; right:0; width:240px; max-width:72vw; max-height:400px; overflow:auto; padding:18px; border:1px solid var(--surface-line); border-radius:18px; background:#fff; box-shadow:var(--surface-shadow-hover); }
-.creator-templates .creator-template-detail-body p { margin:0 0 10px; font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
+.creator-templates .creator-template-details.semi-button { position:absolute; right:8px; top:8px; width:30px; height:30px; min-width:0; padding:0; color:var(--semi-color-text-2); }
+.creator-template-detail-body { width:280px; max-width:calc(100vw - 32px); max-height:min(400px,calc(100vh - 32px)); overflow:auto; padding:18px; }
+.creator-template-detail-body:focus-visible { outline:2px solid var(--semi-color-primary); outline-offset:2px; }
+.creator-template-detail-body p { margin:0 0 10px; font-size:13px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
+.creator-template-detail-body .creator-template-source-warning,.template-source-scope { font-size:13px; line-height:1.7; overflow-wrap:anywhere; padding:10px; color:#7A4B00; background:#FFF4E2; border-radius:10px; }
+.creator-template-detail-body>.semi-button { display:flex; width:100%; justify-content:flex-start; height:34px; padding:0 8px; font-size:13px; margin:4px 0; }
 .creator-templates .creator-style-actions { justify-content:flex-start; }
-.creator-templates .creator-template-detail-body .semi-button { padding:0; height:30px; font-size:13px; }
 .creator-preview-description { color:var(--semi-color-text-2); white-space:pre-wrap; overflow-wrap:anywhere; }
-@media(max-width:1199px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media(max-width:899px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:1199px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media(max-width:999px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media(max-width:759px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 14px; } }
 @media(max-width:440px) { .creator-templates .creator-template-grid.image-list .semi-list-items { grid-template-columns:1fr; } }
 @media(hover:none) { .creator-templates .creator-template-use { opacity:1; pointer-events:auto; } }

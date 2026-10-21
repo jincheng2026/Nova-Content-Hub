@@ -50,3 +50,22 @@ test('explicit folder reveal rebuilds safe readable reports and rejects renderer
     fs.renameSync(folder, `${folder}-saved`); fs.symlinkSync(`${folder}-saved`, folder);
     await assert.rejects(execute('workspaceTemplateFolder', {binding: f.binding, templateId: f.derived.id}));
 });
+
+// Imported source reports are preserved verbatim; their old sample totals are not current-group counts.
+test('historical report scope is labelled without changing notes or splitting colleague groups', () => {
+    const catalog = JSON.parse(fs.readFileSync(new URL('../../plugin-src/resources/colleague-library/catalog.json', import.meta.url), 'utf8'));
+    assert.equal(catalog.templates.length, 5);
+    const expected = [19, 30, 25, 30, 23];
+    for (const [index, template] of catalog.templates.entries()) {
+        const fields = templateCatalogFields({id: template.id, builtin: true}, template);
+        assert.equal(template.referenceImages.length, expected[index]);
+        assert.equal(new Set(template.referenceImages.map(image => image.sha256)).size, expected[index]);
+        assert.equal(fields.designNotes, template.designNotes);
+        if ([1, 3].includes(index)) {
+            assert.match(fields.sourceScopeWarning, /本组实际包含 30 张原图/);
+            assert.match(fields.sourceScopeWarning, index === 1 ? /90 张历史样本/ : /32 张历史样本/);
+            assert.equal(templateCatalogFields({id: 'working-copy'}, template).sourceScopeWarning, fields.sourceScopeWarning);
+        } else assert.equal(fields.sourceScopeWarning, null);
+    }
+    assert.equal(catalog.templates.filter(template => template.id === 'builtin-colleague-spatial-operation').length, 1);
+});
