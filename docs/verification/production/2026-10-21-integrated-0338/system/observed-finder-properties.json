@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-10-21T10:51:56.837Z",
+  "source": "Actual CUA Finder Get Info observations and saved screenshots",
+  "archivedAndInstalled": {
+    "displayName": "自媒体工作台",
+    "fileName": "自媒体工作台.app",
+    "kind": "应用程序(Apple芯片)",
+    "version": "0.3.38",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "finderBytes": 673254983,
+    "finderOnDisk": "676.8 MB",
+    "finderModifiedLocal": "2026-10-21 18:40"
+  },
+  "screenshots": [
+    "archived-finder-info.png",
+    "installed-finder-info.png"
+  ]
+}

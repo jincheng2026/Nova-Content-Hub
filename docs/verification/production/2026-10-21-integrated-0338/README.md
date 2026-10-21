@@ -34,3 +34,22 @@
 - handoff/context/CLI/skill 52/52；最终新构建 native handoff CLI 9/9；源码镜像与模板 catalog 检查通过。
 - React/Semi/Electron 隔离 UI：模板密度与导入、总览、收藏构图预算、图库、分页圆角、历史导入恢复、设置、草稿和日程分页/多渠道/过滤/焦点均通过。隔离 fixture 不读写实际用户库。
 - logs 中 initial/red 是修复前证据，green/final 及本节实际结果是修复后证据；不能把旧失败截图当最终验收。最终桌面双模式构建和真实沙箱恢复探针仍在本次冻结前完成。
+
+### 冻结与最终构建
+
+- 冻结源码 `abbbc8aaf688db6301082ba17e0d48ca5f6db5c0`，分支 `codex/release-0338`；两个父提交分别为上述 main 与 qoder/review，保留两侧历史。交付记录后续单独提交，不改写冻结源码。
+- 最新双模式桌面构建成功。原生探针 required/disabled 的 import/reopen 四阶段全绿，见 `logs/native-probe-both.log`：覆盖沙箱、preload/IPC、utility process/sharp、task=null/已有任务的真实恢复入口、丢失回执后仍绑定原库、清除旧编辑器后切库、disabled 丢失选库响应和状态后的重试、源文件移除后的第二进程重开，以及 MIME/URL/CSP/缺失资源拒绝启动。
+- 修复前 `native-probe-initial-red.log` 是探针直接调用 controller 绕过正常界面收尾，留下旧 busy 状态；最终从实际恢复按钮开始执行。另有旧 #refresh/#list 引用按当前界面更新。没有为探针放宽产品的业务门控。
+- 从干净冻结提交执行 `dist:preview:payload --platform darwin --arch arm64` 成功；独立原生负载、Electron、Node、sharp 及配套 marketplace 均按 arm64 校验。应用临时签名通过，不含开发测试源码与探针。
+- `package.json` 是本目录的实际包核验收据，记录冻结提交、负载摘要、DMG SHA256、完整应用树摘要、镜像一致性及精确三文件的同事交付目录。随包示例库核对 5 模板、52 提示词、1 内容和 2 原始候选图；不包含发布记录。
+- Finder 实际检查归档应用：0.3.38、Apple 芯片、已确认图标、公司版权、673,254,983 字节、修改时间 2026-10-21 18:40；见 `system/archived-finder-info.{txt,png}`。安装后展示与运行另行记录。
+
+### 安装、插件与系统授权边界
+
+- 产品事务安装器已将完整新应用发布到 `/Applications/自媒体工作台.app`，保留旧应用恢复目录，见 `installation.json`。原生启动仍等待系统授权，因此事务为 `published`，尚未由应用确认 `complete`，不能声称安装事务已最终确认。用户当前绑定未改变，独立原库备份保留；库 2071 个条目的安装前后摘要均为 `397eedd04a6081aec0cf23888c1aa9478470d8740abf62ba2611237c9acdb018`。
+- 安装后 Finder 实际核对与归档应用相同的名称、图标、0.3.38、Apple 芯片、公司版权、673,254,983 字节和 18:40 修改时间，见 `system/installed-finder-info.png`。DMG 实际 415,027,638 字节，SHA256 `cf22118a32807064c18ee535ea9e75aa38e62bdec1d32be4e08a7610f016a70d`。
+- 通过官方 CLI 更新 Codex/WorkBuddy 已安装插件，两宿主 cover/template skill 均匹配 0.3.38；相关配置先做私有备份，其余插件与启用设置核对未变。见 `plugins.json`。本次旧会话未重载，不宣称当前会话已经使用新插件执行真实生图。
+- 已创建本地 annotated tag `v0.3.38-preview-mac-arm64`，指向冻结源码 `abbbc8aaf688db6301082ba17e0d48ca5f6db5c0`；未推送远端。
+- 安装后真实进程启动，但活动监视器显示未响应，实际页面/关于/正常退出重开暂未验收。目标进程采样显示主线程同步 `uv_fs_open → open → __open` 等待；系统 TCC 日志直接显示新旧临时签名 cdhash 不同，`DocumentsFolder` 的已有 code requirement 不匹配，并进入 `AUTHREQ_PROMPTING`（请求 `68757.20`），当时无结果返回。最吻合的源码边界为 `desktop.mts` 的 `syncLibraryWatcher()` 在主线程同步检查原库，具体 syscall 文件路径未直接捕获，不能写成已证实路径。
+- 计算机工具明确拒绝操作 `com.apple.UserNotificationCenter`（安全限制），已请用户亲自完成这一次正常的文稿访问决定。没有重置 TCC、改权限数据库、临时重签、迁移用户库或绕过系统安全。授权完成后才能继续真实页面与退出重开验收。
+- `final-integrity.mjs` 默认仍严格要求事务 `complete`。系统授权待答时显式以 `--awaiting-system-permission` 运行，只允许真实 `published` 状态，并输出 `ARTIFACTS_VERIFIED_RUNTIME_PENDING`；不能把这一模式当作运行或最终事务验收通过。`final-integrity.json` 核对的是安装/归档完整树、签名、DMG/交付文件、原绑定/用户库及配套插件；不代表上述待完成的真实运行验收。正式 Developer ID、公证、Intel Mac、Windows 和本版真实生图未验证。

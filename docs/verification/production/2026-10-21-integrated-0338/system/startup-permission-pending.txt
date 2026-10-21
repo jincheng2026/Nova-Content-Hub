@@ -1,0 +1,93 @@
+Window: "活动监视器", App: 活动监视器.
+0 标准窗口 活动监视器 – 所有进程, Secondary Actions: Raise
+	1 滚动区
+		2 外框 Processes
+			3 row (selectable) 自媒体工作台 Helper
+0.0
+0.25
+19
+1
+Apple
+0.0
+0.00
+97173
+mac
+			4 row (selectable) 自媒体工作台 Helper
+0.0
+0.10
+12
+0
+Apple
+0.0
+0.00
+97174
+mac
+			5 row (selectable) 自媒体工作台 Helper (Renderer)
+0.0
+0.29
+17
+0
+Apple
+0.0
+0.00
+97190
+mac
+			6 row (selectable) 自媒体工作台（未响应）
+0.0
+1.01
+36
+0
+Apple
+0.0
+0.00
+97143
+mac
+			7 栏 (selectable) Command
+			8 栏 (selectable) CPUUsage
+			9 栏 (selectable) CPUTime
+			10 栏 (selectable) Threads
+			11 栏 (selectable) IdleWakeUps
+			12 栏 (selectable) Architecture
+			13 栏 (selectable) GPUUsage
+			14 栏 (selectable) GPUTime
+			15 栏 (selectable) PID
+			16 栏 (selectable) UID
+			17 container
+				18 排序按钮 进程名称
+				19 排序按钮 % CPU
+				20 排序按钮 CPU时间
+				21 排序按钮 线程
+				22 排序按钮 闲置唤醒
+				23 排序按钮 种类
+				24 排序按钮 % GPU
+				25 排序按钮 GPU时间
+				26 排序按钮 PID
+				27 排序按钮 用户
+	28 container
+		29 text Value: 61.18% 进程： 闲置： 20.73% 18.09% 用户： 系统： 6,876 702 CPU负载 线程：, Placeholder: -
+	30 工具栏
+		31 按钮 (disabled) Description: 停止, Secondary Actions: 移到下一项, 从工具栏移除
+		32 按钮 (disabled) Description: 检查器, Help: 检查所选进程, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		33 菜单按钮 Description: 操作, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		34 Description: 类别, Help: 显示指定类别中的进程
+			35 单选按钮 Description: CPU, Value: 1
+			36 单选按钮 Description: 内存, Value: 0
+			37 单选按钮 Description: 能耗, Value: 0
+			38 单选按钮 Description: 磁盘, Value: 0
+			39 单选按钮 Description: 网络, Value: 0
+		40 搜索文本栏 (settable) 自媒体工作台
+			41 按钮 搜索
+			42 按钮 取消
+	43 关闭按钮
+	44 缩放按钮
+	45 最小化按钮
+	46 text 活动监视器 所有进程
+47 menu bar
+	48 活动监视器
+	49 文件
+	50 编辑
+	51 显示
+	52 窗口
+	53 帮助
+
+The focused UI element is 40 搜索文本栏 (settable) 自媒体工作台

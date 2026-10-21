@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-10-21T10:51:56.834Z",
+  "installedVersion": "0.3.38",
+  "pid": 97143,
+  "activityMonitor": "not responding",
+  "cuaError": "timeoutReached",
+  "sampleHeader": [
+    "Analysis of sampling 自媒体工作台 (pid 97143) every 1 millisecond",
+    "Process:         自媒体工作台 [97143]",
+    "Path:            /Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+    "Load Address:    0x1049c0000",
+    "Identifier:      com.novaisland.nova-content-hub",
+    "Version:         0.3.38 (0.3.38)",
+    "Code Type:       ARM64",
+    "Platform:        macOS",
+    "Parent Process:  launchd [1]",
+    "Target Type:     live task",
+    "",
+    "Date/Time:       2026-10-21 18:46:41.163 +0800",
+    "Launch Time:     2026-10-21 18:43:41.149 +0800",
+    "OS Version:      macOS 26.4.1 (25E253)",
+    "Report Version:  7",
+    "Analysis Tool:   /usr/bin/sample",
+    "",
+    "Physical footprint:         96.0M",
+    "Physical footprint (peak):  96.6M",
+    "Idle exit:                  untracked",
+    "----",
+    ""
+  ],
+  "mainThreadWait": [
+    "    +                                                                                                               834 uv_fs_open  (in Electron Framework) + 84  [0x111977714]",
+    "    +                                                                                                                 834 node::GetValidatedFd(node::Environment*, v8::Local<v8::Value>)  (in Electron Framework) + 1064  [0x1114f92a8]",
+    "    +                                                                                                                   834 open  (in libsystem_kernel.dylib) + 64  [0x18890b8f0]",
+    "    +                                                                                                                     834 __open  (in libsystem_kernel.dylib) + 8  [0x188900694]",
+    "        __open  (in libsystem_kernel.dylib)        834"
+  ],
+  "tcc": [
+    "2026-10-21 18:43:47.515 Df tccd[96460:b83f275] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder",
+    "2026-10-21 18:43:47.520 Df tccd[96460:b83f275] [com.apple.TCC:access] Failed to match existing code requirement for subject com.novaisland.nova-content-hub and service kTCCServiceSystemPolicyDocumentsFolder",
+    "2026-10-21 18:43:47.524 Df tccd[96460:b83f275] [com.apple.TCC:access] AUTHREQ_PROMPTING: msgID=68757.20, service=kTCCServiceSystemPolicyDocumentsFolder, subject=Sub:{com.novaisland.nova-content-hub}Resp:{TCCDProcess: identifier=com.novaisland.nova-content-hub, pid=97143, auid=501, euid=501, binary_path=/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台},"
+  ],
+  "permissionControlToolRejection": "Computer Use is not allowed to use the app 'com.apple.UserNotificationCenter' for safety reasons.",
+  "existingDocumentsToggleObserved": "on; no toggle changed; actual TCC request still requires a response",
+  "userActionRequested": true,
+  "permissionBypassed": false,
+  "actualPageAcceptance": false,
+  "quitReopenAccepted": false
+}
