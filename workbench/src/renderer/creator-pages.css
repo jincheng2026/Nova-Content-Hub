@@ -6,7 +6,7 @@
 .creator-page-stats { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
 .creator-page-stats>span { display:inline-flex; align-items:center; gap:5px; min-height:30px; padding:4px 12px; border:1px solid rgba(0,0,0,.035); border-radius:999px; background:rgba(255,255,255,.92); color:var(--semi-color-text-0); font-size:13px; box-shadow:0 1px 3px rgba(0,0,0,.03); }
 .creator-page-heading>.management-actions,.content-list-heading>.management-actions { justify-content:flex-end; flex-wrap:wrap; margin:0; max-width:50%; }
-.creator-overview-layout { display:grid; grid-template-columns:minmax(0,1fr); gap:22px; align-items:start; }
+.creator-overview-layout { display:grid; grid-template-columns:minmax(0,1fr); gap:22px; align-items:stretch; }
 .creator-panel { border:1px solid var(--surface-line); background:#fff; border-radius:18px; box-shadow:var(--surface-shadow); min-width:0; overflow:hidden; }
 .creator-panel-heading { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid rgba(0,0,0,.05); }
 .creator-panel-heading h3 { margin:0; font-size:15px; font-weight:600; }
