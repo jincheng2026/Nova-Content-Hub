@@ -1,0 +1,15 @@
+{
+  "version": "0.3.39",
+  "platform": "darwin-arm64",
+  "appName": "自媒体工作台",
+  "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+  "archivedAndInstalledFinderBytes": 673262021,
+  "archivedAndInstalledFinderModifiedLocal": "2026-10-21 19:52",
+  "evidence": [
+    "archived-finder-info.txt",
+    "archived-finder-info.png",
+    "installed-finder-info.txt",
+    "installed-finder-info.png"
+  ],
+  "note": "Finder total is separately observed; package snapshot sums file bytes with another counting method."
+}

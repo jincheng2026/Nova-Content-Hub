@@ -38,3 +38,17 @@ Finder 兼容修复只豁免对象目录中精确命名 `.DS_Store` 的安全普
 根线程以新源码只读访问实际原绑定，读取到 23 模板、5 内容、54 提示词、2 照片、1 合集；前后 2135 个条目及完整摘要保持一致，`.DS_Store` 原样存在。见 `library-read-final.json`。这不是写入修复，也未运行生图。
 
 Finder 修复后的最终文件库全套 **450/450**（原 441 + 新增 9），内置资源/种子 **15/15**；源镜像及 72 项资源目录约束通过。最终双模式桌面构建、native/renderer TypeScript 与镜像/模板检查再次通过。见 `logs/finder-metadata-file-library-final.log`、`logs/seeds-final.log`、`logs/build-final.log`、`logs/typecheck-final.log` 和 `logs/check-final.log`。
+
+## 冻结与安装产物
+
+- 冻结源码 `f3e54c7d8646f4eea6cd8dce74931cf562f6f4fe`，分支 `codex/compact-cover-ui`。从干净提交构建 darwin-arm64 独立负载与 DMG 成功；最终应用与负载、DMG 内应用全树 1853 条目一致。配套 Electron、Node、sharp、marketplace 按 arm64 核验。见 `package.json` 与 `logs/dist.log`、`logs/package-verify.log`。
+- DMG `Nova-Content-Hub-0.3.39-darwin-arm64-preview.dmg`，415,026,999 字节，SHA256 `8388ba8b8c3c81a177cbf5211018d3a3b5b4c5024f61b88ce7ecd190c9784f24`。同事目录 `/Users/mac/Downloads/自媒体工作台-0.3.39-同事交付-Mac苹果芯片` 精确三文件，不带研发测试文件。
+- Finder 实际核对归档和安装后应用：名称/图标正确、Apple 芯片、版本 0.3.39、公司版权完整；均显示 673,262,021 字节、修改时间 2026-10-21 19:52。见 `system/*finder-info.*`。该观察值与文件树求和方法分开记录。
+- 产品事务安装器已发布至 `/Applications/自媒体工作台.app`，旧版恢复目录保留。安装前后原库完整摘要与原绑定一致，未清除 Finder 文件。Codex/WorkBuddy 官方 CLI 更新成功，两端 cover/template 均核对 0.3.39，其他插件设置保留；见 `installation.json`、`plugins.json`。
+- 预览使用 adhoc 临时签名、`productionReady=false`，没有 Developer ID 或公证；0.3.38 原冻结产物/tag 没有改动。本次未向远端推送。
+
+## 原生启动等待系统确认（中间状态）
+
+首次打开安装后的 0.3.39，精确进程检查为 running，CUA 读取应用超时，安装事务为 published。系统 TCC 日志在 19:56:32 明确记录已有 code requirement 不匹配，以及本应用 DocumentsFolder 的 `AUTHREQ_PROMPTING`（18478.21）；见 `system/startup-permission.log`。尚不能把这个状态算作原生启动验收。
+
+已请用户亲自允许系统正常弹窗。此前计算机工具明确禁止操作这个系统授权窗口；本轮不绕过它、不修改权限数据库、不重新签名或转移原库。默认最终核验仍要求事务 complete；等待时仅用显式 `--awaiting-system-permission` 的中间收据，后续页面与正常退出重开完成后再记录最终状态。
