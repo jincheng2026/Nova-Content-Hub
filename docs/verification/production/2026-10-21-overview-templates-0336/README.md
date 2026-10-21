@@ -11,3 +11,14 @@
 目录测试3/3；实际React/Semi/Electron隔离探针覆盖Hero预览与发布隔离、纵向布局、响应式列数、分页末项、完整25张入口、浮层多开/遮挡/边界/外点/Esc/Tab/焦点归位，未调用真实AI或写用户库。截图为隔离合成数据，见probe/，最终安装与Finder观察另记。未重复执行全量矩阵；旧overview-layout与template-density历史探针基于旧布局，本版行为以overview-template-ui-probe为准。
 
 目标为darwin-arm64预览交付，用户已接受临时签名；无Developer ID/公证，Intel/Windows待原生验收。最终冻结源码、哈希与安装信息随后补入本目录。
+
+## 最终交付
+
+冻结源码 `d89ea80d773bdb2cf49118ea0b727bae2a9c6e17`，tag `v0.3.36-preview-mac-arm64`；安装包与后续交付记录分开冻结。本地 main 合入源码与交付记录，未推送远端，qoder/review 工作区保留。
+
+- 交付目录：`/Users/mac/Downloads/自媒体工作台-0.3.36-同事交付-Mac苹果芯片`，仅 DMG、安装与使用说明、SHA256 三项。DMG 414778956 字节，SHA256 `0bd8e16ab034ccf23f94b185aec5bed07206e4d9e8a64d87a6b75f31f3c9c6de`。
+- 最终归档、DMG、已安装应用完整树一致，1821 项，树SHA256 `ba8441766695dd66a3f3a28113d0a39228785f1831cdfb569617562ded5a2fd9`。临时签名校验通过，配套 Codex/WorkBuddy 插件均0.3.36；当前会话插件上下文需后续新任务重新加载，未调用真实生成。
+- 安装、原生浏览、正常退出和重开后，实际内容库 1956 项，SHA256 `78b360bffa8821b65454a05407e8ae01130106d7f281b4370a972b585f5a7e3c` 不变，旧应用恢复副本保留于 `/Applications/.nova-content-hub-install-5952c777-d5f8-4f89-8677-1066b5c979b1`。
+- 原生总览、五列模板、单详情切换及 Esc 焦点归位、完整25张同组预览均已检查；证据见 installed/ 与 startup-acceptance.json。本轮未观察到新的文稿权限弹窗。
+- Finder 最终归档与安装后均显示自媒体工作台、确认N图标、Apple芯片、0.3.36、公司版权，实际显示672950998字节、13:03修改时间；文件内容累计672950705字节，与Finder口径分别记录。应用关于版本及版权以原生AX另核对。
+- darwin-arm64预览包，productionReady=false；没有正式Developer ID签名/公证，Intel/Windows待独立原生验收；未把UI探针或安装检查当作真实AI产物验收。

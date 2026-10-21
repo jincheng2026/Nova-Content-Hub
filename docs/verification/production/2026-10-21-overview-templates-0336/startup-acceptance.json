@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-10-21T05:27:10.135583+00:00",
+  "version": "0.3.36",
+  "sourceCommit": "d89ea80d773bdb2cf49118ea0b727bae2a9c6e17",
+  "target": "/Applications/自媒体工作台.app",
+  "platform": "darwin",
+  "arch": "arm64",
+  "installed": true,
+  "nativeRunning": true,
+  "normalQuitAndReopen": true,
+  "tccPromptObserved": false,
+  "bindingPreserved": true,
+  "userLibraryUnchanged": true,
+  "librarySha256": "78b360bffa8821b65454a05407e8ae01130106d7f281b4370a972b585f5a7e3c",
+  "overview": {
+    "contentSelectedCoverVisible": true,
+    "noImagePlanLabel": "内容封面 · 此计划不带图",
+    "sectionsVertical": true,
+    "redundantTemplateCtaRemoved": true
+  },
+  "templates": {
+    "defaultSource": "builtin",
+    "columnsObserved": 5,
+    "builtinGroups": 5,
+    "counts": {
+      "AI大白话": 19,
+      "秋芝": 30,
+      "Seven研究社": 23,
+      "鹿一家": 30,
+      "科技姐聊AI": 25
+    },
+    "technologyPreviewImageCount": 25,
+    "singlePopoverSwitchObserved": true,
+    "popupActionsVertical": true,
+    "escapeReturnsFocus": true,
+    "historicalScopeWarningVisible": true,
+    "oldUserTemplateRetained": true
+  },
+  "evidenceDirectory": "installed",
+  "generationRun": false,
+  "businessWrites": false,
+  "unverified": [
+    "Intel Mac native installation/runtime",
+    "Windows installation/runtime",
+    "real assistant generation on this version",
+    "Developer ID signing and notarization",
+    "workflow source warning separate native visual check"
+  ]
+}

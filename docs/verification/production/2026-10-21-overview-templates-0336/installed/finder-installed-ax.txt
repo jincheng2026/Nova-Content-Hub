@@ -1,0 +1,4 @@
+The following is a diff from the previous accessibility tree for Window: "“自媒体工作台”简介" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 283
++		291 图像 Description: 预览, ID: QLAXImageAndText_Image
+The focused UI element is 262 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
