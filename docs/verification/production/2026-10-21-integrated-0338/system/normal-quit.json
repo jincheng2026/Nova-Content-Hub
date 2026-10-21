@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-21T11:09:38.592Z",
+  "method": "CUA Cmd+Q",
+  "apps": [
+    {
+      "displayName": "自媒体工作台",
+      "id": "com.novaisland.nova-content-hub",
+      "isRunning": true
+    }
+  ]
+}

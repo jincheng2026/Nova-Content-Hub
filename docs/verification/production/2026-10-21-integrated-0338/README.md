@@ -2,6 +2,16 @@
 
 用户要求：核对最新全部修改，完善后打包、创建 tag 并安装。只发布本机 darwin-arm64 临时签名预览；不推送远端。正式 Developer ID、公证、Intel Mac 与 Windows 原生交付单列为未验证。
 
+## 最终状态（2026-10-21 19:10）
+
+用户亲自允许文稿访问后，已安装的 0.3.38 恢复响应。通过 CUA 实际检查总览、模板、内容、日程、提示词和设置；设置显示 `0.3.38 · macOS · ARM64`，封面与模板助手均准备好。模板卡片底部对齐、分页菜单圆角与来源资料入口已观察并留图。仅查看页面，没有编辑内容库、生成封面或记录发布。
+
+已用 Cmd+Q 正常退出，随后精确进程检查确认旧进程消失；重新从 `/Applications/自媒体工作台.app` 启动，原内容库正常加载。见 `system/native-acceptance.json`、`system/normal-quit-process.json` 与 `system/native-reopened-overview.{txt,png}`。原生界面仅确认来源资料入口可见，未把全文展开操作计入验收；固定 VI 文件的内容完整性由前述资源/文件库测试覆盖。
+
+未带待授权参数的严格 `final-integrity.mjs` 已退出 0，见 `logs/final-integrity-accepted.log` 与当前 `final-integrity.json`：安装事务 `complete`、应用确认成功、`systemPermissionPending=false`，安装应用与归档/镜像全树一致，Codex/WorkBuddy 插件匹配，原绑定保留。用户库仍为 2071 个条目，摘要仍为 `397eedd04a6081aec0cf23888c1aa9478470d8740abf62ba2611237c9acdb018`。
+
+源码与安装包没有重新构建或改签，冻结提交仍为 `abbbc8aaf688db6301082ba17e0d48ca5f6db5c0`，本地 tag 仍为 `v0.3.38-preview-mac-arm64`。下文“等待授权”及诊断截图是较早阶段的历史事实，当前以本节及严格最终收据为准；tag 注释保留创建时的状态，不移动已创建的 tag。正式签名、公证、其他平台与真实生图继续未验收。
+
 ## 来源与整合范围
 
 - 发布基底 `main@fb7ae070919d79600fb7c63651aa266615b1ccff`，延续 0.3.32 至 0.3.37 的收藏构图参考、读取/解码优化、草稿保护、模板报告与工作流、设计系统、模板详情 portal 及总览三列。
