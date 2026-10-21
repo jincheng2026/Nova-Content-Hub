@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-10-21T03:40:33.111051+00:00",
+  "version": "0.3.34",
+  "sourceCommit": "038ee38943c64647cd52270f320c447aefa20ac6",
+  "accepted": true,
+  "target": "/Applications/自媒体工作台.app",
+  "platform": "darwin-arm64",
+  "nativeObservations": {
+    "libraryLoaded": true,
+    "personalInfoEditedInsideOriginalCard": true,
+    "profileFieldsNotChanged": true,
+    "appMotionSwitchRemoved": true,
+    "templateImagesAndStackVisible": true,
+    "coverOriginalsRectangularAndUncropped": true,
+    "ratioSelection": "3:4 -> 16:9, displayed minimum 1376x774 -> restored 3:4 minimum 768x1024",
+    "generatedCovers": false,
+    "nativeAboutVersionAndCopyrightCorrect": true,
+    "normalMenuQuitVerifiedByNoInstalledMainProcess": true,
+    "intentionalReopenAndLibraryLoaded": true,
+    "finderFinalAndInstalledChecked": true,
+    "finderObservedBytes": 672915086,
+    "finderObservedModified": "2026-10-21 11:26 Asia/Shanghai"
+  },
+  "library": {
+    "entries": 1938,
+    "currentSha256": "162a5fbf243bfd3e8bc972772df7af00981cedad9b932810c77dc6e64af5aaf1",
+    "unchanged": true
+  },
+  "signature": {
+    "adhoc": true,
+    "developerIdSigned": false,
+    "notarized": false
+  },
+  "scope": "Native UI read-only acceptance; generation and business writes were not performed. Synthetic save/CAS/selection tests are recorded separately. Only ARM Mac validated."
+}

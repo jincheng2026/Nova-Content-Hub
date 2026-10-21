@@ -31,4 +31,13 @@
 
 ## 交付状态
 
-待冻结构建、安装后原生页面与 Finder 核验。当前交付目标仅 darwin-arm64 preview；Intel Mac/Windows 未在本轮原生验收。按用户选择使用临时签名，不作 Developer ID、公证或全平台生产可用声明。
+已冻结源码 `038ee38943c64647cd52270f320c447aefa20ac6`，本地 main 已快进包含该提交；tag `v0.3.34-preview-mac-arm64` 指向此源码。随后提交只记录本次交付证据，不重新改变产物。
+
+- 安装镜像 SHA256：`e0c71d74e1db6ae4d2d6748885f424da0ae96f2d57c203c2549071b10dfc6c91`；大小 478803459 字节。
+- 最终交付目录：`/Users/mac/Downloads/自媒体工作台-0.3.34-同事交付-Mac苹果芯片`，仅安装包、安装与使用说明、SHA256 三项。两个预检候选移至主仓库 release/darwin-arm64/preview/.preflight-deliveries.noindex/，不作为交付。
+- 最终 `.app`、安装镜像内 `.app`、安装后的 `.app` 树一致；封存新原生负载与冻结源码/lock/config 对应；配套 Codex 和 WorkBuddy 插件同为0.3.34，官方 CLI 更新，其他插件配置保留。
+- 实际原绑定内容库1938项，安装、原生检查与重开后 SHA256保持 `162a5fbf243bfd3e8bc972772df7af00981cedad9b932810c77dc6e64af5aaf1`；恢复旧应用副本保留。核验期间未保存个人资料、未生成图片或发布。
+- 最终原生检查包括：资料原卡片进入编辑再返回、封面矩形完整显示、比例3:4→16:9且提示1376×774→恢复、真实模板叠图、关于版本/版权；正常菜单退出后无主进程，再次打开读取原库。详见 startup-acceptance.json 与 installed/。
+- Finder最终归档和安装后均实际显示名称、已确认图标、Apple芯片、0.3.34、公司版权、672,915,086字节、2026-10-21 11:26修改时间；这是系统显示值，与文件内容累计字节口径分开记录，见 finder-observation.json。
+
+当前交付目标仅 darwin-arm64 preview；Intel Mac/Windows 未在本轮原生验收。按用户选择使用临时签名，未作 Developer ID 签名/公证；release仍明确 experimental=true / productionReady=false。真实助手生图调用及跨平台商业发行验收不在本轮已通过范围。

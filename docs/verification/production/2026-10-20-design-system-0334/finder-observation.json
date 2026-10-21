@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-21T03:40:33.111051+00:00",
+  "version": "0.3.34",
+  "sourceCommit": "038ee38943c64647cd52270f320c447aefa20ac6",
+  "observedVia": "Finder Get Info final archived app and installed Applications app",
+  "appName": "自媒体工作台",
+  "iconVisible": true,
+  "kind": "应用程序(Apple芯片)",
+  "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+  "finderBytes": 672915086,
+  "finderModifiedLocal": "2026-10-21 11:26",
+  "fileInventory": {
+    "appModifiedAt": "2026-10-21T03:26:02.012Z",
+    "appFileBytes": 672914793,
+    "dmgBytes": 478803459,
+    "dmgModifiedAt": "2026-10-21T03:27:38.902Z"
+  },
+  "note": "Finder presentation total and file-content inventory are separate measurements; neither value is hardcoded into application metadata.",
+  "evidence": [
+    "installed/final-app-finder.png",
+    "installed/final-app-finder.txt",
+    "installed/installed-app-finder.png",
+    "installed/installed-app-finder.txt",
+    "installed/about.png"
+  ]
+}

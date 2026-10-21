@@ -1,0 +1,55 @@
+{
+  "recordedAt": "2026-10-21T03:39:38.329Z",
+  "version": "0.3.34",
+  "sourceCommit": "038ee38943c64647cd52270f320c447aefa20ac6",
+  "installedAndArchivedAppEqual": true,
+  "appEntries": 1818,
+  "treeSha256": "1750c5e3a6ab9626d7fed0f7e1211ef5fd879713d037158b0bfae9c0b41c37f4",
+  "dmgSha256": "e0c71d74e1db6ae4d2d6748885f424da0ae96f2d57c203c2549071b10dfc6c91",
+  "deliveredDmgEqual": true,
+  "deliveryFiles": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.34-Mac苹果芯片.dmg"
+  ],
+  "signatureVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "transactionPhase": "complete",
+  "nativeBindingPreserved": true,
+  "userLibrary": {
+    "entries": 1938,
+    "currentSha256": "162a5fbf243bfd3e8bc972772df7af00981cedad9b932810c77dc6e64af5aaf1",
+    "unchanged": true
+  },
+  "skills": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    }
+  ],
+  "actualProperties": {
+    "appModifiedAt": "2026-10-21T03:26:02.012Z",
+    "appFileBytes": 672914793,
+    "dmgBytes": 478803459,
+    "dmgModifiedAt": "2026-10-21T03:27:38.902Z"
+  },
+  "activeConversationReloaded": false,
+  "realGenerationRunOnThisVersion": false
+}
