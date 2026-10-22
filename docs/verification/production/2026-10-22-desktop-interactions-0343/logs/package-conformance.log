@@ -1,0 +1,19 @@
+✔ maintenance command rejects malformed arguments before touching the chosen library (1009.262917ms)
+✔ standalone required bundle has no prototype import capability (261.409416ms)
+✔ standalone disabled bundle has no prototype import capability (331.790791ms)
+✔ standalone required bundle backs up and restores user files without generation authorization (2650.466083ms)
+✔ standalone disabled bundle backs up and restores user files without generation authorization (4158.368917ms)
+✔ both independent packages separate contract and cover commands and preserve the legacy wrapper (1512.439958ms)
+✔ required unified commands and legacy wrappers reject environment and argument auth overrides before IO (264.688083ms)
+✔ one release file controls and validates both namespaces; missing or mismatched pairing cannot fall back (1667.783042ms)
+✔ implementation, hooks, skill capabilities, mode and hashed import resources agree in both packages (1640.5945ms)
+✔ desktop bridge and worker expose no prototype backup import (6.0045ms)
+✔ obsolete import pointers do not query files or block a valid desktop binding (120.32125ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8995.302291

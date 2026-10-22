@@ -1,0 +1,52 @@
+Window: "自媒体工作台", App: 自媒体工作台.
+0 标准窗口 自媒体工作台, Secondary Actions: Raise
+	1 container 自媒体工作台
+		2 container
+			3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html
+				4 container 封面位置批注
+					5 标题 封面位置批注, Value: 2
+						6 文本 封面位置批注
+					7 按钮 暂时收起
+						8 文本 暂时收起
+					9 按钮 关闭
+						10 文本 关闭
+					11 container
+						12 文本 选择点选、标框或划线，标记后填写要求；用选择工具拖动已有批注，点击右侧文字编辑要求。原图和历史候选都会保留。
+						13 container 批注工具
+							14 切换按钮 Description: 选择 / 移动, Value: 1
+							15 切换按钮 Description: 点选, Value: 0
+							16 切换按钮 Description: 标框, Value: 0
+							17 切换按钮 Description: 划线, Value: 0
+						18 container
+							19 按钮 选择已有批注并拖动
+								20 图像 待修改的封面原图
+							21 按钮 选择或移动位置 1
+						22 标题 已确认的位置批注（1）, Value: 3
+							23 text 已确认的位置批注（ 1 ）
+						24 按钮 编辑位置 1 批注
+							25 container
+								26 text 位置  1
+							27 文本 颜色淡一点
+						28 按钮 删除位置 1
+							29 container
+								30 text 删除位置  1
+						31 文本 整体修改要求（可选）
+						32 文本输入区 (settable) 整体修改要求（可选）, Placeholder: 可留空，例如：保留人物和配色
+						33 text 1  / 20 个位置 ·  46  / 10000 字
+						34 按钮 添加中心位置批注
+							35 文本 添加中心位置批注
+						36 按钮 保存批注
+							37 文本 保存批注
+						38 按钮 按批注修改
+							39 文本 按批注修改
+	40 关闭按钮
+	41 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	42 最小化按钮
+43 menu bar
+	44 自媒体工作台
+	45 文件
+	46 编辑
+	47 显示
+	48 窗口
+
+The focused UI element is 32 文本输入区 (settable) 整体修改要求（可选）, Placeholder: 可留空，例如：保留人物和配色

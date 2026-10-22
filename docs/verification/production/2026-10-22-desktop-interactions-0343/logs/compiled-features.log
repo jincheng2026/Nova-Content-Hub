@@ -1,0 +1,1 @@
+{"status":"PASS","files":["index-_lpMuU4q.js"],"version":"0.3.43","compiledFeatureMarkers":8,"claim":"compiled code presence only; installed interaction acceptance separate","checkRepair":"First ad-hoc regex assumed double quotes; corrected to accept minifier backticks without changing source"}
