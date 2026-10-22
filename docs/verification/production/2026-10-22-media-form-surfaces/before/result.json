@@ -1,0 +1,711 @@
+{
+  "checks": [
+    {
+      "width": 1280,
+      "height": 860,
+      "candidate": 0,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 208.5,
+          "height": 278
+        },
+        "natural": [
+          300,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22296%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 1280 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 1280 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 0"
+    },
+    {
+      "width": 1280,
+      "height": 860,
+      "candidate": 1,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 128.25
+        },
+        "natural": [
+          640,
+          360
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22360%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22636%22%20height%3D%22356%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22350%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 1280 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 1280 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 1"
+    },
+    {
+      "width": 1280,
+      "height": 860,
+      "candidate": 2,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 228
+        },
+        "natural": [
+          400,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22396%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 1280 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 1280 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 2"
+    },
+    {
+      "width": 1280,
+      "height": 860,
+      "candidate": 3,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 55.59375,
+          "height": 277.96875
+        },
+        "natural": [
+          200,
+          1000
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%221000%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22196%22%20height%3D%22996%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22990%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 1280 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 1280 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 3"
+    },
+    {
+      "width": 1280,
+      "height": 860,
+      "candidate": 4,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 45.59375
+        },
+        "natural": [
+          1000,
+          200
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221000%22%20height%3D%22200%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22996%22%20height%3D%22196%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22190%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 1280 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 1280 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 4"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "candidate": 0,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 208.5,
+          "height": 278
+        },
+        "natural": [
+          300,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22296%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 960 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 960 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 0"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "candidate": 1,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 128.25
+        },
+        "natural": [
+          640,
+          360
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22360%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22636%22%20height%3D%22356%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22350%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 960 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 960 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 1"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "candidate": 2,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 228
+        },
+        "natural": [
+          400,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22396%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 960 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 960 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 2"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "candidate": 3,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 55.59375,
+          "height": 277.96875
+        },
+        "natural": [
+          200,
+          1000
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%221000%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22196%22%20height%3D%22996%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22990%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 960 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 960 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 3"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "candidate": 4,
+      "metrics": {
+        "frame": {
+          "width": 230,
+          "height": 280
+        },
+        "image": {
+          "width": 228,
+          "height": 45.59375
+        },
+        "natural": [
+          1000,
+          200
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221000%22%20height%3D%22200%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22996%22%20height%3D%22196%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22190%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 960 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 960 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 4"
+    },
+    {
+      "width": 540,
+      "height": 860,
+      "candidate": 0,
+      "metrics": {
+        "frame": {
+          "width": 180,
+          "height": 220
+        },
+        "image": {
+          "width": 163.5,
+          "height": 218
+        },
+        "natural": [
+          300,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22300%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22296%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 540 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 540 c0"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 0"
+    },
+    {
+      "width": 540,
+      "height": 860,
+      "candidate": 1,
+      "metrics": {
+        "frame": {
+          "width": 180,
+          "height": 220
+        },
+        "image": {
+          "width": 178,
+          "height": 100.125
+        },
+        "natural": [
+          640,
+          360
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22360%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22636%22%20height%3D%22356%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22350%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 540 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 540 c1"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 1"
+    },
+    {
+      "width": 540,
+      "height": 860,
+      "candidate": 2,
+      "metrics": {
+        "frame": {
+          "width": 180,
+          "height": 220
+        },
+        "image": {
+          "width": 178,
+          "height": 178
+        },
+        "natural": [
+          400,
+          400
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22400%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22396%22%20height%3D%22396%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22390%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 540 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 540 c2"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 2"
+    },
+    {
+      "width": 540,
+      "height": 860,
+      "candidate": 3,
+      "metrics": {
+        "frame": {
+          "width": 180,
+          "height": 220
+        },
+        "image": {
+          "width": 43.59375,
+          "height": 217.96875
+        },
+        "natural": [
+          200,
+          1000
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22200%22%20height%3D%221000%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22196%22%20height%3D%22996%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22990%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 540 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 540 c3"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 3"
+    },
+    {
+      "width": 540,
+      "height": 860,
+      "candidate": 4,
+      "metrics": {
+        "frame": {
+          "width": 180,
+          "height": 220
+        },
+        "image": {
+          "width": 178,
+          "height": 35.59375
+        },
+        "natural": [
+          1000,
+          200
+        ],
+        "fit": "contain",
+        "background": "rgba(255, 255, 255, 0.08)",
+        "border": "1px",
+        "radius": "min(10px, 4%)",
+        "source": "data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%221000%22%20height%3D%22200%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23244a70%22%2F%3E%3Crect%20x%3D%222%22%20y%3D%222%22%20width%3D%22996%22%20height%3D%22196%22%20fill%3D%22none%22%20stroke%3D%22%23ffde6b%22%20stroke-width%3D%224%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2227%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3ETOP%20%E5%AE%8C%E6%95%B4%E9%A1%B6%E9%83%A8%3C%2Ftext%3E%3Ctext%20x%3D%2250%25%22%20y%3D%22190%22%20text-anchor%3D%22middle%22%20fill%3D%22white%22%20font-size%3D%2222%22%3EBOTTOM%20%E5%AE%8C%E6%95%B4%E5%BA%95%E9%83%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "overflow": false
+      }
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero preserves natural ratio 540 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero contains full artwork without horizontal overflow 540 c4"
+    },
+    {
+      "passed": true,
+      "message": "Hero keeps original image source 4"
+    },
+    {
+      "width": 1280,
+      "fieldsets": [
+        {
+          "border": "2px",
+          "padding": "4.9px 10.5px 8.75px",
+          "minWidth": "min-content",
+          "disabled": false
+        },
+        {
+          "border": "2px",
+          "padding": "4.9px 10.5px 8.75px",
+          "minWidth": "min-content",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "passed": false,
+      "message": "Both publication fieldsets reset 1280"
+    },
+    {
+      "passed": true,
+      "message": "Publication form has no horizontal overflow 1280"
+    },
+    {
+      "passed": true,
+      "message": "Busy retains native disabled semantics 1280"
+    },
+    {
+      "width": 960,
+      "fieldsets": [
+        {
+          "border": "2px",
+          "padding": "4.9px 10.5px 8.75px",
+          "minWidth": "min-content",
+          "disabled": false
+        },
+        {
+          "border": "2px",
+          "padding": "4.9px 10.5px 8.75px",
+          "minWidth": "min-content",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "passed": false,
+      "message": "Both publication fieldsets reset 960"
+    },
+    {
+      "passed": true,
+      "message": "Publication form has no horizontal overflow 960"
+    },
+    {
+      "passed": true,
+      "message": "Busy retains native disabled semantics 960"
+    },
+    {
+      "passed": false,
+      "message": "Standalone collection dialog shares fieldset reset"
+    },
+    {
+      "passed": true,
+      "message": "Tab stays inside modal"
+    },
+    {
+      "passed": true,
+      "message": "Dirty close retains draft and asks before discard"
+    },
+    {
+      "passed": true,
+      "message": "Publication submits original text/schedule/CAS contract"
+    },
+    {
+      "passed": true,
+      "message": "Material image radius follows natural artwork 0"
+    },
+    {
+      "passed": false,
+      "message": "Material image radius follows natural artwork 1"
+    },
+    {
+      "passed": false,
+      "message": "Material image radius follows natural artwork 2"
+    },
+    {
+      "passed": true,
+      "message": "No renderer errors"
+    }
+  ],
+  "scope": "Real source React/Semi/CSS in macOS arm64 Electron; synthetic IPC and isolated userData. No installed app or user library access.",
+  "passed": false
+}

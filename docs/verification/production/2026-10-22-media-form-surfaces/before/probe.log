@@ -1,0 +1,100 @@
+{
+  "passed": false,
+  "failures": [
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c0"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c1"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c2"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c3"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 1280 c4"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c0"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c1"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c2"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c3"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 960 c4"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c0"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c1"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c2"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c3"
+    },
+    {
+      "passed": false,
+      "message": "Hero frame follows actual artwork 540 c4"
+    },
+    {
+      "passed": false,
+      "message": "Both publication fieldsets reset 1280"
+    },
+    {
+      "passed": false,
+      "message": "Both publication fieldsets reset 960"
+    },
+    {
+      "passed": false,
+      "message": "Standalone collection dialog shares fieldset reset"
+    },
+    {
+      "passed": false,
+      "message": "Material image radius follows natural artwork 1"
+    },
+    {
+      "passed": false,
+      "message": "Material image radius follows natural artwork 2"
+    }
+  ],
+  "evidence": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-media-form-surfaces/before"
+}
+AssertionError [ERR_ASSERTION]: media/form surface checks
+
+false !== true
+
+    at main (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-media-form-surfaces-IsJ0xI/main.mjs:26:349) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+Evidence: /Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-media-form-surfaces/before
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-media-form-surfaces-IsJ0xI

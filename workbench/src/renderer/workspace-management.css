@@ -18,7 +18,7 @@
 .workspace-management .check-label, .management-dialog .check-label { display: flex; align-items: center; gap: 8px; }
 .workspace-management .management-notice, .management-dialog .management-notice { color: var(--semi-color-text-2); white-space: pre-wrap; }
 .workspace-management .management-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
-.workspace-management fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+.workspace-management fieldset, .management-dialog fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
 .workspace-management .members-picker { display: grid; gap: 8px; max-height: 240px; overflow: auto; padding: 12px; border: 1px solid var(--semi-color-border); border-radius: 8px; }
 .workspace-management .history-event { border-left: 3px solid var(--semi-color-border); padding-left: 12px; }
 .workspace-page .prompt-management-card { display: grid; gap: 8px; }
@@ -30,10 +30,10 @@
 .management-dialog .template-import-grid img { display: block; width: auto; height: auto; max-width: 100%; max-height: 170px; margin: auto; object-fit: contain; border-radius:min(8px,4%); background: var(--semi-color-fill-0); }
 .management-dialog .template-import-grid figcaption { display: grid; gap: 6px; padding: 10px; font-size: 12px; overflow-wrap: anywhere; }
 .management-dialog .template-import-grid figcaption span { color: var(--semi-color-text-2); }
-.management-resume { margin: 12px 0; padding: 14px; border: 1px solid var(--semi-color-border); border-radius: 10px; background: var(--semi-color-bg-1); }
+.management-resume { margin: 12px 0; padding: 14px; border: 1px solid var(--semi-color-border); border-radius: 12px; background: var(--semi-color-bg-1); }
 .management-dialog .management-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.management-dialog .material-text-preview { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 420px; overflow: auto; padding: 16px; border: 1px solid var(--semi-color-border); border-radius: 8px; background: var(--semi-color-bg-1); font: inherit; }
-.management-dialog .material-image-preview { display: block; width: 100%; max-height: 460px; object-fit: contain; border-radius: 8px; }
+.management-dialog .material-text-preview { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 420px; overflow: auto; padding: 16px; border: 1px solid var(--semi-color-border); border-radius: 12px; background: var(--semi-color-bg-1); font: inherit; }
+.management-dialog .material-image-preview { display: block; width: auto; height: auto; max-width: 100%; max-height: 460px; margin: auto; object-fit: contain; border-radius: 8px; }
 .cover-panel .cover-materials { display: grid; gap: 10px; padding: 14px 0; }
 .cover-panel .cover-materials .checkbox { align-items: flex-start; overflow-wrap: anywhere; }
 .cover-panel .cover-materials .material-detail { display: block; color: var(--semi-color-text-2); font-size: 12px; margin-top: 4px; }

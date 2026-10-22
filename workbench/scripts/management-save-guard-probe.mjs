@@ -21,7 +21,7 @@ window.library = {
   photos: [{id:'photo-1',title:'原照片',isOwnPhoto:false,editToken:'photo-v1',availability:'available',deletedAt:null}],
   settings: {editToken:'settings-v1',defaults:{photoId:null},channels:[{id:'channel-1',name:'原渠道',requiredRatio:null,ink:'#555555',bg:'#f0f0f0',deletedAt:null}]},
   collections: [{id:'collection-1',title:'原合集',body:'原正文',editToken:'collection-v1',memberIds:[],channelIds:[],dateRange:{start:null,end:null},deletedAt:null}],
-  contentDetails: [{id:'content-1',title:'内容一',deletedAt:null},{id:'content-2',title:'内容二',deletedAt:null}]
+  contentDetails: [{id:'content-1',title:'内容一',body:'正文一',updatedAt:'2026-10-22',deletedAt:null},{id:'content-2',title:'内容二',body:'正文二',updatedAt:'2026-10-21',deletedAt:null}]
 };
 window.contentHub = {mutateWorkspace: input => new Promise(resolve => {
   window.calls.push(structuredClone(input));
@@ -85,7 +85,7 @@ async function probeMain(probeRoot) {
       assert.equal(await run(`window.calls[${count-1}].op`),test.op);
       await assertLocked(test.op+' rejection path',draft);
       await run('window.settle(false)');
-      await wait('document.querySelector("dialog [role=status]").textContent.includes("编辑内容仍保留")');
+      await wait('[...document.querySelectorAll("dialog [role=status]")].some(el=>el.textContent.includes("编辑内容仍保留"))');
       assert.deepEqual(await snapshot(),draft,test.op+' rejection preserves all draft values');
       assert.equal(await run(`[...document.querySelectorAll('dialog form input, dialog form textarea, dialog form select')].every(el=>!el.matches(':disabled'))`),true,test.op+' fields unlock after rejection');
       assert.equal(await run('window.refreshes'),Math.floor((count-1)/2),test.op+' rejection does not refresh');

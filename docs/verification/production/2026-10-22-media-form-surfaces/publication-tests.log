@@ -1,0 +1,15 @@
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (2.385542ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (2.311708ms)
+✔ local minute records use the planned timezone across a date boundary (58.338708ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.256459ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.414667ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.29725ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.119875ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 178.312083
