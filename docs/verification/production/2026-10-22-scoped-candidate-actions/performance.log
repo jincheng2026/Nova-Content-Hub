@@ -1,0 +1,49 @@
+{
+  "scope": "One synthetic native fixture, 31 contents and 30 prompts, one candidate. Alternating durable full-library/scoped mutations; no renderer, watcher, installed app, provider or user library.",
+  "samples": [
+    {
+      "mode": "full-library",
+      "milliseconds": 359.56,
+      "readFileSync": 681,
+      "openSync": 804,
+      "operations": [
+        "workspaceMutate",
+        "workspaceRecover",
+        "workspaceLibrary"
+      ]
+    },
+    {
+      "mode": "scoped",
+      "milliseconds": 181.46,
+      "readFileSync": 283,
+      "openSync": 340,
+      "operations": [
+        "workspaceMutate",
+        "workspaceRecover",
+        "workspaceContent"
+      ]
+    },
+    {
+      "mode": "full-library",
+      "milliseconds": 364.99,
+      "readFileSync": 551,
+      "openSync": 662,
+      "operations": [
+        "workspaceMutate",
+        "workspaceRecover",
+        "workspaceLibrary"
+      ]
+    },
+    {
+      "mode": "scoped",
+      "milliseconds": 160.13,
+      "readFileSync": 283,
+      "openSync": 340,
+      "operations": [
+        "workspaceMutate",
+        "workspaceRecover",
+        "workspaceContent"
+      ]
+    }
+  ]
+}

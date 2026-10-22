@@ -1,0 +1,24 @@
+{
+  "busy": {
+    "global": "true",
+    "navigation": true,
+    "otherPreview": false,
+    "allWrites": true
+  },
+  "calls": [
+    {
+      "method": "mutateWorkspace",
+      "input": {
+        "op": "updateCandidate",
+        "kind": "content",
+        "id": "content",
+        "editToken": "c1",
+        "candidateId": "candidate0",
+        "favorite": true,
+        "displayNumber": "",
+        "note": "",
+        "variantId": null
+      }
+    }
+  ]
+}

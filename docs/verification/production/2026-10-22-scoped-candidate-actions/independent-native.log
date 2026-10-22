@@ -1,0 +1,47 @@
+(node:34489) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (21.863917ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (14.171458ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.838542ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (3.64725ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (5.130625ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (2.472042ms)
+✔ navigation and new draft survive a paused focus refresh (2.059708ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (2.155167ms)
+✔ paused editor read preserves a draft typed while its result was in flight (2.974625ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.497333ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.294875ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.716125ms)
+✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (4.075041ms)
+✔ local writes and cover background reads share one dispatch order without global busy (4.094167ms)
+✔ candidate changes acknowledge a fresh scoped entity and token without reading the library (2768.355667ms)
+✔ lost mutation response uses the same scoped receipt recovery and rereads current data (2304.090791ms)
+✔ projection failure preserves exact durable intent; ordinary recovery after restart stays compatible (2502.016ms)
+✔ prompt favorite uses the same pending and CAS rules with a scoped projection (2679.586417ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (5.847584ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (19.489084ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.551209ms)
+✔ readonly non-BUSY failures are returned once (0.26125ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.256125ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (4.161416ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.243667ms)
+✔ actual import boundary rejects changed bytes after preview, creates no reservation and allows normal reselect (162.4495ms)
+✔ worker refuses unknown operations, extra fields, malformed IDs and absent expected source hash (0.3705ms)
+✔ real file import through controller and worker survives a fresh binding and keeps later edits (9356.746417ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (5305.624292ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1566.871833ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (986.34025ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (791.493833ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1068.464625ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (3.086417ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.217458ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (2161.448416ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (1503.229875ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14100.598083

@@ -1,0 +1,29 @@
+(node:41159) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (5.713709ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (6.640875ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (1.033667ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.14475ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (1.526875ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.095708ms)
+✔ navigation and new draft survive a paused focus refresh (0.996583ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (0.94775ms)
+✔ paused editor read preserves a draft typed while its result was in flight (0.96375ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.619708ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.162334ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.633167ms)
+✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (1.122375ms)
+✔ local writes and cover background reads share one dispatch order without global busy (0.915333ms)
+✔ confirmed entity snapshots advance the current content CAS without losing unsaved text (1.163084ms)
+✔ candidate changes acknowledge a fresh scoped entity and token without reading the library (726.108ms)
+✔ lost mutation response uses the same scoped receipt recovery and rereads current data (739.198ms)
+✔ projection failure preserves exact durable intent; ordinary recovery after restart stays compatible (587.234959ms)
+✔ prompt favorite uses the same pending and CAS rules with a scoped projection (851.97625ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3158.025916

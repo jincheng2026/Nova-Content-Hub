@@ -7,7 +7,7 @@ import {fail, requireWrite} from '../shared/validation.ts';
 import {workspaceDesktopInput} from '../shared/workspace-validation.ts';
 import type {Binding, ImportTask, LibraryBinding} from '../shared/contracts.ts';
 import type {
-    WorkspaceMutation, WorkspaceMutationResult, WorkspacePending, WorkspacePendingView,
+    CoverCandidateUpdate, PromptFavoriteUpdate, WorkspaceContentDetails, WorkspaceReceipt, WorkspaceMutation, WorkspaceMutationResult, WorkspacePending, WorkspacePendingView,
     WorkspaceRecovery, WorkspaceWorker, WorkspaceLibrarySnapshot, WorkspaceMaterial, WorkspaceMaterialImport, WorkspaceMaterialReference, WorkspacePublicationReference
 } from '../shared/workspace-contracts.ts';
 
@@ -179,6 +179,15 @@ export class WorkspaceController {
         });
     }
 
+    async readWorkspaceContent(input: {id: string}) {
+        this.validate('readWorkspaceContent', input);
+        return this.owner.exclusive(async () => this.decorateContent(await this.owner.worker.call('workspaceContent', {binding: this.owner.current(), id: input.id})));
+    }
+
+    decorateContent(content: WorkspaceContentDetails) {
+        return {...content, materials: content.materials.map(material => this.decorateMaterial(material)), candidates: content.candidates.map(candidate => ({...candidate, url: this.owner.covers.grant(candidate.assetHash)}))};
+    }
+
     async writable() {
         requireWrite(this.owner.authMode);
         const task = await this.owner.query();
@@ -196,6 +205,27 @@ export class WorkspaceController {
 
     async mutateWorkspace(input: WorkspaceMutation) {
         this.validate('mutateWorkspace', input);
+        return this.startMutation(input, (binding, pending, receipt) => this.fullResult(binding, pending, receipt));
+    }
+
+    async updateCoverCandidate(input: CoverCandidateUpdate) {
+        this.validate('updateCoverCandidate', input);
+        return this.startMutation(input, async (binding, pending, receipt) => {
+            if (receipt.objectKind !== 'content' || receipt.objectId !== input.id) fail('CONFLICT', '候选操作回执不属于当前内容。');
+            const content = await this.owner.worker.call('workspaceContent', {binding, id: receipt.objectId});
+            return this.decorateContent(content);
+        });
+    }
+
+    async updatePromptFavorite(input: PromptFavoriteUpdate) {
+        this.validate('updatePromptFavorite', input);
+        return this.startMutation(input, async (binding, pending, receipt) => {
+            if (receipt.objectKind !== 'prompt' || receipt.objectId !== input.id) fail('CONFLICT', '收藏操作回执不属于当前提示词。');
+            return this.owner.worker.call('workspacePrompt', {binding, id: receipt.objectId});
+        });
+    }
+
+    async startMutation<T>(input: WorkspaceMutation, project: (binding: LibraryBinding, pending: WorkspacePending, receipt: WorkspaceReceipt) => Promise<T>) {
         requireWrite(this.owner.authMode);
         return this.owner.exclusive(async () => {
             this.owner.noPending();
@@ -208,11 +238,20 @@ export class WorkspaceController {
             // Save the exact intent before dispatch so a worker exit cannot turn retry into a second write.
             await this.owner.persist({...this.owner.binding, workspacePending: pending});
             this.pendingView = null;
-            return this.dispatch();
+            return this.dispatchProjection(project);
         });
     }
 
+    async fullResult(binding: LibraryBinding, pending: WorkspacePending, receipt: WorkspaceReceipt): Promise<WorkspaceMutationResult> {
+        const library = this.decorate(await this.owner.worker.call('workspaceLibrary', {binding}));
+        return {mutationId: pending.mutationId, ...receipt, library};
+    }
+
     async recover(): Promise<WorkspaceRecovery> {
+        return this.recoverProjection((binding, pending, receipt) => this.fullResult(binding, pending, receipt));
+    }
+
+    async recoverProjection<T>(project: (binding: LibraryBinding, pending: WorkspacePending, receipt: WorkspaceReceipt) => Promise<T>): Promise<{pending: WorkspacePendingView | null; result: T | null}> {
         if (!this.owner.binding.workspacePending) return {pending: null, result: null};
         const request = this.boundPending();
         this.pendingView = {mutationId: request.pending.mutationId, input: structuredClone(request.pending.input), state: 'uncertain'};
@@ -223,27 +262,30 @@ export class WorkspaceController {
         }
         this.pendingView = {...this.pendingView, state: 'committed'};
         // Receipts describe the historical write; expose only a freshly reread, safe library projection.
-        const library = this.decorate(await this.owner.worker.call('workspaceLibrary', {binding: request.binding}));
-        const result: WorkspaceMutationResult = {mutationId: request.pending.mutationId, ...recovered.receipt, library};
+        const result = await project(request.binding, request.pending, recovered.receipt);
         await this.owner.persist({...this.owner.binding, workspacePending: null});
         this.pendingView = null;
         return {pending: null, result};
     }
 
     async dispatch(): Promise<WorkspaceMutationResult> {
+        return this.dispatchProjection((binding, pending, receipt) => this.fullResult(binding, pending, receipt));
+    }
+
+    async dispatchProjection<T>(project: (binding: LibraryBinding, pending: WorkspacePending, receipt: WorkspaceReceipt) => Promise<T>): Promise<T> {
         try {
             await this.owner.worker.call('workspaceMutate', this.boundPending());
         } catch (error) {
             // A failed response can follow a durable commit. Query that exact receipt before offering retry.
             try {
-                const recovered = await this.recover();
+                const recovered = await this.recoverProjection(project);
                 if (recovered.result) return recovered.result;
             } catch {
                 // Keep the durable pending intent when either receipt lookup or reread remains uncertain.
             }
             throw error;
         }
-        const recovered = await this.recover();
+        const recovered = await this.recoverProjection(project);
         if (!recovered.result) fail('PENDING_MUTATION', '操作结果尚待核验，原事务和输入已保留。');
         return recovered.result;
     }

@@ -14,7 +14,7 @@ const ok = value => ({ok:true,value:structuredClone(value)});
 window.calls=[]; window.pauseRefresh=false;
 window.lib={contentDetails:[],collections:[],photos:[],templates:[],prompts:[],settings:{editToken:'s1',profile:{name:'',intro:'',avatarAssetHash:null,marks:[]},defaults:{},channels:[{id:'channel',name:'隔离渠道',ink:'#335577',bg:'#eef5fa',requiredRatio:null,deletedAt:null}],promptCategories:[],visiblePromptCategories:[],customRatios:[],defaultIssues:[]}};
 window.currentStatus={currentName:'隔离库',assistant:'codex',busy:false,pending:null,started:false,maintenance:{pending:null,health:null},task:null};
-window.contentHub=new Proxy({}, {get:(_,method)=>method==='onWorkspaceChanged'?()=>()=>{}:async input=>{
+window.contentHub=new Proxy({}, {get:(_,method)=>method==='onWorkspaceChanged'?callback=>{window.emitChange=callback;return ()=>{};}:async input=>{
  window.calls.push({method,input}); let value;
  if(method==='status')value=window.currentStatus;
  else if(method==='readWorkspace'){if(window.pauseRefresh)await new Promise((resolve,reject)=>{window.finishRefresh=()=>{window.pauseRefresh=false;resolve();};window.failRefresh=()=>{window.pauseRefresh=false;reject(Object.assign(new Error('fixture read timeout'),{code:'READ_TIMEOUT'}));};});value={contents:[],prompts:[],channels:window.lib.settings.channels.map(c=>({id:c.id,name:c.name,enabled:!c.deletedAt}))};}
@@ -42,7 +42,7 @@ async function probeMain(probeRoot) {
  try {
   await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelector(".creator-overview-layout")');
   await run('document.getElementById("library-menu").click()');await wait('document.querySelector(".library-manager-dialog[open]")');await click('.management-tabs button','渠道');
-  await wait('[...document.querySelectorAll("button")].some(b=>b.textContent==="停用渠道"&&!b.disabled)');await run('window.pauseRefresh=true');await click('.management-actions button','停用渠道');
+  await wait('[...document.querySelectorAll("button")].some(b=>b.textContent==="停用渠道"&&!b.disabled)');await run('window.calls=[]');await click('.management-actions button','停用渠道');await wait('[...document.querySelectorAll("button")].some(b=>b.textContent==="恢复渠道"&&!b.disabled)');assert.equal(await run('window.calls.filter(c=>["readWorkspace","readWorkspaceLibrary","listCoverAssets"].includes(c.method)).length'),0,'acknowledged channel snapshot needs no broad refresh');await run('window.pauseRefresh=true;window.emitChange("changed")');
   await wait('window.finishRefresh && document.querySelector("main[data-busy=false]") && [...document.querySelectorAll("button")].some(b=>b.textContent==="恢复渠道"&&!b.disabled)');
   if(evidence){await run('new Promise(resolve=>setTimeout(resolve,250))');await fs.writeFile(path.join(evidence,'channel-committed-refresh-paused.png'),(await win.webContents.capturePage()).toPNG());}
   assert.equal(await run('window.calls.filter(c=>c.method==="mutateWorkspace").length'),1);

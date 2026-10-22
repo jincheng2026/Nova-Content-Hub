@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "scope": "Synthetic real React/Semi/hidden Electron; five aspect ratios at 1280/900/620 widths, exterior metadata/actions, unchanged image source URLs, contain, keyboard Enter preview, comparison, select/favorite/download/note/annotation entry. No user library or installed app.",
+  "screenshots": [
+    "gallery-1280.png",
+    "gallery-900.png",
+    "gallery-620.png",
+    "keyboard-preview.png",
+    "compare.png"
+  ]
+}

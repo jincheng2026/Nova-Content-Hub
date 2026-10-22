@@ -1,0 +1,25 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2100 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/dist/index.html                                         0.12 kB │ gzip:   0.12 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/dist/assets/app-Dmm_N9Zo.css                          519.82 kB │ gzip:  68.49 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/dist/assets/index-CMN-MYuA.js                           7.76 kB │ gzip:   3.13 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/dist/assets/app-LVj41YfV.js                         1,374.49 kB │ gzip: 381.11 kB
+
+✓ built in 603ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+[39091:1022/150238.602337:ERROR:net/disk_cache/simple/simple_backend_impl.cc:81] Failed to create directory: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/machine/Shared Dictionary/cache
+[39091:1022/150238.603824:ERROR:net/disk_cache/simple/simple_backend_impl.cc:81] Failed to create directory: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/machine/Shared Dictionary/cache
+[39091:1022/150238.604066:ERROR:net/disk_cache/simple/simple_backend_impl.cc:749] Simple Cache Backend: wrong file structure on disk: 1 path: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5/machine/Shared Dictionary/cache
+[39091:1022/150238.606088:ERROR:net/disk_cache/disk_cache.cc:290] Unable to create cache
+PASS real App: keyed pending, queued concurrent candidate favorites with acknowledged CAS, other annotation typing, unfavorite/select/annotation persistence, viewer actions/navigation/two-axis scroll, failed-write unlock/no retry, prompt favorite/unfavorite, zero broad reads for local chains.
+[39080:1022/150241.025888:ERROR:base/process/process_mac.cc:53] task_policy_set TASK_CATEGORY_POLICY: (os/kern) invalid argument (4)
+[39080:1022/150241.026893:ERROR:base/process/process_mac.cc:98] task_policy_set TASK_SUPPRESSION_POLICY: (os/kern) invalid argument (4)
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-entity-actions-9oOMw5

@@ -7,7 +7,7 @@ import {WorkspaceController} from './workspace-controller.mts';
 import {Maintenance} from './maintenance-controller.mts';
 import {readPromptDocument} from './document-import.mts';
 import type {CoverStart, CoverReference, Assistant} from '../shared/cover-contracts.ts';
-import type {WorkspaceMutation, WorkspaceMaterialReference, WorkspacePublicationReference} from '../shared/workspace-contracts.ts';
+import type {WorkspaceMutation, CoverCandidateUpdate, PromptFavoriteUpdate, WorkspaceMaterialReference, WorkspacePublicationReference} from '../shared/workspace-contracts.ts';
 import type {LocalPreferences} from '../shared/preferences-contracts.ts';
 import type {SetupInputs} from '../shared/setup-contracts.ts';
 import type {Preferences} from './preferences.mts';
@@ -133,9 +133,12 @@ export class DesktopController {
     chooseContentMaterial(input?: undefined) { return this.workspace.chooseContentMaterial(input); }
     readContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.readContentMaterial(input); }
     exportContentMaterial(input: WorkspaceMaterialReference) { return this.workspace.exportContentMaterial(input); }
+    readWorkspaceContent(input: {id: string}) { return this.workspace.readWorkspaceContent(input); }
     readWorkspaceLibrary(input?: undefined) { return this.workspace.readWorkspaceLibrary(input); }
     openPublicationLink(input: WorkspacePublicationReference) { return this.workspace.openPublicationLink(input); }
     revealLibraryFolder(input?: undefined) { return this.workspace.revealLibraryFolder(input); }
+    updateCoverCandidate(input: CoverCandidateUpdate) { return this.workspace.updateCoverCandidate(input); }
+    updatePromptFavorite(input: PromptFavoriteUpdate) { return this.workspace.updatePromptFavorite(input); }
     mutateWorkspace(input: WorkspaceMutation) { return this.workspace.mutateWorkspace(input); }
     recoverWorkspaceMutation(input?: undefined) { return this.workspace.recoverWorkspaceMutation(input); }
     retryWorkspaceMutation(input?: undefined) { return this.workspace.retryWorkspaceMutation(input); }

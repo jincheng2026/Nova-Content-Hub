@@ -54,6 +54,9 @@ export type WorkspaceMutation =
     | {op: 'setPromptCategories'; editToken: string; values: string[]}
     | {op: 'addCustomRatio' | 'removeCustomRatio'; editToken: string; ratio: string};
 
+export type CoverCandidateUpdate = Extract<WorkspaceMutation, {op: 'updateCandidate'}> & {kind: 'content'};
+export type PromptFavoriteUpdate = Extract<WorkspaceMutation, {op: 'setPromptFavorite'}>;
+
 export interface WorkspaceEntity extends WorkspaceReference { title: string; createdAt: string; updatedAt: string; deletedAt: string | null }
 export interface WorkspaceLibraryPrompt extends WorkspaceEntity, WorkspacePromptFields { enabled: boolean; favorite: boolean }
 export interface WorkspaceLibraryPhoto extends WorkspaceEntity { assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; originalName: string }
@@ -103,7 +106,10 @@ export interface WorkspaceInputs {
     readContentMaterial: WorkspaceMaterialReference;
     exportContentMaterial: WorkspaceMaterialReference;
     readWorkspaceLibrary: undefined;
+    readWorkspaceContent: {id: string};
     mutateWorkspace: WorkspaceMutation;
+    updateCoverCandidate: CoverCandidateUpdate;
+    updatePromptFavorite: PromptFavoriteUpdate;
     recoverWorkspaceMutation: undefined;
     retryWorkspaceMutation: undefined;
     abandonWorkspaceMutation: undefined;
@@ -118,7 +124,10 @@ export interface WorkspaceResults {
     readContentMaterial: WorkspaceMaterialImport;
     exportContentMaterial: {exported: boolean};
     readWorkspaceLibrary: WorkspaceLibrarySnapshot;
+    readWorkspaceContent: WorkspaceContentDetails;
     mutateWorkspace: WorkspaceMutationResult;
+    updateCoverCandidate: WorkspaceContentDetails;
+    updatePromptFavorite: WorkspaceLibraryPrompt;
     recoverWorkspaceMutation: WorkspaceRecovery;
     retryWorkspaceMutation: WorkspaceMutationResult | null;
     abandonWorkspaceMutation: void;
@@ -130,6 +139,8 @@ export interface WorkspaceWorkerOperations {
     workspaceMaterialBytes: {args: {binding: LibraryBinding; reference: WorkspaceMaterialReference}; result: {data: Uint8Array; detectedType: string; originalName: string}};
     workspaceImportTemplateImages: {args: {binding: LibraryBinding; sources: string[]}; result: WorkspaceTemplateImage[]};
     workspaceLibrary: {args: {binding: LibraryBinding}; result: WorkspaceLibrarySnapshot};
+    workspaceContent: {args: {binding: LibraryBinding; id: string}; result: WorkspaceContentDetails};
+    workspacePrompt: {args: {binding: LibraryBinding; id: string}; result: WorkspaceLibraryPrompt};
     workspaceMutate: {args: {binding: LibraryBinding; pending: WorkspacePending}; result: WorkspaceReceipt};
     workspaceRecover: {args: {binding: LibraryBinding; pending: WorkspacePending}; result: {receipt: WorkspaceReceipt | null; conflict: boolean}};
 }

@@ -6,17 +6,17 @@ import {createHash} from 'node:crypto';
 import {LibraryError, openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {validateImportedRaster} from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import {sourceBytes} from './cover-worker.mts';
-import {exact, libraryBinding, requireWrite, fail} from '../shared/validation.ts';
+import {exact, uuid, libraryBinding, requireWrite, fail} from '../shared/validation.ts';
 import {workspacePending, workspaceMaterialReference} from '../shared/workspace-validation.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
 import type {WorkspaceCoreDocument, WorkspaceCoreLibrary, WorkspaceCorePlan, WorkspaceCorePublication} from '../shared/workspace-core.d.ts';
 import type {
-    WorkspaceEntity, WorkspaceDocument, WorkspaceKind, WorkspaceLibrarySnapshot, WorkspaceMutation,
+    WorkspaceContentDetails, WorkspaceLibraryPrompt, WorkspaceEntity, WorkspaceDocument, WorkspaceKind, WorkspaceLibrarySnapshot, WorkspaceMutation,
     WorkspaceObjectKind, WorkspacePending, WorkspaceReceipt, WorkspaceSchedule, WorkspaceWorkerOperations, WorkspaceTemplateFields, WorkspaceTemplateImage, WorkspaceMaterial, WorkspaceMaterialImport, WorkspaceMaterialReference
 } from '../shared/workspace-contracts.ts';
 import {TEMPLATE_IMPORT_LIMITS} from '../shared/workspace-contracts.ts';
 
-export const isWorkspaceOperation = (op: unknown): op is keyof WorkspaceWorkerOperations => typeof op === 'string' && ['workspaceTemplateFolder', 'workspaceLibrary', 'workspaceMutate', 'workspaceRecover', 'workspaceImportTemplateImages', 'workspaceImportMaterial', 'workspaceReadMaterial', 'workspaceMaterialBytes'].includes(op);
+export const isWorkspaceOperation = (op: unknown): op is keyof WorkspaceWorkerOperations => typeof op === 'string' && ['workspaceTemplateFolder', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'workspaceMutate', 'workspaceRecover', 'workspaceImportTemplateImages', 'workspaceImportMaterial', 'workspaceReadMaterial', 'workspaceMaterialBytes'].includes(op);
 const absolute = (source: unknown): source is string => typeof source === 'string' && source.length <= 32_768 && path.isAbsolute(source) && !source.includes('\0');
 const rasterTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/gif'];
 const materialExtensions = ['.png', '.jpg', '.jpeg', '.webp', '.gif', '.md', '.markdown', '.txt', '.pdf'];
@@ -152,6 +152,13 @@ function document(library: WorkspaceCoreLibrary, input: WorkspaceCoreDocument, k
         coverVariants: (input.coverVariants ?? []).map(({id, name, ratio, preferredTemplateId, selectedCandidateId}) => ({id, name, ratio, preferredTemplateId, selectedCandidateId}))
     };
 }
+export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument): WorkspaceContentDetails {
+    return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
+}
+function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLibraryPrompt {
+    const prompt = library.readPrompt(id);
+    return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true, favorite: prompt.favorite ?? false};
+}
 export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrarySnapshot {
     const settings = library.readLibrarySettings();
     return {
@@ -176,7 +183,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
         }),
         contentDetails: library.listAllContents().map(content => {
-            return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
+            return workspaceContent(library, content);
         }),
         settings: {
             editToken: settings.editToken,
@@ -327,6 +334,11 @@ export async function executeWorkspace(op: keyof WorkspaceWorkerOperations, args
         const binding = args.binding;
         const library = openLibrary(binding.root, {expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity}) as unknown as WorkspaceCoreLibrary;
         return importTemplateImages(library, args.sources);
+    }
+    if (op === 'workspaceContent' || op === 'workspacePrompt') {
+        if (!exact(args, ['binding', 'id']) || !libraryBinding(args.binding) || !absolute(args.binding.root) || !uuid(args.id)) fail('INVALID_INPUT', '拒绝无效的对象读取。');
+        const library = boundReader(args.binding) as unknown as WorkspaceCoreLibrary;
+        return op === 'workspaceContent' ? workspaceContent(library, library.readContent(args.id)) : workspacePrompt(library, args.id);
     }
     if (!isWorkspaceOperation(op) || !exact(args, op === 'workspaceLibrary' ? ['binding'] : ['binding', 'pending']) || !libraryBinding(args.binding) || !path.isAbsolute(args.binding.root) || args.binding.root.includes('\0') || op !== 'workspaceLibrary' && !workspacePending(args.pending)) fail('INVALID_INPUT', '工作进程拒绝额外、路径或无效业务字段。');
     const binding = args.binding as LibraryBinding;

@@ -8,7 +8,7 @@ import electron from 'electron';
 import {build} from 'vite';
 const workbench=fileURLToPath(new URL('../',import.meta.url));
 const root=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'unobstructed-cover-')));
-const evidence=path.resolve(workbench,'../docs/verification/production/2026-10-20-unobstructed-covers');
+const evidence=path.resolve(process.argv[2]??path.join(root,'evidence'));
 try {
   await fs.mkdir(evidence,{recursive:true});
   await fs.writeFile(path.join(root,'index.html'),'<html lang="zh-CN"><div id="root"></div><script type="module" src="/probe.jsx"></script></html>');
@@ -28,6 +28,7 @@ const library={contentDetails:[details],templates:[],photos:[],settings:{default
 const ok=value=>({ok:true,value});
 window.originalSources=candidates.map(item=>item.url);window.calls=[];
 window.contentHub={listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),selectCover:async input=>{window.calls.push(input);view={...view,selectedCandidateId:input.candidateId};return ok(view);},exportCover:async input=>{window.calls.push(input);return ok({exported:true});},mutateWorkspace:async input=>{window.calls.push(input);details={...details,candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};return ok({library:{...library,contentDetails:[details]}});}};
+window.contentHub.readWorkspaceContent=async()=>ok({...content,...details});window.contentHub.updateCoverCandidate=async input=>{await window.contentHub.mutateWorkspace(input);return ok({...content,...details});};
 createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWidth:1160,margin:'auto'}}><CoverPanel library={library} status={{currentName:'synthetic',assistant:'codex'}} content={content} dirty={false} busy={false} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover:view})} run={async action=>{try{return await action();}catch(error){window.probeError=error.message;}}} onContent={()=>{}}/></div>);
 `);
   await build({configFile:false,root,base:'./',resolve:{alias:{react:path.join(workbench,'node_modules/react'),'react-dom':path.join(workbench,'node_modules/react-dom')}},oxc:{jsx:{runtime:'automatic'}},build:{outDir:path.join(root,'dist'),modulePreload:false,target:'chrome148'}});
@@ -59,7 +60,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
         await fs.writeFile(path.join(evidence,'gallery-'+width+'.png'),(await win.webContents.capturePage()).toPNG());
       }
       win.setSize(1280,1000);await paint();
-      assert.equal(await run('document.querySelector(".cover-result-card.is-selected .cover-result-badges").textContent'),'已选定已收藏');
+      assert.equal(await run('document.querySelectorAll(".cover-result-card.is-selected .cover-result-actions button[aria-pressed=true]").length'),2);
       win.webContents.focus();await run('document.querySelector(".cover-result-image").focus()');
       win.webContents.sendInputEvent({type:'keyDown',keyCode:'Enter'});win.webContents.sendInputEvent({type:'char',keyCode:'\r'});win.webContents.sendInputEvent({type:'keyUp',keyCode:'Enter'});
       await wait('document.querySelector(".image-preview[open]")');
@@ -70,8 +71,8 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run(`[...document.querySelectorAll(".cover-compare-image")].every(frame=>!frame.querySelector('button,input,svg')&&frame.textContent.trim()==='' &&getComputedStyle(frame.querySelector(".cover-artwork-original")).objectFit==="contain")`),true);
       await fs.writeFile(path.join(evidence,'compare.png'),(await win.webContents.capturePage()).toPNG());
       await click('.management-dialog button','关闭');
-      await click('.cover-result-card:has([aria-label="放大候选 02"]) button','选用');await wait('window.calls.some(call=>call.candidateId==="c1")');
-      await click('.cover-result-card:has([aria-label="放大候选 02"]) button','收藏');await wait('document.querySelectorAll(".cover-result-badges").length>=2');
+      await click('.cover-result-card:has([aria-label="放大候选 02"]) button','选用');await wait('document.querySelectorAll(".cover-result-card.is-selected .cover-result-actions button:disabled").length===1');
+      await click('.cover-result-card:has([aria-label="放大候选 02"]) button','收藏');await wait('document.querySelectorAll(".cover-result-card.is-selected .cover-result-actions button[aria-pressed=true]").length===2');
       await click('.cover-result-card:has([aria-label="放大候选 02"]) button','下载');
       await click('.cover-result-card:has([aria-label="放大候选 02"]) button','⋯');await wait('document.querySelector(".management-dialog textarea")');
       await click('.management-dialog button','关闭');

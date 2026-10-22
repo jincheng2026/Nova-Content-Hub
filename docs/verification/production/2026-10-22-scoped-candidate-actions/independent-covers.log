@@ -1,0 +1,65 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (1.78475ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.403333ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.288125ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.234959ms)
+✔ annotations use the actual contained image and reject letterboxing (0.227667ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.547667ms)
+✔ large histories index exact attempt pairs without losing candidates (23.622083ms)
+✔ multi-line annotations preserve original text and cannot forge points or the overall separator (0.183917ms)
+✔ mixed point, reverse rectangle and sampled path notes preserve text and percent geometry (0.624833ms)
+✔ unknown and damaged geometry notes fall back to every original character (0.293375ms)
+(node:34490) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (26.752667ms)
+✔ automatic cover failures still report the error and refresh status (2.627417ms)
+✔ foreground operations and external-change refresh still scan the full workspace (7.961084ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (9688.703541ms)
+✔ mixed annotations persist through reopening a temporary library and reach the exact fixed request context (4930.331833ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (2406.438625ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (2307.401875ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (2895.707083ms)
+  ✔ failed (3234.84275ms)
+  ✔ superseded (2972.544666ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (9103.970291ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2566.046167ms)
+  ✔ after (2629.6535ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (5196.274375ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1609.718208ms)
+  ✔ true (1816.533625ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (3426.76575ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2817.462166ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (443.960917ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (435.003334ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (2422.281792ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (3237.174125ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (4340.952209ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1467.24025ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3894.368041ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (939.520834ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (681.126458ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2497.031875ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (2247.380583ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (2020.334083ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (3377.485625ms)
+✔ summary fallback preserves strict input integrity checks for execution (1576.693708ms)
+✔ unexpected errors during summary loading still propagate (1068.761917ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (493.072ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (3192.41925ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (3151.41175ms)
+✔ folder-open failure keeps exported originals recoverable (1350.640042ms)
+✔ bound codex cover continuation keeps original session and waiting-user after global host changes (1870.04375ms)
+✔ bound codex cover continuation keeps original session and waiting-permission after global host changes (1721.905041ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-user after global host changes (1815.6415ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-permission after global host changes (1708.079166ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (2686.214292ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 52
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 89219.980042

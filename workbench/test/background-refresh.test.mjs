@@ -8,10 +8,10 @@ import {errorInfo} from '../src/shared/contracts.ts';
 // Run the actual App hooks and actions, stopping before UI rendering and Electron mounting.
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
 const actions = source.slice(source.indexOf('function App() {'), source.indexOf('    const currentCollection = library?.collections.find')) + `
-    return {nativeAction, refreshStatus, refreshWorkspace, load, clearEditor, setDraft,
+    return {nativeAction, localAction, refreshStatus, refreshWorkspace, load, clearEditor, setDraft,
         refresh: () => {changesPending.current = true; automaticRefresh.current();},
         select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,
-        error, status, workspace, contents, draft, disk, pendingRefresh: changesPending.current};
+        error, status, workspace, contents, draft, disk, base, pendingRefresh: changesPending.current};
 }`;
 const compiled = stripTypeScriptTypes(actions);
 
@@ -40,6 +40,8 @@ function fixture() {
             if (method === 'status') return {currentName: 'library', busy: false, pending: null};
             if (method === 'listContents') return [{...item, version}];
             if (method === 'readContent') return {...item};
+            if (method === 'readWorkspaceLibrary') return {version,contentDetails:[],templates:[],photos:[],prompts:[],settings:{channels:[]}};
+            if (method === 'readWorkspace') return {version, contents:[{...item,selectedCandidateId:null,candidateCount:0,plans:[]}], prompts:[],channels:[]};
             return {version};
         }
     });
@@ -266,4 +268,46 @@ test('automatic cover reads cannot cross the selected content or library epoch',
     await cover;
     assert.equal(f.calls.filter(method => method === 'readCover').length, before);
     assert.equal(f.render().draft, null);
+});
+
+
+test('local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work', async () => {
+    const f = fixture(); await ready(f);
+    let release; const gate = new Promise(resolve => {release = resolve;}), events = [];
+    const first = f.render().localAction(async () => {events.push('local-1'); await gate;});
+    const next = f.render().nativeAction(async () => {events.push('switch'); f.render().clearEditor();}, {refreshWorkspaceAfter:false});
+    const stale = f.render().localAction(async () => {events.push('stale-local-2');});
+    await new Promise(resolve => setImmediate(resolve)); assert.deepEqual(events, ['local-1']);
+    release(); await Promise.all([first,next,stale]);
+    assert.deepEqual(events, ['local-1','switch']); assert.equal(f.render().acting,false);
+});
+
+test('local writes and cover background reads share one dispatch order without global busy', async () => {
+    const f = fixture(); const app = await ready(f); app.load(f.item);
+    let release; const gate = new Promise(resolve => {release = resolve;}), events = [];
+    const first = f.render().localAction(async () => {events.push('favorite'); await gate;});
+    const read = f.render().backgroundAction(async () => {events.push('cover-read');}, false);
+    const second = f.render().localAction(async () => {events.push('favorite-2');});
+    await new Promise(resolve => setImmediate(resolve)); assert.equal(f.render().acting,false); assert.deepEqual(events,['favorite']);
+    release(); await Promise.all([first,read,second]); assert.deepEqual(events,['favorite','cover-read','favorite-2']);
+});
+
+
+test('confirmed entity snapshots advance the current content CAS without losing unsaved text', async () => {
+    const f = fixture(); await ready(f); f.render().load(f.item);
+    const snapshot = item => ({contentDetails:[{...item,candidates:[]}],prompts:[],settings:{channels:[]}});
+    await f.render().refreshWorkspace(snapshot({...f.item,editToken:'plan-token'}));
+    assert.equal(f.render().draft.body, f.item.body); assert.equal(f.render().base.editToken,'plan-token');
+    let selected; await f.render().localAction(async()=>{selected=f.render().draft;}); assert.equal(selected.body,f.item.body);
+    f.render().setDraft({title:'Unsaved title',body:'My complete unsaved body'}); f.render();
+    await f.render().refreshWorkspace(snapshot({...f.item,editToken:'material-token'}));
+    assert.equal(f.render().draft.body,'My complete unsaved body'); assert.equal(f.render().base.editToken,'material-token'); assert.equal(f.render().disk,null);
+    await f.render().refreshWorkspace(snapshot({...f.item,editToken:'external-token',body:'External body'}));
+    assert.equal(f.render().draft.body,'My complete unsaved body'); assert.equal(f.render().disk.body,'External body');
+    const unchangedLibrary = snapshot({...f.item,editToken:'old-metadata'});
+    f.render().load(f.item); await f.render().refreshWorkspace(unchangedLibrary);
+    f.render().load({...f.item,editToken:'new-progress-token',body:'New body from progress'});
+    await f.render().refreshWorkspace({...unchangedLibrary,prompts:[]});
+    assert.equal(f.render().base.editToken,'new-progress-token');
+    assert.equal(f.render().draft.body,'New body from progress','prompt-only snapshot must not roll current content back');
 });

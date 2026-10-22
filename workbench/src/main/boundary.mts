@@ -13,7 +13,7 @@ export const CHANNELS = Object.freeze([
     'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
     'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',
     'cancelCover', 'selectCover', 'exportCover', 'revealCoverFolder', 'setAssistant', 'readAssistantSetup', 'resumeCoverAction', 'abandonCoverAction',
-    'readWorkspaceLibrary', 'openPublicationLink', 'revealLibraryFolder', 'revealTemplateFolder', 'chooseTemplateFolder', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
+    'readWorkspaceLibrary', 'readWorkspaceContent', 'openPublicationLink', 'revealLibraryFolder', 'revealTemplateFolder', 'chooseTemplateFolder', 'mutateWorkspace', 'updateCoverCandidate', 'updatePromptFavorite', 'recoverWorkspaceMutation', 'retryWorkspaceMutation', 'abandonWorkspaceMutation',
     'inspectLibraryHealth', 'backupLibrary', 'verifyLibraryBackup', 'restoreLibraryBackup', 'readMaintenanceStatus', 'recoverMaintenance', 'abandonMaintenance',
     'prepareLibraryUpgrade', 'cancelLibraryUpgrade', 'confirmLibraryUpgrade', 'queryLibraryUpgrade', 'continueLibraryUpgrade', 'openUpgradedLibrary',
     'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',

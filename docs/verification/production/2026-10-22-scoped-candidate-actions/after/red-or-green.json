@@ -1,0 +1,24 @@
+{
+  "busy": {
+    "global": "false",
+    "navigation": false,
+    "target": true,
+    "otherAnnotation": false
+  },
+  "calls": [
+    {
+      "method": "updateCoverCandidate",
+      "input": {
+        "op": "updateCandidate",
+        "kind": "content",
+        "id": "content",
+        "editToken": "c1",
+        "candidateId": "candidate0",
+        "favorite": true,
+        "displayNumber": "",
+        "note": "",
+        "variantId": null
+      }
+    }
+  ]
+}
