@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f'
+- '1ff1fb139591fd21fa1d2796709638dc886938ae3136399afd469e0e5492d2a9'
+
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-scoped-actions-0341/verify-scoped-release.mjs:50:8 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f',
+  expected: '1ff1fb139591fd21fa1d2796709638dc886938ae3136399afd469e0e5492d2a9',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

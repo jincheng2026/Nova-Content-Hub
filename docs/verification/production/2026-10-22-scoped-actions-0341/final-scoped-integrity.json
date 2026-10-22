@@ -1,0 +1,1368 @@
+{
+  "recordedAt": "2026-10-22T07:46:38.699Z",
+  "status": "ARTIFACTS_VERIFIED_LIBRARY_CHANGED",
+  "version": "0.3.41",
+  "sourceCommit": "310efee2bb00edf18a34dddf9027d6064b19697b",
+  "artifactIntegrity": true,
+  "strictLibraryUnchanged": false,
+  "strictVerifierUnmodified": true,
+  "strictFailurePreserved": {
+    "file": "logs/final-integrity-after-archive-restoration.log",
+    "sha256": "4aa5700ae0e0e91cd4d3afe7df6a5b823254cf494fca4df701f5d238b9e62f9c"
+  },
+  "artifacts": {
+    "installed": "/Applications/自媒体工作台.app",
+    "archived": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0341-310efee/mac-arm64/自媒体工作台.app",
+    "entries": 1859,
+    "treeSha256": "c786b6b9a95a9982f9cb5d1d442c10e9316b1ed8da6cd89231dcdd456288dcac",
+    "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.41-darwin-arm64-preview.dmg",
+    "dmgSha256": "49c1766e09396aecbfe7595f3654521e6c5ae7f5d6fd32d05ad92ebf166e5025",
+    "deliveryDirectory": "/Users/mac/Downloads/自媒体工作台-0.3.41-同事交付-Mac苹果芯片",
+    "deliveryFiles": [
+      "SHA256SUMS.txt",
+      "安装与使用.txt",
+      "自媒体工作台-0.3.41-Mac苹果芯片.dmg"
+    ],
+    "readOnlyDmgTreeVerified": true,
+    "strictSignatureVerified": true,
+    "developerIdSigned": false,
+    "notarized": false,
+    "nativeArch": "darwin-arm64",
+    "pairedMarketplaceVerified": true,
+    "transactionPhase": "complete",
+    "skills": [
+      {
+        "host": "codex",
+        "capability": "cover",
+        "skill": "nova-content-cover-execution"
+      },
+      {
+        "host": "codex",
+        "capability": "template",
+        "skill": "nova-content-template-execution"
+      },
+      {
+        "host": "workbuddy",
+        "capability": "cover",
+        "skill": "nova-content-cover-execution"
+      },
+      {
+        "host": "workbuddy",
+        "capability": "template",
+        "skill": "nova-content-template-execution"
+      }
+    ]
+  },
+  "library": {
+    "bindingCurrentPreserved": true,
+    "originalBackupVerified": true,
+    "beforeEntries": 2303,
+    "currentEntries": 2371,
+    "beforeSha256": "b6163320344103d8b401fff17806da42e8c65a087d6df9f202b17c4873f217ae",
+    "currentSha256": "9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f",
+    "observedAt": "2026-10-22T07:46:38.103Z",
+    "stableSecondRead": true,
+    "businessDiffReceiptSha256": "39b1391923295b9d61f5af0cabd9e9a9b7e4cf82358e35bf5e3d048222cb8535",
+    "finderMetadataReceiptSha256": "1a88c373a1a19d746d17a1221b8b10085809c88d7b8a7f37e1e5de2867099920",
+    "exactDiff": [
+      {
+        "path": ".DS_Store",
+        "before": {
+          "sha256": "14cfbe69765662747ae085957e2d485fd748c3c8bd9c0d896bc16c51bf103ffb",
+          "bytes": 8196,
+          "executable": false
+        },
+        "after": {
+          "sha256": "60ab7d66556a429f0624fa85a2e2f409a183b02c96fe155b32ab3e140c467f82",
+          "bytes": 8196,
+          "executable": false
+        }
+      },
+      {
+        "path": "内容/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "de4e86f69b1acca2edc38509d0188ae4bd55b2eb33001ca5d9a003061612ab84",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "内容/12c4e2b6-ea9d-4b3b-8ed6-37c107e23d64/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "c0c13945be2079ac8f85708d3fe11739f28acda360287b3be844b6b8d3d6d55a",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "内容/12c4e2b6-ea9d-4b3b-8ed6-37c107e23d64/内容.json",
+        "before": {
+          "sha256": "c8073e6c8992de2d1236e9ca88c7fbb9ae86a05942aea115d1c4a59888251bc1",
+          "bytes": 4201,
+          "executable": false
+        },
+        "after": {
+          "sha256": "0a2cc09e57a9c482c47233e6529d81b8595bcde2b8e5da9e27cde15feac7b2ff",
+          "bytes": 4203,
+          "executable": false
+        }
+      },
+      {
+        "path": "合集/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "e69450eb7f9c8b9c47e52d6d9ff43d11ffc6d5449e7d698b6ed56b7e48e58141",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "库配置/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "a96272b47155931b97fa27f395587f267752aaae9f040209ef1bbdaec4d0cef6",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "我的照片/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "89aea3c8b89d075744d6be2ef6cf58677ebd30a27aa6c14b2ef0e0c893c8345d",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "模板/.DS_Store",
+        "before": {
+          "sha256": "5cfeead44f029b244b29fa4a8e8b310b9eb62670f05ad2c2d4f9e005ffb4ee40",
+          "bytes": 6148,
+          "executable": false
+        },
+        "after": {
+          "sha256": "887ad683cd1b7aae62300625a9db49aa561fa43b2736b5d14f36cde7ed51004e",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "1b5584aa259f4dfa74413304050fd1349cd50d5034a2520e67f0359d1f489138",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "a52e6f1dda9971cbeba7b265b501e2706f0e9fa4bc104107ddd1e7492e8ff49e",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/.COMMITTED-074030aa-a549-4255-8c4e-c9a3df373f58",
+        "before": null,
+        "after": {
+          "sha256": "1a794c262a40474e7fee4fbb4b4523340d1c68725dea90ed2c91b9f120e4122a",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "1a794c262a40474e7fee4fbb4b4523340d1c68725dea90ed2c91b9f120e4122a",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "42574e6132491ea0c318175447de6f3aa57d85bf063617afe1e8708c953dddb0",
+          "bytes": 4202,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "ed1a8234a5b243b645dcc40b04f9a7c3529cdf72eac9b6d29df26acb7f3068b6",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/.COMMITTED-fcdf2544-77ea-4243-ae77-a3b707cc2978",
+        "before": null,
+        "after": {
+          "sha256": "c6451084c6a3739b594bb8cfa990ecb4861d87a8d8f665dd0e9408e83a6653e8",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "c6451084c6a3739b594bb8cfa990ecb4861d87a8d8f665dd0e9408e83a6653e8",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "f3e7bd430651c4c51b28ea8a21225abf1daa0f84a1d71bcbc1eaecee38412598",
+          "bytes": 4202,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "edce28998e9588934a35f341e3eec1c370296261150a4b39c04c3793f301eb52",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/.COMMITTED-454fb732-b193-4b2c-861c-9d7df5f64883",
+        "before": null,
+        "after": {
+          "sha256": "e2ca80383870414209508abf73db510edc11158329aaa582663b9a2eed704061",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "e2ca80383870414209508abf73db510edc11158329aaa582663b9a2eed704061",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "339117e3219408193fb5ec11c8cbdd7c5a75250c333aaf0959c86d87a4504e5a",
+          "bytes": 4203,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "d94ebf60ace43d35705e533394c4e2c005f3e0a107e287908774c25b40644fd4",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/.COMMITTED-dfa8f868-5001-42a6-9b99-233e1fed0688",
+        "before": null,
+        "after": {
+          "sha256": "63299385be79d086d15c79f20b8533d9fd0e772721379c929519a7934104c7cd",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "63299385be79d086d15c79f20b8533d9fd0e772721379c929519a7934104c7cd",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "73e10a4a7832b19bd653b59b49291a5c39676f80605a3e6f3b32336c7b13eea8",
+          "bytes": 4202,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "d2ba84b4b038ebf90a2ee836712787f09c9fd873094b5d19c02d6e407dcbd88e",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/.COMMITTED-e8ee1b1d-665e-49de-80df-04842901d62a",
+        "before": null,
+        "after": {
+          "sha256": "80bea50b950d040408a8ec884775a6bebc42daa5c7a8c3f4745b715d0be1d685",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "80bea50b950d040408a8ec884775a6bebc42daa5c7a8c3f4745b715d0be1d685",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "4499bd4a1aa712e4b3b2269b602e52c24b54f703efaaca49423309026ef84ce6",
+          "bytes": 4202,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "0e7e5b0aa16a5b4ba32e4adc36d9cf50ad4bde9ab4a2b72ef808d781d65f45bf",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/.COMMITTED-df6a6cd4-5b03-4611-ab5a-7abb02e78d49",
+        "before": null,
+        "after": {
+          "sha256": "e900b64d83f36eefaacbdd4741c0a3915b39e4b8c97b4926cfc791ec0103192a",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "e900b64d83f36eefaacbdd4741c0a3915b39e4b8c97b4926cfc791ec0103192a",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "8c7eb1c7da0b955e0a045e84c4ed45044f649cc1575fcd165bb71177d117846b",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "49eacf0d673d921c23a0d673ce2a39560bf40082634c2b43e6d5b6e6b28ac032",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/.COMMITTED-3eaf3e43-cc67-4cb9-b296-51ab4bbab271",
+        "before": null,
+        "after": {
+          "sha256": "ddf98aa785b15164e4585f9a11b6997b6f24e2f1ba9270f4471167dceb4e1272",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "ddf98aa785b15164e4585f9a11b6997b6f24e2f1ba9270f4471167dceb4e1272",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "774692274a76ea49b77c9517fb0c1cf748e8b7794d9dce6a1acfd956cbba577f",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "a438dd0f313ca04a010589fcdcca70df5fe1c89400f6682621f636cb5f421328",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/.COMMITTED-4639be15-84b7-4620-95d9-60e8813402e9",
+        "before": null,
+        "after": {
+          "sha256": "aa99da4dbeb7e79bb718d1d0b5e1fb0846606e81c6673bd06f1e16c0be17d577",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "aa99da4dbeb7e79bb718d1d0b5e1fb0846606e81c6673bd06f1e16c0be17d577",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "e2e5049aeb22e5eaca7c4ca402d294699113c6c249030b894fae553147b9b479",
+          "bytes": 4203,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "ab69bc9fb40db0f0624cf9a5cc850f962586310770c48d19c9c6415b35d56f6d",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/.COMMITTED-9f24d6e8-8519-4b94-8c67-be2052b634f4",
+        "before": null,
+        "after": {
+          "sha256": "af69dc86457c6ae8b39beb04d8b26535ccdb2b962cfa2424c6ad450e4be21a54",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "af69dc86457c6ae8b39beb04d8b26535ccdb2b962cfa2424c6ad450e4be21a54",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "c3567b9ea108f3f2b1a95e4271cf7c4b84589fcd535ea42b3992343f1348dfd6",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "1fb93a79eed03f40d2e8a1c0b7d2645f61e73886ba1030a7f7877a2dbdce081e",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/.COMMITTED-6cf5b92d-5c59-4b1b-be58-9525b6413e9e",
+        "before": null,
+        "after": {
+          "sha256": "d27682497eb5d88871868f57f23140c78f627b541a47329edf9750cd4d150161",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "d27682497eb5d88871868f57f23140c78f627b541a47329edf9750cd4d150161",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "c8073e6c8992de2d1236e9ca88c7fbb9ae86a05942aea115d1c4a59888251bc1",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "731cffcfd8279618a7f8b8098260d94e2ce8544ea50f729fb98c1c1ef03438cc",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/.COMMITTED-f5e53b84-4672-4509-914a-1f41fdd8abd8",
+        "before": null,
+        "after": {
+          "sha256": "37f6a36caa46b26368c79019dfdc8326f0519d22f9bbea7f931e1a187cd06294",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "37f6a36caa46b26368c79019dfdc8326f0519d22f9bbea7f931e1a187cd06294",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "5da3eac10e5cddd85285b248a81ef66752c2cee10212e085e3114015a3c0ebad",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "19ed6f7436ced530cfc0bbadeb6e54f23639f5c04bba86983f47f6d87ed4428c",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28",
+        "before": null,
+        "after": {
+          "directory": true
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/.COMMITTED-7b89de13-51f5-4218-9ca0-5e998619c808",
+        "before": null,
+        "after": {
+          "sha256": "9709b36a6f307fd28c29868334dfad66b63685d3c2686ff0eaae5edbc137f340",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "9709b36a6f307fd28c29868334dfad66b63685d3c2686ff0eaae5edbc137f340",
+          "bytes": 65,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "629291477798d9388c04240d713f3ea9b9674957083f53b634b41bf3ce3f4a16",
+          "bytes": 4201,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "7ff65f734560c395d150ffb4e588e0cbc6e3a0a7cb6c99d8bce6f87b48429ee2",
+          "bytes": 12048,
+          "executable": false
+        }
+      },
+      {
+        "path": "资产/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "90c3a3ed02202ee20d181d4dd6f2bee81e2f0f3795cea847382a20a97222d195",
+          "bytes": 6148,
+          "executable": false
+        }
+      }
+    ],
+    "businessAndJournalDiffEntries": 61,
+    "finderMetadataDiffEntries": 10,
+    "finderMetadataChanges": [
+      {
+        "path": ".DS_Store",
+        "before": {
+          "sha256": "14cfbe69765662747ae085957e2d485fd748c3c8bd9c0d896bc16c51bf103ffb",
+          "bytes": 8196,
+          "executable": false
+        },
+        "after": {
+          "sha256": "60ab7d66556a429f0624fa85a2e2f409a183b02c96fe155b32ab3e140c467f82",
+          "bytes": 8196,
+          "executable": false
+        }
+      },
+      {
+        "path": "内容/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "de4e86f69b1acca2edc38509d0188ae4bd55b2eb33001ca5d9a003061612ab84",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "内容/12c4e2b6-ea9d-4b3b-8ed6-37c107e23d64/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "c0c13945be2079ac8f85708d3fe11739f28acda360287b3be844b6b8d3d6d55a",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "合集/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "e69450eb7f9c8b9c47e52d6d9ff43d11ffc6d5449e7d698b6ed56b7e48e58141",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "库配置/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "a96272b47155931b97fa27f395587f267752aaae9f040209ef1bbdaec4d0cef6",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "我的照片/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "89aea3c8b89d075744d6be2ef6cf58677ebd30a27aa6c14b2ef0e0c893c8345d",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "模板/.DS_Store",
+        "before": {
+          "sha256": "5cfeead44f029b244b29fa4a8e8b310b9eb62670f05ad2c2d4f9e005ffb4ee40",
+          "bytes": 6148,
+          "executable": false
+        },
+        "after": {
+          "sha256": "887ad683cd1b7aae62300625a9db49aa561fa43b2736b5d14f36cde7ed51004e",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "1b5584aa259f4dfa74413304050fd1349cd50d5034a2520e67f0359d1f489138",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "系统（别动）/事务/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "a52e6f1dda9971cbeba7b265b501e2706f0e9fa4bc104107ddd1e7492e8ff49e",
+          "bytes": 6148,
+          "executable": false
+        }
+      },
+      {
+        "path": "资产/.DS_Store",
+        "before": null,
+        "after": {
+          "sha256": "90c3a3ed02202ee20d181d4dd6f2bee81e2f0f3795cea847382a20a97222d195",
+          "bytes": 6148,
+          "executable": false
+        }
+      }
+    ],
+    "existingBusinessEntriesChanged": 1,
+    "addedJournalEntries": 60,
+    "originalEntriesRemoved": 0,
+    "allOtherOriginalBusinessEntriesUnchanged": true,
+    "journalChainVerified": true,
+    "journalCount": 12,
+    "revisionBefore": 12,
+    "revisionAfter": 24,
+    "bodyUnchanged": true,
+    "originalAssetsUnchanged": true,
+    "semanticDiff": [
+      {
+        "field": "/candidates/0/acceptedAt",
+        "before": "2026-10-22T03:30:04.618Z",
+        "after": "2026-10-22T07:28:03.823Z"
+      },
+      {
+        "field": "/candidates/0/favorite",
+        "before": true,
+        "after": false
+      },
+      {
+        "field": "/candidates/1/favorite",
+        "before": true,
+        "after": false
+      },
+      {
+        "field": "/candidates/1/acceptedAt",
+        "before": "2026-10-22T06:14:24.197Z",
+        "after": "2026-10-22T07:28:00.615Z"
+      },
+      {
+        "field": "/selectedCover/candidateId",
+        "before": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+        "after": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a"
+      },
+      {
+        "field": "/selectedCover/assetHash",
+        "before": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+        "after": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41"
+      },
+      {
+        "field": "/selectedCover/selectedAt",
+        "before": "2026-10-22T06:14:24.197Z",
+        "after": "2026-10-22T07:28:03.823Z"
+      },
+      {
+        "field": "/plans/0/text",
+        "before": "如果做一个ai博主",
+        "after": "如何做一个ai博主"
+      },
+      {
+        "field": "/plans/0/updatedAt",
+        "before": "2026-10-22T04:38:04.644Z",
+        "after": "2026-10-22T07:29:17.979Z"
+      },
+      {
+        "field": "/revision",
+        "before": 12,
+        "after": 24
+      },
+      {
+        "field": "/updatedAt",
+        "before": "2026-10-22T06:14:24.190Z",
+        "after": "2026-10-22T07:29:17.978Z"
+      }
+    ],
+    "journals": [
+      {
+        "mutationId": "971f7491-adcb-442f-9766-afda50b8e501",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "favorite": false,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 12,
+        "afterRevision": 13,
+        "updatedAt": "2026-10-22T07:27:47.966Z",
+        "intentSha256": "731cffcfd8279618a7f8b8098260d94e2ce8544ea50f729fb98c1c1ef03438cc",
+        "capturedSha256": "c8073e6c8992de2d1236e9ca88c7fbb9ae86a05942aea115d1c4a59888251bc1",
+        "afterSha256": "42574e6132491ea0c318175447de6f3aa57d85bf063617afe1e8708c953dddb0",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "0aacba5fce54b603e71e80828dfbd661696845d56c891ebb98dd3b5f07487a46",
+        "changes": [
+          {
+            "field": "/candidates/1/favorite",
+            "before": true,
+            "after": false
+          },
+          {
+            "field": "/revision",
+            "before": 12,
+            "after": 13
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T06:14:24.190Z",
+            "after": "2026-10-22T07:27:47.966Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "055215e5-3316-4890-9403-869ec6522426",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "favorite": true,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 13,
+        "afterRevision": 14,
+        "updatedAt": "2026-10-22T07:27:49.740Z",
+        "intentSha256": "ed1a8234a5b243b645dcc40b04f9a7c3529cdf72eac9b6d29df26acb7f3068b6",
+        "capturedSha256": "42574e6132491ea0c318175447de6f3aa57d85bf063617afe1e8708c953dddb0",
+        "afterSha256": "774692274a76ea49b77c9517fb0c1cf748e8b7794d9dce6a1acfd956cbba577f",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "32ae03b9631c2a57c61f3859eadc218c487dce3de4f7b95a53ca6658116b968e",
+        "changes": [
+          {
+            "field": "/candidates/1/favorite",
+            "before": false,
+            "after": true
+          },
+          {
+            "field": "/revision",
+            "before": 13,
+            "after": 14
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:27:47.966Z",
+            "after": "2026-10-22T07:27:49.740Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "7c6d039b-91ae-48f2-a008-32a4db99d06f",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+          "favorite": false,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 14,
+        "afterRevision": 15,
+        "updatedAt": "2026-10-22T07:27:53.423Z",
+        "intentSha256": "a438dd0f313ca04a010589fcdcca70df5fe1c89400f6682621f636cb5f421328",
+        "capturedSha256": "774692274a76ea49b77c9517fb0c1cf748e8b7794d9dce6a1acfd956cbba577f",
+        "afterSha256": "73e10a4a7832b19bd653b59b49291a5c39676f80605a3e6f3b32336c7b13eea8",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "b9bdf0c6a6a8b313ac952686b14819959e69908e1973b295d76e645c7c212676",
+        "changes": [
+          {
+            "field": "/candidates/0/favorite",
+            "before": true,
+            "after": false
+          },
+          {
+            "field": "/revision",
+            "before": 14,
+            "after": 15
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:27:49.740Z",
+            "after": "2026-10-22T07:27:53.423Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "1d786be6-ed5c-49ac-b5c6-cc12c175ade8",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+          "favorite": true,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 15,
+        "afterRevision": 16,
+        "updatedAt": "2026-10-22T07:27:55.413Z",
+        "intentSha256": "d2ba84b4b038ebf90a2ee836712787f09c9fd873094b5d19c02d6e407dcbd88e",
+        "capturedSha256": "73e10a4a7832b19bd653b59b49291a5c39676f80605a3e6f3b32336c7b13eea8",
+        "afterSha256": "629291477798d9388c04240d713f3ea9b9674957083f53b634b41bf3ce3f4a16",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "152b1d1689d54d453cb4d57c9bf796e84f3817023f37d85cc7421f0504e9a84b",
+        "changes": [
+          {
+            "field": "/candidates/0/favorite",
+            "before": false,
+            "after": true
+          },
+          {
+            "field": "/revision",
+            "before": 15,
+            "after": 16
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:27:53.423Z",
+            "after": "2026-10-22T07:27:55.413Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "f9bbcad1-1071-4e8c-915d-06da558b8d28",
+        "operation": "selectCover",
+        "input": {
+          "action": "selectCover",
+          "candidateId": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+          "variantId": null
+        },
+        "beforeRevision": 16,
+        "afterRevision": 17,
+        "updatedAt": "2026-10-22T07:27:57.596Z",
+        "intentSha256": "7ff65f734560c395d150ffb4e588e0cbc6e3a0a7cb6c99d8bce6f87b48429ee2",
+        "capturedSha256": "629291477798d9388c04240d713f3ea9b9674957083f53b634b41bf3ce3f4a16",
+        "afterSha256": "5da3eac10e5cddd85285b248a81ef66752c2cee10212e085e3114015a3c0ebad",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "cb89c0ef7a0c97832e0d95100c372e3d088f1d3ff0fb243b8c383fb950c78337",
+        "changes": [
+          {
+            "field": "/candidates/0/acceptedAt",
+            "before": "2026-10-22T03:30:04.618Z",
+            "after": "2026-10-22T07:27:57.603Z"
+          },
+          {
+            "field": "/selectedCover/candidateId",
+            "before": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+            "after": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a"
+          },
+          {
+            "field": "/selectedCover/assetHash",
+            "before": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+            "after": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41"
+          },
+          {
+            "field": "/selectedCover/selectedAt",
+            "before": "2026-10-22T06:14:24.197Z",
+            "after": "2026-10-22T07:27:57.603Z"
+          },
+          {
+            "field": "/revision",
+            "before": 16,
+            "after": 17
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:27:55.413Z",
+            "after": "2026-10-22T07:27:57.596Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "98ad7873-cd6f-4c35-8ff6-28fc89a3425b",
+        "operation": "selectCover",
+        "input": {
+          "action": "selectCover",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "variantId": null
+        },
+        "beforeRevision": 17,
+        "afterRevision": 18,
+        "updatedAt": "2026-10-22T07:28:00.607Z",
+        "intentSha256": "19ed6f7436ced530cfc0bbadeb6e54f23639f5c04bba86983f47f6d87ed4428c",
+        "capturedSha256": "5da3eac10e5cddd85285b248a81ef66752c2cee10212e085e3114015a3c0ebad",
+        "afterSha256": "c3567b9ea108f3f2b1a95e4271cf7c4b84589fcd535ea42b3992343f1348dfd6",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "e6db84878f1c431726e5a20136723891154063a927bedbb544e7869f4f69a4f9",
+        "changes": [
+          {
+            "field": "/candidates/1/acceptedAt",
+            "before": "2026-10-22T06:14:24.197Z",
+            "after": "2026-10-22T07:28:00.615Z"
+          },
+          {
+            "field": "/selectedCover/candidateId",
+            "before": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+            "after": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550"
+          },
+          {
+            "field": "/selectedCover/assetHash",
+            "before": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41",
+            "after": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6"
+          },
+          {
+            "field": "/selectedCover/selectedAt",
+            "before": "2026-10-22T07:27:57.603Z",
+            "after": "2026-10-22T07:28:00.615Z"
+          },
+          {
+            "field": "/revision",
+            "before": 17,
+            "after": 18
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:27:57.596Z",
+            "after": "2026-10-22T07:28:00.607Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "8cc97f32-2c1d-45d9-bd2f-5516a29fd663",
+        "operation": "selectCover",
+        "input": {
+          "action": "selectCover",
+          "candidateId": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+          "variantId": null
+        },
+        "beforeRevision": 18,
+        "afterRevision": 19,
+        "updatedAt": "2026-10-22T07:28:03.816Z",
+        "intentSha256": "1fb93a79eed03f40d2e8a1c0b7d2645f61e73886ba1030a7f7877a2dbdce081e",
+        "capturedSha256": "c3567b9ea108f3f2b1a95e4271cf7c4b84589fcd535ea42b3992343f1348dfd6",
+        "afterSha256": "8c7eb1c7da0b955e0a045e84c4ed45044f649cc1575fcd165bb71177d117846b",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "0c46b563cea071c29d7d442d807425eebd7766e3dec4ba90b85e5d8678ac5adf",
+        "changes": [
+          {
+            "field": "/candidates/0/acceptedAt",
+            "before": "2026-10-22T07:27:57.603Z",
+            "after": "2026-10-22T07:28:03.823Z"
+          },
+          {
+            "field": "/selectedCover/candidateId",
+            "before": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+            "after": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a"
+          },
+          {
+            "field": "/selectedCover/assetHash",
+            "before": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+            "after": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41"
+          },
+          {
+            "field": "/selectedCover/selectedAt",
+            "before": "2026-10-22T07:28:00.615Z",
+            "after": "2026-10-22T07:28:03.823Z"
+          },
+          {
+            "field": "/revision",
+            "before": 18,
+            "after": 19
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:00.607Z",
+            "after": "2026-10-22T07:28:03.816Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "60179406-7841-4d13-8db6-a90c7e0935d4",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "fb412045-5874-4cc8-8e17-7b7ba9fd1e1a",
+          "favorite": false,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 19,
+        "afterRevision": 20,
+        "updatedAt": "2026-10-22T07:28:07.478Z",
+        "intentSha256": "49eacf0d673d921c23a0d673ce2a39560bf40082634c2b43e6d5b6e6b28ac032",
+        "capturedSha256": "8c7eb1c7da0b955e0a045e84c4ed45044f649cc1575fcd165bb71177d117846b",
+        "afterSha256": "f3e7bd430651c4c51b28ea8a21225abf1daa0f84a1d71bcbc1eaecee38412598",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "bb0a929aeb9783415cddff40752a7815c4ebc649bc1311b306250308ed56781b",
+        "changes": [
+          {
+            "field": "/candidates/0/favorite",
+            "before": true,
+            "after": false
+          },
+          {
+            "field": "/revision",
+            "before": 19,
+            "after": 20
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:03.816Z",
+            "after": "2026-10-22T07:28:07.478Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "0993cf8f-a146-4c04-bc34-d4199dfae7a1",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "favorite": false,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 20,
+        "afterRevision": 21,
+        "updatedAt": "2026-10-22T07:28:10.161Z",
+        "intentSha256": "edce28998e9588934a35f341e3eec1c370296261150a4b39c04c3793f301eb52",
+        "capturedSha256": "f3e7bd430651c4c51b28ea8a21225abf1daa0f84a1d71bcbc1eaecee38412598",
+        "afterSha256": "e2e5049aeb22e5eaca7c4ca402d294699113c6c249030b894fae553147b9b479",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "a0e00571b9f89f857c5c320db954281062e741cdb218a7fe574685080cb3137d",
+        "changes": [
+          {
+            "field": "/candidates/1/favorite",
+            "before": true,
+            "after": false
+          },
+          {
+            "field": "/revision",
+            "before": 20,
+            "after": 21
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:07.478Z",
+            "after": "2026-10-22T07:28:10.161Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "8532c980-edb3-4b7b-9aae-b5925d7e65ae",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "favorite": true,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 21,
+        "afterRevision": 22,
+        "updatedAt": "2026-10-22T07:28:14.569Z",
+        "intentSha256": "ab69bc9fb40db0f0624cf9a5cc850f962586310770c48d19c9c6415b35d56f6d",
+        "capturedSha256": "e2e5049aeb22e5eaca7c4ca402d294699113c6c249030b894fae553147b9b479",
+        "afterSha256": "4499bd4a1aa712e4b3b2269b602e52c24b54f703efaaca49423309026ef84ce6",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "7c66dad8838318f7a15a29d35191c61df00de037b667c1c4a96f59eb0c7ff975",
+        "changes": [
+          {
+            "field": "/candidates/1/favorite",
+            "before": false,
+            "after": true
+          },
+          {
+            "field": "/revision",
+            "before": 21,
+            "after": 22
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:10.161Z",
+            "after": "2026-10-22T07:28:14.569Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "2c9c0f14-cbbc-4a69-8a68-5b12ab276174",
+        "operation": "updateCandidate",
+        "input": {
+          "action": "updateCandidate",
+          "candidateId": "7c5acbe4-6558-4f74-984e-f8c4f8f5f550",
+          "favorite": false,
+          "displayNumber": "",
+          "note": "",
+          "variantId": null
+        },
+        "beforeRevision": 22,
+        "afterRevision": 23,
+        "updatedAt": "2026-10-22T07:28:16.820Z",
+        "intentSha256": "0e7e5b0aa16a5b4ba32e4adc36d9cf50ad4bde9ab4a2b72ef808d781d65f45bf",
+        "capturedSha256": "4499bd4a1aa712e4b3b2269b602e52c24b54f703efaaca49423309026ef84ce6",
+        "afterSha256": "339117e3219408193fb5ec11c8cbdd7c5a75250c333aaf0959c86d87a4504e5a",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "179d488122ab9aa87d15665df38992f180eeb1d99b0cef00c241b285896627b7",
+        "changes": [
+          {
+            "field": "/candidates/1/favorite",
+            "before": true,
+            "after": false
+          },
+          {
+            "field": "/revision",
+            "before": 22,
+            "after": 23
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:14.569Z",
+            "after": "2026-10-22T07:28:16.820Z"
+          }
+        ]
+      },
+      {
+        "mutationId": "19d4cb42-94e9-47c2-b1dd-121b3396ab45",
+        "operation": "savePlan",
+        "input": {
+          "action": "savePlan",
+          "id": "1830b3c9-dca2-46b9-9a40-58a38e642b33",
+          "channelId": "douyin",
+          "text": "如何做一个ai博主",
+          "schedule": {
+            "precision": "local-minute",
+            "date": "2026-10-22",
+            "time": "09:00",
+            "timezone": "Asia/Shanghai"
+          },
+          "coverChoice": null
+        },
+        "beforeRevision": 23,
+        "afterRevision": 24,
+        "updatedAt": "2026-10-22T07:29:17.978Z",
+        "intentSha256": "d94ebf60ace43d35705e533394c4e2c005f3e0a107e287908774c25b40644fd4",
+        "capturedSha256": "339117e3219408193fb5ec11c8cbdd7c5a75250c333aaf0959c86d87a4504e5a",
+        "afterSha256": "0a2cc09e57a9c482c47233e6529d81b8595bcde2b8e5da9e27cde15feac7b2ff",
+        "bodySha256": "670d9743542cae3ea7ebe36af56bd53648b0a1126162e78d81a32934a711302e",
+        "requestDigest": "bc26d1782bd3fe113e6bdce11d684f57a8a9096e32777d78a63daafaf76053a6",
+        "changes": [
+          {
+            "field": "/plans/0/text",
+            "before": "如果做一个ai博主",
+            "after": "如何做一个ai博主"
+          },
+          {
+            "field": "/plans/0/updatedAt",
+            "before": "2026-10-22T04:38:04.644Z",
+            "after": "2026-10-22T07:29:17.979Z"
+          },
+          {
+            "field": "/revision",
+            "before": 23,
+            "after": 24
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-22T07:28:16.820Z",
+            "after": "2026-10-22T07:29:17.978Z"
+          }
+        ]
+      }
+    ]
+  },
+  "attribution": {
+    "initiatorIndependentlyProven": false,
+    "interpretation": "Committed journal bytes prove favorite toggles, selected-cover changes and one publication-text correction. They do not prove who initiated the actions. Root reports no business-write actions and concurrent user-interaction tool warnings; native evidence is recorded separately."
+  },
+  "missingHistoricalArtifacts": {
+    "old0340DmgCurrentlyAvailable": false,
+    "nativePayloadCurrentlyAvailable": false,
+    "archiveRestoredFromExactDmg": true
+  },
+  "scope": "Release artifact integrity plus exact observed library-change record; strict unchanged-library acceptance remains failed. No installed app, user library or delivery writes; no native UI acceptance inferred."
+}

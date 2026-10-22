@@ -1,0 +1,543 @@
+{
+  "recordedAt": "2026-10-22T07:37:38.102Z",
+  "status": "STRICT_LIBRARY_MISMATCH",
+  "backupSha256Verified": true,
+  "bindingCurrentUnchanged": true,
+  "beforeEntries": 2303,
+  "afterEntries": 2363,
+  "beforeSha256": "b6163320344103d8b401fff17806da42e8c65a087d6df9f202b17c4873f217ae",
+  "afterSha256": "1ff1fb139591fd21fa1d2796709638dc886938ae3136399afd469e0e5492d2a9",
+  "changes": [
+    {
+      "path": "内容/12c4e2b6-ea9d-4b3b-8ed6-37c107e23d64/内容.json",
+      "before": {
+        "sha256": "c8073e6c8992de2d1236e9ca88c7fbb9ae86a05942aea115d1c4a59888251bc1",
+        "bytes": 4201,
+        "executable": false
+      },
+      "after": {
+        "sha256": "0a2cc09e57a9c482c47233e6529d81b8595bcde2b8e5da9e27cde15feac7b2ff",
+        "bytes": 4203,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/.COMMITTED-074030aa-a549-4255-8c4e-c9a3df373f58",
+      "before": null,
+      "after": {
+        "sha256": "1a794c262a40474e7fee4fbb4b4523340d1c68725dea90ed2c91b9f120e4122a",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "1a794c262a40474e7fee4fbb4b4523340d1c68725dea90ed2c91b9f120e4122a",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "42574e6132491ea0c318175447de6f3aa57d85bf063617afe1e8708c953dddb0",
+        "bytes": 4202,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/055215e5-3316-4890-9403-869ec6522426/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "ed1a8234a5b243b645dcc40b04f9a7c3529cdf72eac9b6d29df26acb7f3068b6",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/.COMMITTED-fcdf2544-77ea-4243-ae77-a3b707cc2978",
+      "before": null,
+      "after": {
+        "sha256": "c6451084c6a3739b594bb8cfa990ecb4861d87a8d8f665dd0e9408e83a6653e8",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "c6451084c6a3739b594bb8cfa990ecb4861d87a8d8f665dd0e9408e83a6653e8",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "f3e7bd430651c4c51b28ea8a21225abf1daa0f84a1d71bcbc1eaecee38412598",
+        "bytes": 4202,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0993cf8f-a146-4c04-bc34-d4199dfae7a1/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "edce28998e9588934a35f341e3eec1c370296261150a4b39c04c3793f301eb52",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/.COMMITTED-454fb732-b193-4b2c-861c-9d7df5f64883",
+      "before": null,
+      "after": {
+        "sha256": "e2ca80383870414209508abf73db510edc11158329aaa582663b9a2eed704061",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "e2ca80383870414209508abf73db510edc11158329aaa582663b9a2eed704061",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "339117e3219408193fb5ec11c8cbdd7c5a75250c333aaf0959c86d87a4504e5a",
+        "bytes": 4203,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/19d4cb42-94e9-47c2-b1dd-121b3396ab45/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "d94ebf60ace43d35705e533394c4e2c005f3e0a107e287908774c25b40644fd4",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/.COMMITTED-dfa8f868-5001-42a6-9b99-233e1fed0688",
+      "before": null,
+      "after": {
+        "sha256": "63299385be79d086d15c79f20b8533d9fd0e772721379c929519a7934104c7cd",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "63299385be79d086d15c79f20b8533d9fd0e772721379c929519a7934104c7cd",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "73e10a4a7832b19bd653b59b49291a5c39676f80605a3e6f3b32336c7b13eea8",
+        "bytes": 4202,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/1d786be6-ed5c-49ac-b5c6-cc12c175ade8/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "d2ba84b4b038ebf90a2ee836712787f09c9fd873094b5d19c02d6e407dcbd88e",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/.COMMITTED-e8ee1b1d-665e-49de-80df-04842901d62a",
+      "before": null,
+      "after": {
+        "sha256": "80bea50b950d040408a8ec884775a6bebc42daa5c7a8c3f4745b715d0be1d685",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "80bea50b950d040408a8ec884775a6bebc42daa5c7a8c3f4745b715d0be1d685",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "4499bd4a1aa712e4b3b2269b602e52c24b54f703efaaca49423309026ef84ce6",
+        "bytes": 4202,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/2c9c0f14-cbbc-4a69-8a68-5b12ab276174/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "0e7e5b0aa16a5b4ba32e4adc36d9cf50ad4bde9ab4a2b72ef808d781d65f45bf",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/.COMMITTED-df6a6cd4-5b03-4611-ab5a-7abb02e78d49",
+      "before": null,
+      "after": {
+        "sha256": "e900b64d83f36eefaacbdd4741c0a3915b39e4b8c97b4926cfc791ec0103192a",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "e900b64d83f36eefaacbdd4741c0a3915b39e4b8c97b4926cfc791ec0103192a",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "8c7eb1c7da0b955e0a045e84c4ed45044f649cc1575fcd165bb71177d117846b",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/60179406-7841-4d13-8db6-a90c7e0935d4/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "49eacf0d673d921c23a0d673ce2a39560bf40082634c2b43e6d5b6e6b28ac032",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/.COMMITTED-3eaf3e43-cc67-4cb9-b296-51ab4bbab271",
+      "before": null,
+      "after": {
+        "sha256": "ddf98aa785b15164e4585f9a11b6997b6f24e2f1ba9270f4471167dceb4e1272",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "ddf98aa785b15164e4585f9a11b6997b6f24e2f1ba9270f4471167dceb4e1272",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "774692274a76ea49b77c9517fb0c1cf748e8b7794d9dce6a1acfd956cbba577f",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/7c6d039b-91ae-48f2-a008-32a4db99d06f/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "a438dd0f313ca04a010589fcdcca70df5fe1c89400f6682621f636cb5f421328",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/.COMMITTED-4639be15-84b7-4620-95d9-60e8813402e9",
+      "before": null,
+      "after": {
+        "sha256": "aa99da4dbeb7e79bb718d1d0b5e1fb0846606e81c6673bd06f1e16c0be17d577",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "aa99da4dbeb7e79bb718d1d0b5e1fb0846606e81c6673bd06f1e16c0be17d577",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "e2e5049aeb22e5eaca7c4ca402d294699113c6c249030b894fae553147b9b479",
+        "bytes": 4203,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8532c980-edb3-4b7b-9aae-b5925d7e65ae/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "ab69bc9fb40db0f0624cf9a5cc850f962586310770c48d19c9c6415b35d56f6d",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/.COMMITTED-9f24d6e8-8519-4b94-8c67-be2052b634f4",
+      "before": null,
+      "after": {
+        "sha256": "af69dc86457c6ae8b39beb04d8b26535ccdb2b962cfa2424c6ad450e4be21a54",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "af69dc86457c6ae8b39beb04d8b26535ccdb2b962cfa2424c6ad450e4be21a54",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "c3567b9ea108f3f2b1a95e4271cf7c4b84589fcd535ea42b3992343f1348dfd6",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/8cc97f32-2c1d-45d9-bd2f-5516a29fd663/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "1fb93a79eed03f40d2e8a1c0b7d2645f61e73886ba1030a7f7877a2dbdce081e",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/.COMMITTED-6cf5b92d-5c59-4b1b-be58-9525b6413e9e",
+      "before": null,
+      "after": {
+        "sha256": "d27682497eb5d88871868f57f23140c78f627b541a47329edf9750cd4d150161",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "d27682497eb5d88871868f57f23140c78f627b541a47329edf9750cd4d150161",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "c8073e6c8992de2d1236e9ca88c7fbb9ae86a05942aea115d1c4a59888251bc1",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/971f7491-adcb-442f-9766-afda50b8e501/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "731cffcfd8279618a7f8b8098260d94e2ce8544ea50f729fb98c1c1ef03438cc",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/.COMMITTED-f5e53b84-4672-4509-914a-1f41fdd8abd8",
+      "before": null,
+      "after": {
+        "sha256": "37f6a36caa46b26368c79019dfdc8326f0519d22f9bbea7f931e1a187cd06294",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "37f6a36caa46b26368c79019dfdc8326f0519d22f9bbea7f931e1a187cd06294",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "5da3eac10e5cddd85285b248a81ef66752c2cee10212e085e3114015a3c0ebad",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/98ad7873-cd6f-4c35-8ff6-28fc89a3425b/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "19ed6f7436ced530cfc0bbadeb6e54f23639f5c04bba86983f47f6d87ed4428c",
+        "bytes": 12048,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28",
+      "before": null,
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/.COMMITTED-7b89de13-51f5-4218-9ca0-5e998619c808",
+      "before": null,
+      "after": {
+        "sha256": "9709b36a6f307fd28c29868334dfad66b63685d3c2686ff0eaae5edbc137f340",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/COMMITTED",
+      "before": null,
+      "after": {
+        "sha256": "9709b36a6f307fd28c29868334dfad66b63685d3c2686ff0eaae5edbc137f340",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/captured-0",
+      "before": null,
+      "after": {
+        "sha256": "629291477798d9388c04240d713f3ea9b9674957083f53b634b41bf3ce3f4a16",
+        "bytes": 4201,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/f9bbcad1-1071-4e8c-915d-06da558b8d28/intent.json",
+      "before": null,
+      "after": {
+        "sha256": "7ff65f734560c395d150ffb4e588e0cbc6e3a0a7cb6c99d8bce6f87b48429ee2",
+        "bytes": 12048,
+        "executable": false
+      }
+    }
+  ],
+  "businessChangesInterpreted": false,
+  "userLibraryMutatedByCheck": false
+}

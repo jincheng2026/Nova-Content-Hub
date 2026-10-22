@@ -1,0 +1,87 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 33-35
+~					28 标题 总览, Value: 1
++					45 container
++						46 标题 10月22日星期四, Value: 2
++							47 文本 10月22日星期四
++						48 text 今天  0 / 2  已发
++						49 进度指示器 Description: 今天 2 条安排，已发布 0 条, Value: 0
++						50 container 本周发布安排
++							51 按钮 2026-10-19，2 条安排
++								52 container
++									53 text 一 2
++							54 按钮 2026-10-20，1 条安排
++								55 container
++									56 text 二 1
++							57 按钮 2026-10-21，1 条安排
++								58 container
++									59 text 三 1
++							60 按钮 2026-10-22，2 条安排
++								61 container
++									62 text 四 2
++							63 按钮 2026-10-23，0 条安排
++								64 container
++									65 text 五 0
++							66 按钮 2026-10-24，0 条安排
++								67 container
++									68 text 六 0
++							69 按钮 2026-10-25，0 条安排
++								70 container
++									71 text 日 0
++					72 container 下一条发布
++						73 container
++							74 按钮 放大 如何做一个AI博主
++								75 图像 如何做一个AI博主的内容封面
++							76 文本 下一条
++							77 文本 09:00
++							78 text 抖音 今天 内容封面 · 此计划不带图
++							79 标题 如何做一个AI博主, Value: 3
++								80 文本 如何做一个AI博主
++							81 文本 如何做一个ai博主
++							82 按钮 复制文案
++								83 文本 复制文案
++							84 按钮 记录已发布
++								85 文本 记录已发布
++							86 按钮 打开内容
++								87 container
++									88 text 打开 内容
++					89 container
++						90 标题 今天, Value: 3
++							91 文本 今天
++						92 text 2  条待发布
++						93 文本 10:03
++						94 文本 直播演示·自定义
++						95 按钮 0.3.11 Semi 日程原生验收：虚构内容，仅记录本机计划，不代表平台发布。
++							96 文本 0.3.11 Semi 日程原生验收：虚构内容，仅记录本机计划，不代表平台发布。
++						97 按钮 记录已发布
++							98 文本 记录已发布
++						99 按钮 查看今天全部 2 条安排 →
++							100 container
++								101 text 查看今天全部  2  条安排 →
++						102 text 明天 ·  0  条安排
++						103 按钮 查看日程 →
++							104 文本 查看日程 →
++					105 container
++						106 标题 要处理, Value: 3
++							107 文本 要处理
++						108 text 0  项 当前没有待处理事项
++					109 container
++						110 标题 内容项目, Value: 3
++							111 文本 内容项目
++						112 text 5  篇 ·  1  个合集
++						113 按钮 如何做一个AI博主 已选封面 · 已发 0/1
++							114 container
++								115 text 如何做一个AI博主 已选封面  ·  已发 0/1
++						116 按钮 让创作更有条理 已选封面 · 已发 0/1
++							117 container
++								118 text 让创作更有条理 已选封面  ·  已发 0/1
++						119 按钮 给创作留点空间 已选封面 · 已发 2/2
++							120 container
++								121 text 给创作留点空间 已选封面  ·  已发 2/2
++						122 按钮 连续创作流程验收合集 合集 · 2 篇内容
++							123 container
++								124 文本 连续创作流程验收合集
++								125 文本 合集
++								126 text  ·  2  篇内容
++						127 按钮 查看全部内容项目 →
++							128 文本 查看全部内容项目 →

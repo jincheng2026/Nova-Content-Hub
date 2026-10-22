@@ -1,0 +1,35 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 65, 67, 71-74, 77-80, 134-135
+~									63 标题 添加你的昵称, Value: 3
+~										69 container 自媒体方向
++										134 文本 待填写
+~										75 container 目标读者
++										135 文本 待填写
+~								112 text 封面助手已准备好。 模板学习与还原： 已准备好。
++									136 container
++										137 text 每天提醒 汇总今天待发布的内容与合集
++										138 切换 每天提醒 汇总今天待发布的内容与合集, Value: off
++									139 container
++										140 text 提醒时间 使用本机当前时区 提醒时间使用本机当前时区
++										141 container
++											142 文本栏 (disabled) 提醒时间使用本机当前时区, Value: 09:00, Placeholder: 请选择时间
++											143 图像 clock
++									144 container
++										145 text 开机启动 登录电脑后自动打开工作台
++										146 切换 开机启动 登录电脑后自动打开工作台, Value: off
++									147 container
++										148 text 系统反馈： 开机启动已关闭 。
++									149 container
++										150 按钮 (disabled) 保存偏好
++											151 文本 保存偏好
++										152 按钮 (disabled) 放弃修改
++											153 文本 放弃修改
++										154 文本 只保存在这台电脑
+~									117 文本 每天提醒尚未开启。
+~									133 text 自媒体工作台 0.3.41 · macOS · ARM64 WorkBuddy ： 配套插件已连接，可以制作封面。
++									155 按钮 打开 WorkBuddy
++										156 container
++											157 text 打开  WorkBuddy
++									158 按钮 检查插件
++										159 文本 检查插件
+The focused UI element is 50 按钮 关闭设置
