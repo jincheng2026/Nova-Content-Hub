@@ -7,7 +7,8 @@
 .semi-control-error { flex-basis: 100%; margin-top: 4px; color: var(--semi-color-danger); font-size: 12px; }
 .workspace-management .semi-input, .management-dialog .semi-input { border: 0; border-radius: 0; background: transparent; padding-top: 0; padding-bottom: 0; }
 .semi-control .semi-input, .semi-control-text .semi-input, .workspace-management .semi-input, .management-dialog .semi-input, .cover-create-settings .semi-input { border: 0 !important; border-radius: 0 !important; padding: 0 12px !important; background: transparent !important; box-shadow: none !important; min-height: 0; }
-.semi-control-text .semi-input-textarea { border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding: 5px 12px !important; }
+.semi-input-textarea-wrapper > .semi-input-textarea { border: 0 !important; border-radius: 0 !important; background: transparent !important; box-shadow: none !important; padding: 5px 12px !important; }
+.semi-input-textarea-wrapper:focus-within { border-color: var(--semi-color-primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,113,227,.12); }
 .semi-control-check .semi-checkbox-inner input { padding: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
 .semi-control-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .semi-control > .semi-input-number { width: 100%; }

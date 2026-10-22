@@ -1,0 +1,19 @@
+✔ browser backup and published snapshot candidates remain visible without invented generation records (1.704667ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.291084ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.595208ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (0.411792ms)
+✔ annotations use the actual contained image and reject letterboxing (0.190875ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (2.201458ms)
+✔ large histories index exact attempt pairs without losing candidates (16.46525ms)
+✔ multi-line annotations preserve original text and cannot forge points or the overall separator (0.29275ms)
+✔ mixed point, reverse rectangle and sampled path notes preserve text and percent geometry (2.281083ms)
+✔ unknown and damaged geometry notes fall back to every original character (0.850291ms)
+✔ moving each annotation clamps its whole shape without changing text, size or path spacing (2.881083ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 280.485

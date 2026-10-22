@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {coverCandidateGroups, ratioPixels, imageAnnotationPoint, annotationNote, readAnnotationNote, annotationRect, annotationAnchor, validCoverAnnotation, annotationPathLimit} from '../src/renderer/cover-gallery.ts';
+import {coverCandidateGroups, ratioPixels, imageAnnotationPoint, annotationNote, readAnnotationNote, annotationRect, annotationAnchor, validCoverAnnotation, annotationPathLimit, translateAnnotation} from '../src/renderer/cover-gallery.ts';
 
 const candidate = (id, requestId, attemptId) => ({id, requestId, attemptId, assetHash: id, originalName: id, accepted: false, url: `asset://${id}`});
 const attempt = (attemptId, status = 'committed') => ({attemptId, host: 'codex', status, reason: 'initial', failure: null});
@@ -111,4 +111,30 @@ test('unknown and damaged geometry notes fall back to every original character',
     assert.deepEqual(readAnnotationNote(note), {points: [], overall: note});
   }
   for (const value of [NaN, Infinity, -1, 0]) assert.equal(imageAnnotationPoint(10, 10, {left: 0, top: 0, width: value, height: 100}, 100, 100), null);
+});
+
+
+test('moving each annotation clamps its whole shape without changing text, size or path spacing', () => {
+  const marks = [{x: 10, y: 20, text: '原文\n  缩进'}, {type: 'rect', x: 20, y: 30, width: 25, height: 40, text: '矩形'}, {type: 'path', points: [{x: 10.5, y: 20}, {x: 30.5, y: 40}, {x: 25.5, y: 60}], text: '划线'}];
+  const original = structuredClone(marks);
+  for (const mark of marks) {
+    assert.deepEqual(translateAnnotation(mark, 0, 0), mark);
+    for (const [dx, dy] of [[10, 5], [-200, -200], [200, 200]]) {
+      const moved = translateAnnotation(mark, dx, dy);
+      assert.ok(validCoverAnnotation(moved));
+      assert.equal(moved.text, mark.text);
+      if (mark.type === 'rect') {assert.equal(moved.width, mark.width); assert.equal(moved.height, mark.height);}
+      if (mark.type === 'path') for (let i = 1; i < mark.points.length; i++) {
+        assert.equal(moved.points[i].x - moved.points[0].x, mark.points[i].x - mark.points[0].x);
+        assert.equal(moved.points[i].y - moved.points[0].y, mark.points[i].y - mark.points[0].y);
+      }
+      assert.deepEqual(readAnnotationNote(annotationNote([moved], '整体')), {points: [moved], overall: '整体'});
+    }
+  }
+  const precise = {x: 12.123456789, y: 99.987654321, text: '原精度'};
+  assert.equal(translateAnnotation(precise, 0, 0), precise);
+  assert.equal(annotationNote([translateAnnotation(precise, 0, 0)], ''), annotationNote([precise], ''));
+  assert.deepEqual(marks, original);
+  assert.deepEqual(translateAnnotation(marks[1], 200, 200), {...marks[1], x: 75, y: 60});
+  assert.deepEqual(translateAnnotation(marks[2], -200, -200).points, [{x: 0, y: 0}, {x: 20, y: 20}, {x: 15, y: 40}]);
 });

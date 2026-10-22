@@ -48,6 +48,14 @@ export function annotationAnchor(mark: CoverAnnotation): AnnotationPoint { retur
 export function annotationRect(a: AnnotationPoint, b: AnnotationPoint): CoverAnnotation {
   return {type: 'rect', x: Math.min(a.x, b.x), y: Math.min(a.y, b.y), width: Math.round(Math.abs(a.x - b.x) * 10) / 10, height: Math.round(Math.abs(a.y - b.y) * 10) / 10, text: ''};
 }
+export function translateAnnotation(mark: CoverAnnotation, dx: number, dy: number): CoverAnnotation {
+  const vertices = mark.type === 'path' ? mark.points : mark.type === 'rect' ? [mark, {x: mark.x + mark.width, y: mark.y + mark.height}] : [mark];
+  const x = Math.max(-Math.min(...vertices.map(p => p.x)), Math.min(100 - Math.max(...vertices.map(p => p.x)), dx));
+  const y = Math.max(-Math.min(...vertices.map(p => p.y)), Math.min(100 - Math.max(...vertices.map(p => p.y)), dy));
+  if (x === 0 && y === 0) return mark;
+  const move = (point: AnnotationPoint) => ({x: point.x + x, y: point.y + y});
+  return mark.type === 'path' ? {...mark, points: mark.points.map(move)} : {...mark, ...move(mark)};
+}
 export function imageAnnotationPoint(clientX: number, clientY: number, rect: {left: number; top: number; width: number; height: number}, width: number, height: number): {x: number; y: number} | null {
   if (![clientX, clientY, rect.left, rect.top, rect.width, rect.height, width, height].every(Number.isFinite) || width <= 0 || height <= 0 || rect.width <= 0 || rect.height <= 0) return null;
   const scale = Math.min(rect.width / width, rect.height / height), w = width * scale, h = height * scale;

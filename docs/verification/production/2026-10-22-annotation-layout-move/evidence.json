@@ -1,0 +1,139 @@
+{
+  "viewports": [
+    {
+      "width": 1280,
+      "height": 860,
+      "rows": [
+        {
+          "top": 213.7890625,
+          "actions": 537.046875,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 537.0546875,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 537.046875,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 537.0546875,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 537.046875,
+          "noteRow": false
+        }
+      ],
+      "inputs": {
+        "tag": "semi-input-textarea-wrapper",
+        "innerBorder": "0px",
+        "innerMargin": "0px",
+        "outerBorder": "1px",
+        "height": 100,
+        "minHeight": "100px",
+        "toolCount": 4
+      },
+      "focus": "rgba(0, 113, 227, 0.12) 0px 0px 0px 3px"
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "rows": [
+        {
+          "top": 213.7890625,
+          "actions": 647.453125,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 647.453125,
+          "noteRow": false
+        },
+        {
+          "top": 213.7890625,
+          "actions": 647.453125,
+          "noteRow": false
+        },
+        {
+          "top": 693.453125,
+          "actions": 1127.1171875,
+          "noteRow": false
+        },
+        {
+          "top": 693.453125,
+          "actions": 1127.1171875,
+          "noteRow": false
+        }
+      ],
+      "inputs": {
+        "tag": "semi-input-textarea-wrapper",
+        "innerBorder": "0px",
+        "innerMargin": "0px",
+        "outerBorder": "1px",
+        "height": 100,
+        "minHeight": "100px",
+        "toolCount": 4
+      },
+      "focus": "rgba(0, 113, 227, 0.12) 0px 0px 0px 3px"
+    }
+  ],
+  "checks": [
+    "same-row mixed-note actions",
+    "shared Semi textarea frame/focus/min-height",
+    "4 named icon buttons/pressed state",
+    "trusted point/rect/path movement",
+    "no-op remains clean",
+    "dirty draft close guard",
+    "cancel/lostcapture/blur rollback",
+    "no autosave",
+    "text edit/save/reopen",
+    "whole-shape clamp point/rect/path",
+    "existing drawing tools",
+    "move at 20 mark cap",
+    "full moved note in refinement confirmation"
+  ],
+  "synthetic": true,
+  "autosize": {
+    "beforeGrowth": 50,
+    "afterGrowth": 130
+  },
+  "saved": [
+    {
+      "x": 10,
+      "y": 9.9,
+      "text": "移动后仍可编辑\n  原样换行"
+    },
+    {
+      "type": "rect",
+      "x": 80,
+      "y": 80,
+      "width": 20,
+      "height": 20,
+      "text": "原矩形"
+    },
+    {
+      "type": "path",
+      "points": [
+        {
+          "x": 65,
+          "y": 5
+        },
+        {
+          "x": 85,
+          "y": 15
+        },
+        {
+          "x": 100,
+          "y": 0
+        }
+      ],
+      "text": "原划线"
+    }
+  ]
+}

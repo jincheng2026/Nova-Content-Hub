@@ -47,7 +47,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
     const window=new BrowserWindow({show:false,width:1280,height:900,webPreferences:{contextIsolation:true,nodeIntegration:false}});
     const run=source=>window.webContents.executeJavaScript(source).catch(error=>{throw new Error('Renderer probe failed: '+source, {cause:error});});
     const wait=condition=>run(`new Promise((resolve,reject)=>{const end=Date.now()+4000;const check=()=>{if(${condition})return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+${JSON.stringify(condition)}));setTimeout(check,15)};check()})`);
-    const click=(selector,text)=>run(`(()=>{const button=[...document.querySelectorAll(${JSON.stringify(selector)})].find(el=>el.textContent===${JSON.stringify(text)});if(!button||button.disabled)throw new Error('Missing enabled button: '+${JSON.stringify(text)});button.click()})()`);
+    const click=(selector,text)=>run(`(()=>{const button=[...document.querySelectorAll(${JSON.stringify(selector)})].find(el=>(el.textContent===${JSON.stringify(text)}||el.getAttribute("aria-label")===${JSON.stringify(text)}));if(!button||button.disabled)throw new Error('Missing enabled button: '+${JSON.stringify(text)});button.click()})()`);
     const paint=()=>run('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
     const enter=(selector,value)=>run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el),'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
     const trustedClick = async (x, y) => {
@@ -104,13 +104,13 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.mutations[0].favorite'),true);
       assert.equal(await run('window.mutations[0].candidateId'),'new-landscape');
       assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-candidate-number small").textContent'),'第2批','favorites retain original batch provenance');
-      await click('.cover-result-card:first-child button','⋯');
+      await run('document.querySelector(".cover-result-card:first-child .cover-card-tools button").click()');
       await wait('document.querySelector(".management-dialog[open] textarea")');
       await enter('.management-dialog textarea','保留横图的完整标题与边界');
       await click('.management-dialog button','暂时收起');
       await wait('document.querySelector(".management-resume") && !document.querySelector(".management-dialog[open]")');
       assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button[title]")].every(button=>button.disabled&&button.title.includes("先保存或放弃"))'),true,'minimized candidate draft blocks favorite changes');
-      assert.equal(await run('[...document.querySelectorAll(".cover-card-tools button")].filter(button=>button.textContent==="⋯").every(button=>button.disabled)'),true,'another note entry cannot replace the minimized draft');
+      assert.equal(await run('[...document.querySelectorAll(".cover-card-tools button")].every(button=>button.disabled)'),true,'another note entry cannot replace the minimized draft');
       await run('document.querySelector(".cover-result-actions button[title]").click()');
       assert.equal(await run('window.mutations.length'),1,'disabled favorite cannot silently mutate or discard a draft');
       await click('.management-resume button','继续编辑');
@@ -120,7 +120,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('window.mutations.length===2 && !document.querySelector(".management-dialog")');
       assert.equal(await run('window.mutations[1].favorite'),true,'notes retain saved favorite');
       assert.equal(await run('window.mutations[1].editToken'),'metadata-1','notes use latest saved token');
-      assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-result-caption > p").textContent'),'保留横图的完整标题与边界');
+      assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-note-indicator").title'),'查看完整备注与批注');
       await click('.cover-result-card:first-child button','选用');
       await wait('document.querySelector(".cover-result-card:first-child.is-selected")');
       assert.equal(await run('document.querySelector(".cover-result-card:first-child button[aria-label=已选用]").textContent'),'已选用');
@@ -304,7 +304,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await click('.cover-annotation-popover button','确认批注');
       await wait('document.querySelectorAll(".cover-annotation-note").length===4');
       window.setSize(900,700);await paint();
-      assert.equal(await run('(()=>{const image=document.querySelector(".cover-annotation-image img").getBoundingClientRect(),box=document.querySelector(".cover-annotation-shapes > rect").getBoundingClientRect();return Math.abs((box.left-image.left)/image.width-.25)<.005 && Math.abs((box.top-image.top)/image.height-.3)<.005})()'),true,'saved geometry stays aligned after ResizeObserver recomputes the canvas');
+      assert.equal(await run('(()=>{const image=document.querySelector(".cover-annotation-image img").getBoundingClientRect(),box=document.querySelector(".cover-annotation-shapes > g > rect").getBoundingClientRect();return Math.abs((box.left-image.left)/image.width-.25)<.005 && Math.abs((box.top-image.top)/image.height-.3)<.005})()'),true,'saved geometry stays aligned after ResizeObserver recomputes the canvas');
       window.setSize(1280,900);await paint();
       await enter('#annotation-overall','保留人物和配色');
       await paint();

@@ -44,7 +44,7 @@
 .cover-candidate-number { min-width: 0; color: var(--semi-color-text-0); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cover-result-caption { padding: 7px; }
 .cover-result-caption > strong { font-size: 13px; }
-.cover-result-caption > p { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 1; overflow: hidden; color: var(--semi-color-text-2); font-size: 11px; overflow-wrap: anywhere; margin: 7px 0; }
+.cover-card-tools .cover-note-indicator { color: var(--semi-color-primary); }
 .cover-result-actions { justify-content: flex-start; gap: 6px; flex-wrap: wrap; margin-top: 7px; }
 .cover-result-caption > .cover-result-actions { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2px; }
 .cover-result-caption > .cover-result-actions .semi-button { min-width: 0; min-height: 26px; height: 26px; padding: 0 2px; font-size: 12px; }
@@ -167,6 +167,14 @@
 .management-dialog:has(.cover-annotation-form) > .dialog-heading { flex: none; margin-bottom: 10px; }
 .cover-annotation-form { min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; }
 .cover-annotation-tools { flex: none; margin-bottom: 10px; }
+.cover-annotation-tools .semi-button { width: 36px; height: 36px; padding: 7px; }
+.cover-annotation-tools svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.cover-annotation-canvas.is-select .cover-annotation-marker { cursor: move; touch-action: none; }
+.cover-annotation-canvas.is-select .cover-annotation-image { cursor: default; }
+.cover-annotation-shapes .annotation-hit { stroke: transparent; stroke-width: 14px; pointer-events: stroke; cursor: move; touch-action: none; }
+.cover-annotation-shapes .annotation-hit rect { fill: transparent; pointer-events: all; }
+.cover-annotation-shapes .is-selected { stroke: #7A4B00; }
+.cover-annotation-marker.is-selected { outline: 2px solid #7A4B00; outline-offset: 2px; }
 .cover-annotation-shapes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: none; stroke: var(--semi-color-primary); stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 1px #fff); }
 .cover-annotation-shapes .is-draft { stroke: #7A4B00; stroke-dasharray: 6 4; }
 .cover-annotation-form > p { flex: none; margin: 0 0 10px; font-size: 13px; color: var(--semi-color-text-2); }
@@ -188,7 +196,7 @@
 .cover-annotation-note { margin-bottom: 10px; padding: 8px; border: 1px solid var(--surface-line); border-radius: 7px; }
 .cover-annotation-note-edit { display: grid; gap: 5px; width: 100%; border: 0; background: transparent; padding: 0; color: inherit; text-align: left; }
 .cover-annotation-note-edit span { font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; }
-.cover-annotation-notes textarea { margin-top: 7px; }
+.cover-annotation-notes .semi-input-textarea-wrapper { margin-top: 7px; }
 .cover-annotation-form > .cover-toolbar { flex: none; }
 .cover-refinement-confirm { margin-top: 18px; padding: 16px; background: var(--surface-inset); border: 1px solid var(--surface-line); border-radius: 12px; }
 .cover-refinement-confirm h3 { margin-top: 0; font-size: 15px; }

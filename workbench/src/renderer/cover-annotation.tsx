@@ -3,7 +3,7 @@ import type {PointerEvent as ReactPointerEvent} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
 import {ManagementDialog} from './library-panels.tsx';
-import {annotationAnchor, annotationNote, annotationPathLimit, annotationRect, imageAnnotationPoint, readAnnotationNote, validCoverAnnotation} from './cover-gallery.ts';
+import {annotationAnchor, annotationNote, annotationPathLimit, annotationRect, imageAnnotationPoint, readAnnotationNote, validCoverAnnotation, translateAnnotation} from './cover-gallery.ts';
 import type {AnnotationPoint, CoverAnnotation} from './cover-gallery.ts';
 import type {WorkspaceCandidate} from '../shared/workspace-contracts.ts';
 interface Props {
@@ -17,8 +17,11 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
   const [points, setPoints] = useState(initial.points), [overall, setOverall] = useState(initial.overall), [confirming, setConfirming] = useState(false);
   const [editor, setEditor] = useState<{point: CoverAnnotation; index: number | null} | null>(null);
   const [natural, setNatural] = useState({width: 0, height: 0}), [stageSize, setStageSize] = useState({width: 0, height: 0});
-  const [tool, setTool] = useState<'point' | 'rect' | 'path'>('point'), [drawing, setDrawing] = useState<CoverAnnotation | null>(null), [drawingNotice, setDrawingNotice] = useState('');
+  const [tool, setTool] = useState<'select' | 'point' | 'rect' | 'path'>('point'), [drawing, setDrawing] = useState<CoverAnnotation | null>(null), [drawingNotice, setDrawingNotice] = useState('');
   const drag = useRef<{pointerId: number; tool: 'rect' | 'path'; start: AnnotationPoint; mark: CoverAnnotation} | null>(null);
+  const [selected, setSelected] = useState<number | null>(null);
+  const [moving, setMoving] = useState<{index: number; mark: CoverAnnotation} | null>(null);
+  const movement = useRef<{pointerId: number; element: Element; index: number; start: AnnotationPoint; original: CoverAnnotation; mark: CoverAnnotation; x: number; y: number; moved: boolean} | null>(null);
   const press = useRef<{pointerId: number; x: number; y: number; moved: boolean} | null>(null);
   const stage = useRef<HTMLDivElement>(null), image = useRef<HTMLImageElement>(null);
   const unavailable = disabled || busy;
@@ -27,6 +30,7 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
   const valid = note.length <= 10000 && points.length <= 20 && points.every(point => !!point.text.trim() && validCoverAnnotation(point));
   const scale = natural.width && natural.height ? Math.min(Math.max(0, stageSize.width - 32) / natural.width, Math.max(0, stageSize.height - 32) / natural.height) : 0;
   const imageWidth = natural.width * scale, imageHeight = natural.height * scale;
+  const visiblePoints = points.map((point, index) => moving?.index === index ? moving.mark : point);
   const anchor = editor ? annotationAnchor(editor.point) : {x: 0, y: 0};
   const pointLeft = editor ? (stageSize.width - imageWidth) / 2 + imageWidth * anchor.x / 100 : 0;
   const pointTop = editor ? (stageSize.height - imageHeight) / 2 + imageHeight * anchor.y / 100 : 0;
@@ -53,17 +57,56 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
     const element = image.current?.parentElement;
     if (pointerId !== undefined && element?.hasPointerCapture(pointerId)) element.releasePointerCapture(pointerId);
   }
-  useEffect(() => { if (unavailable) clearDrawing(); }, [unavailable]);
+  function clearMoving() {
+    const active = movement.current; movement.current = null; setMoving(null);
+    if (active?.element.hasPointerCapture(active.pointerId)) active.element.releasePointerCapture(active.pointerId);
+  }
+  useEffect(() => { if (unavailable) { clearDrawing(); clearMoving(); } }, [unavailable]);
+  useEffect(() => {
+    const cancel = () => { clearDrawing(); clearMoving(); };
+    window.addEventListener('blur', cancel);
+    return () => window.removeEventListener('blur', cancel);
+  }, []);
+  function startMoving(event: ReactPointerEvent<Element>, index: number) {
+    if (tool !== 'select' || unavailable || editor || !event.isPrimary || event.button !== 0) return;
+    const start = pointerPoint(event, true); if (!start) return;
+    event.preventDefault(); event.stopPropagation();
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setSelected(index);
+    movement.current = {pointerId: event.pointerId, element: event.currentTarget, index, start, original: points[index], mark: points[index], x: event.clientX, y: event.clientY, moved: false};
+  }
+  function moveExisting(event: ReactPointerEvent<Element>) {
+    const active = movement.current;
+    if (!active || active.pointerId !== event.pointerId || unavailable) return;
+    if (!active.moved && Math.hypot(event.clientX - active.x, event.clientY - active.y) <= 4) return;
+    const next = pointerPoint(event, true); if (!next) return;
+    active.moved = true;
+    active.mark = translateAnnotation(active.original, next.x - active.start.x, next.y - active.start.y);
+    setMoving({index: active.index, mark: active.mark});
+  }
+  function finishMoving(event: ReactPointerEvent<Element>) {
+    const active = movement.current; if (!active || active.pointerId !== event.pointerId) return;
+    moveExisting(event);
+    if (active.moved && !unavailable) {
+      setPoints(old => old.map((point, index) => index === active.index ? active.mark : point));
+      setConfirming(false);
+    }
+    clearMoving();
+  }
+  function cancelMoving(event: ReactPointerEvent<Element>) {
+    if (movement.current?.pointerId === event.pointerId) clearMoving();
+  }
+  const movingEvents = (index: number) => ({onPointerDown: (event: ReactPointerEvent<Element>) => startMoving(event, index), onPointerMove: moveExisting, onPointerUp: finishMoving, onPointerCancel: cancelMoving, onLostPointerCapture: cancelMoving});
   function cancelDrawing(event: ReactPointerEvent<HTMLButtonElement>) {
     if (press.current?.pointerId === event.pointerId || drag.current?.pointerId === event.pointerId) clearDrawing();
   }
-  function pointerPoint(event: ReactPointerEvent<HTMLButtonElement>, clamp = false) {
+  function pointerPoint(event: ReactPointerEvent<Element>, clamp = false) {
     const element = image.current; if (!element) return null;
     const rect = element.getBoundingClientRect();
     return imageAnnotationPoint(clamp ? Math.max(rect.left, Math.min(rect.right, event.clientX)) : event.clientX, clamp ? Math.max(rect.top, Math.min(rect.bottom, event.clientY)) : event.clientY, rect, element.naturalWidth, element.naturalHeight);
   }
   function startDrawing(event: ReactPointerEvent<HTMLButtonElement>) {
-    if (unavailable || editor || points.length >= 20 || !event.isPrimary || event.button !== 0) return;
+    if (tool === 'select' || unavailable || editor || points.length >= 20 || !event.isPrimary || event.button !== 0) return;
     const start = pointerPoint(event); if (!start) return;
     press.current = {pointerId: event.pointerId, x: event.clientX, y: event.clientY, moved: false};
     if (tool === 'point') return;
@@ -101,21 +144,21 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
   function shape(mark: CoverAnnotation, key: string | number) {
     return mark.type === 'rect' ? <rect key={key} x={mark.x} y={mark.y} width={mark.width} height={mark.height} vectorEffect="non-scaling-stroke"/> : mark.type === 'path' ? <polyline key={key} points={mark.points.map(point => `${point.x},${point.y}`).join(' ')} vectorEffect="non-scaling-stroke"/> : null;
   }
-  return <ManagementDialog title="封面位置批注" busy={busy} dirty={!!editor || !!drawing || note !== annotationNote(initial.points, initial.overall)} close={close}>
-    <form className="cover-annotation-form" onSubmit={event => { event.preventDefault(); if (!unavailable && valid && !editor && !drawing) void run(() => save(note)); }}>
-      <p>选择点选、标框或划线，在原图上标记后填写要求并确认。已确认的批注会列在右侧，原图和历史候选都会保留。</p>
-      <div className="cover-toolbar cover-annotation-tools" role="group" aria-label="批注工具">{([['point', '点选'], ['rect', '标框'], ['path', '划线']] as const).map(([value, label]) => <Button key={value} aria-pressed={tool === value} theme={tool === value ? 'solid' : 'light'} disabled={unavailable || !!editor} onClick={() => { clearDrawing(); setTool(value); setConfirming(false); setDrawingNotice(''); }}>{label}</Button>)}</div>
+  return <ManagementDialog title="封面位置批注" busy={busy} dirty={!!editor || !!drawing || !!moving || note !== annotationNote(initial.points, initial.overall)} close={close}>
+    <form className="cover-annotation-form" onSubmit={event => { event.preventDefault(); if (!unavailable && valid && !editor && !drawing && !moving) void run(() => save(note)); }}>
+      <p>选择点选、标框或划线，标记后填写要求；用选择工具拖动已有批注，点击右侧文字编辑要求。原图和历史候选都会保留。</p>
+      <div className="cover-toolbar cover-annotation-tools" role="group" aria-label="批注工具">{([['select', '选择 / 移动'], ['point', '点选'], ['rect', '标框'], ['path', '划线']] as const).map(([value, label]) => <Button key={value} title={label} aria-label={label} aria-pressed={tool === value} theme={tool === value ? 'solid' : 'light'} disabled={unavailable || !!editor} onClick={() => { clearDrawing(); clearMoving(); setTool(value); setConfirming(false); setDrawingNotice(''); }}><svg viewBox="0 0 24 24" aria-hidden="true">{value === 'select' ? <path d="M5.5 3.5l13 7-5.6 1.8-2.6 5.6z"/> : value === 'point' ? <><circle cx="12" cy="12" r="5"/><path d="M12 3v3m0 12v3M3 12h3m12 0h3"/></> : value === 'rect' ? <rect x="4" y="5" width="16" height="14" rx="1.5"/> : <path d="M3 16.5c2.2-4.6 4.6-5 6.2-1.8 1.4 2.8 3.4 2.6 5.2-1.2 1.5-3.2 3.2-5 6.6-4.4"/>}</svg></Button>)}</div>
       {drawingNotice && <p role="status">{drawingNotice}</p>}
       <div className="cover-annotation-layout"><div ref={stage} className="cover-annotation-stage">
-        <div className="cover-annotation-canvas" style={{width: imageWidth || '100%', height: imageHeight || '100%'}}>
-          <button type="button" className="cover-annotation-image" aria-label={tool === 'point' ? '点击原图添加位置批注' : tool === 'rect' ? '拖动原图添加矩形批注' : '拖动原图添加划线批注'} disabled={unavailable || points.length >= 20 || !!editor} onPointerDown={startDrawing} onPointerMove={moveDrawing} onPointerUp={finishDrawing} onPointerCancel={cancelDrawing} onLostPointerCapture={cancelDrawing} onClick={event => {
+        <div className={`cover-annotation-canvas${tool === 'select' ? ' is-select' : ''}`} style={{width: imageWidth || '100%', height: imageHeight || '100%'}}>
+          <button type="button" className="cover-annotation-image" aria-label={tool === 'select' ? '选择已有批注并拖动' : tool === 'point' ? '点击原图添加位置批注' : tool === 'rect' ? '拖动原图添加矩形批注' : '拖动原图添加划线批注'} disabled={unavailable || (tool !== 'select' && points.length >= 20) || !!editor} onPointerDown={startDrawing} onPointerMove={moveDrawing} onPointerUp={finishDrawing} onPointerCancel={cancelDrawing} onLostPointerCapture={cancelDrawing} onClick={event => {
             if (tool !== 'point' || unavailable || !press.current || press.current.moved) return;
             const element = image.current; if (!element) return;
             const point = imageAnnotationPoint(event.clientX, event.clientY, element.getBoundingClientRect(), element.naturalWidth, element.naturalHeight);
             if (point) editPoint({...point, text: ''}, null);
           }}><img ref={image} src={candidate.url} alt="待修改的封面原图" draggable={false} onLoad={event => setNatural({width: event.currentTarget.naturalWidth, height: event.currentTarget.naturalHeight})}/></button>
-          <svg className="cover-annotation-shapes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{points.map((point, index) => shape(point, index))}<g className="is-draft">{drawing && shape(drawing, 'drawing')}{editor && shape(editor.point, 'editing')}</g></svg>
-          {points.map((point, index) => <button type="button" key={index} className="cover-annotation-marker" aria-label={`编辑位置 ${index + 1}`} disabled={unavailable || !!editor || !!drawing} style={{left: `${annotationAnchor(point).x}%`, top: `${annotationAnchor(point).y}%`}} onClick={() => editPoint(point, index)}>{index + 1}</button>)}
+          <svg className="cover-annotation-shapes" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">{visiblePoints.map((point, index) => <g key={index} className={selected === index && tool === 'select' ? 'is-selected' : undefined}>{shape(point, index)}{tool === 'select' && <g className="annotation-hit" {...movingEvents(index)}>{shape(point, 'hit')}</g>}</g>)}<g className="is-draft">{drawing && shape(drawing, 'drawing')}{editor && shape(editor.point, 'editing')}</g></svg>
+          {visiblePoints.map((point, index) => <button type="button" key={index} className={`cover-annotation-marker${selected === index && tool === 'select' ? ' is-selected' : ''}`} aria-label={`${tool === 'select' ? '选择或移动' : '编辑'}位置 ${index + 1}`} disabled={unavailable || !!editor || !!drawing} style={{left: `${annotationAnchor(point).x}%`, top: `${annotationAnchor(point).y}%`}} {...movingEvents(index)} onClick={() => tool === 'select' ? setSelected(index) : editPoint(point, index)}>{index + 1}</button>)}
           {editor && <span className="cover-annotation-marker is-draft" aria-label="正在编辑的位置" style={{left: `${anchor.x}%`, top: `${anchor.y}%`}}>{editor.index === null ? points.length + 1 : editor.index + 1}</span>}
         </div>
         {editor && <div className="cover-annotation-popover" role="region" aria-label="填写位置批注" style={{left: popupLeft, top: popupTop, width: popupWidth, maxHeight: popupHeight}}>
@@ -123,10 +166,10 @@ export function CoverAnnotationEditor({candidate, busy, disabled, refinementDisa
           <TextArea id="annotation-point-text" aria-label="位置修改要求" value={editor.point.text} disabled={unavailable} maxLength={1000} placeholder="例如：把这里的标题放大" onChange={value => setEditor({...editor, point: {...editor.point, text: value}})}/>
           <div className="cover-toolbar"><Button theme="solid" disabled={unavailable || !editor.point.text.trim() || annotationNote(editor.index === null ? [...points, editor.point] : points.map((point, index) => index === editor.index ? editor.point : point), overall).length > 10000} onClick={confirmPoint}>确认批注</Button><Button disabled={unavailable} onClick={() => setEditor(null)}>取消</Button></div>
         </div>}
-      </div><div className="cover-annotation-notes"><h3>已确认的位置批注（{points.length}）</h3>{!points.length && <p>在原图上点选、标框或划线，填写后确认。</p>}{points.map((point, index) => <div className="cover-annotation-note" key={index}><button type="button" className="cover-annotation-note-edit" disabled={unavailable || !!editor || !!drawing} aria-label={`编辑位置 ${index + 1} 批注`} onClick={() => editPoint(point, index)}><strong>位置 {index + 1}{point.type === 'rect' ? ' · 标框' : point.type === 'path' ? ' · 划线' : ''}</strong><span>{point.text}</span></button><Button theme="borderless" disabled={unavailable || !!editor || !!drawing} onClick={() => { setPoints(old => old.filter((_, i) => i !== index)); setConfirming(false); }}>删除位置 {index + 1}</Button></div>)}<label htmlFor="annotation-overall">整体修改要求（可选）<TextArea id="annotation-overall" value={overall} disabled={unavailable} maxLength={9000} placeholder="可留空，例如：保留人物和配色" onChange={value => { setOverall(value); setConfirming(false); }}/></label><p>{points.length} / 20 个位置 · {note.length} / 10000 字</p>{!valid && <p role="alert">请将总字数控制在 10000 字内。</p>}</div></div>
+      </div><div className="cover-annotation-notes"><h3>已确认的位置批注（{points.length}）</h3>{!points.length && <p>在原图上点选、标框或划线，填写后确认。</p>}{points.map((point, index) => <div className="cover-annotation-note" key={index}><button type="button" className="cover-annotation-note-edit" disabled={unavailable || !!editor || !!drawing || !!moving} aria-label={`编辑位置 ${index + 1} 批注`} onClick={() => editPoint(point, index)}><strong>位置 {index + 1}{point.type === 'rect' ? ' · 标框' : point.type === 'path' ? ' · 划线' : ''}</strong><span>{point.text}</span></button><Button theme="borderless" disabled={unavailable || !!editor || !!drawing || !!moving} onClick={() => { setPoints(old => old.filter((_, i) => i !== index)); setSelected(null); setConfirming(false); }}>删除位置 {index + 1}</Button></div>)}<label htmlFor="annotation-overall">整体修改要求（可选）<TextArea id="annotation-overall" value={overall} disabled={unavailable} maxLength={9000} placeholder="可留空，例如：保留人物和配色" onChange={value => { setOverall(value); setConfirming(false); }}/></label><p>{points.length} / 20 个位置 · {note.length} / 10000 字</p>{!valid && <p role="alert">请将总字数控制在 10000 字内。</p>}</div></div>
       {refinementTooLong && <p role="alert">批注、补充要求与定位说明合计 {fullPrompt.length} 字，超过 10000 字。请调整后再修改；原输入仍保留，也可以单独保存批注。</p>}
-      <div className="cover-toolbar"><Button disabled={unavailable || points.length >= 20 || !!editor || !!drawing} onClick={() => editPoint({x: 50, y: 50, text: ''}, null)}>添加中心位置批注</Button><Button htmlType="submit" disabled={unavailable || !valid || !!editor || !!drawing}>保存批注</Button><Button theme="solid" disabled={unavailable || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor || !!drawing} onClick={() => setConfirming(true)}>按批注修改</Button></div>
-      {confirming && <div className="cover-refinement-confirm" role="region" aria-label="确认本次封面修改"><h3>确认本次修改</h3><pre style={{whiteSpace: 'pre-wrap'}}>{fullPrompt}</pre><p>参考上方这张原图与 {points.length} 个位置批注。{referenceSummary}</p><p>当前助手：{assistant}。将保存批注，添加这张原图作为内容参考资料，生成 1 张新候选；已有封面继续保留。</p><Button theme="solid" disabled={unavailable || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor || !!drawing} onClick={() => void run(() => refine(note))}>确认并去 {assistant} 修改</Button><Button disabled={unavailable} onClick={() => setConfirming(false)}>继续调整批注</Button></div>}
+      <div className="cover-toolbar"><Button disabled={unavailable || points.length >= 20 || !!editor || !!drawing || !!moving} onClick={() => editPoint({x: 50, y: 50, text: ''}, null)}>添加中心位置批注</Button><Button htmlType="submit" disabled={unavailable || !valid || !!editor || !!drawing || !!moving}>保存批注</Button><Button theme="solid" disabled={unavailable || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor || !!drawing || !!moving} onClick={() => setConfirming(true)}>按批注修改</Button></div>
+      {confirming && <div className="cover-refinement-confirm" role="region" aria-label="确认本次封面修改"><h3>确认本次修改</h3><pre style={{whiteSpace: 'pre-wrap'}}>{fullPrompt}</pre><p>参考上方这张原图与 {points.length} 个位置批注。{referenceSummary}</p><p>当前助手：{assistant}。将保存批注，添加这张原图作为内容参考资料，生成 1 张新候选；已有封面继续保留。</p><Button theme="solid" disabled={unavailable || refinementDisabled || refinementTooLong || !valid || !hasInstructions || !!editor || !!drawing || !!moving} onClick={() => void run(() => refine(note))}>确认并去 {assistant} 修改</Button><Button disabled={unavailable} onClick={() => setConfirming(false)}>继续调整批注</Button></div>}
     </form>
   </ManagementDialog>;
 }
