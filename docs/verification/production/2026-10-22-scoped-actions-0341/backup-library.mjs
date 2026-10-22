@@ -1,0 +1,26 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import assert from 'node:assert/strict';
+import {createHash, randomUUID} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {snapshotPackage} from '../../../../plugin-src/src/lib/package-snapshot.mjs';
+
+const out = import.meta.dirname;
+const bindingFile = '/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json';
+const bytes = await fs.readFile(bindingFile);
+const binding = JSON.parse(bytes);
+assert.ok(path.isAbsolute(binding.current.root));
+assert.equal(JSON.parse(await fs.readFile(path.join(binding.current.root, '内容库.json'), 'utf8')).libraryId, binding.current.libraryId);
+const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+const before = await snapshotPackage(binding.current.root);
+const backup = path.join(os.homedir(), 'Library/Application Support/Nova 内容库恢复留档', 'release-0341-' + randomUUID());
+await fs.mkdir(backup, {recursive: true, mode: 0o700});
+await fs.writeFile(path.join(backup, 'machine-binding.json'), bytes, {mode: 0o600});
+execFileSync('/usr/bin/ditto', [binding.current.root, path.join(backup, 'library')]);
+assert.deepEqual(await snapshotPackage(path.join(backup, 'library')), before);
+assert.deepEqual(await snapshotPackage(binding.current.root), before, 'Library changed during backup');
+assert.deepEqual(await fs.readFile(bindingFile), bytes, 'Binding changed during backup');
+const receipt = {recordedAt: new Date().toISOString(), bindingFile, backup, libraryId: binding.current.libraryId, current: binding.current, libraryEntries: Object.keys(before).length, librarySha256: digest(before), bindingSha256: digest(binding.current), libraryBackupVerified: true, scope: 'Fresh read-only snapshot and byte-verified copy of the actual current native binding; no library edits or generation.'};
+await fs.writeFile(path.join(out, 'library-protection.json'), JSON.stringify(receipt, null, 2) + '\n');
+console.log(JSON.stringify({status: 'PASS', ...receipt}));
