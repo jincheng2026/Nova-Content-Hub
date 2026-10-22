@@ -1,0 +1,11 @@
+✔ the pre-seal source filter removes engineering material while keeping all built-in resources valid (49273.837792ms)
+✔ the writable example preserves both real covers, fictional-person disclosure and built-in library (39562.659083ms)
+✔ delivery export contains only the copied Mac installer, user guide and checksum, without overwriting (54.217417ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88971.24025

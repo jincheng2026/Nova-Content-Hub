@@ -22,28 +22,6 @@ export interface Counts {
     trash: number
 }
 
-export interface Inspection {
-    source: { sha256: string };
-    counts: Counts;
-    warnings: { code: string; message: string }[]
-}
-
-export type TaskStatus = 'prepared' | 'running' | 'blocked' | 'ready' | 'publishing' | 'committed';
-
-export interface TaskView {
-    status: TaskStatus;
-    progress: { steps: number };
-    issues: Issue[];
-    targetChanged?: boolean;
-    descriptorChanged?: boolean
-}
-
-export interface ImportTask extends TaskView {
-    importId: string;
-    sourceHash: string;
-    libraryId?: string
-}
-
 export interface Content {
     id: string;
     title: string;
@@ -129,11 +107,6 @@ export interface PendingView {
 
 export interface Status {
     busy: boolean;
-    sourceName: string | null;
-    destinationName: string | null;
-    inspection: Pick<Inspection, 'counts' | 'warnings'> | null;
-    started: boolean;
-    task: TaskView | null;
     currentName: string | null;
     needsReselect: boolean;
     pending: PendingView | null;
@@ -152,10 +125,6 @@ export interface Status {
 export interface DesktopInputs extends CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     choosePromptDocument: undefined;
     status: undefined;
-    chooseBackup: undefined;
-    chooseDestination: undefined;
-    importBackup: undefined;
-    resumeImport: undefined;
     listContents: { view: View } | undefined;
     readWorkspace: undefined;
     copyPrompt: { text: string };
@@ -174,10 +143,6 @@ export interface DesktopInputs extends CoverInputs, WorkspaceInputs, Maintenance
 export interface DesktopResults extends CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     choosePromptDocument: {title: string; body: string} | null;
     status: Status;
-    chooseBackup: void;
-    chooseDestination: void;
-    importBackup: void;
-    resumeImport: void;
     listContents: Content[];
     readWorkspace: WorkspaceSnapshot;
     copyPrompt: void;
@@ -224,11 +189,7 @@ export interface Binding {
 }
 
 export interface WorkerOperations extends CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
-    inspect: { args: { source: string }; result: Inspection };
-    query: { args: { destination: string; importId: string | null }; result: ImportTask | null };
-    import: { args: { source: string; destination: string; expectedSourceHash: string }; result: ImportTask };
-    resume: { args: { destination: string; importId: string }; result: ImportTask };
-    bind: { args: { destination: string; libraryId: string | null; importId: string | null }; result: LibraryBinding };
+    bind: { args: { destination: string }; result: LibraryBinding };
     createLibrary: { args: { root: string; rootIdentity: RootIdentity; mutationId: string }; result: LibraryBinding };
     queryCreation: {
         args: { root: string; rootIdentity: RootIdentity; mutationId: string };
@@ -255,8 +216,6 @@ export interface Dialogs {
     maintenanceParent?(): Promise<string | null>;
     legacyLibrary?(): Promise<string | null>;
     libraryBackup?(): Promise<string | null>;
-    backup(): Promise<string | null>;
-
     destination(defaultPath: string): Promise<string | null>;
 
     library?(): Promise<string | null>;

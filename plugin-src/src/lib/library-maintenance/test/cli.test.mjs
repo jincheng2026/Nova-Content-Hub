@@ -6,7 +6,6 @@ import os from 'node:os';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
-import sharp from 'sharp';
 import {createLibrary, openLibrary} from '../../file-library/index.mjs';
 
 const project = fileURLToPath(new URL('../../../../../', import.meta.url));
@@ -41,139 +40,14 @@ test('maintenance command rejects malformed arguments before touching the chosen
     assert.equal(fs.existsSync(absent), false);
 });
 
-async function importFixture(file) {
-    const bytes = await sharp({create: {width: 24, height: 32, channels: 3, background: '#26456e'}}).png().toBuffer();
-    const image = `data:image/png;base64,${bytes.toString('base64')}`;
-    const state = {
-        format: 'nova-content-hub-browser',
-        schema: 1,
-        appScope: 'nova-content-hub',
-        libraryId: 'legacy-library',
-        updatedAt: '2026-10-17T00:00:00.000Z',
-        data: {
-            ACCOUNT: {
-                name: '导入测试',
-                intro: '',
-                avatar: '',
-                photos: [{id: 'own-photo', name: 'photo.png', img: image, use: true}],
-                marks: []
-            },
-            SETTINGS: {
-                host: 'codex',
-                showSample: true,
-                clientId: '',
-                root: '',
-                pluginDir: '',
-                lastCheck: '',
-                installed: {},
-                versions: {},
-                hostConfig: {}
-            },
-            CHANNELS: {抖音: {ink: '#000000', bg: '#ffffff', builtin: true, need: '竖版'}},
-            TEMPLATES: [{
-                id: 'legacy-template',
-                name: '导入模板',
-                version: 1,
-                state: '待拆解',
-                desc: '',
-                style: '',
-                fit: '',
-                unfit: '',
-                source: '',
-                from: '',
-                owner: '',
-                ratio: '3:4',
-                builtin: false,
-                madeAt: '2026-10-16',
-                used: 0,
-                shots: [image, '图库/AI参考/geometry-v3.png'],
-                img: image,
-                why: [],
-                fixed: [],
-                varies: [],
-                evidence: [],
-                colors: []
-            }],
-            PROJECTS: [{
-                id: 'legacy-content',
-                kind: '内容',
-                name: '迁移后的内容',
-                folder: '内容/legacy-content',
-                tpl: 'legacy-template',
-                channels: ['抖音'],
-                dates: {record: '2026-10-16'},
-                plan: '',
-                materials: [],
-                files: [{id: 'legacy-file', name: 'note.txt', size: '5 B', content: 'data:text/plain;base64,aGVsbG8='}],
-                posts: [{
-                    id: 'legacy-post',
-                    date: '2026-10-18',
-                    time: '',
-                    channel: '抖音',
-                    mat: '',
-                    text: '私有渠道文案'
-                }]
-            }],
-            PROMPTS: [{
-                id: 'legacy-prompt',
-                cat: '自用',
-                file: 'prompt.md',
-                title: '导入提示词',
-                when: '',
-                summary: '',
-                source: '',
-                body: '私有提示词正文',
-                tags: [],
-                mine: true,
-                off: true
-            }],
-            TASKS: [], CUSTOM_SIZES: [], PCATS: ['自用'],
-        },
-        trash: []
-    };
-    fs.writeFileSync(file, JSON.stringify(state));
-    return bytes;
-}
-
-for (const mode of ['required', 'disabled']) test(`standalone ${mode} bundle imports a browser backup, resolves bundled bytes and reuses its durable operation`, async () => {
-    const dir = path.join(parent, randomUUID());
-    fs.mkdirSync(dir);
-    const runtime = path.join(dir, 'runtime');
-    fs.cpSync(path.join(project, 'plugin/runtime', `auth-${mode}`), runtime, {recursive: true});
-    const cli = path.join(runtime, 'plugin-src/src/lib/library-maintenance/cli.mjs'), source = path.join(dir, '旧工作台.json'),
-        destination = path.join(dir, '导入库');
-    assert.equal(fs.existsSync(path.join(runtime, 'workbench/prototype/data.js')), false);
-    const photoBytes = await importFixture(source);
-    assert.equal(run(cli, ['import-status', '--destination', destination]).result, null);
-    const imported = run(cli, ['import-browser', '--source', source, '--destination', destination]);
-    assert.equal(imported.ok, true, imported.message);
-    assert.equal(imported.result.status, 'committed');
-    const importId = imported.result.importId;
-    assert.equal(run(cli, ['import-status', '--destination', destination, '--id', importId]).result.importId, importId);
-    const lib = openLibrary(destination), content = lib.listContents()[0], prompts = lib.listPrompts(),
-        photos = lib.listPhotos();
-    assert.equal(lib.listContents().length, 1);
-    assert.equal(content.title, '迁移后的内容');
-    assert.equal(content.plans[0].text, '私有渠道文案');
-    assert.deepEqual(content.plans[0].schedule, {precision: 'date', date: '2026-10-18'});
-    assert.equal(prompts.length, 1);
-    assert.equal(prompts[0].enabled, false);
-    assert.equal(prompts[0].body, '私有提示词正文');
-    assert.equal(photos.length, 1);
-    assert.deepEqual(lib.readAsset(photos[0].assetHash).data, photoBytes);
-    const template = lib.readTemplate(lib.listTemplates()[0].id);
-    assert.equal(Object.keys(template.resources).length, 3); // Two samples plus their separately preserved preview role.
-    assert.equal(new Set(Object.values(template.resources).map(resource => resource.assetHash)).size, 2);
-    const catalog = JSON.parse(fs.readFileSync(path.join(runtime, 'plugin-src/src/lib/browser-import/builtin-resources.json')));
-    assert.equal(template.resources['template/legacy-template/shot/1'].assetHash, catalog.entries['图库/AI参考/geometry-v3.png'].sha256);
-    assert.equal(JSON.stringify(imported).includes('私有渠道文案'), false);
-    fs.unlinkSync(source);
-    const changed = lib.updateContent(content.id, {title: '导入完成后的正常编辑'}, content.editToken);
-    const resumed = run(cli, ['resume-import', '--destination', destination, '--id', importId]);
-    assert.equal(resumed.result.status, 'committed');
-    assert.equal(resumed.result.importId, importId);
-    assert.equal(lib.readContent(content.id).title, changed.title);
-    assert.equal(lib.listContents().length, 1);
+for (const mode of ['required', 'disabled']) test(`standalone ${mode} bundle has no prototype import capability`, () => {
+    const runtime = path.join(project, 'plugin/runtime', `auth-${mode}`);
+    const cli = path.join(runtime, 'plugin-src/src/lib/library-maintenance/cli.mjs');
+    for (const relative of ['plugin-src/src/lib/browser-import', 'plugin-src/resources/builtin-templates', 'plugin-src/resources/图库']) assert.equal(fs.existsSync(path.join(runtime, relative)), false);
+    const help = run(cli, ['help']);
+    assert.equal(help.commands.length, 3);
+    assert.doesNotMatch(JSON.stringify(help), /browser|import-status|resume-import/);
+    for (const command of ['import-browser', 'import-status', 'resume-import']) assert.equal(run(cli, [command, '--destination', path.join(parent, 'absent')]).code, 'INVALID_ARGUMENTS');
 });
 
 for (const mode of ['required', 'disabled']) test(`standalone ${mode} bundle backs up and restores user files without generation authorization`, () => {

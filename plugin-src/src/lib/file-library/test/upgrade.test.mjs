@@ -56,6 +56,16 @@ function flattenToV1(root) {
     return fs.readFileSync(descriptorOf(root));
 }
 
+test('legacy transaction migration preserves regular Finder metadata', t => {
+    const f = fixture(t), content = f.library.createContent({title: 'legacy', body: 'original'});
+    flattenToV1(f.root);
+    const metadata = path.join(baseOf(f.root), '.DS_Store');
+    fs.writeFileSync(metadata, 'ordinary Finder metadata');
+    const upgraded = upgradeLibrary(f.root);
+    assert.equal(upgraded.readContent(content.id).body, 'original');
+    assert.equal(fs.readFileSync(metadata, 'utf8'), 'ordinary Finder metadata');
+});
+
 function fileSnapshot(root, relative = '') {
     const result = {};
     for (const name of fs.readdirSync(path.join(root, relative)).sort()) {

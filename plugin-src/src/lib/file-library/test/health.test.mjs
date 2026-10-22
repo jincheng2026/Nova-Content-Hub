@@ -47,6 +47,24 @@ test('health reports a corrupt object without silently dropping it or fabricatin
     assert.deepEqual(tree(f.root), before);
 });
 
+test('health accepts generated template catalogs and ordinary version Finder metadata', t => {
+    const f = fixture(t), template = f.library.createTemplate({name: 'catalog', definition: {}, resources: {}});
+    assert.deepEqual(f.library.rebuildTemplateReports(template.id).warnings, []);
+    fs.writeFileSync(path.join(f.root, '模板', template.id, '版本', '.DS_Store'), 'Finder metadata');
+    const before = tree(f.root), report = inspectLibraryHealth(f.root, f.options);
+    assert.equal(report.state, 'healthy');
+    assert.equal(report.complete, true);
+    assert.deepEqual(tree(f.root), before);
+});
+
+for (const type of ['directory', 'symlink']) test(`health rejects template catalog ${type}`, t => {
+    const f = fixture(t), target = path.join(f.root, '模板', '模板目录.md');
+    if (type === 'directory') fs.mkdirSync(target);
+    else fs.symlinkSync(path.join(f.root, '内容库.json'), target);
+    const report = inspectLibraryHealth(f.root, f.options);
+    assert.ok(report.issues.some(issue => issue.code === 'STRUCTURE_INVALID' && issue.kind === 'template'));
+});
+
 test('health preserves pending journal and target bytes without recovery', t => {
     const f = fixture(t), item = f.library.createContent({title: 'before', body: 'before'}), mutationId = randomUUID();
     __testing.setHook(event => {if (event.phase === 'afterJournal') throw new Error('leave pending');});

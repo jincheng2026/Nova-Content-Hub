@@ -1,6 +1,7 @@
 import {attemptProgress} from './attempt-progress.mjs';
 import {templateReports} from './template-reports.mjs';
 import fs from 'node:fs';
+import {selectableTemplate, retiredBuiltinTemplate} from './template-retirement.mjs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
@@ -87,7 +88,7 @@ export function templateJobMethods(h) {
         return {job, attempt};
     }
     function active(meta, job, attempt, claimed = false) {
-        if (meta.deletedAt) fail('INVALID_STATE', 'Template is trashed');
+        if (!selectableTemplate(meta)) fail('INVALID_STATE', 'Template is unavailable');
         if (job.acceptance || job.activeAttemptId !== attempt.attemptId || !LIVE.includes(attempt.status)) fail('ATTEMPT_INACTIVE', 'Template attempt has ended');
         if (claimed && attempt.status !== 'claimed') fail('ATTEMPT_NOT_CLAIMED', 'Claim the attempt before submitting');
     }
@@ -131,7 +132,7 @@ export function templateJobMethods(h) {
         return handoff;
     }
     function fresh(meta, request) {
-        if (meta.deletedAt) fail('INVALID_STATE', 'Template is trashed');
+        if (!selectableTemplate(meta)) fail('INVALID_STATE', 'Template is unavailable');
         if (meta.currentVersion !== request.template.version || !meta.versions.some(v => v.version === request.template.version && v.packageHash === request.template.packageHash)) fail('STALE_INPUT', 'Template version differs from the fixed request');
         requestPackage(meta.id, find(meta, request.requestId).job);
     }
@@ -331,6 +332,7 @@ export function templateJobMethods(h) {
     function rebuildTemplateReports(tid) {
         return locked(() => {
             const meta = current(tid);
+            if (retiredBuiltinTemplate(meta)) fail('INVALID_STATE', 'Retired templates are history only');
             return templateReports({root, template: meta,
                 packageFor: entry => templatePackage(root, tid, entry.version, entry.packageHash),
                 evidenceFor: (job, attempt) => verifyEvidence(tid, job, attempt),
@@ -340,7 +342,7 @@ export function templateJobMethods(h) {
                     if (name === '模板目录.md' || /^\.staging-/.test(name)) return false;
                     objectId('template', name);
                     return !!safePath(path.join(root, '模板', name, '模板.json'), true);
-                }).map(name => current(name))});
+                }).map(name => current(name)).filter(meta => !retiredBuiltinTemplate(meta))});
         });
     }
     function withReports(tid, value) {

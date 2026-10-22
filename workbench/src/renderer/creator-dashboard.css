@@ -20,6 +20,7 @@
 .creator-overview .creator-panel { border-color:var(--semi-color-border); border-radius:20px; }
 .creator-overview .creator-panel-heading h3 { color:var(--semi-color-text-0); font-size:16px; }
 .creator-channel { --channel-color:#416dac; --channel-background:#edf3fc; display:inline-flex; align-items:center; width:fit-content; padding:3px 7px; border:1px solid color-mix(in srgb,var(--channel-color) 18%,transparent); border-radius:5px; background:var(--channel-background); color:var(--channel-color); font-size:12px; font-style:normal; line-height:1.4; white-space:nowrap; max-width:100%; overflow:hidden; text-overflow:ellipsis; }
+.creator-channel .channel-name { display:block; min-width:0; max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .channel-tone-0 { --channel-color:#416dac; --channel-background:#edf3fc; }
 .channel-tone-1 { --channel-color:#5a7f67; --channel-background:#eff6f1; }
 .channel-tone-2 { --channel-color:#9b7838; --channel-background:#fbf5e9; }

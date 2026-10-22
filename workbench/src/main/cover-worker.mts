@@ -1,4 +1,4 @@
-import {templateCatalogFields} from './template-catalog.mts';
+import {isTemplateCatalogSelectable, templateCatalogFields} from './template-catalog.mts';
 import {boundReader, forgetBoundReader} from './bound-reader.mts';
 import {errorInfo} from '../shared/contracts.ts';
 import { createHash } from 'node:crypto';
@@ -118,7 +118,7 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
     return photoProjection(library.createPhoto({ title: p.title, originalName: p.originalName, assetHash: p.expectedHash, isOwnPhoto: p.isOwnPhoto }, { mutationId: p.mutationId }));
   }
   if (op === 'coverAssets') return {
-    templates: library.listTemplates().map(t => { const pkg = library.readTemplate(t.id, t.currentVersion); const accepted = !!t.templateJobs?.some(job => job.acceptance?.acceptedTemplate.id === t.id && job.acceptance.acceptedTemplate.version === t.currentVersion && job.acceptance.acceptedTemplate.packageHash === t.versions.find(v => v.version === t.currentVersion)?.packageHash); return { ...templateCatalogFields(t, pkg.definition), builtin: t.builtin === true, id: t.id, version: t.currentVersion, name: pkg.title, description: typeof pkg.definition.desc === 'string' ? pkg.definition.desc : '', accepted, aiTested: accepted, samples: [...new Set(Object.values(pkg.resources).filter(r => r.role === 'style').map(r => r.assetHash))].map(assetHash => ({ assetHash, url: '' })) }; }),
+    templates: library.listTemplates().filter(isTemplateCatalogSelectable).map(t => { const pkg = library.readTemplate(t.id, t.currentVersion); const accepted = !!t.templateJobs?.some(job => job.acceptance?.acceptedTemplate.id === t.id && job.acceptance.acceptedTemplate.version === t.currentVersion && job.acceptance.acceptedTemplate.packageHash === t.versions.find(v => v.version === t.currentVersion)?.packageHash); return { ...templateCatalogFields(t, pkg.definition), builtin: t.builtin === true, id: t.id, version: t.currentVersion, name: pkg.title, description: typeof pkg.definition.desc === 'string' ? pkg.definition.desc : '', accepted, aiTested: accepted, samples: [...new Set(Object.values(pkg.resources).filter(r => r.role === 'style').map(r => r.assetHash))].map(assetHash => ({ assetHash, url: '' })) }; }).filter(template => template.samples.length > 0),
     photos: library.listPhotos().map(photoProjection),
   };
   if (op === 'inspectCoverInput') return library.inspectCoverInput(raw.contentId as string, raw.input as unknown as import('../shared/cover-contracts.ts').CoverInput, raw.editToken as string);

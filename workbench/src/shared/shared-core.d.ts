@@ -2,17 +2,6 @@ declare module '*lib/package-snapshot.mjs' {
     export type PackageEntry = {directory: true} | {link: string} | {sha256: string; bytes: number; executable: boolean};
     export function snapshotPackage(input: string, expected?: Record<string, PackageEntry>): Promise<Record<string, PackageEntry>>;
 }
-declare module '*browser-import/index.mjs' {
-    export function inspectBrowserBackup(source: string): import('./contracts.ts').Inspection;
-
-    export function getBrowserImport(destination: string, importId?: string): import('./contracts.ts').ImportTask | null;
-
-    export function importBrowserBackup(source: string, destination: string, options: {
-        expectedSourceHash: string
-    }): Promise<import('./contracts.ts').ImportTask>;
-
-    export function resumeBrowserImport(destination: string, importId: string): Promise<import('./contracts.ts').ImportTask>;
-}
 declare module '*file-library/index.mjs' {
     export class LibraryError extends Error { code: string; constructor(code: string, message: string, details?: Record<string, unknown>); }
     interface Library {

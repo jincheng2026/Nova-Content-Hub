@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {selectableTemplate, retiredBuiltinTemplate, LEGACY_BUILTIN_TEMPLATE_IDS} from './template-retirement.mjs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
@@ -69,8 +70,8 @@ const defaultChannels = () => [
     ['douyin', '抖音', '#16181d', '#eceef1', '3:4'],
     ['xiaohongshu', '小红书', '#d6336c', '#fce9ef', '1:1'],
     ['wechat-channels', '视频号', '#0f7b3b', '#e6f4ea', '3:4'],
-    ['wechat-official', '公众号', '#a15c00', '#fbf0dd', '47:20'],
-    ['bilibili', 'B 站', '#0a7ea4', '#e3f3f9', '16:9'],
+    ['wechat-official', '微信公众号', '#a15c00', '#fbf0dd', '47:20'],
+    ['bilibili', 'B站', '#0a7ea4', '#e3f3f9', '16:9'],
 ].map(([id, name, ink, bg, requiredRatio]) => ({id, name, ink, bg, requiredRatio, builtinKey: id, deletedAt: null}));
 
 export function modelDefaults(kind) {
@@ -211,7 +212,10 @@ export function modelMethods(h) {
     const activeTemplate = value => {
         if (value === null) return;
         const t = readObject('template', value);
-        invalid(t.deletedAt === null, 'Template is trashed');
+        invalid(selectableTemplate(t), 'Template is unavailable');
+        const version = t.versions.find(entry => entry.version === t.currentVersion);
+        const pkg = templatePackage(root, t.id, t.currentVersion, version.packageHash);
+        invalid(Object.values(pkg.resources).some(resource => resource.role === 'style'), 'Template has no usable style samples');
     };
     const activeChannel = value => {
         const c = settings().channels.find(c => c.id === value);
@@ -247,7 +251,7 @@ export function modelMethods(h) {
             const current = extendModel(meta, kind);
             // Unchanged historical channel links remain valid after a channel is disabled.
             if (input.channelIds && !isDeepStrictEqual(input.channelIds, current.channelIds)) channels(input.channelIds);
-            if (input.preferredTemplateId) activeTemplate(input.preferredTemplateId);
+            if (input.preferredTemplateId && input.preferredTemplateId !== current.preferredTemplateId) activeTemplate(input.preferredTemplateId);
             const {body, ...rest} = input;
             return {...current, ...rest};
         };
@@ -608,6 +612,17 @@ export function modelMethods(h) {
 
     const api = {
         createContent, updateContent,
+        migrateBuiltinSettings: () => {
+            const current = locked(settings), renamed = new Map([['wechat-official', ['公众号', '微信公众号']], ['bilibili', ['B 站', 'B站']]]);
+            const channels = current.channels.map(channel => {
+                const names = renamed.get(channel.id);
+                return names && channel.builtinKey === channel.id && channel.name === names[0] ? {...channel, name: names[1]} : channel;
+            });
+            const removeDefault = LEGACY_BUILTIN_TEMPLATE_IDS.includes(current.defaults.templateId) && locked(() => !!safePath(path.join(root, '模板', current.defaults.templateId), true) && retiredBuiltinTemplate(readObject('template', current.defaults.templateId)));
+            const templateId = removeDefault ? null : current.defaults.templateId;
+            if (isDeepStrictEqual(channels, current.channels) && templateId === current.defaults.templateId) return current;
+            return settingChange('migrateBuiltinSettings', {}, current.editToken, undefined, meta => ({...meta, channels, defaults: {...meta.defaults, templateId}}));
+        },
         readLibrarySettings: () => locked(() => {
             const s = settings(), defaultIssues = [];
             for (const [key, kind] of [['photoId', 'photo'], ['templateId', 'template']]) if (s.defaults[key]) {
@@ -617,6 +632,7 @@ export function modelMethods(h) {
                 }
                 const record = readObject(kind, s.defaults[key]);
                 if (record.deletedAt !== null) defaultIssues.push({field: key, id: record.id, reason: 'trashed'});
+                else if (kind === 'template' && !selectableTemplate(record)) defaultIssues.push({field: key, id: record.id, reason: 'unavailable'});
                 else if (kind === 'photo' && record.availability === 'unavailable') defaultIssues.push({
                     field: key,
                     id: record.id,
@@ -826,7 +842,8 @@ export function modelMethods(h) {
             input.ratio = checkedRatio(input.ratio);
             if (input.preferredTemplateId !== undefined) invalid(ref(input.preferredTemplateId), 'Invalid template');
             return change(kind, value, 'saveVariant', input, token, options, meta => {
-                if (input.preferredTemplateId) activeTemplate(input.preferredTemplateId);
+                const previous = input.id ? meta.coverVariants.find(v => v.id === input.id) : null;
+                if (input.preferredTemplateId && input.preferredTemplateId !== previous?.preferredTemplateId) activeTemplate(input.preferredTemplateId);
                 const old = input.id ? meta.coverVariants.find(v => v.id === input.id) : null;
                 if (input.id) invalid(old, 'Unknown variant');
                 const v = {

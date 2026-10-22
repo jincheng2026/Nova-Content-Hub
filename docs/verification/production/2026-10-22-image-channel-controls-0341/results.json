@@ -1,0 +1,143 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "rules": [
+    "Image-01",
+    "Controls-02",
+    "Surface-03",
+    "Acceptance-01",
+    "Acceptance-02"
+  ],
+  "records": [
+    {
+      "width": 1280,
+      "focus": {
+        "outerShadow": "rgba(0, 113, 227, 0.12) 0px 0px 0px 3px",
+        "outerRadius": "10px",
+        "innerShadow": "none",
+        "innerBorder": "0px",
+        "inputShadow": "none",
+        "inputBorder": "0px"
+      }
+    },
+    {
+      "width": 960,
+      "focus": {
+        "outerShadow": "rgba(0, 113, 227, 0.12) 0px 0px 0px 3px",
+        "outerRadius": "10px",
+        "innerShadow": "none",
+        "innerBorder": "0px",
+        "inputShadow": "none",
+        "inputBorder": "0px"
+      }
+    },
+    {
+      "width": 960,
+      "index": 0,
+      "fit": {
+        "image": [
+          306,
+          408
+        ],
+        "stage": [
+          810,
+          408
+        ],
+        "natural": [
+          1200,
+          1600
+        ]
+      }
+    },
+    {
+      "width": 960,
+      "index": 1,
+      "fit": {
+        "image": [
+          810,
+          8.09375
+        ],
+        "stage": [
+          810,
+          408
+        ],
+        "natural": [
+          10000,
+          100
+        ]
+      }
+    },
+    {
+      "width": 960,
+      "index": 2,
+      "fit": {
+        "image": [
+          4.078125,
+          408
+        ],
+        "stage": [
+          810,
+          408
+        ],
+        "natural": [
+          100,
+          10000
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "index": 0,
+      "fit": {
+        "image": [
+          387,
+          516
+        ],
+        "stage": [
+          1046,
+          516
+        ],
+        "natural": [
+          1200,
+          1600
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "index": 1,
+      "fit": {
+        "image": [
+          1046,
+          10.453125
+        ],
+        "stage": [
+          1046,
+          516
+        ],
+        "natural": [
+          10000,
+          100
+        ]
+      }
+    },
+    {
+      "width": 1280,
+      "index": 2,
+      "fit": {
+        "image": [
+          5.15625,
+          516
+        ],
+        "stage": [
+          1046,
+          516
+        ],
+        "natural": [
+          100,
+          10000
+        ]
+      }
+    }
+  ]
+}

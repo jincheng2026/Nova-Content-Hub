@@ -10,7 +10,7 @@ Object.assign(explanations, {
 });
 const retryableReads = new Set<WorkerOperation>(['readCoverProgress', 'templateProgress', 'workspace', 'list', 'readContent', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
 const busyDelays = [80, 240, 600];
-const boundedReads = new Set<WorkerOperation>([...retryableReads, 'query']);
+const boundedReads = retryableReads;
 const readTimeoutMs = 15_000;
 
 interface Child {
@@ -52,7 +52,7 @@ export class WorkerClient implements Worker {
                 if (this.child !== child) return;
                 this.child = null;
                 if (this.pending) {
-                    this.pending.reject(this.pending.timeout ?? Object.assign(new Error('文件工作进程已退出。请查询磁盘任务，再继续导入。'), {code: 'WORKER_EXIT'}));
+                    this.pending.reject(this.pending.timeout ?? Object.assign(new Error('文件工作进程已退出。原输入已保留，请重新核验当前操作。'), {code: 'WORKER_EXIT'}));
                     this.pending = null;
                 }
             };

@@ -1,4 +1,5 @@
 import {attemptProgress} from './attempt-progress.mjs';
+import {selectableTemplate} from './template-retirement.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -221,7 +222,7 @@ export function coverJobMethods(h) {
         inputFields(input.template, ['id', 'version'], ['id', 'version']);
         objectId('template', input.template.id);
         const templateMeta = metadata(snapshot(root, input.template.id, 'template')[0], input.template.id, 'template');
-        if (templateMeta.deletedAt) fail('INVALID_INPUT', 'Selected template is trashed');
+        if (!selectableTemplate(templateMeta)) fail('INVALID_INPUT', 'Selected template is unavailable');
         const version = templateMeta.versions.find(item => item.version === input.template.version);
         if (!version) fail('INVALID_INPUT', 'Unknown template version');
         const pkg = templatePackage(root, input.template.id, input.template.version, version.packageHash);
@@ -397,6 +398,8 @@ export function coverJobMethods(h) {
         }, (old, before) => {
             const meta = extend(old), {job} = find(meta, requestId);
             const {request} = requestPackage(contentId, job);
+            const templateMeta = metadata(snapshot(root, request.template.id, 'template')[0], request.template.id, 'template');
+            if (!selectableTemplate(templateMeta)) fail('INVALID_INPUT', 'Selected template is unavailable');
             fresh(meta, before[1], request);
             const now = new Date().toISOString();
             const sourceAttemptId = job.activeAttemptId || job.attempts.at(-1)?.attemptId || null;

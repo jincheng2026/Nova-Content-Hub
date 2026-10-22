@@ -1,0 +1,25 @@
+{
+  "symptom": "growing-lists-ui-probe timed out waiting for 20 candidate cards",
+  "red": {
+    "scenario": "initial isolated CoverPanel with unchanged growing-list fixture; skipped all preceding UI stages",
+    "candidateCards": 0,
+    "bodyText": "",
+    "exception": "TypeError: Cannot read properties of undefined (reading 'filter')",
+    "stackFunction": "favoriteCompositions",
+    "source": "workbench/src/renderer/covers.tsx:41 document.candidates.filter(...)"
+  },
+  "cause": "320 synthetic collections omitted required WorkspaceDocument.candidates; live renderer expects full collection DTOs",
+  "fix": "fixture only: candidates/materials/coverVariants empty arrays and dateRange; no product source change for this diagnosis",
+  "green": {
+    "scenario": "same isolated initial CoverPanel, fixture array fields added",
+    "errors": [],
+    "candidateCards": 20,
+    "totalCandidates": 145
+  },
+  "otherStaleAssertionsUpdated": [
+    "read candidate number from .cover-candidate-number span instead of removed card.title",
+    "cover template group page sizes are 5/10/20",
+    "open the details containing .cover-materials instead of the first .cover-advanced block"
+  ],
+  "scope": "synthetic renderer fixture, darwin-arm64 Electron; no user library"
+}

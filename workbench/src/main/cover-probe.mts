@@ -16,7 +16,7 @@ const consoleMessages: string[] = [];
 let stage = 'startup', lastSource = '';
 let captureFailure: ((error: unknown) => Promise<void>) | undefined;
 const mark = (name: string) => { stage = name; console.log(`${new Date().toISOString()} cover probe: ${name}`); };
-startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if (consoleMessages.length > 30) consoleMessages.shift(); }, show: false, userData: path.join(root, 'machine'), dialogs: { backup: async () => null, destination: async () => destination, library: async () => chosenLibrary, photo: async () => path.join(root, 'photo.jpg'), export: async () => exported }, async ready({ window, controller, worker, release }) {
+startDesktop({ onConsoleMessage: message => { consoleMessages.push(message); if (consoleMessages.length > 30) consoleMessages.shift(); }, show: false, userData: path.join(root, 'machine'), dialogs: { destination: async () => destination, library: async () => chosenLibrary, photo: async () => path.join(root, 'photo.jpg'), export: async () => exported }, async ready({ window, controller, worker, release }) {
   captureFailure = async error => {
     const diagnostic = { recordedAt: new Date().toISOString(), stage, source: lastSource, error: String(error), stack: error instanceof Error ? error.stack : null, consoleMessages };
     await fs.writeFile(path.join(root, 'failure.json'), JSON.stringify(diagnostic, null, 2) + '\n');

@@ -36,6 +36,8 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
     const prepared = colleague.prepared;
     const allPrompts = [...prompts.prompts, ...colleague.prompts];
     const assetDescriptors = library.readAssetDescriptors(prepared.flatMap(({resources}) => [...resources.values()].map(input => input.assetHash)));
+    const retiredTemplates = library.retireLegacyBuiltinTemplates();
+    library.migrateBuiltinSettings();
     const templates = [];
     for (const {definition, resources} of prepared) {
         const installed = {};
@@ -77,6 +79,7 @@ export function installBuiltins(library, bundleRoot = defaultBundle) {
     }
     return {
         templates,
+        retiredTemplates,
         styleSamples: colleague.styleSamples,
         structureSamples: colleague.structureSamples,
         prompts: allPrompts.length,

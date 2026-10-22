@@ -50,7 +50,7 @@ const tree = async (directory: string) => {
 startDesktop({
     show: false,
     userData: path.join(root, 'machine'),
-    dialogs: {backup: async () => null, destination: async () => destination, library: async () => destination},
+    dialogs: {destination: async () => destination, library: async () => destination},
     onConsoleMessage: message => messages.push(message),
     async ready({window, controller, worker, release}) {
         window.webContents.setBackgroundThrottling(false);

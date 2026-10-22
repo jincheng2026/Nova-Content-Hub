@@ -151,13 +151,17 @@ export function inspectHealth(selectedRoot, options, h) {
         for (const value of required) attempt('structure', 'STRUCTURE_INVALID', undefined, undefined, () => directory(path.join(root, value)));
         const transactionRoot = attempt('structure', 'STRUCTURE_INVALID', undefined, undefined, () => names(path.join(root, h.SYSTEM, '事务')));
         if (!transactionRoot) unknownPending = true;
-        else for (const name of transactionRoot) if (!['待恢复', '已提交', '升级到3', '升级到4', '升级到5'].includes(name)) add('structure', 'STRUCTURE_INVALID');
+        else for (const name of transactionRoot) {
+            if (name === '.DS_Store') {attempt('structure', 'STRUCTURE_INVALID', undefined, undefined, () => h.finderMetadataFile(path.join(root, h.SYSTEM, '事务'), name, stat)); continue;}
+            if (!['待恢复', '已提交', '升级到3', '升级到4', '升级到5'].includes(name)) add('structure', 'STRUCTURE_INVALID');
+        }
         const transactionIds = new Set();
         for (const location of ['待恢复', '已提交']) {
             const parent = path.join(root, h.SYSTEM, '事务', location);
             const entries = attempt('structure', 'STRUCTURE_INVALID', undefined, undefined, () => names(parent));
             if (!entries && location === '待恢复') unknownPending = true;
             for (const name of entries || []) {
+                if (name === '.DS_Store') {attempt('structure', 'STRUCTURE_INVALID', undefined, undefined, () => h.finderMetadataFile(parent, name, stat)); continue;}
                 if (h.STAGING.test(name)) {add('transaction', 'STAGING_UNVERIFIED', 'unverified'); continue;}
                 if (!h.UUID.test(name)) {add('transaction', 'TRANSACTION_INVALID'); if (location === '待恢复') unknownPending = true; continue;}
                 count('transactions');
@@ -177,6 +181,10 @@ export function inspectHealth(selectedRoot, options, h) {
             for (const id of entries) {
                 if (id === '.DS_Store') {
                     attempt('structure', 'STRUCTURE_INVALID', kind, undefined, () => h.finderMetadataFile(parent, id, stat));
+                    continue;
+                }
+                if (kind === 'template' && id === '模板目录.md') {
+                    attempt('structure', 'STRUCTURE_INVALID', kind, undefined, () => h.templateReportIndex(root, id, stat));
                     continue;
                 }
                 if (h.STAGING.test(id)) {add('object', 'STAGING_UNVERIFIED', 'unverified', kind); continue;}
@@ -210,7 +218,10 @@ export function inspectHealth(selectedRoot, options, h) {
                 if (kind === 'template') {
                     const versionEntries = attempt('structure', 'STRUCTURE_INVALID', kind, id, () => names(path.join(dir, '版本'))) || [];
                     for (const version of meta.versions) {guard(); checkTemplate({id, ...version});}
-                    for (const version of versionEntries) if (!meta.versions.some(entry => String(entry.version) === version)) add('object', 'TEMPLATE_UNREGISTERED', 'unverified', kind, id);
+                    for (const version of versionEntries) {
+                        if (version === '.DS_Store') {attempt('object', 'OBJECT_INVALID', kind, id, () => h.finderMetadataFile(path.join(dir, '版本'), version, stat)); continue;}
+                        if (!meta.versions.some(entry => String(entry.version) === version)) add('object', 'TEMPLATE_UNREGISTERED', 'unverified', kind, id);
+                    }
                 }
                 const jobs = kind === 'template' ? meta.templateJobs || [] : kind === 'content' ? meta.coverJobs || [] : [];
                 for (const job of jobs) {

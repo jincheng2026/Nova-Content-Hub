@@ -34,8 +34,6 @@ export class Maintenance {
         const c = this.owner;
         c.noPending();
         if (c.binding.seedPending) fail('PENDING_MUTATION', '请先完成或处理内置资料初始化。');
-        const task = await c.query();
-        if (c.binding.started && task?.status !== 'committed') fail('IMPORT_IN_PROGRESS', '请先完成或核验当前导入。');
     }
     async destination(kind: 'backup' | 'restore') {
         const selected = await this.owner.dialogs.maintenanceParent?.();

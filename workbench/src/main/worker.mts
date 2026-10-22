@@ -6,7 +6,6 @@ import {isMaintenanceOperation, executeMaintenance} from './maintenance-worker.m
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import {validateRelease} from './boundary.mts';
-import * as imports from '../../../plugin-src/src/lib/browser-import/index.mjs';
 import {openLibrary, createLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {isRecord, errorInfo} from '../shared/contracts.ts';
 import {exact, uuid, identity, libraryBinding, mutation, requireWrite, fail} from '../shared/validation.ts';
@@ -62,11 +61,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
 
 type DelegatedOperation = keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
-    inspect: ['source'],
-    query: ['destination', 'importId'],
-    import: ['source', 'destination', 'expectedSourceHash'],
-    resume: ['destination', 'importId'],
-    bind: ['destination', 'libraryId', 'importId'],
+    bind: ['destination'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
     queryCreation: ['root', 'rootIdentity', 'mutationId'],
     workspace: ['binding'],
@@ -85,18 +80,13 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
     if (!fields || !exact(args, fields) || fields.some(key => {
         const value = args[key];
         if (['source', 'destination', 'root'].includes(key)) return !absolute(value);
-        if (key === 'expectedSourceHash') return !(typeof value === 'string' && /^[0-9a-f]{64}$/.test(value));
         if (key === 'binding') return !libraryBinding(value) || !absolute(value.root);
         if (key === 'rootIdentity') return !identity(value);
         if (key === 'mutation') return !mutation(value);
         if (key === 'view') return !['active', 'trash'].includes(value as string);
-        return !(uuid(value) || (['query', 'bind'].includes(op as string) && value === null));
+        return !uuid(value);
     })) fail('INVALID_INPUT', '工作进程拒绝了无效的业务参数。');
     if (op === 'createLibrary' || op === 'mutate') requireWrite(mode);
-    if (op === 'inspect') return imports.inspectBrowserBackup(args.source as string);
-    if (op === 'query') return imports.getBrowserImport(args.destination as string, (args.importId ?? undefined) as string | undefined);
-    if (op === 'import') return imports.importBrowserBackup(args.source as string, args.destination as string, {expectedSourceHash: args.expectedSourceHash as string});
-    if (op === 'resume') return imports.resumeBrowserImport(args.destination as string, args.importId as string);
     if (op === 'createLibrary' || op === 'queryCreation') {
         const expected = args.rootIdentity as LibraryBinding['rootIdentity'];
         const stat = await fs.lstat(args.root as string, {bigint: true});
@@ -112,20 +102,7 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
         if (library.info.rootIdentity.dev !== expected.dev || library.info.rootIdentity.ino !== expected.ino) fail('CONFLICT', 'Library creation target changed');
         return bindingOf(library);
     }
-    if (op === 'bind') {
-        let library;
-        if (args.libraryId) {
-            const stat = await fs.lstat(args.destination as string, {bigint: true});
-            if (!uuid(args.importId)) fail('INVALID_INPUT', 'Import adoption requires the accepted task');
-            const task = imports.getBrowserImport(args.destination as string, args.importId);
-            if (!task || task.status !== 'committed' || task.targetChanged || task.libraryId !== args.libraryId) fail('CONFLICT', 'Imported library changed');
-            library = openLibrary(args.destination as string, {
-                expectedLibraryId: args.libraryId as string,
-                expectedRootIdentity: {dev: stat.dev.toString(), ino: stat.ino.toString()}
-            });
-        } else library = openLibrary(args.destination as string);
-        return bindingOf(library);
-    }
+    if (op === 'bind') return bindingOf(openLibrary(args.destination as string));
     const binding = args.binding as unknown as LibraryBinding;
     const library = ['workspace', 'list', 'readContent'].includes(op as string) ? boundReader(binding) : bound(binding);
     if (op === 'workspace') return workspace(library);

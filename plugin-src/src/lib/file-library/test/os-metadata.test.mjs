@@ -83,11 +83,32 @@ test('upgrade and backup restore preserve ordinary Finder metadata and usable ob
     for (const directory of ['内容', '提示词', '我的照片', '模板']) for (const root of [f.root, path.join(backup, 'data'), restored]) assert.equal(fs.readFileSync(path.join(root, directory, '.DS_Store'), 'utf8'), 'unchanged Finder metadata');
 });
 
-test('Finder metadata exceptions do not relax transaction layouts or nonempty initialization', t => {
-    const f = fixture(t), pending = path.join(f.root, '系统（别动）', '事务', '待恢复', '.DS_Store');
-    fs.writeFileSync(pending, 'unrecognized transaction entry');
-    assert.throws(() => f.library.listContents(), {code: 'CORRUPT'});
-    assert.equal(fs.readFileSync(pending, 'utf8'), 'unrecognized transaction entry');
+test('Finder metadata in transaction directories survives reads, health and backup restore', t => {
+    const f = fixture(t), content = f.library.createContent({title: 'original', body: 'original body'});
+    const metadata = Buffer.alloc(6148); metadata.writeUInt32BE(1); metadata.write('Bud1', 4);
+    const directories = ['系统（别动）/事务', '系统（别动）/事务/待恢复', '系统（别动）/事务/已提交'];
+    for (const dir of directories) fs.writeFileSync(path.join(f.root, dir, '.DS_Store'), metadata);
+    assert.equal(openLibrary(f.root, f.options).listContents()[0].body, content.body);
+    assert.equal(inspectLibraryHealth(f.root, f.options).state, 'healthy');
+    const backup = path.join(f.parent, 'backup'), restored = path.join(f.parent, 'restored');
+    backupLibrary(f.root, backup); restoreBackup(backup, restored);
+    assert.equal(openLibrary(restored).listContents()[0].body, content.body);
+    for (const dir of directories) for (const root of [f.root, path.join(backup, 'data'), restored]) assert.deepEqual(fs.readFileSync(path.join(root, dir, '.DS_Store')), metadata);
+});
+
+for (const directory of ['系统（别动）/事务', '系统（别动）/事务/待恢复']) for (const type of ['directory', 'symlink', 'unknown']) {
+    test(`transaction layout ${directory} still rejects ${type} metadata`, t => {
+        const f = fixture(t), target = path.join(f.root, directory, type === 'unknown' ? '.DS_Store.backup' : '.DS_Store');
+        if (type === 'directory') fs.mkdirSync(target);
+        else if (type === 'symlink') fs.symlinkSync(path.join(f.root, '内容库.json'), target);
+        else fs.writeFileSync(target, 'unknown transaction');
+        assert.throws(() => f.library.listContents(), {code: type === 'unknown' ? 'CORRUPT' : 'UNSAFE_PATH'});
+        assert.notEqual(inspectLibraryHealth(f.root, f.options).state, 'healthy');
+    });
+}
+
+test('Finder metadata exceptions do not relax nonempty initialization', t => {
+    const f = fixture(t);
     const unbound = path.join(f.parent, 'unbound');fs.mkdirSync(unbound);fs.writeFileSync(path.join(unbound, '.DS_Store'), 'existing directory');
     assert.throws(() => createLibrary(unbound), {code: 'NOT_EMPTY'});
     assert.equal(fs.readFileSync(path.join(unbound, '.DS_Store'), 'utf8'), 'existing directory');

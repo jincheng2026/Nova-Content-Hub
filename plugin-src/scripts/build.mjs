@@ -16,7 +16,7 @@ export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'no
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
 
 export function runtimeSourceFilter(input) {
-    return !['test', '.DS_Store', 'README.md'].includes(basename(input)) && input !== join(source, 'resources/builtin-templates/evidence');
+    return !['test', '.DS_Store', 'README.md'].includes(basename(input)) && !['src/lib/browser-import', 'resources/builtin-templates', 'resources/图库'].some(relative => input === join(source, relative));
 }
 
 export function hooksFor(host, events) {
@@ -166,13 +166,6 @@ export async function buildCover(mode) {
             await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
         }
         // Resource paths match the source tree; no dependency on the browser workbench.
-        const importCatalog = JSON.parse(await readFile(join(source, 'src/lib/browser-import/builtin-resources.json'), 'utf8'));
-        if (importCatalog.format !== 'nova-browser-import-builtin-resources' || importCatalog.schemaVersion !== 1 || !importCatalog.entries || Object.keys(importCatalog.entries).length !== 72) throw new Error('Unsupported import resource catalog');
-        for (const [relative, entry] of Object.entries(importCatalog.entries)) {
-            if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
-            const bytes = await readFile(join(source, 'resources', relative));
-            if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
-        }
         await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: runtimeSourceFilter});
         await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs' && runtimeSourceFilter(input)});
         await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");

@@ -1,7 +1,7 @@
 import {randomUUID} from 'node:crypto';
 import {fail, requireWrite} from '../shared/validation.ts';
 import {templateDesktopInput} from '../shared/template-validation.ts';
-import type {Binding, ImportTask, LibraryBinding} from '../shared/contracts.ts';
+import type {Binding, LibraryBinding} from '../shared/contracts.ts';
 import type {Assistant} from '../shared/cover-contracts.ts';
 import type {TemplateAccept, TemplateAssistantSetup, TemplatePending, TemplatePendingView, TemplateRecovery, TemplateReference, TemplateStart, TemplateWorker, TemplateWorkflowResult, TemplateWorkflowView} from '../shared/template-contracts.ts';
 type TemplateBinding = Binding & {templatePending?: TemplatePending | null};
@@ -12,7 +12,6 @@ export interface TemplateOwner {
     covers: {grant(hash: string): string};
     current(): LibraryBinding;
     noPending(): void;
-    query(): Promise<ImportTask | null>;
     persist(next: TemplateBinding): Promise<void>;
     exclusive<T>(action: () => Promise<T>): Promise<T>;
 }
@@ -44,9 +43,6 @@ export class TemplateController {
     }
     async writable() {
         requireWrite(this.owner.authMode);
-        const task = await this.owner.query();
-        if (this.owner.binding.started && task?.status !== 'committed') fail('IMPORT_IN_PROGRESS', '请先完成或核验当前导入。');
-        if (task?.targetChanged && this.owner.binding.current?.root === this.owner.binding.destination) fail('LIBRARY_NOT_READY', '内容库位置已改变，原学习意图保留。');
         return this.owner.current();
     }
     bound() {

@@ -1,0 +1,570 @@
+
+> nova-content-hub-workbench@0.3.41 test
+> node --test test/*.test.mjs
+
+✔ Chinese macOS menu retains native editing, window and application roles (9.342709ms)
+✔ Windows and Linux keep editing and exit without macOS application actions (3.426958ms)
+✔ codex cover: verified doctor must finish before envelope creation and external open (227.384792ms)
+✔ codex template: verified doctor must finish before envelope creation and external open (238.470791ms)
+✔ workbuddy cover: verified doctor must finish before envelope creation and external open (343.861125ms)
+✔ workbuddy template: verified doctor must finish before envelope creation and external open (308.604375ms)
+✔ tampered executable, launcher, CLI and other payload bytes refuse before spawn, even with cache self-resealing (643.00775ms)
+✔ missing files, wrong release, root/file symlinks, and extra or escaping payload entries refuse before spawn (568.235208ms)
+✔ trusted app inventory must be an ordinary bounded file with exact release and schema (650.45625ms)
+✔ only Codex may omit the exact trusted semver link; present changes never qualify (622.044875ms)
+✔ runtime error, timeout, malformed/oversized or business-bound output never creates an envelope or opens the host (548.101916ms)
+✔ required mode never executes and successful launches do not cache verification across replacements (426.239083ms)
+✔ WorkBuddy allows bounded non-executable in-use markers across live and ended host stages (455.842792ms)
+✔ only WorkBuddy permits validated host markers; trusted inventories cannot declare them (885.35425ms)
+✔ WorkBuddy permits only bounded atomic-write temporary names and exact platform identity data (418.599ms)
+✔ invalid names, marker schemas and excessive host metadata refuse before spawn (5344.4455ms)
+✔ host metadata cannot hide executable files, symlinks, hardlinks, subdirectories, or changed payload (662.568292ms)
+✔ host marker changes during verification fail closed without retrying doctor or launch (646.432667ms)
+✔ cover: failed preflight can continue the same fixed attempt without business writes (424.520833ms)
+✔ template: failed preflight can continue the same fixed attempt without business writes (380.801542ms)
+✔ real fixed Node and shipped launcher doctor are read-only and complete before launch (11312.752042ms)
+✔ codex: only exact installed enabled native release is accepted (37.774708ms)
+✔ codex: explicit config homes never fall back to a different installed host home (21.641375ms)
+✔ codex: manifest path changes, mismatched releases, and modified Skills refuse (58.597041ms)
+✔ codex: Skill symlinks and oversized metadata refuse (44.772708ms)
+✔ codex: legacy nested Skills cannot fall back to an ordinary handoff (28.6135ms)
+✔ workbuddy: only exact installed enabled native release is accepted (64.544834ms)
+✔ workbuddy: explicit config homes never fall back to a different installed host home (39.203209ms)
+✔ workbuddy: manifest path changes, mismatched releases, and modified Skills refuse (80.691459ms)
+✔ workbuddy: Skill symlinks and oversized metadata refuse (23.724083ms)
+✔ workbuddy: legacy nested Skills cannot fall back to an ordinary handoff (27.331666ms)
+✔ WorkBuddy ambiguous records and arbitrary cache paths refuse (83.141708ms)
+✔ Codex TOML uses parser semantics, rejecting malformed and duplicate tables (143.169416ms)
+✔ Codex individual Skill disabling overrides the enabled plugin (111.741125ms)
+(node:13919) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (69.984333ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (54.512083ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (2.426875ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (2.094916ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (2.614583ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (1.470417ms)
+✔ navigation and new draft survive a paused focus refresh (2.572291ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (1.017125ms)
+✔ paused editor read preserves a draft typed while its result was in flight (1.091625ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (1.419458ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (1.496709ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.814792ms)
+✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (2.605666ms)
+✔ local writes and cover background reads share one dispatch order without global busy (0.892416ms)
+✔ confirmed entity snapshots advance the current content CAS without losing unsaved text (1.09625ms)
+✔ only exact top-level sender with no renderer arguments can invoke business (5.869208ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.578125ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.518209ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (27.579875ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.931666ms)
+✔ app icons use fixed bundled PNG/ICO paths and reject missing or damaged bytes (199.640667ms)
+✔ the pre-seal source filter removes engineering material while keeping all built-in resources valid (48824.062333ms)
+✔ the writable example preserves both real covers, fictional-person disclosure and built-in library (39868.1545ms)
+✔ delivery export contains only the copied Mac installer, user guide and checksum, without overwriting (111.689917ms)
+✔ collection rename preserves legacy fields and inactive channels while retaining edit and channel guards (4265.709417ms)
+(node:13924) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (10.526584ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (110.900708ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (1.2ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (1.158459ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (2.258417ms)
+✔ managed notes/publication drafts use App navigation and native close guards (2.354875ms)
+✔ a background workspace read cannot delay a confirmed save or overwrite edits typed afterward (2.310167ms)
+✔ browser backup and published snapshot candidates remain visible without invented generation records (1.168167ms)
+✔ mixed histories show each candidate once and match both request and attempt (0.418708ms)
+✔ favorites are globally first, unique, filterable and keep original batch numbers (0.462916ms)
+✔ custom ratios use the same legal integer dimensions and reject unsafe extremes (1.333291ms)
+✔ annotations use the actual contained image and reject letterboxing (0.195916ms)
+✔ annotation notes round-trip through the existing note field without losing ordinary notes (0.809833ms)
+✔ large histories index exact attempt pairs without losing candidates (23.159291ms)
+✔ multi-line annotations preserve original text and cannot forge points or the overall separator (0.484708ms)
+✔ mixed point, reverse rectangle and sampled path notes preserve text and percent geometry (0.795459ms)
+✔ unknown and damaged geometry notes fall back to every original character (1.062834ms)
+(node:13941) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (9.942958ms)
+✔ automatic cover failures still report the error and refresh status (2.567041ms)
+✔ foreground operations and external-change refresh still scan the full workspace (3.76275ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (11261.035166ms)
+✔ mixed annotations persist through reopening a temporary library and reach the exact fixed request context (14435.600625ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (11973.540791ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (9586.155416ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (11970.627541ms)
+  ✔ failed (11477.885167ms)
+  ✔ superseded (11930.146916ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (35380.187458ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (7665.6135ms)
+  ✔ after (6548.828334ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (14215.35625ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (3590.895291ms)
+  ✔ true (3946.560708ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (7538.320208ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (6862.839625ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (561.986958ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (506.803ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (4211.321916ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (5164.031375ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (8041.573875ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2348.811792ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (6164.171416ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (1830.475334ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (1367.109458ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (5015.1555ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (3682.570708ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (3835.139959ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (5376.453708ms)
+✔ summary fallback preserves strict input integrity checks for execution (2505.327375ms)
+✔ unexpected errors during summary loading still propagate (2206.113125ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (894.622792ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (5209.237833ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (5719.901ms)
+✔ folder-open failure keeps exported originals recoverable (2582.689708ms)
+✔ bound codex cover continuation keeps original session and waiting-user after global host changes (3229.34975ms)
+✔ bound codex cover continuation keeps original session and waiting-permission after global host changes (3366.552125ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-user after global host changes (3456.615167ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-permission after global host changes (2605.785125ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (5094.491458ms)
+✔ overview cover selection opens existing covers and keeps generation as a separate intent (6.045416ms)
+✔ desktop bridge and worker expose no prototype backup import (1.1845ms)
+✔ obsolete import pointers do not query files or block a valid desktop binding (36.045792ms)
+(node:13945) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ detail reads reuse the successful workspace assets without a duplicate asset scan (17.134792ms)
+✔ explicit workspace refresh and library switch replace the shared assets (2.883458ms)
+✔ a failed workspace asset refresh cannot publish a retained stale snapshot (2.760916ms)
+✔ late cover results are discarded after changing content or switching library (8.399959ms)
+✔ native channels preserve only the sealed marketplace during macOS signing (1.048833ms)
+✔ native markets retain the fixed full tree and auth-specific runtime after packaging (4572.276334ms)
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (4736.542125ms)
+✔ source inventory and runtime are validated before their tree can be sealed (1769.624958ms)
+✔ free preview is the default experience and restricted testing stays explicit (0.54525ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.41525ms)
+✔ release pairing, auth and toolchain fail closed (0.437125ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.156666ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.1915ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (626.509416ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.173792ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.5005ms)
+✔ all installer channels and universal builds preserve company, copyright and product identity (387.797125ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (4.928042ms)
+✔ validated macOS build copies are archived without changing bytes, symlinks, modes, DMGs or earlier builds (211.58925ms)
+✔ revealing a bound library permits Finder metadata and subsequent watched/manual reads (3997.211708ms)
+✔ only packaged macOS apps outside Applications offer installation (0.707542ms)
+✔ development, testing and unknown source identities never recover or prompt for the formal application (0.136834ms)
+✔ only the installed formal macOS app confirms its installation journal (0.17425ms)
+✔ skipping installation still recovers interrupted publication before offering install (0.376875ms)
+✔ successful verified publication explicitly relaunches installed executable with safe args (0.661916ms)
+✔ copy and relaunch failures continue without a false success (0.289666ms)
+✔ replacement is explicit and cancel performs no installation (0.101292ms)
+✔ confirmed replacement permits verified installation (0.08675ms)
+✔ running app and unknown recovery records produce a native notice without installation (0.253334ms)
+✔ an unavailable optional dialog does not prevent desktop startup (0.194208ms)
+✔ deferred completed-backup cleanup preserves the current app without offering another replacement (0.105917ms)
+✔ business changes coalesce into fixed notifications without reading event paths (20.347125ms)
+✔ locks, transactions, scratch and temporary paths do not refresh the UI (27.623542ms)
+✔ continuous writes have a bounded maximum delay (35.868958ms)
+✔ identical bindings preserve native handles; unbind and close cancel stale callbacks (25.548083ms)
+✔ native failures notify once and only rearm the pinned library on a periodic check (16.75575ms)
+✔ notification failures cannot escape binding, recovery or debounce callbacks (15.99025ms)
+✔ silent root removal is detected and restoration of the same inode can rearm (45.550666ms)
+✔ a same-ID clone never rearms under the old binding; successful rebind clears unavailable immediately (50.618708ms)
+✔ descriptor identity, format, size and readability are checked before watching and while idle (48.18575ms)
+✔ descriptor changes during the bounded read are rejected (22.441542ms)
+✔ linked descriptors and root ancestors are rejected (29.681958ms)
+✔ attempt progress has its own lightweight notification instead of whole-library refresh (16.818416ms)
+✔ native create/edit/trash/restore/reopen uses one identity and preserves unrelated business metadata (46407.379458ms)
+✔ main persists input and mutation ID before worker; predispatch loss retries only the same ID (38554.414125ms)
+✔ committed response loss queries current content and never replays old receipt over later edits (26537.800833ms)
+✔ conflict retains submitted draft until explicit save-as or discard; query errors never mean missing (19771.242875ms)
+✔ required build main and worker reject all five business writes before any business mutation (452.037167ms)
+✔ bound roots reject different libraries and same-ID clones before any pending recovery (21334.449458ms)
+✔ creation response loss verifies fixed original inode; failure never removes its directory (18510.728708ms)
+✔ legacy bindings require explicit reselect; renderer and worker inputs are exact and finite (20908.088334ms)
+✔ empty reserved creation can explicitly retry its original ID; partial failure can only be abandoned without deleting data (12742.567667ms)
+✔ unsupported old/future library formats are rejected without upgrading or overwriting their descriptor (11289.594667ms)
+✔ pending content blocks opening another library and new writes until its draft is explicitly resolved (28040.890583ms)
+✔ explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits (21718.44225ms)
+✔ explicit native open clears obsolete import metadata without calling retired worker operations (11926.640792ms)
+✔ save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically (19370.649542ms)
+✔ keep on a committed pending retains the submitted draft and durable record after restart (18318.902125ms)
+✔ worker consumes core expectedRootIdentity during initialization before writing a replacement directory (3.019833ms)
+✔ local file boundary rejects extra fields, paths, folders, symlinks, counts, types and size before importing (57.390083ms)
+(node:13961) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ sandbox preload extracts File paths through webUtils only, refuses strings and non-native files (3.375208ms)
+✔ dropped and dialog files reuse real material/template/photo import and keep explicit attachment confirmation (5479.292292ms)
+✔ template folders expand only first-level raster files and reject links and count overflow (762.276209ms)
+✔ verified installation retains the complete previous app and confirms only installed startup (1495.805208ms)
+✔ completed installation retires the launchable raw previous app into a recoverable archive (1571.189375ms)
+✔ native previous-app archive round-trips the complete old tree and publishes a private hash receipt (2351.695708ms)
+Previous application backup retirement deferred: archive disk full
+✔ completed backup write failure preserves old bytes and the retry claim without blocking confirmation (1586.96ms)
+Previous application backup retirement deferred: Previous application archive round-trip mismatch
+✔ completed backup roundtrip failure preserves old bytes and the retry claim without blocking confirmation (1955.245209ms)
+Previous application backup retirement deferred: old signature rejected
+✔ completed backup signature failure preserves old bytes and the retry claim without blocking confirmation (2956.728208ms)
+Previous application backup retirement deferred: Command failed: /usr/bin/ditto -x -k /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-bjtZ4h/Applications/.nova-content-hub-install-0485474f-4d53-4e1c-904a-9d7b69ef9761/.archive-previous-mmcFzs/previous.app.zip /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-bjtZ4h/Applications/.nova-content-hub-install-0485474f-4d53-4e1c-904a-9d7b69ef9761/.verify-previous/payload
+ditto: Couldn't read PKZip signature
+
+✔ completed backup zip failure preserves old bytes and the retry claim without blocking confirmation (1205.902916ms)
+Previous application backup retirement deferred: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-GfAnf8/Applications/.nova-content-hub-install-34cc7bdb-14bf-4dde-8b3c-2222f162ea3f/previous-backup/receipt.json'
+✔ completed backup receipt failure preserves old bytes and the retry claim without blocking confirmation (448.955084ms)
+Previous application backup retirement deferred: archive publication failed
+✔ completed backup publish failure preserves old bytes and the retry claim without blocking confirmation (2966.27025ms)
+Previous application backup retirement deferred: Application recovery identity mismatch
+✔ completed backup changed-previous failure preserves old bytes and the retry claim without blocking confirmation (1113.984208ms)
+Previous application backup retirement deferred: Previous application is still running
+✔ completed backup running failure preserves old bytes and the retry claim without blocking confirmation (513.64975ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ completed backup running-after-archive failure preserves old bytes and the retry claim without blocking confirmation (1513.458792ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ a published archive interrupted before raw retirement is verified and resumed (2282.866ms)
+Previous application backup retirement deferred: interrupted before removal
+▶ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree
+  ✔ false (2310.557417ms)
+Previous application backup retirement deferred: interrupted before removal
+  ✔ true (2537.843708ms)
+✔ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree (4849.306ms)
+Previous application backup retirement deferred: Previous application started while archiving
+▶ archive corruption cannot authorize removal of a retained raw backup
+  ✔ previous.app.zip (1955.744666ms)
+Previous application backup retirement deferred: Previous application started while archiving
+  ✔ receipt.json (2119.801625ms)
+✔ archive corruption cannot authorize removal of a retained raw backup (4076.175334ms)
+✔ explicit retirement refuses foreign paths and non-complete transactions without touching rollback material (616.393167ms)
+✔ a real process exit after extraction leaves a pinned scratch that the next archive call safely clears (2931.214375ms)
+▶ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization
+  ✔ false (1997.894583ms)
+  ✔ true (1971.785416ms)
+✔ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization (3970.43575ms)
+✔ scratch cleanup keeps owner.json through a process exit halfway through payload removal (2151.061291ms)
+✔ an empty scratch left after owner unlink is safely retired while a nonempty unknown one remains protected (1399.062209ms)
+▶ unknown, live-owned and running verification scratch directories are preserved until safely retryable
+  ✔ unknown (657.9375ms)
+  ✔ live-owner (614.286417ms)
+  ✔ running-copy (1877.055875ms)
+✔ unknown, live-owned and running verification scratch directories are preserved until safely retryable (3150.107ms)
+✔ same-process overlapping archive verification cannot clear an active scratch (1243.119042ms)
+✔ only strict native transaction backup executable paths are rejected before desktop locking (1.421625ms)
+▶ completed installation never restores an old backup after the user removes, moves or replaces the installed app
+  ✔ remove (1127.452833ms)
+  ✔ move (1242.083ms)
+  ✔ replace (1469.732834ms)
+✔ completed installation never restores an old backup after the user removes, moves or replaces the installed app (3840.083459ms)
+✔ a completed local-channel journal can recover before an official-channel update (1752.728125ms)
+✔ allowed product channels replace and restore each other with the same executable (331.02625ms)
+✔ unknown journal channels and incompatible executables preserve recovery evidence (786.645416ms)
+✔ unknown installed channels and mismatched incoming source or candidate channels are refused (445.08225ms)
+✔ throw copy or verification failure leaves old app intact (240.758333ms)
+✔ missing copy or verification failure leaves old app intact (276.053708ms)
+✔ hash copy or verification failure leaves old app intact (245.828375ms)
+✔ mode copy or verification failure leaves old app intact (217.280208ms)
+✔ source-signature copy or verification failure leaves old app intact (125.367167ms)
+✔ candidate-signature copy or verification failure leaves old app intact (273.79675ms)
+✔ internal symlinks survive copying; escaping links and unknown identities are refused (505.155042ms)
+✔ running target at check 1 is refused before replacement (94.68425ms)
+✔ running target at check 2 is refused before replacement (294.97725ms)
+✔ running-process query failure leaves previous app intact (70.586875ms)
+✔ failed publish restores old app; failed rollback retains recovery record and previous app (602.243917ms)
+✔ interrupted new rename is pending; recovery refuses a replaced previous identity (390.759667ms)
+✔ unknown transaction directory and target symlink are left untouched (198.298667ms)
+✔ native macOS process query distinguishes an unused app directory (681.910583ms)
+✔ initial installation and a subsequent confirmed update preserve separate backups (609.65425ms)
+✔ another live installation owner cannot have its staging directory archived (460.227083ms)
+✔ prepared journal recovers interruption between the old rename and published record (472.567542ms)
+✔ installing from the target itself is refused without touching it (97.771334ms)
+✔ native ditto copy retains framework-style symlinks and executable bits (407.740709ms)
+✔ same-process concurrent recovery cannot archive an active copy (326.327458ms)
+✔ an initialized private orphan before active publication does not block a later install (604.542709ms)
+✔ published initialized staging claim recovers without deleting its private directory (307.475625ms)
+✔ unknown active regular file and symlink are preserved without following them (207.947542ms)
+✔ exclusive claim publication refuses a concurrently created unknown empty directory (169.096625ms)
+✔ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (3182.98725ms)
+✔ a final marker followed by an actual open failure cannot publish an operation receipt (2716.911667ms)
+✔ query proves a lost restore response and pins the completed target before continuation (3701.288833ms)
+✔ partial backup and partial restored target are preserved and never overwritten (1966.1525ms)
+✔ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (5041.325625ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (618.268209ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (577.990209ms)
+(node:14016) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ successful managed save applies its confirmed snapshot before one background refresh (3.374375ms)
+✔ managed save callback supplies the exact receipt object ID alongside the compatible snapshot argument (0.653375ms)
+✖ CONFLICT preserves the editor and still refreshes status plus the workspace (3.58725ms)
+✖ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.253917ms)
+✖ a background refresh failure retains the acknowledged save and permits an explicit refresh retry (0.907334ms)
+✖ editor reconciliation failure keeps one deferred full read and the committed snapshot (1.948167ms)
+✔ explicit management reload reuses the freshly read snapshot (0.781042ms)
+✔ default foreground/editor/import actions retain their workspace refresh; automatic-cover opt-out stays separate (1.267875ms)
+✖ queued managed success clears only a background BUSY marker: BUSY (1.094916ms)
+✖ queued managed success clears only a background BUSY marker: CONFLICT (1.0955ms)
+✔ a committed management action releases its controls before a delayed full-library refresh (0.983125ms)
+✔ explicit panel refresh callbacks share the nonblocking background path (1.385792ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (3595.470167ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (2300.281917ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (2558.821542ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (2336.535375ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (3169.377084ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.782834ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.387375ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (9344.994208ms)
+✔ desktop operations finish in FIFO order without overlap (1.127333ms)
+✔ a failed operation rejects its caller and leaves the queue usable (0.352166ms)
+✔ foreground save and read run after the active image and before queued images without overlap (0.343375ms)
+✔ background failures and thenables settle their callers and preserve background FIFO (0.2ms)
+✔ operations may enqueue subsequent work without overlapping their own execution (0.118875ms)
+✔ an image grant revoked while queued is checked again before any worker read (0.39625ms)
+✔ close rejects new work immediately and drains active and both accepted queues, including failures (0.539167ms)
+✔ closing an idle queue resolves and never reopens it (0.112417ms)
+✔ retired motion field accepts either saved boolean without changing reminder/login settings or the file (166.926083ms)
+✔ current settings round-trip and new saves reject the retired field (40.02125ms)
+✔ legacy compatibility still rejects invalid and unexpected fields while preserving the original file (99.614542ms)
+✔ saved content is appended only after explicit inclusion and never treated as prompt variables (1.359167ms)
+✔ both worker prompt projections default old files without rewrites and expose durable favorite changes (6837.835083ms)
+✔ favorite command boundary requires a present boolean and finite fields before any write (885.372459ms)
+✔ recording an instant preserves its timezone and precision while using the actual current instant (2.211916ms)
+✔ local minute records use the planned timezone across a date boundary (38.273542ms)
+✔ date-only and unzoned local minute records never invent timezone information (0.311167ms)
+✔ instant display uses its recorded timezone instead of the machine timezone (0.228375ms)
+✔ compact titles distinguish plan text and preserve intentional empty text (0.28ms)
+✔ actual compact titles use the saved snapshot including explicitly empty text (0.496167ms)
+✔ successive raster reads reuse one bound library opening while returning the original bytes (1196.666333ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (1174.54675ms)
+✔ validated MIME hits skip sharp metadata while current-byte tampering is still refused (1230.111834ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (1497.497208ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (1364.817ms)
+✔ a warm raster read still recovers a durable pending content transaction (1489.575541ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (1060.105708ms)
+✔ two-image batches isolate bad images and reject an unbounded batch (1211.896375ms)
+✔ image requests merge in flight, cap batches at two, drain before writers, and discard revoked work (617.812917ms)
+✔ ordinary close hides the existing dirty window; reveal restores and focuses it (0.602667ms)
+✔ cancelled quit resets intent so the next ordinary close hides (0.157416ms)
+✔ explicit discard exits; clean quit and no-tray close can also exit (0.119084ms)
+✔ save-before-quit only retries quit for an exact true response (3.955ms)
+✔ save failure and concurrent quit keep the draft window and clear quit intent (0.410583ms)
+✔ without a tray, dirty close still offers cancel, discard and save (0.437667ms)
+✔ a thousand local schedules resolve the default timezone at most once per projection (10.561208ms)
+✔ the next projection observes a changed system timezone without modifying saved instant schedules (10.779916ms)
+✔ mixed date, local minute, and repeated DST instants keep existing projected ordering (0.664166ms)
+✔ day views order known times and leave date-only time unknown (17.290541ms)
+✔ calendar projection sorts actual publication times and excludes cancelled and example plans (0.328375ms)
+✔ different source timezones cannot put a later instant first and view projection uses one timezone (0.430667ms)
+✔ cancelled plans are available only by explicit projection opt-in (0.103959ms)
+✔ projection resolves first effective correction and excludes retracted snapshots (0.142541ms)
+✔ candidate changes acknowledge a fresh scoped entity and token without reading the library (3487.541834ms)
+✔ lost mutation response uses the same scoped receipt recovery and rereads current data (2664.173541ms)
+✔ projection failure preserves exact durable intent; ordinary recovery after restart stays compatible (3421.183709ms)
+✔ prompt favorite uses the same pending and CAS rules with a scoped projection (3716.936708ms)
+✔ installation copy supplies the selected host exact manifest or folder without manual path edits (116.981209ms)
+✔ session routes are fixed to the owning host and reject arbitrary paths or URLs (0.679917ms)
+✔ codex waiting-user resumes through shared projection while terminal facts win (0.224834ms)
+✔ codex waiting-permission resumes through shared projection while terminal facts win (0.064083ms)
+✔ workbuddy waiting-user resumes through shared projection while terminal facts win (0.063334ms)
+✔ workbuddy waiting-permission resumes through shared projection while terminal facts win (0.064375ms)
+✔ workspace retains history while generation offers only usable current or custom templates; ordinary reads never write Markdown (4504.0005ms)
+✔ generation excludes deleted and empty templates without treating a custom copy as legacy (3764.312667ms)
+✔ explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories (3425.907542ms)
+✔ historical report scope is labelled without changing notes or splitting colleague groups (3.686875ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (10713.746417ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (9846.822875ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (8926.752292ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (8195.167125ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (8361.8975ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (8926.256667ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (8654.328375ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (5926.326667ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (809.680875ms)
+✔ bound codex template continuation keeps original session and waiting-user without progress CAS changes (4906.298625ms)
+✔ bound codex template continuation keeps original session and waiting-permission without progress CAS changes (4424.165458ms)
+✔ bound workbuddy template continuation keeps original session and waiting-user without progress CAS changes (4641.417792ms)
+✔ bound workbuddy template continuation keeps original session and waiting-permission without progress CAS changes (4724.424916ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (2.846666ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (16.639125ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.626958ms)
+✔ readonly non-BUSY failures are returned once (6.34975ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (2.005125ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (3.733208ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.285709ms)
+✔ worker rejects retired browser operations, unknown operations and malformed native inputs (1.284667ms)
+✔ native library open through controller and worker preserves identity, untrusted text and later external edits after restart (2134.244208ms)
+✔ full list records retain the same validated bytes and edit tokens as individual reads, including trash (3855.875834ms)
+✔ workspace projections do not reopen each already validated full record (4409.862083ms)
+✔ only an owned stored publication URL is sent to the system browser (4010.527ms)
+✔ invalid stored links and browser errors do not become successful opens (7873.386917ms)
+✔ reveal requests only the original bound directory and refuses replacements (1573.605625ms)
+✖ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (6835.155417ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1838.404292ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (1211.544083ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (589.751375ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1266.86275ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.781166ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (2.058167ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (3861.462166ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (2813.553167ms)
+ℹ tests 368
+ℹ suites 0
+ℹ pass 360
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 317255.169792
+
+✖ failing tests:
+
+test at test/managed-refresh.test.mjs:45:1
+✖ successful managed save applies its confirmed snapshot before one background refresh (3.374375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:47:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:57:54
+✖ CONFLICT preserves the editor and still refreshes status plus the workspace (3.58725ms)
+  AssertionError [ERR_ASSERTION]: readWorkspace
+  
+  0 !== 1
+  
+      at assertScans (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:43:123)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:60:51)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:57:54
+✖ COMMIT_UNCERTAIN preserves the editor and still refreshes status plus the workspace (1.253917ms)
+  AssertionError [ERR_ASSERTION]: readWorkspace
+  
+  0 !== 1
+  
+      at assertScans (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:43:123)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:60:51)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:63:1
+✖ a background refresh failure retains the acknowledged save and permits an explicit refresh retry (0.907334ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:65:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:70:1
+✖ editor reconciliation failure keeps one deferred full read and the committed snapshot (1.948167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 2
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:73:110)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 2,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:90:42
+✖ queued managed success clears only a background BUSY marker: BUSY (1.094916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:94:80)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/managed-refresh.test.mjs:90:42
+✖ queued managed success clears only a background BUSY marker: CONFLICT (1.0955ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + undefined
+  - true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/managed-refresh.test.mjs:94:80)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at test/workspace.test.mjs:30:1
+✖ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (6835.155417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      enabled: false,
+      id: 'bilibili',
+  +   name: 'B站'
+  -   name: 'B 站'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/workspace.test.mjs:69:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { id: 'bilibili', name: 'B站', enabled: false },
+    expected: { id: 'bilibili', name: 'B 站', enabled: false },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

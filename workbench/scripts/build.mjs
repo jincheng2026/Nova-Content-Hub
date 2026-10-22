@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {createHash} from 'node:crypto';
 import {build} from 'vite';
 import {buildCover, runtimeSourceFilter} from '../../plugin-src/scripts/build.mjs';
 import {buildMarketplace} from '../../plugin-src/scripts/marketplace-builder.mjs';
@@ -95,13 +94,6 @@ for (const mode of modes) {
         const destination = path.join(target, relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
         fs.cpSync(path.join(root, relative), destination, {recursive: true, filter: runtimeSourceFilter});
-    }
-    const catalog = JSON.parse(fs.readFileSync(path.join(root, 'plugin-src/src/lib/browser-import/builtin-resources.json'), 'utf8'));
-    if (catalog.format !== 'nova-browser-import-builtin-resources' || catalog.schemaVersion !== 1 || !catalog.entries || Object.keys(catalog.entries).length !== 72) throw new Error('Unsupported import resource catalog');
-    for (const [relative, entry] of Object.entries(catalog.entries)) {
-        if (!relative.startsWith('图库/') || /[\\:\u0000-\u001f]/.test(relative) || relative.split('/').some(part => !part || part === '.' || part === '..') || entry.path !== relative || !['raster', 'structure'].includes(entry.kind)) throw new Error('Unsafe bundled import resource');
-        const bytes = fs.readFileSync(path.join(target, 'plugin-src/resources', relative));
-        if (bytes.length !== entry.bytes || createHash('sha256').update(bytes).digest('hex') !== entry.sha256) throw new Error('Import resource hash mismatch');
     }
     const {type: _type, devDependencies: _devDependencies, ...runtimePackage} = packageJSON;
     fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({

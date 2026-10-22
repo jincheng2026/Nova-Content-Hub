@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "screenshotDir": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-image-channel-controls-0341/growing-lists",
+  "search": {
+    "n": 20,
+    "median": 16.808875000000626,
+    "p95": 32.91204199999993,
+    "max": 81.14795900000081
+  },
+  "paging": {
+    "n": 20,
+    "median": 33.35974999999962,
+    "p95": 40.428625000000466,
+    "max": 41.6024580000003
+  },
+  "scope": "Real Electron React/Semi, synthetic DTO only; not native I/O latency",
+  "fixture": {
+    "contents": 1000,
+    "collections": 320,
+    "photos": 240,
+    "candidates": 145,
+    "templates": 300
+  },
+  "renderMs": 223.20000004768372,
+  "searchMs": 34.200333,
+  "limits": {
+    "contentRows": 20,
+    "collectionCards": 20,
+    "memberRows": 20,
+    "photoRows": 20,
+    "candidateCards": 20,
+    "pickerOptions": "<20"
+  },
+  "checks": [
+    "pagination",
+    "title/body search",
+    "cross-page full member save",
+    "hidden missing/trashed selections globally block save until explicit removal",
+    "real keyboard Enter in member/metadata search never submits",
+    "numeric Chinese name order",
+    "snapshot token",
+    "cross-page comparison",
+    "virtualized searchable picker",
+    "direct jump to page 50",
+    "20/50/100 DOM slicing across contents/collections/members/materials/photos/candidates/jobs/attempts/reference materials",
+    "5/10/20 cover template groups",
+    "125-channel virtual search and keyboard selection"
+  ]
+}

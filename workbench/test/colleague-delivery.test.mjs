@@ -31,12 +31,8 @@ test('the pre-seal source filter removes engineering material while keeping all 
     installBuiltins(lib, path.join(parent, 'bundle'));
     assert.equal(lib.listTemplates().length, 5);
     assert.equal(lib.listPrompts().length, 52);
-    const catalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-src/src/lib/browser-import/builtin-resources.json'), 'utf8'));
-    for (const [relative, entry] of Object.entries(catalog.entries)) {
-        const bytes = fs.readFileSync(path.join(resources, relative));
-        assert.equal(bytes.length, entry.bytes);
-        assert.equal(hash(bytes), entry.sha256);
-    }
+    for (const relative of ['builtin-templates', '图库']) assert.equal(fs.existsSync(path.join(resources, relative)), false, relative);
+    assert.equal(runtimeSourceFilter(path.join(project, 'plugin-src/src/lib/browser-import')), false);
 });
 
 test('the writable example preserves both real covers, fictional-person disclosure and built-in library', t => {

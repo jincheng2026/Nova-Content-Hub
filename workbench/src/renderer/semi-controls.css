@@ -2,7 +2,7 @@
 .semi-control > .semi-select, .semi-control > .semi-datepicker, .semi-control > .semi-timepicker { width: 100%; }
 .semi-control-validation { position: absolute !important; width: 1px !important; height: 1px !important; padding: 0 !important; border: 0 !important; opacity: 0; pointer-events: none; clip-path: inset(50%); }
 .creator-channel-preview { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-.creator-channel-preview > span { padding: 4px 10px; border-radius: 6px; font-size: 13px; }
+.creator-channel-preview > span { max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding: 4px 10px; border-radius: 6px; font-size: 13px; }
 .semi-control { flex-wrap: wrap; }
 .semi-control-error { flex-basis: 100%; margin-top: 4px; color: var(--semi-color-danger); font-size: 12px; }
 .workspace-management .semi-input, .management-dialog .semi-input { border: 0; border-radius: 0; background: transparent; padding-top: 0; padding-bottom: 0; }
@@ -21,3 +21,10 @@
 .semi-control-check { margin: 0; line-height: 20px; }
 /* Native input padding must not push Semi placeholders below their fixed-height wrapper. */
 .semi-input-wrapper > input.semi-input { padding-top:0 !important; padding-bottom:0 !important; text-align:left; }
+
+/* Semi owns the focus ring on the rounded control, not its nested search field. */
+.semi-select .semi-input-wrapper { border:0; border-radius:0; background:transparent; box-shadow:none; }
+.semi-input-wrapper > input.semi-input { border:0 !important; border-radius:0 !important; outline:0; box-shadow:none !important; background:transparent; }
+.channel-multi-select .semi-select { min-height:36px; height:auto; max-width:100%; }
+.channel-selected-name { display:block; max-width:min(160px,30vw); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.semi-select-option .semi-select-option-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }

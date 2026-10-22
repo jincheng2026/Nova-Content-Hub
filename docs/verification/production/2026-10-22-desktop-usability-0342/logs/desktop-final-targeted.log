@@ -1,0 +1,35 @@
+✔ desktop bridge and worker expose no prototype backup import (1.003959ms)
+✔ obsolete import pointers do not query files or block a valid desktop binding (25.226666ms)
+(node:21180) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save applies the acknowledged collection snapshot without global reads or a global busy lock (6.102417ms)
+✔ managed save callback supplies the exact acknowledged object ID and snapshot (1.114375ms)
+✔ CONFLICT retains the editor, prior snapshot and exact pending input while refreshing status (1.535667ms)
+✔ COMMIT_UNCERTAIN retains the editor, prior snapshot and exact pending input while refreshing status (1.709792ms)
+✔ a later background read failure retains the acknowledged save and permits an explicit read retry (1.48575ms)
+✔ explicit editor reconciliation failure retains the acknowledged snapshot and retries only that editor read (2.473542ms)
+✔ explicit management reload reuses its freshly read snapshot without other library scans (1.528292ms)
+✔ default foreground actions retain full refresh and automatic-cover opt-out remains separate (2.9745ms)
+✔ queued managed save starts after background BUSY and retains its own acknowledgement (2.406042ms)
+✔ queued managed save starts after background CONFLICT and retains its own acknowledgement (1.767542ms)
+✔ only the affected management row is pending while its mutation awaits acknowledgement (1.05025ms)
+✔ an acknowledged asset change refreshes only cover assets, once (0.71ms)
+✔ prompt favorite acknowledgement replaces only that prompt without unrelated scans (0.699542ms)
+✔ explicit panel refresh callbacks share the nonblocking background path (1.809042ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (1489.032417ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (440.670834ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (218.39875ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (122.106833ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (225.7795ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (0.480125ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (1.107916ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (1183.299625ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (776.999ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4714.402667

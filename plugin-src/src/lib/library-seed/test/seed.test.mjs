@@ -10,6 +10,7 @@ import {createLibrary, openLibrary} from '../../file-library/index.mjs';
 import {installBuiltins} from '../index.mjs';
 import {prepareColleagueBuiltins} from '../colleague.mjs';
 import {validateImage} from '../../image-validation/index.mjs';
+import {installHistoricalBuiltin} from '../../file-library/test/legacy-template-fixture.mjs';
 
 const project = fileURLToPath(new URL('../../../../../', import.meta.url));
 const templateCatalog = JSON.parse(fs.readFileSync(path.join(project, 'plugin-src/resources/builtin-templates/catalog.json'), 'utf8'));
@@ -112,7 +113,7 @@ test('all bundled groups and prompts install, reopen and seed again without over
     assert.equal(reopened.readTemplate(firstTemplate.id).deletedAt, trashedTemplate.deletedAt);
 });
 
-test('an existing library receives only missing colleague resources and preserves edits, trash and historic packages', t => {
+test('an existing library retires the fifteen obsolete builtins and preserves custom edits and historic packages', t => {
     const {library} = fixture(t);
     // Reproduce the existing release's installed objects with the unchanged original catalogs.
     for (const definition of templateCatalog.templates) {
@@ -123,19 +124,24 @@ test('an existing library receives only missing colleague resources and preserve
                 resources[ref.path] = {assetHash: asset.assetHash, bytes: asset.bytes, detectedType: asset.detectedType, role};
             }
         }
-        library.installBuiltinTemplate({id: definition.id, name: definition.name, version: definition.version, definition, resources});
+        installHistoricalBuiltin(library, {id: definition.id, name: definition.name, version: definition.version, definition, resources});
     }
     for (const prompt of promptCatalog.prompts) {
         const {title, body, category, when, summary, tags, provenance} = prompt;
         library.createPrompt({title, body, category, when, summary, tags, provenance, builtinKey: prompt.id});
     }
-    const originalHashes = library.listTemplates().map(item => [item.id, library.readTemplate(item.id).packageHash]);
+    const originalHashes = templateCatalog.templates.map(item => [item.id, library.readTemplate(item.id).packageHash]);
+    const oldTemplateFile = path.join(library.info.root, '模板', originalHashes[0][0], '模板.json');
+    const oldTemplate = JSON.parse(fs.readFileSync(oldTemplateFile)); oldTemplate.deletedAt = new Date().toISOString();
+    fs.writeFileSync(oldTemplateFile, `${JSON.stringify(oldTemplate, null, 2)}\n`);
     const oldPrompt = library.listPrompts()[0];
     library.updatePrompt(oldPrompt.id, {body: '用户保留的旧版修改'}, oldPrompt.editToken);
     const sameBody = library.createPrompt({title: '已手工收录同一正文', body: colleagueCatalog.prompts[0].body.trim().replace(/\n/g, '\r\n')});
     const upgraded = installBuiltins(openLibrary(library.info.root));
     assert.equal(upgraded.createdPrompts, 25, 'existing exact body is not duplicated under a different title');
-    assert.equal(library.listTemplates().length, 20);
+    assert.equal(upgraded.retiredTemplates.length, 15);
+    assert.equal(library.listTemplates().length, 5);
+    assert.equal(library.listTemplateTrash().length, 0, 'retired builtins do not move into the recycle bin');
     assert.equal(library.listPrompts().length, 52);
     assert.equal(library.readPrompt(oldPrompt.id).body, '用户保留的旧版修改');
     assert.equal(library.readPrompt(sameBody.id).builtinKey, null, 'custom ownership is not taken over');
@@ -145,7 +151,7 @@ test('an existing library receives only missing colleague resources and preserve
     library.addTemplateVersion(custom.id, {version: 2, definition: {...sourceTemplate.definition, userRule: '保留历史'}, resources: sourceTemplate.resources}, custom.editToken);
     const beforeCustom = library.readTemplate(custom.id);
     assert.equal(installBuiltins(library).templates.length, 5);
-    assert.equal(library.listTemplates().length, 21, 'old 20 and custom template remain');
+    assert.equal(library.listTemplates().length, 6, 'five colleague groups and the custom template remain');
     assert.deepEqual(library.readTemplate(custom.id), beforeCustom, 'custom metadata, versions and exact package history remain');
     const newPrompt = library.listPrompts().find(item => item.builtinKey === colleagueCatalog.prompts[1].id);
     library.trashPrompt(newPrompt.id, newPrompt.editToken);

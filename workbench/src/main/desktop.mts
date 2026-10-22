@@ -230,14 +230,6 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
                 });
                 return selected.canceled ? null : selected.filePaths[0];
             },
-            async backup() {
-                const selected = await dialog.showOpenDialog(window, {
-                    title: '选择旧工作台备份',
-                    properties: ['openFile'],
-                    filters: [{name: '工作台备份', extensions: ['json']}]
-                });
-                return selected.canceled ? null : selected.filePaths[0];
-            },
             async destination(defaultPath) {
                 const selected = await dialog.showSaveDialog(window, {
                     title: '选择新内容库的位置与名称',
@@ -258,9 +250,6 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         controller.pendingView = null;
         controller.workspace.pendingView = null;
         controller.templates.pendingView = null;
-        controller.querying = null;
-        controller.last = null;
-        controller.inspection = null;
         initializationError = undefined;
         libraryWatcher?.bind(null);
     }});
@@ -364,7 +353,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
                 content: !!binding?.pending, workspace: !!binding?.workspacePending, template: !!binding?.templatePending, creation: !!binding?.creation,
                 photo: !!binding?.photoPending, cover: !!binding?.coverPending, coverAction: !!binding?.coverActionPending,
                 maintenance: !!binding?.maintenancePending, seed: !!binding?.seedPending, needsReselect: !!binding?.needsReselect
-            }, counts: controller.inspection?.counts, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};
+            }, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};
         }
     });
     controller.services = {preferences, reminders, setup, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
@@ -390,7 +379,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
-                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'importBackup', 'resumeImport', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
+                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
             };
         } catch (error) {
             return {

@@ -8,7 +8,7 @@ import {fileURLToPath} from 'node:url';
 import electron from 'electron';
 import {build} from 'vite';
 const workbench=fileURLToPath(new URL('../',import.meta.url));
-const evidence=path.resolve(workbench,'../docs/verification/production/2026-10-22-dropdown-corners-0340');
+const evidence=path.resolve(workbench,'../docs/verification/production/2026-10-22-image-channel-controls-0341/dropdown-regression');
 const root=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'nova-dropdown-corners-')));
 await fs.mkdir(evidence,{recursive:true});
 await fs.writeFile(path.join(root,'index.html'),'<html lang="zh-CN"><meta charset="utf-8"><div id="root"></div><script type="module" src="/probe.jsx"></script></html>');

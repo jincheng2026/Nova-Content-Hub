@@ -161,7 +161,7 @@
 .cover-compare-grid { display: grid; gap: 16px; overflow-x: auto; padding: 4px; }
 .cover-compare-grid > article { min-width: 0; }
 .cover-compare-grid > article > p { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
-.cover-compare-image { height: min(55vh, 520px); background: var(--surface-inset); margin-bottom: 12px; }
+.cover-compare-image { display:block; width:100%; padding:0; border:0; cursor:zoom-in; height: min(55vh, 520px); background: var(--surface-inset); margin-bottom: 12px; }
 .management-dialog:has(.cover-compare-grid), .management-dialog:has(.cover-annotation-form) { width: min(1200px, calc(100vw - 40px)); max-width: none; }
 .management-dialog:has(.cover-annotation-form)[open] { height: calc(100vh - 48px); max-height: calc(100vh - 48px); display: flex; flex-direction: column; overflow: auto; }
 .management-dialog:has(.cover-annotation-form) > .dialog-heading { flex: none; margin-bottom: 10px; }
@@ -230,14 +230,23 @@
 .cover-image-viewer { display:flex; flex-direction:column; width:min(96vw,1100px); overflow:hidden; }
 .cover-image-viewer:not([open]) { display:none; }
 .cover-image-viewer .dialog-heading { flex:none; align-items:center; margin-bottom:16px; }
-.cover-image-viewer .dialog-heading h3 { margin:0; }
+.cover-image-viewer .dialog-heading h3 { min-width:0; overflow-wrap:anywhere; margin:0; }
 .cover-viewer-layout { min-height:0; display:grid; grid-template-columns:minmax(0,1fr); gap:20px; }
 .cover-viewer-layout.has-details { grid-template-columns:minmax(0,1fr) 200px; }
-.cover-viewer-stage { min-width:0; min-height:0; height:66vh; overflow:auto; background:var(--surface-inset); display:grid; place-items:center; }
-.cover-viewer-stage img { display:block; width:auto; height:auto; max-width:100%; max-height:66vh; object-fit:contain; }
-.cover-viewer-stage.is-actual-size { display:block; }
-.cover-viewer-stage.is-actual-size img { max-width:none; max-height:none; margin:auto; }
+.image-viewport { min-width:0; min-height:0; }
+.image-zoom-controls { gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.image-zoom-controls output { min-width:48px; text-align:center; font-variant-numeric:tabular-nums; }
+.image-zoom-hint { color:var(--semi-color-text-2); font-size:12px; }
+.cover-viewer-stage { min-width:0; min-height:0; height:60vh; overflow:auto; background:var(--surface-inset); cursor:grab; touch-action:none; overscroll-behavior:contain; }
+.cover-viewer-stage:focus-visible { outline:2px solid var(--semi-color-primary); outline-offset:2px; }
+.cover-viewer-stage.is-dragging { cursor:grabbing; user-select:none; }
+.cover-viewer-canvas { display:grid; place-items:center; min-width:100%; min-height:100%; width:max-content; }
+.cover-image-viewer .cover-viewer-stage img { border-radius:0; display:block; flex:none; max-width:none; max-height:none; object-fit:contain; }
+.image-preview-trigger { display:block; width:100%; min-width:0; padding:0; border:0; border-radius:0; background:transparent; cursor:zoom-in; }
+.image-preview-trigger img { display:block; width:100%; max-height:62vh; object-fit:contain; }
 .cover-viewer-details { min-height:0; max-height:66vh; overflow:auto; }
 .cover-viewer-details .cover-result-actions { display:grid; grid-template-columns:1fr; }
 .cover-viewer-details p { white-space:pre-wrap; overflow-wrap:anywhere; }
-@media(max-width:680px) { .cover-image-viewer .dialog-heading { flex-wrap:wrap; gap:12px; } .cover-viewer-layout.has-details { grid-template-columns:minmax(0,1fr); } .cover-viewer-stage { height:48vh; } .cover-viewer-stage img { max-height:48vh; } .cover-viewer-details { max-height:20vh; } .cover-viewer-details .cover-result-actions { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+@media(max-width:680px) { .cover-image-viewer .dialog-heading { flex-wrap:wrap; gap:12px; } .cover-viewer-layout.has-details { grid-template-columns:minmax(0,1fr); } .cover-viewer-stage { height:48vh; } .cover-viewer-details { max-height:20vh; } .cover-viewer-details .cover-result-actions { grid-template-columns:repeat(4,minmax(0,1fr)); } }
+
+.management-photo > .image-preview-trigger { width:90px; flex:none; }

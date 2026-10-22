@@ -20,7 +20,7 @@ startDesktop({
     show: true,
     onConsoleMessage: message => console.error('Resident renderer:', message),
     userData: path.join(root, 'machine'),
-    dialogs: {backup: async () => null, destination: async () => destination, library: async () => destination},
+    dialogs: {destination: async () => destination, library: async () => destination},
     async ready({window, controller, release, tray}) {
         assert.notEqual(phase, 'secondary', 'second process must not create another window');
         assert.equal(release.AUTH_MODE, 'disabled');

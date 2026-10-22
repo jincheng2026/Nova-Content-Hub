@@ -26,7 +26,7 @@ async function fixture(t, mode = 'disabled') {
         worker,
         documents: root,
         authMode: mode,
-        dialogs: {backup: async () => null, destination: async () => destination, library: async () => destination}
+        dialogs: {destination: async () => destination, library: async () => destination}
     });
     const controller = make();
     await controller.initialize();
@@ -254,15 +254,6 @@ test('legacy bindings require explicit reselect; renderer and worker inputs are 
     await reopened.initialize();
     assert.equal(reopened.binding.needsReselect, true);
     assert.throws(() => reopened.current(), {code: 'LIBRARY_NOT_READY'});
-    const original = f.worker.call;
-    f.worker.call = async (op, args) => op === 'query' ? {
-        importId: binding.importId,
-        sourceHash: binding.sourceHash,
-        libraryId: binding.libraryId,
-        status: 'committed',
-        issues: [],
-        progress: {steps: 1}
-    } : original(op, args);
     await reopened.openLibrary();
     assert.equal(reopened.binding.needsReselect, false);
     assert.equal(reopened.current().libraryId, binding.libraryId);
@@ -337,7 +328,7 @@ test('unsupported old/future library formats are rejected without upgrading or o
         assert.equal(await fs.readFile(descriptor, 'utf8'), raw);
     }
 });
-test('pending content blocks import-result rebinding; unfinished import blocks new content and changing library', async t => {
+test('pending content blocks opening another library and new writes until its draft is explicitly resolved', async t => {
     const f = await fixture(t);
     await f.controller.createLibrary();
     const original = f.worker.call;
@@ -346,19 +337,16 @@ test('pending content blocks import-result rebinding; unfinished import blocks n
         return original(op, args);
     };
     await assert.rejects(f.controller.createContent({title: 'pending', body: 'saved input'}), {code: 'WORKER_EXIT'});
-    await assert.rejects(f.controller.resumeImport(), {code: 'PENDING_MUTATION'});
+    const binding = structuredClone(f.controller.binding.current);
+    await assert.rejects(f.controller.openLibrary(), {code: 'PENDING_MUTATION'});
+    await assert.rejects(f.controller.createContent({title: 'second', body: ''}), {code: 'PENDING_MUTATION'});
+    assert.deepEqual(f.controller.binding.current, binding);
+    assert.equal((await f.controller.status()).pending.draft.body, 'saved input');
     await f.controller.resolvePendingMutation({action: 'discard'});
-    await f.controller.persist({
-        ...f.controller.binding,
-        source: path.join(f.root, 'old.json'),
-        sourceHash: 'a'.repeat(64),
-        destination: path.join(f.root, 'importing'),
-        started: true
-    });
-    f.worker.call = async (op, args) => op === 'query' ? null : original(op, args);
-    await assert.rejects(f.controller.createContent({title: 'during import', body: ''}), {code: 'IMPORT_IN_PROGRESS'});
-    await assert.rejects(f.controller.openLibrary(), {code: 'IMPORT_IN_PROGRESS'});
+    f.worker.call = original;
+    await f.controller.openLibrary();
     assert.equal(f.controller.binding.pending, null);
+    assert.deepEqual(f.controller.binding.current, binding);
 });
 test('explicit save-as retains the submitted draft even when query discovers a committed operation with later disk edits', async t => {
     const f = await fixture(t);
@@ -386,7 +374,7 @@ test('explicit save-as retains the submitted draft even when query discovers a c
     assert.equal(core.readContent(first.id).body, 'later disk version');
     assert.equal(core.listContents().length, 2);
 });
-test('explicitly adopting another current library retires only the completed import pointer', async t => {
+test('explicit native open clears obsolete import metadata without calling retired worker operations', async t => {
     const f = await fixture(t);
     await f.controller.createLibrary();
     const importedId = randomUUID();
@@ -400,23 +388,14 @@ test('explicitly adopting another current library retires only the completed imp
         libraryId: randomUUID()
     });
     const original = f.worker.call;
-    f.worker.call = async (op, args) => op === 'query' ? {
-        importId: importedId,
-        sourceHash: f.controller.binding.sourceHash,
-        libraryId: f.controller.binding.libraryId,
-        status: 'committed',
-        issues: [],
-        progress: {steps: 1}
-    } : original(op, args);
+    const calls = [];
+    f.worker.call = async (op, args) => { calls.push(op); return original(op, args); };
     await f.controller.openLibrary();
     assert.equal(f.controller.binding.importId, null);
     assert.equal(f.controller.binding.started, false);
-    f.worker.call = async (op, args) => {
-        if (op === 'query') throw new Error('Old import path is no longer available');
-        return original(op, args);
-    };
     assert.ok((await f.controller.status()).currentName);
     assert.equal((await f.controller.listContents()).length, 0);
+    assert.equal(calls.some(op => ['inspect', 'query', 'import', 'resume'].includes(op)), false);
 });
 test('save-as ENOSPC preserves the original durable committed pending until its replacement can be saved atomically', async t => {
     const f = await fixture(t);

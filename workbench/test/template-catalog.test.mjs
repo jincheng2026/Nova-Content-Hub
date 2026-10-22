@@ -6,7 +6,7 @@ import os from 'node:os';
 import sharp from 'sharp';
 import {createLibrary, openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 import {execute} from '../src/main/worker.mts';
-import {templateCatalogFields} from '../src/main/template-catalog.mts';
+import {isTemplateCatalogSelectable, templateCatalogFields} from '../src/main/template-catalog.mts';
 
 async function fixture(t) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nch-template-catalog-'));
@@ -22,19 +22,32 @@ async function fixture(t) {
     return {parent, library, builtin, legacy, derived, binding: {root: library.info.root, libraryId: library.info.libraryId, rootIdentity: library.info.rootIdentity}};
 }
 
-test('both catalogs retain default, legacy and derived custom facts; ordinary reads never write Markdown', async t => {
+test('workspace retains history while generation offers only usable current or custom templates; ordinary reads never write Markdown', async t => {
     const f = await fixture(t), workspace = await execute('workspaceLibrary', {binding: f.binding}), covers = await execute('coverAssets', {binding: f.binding});
     for (const templates of [workspace.templates, covers.templates]) {
         assert.equal(templates.find(item => item.id === f.builtin.id).catalogStatus, 'default');
-        assert.equal(templates.find(item => item.id === f.legacy.id).catalogStatus, 'legacy');
         const working = templates.find(item => item.id === f.derived.id);
         assert.equal(working.catalogStatus, 'custom'); assert.deepEqual(working.derivedFrom, {id: f.builtin.id, version: 1});
         assert.equal(working.designNotes, '完整来源\n\n第二段');
     }
+    assert.equal(workspace.templates.find(item => item.id === f.legacy.id).catalogStatus, 'legacy');
+    assert.equal(covers.templates.some(item => item.id === f.legacy.id), false);
     assert.equal(templateCatalogFields({id: f.builtin.id, builtin: false}, {}).catalogStatus, 'custom');
     await execute('templateRead', {binding: f.binding, templateId: f.derived.id}, 'disabled');
     assert.equal(fs.existsSync(path.join(f.binding.root, '模板', '模板目录.md')), false);
     assert.equal(fs.existsSync(path.join(f.binding.root, '模板', f.derived.id, '模板目录.md')), false);
+});
+
+test('generation excludes deleted and empty templates without treating a custom copy as legacy', async t => {
+    const f = await fixture(t);
+    f.library.createTemplate({name: '尚无样张', definition: {}, resources: {}});
+    const derived = f.library.readTemplate(f.derived.id);
+    f.library.trashTemplate(derived.id, derived.editToken);
+    const covers = await execute('coverAssets', {binding: f.binding});
+    assert.deepEqual(covers.templates.map(item => item.id), [f.builtin.id]);
+    assert.equal(isTemplateCatalogSelectable({id: f.builtin.id, builtin: true, deletedAt: '2026-10-22T00:00:00.000Z'}), false);
+    assert.equal(isTemplateCatalogSelectable({id: f.legacy.id, builtin: true}), false);
+    assert.equal(isTemplateCatalogSelectable({id: f.legacy.id, builtin: false}), true);
 });
 
 test('explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories', async t => {

@@ -9,6 +9,7 @@ import {backupMethods} from './backup.mjs';
 import {modelMethods, modelDefaults, validateModelMetadata} from './model-v5.mjs';
 import {validateImportedRaster} from '../image-validation/index.mjs';
 import {inspectHealth} from './health.mjs';
+import {templateRetirementMethods, retiredBuiltinTemplate, LEGACY_BUILTIN_TEMPLATE_IDS} from './template-retirement.mjs';
 
 const FORMAT = 'nova-content-library';
 const VERSION = 1;
@@ -218,9 +219,9 @@ function finderMetadataFile(parent, name, stat = safePath) {
     return true;
 }
 
-function templateReportIndex(root, name) {
+function templateReportIndex(root, name, stat = safePath) {
     if (name !== '模板目录.md') return false;
-    if (!safePath(path.join(root, '模板', name)).isFile()) fail('UNSAFE_PATH', 'Template report index must be a regular file');
+    if (!stat(path.join(root, '模板', name)).isFile()) fail('UNSAFE_PATH', 'Template report index must be a regular file');
     return true;
 }
 
@@ -677,7 +678,7 @@ function applyTransaction(root, tx, assertIdentity = () => {}) {
 function recover(root, libraryId, assertIdentity = () => {}) {
     assertIdentity();
     const base = path.join(root, SYSTEM, '事务');
-    if (fs.readdirSync(base).some(name => !['待恢复', '已提交', BARRIER, '升级到4', '升级到5'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
+    if (fs.readdirSync(base).some(name => !finderMetadataFile(base, name) && !['待恢复', '已提交', BARRIER, '升级到4', '升级到5'].includes(name))) fail('CORRUPT', 'Unexpected transaction layout');
     const dir = path.join(root, SYSTEM, '事务', '待恢复');
     // A prior rename may have succeeded before either parent-directory sync failed.
     syncDirectory(dir);
@@ -686,6 +687,7 @@ function recover(root, libraryId, assertIdentity = () => {}) {
     const completed = [];
     for (const name of fs.readdirSync(dir).sort()) {
         assertIdentity();
+        if (finderMetadataFile(dir, name)) continue;
         if (STAGING.test(name)) {
             directory(path.join(dir, name));
             continue;
@@ -789,7 +791,7 @@ function library(root, initialInfo, rootIdentity) {
                 fail('CORRUPT', `Unexpected object directory: ${name}`);
             }
             return result(snapshot(root, name, kind), name, undefined, kind);
-        }).filter(item => deleted === undefined || (item.deletedAt !== null) === deleted));
+        }).filter(item => !(kind === 'template' && retiredBuiltinTemplate(item))).filter(item => deleted === undefined || (item.deletedAt !== null) === deleted));
     }
 
     function mutate(operation, contentId, input, expectedToken, options = {}, kind = 'content', edit, forcedId, currentRevision = false) {
@@ -813,6 +815,7 @@ function library(root, initialInfo, rootIdentity) {
                 return result(tx.after, tx.objectId, mutationId, tx.kind);
             }
             const before = operation === 'create' ? KINDS[kind].files.map(() => null) : snapshot(root, contentId, kind);
+            if (kind === 'template' && before[0] && retiredBuiltinTemplate(metadata(before[0], contentId, kind))) fail('INVALID_STATE', 'Retired templates are history only');
             let meta;
             const now = new Date().toISOString();
             if (operation === 'create') {
@@ -979,6 +982,7 @@ function library(root, initialInfo, rootIdentity) {
             fail,
             LibraryError,
         }),
+        ...templateRetirementMethods({root, locked, snapshot, metadata, templatePackage, safePath}),
         ...modelMethods({
             finderMetadataFile,
             root,
@@ -1118,6 +1122,7 @@ export function upgradeLibrary(root, options) {
         // Validate every legacy/pending/history plan before moving or replaying any transaction.
         for (const dir of [base, pending, history]) {
             for (const name of fs.readdirSync(dir).sort()) {
+                if (finderMetadataFile(dir, name)) continue;
                 if (dir === base && ['待恢复', '已提交'].includes(name)) continue;
                 const source = path.join(dir, name);
                 if (STAGING.test(name) && dir !== history) {
@@ -1150,8 +1155,8 @@ export function upgradeLibrary(root, options) {
         for (const {source, target} of stages) upgradeMove(source, target, path.basename(source));
         recover(root, info.libraryId);
         hook('upgradeAfterRecovery');
-        if (fs.readdirSync(base).some(name => !['待恢复', '已提交'].includes(name)) ||
-            fs.readdirSync(pending).some(name => !STAGING.test(name))) fail('RECOVERY_CONFLICT', 'Upgrade still has unresolved transactions');
+        if (fs.readdirSync(base).some(name => !finderMetadataFile(base, name) && !['待恢复', '已提交'].includes(name)) ||
+            fs.readdirSync(pending).some(name => !finderMetadataFile(pending, name) && !STAGING.test(name))) fail('RECOVERY_CONFLICT', 'Upgrade still has unresolved transactions');
         if (!read(descriptorPath).equals(original)) fail('CONFLICT', 'Library descriptor changed during upgrade');
         const descriptorStage = path.join(root, `.内容库.schema2-${randomUUID()}`);
         writeNew(descriptorStage, jsonBytes({...parse(original, '内容库.json'), schemaVersion: 2}));
@@ -1283,7 +1288,7 @@ export function openLibrary(root, options) {
 // Diagnosis shares validators, but never opens a recovering business handle.
 export function inspectLibraryHealth(root, options) {
     return inspectHealth(root, options, {
-        canonicalRoot, safePath, finderMetadataFile, acquire, KINDS, SYSTEM, UUID, STAGING,
+        canonicalRoot, safePath, finderMetadataFile, templateReportIndex, acquire, KINDS, SYSTEM, UUID, STAGING,
         exact, validRootIdentity, metadata, objectId, hash, jsonBytes, parse, date, fail,
         snapshot, transaction, templatePackage, readAssetInternal, unregisteredTemplate,
         modelMethods, coverJobMethods, templateJobMethods, result, checkedHash, id, inputFields, LibraryError,
@@ -1686,6 +1691,7 @@ function businessMethods(root, locked, mutate, list) {
         const input = inputFields(raw, ['id', 'name', 'version', 'definition', 'resources'], ['id', 'name', 'version', 'definition', 'resources']);
         if (!BUILTIN.test(input.id)) fail('INVALID_INPUT', 'Expected stable builtin-* ID');
         versionNumber(input.version);
+        if (LEGACY_BUILTIN_TEMPLATE_IDS.includes(input.id)) fail('INVALID_STATE', 'Retired builtins cannot be installed');
         const existing = locked(() => {
             const metaPath = path.join(root, '模板', input.id, '模板.json');
             if (!safePath(path.dirname(metaPath), true) || !safePath(metaPath, true)) return null;
@@ -2387,6 +2393,7 @@ function validateRestoredLibrary(root, info) {
         }
     }
     for (const name of fs.readdirSync(path.join(root, SYSTEM, '事务', '已提交')).sort()) {
+        if (finderMetadataFile(path.join(root, SYSTEM, '事务', '已提交'), name)) continue;
         const tx = transaction(root, id(name), info.libraryId);
         if (info.schemaVersion === 4) validateSchema4Transaction(tx);
     }

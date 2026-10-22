@@ -5,7 +5,7 @@ import fs from 'node:fs/promises';
 import {errorInfo} from '../shared/contracts.ts';
 import {fail, requireWrite} from '../shared/validation.ts';
 import {workspaceDesktopInput} from '../shared/workspace-validation.ts';
-import type {Binding, ImportTask, LibraryBinding} from '../shared/contracts.ts';
+import type {Binding, LibraryBinding} from '../shared/contracts.ts';
 import type {
     CoverCandidateUpdate, PromptFavoriteUpdate, WorkspaceContentDetails, WorkspaceReceipt, WorkspaceMutation, WorkspaceMutationResult, WorkspacePending, WorkspacePendingView,
     WorkspaceRecovery, WorkspaceWorker, WorkspaceLibrarySnapshot, WorkspaceMaterial, WorkspaceMaterialImport, WorkspaceMaterialReference, WorkspacePublicationReference
@@ -22,8 +22,6 @@ export interface WorkspaceOwner {
     revealFolder?: (root: string) => void;
     current(): LibraryBinding;
     noPending(): void;
-    query(): Promise<ImportTask | null>;
-    bindImported(): Promise<void>;
     persist(next: WorkspaceBinding): Promise<void>;
     exclusive<T>(action: () => Promise<T>): Promise<T>;
 }
@@ -172,9 +170,6 @@ export class WorkspaceController {
         this.validate('readWorkspaceLibrary', input);
         const owner = this.owner;
         return owner.exclusive(async () => {
-            const task = await owner.query();
-            if (!owner.binding.current && task?.status === 'committed' && !task.targetChanged && !owner.binding.needsReselect) await owner.bindImported();
-            if (task?.targetChanged && owner.binding.current?.root === owner.binding.destination) fail('LIBRARY_NOT_READY', '原内容库位置已改变。');
             return this.decorate(await owner.worker.call('workspaceLibrary', {binding: owner.current()}));
         });
     }
@@ -190,9 +185,6 @@ export class WorkspaceController {
 
     async writable() {
         requireWrite(this.owner.authMode);
-        const task = await this.owner.query();
-        if (this.owner.binding.started && task?.status !== 'committed') fail('IMPORT_IN_PROGRESS', '请先完成或核验当前导入。');
-        if (task?.targetChanged && this.owner.binding.current?.root === this.owner.binding.destination) fail('LIBRARY_NOT_READY', '原内容库位置已改变，待处理记录已保留。');
         return this.owner.current();
     }
 

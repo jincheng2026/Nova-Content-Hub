@@ -8,7 +8,7 @@ export const CHANNELS = Object.freeze([
     'readTemplateProgress', 'continueBoundTemplate', 'readCoverProgress', 'continueBoundCover', 'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',
     'readBootstrapRecovery', 'resetMachineBinding',
     'choosePromptDocument', 'chooseTemplateImages', 'chooseContentMaterial', 'readContentMaterial', 'exportContentMaterial',
-    'status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents', 'readWorkspace', 'copyPrompt',
+    'status', 'listContents', 'readWorkspace', 'copyPrompt',
     'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent',
     'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
     'resumePhoto', 'abandonPhoto', 'readCover', 'generateCover', 'resumeCover', 'abandonCover', 'continueCover', 'retryCover',

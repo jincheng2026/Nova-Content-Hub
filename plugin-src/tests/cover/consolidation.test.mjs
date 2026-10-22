@@ -135,13 +135,7 @@ test('implementation, hooks, skill capabilities, mode and hashed import resource
             if (event === 'SessionStart') assert.match(result.output.hookSpecificOutput.additionalContext, /contract.*executable=false.*cover/);
             else assert.deepEqual(result.output, {});
         }
-        const catalog = JSON.parse(fs.readFileSync(packagePath(mode, 'plugin-src/src/lib/browser-import/builtin-resources.json')));
-        assert.equal(Object.keys(catalog.entries).length, 72);
-        for (const [relative, entry] of Object.entries(catalog.entries)) {
-            const bytes = fs.readFileSync(packagePath(mode, `plugin-src/resources/${relative}`));
-            assert.equal(bytes.length, entry.bytes);
-            assert.equal(createHash('sha256').update(bytes).digest('hex'), entry.sha256);
-        }
+        for (const relative of ['plugin-src/src/lib/browser-import', 'plugin-src/resources/builtin-templates', 'plugin-src/resources/图库']) assert.equal(fs.existsSync(packagePath(mode, relative)), false, relative);
         for (const relative of ['plugin-src/src/cli.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/bridge/handoff.js']) {
             const text = fs.readFileSync(packagePath(mode, relative), 'utf8');
             assert.doesNotMatch(text, /from ['"](?:electron|node:child_process)['"]|shell\.open|execFile\(/);

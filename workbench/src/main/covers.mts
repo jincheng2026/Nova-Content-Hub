@@ -74,7 +74,7 @@ export class Covers {
   }
   photo(photo: Photo): Photo { return { ...photo, url: photo.availability === 'available' && photo.assetHash ? this.grant(photo.assetHash) : null }; }
   decorate(view: CoverView) { return { ...view, candidates: view.candidates.map(c => ({ ...c, url: this.grant(c.assetHash) })) }; }
-  async writable() { const c = this.owner; c.noPending(); c.current(); const task = await c.query(); if (c.binding.started && task?.status !== 'committed') fail('IMPORT_IN_PROGRESS', '请先完成或核验当前导入。'); }
+  async writable() { const c = this.owner; c.noPending(); c.current(); }
   async seed() {
     const c = this.owner; requireWrite(c.authMode);
     await c.persist({ ...c.binding, seedPending: true });

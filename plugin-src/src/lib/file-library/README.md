@@ -217,6 +217,9 @@ bytes。
 | `listTemplates()` / `listTemplateTrash()`                                 | 返回元信息与 versions[]，不将缺失或损坏的已登记元信息当空模板                                            |
 | `trashTemplate(id,token,options?)` / `restoreTemplate(...)`               | 隐藏/恢复元信息，不删除版本或历史资产                                                                    |
 | `installBuiltinTemplate({id,name,version,definition,resources},options?)` | 专用稳定 builtin-* ID 安装；同 ID/version/packageHash 幂等，不同 hash 冲突；不覆盖、复活或改写旧版本     |
+| `retireLegacyBuiltinTemplates()`                                         | Node 内部 seed 校验：报告精确匹配旧版 15 个 ID 且具有内置身份的历史条目；固定策略从当前/回收站目录列表排除，不改历史文件或路径 |
+
+旧内置模板的原元信息、版本包、学习任务与共享资产仍在原位置，避免破坏已有内容、候选、生成交接包、工作副本及旧版本读取。普通模板列表和回收站均排除这些历史条目；不新增私有目录、迁移标记或库 schema。健康检查、备份和恢复沿用既有路径。新生成、默认/偏好选择和规格选择只接受当前可用模板，旧内置也不允许通过当前 API 恢复、修改或重装；已有内容的未改变历史引用仍可随其他字段保存。seed 调用 `migrateBuiltinSettings()`，按精确 ID 和内置所有权清理旧全局默认，并仅重命名仍使用旧默认名称的内置渠道。旧版本可能重新显示旧模板，但不会因为文件被搬走而创建重复目录。
 
 每个 `模板/<id>/版本/<version>/定义.json` 包只包含 `{definition,resources}`，资源映射为
 `源标识 → {assetHash,bytes,detectedType,role}`。role 只允许 style/structure：style 只接受 PNG/JPEG/GIF/WebP；structure
