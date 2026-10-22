@@ -1,0 +1,10 @@
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (5942.748166ms)
+✔ mixed annotations persist through reopening a temporary library and reach the exact fixed request context (3806.794959ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9994.273375

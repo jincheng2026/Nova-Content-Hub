@@ -1,0 +1,2 @@
+RED: HEAD legacy implementation fails the same mixed point/rect/path note round-trip assertion.
+GREEN: current implementation passes the exact assertion, preserving blank lines and indentation.

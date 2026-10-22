@@ -140,7 +140,7 @@ for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requi
     content = f.library.attachContentMaterial(content.id, {assetHash: candidate.assetHash, originalName: `候选修改参考-${candidate.id}.png`, role: 'reference'}, content.editToken);
     content = f.library.attachContentMaterial(content.id, {assetHash: f.asset.assetHash, originalName: '收藏构图参考-private-annotation-layout', role: 'reference'}, content.editToken);
     const photo = f.library.createPhoto({title: 'PRIVATE_PHOTO_TITLE', originalName: 'PRIVATE_PHOTO.png', assetHash: f.asset.assetHash, isOwnPhoto: true});
-    const prompt = `以所附候选原图（${candidate.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n【封面位置批注】\n1. (x=25%, y=40%) 颜色淡一点\n【整体修改要求】\n保持标题不变`;
+    const prompt = `以所附候选原图（${candidate.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n【封面位置批注】\n1. (x=25%, y=40%) 颜色淡一点\n2. (rect x=10%, y=20%, width=60%, height=30%) 标题放大\n  保留换行\n3. (path 0%,0%; 25.5%,70%; 100%,100%) 调整这条曲线范围\n【整体修改要求】\n保持标题不变\n【本次补充要求】\n额外文字逐字保留`;
     for (const matching of [false, true]) {
         const {request} = f.library.createCoverRequest(content.id, {...Object.fromEntries(['styleAssetHashes', 'pixels', 'ratio', 'count', 'outputFormat'].map(key => [key, f.request[key]])), photo: {id: photo.id, assetHash: photo.assetHash}, template: {id: f.template.id, version: 1}, scope: 'cover-only', materialIds: [content.materials[1].id, ...(matching ? [content.materials[0].id] : [])], prompt}, f.library.readContent(content.id).editToken);
         const {attempt} = f.library.createCoverAttempt(content.id, request.requestId, {host});
@@ -153,6 +153,7 @@ for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requi
         assert.equal(context.request.prompt, prompt);
         assert.ok(text.includes(`任务编号：${prepared.id}`));
         assert.ok(!text.includes('x=25%'));
+        assert.ok(!text.includes('(rect ') && !text.includes('(path ') && !text.includes('额外文字逐字保留'));
         assert.equal(JSON.parse(fs.readFileSync(context.requestPath)).prompt, prompt);
         if (matching) {
             assert.equal(prepared.requiresPaste, false);

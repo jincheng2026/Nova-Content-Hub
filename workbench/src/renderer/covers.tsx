@@ -252,7 +252,7 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
   const refinementRatio = annotationSummary?.ratio ?? ratio;
   const refinementPixels = annotationSummary?.pixels ?? ratioPixels(refinementRatio);
   const refinementDisabled = !!liveJob || !!content?.deletedAt || !template || invalidTemplate || invalidPhoto || invalidMaterialIds.length > 0 || invalidCompositionKeys.size > 0 || !samples.length || !refinementPixels;
-  const refinementPrompt = (note: string) => `以所附候选原图（${annotationDraft?.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n${note}${prompt.trim() && prompt !== defaultCoverPrompt ? `\n【本次补充要求】\n${prompt}` : ''}${compositionPrompt}`;
+  const refinementPrompt = (note: string) => `以所附候选原图（${annotationDraft?.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位；rect 的 x、y 为框左上角，width、height 为框宽高；path 为按顺序连接的划线采样点，均为原图百分比。框和线仅表示修改范围，不画进成品。\n${note}${prompt.trim() && prompt !== defaultCoverPrompt ? `\n【本次补充要求】\n${prompt}` : ''}${compositionPrompt}`;
   async function refineCandidate(note: string) {
     if (!content || !annotationDraft || !annotationCandidate || !template || refinementDisabled) return;
     if (materialIds.length + compositionReferences.length + 1 > 100) throw new Error('本次最多使用 100 份参考资料，请减少构图参考或内容资料的选择。');

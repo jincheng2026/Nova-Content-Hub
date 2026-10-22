@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import {coverCandidateGroups, ratioPixels, imageAnnotationPoint, annotationNote, readAnnotationNote} from '../src/renderer/cover-gallery.ts';
+import {coverCandidateGroups, ratioPixels, imageAnnotationPoint, annotationNote, readAnnotationNote, annotationRect, annotationAnchor, validCoverAnnotation, annotationPathLimit} from '../src/renderer/cover-gallery.ts';
 
 const candidate = (id, requestId, attemptId) => ({id, requestId, attemptId, assetHash: id, originalName: id, accepted: false, url: `asset://${id}`});
 const attempt = (attemptId, status = 'committed') => ({attemptId, host: 'codex', status, reason: 'initial', failure: null});
@@ -84,4 +84,31 @@ test('multi-line annotations preserve original text and cannot forge points or t
   const saved = annotationNote(points, overall);
   assert.deepEqual(readAnnotationNote(saved), {points, overall});
   assert.deepEqual(readAnnotationNote('【封面位置批注】\n1. (x=25%, y=40%) 颜色淡一点\n【整体修改要求】\n标题不变'), {points: [{x: 25, y: 40, text: '颜色淡一点'}], overall: '标题不变'});
+});
+
+
+test('mixed point, reverse rectangle and sampled path notes preserve text and percent geometry', () => {
+  const rect = {...annotationRect({x: 95.4, y: 90}, {x: 15.1, y: 10.2}), text: '框住标题\n\n  原缩进\n【整体修改要求】\n2. (path 0%,0%; 100%,100%) 只是文字'};
+  assert.deepEqual(rect, {type: 'rect', x: 15.1, y: 10.2, width: 80.3, height: 79.8, text: rect.text});
+  const points = [{x: 0, y: 100, text: '旧点'}, rect, {type: 'path', points: [{x: 0, y: 0}, {x: 10.5, y: 90}, {x: 100, y: 100}], text: '逐字保留\n\n'}];
+  assert.deepEqual(readAnnotationNote(annotationNote(points, '\n整体\n  缩进\n')), {points, overall: '\n整体\n  缩进\n'});
+  assert.deepEqual(annotationAnchor(points[2]), {x: 0, y: 0});
+  assert.ok(points.every(validCoverAnnotation));
+  assert.ok(validCoverAnnotation({type: 'rect', x: 0, y: 0, width: 100, height: 100, text: ''}));
+  for (const mark of [
+    {x: Infinity, y: 0, text: ''}, {x: 0, y: NaN, text: ''}, {x: -1, y: 0, text: ''},
+    {type: 'rect', x: 10, y: 10, width: 91, height: 20, text: ''}, {type: 'rect', x: 0, y: 0, width: 0, height: 20, text: ''},
+    {type: 'rect', x: 0, y: 0, width: 10, height: -1, text: ''}, {type: 'unknown', x: 10, y: 10, text: ''},
+    {type: 'path', points: [], text: ''}, {type: 'path', points: [{x: 0, y: 0}, {x: 0, y: 0}], text: ''},
+    {type: 'path', points: [{x: 0, y: 0}, {x: 101, y: 0}], text: ''},
+    {type: 'path', points: Array.from({length: annotationPathLimit + 1}, (_, i) => ({x: i % 100, y: 0})), text: ''}
+  ]) assert.equal(validCoverAnnotation(mark), false, JSON.stringify(mark));
+});
+
+test('unknown and damaged geometry notes fall back to every original character', () => {
+  for (const body of ['1. (rect x=0%, y=0%, width=0%, height=1%) zero', '1. (rect x=99%, y=0%, width=2%, height=1%) overflow', '1. (path 0%,0%; 0%,0%) duplicate', '1. (path 0%,0%; NaN%,1%) nonfinite', '1. (circle x=1%, y=1%) future', '2. (x=1%, y=1%) missing one', '1. (x=1%, y=1%) valid\n\n  damaged', Array.from({length: 21}, (_, i) => `${i + 1}. (x=1%, y=1%) too many`).join('\n')]) {
+    const note = `【封面位置批注】\n${body}\n【整体修改要求】\n  保全所有原文\n`;
+    assert.deepEqual(readAnnotationNote(note), {points: [], overall: note});
+  }
+  for (const value of [NaN, Infinity, -1, 0]) assert.equal(imageAnnotationPoint(10, 10, {left: 0, top: 0, width: value, height: 100}, 100, 100), null);
 });

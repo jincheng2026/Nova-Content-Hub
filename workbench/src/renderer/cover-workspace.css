@@ -166,14 +166,17 @@
 .management-dialog:has(.cover-annotation-form)[open] { height: calc(100vh - 48px); max-height: calc(100vh - 48px); display: flex; flex-direction: column; overflow: auto; }
 .management-dialog:has(.cover-annotation-form) > .dialog-heading { flex: none; margin-bottom: 10px; }
 .cover-annotation-form { min-width: 0; min-height: 0; flex: 1; display: flex; flex-direction: column; }
+.cover-annotation-tools { flex: none; margin-bottom: 10px; }
+.cover-annotation-shapes { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; fill: none; stroke: var(--semi-color-primary); stroke-width: 3px; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 1px #fff); }
+.cover-annotation-shapes .is-draft { stroke: #7A4B00; stroke-dasharray: 6 4; }
 .cover-annotation-form > p { flex: none; margin: 0 0 10px; font-size: 13px; color: var(--semi-color-text-2); }
 .cover-annotation-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(230px, .8fr); gap: 18px; margin-bottom: 12px; min-height: 240px; flex: 1; }
 .cover-annotation-stage { position: relative; display: grid; place-items: center; min-width: 0; min-height: 0; padding: 16px; background: var(--surface-line); border-radius: 12px; }
 .cover-annotation-canvas { position: relative; flex: none; min-width: 0; min-height: 0; }
-.cover-annotation-form .cover-annotation-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; max-width: none; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; cursor: crosshair; line-height: 0; transform: none; }
+.cover-annotation-form .cover-annotation-image { position: absolute; inset: 0; display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; max-width: none; padding: 0; margin: 0; border: 0; border-radius: 0; background: transparent; cursor: crosshair; touch-action: none; line-height: 0; transform: none; }
 .cover-annotation-form .cover-annotation-image img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; object-fit: contain; object-position: center; }
 .cover-annotation-canvas > .cover-annotation-marker { position: absolute; z-index: 2; transform: translate(-50%, -50%); display: grid; place-items: center; width: 26px; height: 26px; min-width: 26px; min-height: 26px; padding: 0; margin: 0; border-radius: 50%; border: 2px solid #fff; background: #2867c9; color: #fff; font-size: 13px; line-height: 1; box-shadow: 0 1px 5px #0006; }
-.cover-annotation-canvas > .cover-annotation-marker.is-draft { background: #b66c17; pointer-events: none; z-index: 5; }
+.cover-annotation-canvas > .cover-annotation-marker.is-draft { background: #b66c17; pointer-events: none; z-index: 3; }
 .cover-annotation-popover { position: absolute; z-index: 4; padding: 12px; border: 1px solid var(--surface-line); border-radius: 9px; background: var(--surface-raised); color: var(--semi-color-text-0); box-shadow: 0 6px 24px #1c355936; overflow: auto; }
 .cover-annotation-popover label { margin: 0 0 7px; font-size: 13px; }
 .cover-annotation-popover .semi-input-textarea { min-height: 68px; max-height: 96px; resize: none; font-size: 13px; }
