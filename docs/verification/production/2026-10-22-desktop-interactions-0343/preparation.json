@@ -1,0 +1,66 @@
+{
+  "recordedAt": "2026-10-22T11:10:56.403Z",
+  "status": "PREPARED_NOT_FROZEN",
+  "version": "0.3.43",
+  "sourceCommitAtPreparation": "f3a136eeab8513aaae3e57a9ea6c52efe3238a89",
+  "sourceFrozen": false,
+  "sourceAndReviewsInFlight": true,
+  "target": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "channel": "preview",
+    "AUTH_MODE": "disabled",
+    "productionReady": false
+  },
+  "versions": [
+    {
+      "file": "package.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "workbench/package.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "release.config.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "package-lock.json",
+      "version": "0.3.43",
+      "lockRootVersion": "0.3.43"
+    },
+    {
+      "file": "workbench/package-lock.json",
+      "version": "0.3.43",
+      "lockRootVersion": "0.3.43"
+    }
+  ],
+  "generatedPrototype": {
+    "file": "workbench/prototype/build-config.js",
+    "version": "0.3.43",
+    "pairId": "nova-content-hub@0.3.43:p1:disabled"
+  },
+  "existingTools": {
+    "distribution": "workbench/scripts/dist.mjs",
+    "nativePayload": "workbench/scripts/native-payload.mjs",
+    "delivery": "workbench/scripts/export-colleague-delivery.mjs",
+    "packageSnapshot": "plugin-src/src/lib/package-snapshot.mjs",
+    "transactionalInstaller": "workbench/src/main/mac-installation.mts"
+  },
+  "pendingPhases": [
+    "root tests and source review",
+    "root authorization to commit/freeze",
+    "clean committed native payload and DMG build",
+    "frozen artifact/delivery verification",
+    "root normal-quit verification",
+    "fresh actual-binding library backup",
+    "transaction installation and paired-plugin update",
+    "root Finder/native acceptance and bounded final integrity"
+  ],
+  "buildExecuted": false,
+  "applicationAccessed": false,
+  "userLibraryAccessed": false,
+  "machineBindingAccessed": false,
+  "pluginsModified": false
+}
