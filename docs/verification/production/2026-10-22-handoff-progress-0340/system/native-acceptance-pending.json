@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-10-22T04:53:45.304Z",
+  "version": "0.3.40",
+  "sourceCommit": "c9820a496f615ea23e7a2603994add4b967f2f2c",
+  "target": "darwin-arm64",
+  "finder": {
+    "archive": {
+      "screenshot": "archive-finder-info.png",
+      "source": "Actual Finder Get Info screenshot visually inspected by root; accompanying AX text is a no-change diff and is not metadata proof"
+    },
+    "installed": {
+      "screenshot": "installed-finder-info.png",
+      "accessibility": "installed-finder-info.txt",
+      "source": "Actual Finder Get Info screenshot and full AX tree"
+    },
+    "observed": {
+      "name": "自媒体工作台",
+      "architecture": "Apple芯片",
+      "version": "0.3.40",
+      "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+      "bytesDisplayed": 673309201,
+      "modifiedDisplayed": "2026-10-22 12:40"
+    }
+  },
+  "startup": {
+    "processId": 67112,
+    "attempted": true,
+    "uiRead": "CUA timeoutReached",
+    "systemLog": "startup-permission.log",
+    "permission": "kTCCServiceSystemPolicyDocumentsFolder",
+    "promptRecordedLocalTime": "2026-10-22 12:47:08",
+    "userConfirmationRequested": true,
+    "permissionOutcome": "awaiting user"
+  },
+  "nativeLibraryLoadedVerified": false,
+  "nativeQuitReopenVerified": false,
+  "installationConfirmedByApp": false,
+  "userLibrary": {
+    "entries": 2283,
+    "currentSha256": "b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4",
+    "unchanged": true
+  },
+  "scope": "Finder identity accepted; native runtime acceptance pending system permission. No real generation or business edits."
+}
