@@ -1,0 +1,30 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2039 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5/dist/assets/index-DUmq1Ofc.css                      336.82 kB │ gzip:  45.41 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5/dist/assets/index-CjrmYBJP.js                       786.54 kB │ gzip: 228.26 kB
+
+✓ built in 339ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+AssertionError [ERR_ASSERTION]: accumulating composition references need a search input
+
+false !== true
+
+    at main (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5/main.mjs:14:10) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+{"errors":[],"calls":[],"mutations":[],"text":"封面作品选好风格，生成的封面会回到这里。打开原图文件夹刷新结果制作封面▧你的第一张封面，从这里开始选择一组模板，也可以加入本人照片，一次生成多张候选。制作封面当前助手：Codex · 可在全局设置中修改暂时收起模板组刷新已选模板：模板风格全部内置我的整组 1 张✓模板风格我的模板查看整组并选择共 1 项 · 1–1 项上一页1下一页每页条数：5封面标题 · 已保存本篇内容已保存正文 · 5 字已保存正文封面比例封面比例3:4生成张数3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准本人照片这次不放人物 · 已选选择我的本人照片这次不放人物从本机添加本人照片我确认新导入的照片是本人照片＋将照片拖到这里每次 1 张 · PNG、JPEG、WebP 或 GIF · 最多 64 MiB选择照片文件原文件保留在本机，不会自动发送给助手。已选：模板风格 · v1 · 1 张样张收藏构图参考（可选） · 已选 0 张参考构图（选填，来自收藏）默认不选。只参考勾选图片的构图；模板决定风格，本人照片单独选择。生成时，所选原图会作为本篇参考资料保存。内容 · 来源内容 · content-favorite合集 · 来源合集 · collection-favorite合集 · 其他合集0 · extra-0合集 · 其他合集1 · extra-1合集 · 其他合集2 · extra-2合集 · 其他合集3 · extra-3合集 · 其他合集4 · extra-4合集 · 其他合集5 · extra-5合集 · 其他合集6 · extra-6合集 · 其他合集7 · extra-7合集 · 其他合集8 · extra-8合集 · 其他合集9 · extra-9合集 · 其他合集10 · extra-10合集 · 其他合集11 · extra-11合集 · 其他合集12 · extra-12合集 · 其他合集13 · extra-13合集 · 其他合集14 · extra-14合集 · 其他合集15 · extra-15合集 · 其他合集16 · extra-16合集 · 其他合集17 · extra-17共 25 项 · 1–20 项上一页12下一页每页条数：20跳至页本次已选 0 张构图参考。补充要求与资料（可选） · 默认不带资料补充要求根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。本次封面要参考的内容资料（可选）默认不带资料。只有你在这里明确勾选的文件，才会进入本次请求；请先确认资料适合交给当前助手使用。共 0 项 · 0–0 项上一页下一页每页条数：20还没有资料，可先在“内容资料附件”中添加，也可以不带资料继续。本次已选 0 份资料。使用已保存的内容和本次选择。收起窗口会保留设置。生成由 Codex 执行，完成后回这里选图。去 Codex 生成封面"}
+Probe fixture: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-cover-composition-pdx7q5

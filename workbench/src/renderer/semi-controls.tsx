@@ -60,10 +60,10 @@ function ValidationInput({value, required, disabled, type = 'text', min, max}: P
 export function PopupSelect({children, onChange, searchable = false, ...props}: ControlProps & {children: ReactNode; searchable?: boolean}) {
   const select = useRef<Select<string>>(null);
   const {ref, popup, change, nameId, label, setOpen} = useControl(onChange, props.disabled, props.id, props['aria-label'], () => select.current?.close());
-  const options = Children.toArray(children).filter(isValidElement<{value: string; disabled?: boolean; children?: ReactNode}>).map(option => ({value: option.props.value, disabled: option.props.disabled, label: option.props.children}));
-  // Short menus fit without a search draft or a fixed-height virtual list.
-  const search = searchable && options.length > 7;
-  return <span ref={ref} className="semi-control"><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} optionList={options} filter={search ? (input, option) => String(option.label ?? '').toLocaleLowerCase().includes(input.toLocaleLowerCase()) : false} virtualize={search ? {itemSize: 36, height: 252} : undefined} searchPlaceholder="搜索选项" emptyContent="没有匹配的选项" getPopupContainer={popup} onChange={value => {if (typeof value === 'string') change(value);}}/><ValidationInput {...props}/></span>;
+  const options = Children.toArray(children).filter(isValidElement<{value: string; disabled?: boolean; children?: ReactNode}>).map(option => ({value: option.props.value, disabled: option.props.disabled, label: Children.toArray(option.props.children).join('')}));
+  // Search is an explicit capability; only long lists need a fixed-height virtual viewport.
+  const virtual = searchable && options.length > 7;
+  return <span ref={ref} className="semi-control"><span id={nameId} className="semi-control-label">{label}</span><Select<string> {...props} ref={select} onDropdownVisibleChange={setOpen} aria-labelledby={nameId} aria-required={props.required} optionList={options} inputProps={{'aria-label': label}} filter={searchable ? (input, option) => String(option.label ?? '').toLocaleLowerCase().includes(input.toLocaleLowerCase()) : false} virtualize={virtual ? {itemSize: 36, height: 252} : undefined} searchPlaceholder="搜索选项" emptyContent="没有匹配的选项" getPopupContainer={popup} onChange={value => {if (typeof value === 'string') change(value);}}/><ValidationInput {...props}/></span>;
 }
 export function PopupCreatableSelect({options, onChange, placeholder = '选择已有分类或直接输入', ...props}: ControlProps & {options: string[]; placeholder?: string}) {
   const select = useRef<Select<string>>(null);

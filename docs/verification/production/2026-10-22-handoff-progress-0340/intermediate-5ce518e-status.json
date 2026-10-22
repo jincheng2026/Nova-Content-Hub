@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-22T04:28:38.626Z",
+  "version": "0.3.40",
+  "sourceCommit": "5ce518e538c31086c08f219c2d9d547bba90fff4",
+  "status": "superseded-intermediate-not-delivered",
+  "reason": "After initial verification, user requested searchable publication content and all other growing-data selectors; a new frozen 0.3.40 source and fresh build are required.",
+  "delivered": false,
+  "installed": false,
+  "companionPluginsUpdated": false,
+  "tagCreated": false,
+  "installedVersion": "0.3.39",
+  "archive": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/intermediate-5ce518e.noindex",
+  "originalReceipt": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-handoff-progress-0340/intermediate-5ce518e-package.json",
+  "receiptBytesPreserved": true,
+  "relocated": {
+    "dmg": {
+      "from": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.40-darwin-arm64-preview.dmg",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/intermediate-5ce518e.noindex/Nova-Content-Hub-0.3.40-darwin-arm64-preview.dmg",
+      "sha256": "8e7b1c7e5d558bb87e649a1d071b15706cdf515cd9069d8b92d4bfa4f012edc1",
+      "bytes": 414996071,
+      "modifiedAt": "2026-10-22T04:26:08.008Z"
+    },
+    "delivery": {
+      "from": "/Users/mac/Downloads/自媒体工作台-0.3.40-同事交付-Mac苹果芯片",
+      "to": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/intermediate-5ce518e.noindex/自媒体工作台-0.3.40-同事交付-Mac苹果芯片",
+      "files": [
+        "SHA256SUMS.txt",
+        "安装与使用.txt",
+        "自媒体工作台-0.3.40-Mac苹果芯片.dmg"
+      ],
+      "treePreserved": true
+    },
+    "blockmap": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/intermediate-5ce518e.noindex/Nova-Content-Hub-0.3.40-darwin-arm64-preview.dmg.blockmap"
+  },
+  "preserved": {
+    "app": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-0340-5ce518e/mac-arm64/自媒体工作台.app",
+    "nativeArtifact": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/native-payloads/5ce518e538c31086c08f219c2d9d547bba90fff4/darwin-arm64-handoff-progress"
+  },
+  "finalPackageReceiptPresent": false
+}

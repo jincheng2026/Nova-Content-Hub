@@ -1,0 +1,38 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "viewport": [
+    1280,
+    1000
+  ],
+  "records": [
+    {
+      "scenario": "actual Calendar short content picker",
+      "radius": "12px",
+      "overflow": "hidden",
+      "height": 224,
+      "options": [
+        "请选择内容",
+        "内容 000",
+        "内容 001",
+        "内容 002",
+        "内容 003",
+        "内容 004"
+      ]
+    }
+  ],
+  "checks": [
+    "short input/filter/no-match/clear/retained ID",
+    "native dialog portal/Escape",
+    "Down+Enter selects candidate without submitting actual form",
+    "350 contents virtual last match",
+    "350 multi channels",
+    "80 prompt categories",
+    "80 default photos and templates",
+    "80 plan channels including disabled retained reference",
+    "80 candidates and 80 variants full rendered labels and IDs",
+    "mode switch query reset",
+    "busy disabled",
+    "no native APIs"
+  ]
+}
