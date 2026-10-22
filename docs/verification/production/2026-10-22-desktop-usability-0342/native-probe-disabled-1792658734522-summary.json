@@ -1,0 +1,56 @@
+{
+  "result": "passed",
+  "exitCode": 0,
+  "scope": "0.3.42 auth-disabled darwin-arm64 standalone external copy only",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.42",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.42:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "command": "node /tmp/nova-native-probe-disabled-1792658734522.mjs > docs/verification/production/2026-10-22-desktop-usability-0342/native-probe-disabled-1792658734522.log 2>&1",
+  "runner": "native-probe-disabled-runner.mjs",
+  "log": "native-probe-disabled-1792658734522.log",
+  "screenshot": "native-probe-disabled-1792658734522-disabled.png",
+  "sha256": {
+    "compiledProbe": "a2780f3c0874edfca0bbf9dc4ebeb028dd0955c5acd66430777301649e91dbda",
+    "log": "fb51957e12ae901cc998c8a13354fb6ab44c589f65abcf27b64b98f6a563194a",
+    "screenshot": "0b3178ce5114ea9b118b22b46b1a634c04d191b6ca3371588c642e05a6dc8db6"
+  },
+  "checks": [
+    "missing release.json fails startup",
+    "missing renderer-resources.json fails startup",
+    "Electron sandbox/context isolation and no renderer Node globals",
+    "exact current preload bridge and retired browser-import methods absent",
+    "native library A saved editor",
+    "durable undispatched native draft after renderer reload, switch blocked, explicit discard",
+    "native A-to-B switch clears A editor before lost selection/status response recovery",
+    "second-process binding identity and later external edits preserved",
+    "malicious title/body remains text",
+    "wrong-release and malformed-binding utility workers refused",
+    "all registered static resource MIME types and disallowed URL forms",
+    "no React/Semi CSP violations"
+  ],
+  "notVerified": [
+    "required auth bundle",
+    "installed app",
+    "system dialogs",
+    "human visual acceptance",
+    "Finder metadata on installed app",
+    "other platforms/architectures"
+  ],
+  "externalCopy": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v",
+    "deletedAfterSuccess": true
+  },
+  "actualUserLibraryOrBindingOpened": false
+}

@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-10-22T08:53:48.380Z",
+  "version": "0.3.42",
+  "sourceCommit": "a9eb3cc788f7e557b93dce9390a4f5a4b7a1aaca",
+  "target": "/Applications/自媒体工作台.app",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-igCXwO/mac-arm64/自媒体工作台.app",
+  "treeSha256": "6ba946a4891dbd8228595084c3ba5eef1b48e8764fc893540e508b8f1b135fa4",
+  "installedEqualsArchivedBuild": true,
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-325ef7cf-8077-44f5-bdb1-54a20737af23",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "libraryRecoveryDirectory": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/release-0342-47aa7513-873b-4dea-948f-5cdcb64504c0",
+  "library": {
+    "entries": 2371,
+    "beforeSha256": "9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f",
+    "afterSha256": "9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f",
+    "bindingSha256": "3a20e71a28ced5bbd7087576627e9b83e5ba824119201dd12fd83b387487e0b9",
+    "bindingFileSha256": "667d693d3c44cf1296b1a12992642ed1148082e3a2e6023ed964ab4b9f3b9067",
+    "unchanged": true
+  },
+  "phase": "installed-awaiting-native-launch"
+}

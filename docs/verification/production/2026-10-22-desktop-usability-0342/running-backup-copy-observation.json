@@ -1,0 +1,10 @@
+{
+  "recordedAt": "2026-10-22T08:51:02.971Z",
+  "runningApplicationCopies": [
+    "77764 /Applications/.nova-content-hub-install-c70c8157-5511-4efb-a638-e20f6989a751/previous.app/Contents/MacOS/自媒体工作台"
+  ],
+  "priorStandardTargetOnlyCheckInsufficient": true,
+  "preliminaryBackupReceipt": "library-protection-preliminary-before-backup-app-quit.json",
+  "finalInstallationBaselineCreated": false,
+  "installationNotStarted": true
+}

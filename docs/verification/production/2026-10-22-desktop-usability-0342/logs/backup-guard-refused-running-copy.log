@@ -1,0 +1,25 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: A copy of the app, including a previous.app recovery copy, is still running; save and quit normally
++ actual - expected
+
++ [
++   '77764 /Applications/.nova-content-hub-install-c70c8157-5511-4efb-a638-e20f6989a751/previous.app/Contents/MacOS/自媒体工作台'
++ ]
+- []
+
+    at assertNoRunningAppCopy (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/0342-build/release.mjs:20:192)
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/0342-build/release.mjs:51:3 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [
+    '77764 /Applications/.nova-content-hub-install-c70c8157-5511-4efb-a638-e20f6989a751/previous.app/Contents/MacOS/自媒体工作台'
+  ],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

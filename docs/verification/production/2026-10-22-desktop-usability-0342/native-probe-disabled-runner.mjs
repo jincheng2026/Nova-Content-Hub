@@ -1,0 +1,88 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import os from 'node:os';
+import {spawn} from 'node:child_process';
+import {fileURLToPath} from 'node:url';
+import electron from 'file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/index.js';
+import {createLibrary} from 'file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs';
+
+const workbench = "/Users/mac/code/dashboard/Nova-Content-Hub/workbench";
+const repository = path.resolve(workbench, '..');
+const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-workbench-probe-')));
+const snapshotPrefix = 'native-probe-disabled-1792658734522';
+let passed = false;
+console.log(JSON.stringify({probeScope:'auth-disabled only', release:JSON.parse(await fs.readFile(path.join(workbench,'dist-desktop/auth-disabled/workbench/dist/release.json'),'utf8')), externalCopyRoot:root}));
+
+async function launch(bundle, entry, phase, data, expected = 0) {
+    await new Promise((resolve, reject) => {
+        const child = spawn(electron, [entry], {
+            cwd: bundle,
+            env: {...process.env, NOVA_DESKTOP_PROBE_ROOT: data, NOVA_DESKTOP_PROBE_PHASE: phase},
+            stdio: 'inherit'
+        });
+        let failure;
+        // Native open exercises pending-draft recovery and lost selection/status responses.
+        const phaseTimeout = phase === 'open' ? 180000 : 60000;
+        const timeout = setTimeout(() => {
+            failure = new Error(`Electron ${phase} probe exceeded ${phaseTimeout / 1000} seconds`);
+            child.kill('SIGKILL');
+        }, phaseTimeout);
+        child.once('error', error => {
+            failure = error;
+            if (child.pid) child.kill('SIGKILL');
+        });
+        child.once('close', (code, signal) => {
+            clearTimeout(timeout);
+            if (failure) reject(failure); else code === expected ? resolve() : reject(new Error(`Electron ${phase} probe closed with code ${code}, signal ${signal}, expected ${expected}`));
+        });
+    });
+}
+
+try {
+    for (const mode of ['disabled']) {
+        const bundle = path.join(root, `auth-${mode}`);
+        const data = path.join(root, `data-${mode}`);
+        await fs.mkdir(path.join(data, 'machine'), {recursive: true});
+        await fs.cp(path.join(repository, 'workbench/dist-desktop', `auth-${mode}`), bundle, {recursive: true});
+        await fs.mkdir(path.join(data, 'initial'));
+        createLibrary(path.join(data, 'initial/library')).createContent({
+            title: 'Library A saved editor',
+            body: 'Library A saved body'
+        });
+        createLibrary(path.join(data, 'library')).createContent({
+            title: '<script>globalThis.untrustedExecuted=true</script>',
+            body: 'Native library B body'
+        });
+        const native = path.join(bundle, 'workbench/dist');
+        for (const filename of ['release.json', 'renderer-resources.json']) {
+            const configFile = path.join(native, filename);
+            const config = await fs.readFile(configFile);
+            await fs.unlink(configFile);
+            await launch(bundle, bundle, `missing-${filename}`, data, 1);
+            await fs.writeFile(configFile, config);
+            console.log(`PASS auth-${mode}: missing ${filename} refuses startup`);
+        }
+        // This test-only entry is injected into the external copy, never shipped in the built package.
+        const entry = path.join(native, 'main/probe.mjs');
+        await fs.copyFile(path.join(workbench, '.native/main/probe.mjs'), entry);
+        for (const phase of ['open', 'reopen']) await launch(bundle, entry, phase, data);
+        await fs.copyFile(path.join(data, 'workbench.png'), path.join("/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-desktop-usability-0342", `${snapshotPrefix}-${mode}.png`));
+    }
+    passed = true;
+    console.log('PASS: disabled 0.3.42 standalone package copied outside the repository; real Electron sandbox/preload/IPC + React/Semi native library open/switch, pending draft and lost response recovery; retired browser import bridge absent; second-process reopen preserves identity and later edits. System dialogs and human UI acceptance were not exercised.');
+} finally {
+    try {
+        for (const mode of ['disabled']) {
+            const data = path.join(root, `data-${mode}`);
+            const files = await fs.readdir(data).catch(error => { if (error.code === 'ENOENT') return []; throw error; });
+            for (const file of files.filter(file => /^probe-failure-.*\.(json|png)$/.test(file))) {
+                const saved = path.join("/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-desktop-usability-0342", `${snapshotPrefix}-${mode}-${file}`);
+                await fs.copyFile(path.join(data, file), saved);
+                console.log(`Saved Electron failure diagnostic: ${saved}`);
+            }
+        }
+    } finally {
+        if (passed) await fs.rm(root, {recursive: true, force: true});
+        else console.log('Preserved failed probe external copy: ' + root);
+    }
+}

@@ -1,0 +1,45 @@
+{"probeScope":"auth-disabled only","release":{"AUTH_MODE":"disabled","prototype":true,"appScope":"nova-content-hub","version":"0.3.42","protocolVersion":1,"productId":"nova-content-hub","format":"nova-content-desktop-release","schemaVersion":1,"pairId":"nova-content-hub@0.3.42:p1:disabled","experimental":true,"productionReady":false,"platform":"darwin","arch":"arm64"},"externalCopyRoot":"/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v"}
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/release.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/main/desktop.mjs:44:48)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/release.json'
+}
+PASS auth-disabled: missing release.json refuses startup
+Error: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/renderer-resources.json'
+    at readFileSync (node:fs:483:20)
+    at node:electron/js2c/node_init:1:12479
+    at startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/main/desktop.mjs:43:52)
+    at file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/main/index.mjs:4:1 {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workbench-probe-sVF50v/auth-disabled/workbench/dist/renderer-resources.json'
+}
+PASS auth-disabled: missing renderer-resources.json refuses startup
+Starting Electron probe phase: open
+PROBE 2026-10-22T08:45:53.989Z disabled/open: waiting for initial renderer idle
+PROBE 2026-10-22T08:45:54.108Z disabled/open: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-22T08:45:54.110Z disabled/open: opening native library A from welcome and checking its saved editor
+PROBE 2026-10-22T08:46:13.561Z disabled/open: checking durable native pending draft blocks library switching after renderer reload
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+PROBE 2026-10-22T08:46:15.775Z disabled/open: switching to native library B with a lost selection/status response
+PROBE 2026-10-22T08:46:31.158Z disabled/open: refreshing native library contents
+PROBE 2026-10-22T08:46:31.689Z disabled/open: native content table rendered; checking text-only data
+PROBE 2026-10-22T08:46:31.789Z disabled/open: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-22T08:46:32.518Z disabled/open: all native library probe assertions passed
+PASS Electron 44.9.0: auth-disabled/open, React/Semi rendered, no CSP violation; real utility process, exact resources, text-only title/body
+Starting Electron probe phase: reopen
+PROBE 2026-10-22T08:46:33.813Z disabled/reopen: waiting for initial renderer idle
+PROBE 2026-10-22T08:46:33.883Z disabled/reopen: initial renderer idle; checking sandbox and exact bridge
+PROBE 2026-10-22T08:46:33.886Z disabled/reopen: checking reopened native binding and externally edited content
+PROBE 2026-10-22T08:46:34.079Z disabled/reopen: refreshing native library contents
+PROBE 2026-10-22T08:46:35.018Z disabled/reopen: native content table rendered; checking text-only data
+PROBE 2026-10-22T08:46:35.554Z disabled/reopen: checking worker binding, release pair, static MIME, URL and CSP boundaries
+PROBE 2026-10-22T08:46:35.740Z disabled/reopen: all native library probe assertions passed
+PASS Electron 44.9.0: auth-disabled/reopen, React/Semi rendered, no CSP violation; real utility process, exact resources, text-only title/body
+PASS: disabled 0.3.42 standalone package copied outside the repository; real Electron sandbox/preload/IPC + React/Semi native library open/switch, pending draft and lost response recovery; retired browser import bridge absent; second-process reopen preserves identity and later edits. System dialogs and human UI acceptance were not exercised.

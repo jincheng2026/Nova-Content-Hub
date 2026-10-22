@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "自媒体工作台".
+The focused UI element is 40 按钮 备份与维护

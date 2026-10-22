@@ -1,0 +1,509 @@
+{
+  "recordedAt": "2026-10-22T09:09:00.305Z",
+  "observedAt": "2026-10-22T09:08:55.814Z",
+  "status": "POST_UPDATE_CHANGES_RECORDED",
+  "version": "0.3.42",
+  "sourceCommit": "a9eb3cc788f7e557b93dce9390a4f5a4b7a1aaca",
+  "artifactIntegrity": true,
+  "strictLibraryUnchanged": false,
+  "originalInstallationReceiptsPreserved": true,
+  "originalReceipts": [
+    {
+      "path": "package.json",
+      "sha256": "ce1f69a983861724be3c77803fb8e7aa49050f7d728f0161ddfbf36c354b6b4e"
+    },
+    {
+      "path": "installation.json",
+      "sha256": "a1cd0595e334d80948e9b53b39692778b379355a0c63a1209e32d5cee086d0de"
+    },
+    {
+      "path": "library-protection.json",
+      "sha256": "d40f6632fb340bf04cc8c3ffa35e10d63213398878aeb23c10f2ef59adea3288"
+    }
+  ],
+  "library": {
+    "beforeSha256": "9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f",
+    "currentSha256": "6563894f6bd8925c305c9a8f958739764e35327e0059f442ca03f7e03bd63b0e",
+    "beforeEntries": 2371,
+    "currentEntries": 2376,
+    "stableSecondRead": true,
+    "stabilityError": null,
+    "exactDiff": [
+      {
+        "path": "库配置/default/配置.json",
+        "before": {
+          "sha256": "53543b403065b74e69375b6ae8643128af56715a32f7d29b4eae9440fdcd0407",
+          "bytes": 1727,
+          "executable": false
+        },
+        "after": {
+          "sha256": "f903af5204148a5b5d3f4c50f4a114023bab8239b7e942ab2e7f91bc32e9ea8d",
+          "bytes": 1733,
+          "executable": false
+        },
+        "category": "settings"
+      },
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146",
+        "before": null,
+        "after": {
+          "directory": true
+        },
+        "category": "journal"
+      },
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/.COMMITTED-cc7f9bc4-5f04-453c-9fb1-891750c2daf9",
+        "before": null,
+        "after": {
+          "sha256": "7f297cb263013a957cf228b507136bb2bf8e952aa6e77e277db721b729cfaa62",
+          "bytes": 65,
+          "executable": false
+        },
+        "category": "journal"
+      },
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/COMMITTED",
+        "before": null,
+        "after": {
+          "sha256": "7f297cb263013a957cf228b507136bb2bf8e952aa6e77e277db721b729cfaa62",
+          "bytes": 65,
+          "executable": false
+        },
+        "category": "journal"
+      },
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/captured-0",
+        "before": null,
+        "after": {
+          "sha256": "53543b403065b74e69375b6ae8643128af56715a32f7d29b4eae9440fdcd0407",
+          "bytes": 1727,
+          "executable": false
+        },
+        "category": "journal"
+      },
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/intent.json",
+        "before": null,
+        "after": {
+          "sha256": "2e7bcad77ff77db3e1756e80c2c00176eb509969731f0091151301cb067234a6",
+          "bytes": 5183,
+          "executable": false
+        },
+        "category": "journal"
+      }
+    ],
+    "byCategory": {
+      "settings": [
+        "库配置/default/配置.json"
+      ],
+      "journal": [
+        "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146",
+        "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/.COMMITTED-cc7f9bc4-5f04-453c-9fb1-891750c2daf9",
+        "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/COMMITTED",
+        "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/captured-0",
+        "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146/intent.json"
+      ]
+    },
+    "groups": {
+      "originalContentFiles": {
+        "files": 235,
+        "beforeSha256": "4b681f0b2fceafebdb4c756e40c6d601ec7b8040eb265deb85110e53d67c74c1",
+        "currentSamePathsSha256": "4b681f0b2fceafebdb4c756e40c6d601ec7b8040eb265deb85110e53d67c74c1",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "originalCollectionFiles": {
+        "files": 2,
+        "beforeSha256": "b5086355af4868f1c1186c03f3b07776d0b185f245129491bd0d49d618addccb",
+        "currentSamePathsSha256": "b5086355af4868f1c1186c03f3b07776d0b185f245129491bd0d49d618addccb",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "originalAssets": {
+        "files": 215,
+        "beforeSha256": "97d3e529632a1d81360249751e03c044fa7794b6e77d23e2bb15863cabe9b998",
+        "currentSamePathsSha256": "97d3e529632a1d81360249751e03c044fa7794b6e77d23e2bb15863cabe9b998",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "templateHistoryFiles": {
+        "files": 24,
+        "beforeSha256": "b09ac3cfbc1e5a6af8400a6c6cc2f5222f84ff13d074373f02c21524f78c43f2",
+        "currentSamePathsSha256": "b09ac3cfbc1e5a6af8400a6c6cc2f5222f84ff13d074373f02c21524f78c43f2",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "legacyTemplateOriginalPaths": {
+        "files": 30,
+        "beforeSha256": "2ad0083f14001d91560f0e6bcb5d8db1c60a39ceb64e0e5d97e3097604f1f1fe",
+        "currentSamePathsSha256": "2ad0083f14001d91560f0e6bcb5d8db1c60a39ceb64e0e5d97e3097604f1f1fe",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "customTemplateOriginalPaths": {
+        "files": 102,
+        "beforeSha256": "bb9313667efbac05cff0e4869cf156242230e722ef2001a834d835ca51a700a1",
+        "currentSamePathsSha256": "bb9313667efbac05cff0e4869cf156242230e722ef2001a834d835ca51a700a1",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      },
+      "allOriginalTemplateFiles": {
+        "files": 145,
+        "beforeSha256": "c429e1a76525c7d3e5b0fd9e4f507d3d914c82137a57b1a73309e0134c928a90",
+        "currentSamePathsSha256": "c429e1a76525c7d3e5b0fd9e4f507d3d914c82137a57b1a73309e0134c928a90",
+        "unchanged": true,
+        "changedOriginalPaths": []
+      }
+    },
+    "coverOriginals": [
+      {
+        "assetHash": "244bdda5a6d7cbad20c113f7a2d62634bea877bd808a4d97c190ed69379be81d",
+        "path": "资产/sha256/24/244bdda5a6d7cbad20c113f7a2d62634bea877bd808a4d97c190ed69379be81d",
+        "before": {
+          "sha256": "244bdda5a6d7cbad20c113f7a2d62634bea877bd808a4d97c190ed69379be81d",
+          "bytes": 1055766,
+          "executable": false
+        },
+        "after": {
+          "sha256": "244bdda5a6d7cbad20c113f7a2d62634bea877bd808a4d97c190ed69379be81d",
+          "bytes": 1055766,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+        "path": "资产/sha256/2c/2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+        "before": {
+          "sha256": "2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+          "bytes": 2095580,
+          "executable": false
+        },
+        "after": {
+          "sha256": "2c1e657da5109be55812ab06372398b600e03c5d4bfc137a1b4759cbdaf97d53",
+          "bytes": 2095580,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "2ca088969e8474c3011d9a9b628473d31c956b763f0ec59b7e5a85cf30b4b674",
+        "path": "资产/sha256/2c/2ca088969e8474c3011d9a9b628473d31c956b763f0ec59b7e5a85cf30b4b674",
+        "before": {
+          "sha256": "2ca088969e8474c3011d9a9b628473d31c956b763f0ec59b7e5a85cf30b4b674",
+          "bytes": 965817,
+          "executable": false
+        },
+        "after": {
+          "sha256": "2ca088969e8474c3011d9a9b628473d31c956b763f0ec59b7e5a85cf30b4b674",
+          "bytes": 965817,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+        "path": "资产/sha256/36/3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+        "before": {
+          "sha256": "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+          "bytes": 981287,
+          "executable": false
+        },
+        "after": {
+          "sha256": "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+          "bytes": 981287,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "4581143483d77a303686496aa86f46e396001cf7cd54e68c1530e442bf9a8641",
+        "path": "资产/sha256/45/4581143483d77a303686496aa86f46e396001cf7cd54e68c1530e442bf9a8641",
+        "before": {
+          "sha256": "4581143483d77a303686496aa86f46e396001cf7cd54e68c1530e442bf9a8641",
+          "bytes": 1022833,
+          "executable": false
+        },
+        "after": {
+          "sha256": "4581143483d77a303686496aa86f46e396001cf7cd54e68c1530e442bf9a8641",
+          "bytes": 1022833,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41",
+        "path": "资产/sha256/49/49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41",
+        "before": {
+          "sha256": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41",
+          "bytes": 1080020,
+          "executable": false
+        },
+        "after": {
+          "sha256": "49c52909cfa1801340c7538b7c2a54d9ee1466afaddd5d61799e9b524400ff41",
+          "bytes": 1080020,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "551ea015510cc1f5c10bd7987ae7cd626437cf381361683d31d1821083393b9b",
+        "path": "资产/sha256/55/551ea015510cc1f5c10bd7987ae7cd626437cf381361683d31d1821083393b9b",
+        "before": {
+          "sha256": "551ea015510cc1f5c10bd7987ae7cd626437cf381361683d31d1821083393b9b",
+          "bytes": 2035734,
+          "executable": false
+        },
+        "after": {
+          "sha256": "551ea015510cc1f5c10bd7987ae7cd626437cf381361683d31d1821083393b9b",
+          "bytes": 2035734,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+        "path": "资产/sha256/5f/5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+        "before": {
+          "sha256": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+          "bytes": 1031795,
+          "executable": false
+        },
+        "after": {
+          "sha256": "5f17af81b98c9404a45f3967551197a0866df5fa352cb1edbfa20bf4186886f6",
+          "bytes": 1031795,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "6c0473770b1ff69c07f9590ce3902fc695f39d5a77112b0199c8cbadfe712d0d",
+        "path": "资产/sha256/6c/6c0473770b1ff69c07f9590ce3902fc695f39d5a77112b0199c8cbadfe712d0d",
+        "before": {
+          "sha256": "6c0473770b1ff69c07f9590ce3902fc695f39d5a77112b0199c8cbadfe712d0d",
+          "bytes": 969319,
+          "executable": false
+        },
+        "after": {
+          "sha256": "6c0473770b1ff69c07f9590ce3902fc695f39d5a77112b0199c8cbadfe712d0d",
+          "bytes": 969319,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444",
+        "path": "资产/sha256/98/982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444",
+        "before": {
+          "sha256": "982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444",
+          "bytes": 1858536,
+          "executable": false
+        },
+        "after": {
+          "sha256": "982eecccccbc6c6b2e4cb3824e487d8cd40c22dba34febc2b49527962f2b8444",
+          "bytes": 1858536,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "b120e9cf58819c7500777f451cb738af7abdf3b880cc0a96c80f8963925a56e4",
+        "path": "资产/sha256/b1/b120e9cf58819c7500777f451cb738af7abdf3b880cc0a96c80f8963925a56e4",
+        "before": {
+          "sha256": "b120e9cf58819c7500777f451cb738af7abdf3b880cc0a96c80f8963925a56e4",
+          "bytes": 877295,
+          "executable": false
+        },
+        "after": {
+          "sha256": "b120e9cf58819c7500777f451cb738af7abdf3b880cc0a96c80f8963925a56e4",
+          "bytes": 877295,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "c5599f8c54fabf046d0813c462078f5f77f3c170bd12b291a9f006983ff5602b",
+        "path": "资产/sha256/c5/c5599f8c54fabf046d0813c462078f5f77f3c170bd12b291a9f006983ff5602b",
+        "before": {
+          "sha256": "c5599f8c54fabf046d0813c462078f5f77f3c170bd12b291a9f006983ff5602b",
+          "bytes": 2163219,
+          "executable": false
+        },
+        "after": {
+          "sha256": "c5599f8c54fabf046d0813c462078f5f77f3c170bd12b291a9f006983ff5602b",
+          "bytes": 2163219,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "e5d8cad9e9153b8604dbbc2e221cf7873cd7094297d48a2679756db8827dfc46",
+        "path": "资产/sha256/e5/e5d8cad9e9153b8604dbbc2e221cf7873cd7094297d48a2679756db8827dfc46",
+        "before": {
+          "sha256": "e5d8cad9e9153b8604dbbc2e221cf7873cd7094297d48a2679756db8827dfc46",
+          "bytes": 1904298,
+          "executable": false
+        },
+        "after": {
+          "sha256": "e5d8cad9e9153b8604dbbc2e221cf7873cd7094297d48a2679756db8827dfc46",
+          "bytes": 1904298,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+        "path": "资产/sha256/e6/e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+        "before": {
+          "sha256": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+          "bytes": 1028605,
+          "executable": false
+        },
+        "after": {
+          "sha256": "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79",
+          "bytes": 1028605,
+          "executable": false
+        },
+        "unchanged": true
+      },
+      {
+        "assetHash": "f6bc8c2901a2f153c35bb77cbd57bda9fb3e0610a33e5aa7dcfce4cde7f5ff30",
+        "path": "资产/sha256/f6/f6bc8c2901a2f153c35bb77cbd57bda9fb3e0610a33e5aa7dcfce4cde7f5ff30",
+        "before": {
+          "sha256": "f6bc8c2901a2f153c35bb77cbd57bda9fb3e0610a33e5aa7dcfce4cde7f5ff30",
+          "bytes": 942827,
+          "executable": false
+        },
+        "after": {
+          "sha256": "f6bc8c2901a2f153c35bb77cbd57bda9fb3e0610a33e5aa7dcfce4cde7f5ff30",
+          "bytes": 942827,
+          "executable": false
+        },
+        "unchanged": true
+      }
+    ],
+    "allOriginalCoverBytesUnchanged": true,
+    "changedSettings": [
+      {
+        "path": "库配置/default/配置.json",
+        "beforeSha256": "53543b403065b74e69375b6ae8643128af56715a32f7d29b4eae9440fdcd0407",
+        "afterSha256": "f903af5204148a5b5d3f4c50f4a114023bab8239b7e942ab2e7f91bc32e9ea8d",
+        "fields": [
+          {
+            "field": "/revision",
+            "before": 9,
+            "after": 10
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-21T09:32:32.634Z",
+            "after": "2026-10-22T09:01:44.694Z"
+          },
+          {
+            "field": "/channels/3/name",
+            "before": "公众号",
+            "after": "微信公众号"
+          },
+          {
+            "field": "/channels/4/name",
+            "before": "B 站",
+            "after": "B站"
+          }
+        ]
+      }
+    ],
+    "journals": [
+      {
+        "path": "系统（别动）/事务/已提交/c91da1ee-63e7-4d4a-9c4b-262508575146",
+        "mutationId": "c91da1ee-63e7-4d4a-9c4b-262508575146",
+        "objectKind": "workspace",
+        "objectId": "default",
+        "operation": "update",
+        "intentSha256": "2e7bcad77ff77db3e1756e80c2c00176eb509969731f0091151301cb067234a6",
+        "requestDigest": "d8496ab8bc2793884474a8c3c154315c29eeb4637ca2bca83a807eda5cb70794",
+        "requestDigestVerifiedForBuiltinSettingsMigration": true,
+        "matchesBuiltinSettingsMigration": true,
+        "before": [
+          {
+            "sha256": "53543b403065b74e69375b6ae8643128af56715a32f7d29b4eae9440fdcd0407",
+            "bytes": 1727
+          }
+        ],
+        "after": [
+          {
+            "sha256": "f903af5204148a5b5d3f4c50f4a114023bab8239b7e942ab2e7f91bc32e9ea8d",
+            "bytes": 1733
+          }
+        ],
+        "captured": [
+          {
+            "index": 0,
+            "sha256": "53543b403065b74e69375b6ae8643128af56715a32f7d29b4eae9440fdcd0407"
+          }
+        ],
+        "committedMarkerSha256": "7f297cb263013a957cf228b507136bb2bf8e952aa6e77e277db721b729cfaa62",
+        "fields": [
+          {
+            "field": "/revision",
+            "before": 9,
+            "after": 10
+          },
+          {
+            "field": "/updatedAt",
+            "before": "2026-10-21T09:32:32.634Z",
+            "after": "2026-10-22T09:01:44.694Z"
+          },
+          {
+            "field": "/channels/3/name",
+            "before": "公众号",
+            "after": "微信公众号"
+          },
+          {
+            "field": "/channels/4/name",
+            "before": "B 站",
+            "after": "B站"
+          }
+        ],
+        "currentTarget": "库配置/default/配置.json"
+      }
+    ]
+  },
+  "binding": {
+    "file": "/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json",
+    "beforeSha256": "667d693d3c44cf1296b1a12992642ed1148082e3a2e6023ed964ab4b9f3b9067",
+    "currentSha256": "667d693d3c44cf1296b1a12992642ed1148082e3a2e6023ed964ab4b9f3b9067",
+    "fullFileUnchanged": true,
+    "currentSelectionUnchanged": true,
+    "fields": []
+  },
+  "artifacts": {
+    "treeSha256": "6ba946a4891dbd8228595084c3ba5eef1b48e8764fc893540e508b8f1b135fa4",
+    "dmgSha256": "23ea4f4a9fa7aa745104dbb01f7fb1aa75b82d5dfd36cd6f185a966f886bbc9f",
+    "transactionPhase": "complete",
+    "signatureVerified": true,
+    "skills": [
+      {
+        "host": "codex",
+        "capability": "cover",
+        "skill": "nova-content-cover-execution"
+      },
+      {
+        "host": "codex",
+        "capability": "template",
+        "skill": "nova-content-template-execution"
+      },
+      {
+        "host": "workbuddy",
+        "capability": "cover",
+        "skill": "nova-content-cover-execution"
+      },
+      {
+        "host": "workbuddy",
+        "capability": "template",
+        "skill": "nova-content-template-execution"
+      }
+    ]
+  },
+  "attribution": "Root reports invoking the product update-builtins setting. Committed payloads can corroborate the exact migration; they do not independently identify the operator. This report records current differences and never rewrites the installation baseline or treats the whole library as unchanged.",
+  "scope": "Read-only before-backup versus current actual-binding comparison after normal quit; exact Finder metadata/cache changes remain included. No library API, seeding, retry or business write was called."
+}

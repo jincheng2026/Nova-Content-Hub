@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-22T08:55:59.579Z",
+  "version": "0.3.42",
+  "sourceCommit": "a9eb3cc788f7e557b93dce9390a4f5a4b7a1aaca",
+  "target": "/Applications/自媒体工作台.app",
+  "transactionPhase": "complete",
+  "nativeAcceptance": "pending-root-thread-verification",
+  "installedTreeSha256": "6ba946a4891dbd8228595084c3ba5eef1b48e8764fc893540e508b8f1b135fa4",
+  "installedEntries": 1646,
+  "actualProperties": {
+    "appModifiedAt": "2026-10-22T08:44:14.078Z",
+    "appFileBytes": 536525416,
+    "dmgBytes": 286571161,
+    "dmgModifiedAt": "2026-10-22T08:44:50.014Z"
+  },
+  "installationLibraryUnchanged": true,
+  "installationBindingFileUnchanged": true,
+  "preliminaryBackupWasNotUsedForInstallation": true,
+  "activeConversationReloaded": false,
+  "realGenerationRunOnThisVersion": false
+}

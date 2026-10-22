@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Strict original-library bytes changed; preserve failure and inspect exact diff
++ actual - expected
+
++ '6563894f6bd8925c305c9a8f958739764e35327e0059f442ca03f7e03bd63b0e'
+- '9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f'
+
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-22-desktop-usability-0342/release.mjs:57:781 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '6563894f6bd8925c305c9a8f958739764e35327e0059f442ca03f7e03bd63b0e',
+  expected: '9e72b02b4b83dfe8a8b2912d3c1fafd873986036f07bfdeddd1742beaac81d5f',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0
