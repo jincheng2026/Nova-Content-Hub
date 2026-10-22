@@ -21,7 +21,8 @@ assert.deepEqual(deliveryFiles, ['SHA256SUMS.txt', '安装与使用.txt', `自�
 assert.equal(hash(await fs.readFile(path.join(pkg.deliveryDirectory, deliveryFiles[2]))), pkg.dmgSha256);
 const transaction = JSON.parse(await fs.readFile(path.join(installation.installation.transaction, 'record.json'), 'utf8'));
 const awaitingPermission = process.argv[2] === '--awaiting-system-permission';
-assert.equal(process.argv.length, awaitingPermission ? 3 : 2);
+const reconcileLibrary = process.argv[2] === '--reconcile-library';
+assert.ok(process.argv.length === 2 || process.argv.length === 3 && (awaitingPermission || reconcileLibrary), 'Use no argument, --awaiting-system-permission, or --reconcile-library');
 assert.equal(transaction.phase, awaitingPermission ? 'published' : 'complete');
 const app = path.join(target, 'Contents/Resources/app');
 const release = JSON.parse(await fs.readFile(path.join(app, 'workbench/dist/release.json'), 'utf8'));
@@ -34,8 +35,18 @@ const binding = JSON.parse(await fs.readFile('/Users/mac/Library/Application Sup
 assert.equal(digest(binding.current), installation.library.bindingSha256);
 assert.equal(JSON.parse(await fs.readFile(path.join(binding.current.root, '内容库.json'), 'utf8')).libraryId, binding.current.libraryId);
 const library = await snapshotPackage(binding.current.root);
-assert.equal(digest(library), installation.library.beforeSha256, 'Current installed package verification preserved user library bytes');
+let reconciliation = null;
+if (reconcileLibrary) {
+    const bytes = await fs.readFile(path.join(out, 'final-integrity-reconciliation.json'));
+    const {recordedAt, ...expected} = JSON.parse(bytes);
+    assert.ok(Number.isFinite(Date.parse(recordedAt)));
+    const {verifyReconciliation} = await import('./final-integrity-reconciliation.mjs');
+    assert.deepEqual(await verifyReconciliation(installation, binding, library), expected);
+    reconciliation = {receipt: 'final-integrity-reconciliation.json', sha256: hash(bytes), mutationId: expected.mutationId, allOtherEntriesUnchanged: true};
+} else {
+    assert.equal(digest(library), installation.library.beforeSha256, 'Current installed package verification preserved user library bytes');
+}
 const stat = await fs.stat(target), dmgStat = await fs.stat(pkg.dmg);
-const receipt = {recordedAt: new Date().toISOString(), version: release.version, sourceCommit: pkg.sourceCommit, installedAndArchivedAppEqual: true, appEntries: Object.keys(installed).length, treeSha256: pkg.treeSha256, dmgSha256: pkg.dmgSha256, deliveredDmgEqual: true, deliveryFiles, signatureVerified: true, developerIdSigned: false, notarized: false, transactionPhase: transaction.phase, installationConfirmedByApp: !awaitingPermission, systemPermissionPending: awaitingPermission, nativeBindingPreserved: true, userLibrary: {entries: Object.keys(library).length, currentSha256: digest(library), unchanged: true}, skills, actualProperties: {appModifiedAt: stat.mtime.toISOString(), appFileBytes: Object.values(installed).reduce((sum, entry) => sum + (entry.bytes ?? 0), 0), dmgBytes: dmgStat.size, dmgModifiedAt: dmgStat.mtime.toISOString()}, activeConversationReloaded: false, realGenerationRunOnThisVersion: false};
+const receipt = {recordedAt: new Date().toISOString(), version: release.version, sourceCommit: pkg.sourceCommit, installedAndArchivedAppEqual: true, appEntries: Object.keys(installed).length, treeSha256: pkg.treeSha256, dmgSha256: pkg.dmgSha256, deliveredDmgEqual: true, deliveryFiles, signatureVerified: true, developerIdSigned: false, notarized: false, transactionPhase: transaction.phase, installationConfirmedByApp: !awaitingPermission, systemPermissionPending: awaitingPermission, nativeBindingPreserved: true, userLibrary: {entries: Object.keys(library).length, installationSha256: installation.library.beforeSha256, currentSha256: digest(library), unchanged: !reconcileLibrary, ...(reconciliation ? {observedConcurrentChangeReconciled: true, reconciliation} : {})}, skills, actualProperties: {appModifiedAt: stat.mtime.toISOString(), appFileBytes: Object.values(installed).reduce((sum, entry) => sum + (entry.bytes ?? 0), 0), dmgBytes: dmgStat.size, dmgModifiedAt: dmgStat.mtime.toISOString()}, activeConversationReloaded: false, realGenerationRunOnThisVersion: false};
 await fs.writeFile(path.join(out, 'final-integrity.json'), JSON.stringify(receipt, null, 2) + '\n');
-console.log(JSON.stringify({status: awaitingPermission ? 'ARTIFACTS_VERIFIED_RUNTIME_PENDING' : 'PASS', ...receipt}));
+console.log(JSON.stringify({status: awaitingPermission ? 'ARTIFACTS_VERIFIED_RUNTIME_PENDING' : reconcileLibrary ? 'PASS_WITH_RECONCILED_USER_CHANGE' : 'PASS', ...receipt}));

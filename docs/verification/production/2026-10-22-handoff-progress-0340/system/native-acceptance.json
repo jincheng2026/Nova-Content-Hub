@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-10-22T05:53:13.553Z",
+  "version": "0.3.40",
+  "sourceCommit": "c9820a496f615ea23e7a2603994add4b967f2f2c",
+  "target": "darwin-arm64",
+  "systemPermission": {
+    "userConfirmedAllowed": true,
+    "permissionPending": false,
+    "libraryLoaded": true
+  },
+  "nativeChecks": {
+    "versionAndArchitecture": true,
+    "originalLibraryLoaded": true,
+    "overview": {
+      "contents": 5,
+      "collections": 1,
+      "selectedCoverVisible": true,
+      "plannedToday": 2
+    },
+    "workbuddyCoverAndTemplateReady": true,
+    "compactSelectedButton": true,
+    "calendarContentSearch": {
+      "savedContents": 5,
+      "observedQuery": "AI",
+      "matchingContent": "如何做一个AI博主",
+      "clearRestoresOptions": true,
+      "escapeClosesOnlyDropdown": true,
+      "continuedOrSavedPlan": false
+    },
+    "promptCategoryRoundedPopup": true,
+    "normalQuit": {
+      "method": "CUA super+q",
+      "priorMainPid": 67112,
+      "exactProcessAbsentVerified": true,
+      "receipt": "native-normal-quit.json"
+    },
+    "normalReopen": {
+      "mainPid": 96233,
+      "originalLibraryAndCoverReloaded": true,
+      "receipt": "native-reopened-overview.txt"
+    }
+  },
+  "evidence": [
+    "native-overview.png",
+    "native-settings.png",
+    "native-settings.txt",
+    "native-compact-covers.png",
+    "native-calendar-search.png",
+    "native-prompt-dropdown.png",
+    "native-reopened-overview.png"
+  ],
+  "libraryIntegrity": "See explicit reconciliation and final-integrity; concurrent manual photo soft-delete preserved, do not claim total library unchanged.",
+  "notCovered": [
+    "real generation",
+    "current conversation plugin reload",
+    "Windows",
+    "Intel Mac",
+    "Developer ID signing/notarization",
+    "unpackaged media/form surface source changes"
+  ],
+  "businessActionsByAgent": "No generation, business save, delete, select cover, publish or library recovery."
+}

@@ -1,5 +1,5 @@
 {
-  "recordedAt": "2026-10-22T04:48:52.518Z",
+  "recordedAt": "2026-10-22T05:56:47.415Z",
   "version": "0.3.40",
   "sourceCommit": "c9820a496f615ea23e7a2603994add4b967f2f2c",
   "installedAndArchivedAppEqual": true,
@@ -15,14 +15,22 @@
   "signatureVerified": true,
   "developerIdSigned": false,
   "notarized": false,
-  "transactionPhase": "published",
-  "installationConfirmedByApp": false,
-  "systemPermissionPending": true,
+  "transactionPhase": "complete",
+  "installationConfirmedByApp": true,
+  "systemPermissionPending": false,
   "nativeBindingPreserved": true,
   "userLibrary": {
-    "entries": 2283,
-    "currentSha256": "b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4",
-    "unchanged": true
+    "entries": 2288,
+    "installationSha256": "b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4",
+    "currentSha256": "e30e75e715726d4d67b4922ab531329d091f481f0449b33658bd6dd0ed04f180",
+    "unchanged": false,
+    "observedConcurrentChangeReconciled": true,
+    "reconciliation": {
+      "receipt": "final-integrity-reconciliation.json",
+      "sha256": "45cb6a8d8480e08703afb5e9622c510ba08f4e062d1fc13277712520995a7416",
+      "mutationId": "0fab52d6-0a47-413c-aeac-004b95d4d475",
+      "allOtherEntriesUnchanged": true
+    }
   },
   "skills": [
     {

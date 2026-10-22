@@ -1,0 +1,38 @@
+Window: "自媒体工作台", App: 自媒体工作台.
+0 标准窗口 自媒体工作台, Secondary Actions: Raise
+	1 container 自媒体工作台
+		2 container
+			3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html
+				4 container 选择要发布的内容
+					5 标题 选择要发布的内容, Value: 2
+						6 文本 选择要发布的内容
+					7 按钮 暂时收起
+						8 文本 暂时收起
+					9 按钮 关闭
+						10 文本 关闭
+					11 container
+						12 text 选一篇已保存的内容，继续为  2026-10-22  安排发布。
+					13 container
+						14 text 发布内容 选择发布内容
+						15 组合框 (settable) 选择发布内容, Value: A
+							16 文本栏 (settable) Description: 选择发布内容, Value: AI
+							17 图像
+					18 按钮 (disabled) 继续安排
+						19 文本 继续安排
+					20 列表框
+						21 文本 tick 如何做一个 AI 博主
+							22 图像 tick
+							23 文本 如何做一个
+							24 文本 AI
+							25 文本 博主
+	26 关闭按钮
+	27 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	28 最小化按钮
+29 menu bar
+	30 自媒体工作台
+	31 文件
+	32 编辑
+	33 显示
+	34 窗口
+
+The focused UI element is 21 文本 tick 如何做一个 AI 博主

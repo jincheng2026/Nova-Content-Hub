@@ -1,0 +1,18 @@
+{
+  "recordedAt": "2026-10-22T05:53:13.507Z",
+  "observation": "CUA reported user changed app during native read-only acceptance",
+  "tool": "mcp__cua_repl.js",
+  "operationAtDetection": "app.scroll(4,'down',1)",
+  "exactToolResponse": "The user changed '/Applications/自媒体工作台.app'. Re-query the latest state with `get_app_state` before sending more actions.",
+  "responseAction": "Re-queried app using cua.getApp before further interaction",
+  "before": {
+    "source": "native-settings.txt",
+    "managedPhotoButtons": 5
+  },
+  "after": {
+    "source": "Full AX tree returned by cua.getApp immediately after user-change notice; four 管理照片 buttons observed at indices 37,39,41,43",
+    "managedPhotoButtons": 4
+  },
+  "agentActions": "Opened/read settings, attempted scroll, closed settings, viewed covers, opened calendar content selector, typed/cleared search, closed it, opened/closed prompt category list, normal quit/reopen. No photo-management/delete/save action was invoked by root.",
+  "scope": "Observed concurrent manual interaction; deletion attribution is an observation matched to transaction evidence, not an independent user confirmation of the deletion."
+}

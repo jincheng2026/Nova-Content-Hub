@@ -1,0 +1,1 @@
+PASS: a simulated additional library change is rejected; changing the original installation baseline is rejected; no actual library bytes were written.

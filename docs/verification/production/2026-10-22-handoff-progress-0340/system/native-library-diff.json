@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-10-22T05:50:43.085Z",
+  "entriesBefore": 2283,
+  "entriesAfter": 2288,
+  "diff": [
+    {
+      "path": "我的照片/a62b4874-ec22-486b-bf3d-480ebe7071b4/照片.json",
+      "before": {
+        "sha256": "46dce7cf487fae328dede6a2b68f428e7bd5d71265139bebd7fb15d82f9aba44",
+        "bytes": 399,
+        "executable": false
+      },
+      "after": {
+        "sha256": "28004dd1f093e4713983034d824f3127ec91b5b8cc435bfa8810e76f408a0698",
+        "bytes": 421,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475",
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/.COMMITTED-d8104d9b-4fb3-4dc2-80e8-97def56a637d",
+      "after": {
+        "sha256": "ac8ac8d609c3bba1c6a19f1d5007526c0ff18ea7e61dce12767df8a64a11fad0",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/COMMITTED",
+      "after": {
+        "sha256": "ac8ac8d609c3bba1c6a19f1d5007526c0ff18ea7e61dce12767df8a64a11fad0",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/captured-0",
+      "after": {
+        "sha256": "46dce7cf487fae328dede6a2b68f428e7bd5d71265139bebd7fb15d82f9aba44",
+        "bytes": 399,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/intent.json",
+      "after": {
+        "sha256": "b961f35827eed9f13f35613c4ce417bb776898fdbdc041be58efcc3bce92bc4f",
+        "bytes": 1687,
+        "executable": false
+      }
+    }
+  ]
+}

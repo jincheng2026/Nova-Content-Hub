@@ -1,0 +1,95 @@
+{
+  "recordedAt": "2026-10-22T05:54:19.490Z",
+  "format": "nova-0340-single-photo-deletion-reconciliation",
+  "sourceCommit": "c9820a496f615ea23e7a2603994add4b967f2f2c",
+  "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+  "bindingSha256": "3a20e71a28ced5bbd7087576627e9b83e5ba824119201dd12fd83b387487e0b9",
+  "beforeSha256": "b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4",
+  "afterSha256": "e30e75e715726d4d67b4922ab531329d091f481f0449b33658bd6dd0ed04f180",
+  "entriesBefore": 2283,
+  "entriesAfter": 2288,
+  "mutationId": "0fab52d6-0a47-413c-aeac-004b95d4d475",
+  "photoId": "a62b4874-ec22-486b-bf3d-480ebe7071b4",
+  "operation": "trash",
+  "deletedAt": "2026-10-22T05:44:27.321Z",
+  "intentSha256": "b961f35827eed9f13f35613c4ce417bb776898fdbdc041be58efcc3bce92bc4f",
+  "capturedBeforeSha256": "46dce7cf487fae328dede6a2b68f428e7bd5d71265139bebd7fb15d82f9aba44",
+  "photoAfterSha256": "28004dd1f093e4713983034d824f3127ec91b5b8cc435bfa8810e76f408a0698",
+  "diff": [
+    {
+      "path": "我的照片/a62b4874-ec22-486b-bf3d-480ebe7071b4/照片.json",
+      "before": {
+        "sha256": "46dce7cf487fae328dede6a2b68f428e7bd5d71265139bebd7fb15d82f9aba44",
+        "bytes": 399,
+        "executable": false
+      },
+      "after": {
+        "sha256": "28004dd1f093e4713983034d824f3127ec91b5b8cc435bfa8810e76f408a0698",
+        "bytes": 421,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475",
+      "after": {
+        "directory": true
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/.COMMITTED-d8104d9b-4fb3-4dc2-80e8-97def56a637d",
+      "after": {
+        "sha256": "ac8ac8d609c3bba1c6a19f1d5007526c0ff18ea7e61dce12767df8a64a11fad0",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/COMMITTED",
+      "after": {
+        "sha256": "ac8ac8d609c3bba1c6a19f1d5007526c0ff18ea7e61dce12767df8a64a11fad0",
+        "bytes": 65,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/captured-0",
+      "after": {
+        "sha256": "46dce7cf487fae328dede6a2b68f428e7bd5d71265139bebd7fb15d82f9aba44",
+        "bytes": 399,
+        "executable": false
+      }
+    },
+    {
+      "path": "系统（别动）/事务/已提交/0fab52d6-0a47-413c-aeac-004b95d4d475/intent.json",
+      "after": {
+        "sha256": "b961f35827eed9f13f35613c4ce417bb776898fdbdc041be58efcc3bce92bc4f",
+        "bytes": 1687,
+        "executable": false
+      }
+    }
+  ],
+  "allOtherEntriesUnchanged": true,
+  "evidence": [
+    {
+      "path": "system/acceptance-library-baseline.json",
+      "sha256": "6f900095f99c51b798e6cc2bfd00a518b5c57e2582e5e36d29eecef05ac839e1"
+    },
+    {
+      "path": "system/native-library-diff.json",
+      "sha256": "12039ff33c4cfd7f2f624d81cc36a3968a3ae2ce7ce448756f5e5b97ffaa5461"
+    },
+    {
+      "path": "system/concurrent-user-change.json",
+      "sha256": "d1b6a532f167a873d1bfdf0e12b664cf492c90f4361335f403ff810f4079a51f"
+    },
+    {
+      "path": "system/native-acceptance.json",
+      "sha256": "6457396f98eb5082e7c6ef1ce00266920eee5a77775ceaec5e34afc3500801a2"
+    },
+    {
+      "path": "system/native-settings.txt",
+      "sha256": "e0be4f9ea087d6f6df841efdac1708d3bd55b9dc8c775bc44c2868b20a56f798"
+    }
+  ],
+  "scope": "Only this observed concurrent user photo soft deletion and its committed journal are reconciled; no rollback, generation or other library change is accepted."
+}

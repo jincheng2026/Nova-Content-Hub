@@ -8,6 +8,14 @@
 
 冻结源码、最终 SHA256、实际大小/时间、安装事务、插件匹配和原库保护结果已记录在本目录对应 JSON 与日志中。系统实际界面验收记录位于 system/；源码与静态检查不能代替原生界面验收。
 
+## 最终状态（已完成原生启动与明确用户变更对账）
+
+用户确认已允许文稿访问后，主线程在安装的 0.3.40 实际验证原库加载、设置版本与 macOS ARM64、WorkBuddy 封面/模板就绪、封面“已选用”紧凑按钮、5 篇内容的日程搜索“AI”命中与清空恢复、Esc 只关闭下拉、提示词分类圆角。正常 super+q 后精确进程确认旧 PID 67112 停止，再次启动后 5 篇内容、1 个合集、原封面及日程重新加载；见 `system/native-acceptance.json`、`system/native-normal-quit.json`、`system/native-reopened-overview.*` 及各项原生截图/AX。安装事务已 complete，系统权限不再 pending。
+
+最终 `final-integrity.mjs --reconcile-library` 退出 0，状态为 `PASS_WITH_RECONCILED_USER_CHANGE`：安装/冻结归档/DMG 的 1859 条目一致，签名、DMG SHA256、三文件交付、两端四项技能及原绑定仍严格通过。原库在并发人工操作后为 2288 条目，摘要 `e30e75e715726d4d67b4922ab531329d091f481f0449b33658bd6dd0ed04f180`；已明确保留且逐字节核对唯一照片软删除与对应已提交事务，不能宣称全库 unchanged。原安装前 2283 条目摘要和备份未改写。见 `final-integrity.json`、`final-integrity-reconciliation.json` 与 `logs/final-integrity-reconciled.log`。
+
+本轮仅验收 Apple Silicon Mac 预览；真实助手生成、当前会话插件重载、Intel Mac、Windows、正式 Developer ID/公证未覆盖。后续未打包的媒体表单源码修改不属于此冻结安装包。
+
 ## 打包前验证
 
 - 现有原型生成机制同步六处源码/生成版本，两个 lockfile 根包均为 0.3.40；见 logs/version-check.log。
@@ -43,12 +51,24 @@
 
 Codex、WorkBuddy 均通过官方 CLI 更新配套插件，四项 cover/template 技能匹配 0.3.40，不相关插件记录与启用设置保留；见 plugins.json、logs/plugins-final.log。当前助手会话未重新加载，未运行本版本真实生成。
 
-## 当前原生启动等待系统授权（中间状态）
+## 原生启动等待系统授权（较早中间状态）
 
 主线程已通过 Finder 实际检查最终归档及安装后应用：名称/图标、Apple 芯片、0.3.40 与完整公司版权一致，均显示 673,309,201 字节、修改时间 2026-10-22 12:40；见 `system/archive-finder-info.*` 与 `system/installed-finder-info.*`。Finder 展示值与文件树字节求和的算法不同，分别留痕。归档应用的 AX 文本仅为 no-change diff，归档元数据依据实际截图观察；安装后应用同时保留完整 AX 树。汇总见 `system/native-acceptance-pending.json`。
 
-实际启动新版本后主进程运行，但 CUA 页面读取超时，事务仍为 published。主线程记录系统 TCC 在 12:47:08 提示新签名 requirement 不匹配并触发 DocumentsFolder 的 AUTHREQ_PROMPTING，已请用户亲自在原始系统弹窗允许。当前不能宣称原生页面、正常退出重开或安装事务 complete 已验收。系统权限由用户处理，不绕过授权、不改权限数据库、不强制结束进程。
+实际启动新版本后主进程运行，但 CUA 页面读取超时，事务仍为 published。主线程记录系统 TCC 在 12:47:08 提示新签名 requirement 不匹配并触发 DocumentsFolder 的 AUTHREQ_PROMPTING，已请用户亲自在原始系统弹窗允许。该中间阶段尚不能宣称原生页面、正常退出重开或安装事务 complete 已验收；后续最终状态见本文顶部。系统权限由用户处理，不绕过授权、不改权限数据库、不强制结束进程。
 
-显式 `final-integrity.mjs --awaiting-system-permission` 退出 0，仅记为 `ARTIFACTS_VERIFIED_RUNTIME_PENDING`：安装/归档全树、最终 DMG 与三文件目录、严格签名核验、两端插件及 2283 条目原库/绑定全部一致，但 `transactionPhase=published`、`systemPermissionPending=true`、`installationConfirmedByApp=false`；见 `final-integrity-awaiting-permission.json` 与 `logs/final-integrity-awaiting-permission.log`。待用户允许及实际界面/正常重开完成后，另跑不带参数的严格 final-integrity，再更新最终状态。
+显式 `final-integrity.mjs --awaiting-system-permission` 退出 0，仅记为 `ARTIFACTS_VERIFIED_RUNTIME_PENDING`：安装/归档全树、最终 DMG 与三文件目录、严格签名核验、两端插件及 2283 条目原库/绑定全部一致，但 `transactionPhase=published`、`systemPermissionPending=true`、`installationConfirmedByApp=false`；见 `final-integrity-awaiting-permission.json` 与 `logs/final-integrity-awaiting-permission.log`。其后用户已允许并完成实际界面/正常重开；默认严格 final-integrity 因并发人工业务变更而如实失败，最终以明确单笔事务 reconciliation 验证收尾，见本文顶部及下文。
 
-本地 annotated tag `v0.3.40-preview-mac-arm64` 指向最终冻结源码 `c9820a496f615ea23e7a2603994add4b967f2f2c`，用于绑定本次 DMG SHA256、adhoc 与非生产预览身份；tag 不代表原生启动/事务 complete 已通过。当前仍待用户处理系统文稿访问授权，pending 收据独立保留。未向远端推送，首轮中间包和旧版 0.3.39 的产物/tag 保留。
+本地 annotated tag `v0.3.40-preview-mac-arm64` 指向最终冻结源码 `c9820a496f615ea23e7a2603994add4b967f2f2c`，用于绑定本次 DMG SHA256、adhoc 与非生产预览身份；tag 不代表原生启动/事务 complete 已通过。tag 创建时仍待系统文稿访问授权；该 pending 收据独立保留，不代表当前仍待授权。未向远端推送，首轮中间包和旧版 0.3.39 的产物/tag 保留。
+
+## 并发人工照片软删除与严格对账
+
+主线程开始原生验收时再次确认原库仍是安装基线 2283 条目、摘要 `b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4`；见 `system/acceptance-library-baseline.json`。之后 CUA 明确提示 user changed app，设置照片从 5 项变 4 项；观测与根线程未调用照片管理/删除动作的范围见 `system/concurrent-user-change.json`。这是观测与事务相互对应，不等于独立取得用户对具体删除操作的口头确认。
+
+原默认严格 final-integrity 因完整库摘要从 `b59082…` 变为 `e30e75…` 失败。根线程原 stdout 日志为空，错误曾返回在工具输出；本轮在修改脚本前用同一无参数命令重新执行，退出 1，完整 stderr 已保存在 `logs/final-integrity-strict-baseline-failure.log`，说明见 `final-integrity-baseline-failure.json`。不将该失败抹去或改记为通过。
+
+专用 `final-integrity-reconciliation.mjs` 只允许事务 `0fab52d6-0a47-413c-aeac-004b95d4d475`：照片 `a62b4874-ec22-486b-bf3d-480ebe7071b4` 的 revision 1→2、updatedAt/deletedAt 均为 `2026-10-22T05:44:27.321Z`，其他业务字段保持一致。独立核验 intent 的 schema/library/object/operation/requestDigest、before/after 原字节、captured-0 与原备份 hash、COMMITTED 与 intent 原字节 SHA256 匹配；差异集合严格限定一份照片 JSON 和该事务目录及其四个文件，共 6 项，其余原条目逐字节不变。原图资产没有被改写或删除。
+
+显式 reconciliation 收据绑定原/现完整摘要、确切 6 项差异和人工观测/原生验收证据 hash；最终脚本再次从实际库与原备份独立核验收据，任何进一步变化都拒绝通过。`userLibrary.unchanged=false`，仅 `allOtherEntriesUnchanged=true`，不修改安装前收据、不回滚用户数据。模拟额外库变化和篡改原基线的负例自检均被拒绝，见 `logs/final-integrity-reconciliation-self-check.log`。
+
+主线程审查最终脚本与精确差异边界后，独立重新运行 `node docs/verification/production/2026-10-22-handoff-progress-0340/final-integrity.mjs --reconcile-library`，退出 0；完整结果见 `logs/final-integrity-independent.log`。源码图片边缘/表单内框优化保留为后续未打包修改，不属于此冻结安装版。

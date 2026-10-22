@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-22T05:55:50.782554+00:00",
+  "command": "node docs/verification/production/2026-10-22-handoff-progress-0340/final-integrity.mjs",
+  "exitCode": 1,
+  "expectedSha256": "b59082a08f68172c8853987c2ec83afc93085c6148683bf4f26b82287c832ec4",
+  "actualSha256": "e30e75e715726d4d67b4922ab531329d091f481f0449b33658bd6dd0ed04f180",
+  "error": "ERR_ASSERTION: Current installed package verification preserved user library bytes",
+  "log": "logs/final-integrity-strict-baseline-failure.log",
+  "logSha256": "f6de6441b0a382b75ceb1f7739556bb746dc397e14061b47364830858a8d2ea6",
+  "originalRootLog": "logs/final-integrity.log",
+  "originalRootLogEmpty": true,
+  "scope": "Root reported the original strict assertion failure in tool output; this same default command was independently reproduced with merged stdout/stderr before the reconciliation script edit. Original installation baseline and backup are not rewritten."
+}
