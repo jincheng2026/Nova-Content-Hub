@@ -13,7 +13,7 @@ test('new-cover tool prompt has a clean-original-generation suffix and preserves
     assert.deepEqual(request, original);
     for (const rule of ['干净的原创封面', 'AI生成', 'WorkBuddy', 'Codex', '不复制其中的平台或工具水印', '不是修改现有图片去水印']) assert.ok(actualToolPrompt.includes(rule), rule);
     for (const skill of ['nova-content-cover', 'nova-content-cover-execution']) {
-        const text = await read(`skills/${skill}/SKILL.md`);
+        const text = await read(`skills/${skill}/${skill.endsWith('-execution') ? 'execution-contract.md' : 'SKILL.md'}`);
         assert.match(text, /“新创封面的干净输出”提示.*追加到实际生图提示末尾/);
         assert.match(text, /不(?:回写固定请求|改写 request.prompt)/);
         assert.match(text, /SHA256/);
@@ -24,7 +24,7 @@ test('new-cover tool prompt has a clean-original-generation suffix and preserves
 
 test('restoration keeps source marks and unmodified tool bytes rather than applying clean-output removal', async () => {
     for (const skill of ['nova-content-template-execution', 'nova-content-template-restore']) {
-        const text = await read(`skills/${skill}/SKILL.md`);
+        const text = await read(`skills/${skill}/${skill.endsWith('-execution') ? 'execution-contract.md' : 'SKILL.md'}`);
         assert.match(text, /来源原图与已有来源标记保留为.*对照基线/);
         assert.match(text, /不额外(?:绘入|添加).*工具品牌或.*水印/);
         assert.match(text, /SHA256/);

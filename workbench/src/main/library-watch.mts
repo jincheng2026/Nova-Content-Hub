@@ -62,9 +62,9 @@ export class LibraryWatcher {
     private binding: LibraryBinding | null = null;
     private generation = 0;
     private stop: (() => void) | null = null;
-    private notify: (change: 'changed' | 'unavailable') => void;
+    private notify: (change: 'changed' | 'progress' | 'unavailable') => void;
 
-    constructor({notify}: {notify: (change: 'changed' | 'unavailable') => void}) {
+    constructor({notify}: {notify: (change: 'changed' | 'progress' | 'unavailable') => void}) {
         this.notify = change => {
             // A closing renderer must not turn an advisory refresh into a failed library operation.
             try { notify(change); } catch {}
@@ -109,6 +109,7 @@ export class LibraryWatcher {
         };
         const changed = (_event: string, filename: string | Buffer | null) => {
             if (!current() || unavailable || !businessChange(filename)) return;
+            if (/^(?:内容[\\/][^\\/]+[\\/]封面任务|模板[\\/][^\\/]+[\\/]学习任务)[\\/][0-9a-f-]{36}[\\/]尝试[\\/][0-9a-f-]{36}[\\/]进度\.json$/.test(filename?.toString().normalize('NFC') ?? '')) {this.notify('progress'); return;}
             if (debounce) clearTimeout(debounce);
             debounce = setTimeout(flush, DEBOUNCE_MS);
             if (!maximum) maximum = setTimeout(flush, MAX_WAIT_MS);

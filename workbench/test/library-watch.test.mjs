@@ -221,3 +221,14 @@ test('linked descriptors and root ancestors are rejected', {skip: process.platfo
     assert.equal(f.handles.length, 0);
     assert.deepEqual(f.events, ['unavailable', 'unavailable']);
 });
+
+test('attempt progress has its own lightweight notification instead of whole-library refresh', t => {
+    const f = fixture(t); f.watcher.bind(f.binding);
+    const event = f.handles[0].callback, requestId = '11111111-1111-4111-8111-111111111111', attemptId = '22222222-2222-4222-8222-222222222222';
+    event('rename', `内容/item/封面任务/${requestId}/尝试/${attemptId}/进度.json`);
+    event('rename', `模板/item/学习任务/${requestId}/尝试/${attemptId}/进度.json`);
+    f.tick(300);
+    assert.deepEqual(f.events, ['changed', 'progress', 'progress']);
+    event('change', '内容/item/进度.json'); f.tick(300);
+    assert.equal(f.events.at(-1), 'changed');
+});

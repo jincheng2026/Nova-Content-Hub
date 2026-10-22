@@ -1,0 +1,26 @@
+✔ session routes are fixed to the owning host and reject arbitrary paths or URLs (1.474875ms)
+✔ codex waiting-user resumes through shared projection while terminal facts win (1.479042ms)
+✔ codex waiting-permission resumes through shared projection while terminal facts win (0.637958ms)
+✔ workbuddy waiting-user resumes through shared projection while terminal facts win (0.889834ms)
+✔ workbuddy waiting-permission resumes through shared projection while terminal facts win (0.128875ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (1872.207041ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (2005.485125ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (1981.258083ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (1795.591875ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (1905.24675ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (2030.360625ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (1824.91475ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (1677.114166ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (276.467291ms)
+✔ bound codex template continuation keeps original session and waiting-user without progress CAS changes (1530.901875ms)
+✔ bound codex template continuation keeps original session and waiting-permission without progress CAS changes (1504.322875ms)
+✔ bound workbuddy template continuation keeps original session and waiting-user without progress CAS changes (1796.309917ms)
+✔ bound workbuddy template continuation keeps original session and waiting-permission without progress CAS changes (1469.827375ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22007.006916

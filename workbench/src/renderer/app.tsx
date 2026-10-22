@@ -203,6 +203,7 @@ function App() {
     };
     useEffect(() => {
         const unsubscribe = window.contentHub.onWorkspaceChanged(change => {
+            if (change === 'progress') return;
             if (change === 'unavailable') {setWatchUnavailable(true); return;}
             setWatchUnavailable(false);
             changesPending.current = true;
@@ -512,6 +513,7 @@ function App() {
     }
     async function changeContentTab(next: typeof contentTab) {
         if (next === contentTab) return;
+        if (contentTab === 'covers' && next === 'body') {setContentTab(next); return;}
         const current = disk ?? baseRef.current;
         const wasDirty = dirty;
         await guard(async saved => {
@@ -656,7 +658,7 @@ function App() {
         {contentTab === 'materials' && <><ContentMaterialPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} contentId={base?.id ?? null} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }}/>{base && !base.deletedAt && <ContentMetadataPanel key={`${libraryEpoch}:${base.id}`} contentId={base.id} library={library} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }}/>}</>}
         {contentTab === 'publication' && <><div className="content-publication-entry"><p className="muted">这篇内容在各个渠道的计划和发布历史，都保存在这里。</p><Button theme="borderless" disabled={busy || !base || !!base.deletedAt} onClick={() => base && void openCalendarFocus({kind: 'content', id: base.id})}>在日程中查看 →</Button></div><PublicationPanel key={`${libraryEpoch}:${base?.id ?? 'new'}`} library={library} documentId={base?.id ?? null} busy={busy || !!blocked || dirty} run={nativeAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => {await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor();}}/></>}
         <div className="cover-detail-pane" hidden={contentTab !== 'covers'}>
-        <CoverPanel titleEditor={{value: draft.title, change: value => setDraft({...draft, title: value}), save: () => void save(), saveDisabled: busy || !dirty || !!blocked || !!disk || !!base?.deletedAt, issue: disk ? '内容已在其他位置改变；本地标题草稿已保留，请进入正文处理冲突。' : error || undefined, openBody: () => setContentTab('body')}} arrangePublication={() => void changeContentTab('publication')} readAutomatically={readCoverAutomatically} startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
+        <CoverPanel titleEditor={{value: draft.title, change: value => setDraft({...draft, title: value}), save: () => void save(), saveDisabled: busy || !dirty || !!blocked || !!disk || !!base?.deletedAt, issue: disk ? '内容已在其他位置改变；本地标题草稿已保留，请进入正文处理冲突。' : error || undefined}} arrangePublication={() => void changeContentTab('publication')} readAutomatically={readCoverAutomatically} startOpenKey={coverStartOpenKey} library={library} refresh={async () => { await refreshWorkspace(); await refreshEditor(); }} selectedTemplate={selectedTemplate} key={`${libraryEpoch}:${base?.id ?? 'none'}`} status={status} content={base} dirty={dirty} busy={busy} blocked={!!blocked} refreshToken={coverRefresh} run={nativeAction} onContent={item => { if (item.id !== baseRef.current?.id) return; if (dirtyRef.current && item.editToken !== baseRef.current.editToken) setDisk(item); else if (!dirtyRef.current) load(item); }} />
         </div>
         </div></section>)}
         </>}

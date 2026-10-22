@@ -195,7 +195,7 @@ export interface DesktopResults extends CoverResults, WorkspaceResults, Maintena
 
 export type DesktopMethod = keyof DesktopResults;
 export type Reply<T> = { ok: true; value: T } | { ok: false; error: { code: string; message: string } };
-export type WorkspaceChange = 'changed' | 'unavailable';
+export type WorkspaceChange = 'changed' | 'progress' | 'unavailable';
 export type ContentHub = { [K in DesktopMethod]: (input?: DesktopInputs[K]) => Promise<Reply<DesktopResults[K]>> } & {
     importLocalFiles<K extends LocalFileKind>(kind: K, files: File[], photo?: PhotoImportOptions): Promise<Reply<LocalFileResults[K]>>;
     onWorkspaceChanged(listener: (change: WorkspaceChange) => void): () => void;

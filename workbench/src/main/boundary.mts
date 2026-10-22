@@ -5,7 +5,7 @@ import type {IpcMainInvokeEvent, WebContents} from 'electron';
 
 export const PAGE = 'nova-content://app/index.html';
 export const CHANNELS = Object.freeze([
-    'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',
+    'readTemplateProgress', 'continueBoundTemplate', 'readCoverProgress', 'continueBoundCover', 'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',
     'readBootstrapRecovery', 'resetMachineBinding',
     'choosePromptDocument', 'chooseTemplateImages', 'chooseContentMaterial', 'readContentMaterial', 'exportContentMaterial',
     'status', 'chooseBackup', 'chooseDestination', 'importBackup', 'resumeImport', 'listContents', 'readWorkspace', 'copyPrompt',

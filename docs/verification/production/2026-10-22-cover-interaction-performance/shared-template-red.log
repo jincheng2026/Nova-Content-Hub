@@ -1,0 +1,28 @@
+✖ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (2612.836333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2809.624209
+
+✖ failing tests:
+
+test at workbench/test/covers.test.mjs:538:1
+✖ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (2612.836333ms)
+  AssertionError [ERR_ASSERTION]: the same immutable template needs one full verification per detail read
+  
+  3 !== 1
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/covers.test.mjs:552:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 3,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

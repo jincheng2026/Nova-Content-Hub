@@ -11,6 +11,8 @@
 .semi-control-check .semi-checkbox-inner input { padding: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
 .semi-control-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .semi-control > .semi-input-number { width: 100%; }
+/* Clip option backgrounds at the popup edge; the inner list keeps its own scrolling. */
+.semi-select-option-list-wrapper { border-radius: var(--semi-border-radius-medium); overflow: hidden; }
 /* Keep modal popups in its top layer while escaping the dialog scroll clipping. */
 .semi-dialog-popup-host { position: fixed; inset: 0; z-index: 1030; pointer-events: none; }
 .semi-dialog-popup-host .semi-portal-inner { pointer-events: auto; }

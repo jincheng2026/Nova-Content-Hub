@@ -1,0 +1,45 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 1883 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dropdown-corners-OlhsTH/dist/index.html                                       0.21 kB │ gzip:   0.18 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dropdown-corners-OlhsTH/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dropdown-corners-OlhsTH/dist/assets/index-Cqiu7q2Z.css                      176.41 kB │ gzip:  25.31 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dropdown-corners-OlhsTH/dist/assets/index-DDgvPyPH.js                       508.63 kB │ gzip: 151.03 kB
+
+✓ built in 297ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+single-selected {"className":"semi-select-option-list-wrapper","radius":"0px","overflow":"visible","html":"<div id=\"semi-select-ffkw1k2\" class=\"semi-select-option-list-wrapper\" style=\"min-width: 400px;\"><div class=\"semi-select-option-list semi-select-option-list-chosen\" role=\"listbox\" aria-multiselectable=\"false\" style=\"max-height: 270px;\"><div class=\"semi-select-option semi-select-option-selected semi-select-option-focused\" role=\"option\" id=\"single-opt","corners":[true,true]}
+AssertionError [ERR_ASSERTION]: rounded popup must clip child option backgrounds
+    at main (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-dropdown-corners-OlhsTH/main.mjs:12:131) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Dropdown probe failed
+
+1 !== 0
+
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/dropdown-corners-ui-probe.mjs:53:488
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 1,
+  expected: 0,
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

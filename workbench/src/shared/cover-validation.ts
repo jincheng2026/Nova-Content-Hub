@@ -27,9 +27,9 @@ export function coverDesktopInput(method: string, v: unknown): boolean | undefin
   switch (method) {
     case 'readAssistantSetup': case 'resumeCoverAction': case 'abandonCoverAction': case 'listCoverAssets': case 'retryBuiltins': case 'resumePhoto': case 'abandonPhoto': case 'resumeCover': case 'abandonCover': return v === undefined;
     case 'choosePhoto': return exact(v, ['title', 'isOwnPhoto']) && typeof v.title === 'string' && !!v.title.trim() && v.title.length <= 500 && typeof v.isOwnPhoto === 'boolean';
-    case 'readCover': case 'revealCoverFolder': return exact(v, ['contentId']) && uuid(v.contentId);
+    case 'readCoverProgress': case 'readCover': case 'revealCoverFolder': return exact(v, ['contentId']) && uuid(v.contentId);
     case 'generateCover': return exact(v, ['contentId', 'editToken', 'input']) && uuid(v.contentId) && token(v.editToken) && coverInput(v.input);
-    case 'continueCover': case 'retryCover': case 'cancelCover': return coverReference(v);
+    case 'continueBoundCover': case 'continueCover': case 'retryCover': case 'cancelCover': return coverReference(v);
     case 'selectCover': return exact(v, ['contentId', 'candidateId', 'editToken']) && uuid(v.contentId) && uuid(v.candidateId) && token(v.editToken);
     case 'exportCover': return exact(v, ['contentId', 'candidateId']) && uuid(v.contentId) && uuid(v.candidateId);
     case 'setAssistant': return exact(v, ['host']) && assistant(v.host);

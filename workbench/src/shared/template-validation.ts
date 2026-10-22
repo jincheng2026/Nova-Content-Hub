@@ -17,9 +17,9 @@ export function templatePending(v: unknown): v is TemplatePending {
     return p.action === 'accept' && exact(p, [...common, 'input']) && templateAccept(p.input);
 }
 export function templateDesktopInput(method: string, input: unknown): boolean | undefined {
-    if (method === 'readTemplateWorkflow') return exact(input, ['templateId']) && templateId(input.templateId);
+    if (['readTemplateWorkflow', 'readTemplateProgress'].includes(method)) return exact(input, ['templateId']) && templateId(input.templateId);
     if (method === 'startTemplateStudy') return templateStart(input);
-    if (['continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy'].includes(method)) return templateReference(input);
+    if (['continueBoundTemplate', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy'].includes(method)) return templateReference(input);
     if (method === 'acceptTemplateStudy') return templateAccept(input);
     if (['readTemplateAssistantSetup', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation'].includes(method)) return input === undefined;
     return undefined;

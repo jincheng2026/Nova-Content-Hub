@@ -1,3 +1,4 @@
+import {attemptProgress} from './attempt-progress.mjs';
 import {templateReports} from './template-reports.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -57,6 +58,24 @@ export function templateJobMethods(h) {
     const change = (tid, input, edit, options, token) => mutate('update', objectId('template', tid), input, token, options, 'template', edit, undefined, token === undefined);
     const host = value => {if (!HOSTS.includes(value)) fail('INVALID_INPUT', 'Unknown template execution host'); return value;};
     const requireText = (value, label, max) => {if (!bounded(value, max)) fail('INVALID_INPUT', `${label} is empty or exceeds ${max} characters`); return value;};
+    const progressStore = attemptProgress(h, 'template');
+    const ownership = (oid, job, attempt) => ({libraryId, objectId: oid, requestId: job.id, attemptId: attempt.attemptId, requestHash: job.requestHash, host: attempt.host});
+    function readTemplateProgress(oid) {
+        return locked(() => {
+            const meta = current(oid);
+            return {editToken: meta.editToken, jobs: (meta.templateJobs || []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, attempts: job.attempts.map(attempt => ({attemptId: attempt.attemptId, status: attempt.status, ...progressStore.read(attemptDir(oid, job.id, attempt.attemptId), ownership(oid, job, attempt))}))}))};
+        });
+    }
+    function reportTemplateProgress(oid, rid, aid, input) {
+        return locked(() => {
+            const meta = current(oid), {job, attempt} = find(meta, rid, aid);
+            active(meta, job, attempt);
+            const request = requestPackage(oid, job);
+            if (meta.currentVersion !== request.template.version || !meta.versions.some(v => v.version === request.template.version && v.packageHash === request.template.packageHash)) fail('STALE_INPUT', 'Fixed template version changed');
+            return progressStore.write(attemptDir(oid, rid, aid), ownership(oid, job, attempt), input, attempt.status === 'claimed');
+        });
+    }
+
     function find(meta, rid, aid) {
         id(rid);
         const job = (meta.templateJobs || []).find(j => j.id === rid);
@@ -212,7 +231,7 @@ export function templateJobMethods(h) {
                     results.push({requestId: j.id, attemptId: a.attemptId, unavailable: true, failure: {code: error.code || 'IO_ERROR', message: error.message}, result: null, report: null});
                 }
             }
-            return {...response(meta, rid, aid), handoff: handoffPackage(tid, job, attempt), inbox: path.join(attemptDir(tid, rid, aid), 'inbox'), ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}), inputs: request.inputs.map(entry => ({...entry, path: path.join(requestDir(tid, rid), '输入', entry.assetHash)})), results};
+            return {...response(meta, rid, aid), requestPath: path.join(requestDir(tid, rid), '请求.json'), ...progressStore.read(attemptDir(tid, rid, aid), ownership(tid, job, attempt)), handoff: handoffPackage(tid, job, attempt), inbox: path.join(attemptDir(tid, rid, aid), 'inbox'), ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}), inputs: request.inputs.map(entry => ({...entry, path: path.join(requestDir(tid, rid), '输入', entry.assetHash)})), results};
         });
     }
 
@@ -438,5 +457,5 @@ export function templateJobMethods(h) {
         }
         return {};
     }
-    return {createTemplateRequest, createTemplateAttempt, readTemplateContext, claimTemplateAttempt, commitTemplateAttempt, failTemplateAttempt, cancelTemplateAttempt, acceptTemplateResult, rebuildTemplateReports};
+    return {readTemplateProgress, reportTemplateProgress, createTemplateRequest, createTemplateAttempt, readTemplateContext, claimTemplateAttempt, commitTemplateAttempt, failTemplateAttempt, cancelTemplateAttempt, acceptTemplateResult, rebuildTemplateReports};
 }

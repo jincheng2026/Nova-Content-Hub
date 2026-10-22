@@ -1,0 +1,26 @@
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (8689.574208ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (4239.3545ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (1775.876083ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (1630.69575ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (3267.233917ms)
+✔ bundled codex exact context restores selected photo, materials and requirements after retry/host change (6864.027375ms)
+✔ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (6546.986917ms)
+✔ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (4393.354625ms)
+✔ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (4490.657875ms)
+✔ bundled codex cover progress roundtrips through both waits, resume and terminal without changing input (4032.343125ms)
+✔ bundled workbuddy cover progress roundtrips through both waits, resume and terminal without changing input (4353.630292ms)
+✔ bundled codex template progress roundtrips through both waits, resume and terminal without changing input (4571.41875ms)
+✔ bundled workbuddy template progress roundtrips through both waits, resume and terminal without changing input (4474.220375ms)
+✔ session routes are fixed to the owning host and reject arbitrary paths or URLs (0.729875ms)
+✔ codex waiting-user resumes through shared projection while terminal facts win (0.241458ms)
+✔ codex waiting-permission resumes through shared projection while terminal facts win (0.070583ms)
+✔ workbuddy waiting-user resumes through shared projection while terminal facts win (0.068125ms)
+✔ workbuddy waiting-permission resumes through shared projection while terminal facts win (0.07075ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63178.988875

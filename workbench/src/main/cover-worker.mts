@@ -4,7 +4,7 @@ import {errorInfo} from '../shared/contracts.ts';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
-import { LibraryError, openLibrary } from '../../../plugin-src/src/lib/file-library/index.mjs';
+import { openLibrary } from '../../../plugin-src/src/lib/file-library/index.mjs';
 import { installBuiltins } from '../../../plugin-src/src/lib/library-seed/index.mjs';
 import { validateImportedRaster } from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import { exact, uuid, token, libraryBinding, requireWrite, fail } from '../shared/validation.ts';
@@ -13,7 +13,7 @@ import type { LibraryBinding, Content } from '../shared/contracts.ts';
 import type { CoverView, Photo, CoverWorkerOperations, CoverPending } from '../shared/cover-contracts.ts';
 const schemas = {
   seed: ['binding'], coverAssets: ['binding'], preflightPhoto: ['source'], importPhoto: ['binding', 'pending'], raster: ['binding', 'assetHash'], rasterBatch: ['binding', 'assetHashes'],
-  inspectCoverInput: ['binding', 'contentId', 'input', 'editToken'], findCoverRequest: ['binding', 'fingerprint'], createCoverRequest: ['binding', 'pending'], createCoverAttempt: ['binding', 'pending'], findCoverAttempt: ['binding', 'pending'], handoffContext: ['binding', 'reference'], coverContext: ['binding', 'reference'], readCover: ['binding', 'contentId'],
+  inspectCoverInput: ['binding', 'contentId', 'input', 'editToken'], findCoverRequest: ['binding', 'fingerprint'], createCoverRequest: ['binding', 'pending'], createCoverAttempt: ['binding', 'pending'], findCoverAttempt: ['binding', 'pending'], handoffContext: ['binding', 'reference'], coverContext: ['binding', 'reference'], readCover: ['binding', 'contentId'], readCoverProgress: ['binding', 'contentId'],
   selectCover: ['binding', 'contentId', 'candidateId', 'editToken', 'mutationId'], cancelCover: ['binding', 'reference', 'mutationId'], candidateRaster: ['binding', 'contentId', 'candidateId'],
 } satisfies Record<keyof CoverWorkerOperations, string[]>;
 export function isCoverOperation(op: unknown): op is keyof CoverWorkerOperations { return typeof op === 'string' && Object.hasOwn(schemas, op); }
@@ -37,20 +37,11 @@ export function sourceBytes(source: string, maxBytes = 64 * 1024 * 1024) {
 }
 type Library = ReturnType<typeof openLibrary>;
 function view(library: Library, contentId: string): CoverView {
-  const current = library.readContent(contentId);
+  const {content: current, progress, requests} = library.readCoverState(contentId);
   return { content: contentProjection(current), jobs: (current.coverJobs || []).map(job => {
-    const attempt = job.attempts.find(a => a.attemptId === job.activeAttemptId) ?? job.attempts.at(-1);
-    let summary: CoverView['jobs'][number]['summary'] = null;
-    if (attempt) try {
-      const { request } = library.readCoverContext(contentId, job.id, attempt.attemptId);
-      summary = { template: { id: request.template.id, version: request.template.version }, styleSampleCount: request.styleAssetHashes.length, hasOwnPhoto: request.photo !== null, pixels: { width: request.pixels.width, height: request.pixels.height }, sizePolicy: request.sizePolicy ?? 'exact', count: request.count, ratio: request.ratio, outputFormat: request.outputFormat };
-    } catch (error) {
-      // Unavailable historical inputs must not hide other jobs or committed candidates.
-      if (!(error instanceof LibraryError)) throw error;
-      const unreadable = error.code === 'IO_ERROR' && ['ENOENT', 'EACCES', 'EPERM', 'EIO', 'ENOTDIR'].includes((error.cause as NodeJS.ErrnoException | undefined)?.code ?? '');
-      if (error.code !== 'CORRUPT' && !unreadable) throw error;
-    }
-    return { id: job.id, requestHash: job.requestHash, inputHash: job.inputHash, activeAttemptId: job.activeAttemptId, summary, attempts: job.attempts.map(a => ({ attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure })) };
+    const request = requests.get(job.id);
+    const summary: CoverView['jobs'][number]['summary'] = request ? { template: { id: request.template.id, version: request.template.version }, styleSampleCount: request.styleAssetHashes.length, hasOwnPhoto: request.photo !== null, pixels: { width: request.pixels.width, height: request.pixels.height }, sizePolicy: request.sizePolicy ?? 'exact', count: request.count, ratio: request.ratio, outputFormat: request.outputFormat } : null;
+    return { id: job.id, requestHash: job.requestHash, inputHash: job.inputHash, activeAttemptId: job.activeAttemptId, summary, attempts: job.attempts.map(a => ({ attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure, progress: progress.jobs.find(j => j.id === job.id)?.attempts.find(p => p.attemptId === a.attemptId)?.progress, progressUnavailable: progress.jobs.find(j => j.id === job.id)?.attempts.find(p => p.attemptId === a.attemptId)?.progressUnavailable })) };
   }), candidates: (current.candidates || []).map(c => ({ id: c.id, assetHash: c.assetHash, originalName: c.originalName, requestId: c.requestId, attemptId: c.attemptId, accepted: c.accepted, url: '' })), selectedCandidateId: current.selectedCover?.candidateId ?? null };
 }
 // Only cache the conclusion for immutable bytes, never bytes or library authority.
@@ -106,7 +97,8 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
       }));
     } catch (error) { forgetBoundReader(); throw error; }
   }
-  const library = ['coverAssets', 'readCover'].includes(op) ? boundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  const library = ['coverAssets', 'readCover', 'readCoverProgress'].includes(op) ? boundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  if (op === 'readCoverProgress') return library.readCoverProgress(raw.contentId as string);
   if (op === 'seed') { installBuiltins(library); return; }
   if (op === 'importPhoto') {
     const p = raw.pending as unknown as import('../shared/cover-contracts.ts').PhotoPending;

@@ -1,3 +1,4 @@
+import {assistantSessionURL} from '../shared/task-progress.ts';
 import {prepareNativeHandoff, nativeHandoffDirectory, openNativeHandoff} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
 import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
@@ -179,7 +180,8 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         launchTemplate: async (binding, reference) => {
             const setup = await readTemplateAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY'});
-            const {templateId, requestId, attemptId, requestHash, host} = reference;
+            const {templateId, requestId, attemptId, requestHash, host, sessionId} = reference;
+            if (sessionId) {await shell.openExternal(assistantSessionURL(host, sessionId)); return;}
             const installedSkill = setup.skill;
             await launchWithAssistantRuntime(host, release, assistantMarketRoot, async () => {
                 const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, {templateId, requestId, attemptId, requestHash, host}, release, {kind: 'template', installedSkill});
@@ -187,6 +189,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             }, {capability: 'template'});
         },
         launch: async (binding, reference) => {
+            if (reference.sessionId) {await shell.openExternal(assistantSessionURL(reference.host, reference.sessionId)); return;}
             const setup = await readAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('助手或配套插件尚未准备好，请在工作台左下角设置中检查后重试。'), {code: 'NOT_READY'});
             const installedSkill = setup.skill;

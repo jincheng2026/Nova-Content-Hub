@@ -1,0 +1,12 @@
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (3279.216125ms)
+✔ summary fallback preserves strict input integrity checks for execution (1414.257875ms)
+✔ unexpected errors during summary loading still propagate (1024.01125ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (2440.560042ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8437.3785

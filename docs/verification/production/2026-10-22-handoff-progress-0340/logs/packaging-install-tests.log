@@ -1,0 +1,127 @@
+✔ native channels preserve only the sealed marketplace during macOS signing (8.947708ms)
+✔ native markets retain the fixed full tree and auth-specific runtime after packaging (1031.15075ms)
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (616.469208ms)
+✔ source inventory and runtime are validated before their tree can be sealed (232.449292ms)
+✔ free preview is the default experience and restricted testing stays explicit (1.068875ms)
+✔ installer accepts only explicit native platform/arch and channel authentication policy (0.610791ms)
+✔ release pairing, auth and toolchain fail closed (0.584334ms)
+✔ free preview requires disabled mode and pairs the desktop stage explicitly (0.182ms)
+✔ production needs signing configuration and remains blocked for this experimental release (0.22575ms)
+✔ testing removes signing variables instead of passing empty certificate paths to builder (728.952042ms)
+✔ packaging preserves runtime files, user data, and testing labels without cloud publication (1.800083ms)
+✔ free preview uses the product identity and local builds keep their isolated identity (0.506208ms)
+✔ all installer channels and universal builds preserve company, copyright and product identity (495.327666ms)
+✔ pinned builder schema and real file matcher accept runtime and exclude release/probe/test sources (4.259208ms)
+✔ validated macOS build copies are archived without changing bytes, symlinks, modes, DMGs or earlier builds (17.443833ms)
+✔ only packaged macOS apps outside Applications offer installation (4.32775ms)
+✔ development, testing and unknown source identities never recover or prompt for the formal application (0.205166ms)
+✔ only the installed formal macOS app confirms its installation journal (0.205208ms)
+✔ skipping installation still recovers interrupted publication before offering install (0.108666ms)
+✔ successful verified publication explicitly relaunches installed executable with safe args (1.882417ms)
+✔ copy and relaunch failures continue without a false success (0.288375ms)
+✔ replacement is explicit and cancel performs no installation (0.103416ms)
+✔ confirmed replacement permits verified installation (0.093791ms)
+✔ running app and unknown recovery records produce a native notice without installation (0.164542ms)
+✔ an unavailable optional dialog does not prevent desktop startup (0.1545ms)
+✔ deferred completed-backup cleanup preserves the current app without offering another replacement (0.107167ms)
+✔ verified installation retains the complete previous app and confirms only installed startup (465.327959ms)
+✔ completed installation retires the launchable raw previous app into a recoverable archive (335.308958ms)
+✔ native previous-app archive round-trips the complete old tree and publishes a private hash receipt (355.661416ms)
+Previous application backup retirement deferred: archive disk full
+✔ completed backup write failure preserves old bytes and the retry claim without blocking confirmation (420.603ms)
+Previous application backup retirement deferred: Previous application archive round-trip mismatch
+✔ completed backup roundtrip failure preserves old bytes and the retry claim without blocking confirmation (329.171666ms)
+Previous application backup retirement deferred: old signature rejected
+✔ completed backup signature failure preserves old bytes and the retry claim without blocking confirmation (349.410417ms)
+Previous application backup retirement deferred: Command failed: /usr/bin/ditto -x -k /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-jQn3m3/Applications/.nova-content-hub-install-bfa9f2a1-be31-40b1-9f10-c514d75fef2a/.archive-previous-4TlnRT/previous.app.zip /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-jQn3m3/Applications/.nova-content-hub-install-bfa9f2a1-be31-40b1-9f10-c514d75fef2a/.verify-previous/payload
+ditto: Couldn't read PKZip signature
+
+✔ completed backup zip failure preserves old bytes and the retry claim without blocking confirmation (265.414125ms)
+Previous application backup retirement deferred: ENOENT: no such file or directory, open '/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-install-gEEcuR/Applications/.nova-content-hub-install-eedb37de-d37a-49b9-8f53-fbf9c306a8ac/previous-backup/receipt.json'
+✔ completed backup receipt failure preserves old bytes and the retry claim without blocking confirmation (155.473791ms)
+Previous application backup retirement deferred: archive publication failed
+✔ completed backup publish failure preserves old bytes and the retry claim without blocking confirmation (513.969584ms)
+Previous application backup retirement deferred: Application recovery identity mismatch
+✔ completed backup changed-previous failure preserves old bytes and the retry claim without blocking confirmation (188.84975ms)
+Previous application backup retirement deferred: Previous application is still running
+✔ completed backup running failure preserves old bytes and the retry claim without blocking confirmation (88.809ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ completed backup running-after-archive failure preserves old bytes and the retry claim without blocking confirmation (681.123ms)
+Previous application backup retirement deferred: Previous application started while archiving
+✔ a published archive interrupted before raw retirement is verified and resumed (323.783875ms)
+Previous application backup retirement deferred: interrupted before removal
+▶ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree
+  ✔ false (227.232042ms)
+Previous application backup retirement deferred: interrupted before removal
+  ✔ true (229.17075ms)
+✔ retirement interruption preserves the pinned non-app directory and resumes only its unchanged tree (456.965667ms)
+Previous application backup retirement deferred: Previous application started while archiving
+▶ archive corruption cannot authorize removal of a retained raw backup
+  ✔ previous.app.zip (173.257583ms)
+Previous application backup retirement deferred: Previous application started while archiving
+  ✔ receipt.json (159.418167ms)
+✔ archive corruption cannot authorize removal of a retained raw backup (333.020125ms)
+✔ explicit retirement refuses foreign paths and non-complete transactions without touching rollback material (73.393916ms)
+✔ a real process exit after extraction leaves a pinned scratch that the next archive call safely clears (351.26925ms)
+▶ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization
+  ✔ false (320.251208ms)
+  ✔ true (306.83775ms)
+✔ a process exit during recursive raw removal resumes only with the pinned durable deletion authorization (627.535875ms)
+✔ scratch cleanup keeps owner.json through a process exit halfway through payload removal (305.683084ms)
+✔ an empty scratch left after owner unlink is safely retired while a nonempty unknown one remains protected (183.89975ms)
+▶ unknown, live-owned and running verification scratch directories are preserved until safely retryable
+  ✔ unknown (84.359292ms)
+  ✔ live-owner (75.213542ms)
+  ✔ running-copy (231.965667ms)
+✔ unknown, live-owned and running verification scratch directories are preserved until safely retryable (392.140375ms)
+✔ same-process overlapping archive verification cannot clear an active scratch (207.124458ms)
+✔ only strict native transaction backup executable paths are rejected before desktop locking (7.012333ms)
+▶ completed installation never restores an old backup after the user removes, moves or replaces the installed app
+  ✔ remove (203.209459ms)
+  ✔ move (233.482625ms)
+  ✔ replace (293.661417ms)
+✔ completed installation never restores an old backup after the user removes, moves or replaces the installed app (731.204208ms)
+✔ a completed local-channel journal can recover before an official-channel update (473.249958ms)
+✔ allowed product channels replace and restore each other with the same executable (120.714041ms)
+✔ unknown journal channels and incompatible executables preserve recovery evidence (195.742458ms)
+✔ unknown installed channels and mismatched incoming source or candidate channels are refused (78.624916ms)
+✔ throw copy or verification failure leaves old app intact (41.800916ms)
+✔ missing copy or verification failure leaves old app intact (35.005833ms)
+✔ hash copy or verification failure leaves old app intact (48.504208ms)
+✔ mode copy or verification failure leaves old app intact (33.401291ms)
+✔ source-signature copy or verification failure leaves old app intact (7.393584ms)
+✔ candidate-signature copy or verification failure leaves old app intact (35.013125ms)
+✔ internal symlinks survive copying; escaping links and unknown identities are refused (86.262667ms)
+✔ running target at check 1 is refused before replacement (6.340458ms)
+✔ running target at check 2 is refused before replacement (55.679167ms)
+✔ running-process query failure leaves previous app intact (5.519958ms)
+✔ failed publish restores old app; failed rollback retains recovery record and previous app (143.517917ms)
+✔ interrupted new rename is pending; recovery refuses a replaced previous identity (78.061958ms)
+✔ unknown transaction directory and target symlink are left untouched (7.221041ms)
+✔ native macOS process query distinguishes an unused app directory (377.401375ms)
+✔ initial installation and a subsequent confirmed update preserve separate backups (127.671042ms)
+✔ another live installation owner cannot have its staging directory archived (64.54ms)
+✔ prepared journal recovers interruption between the old rename and published record (70.562541ms)
+✔ installing from the target itself is refused without touching it (2.677375ms)
+✔ native ditto copy retains framework-style symlinks and executable bits (89.956708ms)
+✔ same-process concurrent recovery cannot archive an active copy (69.032041ms)
+✔ an initialized private orphan before active publication does not block a later install (140.96925ms)
+✔ published initialized staging claim recovers without deleting its private directory (72.8425ms)
+✔ unknown active regular file and symlink are preserved without following them (6.730833ms)
+✔ exclusive claim publication refuses a concurrently created unknown empty directory (19.964416ms)
+✔ native artifacts preserve their byte tree and executable modes across export and assembly copy (1068.289083ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (394.627375ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (330.358ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (160.962ms)
+✔ plugin hashes, Node lock and marketplace inventory cannot be silently regenerated by export (251.421375ms)
+✔ universal selector has only two finite native destinations and refuses other platforms and overrides (0.555958ms)
+✔ payload export is explicit and does not tighten existing native preview commands (0.291917ms)
+✔ final-only universal hook copies both immutable payloads and detects signing mutations (2200.328584ms)
+ℹ tests 98
+ℹ suites 0
+ℹ pass 98
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10834.866792

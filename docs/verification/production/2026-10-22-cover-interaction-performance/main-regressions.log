@@ -1,0 +1,55 @@
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (7148.4535ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (4583.991125ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (4882.585167ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (6246.392542ms)
+  ✔ failed (9727.656958ms)
+  ✔ superseded (11090.14375ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (27065.772ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (8401.583583ms)
+  ✔ after (8016.242083ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (16419.722375ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (4023.649916ms)
+  ✔ true (3581.612833ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (7606.312958ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (5271.915125ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (749.472666ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (746.804167ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (4839.8685ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (8197.843917ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (12339.357709ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (4105.109625ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (12772.613791ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (3285.326916ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (1705.266041ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (7970.632417ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (5949.901042ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (5401.072833ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (11182.465083ms)
+✔ summary fallback preserves strict input integrity checks for execution (5199.999333ms)
+✔ unexpected errors during summary loading still propagate (2880.208ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (1242.852292ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (6096.549791ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (5836.463209ms)
+✔ folder-open failure keeps exported originals recoverable (3788.695458ms)
+✔ bound cover continuation keeps original host, session and waiting state after global host changes (4156.742041ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (6219.523084ms)
+✔ successive raster reads reuse one bound library opening while returning the original bytes (776.393333ms)
+✔ a warm raster read rejects same-size bytes with restored mtime (771.931042ms)
+✔ validated MIME hits skip sharp metadata while current-byte tampering is still refused (778.607084ms)
+✔ a warm reader rejects a cloned root at the same path and accepts its explicit new binding (1051.342167ms)
+✔ a warm reader checks the descriptor identity and current lock on every access (965.844209ms)
+✔ a warm raster read still recovers a durable pending content transaction (853.95325ms)
+✔ root replacement during asynchronous raster decode is rejected by the second asset read (412.450875ms)
+✔ two-image batches isolate bad images and reject an unbounded batch (688.257958ms)
+✔ image requests merge in flight, cap batches at two, drain before writers, and discard revoked work (363.548666ms)
+ℹ tests 44
+ℹ suites 0
+ℹ pass 44
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 187904.114083

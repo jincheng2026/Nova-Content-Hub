@@ -3,7 +3,7 @@ import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import type {TemplateGroup} from '../shared/cover-contracts.ts';
 import './template-preview.css';
 
-export function TemplatePreview({template, disabled, preview, select, selected = false}: {template: TemplateGroup; disabled: boolean; preview(): void; select?(): void; selected?: boolean}) {
+export function TemplatePreview({template, disabled, preview, select, selected = false, previewLabel = '查看整组'}: {template: TemplateGroup; disabled: boolean; preview(): void; select?(): void; selected?: boolean; previewLabel?: string}) {
   const [active, setActive] = useState(0), [browsing, setBrowsing] = useState(false);
   const owner = useId(), root = useRef<HTMLDivElement>(null);
   const samples = template.samples.filter((sample, index, all) => all.findIndex(item => item.assetHash === sample.assetHash) === index).slice(0, 3);
@@ -37,6 +37,6 @@ export function TemplatePreview({template, disabled, preview, select, selected =
       {select && selected && <span className="creator-template-check" aria-hidden="true">✓</span>}
       {samples.length > 1 && <span className="creator-stack-preview-label" aria-hidden="true">组内翻看</span>}
     </Button>
-    {select ? <><Button className="creator-template-select-name" theme="borderless" disabled={disabled} onClick={select} aria-pressed={selected}>{template.name}</Button><div className="creator-template-choice-meta"><span>{template.builtin ? '内置' : '我的模板'}</span><Button size="small" theme="borderless" disabled={disabled} onClick={showPreview} aria-label={`查看整组：${template.name}`}>查看整组</Button></div></> : samples.length > 1 && <div className="creator-template-thumbnails" aria-label={`${template.name}的样张缩略图`}>{samples.map((sample, thumbnail) => <Button key={sample.assetHash} theme="borderless" disabled={disabled} aria-label={`查看${template.name}样张 ${thumbnail + 1}`} aria-pressed={active === thumbnail} onClick={() => {setBrowsing(false); setActive(thumbnail);}}><img src={sample.url} alt="" loading="lazy" decoding="async"/></Button>)}{template.samples.length > 3 && <Button theme="borderless" disabled={disabled} onClick={showPreview} aria-label={`查看全部 ${template.samples.length} 张样张`}>+{template.samples.length - 3}</Button>}</div>}
+    {select ? <><Button className="creator-template-select-name" theme="borderless" disabled={disabled} onClick={select} aria-pressed={selected}>{template.name}</Button><div className="creator-template-choice-meta"><span>{template.builtin ? '内置' : '我的模板'}</span><Button size="small" theme="borderless" disabled={disabled} onClick={showPreview} aria-label={`${previewLabel}：${template.name}`}>{previewLabel}</Button></div></> : samples.length > 1 && <div className="creator-template-thumbnails" aria-label={`${template.name}的样张缩略图`}>{samples.map((sample, thumbnail) => <Button key={sample.assetHash} theme="borderless" disabled={disabled} aria-label={`查看${template.name}样张 ${thumbnail + 1}`} aria-pressed={active === thumbnail} onClick={() => {setBrowsing(false); setActive(thumbnail);}}><img src={sample.url} alt="" loading="lazy" decoding="async"/></Button>)}{template.samples.length > 3 && <Button theme="borderless" disabled={disabled} onClick={showPreview} aria-label={`查看全部 ${template.samples.length} 张样张`}>+{template.samples.length - 3}</Button>}</div>}
   </div>;
 }

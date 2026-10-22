@@ -13,11 +13,15 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     },
     onWorkspaceChanged: listener => {
         if (typeof listener !== 'function') throw new TypeError('Expected a workspace listener');
-        const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'changed' || value === 'unavailable') listener(value); };
+        const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'changed' || value === 'progress' || value === 'unavailable') listener(value); };
         ipcRenderer.on('nova:workspace-changed', receive);
         return () => { ipcRenderer.removeListener('nova:workspace-changed', receive); };
     },
     inspectLibraryHealth: () => ipcRenderer.invoke('nova:inspectLibraryHealth'),
+    readTemplateProgress: input => ipcRenderer.invoke('nova:readTemplateProgress', input),
+    readCoverProgress: input => ipcRenderer.invoke('nova:readCoverProgress', input),
+    continueBoundTemplate: input => ipcRenderer.invoke('nova:continueBoundTemplate', input),
+    continueBoundCover: input => ipcRenderer.invoke('nova:continueBoundCover', input),
     readTemplateAssistantSetup: () => ipcRenderer.invoke('nova:readTemplateAssistantSetup'),
     readTemplateWorkflow: input => ipcRenderer.invoke('nova:readTemplateWorkflow', input),
     startTemplateStudy: input => ipcRenderer.invoke('nova:startTemplateStudy', input),

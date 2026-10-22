@@ -1,0 +1,48 @@
+✔ new-cover tool prompt has a clean-original-generation suffix and preserves fixed input (28.122917ms)
+✔ restoration keeps source marks and unmodified tool bytes rather than applying clean-output removal (5.950458ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (2995.10825ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (3423.209708ms)
+✔ codex exact template handoff names the selected template and requests study plus restoration (4684.178166ms)
+✔ codex ratio-minimum template handoff names the selected template and requests study plus restoration (5248.191709ms)
+✔ workbuddy exact template handoff names the selected template and requests study plus restoration (5104.831292ms)
+✔ workbuddy ratio-minimum template handoff names the selected template and requests study plus restoration (4830.687542ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, with complete annotations local (7739.622416ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, with complete annotations local (7127.319125ms)
+✔ codex composition references are separately counted fixed inputs and all selected hashes are required for claim (5398.044417ms)
+✔ workbuddy composition references are separately counted fixed inputs and all selected hashes are required for claim (5053.303416ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (2496.474875ms)
+✔ empty display names and deleted templates keep a natural cover prompt (3305.576792ms)
+✔ URL budget prunes optional names and preserves the short fixed task for long library paths (3837.568416ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (2580.275042ms)
+✔ release and request/host validation stop before creating an envelope (2494.062ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (2895.509833ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (2442.089083ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (3875.341916ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (2737.752458ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (2780.268542ms)
+✔ codex exact keeps every selected requirement local and restores exact bytes and roles across retry and host change (11881.20725ms)
+✔ codex ratio-minimum keeps every selected requirement local and restores exact bytes and roles across retry and host change (11276.036ms)
+✔ workbuddy exact keeps every selected requirement local and restores exact bytes and roles across retry and host change (9396.692791ms)
+✔ workbuddy ratio-minimum keeps every selected requirement local and restores exact bytes and roles across retry and host change (9015.854583ms)
+✔ execution Skills require actual complete input reads and a visible checklist before claim and generation (1.255417ms)
+✔ codex keeps complete 10000 character requirements local with short direct launch (2053.282625ms)
+✔ workbuddy keeps complete 10000 character requirements local with short direct launch (2148.193833ms)
+✔ direct native handoff never touches the clipboard or paste confirmation (0.218416ms)
+✔ codex template notes keep all 10000 characters in the local fixed request (2391.638666ms)
+✔ workbuddy template notes keep all 10000 characters in the local fixed request (2179.08525ms)
+✔ a custom first-line refinement requirement is never removed as a generated prefix (2551.554375ms)
+✔ short handoff keeps long private instructions only in the immutable local request (1855.002333ms)
+✔ cover progress is isolated, revision guarded and cannot resurrect an ended attempt (2685.9695ms)
+✔ template progress is isolated, revision guarded and cannot resurrect an ended attempt (3359.104459ms)
+✔ cover damaged or swapped progress stays advisory, session ownership and safe paths fail closed (3363.470416ms)
+✔ template damaged or swapped progress stays advisory, session ownership and safe paths fail closed (3605.519208ms)
+✔ cover copied or replaced library roots cannot reuse the original assistant session (2498.091375ms)
+✔ template copied or replaced library roots cannot reuse the original assistant session (2953.245166ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 154782.184041

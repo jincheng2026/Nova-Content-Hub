@@ -29,6 +29,8 @@ declare module '*file-library/index.mjs' {
         findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;
         createCoverRequest(id: string, input: import('./cover-contracts.ts').CoverInput, token: string, options: { mutationId: string }): import('./cover-contracts.ts').RequestResult;
         createCoverAttempt(id: string, requestId: string, input: { host: import('./cover-contracts.ts').Assistant; reason: string }, options: { mutationId: string }): { attempt: import('./cover-contracts.ts').Attempt };
+        readCoverState(id: string): {content: ReturnType<Library['readContent']>; progress: import('./cover-contracts.ts').TaskProgressView; requests: Map<string, ReturnType<Library['readCoverContext']>['request'] | null>};
+        readCoverProgress(id: string): import('./cover-contracts.ts').TaskProgressView;
         readCoverContext(id: string, requestId: string, attemptId: string): import('./cover-contracts.ts').CoverContext & { inbox: string; inputs: { assetHash: string }[]; request: import('./cover-contracts.ts').CoverContext['request'] & Pick<import('./cover-contracts.ts').CoverInput, 'template' | 'styleAssetHashes' | 'photo' | 'pixels' | 'sizePolicy' | 'count' | 'ratio' | 'outputFormat'> };
         claimCoverAttempt(id: string, requestId: string, attemptId: string, input: { host: 'codex' | 'workbuddy'; readAssetHashes: string[] }): unknown;
         commitCoverAttempt(id: string, requestId: string, attemptId: string, receipt: unknown): Promise<unknown>;

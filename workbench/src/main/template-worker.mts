@@ -4,7 +4,7 @@ import {exact, libraryBinding, requireWrite, fail} from '../shared/validation.ts
 import {templateDesktopInput, templatePending, templateReference} from '../shared/template-validation.ts';
 import type {TemplateCoreLibrary, TemplateCoreContext, TemplateCoreDocument} from '../shared/template-core.d.ts';
 import type {TemplatePending, TemplateReference, TemplateWorkerOperations, TemplateWorkflowView, TemplateRequestIdentity} from '../shared/template-contracts.ts';
-const operations = ['templateRead', 'templateRequest', 'templateMutate', 'templateRecover', 'templateHandoff'] as const;
+const operations = ['templateProgress', 'templateRead', 'templateRequest', 'templateMutate', 'templateRecover', 'templateHandoff'] as const;
 export const isTemplateOperation = (op: unknown): op is keyof TemplateWorkerOperations => typeof op === 'string' && (operations as readonly string[]).includes(op);
 const idOf = (p: TemplatePending) => p.action === 'start' || p.action === 'accept' ? p.input.templateId : p.reference.templateId;
 function reference(c: TemplateCoreContext): TemplateReference {
@@ -25,7 +25,7 @@ function writableContext(library: TemplateCoreLibrary, r: TemplateReference, liv
     return c;
 }
 function view(library: TemplateCoreLibrary, templateId: string): TemplateWorkflowView {
-    const t = library.readTemplate(templateId);
+    const t = library.readTemplate(templateId), progress = library.readTemplateProgress(templateId);
     return {templateId: t.id, title: t.title, editToken: t.editToken, currentVersion: t.currentVersion, builtin: t.builtin === true, deletedAt: t.deletedAt ?? null, jobs: (t.templateJobs ?? []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, acceptance: job.acceptance, attempts: job.attempts.map(a => {
         let c: TemplateCoreContext;
         try { c = library.readTemplateContext(templateId, job.id, a.attemptId); }
@@ -33,10 +33,10 @@ function view(library: TemplateCoreLibrary, templateId: string): TemplateWorkflo
             const unreadable = error instanceof LibraryError && error.code === 'IO_ERROR' && ['ENOENT', 'EACCES', 'EPERM', 'EIO', 'ENOTDIR'].includes((error.cause as NodeJS.ErrnoException | undefined)?.code ?? '');
             if (!(error instanceof LibraryError) || error.code !== 'CORRUPT' && !unreadable) throw error;
             const source = t.versions[0];
-            return {attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure, reference: {templateId, requestId: job.id, attemptId: a.attemptId, requestHash: job.requestHash, sourceVersion: 0, sourcePackageHash: source?.packageHash ?? ''}, samples: [], result: null, unavailable: true};
+            return {...progress.jobs.find(j => j.id === job.id)?.attempts.find(p => p.attemptId === a.attemptId), attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure, reference: {templateId, requestId: job.id, attemptId: a.attemptId, requestHash: job.requestHash, sourceVersion: 0, sourcePackageHash: source?.packageHash ?? ''}, samples: [], result: null, unavailable: true};
         }
         const result = c.results.find(r => r.requestId === job.id && r.attemptId === a.attemptId)?.result;
-        return {attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure, reference: reference(c), samples: c.request.styleAssetHashes.map(assetHash => ({assetHash, url: ''})), result: result ? {resultHash: result.resultHash, rules: result.rules, restore: {assetHash: result.restore.assetHash, url: ''}} : null, unavailable: false};
+        return {...progress.jobs.find(j => j.id === job.id)?.attempts.find(p => p.attemptId === a.attemptId), attemptId: a.attemptId, host: a.host, status: a.status, reason: a.reason, failure: a.failure, reference: reference(c), samples: c.request.styleAssetHashes.map(assetHash => ({assetHash, url: ''})), result: result ? {resultHash: result.resultHash, rules: result.rules, restore: {assetHash: result.restore.assetHash, url: ''}} : null, unavailable: false};
     })}))};
 }
 function receipt(library: TemplateCoreLibrary, p: TemplatePending, requestStage = false) {
@@ -77,12 +77,13 @@ async function verifyReplay(library: TemplateCoreLibrary, p: TemplatePending) {
     }
 }
 export async function executeTemplate(op: keyof TemplateWorkerOperations, raw: unknown, mode: 'required' | 'disabled'): Promise<TemplateWorkerOperations[keyof TemplateWorkerOperations]['result']> {
-    const fields = op === 'templateRead' ? ['binding', 'templateId'] : op === 'templateHandoff' ? ['binding', 'reference'] : ['binding', 'pending'];
-    if (!exact(raw, fields) || !libraryBinding(raw.binding) || !path.isAbsolute(raw.binding.root) || raw.binding.root.includes('\0') || (op === 'templateRead' ? templateDesktopInput('readTemplateWorkflow', {templateId: raw.templateId}) !== true : op === 'templateHandoff' ? !templateReference(raw.reference) : !templatePending(raw.pending))) fail('INVALID_INPUT', '工作进程拒绝无效模板输入。');
+    const fields = ['templateRead', 'templateProgress'].includes(op) ? ['binding', 'templateId'] : op === 'templateHandoff' ? ['binding', 'reference'] : ['binding', 'pending'];
+    if (!exact(raw, fields) || !libraryBinding(raw.binding) || !path.isAbsolute(raw.binding.root) || raw.binding.root.includes('\0') || (['templateRead', 'templateProgress'].includes(op) ? templateDesktopInput('readTemplateWorkflow', {templateId: raw.templateId}) !== true : op === 'templateHandoff' ? !templateReference(raw.reference) : !templatePending(raw.pending))) fail('INVALID_INPUT', '工作进程拒绝无效模板输入。');
     requireWrite(mode);
     const library = openLibrary(raw.binding.root, {expectedLibraryId: raw.binding.libraryId, expectedRootIdentity: raw.binding.rootIdentity}) as unknown as TemplateCoreLibrary;
+    if (op === 'templateProgress') return library.readTemplateProgress(raw.templateId as string);
     if (op === 'templateRead') return view(library, raw.templateId as string);
-    if (op === 'templateHandoff') return {host: writableContext(library, raw.reference as unknown as TemplateReference, true).attempt.host};
+    if (op === 'templateHandoff') {const c = writableContext(library, raw.reference as unknown as TemplateReference, true); return {host: c.attempt.host, ...(c.progress?.sessionId ? {sessionId: c.progress.sessionId} : {})};}
     const p = raw.pending as unknown as TemplatePending;
     if (op === 'templateRecover') {
         const found = receipt(library, p);

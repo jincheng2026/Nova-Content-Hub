@@ -1,0 +1,13 @@
+[
+  {
+    "name": "single-selected",
+    "className": "semi-select-option-list-wrapper",
+    "radius": "0px",
+    "overflow": "visible",
+    "html": "<div id=\"semi-select-ffkw1k2\" class=\"semi-select-option-list-wrapper\" style=\"min-width: 400px;\"><div class=\"semi-select-option-list semi-select-option-list-chosen\" role=\"listbox\" aria-multiselectable=\"false\" style=\"max-height: 270px;\"><div class=\"semi-select-option semi-select-option-selected semi-select-option-focused\" role=\"option\" id=\"single-opt",
+    "corners": [
+      true,
+      true
+    ]
+  }
+]

@@ -205,12 +205,10 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
         const task = {contentId: content.id, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId, host: currentHost};
         const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, {installedSkill: 'nova-content-cover-execution'});
         const text = prepared.prompt;
-        assert.match(text, /4张；3:4；(?:精确|至少)768×1024；png/);
-        assert.ok(text.includes(sizePolicy === 'exact' ? '本人照已选' : '不放人物'));
-        assert.match(text, /样张1；资料2/);
-        assert.ok(text.includes(request.prompt), 'the complete supplemental input is readable before CLI context resolution');
-        if (!prepared.requiresPaste) assert.equal(new URL(prepared.url).searchParams.get('prompt'), text);
-        else assert.equal(new URL(prepared.url).searchParams.has('prompt'), false, 'long input uses complete copy, never a locator-only task');
+        assert.ok(text.length < 220);
+        assert.ok(!text.includes(request.prompt));
+        assert.equal(prepared.requiresPaste, false);
+        assert.equal(new URL(prepared.url).searchParams.get('prompt'), text);
         const context = run(f.home, ['cover', 'context', '--handoff', prepared.id]);
         assert.equal(context.ok, true, context.message);
         assert.deepEqual(context.result.request, request);
@@ -228,4 +226,46 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
         assert.equal(run(f.home, ['cover', 'claim', '--handoff', prepared.id, '--stdin'], {host: currentHost, readAssetHashes: hashes}).ok, true);
         assert.equal(run(f.home, ['cover', 'fail', '--handoff', prepared.id, '--stdin'], {code: 'SYNTHETIC_STOP', message: 'No provider called'}).ok, true);
     }
+});
+
+for (const kind of ['cover', 'template']) for (const host of ['codex', 'workbuddy']) test(`bundled ${host} ${kind} progress roundtrips through both waits, resume and terminal without changing input`, async t => {
+    const f = await fixture(t), original = f.library.readCoverContext(f.task.contentId, f.task.requestId, f.task.attemptId);
+    let handoff = f.id, oid = f.task.contentId;
+    if (kind === 'cover' && host !== f.task.host) {
+        const attempt = f.library.createCoverAttempt(oid, f.task.requestId, {host}).attempt;
+        handoff = (await prepareNativeHandoff(f.directory, f.binding, {...f.task, host, attemptId: attempt.attemptId}, release, {installedSkill: 'nova-content-cover-execution'})).id;
+    }
+    if (kind === 'template') {
+        oid = original.request.template.id;
+        const created = await f.library.createTemplateRequest(oid, {version: 1, notes: 'complete template instructions'}, f.library.readTemplate(oid).editToken);
+        const attempt = f.library.createTemplateAttempt(oid, created.request.requestId, {host}).attempt;
+        handoff = (await prepareNativeHandoff(f.directory, f.binding, {templateId: oid, requestId: created.request.requestId, attemptId: attempt.attemptId, requestHash: created.request.requestHash, host}, release, {kind: 'template', installedSkill: 'nova-content-template-execution'})).id;
+    }
+    const args = [kind, 'progress', '--handoff', handoff, '--stdin'];
+    const before = f.library[kind === 'cover' ? 'readContent' : 'readTemplate'](oid).editToken;
+    const ctx = run(f.home, [kind, 'context', '--handoff', handoff]); assert.equal(ctx.ok, true, ctx.message);
+    assert.equal(ctx.result.attempt.host, host);
+    const progress = {host, requestHash: ctx.result.request.requestHash, phase: 'reading', state: 'waiting-user', message: '请在原助手确认', expectedRevision: 0, mutationId: randomUUID()};
+    assert.equal(run(f.home, args, {...progress, host: host === 'codex' ? 'workbuddy' : 'codex'}).code, 'INVALID_INPUT');
+    const written = run(f.home, args, progress); assert.equal(written.ok, true, written.message); assert.equal(written.result.revision, 1);
+    const next = run(f.home, [kind, 'context', '--handoff', handoff]);
+    assert.equal(next.result.progress.state, 'waiting-user'); assert.equal(next.result.progress.revision, 1);
+    const permitted = {...progress, state: 'waiting-permission', expectedRevision: 1, mutationId: randomUUID()};
+    assert.equal(run(f.home, args, permitted).result.revision, 2);
+    const resumed = {...progress, state: 'running', expectedRevision: 2, mutationId: randomUUID()};
+    assert.equal(run(f.home, args, resumed).result.revision, 3);
+    assert.equal(run(f.home, [kind, 'context', '--handoff', handoff]).result.progress.state, 'running');
+    assert.equal(f.library[kind === 'cover' ? 'readContent' : 'readTemplate'](oid).editToken, before);
+    const claimed = {host, readAssetHashes: [...new Set(ctx.result.inputs.map(input => input.assetHash))], ...(kind === 'template' ? {requestHash: progress.requestHash, mutationId: randomUUID()} : {})};
+    assert.equal(run(f.home, [kind, 'claim', '--handoff', handoff, '--stdin'], claimed).ok, true);
+    const generating = {...progress, phase: kind === 'template' ? 'restoring' : 'generating', state: 'running', expectedRevision: 3, mutationId: randomUUID()};
+    assert.equal(run(f.home, args, generating).result.revision, 4);
+    const failure = {code: 'SYNTHETIC_STOP', message: 'No provider called', ...(kind === 'template' ? {mutationId: randomUUID()} : {})};
+    assert.equal(run(f.home, [kind, 'fail', '--handoff', handoff, '--stdin'], failure).ok, true);
+    assert.equal(run(f.home, args, {...generating, expectedRevision: 4, mutationId: randomUUID()}).code, 'ATTEMPT_INACTIVE');
+    const ended = run(f.home, [kind, 'context', '--handoff', handoff]);
+    assert.equal(ended.result.attempt.status, 'failed');
+    assert.deepEqual(ended.result.request, ctx.result.request);
+    const required = (await import('node:url')).fileURLToPath(new URL('../../../plugin/runtime/auth-required/', import.meta.url));
+    assert.equal(run(f.home, args, progress, required).code, 'AUTH_NOT_CONFIGURED');
 });

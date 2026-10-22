@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "exitCode": 0,
+  "command": "node scripts/cover-gallery-ui-probe.mjs",
+  "scope": "isolated React/Semi/Electron with synthetic IPC and assets",
+  "checks": [
+    "candidate selected/favorite button status without duplicate row",
+    "gallery batches/compare/favorites/export",
+    "trusted annotation 4 ratios x 3 viewports",
+    "8000+3000 prompt budget prohibits writes",
+    "sample selection applies exact style hashes",
+    "custom ratio validation/apply",
+    "materials/photo/count preservation",
+    "original assistant continuation"
+  ]
+}

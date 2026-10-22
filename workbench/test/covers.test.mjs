@@ -514,3 +514,50 @@ test('folder-open failure keeps exported originals recoverable', async t => {
   const folder = path.join(parent, folders[0]), files = await fs.readdir(folder);
   assert.equal(files.length, 1); assert.deepEqual(await fs.readFile(path.join(folder, files[0])), f.bytes);
 });
+
+for (const ownerHost of ['codex', 'workbuddy']) for (const waitingState of ['waiting-user', 'waiting-permission']) test(`bound ${ownerHost} cover continuation keeps original session and ${waitingState} after global host changes`, async t => {
+  const f = await fixture(t), otherHost = ownerHost === 'codex' ? 'workbuddy' : 'codex';
+  await f.controller.setAssistant({host: ownerHost});
+  const view = await f.start(), job = view.jobs[0], aid = job.activeAttemptId, sessionId = randomUUID();
+  f.library.reportCoverProgress(f.content.id, job.id, aid, {host: ownerHost, requestHash: job.requestHash, phase: 'reading', state: waitingState, message: '请确认需求', sessionId, expectedRevision: 0, mutationId: randomUUID()});
+  await f.controller.setAssistant({host: otherHost});
+  const before = f.library.readContent(f.content.id).editToken;
+  await f.controller.continueBoundCover({contentId: f.content.id, requestId: job.id, attemptId: aid});
+  assert.equal(f.launches.at(-1).reference.host, ownerHost);
+  assert.equal(f.launches.at(-1).reference.sessionId, sessionId);
+  const progress = await f.controller.readCoverProgress({contentId: f.content.id});
+  assert.equal(progress.jobs[0].attempts[0].progress.state, waitingState);
+  assert.equal(progress.editToken, before);
+  assert.equal(f.library.readContent(f.content.id).coverJobs[0].attempts.length, 1);
+  await f.controller.continueCover({contentId: f.content.id, requestId: job.id, attemptId: aid});
+  const changed = await f.controller.readCoverProgress({contentId: f.content.id});
+  const next = changed.jobs[0].attempts.at(-1);
+  assert.equal(next.progress, null);
+  assert.notEqual(next.attemptId, aid);
+  assert.equal(changed.jobs[0].attempts.length, 2);
+  assert.equal(f.launches.at(-1).reference.host, otherHost);
+  assert.equal(f.launches.at(-1).reference.sessionId, undefined);
+});
+
+test('one detail read verifies a shared template once while rechecking every fixed input and later byte changes', async t => {
+  const f = await fixture(t);
+  for (let n = 0; n < 3; n++) await f.start(f.controller, {...f.input, prompt: `shared template ${n}`});
+  const expected = f.library.readContent(f.content.id), assetFile = path.join(f.library.info.root, '资产', 'sha256', f.asset.assetHash.slice(0, 2), f.asset.assetHash);
+  let assets = 0, snapshots = 0;
+  const open = fsSync.openSync;
+  t.mock.method(fsSync, 'openSync', function(file, ...args) {
+    if (file === assetFile) assets++;
+    if (typeof file === 'string' && file.includes(`${path.sep}输入${path.sep}`)) snapshots++;
+    return Reflect.apply(open, this, [file, ...args]);
+  });
+  const view = await f.controller.readCover({contentId: f.content.id});
+  assert.equal(view.jobs.length, 3); assert.ok(view.jobs.every(job => job.summary));
+  assert.equal(snapshots, 3, 'every independently fixed input is fully verified');
+  assert.equal(assets, 1, 'the same immutable template needs one full verification per detail read');
+  assert.equal(view.content.editToken, expected.editToken);
+  const stat = await fs.stat(assetFile), changed = Buffer.from(f.bytes); changed[changed.length - 1] ^= 1;
+  await fs.writeFile(assetFile, changed); await fs.utimes(assetFile, stat.atime, stat.mtime);
+  assert.ok((await f.controller.readCover({contentId: f.content.id})).jobs.every(job => job.summary === null), 'same-size restored-mtime tampering is rechecked on the next read');
+  await fs.writeFile(assetFile, f.bytes);
+  assert.ok((await f.controller.readCover({contentId: f.content.id})).jobs.every(job => job.summary));
+});

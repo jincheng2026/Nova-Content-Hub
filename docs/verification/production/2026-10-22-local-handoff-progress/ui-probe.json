@@ -1,0 +1,24 @@
+{
+  "ok": true,
+  "scope": "isolated Electron React/Semi fixture",
+  "viewport": [
+    1280,
+    868
+  ],
+  "narrowViewport": [
+    820,
+    868
+  ],
+  "devicePixelRatio": 2,
+  "checks": [
+    "waiting → running → committed",
+    "watch progress event",
+    "poll fallback",
+    "phase reads avoid hydration",
+    "dirty body/notes preserved",
+    "original host after global host unavailable",
+    "continue does not grant permission",
+    "terminal ignores stale wait",
+    "narrow no horizontal overflow"
+  ]
+}

@@ -26,11 +26,11 @@ const summary={template:{id:'template',version:1},styleSampleCount:2,hasOwnPhoto
 const jobs=['old','new'].map(id=>({id,requestHash:id,inputHash:id,activeAttemptId:null,summary,attempts:[{attemptId:id+'-attempt',host:'workbuddy',status:'committed',reason:'initial',failure:null}]}));
 let view={content,jobs,candidates,selectedCandidateId:'old-portrait'},serial=0;
 let details={id:content.id,editToken:'metadata-0',materials:[{id:'material',originalName:'本次资料.txt',detectedType:'text/plain',bytes:30,availability:'available',assetHash:'material-hash'},{id:'material-pdf',originalName:'本次资料.pdf',detectedType:'application/pdf',bytes:40,availability:'available',assetHash:'pdf-hash'},{id:'unselected',originalName:'不选资料.txt',detectedType:'text/plain',bytes:20,availability:'available',assetHash:'unselected-hash'}],coverVariants:[],candidates:candidates.map(item=>({...item,favorite:false,note:'',displayNumber:'',variantId:null}))};
-const assets={templates:[{id:'template',version:1,name:'清爽图文组',description:'整组有横竖两种样张。',accepted:false,aiTested:false,builtin:false,samples:[{assetHash:'portrait',url:portrait},{assetHash:'landscape',url:landscape}]}],photos:[{id:'photo',title:'我的本人照',url:portrait,assetHash:'photo-hash',isOwnPhoto:true,availability:'available'}]};
+const assets={templates:[{id:'template',version:1,currentVersion:1,name:'清爽图文组',description:'整组有横竖两种样张。',accepted:false,aiTested:false,builtin:false,samples:[{assetHash:'portrait',url:portrait},{assetHash:'landscape',url:landscape}]}],photos:[{id:'photo',title:'我的本人照',url:portrait,assetHash:'photo-hash',isOwnPhoto:true,availability:'available'}]};
 const library={contentDetails:[details],templates:assets.templates,photos:assets.photos,settings:{defaults:{templateId:'template',photoId:'',coverCount:2},customRatios:[]}};
 const ok=value=>({ok:true,value});
 window.annotationSources={landscape,portrait,wide:artwork(1200,200,'#926347','宽图完整边界'),tall:artwork(200,1200,'#457192','长图完整边界')};window.mutations=[];
-window.contentHub={revealCoverFolder:async input=>{window.folderRequest=input;window.folderRequests=(window.folderRequests??0)+1;const revealed=!window.cancelFolder;window.cancelFolder=false;return ok({revealed});},listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details=input.op==='attachMaterial'?{...details,editToken:'metadata-'+(++serial),materials:[...details.materials,{id:'refinement-material',assetHash:input.assetHash,role:input.role,originalName:input.originalName,availability:'available',bytes:100,detectedType:'image/png'}]}:{...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};view={...view,content:{...view.content,editToken:details.editToken}};return ok({library:{...library,contentDetails:[details]}});},cancelCover:async()=>{view={...view,jobs};return ok(view);},generateCover:async input=>{if(window.failGenerateOnce){window.failGenerateOnce=false;return {ok:false,error:{code:'TEST_GENERATE_FAILURE',message:'模拟助手启动失败'}};}window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
+window.contentHub={revealCoverFolder:async input=>{window.folderRequest=input;window.folderRequests=(window.folderRequests??0)+1;const revealed=!window.cancelFolder;window.cancelFolder=false;return ok({revealed});},listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),exportCover:async input=>{window.exported=input;return ok({exported:true});},selectCover:async input=>{view={...view,selectedCandidateId:input.candidateId};return ok(view);},mutateWorkspace:async input=>{window.mutations.push(input);details=input.op==='attachMaterial'?{...details,editToken:'metadata-'+(++serial),materials:[...details.materials,{id:'refinement-material',assetHash:input.assetHash,role:input.role,originalName:input.originalName,availability:'available',bytes:100,detectedType:'image/png'}]}:{...details,editToken:'metadata-'+(++serial),candidates:details.candidates.map(item=>item.id===input.candidateId?{...item,favorite:input.favorite,note:input.note,displayNumber:input.displayNumber,variantId:input.variantId}:item)};view={...view,content:{...view.content,editToken:details.editToken}};return ok({library:{...library,contentDetails:[details]}});},cancelCover:async()=>{view={...view,jobs};return ok(view);},generateCover:async input=>{if(window.failGenerateOnce){window.failGenerateOnce=false;return {ok:false,error:{code:'TEST_GENERATE_FAILURE',message:'模拟助手启动失败'}};}window.generated=input;const attempt={attemptId:'live-attempt',host:'workbuddy',status:'created',reason:'initial',failure:null};view={...view,jobs:[...jobs,{id:'live',requestHash:'live',inputHash:'live',activeAttemptId:attempt.attemptId,summary,attempts:[attempt]}]};return ok({...view,launchRequested:true});},continueBoundCover:async input=>{window.continued=input;return ok({launchRequested:true});},continueCover:async input=>{window.continued=input;return ok({launchRequested:true});}};
 function Probe(){const [busy,setBusy]=useState(false),[assistant,setAssistant]=useState('workbuddy'),[activeContent,setActiveContent]=useState(content);window.chooseAssistant=setAssistant;window.changeContent=()=>{const next={...content,id:'other-content',title:'另一篇内容'};view={content:next,jobs:[],candidates:[],selectedCandidateId:null};details={...details,id:next.id,materials:[],candidates:[]};library.contentDetails=[details];setActiveContent(next);};return <CoverPanel library={library} status={{currentName:'isolated-fixture',assistant}} content={activeContent} dirty={false} busy={busy} blocked={false} refreshToken={0} readAutomatically={async()=>({assets,cover:view})} run={async action=>{setBusy(true);try{return await action();}catch(error){window.probeError=error.message;return undefined;}finally{setBusy(false);}}} onContent={()=>{}}/>;}
 createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWidth:1160,margin:'auto',fontFamily:'sans-serif'}}><Probe/></div>);
 `);
@@ -69,7 +69,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
     try {
       await window.loadFile(path.join(probeRoot,'dist/index.html'));
       await wait('document.querySelectorAll(".cover-result-card").length===5');
-      const screenshots=await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-gallery-ui-shots-'));
+      const screenshots=process.env.NOVA_PROBE_EVIDENCE_DIR ? path.join(process.env.NOVA_PROBE_EVIDENCE_DIR,'gallery') : await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-gallery-ui-shots-')); await fs.mkdir(screenshots,{recursive:true});
       assert.equal(await run('getComputedStyle(document.querySelector(".cover-result-groups")).gridTemplateColumns.split(" ").length'),5,'1280px gallery has five columns');
       assert.equal(await run('(()=>{const cards=Array.from(document.querySelectorAll(".cover-result-card"));return cards.every(card=>Math.abs(card.getBoundingClientRect().top-cards[0].getBoundingClientRect().top)<1)})()'),true,'candidates from all batches fill the first row');
       assert.equal(await run('[...document.querySelectorAll(".cover-result-image")].every(el=>Math.abs(el.getBoundingClientRect().width/el.getBoundingClientRect().height-.75)<.01)'),true,'cover frames use 3:4 without cropping originals');
@@ -90,6 +90,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run(`(()=>{const frames=[...document.querySelectorAll('.cover-result-image')];return frames.every(frame=>{const a=frame.querySelector('.cover-artwork-original'),b=frame.querySelector('.cover-artwork-backdrop');return a.src===b.src&&getComputedStyle(a).objectFit==='contain'&&getComputedStyle(b).objectFit==='cover'&&getComputedStyle(b).filter.includes('blur(18px)')&&b.getAttribute('aria-hidden')==='true';});})()`),true);
       await click('.cover-result-card:first-child button','收藏');
       await wait('window.mutations.length===1 && document.querySelector(".cover-result-card:first-child button[aria-pressed=true]")');
+      assert.equal(await run('document.querySelectorAll(".cover-result-badges").length'),0,'status uses existing buttons without a duplicate row');
       assert.equal(await run('window.mutations[0].favorite'),true);
       assert.equal(await run('window.mutations[0].candidateId'),'new-landscape');
       assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-candidate-number small").textContent'),'第2批','favorites retain original batch provenance');
@@ -98,9 +99,9 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await enter('.management-dialog textarea','保留横图的完整标题与边界');
       await click('.management-dialog button','暂时收起');
       await wait('document.querySelector(".management-resume") && !document.querySelector(".management-dialog[open]")');
-      assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button[aria-pressed]")].every(button=>button.disabled&&button.title.includes("先保存或放弃"))'),true,'minimized candidate draft blocks favorite changes');
+      assert.equal(await run('[...document.querySelectorAll(".cover-result-actions button[title]")].every(button=>button.disabled&&button.title.includes("先保存或放弃"))'),true,'minimized candidate draft blocks favorite changes');
       assert.equal(await run('[...document.querySelectorAll(".cover-card-tools button")].filter(button=>button.textContent==="⋯").every(button=>button.disabled)'),true,'another note entry cannot replace the minimized draft');
-      await run('document.querySelector(".cover-result-actions button[aria-pressed]").click()');
+      await run('document.querySelector(".cover-result-actions button[title]").click()');
       assert.equal(await run('window.mutations.length'),1,'disabled favorite cannot silently mutate or discard a draft');
       await click('.management-resume button','继续编辑');
       await wait('document.querySelector(".management-dialog[open] textarea")');
@@ -112,6 +113,8 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('document.querySelector(".cover-result-card:first-child .cover-result-caption > p").textContent'),'保留横图的完整标题与边界');
       await click('.cover-result-card:first-child button','选用');
       await wait('document.querySelector(".cover-result-card:first-child.is-selected")');
+      assert.equal(await run('document.querySelector(".cover-result-card:first-child button[aria-label=已选用]").textContent'),'已选用');
+      assert.equal(await run('document.querySelector(".cover-result-card:first-child button[aria-label=已选用]").getAttribute("aria-pressed")'),'true');
       await click('.cover-result-card:first-child button','下载');
       await wait('window.exported?.candidateId==="new-landscape"');
       await run('document.querySelectorAll(".cover-card-title input")[0].click();document.querySelectorAll(".cover-card-title input")[1].click()');
@@ -126,7 +129,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await paint();
       await fs.writeFile(path.join(screenshots,'compare-wide.png'),(await window.webContents.capturePage()).toPNG());
       await click('.cover-compare-grid article:last-child button','收藏');
-      await wait('document.querySelectorAll(".cover-compare-grid button[aria-pressed=true]").length===2');
+      await wait('document.querySelectorAll(".cover-compare-grid button[aria-pressed=true]").length===3');
       await click('.management-dialog button','关闭');
       await wait('!document.querySelector(".management-dialog")');
       await run('document.querySelector(".cover-gallery-toolbar input").click()');
@@ -274,11 +277,12 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await enter('#cover-custom-ratio','0:3');
       await wait('document.getElementById("generate-cover").disabled');
       await enter('#cover-custom-ratio','2:3');
+      await click('.cover-ratio-editor button','应用');
       await wait('!document.getElementById("generate-cover").disabled');
       assert.equal(await run('document.querySelector(".cover-template-selection").textContent.startsWith("已选模板：")'),true,'chosen template is identified in the current compact selector');
       assert.equal(await run('document.querySelector(".cover-advanced").open'),false);
       assert.equal(await run('(()=>{const button=document.getElementById("generate-cover");return getComputedStyle(button.querySelector("span")).color===getComputedStyle(button).color;})()'),true,'footer helper text styling preserves action contrast');
-      assert.equal(await run('document.querySelectorAll(".cover-sample-grid input:checked").length'),2);
+      assert.equal(await run('document.querySelector(".cover-settings-selection").textContent.includes("2 张样张")'),true);
       assert.equal(await run('document.querySelectorAll(".cover-materials input:checked").length'),2,'refinement retains selected supplementary materials');
       assert.equal(await run('document.querySelector(".cover-content-summary p").textContent.includes("已保存的正文摘要")'),true);
       await paint();
@@ -300,8 +304,11 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await run('document.getElementById("cover-ratio").click()');
       await wait('[...document.querySelectorAll(".semi-select-option")].some(option=>option.textContent==="3:4")');
       await run('[...document.querySelectorAll(".semi-select-option")].find(option=>option.textContent==="3:4").click()');
-      await run('document.querySelectorAll(".cover-sample-grid input[type=checkbox]")[1].click()');
-      await wait('document.querySelectorAll(".cover-sample-grid input:checked").length===1');
+      await click('.creator-template-choice-meta button','查看整组并选择');
+      await wait('document.querySelector(".cover-sample-preview[open]")');
+      await run('document.querySelectorAll(".cover-sample-option input[type=checkbox]")[1].click()');
+      await click('.cover-sample-footer button','使用所选样张');
+      await wait('document.querySelector(".cover-settings-selection").textContent.includes("1 张样张")');
       await click('#generate-cover','去 WorkBuddy 生成封面');
       await wait('window.generated?.input.photo?.id==="photo" && !document.querySelector(".cover-create-dialog")');
       assert.deepEqual(await run('window.generated.input.photo'),{id:'photo',assetHash:'photo-hash'});
@@ -317,8 +324,12 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       await wait('document.querySelector(".cover-create-dialog[open]") && !document.getElementById("generate-cover").disabled');
       await click('#no-person','这次不放人物');
       await wait('document.querySelector("#cover-photo .semi-select-selection-text").textContent==="这次不放人物"');
-      await run('document.querySelector(".cover-advanced").open=true;document.querySelectorAll(".cover-materials input[type=checkbox]")[1].click();document.querySelectorAll(".cover-sample-grid input[type=checkbox]")[1].click()');
-      await wait('document.querySelectorAll(".cover-materials input:checked").length===1 && document.querySelectorAll(".cover-sample-grid input:checked").length===2');
+      await run('document.querySelector(".cover-advanced").open=true;document.querySelectorAll(".cover-materials input[type=checkbox]")[1].click()');
+      await click('.creator-template-choice-meta button','查看整组并选择');
+      await wait('document.querySelector(".cover-sample-preview[open]")');
+      await run('document.querySelectorAll(".cover-sample-option input[type=checkbox]")[1].click()');
+      await click('.cover-sample-footer button','使用所选样张');
+      await wait('document.querySelectorAll(".cover-materials input:checked").length===1 && document.querySelector(".cover-settings-selection").textContent.includes("2 张样张")');
       await click('#generate-cover','去 WorkBuddy 生成封面');
       await wait('window.generated && !document.querySelector(".cover-create-dialog") && document.getElementById("continue-cover")');
       assert.equal(await run('window.generated.input.photo'),null);
@@ -328,9 +339,9 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('window.generated.input.ratio'),'3:4');
       assert.equal(await run('window.generated.input.scope'),'cover-only');
       await run('window.chooseAssistant("codex")');
-      await wait('document.getElementById("continue-cover").textContent==="去 Codex 继续"');
-      assert.equal(await run('[...document.querySelectorAll("button")].filter(el=>/去 (Codex|WorkBuddy) 继续/.test(el.textContent)).length'),1);
-      await click('#continue-cover','去 Codex 继续');
+      await wait('document.getElementById("continue-cover").textContent==="打开 WorkBuddy 继续"');
+      assert.equal(await run('[...document.querySelectorAll("button")].filter(el=>/打开 (Codex|WorkBuddy) 继续/.test(el.textContent)).length'),1);
+      await click('#continue-cover','打开 WorkBuddy 继续');
       await wait('window.continued?.attemptId==="live-attempt"');
       assert.equal(await run('window.probeError??null'),null);
       await run('window.changeContent()');
@@ -341,7 +352,7 @@ createRoot(document.getElementById('root')).render(<div style={{padding:24,maxWi
       assert.equal(await run('document.querySelectorAll(".cover-materials input:checked").length'),0);
       assert.equal(await run('document.getElementById("cover-prompt").value'),'根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。');
       assert.equal(await run('document.getElementById("cover-count").value'),'2');
-      assert.equal(await run('document.querySelectorAll(".cover-sample-grid input:checked").length'),2);
+      assert.equal(await run('document.querySelector(".cover-settings-selection").textContent.includes("2 张样张")'),true);
       console.log('PASS isolated real React/Semi/Electron: five-column continuous 3:4 gallery and compact selected row, exact-id folder export/cancellation, all batches and historical candidates, full-image blur previews, favorites-first/filter, comparison, trusted exact annotation coordinates across 4 aspect ratios + 3 viewport sizes + scroll, floating confirm/cancel/edit, draft/persistence/explicit refinement IPC, 8000+3000 combined prompt budget blocks all writes without truncation, exact full-prompt confirmation, custom ratio validation, favorite/notes/select/export, concise composer, 900/620px layout, explicit materials, no-person input, single current-assistant continuation. Synthetic IPC and assets only; no real generation or user library.');
       console.log('Screenshots: '+screenshots);
       app.exit(0);

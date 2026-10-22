@@ -1,0 +1,17 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2041 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-task-progress-hhhRTl/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-task-progress-hhhRTl/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-task-progress-hhhRTl/dist/assets/index-DlEPFzpe.css                      338.64 kB │ gzip:  45.66 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-task-progress-hhhRTl/dist/assets/index-CR0nce3q.js                       796.06 kB │ gzip: 230.87 kB
+
+✓ built in 391ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+{"ok":true,"scope":"isolated Electron React/Semi fixture","viewport":[1280,868],"narrowViewport":[820,868],"devicePixelRatio":2,"checks":["waiting → running → committed","watch progress event","poll fallback","phase reads avoid hydration","dirty body/notes preserved","original host after global host unavailable","continue does not grant permission","terminal ignores stale wait","narrow no horizontal overflow"]}

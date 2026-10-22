@@ -5,7 +5,7 @@ import {validRelease} from '../content.mjs';
 import {nativeHandoffDirectory, readNativeHandoff} from '../bridge/native-handoff.mjs';
 
 const MAX_INPUT = 64 * 1024;
-const commands = ['help', 'doctor', 'create', 'attempt', 'claim', 'context', 'submit', 'fail', 'cancel', 'status'];
+const commands = ['help', 'doctor', 'create', 'attempt', 'claim', 'progress', 'context', 'submit', 'fail', 'cancel', 'status'];
 const flags = ['library', 'content', 'request', 'attempt', 'handoff', 'file', 'stdin'];
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);
 const problem = (code, message) => Object.assign(new Error(message), {code});
@@ -98,9 +98,9 @@ async function payload(values, raw = false) {
 }
 
 function requiredFlags(command, values) {
-    const withRequest = ['attempt', 'claim', 'context', 'submit', 'fail', 'cancel'].includes(command);
-    const withAttempt = ['claim', 'context', 'submit', 'fail', 'cancel'].includes(command);
-    const withInput = ['create', 'attempt', 'claim', 'submit', 'fail'].includes(command);
+    const withRequest = ['attempt', 'claim', 'progress', 'context', 'submit', 'fail', 'cancel'].includes(command);
+    const withAttempt = ['claim', 'progress', 'context', 'submit', 'fail', 'cancel'].includes(command);
+    const withInput = ['create', 'attempt', 'claim', 'progress', 'submit', 'fail'].includes(command);
     const allowed = ['library', 'content', ...(withRequest ? ['request'] : []), ...(withAttempt ? ['attempt'] : []), ...(withInput ? ['file', 'stdin'] : [])];
     if (Object.keys(values).some(key => !allowed.includes(key)) || !values.library || !path.isAbsolute(values.library) ||
         !uuid(values.content) || withRequest && !uuid(values.request) || withAttempt && !uuid(values.attempt)) {
@@ -129,7 +129,7 @@ export async function main(argv) {
             if (config.AUTH_MODE === 'required') throw problem('AUTH_NOT_CONFIGURED', '可信权益验证尚未接入，鉴权执行包停止业务读写。');
             let located;
             if (Object.hasOwn(values, 'handoff')) {
-                if (!['claim', 'context', 'submit', 'fail', 'cancel', 'status'].includes(command) ||
+                if (!['claim', 'progress', 'context', 'submit', 'fail', 'cancel', 'status'].includes(command) ||
                     Object.keys(values).some(key => !['handoff', 'file', 'stdin'].includes(key))) throw problem('INVALID_ARGUMENTS', '本机交接只接受固定尝试的执行命令，不能混用路径或其他 ID。');
                 located = readNativeHandoff(nativeHandoffDirectory(), values.handoff, config);
                 if (located.kind !== 'cover') throw problem('INVALID_HANDOFF', '封面命令只接受封面交接。');
@@ -160,6 +160,9 @@ export async function main(argv) {
                     break;
                 case 'claim':
                     result = library.claimCoverAttempt(...args, input);
+                    break;
+                case 'progress':
+                    result = library.reportCoverProgress(...args, input);
                     break;
                 case 'context': {
                     const {bodyBytes, ...context} = library.readCoverContext(...args);

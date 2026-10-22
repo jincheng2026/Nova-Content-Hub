@@ -1,12 +1,13 @@
-import type {Assistant, Attempt} from './cover-contracts.ts';
+import type {Assistant, Attempt, TaskProgress, TaskProgressView} from './cover-contracts.ts';
 import type {TemplateRules, TemplateAcceptance} from './template-contracts.ts';
 export interface TemplateCoreAttempt extends Attempt {resultHash: string | null; receiptHash: string | null; reportHash: string | null}
 export interface TemplateCoreJob {id: string; requestHash: string; inputHash: string; activeAttemptId: string | null; acceptance: TemplateAcceptance | null; attempts: TemplateCoreAttempt[]}
 export interface TemplateCoreDocument {id: string; title: string; editToken: string; builtin: boolean; derivedFrom?: {id: string; version: number} | null; currentVersion: number; deletedAt: string | null; versions: {version: number; packageHash: string}[]; templateJobs?: TemplateCoreJob[]}
 export interface TemplateCoreRequest {requestId: string; requestHash: string; template: {id: string; version: number; packageHash: string}; styleAssetHashes: string[]}
-export interface TemplateCoreContext {template: TemplateCoreDocument; request: TemplateCoreRequest; attempt: TemplateCoreAttempt; results: {requestId: string; attemptId: string; unavailable?: boolean; result: {resultHash: string; rules: TemplateRules; restore: {assetHash: string}} | null}[]}
+export interface TemplateCoreContext {progress?: TaskProgress | null; template: TemplateCoreDocument; request: TemplateCoreRequest; attempt: TemplateCoreAttempt; results: {requestId: string; attemptId: string; unavailable?: boolean; result: {resultHash: string; rules: TemplateRules; restore: {assetHash: string}} | null}[]}
 type Options = {mutationId: string};
 export interface TemplateCoreLibrary {
+    readTemplateProgress(id: string): TaskProgressView;
     rebuildTemplateReports(id: string): {warnings: string[]};
     readTemplate(id: string, version?: number): TemplateCoreDocument;
     readTemplateContext(templateId: string, requestId: string, attemptId: string): TemplateCoreContext;

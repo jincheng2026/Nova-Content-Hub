@@ -1,0 +1,105 @@
+{
+  "at": "2026-10-22T04:07:30.151Z",
+  "scope": "Built Electron main + WorkerClient + two real utility processes; first includes process startup; warm OS page cache; no renderer/protocol/paint or installed package claim",
+  "platform": "darwin",
+  "arch": "arm64",
+  "versions": {
+    "node": "24.22.0",
+    "acorn": "8.18.0",
+    "ada": "4.0.0",
+    "amaro": "1.1.11",
+    "ares": "1.34.8",
+    "brotli": "1.2.0",
+    "cldr": "48.0",
+    "icu": "78.2",
+    "llhttp": "9.4.3",
+    "merve": "1.2.2",
+    "modules": "149",
+    "napi": "10",
+    "nbytes": "0.1.4",
+    "ncrypto": "0.0.1",
+    "nghttp2": "1.70.0",
+    "nghttp3": "",
+    "ngtcp2": "",
+    "openssl": "0.0.0",
+    "simdjson": "4.6.11",
+    "simdutf": "7.7.0",
+    "sqlite": "3.53.4",
+    "tz": "2026d",
+    "undici": "7.29.1",
+    "unicode": "17.0",
+    "uv": "1.52.1",
+    "uvwasi": "0.0.23",
+    "v8": "15.2.124.43-electron.0",
+    "zlib": "1.3.2.1-motley",
+    "zstd": "1.6.0",
+    "electron": "44.9.0",
+    "chrome": "152.0.7977.167"
+  },
+  "pairId": "nova-content-hub@0.3.39:p1:disabled",
+  "fixture": {
+    "binding": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-cover-loading-rN9bnI/library",
+      "libraryId": "26bccc60-782c-4ccd-8cdc-92f948759b09",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "76604480"
+      }
+    },
+    "contentId": "b1c9146f-4685-4c6a-93c3-1512bd79b045",
+    "hashes": [
+      "de51f02b8d5e286fdf84393832301052d25f2db87d3f5aeb5a839de26d368e43",
+      "90cebbf40e940cfa2f118b09686576fbbd23119c1f5194de06e56a1ce1a9a403",
+      "5837c495014df430c92727cd2ce91df9c92570e5a99a90371fd606e9b457fd46",
+      "9dbe0546efc518a0ab2767f7dc04ff4e07b5a35bdb3446595674f65640e9913b"
+    ],
+    "jobs": 6,
+    "candidates": 24,
+    "originals": 4,
+    "originalBytes": 4717584,
+    "imageDimensions": [
+      1086,
+      1448
+    ]
+  },
+  "measurements": [
+    {
+      "label": "cold-process-readCover",
+      "durationMs": 283.32008299999995,
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "cold-process-all-originals",
+      "durationMs": 514.785292,
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "warm-process-readCover",
+      "durationMs": 132.91325000000006,
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "warm-process-all-originals",
+      "durationMs": 160.39920800000004,
+      "requests": {
+        "rasterBatch": 2
+      }
+    }
+  ],
+  "originalHashesVerified": true,
+  "fixtureDigest": "bcfae39e003f71abf0f694084ba73ee78b032ad56ba073893770aee06bec402b",
+  "unchanged": true,
+  "buildFiles": {
+    "controller.mjs": "f229314037a29c0eab36f2e3ef69957d4007bd0a8588f2394bb47606a1a8270c",
+    "covers.mjs": "3458f430bbb1d495d41af40af509d1cb39a32e4f2efa5f14eaf1b1d2ede8d0e6",
+    "cover-worker.mjs": "a68b8c98c6146c82570170a62c08f67a4378f2c456a2ab185021020e15f8bc5c",
+    "worker.mjs": "fb2e3d2fba50d1ff8df08fd93e768bcbad49ab5fa62557b08291e6dd2c7c661b",
+    "worker-client.mjs": "5daa500092c4ceeb0c1b0d24a96800fb259ac0ee58b649f7a53ac74ec9a07e49"
+  }
+}

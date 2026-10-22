@@ -3,7 +3,6 @@ import path from 'node:path';
 import os from 'node:os';
 import {randomUUID, createHash} from 'node:crypto';
 import {validRelease} from '../content.mjs';
-import Handoff from './handoff.js';
 import {openLibrary} from '../lib/file-library/index.mjs';
 
 const MAX_BYTES = 64 * 1024;
@@ -96,28 +95,12 @@ function hostURL(host, id, root, options, kind, library, context) {
     const {request} = context;
     const template = kind === 'template' ? context.template : library.readTemplate(request.template.id, request.template.version);
     if (template.packageHash !== request.template.packageHash) refuse('CONFLICT', '模板与固定请求不一致。');
+    const summary = value => Array.from(value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/gu, ' ').replace(/[$`]/g, ' ').trim()).slice(0, 36);
+    const name = summary(kind === 'template' ? template.deletedAt ? '' : template.name : request.title);
     const candidateId = kind === 'cover' && /^以所附候选原图（([0-9a-f-]{36})）为基础，按以下批注修改；/.exec(request.prompt)?.[1];
     const candidate = candidateId && context.content.candidates.find(item => item.id === candidateId);
     const refinement = candidate && request.materials.some(item => item.role === 'reference' && item.assetHash === candidate.assetHash && item.originalName === `候选修改参考-${candidateId}.png`);
-    const compositions = kind === 'cover' ? request.materials.filter(item => item.role === 'reference' && item.originalName.startsWith('收藏构图参考-')).length : 0;
-    const summary = value => Array.from(value.replace(/[\p{Cc}\p{Cf}]/gu, ' ').replace(/\s+/gu, ' ').replace(/\$/g, '＄').replace(/`/g, '｀').trim()).slice(0, 48);
-    const title = kind === 'cover' ? summary(request.title) : [];
-    const name = template.deletedAt ? [] : summary(template.name);
-    const requirements = kind === 'template'
-        ? `要求：参考图${request.styleAssetHashes.length}张；首张还原1张；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.restore.width}×${request.restore.height}；${request.restore.outputFormat}。`
-        : `要求：${request.count}张；${request.ratio}；${request.sizePolicy === 'ratio-minimum' ? '至少' : '精确'}${request.pixels.width}×${request.pixels.height}；${request.outputFormat}；${request.photo ? '本人照已选' : '不放人物'}；样张${request.styleAssetHashes.length}；资料${request.materials.length - compositions - (refinement ? 1 : 0)}；${compositions ? `构图参考${compositions}；` : ''}${refinement ? '原图参考1；' : ''}`;
-    const refinementPrefix = `以所附候选原图（${candidateId}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位。\n`;
-    const visiblePrompt = refinement && request.prompt.startsWith(refinementPrefix) ? request.prompt.slice(refinementPrefix.length) : request.prompt;
-    const userInput = kind === 'template' ? Handoff.inputBlock('模板补充说明', request.notes) : (title.join('') === request.title ? '' : Handoff.inputBlock('封面标题', request.title)) + Handoff.inputBlock(refinement ? '批注（x/y自左上角按宽高%）' : '生成要求', visiblePrompt);
-    const readFirst = '先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准。';
-    const prompt = () => {
-        const intent = kind === 'template'
-            ? `学习${name.length ? `「${name.join('')}」模板的整组参考图` : '这组模板参考图'}，整理规则并还原首张样图，交回工作台验收。`
-            : refinement
-                ? `基于原图按批注修改${title.length ? `「${title.join('')}」的封面` : '原封面'}，保留未要求修改的内容与布局，交回新候选。`
-                : `照${name.length ? `「${name.join('')}」模板` : '已选模板'}，给${title.length ? `「${title.join('')}」` : '这篇内容'}生成封面候选，并交回工作台。`;
-        return [intent, requirements + userInput, readFirst, `任务编号：${id}`, ...(host === 'codex' ? ['$' + skill] : [])].join('\n');
-    };
+    const prompt = () => [kind === 'template' ? `请学习${name.length ? `「${name.join('')}」模板` : '这组模板'}，整理规则并还原首张样图。` : refinement ? `请按批注修改${name.length ? `「${name.join('')}」的封面` : '这篇内容的封面'}，交回新候选。` : `请给${name.length ? `「${name.join('')}」` : '这篇内容'}制作封面，交回工作台。`, `任务编号：${id}`, ...(host === 'codex' ? [`$${skill}`] : []), '请按任务编号读取本地完整请求、正文与全部已选输入后执行。'].join('\n');
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
         url.searchParams.set('action', 'start');
@@ -125,11 +108,7 @@ function hostURL(host, id, root, options, kind, library, context) {
     }
     url.searchParams.set(host === 'workbuddy' ? 'cwd' : 'path', root);
     url.searchParams.set('prompt', prompt());
-    // Names are optional display hints; the fixed handoff and Skill must remain complete.
-    while (url.href.length > 2048 && name.length) {
-        name.pop();
-        url.searchParams.set('prompt', prompt());
-    }
+    while (url.href.length > 2048 && name.length) {name.pop(); url.searchParams.set('prompt', prompt());}
     const requiresPaste = url.href.length > 2048;
     const text = prompt();
     if (requiresPaste) url.searchParams.delete('prompt');

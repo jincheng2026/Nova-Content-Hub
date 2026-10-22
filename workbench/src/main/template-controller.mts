@@ -18,7 +18,7 @@ export interface TemplateOwner {
 }
 export interface TemplateCallbacks {
     readTemplateAssistantSetup(host: Assistant): Promise<TemplateAssistantSetup>;
-    launchTemplate(binding: LibraryBinding, reference: TemplateReference & {host: Assistant}): Promise<void>;
+    launchTemplate(binding: LibraryBinding, reference: TemplateReference & {host: Assistant; sessionId?: string}): Promise<void>;
 }
 const templateId = (p: TemplatePending) => p.action === 'start' || p.action === 'accept' ? p.input.templateId : p.reference.templateId;
 export class TemplateController {
@@ -55,14 +55,16 @@ export class TemplateController {
         if (pending.binding.libraryId !== binding.libraryId || pending.binding.rootIdentity.dev !== binding.rootIdentity.dev || pending.binding.rootIdentity.ino !== binding.rootIdentity.ino) fail('CONFLICT', '待处理学习绑定的内容库已改变，请恢复原位置后核验。');
         return {binding, pending};
     }
+    async readTemplateProgress(input: {templateId: string}) { this.validate('readTemplateProgress', input); return this.owner.exclusive(() => this.owner.worker.call('templateProgress', {binding: this.owner.current(), ...input})); }
+    async continueBoundTemplate(input: TemplateReference) { this.validate('continueBoundTemplate', input); requireWrite(this.owner.authMode); return this.owner.exclusive(async () => {await this.writable(); await this.open(input, true); return {view: this.decorate(await this.owner.worker.call('templateRead', {binding: this.owner.current(), templateId: input.templateId})), launchRequested: true};}); }
     async readTemplateWorkflow(input: {templateId: string}) {
         this.validate('readTemplateWorkflow', input);
         return this.owner.exclusive(async () => this.decorate(await this.owner.worker.call('templateRead', {binding: this.owner.current(), ...input})));
     }
-    async open(reference: TemplateReference) {
+    async open(reference: TemplateReference, bound = false) {
         const binding = this.owner.current(), context = await this.owner.worker.call('templateHandoff', {binding, reference});
         await this.requireAssistant(context.host);
-        await this.callbacks.launchTemplate(binding, {...reference, host: context.host});
+        await this.callbacks.launchTemplate(binding, {...reference, host: context.host, ...(bound && context.sessionId ? {sessionId: context.sessionId} : {})});
     }
     async complete(reference: TemplateReference | null, launch: boolean, reportWarnings?: string[]): Promise<TemplateWorkflowResult> {
         const {binding, pending} = this.bound();

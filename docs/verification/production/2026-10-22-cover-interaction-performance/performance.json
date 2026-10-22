@@ -1,0 +1,296 @@
+{
+  "format": "nova-cover-loading-performance",
+  "recordedAt": "2026-10-22T04:07:30.151Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "fixtureDigest": "bcfae39e003f71abf0f694084ba73ee78b032ad56ba073893770aee06bec402b",
+  "unchangedOriginalsAndLibrary": true,
+  "before": [
+    {
+      "label": "first-readCover",
+      "durationMs": 322.840375,
+      "counts": {
+        "opens": 1,
+        "assets": 24,
+        "assetBytes": 113459352,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 10
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "first-all-visible-originals",
+      "durationMs": 238.92029100000002,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 8
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "repeat-readCover",
+      "durationMs": 243.61175000000003,
+      "counts": {
+        "opens": 0,
+        "assets": 24,
+        "assetBytes": 113459352,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 8
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "repeat-all-visible-originals",
+      "durationMs": 110.89083299999993,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 4
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    }
+  ],
+  "after": [
+    {
+      "label": "first-readCover",
+      "durationMs": 146.32275000000004,
+      "counts": {
+        "opens": 1,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 3
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "first-all-visible-originals",
+      "durationMs": 235.201458,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 8
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "repeat-readCover",
+      "durationMs": 100.55979200000002,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 1
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "repeat-all-visible-originals",
+      "durationMs": 114.96491600000013,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 4
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    }
+  ],
+  "entryAfter": [
+    {
+      "label": "first-readCover",
+      "durationMs": 184.61091699999997,
+      "counts": {
+        "opens": 1,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 3
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "first-all-visible-originals",
+      "durationMs": 274.55500000000006,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 8
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "repeat-readCover",
+      "durationMs": 111.3382079999999,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 1
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "repeat-all-visible-originals",
+      "durationMs": 138.71391600000015,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 4
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "readCoverAutomatically-assets-cache-miss",
+      "durationMs": 152.32391699999994,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 4
+      },
+      "requests": {
+        "readCover": 1,
+        "coverAssets": 1,
+        "ipc:listCoverAssets": 1,
+        "ipc:readCover": 1,
+        "ipc:status": 1
+      }
+    },
+    {
+      "label": "readCoverAutomatically-assets-cache-hit",
+      "durationMs": 118.35862499999985,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 1
+      },
+      "requests": {
+        "readCover": 1,
+        "ipc:readCover": 1,
+        "ipc:status": 1
+      }
+    }
+  ],
+  "electronAfter": [
+    {
+      "label": "cold-process-readCover",
+      "durationMs": 283.32008299999995,
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "cold-process-all-originals",
+      "durationMs": 514.785292,
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "warm-process-readCover",
+      "durationMs": 132.91325000000006,
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "warm-process-all-originals",
+      "durationMs": 160.39920800000004,
+      "requests": {
+        "rasterBatch": 2
+      }
+    }
+  ],
+  "tests": [
+    {
+      "command": "node --test workbench/test/covers.test.mjs workbench/test/raster-reader.test.mjs",
+      "passed": 44,
+      "failed": 0,
+      "log": "main-regressions.log"
+    },
+    {
+      "command": "node --test plugin-src/src/lib/file-library/test/cover-jobs.test.mjs plugin-src/src/lib/file-library/test/template-context-documents.test.mjs",
+      "passed": 82,
+      "failed": 0,
+      "log": "core-regressions.log"
+    },
+    {
+      "command": "node --test --test-name-pattern='bound .* continuation keeps' workbench/test/covers.test.mjs workbench/test/templates.test.mjs",
+      "passed": 8,
+      "failed": 0,
+      "log": "bound-host-regressions.log"
+    }
+  ],
+  "sourceFiles": {
+    "plugin-src/src/lib/file-library/cover-jobs.mjs": "45abc05ecb305449f51be98698cea389aa8eaebc91c48ae76bf10b911075bfbe",
+    "workbench/src/main/cover-worker.mts": "0e5a71ed7813cd691e314c8907021fb8008f6d34cf5053ec805f9be619e1f15b",
+    "workbench/src/shared/shared-core.d.ts": "dde0f265e9a6760084dcab13a63a2f40ca4a78a4eef64e3f207fe745a6f6a858",
+    "workbench/test/covers.test.mjs": "f29a29e08bfb43fe42dd51594dcb9080294c514823c22722cfc7f5c995f17025",
+    "workbench/test/templates.test.mjs": "b5ef4e33dca1bdccadf4d05c465066e60843b6a00dcd8a4a7df55c0b6d8893f0",
+    "workbench/scripts/cover-loading-performance-probe.mjs": "a7f7faafcd859d5d32e78139257e4a389a79e3773e5aa97c59a0331b1014fbe6",
+    "workbench/scripts/cover-loading-electron-probe.mjs": "3ecd1e4aa94c8b20fc3f9289e754f5256c74ea5910de016c32f0dab6c4b83267"
+  },
+  "limits": [
+    "warm OS page cache",
+    "source before-after does not include Electron transport or renderer",
+    "Electron measurement includes real utility process startup and transport, no renderer/protocol/paint",
+    "no installed package or real assistant generation acceptance",
+    "no Intel Mac or Windows native verification"
+  ]
+}

@@ -1,3 +1,4 @@
+import {attemptProgress} from './attempt-progress.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -110,6 +111,24 @@ export function coverJobMethods(h) {
         if (!HOSTS.includes(value)) fail('INVALID_INPUT', 'Unknown cover execution host');
         return value;
     };
+
+    const progressStore = attemptProgress(h, 'cover');
+    const ownership = (oid, job, attempt) => ({libraryId, objectId: oid, requestId: job.id, attemptId: attempt.attemptId, requestHash: job.requestHash, host: attempt.host});
+    function readCoverProgress(oid) {
+        return locked(() => {
+            const meta = content(id(oid));
+            return {editToken: meta.editToken, jobs: (meta.coverJobs || []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, attempts: job.attempts.map(attempt => ({attemptId: attempt.attemptId, status: attempt.status, ...progressStore.read(attemptDir(oid, job.id, attempt.attemptId), ownership(oid, job, attempt))}))}))};
+        });
+    }
+    function reportCoverProgress(oid, rid, aid, input) {
+        return locked(() => {
+            const meta = content(id(oid)), {job, attempt} = find(meta, rid, aid);
+            active(meta, job, attempt);
+            const {request} = requestPackage(oid, job);
+            fresh(meta, Buffer.from(meta.body), request);
+            return progressStore.write(attemptDir(oid, rid, aid), ownership(oid, job, attempt), input, attempt.status === 'claimed');
+        });
+    }
 
     function find(meta, requestId, attemptId) {
         id(requestId);
@@ -429,26 +448,60 @@ export function coverJobMethods(h) {
         };
     }
 
+    function coverContext(contentId, current, job, attempt, readTemplate = (tid, version, packageHash) => templatePackage(root, tid, version, packageHash)) {
+        const requestId = job.id, attemptId = attempt.attemptId;
+        const {request, bodyBytes} = requestPackage(contentId, job);
+        const pkg = readTemplate(request.template.id, request.template.version, request.template.packageHash);
+        const handoff = handoffPackage(contentId, job, attempt);
+        const dir = requestDir(contentId, requestId);
+        const inbox = path.join(attemptDir(contentId, requestId, attemptId), 'inbox');
+        directory(inbox);
+        return {
+            content: current,
+            request,
+            requestPath: path.join(dir, '请求.json'),
+            bodyPath: path.join(dir, '正文.md'),
+            ...progressStore.read(attemptDir(contentId, requestId, attemptId), ownership(contentId, job, attempt)),
+            attempt,
+            handoff,
+            body: bodyBytes.toString('utf8'),
+            bodyBytes,
+            inbox,
+            ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}),
+            inputs: request.inputs.map(entry => ({...entry, path: path.join(dir, '输入', entry.assetHash)}))
+        };
+    }
+
     function readCoverContext(contentId, requestId, attemptId) {
         return locked(() => {
             const current = content(id(contentId)), {job, attempt} = find(current, requestId, attemptId);
-            const {request, bodyBytes} = requestPackage(contentId, job);
-            const pkg = templatePackage(root, request.template.id, request.template.version, request.template.packageHash);
-            const handoff = handoffPackage(contentId, job, attempt);
-            const dir = requestDir(contentId, requestId);
-            const inbox = path.join(attemptDir(contentId, requestId, attemptId), 'inbox');
-            directory(inbox);
-            return {
-                content: current,
-                request,
-                attempt,
-                handoff,
-                body: bodyBytes.toString('utf8'),
-                bodyBytes,
-                inbox,
-                ...templateContextDocuments(root, request.template, pkg, {objectId, assetPath, readAssetInternal, fail, styleAssetHashes: request.styleAssetHashes}),
-                inputs: request.inputs.map(entry => ({...entry, path: path.join(dir, '输入', entry.assetHash)}))
+            return coverContext(contentId, current, job, attempt);
+        });
+    }
+
+    function readCoverState(contentId) {
+        return locked(() => {
+            const current = content(id(contentId)), templates = new Map(), requests = new Map();
+            // One locked read validates each shared immutable package in full once;
+            // fixed input copies are still verified separately for every request.
+            const readTemplate = (tid, version, packageHash) => {
+                const key = JSON.stringify([tid, version, packageHash]);
+                if (!templates.has(key)) templates.set(key, templatePackage(root, tid, version, packageHash));
+                return templates.get(key);
             };
+            for (const job of current.coverJobs || []) {
+                const attempt = job.attempts.find(a => a.attemptId === job.activeAttemptId) || job.attempts.at(-1);
+                let request = null;
+                if (attempt) try { request = coverContext(contentId, current, job, attempt, readTemplate).request; }
+                catch (error) {
+                    const unavailable = ['ENOENT', 'EACCES', 'EPERM', 'EIO', 'ENOTDIR'];
+                    const unreadable = unavailable.includes(error.code) || error instanceof LibraryError && error.code === 'IO_ERROR' && unavailable.includes(error.cause?.code);
+                    if (!(error instanceof LibraryError && error.code === 'CORRUPT') && !unreadable) throw error;
+                }
+                requests.set(job.id, request);
+            }
+            const progress = {editToken: current.editToken, jobs: (current.coverJobs || []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, attempts: job.attempts.map(attempt => ({attemptId: attempt.attemptId, status: attempt.status, ...progressStore.read(attemptDir(contentId, job.id, attempt.attemptId), ownership(contentId, job, attempt))}))}))};
+            return {content: current, progress, requests};
         });
     }
 
@@ -740,6 +793,9 @@ export function coverJobMethods(h) {
         createCoverAttempt,
         claimCoverAttempt,
         readCoverContext,
+        readCoverState,
+        readCoverProgress,
+        reportCoverProgress,
         commitCoverAttempt,
         failCoverAttempt,
         cancelCoverAttempt

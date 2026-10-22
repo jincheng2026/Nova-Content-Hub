@@ -1,5 +1,5 @@
 import type {LibraryBinding} from './contracts.ts';
-import type {Assistant, Attempt, Raster} from './cover-contracts.ts';
+import type {Assistant, Attempt, Raster, TaskProgressView} from './cover-contracts.ts';
 
 export interface TemplateAssistantSetup {host: Assistant; ready: boolean; skill: 'nova-content-template-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured'}
 export interface TemplateReference {templateId: string; requestId: string; attemptId: string; requestHash: string; sourceVersion: number; sourcePackageHash: string}
@@ -22,6 +22,8 @@ export interface TemplatePendingView {mutationId: string; action: TemplatePendin
 export interface TemplateRecovery {pending: TemplatePendingView | null; result: TemplateWorkflowResult | null}
 export interface TemplateInputs {
     readTemplateAssistantSetup: undefined;
+    readTemplateProgress: {templateId: string};
+    continueBoundTemplate: TemplateReference;
     readTemplateWorkflow: {templateId: string};
     startTemplateStudy: TemplateStart;
     continueTemplateStudy: TemplateReference;
@@ -34,6 +36,8 @@ export interface TemplateInputs {
 }
 export interface TemplateResults {
     readTemplateAssistantSetup: TemplateAssistantSetup;
+    readTemplateProgress: TaskProgressView;
+    continueBoundTemplate: TemplateWorkflowResult;
     readTemplateWorkflow: TemplateWorkflowView;
     startTemplateStudy: TemplateWorkflowResult;
     continueTemplateStudy: TemplateWorkflowResult;
@@ -46,10 +50,11 @@ export interface TemplateResults {
 }
 export interface TemplateRequestIdentity {requestId: string; requestHash: string; sourceVersion: number; sourcePackageHash: string}
 export interface TemplateWorkerOperations {
+    templateProgress: {args: {binding: LibraryBinding; templateId: string}; result: TaskProgressView};
     templateRead: {args: {binding: LibraryBinding; templateId: string}; result: TemplateWorkflowView};
     templateRequest: {args: {binding: LibraryBinding; pending: TemplatePending}; result: TemplateRequestIdentity};
     templateMutate: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {reference: TemplateReference | null; reportWarnings?: string[]}};
     templateRecover: {args: {binding: LibraryBinding; pending: TemplatePending}; result: {reportWarnings?: string[]; found: boolean; conflict: boolean; request: TemplateRequestIdentity | null; reference: TemplateReference | null}};
-    templateHandoff: {args: {binding: LibraryBinding; reference: TemplateReference}; result: {host: Assistant}};
+    templateHandoff: {args: {binding: LibraryBinding; reference: TemplateReference}; result: {host: Assistant; sessionId?: string}};
 }
 export interface TemplateWorker {call<K extends keyof TemplateWorkerOperations>(op: K, args: TemplateWorkerOperations[K]['args']): Promise<TemplateWorkerOperations[K]['result']>}

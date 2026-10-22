@@ -90,3 +90,24 @@ test('only internal pending accepts size strategy; public template start stays e
     assert.equal(templateDesktopInput('startTemplateStudy', f.input), true);
     assert.equal(templateDesktopInput('startTemplateStudy', {...f.input, sizePolicy: 'ratio-minimum'}), false);
 });
+
+for (const ownerHost of ['codex', 'workbuddy']) for (const waitingState of ['waiting-user', 'waiting-permission']) test(`bound ${ownerHost} template continuation keeps original session and ${waitingState} without progress CAS changes`, async t => {
+    const f = await fixture(t), otherHost = ownerHost === 'codex' ? 'workbuddy' : 'codex';
+    f.owner.binding.assistant = ownerHost;
+    const c = f.controller(), result = await c.startTemplateStudy(f.input), job = result.view.jobs[0], a = job.attempts[0], sessionId = randomUUID();
+    const originalToken = f.lib.readTemplate(f.template.id).editToken;
+    f.lib.reportTemplateProgress(f.template.id, job.id, a.attemptId, {host: ownerHost, requestHash: a.reference.requestHash, phase: 'reading', state: waitingState, message: '请确认模板', sessionId, expectedRevision: 0, mutationId: randomUUID()});
+    f.owner.binding.assistant = otherHost;
+    await c.continueBoundTemplate(a.reference);
+    assert.equal(f.launches.at(-1).host, ownerHost);
+    assert.equal(f.launches.at(-1).sessionId, sessionId);
+    assert.equal((await c.readTemplateProgress({templateId: f.template.id})).jobs[0].attempts[0].progress.state, waitingState);
+    assert.equal(f.lib.readTemplate(f.template.id).editToken, originalToken);
+    await c.continueTemplateStudy(a.reference);
+    const latest = (await c.readTemplateProgress({templateId: f.template.id})).jobs[0].attempts.at(-1);
+    assert.equal(latest.progress, null);
+    assert.notEqual(latest.attemptId, a.attemptId);
+    assert.equal((await c.readTemplateProgress({templateId: f.template.id})).jobs[0].attempts.length, 2);
+    assert.equal(f.launches.at(-1).host, otherHost);
+    assert.equal(f.launches.at(-1).sessionId, undefined);
+});

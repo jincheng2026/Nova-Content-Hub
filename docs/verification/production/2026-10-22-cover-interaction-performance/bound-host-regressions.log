@@ -1,0 +1,16 @@
+✔ bound codex cover continuation keeps original session and waiting-user after global host changes (6838.226125ms)
+✔ bound codex cover continuation keeps original session and waiting-permission after global host changes (6439.953292ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-user after global host changes (5994.026458ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-permission after global host changes (5668.426792ms)
+✔ bound codex template continuation keeps original session and waiting-user without progress CAS changes (7112.674542ms)
+✔ bound codex template continuation keeps original session and waiting-permission without progress CAS changes (6691.133292ms)
+✔ bound workbuddy template continuation keeps original session and waiting-user without progress CAS changes (6097.351584ms)
+✔ bound workbuddy template continuation keeps original session and waiting-permission without progress CAS changes (5850.841584ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26146.613

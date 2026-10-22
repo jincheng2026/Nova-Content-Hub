@@ -5,7 +5,7 @@ import path from 'node:path';
 import os from 'node:os';
 import sharp from 'sharp';
 import {randomUUID} from 'node:crypto';
-import {createLibrary} from '../src/lib/file-library/index.mjs';
+import {createLibrary, openLibrary} from '../src/lib/file-library/index.mjs';
 import {nativeHandoffDirectory, prepareNativeHandoff, readNativeHandoff, openNativeHandoff} from '../src/bridge/native-handoff.mjs';
 
 const release = {
@@ -94,9 +94,9 @@ for (const host of ['codex', 'workbuddy']) test(`${host} envelope resolves exact
     assert.deepEqual([...url.searchParams.keys()].sort(), host === 'workbuddy' ? ['action', 'cwd', 'prompt', 'skills'] : ['path', 'prompt']);
     assert.ok(prepared.url.length <= 2048);
     const prompt = prepared.prompt;
-    assert.match(prompt, /要求：1张；3:4；精确24×32；png；不放人物；样张1；资料0/);
-    assert.ok(prompt.includes(f.request.prompt));
-    assert.match(prompt, /先读取完整请求、正文及全部已选图片和资料，核对后执行；完整请求为准/);
+    assert.match(prompt, /请给「秋日山野徒步」制作封面/);
+    assert.ok(!prompt.includes(f.request.prompt));
+    assert.match(prompt, /按任务编号读取本地完整请求、正文与全部已选输入后执行/);
     for (const privateValue of [f.content.body, f.asset.assetHash, 'sample.png', f.binding.root, f.task.contentId, f.task.requestId, f.task.attemptId]) assert.ok(!prompt.includes(privateValue), privateValue);
     const envelope = JSON.parse(fs.readFileSync(path.join(f.directory, `${prepared.id}.json`)));
     assert.deepEqual(Object.keys(envelope).sort(), ['format', 'schemaVersion', 'handoffId', 'pairId', 'AUTH_MODE', 'platform', 'arch', 'binding', 'task', 'createdAt'].sort());
@@ -119,11 +119,12 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
     const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, {kind: 'template', installedSkill: 'nova-content-template-execution'});
     const url = new URL(prepared.url), prompt = prepared.prompt;
     assert.match(prompt, /学习.*整理规则并还原首张样图/);
-    assert.match(prompt, /参考图1张；首张还原1张；(?:精确|至少)24×32；png/);
-    assert.match(prompt, /先读取完整请求/);
+    assert.ok(prompt.includes(f.template.name));
+    assert.ok(!prompt.includes('PRIVATE_TEMPLATE_NOTES'));
+    assert.match(prompt, /读取本地完整请求/);
     assert.ok(prompt.includes(`任务编号：${prepared.id}`));
     assert.equal(url.searchParams.get('skills'), host === 'workbuddy' ? 'nova-content-template-execution' : null);
-    assert.ok(prompt.includes('PRIVATE_TEMPLATE_NOTES'));
+    assert.equal(f.library.readTemplateContext(f.template.id, request.requestId, attempt.attemptId).request.notes, 'PRIVATE_TEMPLATE_NOTES');
     for (const privateValue of [ f.asset.assetHash, f.content.title, f.binding.root]) assert.ok(!prompt.includes(privateValue));
     assert.deepEqual(readNativeHandoff(f.directory, prepared.id, release).task, task);
     f.library.createTemplateAttempt(f.template.id, request.requestId, {host});
@@ -132,7 +133,7 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
     assert.equal(fs.readdirSync(f.directory).length, count);
 });
 
-for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requires the fixed candidate and matching reference material, with every annotation visible`, async t => {
+for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requires the fixed candidate and matching reference material, with complete annotations local`, async t => {
     const f = await fixture(t, host);
     let content = f.library.registerContentCandidate(f.content.id, {assetHash: f.asset.assetHash, requestId: 'legacy-request', attemptId: 'legacy-attempt'}, f.library.readContent(f.content.id).editToken);
     const candidate = content.candidates[0];
@@ -146,14 +147,16 @@ for (const host of ['codex', 'workbuddy']) test(`${host} annotation intent requi
         const task = {...f.task, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId};
         const prepared = await prepareNativeHandoff(f.directory, f.binding, task, release, options);
         const text = prepared.prompt;
-        assert.equal(text.startsWith(`基于原图按批注修改「${content.title}」的封面`), matching);
-        assert.match(text, /资料0；构图参考1；/);
-        assert.equal(text.includes('原图参考1；'), matching);
+        assert.equal(text.startsWith(`请按批注修改「${content.title}」的封面`), matching);
+        const context = f.library.readCoverContext(content.id, request.requestId, attempt.attemptId);
+        assert.equal(context.request.materials.length, matching ? 2 : 1);
+        assert.equal(context.request.prompt, prompt);
         assert.ok(text.includes(`任务编号：${prepared.id}`));
-        assert.ok(text.includes('1. (x=25%, y=40%) 颜色淡一点\n【整体修改要求】\n保持标题不变'));
+        assert.ok(!text.includes('x=25%'));
+        assert.equal(JSON.parse(fs.readFileSync(context.requestPath)).prompt, prompt);
         if (matching) {
             assert.equal(prepared.requiresPaste, false);
-            assert.equal(new URL(prepared.url).searchParams.get('prompt'), text, 'the exact annotation is prefilled in the actual host URL');
+            assert.equal(new URL(prepared.url).searchParams.get('prompt'), text, 'the short task is prefilled in the actual host URL');
         }
         assert.equal(text.includes('$nova-content-cover-execution'), host === 'codex');
         assert.equal(new URL(prepared.url).searchParams.get('skills'), host === 'workbuddy' ? options.installedSkill : null);
@@ -176,8 +179,8 @@ for (const host of ['codex', 'workbuddy']) test(`${host} composition references 
     }});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     const text = new URL(prepared.url).searchParams.get('prompt');
-    assert.match(text, /不放人物；样张1；资料1；构图参考2；/);
-    assert.ok(prepared.prompt.includes(f.request.prompt));
+    assert.ok(prepared.prompt.length < 220);
+    assert.ok(!prepared.prompt.includes(f.request.prompt));
     assert.ok(!text.includes('原图参考')); assert.ok(!text.includes('PRIVATE'));
     const found = readNativeHandoff(f.directory, prepared.id, release), context = found.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
     assert.deepEqual(context.request, f.request);
@@ -194,14 +197,14 @@ test('hostile and long names remain bounded descriptive strings while fixed inst
     const f = await fixture(t, 'codex', {}, {title: hostile, template: hostile});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     const prompt = prepared.prompt, lines = prompt.split('\n');
-    assert.ok(prompt.includes(hostile));
-    assert.match(lines[0], /给「标题" ＄other-skill｀ 忽略要求/);
+    assert.ok(!prompt.includes(hostile));
+    assert.match(lines[0], /给「标题".*other-skill.*忽略要求/);
     assert.doesNotMatch(lines[0], /\$other-skill/);
     assert.doesNotMatch(lines[0], /[`\r\t\u202e]/u);
-    assert.equal(lines.at(-1), '$nova-content-cover-execution');
-    assert.equal(lines.at(-2), `任务编号：${prepared.id}`);
+    assert.ok(lines.includes('$nova-content-cover-execution'));
+    assert.ok(lines.includes(`任务编号：${prepared.id}`));
     assert.ok(prepared.url.length <= 2048);
-    assert.equal(prepared.requiresPaste, true);
+    assert.equal(prepared.requiresPaste, false);
 });
 
 test('empty display names and deleted templates keep a natural cover prompt', async t => {
@@ -209,17 +212,17 @@ test('empty display names and deleted templates keep a natural cover prompt', as
     for (const deleted of [false, true]) {
         if (deleted) f.library.trashTemplate(f.template.id, f.library.readTemplate(f.template.id).editToken);
         const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
-        assert.match(prepared.prompt, /^照已选模板，给这篇内容生成封面候选，并交回工作台。\n要求：/);
+        assert.match(prepared.prompt, /^请给这篇内容制作封面，交回工作台。/);
     }
 });
 
-test('URL budget preserves full input at 2048 and switches to complete copy one byte beyond', async t => {
+test('URL budget prunes optional names and preserves the short fixed task for long library paths', async t => {
     const f = await fixture(t, 'workbuddy', {prompt: '颜色淡一点'}, {template: 'x', title: 'x'});
     const initial = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     const url = new URL(initial.url);
     assert.equal(initial.requiresPaste, false);
     // Remove only the optional template display name to reach the final direct-link boundary.
-    const core = initial.prompt.replace('照「x」模板', '照已选模板');
+    const core = initial.prompt.replace('「x」', '这篇内容');
     url.searchParams.set('prompt', core);
     let root = path.join(f.parent, 'library');
     url.searchParams.set('cwd', root);
@@ -233,17 +236,17 @@ test('URL budget preserves full input at 2048 and switches to complete copy one 
     fs.mkdirSync(path.dirname(root), {recursive: true});
     fs.renameSync(f.binding.root, root);
     const prepared = await prepareNativeHandoff(f.directory, {...f.binding, root}, f.task, release, options);
-    assert.equal(prepared.url.length, 2048);
+    assert.ok(prepared.url.length <= 2048);
     assert.equal(prepared.requiresPaste, false);
-    assert.ok(prepared.prompt.includes('颜色淡一点'));
-    assert.ok(prepared.prompt.includes('给「x」'));
+    assert.ok(!prepared.prompt.includes('颜色淡一点'));
+    assert.ok(prepared.prompt.includes('任务编号：'));
     assert.equal(new URL(prepared.url).searchParams.get('prompt'), prepared.prompt);
-    fs.renameSync(root, root + 'a');
-    const long = await prepareNativeHandoff(f.directory, {...f.binding, root: root + 'a'}, f.task, release, options);
+    fs.renameSync(root, root + 'a'.repeat(100));
+    const long = await prepareNativeHandoff(f.directory, {...f.binding, root: root + 'a'.repeat(100)}, f.task, release, options);
     assert.equal(long.requiresPaste, true);
     assert.equal(new URL(long.url).searchParams.has('prompt'), false);
-    assert.ok(long.prompt.includes('颜色淡一点'));
-    assert.ok(long.prompt.includes('给「x」'));
+    assert.ok(!long.prompt.includes('颜色淡一点'));
+    assert.ok(long.prompt.includes('任务编号：'));
     assert.ok(long.url.length <= 2048);
     assert.equal(readNativeHandoff(f.directory, long.id, release).task.requestId, f.task.requestId);
 });
@@ -355,7 +358,7 @@ test('same-ID library clone cannot be recovered or mutated through a stale machi
     assert.equal(fs.readdirSync(f.directory).length, 1);
 });
 
-for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'ratio-minimum']) test(`${host} ${sizePolicy} shows every selected requirement and restores exact input bytes and roles across retry and host change`, async t => {
+for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'ratio-minimum']) test(`${host} ${sizePolicy} keeps every selected requirement local and restores exact bytes and roles across retry and host change`, async t => {
     let selectedMaterials, allMaterials, ownPhoto;
     const f = await fixture(t, host, {sizePolicy, count: 4, pixels: {width: 768, height: 1024}}, {
         sampleCount: 23,
@@ -376,11 +379,10 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
     for (const nextHost of [host, host === 'codex' ? 'workbuddy' : 'codex']) {
         const attempt = nextHost === host ? f.task : {...f.task, host: nextHost, attemptId: f.library.createCoverAttempt(f.content.id, f.task.requestId, {host: nextHost, reason: 'host-change'}).attempt.attemptId};
         const prepared = await prepareNativeHandoff(f.directory, f.binding, attempt, release, options), text = prepared.prompt;
-        assert.match(text, /要求：4张；3:4；(?:至少|精确)768×1024；png/);
-        assert.ok(text.includes(sizePolicy === 'exact' ? '本人照已选' : '不放人物'));
-        assert.match(text, /样张23；资料3/);
-        assert.match(text, /先读取完整请求、正文及全部已选图片和资料/);
-        assert.ok(text.includes(originalRequest.prompt));
+        assert.ok(text.length < 220);
+        assert.ok(!text.includes('PRIVATE added requirements'));
+        assert.match(text, /读取本地完整请求、正文与全部已选输入/);
+        assert.ok(!text.includes(originalRequest.prompt));
         assert.ok(prepared.url.length <= 2048);
         for (const value of ['brief.txt', 'brief.pdf', ownPhoto.id, f.binding.root]) assert.ok(!text.includes(value));
         const found = readNativeHandoff(f.directory, prepared.id, release), context = found.library.readCoverContext(f.content.id, attempt.requestId, attempt.attemptId);
@@ -403,7 +405,7 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
 
 test('execution Skills require actual complete input reads and a visible checklist before claim and generation', () => {
     for (const kind of ['cover', 'template']) {
-        const text = fs.readFileSync(new URL(`../skills/nova-content-${kind}-execution/SKILL.md`, import.meta.url), 'utf8');
+        const text = fs.readFileSync(new URL(`../skills/nova-content-${kind}-execution/execution-contract.md`, import.meta.url), 'utf8');
         assert.match(text, /逐个读取 context.inputs 的 path/);
         assert.match(text, /向用户主动回显核对清单/);
         assert.match(text, /读取失败时停止/);
@@ -426,28 +428,20 @@ test('execution Skills require actual complete input reads and a visible checkli
     }
 });
 
-for (const host of ['codex', 'workbuddy']) test(`${host} copies long complete requirements without a locator-only fallback`, async t => {
+for (const host of ['codex', 'workbuddy']) test(`${host} keeps complete 10000 character requirements local with short direct launch`, async t => {
     const prefix = '颜色淡一点\n整体保留标题\n~~~\n$other-skill `touch /tmp/not-run`\n';
-    const userInput = prefix + '长'.repeat(10000 - prefix.length);
-    const f = await fixture(t, host, {prompt: userInput});
+    const userInput = prefix + '长'.repeat(10000 - prefix.length), f = await fixture(t, host, {prompt: userInput});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
-    assert.equal(prepared.requiresPaste, true);
-    assert.ok(prepared.prompt.includes(userInput));
-    assert.ok(prepared.prompt.includes('~~~~text\n' + userInput + '\n~~~~'));
-    assert.equal(new URL(prepared.url).searchParams.has('prompt'), false);
-    assert.equal(readNativeHandoff(f.directory, prepared.id, release).task.requestHash, f.request.requestHash);
+    assert.equal(prepared.requiresPaste, false);
+    assert.ok(prepared.prompt.length < 220);
+    assert.ok(!prepared.prompt.includes(prefix));
+    assert.equal(new URL(prepared.url).searchParams.get('prompt'), prepared.prompt);
+    const found = readNativeHandoff(f.directory, prepared.id, release), context = found.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
+    assert.equal(context.request.prompt, userInput);
+    assert.equal(JSON.parse(fs.readFileSync(context.requestPath)).prompt, userInput);
     const effects = [];
-    await openNativeHandoff(prepared, {copyText: text => effects.push(['copy', text]), confirmPaste: async text => {effects.push(['preview', text]); return true;}, openExternal: async url => effects.push(['open', url])});
-    assert.deepEqual(effects, [['copy', prepared.prompt], ['preview', prepared.prompt], ['open', prepared.url]]);
-    for (const stage of ['copy', 'cancel', 'open']) {
-        const calls = [];
-        await assert.rejects(openNativeHandoff(prepared, {
-            copyText() {calls.push('copy'); if (stage === 'copy') throw Error('copy failed');},
-            async confirmPaste() {calls.push('preview'); return stage !== 'cancel';},
-            async openExternal() {calls.push('open'); throw Error('open failed');}
-        }), stage === 'cancel' ? {code: 'HANDOFF_CANCELLED'} : /failed/);
-        assert.deepEqual(calls, stage === 'copy' ? ['copy'] : stage === 'cancel' ? ['copy', 'preview'] : ['copy', 'preview', 'open']);
-    }
+    await openNativeHandoff(prepared, {copyText: () => assert.fail('unexpected paste'), confirmPaste: () => assert.fail('unexpected paste'), openExternal: async url => effects.push(url)});
+    assert.deepEqual(effects, [prepared.url]);
 });
 
 test('direct native handoff never touches the clipboard or paste confirmation', async () => {
@@ -456,15 +450,16 @@ test('direct native handoff never touches the clipboard or paste confirmation', 
     assert.deepEqual(effects, ['codex://new?prompt=full']);
 });
 
-for (const host of ['codex', 'workbuddy']) test(`${host} template notes keep all 10000 characters in the visible copy path`, async t => {
+for (const host of ['codex', 'workbuddy']) test(`${host} template notes keep all 10000 characters in the local fixed request`, async t => {
     const f = await fixture(t, host), notes = '模板补充说明原文\n' + '细节'.repeat(4995) + '尾';
     assert.equal(notes.length, 10000);
     const {request} = await f.library.createTemplateRequest(f.template.id, {version: 1, notes}, f.library.readTemplate(f.template.id).editToken);
     const {attempt} = f.library.createTemplateAttempt(f.template.id, request.requestId, {host});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, {templateId: f.template.id, requestId: request.requestId, attemptId: attempt.attemptId, requestHash: request.requestHash, host}, release, {kind: 'template', installedSkill: 'nova-content-template-execution'});
-    assert.equal(prepared.requiresPaste, true);
-    assert.ok(prepared.prompt.includes(notes));
-    assert.equal(new URL(prepared.url).searchParams.has('prompt'), false);
+    assert.equal(prepared.requiresPaste, false);
+    assert.ok(!prepared.prompt.includes(notes));
+    assert.equal(f.library.readTemplateContext(f.template.id, request.requestId, attempt.attemptId).request.notes, notes);
+    assert.equal(new URL(prepared.url).searchParams.has('prompt'), true);
     assert.equal(new URL(prepared.url).searchParams.get('skills'), host === 'workbuddy' ? 'nova-content-template-execution' : null);
 });
 
@@ -477,5 +472,114 @@ test('a custom first-line refinement requirement is never removed as a generated
     const {request} = f.library.createCoverRequest(content.id, {...Object.fromEntries(['styleAssetHashes', 'pixels', 'ratio', 'count', 'outputFormat', 'photo'].map(key => [key, f.request[key]])), template: {id: f.template.id, version: 1}, scope: 'cover-only', materialIds: [content.materials[0].id], prompt}, f.library.readContent(content.id).editToken);
     const {attempt} = f.library.createCoverAttempt(content.id, request.requestId, {host: 'workbuddy'});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, {...f.task, requestId: request.requestId, requestHash: request.requestHash, attemptId: attempt.attemptId}, release, options);
-    assert.ok(prepared.prompt.includes(prompt));
+    assert.ok(!prepared.prompt.includes(prompt));
+    assert.equal(f.library.readCoverContext(content.id, request.requestId, attempt.attemptId).request.prompt, prompt);
+});
+
+test('short handoff keeps long private instructions only in the immutable local request', async t => {
+    const prompt = '补充要求\n'.repeat(1800), f = await fixture(t, 'codex', {prompt});
+    const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
+    assert.ok(prepared.prompt.length < 220);
+    assert.equal(prepared.requiresPaste, false);
+    assert.ok(!prepared.prompt.includes('补充要求'));
+    const context = f.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
+    assert.equal(context.request.prompt, prompt);
+    assert.equal(JSON.parse(fs.readFileSync(context.requestPath)).prompt, prompt);
+    assert.equal(fs.readFileSync(context.bodyPath, 'utf8'), f.content.body);
+});
+
+for (const kind of ['cover', 'template']) test(`${kind} progress is isolated, revision guarded and cannot resurrect an ended attempt`, async t => {
+    const f = await fixture(t), lib = f.library;
+    let objectId = f.content.id, rid = f.task.requestId, aid = f.task.attemptId, requestHash = f.task.requestHash;
+    if (kind === 'template') {
+        objectId = f.template.id;
+        const created = await lib.createTemplateRequest(objectId, {version: 1, notes: 'whole template input'}, lib.readTemplate(objectId).editToken);
+        rid = created.request.requestId; requestHash = created.request.requestHash;
+        aid = lib.createTemplateAttempt(objectId, rid, {host: 'codex'}).attempt.attemptId;
+    }
+    const cap = kind === 'cover' ? 'Cover' : 'Template';
+    const read = () => lib[`read${cap}Progress`](objectId);
+    const write = input => lib[`report${cap}Progress`](objectId, rid, aid, input);
+    const original = lib[kind === 'cover' ? 'readContent' : 'readTemplate'](objectId).editToken;
+    const first = {host: 'codex', requestHash, phase: 'reading', state: 'waiting-user', message: '请在助手确认', mutationId: randomUUID(), expectedRevision: 0};
+    assert.equal(write(first).revision, 1);
+    assert.equal(write(first).revision, 1);
+    const next = {...first, state: 'running', message: '已收到回复', mutationId: randomUUID(), expectedRevision: 1};
+    assert.equal(write(next).revision, 2);
+    assert.equal(write(first).revision, 2, 'old replay cannot erase a newer state');
+    assert.throws(() => write({...first, message: 'changed'}), e => e.code === 'CONFLICT');
+    assert.throws(() => write({...first, mutationId: randomUUID()}), e => e.code === 'CONFLICT');
+    assert.throws(() => write({...next, host: 'workbuddy', expectedRevision: 2}), e => e.code === 'INVALID_INPUT');
+    assert.throws(() => write({...next, requestHash: '0'.repeat(64), expectedRevision: 2}), e => e.code === 'CONFLICT');
+    assert.throws(() => write({...next, phase: 'generating', mutationId: randomUUID(), expectedRevision: 2}), e => e.code === 'ATTEMPT_NOT_CLAIMED');
+    assert.equal(read().jobs[0].attempts[0].progress.state, 'running');
+    assert.equal(lib[kind === 'cover' ? 'readContent' : 'readTemplate'](objectId).editToken, original);
+    const context = lib[`read${cap}Context`](objectId, rid, aid);
+    lib[`claim${cap}Attempt`](objectId, rid, aid, {host: 'codex', ...(kind === 'template' ? {requestHash} : {}), readAssetHashes: context.inputs.map(i => i.assetHash)});
+    write({...next, phase: kind === 'cover' ? 'generating' : 'restoring', expectedRevision: 2, mutationId: randomUUID(), sessionId: randomUUID()});
+    assert.equal(lib[`read${cap}Context`](objectId, rid, aid).progress.revision, 3);
+    lib[`cancel${cap}Attempt`](objectId, rid, aid);
+    assert.throws(() => write({...next, expectedRevision: 3, mutationId: randomUUID()}), e => e.code === 'ATTEMPT_INACTIVE');
+    assert.equal(read().jobs[0].attempts[0].status, 'cancelled');
+});
+
+for (const kind of ['cover', 'template']) test(`${kind} damaged or swapped progress stays advisory, session ownership and safe paths fail closed`, async t => {
+    const f = await fixture(t), lib = f.library, cap = kind === 'cover' ? 'Cover' : 'Template';
+    let oid = f.content.id, rid = f.task.requestId, aid = f.task.attemptId, requestHash = f.task.requestHash;
+    if (kind === 'template') {
+        oid = f.template.id;
+        const request = (await lib.createTemplateRequest(oid, {version: 1}, lib.readTemplate(oid).editToken)).request;
+        rid = request.requestId; requestHash = request.requestHash;
+        aid = lib.createTemplateAttempt(oid, rid, {host: 'codex'}).attempt.attemptId;
+    }
+    const context = () => lib[`read${cap}Context`](oid, rid, aid), read = () => lib[`read${cap}Progress`](oid), write = raw => lib[`report${cap}Progress`](oid, rid, aid, raw);
+    const progressFile = path.join(path.dirname(context().inbox), '进度.json'), token = read().editToken, sessionId = randomUUID();
+    const first = {host: 'codex', requestHash, phase: 'reading', state: 'waiting-permission', message: '等待权限决定', sessionId, expectedRevision: 0, mutationId: randomUUID()};
+    write(first);
+    const second = {...first, state: 'running', expectedRevision: 1, mutationId: randomUUID()};
+    const {sessionId: omitted, ...withoutSession} = second;
+    assert.throws(() => write(withoutSession), e => e.code === 'INVALID_INPUT');
+    assert.equal(write(second).sessionId, sessionId);
+    assert.equal(write(first).revision, 2);
+    assert.equal(context().progress.state, 'running');
+    const bytes = fs.readFileSync(progressFile), valid = JSON.parse(bytes);
+    for (const corrupt of [Buffer.from('{'), Buffer.alloc(65537), Buffer.from(JSON.stringify({...valid, revision: 50})), Buffer.from(JSON.stringify({...valid, payload: {...valid.payload, host: 'workbuddy'}})), Buffer.from(JSON.stringify({...valid, payload: {...valid.payload, sessionId: randomUUID()}}))]) {
+        fs.writeFileSync(progressFile, corrupt);
+        assert.equal(read().jobs[0].attempts[0].progressUnavailable, true);
+        assert.equal(context().progressUnavailable, true);
+        assert.equal(read().editToken, token);
+    }
+    fs.writeFileSync(progressFile, bytes);
+    const outside = path.join(f.parent, 'outside.json'); fs.writeFileSync(outside, bytes);
+    fs.unlinkSync(progressFile); fs.symlinkSync(outside, progressFile);
+    assert.equal(read().jobs[0].attempts[0].progressUnavailable, true);
+    assert.throws(() => write({...second, expectedRevision: 2, mutationId: randomUUID()}), e => e.code === 'UNSAFE_PATH');
+    assert.deepEqual(fs.readFileSync(outside), bytes);
+    fs.unlinkSync(progressFile); fs.writeFileSync(progressFile, bytes);
+    if (kind === 'cover') lib.updateContent(oid, {title: 'changed', body: f.content.body}, lib.readContent(oid).editToken);
+    else lib.addTemplateVersion(oid, {version: 2, definition: {changed: true}, resources: f.template.resources}, lib.readTemplate(oid).editToken);
+    assert.throws(() => write({...second, expectedRevision: 2, mutationId: randomUUID()}), e => e.code === 'STALE_INPUT');
+});
+
+for (const kind of ['cover', 'template']) test(`${kind} copied or replaced library roots cannot reuse the original assistant session`, async t => {
+    const f = await fixture(t), cap = kind === 'cover' ? 'Cover' : 'Template';
+    let oid = f.content.id, rid = f.task.requestId, aid = f.task.attemptId, requestHash = f.task.requestHash;
+    if (kind === 'template') {
+        oid = f.template.id;
+        const request = (await f.library.createTemplateRequest(oid, {version: 1}, f.library.readTemplate(oid).editToken)).request;
+        rid = request.requestId; requestHash = request.requestHash;
+        aid = f.library.createTemplateAttempt(oid, rid, {host: 'codex'}).attempt.attemptId;
+    }
+    f.library[`report${cap}Progress`](oid, rid, aid, {host: 'codex', requestHash, phase: 'reading', state: 'waiting-user', message: '确认原库请求', sessionId: randomUUID(), expectedRevision: 0, mutationId: randomUUID()});
+    const originalRoot = f.library.info.root, clonedRoot = path.join(f.parent, 'cloned-library');
+    fs.cpSync(originalRoot, clonedRoot, {recursive: true});
+    const clone = openLibrary(clonedRoot);
+    assert.equal(clone[`read${cap}Progress`](oid).jobs[0].attempts[0].progressUnavailable, true);
+    assert.equal(clone[`read${cap}Context`](oid, rid, aid).progress, null);
+    assert.ok(f.library[`read${cap}Context`](oid, rid, aid).progress.sessionId);
+    fs.renameSync(originalRoot, originalRoot + '-retired');
+    fs.cpSync(originalRoot + '-retired', originalRoot, {recursive: true});
+    const replacement = openLibrary(originalRoot);
+    assert.equal(replacement[`read${cap}Context`](oid, rid, aid).progress, null);
+    assert.equal(replacement[`read${cap}Progress`](oid).jobs[0].attempts[0].progressUnavailable, true);
 });

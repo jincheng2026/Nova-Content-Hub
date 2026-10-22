@@ -15,7 +15,7 @@ export class Covers {
   private readingImages = false;
   get reading(): Promise<void> { return Promise.allSettled([...this.images.values()]).then(() => {}); }
   owner: DesktopController; epoch = randomUUID(); grants = new Map<string, string>();
-  launch?: (binding: LibraryBinding, reference: CoverReference & { requestHash: string; host: Assistant }) => Promise<void>;
+  launch?: (binding: LibraryBinding, reference: CoverReference & { requestHash: string; host: Assistant; sessionId?: string }) => Promise<void>;
   setup: (host: Assistant) => Promise<AssistantSetup>;
   constructor(owner: DesktopController, launch?: Covers['launch'], reader: Worker = owner.worker, setup?: Covers['setup']) { this.owner = owner; this.launch = launch; this.reader = reader; this.setup = setup ?? (async host => ({ host, ready: false, skill: null, reason: 'unconfigured' })); }
   readAssistantSetup() { return this.setup(this.owner.binding.assistant ?? 'codex'); }
@@ -24,11 +24,11 @@ export class Covers {
     if (!setup.ready || setup.host !== host || setup.skill !== 'nova-content-cover-execution') fail('NOT_READY', '助手尚未准备好。请打开左下角设置，检查助手与配套插件后重试。');
     if (!this.launch) fail('NOT_READY', '此构建尚未配置助手打开入口，请检查工作台安装。');
   }
-  async openAttempt(reference: CoverReference) {
+  async openAttempt(reference: CoverReference, bound = false) {
     const c = this.owner;
     const context = await c.worker.call('handoffContext', { binding: c.current(), reference });
     await this.requireAssistant(context.attempt.host);
-    await this.launch!(c.current(), { ...reference, requestHash: context.request.requestHash, host: context.attempt.host });
+    await this.launch!(c.current(), { ...reference, requestHash: context.request.requestHash, host: context.attempt.host, ...(bound && context.progress?.sessionId ? {sessionId: context.progress.sessionId} : {}) });
   }
   revoke() { this.epoch = randomUUID(); this.grants.clear(); }
   grant(hash: string) { const url = `nova-content://assets/${this.epoch}/${hash}`; this.grants.set(url, hash); return url; }
@@ -100,6 +100,8 @@ export class Covers {
   }
   async resumePhoto() { requireWrite(this.owner.authMode); return this.owner.exclusive(() => this.finishPhoto()); }
   async abandonPhoto() { return this.owner.exclusive(async () => { await this.owner.persist({ ...this.owner.binding, photoPending: null }); }); }
+  async readCoverProgress(input: {contentId: string}) { validateInput('readCoverProgress', input); return this.owner.exclusive(() => this.owner.worker.call('readCoverProgress', {binding: this.owner.current(), ...input})); }
+  async continueBoundCover(reference: CoverReference) { validateInput('continueBoundCover', reference); requireWrite(this.owner.authMode); return this.owner.exclusive(async () => {await this.writable(); await this.openAttempt(reference, true); return {launchRequested: true as const};}); }
   async readCover(input: { contentId: string }) { validateInput('readCover', input); return this.owner.exclusive(async () => this.decorate(await this.owner.worker.call('readCover', { binding: this.owner.current(), contentId: input.contentId }))); }
   async generateCover(input: CoverStart) {
     const c = this.owner; validateInput('generateCover', input); requireWrite(c.authMode);

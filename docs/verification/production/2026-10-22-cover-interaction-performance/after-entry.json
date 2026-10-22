@@ -1,0 +1,129 @@
+{
+  "at": "2026-10-22T04:01:32.265Z",
+  "scope": "Actual source Covers + execute worker; warm OS page cache; first resets bound reader and process MIME cache starts empty; repeat reuses process; no Electron transport/paint",
+  "fixture": {
+    "binding": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nch-cover-loading-rN9bnI/library",
+      "libraryId": "26bccc60-782c-4ccd-8cdc-92f948759b09",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "76604480"
+      }
+    },
+    "contentId": "b1c9146f-4685-4c6a-93c3-1512bd79b045",
+    "hashes": [
+      "de51f02b8d5e286fdf84393832301052d25f2db87d3f5aeb5a839de26d368e43",
+      "90cebbf40e940cfa2f118b09686576fbbd23119c1f5194de06e56a1ce1a9a403",
+      "5837c495014df430c92727cd2ce91df9c92570e5a99a90371fd606e9b457fd46",
+      "9dbe0546efc518a0ab2767f7dc04ff4e07b5a35bdb3446595674f65640e9913b"
+    ],
+    "jobs": 6,
+    "candidates": 24,
+    "originals": 4,
+    "originalBytes": 4717584,
+    "imageDimensions": [
+      1086,
+      1448
+    ]
+  },
+  "fixtureDigest": "bcfae39e003f71abf0f694084ba73ee78b032ad56ba073893770aee06bec402b",
+  "unchanged": true,
+  "measurements": [
+    {
+      "label": "first-readCover",
+      "durationMs": 184.61091699999997,
+      "counts": {
+        "opens": 1,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 3
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "first-all-visible-originals",
+      "durationMs": 274.55500000000006,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 8
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "repeat-readCover",
+      "durationMs": 111.3382079999999,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 1
+      },
+      "requests": {
+        "readCover": 1
+      }
+    },
+    {
+      "label": "repeat-all-visible-originals",
+      "durationMs": 138.71391600000015,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 0,
+        "snapshotBytes": 0,
+        "locks": 4
+      },
+      "requests": {
+        "rasterBatch": 2
+      }
+    },
+    {
+      "label": "readCoverAutomatically-assets-cache-miss",
+      "durationMs": 152.32391699999994,
+      "counts": {
+        "opens": 0,
+        "assets": 8,
+        "assetBytes": 37819784,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 4
+      },
+      "requests": {
+        "readCover": 1,
+        "coverAssets": 1,
+        "ipc:listCoverAssets": 1,
+        "ipc:readCover": 1,
+        "ipc:status": 1
+      }
+    },
+    {
+      "label": "readCoverAutomatically-assets-cache-hit",
+      "durationMs": 118.35862499999985,
+      "counts": {
+        "opens": 0,
+        "assets": 4,
+        "assetBytes": 18909892,
+        "snapshots": 24,
+        "snapshotBytes": 113459352,
+        "locks": 1
+      },
+      "requests": {
+        "readCover": 1,
+        "ipc:readCover": 1,
+        "ipc:status": 1
+      }
+    }
+  ]
+}

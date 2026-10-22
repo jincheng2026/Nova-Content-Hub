@@ -115,6 +115,8 @@ export class DesktopController {
     }
 
     readTemplateAssistantSetup(input?: undefined) { return this.templates.readTemplateAssistantSetup(input); }
+    readTemplateProgress(input: {templateId: string}) { return this.templates.readTemplateProgress(input); }
+    continueBoundTemplate(input: TemplateReference) { return this.templates.continueBoundTemplate(input); }
     readTemplateWorkflow(input: {templateId: string}) { return this.templates.readTemplateWorkflow(input); }
     startTemplateStudy(input: TemplateStart) { return this.templates.startTemplateStudy(input); }
     continueTemplateStudy(input: TemplateReference) { return this.templates.continueTemplateStudy(input); }
@@ -235,6 +237,8 @@ export class DesktopController {
         return this.covers.abandonPhoto();
     }
 
+    readCoverProgress(input: {contentId: string}) { return this.covers.readCoverProgress(input); }
+    continueBoundCover(input: CoverReference) { return this.covers.continueBoundCover(input); }
     readCover(input: { contentId: string }) {
         return this.covers.readCover(input);
     }
