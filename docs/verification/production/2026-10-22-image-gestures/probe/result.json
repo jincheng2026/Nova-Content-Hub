@@ -1,0 +1,237 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "electron": "44.9.0",
+  "checks": [
+    {
+      "name": "Ctrl/pinch wheel zooms image 1280",
+      "passed": true
+    },
+    {
+      "name": "Ctrl wheel leaves document zoom unchanged 1280",
+      "passed": true
+    },
+    {
+      "name": "Meta wheel keeps offcenter image pixel 1280",
+      "passed": true
+    },
+    {
+      "name": "Plain wheel scrolls without zoom 1280",
+      "passed": true
+    },
+    {
+      "name": "Rapid wheel deltas accumulate 1280",
+      "passed": true
+    },
+    {
+      "name": "Rapid wheel anchor remains stable 1280",
+      "passed": true
+    },
+    {
+      "name": "Reversed burst returns to original scale 1280",
+      "passed": true
+    },
+    {
+      "name": "Maximum 800% 1280",
+      "passed": true
+    },
+    {
+      "name": "Minimum 5% 1280",
+      "passed": true
+    },
+    {
+      "name": "Doubleclick opens original detail 1280",
+      "passed": true
+    },
+    {
+      "name": "Second doubleclick returns to fit 1280",
+      "passed": true
+    },
+    {
+      "name": "Held primary button wheel zooms 1280",
+      "passed": true
+    },
+    {
+      "name": "Primary drag pans both axes 1280",
+      "passed": true
+    },
+    {
+      "name": "Pointercancel clears drag 1280",
+      "passed": true
+    },
+    {
+      "name": "Canceled drag does not hijack later plain wheel 1280",
+      "passed": true
+    },
+    {
+      "name": "Keyboard 1 original 1280",
+      "passed": true
+    },
+    {
+      "name": "Keyboard minus 1280",
+      "passed": true
+    },
+    {
+      "name": "Keyboard plus 1280",
+      "passed": true
+    },
+    {
+      "name": "Ctrl/pinch wheel zooms image 960",
+      "passed": true
+    },
+    {
+      "name": "Ctrl wheel leaves document zoom unchanged 960",
+      "passed": true
+    },
+    {
+      "name": "Meta wheel keeps offcenter image pixel 960",
+      "passed": true
+    },
+    {
+      "name": "Plain wheel scrolls without zoom 960",
+      "passed": true
+    },
+    {
+      "name": "Rapid wheel deltas accumulate 960",
+      "passed": true
+    },
+    {
+      "name": "Rapid wheel anchor remains stable 960",
+      "passed": true
+    },
+    {
+      "name": "Reversed burst returns to original scale 960",
+      "passed": true
+    },
+    {
+      "name": "Maximum 800% 960",
+      "passed": true
+    },
+    {
+      "name": "Minimum 5% 960",
+      "passed": true
+    },
+    {
+      "name": "Doubleclick opens original detail 960",
+      "passed": true
+    },
+    {
+      "name": "Second doubleclick returns to fit 960",
+      "passed": true
+    },
+    {
+      "name": "Held primary button wheel zooms 960",
+      "passed": true
+    },
+    {
+      "name": "Primary drag pans both axes 960",
+      "passed": true
+    },
+    {
+      "name": "Pointercancel clears drag 960",
+      "passed": true
+    },
+    {
+      "name": "Canceled drag does not hijack later plain wheel 960",
+      "passed": true
+    },
+    {
+      "name": "Keyboard 1 original 960",
+      "passed": true
+    },
+    {
+      "name": "Keyboard minus 960",
+      "passed": true
+    },
+    {
+      "name": "Keyboard plus 960",
+      "passed": true
+    },
+    {
+      "name": "Small centered image cursor anchor across overflow",
+      "passed": true
+    },
+    {
+      "name": "Small original doubles on doubleclick",
+      "passed": true
+    },
+    {
+      "name": "Extreme aspect ratio fits 2",
+      "passed": true
+    },
+    {
+      "name": "Long image plain wheel retains reading scroll",
+      "passed": true
+    },
+    {
+      "name": "Extreme image opposite end reachable 2",
+      "passed": true
+    },
+    {
+      "name": "Extreme aspect ratio fits 3",
+      "passed": true
+    },
+    {
+      "name": "Extreme image opposite end reachable 3",
+      "passed": true
+    },
+    {
+      "name": "Wheel deltaMode normalization 1",
+      "passed": true
+    },
+    {
+      "name": "Wheel deltaMode normalization 2",
+      "passed": true
+    },
+    {
+      "name": "URL switch discards pending zoom and scroll",
+      "passed": true
+    },
+    {
+      "name": "Error disables zoom controls",
+      "passed": true
+    },
+    {
+      "name": "Error pinch still prevents page zoom",
+      "passed": true
+    },
+    {
+      "name": "Valid URL recovers after image error",
+      "passed": true
+    },
+    {
+      "name": "Capture acquired before blur",
+      "passed": true
+    },
+    {
+      "name": "Window blur clears drag and capture",
+      "passed": true
+    },
+    {
+      "name": "Lost pointer capture clears drag",
+      "passed": true
+    },
+    {
+      "name": "Preview keeps original source",
+      "passed": true
+    },
+    {
+      "name": "Unmount removes native wheel listener",
+      "passed": true
+    },
+    {
+      "name": "Remount installs one wheel listener",
+      "passed": true
+    },
+    {
+      "name": "Nested escape returns focus and preserves outer layer",
+      "passed": true
+    },
+    {
+      "name": "No renderer errors",
+      "passed": true
+    }
+  ],
+  "scope": "Source component in Chromium/Electron using CDP wheel and mouse input plus synchronous burst/cancel lifecycle events. No installed application or physical trackpad/Windows validation."
+}
