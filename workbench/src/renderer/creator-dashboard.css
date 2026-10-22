@@ -118,8 +118,7 @@
 .content-collections { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; }
 .content-collection-card { display:flex; align-items:center; gap:15px; background:var(--semi-color-bg-2); border:1px solid var(--semi-color-border); border-radius:11px; padding:19px 20px; text-align:left; color:var(--semi-color-text-2); }
 .content-collection-card:hover { border-color:var(--semi-color-primary-light-active); }
-.content-collection-art { flex:none; position:relative; display:grid; grid-template-rows:minmax(0,1fr); place-items:center; width:56px; height:60px; overflow:hidden; border:1px solid var(--surface-line); border-radius:7px; background:#edf3fc; color:var(--semi-color-text-2); font-size:25px; box-shadow:4px -4px 0 #f5f8fd,5px -5px 0 var(--surface-line); }
-.content-collection-art img { display:block; min-width:0; min-height:0; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:min(6px,4%); }
+.content-collection-art { flex:none; position:relative; display:grid; grid-template-rows:minmax(0,1fr); place-items:center; width:56px; height:60px; overflow:hidden; border:1px solid var(--surface-line); border-radius:7px; background:#edf3fc; color:var(--semi-color-text-2); font-size:25px; }
 .content-collection-copy { display:grid; gap:7px; min-width:0; flex:1; }
 .content-collection-copy strong { color:var(--semi-color-text-0); font-weight:600; font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .content-collection-copy small { color:var(--semi-color-text-2); font-size:12px; }
@@ -174,8 +173,6 @@
 }
 .creator-content-library .content-action-menu { position:static; width:125px; margin-top:6px; box-shadow:0 3px 12px #20334d0a; }
 .creator-content-library .content-row-actions { flex-wrap:wrap; }
-.content-collection-art:has(img+img) { display:flex; overflow:hidden; }
-.content-collection-art:has(img+img) img { width:auto; max-width:50%; border-radius:min(5px,4%); }
 
 /* The calendar is a day picker; the selected day is an executable list. */
 .daily-plan-filters { display:flex; align-items:center; gap:10px; padding:0 20px 12px; }

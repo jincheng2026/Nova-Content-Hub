@@ -1,5 +1,7 @@
 # 0.3.43 桌面交互预览：打包安装记录
 
+> 本页保留首次0.3.43构建的历史验收。用户随后要求合集预览仍归入同一版本，最新构建与标签记录见 [合集优化发布记录](../2026-10-22-collection-preview-0343-release/)。原始源码改以 `v0.3.43-preview-mac-arm64-initial` 保留；原DMG在新记录的 preservation 映射中另存，旧归档应用、Downloads交付和本页原始收据不覆盖。下文标签、安装位置及标准DMG路径均为首次验收时观察，不代表当前最新版。
+
 本次交付为 darwin-arm64（Apple Silicon Mac）预览，AUTH_MODE=disabled、productionReady=false、adhoc 临时签名。全局交付要求以根 AGENTS.md 为准。
 
 冻结源码为 `266922901c7547e73923184e9c44b93971e095b2`，包含 `f9e6965` 图片手势缩放和 `f3a136e` 候选操作栏、单层批注输入、图标工具及批注移动。本地标签 `v0.3.43-preview-mac-arm64` 指向冻结源码；后续验收记录提交与已冻结安装包分开。

@@ -40,6 +40,8 @@ async function probeMain(probeRoot) {
     first = library.registerContentCandidate(first.id, {assetHash: asset.assetHash, requestId: 'manual', attemptId: 'fixture'}, first.editToken);
     first = library.selectContentCover(first.id, first.candidates[0].id, first.editToken);
     const empty = library.createCollection({title: '空合集', body: ''});
+    // Keep the intended Overview fixture newest even on a fast same-millisecond run.
+    await new Promise(resolve => setTimeout(resolve, 5));
     let group = library.createCollection({title: '旅行合集', body: '旧合集正文保留', channelIds: ['douyin'], dateRange: {start: '2026-10-01', end: '2026-10-31'}});
     group = library.setCollectionMembers(group.id, [first.id, second.id], group.editToken);
     group = library.saveCollectionPublicationPlan(group.id, {channelId: 'douyin', text: '旧合集发布内容', schedule: {precision: 'date', date: '2026-10-19'}, coverChoice: null}, group.editToken);
@@ -94,8 +96,8 @@ async function probeMain(probeRoot) {
         const card = `.content-collection-card[data-collection-id="${group.id}"]`;
         assert.equal(await run(`document.querySelector(${JSON.stringify(card)}).textContent.includes('2026-10')`), false, 'folder card hides legacy dates');
         assert.equal(await run(`document.querySelector(${JSON.stringify(card)}).textContent.includes('发布')`), false, 'folder card hides collection publication business');
-        assert.equal(await run(`document.querySelectorAll(${JSON.stringify(card + ' .content-collection-art img')}).length`), 1, 'folder cover comes from its member');
-        await wait(`document.querySelector(${JSON.stringify(card + ' .content-collection-art img')}).naturalWidth > 0`);
+        assert.equal(await run(`document.querySelectorAll(${JSON.stringify(card + ' .collection-preview img')}).length`), 1, 'folder cover comes from its member');
+        await wait(`document.querySelector(${JSON.stringify(card + ' .collection-preview img')}).naturalWidth > 0`);
         await openGroup(empty.id); assert.deepEqual(await rows(), []);
         assert.equal(await run('document.body.innerText.includes("合集还没有内容")'), true);
         await textClick('← 返回全部内容'); await wait('document.querySelector(".content-collections")');

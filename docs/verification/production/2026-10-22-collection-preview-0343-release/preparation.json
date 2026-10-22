@@ -1,0 +1,70 @@
+{
+  "recordedAt": "2026-10-22T11:54:05.189Z",
+  "status": "PREPARED_NOT_FROZEN",
+  "version": "0.3.43",
+  "sourceCommitAtPreparation": "80efa4e8e9f6af985351252388af4a65439dfb1e",
+  "sourceFrozen": false,
+  "sameVersionReplacement": true,
+  "previousReleaseEvidence": "docs/verification/production/2026-10-22-desktop-interactions-0343",
+  "newDeliveryDirectory": "自媒体工作台-0.3.43-合集优化-同事交付-Mac苹果芯片",
+  "sourceAndReviewsInFlight": true,
+  "target": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "channel": "preview",
+    "AUTH_MODE": "disabled",
+    "productionReady": false
+  },
+  "versions": [
+    {
+      "file": "package.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "workbench/package.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "release.config.json",
+      "version": "0.3.43"
+    },
+    {
+      "file": "package-lock.json",
+      "version": "0.3.43",
+      "lockRootVersion": "0.3.43"
+    },
+    {
+      "file": "workbench/package-lock.json",
+      "version": "0.3.43",
+      "lockRootVersion": "0.3.43"
+    }
+  ],
+  "generatedPrototype": {
+    "file": "workbench/prototype/build-config.js",
+    "version": "0.3.43",
+    "pairId": "nova-content-hub@0.3.43:p1:disabled"
+  },
+  "existingTools": {
+    "distribution": "workbench/scripts/dist.mjs",
+    "nativePayload": "workbench/scripts/native-payload.mjs",
+    "delivery": "workbench/scripts/export-colleague-delivery.mjs",
+    "packageSnapshot": "plugin-src/src/lib/package-snapshot.mjs",
+    "transactionalInstaller": "workbench/src/main/mac-installation.mts"
+  },
+  "pendingPhases": [
+    "root tests and source review",
+    "root authorization to commit/freeze",
+    "preserve original 0.3.43 DMG/blockmap/configuration plus archive and delivery identities",
+    "clean committed native payload and DMG build",
+    "frozen artifact/delivery verification",
+    "root normal-quit verification",
+    "fresh actual-binding library backup",
+    "transaction installation and paired-plugin update",
+    "root Finder/native acceptance and bounded final integrity"
+  ],
+  "buildExecuted": false,
+  "applicationAccessed": false,
+  "userLibraryAccessed": false,
+  "machineBindingAccessed": false,
+  "pluginsModified": false
+}

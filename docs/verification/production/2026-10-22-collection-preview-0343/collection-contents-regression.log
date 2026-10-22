@@ -1,0 +1,70 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2101 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI/renderer/index.html                                         0.19 kB │ gzip:   0.16 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI/renderer/assets/index-Vvn6adXc.css                        522.32 kB │ gzip:  69.14 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI/renderer/assets/index-DELYnBOQ.js                       1,381.40 kB │ gzip: 383.62 kB
+
+✓ built in 1.31s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+Browser assertion: new Promise((resolve,reject)=>{const end=Date.now()+15000;const check=()=>{if(document.querySelector(".content-collections [data-collection-id=\"a7e6ed68-98f2-4d87-a892-86ec801faaac\"] button").disabled)return resolve(true);if(Date.now()>end)return reject(new Error('State timeout: '+"document.querySelector(\".content-collections [data-collection-id=\\\"a7e6ed68-98f2-4d87-a892-86ec801faaac\\\"] button\").disabled"+' / '+document.body.innerText.slice(-1600)));setTimeout(check,15)};check()})
+[Error: State timeout: document.querySelector(".content-collections [data-collection-id=\"a7e6ed68-98f2-4d87-a892-86ec801faaac\"] button").disabled / 自媒体工作台
+内容创作工作空间
+工作空间
+免费体验
+总览
+模板
+内容
+日程
+提示词
+内容库
+设置
+library
+
+资料保存在你的本机
+
+工作空间 / 内容
+
+内容
+本机保存
+刷新
+
+CONTENT · 内容管理
+
+内容
+
+整理内容与合集，查看封面和发布进度。
+
+0 篇内容
+2 个合集
+＋ 新建合集
+＋ 新建内容
+内容范围
+回收站
+内容状态
+全部状态
+内容列表排序
+最近更新
+▤
+空合集 合集
+0 篇内容 · 已移入回收站
+恢复合集不会改变成员内容；成员已回收时请先恢复成员。
+恢复合集
+▤
+外部新名称 合集
+3 篇内容 · 已移入回收站
+恢复合集不会改变成员内容；成员已回收时请先恢复成员。
+恢复合集
+共 2 项 · 1–2 项
+每页条数：20
+
+共匹配 2 项（2 个合集 · 0 篇内容）]
+Failure artifacts: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI
+Probe artifacts: /private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-collection-contents-GOZGNI

@@ -1,0 +1,986 @@
+[
+  {
+    "scenario": "empty",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "overview",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "empty",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "contents",
+    "width": 1280,
+    "height": 860,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "empty",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "overview",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "empty",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "contents",
+    "width": 960,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "empty",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "overview",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "empty",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "one",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "two",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 2,
+    "declared": 2,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      },
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "recycled",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "invalid",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "unselected",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "broken",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 0,
+    "declared": 0,
+    "fallback": true,
+    "bounded": true,
+    "overflow": false,
+    "images": [],
+    "unchanged": true
+  },
+  {
+    "scenario": "partial-broken",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 1.7777777777777777,
+        "naturalRatio": 1.7777777777777777,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  },
+  {
+    "scenario": "duplicate",
+    "screen": "contents",
+    "width": 760,
+    "height": 680,
+    "count": 1,
+    "declared": 1,
+    "fallback": false,
+    "bounded": true,
+    "overflow": false,
+    "images": [
+      {
+        "loaded": true,
+        "fit": "contain",
+        "ratio": 0.75,
+        "naturalRatio": 0.75,
+        "bounded": true
+      }
+    ],
+    "unchanged": true
+  }
+]

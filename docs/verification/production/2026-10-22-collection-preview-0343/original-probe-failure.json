@@ -1,0 +1,5 @@
+{
+  "error": "Error: Script failed to execute, this normally means an error was thrown. Check the renderer console for the error.\n    at node:electron/js2c/sandbox_bundle:2:98605\n    at IpcRendererInternal.<anonymous> (node:electron/js2c/sandbox_bundle:2:93432)\n    at IpcRendererInternal.emit (node:electron/js2c/sandbox_bundle:2:35958)\n    at Object.onMessage (node:electron/js2c/sandbox_bundle:2:92646)",
+  "writes": [],
+  "ui": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月22日星期四\n今天 0/0 已发\n一\n1\n二\n0\n三\n0\n四\n0\n五\n0\n六\n0\n日\n0\n继续创作\n山海游记\n\n第一篇原始正文\n\n复制文案\n下载图片\n继续编辑\n打开内容\n安排日程\n今天\n0 条待发布\n\n今天暂无发布安排。\n\n查看今天全部 0 条安排 →\n明天 · 0 条安排\n查看日程 →\n要处理\n3 项\n准备内容封面\n工作随笔\n2 ›\n核对逾期计划\n发布后补记实际记录\n1 ›\n安排发布日程\n工作随笔\n3 ›\n内容项目\n3 篇 · 2 个合集\n▤\n空合集\n合集 · 0 篇内容\n›\n山海游记\n已选封面 · 尚未安排发布\n›\n▤\n工作随笔\n待做封面 · 尚未安排发布\n›\n▤\n城市漫步\n待做封面 · 尚未安排发布\n›\n查看全部内容项目 →"
+}

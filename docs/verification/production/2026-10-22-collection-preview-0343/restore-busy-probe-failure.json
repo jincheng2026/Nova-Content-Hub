@@ -1,0 +1,81 @@
+{
+  "error": "Error: State timeout: document.querySelector(\".content-collections [data-collection-id=\\\"a7e6ed68-98f2-4d87-a892-86ec801faaac\\\"] button\").disabled / 自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n\nCONTENT · 内容管理\n\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n0 篇内容\n2 个合集\n＋ 新建合集\n＋ 新建内容\n内容范围\n回收站\n内容状态\n全部状态\n内容列表排序\n最近更新\n▤\n空合集 合集\n0 篇内容 · 已移入回收站\n恢复合集不会改变成员内容；成员已回收时请先恢复成员。\n恢复合集\n▤\n外部新名称 合集\n3 篇内容 · 已移入回收站\n恢复合集不会改变成员内容；成员已回收时请先恢复成员。\n恢复合集\n共 2 项 · 1–2 项\n每页条数：20\n\n共匹配 2 项（2 个合集 · 0 篇内容）",
+  "writes": [
+    {
+      "op": "createCollection",
+      "title": "新文件夹",
+      "body": "",
+      "channelIds": [],
+      "dateRange": {
+        "start": null,
+        "end": null
+      }
+    },
+    {
+      "op": "updateCollection",
+      "id": "066f5a8c-0c8c-4919-9058-a6c0853bd550",
+      "editToken": "d4f0bfc58d93b62f6239a72722ba47044f171b679d477810e69c1c2d1a72c93c",
+      "title": "旅行收藏",
+      "body": "旧合集正文保留",
+      "channelIds": [
+        "douyin"
+      ],
+      "dateRange": {
+        "start": "2026-10-01",
+        "end": "2026-10-31"
+      }
+    },
+    {
+      "op": "setCollectionMembers",
+      "id": "066f5a8c-0c8c-4919-9058-a6c0853bd550",
+      "editToken": "8f1580847d55e86bb7fae53a8423003862bdf6025d3f3f13614f42552f02d908",
+      "memberIds": [
+        "6c5d3441-77a9-458a-9361-884f2ccf5cd6",
+        "69a2e4c7-56d0-409a-ab24-08a85e2b1157",
+        "588caa46-c2c6-46d4-941f-98294a7e228b"
+      ]
+    },
+    {
+      "op": "setCollectionMembers",
+      "id": "066f5a8c-0c8c-4919-9058-a6c0853bd550",
+      "editToken": "c0c8a2b04bcbeb27e08001b8a3508d499cf22bc7be0d82f772115c32221f84e2",
+      "memberIds": [
+        "6c5d3441-77a9-458a-9361-884f2ccf5cd6",
+        "588caa46-c2c6-46d4-941f-98294a7e228b"
+      ]
+    },
+    {
+      "op": "setCollectionMembers",
+      "id": "066f5a8c-0c8c-4919-9058-a6c0853bd550",
+      "editToken": "c92f8b0d667c41ea5f086e34e47d9a44295d2d4ecd5fe608ebd4bebbad168208",
+      "memberIds": [
+        "588caa46-c2c6-46d4-941f-98294a7e228b"
+      ]
+    },
+    {
+      "op": "updateCollection",
+      "id": "066f5a8c-0c8c-4919-9058-a6c0853bd550",
+      "editToken": "86f5dde88f517acd31e32fca6214919b84f33f801a78e24db1701ec7f692befa",
+      "title": "保留本地名称草稿",
+      "body": "旧合集正文保留",
+      "channelIds": [
+        "douyin"
+      ],
+      "dateRange": {
+        "start": "2026-10-01",
+        "end": "2026-10-31"
+      }
+    },
+    {
+      "op": "trashCollection",
+      "id": "a7e6ed68-98f2-4d87-a892-86ec801faaac",
+      "editToken": "2f65caba5af1eec3b5ec8e86267e6765d69c1de63ea4d116d3d6bc73fcad1c88"
+    },
+    {
+      "op": "restoreCollection",
+      "id": "a7e6ed68-98f2-4d87-a892-86ec801faaac",
+      "editToken": "6684f6f70e945231be05c41ad08d28082bff26df37a728512156f28efd9af86c"
+    }
+  ],
+  "ui": "自媒体工作台\n内容创作工作空间\n工作空间\n免费体验\n总览\n模板\n内容\n日程\n提示词\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 内容\n\n内容\n本机保存\n刷新\n\nCONTENT · 内容管理\n\n内容\n\n整理内容与合集，查看封面和发布进度。\n\n0 篇内容\n2 个合集\n＋ 新建合集\n＋ 新建内容\n内容范围\n回收站\n内容状态\n全部状态\n内容列表排序\n最近更新\n▤\n空合集 合集\n0 篇内容 · 已移入回收站\n恢复合集不会改变成员内容；成员已回收时请先恢复成员。\n恢复合集\n▤\n外部新名称 合集\n3 篇内容 · 已移入回收站\n恢复合集不会改变成员内容；成员已回收时请先恢复成员。\n恢复合集\n共 2 项 · 1–2 项\n每页条数：20\n\n共匹配 2 项（2 个合集 · 0 篇内容）"
+}

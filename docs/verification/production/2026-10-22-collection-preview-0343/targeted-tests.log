@@ -1,0 +1,21 @@
+✔ collection rename preserves legacy fields and inactive channels while retaining edit and channel guards (4905.582958ms)
+✔ only an owned stored publication URL is sent to the system browser (3775.254791ms)
+✔ invalid stored links and browser errors do not become successful opens (5289.124041ms)
+✔ reveal requests only the original bound directory and refuses replacements (1393.373583ms)
+✔ required-mode workspace reads real contents, plan precision, cover counts, prompts and channels through the bounded projection (5613.1595ms)
+✔ workspace converts a real legacy plan without changing its instant or timezone (1418.3105ms)
+✔ workspace refuses an unbound, missing or swapped root and preserves accepted identity (677.576167ms)
+✔ workspace IPC and worker reject paths, additional fields and malformed bindings (553.057583ms)
+✔ workspace reads use the existing serial operation queue and do not collide with worker calls (1188.522959ms)
+✔ prompt copy is explicit, preserves text, permits required mode and never touches the library (22.364625ms)
+✔ prompt copy rejects malformed, oversized and NUL input before reaching clipboard sink (2.671958ms)
+✔ published workspace entries use actual publication time and retain the original planned schedule (3141.823667ms)
+✔ library thumbnails use scoped candidate URLs and revoke them when the library epoch changes (1685.533125ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15826.701833
