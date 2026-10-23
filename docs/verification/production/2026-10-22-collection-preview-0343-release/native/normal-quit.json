@@ -1,0 +1,8 @@
+{
+  "checkedAt": "2026-10-23T03:16:10.189Z",
+  "action": "Application menu > 退出自媒体工作台",
+  "menuClickTimedOut": true,
+  "processCheck": "ps -axo pid=,comm= | rg Contents/MacOS/自媒体工作台$",
+  "matchingProcesses": 0,
+  "forcedTermination": false
+}

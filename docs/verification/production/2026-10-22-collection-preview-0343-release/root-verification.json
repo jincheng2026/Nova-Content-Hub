@@ -1,0 +1,19 @@
+{
+  "recordedAt": "2026-10-23T03:19:25.186Z",
+  "reviewedSource": "13d0ae9ab36707a3d07d3ae048049213db003aed",
+  "installedTreeMatchesArchive": true,
+  "installedEntries": 1646,
+  "dmgSha256": "9b76064efeb80a1fb08f35f73f350c7573cdbdac4f06e7e6a44df1d45b601aae",
+  "finalStrictLibraryReceiptReviewed": true,
+  "exactInstalledProcess": "15143 /Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+  "nativeEvidence": [
+    "finder-archive",
+    "finder-installed",
+    "about",
+    "overview-collection",
+    "contents-collection",
+    "collection-navigation",
+    "normal-quit",
+    "reopened-overview"
+  ]
+}

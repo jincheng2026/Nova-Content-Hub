@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-10-23T03:17:57.822Z",
+  "version": "0.3.43",
+  "sourceCommit": "13d0ae9ab36707a3d07d3ae048049213db003aed",
+  "artifactIntegrity": true,
+  "strictLibraryUnchanged": true,
+  "transactionPhase": "complete",
+  "treeSha256": "c5bf78153a9bed43ad25ab9bf4c8459f92424879db6c02c670be057807827a87",
+  "dmgSha256": "9b76064efeb80a1fb08f35f73f350c7573cdbdac4f06e7e6a44df1d45b601aae",
+  "skills": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    }
+  ],
+  "library": {
+    "entries": 2381,
+    "sha256": "cf475f06e6914f5910172f2330d36ce0c32de0a9e86e921de936dfef7aef258d"
+  },
+  "activeConversationReloaded": false,
+  "realGenerationRunOnThisVersion": false
+}

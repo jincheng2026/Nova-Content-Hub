@@ -1,0 +1,131 @@
+{
+  "recordedAt": "2026-10-22T12:04:35.923Z",
+  "version": "0.3.43",
+  "sourceCommit": "13d0ae9ab36707a3d07d3ae048049213db003aed",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-WoBdsc/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.43-darwin-arm64-preview.dmg",
+  "dmgSha256": "9b76064efeb80a1fb08f35f73f350c7573cdbdac4f06e7e6a44df1d45b601aae",
+  "preservation": {
+    "file": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/preserved-preview-0343.noindex/initial-266922901c7547e73923184e9c44b93971e095b2/preservation.json",
+    "sourceCommit": "266922901c7547e73923184e9c44b93971e095b2",
+    "dmgSha256": "13f8bdf1ce85ed04796654cf1cd59ac40f7314824a358df42194023fc32ac468",
+    "files": [
+      {
+        "originalPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.43-darwin-arm64-preview.dmg",
+        "preservedPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/preserved-preview-0343.noindex/initial-266922901c7547e73923184e9c44b93971e095b2/Nova-Content-Hub-0.3.43-darwin-arm64-preview.dmg",
+        "bytes": 286569738,
+        "sha256": "13f8bdf1ce85ed04796654cf1cd59ac40f7314824a358df42194023fc32ac468"
+      },
+      {
+        "originalPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.43-darwin-arm64-preview.dmg.blockmap",
+        "preservedPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/preserved-preview-0343.noindex/initial-266922901c7547e73923184e9c44b93971e095b2/Nova-Content-Hub-0.3.43-darwin-arm64-preview.dmg.blockmap",
+        "bytes": 295128,
+        "sha256": "d19896e20001ee494475e71552e5a0f471e5683c2098dd908041540d3800f7ae"
+      },
+      {
+        "originalPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/builder-debug.yml",
+        "preservedPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/preserved-preview-0343.noindex/initial-266922901c7547e73923184e9c44b93971e095b2/builder-debug.yml",
+        "bytes": 1672,
+        "sha256": "aeca414205a745fac8be6eeb11e22fbbb5e340ef80547a853070c11e78990533"
+      },
+      {
+        "originalPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/electron-builder.json",
+        "preservedPath": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/preserved-preview-0343.noindex/initial-266922901c7547e73923184e9c44b93971e095b2/electron-builder.json",
+        "bytes": 10687,
+        "sha256": "662101e18b964d8bae8de32cf0bdeb35eb508fb0e76c24229d4a8d2c8837b9fd"
+      }
+    ],
+    "oldArchive": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-31IaZI/mac-arm64/自媒体工作台.app",
+    "oldDelivery": "/Users/mac/Downloads/自媒体工作台-0.3.43-同事交付-Mac苹果芯片",
+    "oldArchiveAndDeliveryUnchanged": true
+  },
+  "treeSha256": "c5bf78153a9bed43ad25ab9bf4c8459f92424879db6c02c670be057807827a87",
+  "entries": 1646,
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.43",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.43:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "deliveryDirectory": "/Users/mac/Downloads/自媒体工作台-0.3.43-合集优化-同事交付-Mac苹果芯片",
+  "deliveryFiles": [
+    "SHA256SUMS.txt",
+    "安装与使用.txt",
+    "自媒体工作台-0.3.43-Mac苹果芯片.dmg"
+  ],
+  "archivedBuildEqualsDmg": true,
+  "pairedMarketplaceVerified": true,
+  "removedBrowserImportVerified": true,
+  "legacyBuiltinResourceTreesExcluded": true,
+  "engineeringFilesExcluded": true,
+  "companyMetadataVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "nativeArtifact": {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/native-payloads/13d0ae9ab36707a3d07d3ae048049213db003aed/darwin-arm64-de289e05-0186-418c-9d22-b16dd78efc94",
+    "manifestSha256": "639de308053815cca83ef1065da7408a169082867f09483c438e69b11b77f0a1",
+    "source": {
+      "commit": "13d0ae9ab36707a3d07d3ae048049213db003aed",
+      "locks": {
+        "package-lock.json": "bea576e895d573a74b3c5c8dc91a7708c973bd4c9a3825a46e83bf60cbbaa34b",
+        "workbench/package-lock.json": "e1b78cce103eeb68aa342dcc0014023d0496ce887d2ff82cc2a58fefb2d2e0cb",
+        "plugin-src/runtime/node-release.json": "4190437ee5a8f0006365ddcd276b8c3a7a6b3ac3b17761271952ec28b6255c7b"
+      },
+      "config": {
+        "AUTH_MODE": "disabled",
+        "prototype": true,
+        "appScope": "nova-content-hub",
+        "version": "0.3.43",
+        "protocolVersion": 1,
+        "productId": "nova-content-hub"
+      },
+      "toolchain": {
+        "node": "v24.20.0",
+        "npm": "11.19.0",
+        "electron": "44.9.0",
+        "builder": "26.15.3",
+        "sharp": "0.35.5"
+      }
+    },
+    "nativeFiles": [
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib",
+      "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libvk_swiftshader.dylib",
+      "Contents/MacOS/自媒体工作台",
+      "Contents/Resources/app/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+      "Contents/Resources/app/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+      "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+      "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+      "Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node"
+    ]
+  },
+  "demo": {
+    "templates": [
+      "builtin-colleague-assistant-scene",
+      "builtin-colleague-big-head-action",
+      "builtin-colleague-news-collage",
+      "builtin-colleague-orange-green-life",
+      "builtin-colleague-spatial-operation"
+    ],
+    "prompts": 52,
+    "contents": 1,
+    "originalHashes": [
+      "3649a18aa8315d80de046d0a30c9a80573baed307466c842746996ddd710491e",
+      "e64360ad4fe712f6ef0b9b478e138ed8e633b2ad1d25fe4a9bb6e2d76eef3d79"
+    ]
+  },
+  "actualProperties": {
+    "dmgBytes": 286569939,
+    "dmgModifiedAt": "2026-10-22T12:03:18.016Z"
+  },
+  "userLibraryAccessed": false
+}

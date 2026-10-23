@@ -1,0 +1,40 @@
+Window: "“自媒体工作台”简介", App: 访达.
+0 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
+	1 滚动区
+		2 图像 Icon
+		3 text Help: 自媒体工作台, Value: 自媒体工作台 536.5 MB 修改时间： 昨天 20:02
+		4 滚动区
+			5 文本栏 Description: 标签编辑器, Placeholder: 添加标签…
+		6 显示三角形 Value: 1, ID: General
+		7 text 通用： 种类： 应用程序(Apple芯片) 大小： 536,531,714 字节（磁盘上的539.6 MB） 位置： ‎⁨Macintosh HD⁩ ▸ ⁨应用程序⁩ 创建时间： 2026年10月22日 星期四 20:02 修改时间： 2026年10月22日 星期四 20:02 版本： 0.3.43 版权： © 2026 杭州新岛橙灵智能科技有限责任公司
+		8 复选框 已锁定, Value: 0
+		9 显示三角形 Value: 1, ID: MetaData
+		10 text 更多信息： --
+		11 显示三角形 Value: 1, ID: Name
+		12 文本 名称与扩展名：
+		13 文本栏 (settable) Value: 自媒体工作台.app, ID: Name
+		14 复选框 (disabled) 隐藏扩展名, Value: 1
+		15 显示三角形 Value: 1, ID: Comments
+		16 文本 注释：
+		17 滚动区
+			18 文本输入区 (settable) Comments
+		19 显示三角形 Value: 1, ID: Preview
+		20 文本 预览：
+		21 图像 Description: 预览, ID: QLAXImageAndText_Image
+		22 显示三角形 Value: 0, ID: Privileges
+		23 文本 共享与权限：
+	24 关闭按钮
+	25 缩放按钮
+	26 最小化按钮
+	27 图像 Macintosh HD
+	28 文本 “自媒体工作台”简介
+29 menu bar
+	30 访达
+	31 文件
+	32 编辑
+	33 显示
+	34 前往
+	35 窗口
+	36 帮助
+
+The focused UI element is 0 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
