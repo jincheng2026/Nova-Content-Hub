@@ -1,0 +1,126 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "records": [
+    {
+      "width": 1440,
+      "cards": [
+        {
+          "id": "p0",
+          "top": 437.3828125,
+          "bottom": 648.7734375,
+          "buttonBottom": 594.3828125,
+          "rightInset": 17,
+          "bodyHeight": 172,
+          "height": 211.390625
+        },
+        {
+          "id": "p2",
+          "top": 437.3828125,
+          "bottom": 648.7734375,
+          "buttonBottom": 612.7734375,
+          "rightInset": 17,
+          "bodyHeight": 190.390625,
+          "height": 211.390625
+        },
+        {
+          "id": "p3",
+          "top": 437.3828125,
+          "bottom": 648.7734375,
+          "buttonBottom": 594.3828125,
+          "rightInset": 17,
+          "bodyHeight": 172,
+          "height": 211.390625
+        },
+        {
+          "id": "p1",
+          "top": 437.3828125,
+          "bottom": 648.7734375,
+          "buttonBottom": 622.7734375,
+          "rightInset": 17,
+          "bodyHeight": 209.390625,
+          "height": 211.390625
+        }
+      ]
+    },
+    {
+      "width": 960,
+      "cards": [
+        {
+          "id": "p0",
+          "top": 533.3828125,
+          "bottom": 725.7734375,
+          "buttonBottom": 690.3828125,
+          "rightInset": 17,
+          "bodyHeight": 172,
+          "height": 192.390625
+        },
+        {
+          "id": "p2",
+          "top": 533.3828125,
+          "bottom": 725.7734375,
+          "buttonBottom": 708.7734375,
+          "rightInset": 17,
+          "bodyHeight": 190.390625,
+          "height": 192.390625
+        },
+        {
+          "id": "p3",
+          "top": 741.7734375,
+          "bottom": 934.1640625,
+          "buttonBottom": 898.7734375,
+          "rightInset": 17,
+          "bodyHeight": 172,
+          "height": 192.390625
+        },
+        {
+          "id": "p1",
+          "top": 741.7734375,
+          "bottom": 934.1640625,
+          "buttonBottom": 917.1640625,
+          "rightInset": 17,
+          "bodyHeight": 190.390625,
+          "height": 192.390625
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "channelInput": {
+        "width": 24,
+        "paddingLeft": "12px",
+        "paddingRight": "12px",
+        "focused": true,
+        "placeholder": "内容适用渠道选择适用渠道"
+      }
+    },
+    {
+      "width": 960,
+      "channelInput": {
+        "width": 24,
+        "paddingLeft": "12px",
+        "paddingRight": "12px",
+        "focused": true,
+        "placeholder": "内容适用渠道选择适用渠道"
+      }
+    }
+  ],
+  "failures": [
+    "same-row action bottom alignment",
+    "actions anchored at lower right",
+    "medium preview needs no collapse",
+    "medium preview contains complete original text",
+    "same-row action bottom alignment",
+    "actions anchored at lower right",
+    "same-row action bottom alignment",
+    "same-row action bottom alignment",
+    "actions anchored at lower right",
+    "medium preview needs no collapse",
+    "medium preview contains complete original text",
+    "same-row action bottom alignment",
+    "same-row action bottom alignment",
+    "actions anchored at lower right",
+    "channel control visibly offers typing",
+    "channel control visibly offers typing"
+  ]
+}

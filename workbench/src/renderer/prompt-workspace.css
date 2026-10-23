@@ -27,7 +27,7 @@
 .prompt-library-grid.image-list .semi-list-items { grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; }
 .prompt-library-card.semi-card { min-width:0; border-radius:18px; border-color:var(--semi-color-border); background:var(--surface-card); transition:border-color .18s,box-shadow .18s; }
 .prompt-library-card.semi-card:hover { border-color:var(--semi-color-primary-light-active); box-shadow:var(--surface-shadow-hover); }
-.prompt-library-card>.semi-card-body { box-sizing:border-box; min-height:172px; padding:16px; display:flex; flex-direction:column; }
+.prompt-library-card>.semi-card-body { box-sizing:border-box; height:100%; min-height:172px; padding:16px; display:flex; flex-direction:column; }
 .prompt-card-heading { display:flex; align-items:flex-start; gap:4px; min-width:0; }
 .prompt-card-category { min-width:0; max-width:80px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--semi-color-text-2); background:#f0f5fd; border-radius:999px; padding:3px 8px; font-size:12px; }
 .prompt-card-heading>.semi-button:not(.prompt-library-use) { flex:none; width:28px; padding:0; }
@@ -38,7 +38,7 @@
 .prompt-card-preview { min-height:42px; margin:8px 0 12px; color:var(--semi-color-text-2); font-size:13px; line-height:1.6; overflow-wrap:anywhere; white-space:pre-wrap; }
 .prompt-card-metadata { display:flex; align-items:center; flex-wrap:wrap; gap:4px 8px; min-width:0; color:var(--semi-color-text-2); font-size:12px; }
 .prompt-card-metadata>span { white-space:nowrap; }
-.prompt-use-footer { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:8px; min-height:28px; margin-top:auto; }
+.prompt-use-footer { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:8px; min-height:28px; margin-top:auto; }
 .prompt-use-footer>.semi-button { flex:none; }
 .prompt-library-card.is-disabled .prompt-card-category { color:var(--semi-color-text-2); background:var(--semi-color-fill-0); }
 .prompt-library-card.is-disabled .prompt-library-use h3 { color:var(--semi-color-text-2); }

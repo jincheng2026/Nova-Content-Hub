@@ -27,5 +27,6 @@
 .semi-select .semi-input-wrapper { border:0; border-radius:0; background:transparent; box-shadow:none; }
 .semi-input-wrapper > input.semi-input { border:0 !important; border-radius:0 !important; outline:0; box-shadow:none !important; background:transparent; }
 .channel-multi-select .semi-select { min-height:36px; height:auto; max-width:100%; }
+.channel-multi-select .semi-select-input-multiple { min-width:200px; max-width:100%; }
 .channel-selected-name { display:block; max-width:min(160px,30vw); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 .semi-select-option .semi-select-option-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
