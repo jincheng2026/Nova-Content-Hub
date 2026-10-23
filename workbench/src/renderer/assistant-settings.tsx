@@ -9,6 +9,7 @@ import {hasManagedDrafts, ProfileForm} from './library-panels.tsx';
 import {ASSISTANTS} from '../shared/cover-contracts.ts';
 import type {Assistant, AssistantSetup, CoverResults} from '../shared/cover-contracts.ts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
+import type {SetupView} from '../shared/setup-contracts.ts';
 import type {Status} from '../shared/contracts.ts';
 import type {WorkspaceLibrarySnapshot} from '../shared/workspace-contracts.ts';
 import {PopupSelect} from './semi-controls.tsx';
@@ -36,18 +37,37 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
   const requestClose = () => { if (hasManagedDrafts()) setCloseNotice('有尚未保存的设置或编辑，请先保存，或在对应表单中明确放弃修改。'); else close(); };
   const [setup, setSetup] = useState<AssistantSetup | null>(null);
   const [templateSetup, setTemplateSetup] = useState<TemplateAssistantSetup | null>(null);
+  const [installation, setInstallation] = useState<SetupView | null>(null);
+  const [checking, setChecking] = useState(false), [copying, setCopying] = useState(false);
+  const [pluginNotice, setPluginNotice] = useState(''), [showInstall, setShowInstall] = useState(false);
+  const checkRequest = useRef(0);
   const [checkFailed, setCheckFailed] = useState(false);
   const [builtinNotice, setBuiltinNotice] = useState('');
   const builtinsBlocked = busy || !status?.currentName || status.needsReselect || status.creating || !!status.pending || status.photoPending || status.coverPending || status.coverActionPending || !!status.workspacePending || !!status.templatePending || !!status.maintenance?.pending;
   const host = status?.assistant ?? 'codex';
   useEffect(() => { dialog.current?.showModal(); }, []);
   useEffect(() => {
-    let current = true;
-    setSetup(null); setTemplateSetup(null); setCheckFailed(false);
-    void Promise.all([invoke('readAssistantSetup'), invoke('readTemplateAssistantSetup')]).then(([next, template]) => { if (current) { setSetup(next); setTemplateSetup(template); } }, () => { if (current) setCheckFailed(true); });
-    return () => { current = false; };
+    setPluginNotice('');
+    void checkConnection();
+    return () => { checkRequest.current++; };
   }, [host]);
+  async function checkConnection() {
+    const request = ++checkRequest.current;
+    setSetup(null); setTemplateSetup(null); setInstallation(null); setCheckFailed(false); setChecking(true);
+    try {
+      const [next, template, installed] = await Promise.all([invoke('readAssistantSetup'), invoke('readTemplateAssistantSetup'), invoke('readSetup')]);
+      if (request === checkRequest.current) {setSetup(next); setTemplateSetup(template); setInstallation(installed);}
+    } catch {
+      if (request === checkRequest.current) setCheckFailed(true);
+    } finally {
+      if (request === checkRequest.current) setChecking(false);
+    }
+  }
   const selectedSetup = setup?.host === host ? setup : null;
+  const selectedInstallation = installation?.assistant.host === host ? installation : null;
+  const marketAvailable = selectedInstallation?.market.state === 'available';
+  const marketIssue = checking ? '正在读取配套插件安装信息…' : checkFailed ? '安装信息未能读取，请重新检查后再复制。' : !selectedInstallation ? '尚未读取到当前 AI 助手的安装信息，请重新检查。' : selectedInstallation.market.state === 'mismatch' ? '配套插件与当前应用版本、模式或架构不匹配，请获取完整匹配的安装包。' : !marketAvailable ? '当前安装没有可用的配套插件市场，请获取包含插件的完整安装包。' : '';
+  const assistantName = host === 'workbuddy' ? 'WorkBuddy' : 'Codex';
   const profile = library?.settings.profile;
   const photos = assets?.photos.filter(photo => library?.photos.some(item => item.id === photo.id && !item.deletedAt)) ?? [];
   const avatar = photos.find(photo => photo.assetHash === profile?.avatarAssetHash && photo.availability === 'available')?.url;
@@ -74,11 +94,16 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
         {!library && <p className="creator-settings-hint">打开内容库后，即可保存个人信息与照片。</p>}
       </Card></section>
       <Card className="creator-settings-channels" title="发布渠道"><div className="creator-settings-library"><div><strong>{library ? `${library.settings.channels.filter(channel => !channel.deletedAt).length} 个可用渠道` : '打开内容库后设置渠道'}</strong><p>渠道统一用于内容归档、封面和发布日程。</p></div><Button disabled={busy || blocked || !library || !manageChannels} onClick={() => openResource(manageChannels)}>管理渠道</Button></div><div className="creator-channel-preview">{library?.settings.channels.filter(channel => !channel.deletedAt).map(channel => <span key={channel.id} title={channel.name} style={{color: channel.ink, background: channel.bg}}>{channel.name}</span>)}</div>{library && !library.settings.channels.some(channel => !channel.deletedAt) && <p className="creator-settings-hint">还没有可用渠道，可添加你自己的发布渠道。</p>}</Card>
-      <Card className="creator-settings-assistant" title="全局助手"><div className="creator-settings-row"><label htmlFor="assistant">交给哪个 AI 助手</label><PopupSelect id="assistant" value={host} disabled={busy || blocked || !status} onChange={value => {const host = value as Assistant; void run(() => invoke('setAssistant', {host}));}}>{ASSISTANTS.map(host => <option key={host} value={host}>{host === 'codex' ? 'Codex（默认）' : 'WorkBuddy'}</option>)}</PopupSelect></div><p className="creator-settings-hint">制作封面和学习模板时，统一交给这里选择的助手。</p>
-        <div className="creator-settings-check"><span>检查连接</span><Button id="recheck-assistant" disabled={busy} onClick={() => void run(async () => {try {const [next, template] = await Promise.all([invoke('readAssistantSetup'), invoke('readTemplateAssistantSetup')]); setSetup(next); setTemplateSetup(template); setCheckFailed(false);} catch (error) {setCheckFailed(true); throw error;}})}>重新检查</Button></div>
-        <p className="creator-settings-check-status" role="status">{checkFailed ? '检查未完成，请重新检查助手。' : !selectedSetup ? '正在检查助手与配套插件…' : selectedSetup.ready ? '封面助手已准备好。' : selectedSetup.reason === 'protocol-missing' ? '请安装并打开所选助手，再重新检查。' : selectedSetup.reason === 'skill-missing' ? '请先安装并启用工作台配套插件。' : '此构建尚未配置助手检查入口，请检查工作台安装。'}</p>
+      <Card className="creator-settings-assistant" title="AI 助手"><div className="creator-settings-row"><label htmlFor="assistant">交给哪个 AI 助手</label><PopupSelect id="assistant" value={host} disabled={busy || blocked || copying || checking || !status} onChange={value => {const host = value as Assistant; void run(() => invoke('setAssistant', {host}));}}>{ASSISTANTS.map(host => <option key={host} value={host}>{host === 'codex' ? 'Codex（默认）' : 'WorkBuddy'}</option>)}</PopupSelect></div><p className="creator-settings-hint">封面、模板及后续 AI 任务共用这里选择的助手。</p>
+        <div className="creator-settings-check"><span>检查连接</span><Button id="recheck-assistant" loading={checking} disabled={busy || checking || copying} onClick={() => void run(checkConnection)}>重新检查</Button></div>
+        <div className="creator-settings-plugin-actions"><Button id="copy-assistant-plugin" loading={copying} disabled={busy || checking || copying || !marketAvailable} aria-describedby={marketIssue ? 'assistant-market-status' : undefined} onClick={() => void run(async () => {const request = checkRequest.current; setCopying(true); setPluginNotice(''); try {await invoke('copyPluginMarketLocation'); if (request === checkRequest.current) setPluginNotice(`安装位置已复制。请到 ${assistantName} 的插件页面添加本地市场并粘贴。`);} catch (error) {if (request === checkRequest.current) setPluginNotice(`复制安装位置失败：${error instanceof Error ? error.message : '请重试。'}`); throw error;} finally {setCopying(false);}})}>复制安装位置</Button><Button theme="borderless" aria-expanded={showInstall} aria-controls="assistant-install-guide" onClick={() => setShowInstall(!showInstall)}>怎么装</Button></div>
+        {marketIssue && <p id="assistant-market-status" className="creator-settings-check-status" role="status">{marketIssue}</p>}
+        {marketAvailable && <p className="creator-settings-check-status">随包插件版本：{selectedInstallation.version} · 供 Codex / WorkBuddy 安装，非宿主实际已启用版本。</p>}
+        {pluginNotice && <p className="creator-settings-check-status" role="status">{pluginNotice}</p>}
+        <div id="assistant-install-guide" className="creator-settings-install-guide" hidden={!showInstall}><ol><li>点击“复制安装位置”。</li><li>在 {assistantName} 的插件页面添加本地市场，粘贴刚复制的位置。</li><li>找到 Nova Content Hub，安装、启用并确认权限，再回这里“重新检查”。</li></ol><div className="creator-settings-plugin-actions"><Button disabled={busy || copying} onClick={() => void run(async () => {try {await invoke('openSetupTarget', {target: 'assistant'}); setPluginNotice(`已请求打开 ${assistantName}，请在助手中完成安装。`);} catch (error) {setPluginNotice(`打开 ${assistantName} 失败：${error instanceof Error ? error.message : '请重试。'}`); throw error;}})}>打开 {assistantName}</Button><Button theme="borderless" onClick={() => setTab('help')}>更多安装说明与诊断</Button></div></div>
+        <p className="creator-settings-check-status" role="status">AI 助手 · 封面制作：{checkFailed ? '检查未完成，请重新检查助手。' : !selectedSetup ? '正在检查助手与配套插件…' : selectedSetup.ready ? '执行插件已准备好。' : selectedSetup.reason === 'protocol-missing' ? '请安装并打开所选助手，再重新检查。' : selectedSetup.reason === 'skill-missing' ? '请先安装并启用工作台配套插件。' : '此构建尚未配置助手检查入口，请检查工作台安装。'}</p>
         <p className="creator-settings-check-status" role="status">模板学习与还原：{checkFailed ? '检查未完成' : templateSetup?.host !== host ? '正在检查…' : templateSetup.ready ? '已准备好。' : '配套模板执行能力尚未准备好，请安装并启用插件。'}</p>
-        <SettingsHelp title="交接范围与照片使用"><p>检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。</p><p>本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中确认执行。</p></SettingsHelp>
+        <SettingsHelp title="交接范围与照片使用"><p>检查本机打开协议与已安装的配套 Skill；实际生图能力、接单和结果仍需在助手中执行确认。</p><p>本人照保存在本机内容库。交给助手时，所选本机助手将获准读取这次固定输入；系统请求打开助手后，仍需在助手中选择模型并手动发送。</p></SettingsHelp>
       </Card>
       {preferences}
       <Card className="creator-settings-library-card" title="内容库"><div className="creator-settings-library"><div><strong>{status?.currentName || '尚未打开内容库'}</strong><p>正文、封面、模板与照片都保存在这里。</p></div><Button disabled={busy || !manageLibrary} onClick={() => openResource(manageLibrary)}>管理内容库</Button></div>{status?.currentName && <><Button theme="borderless" disabled={busy} onClick={() => void run(() => invoke('revealLibraryFolder'))}>打开文件夹 →</Button><div className="creator-settings-check"><div><strong>内置模板与提示词</strong><p className="creator-settings-hint">补充新风格和提示词，保留已有修改与删除。</p></div><Button id="update-builtins" disabled={builtinsBlocked} onClick={() => {if (hasManagedDrafts()) {setCloseNotice('请先保存或放弃当前填写，再更新内置资源。'); return;} setBuiltinNotice('正在更新内置资源，请稍候…'); void run(async () => {try {await invoke('retryBuiltins'); setBuiltinNotice('内置模板与提示词已更新，已有修改和删除均已保留。');} catch (error) {setBuiltinNotice('更新尚未完成，原有内容保留；请处理工作台恢复提示后继续。'); throw error;}});}}>{status.seedPending ? '继续更新' : '更新内置资源'}</Button></div><p role="status">{builtinNotice}</p></>}</Card>

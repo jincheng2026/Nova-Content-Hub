@@ -26,14 +26,39 @@ async function fixture(t) {
         persist: async next => {owner.binding = structuredClone(validateBinding(next));},
         worker: {call: (op, args) => executeTemplate(op, args, 'disabled')}
     };
-    const controller = () => new TemplateController(owner, {readTemplateAssistantSetup: async host => ({host, ready: true, skill: 'nova-content-template-execution', reason: 'available'}), launchTemplate: async (binding, ref) => launches.push(ref)});
+    const callbacks = {readTemplateAssistantSetup: async host => ({host, ready: true, skill: 'nova-content-template-execution', reason: 'available'}), launchTemplate: async (binding, ref) => launches.push(ref)};
+    const controller = () => new TemplateController(owner, callbacks);
     const input = {templateId: template.id, version: 1, editToken: template.editToken, notes: 'fixed'};
     const legacyPending = () => {
         const attemptMutationId = randomUUID();
         return {action: 'start', input, host: 'codex', binding: {libraryId: binding.libraryId, rootIdentity: {...binding.rootIdentity}}, mutationId: attemptMutationId, attemptMutationId, requestMutationId: randomUUID(), request: null};
     };
-    return {parent, lib, template, binding, owner, controller, input, legacyPending, launches};
+    return {parent, lib, template, binding, owner, controller, input, legacyPending, launches, callbacks};
 }
+
+for (const host of ['codex', 'workbuddy']) test(`${host} failed first launch resumes the saved attempt without claiming or rewriting its request`, async t => {
+    const f = await fixture(t);
+    f.owner.binding.assistant = host;
+    const launch = f.callbacks.launchTemplate;
+    f.callbacks.launchTemplate = async () => {throw new Error('fixture launch failure');};
+    const c = f.controller();
+    await assert.rejects(c.startTemplateStudy(f.input), /fixture launch failure/);
+    const view = await c.readTemplateWorkflow({templateId: f.template.id}), attempt = view.jobs[0].attempts[0];
+    const requestPath = path.join(f.binding.root, '模板', f.template.id, '学习任务', view.jobs[0].id, '请求.json');
+    const bytes = fs.readFileSync(requestPath), token = view.editToken;
+    assert.equal(f.owner.binding.templatePending, null);
+    assert.equal(attempt.status, 'created');
+    assert.equal(attempt.progress, null);
+    f.callbacks.launchTemplate = launch;
+    const resumed = await c.continueBoundTemplate(attempt.reference);
+    assert.equal(resumed.launchRequested, true);
+    assert.equal(resumed.view.jobs[0].attempts.length, 1);
+    assert.equal(resumed.view.jobs[0].attempts[0].attemptId, attempt.attemptId);
+    assert.equal(resumed.view.jobs[0].attempts[0].status, 'created');
+    assert.equal(resumed.view.editToken, token);
+    assert.equal(f.launches.at(-1).host, host);
+    assert.deepEqual(fs.readFileSync(requestPath), bytes);
+});
 
 for (const policy of [undefined, 'ratio-minimum']) for (const phase of ['before-request', 'after-request', 'before-attempt', 'after-attempt']) test(`persisted ${policy ?? 'legacy exact'} intent recovers lost ${phase} response without changing request`, async t => {
     const f = await fixture(t), originalCall = f.owner.worker.call;

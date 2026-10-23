@@ -3,6 +3,9 @@
 .template-study-notes, .template-accept {display: grid; gap: 12px;}
 .template-study-notes textarea {width: 100%; min-height: 80px; resize: vertical;}
 .template-workflow select {display: block; max-width: 100%; margin-top: 8px;}
+.template-study-options {min-width: 0;}
+.template-study-options summary {cursor: pointer; font-weight: 600;}
+.template-study-options[open] > :not(summary) {margin-top: 12px;}
 .template-attempt {display: grid; gap: 16px; border-top: 1px solid var(--semi-color-border); padding-top: 16px;}
 .template-comparison, .template-rules {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;}
 .template-comparison figure, .template-evidence-samples figure {display: flex; flex-direction: column; align-items: center; margin: 0; min-width: 0;}

@@ -19,7 +19,7 @@ import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/
 import {CoverPanel} from ${JSON.stringify(path.join(workbench, 'src/renderer/covers.tsx'))};
 const content = {id:'content',title:'封面测试',body:'正文',editToken:'token'};
 const assets = {templates:[{id:'template',version:1,name:'模板',description:'样张',samples:[{assetHash:'sample',url:''}]}],photos:[]};
-let view = {content,jobs:[],candidates:[],selectedCandidateId:null}, serial = 0;
+let view = {content,jobs:[],candidates:[],selectedCandidateId:null}, serial = 0;window.continues=[];
 const ok = value => ({ok:true,value});
 function launch() {
   const attempt = {attemptId:'attempt-'+(++serial),host:'workbuddy',status:'created',failure:null};
@@ -28,7 +28,7 @@ function launch() {
   return ok({...view,launchRequested:true});
 }
 window.finish = status => {view={...view,jobs:view.jobs.map(job=>({...job,activeAttemptId:null,attempts:job.attempts.map(attempt=>attempt.attemptId===job.activeAttemptId?{...attempt,status,failure:status==='failed'?{code:'FAILED',message:'制作失败详情'}:null}:attempt)}))};};
-window.contentHub = {listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),generateCover:async input=>{window.lastInput=input;return launch();},retryCover:async()=>launch(),continueCover:async()=>ok({launchRequested:true}),cancelCover:async()=>{window.finish('cancelled');return ok(view);}};
+window.contentHub = {listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),generateCover:async input=>{window.lastInput=input;return launch();},retryCover:async()=>launch(),continueCover:async()=>ok({launchRequested:true}),continueBoundCover:async reference=>{window.continues.push(reference);return ok({launchRequested:true});},cancelCover:async()=>{window.finish('cancelled');return ok(view);}};
 function Probe() {
  const [token,setToken]=useState(0);
  window.refresh=()=>setToken(old=>old+1);
@@ -50,7 +50,7 @@ createRoot(document.getElementById('root')).render(<Probe/>);
         const notice = 'document.getElementById("cover-notice").textContent';
         const live = '!!document.getElementById("cover-jobs")';
         const clickText = text => run(`(()=>{const button=[...document.querySelectorAll('button')].find(el=>el.textContent===${JSON.stringify(text)});if(!button||button.disabled)throw new Error('Missing/enabled button: '+${JSON.stringify(text)});button.click()})()`);
-        async function retry() {await clickText('按这组设置重做');await wait(`${live} && ${notice}.includes('已请求系统打开助手')`);}
+        async function retry() {await clickText('按这组设置重做');await wait(`${live} && ${notice}.includes('尚未收到助手接单记录')`);}
         try {
             await window.loadFile(path.join(probeRoot,'dist/index.html'));
             await wait(`document.querySelector('.cover-workspace-heading p')?.textContent.includes('选好风格')`);
@@ -59,8 +59,11 @@ createRoot(document.getElementById('root')).render(<Probe/>);
             await run(`(()=>{const el=document.getElementById('cover-prompt');Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype,'value').set.call(el,'保留我的要求');el.dispatchEvent(new Event('input',{bubbles:true}));})()`);
             await wait('document.getElementById("cover-prompt").value === "保留我的要求"');
             await run('document.getElementById("generate-cover").click()');
-            await wait(`${live} && ${notice}.includes('已请求系统打开助手')`);
+            await wait(`${live} && ${notice}.includes('尚未收到助手接单记录')`);
             assert.equal(await run('window.lastInput.input.prompt'),'保留我的要求');
+            assert.match(await run(notice),/如果还没发送.*选择模型并手动发送/);
+            await clickText('打开 WorkBuddy 继续');await wait('window.continues.length===1');assert.equal(await run('window.continues[0].attemptId'),'attempt-1');
+            assert.equal(await run('document.querySelector(".cover-state").textContent'),'待助手接单');
             await clickText('取消这次生成');
             await wait(`!(${live}) && ${notice} === ''`);
             await retry();

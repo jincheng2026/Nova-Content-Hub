@@ -37,6 +37,12 @@
 .creator-settings-row select { max-width:180px; font-size:13px; }
 .creator-settings-check { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-top:12px; padding-top:12px; border-top:1px solid var(--semi-color-border); color:var(--semi-color-text-1); font-size:14px; }
 .creator-settings-check-status { font-size:12px!important; color:var(--semi-color-text-2); margin:8px 0; }
+.creator-settings-assistant .creator-settings-check { flex-wrap:wrap; }
+.creator-settings-plugin-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:10px; }
+.creator-settings-assistant .creator-settings-check-status { font-size:13px!important; line-height:1.7; overflow-wrap:anywhere; }
+.creator-settings-install-guide { margin-top:10px; padding:12px; border-radius:12px; background:var(--semi-color-fill-0); color:var(--semi-color-text-1); font-size:13px; line-height:1.7; }
+.creator-settings-install-guide ol { margin:0; padding-left:20px; }
+.creator-settings-plugin-actions .semi-button { height:auto; min-height:36px; white-space:normal; }
 .creator-preferences-form { display:grid; gap:0; }
 .creator-preference-row { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:10px 0; margin:0; border-bottom:1px solid var(--semi-color-border); color:var(--semi-color-text-1); font-size:14px; font-weight:500; }
 .creator-preference-row>span { display:grid; gap:5px; }
