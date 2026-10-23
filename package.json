@@ -1,7 +1,7 @@
 {
   "name": "nova-content-hub-prototype",
   "private": true,
-  "version": "0.3.44",
+  "version": "0.3.45",
   "scripts": {
     "test": "node --test workbench/prototype/test/*.test.cjs",
     "test:file-library": "node --test plugin-src/src/lib/file-library/test/*.test.mjs",

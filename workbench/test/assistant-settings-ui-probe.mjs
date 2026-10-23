@@ -28,7 +28,7 @@ window.contentHub=new Proxy({}, {get:(_,method)=>async input=>{
   else if(method==='readTemplateAssistantSetup')value={...assistant,ready:window.templateReady};
   else if(method==='readSetup'){
     if(window.failSetup)return {ok:false,error:{code:'IO_ERROR',message:'安装信息读取失败'}};
-    value={platform:'darwin',arch:'arm64',version:'0.3.44',mode:'disabled',assistant,market:{state:window.market,name:'paired-fixture'}};
+    value={platform:'darwin',arch:'arm64',version:'0.3.45',mode:'disabled',assistant,market:{state:window.market,name:'paired-fixture'}};
     if(window.pauseSetup){window.pauseSetup=false; await new Promise(resolve=>window.releaseSetup=resolve);}
   }
   else if(method==='setAssistant'){window.host=input.host;window.setHost(input.host);}
@@ -68,7 +68,9 @@ async function probeMain(root) {
     await win.loadFile(path.join(root, 'dist/index.html'));
     await wait('document.getElementById("copy-assistant-plugin") && !document.getElementById("copy-assistant-plugin").disabled');
     assert.doesNotMatch(await card(), /封面助手|全局助手/);
-    assert.match(await card(), /随包插件版本：0.3.44.*非宿主实际已启用版本/);
+    assert.match(await card(), /自媒体工作台 0.3.45.*随包插件同版，非助手实际已启用版本/);
+    assert.equal(await run('document.querySelectorAll(".creator-settings-columns > .creator-settings-column").length'), 2);
+    assert.equal(await run('document.querySelector(".creator-settings-columns").textContent.includes("配套插件与版本")'), false);
     for (const host of ['codex', 'workbuddy']) {
       await run(`document.getElementById('assistant').click()`);
       const label = host === 'codex' ? 'Codex（默认）' : 'WorkBuddy';
@@ -95,7 +97,7 @@ async function probeMain(root) {
       await run(`window.market=${JSON.stringify(state)}`); await recheck();
       assert.equal(await run('document.getElementById("copy-assistant-plugin").disabled'), true);
       assert.match(await card(), new RegExp(reason));
-      assert.doesNotMatch(await card(), /随包插件版本/);
+      assert.match(await card(), /自媒体工作台 0.3.45/);
       const before = await run('window.calls.length'); await click('复制安装位置');
       assert.equal(await run(`window.calls.slice(${before}).some(c=>c.method==='copyPluginMarketLocation')`), false);
     }
@@ -127,6 +129,8 @@ async function probeMain(root) {
     }
     win.focus(); win.webContents.focus();
     await run('document.getElementById("copy-assistant-plugin").focus()');
+    win.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Tab'}); win.webContents.sendInputEvent({type: 'keyUp', keyCode: 'Tab'});
+    await wait('document.activeElement.textContent==="打开 Codex"');
     win.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Tab'}); win.webContents.sendInputEvent({type: 'keyUp', keyCode: 'Tab'});
     await wait('document.activeElement.textContent==="怎么装"');
     win.webContents.sendInputEvent({type: 'keyDown', keyCode: 'Enter'}); win.webContents.sendInputEvent({type: 'char', keyCode: '\r'}); win.webContents.sendInputEvent({type: 'keyUp', keyCode: 'Enter'});
