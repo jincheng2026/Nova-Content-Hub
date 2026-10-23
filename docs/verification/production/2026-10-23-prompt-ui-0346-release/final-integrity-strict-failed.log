@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++ actual - expected
+
++ '8e52117ccff148f1daea78832110f551615a992d4811fd6dce90ee64e03d2fb0'
+- '00409edbd8ffa3e598505826bf7c413ceac8465f2f40e5638485e47103610fc5'
+
+    at file:///private/tmp/nova-0346-release-DAWLeP/release.mjs:41:294 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: '8e52117ccff148f1daea78832110f551615a992d4811fd6dce90ee64e03d2fb0',
+  expected: '00409edbd8ffa3e598505826bf7c413ceac8465f2f40e5638485e47103610fc5',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.20.0

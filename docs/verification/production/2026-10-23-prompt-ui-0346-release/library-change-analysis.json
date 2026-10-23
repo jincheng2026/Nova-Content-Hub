@@ -1,0 +1,39 @@
+{
+  "recordedAt": "2026-10-23T11:38:23.072Z",
+  "strictBaselineUnchanged": false,
+  "firstStrictFailureLog": "final-integrity-strict-failed.log",
+  "difference": "library-final-difference.json",
+  "beforeEntries": 2502,
+  "afterEntries": 2510,
+  "addedEntries": 8,
+  "modifiedOriginalEntries": 1,
+  "removedOriginalEntries": 0,
+  "unchangedOriginalEntries": 2501,
+  "modifiedFile": "模板/8021065b-4a77-4ab8-b153-df456194eeab/模板.json",
+  "changedFields": [
+    "revision",
+    "updatedAt",
+    "templateJobs"
+  ],
+  "templateRevision": {
+    "before": 10,
+    "after": 11
+  },
+  "existingTask": {
+    "jobId": "4af40522-b57a-47bf-b8a2-f29ad86356c9",
+    "attemptId": "848e01df-96f4-496b-a07b-4e8e33f2d73a",
+    "host": "workbuddy",
+    "createdAt": "2026-10-23T10:45:50.962Z",
+    "beforeStatus": "claimed",
+    "afterStatus": "failed",
+    "terminalUpdateAt": "2026-10-23T11:30:44.399Z",
+    "failureCode": "IMAGE_GENERATION_UNAVAILABLE",
+    "receiptHash": null,
+    "resultHash": null
+  },
+  "attribution": "Records show an existing WorkBuddy task ending before the new application first launch; actor inference, not process telemetry.",
+  "newApplicationFirstLaunchAfter": "2026-10-23T11:32:00Z",
+  "bindingBytesUnchanged": true,
+  "userDataRestoredOrDeleted": false,
+  "scope": "Preserve observed external task failure and generated image files; do not overwrite live data to restore a digest."
+}

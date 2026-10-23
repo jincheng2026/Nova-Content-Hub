@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-23T11:41:03.814Z",
+  "archive": "/Applications/.nova-content-hub-install-c223f926-6b6d-4630-913b-8843225253d8/previous-backup/previous.app.zip",
+  "archiveSha256": "f13411d4a92c168953239687f3fba6109c7f0b7add84688e9bb05189d0e59aec",
+  "receipt": "/Applications/.nova-content-hub-install-c223f926-6b6d-4630-913b-8843225253d8/previous-backup/receipt.json",
+  "previousAppTreeSha256": "3e3d1ba9be1f83a0ee47eee07eef340253c2aa1b4af18aa9b0cdaa78563d8fdd",
+  "archiveHashVerified": true,
+  "createdByExistingApplicationArchiver": true,
+  "independentExtractionRepeated": false,
+  "previousFullArchivedAppStillAvailable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-jthsOL/mac-arm64/自媒体工作台.app"
+}

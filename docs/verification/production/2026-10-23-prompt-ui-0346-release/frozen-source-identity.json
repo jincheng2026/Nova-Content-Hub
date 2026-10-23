@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-23T11:36:06.340Z",
+  "commit": "7e78bf5f01162b06b8f9c1801b32fbfe4be621aa",
+  "cleanCheckout": true,
+  "locks": [
+    {
+      "file": "package-lock.json",
+      "sha256": "50a56001b45643aa9b51458903dba293bda5d39050752ea0485a8eea8fc3c6ea"
+    },
+    {
+      "file": "workbench/package-lock.json",
+      "sha256": "ecff811f5ebbfc5916b9862ef5be0d355eb47ee69d2b618ee28fcad39cdfa59d"
+    },
+    {
+      "file": "plugin-src/runtime/node-release.json",
+      "sha256": "4190437ee5a8f0006365ddcd276b8c3a7a6b3ac3b17761271952ec28b6255c7b"
+    }
+  ],
+  "toolchain": {
+    "node": "v24.20.0",
+    "npm": "11.19.0",
+    "electron": "44.9.0",
+    "builder": "26.15.3",
+    "sharp": "0.35.5"
+  }
+}

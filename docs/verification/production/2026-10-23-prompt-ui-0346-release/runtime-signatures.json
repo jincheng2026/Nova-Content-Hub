@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-23T11:32:13.011Z",
+  "checks": [
+    {
+      "node": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node",
+      "strictVerificationExitCode": 0,
+      "signature": "Executable=/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node\nIdentifier=node\nFormat=Mach-O thin (arm64)\nCodeDirectory v=20500 size=945264 flags=0x10000(runtime) hashes=29529+7 location=embedded\nSignature size=8985\nAuthority=Developer ID Application: Node.js Foundation (HX7739G8FX)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Aug 26, 2026 at 16:45:29\nInfo.plist=not bound\nTeamIdentifier=HX7739G8FX\nRuntime Version=15.0.0\nSealed Resources=none\nInternal requirements count=1 size=164\n"
+    },
+    {
+      "node": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46/runtime/node",
+      "strictVerificationExitCode": 0,
+      "signature": "Executable=/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46/runtime/node\nIdentifier=node\nFormat=Mach-O thin (arm64)\nCodeDirectory v=20500 size=945264 flags=0x10000(runtime) hashes=29529+7 location=embedded\nSignature size=8985\nAuthority=Developer ID Application: Node.js Foundation (HX7739G8FX)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Aug 26, 2026 at 16:45:29\nInfo.plist=not bound\nTeamIdentifier=HX7739G8FX\nRuntime Version=15.0.0\nSealed Resources=none\nInternal requirements count=1 size=164\n"
+    },
+    {
+      "node": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46/runtime/node",
+      "strictVerificationExitCode": 0,
+      "signature": "Executable=/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46/runtime/node\nIdentifier=node\nFormat=Mach-O thin (arm64)\nCodeDirectory v=20500 size=945264 flags=0x10000(runtime) hashes=29529+7 location=embedded\nSignature size=8985\nAuthority=Developer ID Application: Node.js Foundation (HX7739G8FX)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Aug 26, 2026 at 16:45:29\nInfo.plist=not bound\nTeamIdentifier=HX7739G8FX\nRuntime Version=15.0.0\nSealed Resources=none\nInternal requirements count=1 size=164\n"
+    }
+  ],
+  "pluginDistributionSignatureNotClaimed": true,
+  "applicationSignature": "adhoc"
+}

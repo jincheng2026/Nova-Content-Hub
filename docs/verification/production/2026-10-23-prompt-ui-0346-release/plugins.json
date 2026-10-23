@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-23T11:31:03.856Z",
+  "version": "0.3.46",
+  "fullPayloadVerified": true,
+  "bundledPayloadTreeSha256": "3524d6673009b7d428de34641952b08d4f28167c4184e44acb056fbbfed36bf2",
+  "bundledPayloadEntries": 539,
+  "officialCliUpdates": true,
+  "hosts": [
+    {
+      "host": "codex",
+      "root": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46",
+      "entries": 538,
+      "treeSha256": "c48d10ad9d72def7dc0d0051bff25b0a22484402991661cbc2cccec76fc211a8",
+      "officialInstallerOmittedCommandLinks": [
+        "node_modules/.bin/semver"
+      ]
+    },
+    {
+      "host": "workbuddy",
+      "root": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.46",
+      "entries": 539,
+      "treeSha256": "3524d6673009b7d428de34641952b08d4f28167c4184e44acb056fbbfed36bf2",
+      "officialInstallerOmittedCommandLinks": []
+    }
+  ],
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution"
+    }
+  ],
+  "activeConversationReloaded": false,
+  "realGenerationRunOnThisVersion": false
+}

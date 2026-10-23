@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-10-23T11:27:57.216Z",
+  "sourceCommit": "7e78bf5f01162b06b8f9c1801b32fbfe4be621aa",
+  "checks": [
+    {
+      "command": "npm run check",
+      "exitCode": 0,
+      "log": "root-check.log"
+    },
+    {
+      "command": "npm run typecheck:desktop",
+      "exitCode": 0,
+      "log": "typecheck.log"
+    },
+    {
+      "command": "npm run test:desktop",
+      "exitCode": 0,
+      "tests": 375,
+      "pass": 375,
+      "fail": 0,
+      "log": "desktop-tests.log"
+    },
+    {
+      "command": "UI_EVIDENCE_DIR=<external>/renderer node workbench/scripts/prompt-card-channel-ui-probe.mjs",
+      "exitCode": 0,
+      "log": "prompt-channel-probe.log"
+    },
+    {
+      "command": "git diff --check",
+      "exitCode": 0
+    },
+    {
+      "command": "six version roots and both lock packages roots with prototype pairId assertions",
+      "exitCode": 0
+    }
+  ],
+  "fullRootVerifyNotRun": true
+}

@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-10-23T11:39:21.493Z",
+  "checks": [
+    {
+      "app": "/Applications/自媒体工作台.app",
+      "verification": "codesign --verify --deep --strict",
+      "exitCode": 0
+    },
+    {
+      "app": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-cPPfbE/mac-arm64/自媒体工作台.app",
+      "verification": "codesign --verify --deep --strict",
+      "exitCode": 0
+    },
+    {
+      "app": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-jthsOL/mac-arm64/自媒体工作台.app",
+      "verification": "codesign --verify --deep --strict",
+      "exitCode": 0
+    }
+  ],
+  "newApplicationSignature": "adhoc",
+  "developerIdApplicationSigned": false,
+  "notarized": false
+}

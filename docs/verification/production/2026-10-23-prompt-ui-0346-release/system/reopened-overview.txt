@@ -1,0 +1,88 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 33-35
+~					28 标题 总览, Value: 1
++					45 container
++						46 标题 10月23日星期五, Value: 2
++							47 文本 10月23日星期五
++						48 text 今天  2 / 2  已发
++						49 进度指示器 Description: 今天 2 条安排，已发布 2 条, Value: 100
++						50 container 本周发布安排
++							51 按钮 2026-10-19，2 条安排
++								52 container
++									53 text 一 2
++							54 按钮 2026-10-20，1 条安排
++								55 container
++									56 text 二 1
++							57 按钮 2026-10-21，1 条安排
++								58 container
++									59 text 三 1
++							60 按钮 2026-10-22，0 条安排
++								61 container
++									62 text 四 0
++							63 按钮 2026-10-23，2 条安排
++								64 container
++									65 text 五 2
++							66 按钮 2026-10-24，0 条安排
++								67 container
++									68 text 六 0
++							69 按钮 2026-10-25，0 条安排
++								70 container
++									71 text 日 0
++					72 container 继续创作
++						73 container
++							74 按钮 放大 让创作更有条理
++								75 图像 让创作更有条理的所选封面
++							76 文本 继续创作
++							77 标题 让创作更有条理, Value: 3
++								78 文本 让创作更有条理
++							79 文本 这是 0.3.9 新增科技人物模板组的虚构验收内容，不代表真实发布。
+把灵感、素材和封面放到同一个工作空间，让每次表达更清楚。
+封面准确文字：让创作更有条理。使用 AI 虚构创作者照片，不使用参考图中的人物身份。
++							80 按钮 复制文案
++								81 文本 复制文案
++							82 按钮 下载图片
++								83 文本 下载图片
++							84 按钮 继续编辑
++								85 文本 继续编辑
++							86 按钮 打开内容
++								87 container
++									88 text 打开 内容
++							89 按钮 安排日程
++								90 文本 安排日程
++					91 container
++						92 标题 今天, Value: 3
++							93 文本 今天
++						94 text 0  条待发布 今天的安排已全部记录发布。
++						95 按钮 已发布 2 条 · 查看日程 →
++							96 container
++								97 text 已发布  2  条 · 查看日程 →
++						98 按钮 查看今天全部 2 条安排 →
++							99 container
++								100 text 查看今天全部  2  条安排 →
++						101 text 明天 ·  0  条安排
++						102 按钮 查看日程 →
++							103 文本 查看日程 →
++					104 container
++						105 标题 要处理, Value: 3
++							106 文本 要处理
++						107 text 0  项 当前没有待处理事项
++					108 container
++						109 标题 内容项目, Value: 3
++							110 文本 内容项目
++						111 text 5  篇 ·  1  个合集
++						112 按钮 让创作更有条理 已选封面 · 已发 1/1
++							113 container
++								114 text 让创作更有条理 已选封面  ·  已发 1/1
++						115 按钮 如何做一个AI博主 已选封面 · 已发 1/1
++							116 container
++								117 text 如何做一个AI博主 已选封面  ·  已发 1/1
++						118 按钮 给创作留点空间 已选封面 · 已发 2/2
++							119 container
++								120 text 给创作留点空间 已选封面  ·  已发 2/2
++						121 按钮 连续创作流程验收合集 合集 · 2 篇内容
++							122 container
++								123 文本 连续创作流程验收合集
++								124 文本 合集
++								125 text  ·  2  篇内容
++						126 按钮 查看全部内容项目 →
++							127 文本 查看全部内容项目 →

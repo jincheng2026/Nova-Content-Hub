@@ -1,0 +1,16 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
+import {pathToFileURL} from 'node:url';
+const out=import.meta.dirname,repo=process.cwd(),read=async p=>JSON.parse(await fs.readFile(p,'utf8'));
+const {snapshotPackage}=await import(pathToFileURL(path.join(repo,'plugin-src/src/lib/package-snapshot.mjs'))),hash=x=>createHash('sha256').update(x).digest('hex'),digest=x=>hash(JSON.stringify(x));
+const pkg=await read(path.join(out,'package.json')),base=await read(path.join(out,'library-protection.json')),old=await read(path.join(out,'previous-release.json'));
+const target='/Applications/自媒体工作台.app',transaction='/Applications/.nova-content-hub-install-c223f926-6b6d-4630-913b-8843225253d8',record=await read(path.join(transaction,'record.json'));
+assert.equal(record.target,target);assert.equal(record.phase,'published');assert.equal(record.candidate.digest,pkg.treeSha256);assert.equal(record.previous.digest,old.installedTreeSha256);
+assert.equal(digest(await snapshotPackage(target)),pkg.treeSha256);assert.equal(digest(await snapshotPackage(pkg.source)),pkg.treeSha256);assert.equal(digest(await snapshotPackage(path.join(transaction,'previous.app'))),old.installedTreeSha256);
+assert.equal(hash(await fs.readFile(base.bindingFile)),base.bindingFileSha256);assert.equal(digest(await snapshotPackage(base.current.root)),base.librarySha256);
+const lsregister='/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister',dump=execFileSync(lsregister,['-dump'],{encoding:'utf8',maxBuffer:64*1024*1024});assert.equal(dump.includes(path.join(transaction,'previous.app')),false);execFileSync(lsregister,['-f',target]);
+const receipt={recordedAt:new Date().toISOString(),version:pkg.version,sourceCommit:pkg.sourceCommit,target,source:pkg.source,treeSha256:pkg.treeSha256,installedEqualsArchivedBuild:true,installation:{transaction,execPath:path.join(target,'Contents/MacOS/自媒体工作台')},launchServices:{previousUnregisterExitCode:1,previousUnregisterDiagnostic:'failed to scan hidden recovery app: -10814 from spotlight',previousAppEntryAbsentVerified:true,installedAppRegistered:target,recoveryAppDeleted:false},libraryRecoveryDirectory:base.backup,libraryUnchanged:true,bindingUnchanged:true,phase:'published-awaiting-native-launch',transactionNotRepeated:true};
+await fs.writeFile(path.join(out,'installation.json'),JSON.stringify(receipt,null,2)+'\n',{flag:'wx'});console.log(JSON.stringify({status:'PASS',...receipt}));

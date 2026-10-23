@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-23T11:28:27.006Z",
+  "version": "0.3.46",
+  "sourceCommit": "7e78bf5f01162b06b8f9c1801b32fbfe4be621aa",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-cPPfbE/mac-arm64/自媒体工作台.app",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.46-darwin-arm64-preview.dmg",
+  "nativePayload": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/native-payloads/7e78bf5f01162b06b8f9c1801b32fbfe4be621aa/darwin-arm64-fad403bf-0659-4ce8-919b-9bbe652fd09b",
+  "nativeArtifactManifestSha256": "27c3bf92d48ae75a24291fb016a13f05823652443a18ad6a02238e8a876fb859",
+  "dmgSha256": "6c3a6867b9acdc496a0abc6fed861ce1914a31266aec5971a4117f0fdfe16a03",
+  "treeSha256": "7d48e967e93ad4469cc3eabdcdc1523cefed25a09d3a65cc4bbbf8792092dcad",
+  "entries": 1646,
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.46",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.46:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "archivedBuildEqualsDmg": true,
+  "nativeFiles": [
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libvk_swiftshader.dylib",
+    "Contents/MacOS/自媒体工作台",
+    "Contents/Resources/app/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+    "Contents/Resources/app/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node"
+  ],
+  "pairedMarketplaceVerified": true,
+  "companyMetadataVerified": true,
+  "developerIdSigned": false,
+  "notarized": false,
+  "previousDmgPreserved": true,
+  "actualProperties": {
+    "dmgBytes": 286574600,
+    "dmgModifiedAt": "2026-10-23T11:27:33.018Z",
+    "appLogicalBytes": 536533701,
+    "appModifiedAt": "2026-10-23T11:25:44.865Z"
+  }
+}

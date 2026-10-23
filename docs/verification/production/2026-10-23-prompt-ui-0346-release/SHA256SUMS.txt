@@ -1,0 +1,2 @@
+6c3a6867b9acdc496a0abc6fed861ce1914a31266aec5971a4117f0fdfe16a03  Nova-Content-Hub-0.3.46-darwin-arm64-preview.dmg
+ebe1299ee8fdcef29089d498dc88d203b5c024c547d0ae2b78d98e00ed2c058c  Nova-Content-Hub-0.3.46-darwin-arm64-preview.dmg.blockmap

@@ -1,0 +1,14 @@
+[
+  {
+    "file": "workbench/release/darwin-arm64/preview/electron-builder.json",
+    "sha256": "69aaaea796d90627d0f964f8757bd034c00b08cc5ee742a6c7ccff4ecc8cb1b9"
+  },
+  {
+    "file": "workbench/release/darwin-arm64/preview/builder-debug.yml",
+    "sha256": "aeca414205a745fac8be6eeb11e22fbbb5e340ef80547a853070c11e78990533"
+  },
+  {
+    "file": "workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.45-darwin-arm64-preview.dmg.blockmap",
+    "sha256": "538c04438c611a861200b7ef6831bc89701cb6c70f973998163f42e589d9c968"
+  }
+]
