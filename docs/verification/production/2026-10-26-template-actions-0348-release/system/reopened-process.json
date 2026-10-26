@@ -1,0 +1,11 @@
+{
+  "recordedAt": "2026-10-26T08:32:38.834Z",
+  "launchByApplicationName": true,
+  "mainProcesses": [
+    "12638 /Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  ],
+  "installedVersion": "0.3.48",
+  "developmentStageVersion": "0.3.48",
+  "pairId": "nova-content-hub@0.3.48:p1:disabled",
+  "arch": "arm64"
+}

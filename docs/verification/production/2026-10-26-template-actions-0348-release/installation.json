@@ -1,0 +1,23 @@
+{
+  "recordedAt": "2026-10-26T08:28:52.187Z",
+  "version": "0.3.48",
+  "sourceCommit": "97163ed20950060b2d31b45324d1ae6543dbb968",
+  "target": "/Applications/自媒体工作台.app",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-mW7AXm/mac-arm64/自媒体工作台.app",
+  "treeSha256": "cfd0e5a77b361cf84b669572f6082667121beb8e538230f7dc374914cd7a7e4d",
+  "installedEqualsArchivedBuild": true,
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-20ec87c0-1118-42ee-8783-7ddbe2155814",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "launchServices": {
+    "previousAppUnregistered": "/Applications/.nova-content-hub-install-20ec87c0-1118-42ee-8783-7ddbe2155814/previous.app",
+    "unregistrationExitCode": 1,
+    "installedAppRegistered": "/Applications/自媒体工作台.app",
+    "recoveryAppDeleted": false
+  },
+  "libraryRecoveryDirectory": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/release-0348-template-actions-16f91eb1-4b41-4c69-95d7-c09c711deb2c",
+  "libraryUnchanged": true,
+  "bindingUnchanged": true,
+  "phase": "installed-awaiting-native-launch"
+}

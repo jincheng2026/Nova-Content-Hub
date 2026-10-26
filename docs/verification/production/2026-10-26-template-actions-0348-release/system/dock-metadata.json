@@ -1,0 +1,7 @@
+{
+  "recordedAt": "2026-10-26T08:35:43.274Z",
+  "entries": [],
+  "metadataReadError": "Unable to read Dock group: recent-apps",
+  "dockVisualVerified": false,
+  "reason": "CUA Dock inspection timed out; no Dock screenshot obtained. Bundle icon independently checked in Finder and About."
+}

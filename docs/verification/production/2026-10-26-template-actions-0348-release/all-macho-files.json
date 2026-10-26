@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-26T08:30:34.538Z",
+  "thinArm64": true,
+  "count": 19,
+  "files": [
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Electron Framework",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Helpers/app_shim_loader",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Helpers/chrome_crashpad_handler",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libffmpeg.dylib",
+    "Contents/Frameworks/Electron Framework.framework/Versions/A/Libraries/libvk_swiftshader.dylib",
+    "Contents/Frameworks/Mantle.framework/Versions/A/Mantle",
+    "Contents/Frameworks/ReactiveObjC.framework/Versions/A/ReactiveObjC",
+    "Contents/Frameworks/Squirrel.framework/Versions/A/Resources/ShipIt",
+    "Contents/Frameworks/Squirrel.framework/Versions/A/Squirrel",
+    "Contents/Frameworks/自媒体工作台 Helper (GPU).app/Contents/MacOS/自媒体工作台 Helper (GPU)",
+    "Contents/Frameworks/自媒体工作台 Helper (Plugin).app/Contents/MacOS/自媒体工作台 Helper (Plugin)",
+    "Contents/Frameworks/自媒体工作台 Helper (Renderer).app/Contents/MacOS/自媒体工作台 Helper (Renderer)",
+    "Contents/Frameworks/自媒体工作台 Helper.app/Contents/MacOS/自媒体工作台 Helper",
+    "Contents/MacOS/自媒体工作台",
+    "Contents/Resources/app/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+    "Contents/Resources/app/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-darwin-arm64/lib/sharp-darwin-arm64-0.35.5.node",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/node_modules/@img/sharp-libvips-darwin-arm64/lib/libvips-cpp.8.18.7.dylib",
+    "Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node"
+  ]
+}

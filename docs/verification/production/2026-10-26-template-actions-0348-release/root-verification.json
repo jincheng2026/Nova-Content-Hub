@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-26T08:04:44.520Z",
+  "version": "0.3.48",
+  "sourceCommit": "97163ed20950060b2d31b45324d1ae6543dbb968",
+  "check": {
+    "command": "npm run check",
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "npm run typecheck:desktop",
+    "exitCode": 0
+  },
+  "densityProbe": {
+    "command": "node workbench/scripts/template-density-ui-probe.mjs",
+    "exitCode": 0
+  },
+  "onboardingProbe": {
+    "command": "node workbench/scripts/template-onboarding-ui-probe.mjs",
+    "exitCode": 0
+  },
+  "fullDesktopRunOnThisVersion": false,
+  "precedingFullDesktop": {
+    "version": "0.3.47",
+    "tests": 378,
+    "failed": 0
+  },
+  "scope": "Only template button placement and card hover geometry changed since full desktop regression; state and IPC logic unchanged."
+}
