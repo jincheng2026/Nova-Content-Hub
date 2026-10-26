@@ -2,7 +2,7 @@
 
 每项 artifact 含新 UUIDv4 `id`、`kind`、非空 `title`、`text`（最多 200000 字符）、`assetHash`（SHA256 或 null）及 JSON `data`。result 含 summary 与至少一项 artifacts，总 JSON 不超过 2 MiB。kind 为 report/research/transcript/analysis/narrative/draft/packaging/feedback/knowledge。当前请求之外的任务、库或 attempt 不可覆盖。
 
-报告 HTML 先在临时目录生成，通过 `RUN production import --handoff UUID --file JSON` 导入，JSON 含自己的 workerId、claimToken、绝对 path 与 purpose:production-report。使用回执资产 hash；多页 report 的 data.pages 为 `[{title,assetHash}]`。保留 meta、原始来源、采集时间、范围、真实样本与费用依据，内容不包含秘密。读取器在无 Node/IPC、无同源权限、无外部网络的沙箱内允许内联可视化脚本；外部脚本、在线图片与请求被阻止。使用自包含 HTML、内联样式与本地数据，核心结论仍须有可读正文。
+报告 HTML 先在临时目录生成，通过 `RUN production import --handoff UUID --file JSON` 导入，JSON 含自己的 workerId、claimToken、绝对 path 与 purpose:production-report。使用回执资产 hash；多页 report 的 data.pages 为 `[{title,assetHash}]`，可附 type、sourceUrl、collectedAt、meta；来源及元数据随索引保留。保留 meta、原始来源、采集时间、范围、真实样本与费用依据，内容不包含秘密。读取器在无 Node/IPC、无同源权限、无外部网络的沙箱内允许内联可视化脚本；外部脚本、在线图片与请求被阻止。使用自包含 HTML、内联样式与本地数据，核心结论仍须有可读正文。
 
 research/transcript 采用时 data.references 必须包含完整参考对象：`{id,url,title,platform,originalText,correctedText,segments,corrections,analysis,mediaAssetHash,subtitleAssetHash}`。id 为作品参考的稳定 UUID；url 为 http(s) 或 null；两个资产 hash 可为 null。segments 为 `{startMs,endMs,text}` 数组；corrections 为 `{original,corrected,reason}` 数组。保留原识别稿，校正版单独保存；缺少资料使用空数组／空文本并明确说明。参考资产导入 purpose:production-reference。
 

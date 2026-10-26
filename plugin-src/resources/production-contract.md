@@ -24,6 +24,10 @@
 
 每个请求包含 taskId、attemptId、自己的 workerId、claimToken、新 requestId，并按工具附加：TikHub `tool:tikhub, operation, id, cursor?`；转写 `tool:asr, audioPath, allowCloud?`；模型 `tool:model, instruction, text`。operation 限 douyin-search/user-search/profile/user-posts/video/comments。服务负责凭据、范围、缓存和费用记录，skill 不读取密钥或绕过受控入口。allowCloud 仅在用户已明确允许时为 true。
 
+## 免费优先
+
+优先复用已有字幕、缓存、本地语音识别，以及用户在当前助手中选择的可用模型额度。不要仅凭模型名称、试用宣传或账户已充值认定本次调用免费；提供方额度与抵扣未经核实就标为未知。免费额度不可用或未知时，不自动更换模型、充值或转入付费云端；受控外部调用仍必须满足冻结工具授权、当前设置和任务预算。保留用户的助手模型选择，不代替用户切换。
+
 ## 提交与人工验收
 
 按产物结构构建 `{"workerId":"自己的值","claimToken":"自己的值","result":{"summary":"实际结果","artifacts":[...]},"mutationId":"新UUIDv4"}`，运行 `RUN production submit --handoff UUID --file JSON`。成功后运行 status，核对当前 attempt、submitted、receipt.taskId/attemptId/requestHash/resultHash/sha256，保存回执。只有提交成功才告知已回传。
