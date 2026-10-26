@@ -30,13 +30,23 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
         record('primary menu chevrons align at the right edge');
         const settings = await bridge('readServiceSettings');
         const credentialTested = settings.encryptionAvailable;
-        await bridge('saveServiceSettings', {values: {...settings.values, commentsEnabled: true}, ...(credentialTested ? {keys: {model: 'probe-not-real-secret'}} : {})});
+        await bridge('saveServiceSettings', {values: {...settings.values, asr: {...settings.values.asr, localExecutable:path.join(root,'unused-python'),localModelPath:path.join(root,'unused-model')}, commentsEnabled: true}, ...(credentialTested ? {keys: {model: 'probe-not-real-secret'}} : {})});
         assert(!JSON.stringify(await bridge('readServiceSettings')).includes('probe-not-real-secret'));
         record('desktop safeStorage/settings views omit credential bytes', {encryptionAvailable: credentialTested});
         for (const [width, height] of [[1440,1000],[1000,800]]) {
             const suffix = `${width}x${height}`;
             window.setContentSize(width, height);
             await wait(`innerWidth===${width}&&innerHeight===${height}`);
+            for (const group of ['today','content','research']) {
+                if (await run(`document.querySelector('#nav-group-${group}').getAttribute('aria-expanded')==='true'`)) await click(`#nav-group-${group}`);
+            }
+            await click('#nav-prompts');
+            await wait('document.querySelector("#nav-prompts").getAttribute("aria-current")==="page"');
+            await screenshot(`sidebar-collapsed-${suffix}`);
+            const collapsed=await run(`(()=>{const nav=document.querySelector('nav[aria-label="工作功能"]');const items=Array.from(nav.children).map(el=>{const rect=el.getBoundingClientRect();return {name:el.textContent.trim(),height:rect.height,top:rect.top,bottom:rect.bottom};});return {items,buttonHeights:Array.from(nav.querySelectorAll('.nav-group-toggle,#nav-prompts')).map(el=>el.getBoundingClientRect().height),hiddenGroups:Array.from(nav.querySelectorAll('.nav-children')).every(el=>el.hidden&&el.getBoundingClientRect().height===0)};})()`);
+            assert(collapsed.hiddenGroups);assert(collapsed.buttonHeights.every(height=>height>=40&&height<=44),JSON.stringify(collapsed));
+            assert(collapsed.items.every((item,index)=>index===0||item.top-collapsed.items[index-1].bottom<=10),JSON.stringify(collapsed));
+            record(`collapsed primary navigation keeps normal 42px rows and compact gaps ${suffix}`,collapsed);
             await click('#nav-group-research');
             if (!await run('!!document.querySelector("#nav-accounts")?.getClientRects().length')) await click('#nav-group-research');
             await click('#nav-accounts');
@@ -52,12 +62,15 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
             assert.equal(await run('document.querySelector("#production-research-form input[type=checkbox]").checked'), false);
             await input('#production-research-title', '职场 AI 教程调研报告');
             await input('#production-research-prompt', '比较三类 AI 教程账号的选题与表达结构，保留可核验来源。');
+            assert(await run('document.querySelector("#production-research-prompt").getBoundingClientRect().height<150'));
             await screenshot(`report-create-${suffix}`);
             if (width === 1440) {
                 await textClick('创建并打开助手');
                 await wait('!document.querySelector("#production-research-form")');
                 const snapshot = await bridge('readProduction'), task = snapshot.tasks.at(-1);
                 assert.equal(task.title, '职场 AI 教程调研报告');
+                assert.equal(task.request.prompt, '比较三类 AI 教程账号的选题与表达结构，保留可核验来源。');
+                assert.equal(await run('!!document.querySelector("#production-max-followers,#production-min-likes")'),false);
                 assert.equal(task.request.parameters.comments, false);
                 assert.equal(launches.length, 1);
                 record('report UI freezes explicit title and unchecked per-task comments; launch mocked');
@@ -86,6 +99,41 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
             await wait('document.querySelector("#service-model-id") && !document.querySelector("#service-model-id").disabled');
             assert.equal(await run('document.querySelector("#service-key-model").value'), '');
             assert.equal(await run('document.querySelector("#service-key-model").type'), 'password');
+            assert.equal(await run('document.querySelectorAll(".service-settings-actions button").length'),1);
+            assert.equal(await run('document.querySelector("#service-model-url").closest("details").open'),false);
+            assert.equal(await run('document.querySelector("#service-asr-executable").closest("details").open'),false);
+            if (width === 1440) {
+                if (credentialTested) {
+                    await textClick('清除 Key','document.querySelector(".service-settings")');
+                    assert.equal(await run('document.querySelector("#service-key-model").disabled'),true);
+                    await textClick('撤销清除','document.querySelector(".service-settings")');
+                    assert.equal(await run('document.querySelector("#service-key-model").disabled'),false);
+                    assert.equal((await bridge('readServiceSettings')).credentials.model.hasKey,true);
+                }
+                const originalUrl=(await bridge('readServiceSettings')).values.model.baseUrl;
+                await run('document.querySelector("#service-model-url").closest("details").open=true');
+                await input('#service-model-url','http://localhost');
+                if (credentialTested) await input('#service-key-model','probe-replacement-not-real-secret');
+                await textClick('保存并检查','document.querySelector(".service-settings")');
+                await wait('document.querySelector(".service-settings-notice")?.textContent.startsWith("保存未确认")&&!document.querySelector("#service-key-model").disabled');
+                assert.equal(await run('document.querySelector("#service-model-url").value'),'http://localhost');
+                if (credentialTested) assert.equal(await run('document.querySelector("#service-key-model").value'),'probe-replacement-not-real-secret');
+                assert.equal((await bridge('readServiceSettings')).values.model.baseUrl,originalUrl);
+                await input('#service-model-url',originalUrl);
+                await run('document.querySelector("#service-asr-executable").closest("details").open=true');
+                await input('#service-asr-executable',path.join(root,'not-installed-python'));
+                await textClick('保存并检查','document.querySelector(".service-settings")');
+                await wait('document.querySelector(".service-settings-notice")?.textContent.startsWith("服务设置已保存。")&&!document.querySelector("#service-key-model").disabled');
+                const saved=await bridge('readServiceSettings');assert.equal(saved.values.asr.localExecutable,path.join(root,'not-installed-python'));assert.equal(saved.values.budget.enabled,false);assert.equal(saved.values.commentsEnabled,true);assert.equal(saved.credentials.model.hasKey,credentialTested);
+                const settingsPath=path.join(root,'machine','service-settings.json'),before=await fs.stat(settingsPath);
+                await textClick('保存并检查','document.querySelector(".service-settings")');
+                await wait('document.querySelector(".service-settings-notice")?.textContent.startsWith("服务设置已保存。")&&!document.querySelector("#service-key-model").disabled');
+                assert.equal((await fs.stat(settingsPath)).mtimeMs,before.mtimeMs);
+                await run('document.querySelector("#service-asr-executable").closest("details").open=false');
+                await run('document.querySelector("#service-model-url").closest("details").open=false');
+                record('one existing save action persists and checks local settings; invalid configuration retains inputs; clear toggles to undo; unchanged check does not rewrite credentials or enable budgets');
+            }
+            await run('document.querySelector(".service-settings").closest("dialog").scrollTop=0');
             await screenshot(`service-settings-${suffix}`);
             await click('#close-settings');
             if (!await run('!!document.querySelector("#nav-content")?.getClientRects().length')) await click('#nav-group-content');
