@@ -1,0 +1,28 @@
+{
+  "source": "ada224d",
+  "verifiedAt": "2026-10-26T17:10:29.203Z",
+  "outputs": [
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "required",
+      "version": "0.3.51",
+      "productionReady": false,
+      "runtimeFiles": 572,
+      "releaseSha256": "ac1371823cbdb7324b146be264e71b9109db8c16c0f54007eec72969d74ab4e3",
+      "integritySha256": "546630b916018522c87e6ebdb3a602ba74414fe1fc3b5f3e5188129ce806e7ae"
+    },
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "disabled",
+      "version": "0.3.51",
+      "productionReady": false,
+      "runtimeFiles": 572,
+      "releaseSha256": "859ecb16bc43a26d3eac27b6b8c3e5258def5b5925ad05c6cd842b0af5a23b2e",
+      "integritySha256": "e0be94b406a782c9a3a5a0d96801821dbf9fb46e673e30809251d9ce4272d809"
+    }
+  ]
+}

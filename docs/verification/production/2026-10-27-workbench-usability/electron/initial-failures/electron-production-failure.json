@@ -1,0 +1,182 @@
+{
+  "error": "Error: Timeout: [...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号')?.querySelectorAll('button') && [...[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button')].some(button=>button.textContent.trim()==='拆解'&&!button.disabled)",
+  "stack": "Error: Timeout: [...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号')?.querySelectorAll('button') && [...[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button')].some(button=>button.textContent.trim()==='拆解'&&!button.disabled)",
+  "checks": [
+    {
+      "name": "primary menu chevrons align at the right edge",
+      "detail": true
+    },
+    {
+      "name": "desktop safeStorage/settings views omit credential bytes",
+      "detail": {
+        "encryptionAvailable": true
+      }
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1440x1000",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "report UI freezes explicit title and unchecked per-task comments; launch mocked",
+      "detail": true
+    },
+    {
+      "name": "report HTML import and companion JSON preserve type, source, timestamp and sample metadata through actual UI and IPC; file selection simulated",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "one existing save action persists and checks local settings; invalid configuration retains inputs; clear toggles to undo; unchanged check does not rewrite credentials or enable budgets",
+      "detail": true
+    },
+    {
+      "name": "browser creation saves through desktop durable transaction and rejects stale CAS; explicit stale recovery intent discarded in test library",
+      "detail": true
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1000x800",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1000x800",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1000x800",
+      "detail": true
+    },
+    {
+      "name": "public platform catalog crosses the real sandbox preload and IPC without credentials",
+      "detail": {
+        "status": "live",
+        "origin": "live",
+        "version": "V5.3.2",
+        "count": 20,
+        "source": "https://api.tikhub.io/openapi.json",
+        "checkedAt": "2026-10-26T17:06:08.563Z"
+      }
+    },
+    {
+      "name": "navigation interpolates intermediate frames, reverses during motion, and closes focus into its inert region safely",
+      "detail": {
+        "frames": [
+          0,
+          11.203125,
+          20.1875,
+          28.75,
+          36.3984375,
+          42.3671875,
+          48.015625,
+          52.453125,
+          56.796875,
+          59.6484375,
+          62.53125,
+          64.6796875,
+          66.546875,
+          68.125,
+          69.265625,
+          70.5078125,
+          71.4765625,
+          72.2734375,
+          72.9296875,
+          73.46875,
+          73.8671875,
+          74.21875,
+          74.53125,
+          74.7265625,
+          74.875,
+          74.953125,
+          74.9921875,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75
+        ]
+      }
+    }
+  ]
+}

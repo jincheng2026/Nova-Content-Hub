@@ -1,0 +1,239 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-26T17:07:06.639Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.51",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.51:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "viewports": [
+    [
+      1440,
+      1000
+    ],
+    [
+      1000,
+      800
+    ]
+  ],
+  "checks": [
+    {
+      "name": "primary menu chevrons align at the right edge",
+      "detail": true
+    },
+    {
+      "name": "desktop safeStorage/settings views omit credential bytes",
+      "detail": {
+        "encryptionAvailable": true
+      }
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1440x1000",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "report UI freezes explicit title and unchecked per-task comments; launch mocked",
+      "detail": true
+    },
+    {
+      "name": "report HTML import and companion JSON preserve type, source, timestamp and sample metadata through actual UI and IPC; file selection simulated",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "one existing save action persists and checks local settings; invalid configuration retains inputs; clear toggles to undo; unchanged check does not rewrite credentials or enable budgets",
+      "detail": true
+    },
+    {
+      "name": "browser creation saves through desktop durable transaction and rejects stale CAS; explicit stale recovery intent discarded in test library",
+      "detail": true
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1000x800",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1000x800",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1000x800",
+      "detail": true
+    },
+    {
+      "name": "public platform catalog crosses the real sandbox preload and IPC without credentials",
+      "detail": {
+        "status": "live",
+        "origin": "live",
+        "version": "V5.3.2",
+        "count": 20,
+        "source": "https://api.tikhub.io/openapi.json",
+        "checkedAt": "2026-10-26T17:06:47.002Z"
+      }
+    },
+    {
+      "name": "navigation interpolates intermediate frames, reverses during motion, and closes focus into its inert region safely",
+      "detail": {
+        "frames": [
+          9.796875,
+          18.4296875,
+          27.9609375,
+          35.71875,
+          42.296875,
+          47.8359375,
+          52.4609375,
+          56.390625,
+          59.40625,
+          62.25,
+          64.484375,
+          66.328125,
+          67.9765625,
+          69.1171875,
+          70.390625,
+          71.3984375,
+          72.1953125,
+          72.8671875,
+          73.40625,
+          73.8671875,
+          74.2265625,
+          74.4921875,
+          74.6875,
+          74.8671875,
+          74.9453125,
+          74.9921875,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75,
+          75
+        ]
+      }
+    },
+    {
+      "name": "searchable platform aliases save the selected enum; manual-only account task cannot collect; editing focuses the form and global refresh preserves its draft",
+      "detail": true
+    },
+    {
+      "name": "research collapse preserves title, question and explicit comment selection; only explicit discard clears the form",
+      "detail": true
+    },
+    {
+      "name": "system reduced-motion keeps short nonzero lifecycle and searchable enum selection still commits",
+      "detail": {
+        "durations": "1e-05s"
+      }
+    },
+    {
+      "name": "switching libraries invalidates old browser capabilities",
+      "detail": true
+    }
+  ],
+  "launchMocked": true,
+  "paidRequests": 0,
+  "realLibrary": false,
+  "scope": "Real Electron sandbox/preload/IPC/React navigation and isolated Chromium loopback creation page; excludes real assistant hosts, OS default browser, native installers and other platforms.",
+  "designRules": {
+    "Foundation-01": "screenshots captured for review",
+    "Layout-01": "content group contains exactly content and cover; four project filters verified",
+    "Controls-02": "report title required; per-task comments remain unchecked despite global enabled capability",
+    "Reading-02": "account image assets decoded; settings credential values omitted",
+    "Acceptance-01": "native typecheck and production smoke",
+    "Acceptance-02": "two viewport screenshots; visual review required",
+    "Acceptance-03": "darwin/arm64 native Electron only; no installer or cross-platform claim"
+  }
+}

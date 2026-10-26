@@ -1,0 +1,29 @@
+✔ only exact top-level sender with no renderer arguments can invoke business (0.91075ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.508291ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.45225ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (17.883208ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.649042ms)
+✔ public directory derives unique platform roots; new platforms remain record-only and service routes are excluded (3.111917ms)
+✔ fallback is a dated official snapshot including FAQ platforms and Telegram present in current OpenAPI (0.194208ms)
+✔ capability only recognizes integrated Douyin names; manual account prompt never silently maps a platform (0.237917ms)
+✔ directory requests use a fixed unauthenticated URL, deduplicate concurrent reads and cache for 24 hours (21.547875ms)
+✔ offline fallback cools down retries and preserves last successful source time (0.478417ms)
+✔ invalid, redirected, HTTP error and oversized documents fall back instead of altering platform values (5.674833ms)
+✔ rejected response bodies are cancelled before falling back (0.646458ms)
+✔ renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters (1.501125ms)
+✔ read does not enable creation; explicit enable and draft save use real CAS versions (985.470833ms)
+✔ launch failure preserves one task; comments require per-task consent and setting; budget is REQ without broker token (1791.620708ms)
+✔ lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes (450.391333ms)
+✔ pending metadata is library-bound and required builds reject all production access (169.262292ms)
+✔ claim tokens are redacted and acceptance requires current attempt and exact receipt (1187.518ms)
+✔ unknown cost blocks retry until explicit reconciliation and clears matching service cache intent (1538.685167ms)
+✔ file recovery verifies the original bytes before importing a changed source (324.502625ms)
+✔ platform catalog exposes no caller-controlled endpoint and account platform freezes collection capability (1805.490416ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8708.698667

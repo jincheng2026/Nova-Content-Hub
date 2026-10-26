@@ -1,0 +1,39 @@
+{
+  "status": "passed",
+  "scope": "current React/Semi in isolated Electron; synthetic in-memory IPC; no real library or generation",
+  "platform": "darwin",
+  "arch": "arm64",
+  "viewports": [
+    [
+      1280,
+      860
+    ],
+    [
+      960,
+      680
+    ]
+  ],
+  "checks": [
+    "无计划 Hero 仅一个编辑动作，使用原内容处理器",
+    "照片唯一选择入口调用 choosePhoto；取消后无写入，本人声明仍可查",
+    "渠道比例可搜索；旧7:11原样显示；非法自定义禁用保存且无写入",
+    "合法自定义21:13离焦和13:21按Enter均保留并显式保存；清空为不限制；未改关闭无需放弃确认",
+    "封面仅一个人物选择器；照片与不放人物双向切换、不自动生成/保存；本人声明保留，两视口主控件可达",
+    "同一可新建选择器中文输入后Enter不提交父表单；Esc仅关闭下拉并保留自定义文本"
+  ],
+  "ruleIds": [
+    "Controls-01",
+    "Controls-02",
+    "Cover-01",
+    "Surface-03",
+    "Layout-03",
+    "Acceptance-01",
+    "Acceptance-02"
+  ],
+  "limitations": [
+    "native file picker uses synthetic cancelled reply",
+    "physical IME and drag-drop not exercised",
+    "no Windows or Intel Mac run",
+    "no full old cover-layout pass claimed"
+  ]
+}
