@@ -86,14 +86,14 @@ export function productionMethods(h) {
     function mutateProduction(op,raw,options = {}) {
         invalid(plain(raw),'Expected operation input');
         if(op==='saveCreation') {
-            invalid(UUID.test(raw.contentId) && HASH.test(raw.expectedToken),'Creation and production token required');
-            mutate('update',raw.contentId,{productionOp:op,productionInput:raw},undefined,options,'content',(meta)=>{
+            invalid(UUID.test(raw.contentId) && HASH.test(raw.expectedToken) && HASH.test(raw.expectedContentToken),'Creation, content and production tokens required');
+            mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
                 const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
                 const c=meta.productionState || w.production?.creations.find(x=>x.contentId===raw.contentId);if(!c)fail('INVALID_STATE','Enable creation first');
                 const next=patchCreation(c,raw.creationPatch || raw.patch,new Date().toISOString());
                 for(const r of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(r[key])checkAsset(r[key]);
                 meta.schemaVersion=5;meta.productionState=next;return meta;
-            },undefined,true);
+            });
             return readProduction();
         }
         const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost'];
@@ -159,6 +159,11 @@ export function productionMethods(h) {
                     invalid(inputs.length>0 && inputs.length<=100,'Report artifact requires imported HTML pages');
                     const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
                     const r={id:randomUUID(),title:artifact.title,type:'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:null,collectedAt:now,pages,pageId:pages[0].id,meta:{taskId:t.id,attemptId:a.id},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
+                }
+                for(const artifact of a.result.artifacts.filter(x => ['feedback','knowledge'].includes(x.kind))) {
+                    invalid(text(artifact.text,100000,false),'Feedback and knowledge require bounded evidence text');
+                    const record={id:randomUUID(),contentId:t.contentId,text:artifact.text,source:`助手产物 task:${t.id} attempt:${a.id} artifact:${artifact.id}（尚需人工核对）`,createdAt:now};
+                    if(artifact.kind==='feedback')p.feedback.push(record);else p.knowledge.push({...record,status:'candidate',updatedAt:now});
                 } break;
             }
             case 'acceptTask': {const {t,a}=taskAttempt(p,raw);invalid(a.status==='submitted' && raw.receiptHash===a.receipt.sha256,'Acceptance requires submitted receipt');a.status='accepted';a.updatedAt=t.updatedAt=now;break;}
@@ -175,7 +180,7 @@ export function productionMethods(h) {
             case 'recordCost': case 'reconcileCost': {
                 const {t,a}=taskAttempt(p,raw,op==='recordCost'),c=raw.id ? find(p.costs,raw.id,'cost') : p.costs.find(x=>x.taskId===t.id && x.requestId===raw.requestId);
                 invalid(c && c.taskId===t.id && c.attemptId===a.id,'Cost does not belong to attempt');
-                invalid(op==='reconcileCost' ? ['unknown','reserved'].includes(c.status) : c.status==='reserved','Cost already settled');
+                invalid(['unknown','reserved'].includes(c.status),'Cost already settled');
                 invalid(['actual','billed','measured','estimated','unknown','cancelled'].includes(raw.status),'Invalid cost settlement');
                 invalid(raw.status==='unknown' ? raw.amount===null : [0,1].includes(raw.amount),'REQ settlement must be 0 or 1, unknown must be null');
                 c.status=raw.status;c.amount=raw.amount;c.usage=raw.usage ?? null;c.updatedAt=now;break;

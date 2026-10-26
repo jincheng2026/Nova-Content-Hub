@@ -524,7 +524,7 @@ test('bad JSON, missing body, duplicate identity and newer metadata fail without
     reject('CORRUPT', () => library.readContent(item.id));
     fs.writeFileSync(contentFile(root, item), 'x');
     const meta = JSON.parse(original);
-    fs.writeFileSync(metaFile, JSON.stringify({...meta, schemaVersion: 5}));
+    fs.writeFileSync(metaFile, JSON.stringify({...meta, schemaVersion: 6}));
     reject('FORMAT_UNSUPPORTED', () => library.readContent(item.id));
     fs.writeFileSync(metaFile, JSON.stringify({...meta, id: randomUUID()}));
     reject('CORRUPT', () => library.listContents());

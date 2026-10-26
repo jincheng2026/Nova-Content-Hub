@@ -1351,6 +1351,8 @@ function immutableFile(target, bytes, assertIdentity = () => {}) {
 }
 
 function detectedType(bytes) {
+    if (bytes.subarray(0,4).toString() === 'OggS') return 'audio/ogg';
+    if (bytes.subarray(0,4).toString() === 'fLaC') return 'audio/flac';
     if (bytes.subarray(0,4).toString() === 'RIFF' && bytes.subarray(8,12).toString() === 'WAVE') return 'audio/wav';
     if (bytes.subarray(4,8).toString() === 'ftyp') return bytes.subarray(8,12).toString().startsWith('M4A') ? 'audio/mp4' : 'video/mp4';
     if (bytes.subarray(0,3).toString() === 'ID3' || bytes[0] === 255 && (bytes[1] & 224) === 224) return 'audio/mpeg';
@@ -1442,7 +1444,7 @@ function importAssetInternal(root, sourcePath, options) {
     if (hash(data) !== assetHash || data.length !== total) fail('CORRUPT', 'Imported asset staging changed');
     const type = detectedType(data);
     if (purpose === 'production-report' && (data.length > 2 * 1024 * 1024 || type !== 'text/plain' || !/<(?:!doctype\s+html|html|body|article|section)\b/i.test(data.toString('utf8')))) fail('INVALID_INPUT', 'Production report requires UTF-8 HTML of at most 2 MiB');
-    if (purpose === 'production-reference' && !['image/png','image/jpeg','image/gif','image/webp','text/plain','application/json','audio/wav','audio/mpeg','audio/mp4','video/mp4','video/webm'].includes(type)) fail('INVALID_INPUT','Unsupported production reference');
+    if (purpose === 'production-reference' && !['image/png','image/jpeg','image/gif','image/webp','text/plain','application/json','audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(type)) fail('INVALID_INPUT','Unsupported production reference');
     if (purpose === 'template-structure' && !['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'text/plain', 'application/json'].includes(type)) fail('INVALID_INPUT', 'Unsupported template structure type');
     if (type === 'image/svg+xml' && purpose !== 'template-structure') fail('INVALID_INPUT', 'SVG is accepted only as a structure reference');
     if (['photo', 'template-reference', 'generated-cover'].includes(purpose) && !['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(type)) fail('INVALID_INPUT', 'This purpose requires a raster image');
