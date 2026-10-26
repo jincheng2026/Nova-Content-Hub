@@ -44,7 +44,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         if (!mounted.current || progressEpoch.current.id !== id || progressEpoch.current.library !== library || !viewRef.current) return;
         if (taskStatusChanged(viewRef.current.jobs, snapshot)) {
             const next = await invoke('readTemplateWorkflow', {templateId: id});
-            if (mounted.current && progressEpoch.current.id === id && progressEpoch.current.library === library) {if (viewRef.current?.editToken !== next.editToken) setConfirm(false); setView(next);}
+            if (mounted.current && progressEpoch.current.id === id && progressEpoch.current.library === library) {if (viewRef.current?.editToken !== next.editToken) setConfirm(false); setView(next); await refresh();}
         } else setView(old => old?.templateId === id ? {...old, jobs: mergeTaskProgress(old.jobs, snapshot)} : old);
     });
     const attempt = selected ? attempts.find(a => a.attemptId === selected) : attempts.at(-1);
@@ -54,6 +54,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
     const jobAccepted = !!job?.acceptance;
     const sourceMatches = attempt?.reference.sourceVersion === view?.currentVersion && attempt?.reference.sourcePackageHash === template?.versions.find(v => v.version === view?.currentVersion)?.packageHash;
     const unavailable = !view || busy || loading || !!view.deletedAt;
+    const canStudy = !!view && !view.studyComplete && !activeAttempt;
     async function update(action: () => Promise<TemplateWorkflowResult>, submitted?: string) {
         if (unavailable) return;
         await run(async () => {
@@ -80,10 +81,10 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         <div className="management-toolbar"><div><h3>{view?.title ?? template?.title ?? asset?.name ?? '模板'} · AI拆解风格</h3><p>让 AI 看整组样张、总结风格，并还原第 1 张；最后由你对照确认。</p></div><Button disabled={busy || loading} onClick={() => void reload()}>刷新拆解结果</Button></div>
         <p className="muted">点 AI拆解 → 去已选助手选模型、手动发送 → 回来看进度 → 对照确认</p>
         {attempt && <div className="template-study-progress" role="status" aria-live="polite"><strong>{accepted ? '已确认' : attempt.status === 'committed' ? statusNames.committed : taskProgressLabel(attempt)}</strong><p>{accepted ? '规则与首张还原效果已经你确认并保存。' : attempt.status === 'created' ? assistantLaunchNotice(attempt) : attempt.status === 'claimed' ? '助手已领取任务；进度报告会自动更新。' : attempt.status === 'committed' ? '请对照原样张、规则证据与首张还原图，再勾选确认。回传结果尚未经过你的确认。' : '历史任务与已回传证据仍保留。'}</p><TaskProgressDetails attempt={attempt}/>{live && !attempt.progress?.sessionId && <p>尚未绑定原会话；打开助手后，按同一任务编号继续。</p>}</div>}
-        {view?.builtin ? <div className="template-workflow-message"><p>点击后会保留原样张，并为你准备可编辑的模板。</p>{onDerive && <Button theme="solid" disabled={busy} onClick={() => void onDerive()}>AI拆解风格</Button>}</div> : <>
+        {view?.builtin ? <div className="template-workflow-message"><p>{view.studyComplete ? '当前模板已有拆解资料，内容变化后才需要重新拆解。' : '点击后会保留原样张，并为你准备可编辑的模板。'}</p>{canStudy && onDerive && <Button theme="solid" disabled={busy} onClick={() => void onDerive()}>AI拆解风格</Button>}</div> : <>
             <p className="muted">本次助手：{(activeAttempt?.host ?? setup?.host) === 'workbuddy' ? 'WorkBuddy' : 'Codex'}。{setup && !setup.ready ? '新任务暂不可用，请在设置中检查助手与配套插件。' : '可在左下角设置中更换助手。'}</p>
-            <details className="template-study-options" open={notesDirty ? true : undefined}><summary>补充要求（可选，不填也能拆解）</summary><label className="template-study-notes">希望 AI 特别注意什么？<TextArea className="semi-control-text" maxLength={10_000} value={notes} disabled={unavailable} placeholder="比如：重点还原标题层级与留白关系" onChange={setNotes}/></label>{notesDirty && <Button disabled={busy} onClick={() => setNotes(submittedNotes)}>放弃未提交的补充要求</Button>}</details>
-            {!activeAttempt && !jobAccepted && attempt?.status !== 'committed' && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}), notes)}>{attempts.length ? '重新拆解' : 'AI拆解风格'}</Button>}
+            {(!view?.studyComplete || notesDirty) && <details className="template-study-options" open={notesDirty ? true : undefined}><summary>补充要求（可选，不填也能拆解）</summary><label className="template-study-notes">希望 AI 特别注意什么？<TextArea className="semi-control-text" maxLength={10_000} value={notes} disabled={unavailable || view?.studyComplete} placeholder="比如：重点还原标题层级与留白关系" onChange={setNotes}/></label>{notesDirty && <Button disabled={busy} onClick={() => setNotes(submittedNotes)}>放弃未提交的补充要求</Button>}</details>}
+            {canStudy && <Button theme="solid" disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}), notes)}>{attempts.length ? '重新拆解' : 'AI拆解风格'}</Button>}
             {activeAttempt && attempt?.attemptId !== activeAttempt.attemptId && <Button disabled={busy} onClick={() => {setSelected(activeAttempt.attemptId); setConfirm(false);}}>查看进行中的AI拆解</Button>}
             {live && !attempt.unavailable && !jobAccepted && <Button theme="solid" disabled={unavailable || !sourceMatches || attempt.progressUnavailable} onClick={() => void update(() => invoke('continueBoundTemplate', attempt.reference))}>{attempt.progress?.sessionId ? '去 ' + (attempt.host === 'codex' ? 'Codex' : 'WorkBuddy') + (attempt.progress.state.startsWith('waiting-') ? ' 确认' : ' 继续') : '打开 ' + (attempt.host === 'codex' ? 'Codex' : 'WorkBuddy') + ' 继续'}</Button>}
         </>}
@@ -92,8 +93,8 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
         {(!!attempts.length || !!selected) && <>
             <details className="template-study-options"><summary>历史与更多操作（重试、换助手、取消）</summary>
                 <label>查看哪一次拆解<PopupSelect searchable aria-label="拆解历史" value={selected || attempt?.attemptId || ''} disabled={busy} onChange={value => {setSelected(value); setConfirm(false);}}>{selected && !attempt && <option value={selected} disabled>原拆解记录暂不可用，请重新选择</option>}{[...attempts].reverse().map(a => <option key={a.attemptId} value={a.attemptId}>源版本 v{a.reference.sourceVersion || '?'} · {a.host === 'codex' ? 'Codex' : 'WorkBuddy'} · {statusNames[a.status]} · {a.attemptId.slice(0, 8)}</option>)}</PopupSelect></label>
-                {attempt && !attempt.unavailable && !jobAccepted && !view?.builtin && <div className="management-actions">{live && <>{setup?.host !== attempt.host && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('continueTemplateStudy', attempt.reference))}>换用当前助手继续</Button>}<Button disabled={unavailable} onClick={() => void update(() => invoke('cancelTemplateStudy', attempt.reference))}>取消本次尝试</Button></>}{!activeAttempt && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('retryTemplateStudy', attempt.reference))}>重新AI拆解</Button>}</div>}
-                {!activeAttempt && !view?.builtin && <Button disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}), notes)}>开始新一轮AI拆解</Button>}
+                {attempt && !attempt.unavailable && !jobAccepted && !view?.builtin && <div className="management-actions">{live && <>{setup?.host !== attempt.host && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('continueTemplateStudy', attempt.reference))}>换用当前助手继续</Button>}<Button disabled={unavailable} onClick={() => void update(() => invoke('cancelTemplateStudy', attempt.reference))}>取消本次尝试</Button></>}{canStudy && <Button disabled={unavailable || !sourceMatches || !setup?.ready} onClick={() => void update(() => invoke('retryTemplateStudy', attempt.reference))}>重新AI拆解</Button>}</div>}
+                {canStudy && !view?.builtin && <Button disabled={unavailable || !setup?.ready} onClick={() => view && void update(() => invoke('startTemplateStudy', {templateId, version: view.currentVersion, editToken: view.editToken, notes}), notes)}>开始新一轮AI拆解</Button>}
             </details>
             {selected && !attempt && <p role="alert">原拆解记录暂不可用，本次选择仍保留。请刷新记录或明确选择另一轮拆解。</p>}
             {attempt && <List split={false}><List.Item><div className="template-attempt">
@@ -105,7 +106,7 @@ export function TemplateWorkflowPanel({templateId, library, assets, busy, run, r
                 {accepted && <p>验收保存为 v{job?.acceptance?.acceptedTemplate.version}。{view?.currentVersion === job?.acceptance?.acceptedTemplate.version ? '当前版本已记录人工验收，可用于封面生成。' : '当前所选版本不同，此验收记录不会自动套用。'}</p>}
             </div></List.Item></List>}
         </>}
-        {view && !attempts.length && !selected && <p className="muted">尚未确认AI拆解结果。手动导入的规则可继续使用，拆解记录将在这里保留。</p>}
+        {view && !attempts.length && !selected && <p className="muted">{view.studyComplete ? '当前模板已有拆解资料；来源资料不代表本次人工验收。内容变化后才需要重新拆解。' : '尚未确认AI拆解结果。手动导入的规则可继续使用，拆解记录将在这里保留。'}</p>}
     </section>;
 }
 function TemplateComparison({attempt}: {attempt: TemplateAttemptView}) {

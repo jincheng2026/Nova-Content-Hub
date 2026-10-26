@@ -9,7 +9,7 @@ type Options = {mutationId: string};
 export interface TemplateCoreLibrary {
     readTemplateProgress(id: string): TaskProgressView;
     rebuildTemplateReports(id: string): {warnings: string[]};
-    readTemplate(id: string, version?: number): TemplateCoreDocument;
+    readTemplate(id: string, version?: number): TemplateCoreDocument & {definition: Record<string, unknown>; resources: Record<string, unknown>};
     readTemplateContext(templateId: string, requestId: string, attemptId: string): TemplateCoreContext;
     createTemplateRequest(templateId: string, input: {version: number; notes?: string; sizePolicy?: 'exact' | 'ratio-minimum'}, editToken: string, options: Options): Promise<{template: TemplateCoreDocument; request: TemplateCoreRequest}>;
     createTemplateAttempt(templateId: string, requestId: string, input: {host: Assistant; reason: string}, options: Options): {template: TemplateCoreDocument; request: TemplateCoreRequest; attempt: TemplateCoreAttempt};

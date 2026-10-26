@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
+import {randomUUID} from 'node:crypto';
 import sharp from 'sharp';
 import {createLibrary, openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 import {execute} from '../src/main/worker.mts';
 import {isTemplateCatalogSelectable, templateCatalogFields} from '../src/main/template-catalog.mts';
+import {templateStudyComplete} from '../src/main/template-study-state.mts';
 
 async function fixture(t) {
     const parent = fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()), 'nch-template-catalog-'));
@@ -32,10 +34,68 @@ test('workspace retains history while generation offers only usable current or c
     }
     assert.equal(workspace.templates.find(item => item.id === f.legacy.id).catalogStatus, 'legacy');
     assert.equal(covers.templates.some(item => item.id === f.legacy.id), false);
+    assert.equal(covers.templates.find(item => item.id === f.builtin.id).studyComplete, true);
+    assert.equal(covers.templates.find(item => item.id === f.derived.id).studyComplete, true);
+    assert.equal(covers.templates.find(item => item.id === f.derived.id).accepted, false, 'source analysis does not assert human acceptance');
     assert.equal(templateCatalogFields({id: f.builtin.id, builtin: false}, {}).catalogStatus, 'custom');
-    await execute('templateRead', {binding: f.binding, templateId: f.derived.id}, 'disabled');
+    assert.equal((await execute('templateRead', {binding: f.binding, templateId: f.derived.id}, 'disabled')).studyComplete, true);
     assert.equal(fs.existsSync(path.join(f.binding.root, '模板', '模板目录.md')), false);
     assert.equal(fs.existsSync(path.join(f.binding.root, '模板', f.derived.id, '模板目录.md')), false);
+});
+
+test('analysis follows unchanged material, not inherited notes, version counters or acceptance flags', async t => {
+    const f = await fixture(t), initial = f.library.readTemplate(f.derived.id);
+    const ready = async () => (await execute('coverAssets', {binding: f.binding})).templates.find(item => item.id === f.derived.id).studyComplete;
+    const version = (n, definition, resources = initial.resources) => f.library.addTemplateVersion(initial.id, {version: n, definition, resources}, f.library.readTemplate(initial.id).editToken);
+    version(2, {...initial.definition, accepted: false, aiTested: false});
+    assert.equal(await ready(), true, 'copying unchanged material to another version does not require analysis');
+    version(3, {...initial.definition, rules: ['changed rule']});
+    assert.equal(await ready(), false, 'inherited notes cannot cover changed rules');
+    version(4, initial.definition, {});
+    assert.equal(templateStudyComplete(f.library, f.library.readTemplate(initial.id)), false, 'changed references invalidate inherited analysis');
+    version(5, {accepted: true, aiTested: true});
+    assert.equal(await ready(), false, 'bare acceptance flags never prove analysis');
+    f.library.selectTemplateVersion(initial.id, 1, f.library.readTemplate(initial.id).editToken);
+    assert.equal(await ready(), true, 'switching back restores original version facts');
+});
+
+test('current submitted evidence suppresses new analysis without implying acceptance; old jobs do not block changed packages', () => {
+    const base = {id: 'template', currentVersion: 2, versions: [{version: 1, packageHash: 'old'}, {version: 2, packageHash: 'current'}], definition: {}, resources: {}, templateJobs: [{id: 'job', attempts: [{attemptId: 'attempt', status: 'committed'}], acceptance: null}]};
+    const context = {request: {template: {version: 2, packageHash: 'current'}}, results: [{attemptId: 'attempt', result: {resultHash: 'result'}}]};
+    const reader = {readTemplateContext: () => context};
+    assert.equal(templateStudyComplete(reader, base), true);
+    context.request.template.packageHash = 'old';
+    assert.equal(templateStudyComplete(reader, base), false);
+    base.templateJobs[0].acceptance = {acceptedTemplate: {id: 'template', version: 1, packageHash: 'old'}};
+    assert.equal(templateStudyComplete(reader, base), false, 'old human acceptance does not cover current content');
+    base.templateJobs[0].acceptance.acceptedTemplate = {id: 'template', version: 2, packageHash: 'current'};
+    assert.equal(templateStudyComplete(reader, base), true);
+    base.templateJobs[0].acceptance = null;
+    for (const status of ['created', 'claimed', 'failed', 'cancelled', 'superseded']) {
+        base.templateJobs[0].attempts[0].status = status;
+        assert.equal(templateStudyComplete(reader, base), false, status + ' is not completed analysis');
+    }
+});
+
+test('unreadable committed history does not break the current catalog or masquerade as completed analysis', async t => {
+    const f = await fixture(t), source = f.library.readTemplate(f.derived.id);
+    const template = f.library.createTemplate({name: 'history', definition: {}, resources: source.resources});
+    const {request} = await f.library.createTemplateRequest(template.id, {version: 1}, template.editToken);
+    const {attempt, inbox} = f.library.createTemplateAttempt(template.id, request.requestId, {host: 'codex'});
+    f.library.claimTemplateAttempt(template.id, request.requestId, attempt.attemptId, {host: 'codex', requestHash: request.requestHash, readAssetHashes: request.styleAssetHashes});
+    fs.writeFileSync(path.join(inbox, 'rules.json'), JSON.stringify({fixed: ['composition'], variable: [], evidence: [{sourceAssetHash: request.styleAssetHashes[0], ruleType: 'fixed', ruleIndex: 0, observation: 'reference'}]}));
+    await sharp({create: {width: 12, height: 16, channels: 3, background: 'green'}}).png().toFile(path.join(inbox, 'restore.png'));
+    await f.library.commitTemplateAttempt(template.id, request.requestId, attempt.attemptId, {format: 'nova-template-receipt', schemaVersion: 1, libraryId: f.binding.libraryId, templateId: template.id, requestId: request.requestId, attemptId: attempt.attemptId, requestHash: request.requestHash, host: 'codex', mutationId: randomUUID(), rulesFile: 'rules.json', restoreFile: 'restore.png'});
+    assert.equal((await execute('coverAssets', {binding: f.binding})).templates.find(item => item.id === template.id).studyComplete, true);
+    const requestFile = path.join(f.binding.root, '模板', template.id, '学习任务', request.requestId, '请求.json');
+    for (const damage of [() => fs.writeFileSync(requestFile, '{}'), () => fs.unlinkSync(requestFile)]) {
+        damage();
+        const catalog = await execute('coverAssets', {binding: f.binding});
+        assert.equal(catalog.templates.find(item => item.id === template.id).studyComplete, false);
+        assert.equal(catalog.templates.find(item => item.id === f.builtin.id).studyComplete, true);
+        const view = await execute('templateRead', {binding: f.binding, templateId: template.id}, 'disabled');
+        assert.equal(view.jobs[0].attempts[0].unavailable, true);
+    }
 });
 
 test('generation excludes deleted and empty templates without treating a custom copy as legacy', async t => {

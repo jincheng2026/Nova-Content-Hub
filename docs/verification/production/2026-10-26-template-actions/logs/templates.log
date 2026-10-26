@@ -1,0 +1,30 @@
+✔ workspace retains history while generation offers only usable current or custom templates; ordinary reads never write Markdown (3321.798042ms)
+✔ analysis follows unchanged material, not inherited notes, version counters or acceptance flags (3704.05375ms)
+✔ current submitted evidence suppresses new analysis without implying acceptance; old jobs do not block changed packages (1.101875ms)
+✔ unreadable committed history does not break the current catalog or masquerade as completed analysis (3789.059042ms)
+✔ generation excludes deleted and empty templates without treating a custom copy as legacy (2134.552959ms)
+✔ explicit folder reveal rebuilds safe readable reports and rejects renderer paths or replaced template directories (1981.929708ms)
+✔ historical report scope is labelled without changing notes or splitting colleague groups (10.303833ms)
+✔ codex failed first launch resumes the saved attempt without claiming or rewriting its request (4066.515541ms)
+✔ workbuddy failed first launch resumes the saved attempt without claiming or rewriting its request (3087.610459ms)
+✔ persisted legacy exact intent recovers lost before-request response without changing request (5039.400458ms)
+✔ persisted legacy exact intent recovers lost after-request response without changing request (4983.651416ms)
+✔ persisted legacy exact intent recovers lost before-attempt response without changing request (3279.11025ms)
+✔ persisted legacy exact intent recovers lost after-attempt response without changing request (2555.675917ms)
+✔ persisted ratio-minimum intent recovers lost before-request response without changing request (2901.75575ms)
+✔ persisted ratio-minimum intent recovers lost after-request response without changing request (6164.473209ms)
+✔ persisted ratio-minimum intent recovers lost before-attempt response without changing request (3649.990584ms)
+✔ persisted ratio-minimum intent recovers lost after-attempt response without changing request (2795.983083ms)
+✔ only internal pending accepts size strategy; public template start stays exact-field IPC (457.958833ms)
+✔ bound codex template continuation keeps original session and waiting-user without progress CAS changes (2761.385792ms)
+✔ bound codex template continuation keeps original session and waiting-permission without progress CAS changes (2991.913917ms)
+✔ bound workbuddy template continuation keeps original session and waiting-user without progress CAS changes (2606.837667ms)
+✔ bound workbuddy template continuation keeps original session and waiting-permission without progress CAS changes (3333.923ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51428.411292

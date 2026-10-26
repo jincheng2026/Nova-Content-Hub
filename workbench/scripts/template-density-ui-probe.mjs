@@ -16,7 +16,7 @@ import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/
 import ${JSON.stringify(path.join(workbench, 'node_modules/@douyinfe/semi-ui-19/lib/es/_base/base.css'))};
 import ${JSON.stringify(path.join(workbench, 'src/renderer/style.css'))};
 import {TemplatesPage} from ${JSON.stringify(path.join(workbench, 'src/renderer/workspace-pages.tsx'))};
-const templates = Array.from({length: 16}, (_, i) => ({id: 'template-' + i, title: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, name: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, description: '整组参考样张，保留完整横竖画面和所有文字。这是一段刻意很长的说明，用来核对密集卡片仍然保持两行摘要，完整内容可在整组预览里阅读。', builtin: i > 1, version: 1, currentVersion: 1, versions: [{version: 1, packageHash: 'hash-' + i}], editToken: 'token-' + i, deletedAt: null, rules: [], accepted: false, aiTested: false, samples: Array.from({length: i === 15 ? 0 : i === 0 ? 6 : 2},(_,n)=>({assetHash:'sample-'+i+'-'+n,url:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+((n+i)%2?640:300)+'" height="400"><rect width="100%" height="100%" fill="'+((n+i)%2?'#6d557e':'#476d8b')+'"/><rect x="8" y="8" width="'+((n+i)%2?624:284)+'" height="384" stroke="white" fill="none" stroke-width="5"/><text x="50%" y="50%" fill="white" font-size="24" text-anchor="middle">完整原图 '+(n+1)+'</text></svg>')}))}));
+const templates = Array.from({length: 16}, (_, i) => ({id: 'template-' + i, title: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, name: i === 1 ? '这是一条很长很长的模板名称，用来验证标题截断不会改变卡片排版' : '参考模板 ' + i, description: '整组参考样张，保留完整横竖画面和所有文字。这是一段刻意很长的说明，用来核对密集卡片仍然保持两行摘要，完整内容可在整组预览里阅读。', builtin: i > 1, version: 1, currentVersion: 1, versions: [{version: 1, packageHash: 'hash-' + i}], editToken: 'token-' + i, deletedAt: null, rules: [], studyComplete: false, accepted: false, aiTested: false, samples: Array.from({length: i === 15 ? 0 : i === 0 ? 6 : 2},(_,n)=>({assetHash:'sample-'+i+'-'+n,url:'data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="'+((n+i)%2?640:300)+'" height="400"><rect width="100%" height="100%" fill="'+((n+i)%2?'#6d557e':'#476d8b')+'"/><rect x="8" y="8" width="'+((n+i)%2?624:284)+'" height="384" stroke="white" fill="none" stroke-width="5"/><text x="50%" y="50%" fill="white" font-size="24" text-anchor="middle">完整原图 '+(n+1)+'</text></svg>')}))}));
 let pendingCopy = null;
 window.reads = 0; window.writes = [];
 window.contentHub = {
@@ -43,7 +43,7 @@ function Probe() {
     setAssets(old => ({...old, templates: copy ? [...old.templates, copy] : [...old.templates]}));
     pendingCopy = null;
   }
-  window.probe = {library, refresh};
+  window.probe = {library, refresh, setStudy: (id, complete, builtin = false) => {const patch = t => t.id === id ? {...t, studyComplete: complete, builtin} : t; setLibrary(old => ({...old, templates: old.templates.map(patch)})); setAssets(old => ({...old, templates: old.templates.map(patch)}));}};
   return <main><aside className="app-navigation">隔离验证</aside><div className="app-stage"><header className="app-header"><h1>自媒体工作台</h1></header><TemplatesPage library={library} assets={assets} busy={busy} run={async action => {setBusy(true); try {await action();} finally {setBusy(false);}}} refresh={refresh} useTemplate={template => {window.usedTemplate=template.id;}} managePhotos={() => {window.configurationOpened=(window.configurationOpened??0)+1;}}/></div></main>;
 }
 createRoot(document.getElementById('root')).render(<Probe/>);
@@ -64,7 +64,9 @@ async function probeMain(probeRoot){
  try{
   await win.loadFile(path.join(probeRoot,'dist/index.html'));await wait('document.querySelectorAll(".creator-style-card").length===10');
   await run('document.querySelector(".creator-template-library .semi-select").click()');await wait('document.querySelector(".semi-select-option")');await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent==="全部模板").click()');
-  await run('document.querySelector(".pagination-bar .semi-page-switch .semi-select").click()');await wait('document.querySelector(".semi-select-option")');await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent.includes("20")).click()');await wait('document.querySelectorAll(".creator-style-card").length===16');
+  await run('document.querySelector(".pagination-bar .semi-page-switch .semi-select").click()');await wait('document.querySelector(".semi-select-option")');await run('[...document.querySelectorAll(".semi-select-option")].find(el=>el.textContent.includes("20")).click()');await wait('document.querySelectorAll(".creator-style-card").length===15');
+  assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'), '1', 'generation is visible before hover or focus');
+  assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).pointerEvents'), 'auto', 'generation accepts pointer input at rest');
   assert.equal(await run('!!document.querySelector(".creator-template-sidebar")'),false,'configuration no longer consumes the gallery width');
   await run('[...document.querySelectorAll(".creator-template-grid img")].forEach(image=>image.loading="eager")');await wait('[...document.querySelectorAll(".creator-template-grid img")].every(image=>image.complete&&image.naturalWidth>0)');
   for(const [width,columns] of [[1280,5],[1600,5],[1080,4],[900,3],[700,2]]){
@@ -90,7 +92,7 @@ async function probeMain(probeRoot){
   await run('document.querySelector(".creator-template-use").focus()');await wait('getComputedStyle(document.querySelector(".creator-template-use")).opacity==="1"');
   assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'),'1','keyboard focus reveals the use action');
   assert.deepEqual(await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`),geometryBefore,'keyboard focus preserves card geometry');
-  assert.equal(await run('document.querySelectorAll(".creator-no-reference").length'),1,'empty reference occupies the same fixed art frame');
+  assert.equal(await run('document.querySelectorAll(".creator-no-reference").length'),0,'empty templates remain excluded from selection');
   await run('document.querySelector(".creator-template-use").click()');assert.equal(await run('window.usedTemplate'),'template-0','primary use action remains connected');
   await click('照片与默认设置');assert.equal(await run('window.configurationOpened'),1,'uses existing configuration callback');
   await run('document.querySelector(".creator-reference-stack").click()');await wait('document.querySelector(".image-preview[open]")');
@@ -101,10 +103,22 @@ async function probeMain(probeRoot){
   assert.equal(await run('document.activeElement.id'),'template-learning-workflow','learning and restore still focus their own workflow');
   assert.equal(await run('!!document.querySelector(".template-study-notes textarea")'),true,'personal template learning controls retained');
   await run('(()=>{const input=document.querySelector(".creator-templates .list-toolbar-search input");Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,"value").set.call(input,"没有匹配的模板");input.dispatchEvent(new Event("input",{bubbles:true}));})()');await wait('document.querySelectorAll(".creator-style-card").length===0');await click('收起');await wait('document.activeElement===document.querySelector(".creator-templates .list-toolbar-search input")');assert.equal(await run('document.activeElement.getAttribute("aria-label")'),'搜索模板','removed trigger returns focus to the real shared search input');
+  await click('查看全部模板');await wait('document.querySelectorAll(".creator-style-card").length===15');
+  await run('window.probe.setStudy("template-0",true)');await wait('!document.getElementById("template-workflow-trigger-template-0")');
+  await run('document.querySelector(".creator-template-details").click()');await wait('document.activeElement===document.querySelector(".creator-template-detail-body")');await click('查看拆解与任务记录');await wait('document.activeElement.id==="template-learning-workflow"');
+  assert.equal(await run('[...document.querySelectorAll(".template-workflow button")].some(b=>["AI拆解风格","重新拆解","重新AI拆解","开始新一轮AI拆解"].includes(b.textContent))'),false,'source analysis suppresses every repeat entry despite false acceptance flags');
+  await click('收起');await wait('document.activeElement===document.querySelector(".creator-template-details")');
+  await run('window.probe.setStudy("template-0",true,true)');await run('document.querySelector(".creator-template-details").click()');await wait('document.activeElement===document.querySelector(".creator-template-detail-body")');await click('查看拆解与任务记录');await wait('document.querySelector(".template-workflow-message")');
+  assert.equal(await run('[...document.querySelectorAll(".template-workflow button")].some(b=>b.textContent==="AI拆解风格")'),false,'unchanged analyzed builtin cannot derive a repeat study');
+  await click('收起');await run('window.probe.setStudy("template-0",false)');await wait('!!document.getElementById("template-workflow-trigger-template-0")');await run('document.getElementById("template-workflow-trigger-template-0").click()');await wait('!document.querySelector(".template-workflow-message") && !document.querySelector(".creator-template-use").disabled && !document.querySelector(".template-workflow .management-toolbar button").disabled && [...document.querySelectorAll(".template-workflow > button")].some(b=>b.textContent==="重新拆解"&&!b.disabled)');await paint();
+  assert.equal(await run('[...document.querySelectorAll(".template-workflow > button")].some(b=>b.textContent==="重新拆解"&&!b.disabled)'),true,'changed or unanalyzed material retains study and retry');
+  win.webContents.debugger.attach();await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});await run('document.activeElement.blur()');
+  assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'),'1','reduced motion keeps primary action visible');
+  await click('收起');await run('scrollTo({top:0,behavior:"instant"});window.probe.setStudy("template-0",true,true)');await paint();await fs.writeFile(path.join(probeRoot,'templates-analyzed-idle.png'),(await win.webContents.capturePage()).toPNG());
   assert.deepEqual(await run('window.writes'),[],'gallery and configuration entry make no business writes');
-  console.log('PASS actual React/Semi/Electron: responsive 5/4/3/2 columns, equal flow geometry for long titles and empty samples, fanned previews and thumbnails, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
+  console.log('PASS actual React/Semi/Electron: responsive 5/4/3/2 columns, equal flow geometry for long titles, fanned previews and thumbnails, centered left-aligned search, keyboard use action, no sidebar/overflow, uncropped originals, all group samples/full description, configuration callback, learning workflow focus. Synthetic assets/IPC only.');
   console.log('Screenshots:',path.join(probeRoot,'templates-1280.png'),path.join(probeRoot,'templates-1600.png'));app.exit(0);
- }catch(error){console.error(error);app.exit(1);}
+ }catch(error){console.error(error);console.error(await run('document.body.innerText'));await fs.writeFile(path.join(probeRoot,'failure.png'),(await win.webContents.capturePage()).toPNG());app.exit(1);}
 }
 await fs.writeFile(path.join(root,'probe-main.mjs'),`(${probeMain.toString()})(${JSON.stringify(root)});`);
 const child=spawn(electron,[path.join(root,'probe-main.mjs')],{stdio:'inherit',env:{...process.env,ELECTRON_RUN_AS_NODE:''}});

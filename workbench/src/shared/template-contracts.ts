@@ -9,7 +9,7 @@ export interface TemplateRules {fixed: string[]; variable: string[]; evidence: {
 export interface TemplateAcceptance {requestId: string; attemptId: string; requestHash: string; resultHash: string; sourceTemplate: {id: string; version: number; packageHash: string}; acceptedTemplate: {id: string; version: number; packageHash: string}; acceptedAt: string}
 export interface TemplateAttemptView extends Attempt {reference: TemplateReference; result: {resultHash: string; rules: TemplateRules; restore: Raster} | null; samples: Raster[]; unavailable: boolean}
 export interface TemplateJobView {id: string; activeAttemptId: string | null; acceptance: TemplateAcceptance | null; attempts: TemplateAttemptView[]}
-export interface TemplateWorkflowView {reportWarnings?: string[]; templateId: string; title: string; editToken: string; currentVersion: number; builtin: boolean; deletedAt: string | null; jobs: TemplateJobView[]}
+export interface TemplateWorkflowView {reportWarnings?: string[]; templateId: string; title: string; editToken: string; currentVersion: number; studyComplete: boolean; builtin: boolean; deletedAt: string | null; jobs: TemplateJobView[]}
 export interface TemplateWorkflowResult {view: TemplateWorkflowView; launchRequested: boolean}
 type Bound = {binding: Pick<LibraryBinding, 'libraryId' | 'rootIdentity'>; mutationId: string};
 export type TemplatePending = Bound & (

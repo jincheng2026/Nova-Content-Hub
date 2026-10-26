@@ -1,3 +1,4 @@
+import {templateStudyComplete} from './template-study-state.mts';
 import path from 'node:path';
 import {openLibrary, LibraryError} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {exact, libraryBinding, requireWrite, fail} from '../shared/validation.ts';
@@ -26,7 +27,7 @@ function writableContext(library: TemplateCoreLibrary, r: TemplateReference, liv
 }
 function view(library: TemplateCoreLibrary, templateId: string): TemplateWorkflowView {
     const t = library.readTemplate(templateId), progress = library.readTemplateProgress(templateId);
-    return {templateId: t.id, title: t.title, editToken: t.editToken, currentVersion: t.currentVersion, builtin: t.builtin === true, deletedAt: t.deletedAt ?? null, jobs: (t.templateJobs ?? []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, acceptance: job.acceptance, attempts: job.attempts.map(a => {
+    return {templateId: t.id, title: t.title, editToken: t.editToken, currentVersion: t.currentVersion, studyComplete: templateStudyComplete(library, t), builtin: t.builtin === true, deletedAt: t.deletedAt ?? null, jobs: (t.templateJobs ?? []).map(job => ({id: job.id, activeAttemptId: job.activeAttemptId, acceptance: job.acceptance, attempts: job.attempts.map(a => {
         let c: TemplateCoreContext;
         try { c = library.readTemplateContext(templateId, job.id, a.attemptId); }
         catch (error) {

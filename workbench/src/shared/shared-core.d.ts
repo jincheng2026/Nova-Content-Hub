@@ -14,6 +14,7 @@ declare module '*file-library/index.mjs' {
         listTemplates(): (import('./template-core.d.ts').TemplateCoreDocument)[];
         rebuildTemplateReports(id: string): {warnings: string[]};
         readTemplate(id: string, version?: number): import('./template-core.d.ts').TemplateCoreDocument & { definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
+        readTemplateContext(templateId: string, requestId: string, attemptId: string): import('./template-core.d.ts').TemplateCoreContext;
         inspectCoverInput(id: string, input: import('./cover-contracts.ts').CoverInput, token: string): import('./cover-contracts.ts').Fingerprint;
         findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;
         createCoverRequest(id: string, input: import('./cover-contracts.ts').CoverInput, token: string, options: { mutationId: string }): import('./cover-contracts.ts').RequestResult;
