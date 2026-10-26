@@ -105,7 +105,7 @@ export function modelDefaults(kind) {
 }
 
 export function extendModel(meta, kind = 'content') {
-    return {...modelDefaults(kind), ...meta, schemaVersion: kind === 'content' ? 4 : 1};
+    return {...modelDefaults(kind), ...meta, schemaVersion: kind === 'content' ? Math.max(meta.schemaVersion || 1, 4) : meta.schemaVersion || 1};
 }
 
 export function validateModelMetadata(meta, kind, fail, validateCoverJobs) {
@@ -113,7 +113,7 @@ export function validateModelMetadata(meta, kind, fail, validateCoverJobs) {
         if (!ok) fail('CORRUPT', `Invalid ${kind} ${label}`);
     };
     if (kind === 'workspace') {
-        check(keys(meta, [...COMMON, 'profile', 'defaults', 'channels', 'promptCategories', 'customRatios']) && meta.id === 'default' && meta.deletedAt === null, 'shape');
+        check(keys(meta, [...COMMON, 'profile', 'defaults', 'channels', 'promptCategories', 'customRatios', ...(meta.schemaVersion === 2 ? ['production'] : [])]) && meta.id === 'default' && meta.deletedAt === null, 'shape');
         const p = meta.profile, d = meta.defaults;
         check(keys(p, ['name', 'intro', 'avatarAssetHash', 'marks']) && str(p.name, true) && str(p.intro, true) && (p.avatarAssetHash === null || HASH.test(p.avatarAssetHash)) && Array.isArray(p.marks) && p.marks.every(mark => keys(mark, ['key', 'value']) && str(mark.key) && str(mark.value, true)), 'profile');
         check(keys(d, ['photoId', 'templateId', 'coverCount']) && (d.photoId === null || UUID.test(d.photoId)) && ref(d.templateId) && Number.isSafeInteger(d.coverCount) && d.coverCount >= 1 && d.coverCount <= 20, 'defaults');
@@ -122,7 +122,7 @@ export function validateModelMetadata(meta, kind, fail, validateCoverJobs) {
         check(listOf(meta.promptCategories, value => str(value)) && listOf(meta.customRatios, value => normalizeRatio(value) === value), 'catalogs');
         return;
     }
-    check(keys(meta, [...COMMON, ...BUSINESS, ...(kind === 'content' ? ['recordedDate', 'plannedDate', 'preferredTemplateId', 'isExample', 'coverJobs'] : ['dateRange', 'memberIds'])]), 'shape');
+    check(keys(meta, [...COMMON, ...BUSINESS, ...(kind === 'content' ? ['recordedDate', 'plannedDate', 'preferredTemplateId', 'isExample', 'coverJobs', ...(meta.schemaVersion === 5 ? ['productionState'] : [])] : ['dateRange', 'memberIds'])]), 'shape');
     if (kind === 'content') {
         check((meta.recordedDate === null || day(meta.recordedDate)) && (meta.plannedDate === null || day(meta.plannedDate)) && ref(meta.preferredTemplateId) && typeof meta.isExample === 'boolean', 'description');
         validateCoverJobs(meta, fail);

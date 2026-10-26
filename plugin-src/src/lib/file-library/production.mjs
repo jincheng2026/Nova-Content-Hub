@@ -1,0 +1,211 @@
+import {createHash, randomUUID} from 'node:crypto';
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+const HASH = /^[a-f0-9]{64}$/;
+const STAGES = ['idea','research','references','transcription','analysis','narrative','writing','ready','published'];
+const KINDS = ['research','transcription','analysis','writing','packaging','review'];
+const STATES = ['created','claimed','waiting-user','waiting-permission','submitted','accepted','failed','cancelled'];
+const LIVE = ['created','claimed','waiting-user','waiting-permission'];
+const ARTIFACTS = ['report','research','transcript','analysis','narrative','draft','packaging','feedback','knowledge'];
+const plain = v => !!v && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
+const bodyDigest = value => createHash('sha256').update(value).digest('hex');
+const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
+const iso = v => {try {return typeof v === 'string' && new Date(v).toISOString() === v;} catch {return false;}};
+const text = (v, max = 100000, empty = true) => typeof v === 'string' && v.length <= max && (empty || !!v.trim());
+const url = v => {try {const u = new URL(v); return ['http:','https:'].includes(u.protocol) && !u.username && !u.password;} catch {return false;}};
+function jsonOK(v, depth = 0, secret = false) {
+    if (depth > 20) return false;
+    if (v === null || typeof v === 'boolean' || typeof v === 'string') return typeof v !== 'string' || v.length <= 200000;
+    if (typeof v === 'number') return Number.isFinite(v);
+    if (Array.isArray(v)) return v.length <= 2000 && v.every(x => jsonOK(x, depth + 1, secret));
+    return plain(v) && Object.keys(v).length <= 200 && Object.entries(v).every(([k,x]) => !['__proto__','constructor','prototype'].includes(k) && (!secret || !/(?:api.?key|secret|password|authorization|token|credential)/i.test(k)) && jsonOK(x,depth + 1,secret));
+}
+const fields = (v, names) => plain(v) && Object.keys(v).every(k => names.includes(k));
+const unique = values => Array.isArray(values) && new Set(values).size === values.length;
+const objects = values => Array.isArray(values) && values.length <= 10000 && values.every(x => plain(x) && UUID.test(x.id)) && unique(values.map(x => x.id));
+export const emptyProduction = () => ({schemaVersion:1,nextTNumber:1,accounts:[],reports:[],creations:[],tasks:[],feedback:[],knowledge:[],costs:[]});
+export function defaultProductionCreation(contentId, number, now) {
+    return {contentId,tNumber:`T${String(number).padStart(3,'0')}`,stage:'idea',kind:'other',references:[],analysis:'',narrative:'',suggestions:[],annotations:[],packaging:{titles:[],coverTexts:[],intros:[],selectedTitleId:null,selectedCoverTextId:null,selectedIntroId:null},confirmedBodyHash:null,createdAt:now,updatedAt:now};
+}
+export function validProductionCreation(c) {
+    if (!fields(c,['contentId','tNumber','stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','createdAt','updatedAt']) || !UUID.test(c.contentId) || !/^T[0-9]{3,}$/.test(c.tNumber) || !STAGES.includes(c.stage) || !['tutorial','spoken','science','other'].includes(c.kind) || !text(c.analysis) || !text(c.narrative) || !(c.confirmedBodyHash === null || HASH.test(c.confirmedBodyHash)) || !iso(c.createdAt) || !iso(c.updatedAt) || !Array.isArray(c.suggestions) || !Array.isArray(c.annotations) || !jsonOK(c.suggestions) || !jsonOK(c.annotations) || !objects(c.references)) return false;
+    for (const r of c.references) if (!fields(r,['id','url','title','platform','originalText','correctedText','segments','corrections','analysis','mediaAssetHash','subtitleAssetHash']) || !(r.url === null || url(r.url)) || !['title','platform','originalText','correctedText','analysis'].every(k => text(r[k])) || !['mediaAssetHash','subtitleAssetHash'].every(k => r[k] === null || HASH.test(r[k])) || !Array.isArray(r.segments) || !r.segments.every(s => fields(s,['startMs','endMs','text']) && Number.isFinite(s.startMs) && s.startMs >= 0 && Number.isFinite(s.endMs) && s.endMs >= s.startMs && text(s.text)) || !Array.isArray(r.corrections) || !r.corrections.every(x => fields(x,['original','corrected','reason']) && ['original','corrected','reason'].every(k => text(x[k])))) return false;
+    if (!objects(c.suggestions) || !c.suggestions.every(x=>fields(x,['id','bodyHash','quote','replacement','reason','status']) && HASH.test(x.bodyHash) && ['quote','replacement','reason'].every(k=>text(x[k])) && ['pending','accepted','rejected'].includes(x.status)) || !objects(c.annotations) || !c.annotations.every(x=>fields(x,['id','bodyHash','quote','text','status']) && HASH.test(x.bodyHash) && text(x.quote) && text(x.text) && ['open','resolved'].includes(x.status))) return false;
+    const p = c.packaging;
+    return fields(p,['titles','coverTexts','intros','selectedTitleId','selectedCoverTextId','selectedIntroId']) && [['titles','selectedTitleId'],['coverTexts','selectedCoverTextId'],['intros','selectedIntroId']].every(([a,b]) => objects(p[a]) && p[a].every(x => fields(x,['id','text']) && text(x.text,10000,false)) && (p[b] === null || p[a].some(x => x.id === p[b])));
+}
+export function validateProductionMetadata(meta,kind,fail) {
+    const check = (v,label) => {if (!v) fail('CORRUPT',`Invalid production ${label}`);};
+    if (kind === 'content') {if (meta.schemaVersion === 5) check(validProductionCreation(meta.productionState) && meta.productionState.contentId === meta.id,'content overlay'); return;}
+    if (kind !== 'workspace' || meta.schemaVersion !== 2) return;
+    const p = meta.production;
+    check(fields(p,['schemaVersion','nextTNumber','accounts','reports','creations','tasks','feedback','knowledge','costs']) && p.schemaVersion === 1 && Number.isSafeInteger(p.nextTNumber) && p.nextTNumber > 0,'aggregate');
+    for (const k of ['accounts','reports','tasks','feedback','knowledge','costs']) check(objects(p[k]),k);
+    check(Array.isArray(p.creations) && p.creations.every(validProductionCreation) && unique(p.creations.map(c => c.contentId)) && unique(p.creations.map(c => c.tNumber)) && p.creations.every(c => Number(c.tNumber.slice(1)) < p.nextTNumber),'creation IDs');
+    for (const a of p.accounts) check(fields(a,['id','name','platform','url','note','tags','images','reportIds','createdAt','updatedAt','deletedAt']) && text(a.name,500,false) && text(a.platform,100,false) && (a.url === '' || url(a.url)) && text(a.note) && unique(a.tags) && a.tags.every(x => text(x,200,false)) && unique(a.images) && a.images.every(x => HASH.test(x)) && unique(a.reportIds) && a.reportIds.every(x => UUID.test(x)) && iso(a.createdAt) && iso(a.updatedAt) && (a.deletedAt === null || iso(a.deletedAt)),'account');
+    for (const r of p.reports) check(fields(r,['id','title','type','accountIds','sourceUrl','collectedAt','pages','pageId','meta','createdAt','updatedAt','deletedAt']) && text(r.title,500,false) && text(r.type,100,false) && unique(r.accountIds) && r.accountIds.every(x => UUID.test(x)) && (r.sourceUrl === null || url(r.sourceUrl)) && (r.collectedAt === null || iso(r.collectedAt)) && objects(r.pages) && r.pages.length > 0 && r.pages.every(x => fields(x,['id','title','assetHash']) && text(x.title,500,false) && HASH.test(x.assetHash)) && r.pages.some(x => x.id === r.pageId) && jsonOK(r.meta) && iso(r.createdAt) && iso(r.updatedAt) && (r.deletedAt === null || iso(r.deletedAt)),'report');
+    for (const t of p.tasks) {
+        check(fields(t,['id','kind','title','contentId','accountId','request','requestHash','attempts','activeAttemptId','createdAt','updatedAt']) && KINDS.includes(t.kind) && text(t.title,500,false) && (t.contentId === null || UUID.test(t.contentId)) && (t.accountId === null || UUID.test(t.accountId)) && validRequest(t.request) && digest(t.request) === t.requestHash && objects(t.attempts) && t.attempts.length > 0 && t.attempts.some(a => a.id === t.activeAttemptId) && iso(t.createdAt) && iso(t.updatedAt),'task');
+        for (const a of t.attempts) {
+            check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
+            check(a.id === t.activeAttemptId || !LIVE.includes(a.status),'retired attempt');
+            check(['submitted','accepted'].includes(a.status) ? validResult(a.result) && fields(a.receipt,['sha256','taskId','attemptId','requestHash','resultHash']) && a.receipt.taskId === t.id && a.receipt.attemptId === a.id && a.receipt.requestHash === t.requestHash && a.receipt.resultHash === digest(a.result) && a.receipt.sha256 === digest({taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)}) : a.result === null && a.receipt === null,'receipt');
+        }
+    }
+    for (const r of [...p.feedback,...p.knowledge]) check(UUID.test(r.id) && (r.contentId === null || UUID.test(r.contentId)) && text(r.text,100000,false) && text(r.source,500,false) && iso(r.createdAt),'record');
+    for (const k of p.knowledge) check(['candidate','accepted','rejected'].includes(k.status) && iso(k.updatedAt),'knowledge decision');
+    for (const c of p.costs) check(fields(c,['id','taskId','attemptId','requestId','service','status','amount','currency','usage','createdAt','updatedAt']) && UUID.test(c.taskId) && UUID.test(c.attemptId) && text(c.requestId,200,false) && text(c.service,100,false) && ['reserved','estimated','measured','actual','billed','unknown','cancelled'].includes(c.status) && (c.amount === null || Number.isFinite(c.amount) && c.amount >= 0) && text(c.currency,20,false) && jsonOK(c.usage) && iso(c.createdAt) && iso(c.updatedAt),'cost');
+    check(unique(p.costs.map(c => `${c.taskId}:${c.requestId}`)),'cost request uniqueness');
+}
+function validRequest(r) {return fields(r,['prompt','parameters','tools','budget','bodyHash']) && text(r.prompt,100000,false) && jsonOK(r.parameters,0,true) && JSON.stringify(r.parameters).length <= 100000 && unique(r.tools) && r.tools.every(t => text(t,100,false)) && fields(r.budget,['amount','currency']) && r.budget.currency === 'REQ' && Number.isSafeInteger(r.budget.amount) && r.budget.amount >= 0 && (r.bodyHash === null || HASH.test(r.bodyHash));}
+function validResult(r) {return fields(r,['summary','artifacts']) && text(r.summary,100000,false) && objects(r.artifacts) && r.artifacts.length > 0 && r.artifacts.every(a => fields(a,['id','kind','title','text','assetHash','data']) && ARTIFACTS.includes(a.kind) && text(a.title,500,false) && text(a.text,200000) && (a.assetHash === null || HASH.test(a.assetHash)) && jsonOK(a.data)) && JSON.stringify(r).length <= 2 * 1024 * 1024;}
+
+export function productionMethods(h) {
+    const {root,locked,mutate,snapshot,result,metadata,fail,readAssetInternal,safePath,assetPath,finderMetadataFile} = h;
+    const invalid = (ok,msg) => {if (!ok) fail('INVALID_INPUT',msg);};
+    const current = () => result(snapshot(root,'default','workspace'),'default',undefined,'workspace');
+    const content = cid => {invalid(UUID.test(cid),'Expected content UUID'); const c = result(snapshot(root,cid,'content'),cid,undefined,'content'); return {...c,bodyHash:bodyDigest(c.body)};};
+    const overlay = p => ({...p,creations:p.creations.map(c => {const next = content(c.contentId); return next.productionState || c;})});
+    const project = w => {const p=structuredClone(overlay(w.production || emptyProduction()));for(const t of p.tasks)for(const a of t.attempts)a.claimToken=null;return {...p,editToken:w.editToken,...(w.mutationId ? {mutationId:w.mutationId} : {})};};
+    function checkAsset(hash,missing = false) {
+        invalid(HASH.test(hash),'Expected asset SHA256');
+        if (missing && !safePath(assetPath(root,hash),true)) return false;
+        readAssetInternal(root,hash); return true;
+    }
+    function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const a of p.accounts) for (const hash of a.images) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
+    function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken};});}
+    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted')};});}
+    const find = (list,id,label) => {const v = list.find(x => x.id === id); if (!v) fail('NOT_FOUND',`Unknown ${label}`); return v;};
+    function taskAttempt(p,i,worker = false) {
+        const t = find(p.tasks,i.taskId,'task'), a = find(t.attempts,i.attemptId || t.activeAttemptId,'attempt');
+        if (t.activeAttemptId !== a.id) fail('ATTEMPT_INACTIVE','Attempt was retired');
+        if (worker && (!a.claimToken || a.claimToken !== i.claimToken || a.workerId !== i.workerId)) fail('CLAIM_MISMATCH','Worker does not own this attempt');
+        return {t,a};
+    }
+    const newAttempt = (host,now) => {invalid(['codex','workbuddy'].includes(host),'Unknown assistant');return {id:randomUUID(),host,status:'created',claimToken:null,workerId:null,progress:0,message:'',failure:null,result:null,receipt:null,createdAt:now,updatedAt:now};};
+    function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
+    function mutateProduction(op,raw,options = {}) {
+        invalid(plain(raw),'Expected operation input');
+        if(op==='saveCreation') {
+            invalid(UUID.test(raw.contentId) && HASH.test(raw.expectedToken),'Creation and production token required');
+            mutate('update',raw.contentId,{productionOp:op,productionInput:raw},undefined,options,'content',(meta)=>{
+                const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
+                const c=meta.productionState || w.production?.creations.find(x=>x.contentId===raw.contentId);if(!c)fail('INVALID_STATE','Enable creation first');
+                const next=patchCreation(c,raw.creationPatch || raw.patch,new Date().toISOString());
+                for(const r of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(r[key])checkAsset(r[key]);
+                meta.schemaVersion=5;meta.productionState=next;return meta;
+            },undefined,true);
+            return readProduction();
+        }
+        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost'];
+        const token = raw.expectedToken;
+        if (!workerOps.includes(op)) invalid(HASH.test(token),'A current production editToken is required');
+        const out = mutate('update','default',{productionOp:op,productionInput:raw},token,options,'workspace',(meta) => {
+            const now = new Date().toISOString(), p = structuredClone(meta.production || emptyProduction());
+            meta.schemaVersion = 2; meta.production = p;
+            const editable = a => {if (a.deletedAt !== null) fail('INVALID_STATE','Record is trashed');};
+            switch(op) {
+            case 'enable': break;
+            case 'saveAccount': {
+                invalid(fields(raw,['id','name','platform','url','note','tags','images','reportIds','expectedToken']),'Unknown account fields');
+                const old = raw.id ? find(p.accounts,raw.id,'account') : null; if (old) editable(old);
+                const a = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),name:raw.name,platform:raw.platform,url:raw.url || '',note:raw.note || '',tags:raw.tags || [],images:raw.images || [],reportIds:raw.reportIds || [],updatedAt:now};
+                for (const hash of a.images) checkAsset(hash,old?.images.includes(hash));
+                for (const rid of a.reportIds) editable(find(p.reports,rid,'report'));
+                if (old) Object.assign(old,a); else p.accounts.push(a); break;
+            }
+            case 'trashAccount': case 'restoreAccount': {const a = find(p.accounts,raw.id,'account'); invalid(op === 'restoreAccount' ? a.deletedAt !== null : a.deletedAt === null,'Account is already in requested state'); a.deletedAt = op === 'trashAccount' ? now : null; a.updatedAt = now; break;}
+            case 'saveReport': {
+                invalid(fields(raw,['id','title','type','accountIds','sourceUrl','collectedAt','pages','pageId','meta','expectedToken']),'Unknown report fields');
+                const old = raw.id ? find(p.reports,raw.id,'report') : null; if (old) editable(old);
+                invalid(Array.isArray(raw.pages) && raw.pages.length > 0,'Report pages are required');
+                const pages = raw.pages.map(x => {invalid(fields(x,['id','title','assetHash']),'Invalid report page'); const asset = readAssetInternal(root,x.assetHash); invalid(asset.bytes <= 2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Report must be UTF-8 HTML'); return {id:x.id || randomUUID(),title:x.title,assetHash:x.assetHash};});
+                const r = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),title:raw.title,type:raw.type || '调研',accountIds:raw.accountIds || [],sourceUrl:raw.sourceUrl || null,collectedAt:raw.collectedAt || null,pages,pageId:raw.pageId || pages[0].id,meta:raw.meta || {},updatedAt:now};
+                for (const aid of r.accountIds) editable(find(p.accounts,aid,'account'));
+                if(old) Object.assign(old,r); else p.reports.push(r);
+                for(const a of p.accounts) {a.reportIds = a.reportIds.filter(id => id !== r.id); if(r.accountIds.includes(a.id)) a.reportIds.push(r.id);} break;
+            }
+            case 'trashReport': {const r = find(p.reports,raw.id,'report'); editable(r); r.deletedAt = now; r.updatedAt = now; break;}
+            case 'setReportPosition': {const r = find(p.reports,raw.id,'report'); editable(r); invalid(r.pages.some(x => x.id === raw.pageId),'Unknown page'); r.pageId = raw.pageId; r.updatedAt = now; break;}
+            case 'ensureCreation': {
+                const c = content(raw.contentId); invalid(c.deletedAt === null,'Content is trashed');
+                if (!p.creations.some(x => x.contentId === c.id)) p.creations.push(defaultProductionCreation(c.id,p.nextTNumber++,now)); break;
+            }
+            case 'recordFeedback': case 'recordKnowledge': {
+                invalid(text(raw.text,100000,false),'Record text is required'); if(raw.contentId) invalid(content(raw.contentId).deletedAt === null,'Content is trashed');
+                const r = {id:randomUUID(),contentId:raw.contentId || null,text:raw.text,source:raw.source || '手工记录',createdAt:now};
+                if(op === 'recordFeedback') p.feedback.push(r); else p.knowledge.push({...r,status:'candidate',updatedAt:now}); break;
+            }
+            case 'decideKnowledge': {const k = find(p.knowledge,raw.id,'knowledge'); invalid(k.status === 'candidate' && ['accepted','rejected'].includes(raw.status),'Invalid knowledge decision'); k.status = raw.status; k.updatedAt = now; break;}
+            case 'createTask': {
+                invalid(KINDS.includes(raw.kind) && text(raw.title,500,false),'Invalid task kind or title');
+                const c = raw.contentId ? content(raw.contentId) : null; if(c) invalid(c.deletedAt === null,'Content is trashed');
+                if(raw.accountId) editable(find(p.accounts,raw.accountId,'account'));
+                const request = raw.request || {prompt:raw.prompt,parameters:raw.parameters ?? {},tools:raw.tools || [],budget:raw.budget || {amount:0,currency:'REQ'},bodyHash:Object.hasOwn(raw,'bodyHash') ? raw.bodyHash : c?.bodyHash || null};
+                invalid(validRequest(request),'Invalid fixed request; parameters must be bounded JSON without secrets');
+                if(c) invalid(request.bodyHash === c.bodyHash,'Fixed body hash is stale');
+                const a = newAttempt(raw.host || 'codex',now); p.tasks.push({id:raw.id || randomUUID(),kind:raw.kind,title:raw.title,contentId:c?.id || null,accountId:raw.accountId || null,request:structuredClone(request),requestHash:digest(request),attempts:[a],activeAttemptId:a.id,createdAt:now,updatedAt:now}); break;
+            }
+            case 'claimTask': {const {t,a} = taskAttempt(p,raw); invalid(a.status === 'created','Attempt must be awaiting claim'); invalid(UUID.test(raw.claimToken) && text(raw.workerId,200,false),'Claim requires UUID token and worker ID'); a.claimToken = raw.claimToken; a.workerId = raw.workerId; a.status = 'claimed'; a.updatedAt = t.updatedAt = now; break;}
+            case 'progressTask': {const {t,a} = taskAttempt(p,raw,true); if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(['claimed','waiting-user','waiting-permission'].includes(raw.status) && Number.isFinite(raw.progress) && raw.progress >= a.progress && raw.progress <= 100 && text(raw.message,10000),'Invalid progress'); a.status = raw.status; a.progress = raw.progress; a.message = raw.message; a.updatedAt = t.updatedAt = now; break;}
+            case 'failTask': {const {t,a} = taskAttempt(p,raw,true); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); invalid(fields(raw.failure,['code','message']) && text(raw.failure.code,100,false) && text(raw.failure.message,2000,false),'Failure reason required'); a.status = 'failed'; a.failure = raw.failure; a.updatedAt = t.updatedAt = now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
+            case 'cancelTask': {const {t,a} = taskAttempt(p,raw); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); a.status='cancelled';a.updatedAt=t.updatedAt=now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
+            case 'retryTask': {const {t,a} = taskAttempt(p,raw); invalid(!['submitted','accepted'].includes(a.status),'Submitted task requires acceptance'); if(p.costs.some(c => c.taskId === t.id && ['unknown','reserved'].includes(c.status))) fail('COST_UNKNOWN','Reconcile outstanding service costs before retry'); if(LIVE.includes(a.status)) {a.status='cancelled';a.updatedAt=now;} const next=newAttempt(raw.host || a.host,now);t.attempts.push(next);t.activeAttemptId=next.id;t.updatedAt=now;break;}
+            case 'submitTask': {
+                const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(validResult(raw.result),'Invalid result artifacts');
+                for(const artifact of raw.result.artifacts) if(artifact.assetHash) checkAsset(artifact.assetHash);
+                a.result=structuredClone(raw.result);const receipt={taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)};a.receipt={...receipt,sha256:digest(receipt)};a.status='submitted';a.progress=100;a.updatedAt=t.updatedAt=now;
+                for(const artifact of a.result.artifacts.filter(x => x.kind === 'report')) {
+                    const inputs=plain(artifact.data) && Array.isArray(artifact.data.pages) ? artifact.data.pages : artifact.assetHash ? [{title:artifact.title,assetHash:artifact.assetHash}] : [];
+                    invalid(inputs.length>0 && inputs.length<=100,'Report artifact requires imported HTML pages');
+                    const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
+                    const r={id:randomUUID(),title:artifact.title,type:'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:null,collectedAt:now,pages,pageId:pages[0].id,meta:{taskId:t.id,attemptId:a.id},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
+                } break;
+            }
+            case 'acceptTask': {const {t,a}=taskAttempt(p,raw);invalid(a.status==='submitted' && raw.receiptHash===a.receipt.sha256,'Acceptance requires submitted receipt');a.status='accepted';a.updatedAt=t.updatedAt=now;break;}
+            case 'reserveCost': {
+                const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running');
+                invalid(text(raw.requestId,200,false) && text(raw.service,100,false),'Cost requires request and service');
+                if(p.costs.some(c=>c.taskId===t.id && c.requestId===raw.requestId)) fail('REQUEST_ALREADY_RESERVED','Request already reserved; inspect the existing result before replay');
+                if(p.costs.some(c=>c.taskId===t.id && c.status==='unknown')) fail('COST_UNKNOWN','An unknown cost blocks further calls');
+                invalid(t.request.tools.includes(raw.service),'Service was not authorized in fixed request');
+                const units=raw.usage?.requests ?? 1; invalid([0,1].includes(units),'Requests must be 0 or 1');
+                if(p.costs.filter(c=>c.taskId===t.id && c.status!=='cancelled').reduce((n,c)=>n+(c.amount ?? 1),0)+units>t.request.budget.amount) fail('BUDGET_EXCEEDED','Fixed request budget is exhausted');
+                p.costs.push({id:randomUUID(),taskId:t.id,attemptId:a.id,requestId:raw.requestId,service:raw.service,status:'reserved',amount:units,currency:'REQ',usage:raw.usage ?? null,createdAt:now,updatedAt:now});break;
+            }
+            case 'recordCost': case 'reconcileCost': {
+                const {t,a}=taskAttempt(p,raw,op==='recordCost'),c=raw.id ? find(p.costs,raw.id,'cost') : p.costs.find(x=>x.taskId===t.id && x.requestId===raw.requestId);
+                invalid(c && c.taskId===t.id && c.attemptId===a.id,'Cost does not belong to attempt');
+                invalid(op==='reconcileCost' ? ['unknown','reserved'].includes(c.status) : c.status==='reserved','Cost already settled');
+                invalid(['actual','billed','measured','estimated','unknown','cancelled'].includes(raw.status),'Invalid cost settlement');
+                invalid(raw.status==='unknown' ? raw.amount===null : [0,1].includes(raw.amount),'REQ settlement must be 0 or 1, unknown must be null');
+                c.status=raw.status;c.amount=raw.amount;c.usage=raw.usage ?? null;c.updatedAt=now;break;
+            }
+            default: fail('INVALID_INPUT','Unknown production operation');
+            }
+            try {validateProductionMetadata(meta,'workspace',fail);} catch(error) {if(error.code==='CORRUPT') fail('INVALID_INPUT',error.message);throw error;}
+            return meta;
+        },undefined,workerOps.includes(op));
+        return project(out);
+    }
+    function saveProductionDraft(cid,input,editToken,options={}) {
+        invalid(fields(input,['body','expectedBodyHash','expectedProductionToken','creationPatch']) && text(input.body,4*1024*1024) && HASH.test(input.expectedBodyHash) && HASH.test(input.expectedProductionToken),'Invalid production draft');
+        return mutate('update',cid,{body:input.body,productionDraft:input},editToken,options,'content',(meta,before) => {
+            const w=current();if(w.editToken!==input.expectedProductionToken) fail('CONFLICT','Production state changed');
+            const previous=result(before,cid);if(bodyDigest(previous.body)!==input.expectedBodyHash) fail('STALE_INPUT','Body changed');
+            const creation=meta.productionState || w.production?.creations.find(c=>c.contentId===cid);if(!creation) fail('INVALID_STATE','Enable creation first');
+            const next=patchCreation(creation,input.creationPatch,new Date().toISOString());
+            if(next.confirmedBodyHash!==null && next.confirmedBodyHash!==bodyDigest(input.body)) fail('INVALID_INPUT','Confirmed hash must identify the saved body');
+            if(input.body!==previous.body && next.confirmedBodyHash!==null) fail('INVALID_INPUT','Changed body must be confirmed again');
+            for(const r of next.references) for(const key of ['mediaAssetHash','subtitleAssetHash']) if(r[key]) checkAsset(r[key]);
+            meta.schemaVersion=5;meta.productionState=next;return meta;
+        });
+    }
+    return {readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
+}
+
+export function productionAssetHashes(meta) {
+    const hashes = new Set();
+    if(meta.production) {for(const a of meta.production.accounts) for(const h of a.images) hashes.add(h);for(const r of meta.production.reports) for(const page of r.pages) hashes.add(page.assetHash);for(const t of meta.production.tasks) for(const a of t.attempts) for(const artifact of a.result?.artifacts || []) if(artifact.assetHash) hashes.add(artifact.assetHash);}
+    for(const c of [...(meta.production?.creations || []),...(meta.productionState ? [meta.productionState] : [])]) for(const r of c.references) for(const k of ['mediaAssetHash','subtitleAssetHash']) if(r[k]) hashes.add(r[k]);
+    return [...hashes];
+}

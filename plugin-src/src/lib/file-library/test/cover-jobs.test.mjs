@@ -952,3 +952,21 @@ test('host switches and retries retain their source attempt in the immutable han
     const handoffFile = path.join(f.root, '内容', f.content.id, '封面任务', f.request.requestId, '尝试', third.attempt.attemptId, '交接.json');
     assert.equal(JSON.parse(fs.readFileSync(handoffFile)).sourceAttemptId, second.attempt.attemptId);
 });
+
+test('production selected cover text freezes independently of content title/body and changes request identity', async t => {
+    const f=await fixture(t);
+    f.lib.mutateProduction('ensureCreation',{contentId:f.content.id,expectedToken:f.lib.readProduction().editToken});
+    const state=f.lib.readProductionCreation(f.content.id), first=randomUUID(), second=randomUUID();
+    f.lib.saveProductionDraft(f.content.id,{body:state.content.body,expectedBodyHash:state.content.bodyHash,expectedProductionToken:state.productionToken,creationPatch:{packaging:{titles:[],intros:[],coverTexts:[{id:first,text:'封面\n第一版'},{id:second,text:'第二版'}],selectedTitleId:null,selectedIntroId:null,selectedCoverTextId:first}}},state.content.editToken);
+    const content=f.lib.readContent(f.content.id);
+    const prepared=f.lib.createCoverRequest(content.id,{...f.input,coverText:'封面\n第一版'},content.editToken);
+    assert.equal(prepared.request.coverText,'封面\n第一版');
+    assert.equal(prepared.request.title,content.title);
+    assert.equal(prepared.request.bodyHash,digest(content.body));
+    assert.notEqual(prepared.request.inputHash,f.request.inputHash);
+    throws('STALE_INPUT',()=>f.lib.createCoverRequest(content.id,{...f.input,coverText:'助手擅自选择'},prepared.content.editToken));
+    const state2=f.lib.readProductionCreation(content.id);
+    f.lib.saveProductionDraft(content.id,{body:state2.content.body,expectedBodyHash:state2.content.bodyHash,expectedProductionToken:state2.productionToken,creationPatch:{packaging:{...state2.creation.packaging,selectedCoverTextId:second}}},state2.content.editToken);
+    const attempt=f.lib.createCoverAttempt(content.id,prepared.request.requestId,{host:'codex'});
+    assert.equal(f.lib.readCoverContext(content.id,prepared.request.requestId,attempt.attempt.attemptId).request.coverText,'封面\n第一版');
+});

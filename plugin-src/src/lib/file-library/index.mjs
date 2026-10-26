@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {productionMethods, validateProductionMetadata, productionAssetHashes} from './production.mjs';
 import path from 'node:path';
 import os from 'node:os';
 import {createHash, randomUUID} from 'node:crypto';
@@ -179,7 +180,7 @@ function objectId(kind, value) {
 
 function metadata(bytes, objectIdValue, kind = 'content') {
     const meta = parse(bytes, KINDS[kind].files[0]);
-    const supported = (kind === 'content' && [2, 3, 4].includes(meta?.schemaVersion) || ['prompt', 'photo', 'template'].includes(kind) && meta?.schemaVersion === 2) ? meta.schemaVersion : 1;
+    const supported = (kind === 'content' && [2, 3, 4, 5].includes(meta?.schemaVersion) || ['workspace', 'prompt', 'photo', 'template'].includes(kind) && meta?.schemaVersion === 2) ? meta.schemaVersion : 1;
     format(meta, KINDS[kind].format, KINDS[kind].files[0], supported);
     let validDates = false;
     try {
@@ -922,6 +923,7 @@ function library(root, initialInfo, rootIdentity) {
 
     return Object.freeze({
         ...businessMethods(root, locked, mutate, list),
+        ...productionMethods({root, locked, mutate, snapshot, result, metadata, fail, readAssetInternal, safePath, assetPath, finderMetadataFile}),
         ...templateJobMethods({
             root, libraryId: initialInfo.libraryId, locked, mutate, assertRootIdentity,
             snapshot, result, metadata, hash, jsonBytes, read, safePath, directory,
@@ -1349,6 +1351,10 @@ function immutableFile(target, bytes, assertIdentity = () => {}) {
 }
 
 function detectedType(bytes) {
+    if (bytes.subarray(0,4).toString() === 'RIFF' && bytes.subarray(8,12).toString() === 'WAVE') return 'audio/wav';
+    if (bytes.subarray(4,8).toString() === 'ftyp') return bytes.subarray(8,12).toString().startsWith('M4A') ? 'audio/mp4' : 'video/mp4';
+    if (bytes.subarray(0,3).toString() === 'ID3' || bytes[0] === 255 && (bytes[1] & 224) === 224) return 'audio/mpeg';
+    if (bytes.subarray(0,4).equals(Buffer.from([0x1a,0x45,0xdf,0xa3]))) return 'video/webm';
     if (bytes.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]))) return 'image/png';
     if (bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255) return 'image/jpeg';
     if (['GIF87a', 'GIF89a'].includes(bytes.subarray(0, 6).toString())) return 'image/gif';
@@ -1400,7 +1406,7 @@ function readAssetInternal(root, assetHash, reader = read) {
 
 function importAssetInternal(root, sourcePath, options) {
     const {purpose} = inputFields(options, ['purpose'], ['purpose']);
-    if (!['photo', 'material', 'template-reference', 'template-structure', 'generated-cover'].includes(purpose)) fail('INVALID_INPUT', 'Unknown asset purpose');
+    if (!['photo', 'material', 'template-reference', 'template-structure', 'generated-cover', 'production-reference', 'production-report'].includes(purpose)) fail('INVALID_INPUT', 'Unknown asset purpose');
     if (typeof sourcePath !== 'string' || !path.isAbsolute(sourcePath)) fail('INVALID_INPUT', 'Select an absolute regular source file');
     const source = canonicalRoot(sourcePath);
     const stat = safePath(source);
@@ -1435,6 +1441,8 @@ function importAssetInternal(root, sourcePath, options) {
     const data = read(staging);
     if (hash(data) !== assetHash || data.length !== total) fail('CORRUPT', 'Imported asset staging changed');
     const type = detectedType(data);
+    if (purpose === 'production-report' && (data.length > 2 * 1024 * 1024 || type !== 'text/plain' || !/<(?:!doctype\s+html|html|body|article|section)\b/i.test(data.toString('utf8')))) fail('INVALID_INPUT', 'Production report requires UTF-8 HTML of at most 2 MiB');
+    if (purpose === 'production-reference' && !['image/png','image/jpeg','image/gif','image/webp','text/plain','application/json','audio/wav','audio/mpeg','audio/mp4','video/mp4','video/webm'].includes(type)) fail('INVALID_INPUT','Unsupported production reference');
     if (purpose === 'template-structure' && !['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'text/plain', 'application/json'].includes(type)) fail('INVALID_INPUT', 'Unsupported template structure type');
     if (type === 'image/svg+xml' && purpose !== 'template-structure') fail('INVALID_INPUT', 'SVG is accepted only as a structure reference');
     if (['photo', 'template-reference', 'generated-cover'].includes(purpose) && !['image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(type)) fail('INVALID_INPUT', 'This purpose requires a raster image');
@@ -2207,7 +2215,8 @@ function upgradeTo5(root, pin) {
 }
 
 function validateBusinessMetadata(meta, kind) {
-    if (kind === 'workspace' || kind === 'collection' || kind === 'content' && meta.schemaVersion === 4) {
+    validateProductionMetadata(meta, kind, fail);
+    if (kind === 'workspace' || kind === 'collection' || kind === 'content' && [4, 5].includes(meta.schemaVersion)) {
         validateModelMetadata(meta, kind, fail, validateCoverJobs);
         return;
     }
@@ -2353,6 +2362,7 @@ function validateRestoredLibrary(root, info) {
             }
             const meta = metadata(snapshot(root, name, kind)[0], name, kind);
             if (info.schemaVersion === 4 && (kind === 'content' && meta.schemaVersion > 3 || ['prompt', 'photo', 'template'].includes(kind) && meta.schemaVersion > 1)) fail('FORMAT_UNSUPPORTED', 'Schema4 backup contains newer business metadata');
+            for (const assetHash of productionAssetHashes(meta)) readAssetInternal(root, assetHash);
             if (kind === 'photo' && meta.availability !== 'unavailable') readAssetInternal(root, meta.assetHash);
             if (kind === 'workspace' && meta.profile.avatarAssetHash) readAssetInternal(root, meta.profile.avatarAssetHash);
             if (kind === 'collection' && meta.deletedAt === null) for (const memberId of meta.memberIds) if (metadata(snapshot(root, memberId)[0], memberId).deletedAt !== null) fail('CORRUPT', 'Active collection has a trashed member');
@@ -2449,6 +2459,17 @@ function prepareRestoredLibrary(root, backup) {
             archiveTransaction(root, tx);
             interruptedAttempts.push(...live.map(attempt => ({...attempt, mutationId})));
             mutations.push(mutationId);
+        }
+    }
+    if (info.schemaVersion >= 5) {
+        const restored = library(root, info, fs.lstatSync(root, {bigint:true}));
+        for(const task of restored.readProduction().tasks) {
+            const attempt=task.attempts.find(a=>a.id===task.activeAttemptId);
+            if(attempt && ['created','claimed','waiting-user','waiting-permission'].includes(attempt.status)) {
+                const mutationId=randomUUID();
+                restored.mutateProduction('cancelTask',{taskId:task.id,attemptId:attempt.id,expectedToken:restored.readProduction().editToken},{mutationId});
+                interruptedAttempts.push({taskId:task.id,attemptId:attempt.id,mutationId});mutations.push(mutationId);
+            }
         }
     }
     const provenance = path.join(root, SYSTEM, '恢复来源');

@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {productionAssetHashes} from './production.mjs';
 import path from 'node:path';
 
 // Fixed diagnostic budgets; a larger library gets an honest partial report.
@@ -208,6 +209,7 @@ export function inspectHealth(selectedRoot, options, h) {
                 records.set(`${kind}:${id}`, meta);
                 const checkAsset = value => attempt('asset', 'ASSET_INVALID', kind, id, () => asset(root, value));
                 const checkTemplate = ref => attempt('object', 'REFERENCE_INVALID', kind, id, () => pkg(root, ref.id, ref.version, ref.packageHash));
+                for(const hash of productionAssetHashes(meta)) checkAsset(hash);
                 if (kind === 'photo' && meta.availability !== 'unavailable') checkAsset(meta.assetHash);
                 if (kind === 'workspace' && meta.profile.avatarAssetHash) checkAsset(meta.profile.avatarAssetHash);
                 for (const entry of [...(meta.materials || []), ...(meta.candidates || []), ...(meta.unavailableReferences || [])]) {

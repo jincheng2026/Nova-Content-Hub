@@ -212,7 +212,7 @@ export function coverJobMethods(h) {
     }
 
     function normalizeRequest(meta, bodyBytes, raw) {
-        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
+        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
         if (input.scope !== 'cover-only') fail('INVALID_INPUT', 'Only cover-only scope is supported');
         if (Object.hasOwn(input, 'sizePolicy') && !['exact', 'ratio-minimum'].includes(input.sizePolicy)) fail('INVALID_INPUT', 'Unknown cover size policy');
         text(input.prompt, 'prompt');
@@ -256,10 +256,16 @@ export function coverJobMethods(h) {
             include(item.assetHash, 'material', {materialId});
             return {id: item.id, assetHash: item.assetHash, originalName: item.originalName, role: item.role};
         });
+        if (input.coverText !== undefined) {
+            if(typeof input.coverText !== 'string' || !input.coverText.trim() || input.coverText.length > 10000) fail('INVALID_INPUT','Cover text must be bounded text');
+            const p=meta.productionState?.packaging;
+            if(!p || !p.coverTexts.some(c=>c.id===p.selectedCoverTextId && c.text===input.coverText)) fail('STALE_INPUT','Cover text must match the saved human selection');
+        }
         return {
             protocol: PROTOCOL,
             libraryId,
             contentId: meta.id,
+            ...(input.coverText !== undefined ? {coverText:input.coverText} : {}),
             title: meta.title,
             bodyHash: hash(bodyBytes),
             template: {id: input.template.id, version: input.template.version, packageHash: version.packageHash},
@@ -333,7 +339,7 @@ export function coverJobMethods(h) {
         checkedHash(token);
         const requestInput = {
             action: 'createCoverRequest',
-            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
+            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
         };
         if (requestInput.request.sizePolicy === 'exact') delete requestInput.request.sizePolicy;
         const replayed = replayCoverRequest(contentId, requestInput, token, options);
