@@ -10,7 +10,7 @@ import {isRecord, type Release} from '../shared/contracts.ts';
 import type {Assistant} from '../shared/cover-contracts.ts';
 
 type Runner = (file: string, args: string[], options: ExecFileOptionsWithStringEncoding, callback: (error: ExecFileException | null, stdout: string, stderr: string) => void) => ChildProcess;
-type Options = {home?: string; env?: NodeJS.ProcessEnv; capability?: 'cover' | 'template'; run?: Runner};
+type Options = {home?: string; env?: NodeJS.ProcessEnv; capability?: 'cover' | 'template' | 'research' | 'writing'; run?: Runner};
 const notReady = () => Object.assign(new Error('配套插件校验或启动未完成，请在设置中检查匹配版本后重试；原尝试已保留。'), {code: 'NOT_READY'});
 const identity = (stat: Awaited<ReturnType<typeof fs.lstat>>) => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs, stat.mode];
 type HostMetadata = {entries: Record<string, PackageEntry>; identities: Record<string, ReturnType<typeof identity>>};
@@ -51,8 +51,7 @@ export async function readWorkBuddyCacheMetadata(root: string): Promise<HostMeta
 // Warm the exact installed inode before the host's short hook budget starts.
 export async function launchWithAssistantRuntime(host: Assistant, release: Release, marketRoot: string, launch: () => Promise<void>, {home = os.homedir(), env = process.env, capability = 'cover', run = execFile}: Options = {}): Promise<void> {
     try {
-        if (capability === 'template') installedAssistantSkill(host, release, {home, env, capability});
-        else installedAssistantSkill(host, release, {home, env});
+        installedAssistantSkill(host, release, {home, env, capability});
         const manifest: unknown = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(readAssistantFile(path.join(marketRoot, 'package-files.json'))));
         if (!isRecord(manifest) || manifest.format !== 'nova-content-marketplace-package-files' || manifest.schemaVersion !== 1 || !isDeepStrictEqual(manifest.release, {...release, format: 'nova-content-plugin-release'}) || !isRecord(manifest.entries)) throw notReady();
         const config = host === 'codex' ? env.CODEX_HOME || path.join(home, '.codex') : env.WORKBUDDY_CONFIG_DIR || env.CODEBUDDY_CONFIG_DIR || path.join(home, '.workbuddy');

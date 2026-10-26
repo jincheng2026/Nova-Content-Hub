@@ -3,7 +3,7 @@ import {createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {fileURLToPath} from 'node:url';
 import {isAbsolute, join, relative, sep} from 'node:path';
-import {allSkillNames, integrityPaths, releaseModes, skillNames} from './build.mjs';
+import {allSkillNames, integrityPaths, releaseModes, skillCapabilities} from './build.mjs';
 import {archiveFor, nodeRelease} from './bundled-node.mjs';
 import {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 export {snapshotPackage} from '../src/lib/package-snapshot.mjs';
@@ -30,7 +30,7 @@ export async function validateRuntime(input, expected) {
     const requiredRelease = {...expected, format: 'nova-content-plugin-release', schemaVersion: 1, experimental: true, platform: process.platform, arch: process.arch};
     if (!isDeepStrictEqual(release, requiredRelease)) throw Error('Runtime release does not match the fixed native release configuration');
     const integrity = await readJSON(join(input, 'integrity.json'));
-    const skills = Object.fromEntries(allSkillNames.map(name => [name, {namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover', executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && release.AUTH_MODE === 'disabled'}]));
+    const skills = skillCapabilities(release.AUTH_MODE);
     if (integrity.format !== 'nova-content-plugin-integrity' || integrity.schemaVersion !== 1 || integrity.pairId !== release.pairId || integrity.AUTH_MODE !== release.AUTH_MODE || !isDeepStrictEqual(integrity.skills, skills) || !isDeepStrictEqual(Object.keys(integrity.hashes ?? {}).sort(), integrityPaths().sort())) throw Error('Runtime integrity metadata or Skill capabilities mismatch');
     for (const [path, expectedHash] of Object.entries(integrity.hashes)) {
         if (!/^[a-f0-9]{64}$/.test(expectedHash) || snapshot[path]?.sha256 !== expectedHash) throw Error(`Runtime integrity mismatch: ${path}`);

@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import {createHash} from 'node:crypto';
-import {allSkillNames, integrityPaths, releaseModes, skillNames} from '../../plugin-src/scripts/build.mjs';
+import {allSkillNames, integrityPaths, releaseModes, skillCapabilities} from '../../plugin-src/scripts/build.mjs';
 import {archiveFor, nodeRelease} from '../../plugin-src/scripts/bundled-node.mjs';
 import {buildMarketplace, snapshotPackage} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import * as distribution from '../scripts/dist.mjs';
@@ -33,7 +33,7 @@ async function fixture(t, auth) {
     json(path.join(plugin, 'integrity.json'), {
         format: 'nova-content-plugin-integrity', schemaVersion: 1, pairId: release.pairId, AUTH_MODE: auth,
         hashes: Object.fromEntries(integrityPaths().map(file => [file, hash(path.join(plugin, file))])),
-        skills: Object.fromEntries(allSkillNames.map(name => [name, {namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover', executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && auth === 'disabled'}]))
+        skills: skillCapabilities(auth)
     });
     const [market] = await buildMarketplace(auth, {runtimeRoot, outputRoot: path.join(directory, 'market')});
     return {directory, release, market: market.path};

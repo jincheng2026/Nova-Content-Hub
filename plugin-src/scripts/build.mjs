@@ -12,11 +12,18 @@ import {bundleNode, writeLaunchers, cleanNodeEnv} from './bundled-node.mjs';
 const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
 export const skillNames = ['nova-content-template-study', 'nova-content-template-restore', 'nova-content-cover'];
-export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution'];
+export const productionSkillNames = ['nova-content-research-execution', 'nova-content-writing-execution'];
+export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution', ...productionSkillNames];
+export function skillCapabilities(mode) {
+    return Object.fromEntries(allSkillNames.map(name => [name, {
+        namespace: skillNames.includes(name) ? 'contract' : name.replace('nova-content-', '').replace('-execution', ''),
+        executable: !skillNames.includes(name) && mode === 'disabled'
+    }]));
+}
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
 
 export function runtimeSourceFilter(input) {
-    return !['test', '.DS_Store', 'README.md'].includes(basename(input)) && !['src/lib/browser-import', 'resources/builtin-templates', 'resources/图库'].some(relative => input === join(source, relative));
+    return !['test', 'tests', '__tests__', '.DS_Store', 'README.md'].includes(basename(input)) && !/\.(?:test|spec)\.[cm]?[jt]s$/.test(basename(input)) && !['src/lib/browser-import', 'resources/builtin-templates', 'resources/图库'].some(relative => input === join(source, relative));
 }
 
 export function hooksFor(host, events) {
@@ -54,10 +61,21 @@ export async function releaseModes(mode) {
 }
 
 export function integrityPaths(platform = process.platform) {
-    return ['plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
+    const modules = [];
+    const visit = directory => {
+        for (const entry of fs.readdirSync(join(source, directory), {withFileTypes: true})) {
+            const relative = `${directory}/${entry.name}`;
+            if (!runtimeSourceFilter(join(source, relative))) continue;
+            if (entry.isDirectory()) visit(relative);
+            else if (/\.[cm]?js$/.test(entry.name)) modules.push(`plugin-src/${relative}`);
+        }
+    };
+    visit('src');
+    const support = ['plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
+    return [...new Set([...modules, ...support, 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
-        'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'];
+        'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'])];
 }
 
 async function validateSkills() {
@@ -65,12 +83,12 @@ async function validateSkills() {
         const text = await readFile(join(source, 'skills', name, 'SKILL.md'), 'utf8');
         const frontmatter = /^---\nname: ([^\n]+)\ndescription: ([^\n]+)\n---\n/.exec(text);
         if (!frontmatter || frontmatter[1] !== name || frontmatter[2].length < 10 || /TODO|\[INSERT/.test(text)) throw Error('Invalid Skill identity: ' + name);
-        if (skillNames.includes(name) ? !text.includes('executable:false') : !text.includes('AUTH_NOT_CONFIGURED') || !text.includes('contract check-request') || !text.includes('submit')) throw Error('Invalid Skill capability: ' + name);
+        if (skillNames.includes(name) ? !text.includes('executable:false') : productionSkillNames.includes(name) ? !text.includes('production-contract.md') || !text.includes('production-artifacts.md') : !text.includes('AUTH_NOT_CONFIGURED') || !text.includes('contract check-request') || !text.includes('submit')) throw Error('Invalid Skill capability: ' + name);
     }
 }
 
 async function manifests(dest, release, names, prefix = './skills') {
-    const description = `${names.length === 3 ? '自媒体模板契约插件' : '自媒体工作台配套插件 · 封面制作与模板学习'}；${release.pairId}`;
+    const description = `${names.length === 3 ? '自媒体模板契约插件' : '自媒体工作台配套插件 · 调研、内容创作、封面与模板'}；${release.pairId}`;
     const base = {name: release.appScope, version: release.version, description, author: {name: 'Nova Content Hub'}};
     for (const directory of ['bin', 'hooks', '.codex-plugin', '.codebuddy-plugin']) await mkdir(join(dest, directory), {recursive: true});
     await json(join(dest, '.codex-plugin/plugin.json'), {...base, skills: prefix + '/', hooks: './hooks/codex.json'});
@@ -211,10 +229,7 @@ export async function buildCover(mode) {
             pairId: release.pairId,
             AUTH_MODE: release.AUTH_MODE,
             hashes,
-            skills: Object.fromEntries(allSkillNames.map(name => [name, {
-                namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover',
-                executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && release.AUTH_MODE === 'disabled'
-            }]))
+            skills: skillCapabilities(release.AUTH_MODE)
         });
         outputs.push({path: target, pairId: release.pairId});
         process.stderr.write(`Built experimental ${release.AUTH_MODE} plugin for ${process.platform}/${process.arch}\n`);

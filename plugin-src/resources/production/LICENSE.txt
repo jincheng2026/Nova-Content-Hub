@@ -1,0 +1,4 @@
+生产示例数据：CC0 1.0 Universal（CC0-1.0）。
+本目录 examples.json 为 Nova Content Hub 项目原创演示资料，未复制同事私人内容、代码或真实账号数据，不构成真实研究结论。
+在法律允许的最大范围内，作者放弃此示例数据的版权及相关权利。许可全文：https://creativecommons.org/publicdomain/zero/1.0/legalcode
+仅作为随包示例，不自动写入、覆盖或合并用户内容库。其他代码和资源继续遵循各自声明。

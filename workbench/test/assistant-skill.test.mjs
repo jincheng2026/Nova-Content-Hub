@@ -125,3 +125,20 @@ test('Codex individual Skill disabling overrides the enabled plugin', t => {
     write(f.settings, `${prefix}path = ${JSON.stringify(path.join(f.home, 'unrelated', 'SKILL.md'))}\nenabled = false\n`);
     assert.equal(f.verify(), skill);
 });
+
+for (const host of ['codex', 'workbuddy']) for (const capability of ['research', 'writing']) {
+    test(`${host}: ${capability} requires its own installed executable Skill`, t => {
+        const f = fixture(t, host), name = `nova-content-${capability}-execution`;
+        assert.throws(() => installedAssistantSkill(host, release, {home:f.home,env:{},capability}), {code:'NOT_READY'});
+        const text = `---\nname: ${name}\n---\nProduction fixture\n`, relative = `skills/${name}/SKILL.md`;
+        write(path.join(f.root, relative), text);
+        const integrityFile = path.join(f.root, 'integrity.json'), integrity = JSON.parse(fs.readFileSync(integrityFile, 'utf8'));
+        integrity.skills[name] = {namespace:capability,executable:true};
+        integrity.hashes[relative] = createHash('sha256').update(text).digest('hex');
+        write(integrityFile,integrity);
+        if(host==='workbuddy') write(f.manifestFile,{...f.manifest,skills:[...f.manifest.skills,`./skills/${name}`]});
+        assert.equal(installedAssistantSkill(host, release, {home:f.home,env:{},capability}),name);
+        integrity.skills[name].namespace = 'cover';write(integrityFile,integrity);
+        assert.throws(() => installedAssistantSkill(host, release, {home:f.home,env:{},capability}), {code:'NOT_READY'});
+    });
+}

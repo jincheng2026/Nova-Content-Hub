@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {dirname, join, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {allSkillNames, integrityPaths, releaseModes, skillNames} from '../scripts/build.mjs';
+import {allSkillNames, integrityPaths, releaseModes, skillNames, skillCapabilities} from '../scripts/build.mjs';
 import {archiveFor, nodeRelease} from '../scripts/bundled-node.mjs';
 import {buildMarketplace, main, snapshotPackage} from '../scripts/marketplace-builder.mjs';
 
@@ -46,7 +46,7 @@ async function fixture(t) {
         await json(join(input, 'integrity.json'), {
             format: 'nova-content-plugin-integrity', schemaVersion: 1, pairId: release.pairId, AUTH_MODE: release.AUTH_MODE,
             hashes: Object.fromEntries(await Promise.all(integrityPaths().map(async path => [path, hash(await readFile(join(input, path)))]))),
-            skills: Object.fromEntries(allSkillNames.map(name => [name, {namespace: skillNames.includes(name) ? 'contract' : name === 'nova-content-template-execution' ? 'template' : 'cover', executable: ['nova-content-cover-execution', 'nova-content-template-execution'].includes(name) && release.AUTH_MODE === 'disabled'}]))
+            skills: skillCapabilities(release.AUTH_MODE)
         });
     }
     return {runtimeRoot, outputRoot: join(parent, 'marketplace'), parent};
@@ -121,6 +121,9 @@ test('the build-owned complete manifest detects changed business libraries, Node
         await writeFile(join(input, path), 'critical file bytes');
     }
     if (process.platform !== 'win32') await symlink('index.mjs', join(input, 'node_modules/sharp/dist/local-link'));
+    const integrity = await readJSON(join(input, 'integrity.json'));
+    for (const relative of paths) if (Object.hasOwn(integrity.hashes, relative)) integrity.hashes[relative] = hash(await readFile(join(input, relative)));
+    await json(join(input, 'integrity.json'), integrity);
     const [output] = await buildMarketplace('disabled', f);
     const manifestPath = join(output.path, 'package-files.json');
     const manifestBytes = await readFile(manifestPath);

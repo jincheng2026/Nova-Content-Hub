@@ -43,6 +43,7 @@ for (const mode of modes) {
     if (!market) throw new Error('Matching bundled plugin market is missing');
     fs.cpSync(market.path, path.join(target, 'workbench/plugin-marketplace'), {recursive: true, verbatimSymlinks: true});
     fs.cpSync(appIcons, path.join(dist, 'brand'), {recursive: true});
+    fs.copyFileSync(path.join(root, 'plugin-src/resources/production-creation.html'), path.join(dist, 'production-creation.html'));
     fs.cpSync(path.join(workbench, '.native'), dist, {
         recursive: true,
         filter: source => !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs', 'resident-probe.mjs'].includes(path.basename(source))

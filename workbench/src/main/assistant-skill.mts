@@ -8,7 +8,7 @@ import {isRecord, type Release} from '../shared/contracts.ts';
 import type {Assistant} from '../shared/cover-contracts.ts';
 import {validateRelease} from './boundary.mts';
 
-const SKILLS = {cover: 'nova-content-cover-execution', template: 'nova-content-template-execution'} as const;
+const SKILLS = {cover: 'nova-content-cover-execution', template: 'nova-content-template-execution', research: 'nova-content-research-execution', writing: 'nova-content-writing-execution'} as const;
 type SkillOptions = {env?: NodeJS.ProcessEnv; home?: string};
 const notReady = () => Object.assign(new Error('所选助手的配套执行 Skill 尚未安装、启用或校验未通过，请在助手中检查插件后重试。'), {code: 'NOT_READY'});
 
@@ -48,7 +48,7 @@ function json(file: string): Record<string, unknown> {
 }
 
 export function installedAssistantSkill(host: Assistant, release: Release, options?: SkillOptions & {capability?: 'cover'}): typeof SKILLS.cover;
-export function installedAssistantSkill(host: Assistant, release: Release, options: SkillOptions & {capability: 'template'}): typeof SKILLS.template;
+export function installedAssistantSkill<C extends keyof typeof SKILLS>(host: Assistant, release: Release, options: SkillOptions & {capability: C}): typeof SKILLS[C];
 export function installedAssistantSkill(host: Assistant, release: Release, {env = process.env, home = os.homedir(), capability = 'cover'}: SkillOptions & {capability?: keyof typeof SKILLS} = {}): typeof SKILLS[keyof typeof SKILLS] {
     try {
         if (!Object.hasOwn(SKILLS, capability)) throw notReady();
