@@ -27,7 +27,7 @@ export function productionMutationInput(op:unknown,input:unknown):boolean {
  if(op==='decideKnowledge'&&!['accepted','rejected'].includes(input.status as string))return false;
  return true;
 }
-export function productionDraft(v:unknown):boolean {return exact(v,['contentId','body','editToken','bodyHash','productionToken','creationPatch'])&&uuid(v.contentId)&&text(v.body)&&token(v.editToken)&&token(v.bodyHash)&&token(v.productionToken)&&isRecord(v.creationPatch)&&Object.keys(v.creationPatch).every(k=>['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash'].includes(k))&&boundedJSON(v.creationPatch);}
+export function productionDraft(v:unknown):boolean {return exact(v,['contentId','body','editToken','bodyHash','productionToken','creationPatch'])&&uuid(v.contentId)&&text(v.body)&&token(v.editToken)&&token(v.bodyHash)&&token(v.productionToken)&&isRecord(v.creationPatch)&&Object.keys(v.creationPatch).every(k=>['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming'].includes(k))&&boundedJSON(v.creationPatch);}
 export function productionDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method) {
  case 'readProduction':case 'readProductionPending':return input===undefined;

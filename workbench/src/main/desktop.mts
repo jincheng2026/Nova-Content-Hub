@@ -307,7 +307,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         creationHtml: readFileSync(path.join(here, '../production-creation.html'), 'utf8'),
         authorize: authorizeProductionPage,
         worker: {call: (op, args) => runOperation(async () => {
-            if (op !== 'productionReport' || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
+            if (!['productionReport','productionMedia'].includes(op) || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
             authorizeProductionPage(args.binding as LibraryBinding);
             return worker!.call(op, args);
         })},

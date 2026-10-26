@@ -114,12 +114,13 @@ test('implementation, hooks, skill capabilities, mode and hashed import resource
         assert.equal(integrity.pairId, release.pairId);
         assert.equal(integrity.AUTH_MODE, mode);
         for (const [relative, expected] of Object.entries(integrity.hashes)) assert.equal(createHash('sha256').update(fs.readFileSync(packagePath(mode, relative))).digest('hex'), expected, relative);
-        assert.deepEqual(Object.keys(integrity.skills).sort(), ['nova-content-cover', 'nova-content-cover-execution', 'nova-content-template-execution', 'nova-content-template-restore', 'nova-content-template-study']);
+        assert.deepEqual(Object.keys(integrity.skills).sort(), ['nova-content-cover', 'nova-content-cover-execution', 'nova-content-research-execution', 'nova-content-template-execution', 'nova-content-template-restore', 'nova-content-template-study', 'nova-content-writing-execution']);
         for (const [name, capability] of Object.entries(integrity.skills)) {
             const cover = name === 'nova-content-cover-execution';
             const template = name === 'nova-content-template-execution';
-            assert.equal(capability.namespace, cover ? 'cover' : template ? 'template' : 'contract');
-            assert.equal(capability.executable, (cover || template) && mode === 'disabled');
+            const production = ['nova-content-research-execution', 'nova-content-writing-execution'].includes(name);
+            assert.equal(capability.namespace, cover ? 'cover' : template ? 'template' : production ? name.replace('nova-content-', '').replace('-execution', '') : 'contract');
+            assert.equal(capability.executable, (cover || template || production) && mode === 'disabled');
             assert.equal(fs.readFileSync(packagePath(mode, `skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(path.join(root, `plugin-src/skills/${name}/SKILL.md`), 'utf8'));
             if (cover) assert.equal(fs.readFileSync(packagePath(mode, `cover-runtime/skills/${name}/SKILL.md`), 'utf8'), fs.readFileSync(packagePath(mode, `skills/${name}/SKILL.md`), 'utf8').replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
             else assert.equal(fs.existsSync(packagePath(mode, `skills/${name}/scripts/release.json`)), false);

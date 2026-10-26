@@ -30,7 +30,7 @@ export class ServiceToolBroker {
             let request:unknown;try{request=JSON.parse(body.toString('utf8'));}catch{reply(400,{ok:false,error:{code:'INVALID_INPUT'}});return;}
             if(!serviceToolRequest(request)){reply(400,{ok:false,error:{code:'INVALID_INPUT'}});return;}
             const value=await this.options.execute(request);reply(200,{ok:true,value});
-        }catch(error){const code=error&&typeof error==='object'&&'code'in error&&typeof error.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';reply(400,{ok:false,error:{code}});}finally{clearTimeout(timer);this.active--;if(this.active===0)this.drain?.();}
+        }catch(error){const code=error&&typeof error==='object'&&'code'in error&&typeof error.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';reply(400,{ok:false,error:{code,...(error&&typeof error==='object'&&'httpStatus'in error&&typeof error.httpStatus==='number'&&Number.isInteger(error.httpStatus)&&error.httpStatus>=400&&error.httpStatus<=599?{httpStatus:error.httpStatus}:{}),...(error&&typeof error==='object'&&'providerCode'in error&&typeof error.providerCode==='string'&&/^[A-Za-z0-9_.:-]{1,80}$/.test(error.providerCode)?{providerCode:error.providerCode}:{})}});}finally{clearTimeout(timer);this.active--;if(this.active===0)this.drain?.();}
     }
     async stop():Promise<void>{
         if(this.stopping)return this.stopping;

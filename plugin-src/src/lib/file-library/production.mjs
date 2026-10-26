@@ -24,12 +24,16 @@ const unique = values => Array.isArray(values) && new Set(values).size === value
 const objects = values => Array.isArray(values) && values.length <= 10000 && values.every(x => plain(x) && UUID.test(x.id)) && unique(values.map(x => x.id));
 export const emptyProduction = () => ({schemaVersion:1,nextTNumber:1,accounts:[],reports:[],creations:[],tasks:[],feedback:[],knowledge:[],costs:[]});
 export function defaultProductionCreation(contentId, number, now) {
-    return {contentId,tNumber:`T${String(number).padStart(3,'0')}`,stage:'idea',kind:'other',references:[],analysis:'',narrative:'',suggestions:[],annotations:[],packaging:{titles:[],coverTexts:[],intros:[],selectedTitleId:null,selectedCoverTextId:null,selectedIntroId:null},confirmedBodyHash:null,createdAt:now,updatedAt:now};
+    return {contentId,tNumber:`T${String(number).padStart(3,'0')}`,stage:'idea',kind:'other',references:[],analysis:'',narrative:'',suggestions:[],annotations:[],packaging:{titles:[],coverTexts:[],intros:[],selectedTitleId:null,selectedCoverTextId:null,selectedIntroId:null},confirmedBodyHash:null,filming:{shots:[],readThroughBodyHash:null,recordedBodyHash:null},createdAt:now,updatedAt:now};
 }
 export function validProductionCreation(c) {
-    if (!fields(c,['contentId','tNumber','stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','createdAt','updatedAt']) || !UUID.test(c.contentId) || !/^T[0-9]{3,}$/.test(c.tNumber) || !STAGES.includes(c.stage) || !['tutorial','spoken','science','other'].includes(c.kind) || !text(c.analysis) || !text(c.narrative) || !(c.confirmedBodyHash === null || HASH.test(c.confirmedBodyHash)) || !iso(c.createdAt) || !iso(c.updatedAt) || !Array.isArray(c.suggestions) || !Array.isArray(c.annotations) || !jsonOK(c.suggestions) || !jsonOK(c.annotations) || !objects(c.references)) return false;
+    if (!fields(c,['contentId','tNumber','stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','createdAt','updatedAt']) || !UUID.test(c.contentId) || !/^T[0-9]{3,}$/.test(c.tNumber) || !STAGES.includes(c.stage) || !['tutorial','spoken','science','other'].includes(c.kind) || !text(c.analysis) || !text(c.narrative) || !(c.confirmedBodyHash === null || HASH.test(c.confirmedBodyHash)) || !iso(c.createdAt) || !iso(c.updatedAt) || !Array.isArray(c.suggestions) || !Array.isArray(c.annotations) || !jsonOK(c.suggestions) || !jsonOK(c.annotations) || !objects(c.references)) return false;
     for (const r of c.references) if (!fields(r,['id','url','title','platform','originalText','correctedText','segments','corrections','analysis','mediaAssetHash','subtitleAssetHash']) || !(r.url === null || url(r.url)) || !['title','platform','originalText','correctedText','analysis'].every(k => text(r[k])) || !['mediaAssetHash','subtitleAssetHash'].every(k => r[k] === null || HASH.test(r[k])) || !Array.isArray(r.segments) || !r.segments.every(s => fields(s,['startMs','endMs','text']) && Number.isFinite(s.startMs) && s.startMs >= 0 && Number.isFinite(s.endMs) && s.endMs >= s.startMs && text(s.text)) || !Array.isArray(r.corrections) || !r.corrections.every(x => fields(x,['original','corrected','reason']) && ['original','corrected','reason'].every(k => text(x[k])))) return false;
     if (!objects(c.suggestions) || !c.suggestions.every(x=>fields(x,['id','bodyHash','quote','replacement','reason','status']) && HASH.test(x.bodyHash) && ['quote','replacement','reason'].every(k=>text(x[k])) && ['pending','accepted','rejected'].includes(x.status)) || !objects(c.annotations) || !c.annotations.every(x=>fields(x,['id','bodyHash','quote','text','status']) && HASH.test(x.bodyHash) && text(x.quote) && text(x.text) && ['open','resolved'].includes(x.status))) return false;
+    if (c.filming !== undefined) {
+        const f=c.filming;
+        if (!fields(f,['shots','readThroughBodyHash','recordedBodyHash']) || !Array.isArray(f.shots) || f.shots.length>200 || !objects(f.shots) || !f.shots.every(x=>fields(x,['id','quote','visual','owner','done']) && text(x.quote,100000,false) && text(x.visual,100000,false) && ['screen','self','editing'].includes(x.owner) && typeof x.done==='boolean') || !['readThroughBodyHash','recordedBodyHash'].every(k=>f[k]===null || HASH.test(f[k]))) return false;
+    }
     const p = c.packaging;
     return fields(p,['titles','coverTexts','intros','selectedTitleId','selectedCoverTextId','selectedIntroId']) && [['titles','selectedTitleId'],['coverTexts','selectedCoverTextId'],['intros','selectedIntroId']].every(([a,b]) => objects(p[a]) && p[a].every(x => fields(x,['id','text']) && text(x.text,10000,false)) && (p[b] === null || p[a].some(x => x.id === p[b])));
 }
@@ -60,7 +64,7 @@ function validRequest(r) {return fields(r,['prompt','parameters','tools','budget
 function validResult(r) {return fields(r,['summary','artifacts']) && text(r.summary,100000,false) && objects(r.artifacts) && r.artifacts.length > 0 && r.artifacts.every(a => fields(a,['id','kind','title','text','assetHash','data']) && ARTIFACTS.includes(a.kind) && text(a.title,500,false) && text(a.text,200000) && (a.assetHash === null || HASH.test(a.assetHash)) && jsonOK(a.data)) && JSON.stringify(r).length <= 2 * 1024 * 1024;}
 
 export function productionMethods(h) {
-    const {root,locked,mutate,snapshot,result,metadata,fail,readAssetInternal,safePath,assetPath,finderMetadataFile} = h;
+    const {root,locked,mutate,snapshot,result,metadata,fail,readAssetInternal,safePath,assetPath,finderMetadataFile,historyForContent} = h;
     const invalid = (ok,msg) => {if (!ok) fail('INVALID_INPUT',msg);};
     const current = () => result(snapshot(root,'default','workspace'),'default',undefined,'workspace');
     const content = cid => {invalid(UUID.test(cid),'Expected content UUID'); const c = result(snapshot(root,cid,'content'),cid,undefined,'content'); return {...c,bodyHash:bodyDigest(c.body)};};
@@ -72,8 +76,8 @@ export function productionMethods(h) {
         readAssetInternal(root,hash); return true;
     }
     function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const a of p.accounts) for (const hash of a.images) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
-    function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken};});}
-    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted')};});}
+    function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
+    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
     const find = (list,id,label) => {const v = list.find(x => x.id === id); if (!v) fail('NOT_FOUND',`Unknown ${label}`); return v;};
     function taskAttempt(p,i,worker = false) {
         const t = find(p.tasks,i.taskId,'task'), a = find(t.attempts,i.attemptId || t.activeAttemptId,'attempt');
@@ -82,15 +86,27 @@ export function productionMethods(h) {
         return {t,a};
     }
     const newAttempt = (host,now) => {invalid(['codex','workbuddy'].includes(host),'Unknown assistant');return {id:randomUUID(),host,status:'created',claimToken:null,workerId:null,progress:0,message:'',failure:null,result:null,receipt:null,createdAt:now,updatedAt:now};};
-    function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
+    function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
+    function validateFilmingChange(previous,next,body) {
+        if (!next.filming) return;
+        for (const shot of next.filming.shots) {
+            const old=previous.filming?.shots.find(x=>x.id===shot.id);
+            if (!old || old.quote!==shot.quote) invalid(body.indexOf(shot.quote)>=0 && body.indexOf(shot.quote)===body.lastIndexOf(shot.quote),'Shot quote must uniquely identify the current body');
+        }
+        for (const key of ['readThroughBodyHash','recordedBodyHash']) {
+            const value=next.filming[key];
+            if (value!==null && value!==previous.filming?.[key]) invalid(value===bodyDigest(body),'Filming confirmation must identify the current body');
+        }
+    }
     function mutateProduction(op,raw,options = {}) {
         invalid(plain(raw),'Expected operation input');
         if(op==='saveCreation') {
             invalid(UUID.test(raw.contentId) && HASH.test(raw.expectedToken) && HASH.test(raw.expectedContentToken),'Creation, content and production tokens required');
             mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
-                const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
+                const w=current();if(!meta.productionState && w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
                 const c=meta.productionState || w.production?.creations.find(x=>x.contentId===raw.contentId);if(!c)fail('INVALID_STATE','Enable creation first');
                 const next=patchCreation(c,raw.creationPatch || raw.patch,new Date().toISOString());
+                validateFilmingChange(c,next,content(raw.contentId).body);
                 for(const r of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(r[key])checkAsset(r[key]);
                 meta.schemaVersion=5;meta.productionState=next;return meta;
             });
@@ -195,12 +211,13 @@ export function productionMethods(h) {
     function saveProductionDraft(cid,input,editToken,options={}) {
         invalid(fields(input,['body','expectedBodyHash','expectedProductionToken','creationPatch']) && text(input.body,4*1024*1024) && HASH.test(input.expectedBodyHash) && HASH.test(input.expectedProductionToken),'Invalid production draft');
         return mutate('update',cid,{body:input.body,productionDraft:input},editToken,options,'content',(meta,before) => {
-            const w=current();if(w.editToken!==input.expectedProductionToken) fail('CONFLICT','Production state changed');
+            const w=current();if(!meta.productionState && w.editToken!==input.expectedProductionToken) fail('CONFLICT','Production state changed');
             const previous=result(before,cid);if(bodyDigest(previous.body)!==input.expectedBodyHash) fail('STALE_INPUT','Body changed');
             const creation=meta.productionState || w.production?.creations.find(c=>c.contentId===cid);if(!creation) fail('INVALID_STATE','Enable creation first');
             const next=patchCreation(creation,input.creationPatch,new Date().toISOString());
+            validateFilmingChange(creation,next,input.body);
             if(next.confirmedBodyHash!==null && next.confirmedBodyHash!==bodyDigest(input.body)) fail('INVALID_INPUT','Confirmed hash must identify the saved body');
-            if(input.body!==previous.body && next.confirmedBodyHash!==null) fail('INVALID_INPUT','Changed body must be confirmed again');
+            // An explicit confirmation in this save is valid only for the exact new body hash checked above.
             for(const r of next.references) for(const key of ['mediaAssetHash','subtitleAssetHash']) if(r[key]) checkAsset(r[key]);
             meta.schemaVersion=5;meta.productionState=next;return meta;
         });

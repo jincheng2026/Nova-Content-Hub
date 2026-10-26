@@ -921,9 +921,61 @@ function library(root, initialInfo, rootIdentity) {
         });
     }
 
+    function historyForContent(contentId) {
+        objectId('content', contentId);
+        const history = path.join(root, SYSTEM, '事务', '已提交');
+        directory(history);
+        const limit = 20, scanLimit = 250, entryLimit = 5000, responseBytesLimit = 1024 * 1024;
+        const versions = [], candidates = [];
+        let truncated = false, bytesRead = 0, responseBytes = 2048;
+        const stream = fs.opendirSync(history);
+        try {
+            let entry, entries = 0;
+            while ((entry = stream.readSync()) !== null) {
+                if (finderMetadataFile(history, entry.name)) continue;
+                if (++entries > entryLimit) {truncated = true; break;}
+                if (!UUID.test(entry.name)) fail('CORRUPT', 'Unexpected committed history entry');
+                const target = path.join(history, entry.name);
+                directory(target);
+                candidates.push({name: entry.name, time: safePath(target).mtimeMs});
+            }
+        } finally {stream.closeSync();}
+        candidates.sort((a, b) => b.time - a.time || a.name.localeCompare(b.name));
+        for (const [index, candidate] of candidates.entries()) {
+            if (index >= scanLimit || versions.length >= limit) {truncated = true; break;}
+            const location = path.join(history, candidate.name), intentFile = path.join(location, 'intent.json');
+            const size = safePath(intentFile).size;
+            if (size > 16 * 1024 * 1024 || bytesRead + size > 32 * 1024 * 1024) {truncated = true; break;}
+            const raw = read(intentFile); bytesRead += raw.length;
+            const header = parse(raw, 'committed content history');
+            const kind = header?.schemaVersion === 1 ? 'content' : header?.objectKind;
+            const targetId = header?.schemaVersion === 1 ? header?.contentId : header?.objectId;
+            if (kind !== 'content' || targetId !== contentId) continue;
+            // Reuse full transaction/marker/hash/metadata validation before exposing
+            // any text. No paths or other objects' journal bytes leave this helper.
+            const tx = transaction(root, candidate.name, initialInfo.libraryId, location, (target, optional) => target === intentFile ? raw : read(target, optional));
+            const beforeBody = tx.before[1]?.toString('utf8') ?? null, afterBody = tx.after[1].toString('utf8');
+            if (beforeBody === afterBody) continue;
+            const before = beforeBody ?? '';
+            let prefix = 0, suffix = 0;
+            while (prefix < before.length && prefix < afterBody.length && before[prefix] === afterBody[prefix]) prefix++;
+            while (suffix < before.length - prefix && suffix < afterBody.length - prefix && before[before.length - suffix - 1] === afterBody[afterBody.length - suffix - 1]) suffix++;
+            const meta = metadata(tx.after[0], contentId, 'content');
+            const version = {transactionId: candidate.name, revision: meta.revision, at: meta.updatedAt, operation: tx.intent.operation, source: `已提交内容事务（${tx.intent.operation}）`, author: null, reason: null, beforeBody, afterBody, bodyTruncated: false, summary: {removed: before.slice(prefix, before.length - suffix).slice(0, 300), added: afterBody.slice(prefix, afterBody.length - suffix).slice(0, 300), beforeCharacters: before.length, afterCharacters: afterBody.length}};
+            if (responseBytes + Buffer.byteLength(JSON.stringify(version)) > responseBytesLimit) {
+                version.beforeBody = null; version.afterBody = null; version.bodyTruncated = true; truncated = true;
+            }
+            const outputSize = Buffer.byteLength(JSON.stringify(version)) + 1;
+            if (responseBytes + outputSize > responseBytesLimit) {truncated = true; break;}
+            versions.push(version); responseBytes += outputSize;
+        }
+        versions.sort((a, b) => b.revision - a.revision);
+        return {versions, truncated, limit, scanLimit, entryLimit, responseBytesLimit};
+    }
+
     return Object.freeze({
         ...businessMethods(root, locked, mutate, list),
-        ...productionMethods({root, locked, mutate, snapshot, result, metadata, fail, readAssetInternal, safePath, assetPath, finderMetadataFile}),
+        ...productionMethods({root, locked, mutate, snapshot, result, metadata, fail, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent}),
         ...templateJobMethods({
             root, libraryId: initialInfo.libraryId, locked, mutate, assertRootIdentity,
             snapshot, result, metadata, hash, jsonBytes, read, safePath, directory,

@@ -51,7 +51,13 @@ export class ProductionPages {
     const nonce=randomBytes(20).toString('base64');
     const config=JSON.stringify({basePath}).replace(/</g,'\\u003c');
     const html=this.options.creationHtml.replace(/<script\b/gi,`<script nonce="${nonce}"`).replace('</head>',`<script nonce="${nonce}">window.novaCreation=${config};</script></head>`);
-    return this.send(res,200,html,'text/html; charset=utf-8',`default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; connect-src 'self'; img-src data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`);
+    return this.send(res,200,html,'text/html; charset=utf-8',`default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; connect-src 'self'; media-src 'self'; img-src data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`);
+   }
+   const media=/^\/media\/([a-f0-9]{64})$/.exec(route);
+   if(req.method==='GET'&&media){
+    const asset=await this.options.worker.call('productionMedia',{binding:cap.binding,contentId:cap.id,assetHash:media[1]}),data=Buffer.from(asset.data);let start=0,end=data.length-1,status=200;
+    if(req.headers.range){const range=/^bytes=(\d*)-(\d*)$/.exec(req.headers.range);if(!range||!range[1]&&!range[2])return this.send(res,416,'Invalid range','text/plain');if(!range[1])start=Math.max(0,data.length-Number(range[2]));else{start=Number(range[1]);if(range[2])end=Number(range[2]);}if(!Number.isSafeInteger(start)||!Number.isSafeInteger(end)||start<0||end<start||start>=data.length){res.writeHead(416,{'Content-Range':`bytes */${data.length}`});res.end();return;}end=Math.min(end,data.length-1);status=206;}
+    res.writeHead(status,{'Content-Type':asset.detectedType,'Content-Length':end-start+1,'Accept-Ranges':'bytes',...(status===206?{'Content-Range':`bytes ${start}-${end}/${data.length}`} : {}),'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin'});res.end(data.subarray(start,end+1));return;
    }
    if(req.method==='GET'&&route==='/state')return this.send(res,200,JSON.stringify(await this.options.readCreation(cap.binding,cap.id)),'application/json; charset=utf-8');
    if(req.method==='POST'&&route==='/save'){
@@ -67,11 +73,11 @@ export class ProductionPages {
    const page=/^\/(?:view|page)\/([0-9a-f-]{36})$/.exec(route),pageId=page?.[1]??cap.pageId;
    if(route!=='/'&&!page)return this.send(res,404,'Not found','text/plain');
    const result=await this.options.worker.call('productionReport',{binding:cap.binding,reportId:cap.id,...(pageId?{pageId}:{})});
-   if(route.startsWith('/page/'))return this.send(res,200,result.html,'text/html; charset=utf-8',"sandbox; default-src 'none'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'");
+   if(route.startsWith('/page/'))return this.send(res,200,result.html,'text/html; charset=utf-8',"sandbox allow-scripts; default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'");
    const selected=pageId??result.report.pageId;
    if(route.startsWith('/view/')&&pageId)await this.options.setReportPosition?.(cap.binding,cap.id,pageId);
    const nav=result.report.pages.map(p=>`<a href="${basePath}/view/${p.id}"${p.id===selected?' aria-current="page"':''}>${escape(p.title)}</a>`).join('');
-   return this.send(res,200,`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(result.report.title)}</title><style>body{margin:0;background:#F5F5F7;color:#1D1D1F;font:14px/1.6 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif}header{padding:16px 24px;background:white}h1{font-size:24px;margin:0 0 8px}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:#0071E3}a[aria-current]{font-weight:700}iframe{width:100%;height:calc(100vh - 130px);border:0;background:white}</style></head><body><header><h1>${escape(result.report.title)}</h1><nav aria-label="报告页">${nav}</nav></header><iframe title="报告完整内容" sandbox src="${basePath}/page/${selected}"></iframe></body></html>`,'text/html; charset=utf-8',"default-src 'none'; style-src 'unsafe-inline'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
+   return this.send(res,200,`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(result.report.title)}</title><style>body{margin:0;background:#F5F5F7;color:#1D1D1F;font:14px/1.6 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif}header{padding:16px 24px;background:white}h1{font-size:24px;margin:0 0 8px}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:#0071E3}a[aria-current]{font-weight:700}iframe{width:100%;height:calc(100vh - 130px);border:0;background:white}</style></head><body><header><h1>${escape(result.report.title)}</h1><nav aria-label="报告页">${nav}</nav></header><iframe title="报告完整内容" sandbox="allow-scripts" src="${basePath}/page/${selected}"></iframe></body></html>`,'text/html; charset=utf-8',"default-src 'none'; style-src 'unsafe-inline'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
   }
   this.send(res,405,'Method not allowed','text/plain');
  }

@@ -8,7 +8,7 @@ Object.assign(explanations, {
     UPGRADE_FUTURE_FORMAT: '这个内容库来自更新版本，请使用创建它的新版工作台；原文件保留。',
     UPGRADE_LEGACY_FORMAT: '此入口仅支持第4版内容库。第1至3版请先使用兼容工具升级到第4版；原文件保留。'
 });
-const retryableReads = new Set<WorkerOperation>(['productionContext', 'productionAsset', 'productionRead', 'productionCreation', 'productionReport', 'readCoverProgress', 'templateProgress', 'workspace', 'list', 'readContent', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
+const retryableReads = new Set<WorkerOperation>(['productionMedia', 'productionContext', 'productionAsset', 'productionRead', 'productionCreation', 'productionReport', 'readCoverProgress', 'templateProgress', 'workspace', 'list', 'readContent', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
 const busyDelays = [80, 240, 600];
 const boundedReads = retryableReads;
 const readTimeoutMs = 15_000;

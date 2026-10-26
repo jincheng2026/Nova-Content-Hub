@@ -71,8 +71,11 @@ export function integrityPaths(platform = process.platform) {
         }
     };
     visit('src');
+    const methodFiles=[];
+    const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const relative=`${directory}/${entry.name}`;if(entry.isDirectory())methods(relative);else if(entry.isFile()&&entry.name.endsWith('.md'))methodFiles.push(relative);}};
+    for(const name of productionSkillNames)methods(`skills/${name}/references`);
     const support = ['plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
-    return [...new Set([...modules, ...support, 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
+    return [...new Set([...modules, ...support, ...methodFiles, 'plugin-src/resources/production-methods-provenance.md', 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
         'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'])];

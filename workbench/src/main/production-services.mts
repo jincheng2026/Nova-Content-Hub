@@ -45,7 +45,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
      await owner.worker.call('productionReserve',{binding:initial.binding,input:{...identity,service:prepared.service,usage:{requests:prepared.requests}},mutationId:randomUUID()});
     }),
     afterExecute:async outcome=>runQueue(async()=>{
-     await owner.worker.call('productionTaskMutation',{binding:initial.binding,op:'recordCost',input:{...identity,status:outcome.requestsUsed===null?'unknown':'measured',amount:outcome.requestsUsed,usage:{requests:outcome.requestsUsed,ok:outcome.ok}},mutationId:randomUUID()});
+     await owner.worker.call('productionTaskMutation',{binding:initial.binding,op:'recordCost',input:{...identity,status:outcome.requestsUsed===null?'unknown':'measured',amount:outcome.requestsUsed,usage:{...outcome.usage,requests:outcome.requestsUsed,ok:outcome.ok}},mutationId:randomUUID()});
     })
    });
   }finally{if(temp)await fs.rm(temp,{recursive:true,force:true});}

@@ -21,7 +21,11 @@ export async function publicEndpoint(input:string,resolver:(hostname:string,opti
     if (url.protocol!=='https:'||url.username||url.password||url.hash||url.port&&url.port!=='443'||url.hostname.endsWith('.local')||url.hostname==='localhost') throw new ServiceToolError('UNSAFE_ENDPOINT');
     const host=url.hostname.replace(/^\[|\]$/g,'');
     let addresses;let dnsTimer:ReturnType<typeof setTimeout>|undefined;try {addresses=isIP(host)?[{address:host,family:isIP(host)}]:await Promise.race([resolver(host,{all:true,verbatim:true}),new Promise<never>((_resolve,reject)=>{dnsTimer=setTimeout(()=>reject(new Error('DNS_TIMEOUT')),6000);})]);} catch {throw new ServiceToolError('DNS_FAILED');} finally {clearTimeout(dnsTimer);}
-    if (!addresses.length||addresses.some(a=>!publicAddress(a.address))) throw new ServiceToolError('UNSAFE_ENDPOINT');
+    // Some system TUN proxies return benchmark-range synthetic DNS for these fixed providers.
+    // TLS still verifies the original hostname, requests remain pinned, and redirects stay disabled.
+    const fixedProvider=['api.tikhub.io','ark.cn-beijing.volces.com','openspeech.bytedance.com'].includes(url.hostname);
+    const synthetic=(address:string)=>isIP(address)===4&&/^198\.(18|19)\./.test(address);
+    if (!addresses.length||addresses.some(a=>!publicAddress(a.address)&&!(fixedProvider&&synthetic(a.address)))) throw new ServiceToolError('UNSAFE_ENDPOINT');
     return {url,address:addresses[0].address,family:addresses[0].family};
 }
 export async function boundedHttps(input:string,options:{method?:string;headers?:Record<string,string>;body?:string;maxBytes?:number;timeoutMs?:number}={}):Promise<{data:unknown;headers:Record<string,string|string[]|undefined>}> {
@@ -29,9 +33,9 @@ export async function boundedHttps(input:string,options:{method?:string;headers?
     const body=options.body; if (body&&Buffer.byteLength(body)>24*1024*1024) throw new ServiceToolError('REQUEST_TOO_LARGE');
     return new Promise((resolve,reject)=>{
         let sent=false,done=false; const finish=(error?:ServiceToolError,value?:{data:unknown;headers:Record<string,string|string[]|undefined>})=>{if(done)return;done=true;clearTimeout(timer);if(error)reject(error);else resolve(value!);};
-        const req=https.request(url,{method:options.method??'GET',headers:{...options.headers,...(body?{'Content-Length':String(Buffer.byteLength(body))}:{})},family,lookup:(_host,_options,cb)=>{cb(null,address,family);},agent:false},res=>{
+        const req=https.request(url,{method:options.method??'GET',headers:{'User-Agent':'Nova-Content-Hub',...options.headers,...(body?{'Content-Length':String(Buffer.byteLength(body))}:{})},rejectUnauthorized:true,servername:url.hostname,family,lookup:(_host,_options,cb)=>{cb(null,address,family);},agent:false},res=>{
             // No redirects, retries, or provider error bodies are exposed to callers.
-            if (!res.statusCode||res.statusCode<200||res.statusCode>=300) {res.resume();finish(new ServiceToolError('PROVIDER_REJECTED',null));return;}
+            if (!res.statusCode||res.statusCode<200||res.statusCode>=300) {const issue=new ServiceToolError('PROVIDER_REJECTED',[400,401,402,403,404,405,422].includes(res.statusCode??0)?0:null);Object.assign(issue,{httpStatus:res.statusCode??null});let errorBytes=0;const errorParts:Buffer[]=[];res.on('data',(chunk:Buffer)=>{errorBytes+=chunk.length;if(errorBytes<=65536)errorParts.push(chunk);});res.on('end',()=>{try{const errorBody=JSON.parse(Buffer.concat(errorParts).toString('utf8')),code=errorBody.error?.code??errorBody.code;const value=String(code??'');if(/^[A-Za-z0-9_.:-]{1,80}$/.test(value)&&!Object.values(options.headers??{}).some(header=>header.includes(value)&&value.length>12))Object.assign(issue,{providerCode:value});}catch{}finish(issue);});res.on('error',()=>finish(issue));return;}
             const parts:Buffer[]=[];let size=0;res.on('data',(chunk:Buffer)=>{size+=chunk.length;if(size>(options.maxBytes??4*1024*1024)){req.destroy();finish(new ServiceToolError('RESPONSE_TOO_LARGE',null));}else parts.push(chunk);});
             res.on('end',()=>{try {finish(undefined,{data:JSON.parse(Buffer.concat(parts).toString('utf8')),headers:res.headers});}catch{finish(new ServiceToolError('INVALID_PROVIDER_RESPONSE',null));}});res.on('error',()=>finish(new ServiceToolError('NETWORK_FAILED',null)));
         });
@@ -42,7 +46,7 @@ export async function boundedHttps(input:string,options:{method?:string;headers?
 async function run(executable:string,args:string[],timeoutMs=10000):Promise<string> {return new Promise((resolve,reject)=>{const child=spawn(executable,args,{shell:false,windowsHide:true,env:{...process.env,HF_HUB_OFFLINE:'1',TRANSFORMERS_OFFLINE:'1',HF_DATASETS_OFFLINE:'1',PYTHONIOENCODING:'utf-8'}});let output='',size=0,settled=false;const end=(error?:unknown)=>{if(settled)return;settled=true;clearTimeout(timer);if(error)reject(error);else resolve(output);};const timer=setTimeout(()=>{child.kill();end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE'));},timeoutMs);child.stdout.on('data',(b:Buffer)=>{size+=b.length;if(size>4*1024*1024){child.kill();end(new ServiceToolError('RESPONSE_TOO_LARGE'));}else output+=b.toString('utf8');});child.stderr.on('data',()=>{});child.on('error',()=>end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));child.on('exit',code=>end(code===0?undefined:new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));});}
 interface CacheEntry {collectedAt:string;data?:unknown;unknown?:boolean;requestId?:string}
 interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string}
-export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean}):Promise<void>}
+export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
 export class ServiceTools {
     readonly settings:ServiceSettingsStore; readonly cachePath?:string; private cache=new Map<string,CacheEntry>();private loaded=false;private cacheQueue:Promise<unknown>=Promise.resolve();private inflight=new Set<string>();
     constructor(options:{settings:ServiceSettingsStore;cachePath?:string}){this.settings=options.settings;this.cachePath=options.cachePath;}
@@ -84,7 +88,10 @@ export class ServiceTools {
                 started=true;const data=await this.invoke(request,prepared);result={data:this.scrub(data),service:prepared.service,requestsUsed:prepared.requests,collectedAt:new Date().toISOString(),cacheHit:false};
                 if(cacheKey){this.cache.set(cacheKey,{collectedAt:result.collectedAt,data:result.data});await this.saveCache();}
             }
-            reserved=false;await hooks.afterExecute?.({service:prepared.service,requestsUsed:result.requestsUsed,ok:true});return result;
+            const usage:Record<string,number|string|null>={costStatus:prepared.requests===0?'no-external-call':'unknown'};
+            if(request.tool==='model'&&result.data&&typeof result.data==='object'&&'usage' in result.data){const raw=result.data.usage;if(raw&&typeof raw==='object')for(const key of ['prompt_tokens','completion_tokens','total_tokens','input_tokens','output_tokens']){const value=(raw as Record<string,unknown>)[key];if(typeof value==='number'&&Number.isFinite(value)&&value>=0)usage[key]=value;}}
+            if(request.tool==='asr'){usage.durationMs=null;const data=result.data as Record<string,unknown>|null;if(data&&typeof data.durationMs==='number'&&Number.isFinite(data.durationMs)&&data.durationMs>=0)usage.durationMs=data.durationMs;}
+            reserved=false;await hooks.afterExecute?.({service:prepared.service,requestsUsed:result.requestsUsed,ok:true,usage});return result;
         }catch(error){const code=error&&typeof error==='object'&&'code'in error&&typeof error.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';const safe=error instanceof ServiceToolError?error:new ServiceToolError(code,started&&prepared.requests===1?null:0);if(cacheKey&&safe.requestsUsed===0&&!prepared.cached){this.cache.delete(cacheKey);await this.saveCache();}if(cacheKey&&safe.requestsUsed===null)this.cache.set(cacheKey,{collectedAt:new Date().toISOString(),unknown:true,requestId:request.requestId});if(reserved)await hooks.afterExecute?.({service:prepared.service,requestsUsed:prepared.requests===0?0:safe.requestsUsed,ok:false});throw safe;
         }finally{if(cacheKey)this.inflight.delete(cacheKey);}
     }
@@ -108,7 +115,7 @@ export class ServiceTools {
     }
     private async localTranscribe(audio:string,module:string):Promise<unknown>{
         const a=this.settings.read().values.asr;let script:string;
-        if(module==='faster_whisper')script='import sys,json\nfrom faster_whisper import WhisperModel\nm=WhisperModel(sys.argv[1],device="cpu",compute_type="int8",local_files_only=True)\nsegments,info=m.transcribe(sys.argv[2])\ns=[{"startMs":round(x.start*1000),"endMs":round(x.end*1000),"text":x.text} for x in segments]\nprint(json.dumps({"text":"".join(x["text"] for x in s),"segments":s},ensure_ascii=False))';
+        if(module==='faster_whisper')script='import sys,json\nfrom faster_whisper import WhisperModel\nm=WhisperModel(sys.argv[1],device="cpu",compute_type="int8",local_files_only=True)\nsegments,info=m.transcribe(sys.argv[2])\ns=[{"startMs":round(x.start*1000),"endMs":round(x.end*1000),"text":x.text} for x in segments]\nprint(json.dumps({"text":"".join(x["text"] for x in s),"segments":s,"durationMs":round(info.duration*1000)},ensure_ascii=False))';
         else if(module==='qwen_asr')script='import sys,json\nfrom qwen_asr import Qwen3ASRModel\nm=Qwen3ASRModel.from_pretrained(sys.argv[1],device_map="cpu")\nr=m.transcribe(audio=sys.argv[2])\nprint(json.dumps({"text":"\\n".join(x.text for x in r),"segments":[]},ensure_ascii=False))';
         else if(module==='mlx_audio')script='import sys,json\nfrom mlx_audio.stt.utils import load_model\nm=load_model(sys.argv[1])\nr=m.generate(sys.argv[2])\nprint(json.dumps({"text":r.text,"segments":[]},ensure_ascii=False))';
         else {const dir=await fs.mkdtemp(path.join(os.tmpdir(),'nova-whisper-'));try{const output=path.join(dir,'transcript');await run(a.localExecutable,['-m',a.localModelPath,'-f',audio,'-oj','-of',output],600000);const json=await fs.readFile(`${output}.json`,'utf8');if(json.length>4*1024*1024)throw new ServiceToolError('RESPONSE_TOO_LARGE');return JSON.parse(json);}finally{await fs.rm(dir,{recursive:true,force:true});}}

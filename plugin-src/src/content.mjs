@@ -148,7 +148,7 @@ export function observeHook(host, event, input, release) {
         output: {
             hookSpecificOutput: {
                 hookEventName: 'SessionStart',
-                additionalContext: `Nova Content Hub 插件 ${release.version}；scope=nova-content-hub；模式=${release.AUTH_MODE}。仅响应显式自媒体工作台请求。先校验用户提供的 HANDOFF.json / REQUEST.json，不能从 cwd 猜库；${release.format === 'nova-content-plugin-release' ? 'contract 命令仅校验未绑定原型请求，executable=false；cover 命令仅处理用户明确交来的绝对库位置与 UUID。required 模式因可信权益未接入而拒绝全部业务读写。' : '真实库未绑定，路径不可用，可信授权未接入，executable=false。'}不要将宿主会话结束当作生成成功。`
+                additionalContext: `Nova Content Hub 插件 ${release.version}；scope=nova-content-hub；模式=${release.AUTH_MODE}。仅响应显式自媒体工作台请求。先校验用户提供的 HANDOFF.json / REQUEST.json，不能从 cwd 猜库；${release.format === 'nova-content-plugin-release' ? 'contract 命令仅校验未绑定原型请求，executable=false；cover 命令仅处理用户明确交来的绝对库位置与 UUID。production 命令通过显式 --handoff UUID 读取调研与写稿固定请求，遵守 claim、进度、两种等待及 submit 回执契约；template 沿用模板任务契约。required 模式因可信权益未接入而拒绝全部业务读写。' : '真实库未绑定，路径不可用，可信授权未接入，executable=false。'}不要将宿主会话结束当作生成成功。`
             }
         }, diagnostic: null
     };

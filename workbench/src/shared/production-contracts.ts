@@ -1,11 +1,11 @@
 import type {LibraryBinding} from './contracts.ts';
 import type * as Core from '../../../plugin-src/src/lib/file-library/production.d.ts';
-export type {ProductionAccount, ProductionReference, ProductionTask, ProductionReport, ProductionCost} from '../../../plugin-src/src/lib/file-library/production.d.ts';
+export type {ProductionAccount, ProductionReference, ProductionTask, ProductionReport, ProductionCost, ProductionHistory, ProductionHistoryVersion} from '../../../plugin-src/src/lib/file-library/production.d.ts';
 export interface ProductionSuggestion {id: string; bodyHash: string; quote: string; replacement: string; reason: string; status: 'pending'|'accepted'|'rejected'}
 export interface ProductionAnnotation {id: string; bodyHash: string; quote: string; text: string; status: 'open'|'resolved'}
 export interface ProductionCreation extends Omit<Core.ProductionCreation, 'suggestions'|'annotations'> {suggestions: ProductionSuggestion[]; annotations: ProductionAnnotation[]}
 export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creations'> {creations: ProductionCreation[]; assetUrls?: Record<string,string>}
-export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string}
+export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string; history: Core.ProductionHistory}
 export type ProductionManualOp = 'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
 export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string; accountId?: string; mode: 'simple'|'detailed'; comments: boolean}
@@ -28,6 +28,7 @@ export interface ProductionWorkerOperations {
  productionTaskMutation:{args:{binding:LibraryBinding;op:'recordCost';input:ProductionToolIdentity & {status:'actual'|'measured'|'estimated'|'unknown'|'cancelled';amount:number|null;usage?:Core.ProductionJSON};mutationId:string};result:ProductionSnapshot};
  productionAsset:{args:{binding:LibraryBinding;taskId:string;attemptId:string;claimToken:string;workerId:string;audioPath:string};result:{data:Uint8Array;extension:string}};
 
+ productionMedia:{args:{binding:LibraryBinding;contentId:string;assetHash:string};result:{data:Uint8Array;detectedType:string}};
  productionRead:{args:{binding:LibraryBinding};result:ProductionSnapshot};
  productionCreation:{args:{binding:LibraryBinding;contentId:string};result:ProductionCreationState};
  productionMutate:{args:{binding:LibraryBinding;pending:ProductionPending};result:ProductionSnapshot|ProductionCreationState|ProductionFile[]};
