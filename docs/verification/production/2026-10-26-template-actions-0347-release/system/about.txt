@@ -1,0 +1,16 @@
+Window: "", App: 自媒体工作台.
+1 对话框 Secondary Actions: Raise
+	2 图像 自媒体工作台图标
+	3 text 自媒体工作台 版本0.3.47 (0.3.47)
+	4 滚动区
+		5 文本 © 2026 杭州新岛橙灵智能科技有限责任公司
+	6 关闭按钮
+	7 缩放按钮 (disabled)
+8 menu bar
+	9 自媒体工作台
+	10 文件
+	11 编辑
+	12 显示
+	13 窗口
+
+The focused UI element is 1 对话框 Secondary Actions: Raise

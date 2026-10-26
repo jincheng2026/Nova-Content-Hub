@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-10-26T07:45:39.612Z",
+  "bindingFile": "/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json",
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/release-0347-template-actions-15e1762b-c467-4487-bb0e-d6fec1346f8a",
+  "current": {
+    "root": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019",
+    "libraryId": "554edab3-b11f-49b3-8c88-e009fbe73cc3",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "72037875"
+    }
+  },
+  "libraryEntries": 2573,
+  "librarySha256": "6260f6541a9cdb5668b0b07d438d70179eb6f50d2c047f4cc1514b29a5e7bb0d",
+  "bindingFileSha256": "667d693d3c44cf1296b1a12992642ed1148082e3a2e6023ed964ab4b9f3b9067",
+  "libraryBackupVerified": true
+}

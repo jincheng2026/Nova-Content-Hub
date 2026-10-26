@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-26T07:50:25.466346+00:00",
+  "sourceCommit": "b6aab6ab4155ad0e1d9c4f39f7278cfb7bad4173",
+  "version": "0.3.47",
+  "check": {
+    "command": "npm run check",
+    "exitCode": 0
+  },
+  "typecheck": {
+    "command": "npm run typecheck:desktop",
+    "exitCode": 0
+  },
+  "desktop": {
+    "command": "npm run test:desktop",
+    "exitCode": 0,
+    "tests": 378,
+    "fail": 0
+  },
+  "versionAndPairIdAssertion": true,
+  "diffCheck": true,
+  "fullRootVerifyRun": false
+}

@@ -1,0 +1,32 @@
+The following is a diff from the previous accessibility tree for Window: "“自媒体工作台”简介" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 268-553
+~265 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
+~	266 滚动区
+~		267 图像 Icon
++		268 text Help: 自媒体工作台, Value: 自媒体工作台 536.5 MB 修改时间： 今天 15:50
++		269 滚动区
++			270 文本栏 Description: 标签编辑器, Placeholder: 添加标签…
++		271 显示三角形 Value: 1, ID: General
++		272 text 通用： 种类： 应用程序(Apple芯片) 大小： 536,537,443 字节（磁盘上的539.6 MB） 位置： ‎⁨Macintosh HD⁩ ▸ ⁨应用程序⁩ 创建时间： 2026年10月26日 星期一 15:50 修改时间： 2026年10月26日 星期一 15:50 版本： 0.3.47 版权： © 2026 杭州新岛橙灵智能科技有限责任公司
++		273 复选框 已锁定, Value: 0
++		274 显示三角形 Value: 1, ID: MetaData
++		275 text 更多信息： --
++		276 显示三角形 Value: 1, ID: Name
++		277 文本 名称与扩展名：
++		278 文本栏 (settable) Value: 自媒体工作台.app, ID: Name
++		279 复选框 (disabled) 隐藏扩展名, Value: 1
++		280 显示三角形 Value: 1, ID: Comments
++		281 文本 注释：
++		282 滚动区
++			283 文本输入区 (settable) Comments
++		284 显示三角形 Value: 1, ID: Preview
++		285 文本 预览：
++		286 图像 Description: 预览, ID: QLAXImageAndText_Image
++		287 显示三角形 Value: 0, ID: Privileges
++		288 文本 共享与权限：
++	289 关闭按钮
++	290 缩放按钮
++	291 最小化按钮
++	292 图像 Macintosh HD
++	293 文本 “自媒体工作台”简介
+The focused UI element is 265 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
