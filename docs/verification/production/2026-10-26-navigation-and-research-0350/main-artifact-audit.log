@@ -1,0 +1,52 @@
+{
+  "recordedAt": "2026-10-26T15:11:12.199Z",
+  "sourceCommit": "e51553b1f9203ce343ecf6d2e915b2aedf3cc5f8",
+  "version": "0.3.50",
+  "artifacts": [
+    {
+      "directory": "plugin/runtime/auth-required",
+      "version": "0.3.50",
+      "AUTH_MODE": "required",
+      "platform": "darwin",
+      "arch": "arm64",
+      "entryCount": 572,
+      "bytes": 174979302,
+      "treeSha256": "d648187a56fee34b21d6b1973e870e030bec4ef1e9d34ef16c4cb17176e6610c",
+      "integrityValidated": true
+    },
+    {
+      "directory": "workbench/dist-desktop/auth-required/workbench/plugin-marketplace/nova-content-hub",
+      "version": "0.3.50",
+      "AUTH_MODE": "required",
+      "platform": "darwin",
+      "arch": "arm64",
+      "entryCount": 572,
+      "bytes": 174979302,
+      "treeSha256": "d648187a56fee34b21d6b1973e870e030bec4ef1e9d34ef16c4cb17176e6610c",
+      "integrityValidated": true
+    },
+    {
+      "directory": "plugin/runtime/auth-disabled",
+      "version": "0.3.50",
+      "AUTH_MODE": "disabled",
+      "platform": "darwin",
+      "arch": "arm64",
+      "entryCount": 572,
+      "bytes": 174979298,
+      "treeSha256": "c612073ea5421949eef69678aaa73ccd016ec9109eb7bd735dd658de575adbb0",
+      "integrityValidated": true
+    },
+    {
+      "directory": "workbench/dist-desktop/auth-disabled/workbench/plugin-marketplace/nova-content-hub",
+      "version": "0.3.50",
+      "AUTH_MODE": "disabled",
+      "platform": "darwin",
+      "arch": "arm64",
+      "entryCount": 572,
+      "bytes": 174979298,
+      "treeSha256": "c612073ea5421949eef69678aaa73ccd016ec9109eb7bd735dd658de575adbb0",
+      "integrityValidated": true
+    }
+  ],
+  "scope": "Native development directories only. Each plugin SHA256 covers sorted inventory, not an installer. Installed application not replaced."
+}

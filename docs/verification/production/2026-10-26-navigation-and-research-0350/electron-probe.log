@@ -1,0 +1,14 @@
+PASS primary menu chevrons align at the right edge
+PASS desktop safeStorage/settings views omit credential bytes
+PASS collapsed primary navigation keeps normal 42px rows and compact gaps 1440x1000
+PASS account wall has three readable real asset previews and one active navigation item 1440x1000
+PASS report UI freezes explicit title and unchecked per-task comments; launch mocked
+PASS report HTML import and companion JSON preserve type, source, timestamp and sample metadata through actual UI and IPC; file selection simulated
+PASS report opens capability URL with both pages 1440x1000
+PASS one existing save action persists and checks local settings; invalid configuration retains inputs; clear toggles to undo; unchanged check does not rewrite credentials or enable budgets
+PASS browser creation saves through desktop durable transaction and rejects stale CAS; explicit stale recovery intent discarded in test library
+PASS collapsed primary navigation keeps normal 42px rows and compact gaps 1000x800
+PASS account wall has three readable real asset previews and one active navigation item 1000x800
+PASS report opens capability URL with both pages 1000x800
+PASS switching libraries invalidates old browser capabilities
+PASS Electron production smoke; evidence: /tmp/nch-0350-simplification

@@ -1,0 +1,168 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-26T15:06:43.080Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.50",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.50:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "viewports": [
+    [
+      1440,
+      1000
+    ],
+    [
+      1000,
+      800
+    ]
+  ],
+  "checks": [
+    {
+      "name": "primary menu chevrons align at the right edge",
+      "detail": true
+    },
+    {
+      "name": "desktop safeStorage/settings views omit credential bytes",
+      "detail": {
+        "encryptionAvailable": true
+      }
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1440x1000",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "report UI freezes explicit title and unchecked per-task comments; launch mocked",
+      "detail": true
+    },
+    {
+      "name": "report HTML import and companion JSON preserve type, source, timestamp and sample metadata through actual UI and IPC; file selection simulated",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "one existing save action persists and checks local settings; invalid configuration retains inputs; clear toggles to undo; unchanged check does not rewrite credentials or enable budgets",
+      "detail": true
+    },
+    {
+      "name": "browser creation saves through desktop durable transaction and rejects stale CAS; explicit stale recovery intent discarded in test library",
+      "detail": true
+    },
+    {
+      "name": "collapsed primary navigation keeps normal 42px rows and compact gaps 1000x800",
+      "detail": {
+        "items": [
+          {
+            "name": "今天总览日程助手任务",
+            "height": 42,
+            "top": 147.9921875,
+            "bottom": 189.9921875
+          },
+          {
+            "name": "内容内容项目封面",
+            "height": 42,
+            "top": 196.9921875,
+            "bottom": 238.9921875
+          },
+          {
+            "name": "市场调研对标账号调研报告",
+            "height": 42,
+            "top": 245.9921875,
+            "bottom": 287.9921875
+          },
+          {
+            "name": "提示词与知识",
+            "height": 42,
+            "top": 294.9921875,
+            "bottom": 336.9921875
+          }
+        ],
+        "buttonHeights": [
+          42,
+          42,
+          42,
+          42
+        ],
+        "hiddenGroups": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1000x800",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1000x800",
+      "detail": true
+    },
+    {
+      "name": "switching libraries invalidates old browser capabilities",
+      "detail": true
+    }
+  ],
+  "launchMocked": true,
+  "paidRequests": 0,
+  "realLibrary": false,
+  "scope": "Real Electron sandbox/preload/IPC/React navigation and isolated Chromium loopback creation page; excludes real assistant hosts, OS default browser, native installers and other platforms.",
+  "designRules": {
+    "Foundation-01": "screenshots captured for review",
+    "Layout-01": "content group contains exactly content and cover; four project filters verified",
+    "Controls-02": "report title required; per-task comments remain unchecked despite global enabled capability",
+    "Reading-02": "account image assets decoded; settings credential values omitted",
+    "Acceptance-01": "native typecheck and production smoke",
+    "Acceptance-02": "two viewport screenshots; visual review required",
+    "Acceptance-03": "darwin/arm64 native Electron only; no installer or cross-platform claim"
+  }
+}

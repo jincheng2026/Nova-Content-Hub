@@ -1,0 +1,21 @@
+PASS primary menu chevrons align at the right edge
+PASS desktop safeStorage/settings views omit credential bytes
+AssertionError [ERR_ASSERTION]: {"items":[{"name":"今天总览日程助手任务","height":147.2265625,"top":147.9921875,"bottom":295.21875},{"name":"内容内容项目封面","height":147.2265625,"top":310.21875,"bottom":457.4453125},{"name":"市场调研对标账号调研报告","height":147.2265625,"top":472.4453125,"bottom":619.671875},{"name":"提示词与知识","height":147.234375,"top":634.671875,"bottom":781.90625}],"buttonHeights":[42,42,42,147.234375],"hiddenGroups":true}
+    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-8Nb8vG/bundle/workbench/dist/main/production-probe-entry.mjs:46:44)
+    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-8Nb8vG/bundle/workbench/dist/main/desktop.mjs:578:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/scripts/production-probe.mjs:48
+    if (code !== 0) throw new Error(`Production Electron probe failed: ${code}`);
+                          ^
+
+Error: Production Electron probe failed: 1
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/scripts/production-probe.mjs:48:27
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v24.20.0

@@ -1,0 +1,17 @@
+
+> nova-content-hub-prototype@0.3.50 build:both
+> node plugin-src/scripts/sync-bridge.mjs && node plugin-src/scripts/generate-templates.mjs && node workbench/scripts/build-prototype.mjs --auth both && node plugin-src/build.mjs --auth both
+
+Generated 15 v4 template groups (11 general / 4 AI), 36 preserved and 6 new SVG structure assets, 30 PNG visual references and 45 legacy definitions.
+workbench/dist-prototype/auth-required/index.html
+workbench/dist-prototype/auth-disabled/index.html
+[
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/plugin/contract/nova-content-hub-required",
+    "pairId": "nova-content-hub@0.3.50:p1:required"
+  },
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/plugin/contract/nova-content-hub-disabled",
+    "pairId": "nova-content-hub@0.3.50:p1:disabled"
+  }
+]
