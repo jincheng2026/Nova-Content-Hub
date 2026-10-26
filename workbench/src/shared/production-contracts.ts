@@ -1,3 +1,4 @@
+import type {PlatformCatalog} from './platform-catalog.ts';
 import type {LibraryBinding} from './contracts.ts';
 import type * as Core from '../../../plugin-src/src/lib/file-library/production.d.ts';
 export type {ProductionAccount, ProductionReference, ProductionTask, ProductionReport, ProductionCost, ProductionHistory, ProductionHistoryVersion} from '../../../plugin-src/src/lib/file-library/production.d.ts';
@@ -15,10 +16,10 @@ export type ProductionFileKind = 'images'|'report'|'media';
 export interface ProductionFile {assetHash: string; originalName: string; detectedType: string; bytes: number; url?: string}
 export type ProductionPending = {binding: Pick<LibraryBinding,'libraryId'|'rootIdentity'>; mutationId: string} & ({kind: 'mutate'; op: Core.ProductionMutation; input: Record<string,unknown>}|{kind:'draft'; input: ProductionDraft}|{kind:'files'; fileKind: ProductionFileKind; sources: string[]; hashes: string[]});
 export interface ProductionInputs {
- readProduction: undefined; mutateProduction: ProductionMutation; startProductionTask: ProductionStart; openProductionTask: {taskId:string; host?:Core.ProductionHost}; actProductionTask: ProductionAction; openProductionLink: {kind:'account'|'report'|'creation'; id:string; pageId?:string}; chooseProductionFiles:{kind:ProductionFileKind}; readProductionCreation:{contentId:string}; saveProductionDraft:ProductionDraft; readProductionPending:undefined; recoverProductionPending:{action:'retry'|'discard'};
+ readPlatformCatalog: undefined; readProduction: undefined; mutateProduction: ProductionMutation; startProductionTask: ProductionStart; openProductionTask: {taskId:string; host?:Core.ProductionHost}; actProductionTask: ProductionAction; openProductionLink: {kind:'account'|'report'|'creation'; id:string; pageId?:string}; chooseProductionFiles:{kind:ProductionFileKind}; readProductionCreation:{contentId:string}; saveProductionDraft:ProductionDraft; readProductionPending:undefined; recoverProductionPending:{action:'retry'|'discard'};
 }
 export interface ProductionResults {
- readProduction:ProductionSnapshot; mutateProduction:ProductionSnapshot; startProductionTask:{snapshot:ProductionSnapshot; opened:boolean; message?:string}; openProductionTask:{opened:boolean; message?:string}; actProductionTask:ProductionSnapshot; openProductionLink:{opened:true}; chooseProductionFiles:ProductionFile[]|null; readProductionCreation:ProductionCreationState; saveProductionDraft:ProductionCreationState; readProductionPending:{pending:boolean; message:string}; recoverProductionPending:ProductionSnapshot;
+ readPlatformCatalog:PlatformCatalog; readProduction:ProductionSnapshot; mutateProduction:ProductionSnapshot; startProductionTask:{snapshot:ProductionSnapshot; opened:boolean; message?:string}; openProductionTask:{opened:boolean; message?:string}; actProductionTask:ProductionSnapshot; openProductionLink:{opened:true}; chooseProductionFiles:ProductionFile[]|null; readProductionCreation:ProductionCreationState; saveProductionDraft:ProductionCreationState; readProductionPending:{pending:boolean; message:string}; recoverProductionPending:ProductionSnapshot;
 }
 export interface ProductionReceipt {found:boolean; objectId?:string}
 export interface ProductionToolIdentity {taskId:string; attemptId:string; claimToken:string; workerId:string; requestId:string}

@@ -20,6 +20,7 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     readServiceSettings: () => ipcRenderer.invoke('nova:readServiceSettings'),
     saveServiceSettings: input => ipcRenderer.invoke('nova:saveServiceSettings', input),
     checkServiceReadiness: () => ipcRenderer.invoke('nova:checkServiceReadiness'),
+    readPlatformCatalog: () => ipcRenderer.invoke('nova:readPlatformCatalog'),
     readProduction: input => ipcRenderer.invoke('nova:readProduction', input),
     mutateProduction: input => ipcRenderer.invoke('nova:mutateProduction', input),
     startProductionTask: input => ipcRenderer.invoke('nova:startProductionTask', input),

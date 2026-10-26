@@ -10,7 +10,7 @@ import {createLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 import {emptyBinding} from '../src/main/bindings.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
-const evidence = path.resolve(process.env.UI_EVIDENCE_DIR || path.join(workbench, '../docs/verification/production/2026-10-26-research-creation-rebuild'));
+const evidence = path.resolve(process.env.UI_EVIDENCE_DIR || path.join(workbench, '../docs/verification/production/2026-10-27-workbench-usability/electron'));
 const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-production-probe-')));
 try {
     await fs.mkdir(evidence, {recursive: true});

@@ -31,7 +31,7 @@ export function BootstrapRecoveryPanel({busy, run, onRecovered}: {
             <Button disabled={busy || !view?.canReset} onClick={() => setConfirm(true)}>重新连接内容库</Button>
             <Button disabled={busy} onClick={() => void run(async () => { const result = await invoke('exportDiagnostics'); if (result.exported) setNotice(`脱敏诊断已导出：${result.name}。请保留本机连接备份，供维护者定位。`); })}>导出脱敏诊断</Button>
         </div>
-        {confirm && <div role="group" aria-label="确认恢复本机连接"><p>确认后只会备份并清空本机连接记录。内容库和所有业务文件均保留，待处理任务的旧连接记录也会放在备份里。之后需自己重新选择内容库，不会自动打开或修改业务库。</p><Button disabled={busy} type="danger" onClick={() => void recover()}>确认备份旧记录并重新连接</Button><Button disabled={busy} onClick={() => setConfirm(false)}>取消</Button></div>}
+        {confirm && <div role="group" aria-label="确认恢复本机连接"><p>确认后只会备份并清空本机连接记录。内容库和所有业务文件均保留，待处理任务的旧连接记录也会放在备份里。之后需自己重新选择内容库，不会自动打开或修改业务库。</p><Button disabled={busy} type="danger" onClick={() => void recover()}>确认备份旧记录并重新连接</Button><Button disabled={busy} onClick={() => setConfirm(false)}>保留当前连接</Button></div>}
         {view?.backupName && <p className="muted">旧连接备份：{view.backupName}。如需协助，请导出脱敏诊断；无需上传正文或任意 JSON 文件。</p>}
         {notice && <p role="status">{notice}</p>}
     </Card></section>;

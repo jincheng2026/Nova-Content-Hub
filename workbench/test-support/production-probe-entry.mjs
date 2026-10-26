@@ -20,7 +20,7 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
     const textClick = async (text, scope = 'document', target = window) => {const expr = `[...${scope}.querySelectorAll('button')].find(b=>b.textContent.trim()===${JSON.stringify(text)}&&!b.disabled)`; await wait(expr, target); await target.webContents.executeJavaScript(`${expr}.click()`);};
     const input = async (selector, value, target = window) => target.webContents.executeJavaScript(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});const proto=el.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(proto,'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
     const bridge = async (method, input) => {const reply = await run(`window.contentHub[${JSON.stringify(method)}](${input === undefined ? '' : JSON.stringify(input)})`); assert.equal(reply.ok, true, JSON.stringify(reply)); return reply.value;};
-    const screenshot = async (name, target = window) => {if(target===window){await wait('document.querySelector(\'main[data-loaded="true"][data-busy="false"]\')');await wait('document.querySelectorAll(\'button.nav-item[aria-current="page"]\').length===1');}await target.webContents.executeJavaScript('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');await target.webContents.executeJavaScript('document.fonts.ready'); const image = await target.webContents.capturePage(); await fs.writeFile(path.join(evidence, name + '.png'), image.toPNG());};
+    const screenshot = async (name, target = window) => {if(target===window){await wait('document.querySelector(\'main[data-loaded="true"][data-busy="false"]\')');await wait('document.querySelectorAll(\'button.nav-item[aria-current="page"]\').length===1');}await target.webContents.executeJavaScript('new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');await target.webContents.executeJavaScript('document.fonts.ready'); await target.webContents.executeJavaScript('Promise.all(document.getAnimations().filter(animation=>animation.playState==="running"&&animation.effect?.getComputedTiming().endTime<800).map(animation=>animation.finished.catch(()=>{})))'); const image = await target.webContents.capturePage(); await fs.writeFile(path.join(evidence, name + '.png'), image.toPNG());};
     try {
         window.webContents.setBackgroundThrottling(false);
         await wait('document.querySelector(\'main[data-loaded="true"][data-busy="false"]\')');
@@ -39,11 +39,12 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
             await wait(`innerWidth===${width}&&innerHeight===${height}`);
             for (const group of ['today','content','research']) {
                 if (await run(`document.querySelector('#nav-group-${group}').getAttribute('aria-expanded')==='true'`)) await click(`#nav-group-${group}`);
+                await wait(`document.querySelector('#nav-${group}-pages').getBoundingClientRect().height<.1`);
             }
             await click('#nav-prompts');
             await wait('document.querySelector("#nav-prompts").getAttribute("aria-current")==="page"');
             await screenshot(`sidebar-collapsed-${suffix}`);
-            const collapsed=await run(`(()=>{const nav=document.querySelector('nav[aria-label="工作功能"]');const items=Array.from(nav.children).map(el=>{const rect=el.getBoundingClientRect();return {name:el.textContent.trim(),height:rect.height,top:rect.top,bottom:rect.bottom};});return {items,buttonHeights:Array.from(nav.querySelectorAll('.nav-group-toggle,#nav-prompts')).map(el=>el.getBoundingClientRect().height),hiddenGroups:Array.from(nav.querySelectorAll('.nav-children')).every(el=>el.hidden&&el.getBoundingClientRect().height===0)};})()`);
+            const collapsed=await run(`(()=>{const nav=document.querySelector('nav[aria-label="工作功能"]');const items=Array.from(nav.children).map(el=>{const rect=el.getBoundingClientRect();return {name:el.textContent.trim(),height:rect.height,top:rect.top,bottom:rect.bottom};});return {items,buttonHeights:Array.from(nav.querySelectorAll('.nav-group-toggle,#nav-prompts')).map(el=>el.getBoundingClientRect().height),hiddenGroups:Array.from(nav.querySelectorAll('.nav-children-region')).every(el=>el.inert&&el.getAttribute('aria-hidden')==='true'&&el.getBoundingClientRect().height<.1)};})()`);
             assert(collapsed.hiddenGroups);assert(collapsed.buttonHeights.every(height=>height>=40&&height<=44),JSON.stringify(collapsed));
             assert(collapsed.items.every((item,index)=>index===0||item.top-collapsed.items[index-1].bottom<=10),JSON.stringify(collapsed));
             record(`collapsed primary navigation keeps normal 42px rows and compact gaps ${suffix}`,collapsed);
@@ -79,7 +80,10 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
                 await textClick('导入 HTML 报告');
                 await wait('document.querySelector("#production-report-title")');
                 await input('#production-report-title', '带伴随元数据的导入报告');
-                await input('#production-report-type', '对照调研');
+                await click('#production-report-type');
+                await wait('document.querySelector("#production-report-type input")');
+                await input('#production-report-type input', '对照调研');
+                await run('document.querySelector("#production-report-title").focus()');
                 const companion={sourceUrl:'https://example.com/report-source',collectedAt:'2026-10-25T08:00:00.000Z',sampleCount:12,provenance:'synthetic test'};
                 await run(`(()=>{const el=document.querySelector('#production-report-meta-file');const data=new DataTransfer();data.items.add(new File([${JSON.stringify(JSON.stringify(companion))}], 'report.meta.json',{type:'application/json'}));el.files=data.files;el.dispatchEvent(new Event('change',{bubbles:true}));})()`);
                 await wait(`document.querySelector('[aria-label="报告元数据 JSON"]').value.includes("sampleCount")`);
@@ -167,6 +171,63 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
             }
             browser.destroy(); browser = undefined;
             await click('.back-to-contents');
+        }
+        if (process.env.NOVA_USABILITY_PROBE === '1') {
+            const choose = async (id, search, match) => {
+                await click(`#${id}`);
+                await wait(`document.querySelector('#${id} input')`);
+                await input(`#${id} input`,search);
+                await wait(`[...document.querySelectorAll('[role="option"]')].some(option=>option.textContent.includes(${JSON.stringify(match)}))`);
+                await run(`[...document.querySelectorAll('[role="option"]')].find(option=>option.textContent.includes(${JSON.stringify(match)})).click()`);
+                await wait('!document.querySelector(".semi-select-option")');
+            };
+            const catalog=await bridge('readPlatformCatalog');
+            assert(catalog.platforms.some(platform=>platform.id==='douyin'));assert(catalog.platforms.some(platform=>platform.id==='xiaohongshu'));
+            record('public platform catalog crosses the real sandbox preload and IPC without credentials',{status:catalog.status,origin:catalog.origin,version:catalog.version,count:catalog.platforms.length,source:catalog.source,checkedAt:catalog.checkedAt});
+            if (await run('document.querySelector("#nav-group-research").getAttribute("aria-expanded")==="true"')) await click('#nav-group-research');
+            await wait('document.querySelector("#nav-research-pages").getBoundingClientRect().height<.1');
+            await click('#nav-group-research');
+            const frames=await run(`new Promise(resolve=>{const values=[],start=performance.now();const sample=()=>{values.push(document.querySelector('#nav-research-pages').getBoundingClientRect().height);if(performance.now()-start<320)requestAnimationFrame(sample);else resolve(values)};requestAnimationFrame(sample)})`);
+            const maximum=Math.max(...frames);assert(maximum>60);assert(frames.some(height=>height>.1&&height<maximum-.5),JSON.stringify(frames));
+            await run('document.querySelector("#nav-accounts").focus()');
+            await click('#nav-group-research');
+            assert.equal(await run('document.querySelector("#nav-research-pages").inert'),true);
+            assert.equal(await run('document.activeElement.id'),'nav-group-research');
+            await click('#nav-group-research');await run('new Promise(resolve=>setTimeout(resolve,35))');await click('#nav-group-research');await run('new Promise(resolve=>setTimeout(resolve,35))');await click('#nav-group-research');
+            await wait('document.querySelector("#nav-research-pages").getBoundingClientRect().height>60');
+            record('navigation interpolates intermediate frames, reverses during motion, and closes focus into its inert region safely',{frames});
+            await click('#nav-accounts');await wait('document.querySelectorAll(".production-account-card").length===3');
+            await textClick('添加账号');await input('#production-account-name','平台选择验收账号');
+            await choose('production-account-platform','rednote','小红书');
+            await screenshot('platform-search-selection');
+            await textClick('保存账号');await wait('!document.querySelector("#production-account-name")');
+            const account=(await bridge('readProduction')).accounts.find(item=>item.name==='平台选择验收账号');assert.equal(account.platform,'小红书');
+            await wait(`[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号')?.querySelectorAll('button') && [...[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button')].some(button=>button.textContent.trim()==='用已有资料拆解'&&!button.disabled)`);
+            await run(`[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button').forEach(button=>{if(button.textContent.trim()==='用已有资料拆解')button.click()})`);
+            await wait('document.querySelector(".production-notice")?.textContent.includes("已打开助手")');
+            const task=(await bridge('readProduction')).tasks.at(-1);assert.equal(task.accountId,account.id);assert.equal(task.request.tools.includes('tikhub'),false);assert.equal(task.request.parameters.platformCollection,'manual');
+            await run(`[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button').forEach(button=>{if(button.textContent.trim()==='编辑')button.click()})`);
+            await wait('document.activeElement.id==="production-account-name"');await input('#production-account-note','尚未保存的备注仍需保留');
+            await click('#refresh-workspace');await wait('document.querySelector(".production-notice")?.textContent.includes("填写内容已保留")');
+            assert.equal(await run('document.querySelector("#production-account-note").value'),'尚未保存的备注仍需保留');
+            await textClick('放弃编辑');
+            record('searchable platform aliases save the selected enum; manual-only account task cannot collect; editing focuses the form and global refresh preserves its draft');
+            await click('#nav-reports');await textClick('新建调研报告');await input('#production-research-title','折叠保稿测试');await input('#production-research-prompt','普通账号研究，不附加数字限制');
+            await click('#production-research-form input[type="checkbox"]');
+            await click('button[aria-controls="production-research-form"]');await wait('!document.querySelector("#production-research-form")');
+            await click('button[aria-controls="production-research-form"]');await wait('document.querySelector("#production-research-form")');
+            assert.equal(await run('document.querySelector("#production-research-title").value'),'折叠保稿测试');assert.equal(await run('document.querySelector("#production-research-form input[type=checkbox]").checked'),true);
+            await screenshot('research-collapse-preserves-draft');await textClick('放弃填写');
+            record('research collapse preserves title, question and explicit comment selection; only explicit discard clears the form');
+            await click('#open-settings');await run('[...document.querySelectorAll("[role=tab]")].find(el=>el.textContent.includes("服务与模型")).click()');await wait('document.querySelector("#service-asr-mode")');
+            window.webContents.debugger.attach('1.3');await window.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
+            try {
+                const durations=await run('getComputedStyle(document.querySelector("#nav-research-pages")).transitionDuration');assert(durations.split(',').every(duration=>parseFloat(duration)<.002),durations);
+                await choose('service-asr-mode','仅本地','仅本地');
+                assert.match(await run('document.querySelector("#service-asr-mode").textContent'),/仅本地/);
+                await textClick('放弃修改');record('system reduced-motion keeps short nonzero lifecycle and searchable enum selection still commits',{durations});
+            } finally {await window.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]});window.webContents.debugger.detach();}
+            await click('#close-settings');
         }
         const oldUrl = external.at(-1);
         selection = fixture.otherLibrary;

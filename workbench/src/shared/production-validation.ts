@@ -30,7 +30,7 @@ export function productionMutationInput(op:unknown,input:unknown):boolean {
 export function productionDraft(v:unknown):boolean {return exact(v,['contentId','body','editToken','bodyHash','productionToken','creationPatch'])&&uuid(v.contentId)&&text(v.body)&&token(v.editToken)&&token(v.bodyHash)&&token(v.productionToken)&&isRecord(v.creationPatch)&&Object.keys(v.creationPatch).every(k=>['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming'].includes(k))&&boundedJSON(v.creationPatch);}
 export function productionDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method) {
- case 'readProduction':case 'readProductionPending':return input===undefined;
+ case 'readPlatformCatalog':case 'readProduction':case 'readProductionPending':return input===undefined;
  case 'mutateProduction':return exact(input,['op','input','mutationId'])&&uuid(input.mutationId)&&productionMutationInput(input.op,input.input);
  case 'startProductionTask':return optionalKeys(input,['kind','title','prompt','mode','comments'],['contentId','accountId'])&&isRecord(input)&&kinds.includes(input.kind as string)&&text(input.title,500)&&!!(input.title as string).trim()&&text(input.prompt,100000)&&!!(input.prompt as string).trim()&&['simple','detailed'].includes(input.mode as string)&&typeof input.comments==='boolean'&&['contentId','accountId'].every(k=>input[k]===undefined||uuid(input[k]));
  case 'openProductionTask':return optionalKeys(input,['taskId'],['host'])&&isRecord(input)&&uuid(input.taskId)&&(input.host===undefined||host(input.host));

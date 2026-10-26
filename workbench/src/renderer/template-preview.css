@@ -2,7 +2,7 @@
 .creator-template-preview .creator-reference-stack.semi-button { position:relative; display:block; width:100%; height:auto; aspect-ratio:3/4; padding:10% 13% 7%; border:0; border-radius:17px 17px 0 0; background:linear-gradient(145deg,#FAFAFC,#EFEFF1); isolation:isolate; overflow:hidden; }
 .creator-reference-stack .semi-button-content { display:contents; }
 .creator-stack-sheets { display:block; position:relative; width:100%; height:100%; margin:0; }
-.creator-stack-sheet { display:flex; align-items:center; justify-content:center; position:absolute; inset:0; width:100%; height:100%; filter:drop-shadow(0 10px 9px rgba(0,0,0,.2)); transition:transform 1s cubic-bezier(.2,.7,.3,1),z-index 0s .5s; }
+.creator-stack-sheet { display:flex; align-items:center; justify-content:center; position:absolute; inset:0; width:100%; height:100%; filter:drop-shadow(0 10px 9px rgba(0,0,0,.2)); transition:transform 320ms cubic-bezier(.2,.7,.3,1),z-index 0s 160ms; }
 .creator-stack-sheet img { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:min(10px,4%); }
 .creator-stack-sheet.sheet-2 { z-index:1; transform:translate(-7%,-9%) rotate(-6deg) scale(.9); }
 .creator-stack-sheet.sheet-1 { z-index:2; transform:translate(7%,-5%) rotate(5deg) scale(.95); }

@@ -1,0 +1,25 @@
+/* Interaction-01/02: short, interruptible motion; business actions never wait for it. */
+:root{--motion-fast:120ms;--motion-normal:180ms;--motion-expand:220ms;--motion-ease:cubic-bezier(.2,.7,.3,1)}
+.app-navigation .nav-item.semi-button,.semi-button{transition:background-color var(--motion-fast) var(--motion-ease),color var(--motion-fast) var(--motion-ease),border-color var(--motion-fast) var(--motion-ease),box-shadow var(--motion-normal) var(--motion-ease)}
+.semi-input-wrapper,.semi-input-textarea-wrapper,.semi-select{transition:border-color var(--motion-fast) var(--motion-ease),background-color var(--motion-fast) var(--motion-ease),box-shadow var(--motion-fast) var(--motion-ease)}
+.motion-collapse{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows var(--motion-expand) var(--motion-ease),opacity var(--motion-normal) var(--motion-ease)}
+.motion-collapse[data-expanded="true"]{grid-template-rows:1fr;opacity:1}
+.motion-collapse[data-expanded="false"]{pointer-events:none}
+.motion-collapse-clip{min-height:0;overflow:hidden}
+.nav-group-chevron{transition:transform var(--motion-expand) var(--motion-ease);transform:rotate(0deg)}
+.nav-group-toggle[aria-expanded="true"] .nav-group-chevron{transform:rotate(90deg)}
+/* Native details retain their own open state, accessibility and mounted drafts. */
+@supports (interpolate-size:allow-keywords) and selector(details::details-content){
+ details{interpolate-size:allow-keywords}
+ details::details-content{height:0;opacity:0;overflow:clip;transition:height var(--motion-expand) var(--motion-ease),opacity var(--motion-normal) var(--motion-ease),content-visibility var(--motion-expand) allow-discrete}
+ details[open]::details-content{height:auto;opacity:1}
+}
+/* Only native dialogs use these keyframes. Semi keeps its own animationend lifecycle. */
+dialog[open]{animation:nch-dialog-enter var(--motion-normal) var(--motion-ease)}
+dialog[open]::backdrop{animation:nch-backdrop-enter var(--motion-normal) ease-out}
+@keyframes nch-dialog-enter{from{opacity:0;transform:translateY(6px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes nch-backdrop-enter{from{opacity:0}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){
+ :root{--motion-fast:.01ms;--motion-normal:.01ms;--motion-expand:.01ms}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
+}

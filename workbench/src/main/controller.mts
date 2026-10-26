@@ -1,4 +1,5 @@
 import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness} from '../shared/service-contracts.ts';
+import {readPlatformCatalog} from './platform-catalog.mts';
 import {ProductionController} from './production-controller.mts';
 import type {ProductionCallbacks} from './production-controller.mts';
 import type {ProductionInputs} from '../shared/production-contracts.ts';
@@ -120,6 +121,7 @@ export class DesktopController {
     readServiceSettings(input?: undefined) { validateInput('readServiceSettings', input); return this.service('productionServices').readServiceSettings(); }
     saveServiceSettings(input: ServiceSettingsPatch) { validateInput('saveServiceSettings', input); return this.exclusive(() => this.service('productionServices').saveServiceSettings(input)); }
     checkServiceReadiness(input?: undefined) { validateInput('checkServiceReadiness', input); return this.exclusive(() => this.service('productionServices').checkServiceReadiness()); }
+    readPlatformCatalog(input?: undefined) { this.production.validate('readPlatformCatalog', input); return readPlatformCatalog(); }
     readProduction(input?: undefined) { return this.production.readProduction(input); }
     mutateProduction(input: ProductionInputs['mutateProduction']) { return this.production.mutateProduction(input); }
     startProductionTask(input: ProductionInputs['startProductionTask']) { return this.production.startProductionTask(input); }

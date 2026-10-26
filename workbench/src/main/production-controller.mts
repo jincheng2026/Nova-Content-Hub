@@ -1,3 +1,4 @@
+import {platformCollectionCapability} from '../shared/platform-catalog.ts';
 import fs from 'node:fs/promises';
 import {createHash,randomUUID} from 'node:crypto';
 import {fail,requireWrite} from '../shared/validation.ts';
@@ -54,8 +55,11 @@ export class ProductionController {
   this.owner.noPending();const b=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding:b}),settings=await this.callbacks.serviceSettings(),v=settings.values;
   const bodyHash=input.contentId?(await this.owner.worker.call('productionCreation',{binding:b,contentId:input.contentId})).content.bodyHash:null;
   const serviceDescriptor=await this.callbacks.servicesDescriptor?.();
-  const parameters={mode:input.mode,comments:input.comments&&v.commentsEnabled,budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
-  const tools=['tikhub','model','asr'];
+  const account=input.accountId?snapshot.accounts.find(account=>account.id===input.accountId&&!account.deletedAt):undefined;
+  if(input.accountId&&!account)fail('NOT_FOUND','对标账号不存在，请刷新后重新选择。');
+  const platformCollection=account?platformCollectionCapability(account.platform):null;
+  const parameters={...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
+  const tools=platformCollection==='manual'?['model','asr']:['tikhub','model','asr'];
   const prior=new Set(snapshot.tasks.map(t=>t.id));
   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
   const task=result.tasks.find(t=>!prior.has(t.id));if(!task)fail('PENDING_MUTATION','任务已写入但无法定位，请刷新原任务列表。');
