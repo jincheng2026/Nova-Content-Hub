@@ -1,0 +1,28 @@
+{
+  "source": "60d649a",
+  "verifiedAt": "2026-10-26T18:59:17.849Z",
+  "outputs": [
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "required",
+      "version": "0.3.52",
+      "productionReady": false,
+      "runtimeFiles": 576,
+      "releaseSha256": "485a319f4a3719929ea42eb12a351302e9b7f593576d5ca68c81e5046eb3fd6c",
+      "integritySha256": "22a5b140230b9167d0e7267f99314f9be2e6aeabe4f01a0cb40bf41c47863900"
+    },
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "disabled",
+      "version": "0.3.52",
+      "productionReady": false,
+      "runtimeFiles": 576,
+      "releaseSha256": "183caf2262e95d45eff2f85931d9bc9625b98c62c1bd7ad2ad3223f27cab28d0",
+      "integritySha256": "bea438a8348e327aeda3eb5429157ac9779b26a69657f39405de1d2810015516"
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+✔ legacy creations without filming remain valid and persist through current draft saves (2170.225416ms)
+✔ filming schema rejects bad hashes, duplicate IDs, invalid owners and missing fields (0.32725ms)
+✔ confirmations bind the exact current body, survive same-body edits and become stale after body changes (4961.75525ms)
+✔ new or changed shot quotes must uniquely match the current body; existing stale references are retained (4854.125334ms)
+✔ history only exposes validated committed body versions for the current content and bounded summaries to agents (3970.373708ms)
+✔ restoring preserves latest overlays and unrelated workspace updates; stale content and legacy production CAS reject (6541.14025ms)
+✔ version and response budgets explicitly truncate and never return partial restorable bodies (18234.577042ms)
+✔ committed marker corruption is rejected before historical text is returned (2011.998958ms)
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (3945.147625ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (5368.608792ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (6749.017167ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (5452.862959ms)
+✔ fixed requests reject secret parameters and invalid JSON (1101.311875ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (3458.473542ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (2392.924542ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (1358.217375ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (5485.179916ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (1085.234583ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (4119.957708ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (2717.288292ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (2526.60075ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (4333.019042ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (3052.558167ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (1593.339541ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (3621.387875ms)
+✔ radar unknown metrics stay null; ratios require positive followers; date and threshold checks deterministic (11.301208ms)
+✔ codex: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (7911.606083ms)
+✔ workbuddy: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (9051.9775ms)
+✔ accepted query comparisons tolerate key order while retaining exact field values and full receipt integrity (2927.042208ms)
+✔ forged/mismatched artifacts are refused; a rejected candidate cannot become a topic (3818.039542ms)
+✔ ordinary manual reports and assistant report artifacts cannot inject radar type or reserved metadata (2507.319208ms)
+✔ interruption after child topic publication recovers the exact source without duplicates (5980.090666ms)
+✔ rejected sources retain their decision in later batches and parent publication interruption replays once (8168.511666ms)
+✔ collector uses one search and at most three missing-author profiles, no model/comments/retry (1.934791ms)
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (3022.12525ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (3112.974959ms)
+✔ long complete prompts stay available through manual clipboard fallback (1706.997708ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (15818.318125ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 58915.848583

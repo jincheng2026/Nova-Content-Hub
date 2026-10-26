@@ -1,0 +1,13 @@
+{
+  "text": "string",
+  "segments": {
+    "type": "array",
+    "length": 1,
+    "sample": {
+      "startMs": "number",
+      "endMs": "number",
+      "text": "string"
+    }
+  },
+  "durationMs": "number"
+}

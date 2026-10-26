@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "at": "2026-10-26T18:57:19.430Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.52",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.52:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "checks": [
+    {
+      "name": "real UI creates fixed radar task through sandbox IPC; disabled budget leaves all paid tools unavailable",
+      "detail": {
+        "geometry": {
+          "width": 712.800048828125,
+          "height": 526.9429931640625,
+          "left": 283.6000061035156,
+          "top": 156.52850341796875,
+          "viewport": [
+            1280,
+            828
+          ],
+          "buttons": [
+            {
+              "text": "取消",
+              "bottom": 666.6414794921875
+            },
+            {
+              "text": "创建并打开助手",
+              "bottom": 666.6414794921875
+            }
+          ]
+        },
+        "query": {
+          "platform": "抖音",
+          "direction": "AI 工具教程",
+          "sampleLimit": 3,
+          "maxFollowers": 4321,
+          "minLikes": 1500,
+          "minRatio": 2,
+          "lookbackDays": 30
+        }
+      }
+    },
+    {
+      "name": "both waiting states recover and submitted receipt is explicitly accepted then adopted into durable radar HTML report",
+      "detail": true
+    },
+    {
+      "name": "add-topic creates an empty-body topic with source reference and repeated calls reuse its durable identity",
+      "detail": {
+        "topicId": "d2b27a7e-afa8-45da-abd9-09e1d249734e"
+      }
+    },
+    {
+      "name": "new topic appears in existing directory immediately and edits save through original content action",
+      "detail": true
+    },
+    {
+      "name": "topic reopens original content; unknown metrics remain unknown; rejection survives navigation",
+      "detail": true
+    },
+    {
+      "name": "radar plus seven existing pages render without horizontal overflow at 1280x860 and 960x680; modal actions remain reachable",
+      "detail": true
+    }
+  ],
+  "paidRequests": 0,
+  "syntheticCandidates": true,
+  "realHosts": false,
+  "scope": "Native Electron sandbox/preload/IPC/worker/durable isolated library; candidate fixture and external host launches simulated; separate live-service evidence records HTTP402."
+}

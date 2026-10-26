@@ -1,0 +1,99 @@
+{
+  "startedAt": "2026-10-26T18:34:20.801Z",
+  "updatedAt": "2026-10-26T18:34:34.839Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "results": [
+    {
+      "name": "douyin-search",
+      "ok": false,
+      "elapsedMs": 1089,
+      "code": "PROVIDER_REJECTED",
+      "httpStatus": 402,
+      "providerCode": null
+    },
+    {
+      "name": "xhs-search",
+      "ok": false,
+      "elapsedMs": 1026,
+      "code": "PROVIDER_REJECTED",
+      "httpStatus": 402,
+      "providerCode": null
+    },
+    {
+      "name": "ark-model",
+      "ok": true,
+      "elapsedMs": 1282,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-26T18:34:24.789Z"
+    },
+    {
+      "name": "local-asr-readiness",
+      "available": true,
+      "reason": "本地路径与 faster_whisper 模块检查通过；实际音频识别仍在任务内验证。"
+    },
+    {
+      "name": "local-asr",
+      "ok": true,
+      "elapsedMs": 4476,
+      "requestsUsed": 0,
+      "cacheHit": false,
+      "collectedAt": "2026-10-26T18:34:34.708Z"
+    },
+    {
+      "name": "local-asr-text",
+      "nonEmpty": true,
+      "textLength": 12
+    }
+  ],
+  "costs": [
+    {
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "requests": 0,
+        "ok": false,
+        "operation": "douyin-search",
+        "id": "人工智能"
+      }
+    },
+    {
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "requests": 0,
+        "ok": false,
+        "operation": "xhs-search",
+        "id": "人工智能"
+      }
+    },
+    {
+      "service": "model",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "prompt_tokens": 46,
+        "completion_tokens": 24,
+        "total_tokens": 70,
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "service": "asr",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "costStatus": "no-external-call",
+        "durationMs": 2169,
+        "requests": 0,
+        "ok": true
+      }
+    }
+  ],
+  "guiVerified": false
+}

@@ -1,0 +1,22 @@
+✔ radar unknown metrics stay null; ratios require positive followers; date and threshold checks deterministic (15.418125ms)
+✔ codex: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (3532.03775ms)
+✔ workbuddy: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (3668.5995ms)
+✔ accepted query comparisons tolerate key order while retaining exact field values and full receipt integrity (1035.052166ms)
+✔ forged/mismatched artifacts are refused; a rejected candidate cannot become a topic (1621.083625ms)
+✔ ordinary manual reports and assistant report artifacts cannot inject radar type or reserved metadata (1016.048792ms)
+✔ interruption after child topic publication recovers the exact source without duplicates (3398.16975ms)
+✔ child recovery keeps a subsequently registered creation and its user narrative while attaching the source (3879.043125ms)
+✔ rejected sources retain their decision in later batches and parent publication interruption replays once (2616.407833ms)
+✔ collector uses one search and at most three missing-author profiles, no model/comments/retry (1.577833ms)
+✔ radar desktop freezes query, operations and min(current,4) budget while manual platforms never inherit Douyin (3021.805292ms)
+✔ radar broker enforces frozen platform/query/filter/author policy before provider and persists author allowance over restart (4209.237209ms)
+✔ radar adoption and topic decision keep durable original intent through a lost worker reply (4532.200958ms)
+✔ controller recovery completes the canonical reference after a parent receipt exists and preserves intervening creation edits (6987.599ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 20900.848334

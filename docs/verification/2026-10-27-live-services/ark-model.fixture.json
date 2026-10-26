@@ -1,0 +1,30 @@
+{
+  "choices": [
+    {
+      "finish_reason": "sample-6c45cb72a36e",
+      "index": 0,
+      "logprobs": null,
+      "message": {
+        "content": "sample-565339bc4d33",
+        "reasoning_content": "sample-b41ed8bb42ae",
+        "role": "sample-a39a7ffad4a3"
+      }
+    }
+  ],
+  "created": 1793039664,
+  "id": "sample-b312a7b19671",
+  "model": "sample-e08c1f1d49a1",
+  "service_tier": "sample-37a8eec1ce19",
+  "object": "sample-e5ceded10e02",
+  "usage": {
+    "completion_tokens": 24,
+    "prompt_tokens": 46,
+    "total_tokens": 70,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 23
+    }
+  }
+}

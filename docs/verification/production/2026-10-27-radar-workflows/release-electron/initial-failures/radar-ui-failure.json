@@ -1,0 +1,40 @@
+{
+  "error": "LibraryError: Library locked by a live process (including reused PIDs)",
+  "stack": "LibraryError: Library locked by a live process (including reused PIDs)\n    at fail (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/plugin-marketplace/nova-content-hub/plugin-src/src/lib/file-library/index.mjs:47:11)\n    at acquire (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/plugin-marketplace/nova-content-hub/plugin-src/src/lib/file-library/index.mjs:357:17)\n    at locked (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/plugin-marketplace/nova-content-hub/plugin-src/src/lib/file-library/index.mjs:739:23)\n    at Object.readAsset (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/plugin-marketplace/nova-content-hub/plugin-src/src/lib/file-library/index.mjs:1782:33)\n    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/dist/main/production-probe-entry.mjs:49:22)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-RHNbac/bundle/workbench/dist/main/desktop.mjs:579:5)",
+  "checks": [
+    {
+      "name": "real UI creates fixed radar task through sandbox IPC; disabled budget leaves all paid tools unavailable",
+      "detail": {
+        "geometry": {
+          "width": 712.800048828125,
+          "height": 526.9429931640625,
+          "left": 283.6000061035156,
+          "top": 156.52850341796875,
+          "viewport": [
+            1280,
+            828
+          ],
+          "buttons": [
+            {
+              "text": "取消",
+              "bottom": 666.6414794921875
+            },
+            {
+              "text": "创建并打开助手",
+              "bottom": 666.6414794921875
+            }
+          ]
+        },
+        "query": {
+          "platform": "抖音",
+          "direction": "AI 工具教程",
+          "sampleLimit": 3,
+          "maxFollowers": 4321,
+          "minLikes": 1500,
+          "minRatio": 2,
+          "lookbackDays": 30
+        }
+      }
+    }
+  ]
+}

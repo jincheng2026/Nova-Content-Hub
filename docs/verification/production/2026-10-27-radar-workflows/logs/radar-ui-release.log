@@ -1,0 +1,7 @@
+PASS real UI creates fixed radar task through sandbox IPC; disabled budget leaves all paid tools unavailable
+PASS both waiting states recover and submitted receipt is explicitly accepted then adopted into durable radar HTML report
+PASS add-topic creates an empty-body topic with source reference and repeated calls reuse its durable identity
+PASS new topic appears in existing directory immediately and edits save through original content action
+PASS topic reopens original content; unknown metrics remain unknown; rejection survives navigation
+PASS radar plus seven existing pages render without horizontal overflow at 1280x860 and 960x680; modal actions remain reachable
+PASS Electron production smoke; evidence: /Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/docs/verification/production/2026-10-27-radar-workflows/release-electron

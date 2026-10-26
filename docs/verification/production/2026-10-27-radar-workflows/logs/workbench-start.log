@@ -1,0 +1,4 @@
+
+> nova-content-hub-workbench@0.3.52 start
+> electron dist-desktop/auth-disabled
+
