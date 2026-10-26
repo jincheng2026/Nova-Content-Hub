@@ -584,3 +584,30 @@ for (const kind of ['cover', 'template']) test(`${kind} copied or replaced libra
     assert.equal(replacement[`read${cap}Context`](oid, rid, aid).progress, null);
     assert.equal(replacement[`read${cap}Progress`](oid).jobs[0].attempts[0].progressUnavailable, true);
 });
+
+for (const host of ['codex', 'workbuddy']) test(`${host} handoff directs frozen selected cover text without copying private text into the launch URL`, async t => {
+    const coverText = '人工确定封面文字\n  保留换行';
+    const f = await fixture(t, host, {}, {configure({library, content}) {
+        library.mutateProduction('ensureCreation', {contentId: content.id, expectedToken: library.readProduction().editToken});
+        const state = library.readProductionCreation(content.id), selectedCoverTextId = randomUUID();
+        library.saveProductionDraft(content.id, {body: state.content.body, expectedBodyHash: state.content.bodyHash, expectedProductionToken: state.productionToken, creationPatch: {packaging: {titles: [], intros: [], coverTexts: [{id: selectedCoverTextId, text: coverText}], selectedTitleId: null, selectedIntroId: null, selectedCoverTextId}}}, state.content.editToken);
+        return {coverText};
+    }});
+    const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
+    assert.match(prepared.prompt, /固定请求 coverText，逐字保留换行/);
+    assert.ok(!prepared.prompt.includes(coverText));
+    assert.ok(!prepared.url.includes(encodeURIComponent(coverText)));
+    const located = readNativeHandoff(f.directory, prepared.id, release);
+    const context = located.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
+    assert.equal(context.request.coverText, coverText);
+    assert.equal(context.request.title, f.content.title);
+    assert.equal(context.body, f.content.body);
+    assert.equal(new URL(prepared.url).searchParams.get('prompt'), prepared.prompt);
+});
+
+test('cover execution contract requires exact frozen text in actual image prompt with legacy title fallback', () => {
+    const text = fs.readFileSync(new URL('../skills/nova-content-cover-execution/execution-contract.md', import.meta.url), 'utf8');
+    assert.match(text, /request.coverText.*完整内容与换行/);
+    assert.match(text, /request.title 仅用于理解内容/);
+    assert.match(text, /未提供 coverText 时沿用 request.title 作为封面标题/);
+});

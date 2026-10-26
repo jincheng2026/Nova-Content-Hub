@@ -28,7 +28,7 @@ function launch() {
   return ok({...view,launchRequested:true});
 }
 window.finish = status => {view={...view,jobs:view.jobs.map(job=>({...job,activeAttemptId:null,attempts:job.attempts.map(attempt=>attempt.attemptId===job.activeAttemptId?{...attempt,status,failure:status==='failed'?{code:'FAILED',message:'制作失败详情'}:null}:attempt)}))};};
-window.contentHub = {listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),generateCover:async input=>{window.lastInput=input;return launch();},retryCover:async()=>launch(),continueCover:async()=>ok({launchRequested:true}),continueBoundCover:async reference=>{window.continues.push(reference);return ok({launchRequested:true});},cancelCover:async()=>{window.finish('cancelled');return ok(view);}};
+window.contentHub = {readProductionCreation:async()=>ok({content:view.content,creation:null}),listCoverAssets:async()=>ok(assets),readCover:async()=>ok(view),generateCover:async input=>{window.lastInput=input;return launch();},retryCover:async()=>launch(),continueCover:async()=>ok({launchRequested:true}),continueBoundCover:async reference=>{window.continues.push(reference);return ok({launchRequested:true});},cancelCover:async()=>{window.finish('cancelled');return ok(view);}};
 function Probe() {
  const [token,setToken]=useState(0);
  window.refresh=()=>setToken(old=>old+1);

@@ -100,7 +100,7 @@ function hostURL(host, id, root, options, kind, library, context) {
     const candidateId = kind === 'cover' && /^以所附候选原图（([0-9a-f-]{36})）为基础，按以下批注修改；/.exec(request.prompt)?.[1];
     const candidate = candidateId && context.content.candidates.find(item => item.id === candidateId);
     const refinement = candidate && request.materials.some(item => item.role === 'reference' && item.assetHash === candidate.assetHash && item.originalName === `候选修改参考-${candidateId}.png`);
-    const prompt = () => [kind === 'template' ? `请学习${name.length ? `「${name.join('')}」模板` : '这组模板'}，整理规则并还原首张样图。` : refinement ? `请按批注修改${name.length ? `「${name.join('')}」的封面` : '这篇内容的封面'}，交回新候选。` : `请给${name.length ? `「${name.join('')}」` : '这篇内容'}制作封面，交回工作台。`, `任务编号：${id}`, ...(host === 'codex' ? [`$${skill}`] : []), '请按任务编号读取本地完整请求、正文与全部已选输入后执行。'].join('\n');
+    const prompt = () => [kind === 'template' ? `请学习${name.length ? `「${name.join('')}」模板` : '这组模板'}，整理规则并还原首张样图。` : refinement ? `请按批注修改${name.length ? `「${name.join('')}」的封面` : '这篇内容的封面'}，交回新候选。` : `请给${name.length ? `「${name.join('')}」` : '这篇内容'}制作封面，交回工作台。`, `任务编号：${id}`, ...(host === 'codex' ? [`$${skill}`] : []), '请按任务编号读取本地完整请求、正文与全部已选输入后执行。', ...(kind === 'cover' && request.coverText !== undefined ? ['封面文字采用固定请求 coverText，逐字保留换行。'] : [])].join('\n');
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
         url.searchParams.set('action', 'start');

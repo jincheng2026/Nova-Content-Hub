@@ -6,8 +6,10 @@ export const assistant = (v: unknown) => ASSISTANTS.includes(v as typeof ASSISTA
 export const templateId = (v: unknown) => uuid(v) || typeof v === 'string' && /^builtin-[a-z0-9-]{1,80}$/.test(v);
 export function coverInput(v: unknown): v is CoverInput {
   const hasSizePolicy = isRecord(v) && Object.hasOwn(v, 'sizePolicy');
-  return exact(v, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', ...(hasSizePolicy ? ['sizePolicy'] : [])]) &&
+  const hasCoverText = isRecord(v) && Object.hasOwn(v, 'coverText');
+  return exact(v, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', ...(hasSizePolicy ? ['sizePolicy'] : []), ...(hasCoverText ? ['coverText'] : [])]) &&
     (!hasSizePolicy || v.sizePolicy === 'exact' || v.sizePolicy === 'ratio-minimum') &&
+    (!hasCoverText || typeof v.coverText === 'string' && v.coverText.trim().length > 0 && v.coverText.length <= 10000) &&
     exact(v.template, ['id', 'version']) && templateId(v.template.id) && Number.isSafeInteger(v.template.version) && (v.template.version as number) > 0 &&
     Array.isArray(v.styleAssetHashes) && v.styleAssetHashes.length > 0 && v.styleAssetHashes.length <= 100 && v.styleAssetHashes.every(token) && new Set(v.styleAssetHashes).size === v.styleAssetHashes.length &&
     (v.photo === null || exact(v.photo, ['id', 'assetHash']) && uuid(v.photo.id) && token(v.photo.assetHash)) &&

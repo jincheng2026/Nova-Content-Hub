@@ -23,7 +23,7 @@ const photos=[photo('photo-a','本人照片甲'),photo('photo-b','本人照片�
 const assets={photos,templates:[{id:'template',name:'参考模板',version:1,samples:[{assetHash:'sample',url:''}]}]};
 const cover={content,candidates:[],jobs:[],selectedCandidateId:null};
 const initialLibrary={settings:{defaults:{photoId:'photo-a',templateId:'template',coverCount:2},customRatios:['2:3']},photos,templates:[{id:'template',deletedAt:null}],contentDetails:[{...content,materials:[],candidates:[],coverVariants:[]}]};
-window.contentHub={listCoverAssets:async()=>({ok:true,value:assets}),readCover:async()=>({ok:true,value:cover}),generateCover:async input=>{window.calls.push(input);return {ok:true,value:{...cover,launchRequested:false}}}};
+window.contentHub={readProductionCreation:async()=>({ok:true,value:{content,creation:window.packaging?{packaging:window.packaging}:null}}),listCoverAssets:async()=>({ok:true,value:assets}),readCover:async()=>({ok:true,value:cover}),generateCover:async input=>{window.calls.push(input);return {ok:true,value:{...cover,launchRequested:false}}}};
 function Fixture(){const [busy,setBusy]=useState(false),[library,setLibrary]=useState(initialLibrary),[refreshToken,setRefreshToken]=useState(0);window.refreshFixture=()=>{setLibrary({...initialLibrary});setRefreshToken(t=>t+1)};return <CoverPanel library={library} status={{currentName:'回归库',assistant:'codex'}} content={content} dirty={false} busy={busy} blocked={false} refreshToken={refreshToken} startOpenKey={1} readAutomatically={async()=>({assets,cover})} run={async action=>{setBusy(true);try{return await action()}catch(e){window.errors.push(e.message)}finally{setBusy(false)}}} onContent={()=>{}}/>}
 createRoot(document.getElementById('root')).render(<Fixture/>);
 `);

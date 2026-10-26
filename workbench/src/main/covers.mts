@@ -166,9 +166,12 @@ export class Covers {
     await this.requireAssistant(c.binding.assistant ?? 'codex');
     const current = context ?? await c.worker.call('coverContext', { binding, reference });
     const request = current.request as CoverContext['request'] & CoverInput & { materials?: { id: string }[] };
-    const input: CoverInput = { template: { id: request.template.id, version: request.template.version }, styleAssetHashes: [...request.styleAssetHashes], photo: request.photo ? { id: request.photo.id, assetHash: request.photo.assetHash } : null, materialIds: (request.materials || []).map(m => m.id), prompt: request.prompt, pixels: { ...request.pixels }, ...(request.sizePolicy ? { sizePolicy: request.sizePolicy } : {}), ratio: request.ratio, count: request.count, outputFormat: request.outputFormat, scope: 'cover-only' };
-    const fingerprint = await c.worker.call('inspectCoverInput', { binding, contentId: reference.contentId, input, editToken: current.content.editToken });
-    if (fingerprint.title !== request.title || fingerprint.bodyHash !== request.bodyHash) fail('STALE_INPUT', '正文或标题已改变，请使用当前内容重新准备封面。');
+    const input: CoverInput = { template: { id: request.template.id, version: request.template.version }, styleAssetHashes: [...request.styleAssetHashes], photo: request.photo ? { id: request.photo.id, assetHash: request.photo.assetHash } : null, materialIds: (request.materials || []).map(m => m.id), prompt: request.prompt, ...(request.coverText !== undefined ? {coverText: request.coverText} : {}), pixels: { ...request.pixels }, ...(request.sizePolicy ? { sizePolicy: request.sizePolicy } : {}), ratio: request.ratio, count: request.count, outputFormat: request.outputFormat, scope: 'cover-only' };
+    // A retry uses the frozen human selection even if packaging was edited afterward.
+    const fingerprint = request.coverText !== undefined
+      ? {contentId: reference.contentId, title: request.title, bodyHash: request.bodyHash, inputHash: request.inputHash, editToken: current.content.editToken, existingRequest: {requestId: request.requestId, requestHash: request.requestHash}}
+      : await c.worker.call('inspectCoverInput', { binding, contentId: reference.contentId, input, editToken: current.content.editToken });
+    if (current.content.title !== request.title || createHash('sha256').update(current.content.body).digest('hex') !== request.bodyHash || fingerprint.title !== request.title || fingerprint.bodyHash !== request.bodyHash) fail('STALE_INPUT', '正文或标题已改变，请使用当前内容重新准备封面。');
     await c.persist({ ...c.binding, coverPending: { input, fingerprint, host: c.binding.assistant ?? 'codex', requestId: reference.requestId, requestHash: request.requestHash, requestMutationId: randomUUID(), attemptMutationId: randomUUID(), reason } });
     return this.finishCover(open);
   }

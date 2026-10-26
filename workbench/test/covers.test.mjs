@@ -588,3 +588,50 @@ test('one detail read verifies a shared template once while rechecking every fix
   await fs.writeFile(assetFile, f.bytes);
   assert.ok((await f.controller.readCover({contentId: f.content.id})).jobs.every(job => job.summary));
 });
+
+for (const host of ['codex', 'workbuddy']) test(`${host} freezes selected cover text through recovery, retry and host switch without changing title or body`, async t => {
+  const f = await fixture(t);
+  f.library.mutateProduction('ensureCreation', {contentId: f.content.id, expectedToken: f.library.readProduction().editToken});
+  const first = randomUUID(), second = randomUUID(), coverText = '封面逐字文字\n  保留缩进';
+  const select = selectedCoverTextId => {
+    const state = f.library.readProductionCreation(f.content.id);
+    return f.library.saveProductionDraft(f.content.id, {body: state.content.body, expectedBodyHash: state.content.bodyHash, expectedProductionToken: state.productionToken, creationPatch: {packaging: {titles: [], intros: [], coverTexts: [{id: first, text: coverText}, {id: second, text: '新选择'}], selectedTitleId: null, selectedIntroId: null, selectedCoverTextId}}}, state.content.editToken);
+  };
+  select(first);
+  await f.controller.setAssistant({host});
+  const call = f.worker.call; let interrupted = false;
+  f.worker.call = async (op, args) => {const result = await call(op, args); if (op === 'createCoverRequest' && !interrupted) {interrupted = true; throw Object.assign(new Error('lost acknowledgement'), {code: 'WORKER_EXIT'});} return result;};
+  await assert.rejects(f.start(f.controller, {...f.input, coverText}), {code: 'WORKER_EXIT'});
+  assert.equal((await f.store.load()).coverPending.input.coverText, coverText);
+  f.worker.call = call;
+  const reopened = f.make(); await reopened.initialize();
+  const generated = await reopened.resumeCover(), job = generated.jobs[0];
+  const reference = {contentId: f.content.id, requestId: job.id, attemptId: job.activeAttemptId};
+  const originalPath = path.join(f.libraryRoot, '内容', f.content.id, '封面任务', job.id, '请求.json');
+  const originalBytes = await fs.readFile(originalPath);
+  select(second);
+  const retried = await reopened.retryCover(reference);
+  await reopened.setAssistant({host: host === 'codex' ? 'workbuddy' : 'codex'});
+  await reopened.continueCover({...reference, attemptId: retried.jobs[0].activeAttemptId});
+  const current = f.library.readContent(f.content.id), activeAttemptId = current.coverJobs[0].activeAttemptId;
+  const context = f.library.readCoverContext(f.content.id, job.id, activeAttemptId);
+  assert.equal(context.request.coverText, coverText);
+  assert.equal(context.request.title, f.content.title);
+  assert.equal(context.body, f.content.body);
+  assert.equal(current.coverJobs.length, 1);
+  assert.equal(current.coverJobs[0].attempts.length, 3);
+  assert.deepEqual(await fs.readFile(originalPath), originalBytes);
+  assert.equal(f.launches.length, 3, 'each explicit launch retains the existing manual assistant flow');
+  f.library.updateContent(current.id, {body: 'changed after request'}, current.editToken);
+  await assert.rejects(reopened.retryCover({...reference, attemptId: activeAttemptId}), {code: 'STALE_INPUT'});
+  assert.equal(f.launches.length, 3);
+});
+
+test('cover IPC accepts bounded optional frozen text while rejecting invalid values and keeping legacy input valid', async t => {
+  const f = await fixture(t);
+  const validate = input => validateInput('generateCover', {contentId: f.content.id, editToken: f.content.editToken, input});
+  assert.doesNotThrow(() => validate(f.input));
+  assert.doesNotThrow(() => validate({...f.input, coverText: '第一行\n第二行'}));
+  assert.doesNotThrow(() => validate({...f.input, coverText: '字'.repeat(10000)}));
+  for (const value of [undefined, null, '', '  ', 12, '字'.repeat(10001)]) assert.throws(() => validate({...f.input, coverText: value}), {code: 'INVALID_INPUT'});
+});

@@ -6,7 +6,7 @@ export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-
 export interface Raster { assetHash: string; url: string }
 export interface TemplateGroup extends TemplateCatalogFields { studyComplete: boolean; builtin: boolean; id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
 export interface Photo { id: string; title: string; assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; url: string | null }
-export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; pixels: { width: number; height: number }; sizePolicy?: 'exact' | 'ratio-minimum'; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
+export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; coverText?: string; pixels: { width: number; height: number }; sizePolicy?: 'exact' | 'ratio-minimum'; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
 export interface CoverStart { contentId: string; editToken: string; input: CoverInput }
 export interface Fingerprint { contentId: string; title: string; bodyHash: string; editToken: string; inputHash: string; existingRequest: { requestId: string; requestHash: string } | null }
 export interface TaskProgress {phase: 'reading' | 'generating' | 'validating' | 'analyzing' | 'restoring'; state: 'running' | 'waiting-user' | 'waiting-permission'; message: string; revision: number; updatedAt: string; sessionId?: string}
@@ -21,7 +21,7 @@ export interface PhotoPending { source: string; expectedHash: string; mutationId
 export type CoverActionPending = { mutationId: string } & ({ action: 'select'; contentId: string; candidateId: string; editToken: string } | { action: 'cancel'; reference: CoverReference });
 export interface CoverPending { input: CoverInput; fingerprint: Fingerprint; requestMutationId: string; attemptMutationId: string; host: Assistant; requestId: string | null; requestHash: string | null; reason: 'initial' | 'retry' | 'host-change' }
 export interface CoverReference { contentId: string; requestId: string; attemptId: string }
-export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string; sizePolicy?: CoverInput['sizePolicy'] }; attempt: Attempt; progress?: TaskProgress | null }
+export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string; coverText?: string; sizePolicy?: CoverInput['sizePolicy'] }; attempt: Attempt; progress?: TaskProgress | null }
 export interface RequestResult { content: Content & { coverJobs?: CoverJob[] }; request: CoverContext['request']; bodyBytes: Uint8Array }
 export interface CoverInputs {
   readAssistantSetup: undefined;
