@@ -1,3 +1,5 @@
+import {serviceSettingsPatch} from './service-validation.ts';
+import {productionDesktopInput} from './production-validation.ts';
 import {coverDesktopInput} from './cover-validation.ts';
 import {workspaceDesktopInput} from './workspace-validation.ts';
 import {maintenanceDesktopInput} from './maintenance-validation.ts';
@@ -21,13 +23,14 @@ export const libraryBinding = (v: unknown): v is LibraryBinding => exact(v, ['ro
 export function validateInput(method: DesktopMethod, input: unknown) {
     const ref = (v: unknown) => exact(v, ['id', 'editToken']) && uuid(v.id) && token(v.editToken);
     const draft = (v: Record<string, unknown>) => typeof v.title === 'string' && !!v.title.trim() && v.title.length <= 500 && typeof v.body === 'string' && v.body.length <= 1_000_000;
-    const delegated = coverDesktopInput(method, input) ?? workspaceDesktopInput(method, input) ?? maintenanceDesktopInput(method, input) ?? preferencesDesktopInput(method, input) ?? setupDesktopInput(method, input) ?? bootstrapDesktopInput(method, input) ?? templateDesktopInput(method, input);
+    const delegated = productionDesktopInput(method, input) ?? coverDesktopInput(method, input) ?? workspaceDesktopInput(method, input) ?? maintenanceDesktopInput(method, input) ?? preferencesDesktopInput(method, input) ?? setupDesktopInput(method, input) ?? bootstrapDesktopInput(method, input) ?? templateDesktopInput(method, input);
     if (delegated !== undefined) {
         if (!delegated) fail('INVALID_INPUT', '操作拒绝额外、路径或无效字段。');
         return;
     }
     let valid: boolean;
     switch (method) {
+        case 'saveServiceSettings': valid = serviceSettingsPatch(input); break;
         case 'createContent':
             valid = exact(input, ['title', 'body']) && draft(input);
             break;

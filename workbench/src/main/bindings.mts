@@ -1,3 +1,4 @@
+import {productionPending} from '../shared/production-validation.ts';
 import {assistant, coverPending, photoPending, coverActionPending} from '../shared/cover-validation.ts';
 import {templatePending} from '../shared/template-validation.ts';
 import {workspacePending} from '../shared/workspace-validation.ts';
@@ -20,7 +21,7 @@ function validMaintenance(value: unknown, current: unknown): boolean {
 }
 
 export function validateBinding(value: unknown): Binding {
-    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect', 'assistant', 'photoPending', 'coverPending', 'seedPending', 'coverActionPending', 'workspacePending', 'templatePending', 'maintenancePending'].includes(key)) ||
+    if (!isRecord(value) || value.version !== 1 || Object.keys(value).some(key => !['version', 'source', 'sourceHash', 'destination', 'started', 'importId', 'libraryId', 'current', 'pending', 'creation', 'needsReselect', 'assistant', 'photoPending', 'coverPending', 'seedPending', 'coverActionPending', 'workspacePending', 'templatePending', 'maintenancePending', 'productionPending'].includes(key)) ||
         !(value.source === null || absolute(value.source)) || !(value.destination === null || absolute(value.destination)) ||
         !(value.sourceHash === null || (typeof value.sourceHash === 'string' && /^[0-9a-f]{64}$/.test(value.sourceHash))) || typeof value.started !== 'boolean' ||
         !(value.importId === null || (typeof value.importId === 'string' && UUID.test(value.importId))) || !(value.libraryId === null || (typeof value.libraryId === 'string' && UUID.test(value.libraryId))) ||
@@ -35,9 +36,10 @@ export function validateBinding(value: unknown): Binding {
         (value.workspacePending !== undefined && value.workspacePending !== null && (!workspacePending(value.workspacePending) || !libraryBinding(value.current) || value.workspacePending.binding.libraryId !== value.current.libraryId || value.workspacePending.binding.rootIdentity.dev !== value.current.rootIdentity.dev || value.workspacePending.binding.rootIdentity.ino !== value.current.rootIdentity.ino)) ||
         (value.templatePending !== undefined && value.templatePending !== null && (!templatePending(value.templatePending) || !libraryBinding(value.current) || value.templatePending.binding.libraryId !== value.current.libraryId || value.templatePending.binding.rootIdentity.dev !== value.current.rootIdentity.dev || value.templatePending.binding.rootIdentity.ino !== value.current.rootIdentity.ino)) ||
         (value.maintenancePending !== undefined && value.maintenancePending !== null && !validMaintenance(value.maintenancePending, value.current)) ||
+        (value.productionPending !== undefined && value.productionPending !== null && (!productionPending(value.productionPending) || !libraryBinding(value.current) || value.productionPending.binding.libraryId !== value.current.libraryId || value.productionPending.binding.rootIdentity.dev !== value.current.rootIdentity.dev || value.productionPending.binding.rootIdentity.ino !== value.current.rootIdentity.ino)) ||
         (value.seedPending !== undefined && typeof value.seedPending !== 'boolean') ||
         (value.seedPending && !value.current) ||
-        ([value.pending, value.creation, value.photoPending, value.coverPending, value.coverActionPending, value.workspacePending, value.templatePending, value.maintenancePending, value.seedPending].filter(Boolean).length > 1) ||
+        ([value.pending, value.creation, value.photoPending, value.coverPending, value.coverActionPending, value.workspacePending, value.templatePending, value.maintenancePending, value.productionPending, value.seedPending].filter(Boolean).length > 1) ||
         (value.needsReselect !== undefined && typeof value.needsReselect !== 'boolean') || (value.pending && value.creation) ||
         (value.importId && !value.started) || (value.libraryId && !value.importId)) {
         throw Object.assign(new Error('机器绑定记录损坏，已保留现场；请联系维护者检查。'), {code: 'BINDING_INVALID'});
@@ -58,6 +60,7 @@ export const emptyBinding = (): Binding => ({
     workspacePending: null,
     templatePending: null,
     maintenancePending: null,
+    productionPending: null,
     creation: null,
     needsReselect: false
 });

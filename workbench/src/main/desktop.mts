@@ -1,9 +1,12 @@
 import {assistantSessionURL} from '../shared/task-progress.ts';
 import {prepareNativeHandoff, nativeHandoffDirectory, openNativeHandoff} from '../../../plugin-src/src/bridge/native-handoff.mjs';
+import {prepareProductionHandoff} from '../../../plugin-src/src/bridge/production-handoff.mjs';
 import {errorInfo} from '../shared/contracts.ts';
-import type {Dialogs, Release, DesktopInputs, DesktopMethod} from '../shared/contracts.ts';
-import {app, BrowserWindow, clipboard, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray, powerMonitor} from 'electron';
+import type {Dialogs, Release, DesktopInputs, DesktopMethod, LibraryBinding} from '../shared/contracts.ts';
+import {requireWrite, fail} from '../shared/validation.ts';
+import {app, BrowserWindow, clipboard, dialog, ipcMain, protocol, session, utilityProcess, nativeImage, shell, Menu, Tray, powerMonitor, safeStorage} from 'electron';
 import fs from 'node:fs/promises';
+import {randomUUID} from 'node:crypto';
 import {readFileSync, existsSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -24,6 +27,10 @@ import {installedAssistantSkill} from './assistant-skill.mts';
 import {launchWithAssistantRuntime} from './assistant-runtime.mts';
 import {confirmInstalledApplication, offerApplicationInstall} from './installation.mts';
 import {isMacInstallationBackupExecutable} from './mac-installation.mts';
+import {ServiceSettingsStore} from './service-settings.mts';
+import {ServiceTools} from './service-tools.mts';
+import {productionToolBroker} from './production-services.mts';
+import {ProductionPages} from './production-pages.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
@@ -74,6 +81,9 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     let tray: Tray | null = null;
     let reminders: Reminders | undefined;
     let libraryWatcher: LibraryWatcher | undefined;
+    let productionPages: ProductionPages | undefined;
+    let productionBroker: ReturnType<typeof productionToolBroker> | undefined;
+    const serviceErrors: string[] = [];
     let quitting = false, quitReady = false;
     let resumeReminders: (() => void) | undefined;
     // Keep library reads and writes serial: separate workers still share the same library lock.
@@ -87,14 +97,14 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         if (quitting) return;
         quitting = true;
         // will-quit follows the resident draft-save guard; accepted writes must release their locks before worker termination.
-        const drained = runOperation.close();
         libraryWatcher?.close();
         reminders?.dispose();
         if (resumeReminders) {
             powerMonitor.removeListener('resume', resumeReminders);
             powerMonitor.removeListener('unlock-screen', resumeReminders);
         }
-        void drained.then(() => {
+        // Stop new browser/tool requests and settle accepted service calls before closing the shared queue.
+        void Promise.allSettled([productionPages?.close(), productionBroker?.stop()]).then(() => runOperation.close()).then(() => {
             worker?.stop();
             resourceWorker?.stop();
             tray?.destroy();
@@ -160,6 +170,10 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         openExternal: (url: string) => shell.openExternal(url)
     });
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
+    const serviceSettings = new ServiceSettingsStore({filePath: path.join(app.getPath('userData'), 'service-settings.json'), encryption: safeStorage});
+    try { await serviceSettings.initialize(); } catch { serviceErrors.push('SETTINGS_UNAVAILABLE'); }
+    const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json')});
+    const serviceDescriptorPath = path.join(app.getPath('userData'), 'production-services.json');
     const controller: DesktopController = new DesktopController({
         copyText: text => clipboard.writeText(text),
         openPublicationURL: url => shell.openExternal(url),
@@ -177,6 +191,43 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         documents: app.getPath('documents'),
         readAssistantSetup,
         readTemplateAssistantSetup,
+        productionCallbacks: {
+            serviceSettings: async () => serviceSettings.read(),
+            costReconciled: requestId => serviceTools.reconcileCost(requestId),
+            launch: async (binding, reference) => {
+                requireWrite(release.AUTH_MODE);
+                serviceSettings.read();
+                if (!productionBroker) fail('NOT_READY', '本机工具服务尚未准备好。');
+                await productionBroker.start();
+                const context = await worker!.call('productionContext', {binding, taskId: reference.taskId});
+                if (!context.task) fail('NOT_FOUND', '任务不存在。');
+                const capability = context.task.kind === 'research' ? 'research' : 'writing';
+                try { await app.getApplicationInfoForProtocol(`${reference.host}://`); }
+                catch { fail('NOT_READY', '所选助手尚未安装或未注册打开协议。'); }
+                const installedSkill = installedAssistantSkill(reference.host, release, {capability});
+                await launchWithAssistantRuntime(reference.host, release, assistantMarketRoot, async () => {
+                    const handoff = await prepareProductionHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill, serviceDescriptorPath});
+                    await openPreparedHandoff(handoff);
+                }, {capability});
+            },
+            open: async (binding, target) => {
+                let url: string;
+                if (target.kind === 'account') {
+                    const snapshot = await worker!.call('productionRead', {binding});
+                    const account = snapshot.accounts.find(item => item.id === target.id && !item.deletedAt);
+                    if (!account) fail('NOT_FOUND', '账号不存在。');
+                    let parsed: URL;
+                    try { parsed = new URL(account.url); } catch { return fail('INVALID_INPUT', '账号链接无效。'); }
+                    if (!['http:', 'https:'].includes(parsed.protocol) || parsed.username || parsed.password) fail('INVALID_INPUT', '账号链接无效。');
+                    url = parsed.href;
+                } else {
+                    if (!productionPages) fail('NOT_READY', '本机创作与报告页面尚未准备好。');
+                    url = target.kind === 'creation' ? await productionPages.openCreation(binding, target.id) : await productionPages.openReport(binding, target.id, target.pageId);
+                }
+                await shell.openExternal(url);
+                return url;
+            }
+        },
         launchTemplate: async (binding, reference) => {
             const setup = await readTemplateAssistantSetup(reference.host);
             if (!setup.ready || !setup.skill) throw Object.assign(new Error('请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY'});
@@ -199,6 +250,11 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             });
         },
         dialogs: dialogs ?? {
+            async productionFiles(kind) {
+                const filters = kind === 'images' ? [{name: '图片', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif']}] : kind === 'report' ? [{name: 'HTML 报告', extensions: ['html', 'htm']}] : [{name: '音视频与字幕', extensions: ['mp3', 'wav', 'm4a', 'mp4', 'mov', 'webm', 'ogg', 'flac', 'aac', 'srt', 'vtt', 'txt']}];
+                const selected = await dialog.showOpenDialog(window, {title: kind === 'images' ? '选择账号截图（每个文件不超过64 MiB）' : kind === 'report' ? '选择完整 HTML 报告（每个文件不超过64 MiB）' : '选择本机音视频或字幕（每个文件不超过64 MiB）', properties: ['openFile', 'multiSelections'], filters});
+                return selected.canceled ? null : selected.filePaths;
+            },
             async promptDocument() { const selected = await dialog.showOpenDialog(window, { title: '选择提示词文件', properties: ['openFile'], filters: [{ name: 'Markdown 或文本', extensions: ['md', 'markdown', 'txt'] }] }); return selected.canceled ? null : selected.filePaths[0] ?? null; },
             async templateFolder() {const selected = await dialog.showOpenDialog(window, {title: '选择同一模板的图片文件夹（仅第一层，最多50张）', properties: ['openDirectory']}); return selected.canceled ? null : selected.filePaths[0] ?? null;},
             async templateImages() {
@@ -241,6 +297,41 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             },
         },
     });
+    const authorizeProductionPage = (binding: LibraryBinding) => {
+        requireWrite(release.AUTH_MODE);
+        if (quitting) fail('FORBIDDEN', '工作台正在退出。');
+        const current = controller.current();
+        if (current.libraryId !== binding.libraryId || current.root !== binding.root || current.rootIdentity.dev !== binding.rootIdentity.dev || current.rootIdentity.ino !== binding.rootIdentity.ino) fail('FORBIDDEN', '页面所属内容库已切换，请从当前内容库重新打开。');
+    };
+    productionPages = new ProductionPages({
+        creationHtml: readFileSync(path.join(here, '../production-creation.html'), 'utf8'),
+        authorize: authorizeProductionPage,
+        worker: {call: (op, args) => runOperation(async () => {
+            if (op !== 'productionReport' || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
+            authorizeProductionPage(args.binding as LibraryBinding);
+            return worker!.call(op, args);
+        })},
+        readCreation: (binding, contentId) => runOperation(async () => {
+            authorizeProductionPage(binding);
+            return controller.readProductionCreation({contentId});
+        }),
+        setReportPosition: (binding, reportId, pageId) => runOperation(async () => {
+            authorizeProductionPage(binding);
+            const snapshot = await controller.readProduction();
+            try { await controller.mutateProduction({op: 'setReportPosition', input: {id: reportId, pageId, expectedToken: snapshot.editToken}, mutationId: randomUUID()}); }
+            finally { syncLibraryWatcher(); }
+        }),
+        saveDraft: (binding, input) => runOperation(async () => {
+            authorizeProductionPage(binding);
+            try { return await controller.saveProductionDraft(input); }
+            finally { syncLibraryWatcher(); }
+        })
+    });
+    productionBroker = productionToolBroker({worker, current: () => {
+        requireWrite(release.AUTH_MODE);
+        return controller.current();
+    }}, serviceTools, serviceDescriptorPath, runOperation);
+    if (release.AUTH_MODE === 'disabled') try { await productionBroker.start(); } catch { serviceErrors.push('BROKER_UNAVAILABLE'); }
     let initializationError: unknown;
     let bootstrapReason = 'none';
     let bindingBackupName: string | null = null;
@@ -319,9 +410,8 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         console.warn('菜单栏/托盘不可用，关闭窗口将退出工作台。', error);
     }
     const preferences = new Preferences({file: path.join(app.getPath('userData'), 'local-preferences.json'), login: app});
-    const serviceErrors: string[] = [];
     try { await preferences.initialize(); } catch { serviceErrors.push('PREFERENCES_UNAVAILABLE'); }
-    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.templatePending && !controller.binding.maintenancePending && !controller.binding.seedPending;
+    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.templatePending && !controller.binding.maintenancePending && !controller.binding.seedPending && !controller.binding.productionPending;
     reminders = new Reminders({
         file: path.join(app.getPath('userData'), 'daily-reminder.json'),
         preferences: () => preferences.values,
@@ -356,7 +446,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             }, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};
         }
     });
-    controller.services = {preferences, reminders, setup, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
+    controller.services = {preferences, reminders, setup, productionServices: {readServiceSettings: () => serviceSettings.read(), saveServiceSettings: input => serviceSettings.update(input), checkServiceReadiness: () => serviceTools.checkReadiness()}, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
     preferences.onSaved = () => { if (!quitting) void reminders?.refresh(true); };
     resumeReminders = () => { if (!quitting) void reminders?.refresh(true); };
     powerMonitor.on('resume', resumeReminders);
@@ -376,7 +466,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     for (const method of CHANNELS) ipcMain.handle(`nova:${method}`, async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, args, method);
-            if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
+            if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readServiceSettings', 'saveServiceSettings', 'checkServiceReadiness', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
                 value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })

@@ -1,3 +1,5 @@
+import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness} from './service-contracts.ts';
+import type {ProductionInputs, ProductionResults, ProductionPending, ProductionWorkerOperations, ProductionFileKind} from './production-contracts.ts';
 import type {LocalFileKind, LocalFileResults, PhotoImportOptions} from './local-files.ts';
 import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, PhotoPending, CoverActionPending, Assistant} from './cover-contracts.ts';
 import type {WorkspaceInputs, WorkspaceResults, WorkspaceWorkerOperations, WorkspacePending, WorkspacePendingView} from './workspace-contracts.ts';
@@ -119,10 +121,14 @@ export interface Status {
     seedPending: boolean;
     workspacePending: WorkspacePendingView | null;
     templatePending: TemplatePendingView | null;
+    productionPending: boolean;
     maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
+export interface DesktopInputs extends ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
+    readServiceSettings: undefined;
+    saveServiceSettings: ServiceSettingsPatch;
+    checkServiceReadiness: undefined;
     choosePromptDocument: undefined;
     status: undefined;
     listContents: { view: View } | undefined;
@@ -140,7 +146,10 @@ export interface DesktopInputs extends CoverInputs, WorkspaceInputs, Maintenance
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
+export interface DesktopResults extends ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
+    readServiceSettings: ServiceSettingsView;
+    saveServiceSettings: ServiceSettingsView;
+    checkServiceReadiness: ServiceReadiness;
     choosePromptDocument: {title: string; body: string} | null;
     status: Status;
     listContents: Content[];
@@ -181,6 +190,7 @@ export interface Binding {
     workspacePending?: WorkspacePending | null;
     templatePending?: TemplatePending | null;
     maintenancePending?: MaintenancePending | null;
+    productionPending?: ProductionPending | null;
     seedPending?: boolean;
     current?: LibraryBinding | null;
     pending?: Mutation | null;
@@ -188,7 +198,7 @@ export interface Binding {
     needsReselect?: boolean
 }
 
-export interface WorkerOperations extends CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
+export interface WorkerOperations extends ProductionWorkerOperations, CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
     bind: { args: { destination: string }; result: LibraryBinding };
     createLibrary: { args: { root: string; rootIdentity: RootIdentity; mutationId: string }; result: LibraryBinding };
     queryCreation: {
@@ -209,6 +219,7 @@ export interface Worker {
 }
 
 export interface Dialogs {
+    productionFiles?(kind: ProductionFileKind): Promise<string[] | null>;
     promptDocument?(): Promise<string | null>;
     templateFolder?(): Promise<string | null>;
     templateImages?(): Promise<string[] | null>;

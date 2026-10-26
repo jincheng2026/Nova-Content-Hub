@@ -1,3 +1,7 @@
+import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness} from '../shared/service-contracts.ts';
+import {ProductionController} from './production-controller.mts';
+import type {ProductionCallbacks} from './production-controller.mts';
+import type {ProductionInputs} from '../shared/production-contracts.ts';
 import {validateLocalFiles} from './local-files.mts';
 import {Covers} from './covers.mts';
 import {TemplateController} from './template-controller.mts';
@@ -40,6 +44,7 @@ function fail(code: string, message: string): never {
 }
 
 export interface ControllerServices {
+    productionServices?: {readServiceSettings(): ServiceSettingsView | Promise<ServiceSettingsView>; saveServiceSettings(input: ServiceSettingsPatch): Promise<ServiceSettingsView>; checkServiceReadiness(): Promise<ServiceReadiness>};
     bootstrap?: Pick<BootstrapRecovery, 'readBootstrapRecovery' | 'resetMachineBinding'>;
     preferences?: Pick<Preferences, 'readPreferences' | 'savePreferences'>;
     reminders?: Pick<Reminders, 'readReminderStatus' | 'testReminder'>;
@@ -60,6 +65,7 @@ export class DesktopController {
         if (selection.kind === 'material') return this.workspace.chooseContentMaterial(undefined, selection.sources[0]);
         return this.covers.choosePhoto(selection.photo!, selection.sources[0]);
     }
+    production: ProductionController;
     covers: Covers;
     workspace: WorkspaceController;
     templates: TemplateController;
@@ -78,7 +84,8 @@ export class DesktopController {
     openPublicationURL?: (url: string) => Promise<void>;
     revealFolder?: (root: string) => void;
 
-    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, openPublicationURL, revealFolder, services = {}, readTemplateAssistantSetup, launchTemplate}: {
+    constructor({store, worker, dialogs, documents, authMode = 'required', launch, readAssistantSetup, resourceWorker, copyText, openPublicationURL, revealFolder, services = {}, readTemplateAssistantSetup, launchTemplate, productionCallbacks}: {
+        productionCallbacks?: ProductionCallbacks;
         store: BindingStore;
         worker: Worker;
         dialogs: Dialogs;
@@ -103,11 +110,27 @@ export class DesktopController {
         this.openPublicationURL = openPublicationURL;
         this.revealFolder = revealFolder;
         this.services = services;
+        this.production = new ProductionController(this, productionCallbacks ?? {launch: async () => fail('NOT_READY', '助手尚未配置。'), open: async () => fail('NOT_READY', '本地创作页尚未配置。'), serviceSettings: async () => fail('NOT_READY', '服务尚未配置。')});
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
         this.templates = new TemplateController(this, {readTemplateAssistantSetup: readTemplateAssistantSetup ?? (async host => ({host, ready: false, skill: null, reason: 'unconfigured'})), launchTemplate: launchTemplate ?? (async () => fail('NOT_READY', '当前构建未配置模板助手交接。'))});
         this.maintenance = new Maintenance(this);
     }
+
+    readServiceSettings(input?: undefined) { validateInput('readServiceSettings', input); return this.service('productionServices').readServiceSettings(); }
+    saveServiceSettings(input: ServiceSettingsPatch) { validateInput('saveServiceSettings', input); return this.exclusive(() => this.service('productionServices').saveServiceSettings(input)); }
+    checkServiceReadiness(input?: undefined) { validateInput('checkServiceReadiness', input); return this.exclusive(() => this.service('productionServices').checkServiceReadiness()); }
+    readProduction(input?: undefined) { return this.production.readProduction(input); }
+    mutateProduction(input: ProductionInputs['mutateProduction']) { return this.production.mutateProduction(input); }
+    startProductionTask(input: ProductionInputs['startProductionTask']) { return this.production.startProductionTask(input); }
+    openProductionTask(input: ProductionInputs['openProductionTask']) { return this.production.openProductionTask(input); }
+    actProductionTask(input: ProductionInputs['actProductionTask']) { return this.production.actProductionTask(input); }
+    openProductionLink(input: ProductionInputs['openProductionLink']) { return this.production.openProductionLink(input); }
+    chooseProductionFiles(input: ProductionInputs['chooseProductionFiles']) { return this.production.chooseProductionFiles(input); }
+    readProductionCreation(input: ProductionInputs['readProductionCreation']) { return this.production.readProductionCreation(input); }
+    saveProductionDraft(input: ProductionInputs['saveProductionDraft']) { return this.production.saveProductionDraft(input); }
+    readProductionPending(input?: undefined) { return this.production.readProductionPending(input); }
+    recoverProductionPending(input: ProductionInputs['recoverProductionPending']) { return this.production.recoverProductionPending(input); }
 
     readTemplateAssistantSetup(input?: undefined) { return this.templates.readTemplateAssistantSetup(input); }
     readTemplateProgress(input: {templateId: string}) { return this.templates.readTemplateProgress(input); }
@@ -287,6 +310,7 @@ export class DesktopController {
 
     async status(): Promise<Status> {
         return {
+            productionPending: !!this.binding.productionPending,
             assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
             workspacePending: this.workspace.view(),
             templatePending: this.templates.view(),
@@ -316,7 +340,7 @@ export class DesktopController {
     }
 
     noPending(allowSeedRetry = false) {
-        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.templatePending || this.binding.maintenancePending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
+        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.templatePending || this.binding.maintenancePending || this.binding.productionPending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
     }
 
     async maySwitch() {

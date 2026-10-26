@@ -1,3 +1,4 @@
+import {isProductionOperation, executeProduction} from './production-worker.mts';
 import {boundReader} from './bound-reader.mts';
 import {isCoverOperation, executeCover} from './cover-worker.mts';
 import {isTemplateOperation, executeTemplate} from './template-worker.mts';
@@ -59,7 +60,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
     return {contents, prompts, channels};
 }
 
-type DelegatedOperation = keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
+type DelegatedOperation = keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
     bind: ['destination'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
@@ -72,6 +73,7 @@ const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = 
 };
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
+    if (isProductionOperation(op)) return executeProduction(op, args, mode);
     if (isCoverOperation(op)) return executeCover(op, args, mode);
     if (isTemplateOperation(op)) return executeTemplate(op, args, mode);
     if (isWorkspaceOperation(op)) return executeWorkspace(op, args, mode);
