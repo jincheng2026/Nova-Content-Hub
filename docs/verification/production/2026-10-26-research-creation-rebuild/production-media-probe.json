@@ -1,0 +1,70 @@
+{
+  "startedAt": "2026-10-26T13:52:49.876Z",
+  "platform": "darwin-arm64",
+  "checks": {
+    "mediaRange": {
+      "header": "bytes 0-43/256044",
+      "suffixStatus": 206,
+      "outOfBoundsStatus": 416,
+      "foreignRegisteredAssetStatus": 403,
+      "creationCspMediaSelf": true
+    },
+    "browserPlayback": {
+      "metadata": {
+        "duration": 8,
+        "readyState": 4,
+        "error": null
+      },
+      "playback": {
+        "currentTime": 2.736417,
+        "paused": false,
+        "readyState": 4
+      },
+      "originalBodyPreserved": true,
+      "configuredByRealPages": true
+    },
+    "reportSandbox": {
+      "csp": "sandbox allow-scripts; default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'",
+      "iframeSandbox": "allow-scripts",
+      "origin": "null",
+      "parentAccess": "SecurityError",
+      "bridge": {
+        "require": "undefined",
+        "process": "undefined",
+        "nova": "undefined",
+        "electron": "undefined"
+      },
+      "violations": [
+        {
+          "directive": "connect-src",
+          "blocked": "https://nova-production-probe.invalid/must-not-leave"
+        },
+        {
+          "directive": "script-src-elem",
+          "blocked": "https://nova-production-probe.invalid/never-load.js"
+        }
+      ],
+      "chartWidth": "72%"
+    }
+  },
+  "screenshots": [
+    "media-real-chrome-1440x1000.png",
+    "media-real-chrome-900x800.png",
+    "report-inline-sandbox-1440x1000.png",
+    "report-inline-sandbox-900x800.png"
+  ],
+  "externalRequestAttempts": [],
+  "expectedCspConsoleErrors": [
+    "Connecting to 'https://nova-production-probe.invalid/must-not-leave' violates the following Content Security Policy directive: \"default-src 'none'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+    "Fetch API cannot load https://nova-production-probe.invalid/must-not-leave. Refused to connect because it violates the document's Content Security Policy.",
+    "Loading the script 'https://nova-production-probe.invalid/never-load.js' violates the following Content Security Policy directive: \"script-src 'unsafe-inline'\". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked."
+  ],
+  "pageErrors": [],
+  "workerOperations": [
+    "productionMedia",
+    "productionCreation",
+    "productionReport"
+  ],
+  "status": "passed",
+  "finishedAt": "2026-10-26T13:53:02.618Z"
+}

@@ -1,0 +1,43 @@
+{
+  "recordedAt": "2026-10-26T14:08:02.504Z",
+  "provider": "volc-ark",
+  "model": "doubao-seed-2-0-mini-260428",
+  "scope": "One real request through encrypted desktop settings, ServiceTools, claimed task, worker and broker on an isolated library after user reported recharge",
+  "inferenceSucceeded": true,
+  "httpStatus": 200,
+  "requestsUsed": 1,
+  "reply": "OK",
+  "usage": {
+    "completion_tokens": 28,
+    "prompt_tokens": 46,
+    "total_tokens": 74,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 27
+    }
+  },
+  "elapsedMs": 1308,
+  "credentialsPrinted": false,
+  "retryAutomatically": false,
+  "actualSettingsUnchanged": true,
+  "actualBudgetEnabled": false,
+  "freeQuotaVerified": false,
+  "costs": [
+    {
+      "service": "model",
+      "status": "measured",
+      "amount": 1,
+      "currency": "REQ",
+      "usage": {
+        "costStatus": "unknown",
+        "prompt_tokens": 46,
+        "completion_tokens": 28,
+        "total_tokens": 74,
+        "requests": 1,
+        "ok": true
+      }
+    }
+  ]
+}

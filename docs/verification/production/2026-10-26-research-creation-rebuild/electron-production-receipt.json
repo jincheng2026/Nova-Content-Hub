@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-26T14:12:34.226Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.49",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.49:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "viewports": [
+    [
+      1440,
+      1000
+    ],
+    [
+      1000,
+      800
+    ]
+  ],
+  "checks": [
+    {
+      "name": "primary menu chevrons align at the right edge",
+      "detail": true
+    },
+    {
+      "name": "desktop safeStorage/settings views omit credential bytes",
+      "detail": {
+        "encryptionAvailable": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "report UI freezes explicit title and unchecked per-task comments; launch mocked",
+      "detail": true
+    },
+    {
+      "name": "report HTML import and companion JSON preserve type, source, timestamp and sample metadata through actual UI and IPC; file selection simulated",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "browser creation saves through desktop durable transaction and rejects stale CAS; explicit stale recovery intent discarded in test library",
+      "detail": true
+    },
+    {
+      "name": "account wall has three readable real asset previews and one active navigation item 1000x800",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1000x800",
+      "detail": true
+    },
+    {
+      "name": "switching libraries invalidates old browser capabilities",
+      "detail": true
+    }
+  ],
+  "launchMocked": true,
+  "paidRequests": 0,
+  "realLibrary": false,
+  "scope": "Real Electron sandbox/preload/IPC/React navigation and isolated Chromium loopback creation page; excludes real assistant hosts, OS default browser, native installers and other platforms.",
+  "designRules": {
+    "Foundation-01": "screenshots captured for review",
+    "Layout-01": "content group contains exactly content and cover; four project filters verified",
+    "Controls-02": "report title required; per-task comments remain unchecked despite global enabled capability",
+    "Reading-02": "account image assets decoded; settings credential values omitted",
+    "Acceptance-01": "native typecheck and production smoke",
+    "Acceptance-02": "two viewport screenshots; visual review required",
+    "Acceptance-03": "darwin/arm64 native Electron only; no installer or cross-platform claim"
+  }
+}

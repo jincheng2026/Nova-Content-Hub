@@ -1,0 +1,36 @@
+{
+  "error": "Error: Timeout: [...document.querySelectorAll('button')].find(b=>b.textContent.trim()===\"打开本地创作页 ↗\"&&!b.disabled)",
+  "stack": "Error: Timeout: [...document.querySelectorAll('button')].find(b=>b.textContent.trim()===\"打开本地创作页 ↗\"&&!b.disabled)",
+  "checks": [
+    {
+      "name": "desktop safeStorage/settings views omit credential bytes",
+      "detail": {
+        "encryptionAvailable": true
+      }
+    },
+    {
+      "name": "account wall has three readable real asset previews 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "report UI freezes explicit title and unchecked per-task comments; launch mocked",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "browser creation saves through desktop durable transaction and rejects stale CAS",
+      "detail": true
+    },
+    {
+      "name": "account wall has three readable real asset previews 1000x800",
+      "detail": true
+    },
+    {
+      "name": "report opens capability URL with both pages 1000x800",
+      "detail": true
+    }
+  ]
+}

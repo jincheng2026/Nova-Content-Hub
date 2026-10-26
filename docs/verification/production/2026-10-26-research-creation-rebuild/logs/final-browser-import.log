@@ -1,0 +1,47 @@
+
+> nova-content-hub-prototype@0.3.48 test:browser-import
+> node --test plugin-src/src/lib/browser-import/test/*.test.mjs
+
+✔ expected source hash binds the actual read before any target reservation (3603.754833ms)
+✔ import options reject unknown keys and malformed expected hashes without reserving (8.136875ms)
+✔ full migration exposes every real business object and scoped historical evidence, then survives backup/restore (30265.688125ms)
+✔ SIGKILL afterReservation: resumes same import and exact IDs without requiring original source (2321.137583ms)
+✔ SIGKILL beforeStageBinding: resumes same import and exact IDs without requiring original source (2362.170584ms)
+✔ SIGKILL afterStageBinding: resumes same import and exact IDs without requiring original source (2322.636875ms)
+✔ SIGKILL beforeStepIntent: resumes same import and exact IDs without requiring original source (2340.300125ms)
+✔ SIGKILL afterStepIntent: resumes same import and exact IDs without requiring original source (2324.205542ms)
+✔ SIGKILL afterCrud: resumes same import and exact IDs without requiring original source (2349.934667ms)
+✔ SIGKILL beforeStepResult: resumes same import and exact IDs without requiring original source (2720.560292ms)
+✔ SIGKILL afterReady: resumes same import and exact IDs without requiring original source (2591.771584ms)
+✔ SIGKILL beforeTargetBinding: resumes same import and exact IDs without requiring original source (2349.724292ms)
+✔ SIGKILL afterTargetBinding: resumes same import and exact IDs without requiring original source (2301.760416ms)
+✔ SIGKILL afterInstallFile: resumes same import and exact IDs without requiring original source (2376.674583ms)
+✔ SIGKILL beforeDescriptor: resumes same import and exact IDs without requiring original source (2990.095166ms)
+✔ SIGKILL afterDescriptor: resumes same import and exact IDs without requiring original source (2344.640666ms)
+✔ SIGKILL beforeCommitted: resumes same import and exact IDs without requiring original source (2274.098292ms)
+✔ descriptor commit with lost response remains committed after normal content edits and stage no longer needed (2479.2565ms)
+✔ same target parallel starts share one importId; a different raw backup conflicts (2263.579958ms)
+✔ bound target replacement and changed installed files stop without overwriting external bytes (1207.316709ms)
+✔ foreign nonempty targets, portable aliases, unknown operation format and symlinks are refused (6.252ms)
+✔ failure after CRUD reuses committed mutation and mismatch stops instead of changing its expected token (2125.593334ms)
+✔ EIO before descriptor publication resumes only its exact known temporary; divergent temporary is preserved (4867.594625ms)
+✔ a one-off storage unlink EIO blocks resource processing, then resume imports the original photo as available (3211.8085ms)
+✔ same actual raster hash is decoded once per resource batch across roles; srcPath is inert (20997.075792ms)
+✔ inspection preserves source bytes, separates scoped candidate IDs and never claims a migration or image decode (5.274ms)
+✔ attachment srcPath is inert even when a matching local file exists (2.033333ms)
+✔ malformed, invalid UTF-8, credential fields, newer format and excessive size are refused without writes (8.595792ms)
+✔ only an explicitly selected ordinary absolute file is accepted (2.068125ms)
+✔ external replacement during a selected file read is detected (2.036833ms)
+✔ BOM and CRLF remain intact in the private raw archive input (3.986791ms)
+✔ nonbuiltin historical weak fingerprints bind only unique known originals then decode actual full bytes (705.415959ms)
+✔ malformed raster bytes remain unavailable photo and preserved raw resource, never a substituted first frame (5470.025833ms)
+✔ missing decoder blocks accepted import; resume uses archived source after capability returns (6115.626792ms)
+✔ persisted resource metadata rejects path hashes and future fields before any source lookup (637.097625ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 105579.2535

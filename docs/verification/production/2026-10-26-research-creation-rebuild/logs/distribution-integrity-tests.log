@@ -1,0 +1,12 @@
+✔ native channels preserve only the sealed marketplace during macOS signing (0.967125ms)
+✔ native markets retain the fixed full tree and auth-specific runtime after packaging (10612.534666ms)
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (10255.030291ms)
+✔ source inventory and runtime are validated before their tree can be sealed (3022.187167ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24156.663833

@@ -1,0 +1,30 @@
+✔ both builds identify themselves and required mode refuses business IO before reading input or library (391.581167ms)
+✔ independent packaged runtime fully decodes, submits, replays and exposes exact status through actual CLI commands (14186.249125ms)
+✔ independent packaged runtime fully decodes, submits, replays and exposes ratio-minimum status through actual CLI commands (8710.214334ms)
+✔ CLI bounds input, rejects malformed commands and never writes on transport failures (1920.196875ms)
+✔ the bundled Skill references the real CLI and contains no template or user library scripts (0.976459ms)
+✔ both independent packages separate contract and cover commands and preserve the legacy wrapper (1075.074458ms)
+✔ required unified commands and legacy wrappers reject environment and argument auth overrides before IO (204.185333ms)
+✔ one release file controls and validates both namespaces; missing or mismatched pairing cannot fall back (1213.508583ms)
+✔ implementation, hooks, skill capabilities, mode and hashed import resources agree in both packages (1082.493125ms)
+✔ standalone bundled launcher resolves exact handoff and completes context/claim/submit/status/replay with empty Node PATH (12479.082083ms)
+✔ standalone bundled launcher resolves ratio-minimum handoff and completes context/claim/submit/status/replay with empty Node PATH (9337.238958ms)
+✔ handoff cannot be mixed with roots/IDs or used to create another request/attempt (6262.213458ms)
+✔ required package stops before envelope resolution; stale same-ID root clone is rejected (5305.009333ms)
+✔ cancel and fail use the same fixed handoff; inactive claim does not create a new attempt (11580.280875ms)
+✔ bundled codex exact context restores selected photo, materials and requirements after retry/host change (21265.7825ms)
+✔ bundled codex ratio-minimum context restores selected photo, materials and requirements after retry/host change (17622.245917ms)
+✔ bundled workbuddy exact context restores selected photo, materials and requirements after retry/host change (14771.077917ms)
+✔ bundled workbuddy ratio-minimum context restores selected photo, materials and requirements after retry/host change (15975.511625ms)
+✔ bundled codex cover progress roundtrips through both waits, resume and terminal without changing input (14432.981667ms)
+✔ bundled workbuddy cover progress roundtrips through both waits, resume and terminal without changing input (15037.187ms)
+✔ bundled codex template progress roundtrips through both waits, resume and terminal without changing input (16263.757ms)
+✔ bundled workbuddy template progress roundtrips through both waits, resume and terminal without changing input (13906.19725ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 231712.326458

@@ -1,0 +1,8 @@
+
+> nova-content-hub-prototype@0.3.48 build:desktop
+> npm run build --prefix workbench -- --auth both
+
+
+> nova-content-hub-workbench@0.3.48 build
+> node scripts/build.mjs --auth both
+

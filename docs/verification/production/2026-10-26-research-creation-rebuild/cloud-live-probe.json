@@ -1,0 +1,36 @@
+{
+  "recordedAt": "2026-10-26T13:40:24.712Z",
+  "scope": "Real ServiceTools + production worker/broker on an isolated temporary library; no comments or publishing; 1 request maximum per task",
+  "settings": {
+    "modelId": "doubao-seed-2-0-mini-260428",
+    "credentials": {
+      "tikhub": true,
+      "model": true,
+      "asr": false
+    }
+  },
+  "results": [
+    {
+      "tool": "tikhub",
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "elapsedMs": 3781,
+      "providerCode": 200,
+      "reply": null
+    }
+  ],
+  "costs": [
+    {
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "currency": "REQ",
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    }
+  ]
+}

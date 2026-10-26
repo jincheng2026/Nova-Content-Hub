@@ -1,0 +1,83 @@
+{
+  "platform": "darwin-arm64",
+  "startedAt": "2026-10-26T12:53:54.288Z",
+  "python": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/venv/bin/python",
+  "model": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/models/faster-whisper-small",
+  "inputText": "你好，这是自媒体工作台的本地语音转文字测试。今天我们学习整理内容，记录想法。",
+  "audioBytes": 275880,
+  "missingModelFailsClosed": true,
+  "readiness": {
+    "localAsr": {
+      "available": true,
+      "reason": "本地路径与 faster_whisper 模块检查通过；实际音频识别仍在任务内验证。"
+    },
+    "encryptionAvailable": false
+  },
+  "direct": {
+    "elapsedMs": 37185,
+    "data": {
+      "text": "你好,这是自媒体工作台的本地语音拽文字测试,今天我们学习整理内容,记录想法。",
+      "segments": [
+        {
+          "startMs": 0,
+          "endMs": 8500,
+          "text": "你好,这是自媒体工作台的本地语音拽文字测试,今天我们学习整理内容,记录想法。"
+        }
+      ],
+      "durationMs": 8493
+    },
+    "service": "asr",
+    "requestsUsed": 0,
+    "collectedAt": "2026-10-26T12:54:32.752Z",
+    "cacheHit": false
+  },
+  "broker": {
+    "elapsedMs": 4245,
+    "data": {
+      "text": "你好,这是自媒体工作台的本地语音拽文字测试,今天我们学习整理内容,记录想法。",
+      "segments": [
+        {
+          "startMs": 0,
+          "endMs": 8500,
+          "text": "你好,这是自媒体工作台的本地语音拽文字测试,今天我们学习整理内容,记录想法。"
+        }
+      ],
+      "durationMs": 8493
+    },
+    "service": "asr",
+    "requestsUsed": 0,
+    "collectedAt": "2026-10-26T12:54:37.449Z",
+    "cacheHit": false,
+    "operations": [
+      "productionContext",
+      "productionAsset",
+      "productionContext",
+      "productionReserve",
+      "productionTaskMutation"
+    ]
+  },
+  "costs": [
+    {
+      "id": "7bd6c438-5633-4f3c-acfa-cf602ea88c1a",
+      "taskId": "7da71aec-a240-420f-9809-0a612fdf30a5",
+      "attemptId": "a9f3e115-7f25-435b-8363-5fba8ba19a01",
+      "requestId": "3f7599c4-5788-4b0c-ac93-f7969cb9f15f",
+      "service": "asr",
+      "status": "measured",
+      "amount": 0,
+      "currency": "REQ",
+      "usage": {
+        "costStatus": "no-external-call",
+        "durationMs": 8493,
+        "requests": 0,
+        "ok": true
+      },
+      "createdAt": "2026-10-26T12:54:33.669Z",
+      "updatedAt": "2026-10-26T12:54:37.518Z"
+    }
+  ],
+  "pythonNetworkAttempts": [],
+  "externalHttpsAttempts": 0,
+  "status": "passed",
+  "finishedAt": "2026-10-26T12:54:37.612Z"
+}

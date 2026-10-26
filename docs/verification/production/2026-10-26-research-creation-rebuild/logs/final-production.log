@@ -1,0 +1,25 @@
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (707.160792ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (1226.295875ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (1118.922041ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (926.169041ms)
+✔ fixed requests reject secret parameters and invalid JSON (163.375416ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (728.452833ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (493.602542ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (270.656167ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (1196.489458ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (288.18175ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (955.88225ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (545.021375ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (428.668542ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (775.152209ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (614.278417ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (422.839333ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (684.93275ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11637.448833

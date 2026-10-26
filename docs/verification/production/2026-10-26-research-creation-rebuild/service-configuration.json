@@ -1,0 +1,41 @@
+{
+  "recordedAt": "2026-10-26T13:45:49.469Z",
+  "filePath": "/Users/mac/Library/Application Support/Nova 内容库技术验证/service-settings.json",
+  "credentials": {
+    "tikhub": {
+      "hasKey": true
+    },
+    "model": {
+      "hasKey": true
+    },
+    "asr": {
+      "hasKey": false
+    }
+  },
+  "encryptionAvailable": true,
+  "roundtripVerified": true,
+  "plaintextInFile": false,
+  "values": {
+    "model": {
+      "provider": "volc",
+      "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+      "modelId": "doubao-seed-2-0-mini-260428"
+    },
+    "asr": {
+      "mode": "local-first",
+      "resourceId": "volc.bigasr.auc_turbo",
+      "localEngine": "faster-whisper",
+      "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/venv/bin/python",
+      "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/models/faster-whisper-small"
+    },
+    "budget": {
+      "enabled": false,
+      "maxRequestsPerTask": 10
+    },
+    "commentsEnabled": false
+  },
+  "fireInferenceStatus": "verified: HTTP200 actual inference after user recharge; no free quota assertion",
+  "cloudAsr": "not configured: no separate speech credential supplied",
+  "scope": "Actual desktop machine settings only; no content-library mutation; existing budget/comment capability preserved",
+  "inferenceRecheckedAt": "2026-10-26T14:08:02.504Z"
+}

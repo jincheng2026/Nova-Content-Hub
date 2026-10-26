@@ -1,0 +1,17 @@
+
+> nova-content-hub-prototype@0.3.48 test:icons
+> node --test workbench/test/icons/*.test.mjs
+
+✔ desktop icon containers preserve transparency and provide all Windows DPI sizes (55.021ms)
+✔ macOS keeps rounded opaque artwork inside an 824px body on a transparent 1024px canvas (41.992125ms)
+✔ changing an output or the master is rejected without silently rebuilding it (48.51725ms)
+✔ macOS iconutil can decode the committed ICNS into the complete Retina iconset (433.35025ms)
+✔ macOS tray artwork is a transparent monochrome glyph at normal and Retina sizes (14.222625ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 799.747208

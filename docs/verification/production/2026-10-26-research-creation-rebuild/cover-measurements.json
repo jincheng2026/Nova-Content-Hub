@@ -1,0 +1,120 @@
+{
+  "status": "PASS",
+  "scope": "cover-only",
+  "measurements": [
+    {
+      "viewport": [
+        1280,
+        860
+      ],
+      "body": {
+        "x": 21,
+        "y": 104.9453125,
+        "width": 1238,
+        "height": 663.8125,
+        "bottom": 768.7578125
+      },
+      "title": {
+        "x": 956,
+        "y": 146.7421875,
+        "width": 286,
+        "height": 90,
+        "bottom": 236.7421875
+      },
+      "photo": {
+        "x": 955,
+        "y": 531.7265625,
+        "width": 288,
+        "height": 32,
+        "bottom": 563.7265625
+      },
+      "count": {
+        "x": 1133.796875,
+        "y": 395.1328125,
+        "width": 87.1953125,
+        "height": 30,
+        "bottom": 425.1328125
+      },
+      "ratio": {
+        "x": 955,
+        "y": 394.1328125,
+        "width": 166.796875,
+        "height": 32,
+        "bottom": 426.1328125
+      },
+      "generate": {
+        "x": 1059,
+        "y": 788.375,
+        "width": 180,
+        "height": 32,
+        "bottom": 820.375
+      },
+      "required": 0,
+      "columns": 5
+    },
+    {
+      "viewport": [
+        960,
+        680
+      ],
+      "body": {
+        "x": 21,
+        "y": 104.9453125,
+        "width": 918,
+        "height": 483.8125,
+        "bottom": 588.7578125
+      },
+      "title": {
+        "x": 656,
+        "y": 146.7421875,
+        "width": 266,
+        "height": 90,
+        "bottom": 236.7421875
+      },
+      "photo": {
+        "x": 655,
+        "y": 531.7265625,
+        "width": 268,
+        "height": 32,
+        "bottom": 563.7265625
+      },
+      "count": {
+        "x": 821.796875,
+        "y": 395.1328125,
+        "width": 79.1953125,
+        "height": 30,
+        "bottom": 425.1328125
+      },
+      "ratio": {
+        "x": 655,
+        "y": 394.1328125,
+        "width": 154.796875,
+        "height": 32,
+        "bottom": 426.1328125
+      },
+      "generate": {
+        "x": 739,
+        "y": 608.375,
+        "width": 180,
+        "height": 32,
+        "bottom": 640.375
+      },
+      "required": 0,
+      "columns": 3
+    }
+  ],
+  "images": [
+    {
+      "width": 318.6640625,
+      "height": 240,
+      "ratio": 0.7486187845303868,
+      "fit": "contain"
+    },
+    {
+      "width": 318.6640625,
+      "height": 240,
+      "ratio": 1.6,
+      "fit": "contain"
+    }
+  ]
+}

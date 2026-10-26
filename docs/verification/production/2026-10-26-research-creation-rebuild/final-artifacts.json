@@ -1,0 +1,64 @@
+{
+  "recordedAt": "2026-10-26T14:17:03.783Z",
+  "sourceCommit": "a71c993c842c46073748b7dca84642e434d1bd7b",
+  "productName": "自媒体工作台",
+  "version": "0.3.49",
+  "platform": "darwin",
+  "arch": "arm64",
+  "channel": "development",
+  "experimental": true,
+  "productionReady": false,
+  "artifacts": [
+    {
+      "path": "plugin/runtime/auth-required",
+      "kind": "plugin-runtime-directory",
+      "version": "0.3.49",
+      "platform": "darwin",
+      "arch": "arm64",
+      "files": 474,
+      "bytes": 174977594,
+      "treeSha256": "817ca0e24109b1a482bfb2519ee31b73253cfcd69a5bda13fcc306bb9049d685",
+      "integrityValidated": true
+    },
+    {
+      "path": "workbench/dist-desktop/auth-required",
+      "kind": "electron-development-directory",
+      "version": "0.3.49",
+      "platform": "darwin",
+      "arch": "arm64",
+      "files": 962,
+      "bytes": 235000626,
+      "treeSha256": "61f4550cc30ed25b9c0066885dbb5fbb445dc3ead6042ccf34172fdbde49b219",
+      "embeddedRuntimeIntegrityValidated": true,
+      "productionSourcesMatch": true,
+      "entrypoint": "workbench/dist-desktop/auth-required/workbench/dist/main/index.mjs"
+    },
+    {
+      "path": "plugin/runtime/auth-disabled",
+      "kind": "plugin-runtime-directory",
+      "version": "0.3.49",
+      "platform": "darwin",
+      "arch": "arm64",
+      "files": 474,
+      "bytes": 174977590,
+      "treeSha256": "2413bf0f376c18faacf4503d8e71b1d0844b01a77b626ff4d5ab5c92fe77f648",
+      "integrityValidated": true
+    },
+    {
+      "path": "workbench/dist-desktop/auth-disabled",
+      "kind": "electron-development-directory",
+      "version": "0.3.49",
+      "platform": "darwin",
+      "arch": "arm64",
+      "files": 962,
+      "bytes": 235000574,
+      "treeSha256": "60001e37cc5f24b570ec44efc63acae51db14b4e3fdeafbb0d3828a8b219c686",
+      "embeddedRuntimeIntegrityValidated": true,
+      "productionSourcesMatch": true,
+      "entrypoint": "workbench/dist-desktop/auth-disabled/workbench/dist/main/index.mjs"
+    }
+  ],
+  "installerBuilt": false,
+  "installedApplicationUpdated": false,
+  "scope": "Actual final directories rebuilt in main; SHA256 is a deterministic sorted directory inventory digest, not an installer hash. No cross-platform or native installation claim."
+}

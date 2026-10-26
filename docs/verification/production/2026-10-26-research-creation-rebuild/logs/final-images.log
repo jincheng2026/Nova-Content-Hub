@@ -1,0 +1,23 @@
+
+> nova-content-hub-prototype@0.3.48 test:images
+> node --test plugin-src/src/lib/image-validation/test/*.test.mjs
+
+✔ import validates real static png and keeps original bytes/hash (11.245583ms)
+✔ import validates real static jpeg and keeps original bytes/hash (5.830916ms)
+✔ import validates real static webp and keeps original bytes/hash (7.035917ms)
+✔ JPEG EXIF orientation changes displayed dimensions without rewriting compressed source (15.492042ms)
+✔ all gif frames are decoded and receipt protocol remains static-only (5.773209ms)
+✔ all webp frames are decoded and receipt protocol remains static-only (6.234459ms)
+✔ GIF framing rejects an incomplete last frame even when sharp metadata reports a valid earlier frame (3.417292ms)
+✔ actual pixel decoding rejects a complete GIF container with damaged final-frame compressed data (4.088042ms)
+✔ APNG is explicitly unsupported and a PNG header cannot count as decoded pixels (2.292333ms)
+✔ encoded bytes, frames and total pixels have separate bounded rejection (85.734459ms)
+✔ missing packaged decoder is a distinct execution failure (94.584333ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 400.495875

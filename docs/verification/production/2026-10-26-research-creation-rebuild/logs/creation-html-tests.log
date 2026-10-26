@@ -1,0 +1,23 @@
+✔ creation page saves the fixed content through its capability using original CAS tokens (8.657916ms)
+✔ a conflict retains unsaved text, shows the latest body and blocks stale re-submission (2.110125ms)
+✔ manual edits clear a previous content confirmation without changing saved tokens (1.663375ms)
+✔ HTML embeds the same pure review rules consumed by React (0.306708ms)
+✔ independent suggestions can be accepted consecutively and save atomically without mutating source artifacts (3.05775ms)
+✔ overlapping, externally stale, ambiguous and user-edited suggestions stay stale and never replace handwritten text (2.583ms)
+✔ a manual change outside otherwise intact quotes prevents automatic rebasing (1.243292ms)
+✔ long paragraph quotes and annotation markers scroll the exact source into view at the end (2.374375ms)
+✔ review paragraph derivation preserves every body character including multiline quotes and overlapping occurrences (0.519209ms)
+✔ newly duplicated quotes are not rebased even when their old range was disjoint (0.979166ms)
+✔ an overlapping quote that survives a containing replacement is never silently rebased (0.400334ms)
+✔ history search and explicit restore fill the same body draft and preserve original CAS and stale suggestions (2.189208ms)
+✔ registered reference media uses the same capability and timestamp playback preserves transcript text (2.463667ms)
+✔ filming checklist adds anchored shots, requires completed shots for recording and saves through unchanged CAS (2.568541ms)
+✔ filming confirmations become visibly stale after body editing and invalid quotes never alter body (5.815916ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 108.779583

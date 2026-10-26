@@ -1,0 +1,42 @@
+
+> nova-content-hub-prototype@0.3.49 test:seeds
+> node --test plugin-src/tests/resources/*.test.mjs plugin-src/src/lib/library-seed/test/*.test.mjs
+
+✔ five canonical VI copies, three style copies and named source index preserve every source byte (164.672875ms)
+✔ all bundled groups and prompts install, reopen and seed again without overwriting user facts (68189.133ms)
+✔ an existing library retires the fifteen obsolete builtins and preserves custom edits and historic packages (60420.429167ms)
+✔ tampered colleague source is rejected during preflight (486.270917ms)
+✔ batch verification waits for the complete colleague source preflight (668.208083ms)
+✔ a missing bundled colleague source stops preflight before any writes (620.745542ms)
+✔ a missing asset is imported, but a tampered same-hash asset is never overwritten (4048.375292ms)
+✔ stored assets changed after the batch are revalidated by template installation (4050.074ms)
+✔ root replacement after the batch stops installation before any write to the clone (4487.913291ms)
+✔ source bytes changing after preflight still fail the import hash comparison (942.451166ms)
+✔ same-version package conflicts are still rejected after batch verification (3856.036041ms)
+✔ bundle resource links cannot read a file outside the packaged resource root (615.063459ms)
+✔ creation page saves the fixed content through its capability using original CAS tokens (15.178167ms)
+✔ a conflict retains unsaved text, shows the latest body and blocks stale re-submission (2.501291ms)
+✔ manual edits clear a previous content confirmation without changing saved tokens (2.247916ms)
+✔ HTML embeds the same pure review rules consumed by React (0.326084ms)
+✔ independent suggestions can be accepted consecutively and save atomically without mutating source artifacts (3.553709ms)
+✔ overlapping, externally stale, ambiguous and user-edited suggestions stay stale and never replace handwritten text (2.887708ms)
+✔ a manual change outside otherwise intact quotes prevents automatic rebasing (1.626625ms)
+✔ long paragraph quotes and annotation markers scroll the exact source into view at the end (1.816083ms)
+✔ review paragraph derivation preserves every body character including multiline quotes and overlapping occurrences (0.405459ms)
+✔ newly duplicated quotes are not rebased even when their old range was disjoint (0.882ms)
+✔ an overlapping quote that survives a containing replacement is never silently rebased (0.441375ms)
+✔ history search and explicit restore fill the same body draft and preserve original CAS and stale suggestions (2.819875ms)
+✔ registered reference media uses the same capability and timestamp playback preserves transcript text (1.234ms)
+✔ filming checklist adds anchored shots, requires completed shots for recording and saves through unchanged CAS (6.783125ms)
+✔ filming confirmations become visibly stale after body editing and invalid quotes never alter body (1.814792ms)
+✔ catalog has a supported version and 26 uniquely identified prompts (0.6995ms)
+✔ every prompt has usable metadata and original project provenance (1.549916ms)
+✔ variables use complete, simple placeholders without a duplicated variable schema (2.0235ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 148726.82475
