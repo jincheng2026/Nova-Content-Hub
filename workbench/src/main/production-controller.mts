@@ -1,3 +1,6 @@
+import {radarOperations,radarSearchFilters,radarPrompt} from '../../../plugin-src/src/lib/file-library/radar.mjs';
+import {publicEndpoint} from './service-tools.mts';
+import type {RadarQuery,RadarAdopt,RadarDecision,RadarReport} from '../shared/radar-contracts.ts';
 import {platformCollectionCapability} from '../shared/platform-catalog.ts';
 import fs from 'node:fs/promises';
 import {createHash,randomUUID} from 'node:crypto';
@@ -10,6 +13,7 @@ export interface ProductionCallbacks {
  launch(binding:LibraryBinding,reference:{taskId:string;attemptId:string;requestHash:string;host:'codex'|'workbuddy'}):Promise<void>;
  open(binding:LibraryBinding,target:ProductionInputs['openProductionLink']):Promise<string>;
  serviceSettings():Promise<ServiceSettingsView>;
+ openSource?(url:string):Promise<void>;
  costReconciled?(requestId:string):Promise<void>;
  servicesDescriptor?():ServiceBrokerDescriptor|null|Promise<ServiceBrokerDescriptor|null>;
 }
@@ -64,6 +68,21 @@ export class ProductionController {
   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
   const task=result.tasks.find(t=>!prior.has(t.id));if(!task)fail('PENDING_MUTATION','任务已写入但无法定位，请刷新原任务列表。');
   const launched=await this.launch(task.id);return {snapshot:await this.read(),...launched};
+ });}
+ createRadarTask(input:RadarQuery){this.validate('createRadarTask',input);return this.owner.exclusive(async()=>{
+  this.owner.noPending();const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),settings=await this.callbacks.serviceSettings(),v=settings.values,ops=radarOperations(input.platform),query=structuredClone(input);
+  const budget=v.budget.enabled&&ops.length?Math.min(4,1+query.sampleLimit,v.budget.maxRequestsPerTask):0,descriptor=await this.callbacks.servicesDescriptor?.();
+  const parameters={workflow:'viral-radar',query,operations:budget?ops:[],search:radarSearchFilters(query),comments:false,budgetEnabled:budget>0,maxRequestsPerTask:budget,...(descriptor?{serviceDescriptor:{version:descriptor.version,host:descriptor.host,port:descriptor.port}}:{})};
+  const prior=new Set(snapshot.tasks.map(t=>t.id));
+  const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:'research',title:`${query.direction} · 低粉爆款雷达`,prompt:radarPrompt(query)+(budget?'':' 本次未授权付费采集；只接受用户材料与可核验人工来源。'),contentId:null,accountId:null,host:this.owner.binding.assistant??'codex',parameters,tools:budget?['tikhub']:[],budget:{amount:budget,currency:'REQ'},bodyHash:null,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+  const task=result.tasks.find(t=>!prior.has(t.id));if(!task)fail('PENDING_MUTATION','雷达任务已写入，定位尚待核验。');return {snapshot:await this.read(),...await this.launch(task.id)};
+ });}
+ adoptRadarResult(input:RadarAdopt){this.validate('adoptRadarResult',input);return this.owner.exclusive(async()=>{await this.write({...this.pendingBase(),kind:'mutate',op:'adoptRadarResult',input:{...input}});return this.read();});}
+ decideRadarCandidate(input:RadarDecision){this.validate('decideRadarCandidate',input);return this.owner.exclusive(async()=>{await this.write({...this.pendingBase(),kind:'mutate',op:'decideRadarCandidate',input:{...input}});return this.read();});}
+ openRadarSource(input:ProductionInputs['openRadarSource']){this.validate('openRadarSource',input);return this.owner.exclusive(async()=>{
+  const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),report=snapshot.reports.find(r=>r.id===input.reportId&&!r.deletedAt&&r.type==='viral-radar'),radar=(report?.meta as {radar?:RadarReport}|undefined)?.radar,candidate=radar?.candidates.find(c=>c.id===input.candidateId);
+  if(!candidate)fail('NOT_FOUND','雷达来源不存在。');if(!this.callbacks.openSource)fail('NOT_READY','系统外链打开入口尚未配置。');
+  const checked=await publicEndpoint(candidate.url);await this.callbacks.openSource(checked.url.href);return {opened:true as const};
  });}
  openProductionTask(input:ProductionInputs['openProductionTask']){this.validate('openProductionTask',input);return this.owner.exclusive(async()=>{
   this.owner.noPending();

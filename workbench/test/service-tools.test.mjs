@@ -4,9 +4,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import http from 'node:http';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {ServiceSettingsStore} from '../src/main/service-settings.mts';
-import {ServiceTools,ServiceToolError,publicAddress,publicEndpoint,TIKHUB_CACHE_TTL_MS} from '../src/main/service-tools.mts';
+import {ServiceTools,ServiceToolError,publicAddress,publicEndpoint,TIKHUB_CACHE_TTL_MS,tikHubHttpRequest} from '../src/main/service-tools.mts';
 import {ServiceToolBroker} from '../src/main/service-broker.mts';
 import {productionToolBroker} from '../src/main/production-services.mts';
 import {defaultServiceSettings,serviceToolRequest} from '../src/shared/service-validation.ts';
@@ -23,6 +23,30 @@ test('credentials stay encrypted and omitted/null/replace semantics preserve ind
 test('plaintext fallback safeStorage backend cannot save/use credentials',async t=>{const {dir}=await fixture(t);const store=new ServiceSettingsStore({filePath:path.join(dir,'unsafe.json'),encryption:{...encryption,getSelectedStorageBackend:()=> 'basic_text'}});await store.initialize();assert.equal(store.read().encryptionAvailable,false);await assert.rejects(store.update({keys:{model:'never-saved'}}),{code:'ENCRYPTION_UNAVAILABLE'});await assert.rejects(fs.stat(store.filePath),{code:'ENOENT'});});
 test('SSRF rejects all local, mapped, reserved and unsafe schemes',async()=>{for(const ip of ['127.0.0.1','10.1.2.3','169.254.169.254','100.64.0.1','198.18.0.1','192.0.2.1','203.0.113.1','::1','::ffff:8.8.8.8','2001:db8::1','2001:20::1','2002:0808:0808::1','fc00::1'])assert.equal(publicAddress(ip),false,ip);for(const ip of ['8.8.8.8','1.1.1.1','2606:4700:4700::1111'])assert.equal(publicAddress(ip),true,ip);for(const u of ['http://example.com','https://user:key@example.com','https://127.0.0.1','https://[::1]'])await assert.rejects(publicEndpoint(u));});
 test('strict tool input rejects extraneous providers/unsafe IDs/invalid identity',()=>{assert(serviceToolRequest(request()));assert(!serviceToolRequest(request({apiKey:'secret'})));assert(!serviceToolRequest(request({requestId:'not-uuid'})));assert(!serviceToolRequest(request({id:'https://evil.test'})));assert(!serviceToolRequest(request({cursor:'9007199254740993'})));});
+test('search whitelist maps documented platform filters and keeps Xiaohongshu on one first page',()=>{
+ const search={sortType:'likes',timeRange:'week',contentType:'image'},dy=request({operation:'douyin-search',id:'方向',search});
+ assert(serviceToolRequest(dy));assert.deepEqual(JSON.parse(tikHubHttpRequest(dy).body),{keyword:'方向',cursor:0,sort_type:'1',publish_time:'7',content_type:'2'});
+ const xhs=request({operation:'xhs-search',id:'方向',search}),http=tikHubHttpRequest(xhs),url=new URL(http.url);
+ assert(serviceToolRequest(xhs));assert.equal(http.method,'GET');assert.equal(url.pathname,'/api/v1/xiaohongshu/app_v2/search_notes');assert.deepEqual(Object.fromEntries(url.searchParams),{keyword:'方向',page:'1',ai_mode:'0',sort_type:'popularity_descending',time_filter:'一周内',note_type:'普通笔记'});
+ assert(serviceToolRequest(request({operation:'xhs-profile',id:'61b46d790000000010008153'})));
+ for(const bad of [{operation:'xhs-search',cursor:'1'},{operation:'xhs-profile',id:'https://xhslink.com/a'},{operation:'profile',search},{operation:'user-search',search},{operation:'xhs-search',search:{page:2}},{operation:'douyin-search',search:{sortType:'guess'}}])assert(!serviceToolRequest(request(bad)),JSON.stringify(bad));
+ assert.deepEqual(JSON.parse(tikHubHttpRequest(request({operation:'douyin-search',id:'旧调用'})).body),{keyword:'旧调用',cursor:0});
+});
+test('search cache separates every provider behavior parameter while equivalent filter order shares results',async t=>{
+ const {dir,store}=await fixture(t);await store.update({keys:{tikhub:'secret'},values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:6}}});const tools=new ServiceTools({settings:store,cachePath:path.join(dir,'search-cache.json')});let calls=0;tools.invoke=async()=>({call:++calls});
+ const base={operation:'douyin-search',id:'方向',search:{sortType:'likes',timeRange:'week',contentType:'any'}};
+ assert.equal((await tools.execute(request(base))).requestsUsed,1);
+ assert.equal((await tools.execute(request({...base,search:{contentType:'any',timeRange:'week',sortType:'likes'}}))).requestsUsed,0);
+ for(const search of [{...base.search,sortType:'latest'},{...base.search,timeRange:'day'},{...base.search,contentType:'video'}])assert.equal((await tools.execute(request({...base,search}))).requestsUsed,1);
+ assert.equal((await tools.execute(request({...base,operation:'xhs-search'}))).requestsUsed,1);assert.equal(calls,5);
+});
+test('legacy cache and unknown-cost markers survive the addition of search filters',async t=>{
+ const {dir,store}=await fixture(t),file=path.join(dir,'legacy-cache.json');await store.update({values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:6}}});
+ const key=id=>createHash('sha256').update(JSON.stringify(['video',id,'0'])).digest('hex'),collectedAt=new Date().toISOString();
+ await fs.writeFile(file,JSON.stringify([[key('123'),{collectedAt,data:{legacy:true}}],[key('456'),{collectedAt,unknown:true,requestId:randomUUID()}]]));
+ const tools=new ServiceTools({settings:store,cachePath:file});tools.invoke=()=>assert.fail('Legacy cache state must prevent a new paid call');
+ assert.equal((await tools.execute(request({id:'123'}))).cacheHit,true);await assert.rejects(tools.execute(request({id:'456'})),{code:'COST_UNKNOWN'});
+});
 test('successful TikHub collection caches traceable data and charges a single request',async t=>{
  const {dir,store}=await fixture(t);await store.update({keys:{tikhub:'secret-tik'},values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:10}}});const tools=new ServiceTools({settings:store,cachePath:path.join(dir,'cache.json')});let calls=0;tools.invoke=async()=>{calls++;return {text:'public data',echo:'secret-tik'};};
  const charges=[],hooks={beforeExecute:async p=>charges.push(p.requests),afterExecute:async p=>assert.equal(p.requestsUsed,charges.at(-1))};const a=await tools.execute(request(),hooks),b=await tools.execute(request(),hooks);assert.equal(calls,1);assert.deepEqual(charges,[1,0]);assert.equal(a.cacheHit,false);assert.equal(b.cacheHit,true);assert.equal(a.collectedAt,b.collectedAt);assert.equal(b.requestsUsed,0);assert.equal(a.data.echo,'[redacted]');assert.equal(TIKHUB_CACHE_TTL_MS,21600000);

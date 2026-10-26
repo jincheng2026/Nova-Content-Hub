@@ -1,0 +1,5 @@
+export interface RadarQuery {platform:string;direction:string;sampleLimit:1|2|3;maxFollowers:number;minLikes:number;minRatio:number;lookbackDays:number}
+export interface RadarCandidate {id:string;sourceKey:string;platform:string;sourceId:string;url:string;title:string;author:{id:string|null;name:string;url:string|null;followers:number|null};metrics:{likes:number|null;comments:number|null;shares:number|null;saves:number|null;views:number|null;likeFollowerRatio:number|null};publishedAt:string|null;collectedAt:string;evidence:string[];eligibility:'qualified'|'unqualified'|'unknown';reasons:string[];decision:'pending'|'added'|'rejected';topicId:string|null}
+export interface RadarReport {schemaVersion:1;query:RadarQuery;taskId:string;attemptId:string;receiptHash:string;collectedAt:string;candidates:RadarCandidate[]}
+export interface RadarAdopt {taskId:string;attemptId:string;receiptHash:string;expectedToken:string}
+export interface RadarDecision {reportId:string;candidateId:string;decision:'add-topic'|'reject';expectedToken:string}

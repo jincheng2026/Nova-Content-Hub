@@ -10,6 +10,22 @@ import {ServiceSettingsStore} from './service-settings.mts';
 import {serviceToolRequest} from '../shared/service-validation.ts';
 import type {ServiceReadiness,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
 export const TIKHUB_CACHE_TTL_MS = 6*60*60*1000;
+type TikHubRequest = Extract<ServiceToolRequest,{tool:'tikhub'}>;
+export function tikHubHttpRequest(request:TikHubRequest):{url:string;method:'GET'|'POST';body?:string} {
+    const endpoints={ 'douyin-search':'/api/v1/douyin/search/fetch_video_search_v2','user-search':'/api/v1/douyin/search/fetch_user_search_v2',profile:'/api/v1/douyin/app/v3/handler_user_profile','user-posts':'/api/v1/douyin/app/v3/fetch_user_post_videos',video:'/api/v1/douyin/app/v3/fetch_one_video_v2',comments:'/api/v1/douyin/app/v3/fetch_video_comments','xhs-search':'/api/v1/xiaohongshu/app_v2/search_notes','xhs-profile':'/api/v1/xiaohongshu/app_v2/get_user_info'};
+    const post=request.operation==='douyin-search'||request.operation==='user-search';
+    const params:Record<string,string|number>=post?{keyword:request.id,cursor:Number(request.cursor??0)}:request.operation==='xhs-search'?{keyword:request.id,page:1,ai_mode:0}:request.operation==='xhs-profile'?{user_id:request.id}:{[request.operation==='profile'||request.operation==='user-posts'?'sec_user_id':'aweme_id']:request.id};
+    if(request.search){const f=request.search;
+        if(request.operation==='douyin-search')Object.assign(params,{sort_type:{general:'0',likes:'1',latest:'2'}[f.sortType??'general'],publish_time:{any:'0',day:'1',week:'7','half-year':'180'}[f.timeRange??'any'],content_type:{any:'0',video:'1',image:'2'}[f.contentType??'any']});
+        if(request.operation==='xhs-search')Object.assign(params,{sort_type:{general:'general',likes:'popularity_descending',latest:'time_descending'}[f.sortType??'general'],time_filter:{any:'不限',day:'一天内',week:'一周内','half-year':'半年内'}[f.timeRange??'any'],note_type:{any:'不限',video:'视频笔记',image:'普通笔记'}[f.contentType??'any']});
+    }
+    if(request.operation==='user-posts')Object.assign(params,{max_cursor:request.cursor??'0',count:20});
+    if(request.operation==='comments')Object.assign(params,{cursor:request.cursor??'0',count:20});
+    const url=new URL(endpoints[request.operation],'https://api.tikhub.io');
+    if(post)return{url:url.href,method:'POST',body:JSON.stringify(params)};
+    for(const[k,v]of Object.entries(params))url.searchParams.set(k,String(v));
+    return{url:url.href,method:'GET'};
+}
 export class ServiceToolError extends Error {code:string; requestsUsed:0|1|null; constructor(code:string,requestsUsed:0|1|null=0){super(code === 'COST_UNKNOWN' ? '上次请求费用未确认，请先人工核验账单再继续。' : code === 'LOCAL_ASR_UNAVAILABLE' ? '本地语音依赖或模型不可用，请检查已保存的路径与 Python 模块；本次没有调用云端。' : '服务调用未完成；请检查配置或任务授权后继续。');this.code=code;this.requestsUsed=requestsUsed;}}
 export function publicAddress(address:string):boolean {
     if (isIP(address)===4) {const [a,b,c]=address.split('.').map(Number);return !(a===0||a===10||a===127||a>=224||a===169&&b===254||a===172&&b>=16&&b<=31||a===192&&(b===0||b===168||b===88&&c===99)||a===100&&b>=64&&b<=127||a===198&&(b===18||b===19||b===51)||a===203&&b===0);}
@@ -66,7 +82,8 @@ export class ServiceTools {
         if(!serviceToolRequest(request))throw new ServiceToolError('INVALID_INPUT');const s=this.settings.read();
         if(request.tool==='tikhub'){
             if(request.operation==='comments'&&!s.values.commentsEnabled)throw new ServiceToolError('COMMENTS_DISABLED');
-            await this.loadCache();const cacheKey=createHash('sha256').update(JSON.stringify([request.operation,request.id,request.cursor??'0'])).digest('hex'),entry=this.cache.get(cacheKey);
+            // Preserve existing cache/unknown-cost records for unchanged legacy calls.
+            await this.loadCache();const http=tikHubHttpRequest(request),cacheKey=createHash('sha256').update(JSON.stringify(request.search?[request.operation,request.id,request.cursor??'0',http.method,http.url,http.body??'']:[request.operation,request.id,request.cursor??'0'])).digest('hex'),entry=this.cache.get(cacheKey);
             if(entry?.unknown)throw new ServiceToolError('COST_UNKNOWN');
             if(entry&&Date.now()-Date.parse(entry.collectedAt)<TIKHUB_CACHE_TTL_MS)return{service:'tikhub',requests:0,cacheKey,cached:{data:entry.data,service:'tikhub',requestsUsed:0,collectedAt:entry.collectedAt,cacheHit:true}};
             this.settings.secret('tikhub');return{service:'tikhub',requests:1,cacheKey};
@@ -100,11 +117,8 @@ export class ServiceTools {
     private async invoke(request:ServiceToolRequest,p:Prepared):Promise<unknown>{
         const s=this.settings.read().values;
         if(request.tool==='tikhub'){
-            const endpoints={ 'douyin-search':'/api/v1/douyin/search/fetch_video_search_v2','user-search':'/api/v1/douyin/search/fetch_user_search_v2',profile:'/api/v1/douyin/app/v3/handler_user_profile','user-posts':'/api/v1/douyin/app/v3/fetch_user_post_videos',video:'/api/v1/douyin/app/v3/fetch_one_video_v2',comments:'/api/v1/douyin/app/v3/fetch_video_comments'};
-            const search=request.operation.endsWith('search');const params:Record<string,string|number>=search?{keyword:request.id,cursor:Number(request.cursor??0)}:{[request.operation==='profile'||request.operation==='user-posts'?'sec_user_id':'aweme_id']:request.id};
-            if(request.operation==='user-posts')Object.assign(params,{max_cursor:request.cursor??'0',count:20});if(request.operation==='comments')Object.assign(params,{cursor:request.cursor??'0',count:20});
-            const url=new URL(endpoints[request.operation],'https://api.tikhub.io');if(!search)for(const [k,v]of Object.entries(params))url.searchParams.set(k,String(v));
-            const response=await boundedHttps(url.href,{method:search?'POST':'GET',headers:{Authorization:`Bearer ${this.settings.secret('tikhub')}`,'Content-Type':'application/json'},...(search?{body:JSON.stringify(params)}:{})});
+            const http=tikHubHttpRequest(request);
+            const response=await boundedHttps(http.url,{method:http.method,headers:{Authorization:`Bearer ${this.settings.secret('tikhub')}`,'Content-Type':'application/json'},...(http.body?{body:http.body}:{})});
             if(response.data&&typeof response.data==='object'&&'code'in response.data&&response.data.code!==200&&response.data.code!==0)throw new ServiceToolError('PROVIDER_REJECTED',null);return response.data;
         }
         if(request.tool==='model')return(await boundedHttps(`${s.model.baseUrl.replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{Authorization:`Bearer ${this.settings.secret('model')}`,'Content-Type':'application/json'},body:JSON.stringify({model:s.model.modelId,messages:[{role:'system',content:request.instruction},{role:'user',content:request.text}],stream:false})})).data;

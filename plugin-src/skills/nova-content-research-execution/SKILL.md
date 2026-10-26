@@ -13,6 +13,7 @@ description: 执行自媒体工作台交来的调研任务编号，按冻结预�
 
 | 本轮工作 | 执行前必读 | 完成本轮的可检查结果 |
 | --- | --- | --- |
+| 冻结 parameters.workflow 为 viral-radar 的爆款雷达 | [雷达采样与交付](references/viral-radar.md) | 固定方向与平台、可复算指标、真实来源、明确缺口；不自动加入选题 |
 | 搜索、筛选、账号研究、高低表现对照、评论需求 | [调研方法](references/research-method.md) | 实际范围、去重样本、逐条筛选理由、原文支持的判断及局限 |
 | 单条或多条参考的收集、主动跳过参考 | [参考接入](../nova-content-writing-execution/references/reference-intake.md) | 稳定参考 ID、已有材料复用情况、主辅参考和缺口 |
 | 原片或字幕需要转写纠错 | [转写与纠错](../nova-content-writing-execution/references/transcription.md) | 原识别稿、校正版、时间精度、纠错证据；仅在本任务授权工具内执行 |

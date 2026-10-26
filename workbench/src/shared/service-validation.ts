@@ -16,9 +16,20 @@ const uuid = (v: unknown) => typeof v === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-
 export function serviceToolRequest(v: unknown): v is ServiceToolRequest {
     if (!record(v) || !bounded(v.workerId,200) || !String(v.workerId).trim() || !['taskId','attemptId','claimToken','requestId'].every(k => uuid(v[k]))) return false;
     const base = ['tool','taskId','attemptId','claimToken','workerId','requestId'];
-    const allowed = v.tool === 'tikhub' ? ['operation','id','cursor'] : v.tool === 'asr' ? ['audioPath','allowCloud'] : v.tool === 'model' ? ['instruction','text'] : [];
+    const allowed = v.tool === 'tikhub' ? ['operation','id','cursor','search'] : v.tool === 'asr' ? ['audioPath','allowCloud'] : v.tool === 'model' ? ['instruction','text'] : [];
     if (!allowed.length || Object.keys(v).some(k => ![...base,...allowed].includes(k))) return false;
-    if (v.tool === 'tikhub') return ['douyin-search','user-search','profile','user-posts','video','comments'].includes(String(v.operation)) && bounded(v.id, 512) && String(v.id).trim().length > 0 && (['douyin-search','user-search'].includes(String(v.operation)) || typeof v.id==='string' && (['video','comments'].includes(String(v.operation)) ? /^\d{1,32}$/.test(v.id) : /^[A-Za-z0-9_-]{1,256}$/.test(v.id))) && (v.cursor === undefined || typeof v.cursor === 'string' && /^\d{1,16}$/.test(v.cursor) && Number.isSafeInteger(Number(v.cursor)));
+    if (v.tool === 'tikhub') {
+        if (!['douyin-search','user-search','profile','user-posts','video','comments','xhs-search','xhs-profile'].includes(String(v.operation)) || !bounded(v.id,512) || !String(v.id).trim()) return false;
+        if (!['douyin-search','user-search','xhs-search'].includes(String(v.operation)) && !(typeof v.id==='string' && (['video','comments'].includes(String(v.operation)) ? /^\d{1,32}$/.test(v.id) : v.operation==='xhs-profile' ? /^[0-9a-f]{24}$/i.test(v.id) : /^[A-Za-z0-9_-]{1,256}$/.test(v.id)))) return false;
+        if (v.cursor !== undefined && !(typeof v.cursor==='string' && /^\d{1,16}$/.test(v.cursor) && Number.isSafeInteger(Number(v.cursor)))) return false;
+        if (['xhs-search','xhs-profile'].includes(String(v.operation)) && v.cursor!==undefined) return false;
+        if (v.search!==undefined) {
+            if (!['douyin-search','xhs-search'].includes(String(v.operation)) || !record(v.search) || Object.keys(v.search).some(k=>!['sortType','timeRange','contentType'].includes(k))) return false;
+            const s=v.search;
+            if (s.sortType!==undefined&&!['general','likes','latest'].includes(String(s.sortType)) || s.timeRange!==undefined&&!['any','day','week','half-year'].includes(String(s.timeRange)) || s.contentType!==undefined&&!['any','video','image'].includes(String(s.contentType))) return false;
+        }
+        return true;
+    }
     if (v.tool === 'asr') return bounded(v.audioPath, 4096) && String(v.audioPath).length > 0 && (v.allowCloud === undefined || typeof v.allowCloud === 'boolean');
     return bounded(v.instruction, 32000) && bounded(v.text, 200000) && String(v.instruction).trim().length > 0;
 }

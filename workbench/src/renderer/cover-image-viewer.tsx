@@ -74,13 +74,13 @@ export function ImageViewport({url, label}: {url: string; label: string}) {
 }
 
 export function ImagePreviewButton({url, label, loading}: {url: string; label: string; loading?: 'lazy' | 'eager'}) {
-  const [open, setOpen] = useState(false);
-  return <><button type="button" className="image-preview-trigger" aria-label={`放大查看：${label}`} onClick={() => setOpen(true)}><img src={url} alt={label} loading={loading}/></button>{open && <CoverImageViewer url={url} label={label} close={() => setOpen(false)}/>}</>;
+  const [open, setOpen] = useState(false), trigger = useRef<HTMLButtonElement>(null);
+  return <><button ref={trigger} type="button" className="image-preview-trigger" aria-label={`放大查看：${label}`} onClick={() => setOpen(true)}><img src={url} alt={label} loading={loading}/></button>{open && <CoverImageViewer url={url} label={label} returnFocusTo={trigger.current} close={() => setOpen(false)}/>}</>;
 }
 
-export function CoverImageViewer({url, label, close, previous, next, children}: {url: string; label: string; close(): void; previous?(): void; next?(): void; children?: ReactNode}) {
+export function CoverImageViewer({url, label, close, previous, next, children, returnFocusTo}: {url: string; label: string; close(): void; previous?(): void; next?(): void; children?: ReactNode; returnFocusTo?: HTMLElement | null}) {
   const dialog = useRef<HTMLDialogElement>(null), returnFocus = useRef<HTMLElement | null>(null);
-  useEffect(() => {returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null; dialog.current?.showModal(); return () => {returnFocus.current?.focus();};}, []);
+  useEffect(() => {returnFocus.current = returnFocusTo ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null); dialog.current?.showModal(); return () => {const target = returnFocus.current; requestAnimationFrame(() => {if (target?.isConnected) target.focus({preventScroll: true});});};}, []);
   return <dialog ref={dialog} className="image-preview cover-image-viewer" aria-label={label} onCancel={event => {event.preventDefault(); event.stopPropagation(); requestAnimationFrame(close);}} onKeyDown={event => {if (event.key === 'Escape' && !event.nativeEvent.isComposing) {event.preventDefault(); event.stopPropagation(); close(); return;} if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement || (event.target as Element).closest('.cover-viewer-stage')) return; if (event.key === 'ArrowLeft' && previous) {event.preventDefault(); previous();} if (event.key === 'ArrowRight' && next) {event.preventDefault(); next();}}}>
     <div className="dialog-heading"><h3>{label}</h3><div className="cover-toolbar">{(previous || next) && <><Button disabled={!previous} onClick={previous}>上一张</Button><Button disabled={!next} onClick={next}>下一张</Button></>}<Button onClick={close}>关闭预览</Button></div></div>
     <div className={`cover-viewer-layout${children ? ' has-details' : ''}`}><ImageViewport url={url} label={label}/>{children && <div className="cover-viewer-details">{children}</div>}</div>

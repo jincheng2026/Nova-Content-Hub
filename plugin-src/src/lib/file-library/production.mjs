@@ -1,4 +1,6 @@
 import {createHash, randomUUID} from 'node:crypto';
+import path from 'node:path';
+import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
 const HASH = /^[a-f0-9]{64}$/;
 const STAGES = ['idea','research','references','transcription','analysis','narrative','writing','ready','published'];
@@ -64,12 +66,12 @@ function validRequest(r) {return fields(r,['prompt','parameters','tools','budget
 function validResult(r) {return fields(r,['summary','artifacts']) && text(r.summary,100000,false) && objects(r.artifacts) && r.artifacts.length > 0 && r.artifacts.every(a => fields(a,['id','kind','title','text','assetHash','data']) && ARTIFACTS.includes(a.kind) && text(a.title,500,false) && text(a.text,200000) && (a.assetHash === null || HASH.test(a.assetHash)) && jsonOK(a.data)) && JSON.stringify(r).length <= 2 * 1024 * 1024;}
 
 export function productionMethods(h) {
-    const {root,locked,mutate,snapshot,result,metadata,fail,readAssetInternal,safePath,assetPath,finderMetadataFile,historyForContent} = h;
+    const {root,locked,mutate,snapshot,result,metadata,fail,readAssetInternal,safePath,assetPath,finderMetadataFile,historyForContent,storeProductionHtml} = h;
     const invalid = (ok,msg) => {if (!ok) fail('INVALID_INPUT',msg);};
     const current = () => result(snapshot(root,'default','workspace'),'default',undefined,'workspace');
     const content = cid => {invalid(UUID.test(cid),'Expected content UUID'); const c = result(snapshot(root,cid,'content'),cid,undefined,'content'); return {...c,bodyHash:bodyDigest(c.body)};};
     const overlay = p => ({...p,creations:p.creations.map(c => {const next = content(c.contentId); return next.productionState || c;})});
-    const project = w => {const p=structuredClone(overlay(w.production || emptyProduction()));for(const t of p.tasks)for(const a of t.attempts)a.claimToken=null;return {...p,editToken:w.editToken,...(w.mutationId ? {mutationId:w.mutationId} : {})};};
+    const project = w => {const p=structuredClone(overlay(w.production || emptyProduction()));p.reports=p.reports.map(r=>r.type==='viral-radar'&&!trustedRadar(p,r)?{...r,type:'调研'}:r);for(const t of p.tasks)for(const a of t.attempts)a.claimToken=null;return {...p,editToken:w.editToken,...(w.mutationId ? {mutationId:w.mutationId} : {})};};
     function checkAsset(hash,missing = false) {
         invalid(HASH.test(hash),'Expected asset SHA256');
         if (missing && !safePath(assetPath(root,hash),true)) return false;
@@ -78,6 +80,16 @@ export function productionMethods(h) {
     function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const a of p.accounts) for (const hash of a.images) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
     function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
     function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
+    function trustedRadar(p,r) {
+        if(r.type!=='viral-radar'||!plain(r.meta?.radar))return null;
+        try {
+            const state=r.meta.radar,t=p.tasks.find(t=>t.id===state.taskId),verified=radarArtifactCandidates(t,state.attemptId,state.receiptHash);
+            if(r.id!==radarId(`radar-report:${state.taskId}:${state.attemptId}:${state.receiptHash}`)||!Array.isArray(state.candidates))return null;
+            if(!state.candidates.every(c=>['pending','added','rejected'].includes(c.decision)&&(c.decision==='added'?UUID.test(c.topicId):c.topicId===null)))return null;
+            const source={...state,candidates:state.candidates.map(c=>({...c,decision:'pending',topicId:null}))};
+            return JSON.stringify(source)===JSON.stringify(verified)?state:null;
+        }catch{return null;}
+    }
     const find = (list,id,label) => {const v = list.find(x => x.id === id); if (!v) fail('NOT_FOUND',`Unknown ${label}`); return v;};
     function taskAttempt(p,i,worker = false) {
         const t = find(p.tasks,i.taskId,'task'), a = find(t.attempts,i.attemptId || t.activeAttemptId,'attempt');
@@ -112,6 +124,35 @@ export function productionMethods(h) {
             });
             return readProduction();
         }
+        // Create a source-keyed, empty canonical topic before the workspace receipt. The child
+        // transaction has a stable identity, so recovery after either publication cannot duplicate it.
+        let radarTopic = null,radarResume=false;
+        if(op==='decideRadarCandidate' && raw.decision==='add-topic') {
+            invalid(plain(options)&&Object.keys(options).every(k=>k==='mutationId')&&(options.mutationId===undefined||UUID.test(options.mutationId)),'Invalid radar transaction identity');
+            options={mutationId:options.mutationId??randomUUID()};
+            const w=locked(()=>current());
+            // Completed parent transactions replay without executing any child write.
+            const p=w.production || emptyProduction(), r=find(p.reports,raw.reportId,'report');
+            invalid(trustedRadar(p,r) && r.deletedAt===null,'Trusted radar report required');
+            const state=r.meta?.radar,t=find(p.tasks,state?.taskId,'radar task');
+            const verified=radarArtifactCandidates(t,state.attemptId,state.receiptHash),candidate=find(verified.candidates,raw.candidateId,'radar candidate');
+            const stored=find(state.candidates,raw.candidateId,'radar candidate');
+            invalid(JSON.stringify({...stored,decision:'pending',topicId:null})===JSON.stringify(candidate),'Radar evidence was changed');
+            invalid(stored.decision==='pending'||stored.decision==='added','Candidate already rejected');
+            const existing=p.reports.flatMap(x=>trustedRadar(p,x)?.candidates??[]).find(x=>x.sourceKey===candidate.sourceKey&&x.decision==='added'&&x.topicId);
+            const contentId=existing?.topicId || radarId(`radar-topic:${candidate.sourceKey}`);
+            let c=locked(()=>safePath(path.join(root,'内容',contentId),true)?content(contentId):null);
+            const childInput={title:candidate.title,body:'',radarSource:candidate.sourceKey,radarParent:{mutationId:options.mutationId,input:raw}};
+            const childOptions={mutationId:radarId(`radar-topic-create:${candidate.sourceKey}`)};
+            if(!c){invalid(w.editToken===raw.expectedToken,'Production state changed');c=mutate('create',undefined,childInput,undefined,childOptions,'content',undefined,contentId);radarResume=true;}
+            else if(stored.decision==='pending'){
+                // Replay verifies the original child request digest, including this exact parent
+                // mutation ID and original input. Only that proven continuation may rebase CAS.
+                mutate('create',undefined,childInput,undefined,childOptions,'content',undefined,contentId);radarResume=true;
+            }
+            invalid(c.deletedAt===null,'Previously added radar topic is trashed; restore the original topic');
+            radarTopic={contentId,candidate};
+        }
         const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost'];
         const token = raw.expectedToken;
         if (!workerOps.includes(op)) invalid(HASH.test(token),'A current production editToken is required');
@@ -133,12 +174,35 @@ export function productionMethods(h) {
             case 'saveReport': {
                 invalid(fields(raw,['id','title','type','accountIds','sourceUrl','collectedAt','pages','pageId','meta','expectedToken']),'Unknown report fields');
                 const old = raw.id ? find(p.reports,raw.id,'report') : null; if (old) editable(old);
+                invalid(raw.type!=='viral-radar' && old?.type!=='viral-radar'&&!Object.hasOwn(raw.meta??{},'radar'),'Radar reports require receipt-based adoption and dedicated decisions');
                 invalid(Array.isArray(raw.pages) && raw.pages.length > 0,'Report pages are required');
                 const pages = raw.pages.map(x => {invalid(fields(x,['id','title','assetHash']),'Invalid report page'); const asset = readAssetInternal(root,x.assetHash); invalid(asset.bytes <= 2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Report must be UTF-8 HTML'); return {id:x.id || randomUUID(),title:x.title,assetHash:x.assetHash};});
                 const r = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),title:raw.title,type:raw.type || '调研',accountIds:raw.accountIds || [],sourceUrl:raw.sourceUrl || null,collectedAt:raw.collectedAt || null,pages,pageId:raw.pageId || pages[0].id,meta:raw.meta || {},updatedAt:now};
                 for (const aid of r.accountIds) editable(find(p.accounts,aid,'account'));
                 if(old) Object.assign(old,r); else p.reports.push(r);
                 for(const a of p.accounts) {a.reportIds = a.reportIds.filter(id => id !== r.id); if(r.accountIds.includes(a.id)) a.reportIds.push(r.id);} break;
+            }
+            case 'adoptRadarResult': {
+                const {t,a}=taskAttempt(p,raw),radar=radarArtifactCandidates(t,a.id,raw.receiptHash);
+                const existing=p.reports.find(r=>trustedRadar(p,r)&&r.meta?.radar?.taskId===t.id&&r.meta.radar.attemptId===a.id&&r.meta.radar.receiptHash===raw.receiptHash);
+                if(existing)break;
+                for(const candidate of radar.candidates){const previous=p.reports.flatMap(r=>trustedRadar(p,r)?.candidates??[]).find(c=>c.sourceKey===candidate.sourceKey&&['added','rejected'].includes(c.decision));if(previous){candidate.decision=previous.decision;candidate.topicId=previous.topicId;}}
+                const assetHash=storeProductionHtml(Buffer.from(renderRadarReport(radar),'utf8'));
+                const page={id:randomUUID(),title:'雷达采集报告',assetHash};
+                p.reports.push({id:radarId(`radar-report:${t.id}:${a.id}:${raw.receiptHash}`),title:`${radar.query.direction} · 低粉爆款`,type:'viral-radar',accountIds:[],sourceUrl:null,collectedAt:radar.collectedAt,pages:[page],pageId:page.id,meta:{radar},createdAt:now,updatedAt:now,deletedAt:null});break;
+            }
+            case 'decideRadarCandidate': {
+                invalid(['add-topic','reject'].includes(raw.decision),'Invalid radar decision');
+                const r=find(p.reports,raw.reportId,'report');editable(r);invalid(trustedRadar(p,r),'Trusted radar report required');
+                const state=r.meta?.radar,t=find(p.tasks,state?.taskId,'radar task');
+                const verified=radarArtifactCandidates(t,state.attemptId,state.receiptHash),original=find(verified.candidates,raw.candidateId,'radar candidate'),c=find(state.candidates,raw.candidateId,'radar candidate');
+                invalid(JSON.stringify({...c,decision:'pending',topicId:null})===JSON.stringify(original),'Radar evidence was changed');
+                if(c.decision!=='pending'){invalid(c.decision===(raw.decision==='reject'?'rejected':'added'),'Candidate already decided');break;}
+                if(raw.decision==='reject'){for(const report of p.reports.filter(x=>trustedRadar(p,x)))for(const candidate of report.meta?.radar?.candidates??[])if(candidate.sourceKey===original.sourceKey&&candidate.decision==='pending'){candidate.decision='rejected';report.updatedAt=now;}break;}
+                invalid(radarTopic,'Topic transaction required');
+                let creation=p.creations.find(x=>x.contentId===radarTopic.contentId);
+                if(!creation){creation=defaultProductionCreation(radarTopic.contentId,p.nextTNumber++,now);creation.references=[{id:radarId(`radar-reference:${original.sourceKey}`),url:original.url,title:original.title,platform:original.platform,originalText:'',correctedText:'',segments:[],corrections:[],analysis:`雷达来源 ${original.sourceKey}；粉丝 ${original.author.followers??'未知'}；点赞 ${original.metrics.likes??'未知'}；赞粉比 ${original.metrics.likeFollowerRatio??'未知'}。采集 ${original.collectedAt}。`,mediaAssetHash:null,subtitleAssetHash:null}];p.creations.push(creation);}
+                for(const report of p.reports.filter(x=>trustedRadar(p,x)))for(const candidate of report.meta?.radar?.candidates??[])if(candidate.sourceKey===original.sourceKey&&candidate.decision==='pending'){candidate.decision='added';candidate.topicId=radarTopic.contentId;report.updatedAt=now;}break;
             }
             case 'trashReport': {const r = find(p.reports,raw.id,'report'); editable(r); r.deletedAt = now; r.updatedAt = now; break;}
             case 'setReportPosition': {const r = find(p.reports,raw.id,'report'); editable(r); invalid(r.pages.some(x => x.id === raw.pageId),'Unknown page'); r.pageId = raw.pageId; r.updatedAt = now; break;}
@@ -170,11 +234,11 @@ export function productionMethods(h) {
                 const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(validResult(raw.result),'Invalid result artifacts');
                 for(const artifact of raw.result.artifacts) if(artifact.assetHash) checkAsset(artifact.assetHash);
                 a.result=structuredClone(raw.result);const receipt={taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)};a.receipt={...receipt,sha256:digest(receipt)};a.status='submitted';a.progress=100;a.updatedAt=t.updatedAt=now;
-                for(const artifact of a.result.artifacts.filter(x => x.kind === 'report')) {
+                for(const artifact of a.result.artifacts.filter(x => x.kind === 'report' && t.request.parameters?.workflow!=='viral-radar')) {
                     const inputs=plain(artifact.data) && Array.isArray(artifact.data.pages) ? artifact.data.pages : artifact.assetHash ? [{title:artifact.title,assetHash:artifact.assetHash}] : [];
                     invalid(inputs.length>0 && inputs.length<=100,'Report artifact requires imported HTML pages');
                     const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
-                    const details=plain(artifact.data)?artifact.data:{};const r={id:randomUUID(),title:artifact.title,type:details.type??'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:details.sourceUrl??null,collectedAt:details.collectedAt??now,pages,pageId:pages[0].id,meta:{...(plain(details.meta)?details.meta:{}),taskId:t.id,attemptId:a.id},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
+                    const details=plain(artifact.data)?artifact.data:{};invalid(details.type!=='viral-radar'&&!Object.hasOwn(details.meta??{},'radar'),'Radar reports require accepted receipt adoption');const r={id:randomUUID(),title:artifact.title,type:details.type??'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:details.sourceUrl??null,collectedAt:details.collectedAt??now,pages,pageId:pages[0].id,meta:{...(plain(details.meta)?details.meta:{}),taskId:t.id,attemptId:a.id},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
                 }
                 for(const artifact of a.result.artifacts.filter(x => ['feedback','knowledge'].includes(x.kind))) {
                     invalid(text(artifact.text,100000,false),'Feedback and knowledge require bounded evidence text');
@@ -205,7 +269,26 @@ export function productionMethods(h) {
             }
             try {validateProductionMetadata(meta,'workspace',fail);} catch(error) {if(error.code==='CORRUPT') fail('INVALID_INPUT',error.message);throw error;}
             return meta;
-        },undefined,workerOps.includes(op));
+        },undefined,workerOps.includes(op)||radarResume);
+        if(radarTopic){
+            const {contentId,candidate}=radarTopic;
+            const reference={id:radarId(`radar-reference:${candidate.sourceKey}`),url:candidate.url,title:candidate.title,platform:candidate.platform,originalText:'',correctedText:'',segments:[],corrections:[],analysis:`雷达来源 ${candidate.sourceKey}；粉丝 ${candidate.author.followers??'未知'}；点赞 ${candidate.metrics.likes??'未知'}；赞粉比 ${candidate.metrics.likeFollowerRatio??'未知'}。采集 ${candidate.collectedAt}。`,mediaAssetHash:null,subtitleAssetHash:null};
+            const state=readProductionCreation(contentId);
+            if(!state.creation?.references.some(r=>r.id===reference.id)){
+                // Creation may have been independently registered/edited after the topic child.
+                // Append to the latest canonical overlay after the parent receipt, preserving all
+                // user fields. Parent replay continues this stable transaction if publication fails.
+                mutate('update',contentId,{productionOp:'attachRadarReference',productionInput:{parentMutationId:options.mutationId,parent:raw,reference}},undefined,{mutationId:radarId(`radar-reference-merge:${options.mutationId}`)},'content',(meta)=>{
+                    const creation=meta.productionState||current().production?.creations.find(c=>c.contentId===contentId);
+                    invalid(creation,'Radar topic creation is missing');
+                    const next=structuredClone(creation);
+                    if(!next.references.some(r=>r.id===reference.id)){next.references.push(reference);next.updatedAt=new Date().toISOString();}
+                    invalid(validProductionCreation(next),'Invalid radar topic creation');
+                    meta.schemaVersion=5;meta.productionState=next;return meta;
+                },undefined,true);
+            }
+            return readProduction();
+        }
         return project(out);
     }
     function saveProductionDraft(cid,input,editToken,options={}) {

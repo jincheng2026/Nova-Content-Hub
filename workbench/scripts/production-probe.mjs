@@ -10,7 +10,7 @@ import {createLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 import {emptyBinding} from '../src/main/bindings.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
-const evidence = path.resolve(process.env.UI_EVIDENCE_DIR || path.join(workbench, '../docs/verification/production/2026-10-27-workbench-usability/electron'));
+const evidence = path.resolve(process.env.UI_EVIDENCE_DIR || path.join(workbench, '../docs/verification/production/2026-10-27-radar-workflows/production-electron'));
 const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-production-probe-')));
 try {
     await fs.mkdir(evidence, {recursive: true});
@@ -38,7 +38,7 @@ try {
     await fs.writeFile(path.join(machine, 'machine-binding.json'), JSON.stringify({...emptyBinding(), current}), {mode: 0o600});
     await fs.writeFile(path.join(root, 'fixture.json'), JSON.stringify({contentId: content.id, reportId: reports.reports[0].id, library: library.info.root, otherLibrary: other.info.root, reportFile}));
     const entry = path.join(bundle, 'workbench/dist/main/production-probe-entry.mjs');
-    await fs.copyFile(path.join(workbench, 'test-support/production-probe-entry.mjs'), entry);
+    await fs.copyFile(path.join(workbench, process.env.NOVA_RADAR_PROBE === '1' ? 'test-support/radar-probe-entry.mjs' : 'test-support/production-probe-entry.mjs'), entry);
     const code = await new Promise((resolve, reject) => {
         const child = spawn(electron, [entry], {cwd: bundle, env: {...process.env, NOVA_PRODUCTION_PROBE_ROOT: root, NOVA_PRODUCTION_PROBE_EVIDENCE: evidence}, stdio: 'inherit'});
         const timer = setTimeout(() => child.kill('SIGKILL'), 180000);

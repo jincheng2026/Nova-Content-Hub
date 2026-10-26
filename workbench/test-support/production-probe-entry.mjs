@@ -75,7 +75,7 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
                 assert.equal(task.request.parameters.comments, false);
                 assert.equal(launches.length, 1);
                 record('report UI freezes explicit title and unchecked per-task comments; launch mocked');
-            } else await textClick('放弃填写');
+            } else {await textClick('取消','document.querySelector("dialog[open]")');await textClick('放弃本次填写');}
             if (width === 1440) {
                 await textClick('导入 HTML 报告');
                 await wait('document.querySelector("#production-report-title")');
@@ -208,17 +208,17 @@ startDesktop({show: false, userData: path.join(root, 'machine'), dialogs: {libra
             const task=(await bridge('readProduction')).tasks.at(-1);assert.equal(task.accountId,account.id);assert.equal(task.request.tools.includes('tikhub'),false);assert.equal(task.request.parameters.platformCollection,'manual');
             await run(`[...document.querySelectorAll('.production-account-card')].find(card=>card.querySelector('h3')?.textContent==='平台选择验收账号').querySelectorAll('button').forEach(button=>{if(button.textContent.trim()==='编辑')button.click()})`);
             await wait('document.activeElement.id==="production-account-name"');await input('#production-account-note','尚未保存的备注仍需保留');
-            await click('#refresh-workspace');await wait('document.querySelector(".production-notice")?.textContent.includes("填写内容已保留")');
+            await textClick('取消','document.querySelector("dialog[open]")');await click('#refresh-workspace');await wait('document.querySelector(".production-notice")?.textContent.includes("填写内容已保留")');await textClick('添加账号');await wait('document.querySelector("#production-account-note")');
             assert.equal(await run('document.querySelector("#production-account-note").value'),'尚未保存的备注仍需保留');
-            await textClick('放弃编辑');
+            await textClick('取消','document.querySelector("dialog[open]")');await textClick('放弃本次填写');
             record('searchable platform aliases save the selected enum; manual-only account task cannot collect; editing focuses the form and global refresh preserves its draft');
             await click('#nav-reports');await textClick('新建调研报告');await input('#production-research-title','折叠保稿测试');await input('#production-research-prompt','普通账号研究，不附加数字限制');
             await click('#production-research-form input[type="checkbox"]');
-            await click('button[aria-controls="production-research-form"]');await wait('!document.querySelector("#production-research-form")');
+            await textClick('取消','document.querySelector("dialog[open]")');await wait('!document.querySelector("#production-research-form")');
             await click('button[aria-controls="production-research-form"]');await wait('document.querySelector("#production-research-form")');
             assert.equal(await run('document.querySelector("#production-research-title").value'),'折叠保稿测试');assert.equal(await run('document.querySelector("#production-research-form input[type=checkbox]").checked'),true);
-            await screenshot('research-collapse-preserves-draft');await textClick('放弃填写');
-            record('research collapse preserves title, question and explicit comment selection; only explicit discard clears the form');
+            await screenshot('research-collapse-preserves-draft');await textClick('取消','document.querySelector("dialog[open]")');await textClick('放弃本次填写');
+            record('research modal cancellation preserves title, question and explicit comment selection; only explicit discard clears the form');
             await click('#open-settings');await run('[...document.querySelectorAll("[role=tab]")].find(el=>el.textContent.includes("服务与模型")).click()');await wait('document.querySelector("#service-asr-mode")');
             window.webContents.debugger.attach('1.3');await window.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]});
             try {

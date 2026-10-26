@@ -122,6 +122,10 @@ export class DesktopController {
     saveServiceSettings(input: ServiceSettingsPatch) { validateInput('saveServiceSettings', input); return this.exclusive(() => this.service('productionServices').saveServiceSettings(input)); }
     checkServiceReadiness(input?: undefined) { validateInput('checkServiceReadiness', input); return this.exclusive(() => this.service('productionServices').checkServiceReadiness()); }
     readPlatformCatalog(input?: undefined) { this.production.validate('readPlatformCatalog', input); return readPlatformCatalog(); }
+    createRadarTask(input: ProductionInputs['createRadarTask']) { return this.production.createRadarTask(input); }
+    adoptRadarResult(input: ProductionInputs['adoptRadarResult']) { return this.production.adoptRadarResult(input); }
+    decideRadarCandidate(input: ProductionInputs['decideRadarCandidate']) { return this.production.decideRadarCandidate(input); }
+    openRadarSource(input: ProductionInputs['openRadarSource']) { return this.production.openRadarSource(input); }
     readProduction(input?: undefined) { return this.production.readProduction(input); }
     mutateProduction(input: ProductionInputs['mutateProduction']) { return this.production.mutateProduction(input); }
     startProductionTask(input: ProductionInputs['startProductionTask']) { return this.production.startProductionTask(input); }

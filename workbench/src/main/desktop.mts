@@ -193,6 +193,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         readTemplateAssistantSetup,
         productionCallbacks: {
             serviceSettings: async () => serviceSettings.read(),
+            openSource: async url => { await shell.openExternal(url); },
             costReconciled: requestId => serviceTools.reconcileCost(requestId),
             launch: async (binding, reference) => {
                 requireWrite(release.AUTH_MODE);

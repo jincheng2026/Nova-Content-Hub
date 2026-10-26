@@ -1,3 +1,4 @@
+import {validRadarQuery} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {isRecord} from './contracts.ts';
 import {exact, uuid, token, identity} from './validation.ts';
 import type {ProductionPending} from './production-contracts.ts';
@@ -30,6 +31,10 @@ export function productionMutationInput(op:unknown,input:unknown):boolean {
 export function productionDraft(v:unknown):boolean {return exact(v,['contentId','body','editToken','bodyHash','productionToken','creationPatch'])&&uuid(v.contentId)&&text(v.body)&&token(v.editToken)&&token(v.bodyHash)&&token(v.productionToken)&&isRecord(v.creationPatch)&&Object.keys(v.creationPatch).every(k=>['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming'].includes(k))&&boundedJSON(v.creationPatch);}
 export function productionDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method) {
+ case 'createRadarTask':return validRadarQuery(input);
+ case 'adoptRadarResult':return exact(input,['taskId','attemptId','receiptHash','expectedToken'])&&uuid(input.taskId)&&uuid(input.attemptId)&&token(input.receiptHash)&&token(input.expectedToken);
+ case 'decideRadarCandidate':return exact(input,['reportId','candidateId','decision','expectedToken'])&&uuid(input.reportId)&&uuid(input.candidateId)&&['add-topic','reject'].includes(input.decision as string)&&token(input.expectedToken);
+ case 'openRadarSource':return exact(input,['reportId','candidateId'])&&uuid(input.reportId)&&uuid(input.candidateId);
  case 'readPlatformCatalog':case 'readProduction':case 'readProductionPending':return input===undefined;
  case 'mutateProduction':return exact(input,['op','input','mutationId'])&&uuid(input.mutationId)&&productionMutationInput(input.op,input.input);
  case 'startProductionTask':return optionalKeys(input,['kind','title','prompt','mode','comments'],['contentId','accountId'])&&isRecord(input)&&kinds.includes(input.kind as string)&&text(input.title,500)&&!!(input.title as string).trim()&&text(input.prompt,100000)&&!!(input.prompt as string).trim()&&['simple','detailed'].includes(input.mode as string)&&typeof input.comments==='boolean'&&['contentId','accountId'].every(k=>input[k]===undefined||uuid(input[k]));
@@ -49,6 +54,6 @@ export function productionPending(v:unknown):v is ProductionPending {
  if(v.kind==='files')return exact(v,['kind','binding','mutationId','fileKind','sources','hashes'])&&['images','report','media'].includes(v.fileKind as string)&&strings(v.sources,x=>text(x,32768),100)&&(v.sources as unknown[]).length>0&&strings(v.hashes,token,100)&&(v.hashes as unknown[]).length===(v.sources as unknown[]).length;
  if(v.kind!=='mutate'||!exact(v,['kind','binding','mutationId','op','input'])||!boundedJSON(v.input))return false;
  if(productionMutationInput(v.op,v.input))return true;
- const internal:Record<string,string[]>={createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
+ const internal:Record<string,string[]>={adoptRadarResult:['taskId','attemptId','receiptHash','expectedToken'],decideRadarCandidate:['reportId','candidateId','decision','expectedToken'],createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
  return typeof v.op==='string'&&Object.hasOwn(internal,v.op)&&exact(v.input,internal[v.op])&&token(v.input.expectedToken);
 }

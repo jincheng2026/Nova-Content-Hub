@@ -1,0 +1,14 @@
+import type {RadarQuery,RadarCandidate,RadarReport} from '../../../../workbench/src/shared/radar-contracts.ts';
+import type {ProductionTask} from './production.d.ts';
+export function validRadarQuery(value:unknown):value is RadarQuery;
+export function radarId(value:string):string;
+export function radarSearchFilters(query:RadarQuery):{sortType:'likes';timeRange:'day'|'week'|'half-year'|'any';contentType:'any'};
+export function radarPlatform(platform:string):string;
+export function radarOperations(platform:string):string[];
+export function douyinRows(raw:unknown):Record<string,any>[];
+export function douyinProfileFollowers(raw:unknown):number|null;
+export function normalizeRadarCandidate(raw:unknown,query:RadarQuery,collectedAt:string):RadarCandidate;
+export function normalizeDouyinRadar(raw:unknown,query:RadarQuery,collectedAt:string,profiles?:Record<string,number|null>):RadarCandidate[];
+export function radarArtifactCandidates(task:ProductionTask,attemptId:string,receiptHash:string):RadarReport;
+export function renderRadarReport(radar:RadarReport):string;
+export function radarPrompt(query:RadarQuery):string;
