@@ -1,0 +1,13 @@
+/* Foundation-01/02/03, Surface-01, Reading-01/02, Controls-01/02: use shared tokens and Semi controls. */
+.service-settings{display:flex;flex-direction:column;gap:16px;min-width:0;color:var(--text,#1d1d1f);font-size:14px;line-height:1.6}
+.service-settings .semi-card{background:var(--surface,#fff);border:1px solid rgba(0,0,0,.08);border-radius:18px}
+.service-settings .semi-card-body{display:flex;flex-direction:column;gap:10px;padding:22px;min-width:0}
+.service-settings p{margin:0;color:var(--muted,#6e6e73);overflow-wrap:anywhere;font-size:13px}
+.service-settings label{font-weight:500}
+.service-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0}
+.service-settings-grid>div,.service-settings-key{display:flex;flex-direction:column;gap:6px;min-width:0}
+.service-settings-key{margin-block:8px}
+.service-settings-key-status{color:var(--muted,#6e6e73);font-size:13px}
+.service-settings-key-actions,.service-settings-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.service-settings .service-settings-notice{padding:12px 16px;border-radius:12px;background:#e8f1fc;color:#1d1d1f}
+@media(max-width:700px){.service-settings-grid{grid-template-columns:1fr}.service-settings .semi-card-body{padding:16px}}
