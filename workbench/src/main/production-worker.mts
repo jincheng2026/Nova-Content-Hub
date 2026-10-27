@@ -1,4 +1,5 @@
 import path from 'node:path';
+import {reportNavigation} from './report-navigation.mts';
 import {verifiedBoundReader} from './bound-reader.mts';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
@@ -49,11 +50,12 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  if(op==='productionRead')return l.readProduction();
  if(op==='productionCreation')return creation(l,a.contentId!);
  if(op==='productionReport') {
-  const report=l.readProduction().reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
+  const reports=l.readProduction().reports,report=reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
   if(!report||!page)fail('NOT_FOUND','报告页面不存在。');
   const asset=l.readAsset(page.assetHash);
   if(asset.bytes>8*1024*1024||!['text/plain','text/html'].includes(asset.detectedType))fail('INVALID_REPORT','报告不是受支持的 HTML。');
-  return {html:new TextDecoder('utf-8',{fatal:true}).decode(asset.data),report};
+  const html=new TextDecoder('utf-8',{fatal:true}).decode(asset.data);
+  return {html,report,navigation:reportNavigation(a.binding,reports,report.id,page.id,html)};
  }
  const pending=a.pending!;
  if(op==='productionRecover') {

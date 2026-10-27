@@ -27,6 +27,8 @@ export interface ProductionResults {
  createRadarTask:{snapshot:ProductionSnapshot;opened:boolean;message?:string}; adoptRadarResult:ProductionSnapshot; decideRadarCandidate:ProductionSnapshot; openRadarSource:{opened:true};
  readPlatformCatalog:PlatformCatalog; readProduction:ProductionSnapshot; mutateProduction:ProductionSnapshot; startProductionTask:{snapshot:ProductionSnapshot; opened:boolean; message?:string}; openProductionTask:{opened:boolean; message?:string}; actProductionTask:ProductionSnapshot; openProductionLink:{opened:true;message?:string}; chooseProductionFiles:ProductionFile[]|null; readProductionCreation:ProductionCreationState; saveProductionDraft:ProductionCreationState; readProductionPending:{pending:boolean; message:string}; recoverProductionPending:ProductionSnapshot;
 }
+export interface ReportNavigationTarget {reportId:string;pageId:string;identity:string;fragment:string}
+export interface ReportNavigation {fingerprint:string;pageIdentity:string|null;links:{href:string;target:ReportNavigationTarget|null;message:string}[]}
 export interface ProductionReceipt {found:boolean; objectId?:string}
 export interface ProductionToolIdentity {taskId:string; attemptId:string; claimToken:string; workerId:string; requestId:string}
 export interface ProductionWorkerOperations {
@@ -43,5 +45,5 @@ export interface ProductionWorkerOperations {
  productionCreation:{args:{binding:LibraryBinding;contentId:string};result:ProductionCreationState};
  productionMutate:{args:{binding:LibraryBinding;pending:ProductionPending};result:ProductionSnapshot|ProductionCreationState|ProductionFile[]};
  productionRecover:{args:{binding:LibraryBinding;pending:ProductionPending};result:ProductionReceipt};
- productionReport:{args:{binding:LibraryBinding;reportId:string;pageId?:string};result:{html:string;report:Core.ProductionReport}};
+ productionReport:{args:{binding:LibraryBinding;reportId:string;pageId?:string};result:{html:string;report:Core.ProductionReport;navigation:ReportNavigation}};
 }
