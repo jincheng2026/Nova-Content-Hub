@@ -43,6 +43,17 @@ function contentRules(bytes, file, allowExampleLibrary) {
     for (const match of text.matchAll(/["'`]?([A-Za-z][A-Za-z0-9_-]*)["'`]?\s*[:=]\s*(["'`])([^\r\n"'`]+)\2/g)) {
         if (credentialName.test(match[1]) && secretLiteral(match[3])) rules.add('CREDENTIAL_LITERAL');
     }
+    // Bare scalars are meaningful in config/shell files, not JS/TS variable expressions.
+    const member = file.split('!').at(-1);
+    if (/\.(?:ya?ml|ini|cfg|conf|toml|sh|bash|zsh|cmd|ps1)$/i.test(member) || /^#![^\r\n]*\b(?:ba|z|k)?sh\b/.test(text)) {
+        for (const line of text.split(/\r?\n/)) {
+            const assignment = /^[ \t]*(?:-[ \t]+)?(?:(?:export|set)[ \t]+)?["']?([A-Za-z][A-Za-z0-9_-]*)["']?[ \t]*[:=][ \t]*([A-Za-z0-9_+./=-]+)[ \t]*(?:[#;].*)?$/.exec(line);
+            if (!assignment || !credentialName.test(assignment[1])) continue;
+            const value = assignment[2];
+            if (/^(?:process\.env|import\.meta\.env|os\.environ|env|settings|config|credentials|secrets)\./.test(value)) continue;
+            if (secretLiteral(value)) rules.add('CREDENTIAL_LITERAL');
+        }
+    }
     for (const match of text.matchAll(/\bBearer\s+([A-Za-z0-9_+./=-]{16,})/g)) if (!placeholder(match[1])) rules.add('BEARER_LITERAL');
     if (/\.json$/i.test(file) || /^\s*[\[{]/.test(text)) {
         let data; try {data = JSON.parse(text);} catch {return rules;}

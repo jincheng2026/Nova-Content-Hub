@@ -137,3 +137,37 @@ test('generated demo library allowance still rejects real content and local key 
     f.write('内容/demo/内容.json',JSON.stringify({format:'nova-content',isExample:false})); await assert.rejects(assertArtifactSafe(f.root,{allowGeneratedExampleLibrary:true}), /NON_EXAMPLE_CONTENT/);
     f.write('service-settings.json','{}'); await assert.rejects(assertArtifactSafe(f.root,{allowGeneratedExampleLibrary:true}), /LOCAL_STATE/);
 });
+
+test('unquoted YAML, INI and shell credential scalars are rejected without exposing their values', async t => {
+    for (const [file,content] of [
+        ['settings.yaml',`api_key: ${fakeSecret()}`],
+        ['settings.yml',`services:\n  - TIKHUB_API_KEY: ${fakeSecret()} # collection provider`],
+        ['settings.ini',`[services]\nTIKHUB_API_KEY=${fakeSecret()} ; configured locally`],
+        ['settings.conf',`ASR_ACCESS_TOKEN = ${fakeSecret()}`],
+        ['configure.sh',`#!/bin/sh\nexport TIKHUB_API_KEY=${fakeSecret()}`],
+        ['configure.cmd',`set MODEL_API_KEY=${fakeSecret()}`],
+        ['bin/configure',`#!/usr/bin/env bash\nTIKHUB_API_KEY=${fakeSecret()}`]
+    ]) {
+        const f = tree(t); f.write(file,content);
+        await assert.rejects(assertArtifactSafe(f.root), error => error.code === 'ARTIFACT_UNSAFE' && error.message.includes(file) && error.message.includes('CREDENTIAL_LITERAL') && !error.message.includes(fakeSecret()));
+    }
+    const f = tree(t); f.write('config.zip',zip('services.yaml',`api_key: ${fakeSecret()}`));
+    await assert.rejects(assertArtifactSafe(f.root), /CREDENTIAL_LITERAL/);
+});
+
+test('bare credential rules preserve environment references, code variables and explicit placeholders', async t => {
+    const f = tree(t);
+    f.write('settings.yaml',[
+        'api_key: ${TIKHUB_API_KEY}',
+        'model_api_key: process.env.MODEL_API_KEY',
+        'asr_api_key: import.meta.env.ASR_API_KEY',
+        'groq_api_key: settings.configuredGroqApiKey',
+        'custom_api_key: your-custom-api-key',
+        'access_token: mock-access-token-for-tests',
+        `editToken: ${fakeSecret()}`
+    ].join('\n'));
+    f.write('configure.sh','#!/bin/sh\nexport TIKHUB_API_KEY=$COLLECTION_PROVIDER_KEY\nASR_API_KEY=${SPEECH_PROVIDER_KEY}\nMODEL_API_KEY=$(read_model_key)\n');
+    f.write('configure.ini','api_key=env.TIKHUB_API_KEY\nmodel_api_key=secrets.configuredModelKey\n');
+    f.write('client.mjs','const apiKey = configuredServiceApiKey;\napiKey = runtimeConfig.apiKey;\n');
+    await assertArtifactSafe(f.root);
+});

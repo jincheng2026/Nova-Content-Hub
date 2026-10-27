@@ -21,7 +21,7 @@
 `plugin-src/scripts/artifact-safety.mjs` 仅读取传入的装配目录，不读取开发者 HOME、环境变量值或本机 userData。
 
 - 按路径拒绝 `.env` 系列（仅空 `.env.example` 例外）、凭据/服务设置/机器绑定/本机偏好 JSON 与备份、`.npmrc`、`.netrc`、内容库描述、第一方测试 fixture、数据库及日志。
-- 文本检测明确的 API Key、access token、service-scoped key 等字面量赋值、Bearer 字面量、常见服务商 Key 格式、私钥标记及已加密设置对象；普通 `token`/`editToken` 字段、服务商枚举、hash、读取 `process.env` 和明确的 mock/placeholder 不作为凭据。
+- 文本检测明确的 API Key、access token、service-scoped key 等字面量赋值（含 YAML/INI/配置及 shell 整行无引号标量）、Bearer 字面量、常见服务商 Key 格式、私钥标记及已加密设置对象；普通 `token`/`editToken` 字段、服务商枚举、hash、读取 `process.env`、配置中的环境表达式、shell 的 `$VAR`/`${...}`、代码变量表达式和明确的 mock/placeholder 不作为凭据。
 - 第三方依赖不运行通用字段或高熵扫描，只检查明确服务商 Key、私钥、环境文件和本机状态路径。二进制与媒体不做高熵匹配。
 - 递归检查 ZIP（stored/deflate）、普通 TAR、GZIP/TGZ；不解压到磁盘。压缩成员路径穿越、加密 ZIP、ZIP64、TAR 链接/扩展条目、未知归档格式、损坏或超限归档均阻断。大小上限为文本 16 MiB、单成员/单次 gzip 解压 64 MiB、归档输入及总展开预算 256 MiB、嵌套 4 层。常规 ZIP/TAR/GZIP 魔数也会识别改扩展名的归档。
 - 命中只报相对路径与规则 ID，归档成员用 `包.zip!相对路径` 表示，不输出值、片段、绝对路径或底层解析异常。异常令构建失败，不存在仅警告继续发布的路径。
