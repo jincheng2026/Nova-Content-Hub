@@ -43,12 +43,38 @@ export function productionCompositionRuntime() {
         const nextBody=body.slice(0,segment.start)+replacement+body.slice(segment.end),delta=replacement.length-(segment.end-segment.start);
         return {body:nextBody,composition:{...composition,bodyHash:bodyHash(nextBody),segments:composition.segments.map(value=>value.id===segmentId?{...value,end:value.start+replacement.length}:value.start>=segment.end?{...value,start:value.start+delta,end:value.end+delta}:value)}};
     }
+    function knownSegment(body,composition,segmentId) {
+        assertComposition(composition,body);const index=composition.segments.findIndex(value=>value.id===segmentId);if(index<0)error('INVALID_INPUT','找不到要编辑的段落，原稿保留。');return {segment:composition.segments[index],index};
+    }
+    function splitSegment({body,composition,segmentId,offset,filming,createId=()=>globalThis.crypto.randomUUID()}) {
+        const {segment,index}=knownSegment(body,composition,segmentId);
+        if(!Number.isSafeInteger(offset)||offset<=segment.start||offset>=segment.end||!boundary(body,offset))error('INVALID_INPUT','请将光标放在段落中间的完整字符边界，再拆分。');
+        if(composition.segments.length>=2000)error('INVALID_INPUT','段落数量已达到上限。');
+        const id=createId();if(!uuid.test(id)||composition.segments.some(value=>value.id===id))error('INVALID_INPUT','新段落编号无效或重复。');
+        const first={...segment,end:offset},second={...segment,id,start:offset,title:segment.title?segment.title+'（续）':'接续段落',references:segment.references.map(value=>({...value}))},segments=[...composition.segments.slice(0,index),first,second,...composition.segments.slice(index+1)];
+        // A uniquely located shot fully inside the second half follows that half. Spanning
+        // shots keep their original identity for explicit review in the recording view.
+        const nextFilming=filming?{...filming,shots:filming.shots.map(shot=>{if(shot.segmentId!==segment.id)return {...shot};const at=position(body,shot.quote);return at>=offset&&at+shot.quote.length<=segment.end?{...shot,segmentId:id}:{...shot};})}:undefined;
+        return {body,composition:{...composition,segments},...(nextFilming?{filming:nextFilming}:{})};
+    }
+    function mergeSegment({body,composition,segmentId,filming}) {
+        const {segment,index}=knownSegment(body,composition,segmentId),next=composition.segments[index+1];if(!next)error('INVALID_INPUT','当前段落之后没有可合并的段落。');
+        const references=[...segment.references.map(value=>({...value}))];for(const reference of next.references)if(!references.some(value=>JSON.stringify(value)===JSON.stringify(reference)))references.push({...reference});
+        if(references.length>1000)error('INVALID_INPUT','合并后的来源关联超过上限，请先核对来源。');
+        const join=(a,b)=>[a,b].filter(Boolean).join('\n'),merged={...segment,end:next.end,references,purpose:join(segment.purpose,next.purpose),visual:join(segment.visual,next.visual)};if(merged.purpose.length>100000||merged.visual.length>100000)error('INVALID_INPUT','合并后的用途或画面超出长度限制。');
+        return {body,composition:{...composition,segments:[...composition.segments.slice(0,index),merged,...composition.segments.slice(index+2)]},...(filming?{filming:{...filming,shots:filming.shots.map(shot=>({...shot,...(shot.segmentId===next.id?{segmentId:segment.id}:{})}))}}:{})};
+    }
+    function deleteSegment({body,composition,segmentId,filming}) {
+        const {segment}=knownSegment(body,composition,segmentId),length=segment.end-segment.start,nextBody=body.slice(0,segment.start)+body.slice(segment.end),segments=composition.segments.filter(value=>value.id!==segmentId).map(value=>value.start>=segment.end?{...value,start:value.start-length,end:value.end-length}:{...value});
+        // Orphaned shots intentionally remain available for reassignment or explicit removal.
+        return {body:nextBody,composition:{...composition,bodyHash:bodyHash(nextBody),segments},...(filming?{filming:{...filming,shots:filming.shots.map(shot=>({...shot})),readThroughBodyHash:null,recordedBodyHash:null}}:{})};
+    }
     function filmingScript(body,composition,filming) {
         assertComposition(composition,body);const cell=value=>String(value??'').replaceAll('\t',' ').replace(/\r?\n/g,' / '),rows=[['段落','口播','画面','制作分工','录屏步骤']];
         for(const segment of composition.segments){const shots=(filming?.shots??[]).filter(shot=>shot.segmentId===segment.id||!shot.segmentId&&position(body,shot.quote)>=segment.start&&position(body,shot.quote)+shot.quote.length<=segment.end);rows.push([segment.title,body.slice(segment.start,segment.end),[segment.visual,...shots.map(shot=>shot.visual)].filter(Boolean).join('\n'),shots.map(shot=>({screen:'录屏',self:'本人口播',editing:'后期'})[shot.owner]).join('、'),shots.flatMap(shot=>(shot.steps??[]).map(step=>[step.where,step.prompt,step.expect,step.caution].filter(Boolean).join('；'))).join('\n')]);}
         return rows.map(row=>row.map(cell).join('\t')).join('\n');
     }
     function validAdoptions(values) {return Array.isArray(values)&&values.length<=10000&&values.every(value=>fields(value,['taskId','attemptId','receiptHash','bodyHash','at','artifactIds'])&&uuid.test(value.taskId)&&uuid.test(value.attemptId)&&hash.test(value.receiptHash)&&hash.test(value.bodyHash)&&typeof value.at==='string'&&(()=>{try{return new Date(value.at).toISOString()===value.at;}catch{return false;}})()&&(value.artifactIds===undefined||Array.isArray(value.artifactIds)&&value.artifactIds.length>0&&new Set(value.artifactIds).size===value.artifactIds.length&&value.artifactIds.every(id=>uuid.test(id))));}
-    return {bodyHash,position,validComposition,assertComposition,createComposition,migrateComposition,replaceSegment,filmingScript,validAdoptions};
+    return {bodyHash,position,validComposition,assertComposition,createComposition,migrateComposition,replaceSegment,splitSegment,mergeSegment,deleteSegment,filmingScript,validAdoptions};
 }
-export const {bodyHash:compositionBodyHash,validComposition:validProductionComposition,createComposition:createProductionComposition,migrateComposition:migrateProductionComposition,replaceSegment:replaceProductionSegment,filmingScript:productionFilmingScript,validAdoptions:validProductionAdoptions}=productionCompositionRuntime();
+export const {bodyHash:compositionBodyHash,validComposition:validProductionComposition,createComposition:createProductionComposition,migrateComposition:migrateProductionComposition,replaceSegment:replaceProductionSegment,splitSegment:splitProductionSegment,mergeSegment:mergeProductionSegment,deleteSegment:deleteProductionSegment,filmingScript:productionFilmingScript,validAdoptions:validProductionAdoptions}=productionCompositionRuntime();

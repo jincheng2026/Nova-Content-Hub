@@ -178,3 +178,10 @@ test('whole-text edits retain unmatched segment metadata and prevent silent save
  const f=await fixture({segmentRuntime:true});await vm.runInContext('draft.composition=segmentComposition',f.context);f.edit('完全重写后正文');await vm.runInContext('save()',f.context);
  assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);assert.equal(f.get('body').value,'完全重写后正文');assert.match(f.get('notice').textContent,/段落关联待核对/);
 });
+
+test('explicit HTML split and merge preserve body bytes and deletion keeps recoverable shots',async()=>{
+ const body='第一段\n\n第二段',f=await fixture({segmentRuntime:true,content:{body,bodyHash:bodyHash(body)}});
+ await vm.runInContext("$('segment-body-input').selectionStart=1; changeSegmentStructure('split',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('segmentComposition.segments.length',f.context),3);
+ await vm.runInContext("changeSegmentStructure('merge',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('segmentComposition.segments.length',f.context),2);
+ await vm.runInContext("draft.filming={shots:[{id:crypto.randomUUID(),segmentId:segmentComposition.segments[0].id,quote:'第一段',visual:'旧画面',owner:'screen',done:true}],readThroughBodyHash:null,recordedBodyHash:null}; changeSegmentStructure('delete',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,'\n\n第二段');assert.equal(vm.runInContext('draft.filming.shots.length',f.context),1);assert.equal(vm.runInContext('filmingNeedsReview(draft.filming.shots[0])',f.context),true);
+});
