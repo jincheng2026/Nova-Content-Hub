@@ -27,8 +27,8 @@ export function prepareResearchAdoption({snapshot,taskId,attemptId,receiptHash,a
  for(const incoming of source.references){
   const sameId=references.find(item=>item.id===incoming.id);
   if(sameId){if(serializeProductionReference(sameId)!==serializeProductionReference(incoming))fail('CONFLICT','本篇已有同编号的不同参考版本，请保留原版本并先核对差异。');continue;}
-  // A locally corrected copy wins over an older research snapshot of the same URL.
-  if(incoming.url&&references.some(item=>item.url===incoming.url))continue;
+  const sameUrl=incoming.url&&references.find(item=>item.url===incoming.url);
+  if(sameUrl){if(serializeProductionReference(sameUrl)!==serializeProductionReference({...incoming,id:sameUrl.id}))fail('CONFLICT','本篇已保存同一来源的另一版本，请先在参考资料核对、合并或明确移除旧版本，再采用研究。');continue;}
   references.push(incoming);
  }
  if(references.length>10000)fail('INVALID_INPUT','合并后参考资料超过保存上限。');
