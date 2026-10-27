@@ -10,9 +10,9 @@ import {adoptTitleRecommendation} from '../src/shared/content-title-recommendati
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
 const appStart = source.indexOf('function App() {'), layoutStart = source.indexOf('    const currentCollection =');
 assert.ok(appStart >= 0 && layoutStart > appStart, 'App logic boundary must exist before compiling the save fixture');
-const compiled = stripTypeScriptTypes(source.slice(appStart, layoutStart) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, adoptRecommendedTitle, draft, base, disk, error, dirty};}');
+const compiled = stripTypeScriptTypes(source.slice(appStart, layoutStart) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, adoptRecommendedTitle, setSourceAccess, sourceKey, draft, base, disk, error, dirty};}');
 function fixture() {
-  const slots = [], calls = []; let cursor = 0, failure = '', pause, committed, managed = false;
+  const slots = [], calls = []; let cursor = 0, failure = '', pause, committed, managed = false, sourceEditable = true;
   const context = vm.createContext({
     useState(initial) {const i=cursor++; if (!(i in slots)) slots[i]=initial; return [slots[i], value=>{slots[i]=typeof value==='function'?value(slots[i]):value;}];},
     useRef(initial) {const i=cursor++; return slots[i]??={current:initial};}, useMemo: fn=>fn(), useEffect() {}, useLayoutEffect() {},
@@ -27,8 +27,8 @@ function fixture() {
       return {version:1};
     }
   });
-  vm.runInContext(compiled,context); const render=()=>{cursor=0; return context.App();};
-  return {render,calls, managed:value=>{managed=value;}, fail:method=>{failure=method;}, commit:item=>{committed=item;}, pause(method){let release;const wait=new Promise(resolve=>{release=resolve;});pause={method,wait};return release;}};
+  vm.runInContext(compiled,context); const render=()=>{cursor=0;let state=context.App();if(state.base){state.setSourceAccess({key:state.sourceKey,editable:sourceEditable});cursor=0;state=context.App();}return state;};
+  return {render,calls, source:value=>{sourceEditable=value;}, managed:value=>{managed=value;}, fail:method=>{failure=method;}, commit:item=>{committed=item;}, pause(method){let release;const wait=new Promise(resolve=>{release=resolve;});pause={method,wait};return release;}};
 }
 const draft={title:'new title',body:'retained body'}, disk={id:'original',editToken:'external-token',title:'external',body:'external body'};
 test('confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate',async()=>{
@@ -86,4 +86,10 @@ test('recommended title cannot overwrite typing or a newer editor version',()=>{
   assert.equal(f.render().adoptRecommendedTitle(candidate),false);assert.equal(f.render().draft.title,'我的未保存标题');
   f.render().load({...base,editToken:'newer'});
   assert.equal(f.render().adoptRecommendedTitle(candidate),false);assert.equal(f.render().draft.title,'原标题');assert.equal(f.calls.length,0);
+});
+
+test('uneditable or unverified source blocks original Save without losing a local draft',async()=>{
+ const f=fixture();f.render().load(disk);f.render().setDraft(draft);f.source(false);
+ assert.equal(await f.render().save(),false);assert.equal(f.render().draft.body,draft.body);assert.equal(f.calls.length,0);assert.match(f.render().error,/来源尚不可编辑/);
+ f.source(true);assert.equal(await f.render().save(),true);assert.equal(f.calls.filter(c=>c.method==='updateContent').length,1);
 });

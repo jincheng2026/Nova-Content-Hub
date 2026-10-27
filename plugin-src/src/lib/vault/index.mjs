@@ -57,6 +57,12 @@ function initialize(root) {
         rootIdentity,
     });
     recoverVault(root);
+    // The first handle predates vault-binding.json. Finish its source projection
+    // here, inside explicit open/create, before short desktop reads can see it.
+    openLibrary(runtimeRoot, {
+        expectedLibraryId: runtime.info.libraryId,
+        expectedRootIdentity: runtime.info.rootIdentity,
+    });
     return {
         root: runtimeRoot,
         libraryId: runtime.info.libraryId,
