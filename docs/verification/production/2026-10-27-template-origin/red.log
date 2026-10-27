@@ -1,0 +1,30 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2074 modules transformed.
+
+(!) outDir /var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/dist is not inside project root and will not be emptied.
+Use --emptyOutDir to override.
+
+rendering chunks...
+computing gzip size...
+../../../../../../../../var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/dist/index.html                                       0.19 kB │ gzip:   0.16 kB
+../../../../../../../../var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/dist/assets/nova-content-hub-icon-512-A1Ow6cZT.png  263.83 kB
+../../../../../../../../var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/dist/assets/index-Drrz7vBK.css                      397.56 kB │ gzip:  54.97 kB
+../../../../../../../../var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/dist/assets/index-axPRYEHj.js                       846.91 kB │ gzip: 246.70 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.21s
+AssertionError [ERR_ASSERTION]: edited builtin roots must not inflate mine from 1 to 4
+    at main (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR/main.mjs:6:140) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '3 组内置风格4 组我的模板0 张照片',
+  expected: /1 组我的模板/,
+  operator: 'match',
+  diff: 'simple'
+}
+Artifacts: /var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-template-origin-JHf1yR

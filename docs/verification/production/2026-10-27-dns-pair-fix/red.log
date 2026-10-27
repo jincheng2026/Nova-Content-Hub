@@ -1,0 +1,140 @@
+✔ credentials stay encrypted and omitted/null/replace semantics preserve independent keys (35.640791ms)
+✔ plaintext fallback safeStorage backend cannot save/use credentials (6.944375ms)
+✔ SSRF rejects all local, mapped, reserved and unsafe schemes (4.610375ms)
+✔ strict tool input rejects extraneous providers/unsafe IDs/invalid identity (0.433083ms)
+✔ search whitelist maps documented platform filters and keeps Xiaohongshu on one first page (0.756ms)
+✔ search cache separates every provider behavior parameter while equivalent filter order shares results (78.108ms)
+✔ legacy cache and unknown-cost markers survive the addition of search filters (17.247417ms)
+✔ successful TikHub collection caches traceable data and charges a single request (18.608125ms)
+✔ unknown provider cost blocks replay across restart until explicit manual reconciliation (30.48775ms)
+✔ known validation failure and local failure use zero requests; cloud requires explicit permission before reserve (11.836875ms)
+✔ loopback broker requires token, rejects Origin and serves bounded requests through stdin client API (64.472ms)
+✔ production broker verifies frozen comment consent and budgets before provider calls (54.007375ms)
+✔ production broker reserves and settles every call independently and cache hits cost zero (110.640667ms)
+✔ production ASR only copies registered bytes to private temp and local usage zero needs no paid budget (62.089958ms)
+✔ public DNS validation checks every answer and keeps the selected address for pinning (3.138959ms)
+✔ model usage keeps only actual finite provider counters without inventing a monetary charge (23.846083ms)
+✔ fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked (1.251375ms)
+▶ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias
+  ✖ observed translated pair IPv4 first (4.008167ms)
+  ✖ observed translated pair IPv6 first (1.348666ms)
+  ✖ mapped hexadecimal alias (0.821417ms)
+  ✖ mapped dotted alias (0.098042ms)
+  ✖ expanded translated alias (0.067292ms)
+  ✖ translated 198.19 address (0.055292ms)
+  ✖ mapped 198.19 address (0.053916ms)
+✖ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias (7.663ms)
+▶ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts
+  ✔ translated alias without IPv4 (2.523125ms)
+  ✔ mapped alias without IPv4 (0.637209ms)
+  ✔ translated alias for different IPv4 (0.623291ms)
+  ✔ mapped alias for different subnet (0.102958ms)
+  ✔ translated alias with public IPv4 (0.062833ms)
+  ✔ paired alias mixed with loopback (0.051209ms)
+  ✔ paired alias mixed with private IPv6 (0.115583ms)
+  ✔ paired alias mixed with mapped private IPv4 (0.284625ms)
+  ✔ unrecognized translation prefix (0.949084ms)
+  ✔ custom provider (0.276667ms)
+  ✔ official hostname suffix attack (0.491583ms)
+✔ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts (8.603625ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 29
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 919.382667
+
+✖ failing tests:
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ observed translated pair IPv4 first (4.008167ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ observed translated pair IPv6 first (1.348666ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ mapped hexadecimal alias (0.821417ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ mapped dotted alias (0.098042ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ expanded translated alias (0.067292ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ translated 198.19 address (0.055292ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }
+
+test at workbench/test/service-tools.test.mjs:88:40
+✖ mapped 198.19 address (0.053916ms)
+  Error: 服务调用未完成；请检查配置或任务授权后继续。
+      at publicEndpoint (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/src/main/service-tools.mts:44:120)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:91:19)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation/workbench/test/service-tools.test.mjs:88:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'UNSAFE_ENDPOINT',
+    requestsUsed: 0
+  }

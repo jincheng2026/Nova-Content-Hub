@@ -1,0 +1,51 @@
+✔ credentials stay encrypted and omitted/null/replace semantics preserve independent keys (22.522375ms)
+✔ plaintext fallback safeStorage backend cannot save/use credentials (2.419167ms)
+✔ SSRF rejects all local, mapped, reserved and unsafe schemes (4.929042ms)
+✔ strict tool input rejects extraneous providers/unsafe IDs/invalid identity (0.445833ms)
+✔ search whitelist maps documented platform filters and keeps Xiaohongshu on one first page (1.126667ms)
+✔ search cache separates every provider behavior parameter while equivalent filter order shares results (16.410667ms)
+✔ legacy cache and unknown-cost markers survive the addition of search filters (6.195875ms)
+✔ successful TikHub collection caches traceable data and charges a single request (6.100833ms)
+✔ unknown provider cost blocks replay across restart until explicit manual reconciliation (6.716625ms)
+✔ known validation failure and local failure use zero requests; cloud requires explicit permission before reserve (2.492542ms)
+✔ loopback broker requires token, rejects Origin and serves bounded requests through stdin client API (21.597084ms)
+✔ production broker verifies frozen comment consent and budgets before provider calls (7.085042ms)
+✔ production broker reserves and settles every call independently and cache hits cost zero (20.910542ms)
+✔ production ASR only copies registered bytes to private temp and local usage zero needs no paid budget (6.939458ms)
+✔ public DNS validation checks every answer and keeps the selected address for pinning (0.438292ms)
+✔ model usage keeps only actual finite provider counters without inventing a monetary charge (3.735375ms)
+✔ fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked (0.457708ms)
+▶ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias
+  ✔ observed translated pair IPv4 first (0.669291ms)
+  ✔ observed translated pair IPv6 first (1.520542ms)
+  ✔ mapped hexadecimal alias (0.164291ms)
+  ✔ mapped dotted alias (0.113167ms)
+  ✔ expanded translated alias (0.089708ms)
+  ✔ translated 198.19 address (0.07925ms)
+  ✔ mapped 198.19 address (0.066167ms)
+✔ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias (3.616459ms)
+▶ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts
+  ✔ translated alias without IPv4 (0.094959ms)
+  ✔ mapped alias without IPv4 (0.0495ms)
+  ✔ translated alias for different IPv4 (0.1035ms)
+  ✔ mapped alias for different subnet (0.061959ms)
+  ✔ translated alias with public IPv4 (0.052458ms)
+  ✔ paired alias mixed with loopback (0.049542ms)
+  ✔ paired alias mixed with private IPv6 (0.052625ms)
+  ✔ paired alias mixed with mapped private IPv4 (0.050708ms)
+  ✔ unrecognized translation prefix (0.086125ms)
+  ✔ custom provider (0.070916ms)
+  ✔ official hostname suffix attack (0.056416ms)
+✔ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts (1.271125ms)
+✔ builtin working copies and multi-version custom roots form mutually exclusive origins (1.414959ms)
+✔ deleted and legacy authoritative roots classify surviving copies without becoming selectable (0.156459ms)
+✔ missing roots and cycles remain visible with unknown origin instead of inventing user ownership (0.123917ms)
+✔ authoritative library facts win over asset snapshots and ordering never replaces the root representative (0.072666ms)
+ℹ tests 41
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 567.987916

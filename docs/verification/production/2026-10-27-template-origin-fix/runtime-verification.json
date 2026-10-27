@@ -1,0 +1,36 @@
+{
+  "source": "6b55ddf",
+  "verifiedAt": "2026-10-27T02:12:25.175Z",
+  "outputs": [
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "required",
+      "version": "0.3.53",
+      "productionReady": false,
+      "runtimeFiles": 576,
+      "releaseSha256": "eb0b97e400c99e3c5dc52a89e6f63e4ea6ee6fead753c80aebc2cb513b39ffbd",
+      "integritySha256": "c8e729be26b4759c064f401e4334a02fb66285d8301305ccd07bfaa286eb2094"
+    },
+    {
+      "channel": "development",
+      "platform": "darwin",
+      "arch": "arm64",
+      "mode": "disabled",
+      "version": "0.3.53",
+      "productionReady": false,
+      "runtimeFiles": 576,
+      "releaseSha256": "fb30644f2f27975bf8f46ce73dd04f9e8370686bc79a8d17d4a53b8dbe7845df",
+      "integritySha256": "ee2bdb86a90add95350dca8e652ed4f99faf42959186da0d08547c195b83ec9e"
+    }
+  ],
+  "developmentRestart": {
+    "oldMainPid": 68955,
+    "quit": "graceful macOS quit; old process absent before restart",
+    "newMainPid": 72295,
+    "launcherPid": 72268,
+    "version": "0.3.53",
+    "installedAppUpdated": false
+  }
+}

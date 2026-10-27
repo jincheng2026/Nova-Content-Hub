@@ -1,0 +1,43 @@
+DNS paired synthetic IPv6 regression fix — 2026-10-27
+Workspace: /Users/mac/code/dashboard/Nova-Content-Hub/.worktrees/research-creation
+Runtime: node v24.20.0
+
+Root cause: publicEndpoint allowed official providers' synthetic 198.18/19 IPv4
+answers, but rejected an accompanying IPv6 mapped/translated alias during
+all-answer validation. The supplied observed DNS pair is reproduced with an
+injected resolver; no real provider requests were made.
+
+RED command (tests added, production source unchanged):
+node --experimental-strip-types --test workbench/test/service-tools.test.mjs
+Exit: 1. Tests 37, pass 29, fail 8 (7 positive fixture subtests plus parent).
+All 7 positive subtests fail with UNSAFE_ENDPOINT, requestsUsed: 0.
+Full output: red.log
+
+GREEN command (after narrow production fix):
+node --experimental-strip-types --test workbench/test/service-tools.test.mjs
+Exit: 0. Tests 37, pass 37, fail 0, cancelled 0, skipped 0, todo 0.
+Full output: green.log
+
+Native typecheck command:
+npm run typecheck:native --prefix workbench
+Exit: 0. tsc -p tsconfig.native.json --noEmit
+Full output: typecheck-native.log
+
+git diff --check: exit 0.
+
+Scope: only three existing official fixed hostnames. IPv6 normalized by URL,
+then accepted only for ::ffff:(0:)?c612/13:xxxx with a matching synthetic IPv4
+in the same DNS result. All answers still checked. Returned address is a
+synthetic IPv4 when available so transport pins IPv4 even if alias appears first.
+publicAddress, TLS servername/rejectUnauthorized, redirect policy and HTTPS
+lookup pinning remain unchanged.
+
+Coverage: observed pair in both orders; hexadecimal/dotted mapped aliases;
+expanded uppercase translated alias; 198.19 mapped and translated aliases;
+all three fixed hostnames; unpaired/mismatched aliases; private mixed answers;
+unsupported translation prefix; custom provider and hostname suffix rejection.
+
+No application build, installation, real API call, user settings modification,
+or commit performed. Cross-platform runtime and final installed artifacts were
+not exercised; this evidence is limited to resolver-injected unit regression
+coverage and native TypeScript checking on the current development machine.
