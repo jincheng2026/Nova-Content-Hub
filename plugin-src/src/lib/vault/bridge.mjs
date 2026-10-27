@@ -48,7 +48,8 @@ export function makeVaultBridge(root) {
         batchDepth = 0,
         api,
         mutate,
-        latest = [];
+        latest = [],
+        resourcesPrimed = false;
     const projectionPath = '.workbench/projection.json';
     let projection = {format: 'nova-vault-projection', contents: {}};
     if (fs.existsSync(safe(binding.vaultRoot, projectionPath, true)))
@@ -107,20 +108,23 @@ export function makeVaultBridge(root) {
         );
         return mutate(...args);
     }
-    function sync() {
+    function sync(includeResources = true) {
         if (syncing || batchDepth) return;
         syncing = true;
         try {
             if (fs.existsSync(safe(binding.vaultRoot, projectionPath, true)))
                 projection = json(binding.vaultRoot, projectionPath);
             const snapshot = readVaultSnapshot(root);
-            resourceProjector?.({
-                runtimeRoot: root,
-                vaultRoot: binding.vaultRoot,
-                snapshot,
-                rawApi: api,
-                mutate,
-            });
+            if (includeResources || !resourcesPrimed) {
+                resourceProjector?.({
+                    runtimeRoot: root,
+                    vaultRoot: binding.vaultRoot,
+                    snapshot,
+                    rawApi: api,
+                    mutate,
+                });
+                resourcesPrimed = true;
+            }
             latest = contentSources(snapshot).filter((s) => {
                 const old = projection.contents[s.contentId];
                 return (
@@ -501,7 +505,7 @@ export function makeVaultBridge(root) {
                             'mutateProduction',
                         ].includes(name)
                     )
-                        sync();
+                        sync(!['listContents', 'listAllContents', 'listTrash', 'readContent'].includes(name));
                     if (
                         name === 'createContent' &&
                         args[0] &&

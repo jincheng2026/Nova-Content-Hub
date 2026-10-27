@@ -80,6 +80,7 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
                 }
             }
             if (normalizeAsrSettings(current.values.asr).mode === 'cloud') {setNotice('服务设置已保存。云端识别将在任务授权后调用。'); return;}
+            setNotice('服务设置已保存，正在检查本地语音组件。首次初始化可能较慢，最多等待 120 秒；检查完成前不表示已就绪。');
             try {const result = await onCheck(); setNotice(`服务设置已保存。${result.localAsr.reason}`);}
             catch {setNotice('服务设置已保存；本地模型检查未完成，可再次点击“保存并检查”重试。');}
         } finally {setSaving(false);}
@@ -105,10 +106,10 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
       <Card title="研究与创作服务"><p>调研、账号分析及所有文字分析与创作均由你选择的 Codex / WorkBuddy 助手完成。这里配置 TikHub 采集与语音识别；工作台直连云端模型仅用于语音转文字。</p><p>Key 加密保存在本机，不随内容库备份；已配置的 Key 默认隐藏，点击“查看”可显示。新 Key 留空保留原值。</p>{saved && !saved.encryptionAvailable && <p role="alert">系统安全存储当前不可用，暂不能保存或使用新 Key。请先解锁钥匙串或配置系统凭据存储。</p>}{loading && <p role="status">正在读取服务设置…</p>}</Card>
       <Card title="TikHub 采集">{keyInput('tikhub', 'TikHub Key')}<p>用于抖音搜索、账号、作品与评论，调用可能计费。</p></Card>
       <Card title="语音识别">
-        <p>默认使用免费的本地识别（faster-whisper）。云端识别仅在本次任务明确授权后使用；本地失败不会自动取得云端授权。</p>
+        <p>默认优先使用适用本机的免费随包语音组件。云端识别仅在本次任务明确授权后使用；本地失败不会自动取得云端授权。</p>
         <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={currentAsr.mode} disabled={blocked} onChange={mode => changeAsrMode(mode as ServiceSettingsValues['asr']['mode'])}><option value="local-first">免费本地优先</option><option value="local-only">仅本地</option><option value="cloud">云端识别（需授权）</option></PopupSelect><p>选择“仅本地”会放弃未保存的云端配置与 Key 修改，已保存配置保留。</p>
         {!cloudMode && <>
-          <p>{localConfigured ? '已填写本地模型路径，保存时检查可用性。' : '请展开配置已安装的本地模型。'}本地识别失败时不会自动转付费云端。</p>
+          <p>{localConfigured ? '已填写本地模型路径，保存时检查可用性。' : '路径留空会检查适用本机的随包组件；也可展开指定已有模型。'}本地识别失败时不会自动转付费云端。</p>
           <details className="service-settings-details" open={!localConfigured}><summary>本地模型配置</summary><div className="service-settings-detail-body">
             <label htmlFor="service-asr-engine">本地引擎</label><PopupSelect id="service-asr-engine" value={values.asr.localEngine} disabled={blocked} onChange={localEngine => asr({localEngine: localEngine as ServiceSettingsValues['asr']['localEngine']})}><option value="faster-whisper">faster-whisper / Python</option><option value="qwen3-asr">Qwen3-ASR / Python</option><option value="whisper-cpp">whisper.cpp</option></PopupSelect>
             <label htmlFor="service-asr-executable">Python / whisper-cli 路径</label><Input id="service-asr-executable" value={values.asr.localExecutable} disabled={blocked} onChange={localExecutable => asr({localExecutable})}/>

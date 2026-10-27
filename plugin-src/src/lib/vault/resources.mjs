@@ -7,6 +7,7 @@ import {bindingForRuntime, readBytes, digest, uuidFor, safe, json, writeJSON, mk
 
 const STATE = '.workbench/resource-projection.json';
 const PROJECTION_POLICY_VERSION = 4;
+const RESOURCE_INPUT_POLICY_VERSION = 1;
 const BLOCK = /<!-- nova-content-hub:resource\r?\n([\s\S]*?)\r?\n-->/g;
 const UUID = /^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
 const now = () => new Date().toISOString();
@@ -79,23 +80,27 @@ const RESOURCE_ROLES=new Set(['benchmark-accounts','reports','prompts']);
 const FORMAT={'.md':'markdown','.markdown':'markdown','.txt':'text','.html':'html','.htm':'html','.json':'json','.jsonl':'text'};
 function resourceSnapshot(snapshot){
     if(!fs.existsSync(safe(snapshot.root,'.workbench/source-map.json',true)))return snapshot;
-    const documents=snapshot.documents.map(d=>({...d})),issues=[],boundSources=[];
-    for(const entry of readSourceMap(snapshot.root).sources.filter(s=>RESOURCE_ROLES.has(s.role))){
+    const documents=snapshot.documents.map(d=>({...d})),issues=[],boundSources=[],sourceMap=readSourceMap(snapshot.root);
+    const byPath=new Map(documents.map(document=>[document.relativePath,document]));
+    for(const entry of sourceMap.sources.filter(s=>RESOURCE_ROLES.has(s.role))){
         let catalog;
         try{catalog=readBoundSourceCatalog(snapshot.root,{sourceId:entry.id});}catch(error){issues.push({sourceId:entry.id,relativePath:entry.root,code:error.code??'IO_ERROR',message:error.message});continue;}
         boundSources.push(catalog.source);issues.push(...catalog.issues.map(i=>({...i,relativePath:i.relativePath??entry.root})));
         for(const file of catalog.files){
-            if(entry.role==='reports'&&(file.relativePath.split('/').length!==2||!/(?:\.html?$|(?:^|\/)meta\.json$)/i.test(file.relativePath)))continue;
+            const reportSidecar=entry.role==='reports'&&(file.relativePath.split('/').length!==2||!/(?:\.html?$|(?:^|\/)meta\.json$)/i.test(file.relativePath));
+            if(reportSidecar&&entry.mode==='internal')continue;
             const relativePath=entry.mode==='internal'?path.posix.join(entry.root,file.relativePath):`${entry.id}/${file.relativePath}`;
-            const existing=entry.mode==='internal'?documents.find(d=>d.relativePath===relativePath):null;
+            const existing=entry.mode==='internal'?byPath.get(relativePath):null;
             const extra={explicitBinding:entry.mode==='linked'||!!entry.provenance,sourceId:entry.id,boundRole:entry.role,sourceRelativePath:file.relativePath,readRoot:catalog.source.root,readRelativePath:file.relativePath,sourceWritable:entry.mode==='internal'&&entry.writable};
             if(existing){Object.assign(existing,extra,{section:entry.role==='benchmark-accounts'?'accounts':entry.role==='prompts'?'prompts':existing.section});continue;}
-            const format=FORMAT[path.extname(file.relativePath).toLowerCase()];if(!format)continue;
+            // Every bound sidecar participates in the current-byte signature too.
+            // Images/styles can change a report even when its HTML is unchanged.
+            const format=reportSidecar?'other':FORMAT[path.extname(file.relativePath).toLowerCase()]??'other';
             try{const data=readBoundSourceFile(snapshot.root,{sourceId:entry.id,relativePath:file.relativePath});documents.push({id:`source-${digest(entry.id+':'+file.relativePath).slice(0,32)}`,relativePath,hash:data.hash,format,section:entry.role==='benchmark-accounts'?'accounts':entry.role==='prompts'?'prompts':'materials',title:path.posix.basename(file.relativePath,path.posix.extname(file.relativePath)),bytes:data.bytes,writable:false,contentId:null,tNumber:null,...extra});}
             catch(error){issues.push({sourceId:entry.id,relativePath,code:error.code??'IO_ERROR',message:error.message});}
         }
     }
-    return {...snapshot,documents,sourceIssues:issues,boundSources};
+    return {...snapshot,documents,sourceIssues:issues,boundSources,sourceMap};
 }
 const sourceBytes=(snapshot,document)=>readBytes(document.readRoot??snapshot.root,document.readRelativePath??document.relativePath);
 function originalReportGroups(snapshot,out){
@@ -125,7 +130,9 @@ function originalReportGroups(snapshot,out){
 
 /** Conservatively classify the one snapshot already read by the bridge. Every source gets an inventory entry. */
 export function classifyVaultResources(snapshot) {
-    snapshot=resourceSnapshot(snapshot);
+    return classifyPreparedResources(resourceSnapshot(snapshot));
+}
+function classifyPreparedResources(snapshot) {
     const out={accounts:[],reports:[],prompts:[],inventory:[],issues:[...(snapshot.sourceIssues??[])]},companions=[];
     const grouped=originalReportGroups(snapshot,out);
     for(const document of snapshot.documents){
@@ -159,7 +166,7 @@ export function classifyVaultResources(snapshot) {
             if(!kind||!plain(record))continue;
             const id=UUID.test(block?.id??'')&&!document.explicitBinding?block.id:uuidFor(`${snapshot.vaultId}:resource:${kind}:${document.id}`);
             const source={kind,id,document,record:structuredClone(record),text,body:['prompt','report'].includes(kind)?promptBody:body,block};
-            if(kind==='account'&&document.sourceId){const dir=path.posix.dirname(document.readRelativePath);source.imageFiles=fs.readdirSync(dir==='.'?document.readRoot:safe(document.readRoot,dir)).filter(name=>/\.(?:png|jpe?g|webp)$/i.test(name)).sort((a,b)=>(a.startsWith('头像')?0:1)-(b.startsWith('头像')?0:1)||a.localeCompare(b)).map(name=>({root:document.readRoot,relativePath:path.posix.join(dir,name)}));}
+            if(kind==='account'&&document.sourceId){const dir=path.posix.dirname(document.readRelativePath);source.imageFiles=fs.readdirSync(dir==='.'?document.readRoot:safe(document.readRoot,dir)).filter(name=>/\.(?:png|jpe?g|webp)$/i.test(name)).sort((a,b)=>(a.startsWith('头像')?0:1)-(b.startsWith('头像')?0:1)||a.localeCompare(b)).map(name=>{const relativePath=path.posix.join(dir,name);return {root:document.readRoot,relativePath,hash:digest(readBytes(document.readRoot,relativePath))};});}
             out[`${kind==='account'?'accounts':kind==='report'?'reports':'prompts'}`].push(source);
             inv.kind=kind;inv.resourceId=id;inv.reason=block?'明确工作台管理档案':'可辨识的原位资源';
         } catch(error){inv.kind='conflict';inv.reason=error.message;out.issues.push({code:error.code??'CORRUPT',relativePath:document.relativePath,message:error.message});}
@@ -170,6 +177,7 @@ export function classifyVaultResources(snapshot) {
         source.record={...source.record,...block.record};source.block=block;source.companion=document;source.companionText=sourceBytes(snapshot,document).toString('utf8');
         if(block.bodyLayout==='after-block'){source.body=frontmatter(withoutBlock(source.companionText)).body;source.managedMarkdown=true;}
     }
+    for(const source of out.reports)source.dependencies=reportDependencies(snapshot,source);
     return out;
 }
 
@@ -199,6 +207,31 @@ function loadState(root) {
     if(state.format!=='nova-vault-resources'||state.version!==1||!plain(state.resources)||!['account','report','prompt'].every(k=>plain(state.resources[k])))fail('CORRUPT','结构化资源映射损坏');
     return state;
 }
+function reportDependencies(snapshot, source) {
+    const dependencies=[];
+    for(const page of source.originalPages??[{html:source.body,document:source.document}]) {
+        const document=page.document, root=document.readRoot??snapshot.root,
+            relative=document.readRelativePath??document.relativePath;
+        const html=page.html??source.body;
+        const urls=[...html.matchAll(/<script\b[^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)')[^>]*>/gi)].map(match=>[match[1]??match[2],'.js']);
+        for(const match of html.matchAll(/<link\b[^>]*>/gi)) {
+            if(!/\brel\s*=\s*["']stylesheet["']/i.test(match[0]))continue;
+            const href=match[0].match(/\bhref\s*=\s*(?:"([^"]+)"|'([^']+)')/i);
+            if(href)urls.push([href[1]??href[2],'.css']);
+        }
+        for(const [url,extension]of urls) {
+            try {
+                if(/^(?:[a-z][a-z\d+.-]*:|\/\/|\/)/i.test(url)||/[?#]/.test(url))continue;
+                const target=path.posix.normalize(path.posix.join(path.posix.dirname(relative),decodeURIComponent(url)));
+                if(path.posix.extname(target).toLowerCase()!==extension)continue;
+                let hash=null;
+                try{hash=digest(readBytes(root,target));}catch(error){if(!['ENOENT','ENOTDIR','INVALID_INPUT'].includes(error.code))throw error;}
+                dependencies.push({page:document.relativePath,relativePath:target,hash});
+            } catch(error) {if(error.code)throw error;}
+        }
+    }
+    return dependencies;
+}
 function sourceEntry(s) {
     const foreignOriginal=s.kind==='report'&&s.document.format==='html'&&!s.managedMarkdown&&!s.block?.pageOverrides?.length;
     return {documentId:s.document.id,relativePath:s.document.relativePath,hash:s.originalDocument?.hash??s.document.hash,format:s.document.format,
@@ -206,6 +239,8 @@ function sourceEntry(s) {
         ...(s.originalPages?{originalPages:s.originalPages.map(p=>({id:p.id,relativePath:p.document.relativePath,hash:p.document.hash}))}:{}),
         ...(foreignOriginal?{htmlPolicyVersion:PROJECTION_POLICY_VERSION,previewMode:'isolated-html'}:{}),
         ...(s.kind==='report'?{currentBody:s.block?.pageOverrides?.length?'managed-pages':s.managedMarkdown?'managed-markdown':'original'}:{}),
+        ...(s.dependencies?.length?{dependencies:s.dependencies}:{}),
+        ...(s.imageFiles?.length?{imageDependencies:s.imageFiles.map(file=>({relativePath:file.relativePath,hash:file.hash}))}:{}),
         ...(s.companion?{companion:{documentId:s.companion.id,relativePath:s.companion.relativePath,hash:s.companion.hash}}:{})};
 }
 const markerPath=mid=>`.workbench/resource-projection-mutations/${mid}.json`;
@@ -243,14 +278,71 @@ function reportRecord(s,root,api,previous) {
 }
 function accountRecord(s,previous,api) {
     const r=s.record;
-    const imported=(s.imageFiles??[]).map(file=>{readBytes(file.root,file.relativePath);return api.importAsset(safe(file.root,file.relativePath),{purpose:'photo'}).assetHash;});
+    const imported=(s.imageFiles??[]).map(file=>{if(digest(readBytes(file.root,file.relativePath))!==file.hash)fail('CONFLICT','账号图片在投影期间变化');const asset=api.importAsset(safe(file.root,file.relativePath),{purpose:'photo'});if(asset.assetHash!==file.hash)fail('CONFLICT','账号图片在导入期间变化');return asset.assetHash;});
     return {id:s.id,name:r.name,platform:r.platform||'未知',url:validURL(r.url),note:r.note??'',tags:strings(r.tags),images:imported.length?imported:strings(r.images),avatarAssetHash:r.avatarAssetHash??null,reportIds:strings(r.reportIds).filter(x=>UUID.test(x)),createdAt:previous?.createdAt??r.createdAt??now(),updatedAt:now(),deletedAt:r.deletedAt??null};
 }
 
 /** The runtime is a rebuildable projection. Source writes are handled before runtime capture below. */
+// This is a signature of inputs checked in THIS read, not a time-based cache.
+// Only creation pages verified as excluded can omit author bytes. Changed
+// pages receive a target read to check explicit resource declarations first.
+// Identity/format/availability, all resource hashes, bound sidecars and source
+// maps still participate on every read.
+const creationOnly = document => document.section === 'drafts' &&
+    document.editAdapter === 'creation-document' && !document.boundRole;
+function creationExclusions(snapshot, state) {
+    const previous=new Map(state.inventory.map(entry=>[entry.documentId,entry])), excluded=new Set();
+    for(const document of snapshot.documents.filter(creationOnly)) {
+        const old=previous.get(document.id);
+        if(old?.kind!=='excluded')continue;
+        if(old.hash===document.hash){excluded.add(document.id);continue;}
+        // Changed creation pages are a single target read, never an assumption
+        // that a jc-doc page cannot also declare an explicit resource block.
+        const bytes=sourceBytes(snapshot,document);
+        if(digest(bytes)!==document.hash)fail('CONFLICT','创作页在资源签名读取时变化');
+        try {
+            const text=bytes.toString('utf8'),block=management(text),fields=frontmatter(text).fields;
+            if(!block&&!['report','research-report'].includes(fields.type)&&!['report','research-report'].includes(fields.kind))excluded.add(document.id);
+        } catch { /* classify reports the exact malformed block */ }
+    }
+    return excluded;
+}
+function resourceInputFingerprint(snapshot, libraryId, excluded) {
+    return digest(JSON.stringify([RESOURCE_INPUT_POLICY_VERSION,PROJECTION_POLICY_VERSION, libraryId,
+        snapshot.root, snapshot.vaultId, snapshot.sourceMap ?? null,
+        snapshot.boundSources ?? [], snapshot.sourceIssues ?? [],
+        snapshot.documents.map(document => excluded.has(document.id)
+            ? {...document, hash: null, bytes: null} : document)]));
+}
+function refreshCreationInventory(state, snapshot, excluded) {
+    const byId = new Map(snapshot.documents.filter(document=>excluded.has(document.id)).map(document => [document.id, document]));
+    let changed = false;
+    for (const entry of state.inventory) {
+        const document = byId.get(entry.documentId);
+        if (document && entry.kind === 'excluded' && entry.hash !== document.hash) {
+            entry.hash = document.hash;
+            changed = true;
+        }
+    }
+    return changed;
+}
 export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mutate}) {
-    const state=loadState(vaultRoot),classified=classifyVaultResources(snapshot),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,classified.inventory,classified.issues]));
-    if(state.fingerprint===fingerprint)return;
+    const state=loadState(vaultRoot), prepared=resourceSnapshot(snapshot),
+        exclusions=creationExclusions(prepared,state),
+        inputFingerprint=resourceInputFingerprint(prepared,rawApi.info.libraryId,exclusions);
+    if (state.fingerprint && state.inputFingerprint === inputFingerprint && state.libraryId === rawApi.info.libraryId) {
+        if (refreshCreationInventory(state, prepared, exclusions)) {
+            state.fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,state.inventory,state.issues]));
+            writeJSON(vaultRoot,STATE,state);
+        }
+        return;
+    }
+    const classified=classifyPreparedResources(prepared),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,classified.inventory,classified.issues]));
+    if(state.fingerprint===fingerprint) {
+        state.inputFingerprint=inputFingerprint;
+        writeJSON(vaultRoot,STATE,state);
+        return;
+    }
     const blocked=new Set();
     for(const issue of classified.issues)for(const [kind,group]of Object.entries(state.resources))for(const [id,entry]of Object.entries(group)){
         if(entry.relativePath===issue.relativePath||entry.companion?.relativePath===issue.relativePath||entry.originalPages?.some(p=>p.relativePath===issue.relativePath)){entry.missing=true;entry.sourceIssue=issue;blocked.add(`${kind}:${id}`);}
@@ -310,7 +402,7 @@ export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mut
         },source.id);
         state.resources.prompt[source.id]=entry;
     }
-    state.inventory=classified.inventory;state.issues=classified.issues;state.fingerprint=fingerprint;state.libraryId=rawApi.info.libraryId;
+    state.inventory=classified.inventory;state.issues=classified.issues;state.fingerprint=fingerprint;state.inputFingerprint=resourceInputFingerprint(prepared,rawApi.info.libraryId,creationExclusions(prepared,state));state.libraryId=rawApi.info.libraryId;
     writeJSON(vaultRoot,STATE,state);
 }
 

@@ -39,3 +39,20 @@
 ## 范围结论
 
 确认 **1 项 P1、1 项 P2**，均已将最小复现结果通知集成负责人。源页面写入包含独立 capability、来源 hash、sandbox、路径/root identity 检查，未在本次聚焦检查中证实新的可报告信任边界绕过；这不等于完整安全审计通过。其余已读接线未发现足够确定的新 P1/P2，不以代码量或报告存在推断功能等价完成。
+
+## 最终性能／本地语音初始化补丁定点审查
+
+基线：HEAD `52d36f5` 之后的未提交补丁；本节不重复此前业务和创作页审查。读取实际 `bridge.mjs`、`resources.mjs`、`service-tools.mts` 差异及相关有限调用链，没有修改产品代码。此轮 `core.mjs`、bound-reader、worker deadline 没有新增差异。
+
+初版发现两类 P2，均在本轮修复后复核通过：
+
+- **明确声明为报告的 jc-doc 被误当作仅正文页缓存。** 原 `creationOnly` 直接忽略所有 drafts jc-doc 的 hash/bytes。临时真实库中，管理块声明 `kind:report` 的页面正文 AAAA→BBBB 后，`readProduction()` 返回旧 asset，`hasNewText=false`。修法现为 `resources.mjs:293–307`：仅上次 inventory 已验证 excluded 的创作页可尝试排除；变化页面定点读回并验证 hash，检查 management 和 frontmatter 的 `type/kind=report/research-report`。中途复核还实际复现了“excluded 页面新增 frontmatter 报告声明后 reports 仍为 0”，已补上对应 predicate 和回归。原本已是报告的页面不再忽略完整 hash。
+- **关联报告 CSS 变化后离线预览仍保留旧 CSS。** 原 reports catalog 提前过滤 sidecar，且对象 `sourceEntry` 没有依赖 hash。临时库关联 `group/report.html` 和 `theme.css`，red→blue 后旧输出 `assetChanged=false, hasBlue=false`。现 linked sidecar 参与当前输入签名；实际 script/style 引用的 hash 进入 sourceEntry，触发该报告重新导入。账号图片也加入 imageDependencies，导入前后校验当前 hash。
+
+最终检查：资源输入签名同时包含 libraryId、vault root/vaultId、完整 source-map、bound sources/可用性、source issues 和当前文件清单；新增、删除、绑定根替换与资源 hash 变更均能使相关读重新分类。仅内容列表／正文读在首次 hydration 后跳过无关资源投影，资源 API 下次读取仍重新取得输入签名；没有增加 TTL。原 pending recovery 和 runtime asset checksum 校验仍经真实 API 执行。没有发现这轮补丁新增的跨库元数据复用或其他可定位 P1/P2。
+
+独立验证运行：`node --test plugin-src/src/lib/vault/test/resource-read-performance.test.mjs` 的前 9 项全部通过（10.320 秒），覆盖外改、同尺寸同 mtime、source-map、linked root 替换、资产损坏和 pending 事务恢复，以及本轮报告／CSS／图片回归。随后只对新增 frontmatter 修正运行 `--test-name-pattern=frontmatter`，1 项通过，包含 excluded→声明报告和声明后的正文变化。没有为无变化代码再次全仓测试。
+
+语音初始化只将实际 Python 模块 import 的上限改为 `LOCAL_ASR_INIT_TIMEOUT_MS=120000`（`service-tools.mts:128`）；超时独立返回 `LOCAL_ASR_INIT_TIMEOUT`，readiness 仍为 unavailable（`:131`），非零退出／缺组件仍区分为不可用。离线环境变量保留，没有把初始化失败变成云端授权，也没有延长 Vault 读取 deadline。核对执行负责人产出的 `.local-probes/asr-init-green.log`（3/3）及 `.local-probes/asr-init-contracts-green.log`（60/60，10.317 秒）：覆盖 30 秒后仍 pending、120 秒超时不宣告就绪、beforeExecute 未预约费用、冻结设置及相关服务契约。负责人另报告 native/renderer typecheck 通过；本审查不将它冒充真实安装或冷启动实测。
+
+本节结论：已发现的缓存 P2 在当前补丁中闭环；当前定点范围没有遗留新 P1/P2。实际 10,916 文件库的速度与最终安装包冷启动效果由集成／执行证据确认，本审查未独立复跑该大型真实库，也未新增视觉验收结论。
