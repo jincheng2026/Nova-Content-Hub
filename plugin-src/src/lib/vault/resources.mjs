@@ -6,7 +6,7 @@ import {bindingForRuntime, readBytes, digest, uuidFor, safe, json, writeJSON, mk
     saveVaultDocument, createVaultDocument, runMutation, queryVaultMutation, resumeVaultMutation} from './core.mjs';
 
 const STATE = '.workbench/resource-projection.json';
-const PROJECTION_POLICY_VERSION = 4;
+const PROJECTION_POLICY_VERSION = 5;
 const RESOURCE_INPUT_POLICY_VERSION = 1;
 const BLOCK = /<!-- nova-content-hub:resource\r?\n([\s\S]*?)\r?\n-->/g;
 const UUID = /^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
@@ -103,6 +103,41 @@ function resourceSnapshot(snapshot){
     return {...snapshot,documents,sourceIssues:issues,boundSources,sourceMap};
 }
 const sourceBytes=(snapshot,document)=>readBytes(document.readRoot??snapshot.root,document.readRelativePath??document.relativePath);
+function reportHTMLEntities(text) {
+    return text.replace(/&(?:amp|quot|apos|lt|gt|#(?:x[0-9a-f]+|\d+));/gi,entity=>{
+        const named={'&amp;':'&','&quot;':'"','&apos;':"'",'&lt;':'<','&gt;':'>'};
+        if(named[entity.toLowerCase()])return named[entity.toLowerCase()];
+        const n=entity.slice(2,-1),value=parseInt(n[0].toLowerCase()==='x'?n.slice(1):n,n[0].toLowerCase()==='x'?16:10);
+        return value>0&&value<=0x10ffff?String.fromCodePoint(value):'\0';
+    });
+}
+// Only a direct href from a declared page can register an already-snapshotted
+// HTML sibling. This never resolves arbitrary paths or follows appendix links.
+function reportAppendixName(href) {
+    if(!href||href.length>4096||href!==href.trim()||href.startsWith('/')||/^[a-z][a-z\d+.-]*:/i.test(href)||href.includes('?'))return null;
+    const pathname=href.split('#',1)[0];if(!pathname)return null;
+    let parts;try{parts=pathname.split('/').map(part=>decodeURIComponent(part));}catch{return null;}
+    if(parts.some(part=>/[\\/\u0000-\u001f\u007f%:]/.test(part)))return null;
+    if(parts.length===2&&parts[0]==='.')parts.shift();
+    if(parts.length!==1||parts[0].startsWith('.')||!/^\.html?$/i.test(path.posix.extname(parts[0])))return null;
+    return parts[0];
+}
+function referencedReportAppendices(snapshot,siblings,declaredPages,issues) {
+    const appendices=[],seen=new Set(declaredPages.map(page=>page.document.id));
+    const anchors=html=>html.replace(/<!--[\s\S]*?-->|<(script|style|textarea|title|xmp)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,'').matchAll(/<a\b[^>]*>/gi);
+    for(const page of declaredPages)for(const anchor of anchors(page.html)){
+        const href=anchor[0].match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);if(!href)continue;
+        const name=reportAppendixName(reportHTMLEntities(href[1]??href[2]??href[3]));if(!name)continue;
+        const candidates=siblings.filter(document=>path.posix.basename(document.relativePath)===name);if(candidates.length!==1)continue;
+        const document=candidates[0];if(seen.has(document.id))continue;
+        const bytes=sourceBytes(snapshot,document);if(digest(bytes)!==document.hash)fail('CONFLICT','报告附页在读取时变化');
+        let html;try{html=htmlBytes(bytes);}catch(error){if(error.code!=='INVALID_INPUT')throw error;issues.push({code:error.code,relativePath:document.relativePath,message:'原报告可选引用附页不是受支持的HTML；已保留声明页面'});continue;}
+        const rawTitle=html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i)?.[1];
+        const title=rawTitle?reportHTMLEntities(rawTitle.replace(/<[^>]*>/g,'')).trim().slice(0,500):document.title;
+        appendices.push({id:uuidFor(`${snapshot.vaultId}:${document.sourceId}:${document.sourceRelativePath}`),title:title||document.title,html,document});seen.add(document.id);
+    }
+    return appendices;
+}
 function originalReportGroups(snapshot,out){
     const grouped=new Set();
     for(const meta of snapshot.documents.filter(d=>d.boundRole==='reports'&&d.format==='json'&&path.posix.basename(d.relativePath)==='meta.json'&&d.sourceRelativePath.split('/').length===2)){
@@ -121,6 +156,10 @@ function originalReportGroups(snapshot,out){
                 out.inventory.push({documentId:d.id,relativePath:d.relativePath,hash:d.hash,kind:'report',reason:'原报告组内页面'});
             }
             if(!pages.length)continue;
+            for(const appendix of referencedReportAppendices(snapshot,siblings,pages,out.issues)){
+                pages.push(appendix);
+                out.inventory.push({documentId:appendix.document.id,relativePath:appendix.document.relativePath,hash:appendix.document.hash,kind:'report',reason:'原报告同目录引用附页'});
+            }
             const id=uuidFor(`${snapshot.vaultId}:source-report:${meta.sourceId}:${meta.sourceRelativePath}`),title=typeof metadata.title==='string'?metadata.title:path.posix.basename(directory).replace(/^\d{4}-\d{2}-\d{2}_/,'');
             out.reports.push({kind:'report',id,document:{...meta,format:'html',hash:digest(JSON.stringify([meta.hash,pages.map(p=>[p.id,p.document.hash])]))},originalDocument:meta,record:{title,type:metadata.type??'调研',accountIds:[],sourceUrl:validURL(metadata.source)||null,collectedAt:typeof metadata.collectedAt==='string'&&/^\d{4}-\d\d-\d\dT/.test(metadata.collectedAt)?metadata.collectedAt:null,meta:{original:metadata}},text:'',body:pages[0].html,block:null,originalPages:pages});
         }catch(error){out.issues.push({code:error.code??'CORRUPT',relativePath:meta.relativePath,message:error.message});}
