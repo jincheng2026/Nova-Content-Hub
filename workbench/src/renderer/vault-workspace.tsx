@@ -32,6 +32,14 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
   catch(error){setMessage(`${errorInfo(error).message} 本次填写仍保留；请先核验上次修改。`);}
   finally{active.current=false;setWorking(false);await statusChanged();}
  }
+ async function establishWorkingDraft(){
+  if(!current?.workingDraftAvailable||active.current||busy||sourceUnavailable||conflict)return;
+  active.current=true;setWorking(true);setMessage('');
+  const input={id:current.document.id,expectedHash:current.document.hash};submission.current={method:'createVaultWorkingDraft',input};
+  try{const result=await invoke('createVaultWorkingDraft',input);submission.current=null;setCurrent(result);setText(result.text);setMessage('可编辑工作稿已建立，原 HTML 保留在同一内容目录。');await saved();}
+  catch(error){setMessage(`${errorInfo(error).message} 原 HTML 与当前显示内容仍保留；请先核验上次修改。`);}
+  finally{active.current=false;setWorking(false);await statusChanged();}
+ }
  async function topics(){
   if(active.current||busy)return;
   let source=current;
@@ -43,12 +51,12 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
  return <ManagementDialog title={current?.document.title||'新建资料'} dirty={dirty} busy={busy||working} close={close}>
   <div className="vault-document-form">
    {current?<p className="vault-source-path">来源：{current.document.relativePath}</p>:<><label>分类<PopupSelect value={category} disabled={working} onChange={value=>setCategory(value as VaultSection)}>{vaultSections.map(value=><option key={value} value={value}>{labels[value]}</option>)}</PopupSelect></label><label>名称（可稍后填写）<Input aria-label="资料名称" value={title} maxLength={500} disabled={working} onChange={setTitle}/></label></>}
-   {readonly&&<Banner type="info" closeIcon={null} description="此格式保留原文件，仅供阅读。可在文件管理器中定位原件。"/>}
+   {readonly&&<Banner type="info" closeIcon={null} description={current?.workingDraftAvailable?"这是从原 HTML 读取的人工当前稿。建立可编辑工作稿后，原 HTML 保留，后续改稿在同一内容目录继续。":"此格式保留原文件，仅供阅读。可在文件管理器中定位原件。"}/>}
    <label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>
    <p role="status">{message}</p>
    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
    {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
-   <div className="actions">{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
+   <div className="actions">{current?.workingDraftAvailable&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict} onClick={()=>void establishWorkingDraft()}>建立可编辑工作稿</Button>}{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
    {current&&!readonly&&<details className="vault-document-more"><summary>更多操作</summary>{dirty?<p>请先保存或放弃本次修改，再回收资料。</p>:confirmTrash?<div role="alert"><p>将原资料移入知识库回收区，保留恢复原件的机会。</p><Button type="danger" disabled={working} onClick={()=>void trash()}>确认移入回收区</Button><Button onClick={()=>setConfirmTrash(false)}>取消</Button></div>:<Button type="danger" theme="borderless" onClick={()=>setConfirmTrash(true)}>移入回收区</Button>}</details>}
   </div>
  </ManagementDialog>;

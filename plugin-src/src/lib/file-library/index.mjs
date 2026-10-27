@@ -862,6 +862,9 @@ function library(root, initialInfo, rootIdentity) {
             }
             const after = [jsonBytes(meta), ...(KINDS[kind].files.length === 2 ? [operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]] : [])];
             metadata(after[0], contentId, kind);
+            const resourceTransaction = {kind, objectId: contentId, intent: {mutationId}, before, after};
+            try { vaultBridge?.validateResourceTransaction(resourceTransaction); }
+            catch (error) { throw Object.assign(ioError(error), {mutationId, pendingRecovery: false}); }
             if (kind === 'content') vaultBridge?.validateMutation({operation, contentId, input, mutationId, before, after});
             const intent = {
                 schemaVersion: 3,
@@ -882,6 +885,7 @@ function library(root, initialInfo, rootIdentity) {
                 hook('beforeJournal', {mutationId});
                 writeNew(path.join(stagingDir, 'intent.json'), jsonBytes(intent));
                 hook('beforeIntentPublish', {mutationId});
+                vaultBridge?.validateResourceTransaction(resourceTransaction);
                 fs.renameSync(stagingDir, txDir);
                 published = true;
                 syncDirectory(path.dirname(txDir));

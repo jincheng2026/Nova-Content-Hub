@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
+import {projectVaultResources, applyVaultResourceTransaction, validateVaultResourceTransaction, annotateVaultResources} from './resources.mjs';
 import {
     defaultProductionCreation,
     emptyProduction,
@@ -14,6 +15,7 @@ import {
     createVaultDocument,
     trashVaultDocument,
     restoreVaultSource,
+    validateVaultRestoreSource,
     materializeVaultBody,
     digest,
     json,
@@ -28,7 +30,7 @@ import {
     resumeVaultMutation,
 } from './core.mjs';
 
-let resourceProjector = null;
+let resourceProjector = projectVaultResources;
 /** Internal extension point: runs once per outer sync, before any runtime lock.
  * Use the supplied snapshot/raw API; do not reopen or rescan the Vault here.
  * The projector owns its own per-source fingerprint and writes only changed projections.
@@ -59,6 +61,41 @@ export function makeVaultBridge(root) {
     function store() {
         writeJSON(binding.vaultRoot, projectionPath, projection);
     }
+    // A trash receipt pins the original source even if an earlier projection
+    // accidentally rebound a surviving topic card. Repair only managed metadata.
+    let repairedTrashMapping = false;
+    for (const source of Object.values(projection.contents)) {
+        if (!source.trashMutationId) continue;
+        const receipt = queryVaultMutation(root, source.trashMutationId);
+        if (
+            receipt?.request.action !== 'trash' ||
+            receipt.status !== 'committed'
+        )
+            fail('CORRUPT', '内容回收映射缺少有效回执');
+        const original = json(
+            binding.vaultRoot,
+            `.workbench/mutations/${source.trashMutationId}.json`,
+        );
+        if (
+            source.relativePath !== original.path ||
+            source.documentId !== receipt.request.input.id ||
+            source.hash !== original.beforeHash
+        ) {
+            source.relativePath = original.path;
+            source.documentId = receipt.request.input.id;
+            source.hash = original.beforeHash;
+            source.writable = /\.(?:md|markdown|txt|json)$/i.test(
+                original.path,
+            );
+            if (original.path.startsWith('05_内容草稿/'))
+                source.contentDirectory = path.posix.dirname(original.path);
+            repairedTrashMapping = true;
+        }
+    }
+    if (repairedTrashMapping) {
+        delete projection.sourceFingerprint;
+        store();
+    }
     function project(...args) {
         const mid = args[4].mutationId;
         mkdir(binding.vaultRoot, '.workbench/projection-mutations');
@@ -87,10 +124,10 @@ export function makeVaultBridge(root) {
                 const old = projection.contents[s.contentId];
                 return (
                     !old ||
-                    old.trashMutationId ||
-                    snapshot.documents.some(
-                        (d) => d.relativePath === old.relativePath,
-                    )
+                    (!old.trashMutationId &&
+                        snapshot.documents.some(
+                            (d) => d.relativePath === old.relativePath,
+                        ))
                 );
             });
             const sourceFingerprint = digest(
@@ -99,8 +136,10 @@ export function makeVaultBridge(root) {
                         s.contentId,
                         s.document.id,
                         s.document.hash,
+                        s.document.writable,
+                        s.document.sourceConflict ?? null,
                         s.title,
-                        s.published,
+                        s.publicationState,
                     ]),
                 ),
             );
@@ -135,31 +174,80 @@ export function makeVaultBridge(root) {
                             );
                             if (source.published)
                                 meta.productionState.stage = 'published';
+                            else if (source.publicationState === '草稿')
+                                meta.productionState.stage = 'writing';
                             return meta;
                         },
                         source.contentId,
                     );
-                } else if (
-                    (previous?.hash !== source.document.hash ||
-                        old.body !== source.body) &&
-                    old.deletedAt === null
-                ) {
-                    project(
-                        'update',
-                        old.id,
-                        {body: source.body},
-                        old.editToken,
-                        {mutationId: randomUUID()},
-                        'content',
-                    );
+                } else if (old.deletedAt === null) {
+                    let creation = old.productionState;
+                    const statusChanged =
+                        previous?.publicationState !== source.publicationState;
+                    if (statusChanged && !creation) {
+                        creation =
+                            api
+                                .readProduction()
+                                .creations.find(
+                                    (c) => c.contentId === source.contentId,
+                                ) ??
+                            defaultProductionCreation(
+                                source.contentId,
+                                Number(source.tNumber.slice(1)),
+                                new Date().toISOString(),
+                            );
+                    }
+                    let nextStage = creation?.stage;
+                    if (statusChanged) {
+                        if (source.publicationState === '已发布')
+                            nextStage = 'published';
+                        else if (source.publicationState === '草稿')
+                            nextStage = 'writing';
+                        else if (source.publicationState === '待写')
+                            nextStage = 'idea';
+                        else if (
+                            source.publicationState === 'conflict' &&
+                            nextStage === 'published'
+                        )
+                            nextStage = 'writing';
+                    }
+                    const stageChanged =
+                        statusChanged && nextStage !== creation?.stage;
+                    if (
+                        previous?.hash !== source.document.hash ||
+                        old.body !== source.body ||
+                        stageChanged
+                    ) {
+                        project(
+                            'update',
+                            old.id,
+                            {body: source.body},
+                            old.editToken,
+                            {mutationId: randomUUID()},
+                            'content',
+                            stageChanged
+                                ? (meta) => ({
+                                      ...meta,
+                                      schemaVersion: 5,
+                                      productionState: {
+                                          ...creation,
+                                          stage: nextStage,
+                                          updatedAt: new Date().toISOString(),
+                                      },
+                                  })
+                                : undefined,
+                        );
+                    }
                 }
                 projection.contents[source.contentId] = {
                     documentId: source.document.id,
                     relativePath: source.document.relativePath,
                     hash: source.document.hash,
                     writable: source.document.writable,
+                    sourceConflict: source.document.sourceConflict ?? null,
                     contentDirectory: source.contentDirectory,
                     tNumber: source.tNumber,
+                    publicationState: source.publicationState,
                     ...(previous?.trashMutationId
                         ? {trashMutationId: previous.trashMutationId}
                         : {}),
@@ -213,7 +301,12 @@ export function makeVaultBridge(root) {
         if (syncing || operation === 'create') return;
         const source = projection.contents[contentId];
         if (!source) fail('CONFLICT', '此内容缺少原位来源，拒绝维护独立正文');
-        if (operation === 'restore') return;
+        if (operation === 'restore') {
+            validateVaultRestoreSource(root, source);
+            return;
+        }
+        if (operation === 'update' && source.sourceConflict)
+            fail('CONFLICT', source.sourceConflict);
         if (operation === 'update' && after[1].equals(before[1])) return;
         if (!source.writable && operation === 'update')
             fail(
@@ -370,6 +463,15 @@ export function makeVaultBridge(root) {
                             'updateContent',
                             'trashContent',
                             'restoreContent',
+                            'listPrompts',
+                            'listPromptTrash',
+                            'readPrompt',
+                            'createPrompt',
+                            'updatePrompt',
+                            'trashPrompt',
+                            'restorePrompt',
+                            'setPromptEnabled',
+                            'setPromptFavorite',
                             'readProduction',
                             'readProductionCreation',
                             'readProductionContext',
@@ -386,9 +488,10 @@ export function makeVaultBridge(root) {
                     )
                         args[0] = {...args[0], title: '未定选题'};
                     const result = fn(...args);
+                    const annotate = value => ['readProduction','mutateProduction','readProductionContext','readPrompt','listPrompts','listPromptTrash','createPrompt','updatePrompt','trashPrompt','restorePrompt','setPromptEnabled','setPromptFavorite'].includes(name) ? annotateVaultResources(root,value) : value;
                     if (result && typeof result.then === 'function')
-                        return result.then((value) => value);
-                    return result;
+                        return result.then(annotate);
+                    return annotate(result);
                 };
         const originalContext = out.readProductionContext;
         out.readProductionContext = (...args) => {
@@ -404,6 +507,7 @@ export function makeVaultBridge(root) {
         wrap,
         beforeMutation,
         validateMutation,
+        validateResourceTransaction: tx => validateVaultResourceTransaction(root,tx),
         sync,
         isSyncing: () => syncing,
         contentIdForMutation: (mutationId) =>
@@ -412,7 +516,8 @@ export function makeVaultBridge(root) {
 }
 
 export function applyVaultSourceTransaction(root, tx) {
-    if (tx.kind !== 'content' || tx.committed) return;
+    if (tx.committed) return;
+    if (tx.kind !== 'content') return applyVaultResourceTransaction(root, tx);
     const binding = bindingForRuntime(root);
     if (!binding) return;
     const marker = `.workbench/projection-mutations/${tx.intent.mutationId}.json`;

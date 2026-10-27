@@ -124,8 +124,10 @@ export class DesktopController {
     }
 
     readVault(input?:undefined){return this.vault.readVault(input);}
+    readVaultContentSource(input:VaultInputs['readVaultContentSource']){return this.vault.readVaultContentSource(input);}
     readVaultDocument(input:VaultInputs['readVaultDocument']){return this.vault.readVaultDocument(input);}
     saveVaultDocument(input:VaultInputs['saveVaultDocument']){return this.vault.saveVaultDocument(input);}
+    createVaultWorkingDraft(input:VaultInputs['createVaultWorkingDraft']){return this.vault.createVaultWorkingDraft(input);}
     createVaultDocument(input:VaultInputs['createVaultDocument']){return this.vault.createVaultDocument(input);}
     trashVaultDocument(input:VaultInputs['trashVaultDocument']){return this.vault.trashVaultDocument(input);}
     revealVaultDocument(input:VaultInputs['revealVaultDocument']){return this.vault.revealVaultDocument(input);}

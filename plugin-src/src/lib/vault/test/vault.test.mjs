@@ -309,7 +309,10 @@ test('published facts come from explicit card status; archive folder alone does 
         '# T030 已发布\n\n- **状态**：已发布\n',
     );
     const p = openLibrary(f.runtime).readProduction();
-    assert.equal(p.creations.find((c) => c.tNumber === 'T029').stage, 'idea');
+    assert.equal(
+        p.creations.find((c) => c.tNumber === 'T029').stage,
+        'writing',
+    );
     assert.equal(
         p.creations.find((c) => c.tNumber === 'T030').stage,
         'published',
@@ -450,4 +453,180 @@ test('resolve proves missing only under a valid root and write lock; pending con
     assert.deepEqual(resolveVaultMutation(f.runtime, randomUUID()), {
         state: 'uncertain',
     });
+});
+
+test('trash with a surviving topic card preserves the original draft mapping and restores exactly that source', (t) => {
+    const f = fixture(t),
+        root = vaultRootForRuntime(f.runtime),
+        card = path.join(root, '04_选题库/T021_卡.md'),
+        dir = path.join(root, '05_内容草稿/T021_当前稿');
+    fs.writeFileSync(card, '# T021 卡\n\n- **状态**：草稿\n\n卡片资料');
+    fs.mkdirSync(dir, {recursive: true});
+    const draft = path.join(dir, '正文.md');
+    fs.writeFileSync(draft, '当前正文');
+    const api = openLibrary(f.runtime),
+        content = api.listContents()[0],
+        before = readVaultTaskContext(f.runtime, content.id).content
+            .relativePath;
+    const trashed = api.trashContent(content.id, content.editToken);
+    assert.equal(api.listTrash().length, 1);
+    const projection = JSON.parse(
+        fs.readFileSync(path.join(root, '.workbench/projection.json')),
+    );
+    assert.equal(projection.contents[content.id].relativePath, before);
+    const restored = api.restoreContent(content.id, trashed.editToken, {
+        mutationId: randomUUID(),
+    });
+    assert.equal(restored.body, '当前正文');
+    assert.equal(fs.readFileSync(draft, 'utf8'), '当前正文');
+    assert.match(fs.readFileSync(card, 'utf8'), /卡片资料/);
+    assert.equal(openLibrary(f.runtime).listContents().length, 1);
+});
+test('existing creation follows explicit external publish and revoke facts without changing body or ID', (t) => {
+    const f = fixture(t),
+        root = vaultRootForRuntime(f.runtime),
+        card = path.join(root, '04_选题库/T022_发布状态.md');
+    const write = (status) =>
+        fs.writeFileSync(
+            card,
+            `# T022 发布状态\n\n- **状态**：${status}\n\n固定想法`,
+        );
+    const dir = path.join(root, '05_内容草稿/T022_当前正文');
+    fs.mkdirSync(dir, {recursive: true});
+    fs.writeFileSync(path.join(dir, '正文.md'), '不随发布状态改变的当前稿');
+    write('草稿');
+    const api = openLibrary(f.runtime),
+        content = api.listContents()[0],
+        id = content.id;
+    write('已发布');
+    assert.equal(api.readProductionCreation(id).creation.stage, 'published');
+    write('草稿');
+    assert.equal(api.readProductionCreation(id).creation.stage, 'writing');
+    write('待写');
+    assert.equal(api.readProductionCreation(id).creation.stage, 'idea');
+    assert.equal(api.listContents()[0].id, id);
+    assert.equal(api.readContent(id).body, '不随发布状态改变的当前稿');
+    assert.equal(
+        api.readProduction().creations.find((c) => c.contentId === id).stage,
+        'idea',
+    );
+});
+
+test('pending restore repairs an older trash mapping rebound to a surviving card before recovery', (t) => {
+    process.env.NODE_ENV = 'test';
+    const f = fixture(t),
+        root = vaultRootForRuntime(f.runtime),
+        card = path.join(root, '04_选题库/T031_保留卡.md'),
+        dir = path.join(root, '05_内容草稿/T031_原文');
+    fs.writeFileSync(card, '# T031 保留卡\n\n- **状态**：草稿\n\n保留资料');
+    fs.mkdirSync(dir, {recursive: true});
+    fs.writeFileSync(path.join(dir, '正文.md'), '不能丢失的原文');
+    const api = openLibrary(f.runtime),
+        content = api.listContents()[0],
+        trashed = api.trashContent(content.id, content.editToken),
+        mid = randomUUID();
+    __testing.setHook((e) => {
+        if (e.phase === 'afterJournal' && e.mutationId === mid)
+            throw new Error('restore interrupted');
+    });
+    try {
+        assert.throws(
+            () =>
+                api.restoreContent(content.id, trashed.editToken, {
+                    mutationId: mid,
+                }),
+            /restore interrupted/,
+        );
+    } finally {
+        __testing.setHook(null);
+    }
+    const doc = readVaultSnapshot(f.runtime).documents.find(
+            (d) => d.relativePath === '04_选题库/T031_保留卡.md',
+        ),
+        loc = path.join(root, '.workbench/projection.json'),
+        projection = JSON.parse(fs.readFileSync(loc));
+    Object.assign(projection.contents[content.id], {
+        relativePath: doc.relativePath,
+        documentId: doc.id,
+        hash: doc.hash,
+        contentDirectory: '05_内容草稿/T031_错误目标',
+    });
+    fs.writeFileSync(loc, JSON.stringify(projection));
+    const reopened = openLibrary(f.runtime);
+    assert.equal(reopened.readContent(content.id).body, '不能丢失的原文');
+    assert.equal(
+        fs.readFileSync(path.join(dir, '正文.md'), 'utf8'),
+        '不能丢失的原文',
+    );
+    assert.match(fs.readFileSync(card, 'utf8'), /保留资料/);
+    assert.equal(
+        reopened.restoreContent(content.id, trashed.editToken, {
+            mutationId: mid,
+        }).mutationId,
+        mid,
+    );
+    assert.equal(reopened.listTrash().length, 0);
+});
+test('restore path conflict is rejected before publishing a runtime journal and cannot brick reopening', (t) => {
+    const f = fixture(t),
+        api = openLibrary(f.runtime),
+        c = api.createContent({title: '恢复冲突', body: '原文'}),
+        context = readVaultTaskContext(f.runtime, c.id),
+        trashed = api.trashContent(c.id, c.editToken),
+        mid = randomUUID();
+    const target = path.join(context.vault.root, context.content.relativePath);
+    fs.writeFileSync(target, '外部新文件');
+    assert.throws(
+        () => api.restoreContent(c.id, trashed.editToken, {mutationId: mid}),
+        {code: 'CONFLICT'},
+    );
+    assert.equal(
+        fs.existsSync(path.join(f.runtime, '系统（别动）/事务/待恢复', mid)),
+        false,
+    );
+    assert.equal(api.listTrash().length, 1);
+    assert.equal(openLibrary(f.runtime).listTrash().length, 1);
+    assert.equal(fs.readFileSync(target, 'utf8'), '外部新文件');
+});
+
+test('a surviving assistant archive cannot replace a trashed current source', (t) => {
+    const f = fixture(t),
+        root = vaultRootForRuntime(f.runtime),
+        api = openLibrary(f.runtime),
+        c = api.createContent({title: '归档共存', body: '当前稿'}),
+        context = readVaultTaskContext(f.runtime, c.id),
+        archive = path.join(root, context.contentDirectory, '助手归档.md');
+    fs.writeFileSync(archive, '历史候选不得变为当前稿');
+    const current = api.readContent(c.id),
+        trashed = api.trashContent(c.id, current.editToken);
+    api.listTrash();
+    const restored = api.restoreContent(c.id, trashed.editToken);
+    assert.equal(restored.body, '当前稿');
+    assert.equal(fs.readFileSync(archive, 'utf8'), '历史候选不得变为当前稿');
+    assert.equal(openLibrary(f.runtime).readContent(c.id).body, '当前稿');
+});
+test('conflicting source publication facts revoke published display and clear once facts agree', (t) => {
+    const f = fixture(t),
+        root = vaultRootForRuntime(f.runtime),
+        card = path.join(root, '04_选题库/T033_状态冲突.md'),
+        overview = path.join(root, '04_选题库/00_选题总览.md');
+    fs.writeFileSync(card, '# T033 状态冲突\n\n- **状态**：已发布\n');
+    const api = openLibrary(f.runtime),
+        c = api.listContents()[0];
+    assert.equal(api.readProductionCreation(c.id).creation.stage, 'published');
+    fs.writeFileSync(overview, '# 选题总览\n| T033 | 状态冲突 | 草稿 |\n');
+    assert.ok(
+        readVaultSnapshot(f.runtime).issues.some(
+            (i) => i.code === 'PUBLICATION_STATUS_CONFLICT',
+        ),
+    );
+    assert.equal(api.readProductionCreation(c.id).creation.stage, 'writing');
+    fs.writeFileSync(overview, '# 选题总览\n| T033 | 状态冲突 | 已发布 |\n');
+    assert.equal(api.readProductionCreation(c.id).creation.stage, 'published');
+    assert.equal(
+        readVaultSnapshot(f.runtime).issues.some(
+            (i) => i.code === 'PUBLICATION_STATUS_CONFLICT',
+        ),
+        false,
+    );
 });

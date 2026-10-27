@@ -7,13 +7,14 @@ const text = (value:unknown,max:number) => typeof value==='string' && value.leng
 export function vaultDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method){
  case 'readVault':return input===undefined;
+ case 'readVaultContentSource':return exact(input,['contentId'])&&uuid(input.contentId);
  case 'readVaultDocument':case 'revealVaultDocument':return exact(input,['id'])&&vaultDocumentId(input.id);
  case 'saveVaultDocument':return exact(input,['id','expectedHash','text'])&&vaultDocumentId(input.id)&&token(input.expectedHash)&&text(input.text,1_000_000);
  case 'createVaultDocument':return exact(input,['section','title','text'])&&vaultSections.includes(input.section as typeof vaultSections[number])&&text(input.title,500)&&text(input.text,1_000_000);
- case 'trashVaultDocument':return exact(input,['id','expectedHash'])&&vaultDocumentId(input.id)&&token(input.expectedHash);
+ case 'createVaultWorkingDraft':case 'trashVaultDocument':return exact(input,['id','expectedHash'])&&vaultDocumentId(input.id)&&token(input.expectedHash);
  case 'recoverVaultMutation':return exact(input,['action'])&&['retry','discard'].includes(input.action as string);
  }
 }
 export function vaultPending(value:unknown):value is VaultPending {
- return exact(value,['method','input','mutationId','binding']) && ['saveVaultDocument','createVaultDocument','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&vaultDesktopInput(value.method as string,value.input)===true;
+ return exact(value,['method','input','mutationId','binding']) && ['saveVaultDocument','createVaultDocument','createVaultWorkingDraft','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&vaultDesktopInput(value.method as string,value.input)===true;
 }

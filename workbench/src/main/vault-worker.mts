@@ -1,15 +1,16 @@
 import fs from 'node:fs';
+import {createVaultWorkingDraft} from '../../../plugin-src/src/lib/vault/working-draft.mjs';
 import path from 'node:path';
 import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
-import {readVaultSnapshot,readVaultDocument,saveVaultDocument,createVaultDocument,trashVaultDocument,vaultRootForRuntime,resolveVaultMutation} from '../../../plugin-src/src/lib/vault/index.mjs';
+import {readVaultSnapshot,readVaultDocument,readVaultTaskContext,saveVaultDocument,createVaultDocument,trashVaultDocument,vaultRootForRuntime,resolveVaultMutation} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {exact,libraryBinding,requireWrite,fail,uuid} from '../shared/validation.ts';
 import {vaultDocumentId,vaultPending} from '../shared/vault-validation.ts';
 import type {VaultWorkerOperations,VaultPending,VaultResolution} from '../shared/vault-contracts.ts';
 import {isRecord} from '../shared/contracts.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultResolve','vaultRead','vaultDocument','vaultMutate','vaultLocation'].includes(op);
+export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultMutate','vaultLocation'].includes(op);
 export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'required'|'disabled') {
- const fields=op==='vaultResolve'?['binding','mutationId']:op==='vaultRead'?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:null;
+ const fields=op==='vaultResolve'?['binding','mutationId']:op==='vaultRead'?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:op==='vaultContentSource'?['binding','contentId']:null;
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
@@ -17,6 +18,17 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
  openLibrary(binding.root,{expectedLibraryId:binding.libraryId,expectedRootIdentity:binding.rootIdentity});
  if(op==='vaultResolve'){requireWrite(mode);if(!uuid(args.mutationId))fail('INVALID_INPUT','资料恢复标识无效。');return resolveVaultMutation(binding.root,args.mutationId) as VaultResolution;}
  if(op==='vaultRead')return readVaultSnapshot(binding.root);
+ if(op==='vaultContentSource'){
+  if(!uuid(args.contentId))fail('INVALID_INPUT','内容标识无效。');
+  const context=readVaultTaskContext(binding.root,args.contentId);
+  if(!context)return null;
+  const content=context.content;
+  if(content===null)fail('NOT_FOUND','此内容缺少可读取的原位来源，请刷新或恢复原文件后继续。');
+  if(!isRecord(content)||!vaultDocumentId(content.sourceDocumentId))fail('CORRUPT','当前稿来源登记无效。');
+  if(content.sourceMissing)fail('NOT_FOUND','当前稿来源已移走或不可读取，请恢复原文件后继续。');
+  if(typeof content.sourceConflict==='string'&&content.sourceConflict)fail('CONFLICT',content.sourceConflict);
+  return readVaultDocument(binding.root,content.sourceDocumentId);
+ }
  if(op==='vaultMutate'){
   requireWrite(mode);
   if(!vaultPending(args.pending))fail('INVALID_INPUT','资料变更意图无效。');
@@ -24,6 +36,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   if(pending.binding.libraryId!==binding.libraryId||pending.binding.rootIdentity.dev!==binding.rootIdentity.dev||pending.binding.rootIdentity.ino!==binding.rootIdentity.ino)fail('CONFLICT','资料变更绑定的知识库已改变。');
   const options={mutationId:pending.mutationId};
   if(pending.method==='saveVaultDocument')return saveVaultDocument(binding.root,pending.input,options);
+  if(pending.method==='createVaultWorkingDraft')return createVaultWorkingDraft(binding.root,pending.input,options);
   if(pending.method==='createVaultDocument')return createVaultDocument(binding.root,pending.input,options);
   return trashVaultDocument(binding.root,pending.input,options);
  }

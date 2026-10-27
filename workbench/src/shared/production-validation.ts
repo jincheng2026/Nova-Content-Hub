@@ -10,7 +10,7 @@ const boundedJSON=(v:unknown)=>json(v)&&JSON.stringify(v).length<=4_000_000;
 const strings=(v:unknown,check:(x:unknown)=>boolean,n=500)=>Array.isArray(v)&&v.length<=n&&v.every(check);
 const host=(v:unknown)=>v==='codex'||v==='workbuddy';
 const kinds=['research','transcription','analysis','writing','packaging','review'];
-const manualFields:Record<string,[string[],string[]?]>={adoptResearchReferences:[['contentId','taskId','attemptId','receiptHash','artifactId','expectedContentToken']],enable:[[]],saveAccount:[['name','platform','url','note','tags','images','reportIds'],['id','avatarAssetHash']],trashAccount:[['id']],restoreAccount:[['id']],saveReport:[['title','type','accountIds','sourceUrl','collectedAt','pages','meta'],['id']],trashReport:[['id']],setReportPosition:[['id','pageId']],ensureCreation:[['contentId']],saveCreation:[['contentId','patch','expectedContentToken']],recordFeedback:[['text','source'],['contentId']],recordKnowledge:[['text','source'],['contentId']],decideKnowledge:[['id','status']],reconcileCost:[['taskId','attemptId','id','status','amount','usage']]};
+const manualFields:Record<string,[string[],string[]?]>={adoptResearchReferences:[['contentId','taskId','attemptId','receiptHash','artifactId','expectedContentToken']],enable:[[]],saveAccount:[['name','platform','url','note','tags','images','reportIds'],['id','avatarAssetHash']],trashAccount:[['id']],restoreAccount:[['id']],saveReport:[['title','type','accountIds','sourceUrl','collectedAt','meta'],['id','pages','markdown']],trashReport:[['id']],setReportPosition:[['id','pageId']],ensureCreation:[['contentId']],saveCreation:[['contentId','patch','expectedContentToken']],recordFeedback:[['text','source'],['contentId']],recordKnowledge:[['text','source'],['contentId']],decideKnowledge:[['id','status']],reconcileCost:[['taskId','attemptId','id','status','amount','usage']]};
 export function productionMutationInput(op:unknown,input:unknown):boolean {
  if(typeof op!=='string'||!Object.hasOwn(manualFields,op))return false;
  const [required,optional=[]]=manualFields[op];
@@ -26,7 +26,10 @@ export function productionMutationInput(op:unknown,input:unknown):boolean {
  }
  if(['saveCreation','adoptResearchReferences'].includes(op)&&!token(input.expectedContentToken))return false;
  if(op==='adoptResearchReferences'&&!token(input.receiptHash))return false;
- if(op==='saveReport'&&(!Array.isArray(input.pages)||!input.pages.length||input.pages.length>100||!input.pages.every(p=>optionalKeys(p,['title','assetHash'],['id'])&&isRecord(p)&&text(p.title,500)&&token(p.assetHash)&&(p.id===undefined||uuid(p.id)))))return false;
+ if(op==='saveReport'){
+  if(input.markdown!==undefined){if(input.pages!==undefined||typeof input.markdown!=='string'||!text(input.markdown,100000)||!input.markdown.trim())return false;}
+  else if(!Array.isArray(input.pages)||!input.pages.length||input.pages.length>100||!input.pages.every(p=>optionalKeys(p,['title','assetHash'],['id'])&&isRecord(p)&&text(p.title,500)&&token(p.assetHash)&&(p.id===undefined||uuid(p.id))))return false;
+ }
  if(op==='reconcileCost'&&(!['actual','measured','estimated','billed','cancelled'].includes(input.status as string)||![0,1].includes(input.amount as number)))return false;
  if(op==='decideKnowledge'&&!['accepted','rejected'].includes(input.status as string))return false;
  return true;

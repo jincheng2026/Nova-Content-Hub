@@ -6,6 +6,7 @@ export class VaultController {
  owner:DesktopController;
  constructor(owner:DesktopController){this.owner=owner;}
  readVault(input?:undefined){validateInput('readVault',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultRead',{binding:this.owner.current()}));}
+ readVaultContentSource(input:VaultInputs['readVaultContentSource']){validateInput('readVaultContentSource',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultContentSource',{binding:this.owner.current(),contentId:input.contentId}));}
  readVaultDocument(input:VaultInputs['readVaultDocument']){validateInput('readVaultDocument',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultDocument',{binding:this.owner.current(),id:input.id}));}
  async revealVaultDocument(input:VaultInputs['revealVaultDocument']){validateInput('revealVaultDocument',input);return this.owner.exclusive(async()=>{if(!this.owner.revealFolder)fail('NOT_READY','此安装没有文件管理器入口。');const location=await this.owner.worker.call('vaultLocation',{binding:this.owner.current(),id:input.id});this.owner.revealFolder(location);return {revealed:true as const};});}
  async mutate<K extends VaultMutationMethod>(method:K,input:VaultInputs[K]){
@@ -41,6 +42,7 @@ export class VaultController {
   });
  }
  saveVaultDocument(input:VaultInputs['saveVaultDocument']){return this.mutate('saveVaultDocument',input) as Promise<VaultText>;}
+ createVaultWorkingDraft(input:VaultInputs['createVaultWorkingDraft']){return this.mutate('createVaultWorkingDraft',input) as Promise<VaultText>;}
  createVaultDocument(input:VaultInputs['createVaultDocument']){return this.mutate('createVaultDocument',input) as Promise<VaultText>;}
  trashVaultDocument(input:VaultInputs['trashVaultDocument']){return this.mutate('trashVaultDocument',input) as Promise<{trashed:true}>;}
 }

@@ -1,3 +1,4 @@
+import {ContentSourceNotice} from './content-source-notice.tsx';
 import {announceVaultRecovery} from '../shared/vault-editor-recovery.ts';
 import {VaultWorkspace} from './vault-workspace.tsx';
 import {RadarWorkspace} from './radar-workspace.tsx';
@@ -113,6 +114,9 @@ function App() {
     const active = useRef(false);
     const [view, setView] = useState<View>('active');
     const [base, setBase] = useState<Content | null>(null);
+    const [sourceAccess,setSourceAccess]=useState<{key:string;editable:boolean}|null>(null);
+    const sourceKey=base?`${libraryEpoch}:${base.id}:${base.editToken}`:'';
+    const sourceBlocked=!!base&&(sourceAccess?.key!==sourceKey||!sourceAccess.editable);
     const baseRef = useRef(base);
     baseRef.current = base;
     const [draft, setDraft] = useState<Draft | null>(null);
@@ -143,7 +147,7 @@ function App() {
         setDisk(null);
     };
     function adoptRecommendedTitle(candidate: ContentTitleRecommendation): boolean {
-        if (active.current || status?.busy || disk) return false;
+        if (active.current || status?.busy || disk || sourceBlocked) return false;
         try {
             const next = adoptTitleRecommendation(baseRef.current, draftRef.current, candidate);
             draftRef.current = next;
@@ -361,6 +365,7 @@ function App() {
     const untitledName=useRef('未定标题内容');
     async function save(): Promise<boolean> {
         if (!draft || disk) return false;
+        if(sourceBlocked){setError('当前稿件来源尚不可编辑，请先核对来源或建立可编辑工作稿；本次填写仍保留。');return false;}
         const originalDraft={...draft};
         const submitted = {...draft,title:draft.title.trim()?draft.title:base?.title||untitledName.current};
         const result = await nativeAction(async () => {
@@ -705,22 +710,22 @@ function App() {
         {page === 'templates' && <TemplatesPage key={libraryEpoch} library={library} run={localAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openLibraryResources('photos')}/>}
         {page === 'calendar' && <CalendarPage key={libraryEpoch} initialFocus={calendarFocus} library={library} run={localAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
         {page === 'prompts' && <section className="prompt-resources" aria-label="提示词与知识"><div className="workspace-view-tabs" role="group" aria-label="提示词与知识分类">{([['prompts','提示词'],['knowledge','创作知识']] as const).map(([value,label])=><Button key={value} id={`prompt-view-${value}`} theme={promptView===value?'solid':'borderless'} aria-pressed={promptView===value} disabled={busy} onClick={()=>void guard(async()=>{setPromptView(value);})}>{label}</Button>)}</div>{promptView==='prompts'? <PromptsPage key={libraryEpoch} initialContentId={promptContentId} currentContentId={base && !base.deletedAt ? base.id : null} workspace={workspace} library={library} busy={busy || !!blocked || dirty} run={localAction} refresh={refreshWorkspace} openContentBody={openPromptContentBody} importPrompt={async () => await nativeAction(() => invoke('choosePromptDocument')) ?? null}/> : <ProductionWorkspace key={`${libraryEpoch}:knowledge`} section="knowledge" busy={busy} openContent={openProductionContent}/>}</section>}
-        {page === 'content' && (!detailOpen || !draft ? activeCollection ? <CollectionContents key={`${libraryEpoch}:${activeCollection.id}`} collection={activeCollection} unavailable={collectionUnavailable} workspace={workspace} props={{library, busy: busy || !!blocked, run: localAction, refresh: refreshWorkspace}} query={collectionQuery} setQuery={setCollectionQuery} back={() => void guard(async () => {setActiveCollectionId(null);})} open={item => void select(item, undefined, false, activeCollection.id)}/> : contentProjectListing : <section className="content-detail-page" aria-label="内容详情"><Button theme="borderless" className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>{activeCollection ? '← 返回合集' : '← 返回内容列表'}</Button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先记资料或想法，标题可以稍后确定。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme={contentTab === 'production' ? 'light' : 'solid'} disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div><div className="content-detail-tabs" aria-label="内容详情分类">{([['production', '创作'], ['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <Button theme="borderless" key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</Button>)}</div><div className="content-detail-panel">
-        {contentTab === 'production' && base && <ContentProduction key={`${libraryEpoch}:${base.id}`} content={base} assistant={status?.assistant} busy={busy||!!blocked||dirty} onContent={next=>{if(next.id===baseRef.current?.id&&!dirtyRef.current){load(next);void refreshWorkspace();}}} makeCover={()=>void startCover()}/>}
+        {page === 'content' && (!detailOpen || !draft ? activeCollection ? <CollectionContents key={`${libraryEpoch}:${activeCollection.id}`} collection={activeCollection} unavailable={collectionUnavailable} workspace={workspace} props={{library, busy: busy || !!blocked, run: localAction, refresh: refreshWorkspace}} query={collectionQuery} setQuery={setCollectionQuery} back={() => void guard(async () => {setActiveCollectionId(null);})} open={item => void select(item, undefined, false, activeCollection.id)}/> : contentProjectListing : <section className="content-detail-page" aria-label="内容详情"><Button theme="borderless" className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>{activeCollection ? '← 返回合集' : '← 返回内容列表'}</Button><div className="content-detail-hero"><div><div className="content-detail-state"><span className="tag">{contentStage}</span><span id="dirty-state">{dirty ? '有未保存草稿' : '已保存'}</span></div><h2>{draft.title || '未命名内容'}</h2><p>{base ? '正文、封面和发布安排，都在这一篇内容里。' : '先记资料或想法，标题可以稍后确定。'}</p></div>{contentTab !== 'covers' && <Button id="make-content-cover" theme={contentTab === 'production' ? 'light' : 'solid'} disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void startCover()}>制作封面</Button>}</div>{base&&!base.deletedAt&&<ContentSourceNotice key={sourceKey} contentId={base.id} busy={busy||!!blocked} dirty={dirty} run={nativeAction} access={editable=>setSourceAccess({key:sourceKey,editable})} converted={async()=>{await nativeAction(async()=>{const next=await invoke('readContent',{id:base.id});if(baseRef.current?.id===next.id&&!dirtyRef.current)load(next);await refreshWorkspace();});}}/>}<div className="content-detail-tabs" aria-label="内容详情分类">{([['production', '创作'], ['covers', '封面'], ['body', '正文'], ['materials', '资料'], ['publication', '发布计划']] as const).map(([key, label]) => <Button theme="borderless" key={key} aria-current={contentTab === key ? 'page' : undefined} className={contentTab === key ? 'active' : ''} disabled={busy} onClick={() => void changeContentTab(key)}>{label}</Button>)}</div><div className="content-detail-panel">
+        {contentTab === 'production' && base && <ContentProduction key={`${libraryEpoch}:${base.id}`} content={base} assistant={status?.assistant} busy={busy||!!blocked||dirty||sourceBlocked} onContent={next=>{if(next.id===baseRef.current?.id&&!dirtyRef.current){load(next);void refreshWorkspace();}}} makeCover={()=>void startCover()}/>}
         {contentTab === 'body' && <Card title="标题与正文"><p
             id="editor-dirty-state">{dirty ? '有未保存草稿' : '已保存'}{base?.deletedAt ? ' · 此内容在回收站' : ''}</p><label
-            htmlFor="content-title">标题（可稍后填写）</label><Input id="content-title" className="semi-control-text" disabled={busy || !!blocked} maxLength={500}
+            htmlFor="content-title">标题（可稍后填写）</label><Input id="content-title" className="semi-control-text" disabled={busy || !!blocked || sourceBlocked} maxLength={500}
                                                        value={draft.title} onChange={value => setDraft({
             ...draft,
             title: value
-        })}/><ContentTitleRecommendations key={`${libraryEpoch}:${base?.id ?? 'new'}`} content={base} dirty={dirty} busy={busy || !!blocked} conflict={!!disk} run={nativeAction} adopt={adoptRecommendedTitle} showTasks={() => void navigate('tasks')}/><label htmlFor="content-body">正文</label><TextArea id="content-body" className="semi-control-text" disabled={busy || !!blocked}
+        })}/><ContentTitleRecommendations key={`${libraryEpoch}:${base?.id ?? 'new'}`} content={base} dirty={dirty} busy={busy || !!blocked || sourceBlocked} conflict={!!disk} run={nativeAction} adopt={adoptRecommendedTitle} showTasks={() => void navigate('tasks')}/><label htmlFor="content-body">正文</label><TextArea id="content-body" className="semi-control-text" disabled={busy || !!blocked || sourceBlocked}
                                                                  maxLength={1_000_000} value={draft.body}
                                                                  onChange={value => setDraft({
                                                                      ...draft,
                                                                      body: value
                                                                  })}/>
             <div className="actions"><Button id="save-content" theme="solid"
-                                             disabled={busy || !dirty || blocked || !!disk || !!base?.deletedAt}
+                                             disabled={busy || !dirty || blocked || sourceBlocked || !!disk || !!base?.deletedAt}
                                              onClick={() => void save()}>保存内容</Button><Button id="recommend-content-topics" disabled={busy||!!blocked||!!disk||!!base?.deletedAt} onClick={()=>void recommendTopics()}>{dirty?'保存想法并推荐选题':'推荐选题'}</Button><Button id="save-as-content"
                                                                                                   disabled={busy || blocked || !!disk}
                                                                                                   onClick={retainDraftAsNew}>准备另存为新内容</Button><Button id="open-content-prompts" disabled={busy || blocked || !base || !!base.deletedAt} onClick={() => void openContentPrompts()}>用提示词继续创作</Button>

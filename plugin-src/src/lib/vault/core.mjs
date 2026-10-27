@@ -1,4 +1,9 @@
 import fs from 'node:fs';
+import {
+    applyWorkingDraftReceipt,
+    currentWorkingDraft,
+    workingDraftAvailable,
+} from './working-draft.mjs';
 import {LibraryError} from '../file-library/index.mjs';
 import path from 'node:path';
 import os from 'node:os';
@@ -417,6 +422,13 @@ export function readVaultSnapshot(runtimeRoot) {
             docs,
             t,
         );
+    for (const contentId of new Set(documents.map(d => d.contentId).filter(Boolean))) {
+        const selected = currentWorkingDraft({root: binding.vaultRoot, documents, issues}, contentId);
+        if (selected?.sourceConflict) {
+            const index = documents.findIndex(document => document.id === selected.id);
+            documents[index] = {...documents[index], writable: false, sourceConflict: selected.sourceConflict};
+        }
+    }
     const position = documents.filter(
         (d) =>
             d.section === 'profile' &&
@@ -451,7 +463,14 @@ export function readVaultDocument(runtimeRoot, id) {
     const bytes = readBytes(s.root, document.relativePath);
     if (digest(bytes) !== document.hash)
         fail('CONFLICT', '知识文件在读取时变化');
-    return {document, text: bytes.toString('utf8')};
+    const text = bytes.toString('utf8');
+    return {
+        document,
+        text: document.format === 'html' ? (htmlBody(text) ?? text) : text,
+        ...(document.format === 'html'
+            ? {workingDraftAvailable: workingDraftAvailable(s, document, text)}
+            : {}),
+    };
 }
 function mutationID(options) {
     if (
@@ -464,6 +483,7 @@ function mutationID(options) {
     return options.mutationId;
 }
 function applyReceipt(root, r) {
+    if (r.action === 'working-draft') return applyWorkingDraftReceipt(root, r);
     if (
         r.format !== 'nova-vault-mutation' ||
         !['save', 'create', 'trash'].includes(r.action) ||
@@ -521,7 +541,16 @@ export function recoverVault(root) {
         if (!/^[a-zA-Z0-9_-]{8,100}\.json$/.test(name))
             fail('CORRUPT', '知识事务目录包含未知文件');
         const r = json(root, `.workbench/mutations/${name}`);
-        if (r.status === 'pending') applyReceipt(root, r);
+        if (r.status === 'pending') {
+            try {
+                applyReceipt(root, r);
+            } catch (error) {
+                // A working-draft conflict retains the intent for explicit recovery,
+                // but must not prevent opening the original read-only Vault.
+                if (r.action !== 'working-draft' || error.code !== 'CONFLICT')
+                    throw error;
+            }
+        }
     }
 }
 function runMutationUnlocked(runtimeRoot, request, options, prepare) {
@@ -535,6 +564,9 @@ function runMutationUnlocked(runtimeRoot, request, options, prepare) {
         queryVaultMutation(runtimeRoot, mid);
         if (old.requestHash !== requestHash)
             fail('INVALID_INPUT', 'mutationId 已用于另一项请求');
+        if (old.action === 'working-draft' && old.status === 'pending') {
+            applyReceipt(b.root, old);
+        }
         return old;
     }
     const r = {
@@ -588,7 +620,7 @@ function withVaultLock(root, fn) {
         fs.rmdirSync(lock);
     }
 }
-function runMutation(runtimeRoot, request, options, prepare) {
+export function runMutation(runtimeRoot, request, options, prepare) {
     return withVaultLock(vaultState(runtimeRoot).root, () =>
         runMutationUnlocked(runtimeRoot, request, options, prepare),
     );
@@ -606,6 +638,7 @@ export function saveVaultDocument(runtimeRoot, input, options) {
         fail('INVALID_INPUT', '知识文件保存参数无效或内容超限');
     const r = runMutation(runtimeRoot, {action: 'save', input}, options, () => {
         const {document} = readVaultDocument(runtimeRoot, input.id);
+        if (document.sourceConflict) fail('CONFLICT', document.sourceConflict);
         if (!document.writable)
             fail('INVALID_INPUT', '该格式仅支持只读，原文件已保留');
         if (document.hash !== input.expectedHash)
@@ -806,6 +839,20 @@ export function materializeVaultBody(
     );
     return r.result;
 }
+export function validateVaultRestoreSource(runtimeRoot, source) {
+    const binding = vaultState(runtimeRoot);
+    if (!source.trashMutationId)
+        fail('INVALID_INPUT', '此内容没有原位回收记录');
+    if (exists(binding.root, source.relativePath))
+        fail('CONFLICT', '恢复路径已有文件，拒绝覆盖');
+    const bytes = readBytes(
+        binding.root,
+        `.workbench/trash/${source.trashMutationId}/source`,
+    );
+    if (digest(bytes) !== source.hash)
+        fail('CONFLICT', '回收原文件已变化，不能恢复');
+}
+
 export function restoreVaultSource(runtimeRoot, source, options) {
     runMutation(
         runtimeRoot,
@@ -886,11 +933,11 @@ function publicationStatus(snapshot, docs, tNumber) {
             relativePath: docs.find((d) => d.section === 'topics')
                 ?.relativePath,
         });
-        return false;
+        return 'conflict';
     }
-    return unique[0] === '已发布';
+    return unique[0] ?? null;
 }
-export function contentSources(snapshot) {
+export function contentSources(snapshot, ignoredWorkingDraftId = null) {
     const groups = new Map();
     for (const d of snapshot.documents)
         if (d.contentId && ['topics', 'drafts'].includes(d.section)) {
@@ -911,8 +958,13 @@ export function contentSources(snapshot) {
             line = lines.find((l) =>
                 new RegExp(`^\\|\\s*${tNumber}\\s*\\|`).test(l),
             );
-        let chosen = null;
-        if (line) {
+        let chosen = contentId === ignoredWorkingDraftId ? null : currentWorkingDraft(snapshot, contentId);
+        if (chosen === undefined) return null;
+        if (chosen?.pendingWorkingDraftPath) {
+            docs = docs.filter(document => document.relativePath !== chosen.pendingWorkingDraftPath);
+            chosen = null;
+        }
+        if (!chosen && line) {
             if (
                 /创作页\]\(http/.test(line) &&
                 /创作页[^|]*·[^|]*工作稿/.test(line)
@@ -964,6 +1016,7 @@ export function contentSources(snapshot) {
                     ? (htmlBody(text) ??
                       `此 HTML 当前稿暂只读，请查看源文件：${chosen.relativePath}`)
                     : text;
+        const publicationState = publicationStatus(snapshot, docs, tNumber);
         return {
             contentId,
             tNumber,
@@ -981,9 +1034,10 @@ export function contentSources(snapshot) {
                 chosen.section === 'drafts'
                     ? path.posix.dirname(chosen.relativePath)
                     : `${SECTIONS.drafts}/${tNumber}_${chosen.title.replace(/[<>:"/\\|?*]/g, '_').slice(0, 80)}`,
-            published: publicationStatus(snapshot, docs, tNumber),
+            published: publicationState === '已发布',
+            publicationState,
         };
-    });
+    }).filter(Boolean);
 }
 export function readVaultTaskContext(runtimeRoot, contentId = null) {
     const binding = bindingForRuntime(runtimeRoot);
@@ -1055,11 +1109,12 @@ export function readVaultTaskContext(runtimeRoot, contentId = null) {
                   relativePath: source.document.relativePath,
                   hash: source.document.hash,
                   writable: source.document.writable,
-                  readOnlyReason: source.sourceMissing
+                  sourceConflict: source.document.sourceConflict ?? null,
+                  readOnlyReason: source.document.sourceConflict ?? (source.sourceMissing
                       ? '原位来源缺失，等待恢复'
                       : source.document.writable
                         ? null
-                        : '当前来源格式暂只读',
+                        : '当前来源格式暂只读'),
                   sourceMissing: !!source.sourceMissing,
                   relatedDocuments: source.documents.map((d) => ({
                       documentId: d.id,
