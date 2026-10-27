@@ -1,0 +1,11 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import os from 'node:os';import path from 'node:path';
+import {createVault,openVault} from '../../vault/index.mjs';import * as api from '../index.mjs';
+for(const interruption of ['before-rename','after-rename'])test('recover '+interruption+' restores an atomic author group and its history once',async(t)=>{
+ const root=fs.mkdtempSync(path.join(os.tmpdir(),'creation-recovery-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));createVault(root);
+ const source={sourceId:'drafts',documentId:'a',relativePath:'05_内容草稿/a.html'},raw={page_id:'abcdefghij',token:'t',items:[{id:'seg-a',kind:'segment',locked:{order:1},fields:{mine:'原句',note:''}},{id:'sug-a',kind:'suggestion',locked:{segment:'seg-a',original:'原句'},fields:{proposed:'新句',decision:''}}]};
+ const original=Buffer.from('<script id="jc-doc" type="application/json">'+JSON.stringify(raw)+'</script>');fs.writeFileSync(path.join(root,source.relativePath),original);const d=await api.readCreationDocument(root,source),mutationId='recover-group-'+interruption;
+ const input={mutationId,page_id:d.pageId,token:'t',changes:[{change_id:'mine',item_id:'seg-a',field:'mine',before:'原句',after:'新句',item_fp:api.itemFingerprint(d.items[0]),group:'adopt'},{change_id:'decision',item_id:'sug-a',field:'decision',before:'',after:'采纳',item_fp:api.itemFingerprint(d.items[1]),group:'adopt'}]};
+ const result=await api.saveKitChanges(root,source,input);const receiptPath=path.join(root,'.workbench/mutations/'+mutationId+'.json'),receipt=JSON.parse(fs.readFileSync(receiptPath));receipt.status='pending';fs.writeFileSync(receiptPath,JSON.stringify(receipt));if(interruption==='before-rename')fs.writeFileSync(path.join(root,source.relativePath),original);
+ openVault(root);const next=await api.readCreationDocument(root,source);assert.equal(next.items[0].fields.mine,'新句');assert.equal(next.items[1].fields.decision,'采纳');assert.equal(JSON.parse(fs.readFileSync(receiptPath)).status,'committed');
+ assert.deepEqual(await api.saveKitChanges(root,source,input),result);assert.equal((await api.readHistory(root,source)).changes.length,2);
+});

@@ -1,0 +1,44 @@
+{
+  "format": "jincheng-creation-trusted-template",
+  "version": "jincheng-source-v1",
+  "source": "AIJinCheng/工具项目/内容工作台/creation-page",
+  "files": {
+    "template/shell.html": {
+      "sha256": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1",
+      "bytes": 1304
+    },
+    "template/style.css": {
+      "sha256": "58e487524b79a1bd26823461949ad907ccd6ef1395d71f313754953ff2f03b30",
+      "bytes": 44184
+    },
+    "template/app.js": {
+      "sha256": "aa2272b34df41a2bfc567c7015099e0bdf8538fbc8fdd7a8f32b158de6fe2b35",
+      "bytes": 145860
+    },
+    "kit/kit.js": {
+      "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+      "bytes": 61367
+    },
+    "creation_doc.py": {
+      "sha256": "874f9f9b96f64de563615128ee47e4e974895aef8b38cebc43ff26851e8a6734",
+      "bytes": 15208
+    },
+    "build_page.py": {
+      "sha256": "9f0d2d3796acca1099503e2468ebca481394ac34ee4f04ecbc5a3928a1fea940",
+      "bytes": 46743
+    },
+    "brain_page.py": {
+      "sha256": "b34966bebb6e05653c1ed4ac36cfd7b6e67bdb91e38be181da884443e36be5cf",
+      "bytes": 29552
+    },
+    "server/brain_save.py": {
+      "sha256": "90b3578085608ec9000970b7a41e804e2045c8e283f037017b2a7cf5139d02e8",
+      "bytes": 59022
+    },
+    "schema/creation-page.md": {
+      "sha256": "95f4445fac4a5c2e744de966ee3fa4e35781c1973e7b4b93c181b390b5c72475",
+      "bytes": 38796
+    }
+  },
+  "adaptation": "Raw frozen app/style/kit/shell. Desktop transport adapters are separate; no source scripts executed."
+}
