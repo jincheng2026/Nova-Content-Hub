@@ -1,0 +1,11 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "retained research draft blocks navigation and displays the managed-draft guard",
+    "discard followed by successful navigation clears the stale guard notice",
+    "successful navigation preserves an unrelated business error"
+  ]
+}

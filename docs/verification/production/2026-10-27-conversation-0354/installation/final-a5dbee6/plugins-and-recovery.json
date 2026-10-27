@@ -1,0 +1,47 @@
+{
+  "recordedAt": "2026-10-27T06:39:53.195Z",
+  "version": "0.3.54",
+  "sourceCommit": "a5dbee6",
+  "installedFinalTreeSha256": "41fec646ee744bb0efc51790338a77b32c5aa2058e243b9fa94eef1c68864ed3",
+  "marketFilesSha256": "ca885522571f82b0ab42178519f0aeb4d819da2bfe038548cacc26d124e75967",
+  "matchingPluginReinstallNeeded": false,
+  "finalInstalledRuntimeChecks": [
+    {
+      "host": "codex",
+      "capability": "research",
+      "realInstalledRuntimeDoctor": true,
+      "matchingPayload": true,
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "realInstalledRuntimeDoctor": true,
+      "matchingPayload": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "realInstalledRuntimeDoctor": true,
+      "matchingPayload": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "realInstalledRuntimeDoctor": true,
+      "matchingPayload": true,
+      "guiOpened": false
+    }
+  ],
+  "priorAllEightChecks": "docs/verification/production/2026-10-27-conversation-0354/installation/plugins-0354.json",
+  "old048RecoveryArchive": "/Applications/.nova-content-hub-install-b93f77fc-109d-4767-b9d3-67ba2573fbf1/previous-backup/previous.app.zip",
+  "oldArchiveReceiptValidated": true,
+  "oldTransactionRecoveredNaturally": true,
+  "newTransaction": "/Applications/.nova-content-hub-install-65fc7539-c250-4b38-b640-757c4c50f51c",
+  "startedApplicationByAgent": false,
+  "uiOwnedByRoot": true,
+  "keysReadOrDisplayed": false,
+  "externalBudgetChanged": false
+}

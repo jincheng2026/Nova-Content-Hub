@@ -111,7 +111,8 @@ function hostURL(host, id, root, options, kind, library, context) {
     while (url.href.length > 2048 && name.length) {name.pop(); url.searchParams.set('prompt', prompt());}
     const requiresPaste = url.href.length > 2048;
     const text = prompt();
-    if (requiresPaste) url.searchParams.delete('prompt');
+    // WorkBuddy rejects task links without prompt, payloadId or promptContentBlocks.
+    if (requiresPaste) url.searchParams.set('prompt', `请用工作台已复制的完整需求替换本段，再手动发送。任务编号：${id}`);
     if (url.href.length > 2048) refuse('INVALID_HANDOFF', '助手交接链接超过系统长度限制，请使用路径较短的内容库。');
     return {url: url.href, prompt: text, requiresPaste};
 }

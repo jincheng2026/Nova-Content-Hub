@@ -1,0 +1,32 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2122 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-kaNlRd/bundle/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-kaNlRd/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-kaNlRd/bundle/workbench/dist/renderer/assets/index-RJkolkuG.css                        543.53 kB │ gzip:  72.20 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-kaNlRd/bundle/workbench/dist/renderer/assets/index-P8YzgBg1.js                       1,509.72 kB │ gzip: 425.06 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 717ms
+PASS one requirement and one primary action; advanced tools collapsed before creation is enabled
+PASS Layout-01 Controls-01 Reading-03 primary action reachable 1280x860
+PASS Layout-01 Controls-01 Reading-03 primary action reachable 960x680
+PASS new-content advanced initialization enables adding and saving references without any assistant launch, focus or task
+PASS starting after manual initialization keeps one creation; failed launch repeats the same task and attempt
+PASS both waiting states foreground the registered assistant app, preserve the session limitation, and retain the original task/chat and never launch a replacement
+PASS dirty advanced fields block generation and adoption while retaining all saved data
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/simple-creation-ui-probe.mjs:33
+ if(code!==0)throw Error('Simple creation Electron probe failed: '+code);
+                   ^
+
+Error: Simple creation Electron probe failed: null
+    at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/simple-creation-ui-probe.mjs:33:20
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+
+Node.js v24.20.0

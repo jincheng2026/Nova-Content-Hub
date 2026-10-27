@@ -1,0 +1,70 @@
+{
+  "recordedAt": "2026-10-27T06:56:50.949Z",
+  "scope": "Long-URI task fallback; no host application/UI execution by this agent",
+  "rootCause": "Clipboard fallback removed the prompt required by WorkBuddy task parser, so action=start was rejected as missing-required.",
+  "fixedBehavior": "Keep a short nonempty task prefill with handoff locator while preserving the complete prompt in clipboard. User replaces prefill and manually sends. No payloadId protocol was invented.",
+  "regression": {
+    "command": "node --test plugin-src/tests/bridge.test.mjs plugin-src/tests/native-handoff.test.mjs plugin-src/tests/production-handoff.test.mjs",
+    "passed": 59,
+    "failed": 0,
+    "exitCode": 0,
+    "log": "uri-fallback-regression.log"
+  },
+  "nativeTypecheck": {
+    "command": "npm run typecheck:native --prefix workbench",
+    "exitCode": 0
+  },
+  "generatedBridge": {
+    "command": "node plugin-src/scripts/sync-bridge.mjs --check",
+    "exitCode": 0
+  },
+  "actualInstalledParserReplay": "fixed-source-installed-parser.json",
+  "designRules": {
+    "Reading-02": "Complete long prompt remains available without truncation; URI contains only placeholder and locator.",
+    "Surface-03": "Native confirmation is concise and keeps explicit open/cancel choices; real GUI verification pending root.",
+    "Acceptance-01": "59 regression tests, native typecheck, generated bridge and diff checks passed.",
+    "Acceptance-02": "New packaged native dialog / workspace observations pending root; source and offline parser are not visual acceptance.",
+    "Acceptance-03": "No cross-platform installation or Codex native conversation success claimed."
+  },
+  "files": [
+    {
+      "file": "plugin-src/src/bridge/handoff.js",
+      "sha256": "406d55b1e3a97f18880e742c972ef2a96c0acc77b29df2646d83aeb212e8a001"
+    },
+    {
+      "file": "plugin-src/src/bridge/native-handoff.mjs",
+      "sha256": "9717f492f75521fd69e1c64a04fcb275bbbf9c09a604fe4531b4efc4f76499cb"
+    },
+    {
+      "file": "plugin-src/src/bridge/production-handoff.mjs",
+      "sha256": "d5a29e6b257df24c92d3b6c642550626bc752fed3eb595bc15f0ec40483abf7f"
+    },
+    {
+      "file": "plugin-src/src/lib/browser-import/legacy/shared/handoff.js",
+      "sha256": "21adfb9230c0b5e5fa6b26d786bb8b7b63c7d6b35a739ee488ed3144f7669649"
+    },
+    {
+      "file": "workbench/prototype/shared/handoff.js",
+      "sha256": "21adfb9230c0b5e5fa6b26d786bb8b7b63c7d6b35a739ee488ed3144f7669649"
+    },
+    {
+      "file": "workbench/src/main/desktop.mts",
+      "sha256": "22f0fbfe765c1fd6b652d0f733d2dcbe13055da2238a7524174c1857b6812cef"
+    },
+    {
+      "file": "plugin-src/tests/bridge.test.mjs",
+      "sha256": "bbd616ee681ec188f30cbbd0228fec877dbd20de45d62b105e28ada2a509a144"
+    },
+    {
+      "file": "plugin-src/tests/native-handoff.test.mjs",
+      "sha256": "0ecc18479dd345930c014b07f233695e03f1d818cc609546d7cfd61d8661902e"
+    },
+    {
+      "file": "plugin-src/tests/production-handoff.test.mjs",
+      "sha256": "75488070135ced32e9c1f82f938d7a1067b9405dba6b0582ceb021ffa5da7fdc"
+    }
+  ],
+  "uiActions": false,
+  "messageSent": false,
+  "realLibraryMutations": false
+}

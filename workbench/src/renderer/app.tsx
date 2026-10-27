@@ -104,7 +104,7 @@ function App() {
     const [coverRefresh, setCoverRefresh] = useState(0);
     const [status, setStatus] = useState<Status | null>(null);
     const [contents, setContents] = useState<Content[] | null>(null);
-    const [failure, setFailure] = useState<{message: string; backgroundBusyEpoch?: number}>({message: ''});
+    const [failure, setFailure] = useState<{message: string; backgroundBusyEpoch?: number; managedDraftGuard?: true}>({message: ''});
     const error = failure.message;
     const setError = (message: string) => setFailure({message});
     const [acting, setActing] = useState(false);
@@ -271,7 +271,7 @@ function App() {
     }, []);
 
     async function guard(action: (saved?: boolean) => Promise<void>) {
-        if (hasManagedDrafts()) { setError('还有未保存的填写内容，请回到暂时收起的编辑窗口，保存或明确关闭后再继续。'); return; }
+        if (hasManagedDrafts()) { setFailure({message: '还有未保存的填写内容，请回到暂时收起的编辑窗口，保存或明确关闭后再继续。', managedDraftGuard: true}); return; }
         if (dirty) setLeaving(() => action); else await action();
     }
 
@@ -503,7 +503,7 @@ function App() {
     }, [page]);
 
     async function navigate(next: Page) {
-        await guard(async () => { setPromptContentId(null); setPage(next); setActiveCollectionId(null); setCalendarFocus(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); });
+        await guard(async () => { setPromptContentId(null); setPage(next); setActiveCollectionId(null); setCalendarFocus(null); setCoverStartOpenKey(0); if (next === 'content') setDetailOpen(false); setFailure(previous => previous.managedDraftGuard ? {message: ''} : previous); });
     }
     async function openContentPrompts() {
         const selectedId = baseRef.current?.id;

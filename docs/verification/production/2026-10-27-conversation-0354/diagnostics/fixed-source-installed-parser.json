@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-27T06:52:41.248Z",
+  "host": "WorkBuddy",
+  "hostVersion": "5.8.3",
+  "installedParser": "renderer/assets/deeplink-CxS_KKxK.js",
+  "parserSha256": "1ac213b440e354db89b4efb26806e47f8e6ebb232a3b03be8c597f8de9206953",
+  "actualSourceLauncher": "plugin-src/src/bridge/production-handoff.mjs",
+  "oldFallback": {
+    "result": "missing-required",
+    "accepted": false
+  },
+  "fixedFallback": {
+    "accepted": true,
+    "urlLength": 493,
+    "nonemptyPrompt": true,
+    "handoffLocatorPreserved": true,
+    "workspacePreserved": true,
+    "skillPreserved": true,
+    "fullClipboardPromptPreserved": true,
+    "privateInputAbsentFromUri": true
+  },
+  "hostApplicationExecuted": false,
+  "installedParserExecutedOffline": true,
+  "uiActions": false,
+  "messageSent": false
+}

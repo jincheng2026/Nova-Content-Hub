@@ -245,7 +245,8 @@ test('URL budget prunes optional names and preserves the short fixed task for lo
     fs.renameSync(root, root + 'a'.repeat(100));
     const long = await prepareNativeHandoff(f.directory, {...f.binding, root: root + 'a'.repeat(100)}, f.task, release, options);
     assert.equal(long.requiresPaste, true);
-    assert.equal(new URL(long.url).searchParams.has('prompt'), false);
+    assert.match(new URL(long.url).searchParams.get('prompt'), /替换.*发送/);
+    assert.ok(new URL(long.url).searchParams.get('prompt').includes(long.id));
     assert.ok(!long.prompt.includes('颜色淡一点'));
     assert.ok(long.prompt.includes('任务编号：'));
     assert.ok(long.url.length <= 2048);

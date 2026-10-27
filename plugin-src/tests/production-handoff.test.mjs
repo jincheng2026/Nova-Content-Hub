@@ -23,7 +23,11 @@ for(const host of ['codex','workbuddy'])test(`${host}: full prompt, frozen reque
  f.lib.mutateProduction('cancelTask',{taskId:f.task.id,expectedToken:f.lib.readProduction().editToken});await assert.rejects(prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release),{code:'INVALID_HANDOFF'});
  assert.throws(()=>readProductionHandoff(path.join(f.dir,'handoffs'),prepared.id,{...release,AUTH_MODE:'required',pairId:'nova-content-hub@0.2.0:p1:required'}),{code:'AUTH_NOT_CONFIGURED'});
 });
-test('long complete prompts stay available through manual clipboard fallback',async t=>{const f=fixture(t,'workbuddy','完整需求\n'.repeat(2000));const h=await prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release);assert.equal(h.requiresPaste,true);assert(!new URL(h.url).searchParams.has('prompt'));assert(h.prompt.includes(f.task.request.prompt));});
+for(const host of ['codex','workbuddy'])test(`${host}: long prompts retain a valid nonempty task prefill and keep complete private input only in clipboard fallback`,async t=>{
+ const f=fixture(t,host,'完整私有需求\n'.repeat(2000)),h=await prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release),url=new URL(h.url),prefill=url.searchParams.get('prompt');
+ assert.equal(h.requiresPaste,true);assert(prefill?.trim());assert(prefill.includes(h.id));assert.match(prefill,/替换.*发送/);assert(!prefill.includes('完整私有需求'));assert(h.prompt.includes(f.task.request.prompt));assert(h.url.length<=2048);
+ assert.equal(url.searchParams.get(host==='codex'?'path':'cwd'),f.binding.root);if(host==='workbuddy'){assert.equal(url.searchParams.get('action'),'start');assert.equal(url.searchParams.get('skills'),'nova-content-research-execution');}
+});
 for(const host of ['codex','workbuddy'])test(`${host}: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation`,async t=>{
  const f=fixture(t,host),directory=path.join(f.dir,'handoffs'),original=await prepareProductionHandoff(directory,f.binding,f.locator,release),identity={taskId:f.task.id,attemptId:f.task.activeAttemptId,claimToken:randomUUID(),workerId:'original-chat'};
  f.lib.mutateProduction('claimTask',identity,{mutationId:randomUUID()});

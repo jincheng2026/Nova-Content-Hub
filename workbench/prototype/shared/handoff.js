@@ -134,7 +134,7 @@
         const requiresPaste = utf8Bytes(link) > MAX_URL_BYTES;
         if (requiresPaste) {
             message = prompt(e, options);
-            link = e.target.host === 'workbuddy' && e.request ? `workbuddy://task?action=start&skills=${encodeURIComponent(e.request.skill)}` : e.target.host === 'codex' && e.target.mode === 'resume' ? `codex://threads/${encodeURIComponent(e.target.sessionId)}` : homeUrl(e.target.host);
+            link = make(`请用工作台已复制的完整需求替换本段，再手动发送。任务编号：${e.handoffId}`);
         }
         return {
             ok: true,

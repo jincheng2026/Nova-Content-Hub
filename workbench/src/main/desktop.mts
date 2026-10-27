@@ -165,8 +165,8 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             await clipboard.writeText(text);
             if (await clipboard.readText() !== text) throw Object.assign(new Error('完整提示词复制失败，请回工作台重试；任务仍保留。'), {code: 'COPY_FAILED'});
         },
-        async confirmPaste(text: string) {
-            const result = await dialog.showMessageBox(window, {type: 'info', message: '完整提示词已复制，请在助手输入框粘贴后确认发送', detail: `内容超过系统链接容量，未截断任何要求。下面是将要粘贴的完整提示词：\n\n${text}`, buttons: ['打开助手后粘贴', '取消'], defaultId: 0, cancelId: 1, noLink: true});
+        async confirmPaste() {
+            const result = await dialog.showMessageBox(window, {type: 'info', message: '完整任务已复制', detail: '打开助手后，在新聊天输入框中全选并粘贴，再手动发送。任务会保留在工作台。', buttons: ['打开助手', '取消'], defaultId: 0, cancelId: 1, noLink: true});
             return result.response === 0;
         },
         openExternal: (url: string) => shell.openExternal(url)

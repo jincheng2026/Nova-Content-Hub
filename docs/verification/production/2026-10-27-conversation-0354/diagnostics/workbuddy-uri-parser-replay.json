@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-27T06:48:32.856Z",
+  "host": "WorkBuddy",
+  "version": "5.8.3",
+  "actualInstalledParser": "renderer/assets/deeplink-CxS_KKxK.js",
+  "parserSha256": "1ac213b440e354db89b4efb26806e47f8e6ebb232a3b03be8c597f8de9206953",
+  "handoffId": "74ca8316-0473-46ca-b522-0aa61005b150",
+  "taskId": "9ee5b298-bc68-4cef-87da-8c952d2c6bfd",
+  "attemptId": "98691add-0afd-4c57-8eb8-b9e4c76b71a1",
+  "actualFallback": {
+    "url": "workbuddy://task?action=start&skills=nova-content-writing-execution&cwd=%2FUsers%2Fmac%2FDocuments%2F%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0%2F%E5%86%85%E5%AE%B9%E5%BA%93-%E6%81%A2%E5%A4%8D-20261019",
+    "length": 213,
+    "parserResult": {
+      "ok": false,
+      "reason": "missing-required",
+      "message": "payloadId、prompt 与 promptContentBlocks 至少需要一个",
+      "gateContext": {}
+    }
+  },
+  "candidateFallback": {
+    "url": "workbuddy://task?action=start&skills=nova-content-writing-execution&cwd=%2FUsers%2Fmac%2FDocuments%2F%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0%2F%E5%86%85%E5%AE%B9%E5%BA%93-%E6%81%A2%E5%A4%8D-20261019&prompt=%E8%AF%B7%E7%94%A8%E5%B7%A5%E4%BD%9C%E5%8F%B0%E5%89%AA%E8%B4%B4%E6%9D%BF%E4%B8%AD%E7%9A%84%E5%AE%8C%E6%95%B4%E6%8F%90%E7%A4%BA%E8%AF%8D%E6%9B%BF%E6%8D%A2%E6%9C%AC%E6%AE%B5%E5%90%8E%EF%BC%8C%E6%89%8B%E5%8A%A8%E5%8F%91%E9%80%81%E3%80%82%E4%BB%BB%E5%8A%A1%E7%BC%96%E5%8F%B7%EF%BC%9A74ca8316-0473-46ca-b522-0aa61005b150",
+    "length": 536,
+    "parserOk": true,
+    "parsedPrompt": "请用工作台剪贴板中的完整提示词替换本段后，手动发送。任务编号：74ca8316-0473-46ca-b522-0aa61005b150",
+    "parsedCwd": "/Users/mac/Documents/自媒体工作台/内容库-恢复-20261019",
+    "parsedSkills": [
+      "nova-content-writing-execution"
+    ]
+  },
+  "executedHostApplication": false,
+  "executedInstalledParserOffline": true,
+  "applicationUiActions": false,
+  "aiMessageSent": false
+}

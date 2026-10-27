@@ -98,7 +98,9 @@ test('long links switch to full visible copy without truncating source input', (
             assert.deepEqual(data(full), e);
             assert.ok(Handoff.utf8Bytes(result.url) <= Handoff.MAX_URL_BYTES);
             const url = new URL(result.url);
-            assert.equal(url.searchParams.has('prompt'), false);
+            assert.match(url.searchParams.get('prompt'), /替换.*发送/);
+            assert.ok(url.searchParams.get('prompt').includes(e.handoffId));
+            assert.ok(!url.searchParams.get('prompt').includes('私有正文'));
             if (kind) assert.ok(result.prompt.includes('执行 Skill：' + e.request.skill));
             assert.equal(url.searchParams.get('skills'), host === 'workbuddy' && kind ? e.request.skill : null);
         }
@@ -229,7 +231,12 @@ test('long Codex continuation keeps its original session while the full prompt i
     e.context.project.summary = '不能截断的原文'.repeat(200);
     const launch = Handoff.url(e);
     assert.equal(launch.requiresPaste, true);
-    assert.equal(launch.url, 'codex://threads/original-session');
+    const url = new URL(launch.url);
+    assert.equal(url.protocol, 'codex:');
+    assert.equal(url.host, 'threads');
+    assert.equal(url.pathname, '/original-session');
+    assert.ok(url.searchParams.get('prompt').includes(e.handoffId));
+    assert.ok(!url.searchParams.get('prompt').includes('不能截断的原文'));
     assert.ok(launch.prompt.includes(e.context.project.summary));
     assert.match(launch.prompt, /\$nova-content-cover/);
 });

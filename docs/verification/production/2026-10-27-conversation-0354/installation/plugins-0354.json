@@ -1,0 +1,90 @@
+{
+  "recordedAt": "2026-10-27T06:36:23.748Z",
+  "version": "0.3.54",
+  "platform": "darwin",
+  "arch": "arm64",
+  "marketRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "marketFilesSha256": "ca885522571f82b0ab42178519f0aeb4d819da2bfe038548cacc26d124e75967",
+  "bundledPayloadTreeSha256": "63aa251c4e5601cd6b8e2f9fa920a0430dae5e4d81eafd1f5b30d7bb26e41e7c",
+  "officialCliInstallation": true,
+  "matchingPayloadVerifiedByRuntime": true,
+  "realShippedDoctorExecuted": true,
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "preflight": "passed",
+      "guiOpened": false
+    }
+  ],
+  "hosts": [
+    {
+      "host": "codex",
+      "root": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.54",
+      "entries": 579,
+      "treeSha256": "88cb942f9b37b1c3845633e5151add6901cbc77ea5c53b26bd2ba3b72ad8f0f4",
+      "priorVersion053Preserved": false
+    },
+    {
+      "host": "workbuddy",
+      "root": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.54",
+      "entries": 580,
+      "treeSha256": "63aa251c4e5601cd6b8e2f9fa920a0430dae5e4d81eafd1f5b30d7bb26e41e7c",
+      "priorVersion053Preserved": true
+    }
+  ],
+  "guiVerification": "pending; no UI or AI message sent by installer",
+  "workbuddyReload": "CLI recommends reload-plugins or new session; no command was sent to a conversation",
+  "keysReadOrDisplayed": false,
+  "externalBudgetChanged": false
+}

@@ -1,0 +1,4 @@
+
+> nova-content-hub-workbench@0.3.54 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+

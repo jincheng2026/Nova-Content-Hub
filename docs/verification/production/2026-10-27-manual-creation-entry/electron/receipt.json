@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "one requirement and one primary action; advanced tools collapsed before creation is enabled",
+    "Layout-01 Controls-01 Reading-03 primary action reachable 1280x860",
+    "Layout-01 Controls-01 Reading-03 primary action reachable 960x680",
+    "new-content advanced initialization enables adding and saving references without any assistant launch, focus or task"
+  ]
+}

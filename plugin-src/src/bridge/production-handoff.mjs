@@ -44,7 +44,7 @@ export async function prepareProductionHandoff(target,binding,task,release,optio
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
  url.searchParams.set(task.host==='codex'?'path':'cwd',binding.root);url.searchParams.set('prompt',prompt);
- const requiresPaste=url.href.length>2048;if(requiresPaste)url.searchParams.delete('prompt');check(url.href.length<=2048,'Library path too long');
+ const requiresPaste=url.href.length>2048;if(requiresPaste)url.searchParams.set('prompt',`请用工作台已复制的完整需求替换本段，再手动发送。任务编号：${id}`);check(url.href.length<=2048,'Library path too long');
  if(options.serviceDescriptorPath!==undefined)check(typeof options.serviceDescriptorPath==='string'&&path.isAbsolute(options.serviceDescriptorPath)&&!options.serviceDescriptorPath.includes('\0'),'Invalid service descriptor path');
  const before=directory(target,true),envelope={format:'nova-content-production-handoff',schemaVersion:1,handoffId:id,pairId:release.pairId,AUTH_MODE:release.AUTH_MODE,platform:release.platform,arch:release.arch,binding,task,...(options.serviceDescriptorPath ? {serviceDescriptorPath:options.serviceDescriptorPath} : {}),createdAt:new Date().toISOString()};
  const bytes=Buffer.from(JSON.stringify(envelope)+'\n');check(bytes.length<=65536,'Handoff too large');
