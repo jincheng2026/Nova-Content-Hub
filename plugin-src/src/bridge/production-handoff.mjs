@@ -31,7 +31,7 @@ export function productionHandoffContext(envelope,launching=false){
  const context=library.readProductionContext(envelope.task.taskId,envelope.task.attemptId);
  const attempt=context.attempt??context.task?.attempts.find(a=>a.id===envelope.task.attemptId);
  check(context.task?.requestHash===envelope.task.requestHash&&attempt?.host===envelope.task.host,'Fixed task changed');
- if(launching)check(context.task.activeAttemptId===attempt.id&&['created','claimed','waiting-user','waiting-permission'].includes(attempt.status),'Attempt is no longer active');
+ if(launching)check(context.task.activeAttemptId===attempt.id&&attempt.status==='created','Attempt is already claimed or no longer awaiting launch');
  return {library,context:{...context,attempt,...(envelope.serviceDescriptorPath ? {serviceDescriptorPath:envelope.serviceDescriptorPath} : {})}};
 }
 export async function prepareProductionHandoff(target,binding,task,release,options={}){

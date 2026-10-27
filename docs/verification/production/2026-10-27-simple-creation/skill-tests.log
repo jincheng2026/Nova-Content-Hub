@@ -1,0 +1,14 @@
+✔ new-cover tool prompt has a clean-original-generation suffix and preserves fixed input (15.678834ms)
+✔ restoration keeps source marks and unmodified tool bytes rather than applying clean-output removal (8.154459ms)
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (2126.054167ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (2877.518291ms)
+✔ long complete prompts stay available through manual clipboard fallback (2322.688958ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (22661.549625ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30351.307625

@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-10-27T05:41:48.564Z",
+  "inputSpokenText": "你好，语音测试。",
+  "recognizedText": "你好,語音測試。",
+  "responseHash": "4cdf462d15251da48d848dfebfa02fecfdcd604f68461ef760fdb8657fcf7fbb",
+  "candidateHash": "4cdf462d15251da48d848dfebfa02fecfdcd604f68461ef760fdb8657fcf7fbb",
+  "exactHashMatches": true,
+  "normalizedSpokenWordsMatch": true,
+  "normalization": "Known sample only: 語→语, 測→测, 試→试; ignore punctuation.",
+  "method": "Recorded actual response SHA256 exactly matches the identified transcript; no model or ASR rerun."
+}

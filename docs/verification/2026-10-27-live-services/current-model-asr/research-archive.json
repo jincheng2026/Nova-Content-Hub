@@ -1,0 +1,92 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "b56ac604-7e34-463f-8d22-b36b0669ec94",
+  "category": "调研报告",
+  "taskId": "e4e6c79c-42d4-4ab4-8a7e-817f9475d44f",
+  "attemptId": "0a772a62-13df-432e-baf5-6a75aeabb5f8",
+  "status": "accepted",
+  "requestHash": "e4a3d84a6bcfae39456581ea9dea2c33809cd762812b0eac50087ae25b58bc24",
+  "receiptHash": "b02f80ecd5cbd6f099296e6e0af280974ce68dc45fd7259e2a88f2c98f6f9377",
+  "receipt": {
+    "taskId": "e4e6c79c-42d4-4ab4-8a7e-817f9475d44f",
+    "attemptId": "0a772a62-13df-432e-baf5-6a75aeabb5f8",
+    "requestHash": "e4a3d84a6bcfae39456581ea9dea2c33809cd762812b0eac50087ae25b58bc24",
+    "resultHash": "a6ac1bc7c824b028118c59dc1693ef09d70fa95b262b463c1db35b8320e705ea",
+    "sha256": "b02f80ecd5cbd6f099296e6e0af280974ce68dc45fd7259e2a88f2c98f6f9377"
+  },
+  "task": {
+    "title": "最小真实验证 ark-model",
+    "kind": "research",
+    "contentId": null,
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "用户已授权的最小真实调用；仅执行一次，无评论、无重试。",
+    "parameters": {
+      "mode": "simple",
+      "researchDepth": {
+        "label": "简单调研",
+        "goal": "先判断方向",
+        "suitable": "适合初步了解领域、筛选值得继续研究的方向。",
+        "deliverables": [
+          "相关账号与代表作品，附真实来源",
+          "主要内容方向、初步观察与选题建议"
+        ],
+        "effort": "优先已有资料，围绕问题做重点梳理。",
+        "constraints": "围绕用户本轮问题，不自动扩大平台、时间或样本范围。样本不足时如实交付缺口，不凑数；评论须本任务单独授权，所有采集遵守冻结预算，不保证固定时长或费用。"
+      },
+      "comments": false,
+      "budgetEnabled": true,
+      "maxRequestsPerTask": 1,
+      "serviceConfig": {
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asr": {
+          "mode": "local-only",
+          "resourceId": "volc.bigasr.auc_turbo",
+          "localEngine": "faster-whisper",
+          "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/venv/bin/python",
+          "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr/models/faster-whisper-small"
+        }
+      },
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 58059
+      }
+    },
+    "tools": [
+      "tikhub",
+      "model",
+      "asr"
+    ],
+    "budget": {
+      "amount": 1,
+      "currency": "REQ"
+    },
+    "bodyHash": null
+  },
+  "result": {
+    "summary": "真实ark-model调用成功，提交本次实际响应。",
+    "artifacts": [
+      {
+        "id": "097f7f79-925c-44ad-8cc9-a63664f11209",
+        "kind": "research",
+        "title": "真实ark-model响应",
+        "text": "OK",
+        "assetHash": null,
+        "data": {
+          "tool": "model",
+          "collectedAt": "2026-10-27T05:39:36.753Z"
+        }
+      }
+    ]
+  },
+  "reports": [],
+  "submittedOrAcceptedAt": "2026-10-27T05:39:37.281Z"
+}

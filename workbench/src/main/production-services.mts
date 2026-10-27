@@ -5,13 +5,23 @@ import os from 'node:os';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import type {LibraryBinding,Worker} from '../shared/contracts.ts';
-import type {ServiceToolRequest} from '../shared/service-contracts.ts';
+import type {ServiceSettingsValues,ServiceToolRequest} from '../shared/service-contracts.ts';
 import {ServiceTools,ServiceToolError} from './service-tools.mts';
 import {ServiceToolBroker} from './service-broker.mts';
 export interface ProductionServiceOwner {worker:Worker;current():LibraryBinding}
 export type ProductionRunQueue = <T>(action:()=>Promise<T>)=>Promise<T>;
 const parameters=(value:unknown):Record<string,unknown>=>value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};
 export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceTools,descriptorPath:string,runQueue:ProductionRunQueue=action=>action()):ServiceToolBroker {
+ function checkServiceConfig(context:ProductionContext,request:ServiceToolRequest,prepared?:{config?:ServiceSettingsValues}){
+  if(request.tool!=='model'&&request.tool!=='asr')return;
+  const frozen=parameters(context.task?.request.parameters);
+  // Legacy tasks did not save a serviceConfig. Do not invent a frozen provider for them.
+  if(!Object.hasOwn(frozen,'serviceConfig'))return;
+  const expected=parameters(parameters(frozen.serviceConfig)[request.tool]),current=tools.settings.read().values[request.tool];
+  // Check what will actually execute as well as current settings: current may return to A after preparing B.
+  const actual=[current,...(prepared?[prepared.config?.[request.tool]??{}]:[])];
+  if(actual.some(config=>Object.keys(expected).length!==Object.keys(config).length||Object.entries(config).some(([key,value])=>expected[key]!==value)))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
+ }
  function checkRadar(context:ProductionContext,request:ServiceToolRequest){
   const task=context.task;if(!task)return;const frozen=parameters(task.request.parameters);if(frozen.workflow!=='viral-radar')return;
   const query=frozen.query;if(!validRadarQuery(query)||request.tool!=='tikhub'||!Array.isArray(frozen.operations)||!frozen.operations.includes(request.operation)||!radarQueryOperations(query).includes(request.operation))throw new ServiceToolError('RADAR_OPERATION_FORBIDDEN');
@@ -27,7 +37,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
    const binding=owner.current(),context=await owner.worker.call('productionContext',{binding,taskId:request.taskId});
    const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
    if(!task||task.activeAttemptId!==request.attemptId||!attempt||attempt.claimToken!==request.claimToken||attempt.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
-   checkRadar(context,request);
+   checkRadar(context,request);checkServiceConfig(context,request);
    const frozen=parameters(task.request.parameters),current=tools.settings.read().values;
    if(request.tool==='tikhub'&&request.operation==='comments'&&!(current.commentsEnabled&&frozen.comments===true&&current.budget.enabled&&frozen.budgetEnabled===true))throw new ServiceToolError('COMMENTS_DISABLED');
    return {binding,workerId:attempt.workerId,isRadar:frozen.workflow==='viral-radar'};
@@ -51,7 +61,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
      const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId});const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==identity.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
      if(context.snapshot.costs.some(c=>c.taskId===task.id&&['reserved','unknown'].includes(c.status)))throw new ServiceToolError('COST_UNKNOWN');
-     checkRadar(context,request);
+     checkRadar(context,request);checkServiceConfig(context,request,prepared);
      const frozen=parameters(task.request.parameters),current=tools.settings.read().values;
      if(request.tool==='tikhub'&&request.operation==='comments'&&!(current.commentsEnabled&&frozen.comments===true&&current.budget.enabled&&frozen.budgetEnabled===true))throw new ServiceToolError('COMMENTS_DISABLED');
      if(prepared.requests===1){

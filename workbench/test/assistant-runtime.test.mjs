@@ -45,6 +45,13 @@ async function fixture(t, host = 'workbuddy') {
     return {host, home, config, root, trusted, manifestFile, seal, options: {home, env: {}, run}, open: (launch = async () => {}, options = {}) => launchWithAssistantRuntime(host, release, trusted, launch, {home, env: {}, run, ...options})};
 }
 
+test('runtime preflight preserves safe missing capability diagnostics before spawning', async t => {
+    const f = await fixture(t);
+    await assert.rejects(f.open(undefined, {capability: 'research'}), {code: 'NOT_READY', reason: 'skill-not-supported'});
+    await fs.appendFile(path.join(f.root, nodeFile), 'modified');
+    await assert.rejects(f.open(), {code: 'NOT_READY', reason: 'integrity-failed'});
+});
+
 for (const host of ['codex', 'workbuddy']) for (const capability of ['cover', 'template']) test(`${host} ${capability}: verified doctor must finish before envelope creation and external open`, async t => {
     const f = await fixture(t, host), events = [];
     let finish, started;

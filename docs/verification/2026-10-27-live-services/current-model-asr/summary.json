@@ -1,0 +1,144 @@
+{
+  "startedAt": "2026-10-27T05:39:34.470Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "arkSafeExperienceMode": {
+    "confirmedByUser": true,
+    "independentlyVerified": false
+  },
+  "maxModelRequests": 1,
+  "maxLocalAsrRequests": 1,
+  "maxTikHubRequests": 0,
+  "guiVerified": false,
+  "results": [
+    {
+      "name": "ark-model",
+      "startedAt": "2026-10-27T05:39:35.530Z",
+      "frozen": {
+        "tools": [
+          "tikhub",
+          "model",
+          "asr"
+        ],
+        "budget": {
+          "amount": 1,
+          "currency": "REQ"
+        },
+        "comments": false,
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asrMode": "local-only"
+      },
+      "actualHttpRequest": true,
+      "ok": true,
+      "cacheHit": false,
+      "requestsUsed": 1,
+      "collectedAt": "2026-10-27T05:39:36.753Z",
+      "response": {
+        "model": "doubao-seed-2-0-mini-260428",
+        "reply": "OK",
+        "textHash": "565339bc4d33d72817b583024112eb7f5cdf3e5eef0252d6ec1b9c9a94e12bb3",
+        "textLength": 2,
+        "usage": {
+          "completion_tokens": 21,
+          "prompt_tokens": 46,
+          "total_tokens": 67,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 20
+          }
+        }
+      },
+      "submission": {
+        "receiptVerified": true,
+        "accepted": true,
+        "artifactCount": 1,
+        "receiptHash": "b02f80ecd5cbd6f099296e6e0af280974ce68dc45fd7259e2a88f2c98f6f9377"
+      }
+    },
+    {
+      "name": "local-asr",
+      "startedAt": "2026-10-27T05:39:56.961Z",
+      "frozen": {
+        "tools": [
+          "tikhub",
+          "model",
+          "asr"
+        ],
+        "budget": {
+          "amount": 1,
+          "currency": "REQ"
+        },
+        "comments": false,
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asrMode": "local-only"
+      },
+      "actualHttpRequest": false,
+      "ok": true,
+      "cacheHit": false,
+      "requestsUsed": 0,
+      "collectedAt": "2026-10-27T05:40:19.190Z",
+      "response": {
+        "textLength": 8,
+        "textHash": "4cdf462d15251da48d848dfebfa02fecfdcd604f68461ef760fdb8657fcf7fbb",
+        "segmentCount": 1,
+        "durationMs": 1543
+      },
+      "submission": {
+        "receiptVerified": true,
+        "accepted": true,
+        "artifactCount": 1,
+        "receiptHash": "e8f1e0595fbf2a377bac87e4aba04f3ed2df384664c5cf246ad7a36523018de5"
+      }
+    }
+  ],
+  "config": {
+    "model": {
+      "provider": "volc",
+      "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+      "modelId": "doubao-seed-2-0-mini-260428"
+    },
+    "localAsrEngine": "faster-whisper"
+  },
+  "localAsrReadiness": {
+    "available": true,
+    "reason": "本地路径与 faster_whisper 模块检查通过；实际音频识别仍在任务内验证。"
+  },
+  "updatedAt": "2026-10-27T05:40:20.462Z",
+  "costs": [
+    {
+      "service": "model",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "prompt_tokens": 46,
+        "completion_tokens": 21,
+        "total_tokens": 67,
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "service": "asr",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "costStatus": "no-external-call",
+        "durationMs": 1543,
+        "requests": 0,
+        "ok": true
+      }
+    }
+  ],
+  "originalSettingsChanged": false
+}

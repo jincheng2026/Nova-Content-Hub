@@ -1,0 +1,50 @@
+✔ broker shutdown waits for an accepted request to settle after its client disconnects (69.429042ms)
+✔ broker rejects model or ASR changes after a task freezes service settings before any service request (2975.600875ms)
+✔ local execution uses the configuration prepared before an asynchronous reservation (21.675416ms)
+✔ credentials stay encrypted and omitted/null/replace semantics preserve independent keys (46.7025ms)
+✔ plaintext fallback safeStorage backend cannot save/use credentials (15.233375ms)
+✔ SSRF rejects all local, mapped, reserved and unsafe schemes (6.888791ms)
+✔ strict tool input rejects extraneous providers/unsafe IDs/invalid identity (0.45125ms)
+✔ search whitelist maps documented platform filters and keeps Xiaohongshu on one first page (1.355292ms)
+✔ search cache separates every provider behavior parameter while equivalent filter order shares results (32.026584ms)
+✔ legacy cache and unknown-cost markers survive the addition of search filters (8.705333ms)
+✔ successful TikHub collection caches traceable data and charges a single request (8.799958ms)
+✔ unknown provider cost blocks replay across restart until explicit manual reconciliation (46.426292ms)
+✔ known validation failure and local failure use zero requests; cloud requires explicit permission before reserve (14.918292ms)
+✔ loopback broker requires token, rejects Origin and serves bounded requests through stdin client API (93.26625ms)
+✔ production broker verifies frozen comment consent and budgets before provider calls (24.249208ms)
+✔ production broker reserves and settles every call independently and cache hits cost zero (57.0055ms)
+✔ production ASR only copies registered bytes to private temp and local usage zero needs no paid budget (24.7475ms)
+✔ public DNS validation checks every answer and keeps the selected address for pinning (0.432042ms)
+✔ model usage keeps only actual finite provider counters without inventing a monetary charge (1.872667ms)
+✔ fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked (0.389792ms)
+▶ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias
+  ✔ observed translated pair IPv4 first (0.297834ms)
+  ✔ observed translated pair IPv6 first (0.082458ms)
+  ✔ mapped hexadecimal alias (0.173709ms)
+  ✔ mapped dotted alias (0.106958ms)
+  ✔ expanded translated alias (0.08425ms)
+  ✔ translated 198.19 address (0.403208ms)
+  ✔ mapped 198.19 address (0.796208ms)
+✔ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias (2.724708ms)
+▶ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts
+  ✔ translated alias without IPv4 (0.858041ms)
+  ✔ mapped alias without IPv4 (0.864375ms)
+  ✔ translated alias for different IPv4 (0.34775ms)
+  ✔ mapped alias for different subnet (0.087708ms)
+  ✔ translated alias with public IPv4 (0.060375ms)
+  ✔ paired alias mixed with loopback (0.057208ms)
+  ✔ paired alias mixed with private IPv6 (0.06175ms)
+  ✔ paired alias mixed with mapped private IPv4 (1.285833ms)
+  ✔ unrecognized translation prefix (0.151708ms)
+  ✔ custom provider (0.083208ms)
+  ✔ official hostname suffix attack (0.063375ms)
+✔ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts (5.163625ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3500.70625

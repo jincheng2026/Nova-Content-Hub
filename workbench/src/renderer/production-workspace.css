@@ -43,3 +43,7 @@
 
 /* Foundation-04: a rebuildable archive warning preserves the successful task receipt. */
 .production-workspace .production-archive-warning{background:#FFF4E2;color:#7A4B00}
+
+/* Layout-01/02, Surface-01, Controls-01/02, Reading-02/03: simple creation first,
+   one clear primary action and native keyboard-accessible advanced disclosure. */
+.creation-simple .semi-card-body{gap:12px}.creation-simple label{margin:0;font-size:14px;font-weight:600}.creation-simple .semi-input-textarea{min-height:0;font-size:14px;line-height:1.6}.creation-task-status{display:grid;gap:8px;padding:14px;background:#F2F7FD;border-radius:12px;font-size:13px}.creation-task-status>button{justify-self:start}.creation-advanced{border:1px solid rgba(0,0,0,.08);border-radius:18px;background:#FFF;padding:10px 18px}.creation-advanced>summary{font-size:14px;font-weight:600}.creation-advanced-body{display:grid;gap:18px;padding-top:12px;min-width:0}.creation-bundle-preview .semi-card-body{gap:16px}.creation-bundle-preview pre{max-height:440px}.creation-preview-button{justify-self:start}@media(max-width:1000px){.creation-simple .semi-card-body{padding:18px}.creation-simple .production-actions{align-items:stretch}.creation-simple #start-content-creation{max-width:100%;height:auto;min-height:36px;white-space:normal}.creation-advanced{padding:8px 12px}}

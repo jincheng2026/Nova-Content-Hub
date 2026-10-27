@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-27T05:39:02.593Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "connections": [
+    {
+      "host": "127.0.0.1",
+      "port": 11434,
+      "connected": false,
+      "code": "ECONNREFUSED"
+    },
+    {
+      "host": "127.0.0.1",
+      "port": 1234,
+      "connected": false,
+      "code": "ECONNREFUSED"
+    },
+    {
+      "host": "127.0.0.1",
+      "port": 8000,
+      "connected": true
+    }
+  ],
+  "applicationSupport": {
+    "ollama": false,
+    "lmStudio": false,
+    "ollamaModels": false
+  },
+  "notes": [
+    "常见端口检查不能证明其他端口不存在本地模型。",
+    "端口可连不等于模型服务；8000端口单独lsof观察为ssh进程，本次未发HTTP。",
+    "本地ASR不等于本地语言模型。"
+  ],
+  "configuredModel": {
+    "provider": "volc",
+    "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+    "modelId": "doubao-seed-2-0-mini-260428"
+  },
+  "localLanguageModelConfigured": false,
+  "acceptsLocalHttpSettings": false,
+  "localHttpsPreflight": "UNSAFE_ENDPOINT"
+}

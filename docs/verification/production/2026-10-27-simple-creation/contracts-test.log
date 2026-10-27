@@ -1,0 +1,45 @@
+✔ one submitted receipt previews the whole bundle without writes; one CAS save adopts all fields after acceptance (4309.528833ms)
+✔ bundle refuses stale baselines, duplicate field owners, mixed review/filming and one invalid artifact without partial writes (22914.383792ms)
+✔ packaging appends without changing a human selection; accepted save failure retains original body CAS for retry (5483.274791ms)
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (3577.875ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (8092.79875ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (7461.607875ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (4729.972583ms)
+✔ fixed requests reject secret parameters and invalid JSON (882.523292ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (4501.057875ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (2655.940208ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (1785.833625ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (3742.197167ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (810.006667ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (3369.025ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (1943.805875ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (1229.489834ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (2583.595875ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (3022.201375ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (1981.531375ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (1955.854417ms)
+✔ content creation workflow validates scope, ensures creation once and reuses the active task after a launch failure (6992.956458ms)
+✔ workflow keeps one attempt across both waiting states and submitted result for each host without granting extra permissions (18660.524583ms)
+✔ renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters (1.637917ms)
+✔ read does not enable creation; explicit enable and draft save use real CAS versions (6421.96825ms)
+✔ launch failure preserves one task; comments require per-task consent and setting; budget is REQ without broker token (8952.657708ms)
+✔ production launch exposes safe preflight reasons, preserves task and redacts raw exception details (6179.85725ms)
+✔ lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes (2213.932667ms)
+✔ pending metadata is library-bound and required builds reject all production access (840.060541ms)
+✔ claim tokens are redacted and acceptance requires current attempt and exact receipt (7266.0725ms)
+✔ unknown cost blocks retry until explicit reconciliation and clears matching service cache intent (6440.142708ms)
+✔ file recovery verifies the original bytes before importing a changed source (1686.474167ms)
+✔ platform catalog exposes no caller-controlled endpoint and account platform freezes collection capability (7819.973375ms)
+✔ research depth freezes distinct deliverables while preserving user scope, budget and other task kinds (5862.743208ms)
+✔ creation capabilities share one loopback startup and inject the fixed page endpoint with nonce CSP (1768.08475ms)
+✔ creation writes require matching Origin, JSON and server-fixed content, and stale CAS produces 409 (2512.354541ms)
+✔ capabilities deny query alterations and cross-library use; reports keep all HTML in network-free sandbox (5958.758083ms)
+✔ reference media is bound to this content and range playback cannot read arbitrary assets (3386.80975ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 54656.574625

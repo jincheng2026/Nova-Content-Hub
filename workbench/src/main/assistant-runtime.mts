@@ -6,12 +6,13 @@ import {isDeepStrictEqual} from 'node:util';
 import {createHash} from 'node:crypto';
 import {snapshotPackage, type PackageEntry} from '../../../plugin-src/src/lib/package-snapshot.mjs';
 import {installedAssistantSkill, readAssistantFile} from './assistant-skill.mts';
+import {assistantNotReady, type AssistantFailureReason} from './assistant-failure.mts';
 import {isRecord, type Release} from '../shared/contracts.ts';
 import type {Assistant} from '../shared/cover-contracts.ts';
 
 type Runner = (file: string, args: string[], options: ExecFileOptionsWithStringEncoding, callback: (error: ExecFileException | null, stdout: string, stderr: string) => void) => ChildProcess;
 type Options = {home?: string; env?: NodeJS.ProcessEnv; capability?: 'cover' | 'template' | 'research' | 'writing'; run?: Runner};
-const notReady = () => Object.assign(new Error('配套插件校验或启动未完成，请在设置中检查匹配版本后重试；原尝试已保留。'), {code: 'NOT_READY'});
+const notReady = () => assistantNotReady('integrity-failed');
 const identity = (stat: Awaited<ReturnType<typeof fs.lstat>>) => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs, stat.mode];
 type HostMetadata = {entries: Record<string, PackageEntry>; identities: Record<string, ReturnType<typeof identity>>};
 
@@ -50,8 +51,9 @@ export async function readWorkBuddyCacheMetadata(root: string): Promise<HostMeta
 
 // Warm the exact installed inode before the host's short hook budget starts.
 export async function launchWithAssistantRuntime(host: Assistant, release: Release, marketRoot: string, launch: () => Promise<void>, {home = os.homedir(), env = process.env, capability = 'cover', run = execFile}: Options = {}): Promise<void> {
+    installedAssistantSkill(host, release, {home, env, capability});
+    let reason: AssistantFailureReason = 'integrity-failed';
     try {
-        installedAssistantSkill(host, release, {home, env, capability});
         const manifest: unknown = JSON.parse(new TextDecoder('utf-8', {fatal: true}).decode(readAssistantFile(path.join(marketRoot, 'package-files.json'))));
         if (!isRecord(manifest) || manifest.format !== 'nova-content-marketplace-package-files' || manifest.schemaVersion !== 1 || !isDeepStrictEqual(manifest.release, {...release, format: 'nova-content-plugin-release'}) || !isRecord(manifest.entries)) throw notReady();
         const config = host === 'codex' ? env.CODEX_HOME || path.join(home, '.codex') : env.WORKBUDDY_CONFIG_DIR || env.CODEBUDDY_CONFIG_DIR || path.join(home, '.workbuddy');
@@ -73,6 +75,7 @@ export async function launchWithAssistantRuntime(host: Assistant, release: Relea
         if (after.some((stat, index) => !stat.isFile() || !isDeepStrictEqual(identity(stat), identity(before[index]!)))) throw notReady();
         if (metadata && !isDeepStrictEqual(metadata, await readWorkBuddyCacheMetadata(root))) throw notReady();
         const cleanEnv = Object.fromEntries(Object.entries(env).filter(([key]) => !/^(?:NODE_OPTIONS|NODE_PATH|ELECTRON_RUN_AS_NODE|LD_.*|DYLD_.*|_RLD.*|LDR_.*|LIBPATH|SHLIB_PATH|GCONV_PATH|GLIBC_TUNABLES)$/i.test(key)));
+        reason = 'runtime-failed';
         await new Promise<void>((resolve, reject) => {
             const child = run(node, [launcher, 'doctor'], {cwd: root, env: cleanEnv, shell: false, encoding: 'utf8', timeout: 30_000, maxBuffer: 65_536, killSignal: 'SIGKILL', windowsHide: true}, (error, stdout, stderr) => {
                 try {
@@ -84,6 +87,6 @@ export async function launchWithAssistantRuntime(host: Assistant, release: Relea
             });
             child.stdin?.end();
         });
-    } catch { throw notReady(); }
+    } catch { throw assistantNotReady(reason); }
     await launch();
 }

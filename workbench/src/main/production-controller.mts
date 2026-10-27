@@ -1,4 +1,6 @@
+import {contentCreationPrompt} from '../shared/content-creation-workflow.ts';
 import {researchDepthRequirements} from '../shared/research-depth.ts';
+import {productionLaunchFailure} from './assistant-failure.mts';
 import {radarQueryOperations,radarSearchFilters,radarPrompt} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {publicEndpoint} from './service-tools.mts';
 import type {RadarQuery,RadarAdopt,RadarDecision,RadarReport} from '../shared/radar-contracts.ts';
@@ -12,6 +14,7 @@ import type {ProductionMutation,ProductionStart,ProductionAction,ProductionDraft
 import type {ServiceSettingsView,ServiceBrokerDescriptor} from '../shared/service-contracts.ts';
 export interface ProductionCallbacks {
  launch(binding:LibraryBinding,reference:{taskId:string;attemptId:string;requestHash:string;host:'codex'|'workbuddy'}):Promise<void>;
+ focus?(host:'codex'|'workbuddy'):Promise<void>;
  open(binding:LibraryBinding,target:ProductionInputs['openProductionLink']):Promise<string>;
  serviceSettings():Promise<ServiceSettingsView>;
  openSource?(url:string):Promise<void>;
@@ -53,20 +56,32 @@ export class ProductionController {
   const b=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding:b}),task=snapshot.tasks.find(t=>t.id===taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!task||!attempt)fail('NOT_FOUND','任务不存在。');
   if(['accepted','cancelled','failed'].includes(attempt.status))fail('ATTEMPT_INACTIVE','此任务已结束，请重试后打开。');
+  if(attempt.status==='submitted')return {opened:false,message:'任务结果已提交，请在创作页或任务结果中预览并确认采用。'};
+  if(attempt.status!=='created'){
+   if(!this.callbacks.focus)return {opened:false,message:'请在原对话继续此任务；当前无法自动定位原聊天，请手动打开所选助手。'};
+   try{await this.callbacks.focus(attempt.host);return {opened:true,message:'已打开助手，请在原对话继续，当前无法自动定位原聊天。'};}
+   catch(error){return {opened:false,message:productionLaunchFailure(error)};}
+  }
   try{await this.callbacks.launch(b,{taskId:task.id,attemptId:attempt.id,requestHash:task.requestHash,host:attempt.host});return {opened:true};}
-  catch{return {opened:false,message:'任务已保存在内容库，助手未成功打开。请在助手任务列表继续打开原任务。'};}
+  catch(error){return {opened:false,message:productionLaunchFailure(error)};}
  }
  startProductionTask(input:ProductionStart){this.validate('startProductionTask',input);return this.owner.exclusive(async()=>{
-  this.owner.noPending();const b=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding:b}),settings=await this.callbacks.serviceSettings(),v=settings.values;
+  this.owner.noPending();const b=this.owner.current();let snapshot=await this.owner.worker.call('productionRead',{binding:b});
+  if(input.workflow==='content-creation'){
+   const existing=[...snapshot.tasks].reverse().find(task=>task.contentId===input.contentId&&task.request.parameters!==null&&typeof task.request.parameters==='object'&&!Array.isArray(task.request.parameters)&&task.request.parameters.workflow==='content-creation'&&task.attempts.some(attempt=>attempt.id===task.activeAttemptId&&['created','claimed','waiting-user','waiting-permission','submitted'].includes(attempt.status)));
+   if(existing){const launched=await this.launch(existing.id);return {snapshot:await this.read(),...launched};}
+   if(!snapshot.creations.some(creation=>creation.contentId===input.contentId))snapshot=await this.write({...this.pendingBase(),kind:'mutate',op:'ensureCreation',input:{contentId:input.contentId,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+  }
+  const settings=await this.callbacks.serviceSettings(),v=settings.values;
   const bodyHash=input.contentId?(await this.owner.worker.call('productionCreation',{binding:b,contentId:input.contentId})).content.bodyHash:null;
   const serviceDescriptor=await this.callbacks.servicesDescriptor?.();
   const account=input.accountId?snapshot.accounts.find(account=>account.id===input.accountId&&!account.deletedAt):undefined;
   if(input.accountId&&!account)fail('NOT_FOUND','对标账号不存在，请刷新后重新选择。');
   const platformCollection=account?platformCollectionCapability(account.platform):null;
-  const parameters={...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
+  const parameters={...(input.workflow?{workflow:input.workflow}:{}),...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
   const tools=platformCollection==='manual'?['model','asr']:['tikhub','model','asr'];
   const prior=new Set(snapshot.tasks.map(t=>t.id));
-  const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+  const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.workflow==='content-creation'?contentCreationPrompt(input.prompt):input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
   const task=result.tasks.find(t=>!prior.has(t.id));if(!task)fail('PENDING_MUTATION','任务已写入但无法定位，请刷新原任务列表。');
   const launched=await this.launch(task.id);return {snapshot:await this.read(),...launched};
  });}

@@ -26,6 +26,7 @@ import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
 import {launchWithAssistantRuntime} from './assistant-runtime.mts';
+import {assistantNotReady} from './assistant-failure.mts';
 import {confirmInstalledApplication, offerApplicationInstall} from './installation.mts';
 import {isMacInstallationBackupExecutable} from './mac-installation.mts';
 import {ServiceSettingsStore} from './service-settings.mts';
@@ -196,6 +197,12 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             serviceSettings: async () => serviceSettings.read(),
             openSource: async url => { await shell.openExternal(url); },
             costReconciled: requestId => serviceTools.reconcileCost(requestId),
+            focus: async host => {
+                let target;
+                try { target = await app.getApplicationInfoForProtocol(`${host}://`); }
+                catch { throw assistantNotReady('protocol-missing'); }
+                if (!path.isAbsolute(target.path) || await shell.openPath(target.path)) fail('OPEN_FAILED', '系统未能打开所选助手，请手动返回原对话。');
+            },
             launch: async (binding, reference) => {
                 requireWrite(release.AUTH_MODE);
                 serviceSettings.read();
@@ -205,7 +212,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
                 if (!context.task) fail('NOT_FOUND', '任务不存在。');
                 const capability = context.task.kind === 'research' ? 'research' : 'writing';
                 try { await app.getApplicationInfoForProtocol(`${reference.host}://`); }
-                catch { fail('NOT_READY', '所选助手尚未安装或未注册打开协议。'); }
+                catch { throw assistantNotReady('protocol-missing'); }
                 const installedSkill = installedAssistantSkill(reference.host, release, {capability});
                 await launchWithAssistantRuntime(reference.host, release, assistantMarketRoot, async () => {
                     const handoff = await prepareProductionHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill, serviceDescriptorPath});

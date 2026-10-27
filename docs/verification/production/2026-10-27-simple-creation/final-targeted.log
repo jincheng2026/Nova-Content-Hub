@@ -1,0 +1,13 @@
+✔ one submitted receipt previews the whole bundle without writes; one CAS save adopts all fields after acceptance (2169.467625ms)
+✔ bundle refuses stale baselines, duplicate field owners, mixed review/filming and one invalid artifact without partial writes (12528.2005ms)
+✔ packaging appends without changing a human selection; accepted save failure retains original body CAS for retry (1244.359208ms)
+✔ content creation workflow validates scope, ensures creation once and reuses the active task after a launch failure (3213.747875ms)
+✔ workflow keeps one attempt across both waiting states and submitted result for each host without granting extra permissions (10991.597792ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16048.847208

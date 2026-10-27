@@ -1,0 +1,147 @@
+{
+  "recordedAt": "2026-10-27T05:36:26.889Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "installedApp": "/Applications/自媒体工作台.app",
+  "installedVersion": "0.3.48",
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "ready": false,
+      "code": "NOT_READY",
+      "reason": "plugin-missing",
+      "message": "所选助手尚未安装当前工作台的配套插件，请在设置中获取并安装匹配版本。"
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "ready": false,
+      "code": "NOT_READY",
+      "reason": "plugin-missing",
+      "message": "所选助手尚未安装当前工作台的配套插件，请在设置中获取并安装匹配版本。"
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "ready": false,
+      "code": "NOT_READY",
+      "reason": "plugin-missing",
+      "message": "所选助手尚未安装当前工作台的配套插件，请在设置中获取并安装匹配版本。"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "ready": true,
+      "skill": "nova-content-cover-execution"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "ready": false,
+      "code": "NOT_READY",
+      "reason": "skill-not-supported",
+      "message": "所选助手的配套插件不包含本任务执行能力，请升级工作台及匹配插件后重试。"
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "ready": false,
+      "code": "NOT_READY",
+      "reason": "skill-not-supported",
+      "message": "所选助手的配套插件不包含本任务执行能力，请升级工作台及匹配插件后重试。"
+    }
+  ],
+  "protocolProbe": {
+    "isolatedFixtures": "/private/tmp/nova-production-host-20261027",
+    "fixtures": {
+      "workbuddy": {
+        "root": "/private/tmp/nova-production-host-20261027/workbuddy-隔离验收库",
+        "libraryId": "835d0bfb-9066-4210-95a6-8a8133ff0db3",
+        "rootIdentity": {
+          "dev": "16777231",
+          "ino": "81140139"
+        },
+        "taskId": "295eacee-9db3-4fa3-975a-d7f4a41d4e9e",
+        "handoffId": "9c74913e-6cca-4160-8fbc-de12e10b000b",
+        "urlLength": 179,
+        "requiresPaste": true,
+        "promptCharacters": 646
+      },
+      "codex": {
+        "root": "/private/tmp/nova-production-host-20261027/codex-隔离验收库",
+        "libraryId": "caeda2ff-9c2e-45c2-bf6d-0cc2bc4569c1",
+        "rootIdentity": {
+          "dev": "16777231",
+          "ino": "81140189"
+        },
+        "taskId": "f6799b24-0950-457a-9f9d-224918074c69",
+        "handoffId": "e3f81849-ad5d-4cb7-aa2f-9000fd7e4aaf",
+        "urlLength": 119,
+        "requiresPaste": true,
+        "promptCharacters": 675
+      }
+    },
+    "workbuddy": {
+      "version": "5.8.3",
+      "path": "/Applications/WorkBuddy.app",
+      "actualShellOpen": true,
+      "guiObserved": "Expert / skills / installed nova-content-hub 0.3.48 detail. Research and writing skills absent; isolated conversation workspace not opened.",
+      "draftPasted": false,
+      "messageSent": false
+    },
+    "codex": {
+      "version": "26.1021.31345",
+      "path": "/Applications/ChatGPT.app",
+      "actualShellOpen": true,
+      "guiObserved": false,
+      "limitation": "CUA denied com.openai.codex for safety reasons; no workaround attempted.",
+      "messageSent": false
+    },
+    "clipboard": {
+      "fullPromptCopyReadBackVerified": true,
+      "currentHost": "codex",
+      "requiresPaste": true
+    },
+    "scope": "Protocol-only probes do not count as preflight-verified task conversations or task acceptance."
+  },
+  "unchanged": {
+    "productionApplication": true,
+    "hostPluginConfiguration": true,
+    "realContentLibraries": true
+  },
+  "pending": [
+    "Install matching new release and paired production skills before WorkBuddy end-to-end GUI recheck.",
+    "Codex native workspace/draft confirmation requires an authorized observation path.",
+    "No host claim/progress/waits/submit acceptance was exercised in GUI."
+  ],
+  "sourceVerification": {
+    "regressions": {
+      "command": "node --test workbench/test/assistant-skill.test.mjs workbench/test/assistant-runtime.test.mjs workbench/test/production-desktop.test.mjs plugin-src/tests/production-handoff.test.mjs",
+      "passed": 54,
+      "failed": 0,
+      "exitCode": 0
+    },
+    "nativeTypecheck": {
+      "command": "npm run typecheck:native --prefix workbench",
+      "exitCode": 0
+    },
+    "redFirst": {
+      "tests": 3,
+      "failed": 3,
+      "description": "Missing capability reason and production swallowed-error regressions failed before implementation; runtime reason regression separately failed before runtime fix."
+    }
+  },
+  "continuationBoundary": {
+    "checkedAt": "2026-10-27T05:57:20.085Z",
+    "created": "may prepare a new conversation",
+    "claimedAndWaiting": "only optional focus(host); OS protocol application path is opened without task URL, prompt or claim",
+    "submitted": "local preview notice only",
+    "missingFocus": "explicit original-chat notice; no launch fallback",
+    "handoffLaunchGuard": "created only; old handoffs remain readable while claimed/waiting",
+    "regressionCommand": "node --test workbench/test/production-desktop.test.mjs workbench/test/content-creation-workflow.test.mjs plugin-src/tests/production-handoff.test.mjs",
+    "passed": 24,
+    "failed": 0,
+    "nativeTypecheckExitCode": 0
+  }
+}

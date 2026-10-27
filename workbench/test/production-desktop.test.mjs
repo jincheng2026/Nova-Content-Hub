@@ -41,6 +41,39 @@ test('launch failure preserves one task; comments require per-task consent and s
  await c.openProductionTask({taskId:result.snapshot.tasks[0].id});assert.equal((await c.readProduction()).tasks.length,1);assert.equal(launches,2);
  settings.values.commentsEnabled=true;assert.equal((await c.startProductionTask({...start,comments:true})).snapshot.tasks.at(-1).request.parameters.comments,true);assert.equal((await c.startProductionTask(start)).snapshot.tasks.at(-1).request.parameters.comments,false);
 });
+test('production launch exposes safe preflight reasons, preserves task and redacts raw exception details',async t=>{
+ let reason='skill-not-supported';
+ const {controller:c}=await fixture(t,{launch:async()=>{throw Object.assign(Error('broker-token=must-not-leak'),{code:'NOT_READY',reason});}});
+ const result=await c.startProductionTask(start);
+ assert.equal(result.opened,false);assert.match(result.message,/配套插件.*不包含.*执行能力/);assert(!result.message.includes('must-not-leak'));
+ const taskId=result.snapshot.tasks[0].id;reason='plugin-missing';
+ const reopened=await c.openProductionTask({taskId});assert.match(reopened.message,/尚未安装.*配套插件/);assert.equal((await c.readProduction()).tasks.length,1);
+ reason='unknown';const unknown=await c.openProductionTask({taskId});assert.match(unknown.message,/NOT_READY/);assert(!unknown.message.includes('must-not-leak'));
+});
+for(const host of ['codex','workbuddy'])for(const workflow of ['legacy','content-creation'])test(`${host}/${workflow}: only created attempts launch conversations; active attempts only focus host and submitted results stay local`,async t=>{
+ let launches=0,focuses=0;
+ const {controller:c,library:l}=await fixture(t,{launch:async()=>{launches++;},focus:async selected=>{assert.equal(selected,host);focuses++;}});
+ const snapshot=l.mutateProduction('createTask',{kind:'research',title:'启动边界',prompt:'只验收本地状态',host,parameters:workflow==='legacy'?{}:{workflow},tools:[],budget:{amount:0,currency:'REQ'},expectedToken:l.readProduction().editToken});
+ const task=snapshot.tasks[0],taskId=task.id,attemptId=task.activeAttemptId,claimToken=randomUUID(),identity={taskId,attemptId,claimToken,workerId:'focus-test'};
+ assert.equal((await c.openProductionTask({taskId})).opened,true);assert.equal(launches,1);
+ l.mutateProduction('claimTask',identity,{mutationId:randomUUID()});
+ for(const status of ['claimed','waiting-user','claimed','waiting-permission','claimed']){
+  if(status!==l.readProduction().tasks[0].attempts[0].status)l.mutateProduction('progressTask',{...identity,status,progress:10,message:'等待状态验收'},{mutationId:randomUUID()});
+  const opened=await c.openProductionTask({taskId});assert.equal(opened.opened,true);assert.match(opened.message,/已打开助手.*原对话.*无法自动定位原聊天/);
+ }
+ assert.equal(launches,1);assert.equal(focuses,5);assert.equal(l.readProduction().tasks[0].activeAttemptId,attemptId);assert.equal(l.readProduction().tasks[0].requestHash,task.requestHash);assert.equal(l.readProduction().tasks[0].attempts.length,1);
+ l.mutateProduction('cancelTask',{taskId,expectedToken:l.readProduction().editToken});await c.actProductionTask({taskId,action:'retry'});
+ assert.equal((await c.openProductionTask({taskId})).opened,true);assert.equal(launches,2);assert.equal(l.readProduction().tasks[0].attempts.length,2);
+ identity.attemptId=l.readProduction().tasks[0].activeAttemptId;identity.claimToken=randomUUID();l.mutateProduction('claimTask',identity,{mutationId:randomUUID()});
+ l.mutateProduction('submitTask',{...identity,result:{summary:'结果已保存',artifacts:[{id:randomUUID(),kind:'research',title:'本地结果',text:'本地契约',assetHash:null,data:null}]}},{mutationId:randomUUID()});
+ const submitted=await c.openProductionTask({taskId});assert.equal(submitted.opened,false);assert.match(submitted.message,/已提交.*预览/);assert.equal(focuses,5);assert.equal(launches,2);
+});
+test('active tasks without a focus capability retain the original chat and never fall back to launching',async t=>{
+ let launches=0;const {controller:c,library:l}=await fixture(t,{launch:async()=>{launches++;}});
+ const result=await c.startProductionTask(start),task=result.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'no-focus'};
+ l.mutateProduction('claimTask',identity,{mutationId:randomUUID()});const opened=await c.openProductionTask({taskId:task.id});
+ assert.equal(opened.opened,false);assert.match(opened.message,/原对话.*无法自动定位/);assert.equal(launches,1);assert.equal(l.readProduction().tasks.length,1);
+});
 test('lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes',async t=>{
  const {controller:c,store}=await fixture(t),before=await c.readProduction();let lose=true;
  c.worker={call:async(op,args)=>{const result=await execute(op,args,'disabled');if(op==='productionMutate'&&lose){lose=false;throw Object.assign(Error('lost'),{code:'WORKER_EXIT'});}return result;}};

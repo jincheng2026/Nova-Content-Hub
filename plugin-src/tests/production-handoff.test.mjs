@@ -24,6 +24,16 @@ for(const host of ['codex','workbuddy'])test(`${host}: full prompt, frozen reque
  assert.throws(()=>readProductionHandoff(path.join(f.dir,'handoffs'),prepared.id,{...release,AUTH_MODE:'required',pairId:'nova-content-hub@0.2.0:p1:required'}),{code:'AUTH_NOT_CONFIGURED'});
 });
 test('long complete prompts stay available through manual clipboard fallback',async t=>{const f=fixture(t,'workbuddy','完整需求\n'.repeat(2000));const h=await prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release);assert.equal(h.requiresPaste,true);assert(!new URL(h.url).searchParams.has('prompt'));assert(h.prompt.includes(f.task.request.prompt));});
+for(const host of ['codex','workbuddy'])test(`${host}: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation`,async t=>{
+ const f=fixture(t,host),directory=path.join(f.dir,'handoffs'),original=await prepareProductionHandoff(directory,f.binding,f.locator,release),identity={taskId:f.task.id,attemptId:f.task.activeAttemptId,claimToken:randomUUID(),workerId:'original-chat'};
+ f.lib.mutateProduction('claimTask',identity,{mutationId:randomUUID()});
+ for(const status of ['claimed','waiting-user','claimed','waiting-permission','claimed']){
+  if(status!==f.lib.readProduction().tasks[0].attempts[0].status)f.lib.mutateProduction('progressTask',{...identity,status,progress:10,message:'原聊天继续'},{mutationId:randomUUID()});
+  assert.equal(readProductionHandoff(directory,original.id,release).task.attemptId,identity.attemptId);
+  await assert.rejects(prepareProductionHandoff(directory,f.binding,f.locator,release),{code:'INVALID_HANDOFF'});
+  assert.equal(fs.readdirSync(directory).length,1);
+ }
+});
 test('built CLI preserves worker identity, both waits, submit receipt and manual acceptance',async t=>{
  const f=fixture(t),src=path.join(f.dir,'src');fs.cpSync(new URL('../src/',import.meta.url),src,{recursive:true});fs.writeFileSync(path.join(src,'release.json'),JSON.stringify(release));
  const h=await prepareProductionHandoff(nativeHandoffDirectory(),f.binding,f.locator,release,{serviceDescriptorPath:path.join(f.dir,'service.json')});t.after(()=>fs.rmSync(path.join(nativeHandoffDirectory(),`${h.id}.production.json`),{force:true}));

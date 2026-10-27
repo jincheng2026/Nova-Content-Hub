@@ -142,3 +142,10 @@ for (const host of ['codex', 'workbuddy']) for (const capability of ['research',
         assert.throws(() => installedAssistantSkill(host, release, {home:f.home,env:{},capability}), {code:'NOT_READY'});
     });
 }
+
+for (const host of ['codex', 'workbuddy']) test(`${host}: missing production capability reports a safe actionable reason`, t => {
+    const f = fixture(t, host);
+    assert.throws(() => installedAssistantSkill(host, release, {home: f.home, env: {}, capability: 'research'}), {code: 'NOT_READY', reason: host === 'workbuddy' ? 'skill-not-supported' : 'skill-missing'});
+    fs.rmSync(f.root, {recursive: true});
+    assert.throws(() => installedAssistantSkill(host, release, {home: f.home, env: {}, capability: 'research'}), {code: 'NOT_READY', reason: 'plugin-missing'});
+});

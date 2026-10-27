@@ -13,6 +13,7 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 
 | 本轮工作 | 执行前必读 | 完成条件 |
 | --- | --- | --- |
+| 固定 workflow 为 content-creation 的整篇创作 | [整篇创作](references/content-creation.md) | 同一聊天连续研究、拆解、叙事、正文与包装，同一回执交回整套结果 |
 | 找参考、复用已有作品、手动链接或无参考创作 | [参考接入](references/reference-intake.md) | 参考稳定 ID、来源、主辅用途、已有转写与拆解复用 |
 | 语音转文字、字幕校对 | [转写与纠错](references/transcription.md) | 原稿、校正版、时间精度和逐条纠错依据齐全 |
 | 拆视频、比多条参考、用户先拆再对比 | [视频拆解](references/video-analysis.md) | 段落和整片分析都有原文/画面依据，分清可借方法与适用条件 |

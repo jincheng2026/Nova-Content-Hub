@@ -8,7 +8,7 @@ import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import {ServiceSettingsStore} from './service-settings.mts';
 import {serviceToolRequest} from '../shared/service-validation.ts';
-import type {ServiceReadiness,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
+import type {ServiceReadiness,ServiceSettingsValues,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
 export const TIKHUB_CACHE_TTL_MS = 6*60*60*1000;
 type TikHubRequest = Extract<ServiceToolRequest,{tool:'tikhub'}>;
 export function tikHubHttpRequest(request:TikHubRequest):{url:string;method:'GET'|'POST';body?:string} {
@@ -71,13 +71,12 @@ export async function boundedHttps(input:string,options:{method?:string;headers?
 }
 async function run(executable:string,args:string[],timeoutMs=10000):Promise<string> {return new Promise((resolve,reject)=>{const child=spawn(executable,args,{shell:false,windowsHide:true,env:{...process.env,HF_HUB_OFFLINE:'1',TRANSFORMERS_OFFLINE:'1',HF_DATASETS_OFFLINE:'1',PYTHONIOENCODING:'utf-8'}});let output='',size=0,settled=false;const end=(error?:unknown)=>{if(settled)return;settled=true;clearTimeout(timer);if(error)reject(error);else resolve(output);};const timer=setTimeout(()=>{child.kill();end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE'));},timeoutMs);child.stdout.on('data',(b:Buffer)=>{size+=b.length;if(size>4*1024*1024){child.kill();end(new ServiceToolError('RESPONSE_TOO_LARGE'));}else output+=b.toString('utf8');});child.stderr.on('data',()=>{});child.on('error',()=>end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));child.on('exit',code=>end(code===0?undefined:new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));});}
 interface CacheEntry {collectedAt:string;data?:unknown;unknown?:boolean;requestId?:string}
-interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string}
-export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
+interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string;config?:ServiceSettingsValues}
+export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1;config?:ServiceSettingsValues}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
 export class ServiceTools {
     readonly settings:ServiceSettingsStore; readonly cachePath?:string; private cache=new Map<string,CacheEntry>();private loaded=false;private cacheQueue:Promise<unknown>=Promise.resolve();private inflight=new Set<string>();
     constructor(options:{settings:ServiceSettingsStore;cachePath?:string}){this.settings=options.settings;this.cachePath=options.cachePath;}
-    private async localModule():Promise<string> {
-        const a=this.settings.read().values.asr;
+    private async localModule(a:ServiceSettingsValues['asr']=this.settings.read().values.asr):Promise<string> {
         if (!path.isAbsolute(a.localExecutable)||!path.isAbsolute(a.localModelPath)) throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');
         try {const [ex,model]=await Promise.all([fs.stat(a.localExecutable),fs.stat(a.localModelPath)]);if(!ex.isFile()||(a.localEngine==='whisper-cpp'?!model.isFile():!model.isDirectory())) throw new Error();await fs.access(a.localExecutable,fs.constants.X_OK);}catch{throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');}
         if(a.localEngine==='whisper-cpp')return 'whisper-cpp';
@@ -98,16 +97,16 @@ export class ServiceTools {
             if(entry&&Date.now()-Date.parse(entry.collectedAt)<TIKHUB_CACHE_TTL_MS)return{service:'tikhub',requests:0,cacheKey,cached:{data:entry.data,service:'tikhub',requestsUsed:0,collectedAt:entry.collectedAt,cacheHit:true}};
             this.settings.secret('tikhub');return{service:'tikhub',requests:1,cacheKey};
         }
-        if(request.tool==='model'){if(!s.values.model.modelId.trim())throw new ServiceToolError('MODEL_ID_MISSING');this.settings.secret('model');await publicEndpoint(s.values.model.baseUrl);return{service:'model',requests:1};}
-        if(s.values.asr.mode!=='volc'){try{return{service:'asr',requests:0,localModule:await this.localModule()};}catch(error){if(s.values.asr.mode==='local-only'||!request.allowCloud)throw error;}}
-        if(!request.allowCloud)throw new ServiceToolError('CLOUD_PERMISSION_REQUIRED');if(s.values.asr.resourceId!=='volc.bigasr.auc_turbo')throw new ServiceToolError('ASR_RESOURCE_UNSUPPORTED');this.settings.secret('asr');return{service:'asr',requests:1};
+        if(request.tool==='model'){if(!s.values.model.modelId.trim())throw new ServiceToolError('MODEL_ID_MISSING');this.settings.secret('model');await publicEndpoint(s.values.model.baseUrl);return{service:'model',requests:1,config:s.values};}
+        if(s.values.asr.mode!=='volc'){try{return{service:'asr',requests:0,localModule:await this.localModule(s.values.asr),config:s.values};}catch(error){if(s.values.asr.mode==='local-only'||!request.allowCloud)throw error;}}
+        if(!request.allowCloud)throw new ServiceToolError('CLOUD_PERMISSION_REQUIRED');if(s.values.asr.resourceId!=='volc.bigasr.auc_turbo')throw new ServiceToolError('ASR_RESOURCE_UNSUPPORTED');this.settings.secret('asr');return{service:'asr',requests:1,config:s.values};
     }
     async execute(request:ServiceToolRequest,hooks:ServiceExecutionHooks={}):Promise<ServiceToolResult>{
         const prepared=await this.prepare(request);if(prepared.requests===1&&!this.settings.read().values.budget.enabled)throw new ServiceToolError('BUDGET_DISABLED');const {cacheKey}=prepared;
         if(cacheKey&&this.inflight.has(cacheKey))throw new ServiceToolError('REQUEST_IN_PROGRESS');if(cacheKey)this.inflight.add(cacheKey);
         let reserved=false,started=false;
         try{
-            await hooks.beforeExecute?.({service:prepared.service,requests:prepared.requests});reserved=true;
+            await hooks.beforeExecute?.({service:prepared.service,requests:prepared.requests,...(prepared.config?{config:structuredClone(prepared.config)}:{})});reserved=true;
             let result:ServiceToolResult;
             if(prepared.cached)result=prepared.cached;
             else{
@@ -125,7 +124,7 @@ export class ServiceTools {
     async reconcileCost(requestId:string):Promise<void>{await this.loadCache();for(const [key,entry] of this.cache)if(entry.unknown&&entry.requestId===requestId)this.cache.delete(key);await this.saveCache();}
     private scrub(data:unknown):unknown{let json=JSON.stringify(data);for(const name of ['tikhub','model','asr'] as const){try{const key=this.settings.secret(name);if(key)json=json.split(JSON.stringify(key).slice(1,-1)).join('[redacted]');}catch{}}return JSON.parse(json);}
     private async invoke(request:ServiceToolRequest,p:Prepared):Promise<unknown>{
-        const s=this.settings.read().values;
+        const s=p.config??this.settings.read().values;
         if(request.tool==='tikhub'){
             const http=tikHubHttpRequest(request);
             const response=await boundedHttps(http.url,{method:http.method,headers:{Authorization:`Bearer ${this.settings.secret('tikhub')}`,'Content-Type':'application/json'},...(http.body?{body:http.body}:{})});
@@ -133,12 +132,12 @@ export class ServiceTools {
         }
         if(request.tool==='model')return(await boundedHttps(`${s.model.baseUrl.replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{Authorization:`Bearer ${this.settings.secret('model')}`,'Content-Type':'application/json'},body:JSON.stringify({model:s.model.modelId,messages:[{role:'system',content:request.instruction},{role:'user',content:request.text}],stream:false})})).data;
         const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>(p.requests===0?64:16)*1024*1024)throw new ServiceToolError('INVALID_AUDIO');
-        if(p.requests===0)return this.localTranscribe(request.audioPath,p.localModule!);
+        if(p.requests===0)return this.localTranscribe(request.audioPath,p.localModule!,s.asr);
         const data=(await boundedHttps('https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash',{method:'POST',headers:{'Content-Type':'application/json','X-Api-Key':this.settings.secret('asr'),'X-Api-Resource-Id':s.asr.resourceId,'X-Api-Request-Id':request.requestId,'X-Api-Sequence':'-1'},body:JSON.stringify({user:{uid:'nova-workbench'},audio:{data:(await fs.readFile(request.audioPath)).toString('base64')},request:{model_name:'bigmodel',enable_itn:true,enable_punc:true}}),timeoutMs:180000}));
         if(data.headers['x-api-status-code']!=='20000000')throw new ServiceToolError('PROVIDER_REJECTED',null);return data.data;
     }
-    private async localTranscribe(audio:string,module:string):Promise<unknown>{
-        const a=this.settings.read().values.asr;let script:string;
+    private async localTranscribe(audio:string,module:string,a:ServiceSettingsValues['asr']):Promise<unknown>{
+        let script:string;
         if(module==='faster_whisper')script='import sys,json\nfrom faster_whisper import WhisperModel\nm=WhisperModel(sys.argv[1],device="cpu",compute_type="int8",local_files_only=True)\nsegments,info=m.transcribe(sys.argv[2])\ns=[{"startMs":round(x.start*1000),"endMs":round(x.end*1000),"text":x.text} for x in segments]\nprint(json.dumps({"text":"".join(x["text"] for x in s),"segments":s,"durationMs":round(info.duration*1000)},ensure_ascii=False))';
         else if(module==='qwen_asr')script='import sys,json\nfrom qwen_asr import Qwen3ASRModel\nm=Qwen3ASRModel.from_pretrained(sys.argv[1],device_map="cpu")\nr=m.transcribe(audio=sys.argv[2])\nprint(json.dumps({"text":"\\n".join(x.text for x in r),"segments":[]},ensure_ascii=False))';
         else if(module==='mlx_audio')script='import sys,json\nfrom mlx_audio.stt.utils import load_model\nm=load_model(sys.argv[1])\nr=m.generate(sys.argv[2])\nprint(json.dumps({"text":r.text,"segments":[]},ensure_ascii=False))';
