@@ -1,0 +1,11 @@
+✔ anchored review edits preserve the paragraph identity and produce a saveable current-body composition (24.925ms)
+✔ history changes with unmatched paragraph evidence remain a visible draft requiring review (7.631917ms)
+✔ legacy bodies without paragraph associations can still be restored directly (1.478166ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 463.246958

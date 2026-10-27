@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-27",
+  "fixture": "合成素材、隔离内容库；未改真实用户库",
+  "surface": "Computer Use / in-app browser",
+  "checks": [
+    "逐段与来源：第2段原话及画面与正文并排",
+    "段内修改后显式保存成功，正文仍为唯一真源",
+    "录制分工新增镜头与步骤（位置/提示词/预期），保存并重开后完整保留",
+    "960×680 viewport检查录制分工布局，保存动作与视图切换可达",
+    "报告展开来源目录后，受控POST被本地callback收到，页面显示已请求打开来源；此fixture不启动系统浏览器"
+  ],
+  "rules": [
+    "Foundation-01/02/03",
+    "Surface-01",
+    "Controls-01/02",
+    "Reading-02",
+    "Acceptance-02"
+  ],
+  "limits": [
+    "本次为真实浏览器+真实文件库的合成材料验收",
+    "未替代安装版系统外链打开和真实服务调用",
+    "画面截图保留在本聊天Computer Use工具回执，Electron自动探针截图另存electron-simple/electron-lists"
+  ],
+  "sourceRequests": [
+    {
+      "url": "https://example.com/source"
+    }
+  ]
+}

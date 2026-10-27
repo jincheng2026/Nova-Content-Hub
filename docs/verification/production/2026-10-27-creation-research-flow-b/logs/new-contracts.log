@@ -1,0 +1,115 @@
+✔ one submitted receipt previews the whole bundle without writes; one CAS save adopts all fields after acceptance (5991.747542ms)
+✔ bundle refuses stale baselines, duplicate field owners, mixed review/filming and one invalid artifact without partial writes (17474.450083ms)
+✔ packaging appends without changing a human selection; accepted save failure retains original body CAS for retry (4147.425791ms)
+✔ content-creation refuses incomplete deliverables and records only accepted artifact ownership (12226.551083ms)
+✔ portable body hash matches the canonical UTF-8 digest including astral and multiline text (35.916833ms)
+✔ ranges use UTF16 offsets; replacement preserves IDs, suffix and later associations (2.651708ms)
+✔ schema rejects overlaps, duplicate IDs, surrogate splits, bounds and stale hashes (11.040792ms)
+✔ whole-body migration only matches unique exact text and returns all unmatched associations (3.057125ms)
+✔ script exports tab-separated segment, voice, visual, owners and steps; teleprompter body stays untouched (1.03425ms)
+✔ legacy read creates no composition; explicit save stores ranges and stale migration never drops associations (4866.350625ms)
+✔ ordinary patches cannot invent adoption receipts or overwrite append-only history (1626.287791ms)
+✔ explicit split preserves body bytes and first ID, checks UTF16 cursor boundaries and moves contained shots (0.830666ms)
+✔ explicit merge keeps both source sets and migrates all later-segment shots without altering body (0.407042ms)
+✔ explicit delete preserves orphaned shots and exact remaining bytes, with stable later IDs (0.404833ms)
+✔ dedicated analysis adoption changes only reference analysis and records accepted artifact (101.791708ms)
+✔ stale reference, duplicate ownership and mixed evidence update remain rejected (1.9215ms)
+✖ independent accepted research is adopted with provenance, keeps body and survives reopen without duplication (6425.746333ms)
+✔ unaccepted, forged and stale research adoption cannot write into content (5107.235709ms)
+✖ same source URL with different evidence reports a conflict and never records false adoption (4272.938958ms)
+✔ known failures in the returned pool cannot consume final sample or author allowance (3.67ms)
+✔ unknown metrics and zero followers retain unknown eligibility without being invented (0.193375ms)
+✔ XHS applies the same known-condition selection before the final per-platform limit (0.877459ms)
+✔ collector profiles only selected pool authors and never grows the frozen request budget (1.01825ms)
+✔ cached sources retain their own time and profile enrichment records its independent timestamp (0.441333ms)
+✔ empty filtered pools are valid and do not trigger profiles, extra pages or retries (0.152916ms)
+✔ latest source evidence wins over adoption order while persisted add and reject intent survives (0.18625ms)
+✔ creation page saves the fixed content through its capability using original CAS tokens (23.58175ms)
+✔ a conflict retains unsaved text, shows the latest body and blocks stale re-submission (4.02425ms)
+✔ manual edits clear a previous content confirmation without changing saved tokens (4.736ms)
+✔ HTML embeds the same pure review rules consumed by React (1.019125ms)
+✔ independent suggestions can be accepted consecutively and save atomically without mutating source artifacts (7.277417ms)
+✔ overlapping, externally stale, ambiguous and user-edited suggestions stay stale and never replace handwritten text (12.931042ms)
+✔ a manual change outside otherwise intact quotes prevents automatic rebasing (6.777833ms)
+✔ long paragraph quotes and annotation markers scroll the exact source into view at the end (8.920875ms)
+✔ review paragraph derivation preserves every body character including multiline quotes and overlapping occurrences (1.027708ms)
+✔ newly duplicated quotes are not rebased even when their old range was disjoint (3.365583ms)
+✔ an overlapping quote that survives a containing replacement is never silently rebased (0.654125ms)
+✔ history search and explicit restore fill the same body draft and preserve original CAS and stale suggestions (11.9825ms)
+✔ registered reference media uses the same capability and timestamp playback preserves transcript text (1.881084ms)
+✔ filming checklist adds anchored shots, requires completed shots for recording and saves through unchanged CAS (17.228209ms)
+✔ filming confirmations become visibly stale after body editing and invalid quotes never alter body (8.880708ms)
+✔ creation views keep one untouched body draft and switch only the relevant workspace (2.741292ms)
+✔ selecting a sentence reuses it for an inline annotation and filming without dirtying or saving the draft (6.691541ms)
+✔ empty creation draft gives actionable guidance and no invented body or automatic changes (2.810917ms)
+✔ a new selection cannot reattach an unfinished annotation or filming description to another sentence (5.157375ms)
+✔ routine load and save use the compact saved status while errors remain visible (12.414334ms)
+✔ segment page updates the same body and persists UTF16 ranges on explicit save (15.627375ms)
+✔ whole-text edits retain unmatched segment metadata and prevent silent save (6.524708ms)
+✔ explicit HTML split and merge preserve body bytes and deletion keeps recoverable shots (13.230542ms)
+✔ media wire schema accepts only receipt identity, never URLs, hashes, paths or client reference IDs (7.091084ms)
+✔ grant needs frozen authorization and settled source proof; replay preserves server reference and costs (9037.860167ms)
+✔ grant limit and exact reference ownership block unrelated assets and expire after terminal state (7300.4815ms)
+✔ fetch-media derives receipt requests, rejects shortlinks, and recovers existing grant without TikHub (3172.807292ms)
+✔ ASR derives candidate reference from current grant without changing creation (2906.109ms)
+✔ video source summary never exposes download URLs and settles missing/mismatched media once (6538.114916ms)
+✔ legacy report metadata preserves date, purpose and reading order (3.055375ms)
+✔ unknown collection time stays unknown and malformed or ambiguous metadata is rejected (0.28275ms)
+✔ report source catalog preserves public links, decodes entities and excludes executable or credential-bearing URLs (2.919666ms)
+ℹ tests 58
+ℹ suites 0
+ℹ pass 56
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 40621.931583
+
+✖ failing tests:
+
+test at plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:9:1
+✖ independent accepted research is adopted with provenance, keeps body and survives reopen without duplication (6425.746333ms)
+  Error [LibraryError]: Refusing to take over a nonempty directory
+      at fail (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:47:11)
+      at createLibrary (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:1286:42)
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:9:791)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'NOT_EMPTY'
+  }
+
+test at plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:12:1
+✖ same source URL with different evidence reports a conflict and never records false adoption (4272.938958ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  LibraryError: 本篇已保存同一来源的另一版本，请先在参考资料核对、合并或明确移除旧版本，再采用研究。
+      at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:12:505)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: LibraryError: 本篇已保存同一来源的另一版本，请先在参考资料核对、合并或明确移除旧版本，再采用研究。
+        at ioError (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:279:52)
+        at file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:856:41
+        at locked (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:744:21)
+        ... 4 lines matching cause stack trace ...
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:12:505) {
+      [cause]: Error: 本篇已保存同一来源的另一版本，请先在参考资料核对、合并或明确移除旧版本，再采用研究。
+          at fail (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/production-research.mjs:2:49)
+          at prepareResearchAdoption (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/production-research.mjs:31:116)
+          at file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:155:29
+          at file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:854:28
+          at locked (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:744:21)
+          at mutate (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:811:16)
+          at Object.mutateProduction (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:152:13)
+          at m (file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:8:229)
+          at file:///Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-research-adoption.test.mjs:12:516
+          at getActual (node:assert:611:5)
+    },
+    operator: 'throws',
+    diff: 'simple'
+  }
