@@ -152,7 +152,7 @@ export function productionMethods(h) {
             mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
                 const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
                 const creation=meta.productionState||w.production?.creations.find(value=>value.contentId===raw.contentId);if(!creation)fail('INVALID_STATE','Enable creation first');
-                const patch=prepareResearchAdoption({snapshot:w.production||emptyProduction(),...raw,creation,bodyHash:content(raw.contentId).bodyHash,now:new Date().toISOString()}),next=patchCreation(creation,patch,new Date().toISOString());
+                let patch;try{patch=prepareResearchAdoption({snapshot:w.production||emptyProduction(),...raw,creation,bodyHash:content(raw.contentId).bodyHash,now:new Date().toISOString()});}catch(error){if(['STALE_INPUT','CONFLICT','INVALID_INPUT'].includes(error?.code))fail(error.code,error.message);throw error;}const next=patchCreation(creation,patch,new Date().toISOString());
                 for(const reference of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(reference[key])checkAsset(reference[key]);
                 meta.schemaVersion=5;meta.productionState=next;return meta;
             });return readProduction();
