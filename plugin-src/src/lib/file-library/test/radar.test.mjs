@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';import os from 'node:os';import path from 'node:path';import {randomUUID,createHash} from 'node:crypto';
 import {createLibrary,openLibrary,__testing} from '../index.mjs';
-import {validRadarQuery,normalizeRadarCandidate,normalizeDouyinRadar,radarArtifactCandidates,renderRadarReport} from '../radar.mjs';
+import {validRadarQuery,normalizeRadarCandidate,normalizeDouyinRadar,radarArtifactCandidates,renderRadarReport,radarPrompt} from '../radar.mjs';
 import {collectRadar} from '../radar-collector.mjs';
 process.env.NODE_ENV='test';
 const query={platform:'抖音',direction:'测试方向',sampleLimit:3,maxFollowers:5000,minLikes:100,minRatio:1,lookbackDays:7};
@@ -156,4 +156,35 @@ test('legacy artifacts with an explicit old source time retain their historical 
  assert.equal(openLibrary(l.info.root).readProduction().reports[0].type,'viral-radar');
  mutate(l,'decideRadarCandidate',{reportId:report.id,candidateId:report.meta.radar.candidates[0].id,decision:'reject'});
  assert.equal(l.readProduction().reports[0].meta.radar.candidates[0].decision,'rejected');
+});
+
+
+test('optional evidence angle is normalized without adding a field to legacy candidates',()=>{
+ const legacy=normalizeRadarCandidate(evidence(),query,at);
+ assert.equal(Object.hasOwn(legacy,'angle'),false);
+ for(const angle of [undefined,null,'','  \n ',12,{text:'无依据'}]){
+  const candidate=normalizeRadarCandidate({...evidence(),angle},query,at);
+  assert.equal(Object.hasOwn(candidate,'angle'),false);assert.deepEqual(candidate,legacy);
+ }
+ const angle=normalizeRadarCandidate({...evidence(),angle:'  用真实案例对比两种工具的适用条件  '},query,at);
+ assert.equal(angle.angle,'用真实案例对比两种工具的适用条件');
+ assert.equal(normalizeRadarCandidate({...evidence(),angle:'甲'.repeat(2100)},query,at).angle.length,2000);
+ assert.match(radarPrompt(query),/可选 angle/);assert.match(radarPrompt(query),/没有依据可留空或省略/);
+});
+
+test('accepted evidence angles survive receipt adoption and reopening while legacy trust stays unchanged',t=>{
+ const {l,root}=fixture(t),angle='只借鉴问题与操作步骤的对应结构，效果需另行验证';
+ const receipt=accepted(l,'angle','codex',query,[{...evidence('angle'),angle}]);
+ const report=mutate(l,'adoptRadarResult',receipt).reports[0];
+ assert.equal(report.meta.radar.candidates[0].angle,angle);
+ assert.equal(openLibrary(root).readProduction().reports[0].meta.radar.candidates[0].angle,angle);
+ const after=mutate(l,'decideRadarCandidate',{reportId:report.id,candidateId:report.meta.radar.candidates[0].id,decision:'add-topic'});
+ const topicId=after.reports[0].meta.radar.candidates[0].topicId,creation=openLibrary(root).readProductionCreation(topicId);
+ assert(creation.creation.references.some(reference=>reference.url==='https://www.douyin.com/video/angle'&&reference.analysis.includes(`可借鉴角度：${angle}`)));
+ assert.equal(creation.content.body,'');
+ const legacyReceipt=accepted(l,'legacy-angle');const legacyReport=mutate(l,'adoptRadarResult',legacyReceipt).reports[1];
+ assert.equal(Object.hasOwn(legacyReport.meta.radar.candidates[0],'angle'),false);
+ const reopened=openLibrary(root);assert.equal(reopened.readProduction().reports[1].type,'viral-radar');
+ mutate(reopened,'decideRadarCandidate',{reportId:legacyReport.id,candidateId:legacyReport.meta.radar.candidates[0].id,decision:'reject'});
+ assert.equal(reopened.readProduction().reports[1].meta.radar.candidates[0].decision,'rejected');
 });
