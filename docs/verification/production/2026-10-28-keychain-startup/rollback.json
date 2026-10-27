@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-27T21:11:08.254Z",
+  "status": "restored",
+  "reason": "Installed preview native startup blocked in OS Keychain check before any window; previous app restored pending deferred-check fix",
+  "sourceCommit": "52d36f5",
+  "preservedCandidate": "/Applications/.nova-content-hub-install-3f827d67-e117-4100-9853-ad8042cdb7f2/candidate.app",
+  "userSettingsTouched": false,
+  "contentLibraryTouched": false
+}

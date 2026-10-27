@@ -175,7 +175,7 @@ export async function startDesktop(options:StartOptions = {}) {
         openExternal: (url: string) => shell.openExternal(url)
     });
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
-    const serviceSettings = new ServiceSettingsStore({filePath: path.join(app.getPath('userData'), 'service-settings.json'), encryption: safeStorage});
+    const serviceSettings = new ServiceSettingsStore({filePath: path.join(app.getPath('userData'), 'service-settings.json'), encryption: safeStorage, deferEncryptionCheck: true});
     try { await serviceSettings.initialize(); } catch { serviceErrors.push('SETTINGS_UNAVAILABLE'); }
     const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json'),localRuntimeRoots:options.localRuntimeRoots??[path.join(process.resourcesPath,'local-asr',`${process.platform}-${process.arch}`)]});
     const serviceDescriptorPath = path.join(app.getPath('userData'), 'production-services.json');

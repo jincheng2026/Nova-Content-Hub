@@ -56,3 +56,18 @@
 语音初始化只将实际 Python 模块 import 的上限改为 `LOCAL_ASR_INIT_TIMEOUT_MS=120000`（`service-tools.mts:128`）；超时独立返回 `LOCAL_ASR_INIT_TIMEOUT`，readiness 仍为 unavailable（`:131`），非零退出／缺组件仍区分为不可用。离线环境变量保留，没有把初始化失败变成云端授权，也没有延长 Vault 读取 deadline。核对执行负责人产出的 `.local-probes/asr-init-green.log`（3/3）及 `.local-probes/asr-init-contracts-green.log`（60/60，10.317 秒）：覆盖 30 秒后仍 pending、120 秒超时不宣告就绪、beforeExecute 未预约费用、冻结设置及相关服务契约。负责人另报告 native/renderer typecheck 通过；本审查不将它冒充真实安装或冷启动实测。
 
 本节结论：已发现的缓存 P2 在当前补丁中闭环；当前定点范围没有遗留新 P1/P2。实际 10,916 文件库的速度与最终安装包冷启动效果由集成／执行证据确认，本审查未独立复跑该大型真实库，也未新增视觉验收结论。
+
+## 原生钥匙串启动阻塞修复定点审查
+
+基线：HEAD `1b78f7b` 之后本轮未提交的 service-settings/service-tools/desktop/shared contracts/设置控件与 deferred 测试补丁。根因依据集成负责人提供的 `/tmp/nova-050-main-start.sample.txt`：真实已安装候选主线程在 `SecItemCopyMatching → SecKeychainItemCopyContent` 同步等待；启动在创建窗口之前经 `initialize → read → encryptionAvailable` 调用 safeStorage。审查没有读取真实密钥、触发系统许可、操作 SecurityAgent 或改动安装应用。
+
+检查实际调用点和差异后，未发现本轮新增或遗留的可定位 P1/P2：
+
+- 生产 main 中唯一 ServiceSettingsStore 实例在 `desktop.mts:178` 明确设置 `deferEncryptionCheck:true`；初始化、反复 read、普通设置更新和清除 Key 都只返回缓存状态，不探测 native。非 desktop 默认 eager 行为保留，没有把兼容模式误用于生产实例。
+- `secret()` 先检查指定密文存在，再主动探测和解密；仅明确 Key 替换执行加密。失败保留既有设置／密文并记 unavailable；`basic_text/unsafe` 等后端限制保留，无明文回退。明确清除是用户操作，不被误称密文丢失。
+- 共用本地 readiness 仅检查本地模块并返回缓存 encryptionStatus。成功本地转写后的 scrub 只调用 `redactSerialized`，不再枚举或解密其他凭据。该内存集合只登记明确取用后返回的值；轮转前已使用的值继续参与当前进程脱敏，未主动解密未取用 Key。
+- 自动发布 collector 的被动 isReady 读取缓存；unchecked 时不创建观测任务。设置 UI 挂载仍仅 onLoad；unchecked/unavailable 显式区分，Key 输入、查看与重试不再因缓存 available=false 永久禁用。检查了隔离 UI probe 新断言，没有据此宣称真实系统权限界面验收。
+
+独立运行 `node --test workbench/test/service-settings-deferred.test.mjs`：**8/8 通过，240.561 毫秒**。覆盖零 native 的启动／读取／普通保存／清除、本地 readiness 和成功转写、缺 Key 优先返回、显式操作、拒绝和加解密异常后的密文保全、拒绝明文后端、旧 API、轮转脱敏及 observer 禁止派单。集成负责人提供的 82 项目标测试、typecheck 和隔离 UI 结果作为执行方证据，本审查未重复全量运行。
+
+范围限制保持明确：延迟探测修复的是启动、被动访问及本地 ASR 被迫访问钥匙串的问题。用户主动查看／替换 Key 或执行授权 provider 调用时，系统仍可请求许可，当前同步 native 调用仍可能等待用户；此补丁没有实现权限等待期间的独立凭据进程隔离。最终重新构建、真实安装和无需 Key 操作即可进入 Vault/原创作页的冷启动验收由集成负责人继续执行，本节不将单元测试替代该结果。

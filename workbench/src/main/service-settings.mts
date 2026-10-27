@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {customAsrBaseUrl, defaultServiceSettings, normalizeServiceSettings, normalizeAsrSettings, serviceCredentials, serviceSettingsPatch, serviceSettingsValues, validCustomAsrBaseUrl} from '../shared/service-validation.ts';
-import type {ServiceCredential,ServiceCredentialDisclosure, ServiceSettingsPatch, ServiceSettingsValues, ServiceSettingsView} from '../shared/service-contracts.ts';
+import type {ServiceCredential,ServiceCredentialDisclosure, ServiceEncryptionStatus, ServiceSettingsPatch, ServiceSettingsValues, ServiceSettingsView} from '../shared/service-contracts.ts';
 export interface ServiceEncryption {isEncryptionAvailable(): boolean; getSelectedStorageBackend?(): string; encryptString(text: string): Buffer; decryptString(bytes: Buffer): string}
 const fail = (code: string) => {throw Object.assign(new Error(code === 'ENCRYPTION_UNAVAILABLE' ? '系统安全存储不可用，请解锁钥匙串或配置系统凭据存储。' : '服务设置不可用；原设置文件已保留。'), {code});};
 export class ServiceSettingsStore {
@@ -11,9 +11,21 @@ export class ServiceSettingsStore {
     private values = defaultServiceSettings();
     private encrypted: Partial<Record<ServiceCredential,string>> = {};
     private initialized = false;
+    private readonly deferEncryptionCheck: boolean;
+    private storageStatus: ServiceEncryptionStatus = 'unchecked';
+    // Only values already obtained by an explicit credential action enter this process-local cache.
+    private readonly usedSecrets = new Set<string>();
     private pending: Promise<unknown> = Promise.resolve();
-    constructor(options: {filePath: string; encryption: ServiceEncryption}) {this.filePath=options.filePath; this.encryption=options.encryption;}
-    encryptionAvailable(): boolean {try {return this.encryption.isEncryptionAvailable() && !['basic_text','unsafe',...(process.platform==='linux'?['unknown']:[])].includes(this.encryption.getSelectedStorageBackend?.()??'');} catch {return false;}}
+    constructor(options: {filePath: string; encryption: ServiceEncryption; deferEncryptionCheck?: boolean}) {this.filePath=options.filePath; this.encryption=options.encryption; this.deferEncryptionCheck=options.deferEncryptionCheck??false;}
+    encryptionStatus(): ServiceEncryptionStatus {return this.storageStatus;}
+    // Desktop reads must never enter synchronous native storage. Legacy callers keep their eager API.
+    encryptionAvailable(): boolean {return this.deferEncryptionCheck ? this.storageStatus==='available' : this.probeEncryption();}
+    private probeEncryption(): boolean {
+        let available=false;
+        try {available=this.encryption.isEncryptionAvailable() && !['basic_text','unsafe',...(process.platform==='linux'?['unknown']:[])].includes(this.encryption.getSelectedStorageBackend?.()??'');} catch {}
+        this.storageStatus=available?'available':'unavailable';return available;
+    }
+    redactSerialized(text: string): string {for(const key of [...this.usedSecrets].sort((a,b)=>b.length-a.length))text=text.split(JSON.stringify(key).slice(1,-1)).join('[redacted]');return text;}
     async initialize(): Promise<ServiceSettingsView> {
         try {
             const stat=await fs.lstat(this.filePath); if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 100000) fail('SETTINGS_UNAVAILABLE');
@@ -28,9 +40,15 @@ export class ServiceSettingsStore {
         } catch(error) {if (!(error && typeof error==='object' && 'code' in error && error.code==='ENOENT')) fail('SETTINGS_UNAVAILABLE');}
         this.initialized=true; return this.read();
     }
-    read(): ServiceSettingsView {if (!this.initialized) fail('SETTINGS_UNAVAILABLE'); return {values: structuredClone(this.values), credentials: {tikhub:{hasKey:!!this.encrypted.tikhub}, model:{hasKey:!!this.encrypted.model}, asr:{hasKey:!!this.encrypted.asr}, groq:{hasKey:!!this.encrypted.groq}, custom:{hasKey:!!this.encrypted.custom}}, encryptionAvailable:this.encryptionAvailable()};}
+    read(): ServiceSettingsView {if (!this.initialized) fail('SETTINGS_UNAVAILABLE'); return {values: structuredClone(this.values), credentials: {tikhub:{hasKey:!!this.encrypted.tikhub}, model:{hasKey:!!this.encrypted.model}, asr:{hasKey:!!this.encrypted.asr}, groq:{hasKey:!!this.encrypted.groq}, custom:{hasKey:!!this.encrypted.custom}}, encryptionAvailable:this.encryptionAvailable(), encryptionStatus:this.storageStatus};}
     reveal(name:ServiceCredential):ServiceCredentialDisclosure {if(!serviceCredentials.includes(name))fail('INVALID_INPUT');return{service:name,key:this.secret(name)};}
-    secret(name: ServiceCredential): string {if (!this.initialized) fail('SETTINGS_UNAVAILABLE'); if (!this.encryptionAvailable()) fail('ENCRYPTION_UNAVAILABLE'); const bytes=this.encrypted[name]; if (!bytes) fail('SERVICE_KEY_MISSING'); try {return this.encryption.decryptString(Buffer.from(bytes!,'base64'));} catch {return fail('ENCRYPTION_UNAVAILABLE');}}
+    secret(name: ServiceCredential): string {
+        if (!this.initialized) fail('SETTINGS_UNAVAILABLE');
+        const bytes=this.encrypted[name];if (!bytes) fail('SERVICE_KEY_MISSING');
+        if (!this.probeEncryption()) fail('ENCRYPTION_UNAVAILABLE');
+        try {const key=this.encryption.decryptString(Buffer.from(bytes!,'base64'));if(key)this.usedSecrets.add(key);return key;}
+        catch {this.storageStatus='unavailable';return fail('ENCRYPTION_UNAVAILABLE');}
+    }
     async update(patch: ServiceSettingsPatch): Promise<ServiceSettingsView> {
         const run=this.pending.then(async () => {
             if (!this.initialized || !serviceSettingsPatch(patch)) fail('INVALID_INPUT');
@@ -41,7 +59,11 @@ export class ServiceSettingsStore {
             if(typeof patch.keys?.custom==='string'&&!validCustomAsrBaseUrl(next.customBaseUrl))fail('CUSTOM_ASR_ENDPOINT_REQUIRED');
             for (const name of serviceCredentials) if (patch.keys && Object.hasOwn(patch.keys,name)) {
                 const value=patch.keys[name]; if (value === null) delete keys[name];
-                else {if (!this.encryptionAvailable()) fail('ENCRYPTION_UNAVAILABLE'); keys[name]=this.encryption.encryptString(value!).toString('base64');}
+                else {
+                    if (!this.probeEncryption()) fail('ENCRYPTION_UNAVAILABLE');
+                    try {keys[name]=this.encryption.encryptString(value!).toString('base64');}
+                    catch {this.storageStatus='unavailable';fail('ENCRYPTION_UNAVAILABLE');}
+                }
             }
             await fs.mkdir(path.dirname(this.filePath),{recursive:true,mode:0o700});
             try {const s=await fs.lstat(this.filePath); if (!s.isFile() || s.isSymbolicLink()) fail('SETTINGS_UNAVAILABLE');} catch(error) {if (!(error && typeof error==='object' && 'code' in error && error.code==='ENOENT')) throw error;}

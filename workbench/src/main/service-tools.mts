@@ -8,7 +8,7 @@ import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import {discoverLocalAsrRuntime} from './local-asr-runtime.mts';
 import {ServiceSettingsStore} from './service-settings.mts';
-import {customAsrBaseUrl,normalizeAsrSettings,serviceCredentials,serviceToolRequest} from '../shared/service-validation.ts';
+import {customAsrBaseUrl,normalizeAsrSettings,serviceToolRequest} from '../shared/service-validation.ts';
 import type {NormalizedAsrSettings,ServiceCredential,ServiceReadiness,ServiceSettingsValues,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
 export const LOCAL_ASR_INIT_TIMEOUT_MS = 120_000;
 export const TIKHUB_CACHE_TTL_MS = 6*60*60*1000;
@@ -128,7 +128,7 @@ for name in ${JSON.stringify(modules)}:
 print(json.dumps(found))`],LOCAL_ASR_INIT_TIMEOUT_MS,'LOCAL_ASR_INIT_TIMEOUT')).trim().split('\n').at(-1)!;
         try {const found=JSON.parse(result);if(Array.isArray(found)&&typeof found[0]==='string')return found[0];}catch{}throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');
     }
-    async checkReadiness():Promise<ServiceReadiness>{let available=false,reason='未找到适用本机的内置本地语音组件。可安装本机专用组件包，或在高级设置填写 Python 与完整离线模型路径；本次检查不下载模型。';try{const saved=this.settings.read().values.asr,a=await this.localConfig(saved),m=await this.localModule(a.config);available=true;reason=`${!saved.localExecutable&&!saved.localModelPath?'内置 Qwen3-ASR 组件':'本地语音组件'}的模型文件与 ${m} 实际导入检查通过；真实识别在任务中执行。`;}catch(error){if(error instanceof ServiceToolError&&error.code==='LOCAL_ASR_INIT_TIMEOUT')reason=error.message;}return{localAsr:{available,reason},encryptionAvailable:this.settings.encryptionAvailable()};}
+    async checkReadiness():Promise<ServiceReadiness>{let available=false,reason='未找到适用本机的内置本地语音组件。可安装本机专用组件包，或在高级设置填写 Python 与完整离线模型路径；本次检查不下载模型。';try{const saved=this.settings.read().values.asr,a=await this.localConfig(saved),m=await this.localModule(a.config);available=true;reason=`${!saved.localExecutable&&!saved.localModelPath?'内置 Qwen3-ASR 组件':'本地语音组件'}的模型文件与 ${m} 实际导入检查通过；真实识别在任务中执行。`;}catch(error){if(error instanceof ServiceToolError&&error.code==='LOCAL_ASR_INIT_TIMEOUT')reason=error.message;}return{localAsr:{available,reason},encryptionAvailable:this.settings.encryptionStatus()==='available',encryptionStatus:this.settings.encryptionStatus()};}
     private async loadCache(){if(this.loaded)return;this.loaded=true;if(!this.cachePath)return;try{const s=await fs.lstat(this.cachePath);if(!s.isFile()||s.isSymbolicLink()||s.size>32*1024*1024)throw new Error();const rows:unknown=JSON.parse(await fs.readFile(this.cachePath,'utf8'));if(!Array.isArray(rows)||rows.length>1000)throw new Error();for(const row of rows)if(Array.isArray(row)&&typeof row[0]==='string'&&row[1]&&typeof row[1].collectedAt==='string')this.cache.set(row[0],row[1]);}catch(error){if(error&&typeof error==='object'&&'code'in error&&error.code==='ENOENT')return;throw new ServiceToolError('CACHE_UNAVAILABLE');}}
     private async saveCache(){if(!this.cachePath)return;const run=this.cacheQueue.then(async()=>{while(this.cache.size>500){const victim=[...this.cache].find(([,e])=>!e.unknown);if(!victim)throw new ServiceToolError('CACHE_FULL');this.cache.delete(victim[0]);}const bytes=JSON.stringify([...this.cache]);if(Buffer.byteLength(bytes)>32*1024*1024)throw new ServiceToolError('CACHE_FULL');await fs.mkdir(path.dirname(this.cachePath!),{recursive:true,mode:0o700});const temp=`${this.cachePath}.${randomUUID()}.tmp`;try{await fs.writeFile(temp,bytes,{mode:0o600,flag:'wx'});await fs.rename(temp,this.cachePath!);}finally{await fs.rm(temp,{force:true});}});this.cacheQueue=run.catch(()=>{});await run;}
     async ensureTikHubVideoFreshness(id:string,notBefore:string):Promise<void>{
@@ -184,7 +184,7 @@ print(json.dumps(found))`],LOCAL_ASR_INIT_TIMEOUT_MS,'LOCAL_ASR_INIT_TIMEOUT')).
         }finally{if(cacheKey)this.inflight.delete(cacheKey);}
     }
     async reconcileCost(requestId:string):Promise<void>{await this.loadCache();for(const [key,entry] of this.cache)if(entry.unknown&&entry.requestId===requestId)this.cache.delete(key);await this.saveCache();}
-    private scrub(data:unknown):unknown{let json=JSON.stringify(data);for(const name of serviceCredentials){try{const key=this.settings.secret(name);if(key)json=json.split(JSON.stringify(key).slice(1,-1)).join('[redacted]');}catch{}}return JSON.parse(json);}
+    private scrub(data:unknown):unknown{return JSON.parse(this.settings.redactSerialized(JSON.stringify(data)));}
     private async invoke(request:ServiceToolRequest,p:Prepared):Promise<unknown>{
         const s=p.config??this.settings.read().values;
         if(request.tool==='tikhub'){

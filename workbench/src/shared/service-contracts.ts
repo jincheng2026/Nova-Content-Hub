@@ -15,8 +15,9 @@ export interface ServiceSettingsValues {
     commentsEnabled: boolean;
 }
 export interface ServiceSettingsPatch {values?: ServiceSettingsValues; keys?: Partial<Record<ServiceCredential, string|null>>}
-export interface ServiceSettingsView {values: ServiceSettingsValues; credentials: Record<ServiceCredential, {hasKey: boolean}>; encryptionAvailable: boolean}
-export interface ServiceReadiness {localAsr: {available: boolean; reason: string}; encryptionAvailable: boolean}
+export type ServiceEncryptionStatus = 'unchecked'|'available'|'unavailable';
+export interface ServiceSettingsView {values: ServiceSettingsValues; credentials: Record<ServiceCredential, {hasKey: boolean}>; encryptionAvailable: boolean; encryptionStatus: ServiceEncryptionStatus}
+export interface ServiceReadiness {localAsr: {available: boolean; reason: string}; encryptionAvailable: boolean; encryptionStatus: ServiceEncryptionStatus}
 export type TikHubOperation = 'douyin-search'|'user-search'|'profile'|'user-posts'|'video'|'comments'|'xhs-search'|'xhs-profile';
 export interface TikHubSearchFilters {sortType?: 'general'|'likes'|'latest'; timeRange?: 'any'|'day'|'week'|'half-year'; contentType?: 'any'|'video'|'image'}
 // The legacy model shape is validated only to return MODEL_SERVICE_DISABLED without rewriting old tasks.
