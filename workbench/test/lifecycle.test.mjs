@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import {randomUUID} from 'node:crypto';
+import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
 import {DesktopController} from '../src/main/controller.mts';
 import {BindingStore} from '../src/main/bindings.mts';
 import {execute} from '../src/main/worker.mts';
@@ -13,7 +14,7 @@ import {openLibrary, createLibrary, __testing} from '../../plugin-src/src/lib/fi
 process.env.NODE_ENV = 'test';
 
 async function fixture(t, mode = 'disabled') {
-    const root = await fs.mkdtemp(path.join(os.tmpdir(), 'nova-native-lifecycle-'));
+    const root = await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()), 'nova-native-lifecycle-'));
     t.after(() => {
         __testing.setHook(undefined);
         return fs.rm(root, {recursive: true, force: true});
@@ -21,13 +22,17 @@ async function fixture(t, mode = 'disabled') {
     const destination = path.join(root, 'library');
     const file = path.join(root, 'machine.json');
     const worker = {call: (op, args) => execute(op, args, mode)};
-    const make = () => new DesktopController({
+    const make = () => {const controller=new DesktopController({
         store: new BindingStore(file),
         worker,
         documents: root,
         authMode: mode,
         dialogs: {destination: async () => destination, library: async () => destination}
     });
+    // Template seeding is covered separately; lifecycle fixtures exercise library/mutation identity.
+    controller.covers.seed=async()=>{};
+    return controller;
+    };
     const controller = make();
     await controller.initialize();
     return {root, destination, file, controller, worker, make};
@@ -38,7 +43,7 @@ test('native create/edit/trash/restore/reopen uses one identity and preserves un
     await f.controller.createLibrary();
     const identity = f.controller.binding.current;
     let item = await f.controller.createContent({title: 'new', body: '<script>text only</script>'});
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     item = core.savePublicationPlan(item.id, {
         channelId: 'wechat',
         scheduledAt: '2026-10-20T00:00:00Z',
@@ -90,7 +95,7 @@ test('main persists input and mutation ID before worker; predispatch loss retrie
     const item = await reopened.retryPendingMutation();
     assert.equal(item.body, 'preserved');
     assert.deepEqual(dispatched, [saved.mutationId, saved.mutationId]);
-    assert.equal(openLibrary(f.destination).queryMutation(saved.mutationId).objectId, item.id);
+    assert.equal(openLibrary(f.controller.current().root).queryMutation(saved.mutationId).objectId, item.id);
     assert.equal((await reopened.listContents()).length, 1);
 });
 test('committed response loss queries current content and never replays old receipt over later edits', async t => {
@@ -109,7 +114,7 @@ test('committed response loss queries current content and never replays old rece
         return result;
     };
     await assert.rejects(f.controller.createContent({title: 'first', body: 'old receipt'}), {code: 'WORKER_EXIT'});
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     const first = core.listContents()[0];
     core.updateContent(first.id, {body: 'later external edit'}, first.editToken);
     const reopened = f.make();
@@ -126,7 +131,7 @@ test('conflict retains submitted draft until explicit save-as or discard; query 
     const f = await fixture(t);
     await f.controller.createLibrary();
     const item = await f.controller.createContent({title: 'first', body: 'base'});
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     core.updateContent(item.id, {body: 'disk'}, item.editToken);
     await assert.rejects(f.controller.updateContent({
         id: item.id,
@@ -160,7 +165,7 @@ test('required build main and worker reject all five business writes before any 
     let item = core.createContent({title: 'readable', body: 'body'});
     await f.controller.openLibrary();
     const binding = f.controller.binding.current;
-    const before = await fs.readdir(path.join(f.destination, '系统（别动）', '事务', '已提交'));
+    const before = await fs.readdir(path.join(f.controller.current().root, '系统（别动）', '事务', '已提交'));
     for (const [op, input] of [['createContent', {title: 'blocked', body: ''}], ['updateContent', {
         id: item.id,
         editToken: item.editToken,
@@ -181,7 +186,7 @@ test('required build main and worker reject all five business writes before any 
         rootIdentity: binding.rootIdentity,
         mutationId: randomUUID()
     }), {code: 'AUTH_NOT_CONFIGURED'});
-    assert.deepEqual(await fs.readdir(path.join(f.destination, '系统（别动）', '事务', '已提交')), before);
+    assert.deepEqual(await fs.readdir(path.join(f.controller.current().root, '系统（别动）', '事务', '已提交')), before);
     assert.equal(f.controller.binding.pending, null);
     assert.equal((await f.controller.listContents()).length, 1);
 });
@@ -189,7 +194,7 @@ test('bound roots reject different libraries and same-ID clones before any pendi
     const f = await fixture(t);
     await f.controller.createLibrary();
     const original = f.controller.binding.current;
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     const item = core.createContent({title: 'base', body: 'base'});
     __testing.setHook(event => {
         if (event.phase === 'afterJournal') throw new Error('stop before commit');
@@ -203,13 +208,14 @@ test('bound roots reject different libraries and same-ID clones before any pendi
     const saved = path.join(f.root, 'original');
     await fs.rename(f.destination, saved);
     await fs.cp(saved, f.destination, {recursive: true});
-    const snapshot = async () => fs.readdir(path.join(f.destination, '系统（别动）', '事务', '待恢复'));
+    const snapshot = async () => fs.readdir(path.join(f.controller.current().root, '系统（别动）', '事务', '待恢复'));
     const before = await snapshot();
     assert.equal(before.length, 1);
     await assert.rejects(f.controller.listContents(), {code: 'CONFLICT'});
     assert.deepEqual(await snapshot(), before);
     await fs.rm(f.destination, {recursive: true});
-    createLibrary(f.destination);
+    await fs.mkdir(f.destination);
+    createVault(f.destination);
     await assert.rejects(f.controller.listContents(), {code: 'CONFLICT'});
     assert.deepEqual(f.controller.binding.current, original);
 });
@@ -235,7 +241,13 @@ test('creation response loss verifies fixed original inode; failure never remove
     await fs.rm(f.destination, {recursive: true});
     await fs.rename(originalRoot, f.destination);
     await reopened.queryPendingMutation();
-    assert.equal(reopened.binding.current.rootIdentity.ino, reservation.rootIdentity.ino);
+    const recoveredRoot=await fs.lstat(reservation.root,{bigint:true});
+    assert.equal(String(recoveredRoot.ino),reservation.rootIdentity.ino);
+    assert.equal(String(recoveredRoot.dev),reservation.rootIdentity.dev);
+    const runtime=await fs.lstat(reopened.current().root,{bigint:true});
+    assert.equal(String(runtime.ino),reopened.current().rootIdentity.ino);
+    assert.equal(String(runtime.dev),reopened.current().rootIdentity.dev);
+    assert.equal(path.relative(reservation.root,reopened.current().root),path.join('.workbench','runtime'));
     assert.equal(reopened.binding.creation, null);
 });
 test('legacy bindings require explicit reselect; renderer and worker inputs are exact and finite', async t => {
@@ -264,10 +276,8 @@ test('legacy bindings require explicit reselect; renderer and worker inputs are 
         title: 'x',
         body: '',
         authMode: 'disabled'
-    }, {title: 'x', body: 'x'.repeat(1_000_001)}, {
-        title: ' ',
-        body: ''
-    }]) assert.throws(() => assertCaller(event, sender, [input], 'createContent'), {code: 'INVALID_INPUT'});
+    }, {title: 'x', body: 'x'.repeat(1_000_001)}]) assert.throws(() => assertCaller(event, sender, [input], 'createContent'), {code: 'INVALID_INPUT'});
+    assert.doesNotThrow(()=>assertCaller(event,sender,[{title:' ',body:'idea before title'}],'createContent'));
     for (const input of [{id: '../x'}, {id: 'https://evil.test'}, {
         id: randomUUID(),
         libraryId: randomUUID()
@@ -297,7 +307,13 @@ test('empty reserved creation can explicitly retry its original ID; partial fail
     await f.controller.queryPendingMutation();
     assert.equal((await f.controller.status()).creationMissing, true);
     assert.equal(await f.controller.retryPendingMutation(), null);
-    assert.equal(f.controller.binding.current.rootIdentity.ino, reservation.rootIdentity.ino);
+    const recoveredRoot=await fs.lstat(reservation.root,{bigint:true});
+    assert.equal(String(recoveredRoot.ino),reservation.rootIdentity.ino);
+    assert.equal(String(recoveredRoot.dev),reservation.rootIdentity.dev);
+    const runtime=await fs.lstat(f.controller.current().root,{bigint:true});
+    assert.equal(String(runtime.ino),f.controller.current().rootIdentity.ino);
+    assert.equal(String(runtime.dev),f.controller.current().rootIdentity.dev);
+    assert.equal(path.relative(reservation.root,f.controller.current().root),path.join('.workbench','runtime'));
     const failed = path.join(f.root, 'partial');
     await fs.mkdir(failed);
     await fs.writeFile(path.join(failed, 'keep.txt'), 'preserve failed creation');
@@ -310,7 +326,12 @@ test('empty reserved creation can explicitly retry its original ID; partial fail
             mutationId: randomUUID()
         }
     });
-    await assert.rejects(f.controller.queryPendingMutation(), {code: 'ENOENT'});
+    await assert.rejects(f.controller.queryPendingMutation(), error=>{
+        assert.equal(error.code,'IO_ERROR');
+        assert.equal(error.cause?.code,'ENOENT');
+        assert.equal(error.cause?.path,path.join(failed,'内容库.json'));
+        return true;
+    });
     assert.ok(f.controller.binding.creation);
     await f.controller.resolvePendingMutation({action: 'discard'});
     assert.equal(f.controller.binding.creation, null);
@@ -319,7 +340,7 @@ test('empty reserved creation can explicitly retry its original ID; partial fail
 test('unsupported old/future library formats are rejected without upgrading or overwriting their descriptor', async t => {
     const f = await fixture(t);
     await f.controller.createLibrary();
-    const descriptor = path.join(f.destination, '内容库.json');
+    const descriptor = path.join(f.controller.current().root, '内容库.json');
     const current = JSON.parse(await fs.readFile(descriptor, 'utf8'));
     for (const schemaVersion of [1, 999]) {
         const raw = JSON.stringify({...current, schemaVersion});
@@ -365,7 +386,7 @@ test('explicit save-as retains the submitted draft even when query discovers a c
         title: 'submitted',
         body: 'preserve original draft'
     }), {code: 'WORKER_EXIT'});
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     const first = core.listContents()[0];
     core.updateContent(first.id, {body: 'later disk version'}, first.editToken);
     const copy = await f.controller.resolvePendingMutation({action: 'saveAs'});
@@ -415,7 +436,7 @@ test('save-as ENOSPC preserves the original durable committed pending until its 
         body: 'durable original draft'
     }), {code: 'WORKER_EXIT'});
     const pending = f.controller.binding.pending;
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     const first = core.listContents()[0];
     core.updateContent(first.id, {body: 'later disk edit'}, first.editToken);
     const save = f.controller.store.save.bind(f.controller.store);
@@ -450,7 +471,7 @@ test('keep on a committed pending retains the submitted draft and durable record
         title: 'submitted',
         body: 'keep this draft'
     }), {code: 'WORKER_EXIT'});
-    const core = openLibrary(f.destination);
+    const core = openLibrary(f.controller.current().root);
     const item = core.listContents()[0];
     core.updateContent(item.id, {body: 'later disk'}, item.editToken);
     const reopened = f.make();
@@ -478,4 +499,34 @@ test('worker consumes core expectedRootIdentity during initialization before wri
     }, 'disabled'), {code: 'CONFLICT'});
     __testing.setHook(undefined);
     assert.deepEqual(await fs.readdir(f.destination), []);
+});
+
+test('worker Vault initialization preserves the core runtime inode before writing a replacement directory', async t => {
+    const f = await fixture(t);
+    await fs.mkdir(f.destination);
+    const stat = await fs.lstat(f.destination, {bigint: true});
+    // Vault first reserves its source skeleton; the core hook now protects its separate runtime root.
+    const sync = await import('node:fs');
+    const runtimeRoot=path.join(f.destination,'.workbench','runtime'),originalRuntime=path.join(f.root,'reserved-original-runtime');
+    let pinnedRuntime;
+    __testing.setHook(event => {
+        if (event.phase === 'createAfterEmptyCheck') {
+            assert.equal(event.root,runtimeRoot);
+            pinnedRuntime=sync.lstatSync(event.root,{bigint:true});
+            sync.renameSync(event.root,originalRuntime);
+            sync.mkdirSync(event.root);
+        }
+    });
+    await assert.rejects(execute('createLibrary', {
+        root: f.destination,
+        rootIdentity: {dev: stat.dev.toString(), ino: stat.ino.toString()},
+        mutationId: randomUUID()
+    }, 'disabled'), {code: 'CONFLICT'});
+    __testing.setHook(undefined);
+    assert.ok(pinnedRuntime,'runtime replacement fault must actually execute');
+    assert.deepEqual(await fs.readdir(runtimeRoot), []);
+    const preserved=await fs.lstat(originalRuntime,{bigint:true}),replacement=await fs.lstat(runtimeRoot,{bigint:true}),vault=await fs.lstat(f.destination,{bigint:true});
+    assert.equal(preserved.ino,pinnedRuntime.ino);
+    assert.notEqual(replacement.ino,pinnedRuntime.ino);
+    assert.equal(vault.ino,stat.ino,'Vault reservation inode is still the original source root');
 });

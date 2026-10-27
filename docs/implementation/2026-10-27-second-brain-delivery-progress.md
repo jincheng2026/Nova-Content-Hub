@@ -62,3 +62,7 @@
 
 - 资源三项P1和HTML工作稿P1/P2均已修并独立复核关闭；资源最终50/50定向及真实报告路由Chrome四场通过，HTML新16项与类型检查通过。主内容页增加只读来源核对与建立工作稿直达，待真实Electron验证。
 - 已开始both模式统一构建、完整file-library和desktop回归。历史未可信HTML最终采用受控静态文本/JSON抽取；CSP-only中间方案被真实导航绕过证明不足，未作为交付方案。
+
+- 首轮完整file-library为581项，579通过、2条旧fixture违反已有字幕归属/独立报告页校验；仅修测试，相关完整文件3/3和8/8通过，runtime安全校验未放宽。桌面旧fixture已按Vault根/runtime根分工更新，lifecycle+distribution完整28/28；旧全套中的lifecycle进程被定向完整替代。
+- Vault全套75/75、插件全套123通过/2环境项跳过；真实Codex隔离安装已验证21技能、14方法、4执行能力与完整包doctor。该记录不代表真实模型整场执行或WorkBuddy实装。
+- Electron首次开库复现READ_TIMEOUT：openVault首handle先于binding建立，首次约31秒投影误落到15秒vaultLocation。f4606e7在显式open/create返回前完成投影；新增激活测试先红后绿。warm各worker读约0.3–1秒，无重复资产导入。最终原生复验与打包进行中。

@@ -125,7 +125,7 @@ test('free preview uses the product identity and local builds keep their isolate
         assert.match(built.directories.app, /dist-desktop[/\\\\]auth-disabled$/);
         assert.match(built.directories.output, new RegExp(`release[/\\\\]${platform}-${arch}[/\\\\]preview$`));
         assert.ok(built.artifactName.includes(`${config.version}-${platform}-${arch}-preview`));
-        assert.equal(built.extraMetadata.description, '自媒体工作台 · 内容整理、模板学习与封面制作');
+        assert.equal(built.extraMetadata.description, '自媒体工作台 · 第二大脑与内容创作');
         assert.equal(built.publish, null);
         assert.equal(built.mac.notarize, false);
         assert.equal(built.nsis.deleteAppDataOnUninstall, false);
