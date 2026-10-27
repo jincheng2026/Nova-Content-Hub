@@ -25,7 +25,7 @@ export function SegmentWorkspace({body,creation,busy=false,onChange,openReferenc
  const bodyEditor=useRef<HTMLTextAreaElement>(null);
  const composition=useMemo(()=>creation.composition??createProductionComposition(body),[creation.composition,creation.contentId,body]);
  const currentHash=useMemo(()=>compositionBodyHash(body),[body]);
- const valid=validProductionComposition(composition,body,currentHash,creation.references.map(value=>value.id));
+ const valid=Boolean(validProductionComposition(composition,body,currentHash,creation.references.map(value=>value.id)));
  const segment=composition.segments.find(value=>value.id===active)??composition.segments[0],index=segment?composition.segments.indexOf(segment):-1,filming=filmingOf(creation);
  function emit(patch:Partial<ProductionCreation>,nextBody=body){if(busy)return;onChange(nextBody,{...patch,confirmedBodyHash:nextBody===body?creation.confirmedBodyHash:null});}
  function changeSegment(patch:Partial<ProductionSegment>){if(!valid||!segment)return;emit({composition:{...composition,segments:composition.segments.map(value=>value.id===segment.id?{...value,...patch}:value)}});}
