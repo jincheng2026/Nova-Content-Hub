@@ -1,0 +1,23 @@
+{
+  "installerSha256": "24e4c34595abda809c9871c58747801d17357768538aad40894be635e790a547",
+  "completeExistingInstallationRefused": {
+    "exitCode": 1,
+    "message": "安装未完成：目录已存在，未覆盖：/private/tmp/Nova Qwen 最终ZIP验收 20261027。请检查已有组件状态；如安装未完成或无法确认，请保留检查或另选新的空目录。",
+    "claimsUsable": false,
+    "priorInstallationReceiptUnchanged": true
+  },
+  "incompleteExistingInstallationRefused": {
+    "exitCode": 1,
+    "message": "安装未完成：目录已存在，未覆盖：/private/tmp/qwen-existing-partial-jx6y7rht/partial。请检查已有组件状态；如安装未完成或无法确认，请保留检查或另选新的空目录。",
+    "claimsUsable": false,
+    "partialDirectoryRetained": true,
+    "incompleteEvenWithClaimedPassedJson": true
+  },
+  "corruptPayloadRefused": {
+    "exitCode": 1,
+    "message": "shasum: WARNING: 1 computed checksum did NOT match\n安装未完成：载荷校验失败，请重新获取完整附加包。",
+    "createdTarget": false
+  },
+  "scriptSyntaxCheck": "bash -n exit 0",
+  "engineInferenceRerun": false
+}

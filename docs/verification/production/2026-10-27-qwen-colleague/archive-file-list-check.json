@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-27T08:59:24.634646+00:00",
+  "archiveFileListEqualsHashManifest": true,
+  "extractedFileListEqualsHashManifest": true,
+  "manifestEntries": 2311,
+  "hashesVerified": 2311,
+  "allPayloadHashesPassed": true,
+  "unlistedFiles": [],
+  "missingFiles": [],
+  "duplicateArchivePaths": [],
+  "installCommandUnixMode": "0o100755",
+  "shellSyntaxCheck": "bash -n exit 0",
+  "probePythonSyntaxCheck": "ast.parse passed",
+  "currentInstallerMatchesSource": true,
+  "engineInferenceRerun": false,
+  "engineEvidenceReference": "engine-validation-reference.json"
+}

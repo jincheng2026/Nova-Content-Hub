@@ -1,0 +1,10 @@
+{
+  "archiveSha256": "381b49dff10d0a03f7b9ee2722f45aed37f71a0dbf25d596c65b9694d12790ff",
+  "archiveBytes": 2675524524,
+  "installCommandSha256": "1644c929cc2987e7cf9014d79839a180d07408cbfa701fe82ce9f668e7413488",
+  "scriptSnapshot": "engine-validated-install.command",
+  "engineTest": "final-zip-install-test.json",
+  "installLog": "final-zip-install.log",
+  "result": "passed",
+  "note": "Real offline installation/inference used this previous archive and installer. The final replacement archive changes only the already-existing-directory refusal message; no engine inference rerun is claimed."
+}

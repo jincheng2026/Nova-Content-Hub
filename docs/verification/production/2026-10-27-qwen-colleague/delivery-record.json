@@ -1,0 +1,72 @@
+{
+  "recordedAt": "2026-10-27T08:59:48.943807+00:00",
+  "component": "Qwen3-ASR offline addon",
+  "componentVersion": "2026.10.27",
+  "channel": "offline colleague preview",
+  "archive": {
+    "path": "/Users/mac/code/dashboard/qwen-addon/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline.zip",
+    "name": "Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline.zip",
+    "bytes": 2675524552,
+    "sha256": "05fdad6aace9c5bd4455de428cf9aaad75eeeb003e187b7a1845c784394775ce",
+    "modifiedAt": "2026-10-27T08:58:13.522089+00:00"
+  },
+  "source": {
+    "gitBaseCommit": "698139e86aa9008c8385e25b8860be16403f077f",
+    "uncommittedSource": "tools/local-asr/",
+    "sourceHashInventory": "build-inventory.json",
+    "commitCreated": false,
+    "tagCreated": false,
+    "mainApplicationVersionChanged": false
+  },
+  "target": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "macOSMajor": 26,
+    "nativeExecution": true,
+    "buildMachineVersion": "26.4.1",
+    "built": true,
+    "installedFromFinalArchive": false,
+    "localSpeechRecognitionPassed": true,
+    "colleagueMachineInstalled": false,
+    "guiVerified": false,
+    "runtimePayloadPreviouslyInstalledAndRecognized": true,
+    "finalArchiveIntegrityVerifiedSeparately": true
+  },
+  "verification": {
+    "finalArchiveFileList": "archive-file-list-check.json",
+    "installationLog": "final-zip-install.log",
+    "speechRecognition": "final-zip-install-test.json",
+    "networkDenyControl": "network-denial-control.json",
+    "negativeInstallationTests": "installer-negative-tests.json",
+    "correctedPackagingIssue": "packaging-integrity-notes.json",
+    "knownSpeech": "你好，语音测试。",
+    "audioSha256": "c49406af03a8d0f18653526bb8f69d536d36a49c7a368c77bd4a0259de07dd93",
+    "elapsedSeconds": 37.322,
+    "OSNetworkDeniedForWholeInstallAndInference": true,
+    "PythonNetworkConnectAttempts": [],
+    "newRuntimePython": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/venv/bin/python",
+    "newRuntimeBasePrefix": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/python",
+    "newModelPath": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/models/Qwen3-ASR-1.7B-8bit",
+    "currentArchiveEngineInferenceRerun": false,
+    "engineEvidenceReference": "engine-validation-reference.json",
+    "engineValidatedArchiveSha256": "381b49dff10d0a03f7b9ee2722f45aed37f71a0dbf25d596c65b9694d12790ff",
+    "engineValidatedInstallerSha256": "1644c929cc2987e7cf9014d79839a180d07408cbfa701fe82ce9f668e7413488",
+    "currentInstallerSha256": "24e4c34595abda809c9871c58747801d17357768538aad40894be635e790a547",
+    "payloadChangeRecord": "payload-change-record.json",
+    "wordingReviewFix": "Existing targets receive neutral refusal requiring component-state inspection; no readiness claim or JSON parsing.",
+    "installationLogAppliesTo": "previous engine-validated archive only",
+    "speechRecognitionAppliesTo": "previous engine-validated archive only"
+  },
+  "scope": {
+    "workbenchSourceVersionUIChangedByAddon": false,
+    "existingUserLibrarySettingsKeysAccessedByInstaller": false,
+    "existingASRRuntimeReusedAsInstalledVenv": false,
+    "modelBytesReusedButIndependentlyCopiedAndHashed": true
+  },
+  "remainingGates": [
+    "Colleague native Apple Silicon + macOS26 installation, actual Gatekeeper/quarantine prompts and workbench setting + transcription acceptance.",
+    "No Developer ID signing or notarization; no production release approval claimed.",
+    "Receiver upgrade/reopen/uninstall and content-preservation acceptance not performed.",
+    "Older macOS, Intel Mac, Windows x64 and Windows ARM have no usable payload or acceptance in this addon."
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "componentVersion": "2026.10.27",
+  "platform": "darwin",
+  "arch": "arm64",
+  "osGate": "macOS major 26",
+  "regularFileCount": 2303,
+  "regularFileLogicalBytes": 2674607357,
+  "wheelCount": 39,
+  "wheelBytes": 135178733,
+  "modelFileCount": 11,
+  "modelBytes": 2467859030,
+  "licenseAndMetadataFileCount": 122,
+  "payloadManifestSha256": "a362fc85d9d7aefca99324e91d30c2d7fc6d04113f4a119d522818178ce99808",
+  "internalSymlinks": [
+    {
+      "path": "python/bin/2to3",
+      "target": "2to3-3.11"
+    },
+    {
+      "path": "python/bin/python3",
+      "target": "python3.11"
+    },
+    {
+      "path": "python/bin/python",
+      "target": "python3.11"
+    },
+    {
+      "path": "python/bin/idle3",
+      "target": "idle3.11"
+    },
+    {
+      "path": "python/bin/python3-config",
+      "target": "python3.11-config"
+    },
+    {
+      "path": "python/bin/pydoc3",
+      "target": "pydoc3.11"
+    },
+    {
+      "path": "python/lib/pkgconfig/python3.pc",
+      "target": "python-3.11.pc"
+    },
+    {
+      "path": "python/lib/pkgconfig/python3-embed.pc",
+      "target": "python-3.11-embed.pc"
+    },
+    {
+      "path": "python/share/man/man1/python3.1",
+      "target": "python3.11.1"
+    }
+  ],
+  "mlxWheel": [
+    "mlx-0.32.4-cp311-cp311-macosx_26_0_arm64.whl",
+    "mlx_metal-0.32.4-py3-none-macosx_26_0_arm64.whl"
+  ],
+  "archiveModifiedAt": "2026-10-27T08:58:13.522089+00:00"
+}

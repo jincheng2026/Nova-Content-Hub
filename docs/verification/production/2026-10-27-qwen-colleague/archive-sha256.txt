@@ -1,0 +1,1 @@
+05fdad6aace9c5bd4455de428cf9aaad75eeeb003e187b7a1845c784394775ce  /Users/mac/code/dashboard/qwen-addon/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline.zip

@@ -1,0 +1,55 @@
+{
+  "checkedAt": "2026-10-27T08:46:18.622952+00:00",
+  "gitBaseCommit": "45c7d2578f6affd9b988a03b98d1e4e6ad524106",
+  "sourceStatus": "Uncommitted addon scripts. Main application and existing unrelated changes are outside addon scope; no commit or tag created.",
+  "sourceScriptSha256": {
+    "tools/local-asr/README.md": "6e4d0ed21be459fe77d83fe9c9723e12ff14afa6fad8881a074283f1220bce35",
+    "tools/local-asr/README.txt": "6cdbc5f117e5b3289356934d898075d25c18656c1767effe56e5b530776296c9",
+    "tools/local-asr/assemble.py": "d4af7f4cf38818c36fbc7faf9c7a8a9514268c0f4a069498e41545ef763ddb6a",
+    "tools/local-asr/install.command": "24e4c34595abda809c9871c58747801d17357768538aad40894be635e790a547",
+    "tools/local-asr/prepare.py": "3c5ea711e6a91cd772c557a063e78da27514337b0a78e2cb9aca482d1f8e0229",
+    "tools/local-asr/prepare_licenses.py": "cc0e50664a25c053c300f22fc6579e1d26162dec3ddc869949dd1a9818f3a94e",
+    "tools/local-asr/verify.py": "f276f9b056621cb0b45adfa833cef234141bff566e8c802572ebcd1e7b25db10"
+  },
+  "payloadFolder": "/Users/mac/code/dashboard/qwen-addon/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline",
+  "supportedTarget": "darwin-arm64, native Apple Silicon, macOS 26 only",
+  "buildMachine": {
+    "os": "macOS 26.4.1",
+    "osBuild": "25E253",
+    "arch": "arm64",
+    "memoryBytes": 17179869184
+  },
+  "provisionalResults": {
+    "sourcePayloadInstalledAt": "/private/tmp/Nova Qwen 独立验收 20261027",
+    "offlinePipInstall": "39 dependencies; --no-index --require-hashes --only-binary=:all:; pip check passed",
+    "bootstrap": "pip 24.0 and setuptools 79.0.1 included in hash-pinned official CPython ensurepip payload",
+    "OSNetworkPolicy": "sandbox-exec (version 1) (allow default) (deny network*)",
+    "negativeNetworkControl": "PermissionError errno 1 from attempted TCP connection; no actual network request",
+    "chineseSpeechRecognition": "你好，语音测试。",
+    "elapsedSeconds": 26.426
+  },
+  "doesNotWrite": [
+    "workbench application source/version/UI",
+    "existing workbench user library",
+    "workbench settings",
+    "credentials or keys"
+  ],
+  "remainingGates": [
+    "receiving colleague machine installation, Gatekeeper/quarantine interaction and workbench settings + transcription",
+    "Developer ID signing and notarization",
+    "upgrade/reopen/uninstall on receiving machine",
+    "Intel Mac, older macOS, Windows x64 and Windows ARM unsupported by this payload"
+  ],
+  "engineValidatedArchiveResults": {
+    "finalArchiveInstalledAt": "/private/tmp/Nova Qwen 最终ZIP验收 20261027",
+    "selfTestOutcome": "passed",
+    "elapsedSeconds": 37.322,
+    "finalZipSha256": "381b49dff10d0a03f7b9ee2722f45aed37f71a0dbf25d596c65b9694d12790ff"
+  },
+  "finalArchiveVerification": {
+    "archiveSha256": "05fdad6aace9c5bd4455de428cf9aaad75eeeb003e187b7a1845c784394775ce",
+    "payloadChangeRecord": "payload-change-record.json",
+    "fullIntegrityAndSyntaxEvidence": "archive-file-list-check.json",
+    "engineInferenceRerun": false
+  }
+}

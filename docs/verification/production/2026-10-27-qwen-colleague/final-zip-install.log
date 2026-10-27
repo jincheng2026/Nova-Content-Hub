@@ -1,0 +1,77 @@
+1/4 校验离线包完整性（约 3 GB）…
+2/4 复制 Python 与模型组件…
+3/4 新建 venv，并从附带 wheel 离线安装固定版本…
+Looking in links: /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/wheels
+Processing ./wheels/annotated_doc-0.0.5-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 1))
+Processing ./wheels/anyio-4.15.1-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 2))
+Processing ./wheels/cffi-2.1.1-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 3))
+Processing ./wheels/click-8.5.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 4))
+Processing ./wheels/filelock-4.2.4-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 5))
+Processing ./wheels/fsspec-2026.9.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 6))
+Processing ./wheels/h11-0.16.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 7))
+Processing ./wheels/hf_xet-1.7.0-cp38-abi3-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 8))
+Processing ./wheels/httpcore2-2.16.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 9))
+Processing ./wheels/httpx2-2.16.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 10))
+Processing ./wheels/huggingface_hub-2.3.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 11))
+Processing ./wheels/idna-3.20-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 12))
+Processing ./wheels/jinja2-3.1.6-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 13))
+Processing ./wheels/markdown_it_py-4.2.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 14))
+Processing ./wheels/markupsafe-3.0.4-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 15))
+Processing ./wheels/mdurl-0.1.2-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 16))
+Processing ./wheels/miniaudio-1.71-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 17))
+Processing ./wheels/mlx-0.32.4-cp311-cp311-macosx_26_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 18))
+Processing ./wheels/mlx_audio-0.6.2-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 19))
+Processing ./wheels/mlx_metal-0.32.4-py3-none-macosx_26_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 20))
+Processing ./wheels/numpy-2.4.6-cp311-cp311-macosx_14_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 21))
+Processing ./wheels/packaging-26.3-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 22))
+Processing ./wheels/pycparser-3.12-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 23))
+Processing ./wheels/pygments-2.21.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 24))
+Processing ./wheels/pyyaml-6.0.3-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 25))
+Processing ./wheels/regex-2026.9.29-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 26))
+Processing ./wheels/rich-15.0.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 27))
+Processing ./wheels/safetensors-0.8.0-cp310-abi3-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 28))
+Processing ./wheels/scipy-1.17.1-cp311-cp311-macosx_14_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 29))
+Processing ./wheels/sentencepiece-0.2.2-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 30))
+Processing ./wheels/shellingham-1.5.4-py2.py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 31))
+Processing ./wheels/sounddevice-0.5.6-py3-none-macosx_10_6_x86_64.macosx_10_6_universal2.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 32))
+Processing ./wheels/tokenizers-0.23.3-cp310-abi3-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 33))
+Processing ./wheels/tqdm-4.70.1-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 34))
+Processing ./wheels/transformers-5.21.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 35))
+Processing ./wheels/truststore-0.10.5-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 36))
+Processing ./wheels/typer-0.27.3-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 37))
+Processing ./wheels/typing_extensions-4.16.0-py3-none-any.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 38))
+Processing ./wheels/zstandard-0.25.0-cp311-cp311-macosx_11_0_arm64.whl (from -r /Users/mac/code/dashboard/qwen-addon/final-zip-verified/Qwen3-ASR-addon-2026.10.27-darwin-arm64-macos26-offline/requirements.lock (line 39))
+Installing collected packages: zstandard, typing_extensions, truststore, tqdm, shellingham, sentencepiece, safetensors, regex, PyYAML, Pygments, pycparser, packaging, numpy, mlx-metal, mdurl, MarkupSafe, idna, hf-xet, h11, fsspec, filelock, click, annotated-doc, scipy, mlx, markdown-it-py, Jinja2, httpcore2, cffi, anyio, sounddevice, rich, miniaudio, httpx2, typer, huggingface_hub, tokenizers, transformers, mlx-audio
+Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 PyYAML-6.0.3 Pygments-2.21.0 annotated-doc-0.0.5 anyio-4.15.1 cffi-2.1.1 click-8.5.0 filelock-4.2.4 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.7.0 httpcore2-2.16.0 httpx2-2.16.0 huggingface_hub-2.3.0 idna-3.20 markdown-it-py-4.2.0 mdurl-0.1.2 miniaudio-1.71 mlx-0.32.4 mlx-audio-0.6.2 mlx-metal-0.32.4 numpy-2.4.6 packaging-26.3 pycparser-3.12 regex-2026.9.29 rich-15.0.0 safetensors-0.8.0 scipy-1.17.1 sentencepiece-0.2.2 shellingham-1.5.4 sounddevice-0.5.6 tokenizers-0.23.3 tqdm-4.70.1 transformers-5.21.0 truststore-0.10.5 typer-0.27.3 typing_extensions-4.16.0 zstandard-0.25.0
+No broken requirements found.
+4/4 本地识别内附中文测试音频…
+{
+  "startedAt": "2026-10-27T08:51:19.590369+00:00",
+  "platform": "Darwin",
+  "arch": "arm64",
+  "macOS": "26.4.1",
+  "pythonVersion": "3.11.16",
+  "python": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/venv/bin/python",
+  "basePrefix": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/python",
+  "model": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/models/Qwen3-ASR-1.7B-8bit",
+  "audioSha256": "c49406af03a8d0f18653526bb8f69d536d36a49c7a368c77bd4a0259de07dd93",
+  "expectedText": "你好，语音测试。",
+  "packages": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-audio": "0.6.2",
+    "transformers": "5.21.0"
+  },
+  "networkPolicy": "HF/transformers offline flags + Python socket connect denied; OS sandbox network denial is separate evidence",
+  "text": "你好，语音测试。",
+  "normalizedTextMatch": true,
+  "outcome": "passed",
+  "elapsedSeconds": 37.322,
+  "pythonNetworkConnectAttempts": []
+}
+本地 Python 可执行文件：
+/private/tmp/Nova Qwen 最终ZIP验收 20261027/venv/bin/python
+
+本地模型目录：
+/private/tmp/Nova Qwen 最终ZIP验收 20261027/models/Qwen3-ASR-1.7B-8bit
+组件安装与中文自测通过。请在工作台设置中选择本地 Qwen3-ASR，手动粘贴以上两条路径。此脚本没有修改工作台设置。

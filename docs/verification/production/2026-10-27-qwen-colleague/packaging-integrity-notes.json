@@ -1,0 +1,6 @@
+{
+  "initialArchiveAcceptance": "rejected by full payload SHA256 check before creating target install directory",
+  "cause": "A packaging-time network negative control ran the source payload Python without -B and regenerated several stdlib .pyc files after manifest freeze.",
+  "correction": "Restored the entire Python directory from the previously SHA256-verified official install_only archive, froze the full manifest again, rebuilt the archive from scratch. Network controls now use an already installed test Python. No frozen source payload Python is executed after manifest generation.",
+  "additionalGate": "Final ZIP central-directory file list must equal the complete hash manifest, with no unlisted or missing files. Final installation must use freshly extracted final ZIP and an absent destination."
+}

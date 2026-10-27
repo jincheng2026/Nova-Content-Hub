@@ -1,0 +1,1 @@
+{"networkDenied": true, "type": "PermissionError", "errno": 1, "reason": "[Errno 1] Operation not permitted", "target": "1.1.1.1:443", "sandboxPolicy": "(version 1) (allow default) (deny network*)"}

@@ -1,0 +1,14 @@
+{
+  "payloadFilesChanged": [
+    "install.command"
+  ],
+  "change": "Neutral existing-directory refusal wording only; no automatic readiness claim or JSON parsing.",
+  "fileCountUnchanged": 2311,
+  "allOtherPayloadHashesUnchanged": true,
+  "oldInstallCommandSha256": "1644c929cc2987e7cf9014d79839a180d07408cbfa701fe82ce9f668e7413488",
+  "newInstallCommandSha256": "24e4c34595abda809c9871c58747801d17357768538aad40894be635e790a547",
+  "oldManifestSha256": "f589d0c8b27dd3f091514eb8af4b885c8dd2a31c8f54110d64cd1086015b3d39",
+  "newManifestSha256": "a362fc85d9d7aefca99324e91d30c2d7fc6d04113f4a119d522818178ce99808",
+  "engineInferenceRerun": false,
+  "previousEngineEvidenceReference": "engine-validation-reference.json"
+}

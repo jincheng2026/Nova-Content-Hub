@@ -1,0 +1,24 @@
+{
+  "startedAt": "2026-10-27T08:51:19.590369+00:00",
+  "platform": "Darwin",
+  "arch": "arm64",
+  "macOS": "26.4.1",
+  "pythonVersion": "3.11.16",
+  "python": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/venv/bin/python",
+  "basePrefix": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/python",
+  "model": "/private/tmp/Nova Qwen 最终ZIP验收 20261027/models/Qwen3-ASR-1.7B-8bit",
+  "audioSha256": "c49406af03a8d0f18653526bb8f69d536d36a49c7a368c77bd4a0259de07dd93",
+  "expectedText": "你好，语音测试。",
+  "packages": {
+    "mlx": "0.32.4",
+    "mlx-metal": "0.32.4",
+    "mlx-audio": "0.6.2",
+    "transformers": "5.21.0"
+  },
+  "networkPolicy": "HF/transformers offline flags + Python socket connect denied; OS sandbox network denial is separate evidence",
+  "text": "你好，语音测试。",
+  "normalizedTextMatch": true,
+  "outcome": "passed",
+  "elapsedSeconds": 37.322,
+  "pythonNetworkConnectAttempts": []
+}
