@@ -6,8 +6,9 @@
 2. 读[参考接入](reference-intake.md)，复用已有可信材料；用户要求研究时在已授权工具内寻找可核验来源。涉及音视频时读[转写与纠错](transcription.md)，涉及作品结构比较时读[视频拆解](video-analysis.md)。用户明确跳过参考则直接创作并保留证据缺口。
 3. 读[叙事与写稿](writing-method.md)，在同一聊天完成拆解、叙事和一份当前完整正文；让受众收获、结构、证据和表达相互对应。保留可核实引用与不确定处，避免用阶段摘要冒充成稿。
 4. 读[包装方法](packaging-method.md)，基于本次最终正文准备标题、封面短文与简介候选，保留人工选用。涉及用户否决、纠正和取舍时读[反馈与知识](feedback-method.md)，在交付说明中保留反馈依据；本轮整套采用只承载下述创作字段。
-5. 读[产物结构](../../../plugin-src/resources/production-artifacts.md)，最后一次 submit 提交同一 result.artifacts 数组：研究参考用 research（data.references 完整结构）、整体拆解用 analysis、叙事用 narrative、唯一完整稿用 draft、包装用 packaging（data.packaging 的三组候选）。实际跳过的研究不伪造引用；analysis/narrative/draft/packaging 各至多一项，draft 必须有且是完整稿。一个编号只交一个明确版本，避免同一字段多候选造成覆盖歧义。
-6. 提交前回读 context 核对固定正文 bodyHash，必要变化按共同契约停止并提示重新生成；提交后回读真实 status/receipt。说明已交回整套结果，等待用户在工作台完整预览并一次确认采用。聊天结束与任务验收均不代表已采用，更不代表发布成功。
+5. 读[产物结构](../../../plugin-src/resources/production-artifacts.md)，最后一次 submit 提交同一 result.artifacts 数组：研究参考用 research（data.references 完整结构）、整体拆解用 analysis、叙事用 narrative、唯一完整稿用 draft、包装用 packaging（data.packaging 的三组候选）。实际跳过的研究不伪造引用；analysis/narrative/draft/packaging 必须各一项，拆解与叙事须有实质内容，draft 为完整稿；packaging 三组各至少一条有效候选。确有关键缺口无法交齐时，回写 waiting-user 或真实失败并说明待补条件，待补齐再提交，不能用空数组或阶段摘要冒充整套完成。一个编号只交一个明确版本，避免同一字段多候选造成覆盖歧义。
+6. 正文产物可在 data.composition 提交稳定段落范围与参考关联，具体结构读[产物结构](../../../plugin-src/resources/production-artifacts.md)。正文仍只在 draft.text 保存，段落只带 UTF-16 范围、用途与来源，不重复正文；用整篇 SHA256 绑定版本。来源引用须出自保留的原文或校正版，时间码须落在已知字幕范围。首次生成稳定 UUID，局部修改沿用编号；跨稿无法唯一精确匹配时交回待核对，保留旧关联。
+7. 提交前回读 context 核对固定正文 bodyHash，必要变化按共同契约停止并提示重新生成；提交后回读真实 status/receipt。说明已交回整套结果，等待用户在工作台完整预览并一次确认采用。聊天结束与任务验收均不代表已采用，更不代表发布成功。
 
 整套提交使用同一原始正文版本。审稿建议、批注和拍摄确认遵循各自的独立版本和人工确认流程，整套结果不夹带 suggestions、annotations 或 filming，也不替用户选定包装候选。需要独立审稿时读取[创作协作与审稿](review-method.md)并说明下一步；不能将受旧稿约束的批注与新正文在一次采用中混套。
 

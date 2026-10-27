@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {webcrypto,createHash} from 'node:crypto';
+import {productionCompositionRuntime} from '../../src/lib/file-library/production-composition.mjs';
 import {acceptReviewSuggestion, reviewParagraphs, quotePosition} from '../../src/lib/file-library/production-review.mjs';
 const html=fs.readFileSync(new URL('../../resources/production-creation.html',import.meta.url),'utf8');
 const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -17,7 +18,7 @@ async function fixture(overrides={}){
  if(overrides.history)initial.history=overrides.history;Object.assign(initial.content,overrides.content);Object.assign(initial.creation,overrides.creation);let state=structuredClone(initial),conflict=false;
  const descendants=()=>{const result=[];const visit=e=>{result.push(e);for(const child of e.children)visit(child);};for(const e of elements.values())visit(e);return result;};
  const get=id=>{const found=descendants().find(e=>e.id===id);if(found)return found;if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
- const context=vm.createContext({document:{getElementById:get,createElement:tag=>{const element=new Element();element.tagName=tag;return element;},querySelectorAll:()=>[]},window:{novaCreation:{basePath:'/p/'+'a'.repeat(64)},addEventListener(){},confirm:()=>true},crypto:webcrypto,TextEncoder,URL,structuredClone,fetch:async(url,options={})=>{
+ const context=vm.createContext({document:{getElementById:get,createElement:tag=>{const element=new Element();element.tagName=tag;return element;},querySelectorAll:()=>[]},window:{...(overrides.segmentRuntime?{productionComposition:productionCompositionRuntime()}:{}),novaCreation:{basePath:'/p/'+'a'.repeat(64)},addEventListener(){},confirm:()=>true},crypto:webcrypto,TextEncoder,URL,structuredClone,fetch:async(url,options={})=>{
   calls.push({url,options});if(options.method==='POST'){
    if(conflict)return{ok:false,status:409,json:async()=>({error:{code:'CONFLICT'}})};
    const payload=JSON.parse(options.body);state={...state,content:{...state.content,body:payload.body,bodyHash:bodyHash(payload.body),editToken:'next-content-token'},productionToken:'next-production-token',creation:{...state.creation,...payload.creationPatch}};
@@ -164,4 +165,16 @@ test('a new selection cannot reattach an unfinished annotation or filming descri
 
 test('routine load and save use the compact saved status while errors remain visible',async()=>{
  const f=await fixture();assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('一次明确保存');await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('保留冲突输入');f.conflict();await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,false);assert.match(f.get('notice').textContent,/冲突/);
+});
+
+test('segment page updates the same body and persists UTF16 ranges on explicit save',async()=>{
+ const f=await fixture({segmentRuntime:true,content:{body:'第一段😀\n\n第二段。',bodyHash:bodyHash('第一段😀\n\n第二段。')}});
+ assert.equal(vm.runInContext('draft.composition===undefined',f.context),true);
+ await vm.runInContext("const first=segmentComposition.segments[0]; const result=segmentRuntime().replaceSegment({body:$('body').value,composition:segmentComposition,segmentId:first.id,replacement:'修改的第一段😀'}); $('body').value=result.body; segmentBody=result.body; segmentUpdate(result.composition);",f.context);
+ await vm.runInContext('save()',f.context);const payload=JSON.parse(f.calls.find(value=>value.options.method==='POST').options.body);
+ assert.equal(payload.body,'修改的第一段😀\n\n第二段。');assert.equal(payload.creationPatch.composition.bodyHash,bodyHash(payload.body));assert.equal(payload.body.slice(payload.creationPatch.composition.segments[1].start),'第二段。');
+});
+test('whole-text edits retain unmatched segment metadata and prevent silent save',async()=>{
+ const f=await fixture({segmentRuntime:true});await vm.runInContext('draft.composition=segmentComposition',f.context);f.edit('完全重写后正文');await vm.runInContext('save()',f.context);
+ assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);assert.equal(f.get('body').value,'完全重写后正文');assert.match(f.get('notice').textContent,/段落关联待核对/);
 });

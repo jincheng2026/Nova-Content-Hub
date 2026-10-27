@@ -23,6 +23,13 @@ function artifactDraft({task,attemptId,artifactId,creation,body,bodyHash},verifi
     if(stale && ['draft','analysis','narrative'].includes(artifact.kind)) error('STALE_INPUT','正文版本已变化，请基于当前正文重新生成。');
     let creationPatch={},nextBody=body,action='保存此产物';
     const data=artifact.data && typeof artifact.data==='object' && !Array.isArray(artifact.data) ? artifact.data : {};
+    if(Object.hasOwn(data,'referenceAnalyses')) {
+        if(artifact.kind!=='analysis'||Object.keys(data).some(key=>key!=='referenceAnalyses')||!Array.isArray(data.referenceAnalyses)||!data.referenceAnalyses.length||data.referenceAnalyses.length>10000)error('INVALID_INPUT','参考拆解须由独立 analysis 产物提交，仅包含 referenceAnalyses。');
+        const ids=new Set(),references=structuredClone(creation.references);
+        for(const update of data.referenceAnalyses){if(!update||typeof update!=='object'||Array.isArray(update)||Object.keys(update).sort().join(',')!=='analysis,baselineHash,referenceId'||!/^([a-f0-9]{64})$/.test(update.baselineHash)||typeof update.analysis!=='string'||!update.analysis.trim()||update.analysis.length>100000||ids.has(update.referenceId))error('INVALID_INPUT','参考拆解缺少唯一参考、版本或有效内容。');ids.add(update.referenceId);const reference=references.find(value=>value.id===update.referenceId);if(!reference||compositionBodyHash(serializeProductionReference(reference))!==update.baselineHash)error('STALE_INPUT','参考资料已变化，请基于当前证据重新拆解。');reference.analysis=update.analysis;}
+        creationPatch.references=references;
+    }
+
     if(data.filming){if(stale)error('STALE_INPUT','拍摄清单对应旧版正文，请重新核对。');creationPatch.filming={...data.filming,shots:Array.isArray(data.filming.shots)?data.filming.shots.map(shot=>({...shot,done:false})):data.filming.shots,readThroughBodyHash:null,recordedBodyHash:null};}
     if(data.suggestions || data.annotations) {
         if(stale)error('STALE_INPUT','审稿结果对应旧版正文，请重新审稿。');
@@ -121,7 +128,11 @@ export function productionArtifactDraft(input){return withAdoption(input,artifac
 // Clone before hashing so an asynchronous preview never silently rebases its reference.
 export async function prepareProductionArtifactDraft(input){
     const snapshot=structuredClone(input),binding=transcriptBinding(snapshot.task);
-    if(binding===undefined)return productionArtifactDraft(snapshot);
+    if(binding===undefined){
+        const artifact=snapshot.task.attempts.find(value=>value.id===snapshot.attemptId)?.result?.artifacts.find(value=>value.id===snapshot.artifactId);
+        if(Array.isArray(artifact?.data?.referenceAnalyses))for(const update of artifact.data.referenceAnalyses){const reference=snapshot.creation.references.find(value=>value.id===update.referenceId);if(!reference||await productionReferenceHash(reference)!==update.baselineHash)referenceError('STALE_INPUT','参考资料版本已变化，请基于当前参考重新拆解。');}
+        return productionArtifactDraft(snapshot);
+    }
     const {task,creation,attemptId,artifactId}=snapshot;
     if(!binding||typeof binding!=='object'||Array.isArray(binding)||Object.keys(binding).sort().join(',')!=='baselineHash,intent,referenceId,version'||binding.version!==1||!['extract','correct','reextract'].includes(binding.intent)||!/^([a-f0-9]{64})$/.test(binding.baselineHash)||task.kind!=='transcription'||task.accountId||task.request.parameters.workflow)referenceError('INVALID_INPUT','转写任务缺少有效的固定意图与参考版本。');
     const current=creation.references.find(reference=>reference.id===binding.referenceId);
