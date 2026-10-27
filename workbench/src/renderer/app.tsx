@@ -228,7 +228,7 @@ function App() {
     }
     useEffect(() => {
         const epoch = epochRef.current;
-        void refreshStatus().then(async next => { if (next.currentName) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(failure => {if (epochRef.current === epoch) report(failure);});
+        void refreshStatus().then(async next => { if (next.currentName && !next.needsReselect) { const items = await invoke('listContents', {view: 'active'}); if (epochRef.current === epoch) { setContents(items); await refreshWorkspace(); } } }).catch(failure => {if (epochRef.current === epoch) report(failure);});
     }, []);
 
     useEffect(() => { const show = () => { void navigate('calendar'); }; window.addEventListener('nova-show-calendar', show); return () => window.removeEventListener('nova-show-calendar', show); });
@@ -504,6 +504,8 @@ function App() {
         await nativeAction(async () => {
             clearEditor();
             await invoke(method);
+            const next = await refreshStatus();
+            if (next.needsReselect || !next.currentName) return;
             setContents(await invoke('listContents', {view}));
             setLibraryOpen(false);
         });
@@ -649,7 +651,7 @@ function App() {
     const hasPublishedRecord = !!currentContentDetails?.publications.some(item => !currentContentDetails.publicationEvents.some(event => event.targetId === item.id));
     const contentStage = base?.deletedAt ? '回收站' : !base ? '新内容' : hasPublishedRecord ? '已有发布记录' : currentContentSummary?.selectedCandidateId ? '已选封面' : currentContentSummary?.candidateCount ? '待选封面' : '待做封面';
     const workspaceReady = !!workspace && !!library && !!assets && (page !== 'content' || !!contents);
-    const showPage = workspaceReady || page==='vault'&&!!status?.currentName || page === 'content' && detailOpen && !!draft;
+    const showPage = !status?.needsReselect && (workspaceReady || page==='vault'&&!!status?.currentName || page === 'content' && detailOpen && !!draft);
     const initialReadFailed = !showPage && !!error;
     const recoveryCards = <>
         {status?.vaultPending&&<Card title="资料修改需要核验"><p>上次修改与填写已保留。先核验结果，再继续编辑。</p><div className="actions"><Button disabled={busy} onClick={()=>void recoverVault('retry')}>核验上次修改</Button><Button disabled={busy} onClick={()=>void recoverVault('discard')}>确认未提交后放弃修改</Button></div></Card>}
@@ -678,10 +680,10 @@ function App() {
         {libraryOpen && <dialog ref={libraryDialog} className="library-manager-dialog" aria-labelledby="library-manager-title" onCancel={event => {event.preventDefault(); closeLibrary();}}><div className="dialog-heading"><div><h2 id="library-manager-title">内容库管理</h2><p>{status?.currentName || '打开或新建你的本机内容库'}</p></div><div className="actions">{blocked && <Button onClick={openRecovery}>继续处理</Button>}<Button disabled={acting} onClick={closeLibrary}>关闭</Button></div></div><div className="manager-tabs"><Button theme={libraryTab === 'resources' ? 'solid' : 'borderless'} onClick={() => {if (hasManagedDrafts()) setError('请先保存或放弃当前填写，再切换管理页。'); else setLibraryTab('resources');}}>资料与默认值</Button><Button theme={libraryTab === 'storage' ? 'solid' : 'borderless'} onClick={() => {if (hasManagedDrafts()) setError('请先保存或放弃当前填写，再切换管理页。'); else setLibraryTab('storage');}}>备份与维护</Button></div><p className="manager-error" role="alert">{error}</p>
         {libraryTab === 'storage' && <section className="library-manager" aria-label="备份与维护">
         <Card title="当前内容库"><p
-            id="current-library">{status?.currentName || '尚未打开内容库'}{status?.needsReselect ? ' · 旧绑定缺少目录身份，请明确重选' : ''}</p>
+            id="current-library">{status?.currentName || '尚未打开内容库'}{status?.needsReselect ? ' · 请重新选择内容库以确认文件访问' : ''}</p>
             <div className="actions"><Button id="create-library" disabled={busy || blocked}
                                              onClick={() => void guard(() => act('createLibrary'))}>新建知识库</Button><Button
-                id="open-library" disabled={busy || blocked}
+                id="open-library" disabled={busy || blocked && !status?.needsReselect}
                 onClick={() => void guard(() => act('openLibrary'))}>打开知识库</Button><Button disabled={busy || !status?.currentName} onClick={() => void nativeAction(() => invoke('revealLibraryFolder'))}>在文件管理器中查看</Button></div>
             {status?.creating &&
                 <div><p>新库创建结果待核实；固定原目标，失败目录会保留。</p><Button id="abandon-creation" disabled={busy}
@@ -706,7 +708,8 @@ function App() {
         <p id="error" role="alert">{error}</p>
         {workspaceUnavailable && workspace && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
-        {!showPage && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <div className="actions"><Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button><Button id="open-recovered-library" disabled={busy || !!blocked} onClick={() => void guard(() => act('openLibrary'))}>打开其他内容库</Button></div>}</section>}
+        {status?.needsReselect && <section className="creator-panel creator-empty" aria-live="polite" data-workspace-state="selection-required"><h2>请重新选择内容库以确认文件访问</h2><p>{blocked ? '待处理操作已保留，请重新选择原内容库继续。' : '原内容库已保留，请选择要使用的内容库。'}</p><div className="actions"><Button id="confirm-library-access" disabled={busy} onClick={() => void guard(() => act('openLibrary'))}>重新选择内容库</Button></div></section>}
+        {!showPage && !status?.needsReselect && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <div className="actions"><Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button><Button id="open-recovered-library" disabled={busy || !!blocked} onClick={() => void guard(() => act('openLibrary'))}>打开其他内容库</Button></div>}</section>}
         {showPage && <>
         {page==='vault'&&<VaultWorkspace key={libraryEpoch} statusChanged={async()=>{await refreshStatus();}} busy={busy||!!blocked} openContent={openProductionContent} showTasks={()=>void navigate('tasks')} openResources={()=>void openLibraryResources('profile')} openAccounts={()=>void navigate('accounts')} openReports={()=>void navigate('reports')}/>}
         {page === 'bookmarks' && <JinchengBoundWorkspace key={`${libraryEpoch}:bookmarks`} kind="bookmarks" busy={busy||!!blocked}/>}

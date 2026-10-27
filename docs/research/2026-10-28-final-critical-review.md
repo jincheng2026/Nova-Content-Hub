@@ -86,3 +86,36 @@
 证据核对：`.local-probes/mp4-asr/contracts-green.log` 为 **62 项通过、0 失败、0 skipped，16.951 秒**。新增测试实际解码，PATH 限制为 `/usr/bin:/bin`；延迟测试现已 remux video 起点 0、audio 延迟 1 秒，断言静音不少于 14000 样本且总样本增加约 16000，避免仅 audio-only 容器归零的弱验证。另验证真实 PCM 转换后成功／下游失败清理（仅下游转写在这项合同测试中 stub）。
 
 最终显式 dref 限制版真实 broker 证据已读回：`docs/verification/production/2026-10-28-installed-050-asr/mp4-2026-10-27T21-28-42.863Z/{runner-result,service-summary}.json`。记录显示通过、13.157 秒本地转写、5 个词级时间段、原资产与 mediaDecode.originalSha256 一致、预算关闭、requestsUsed=0、外部 HTTPS 尝试 0、PCM 目录已清理、隔离样例已提交接受并生成归档回执。它使用新编译 ServiceTools 与冻结候选 native payload，**不是最终重新安装应用验收**；真人语音对齐和 GUI 均明确未验。本审查未重复模型运行，也不以这些合成样例结果承诺所有平台媒体或所有语言精度。
+
+## 安装升级后的 Documents 授权启动门禁：实施前关键约束
+
+集成负责人提供真实 e3a1b44 安装候选的 TCC 日志 `/tmp/nova-final050-documents-tcc.log`。本审查读取确认 `kTCCServiceSystemPolicyDocumentsFolder` 的 existing code requirement 不匹配并进入 AUTHREQ_PROMPTING。当前 machine binding 自动恢复旧 Documents 库，`controller.initialize()` 的 vaultLocation 与随后 LibraryWatcher 同步 checkBinding 均会触及受保护目录。此前已通过的单元测试或模型 broker 测试不能替代这次真实安装失败，也不能将该安装记录为原生运行通过。
+
+拟议的 packaged 安装身份 receipt 门禁可直接收敛这个启动问题：只读取 app/userData 范围内的身份与 machine-binding，安装身份不匹配时把旧 binding 及 pending 保留在内存、设 needsReselect，跳过旧库 vaultLocation、watch、reminders 和 observer，先显示可操作窗口。receipt 只是控制是否尝试自动恢复的本机记录，不是系统已授权的证明，也不替代原库 rootIdentity／CAS。
+
+已向实现负责人指出必须处理的现有代码交叉点，尚未据方案宣布代码通过：
+
+1. `openLibrary()` 原先先 maySwitch/noPending，UI 打开按钮也会因 pending disabled。升级后必须允许明确的“重新授权原库”选择路径；选库结果与旧 root/libraryId/dev/ino 精确一致后仅解除门禁，保留所有 pending，不能用 emptyBinding 清空恢复现场。选错库不得带着旧 pending 切换。
+2. creation 的 query/retry 分支以及部分 maintenance 恢复直接使用已保存 reservation，不经 current()。实施前曾建议所有 reservation 逐一重选；该建议经主线程架构收敛后撤回，不能据此扩展业务授权门禁。最终只禁止门禁期间自动读取旧 current；明确同库重选后原显式恢复继续按既有身份/CAS/系统权限执行。creation 无 current 时没有自动源读取，不新增重选死锁。具体核对见下节。
+3. receipt 只在用户完成对应 OpenPanel 选择、受控 worker 身份核验成功、binding 持久化成功后原子写入。取消、选择错误目录、bind 失败都不写。创建／恢复的 receipt 不得先于实际成功固定目标。文件损坏、缺失或原子写失败必须保守返回需重选并保留原 binding/pending，不能降级为默认许可。
+4. 安装身份字段应至少区分平台、架构、本机绝对 exe 路径、dev/ino、版本与 mtime，按目标平台路径规则比较；不是从用户内容或跨平台同步来的授权记录。非 packaged harness 保留既有初始化行为。没有旧库时不默认探测 Documents。
+
+必要验证是首启加载零旧库 worker/watch 调用、所有 pending 原字段保全、取消／错选／失败不留 receipt、精确同库重选后可恢复、未完成 creation 的原显式恢复仍可用、receipt 缺坏回退、同安装下次启动正常恢复以及异安装身份重新门禁。最终仍需新冻结安装包在真实 macOS 上完成冷启动与明确选库验证；此节为实施前审查指导，不是修复验收结果。
+
+
+## Documents 首启门禁最终定点复核
+
+审查范围为本轮 `controller.mts`、`desktop.mts`、`startup-access.mts`、`app.tsx` 和新增启动专项；按主线程最终决定，receipt 仅是“本安装是否已明确选库”的自动恢复启发式，不是系统权限或跨 root 业务授权凭据。没有新增所有 reservation 逐一 OpenPanel 的要求，也没有把系统可能再次提示当作永久禁止恢复的理由。
+
+实际差异确认如下：
+
+- packaged 且可见启动读取 executable 的绝对路径、platform/arch、version、dev/ino、size/mtimeNs，与 app-local receipt 精确比较。缺失、损坏、符号链接、身份不可读均退回需重选；复用原安全 local-record 读取与临时文件 fsync/rename 写入，不触碰内容库路径。开发及 `show:false` harness 保持原初始化。
+- 只有已有 current 时新安装要求在内存设 needsReselect；初次加载不重写 machine binding，全部 pending 原字段保全，跳过 vaultLocation。watcher 绑定 null，reminders/canRemind 与 observer listBindings 均拒绝此状态；renderer 初次读取与工作区挂载也显式跳过。通用 IPC 和本地文件导入在调用 controller 前检查门禁，避免绕过 current() 的旧路径访问。
+- `status()` / `readMaintenanceStatus()` 只拼接内存状态。renderer `recover()` 中 query/retry creation，以及 MaintenancePanel 的 recover/queryUpgrade/continue 均来自明确按钮事件，未找到无点击便自动访问额外 reservation root 的调用。因此 creation 无 current 保留原显式恢复入口；同库重选后 maintenance/creation 的原身份、路径和 CAS 合同不变。
+- 明确重选若存在 11 类任一 pending，worker bind 返回的 root/libraryId/dev/ino 必须与旧 current 一致，随后只清 needsReselect 并保存原 binding。选错、取消、bind/保存失败不写 receipt。实际 visible Vault 选择能映射到相同 hidden runtime，保留 pending。
+- 复核中指出的一个 P2 已修：原新分支即使没有 pending 也强制原目录，旧磁盘不可恢复时会阻止用户显式打开其他库。最终仅有 pending 才要求同库；无 pending 沿原 maySwitch + 明确 OpenPanel + bind + 成功 persist 切库流程，旧指针保留到新选择成功，不自动读取旧位置。
+- desktop 仅在选库/建库/打开已升级库方法成功返回、已有 current 且门禁已解除后写 receipt。门禁期间取消不记录；receipt 写失败不冒充成功，下次启动再次重选。receipt 不声明其他 pending root 获得系统授权，后续恢复仍需用户显式动作。
+
+独立运行最终 `node --test workbench/test/startup-access.test.mjs`：**10 项通过，0 失败、0 skipped，2.404 秒**。覆盖零旧源 worker 调用、binding 字节保全、IPC 门禁、取消/错选/绑定或保存失败、同安装恢复、exe/版本/路径/平台/架构变更、损坏/链接 receipt、空库、开发 harness、真实 visible Vault 同库重选、无 pending 更换不可访问旧库、creation 无 current 原恢复可用。执行负责人另报告 native/renderer typecheck 及相关 42 项回归通过；本审查未重复全仓测试或触碰真实用户库。
+
+最终结论：这轮定点范围没有剩余可定位 P1/P2，可以冻结源码进入重新构建和安装验证。先前 e3a1b44 候选的 Documents TCC 阻塞仍是已观察到的真实安装失败，不能被此单元测试结果覆盖；新包是否能在系统许可待定时先显示窗口，以及明确选库后的恢复，必须按最终安装产物记录。本审查没有触发、批准或操作系统权限界面。

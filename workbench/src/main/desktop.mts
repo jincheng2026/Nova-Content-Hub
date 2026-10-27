@@ -21,6 +21,7 @@ import {applicationMenu} from './application-menu.mts';
 import {keepResident} from './resident.mts';
 import {createOperationQueue} from './operation-queue.mts';
 import {Preferences} from './preferences.mts';
+import {StartupAccessReceipt, assertStartupAccess} from './startup-access.mts';
 import {BootstrapRecovery} from './bootstrap-recovery.mts';
 import {LibraryWatcher} from './library-watch.mts';
 import {Reminders} from './reminders.mts';
@@ -361,8 +362,10 @@ export async function startDesktop(options:StartOptions = {}) {
     let initializationError: unknown;
     let bootstrapReason = 'none';
     let bindingBackupName: string | null = null;
+    const startupAccess = new StartupAccessReceipt({file: path.join(app.getPath('userData'), 'installation-library-selection.json'), executable: process.execPath, version: release.version, platform: process.platform, arch: process.arch, packaged: app.isPackaged, show});
+    const initializeController = async () => controller.initialize({requireLibrarySelection: await startupAccess.requiresSelection()});
     const bootstrap = new BootstrapRecovery({store: controller.store, onRecovered: async () => {
-        await controller.initialize();
+        await initializeController();
         controller.covers.revoke();
         controller.pendingView = null;
         controller.workspace.pendingView = null;
@@ -374,13 +377,13 @@ export async function startDesktop(options:StartOptions = {}) {
         const result = await bootstrap.readBootstrapRecovery();
         bootstrapReason = result.reasonCode;
         bindingBackupName = result.backupName;
-        if (result.state === 'ready' && initializationError) { await controller.initialize(); initializationError = undefined; }
+        if (result.state === 'ready' && initializationError) { await initializeController(); initializationError = undefined; }
         return result;
     };
     try {
         const startup = await readBootstrapRecovery();
         if (startup.state !== 'ready') throw Object.assign(new Error('本机内容库连接记录不可用，请使用重新连接入口保留原记录并恢复。'), {code: 'BINDING_INVALID'});
-        await controller.initialize();
+        await initializeController();
     } catch (error) {
         initializationError = error;
     }
@@ -492,6 +495,7 @@ export async function startDesktop(options:StartOptions = {}) {
     ipcMain.handle('nova:importLocalFiles', async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, []);
+            assertStartupAccess('importLocalFiles', controller.binding);
             if (args.length !== 1) throw Object.assign(new Error('文件导入参数无效。'), {code: 'INVALID_FILES'});
             if (initializationError) throw initializationError;
             return {ok: true, value: await runOperation(() => controller.importLocalFiles(args[0])).finally(syncLibraryWatcher)};
@@ -500,10 +504,15 @@ export async function startDesktop(options:StartOptions = {}) {
     for (const method of CHANNELS) ipcMain.handle(`nova:${method}`, async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, args, method);
+            assertStartupAccess(method, controller.binding);
             if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
-                value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
+                value: await runOperation(async () => {
+                    const value = await (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod]);
+                    await startupAccess.recordSelection(method, controller.binding);
+                    return value;
+                }).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
             };
         } catch (error) {
             return {

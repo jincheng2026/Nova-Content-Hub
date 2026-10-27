@@ -1,0 +1,27 @@
+Startup access fix verification (source only, no installed bundle changed)
+
+Product files:
+workbench/src/main/controller.mts
+workbench/src/main/desktop.mts
+workbench/src/main/startup-access.mts (new)
+workbench/src/renderer/app.tsx
+Test file: workbench/test/startup-access.test.mjs (new)
+
+TDD evidence: first valid new deferred-initialize test failed with unexpected vaultLocation source worker call. After implementation it passed.
+Commands and observed results:
+- npm run typecheck --prefix workbench: native and renderer both exit 0 (after platform/arch and new selection branch).
+- cd workbench && node --test test/startup-access.test.mjs: 10 tests, 10 pass, 0 fail.
+- cd workbench && node --test test/startup-access.test.mjs test/desktop-only.test.mjs test/production-desktop.test.mjs test/vault-desktop.test.mjs test/maintenance-upgrade.test.mjs: 42 tests, 42 pass, 0 fail at the eight-special-test stage; final two Vault scenarios separately included in final 10/10 run.
+- git diff --check: exit 0.
+
+Covered: new packaged identity with old current makes zero source worker calls; exact binding bytes/pending/obsolete pointers remain untouched; currentName and pending state available without source IO; cancel, wrong identity, bind error and persistence error do not save receipt; explicit same-current with pending preserves all fields; visible Vault selection resolves existing hidden runtime; no-pending explicit different Vault selection leaves old source unaccessed; matching identity restores normally; executable replacement, version/platform/arch/path differences, malformed or symlinked receipt require reselection; show:false or unpackaged harnesses do not change automatic recovery; no-current creation reservation keeps original explicit recovery flow.
+
+Design rule acceptance (docs/design/内容工作台设计标准.md):
+Foundation-04: selection-required is shown by readable text and existing card styling, not false corruption/success color.
+Interaction-01: native cancellation leaves the pending selection visible without a misleading read error; no new delayed animation.
+Interaction-03: existing OpenPanel, worker bind, identity, pending, CAS and recovery contracts retained; no new dependency or OS-permission manipulation.
+Acceptance-01: native/renderer typecheck and scoped behavior tests passed as above.
+Acceptance-02: source-level check only; final native CUA screenshot/layout verification remains with parent thread.
+Acceptance-03: no package/platform claims. Final native installed cold start/reopen remains to be verified by parent thread; Windows and Intel Mac not exercised here.
+
+No commit, live config mutation, installed app modification, OS permission action or process kill performed by this agent.

@@ -353,9 +353,10 @@ export class DesktopController {
         return this.covers.readAssistantSetup();
     }
 
-    async initialize() {
+    async initialize({requireLibrarySelection = false}: {requireLibrarySelection?: boolean} = {}) {
         this.binding = await this.store.load();
-        if(this.binding.current){try{const root=await this.worker.call('vaultLocation',{binding:this.binding.current});this.displayRoot={bindingRoot:this.binding.current.root,root};}catch{/* Existing recovery paths remain available when the source is unavailable. */}}
+        if (requireLibrarySelection && this.binding.current) this.binding.needsReselect = true;
+        if(this.binding.current && !this.binding.needsReselect){try{const root=await this.worker.call('vaultLocation',{binding:this.binding.current});this.displayRoot={bindingRoot:this.binding.current.root,root};}catch{/* Existing recovery paths remain available when the source is unavailable. */}}
         if ((this.binding.libraryId || this.binding.started) && this.binding.current === undefined) this.binding.needsReselect = true;
     }
 
@@ -402,12 +403,23 @@ export class DesktopController {
     }
 
     current(): LibraryBinding {
-        if (!this.binding.current || this.binding.needsReselect) fail('LIBRARY_NOT_READY', '请明确打开内容库；旧绑定缺少目录身份时必须重新选择。');
+        if (!this.binding.current || this.binding.needsReselect) fail('LIBRARY_NOT_READY', '请重新选择内容库以确认文件访问。');
         return this.binding.current;
     }
 
     async openLibrary() {
         return this.exclusive(async () => {
+            const pending = this.binding;
+            const hasPending = [pending.vaultPending, pending.pending, pending.creation, pending.photoPending, pending.coverPending, pending.coverActionPending, pending.workspacePending, pending.templatePending, pending.maintenancePending, pending.seedPending, pending.productionPending].some(Boolean);
+            if (this.binding.needsReselect && this.binding.current && hasPending) {
+                const destination = await this.dialogs.library?.();
+                if (!destination) return;
+                const previous = this.binding.current, current = await this.worker.call('bind', {destination});
+                if (current.root !== previous.root || current.libraryId !== previous.libraryId || current.rootIdentity.dev !== previous.rootIdentity.dev || current.rootIdentity.ino !== previous.rootIdentity.ino) fail('SOURCE_CHANGED', '请重新选择原内容库，确认文件访问后再切换；已有操作和草稿已保留。');
+                await this.persist({...this.binding, needsReselect: false});
+                await this.refreshDisplayRoot(current);
+                return;
+            }
             await this.maySwitch();
             const destination = await this.dialogs.library?.();
             if (!destination) return;
