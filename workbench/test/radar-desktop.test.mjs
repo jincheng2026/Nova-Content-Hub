@@ -75,6 +75,10 @@ test('XHS and Douyin profiles stay bound to their own sampled search authors and
  const source=new URL('../../docs/verification/2026-10-27-live-services/tikhub-all-after-recharge/',import.meta.url),read=async op=>JSON.parse(await fs.readFile(new URL(`${op}.fixture.json`,source),'utf8'));
  const dy=await read('douyin-search'),xhs=await read('xhs-search'),dyId='1'.repeat(24),xhsId='2'.repeat(24),outsideQuota='3'.repeat(24);
  dy.data.business_data[0].data.aweme_info.author={sec_uid:dyId};xhs.data.data.items[0].note.user.userid=xhsId;xhs.data.data.items[1].note.user.userid=outsideQuota;
+ // This test exercises platform binding; the provider replay dates must satisfy the test's 7-day query.
+ const recent=Math.floor(Date.now()/1000)-3600;dy.data.business_data[0].data.aweme_info.create_time=recent;
+ dy.data.business_data[0].data.aweme_info.statistics={digg_count:200};
+ for(const item of xhs.data.data.items){item.note.timestamp=recent;item.note.liked_count=200;}
  const encryption={isEncryptionAvailable:()=>true,encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'settings.json'),encryption});await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'test-key'}});
  const tools=new ServiceTools({settings});let invoked=0;tools.invoke=async r=>{invoked++;return r.operation==='douyin-search'?dy:r.operation==='xhs-search'?xhs:r.operation==='profile'?{data:{user:{follower_count:20}}}:{data:{data:{fans:30}}};};
  const file=path.join(f.dir,'multi-broker.json'),owner={worker:f.worker,current:()=>f.binding};let broker=productionToolBroker(owner,tools,file);await broker.start();t.after(()=>broker.stop());
@@ -98,4 +102,22 @@ test('XHS account analysis freezes the correct capability and never enables Douy
  const call=operation=>callServiceTool(file,{...identity,requestId:randomUUID(),tool:'tikhub',operation,id:operation.endsWith('search')?'fixture':'1'.repeat(24)});
  for(const operation of ['douyin-search','profile','user-posts','video','comments','user-search'])await assert.rejects(call(operation),{code:'PLATFORM_OPERATION_FORBIDDEN'});
  await call('xhs-search');await call('xhs-profile');assert.deepEqual(calls,['xhs-search','xhs-profile']);
+});
+
+
+test('broker persists the filtered first-page author allowance before enforcing profile access',async t=>{
+ const f=await fixture(t),fixed={...query,sampleLimit:1},created=await f.controller.createRadarTask(fixed),task=created.snapshot.tasks[0];
+ const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'radar-filter-test'};f.library.mutateProduction('claimTask',identity);
+ const encryption={isEncryptionAvailable:()=>true,encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'filter-settings.json'),encryption});
+ await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'fixture-only-key'}});
+ const recent=Math.floor(Date.now()/1000)-3600,row=(id,author,likes=200,time=recent)=>({data:{aweme_info:{aweme_id:id,author:{sec_uid:author},statistics:{digg_count:likes},create_time:time}}});
+ const raw={data:{business_data:[row('1','low-likes',1),row('2','expired',200,recent-30*86400),row('3','selected'),row('4','outside-final-limit')]}};
+ const tools=new ServiceTools({settings}),calls=[];tools.invoke=async request=>{calls.push(request.operation);return request.operation==='douyin-search'?raw:{data:{user:{follower_count:10}}};};
+ const file=path.join(f.dir,'filter-broker.json'),broker=productionToolBroker({worker:f.worker,current:()=>f.binding},tools,file);await broker.start();t.after(()=>broker.stop());
+ const call=(operation,id,extra={})=>callServiceTool(file,{...identity,requestId:randomUUID(),tool:'tikhub',operation,id,...extra});
+ await call('douyin-search',fixed.direction,{search:radarSearchFilters(fixed)});
+ assert.deepEqual(f.library.readProduction().costs[0].usage.radarAuthorIds,['selected']);
+ for(const id of ['low-likes','expired','outside-final-limit'])await assert.rejects(call('profile',id),{code:'RADAR_AUTHOR_FORBIDDEN'});
+ await call('profile','selected');assert.deepEqual(calls,['douyin-search','profile']);
+ assert.equal(f.library.readProduction().costs.reduce((n,c)=>n+c.amount,0),2);
 });

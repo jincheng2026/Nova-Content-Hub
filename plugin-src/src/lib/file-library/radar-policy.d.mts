@@ -1,4 +1,4 @@
-import type {RadarQuery} from '../../../../workbench/src/shared/radar-contracts.ts';
+import type {RadarQuery,RadarCandidate} from '../../../../workbench/src/shared/radar-contracts.ts';
 export function radarPlatforms(query:RadarQuery):string[];
 export function radarPlatform(platform:string):string;
 export function radarOperations(platform:string):string[];
@@ -9,3 +9,4 @@ export function radarAutomaticPlatforms(query:RadarQuery,allowedOperations?:stri
 export function radarPlatformSampleLimit(query:RadarQuery,platform:string,allowedOperations?:string[]):number;
 export function radarPlannedPlatforms(query:RadarQuery,allowedOperations?:string[]):string[];
 export function radarRequestLimit(query:RadarQuery,currentMax?:number):number;
+export function radarLatestEntries<T extends {radar:{candidates:RadarCandidate[]}}>(reports:T[]):Array<T & {candidate:RadarCandidate}>;

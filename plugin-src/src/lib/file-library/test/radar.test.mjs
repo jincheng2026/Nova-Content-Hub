@@ -10,10 +10,10 @@ const at='2026-10-27T00:00:00.000Z';
 const evidence=(id='123')=>({platform:query.platform,sourceId:id,url:`https://www.douyin.com/video/${id}`,title:'<script>alert(1)</script>',author:{id:'sec-test',name:'作者',followers:10},metrics:{likes:200},publishedAt:'2026-10-26T00:00:00.000Z',evidence:['真实来源 & 缺口']});
 function fixture(t){const parent=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'nova-radar-'));t.after(()=>{__testing.setHook(undefined);fs.rmSync(parent,{recursive:true,force:true});});return {root:path.join(parent,'lib'),l:createLibrary(path.join(parent,'lib'))};}
 const mutate=(l,op,input={},options)=>l.mutateProduction(op,{expectedToken:l.readProduction().editToken,...input},options);
-function accepted(l,id='123',host='codex',fixed=query,candidates=[evidence(id)]){
+function accepted(l,id='123',host='codex',fixed=query,candidates=[evidence(id)],sourceTimeVersion){
  const task=mutate(l,'createTask',{kind:'research',title:'雷达',prompt:'雷达',host,parameters:{workflow:'viral-radar',query:fixed},tools:[],budget:{amount:0,currency:'REQ'}}).tasks.at(-1);
  const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'test'};l.mutateProduction('claimTask',identity);
- const p=l.mutateProduction('submitTask',{...identity,result:{summary:'来源证据',artifacts:[{id:randomUUID(),kind:'research',title:'雷达',text:'首屏',assetHash:null,data:{radar:{schemaVersion:1,query:fixed,collectedAt:at,candidates}}}]}}),a=p.tasks.at(-1).attempts[0];
+ const p=l.mutateProduction('submitTask',{...identity,result:{summary:'来源证据',artifacts:[{id:randomUUID(),kind:'research',title:'雷达',text:'首屏',assetHash:null,data:{radar:{schemaVersion:1,...(sourceTimeVersion===undefined?{}:{sourceTimeVersion}),query:fixed,collectedAt:at,candidates}}}]}}),a=p.tasks.at(-1).attempts[0];
  mutate(l,'acceptTask',{taskId:task.id,attemptId:a.id,receiptHash:a.receipt.sha256});return {taskId:task.id,attemptId:a.id,receiptHash:a.receipt.sha256};
 }
 test('radar unknown metrics stay null; ratios require positive followers; date and threshold checks deterministic',()=>{
@@ -129,4 +129,31 @@ test('legacy frozen single-platform queries keep whitespace-compatible acceptanc
  const receipt=accepted(l,'legacy','codex',legacy,[{...evidence('legacy'),platform:' 抖音 '}]);
  const report=mutate(l,'adoptRadarResult',receipt).reports[0].meta.radar;
  assert.deepEqual(report.query,legacy);assert.equal(report.candidates[0].sourceKey,'douyin:legacy');
+});
+
+
+test('accepted artifacts retain per-source evidence times while legacy candidates use the report timestamp',t=>{
+ const {l}=fixture(t),oldAt='2026-10-25T00:00:00.000Z';
+ const receipt=accepted(l,'source-time','codex',query,[{...evidence('source-time'),collectedAt:oldAt,publishedAt:'2026-10-24T00:00:00.000Z'}],1);
+ let report=mutate(l,'adoptRadarResult',receipt).reports[0];
+ assert.equal(report.meta.radar.collectedAt,at);assert.equal(report.meta.radar.candidates[0].collectedAt,oldAt);
+ const c=report.meta.radar.candidates[0];mutate(l,'decideRadarCandidate',{reportId:report.id,candidateId:c.id,decision:'reject'});
+ const later=accepted(l,'source-time');report=mutate(l,'adoptRadarResult',later).reports[1];
+ assert.equal(report.meta.radar.candidates[0].collectedAt,at);assert.equal(report.meta.radar.candidates[0].decision,'rejected');
+ const task=structuredClone(l.readProduction().tasks[0]),a=task.attempts[0],radar=a.result.artifacts[0].data.radar;
+ const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
+ for(const invalid of [null,'not-a-time','2026-10-28T00:00:00.000Z']){
+  radar.candidates[0].collectedAt=invalid;a.receipt.resultHash=hash(a.result);a.receipt.sha256=hash({taskId:task.id,attemptId:a.id,requestHash:task.requestHash,resultHash:a.receipt.resultHash});
+  assert.throws(()=>radarArtifactCandidates(task,a.id,a.receipt.sha256),{code:'INVALID_INPUT'});
+ }
+});
+
+
+test('legacy artifacts with an explicit old source time retain their historical report-time interpretation',t=>{
+ const {l}=fixture(t),receipt=accepted(l,'legacy-time','codex',query,[{...evidence('legacy-time'),collectedAt:'2026-10-20T00:00:00.000Z'}]);
+ const report=mutate(l,'adoptRadarResult',receipt).reports[0];
+ assert.equal(report.meta.radar.candidates[0].collectedAt,at);
+ assert.equal(openLibrary(l.info.root).readProduction().reports[0].type,'viral-radar');
+ mutate(l,'decideRadarCandidate',{reportId:report.id,candidateId:report.meta.radar.candidates[0].id,decision:'reject'});
+ assert.equal(l.readProduction().reports[0].meta.radar.candidates[0].decision,'rejected');
 });
