@@ -41,8 +41,18 @@ export async function publicEndpoint(input:string,resolver:(hostname:string,opti
     // TLS still verifies the original hostname, requests remain pinned, and redirects stay disabled.
     const fixedProvider=['api.tikhub.io','ark.cn-beijing.volces.com','openspeech.bytedance.com'].includes(url.hostname);
     const synthetic=(address:string)=>isIP(address)===4&&/^198\.(18|19)\./.test(address);
-    if (!addresses.length||addresses.some(a=>!publicAddress(a.address)&&!(fixedProvider&&synthetic(a.address)))) throw new ServiceToolError('UNSAFE_ENDPOINT');
-    return {url,address:addresses[0].address,family:addresses[0].family};
+    const pairedSyntheticAlias=(address:string)=>{
+        if(isIP(address)!==6)return false;
+        let normalized:string;try{normalized=new URL(`https://[${address}]`).hostname.slice(1,-1);}catch{return false;}
+        const match=/^::ffff:(?:0:)?(c612|c613):([0-9a-f]{1,4})$/.exec(normalized);
+        if(!match)return false;
+        const low=parseInt(match[2],16),ipv4=`198.${match[1]==='c612'?18:19}.${low>>8}.${low&255}`;
+        return addresses.some(a=>a.address===ipv4&&synthetic(a.address));
+    };
+    if (!addresses.length||addresses.some(a=>!publicAddress(a.address)&&!(fixedProvider&&(synthetic(a.address)||pairedSyntheticAlias(a.address))))) throw new ServiceToolError('UNSAFE_ENDPOINT');
+    // Never connect through an IPv6 alias: pin the corresponding synthetic IPv4 instead.
+    const selected=addresses.find(a=>synthetic(a.address))??addresses[0];
+    return {url,address:selected.address,family:selected.family};
 }
 export async function boundedHttps(input:string,options:{method?:string;headers?:Record<string,string>;body?:string;maxBytes?:number;timeoutMs?:number}={}):Promise<{data:unknown;headers:Record<string,string|string[]|undefined>}> {
     const {url,address,family}=await publicEndpoint(input);

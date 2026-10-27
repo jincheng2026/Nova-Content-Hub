@@ -73,3 +73,43 @@ test('public DNS validation checks every answer and keeps the selected address f
 test('model usage keeps only actual finite provider counters without inventing a monetary charge',async t=>{const {store}=await fixture(t),tools=new ServiceTools({settings:store});await store.update({values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:3}}});tools.prepare=async()=>({service:'model',requests:1});tools.invoke=async()=>({choices:[],usage:{prompt_tokens:120,completion_tokens:45,total_tokens:165,secret:'never-ledger',input_tokens:-1,output_tokens:null}});let outcome;const r=request();delete r.operation;delete r.id;Object.assign(r,{tool:'model',instruction:'分析手工资料',text:'已授权正文'});await tools.execute(r,{afterExecute:async value=>{outcome=value;}});assert.deepEqual(outcome.usage,{costStatus:'unknown',prompt_tokens:120,completion_tokens:45,total_tokens:165});assert.equal(outcome.requestsUsed,1);});
 
 test('fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked',async()=>{const resolver=async()=>[{address:'198.18.0.120',family:4}];assert.equal((await publicEndpoint('https://api.tikhub.io/api/v1/test',resolver)).address,'198.18.0.120');assert.equal((await publicEndpoint('https://ark.cn-beijing.volces.com/api/v3',resolver)).url.hostname,'ark.cn-beijing.volces.com');await assert.rejects(publicEndpoint('https://compatible.example/api/v3',resolver),{code:'UNSAFE_ENDPOINT'});await assert.rejects(publicEndpoint('https://api.tikhub.io/api/v1/test',async()=>[{address:'127.0.0.1',family:4}]),{code:'UNSAFE_ENDPOINT'});});
+
+
+test('fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias',async t=>{
+ const fixtures=[
+  {name:'observed translated pair IPv4 first',ipv4:'198.18.0.120',alias:'::ffff:0:c612:78'},
+  {name:'observed translated pair IPv6 first',ipv4:'198.18.0.120',alias:'::ffff:0:c612:78',aliasFirst:true},
+  {name:'mapped hexadecimal alias',ipv4:'198.18.0.120',alias:'::ffff:c612:78',aliasFirst:true},
+  {name:'mapped dotted alias',ipv4:'198.18.0.120',alias:'::ffff:198.18.0.120',aliasFirst:true},
+  {name:'expanded translated alias',ipv4:'198.18.0.120',alias:'0:0:0:0:FFFF:0:C612:0078',aliasFirst:true},
+  {name:'translated 198.19 address',ipv4:'198.19.255.254',alias:'::ffff:0:c613:fffe',aliasFirst:true},
+  {name:'mapped 198.19 address',ipv4:'198.19.255.254',alias:'::ffff:c613:fffe',aliasFirst:true},
+ ];
+ for(const fixture of fixtures)await t.test(fixture.name,async()=>{
+  const v4={address:fixture.ipv4,family:4},v6={address:fixture.alias,family:6};
+  for(const host of ['api.tikhub.io','ark.cn-beijing.volces.com','openspeech.bytedance.com']){
+   const endpoint=await publicEndpoint(`https://${host}/api/test`,async()=>fixture.aliasFirst?[v6,v4]:[v4,v6]);
+   assert.equal(endpoint.address,fixture.ipv4);assert.equal(endpoint.family,4);assert.equal(endpoint.url.hostname,host);
+  }
+ });
+});
+
+test('synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts',async t=>{
+ const v4={address:'198.18.0.120',family:4},v6={address:'::ffff:0:c612:78',family:6};
+ const fixtures=[
+  {name:'translated alias without IPv4',answers:[v6]},
+  {name:'mapped alias without IPv4',answers:[{address:'::ffff:c612:78',family:6}]},
+  {name:'translated alias for different IPv4',answers:[v4,{address:'::ffff:0:c612:79',family:6}]},
+  {name:'mapped alias for different subnet',answers:[v4,{address:'::ffff:c613:78',family:6}]},
+  {name:'translated alias with public IPv4',answers:[{address:'8.8.8.8',family:4},v6]},
+  {name:'paired alias mixed with loopback',answers:[v4,v6,{address:'127.0.0.1',family:4}]},
+  {name:'paired alias mixed with private IPv6',answers:[v4,v6,{address:'fc00::1',family:6}]},
+  {name:'paired alias mixed with mapped private IPv4',answers:[v4,v6,{address:'::ffff:10.0.0.1',family:6}]},
+  {name:'unrecognized translation prefix',answers:[v4,{address:'64:ff9b::c612:78',family:6}]},
+  {name:'custom provider',host:'compatible.example',answers:[v4,v6]},
+  {name:'official hostname suffix attack',host:'api.tikhub.io.evil.example',answers:[v4,v6]},
+ ];
+ for(const fixture of fixtures)await t.test(fixture.name,async()=>{
+  await assert.rejects(publicEndpoint(`https://${fixture.host??'api.tikhub.io'}/api/test`,async()=>fixture.answers),{code:'UNSAFE_ENDPOINT'});
+ });
+});

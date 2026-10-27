@@ -1,3 +1,4 @@
+import {groupTemplates} from '../shared/template-groups.ts';
 import {isSelectableTemplate} from '../shared/template-availability.ts';
 import {assistantLaunchNotice, taskProgressLabel, taskStatusChanged, mergeTaskProgress} from '../shared/task-progress.ts';
 import {useTaskProgress, TaskProgressDetails} from './task-progress.tsx';
@@ -193,19 +194,9 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
     if (next && isSelectableTemplate(next)) { appliedSelection.current = selectedTemplate.key; touched.current.template = true; setTemplateId(next.id); setTemplateVersion(next.version); setSamples(next.samples.map(sample => sample.assetHash)); }
   }, [selectedTemplate?.id, selectedTemplate?.key, assets]);
   const enabled = !!status?.currentName && !busy && !blocked;
-  const templateGroups = useMemo(() => {
-    const available = assets?.templates ?? [], byId = new Map(available.map(item => [item.id, item]));
-    const groups = new Map<string, typeof available>();
-    for (const item of available) {
-      if (!isSelectableTemplate(item)) continue;
-      let source = item; const visited = new Set([item.id]);
-      while (source.derivedFrom && byId.has(source.derivedFrom.id) && !visited.has(source.derivedFrom.id)) {visited.add(source.derivedFrom.id); source = byId.get(source.derivedFrom.id)!;}
-      const members = groups.get(source.id) ?? []; members.push(item); groups.set(source.id, members);
-    }
-    return [...groups].map(([id, members]) => ({source: byId.get(id)!, members}));
-  }, [assets]);
+  const templateGroups = useMemo(() => groupTemplates(assets?.templates ?? [], library?.templates), [assets, library]);
     const previewGroup = templateGroups.find(group => group.members.some(item => item.id === previewTemplate?.id))?.members ?? [];
-  const matching = templateGroups.filter(({source, members}) => (templateSource === 'all' || (templateSource === 'builtin' ? source.builtin : members.some(item => !item.builtin))) && members.some(item => `${item.name} ${item.description}`.toLowerCase().includes(query.trim().toLowerCase())));
+  const matching = templateGroups.filter(({origin, members}) => (templateSource === 'all' || origin === templateSource) && members.some(item => `${item.name} ${item.description}`.toLowerCase().includes(query.trim().toLowerCase())));
   const currentTemplatePage = Math.min(page, Math.max(1, Math.ceil(matching.length / templatePageSize)));
   const visibleTemplates = matching.slice((currentTemplatePage - 1) * templatePageSize, currentTemplatePage * templatePageSize);
   function chooseTemplate(id: string) { const next = assets?.templates.find(t => t.id === id); if (next && isSelectableTemplate(next) && (id !== templateId || invalidTemplate)) { touched.current.template = true; setTemplateId(id); setTemplateVersion(next.version); setSamples(next.samples.map(r => r.assetHash)); } }
