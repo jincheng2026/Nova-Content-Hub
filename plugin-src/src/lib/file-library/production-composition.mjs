@@ -22,21 +22,31 @@ export function productionCompositionRuntime() {
         let end=0;const ids=new Set();
         return value.segments.every(segment=>{
             if(!fields(segment,['id','start','end','title','purpose','references','visual'])||!uuid.test(segment.id)||ids.has(segment.id)||!Number.isSafeInteger(segment.start)||!Number.isSafeInteger(segment.end)||segment.start<end||segment.end<=segment.start||!['title','purpose','visual'].every(key=>text(segment[key]))||!Array.isArray(segment.references)||segment.references.length>1000)return false;
-            if(body!==undefined&&(segment.end>body.length||!boundary(body,segment.start)||!boundary(body,segment.end)))return false;
+            if(body!==undefined&&(segment.end>body.length||!boundary(body,segment.start)||!boundary(body,segment.end)||body.slice(end,segment.start).trim()))return false;
             ids.add(segment.id);end=segment.end;
             return segment.references.every(ref=>fields(ref,['referenceId','role','quote','startMs','endMs','visual'])&&uuid.test(ref.referenceId)&&(!referenceIds||referenceIds.includes(ref.referenceId))&&['primary','support','example'].includes(ref.role)&&text(ref.quote)&&text(ref.visual)&&(ref.startMs===null&&ref.endMs===null||Number.isFinite(ref.startMs)&&ref.startMs>=0&&Number.isFinite(ref.endMs)&&ref.endMs>=ref.startMs));
-        });
+        })&&(body===undefined||!body.slice(end).trim());
     }
     function assertComposition(value,body) {if(!validComposition(value,body,bodyHash(body)))error('STALE_INPUT','段落对应的正文版本已变化，或段落范围无效；请核对后继续。');}
     function createComposition(body,createId=()=>globalThis.crypto.randomUUID()) {
         const segments=[];for(const match of body.matchAll(/[^\r\n]+(?:\r?\n(?!\r?\n)[^\r\n]+)*/g)){if(!match[0].trim())continue;segments.push({id:createId(),start:match.index,end:match.index+match[0].length,title:`第 ${segments.length+1} 段`,purpose:'',references:[],visual:''});}
         return {version:1,bodyHash:bodyHash(body),segments};
     }
+    // Fill only known-unowned gaps: after all old anchors matched, or after explicit
+    // user reassignment. A partial artifact still fails validComposition directly.
+    function completeComposition(composition,body,createId=()=>globalThis.crypto.randomUUID()) {
+        if(!validComposition(composition,undefined,bodyHash(body))||composition.segments.some(segment=>segment.end>body.length||!boundary(body,segment.start)||!boundary(body,segment.end)))error('INVALID_INPUT','段落范围、正文版本或字符边界无效，原关联保留。');
+        const segments=[],ids=new Set(composition.segments.map(segment=>segment.id));let end=0;
+        const gap=(start,finish)=>{for(const segment of createComposition(body.slice(start,finish),createId).segments){if(ids.has(segment.id))error('INVALID_INPUT','新增段落编号重复，原稿保留。');ids.add(segment.id);segments.push({...segment,start:segment.start+start,end:segment.end+start});}};
+        for(const segment of composition.segments){gap(end,segment.start);segments.push(segment);end=segment.end;}gap(end,body.length);
+        const next={...composition,segments};if(!validComposition(next,body,bodyHash(body)))error('INVALID_INPUT','正文段落补全超出范围或数量上限，原稿保留。');return next;
+    }
     function migrateComposition(composition,previousBody,body) {
         assertComposition(composition,previousBody);const segments=[],unmatchedSegments=[];
         for(const segment of composition.segments){const quote=previousBody.slice(segment.start,segment.end),start=position(body,quote);if(start<0){unmatchedSegments.push({...segment,quote});continue;}segments.push({...segment,start,end:start+quote.length});}
         segments.sort((a,b)=>a.start-b.start);const overlaps=new Set();for(let i=1;i<segments.length;i++)if(segments[i].start<segments[i-1].end){overlaps.add(segments[i].id);overlaps.add(segments[i-1].id);}for(const segment of segments.filter(value=>overlaps.has(value.id)))unmatchedSegments.push({...segment,quote:previousBody.slice(composition.segments.find(value=>value.id===segment.id).start,composition.segments.find(value=>value.id===segment.id).end)});
-        return {composition:{version:1,bodyHash:bodyHash(body),segments:segments.filter(value=>!overlaps.has(value.id))},unmatchedSegments};
+        const mapped={version:1,bodyHash:bodyHash(body),segments:segments.filter(value=>!overlaps.has(value.id))},requiresReview=unmatchedSegments.length>0;
+        return {composition:requiresReview?mapped:completeComposition(mapped,body),unmatchedSegments,requiresReview};
     }
     function replaceSegment({body,composition,segmentId,replacement}) {
         assertComposition(composition,body);const segment=composition.segments.find(value=>value.id===segmentId);if(!segment||typeof replacement!=='string'||!replacement.length)error('INVALID_INPUT','段落不存在，或修改后的段落为空。');
@@ -75,6 +85,6 @@ export function productionCompositionRuntime() {
         return rows.map(row=>row.map(cell).join('\t')).join('\n');
     }
     function validAdoptions(values) {return Array.isArray(values)&&values.length<=10000&&values.every(value=>fields(value,['taskId','attemptId','receiptHash','bodyHash','at','artifactIds'])&&uuid.test(value.taskId)&&uuid.test(value.attemptId)&&hash.test(value.receiptHash)&&hash.test(value.bodyHash)&&typeof value.at==='string'&&(()=>{try{return new Date(value.at).toISOString()===value.at;}catch{return false;}})()&&(value.artifactIds===undefined||Array.isArray(value.artifactIds)&&value.artifactIds.length>0&&new Set(value.artifactIds).size===value.artifactIds.length&&value.artifactIds.every(id=>uuid.test(id))));}
-    return {bodyHash,position,validComposition,assertComposition,createComposition,migrateComposition,replaceSegment,splitSegment,mergeSegment,deleteSegment,filmingScript,validAdoptions};
+    return {bodyHash,position,validComposition,assertComposition,createComposition,completeComposition,migrateComposition,replaceSegment,splitSegment,mergeSegment,deleteSegment,filmingScript,validAdoptions};
 }
-export const {bodyHash:compositionBodyHash,validComposition:validProductionComposition,createComposition:createProductionComposition,migrateComposition:migrateProductionComposition,replaceSegment:replaceProductionSegment,splitSegment:splitProductionSegment,mergeSegment:mergeProductionSegment,deleteSegment:deleteProductionSegment,filmingScript:productionFilmingScript,validAdoptions:validProductionAdoptions}=productionCompositionRuntime();
+export const {bodyHash:compositionBodyHash,validComposition:validProductionComposition,createComposition:createProductionComposition,completeComposition:completeProductionComposition,migrateComposition:migrateProductionComposition,replaceSegment:replaceProductionSegment,splitSegment:splitProductionSegment,mergeSegment:mergeProductionSegment,deleteSegment:deleteProductionSegment,filmingScript:productionFilmingScript,validAdoptions:validProductionAdoptions}=productionCompositionRuntime();

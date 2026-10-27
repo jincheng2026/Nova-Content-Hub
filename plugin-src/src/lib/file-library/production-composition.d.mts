@@ -7,7 +7,8 @@ export interface CompositionRuntime {
  validComposition(value:unknown,body?:string,expectedHash?:string,referenceIds?:string[]):value is ProductionComposition;
  assertComposition(value:ProductionComposition,body:string):void;
  createComposition(body:string,createId?:()=>string):ProductionComposition;
- migrateComposition(composition:ProductionComposition,previousBody:string,body:string):{composition:ProductionComposition;unmatchedSegments:(ProductionSegment&{quote:string})[]};
+ completeComposition(composition:ProductionComposition,body:string,createId?:()=>string):ProductionComposition;
+ migrateComposition(composition:ProductionComposition,previousBody:string,body:string):{composition:ProductionComposition;unmatchedSegments:(ProductionSegment&{quote:string})[];requiresReview:boolean};
  replaceSegment(input:{body:string;composition:ProductionComposition;segmentId:string;replacement:string}):{body:string;composition:ProductionComposition};
  splitSegment(input:SegmentStructureInput&{offset:number;createId?:()=>string}):SegmentStructureResult;
  mergeSegment(input:SegmentStructureInput):SegmentStructureResult;
@@ -26,3 +27,4 @@ export const validProductionAdoptions:CompositionRuntime['validAdoptions'];
 export const splitProductionSegment:CompositionRuntime['splitSegment'];
 export const mergeProductionSegment:CompositionRuntime['mergeSegment'];
 export const deleteProductionSegment:CompositionRuntime['deleteSegment'];
+export const completeProductionComposition:CompositionRuntime['completeComposition'];
