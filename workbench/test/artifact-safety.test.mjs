@@ -39,7 +39,7 @@ test('copy filters exclude local state, fixtures and logs without excluding serv
 test('sealed artifacts reject copied local state by path without reading it', async t => {
     for (const file of ['.env', 'workbench/service-settings.json', 'plugin/credentials.enc', 'machine-binding.recovery.json', 'config.test.json', 'plugin-src/fixtures/settings.json', 'logs/request.log', 'content/内容库.json']) {
         const f = tree(t); f.write(file, 'DO_NOT_PRINT_SECRET');
-        await assert.rejects(assertArtifactSafe(f.root), error => error.code === 'ARTIFACT_UNSAFE' && error.message.includes(file) && !error.message.includes('DO_NOT_PRINT_SECRET'));
+        await assert.rejects(assertArtifactSafe(f.root), error => error.code === 'ARTIFACT_UNSAFE' && error.findings.some(issue => issue.file === file || file.startsWith(issue.file + '/')) && !error.message.includes('DO_NOT_PRINT_SECRET'));
     }
 });
 
@@ -170,4 +170,15 @@ test('bare credential rules preserve environment references, code variables and 
     f.write('configure.ini','api_key=env.TIKHUB_API_KEY\nmodel_api_key=secrets.configuredModelKey\n');
     f.write('client.mjs','const apiKey = configuredServiceApiKey;\napiKey = runtimeConfig.apiKey;\n');
     await assertArtifactSafe(f.root);
+});
+
+
+test('provider-prefixed placeholders share literal detection rules without exempting ordinary provider keys', async t => {
+    for (const value of ['sk-proj-mock-for-testing-only-12345','sk-test-for-testing-only-12345','gsk_mock-for-testing-only-12345']) {
+        const f = tree(t); f.write('client.mjs',`export const apiKey = '${value}';`); await assertArtifactSafe(f.root);
+    }
+    for (const value of ['sk-proj-' + fakeSecret(), 'sk-proj-' + fakeSecret().slice(0,16) + '-mock-' + fakeSecret().slice(16), 'gsk_' + fakeSecret()]) {
+        const f = tree(t); f.write('client.mjs',`export const apiKey = '${value}';`);
+        await assert.rejects(assertArtifactSafe(f.root), error => error.code === 'ARTIFACT_UNSAFE' && error.findings.some(issue => issue.rule === 'PROVIDER_KEY') && error.findings.some(issue => issue.rule === 'CREDENTIAL_LITERAL') && !error.message.includes(value));
+    }
 });

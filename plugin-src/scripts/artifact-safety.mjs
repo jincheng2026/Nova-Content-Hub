@@ -25,7 +25,8 @@ export function releaseSourceFilter(input) {
     return !pathRule(slash(input));
 }
 
-const placeholder = value => /^(?:<[^>]+>|\$\{[^}]+\}|(?:your|example|sample|mock|fake|dummy|test|placeholder|replace|insert)(?:[\s_:-].*)?|(?:x|\*|•){3,})$/i.test(value);
+const providerPayload = value => value.replace(/^(?:sk-(?:proj-|svcacct-|ant-api\d+-)?|gsk_)/, '');
+const placeholder = value => /^(?:<[^>]+>|\$\{[^}]+\}|(?:your|example|sample|mock|fake|dummy|test|placeholder|replace|insert)(?:[\s_:-].*)?|(?:x|\*|•){3,})$/i.test(providerPayload(value));
 const credentialName = /^(?:api[_-]?key|access[_-]?(?:key|token)|secret[_-]?key|auth[_-]?token|client[_-]?secret|(?:tikhub|model|asr|groq|custom|openai|anthropic|volc)[_-]?(?:(?:api|access|secret)[_-]?)?(?:key|token|secret))$/i;
 const secretLiteral = value => value.length >= 16 && !placeholder(value) && /^[A-Za-z0-9_+./=-]+$/.test(value);
 function contentRules(bytes, file, allowExampleLibrary) {
@@ -37,7 +38,7 @@ function contentRules(bytes, file, allowExampleLibrary) {
         }
     }
     if (/-----BEGIN (?:RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----/.test(text)) rules.add('PRIVATE_KEY');
-    for (const match of text.matchAll(/\b(?:sk-(?:proj-|svcacct-|ant-api\d+-)?[A-Za-z0-9_-]{20,}|gsk_[A-Za-z0-9]{20,}|AKIA[A-Z0-9]{16})\b/g)) if (!placeholder(match[0].replace(/^(?:sk-(?:proj-|svcacct-|ant-api\d+-)?|gsk_)/, ''))) rules.add('PROVIDER_KEY');
+    for (const match of text.matchAll(/\b(?:sk-(?:proj-|svcacct-|ant-api\d+-)?[A-Za-z0-9_-]{20,}|gsk_[A-Za-z0-9]{20,}|AKIA[A-Z0-9]{16})\b/g)) if (!placeholder(match[0])) rules.add('PROVIDER_KEY');
     // Third-party packages are checked for explicit provider/private keys, never generic entropy.
     if (dependency(file)) return rules;
     for (const match of text.matchAll(/["'`]?([A-Za-z][A-Za-z0-9_-]*)["'`]?\s*[:=]\s*(["'`])([^\r\n"'`]+)\2/g)) {
