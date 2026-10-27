@@ -1,4 +1,6 @@
 export type ServiceCredential = 'tikhub' | 'model' | 'asr';
+export interface ServiceCredentialRequest {service:ServiceCredential}
+export interface ServiceCredentialDisclosure {service:ServiceCredential;key:string}
 export interface ServiceSettingsValues {
     model: {provider: 'volc'|'compatible'; baseUrl: string; modelId: string};
     asr: {mode: 'local-first'|'local-only'|'volc'; resourceId: string; localEngine: 'faster-whisper'|'whisper-cpp'|'qwen3-asr'; localExecutable: string; localModelPath: string};

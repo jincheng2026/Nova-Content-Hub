@@ -1,0 +1,56 @@
+✔ only exact top-level sender with no renderer arguments can invoke business (4.763292ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (0.58675ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.478125ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (35.194167ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.499542ms)
+✔ saved credential disclosure is finite, explicit, read-only and excluded from settings reads (21.1125ms)
+✔ credential reveal keeps the existing trusted renderer boundary (0.474958ms)
+✔ broker rejects model or ASR changes after a task freezes service settings before any service request (1985.164208ms)
+✔ local execution uses the configuration prepared before an asynchronous reservation (3.5995ms)
+✔ credentials stay encrypted and omitted/null/replace semantics preserve independent keys (30.722708ms)
+✔ plaintext fallback safeStorage backend cannot save/use credentials (2.159667ms)
+✔ SSRF rejects all local, mapped, reserved and unsafe schemes (5.698125ms)
+✔ strict tool input rejects extraneous providers/unsafe IDs/invalid identity (0.513041ms)
+✔ search whitelist maps documented platform filters and keeps Xiaohongshu on one first page (2.1365ms)
+✔ search cache separates every provider behavior parameter while equivalent filter order shares results (30.923458ms)
+✔ legacy cache and unknown-cost markers survive the addition of search filters (2.573916ms)
+✔ successful TikHub collection caches traceable data and charges a single request (4.41925ms)
+✔ unknown provider cost blocks replay across restart until explicit manual reconciliation (7.254292ms)
+✔ known validation failure and local failure use zero requests; cloud requires explicit permission before reserve (2.23325ms)
+✔ loopback broker requires token, rejects Origin and serves bounded requests through stdin client API (29.727875ms)
+✔ production broker verifies frozen comment consent and budgets before provider calls (21.499375ms)
+✔ production broker reserves and settles every call independently and cache hits cost zero (24.571833ms)
+✔ production ASR only copies registered bytes to private temp and local usage zero needs no paid budget (18.604ms)
+✔ public DNS validation checks every answer and keeps the selected address for pinning (0.3965ms)
+✔ model usage keeps only actual finite provider counters without inventing a monetary charge (6.462458ms)
+✔ fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked (0.428042ms)
+▶ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias
+  ✔ observed translated pair IPv4 first (0.290584ms)
+  ✔ observed translated pair IPv6 first (0.081ms)
+  ✔ mapped hexadecimal alias (0.079041ms)
+  ✔ mapped dotted alias (0.079791ms)
+  ✔ expanded translated alias (0.072667ms)
+  ✔ translated 198.19 address (0.063792ms)
+  ✔ mapped 198.19 address (0.055667ms)
+✔ fixed providers pin the matching synthetic IPv4 when DNS also returns its IPv6 alias (1.064417ms)
+▶ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts
+  ✔ translated alias without IPv4 (0.074292ms)
+  ✔ mapped alias without IPv4 (0.044083ms)
+  ✔ translated alias for different IPv4 (0.043833ms)
+  ✔ mapped alias for different subnet (0.041125ms)
+  ✔ translated alias with public IPv4 (0.039208ms)
+  ✔ paired alias mixed with loopback (0.040833ms)
+  ✔ paired alias mixed with private IPv6 (0.043167ms)
+  ✔ paired alias mixed with mapped private IPv4 (0.0435ms)
+  ✔ unrecognized translation prefix (0.043833ms)
+  ✔ custom provider (0.042375ms)
+  ✔ official hostname suffix attack (0.037166ms)
+✔ synthetic IPv6 exceptions reject unpaired aliases, private answers and custom hosts (0.807667ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2480.009375

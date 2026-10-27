@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
         return () => { ipcRenderer.removeListener('nova:workspace-changed', receive); };
     },
     readServiceSettings: () => ipcRenderer.invoke('nova:readServiceSettings'),
+    revealServiceCredential: input => ipcRenderer.invoke('nova:revealServiceCredential',input),
     saveServiceSettings: input => ipcRenderer.invoke('nova:saveServiceSettings', input),
     checkServiceReadiness: () => ipcRenderer.invoke('nova:checkServiceReadiness'),
     createRadarTask: input => ipcRenderer.invoke('nova:createRadarTask', input),

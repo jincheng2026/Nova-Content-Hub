@@ -7,6 +7,9 @@
 .service-settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;min-width:0}
 .service-settings-grid>div,.service-settings-key{display:flex;flex-direction:column;gap:6px;min-width:0}
 .service-settings-key{margin-block:8px}
+.service-settings-key-saved{display:flex;align-items:center;gap:8px;min-width:0}
+.service-settings-key-saved>.semi-input-wrapper{flex:1;min-width:0;background:var(--surface-inset,#fafafc)}
+.service-settings-key-saved>.semi-button{flex:none}
 .service-settings-key-status{color:var(--muted,#6e6e73);font-size:13px}
 .service-settings-key-actions,.service-settings-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .service-settings .service-settings-notice{padding:12px 16px;border-radius:12px;background:#e8f1fc;color:#1d1d1f}

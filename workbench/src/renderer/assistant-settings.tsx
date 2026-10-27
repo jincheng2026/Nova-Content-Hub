@@ -28,7 +28,7 @@ interface SettingsProps {
   run<T>(action: () => Promise<T>): Promise<T | undefined>; close(): void;
   library?: WorkspaceLibrarySnapshot | null; assets?: CoverResults['listCoverAssets'] | null;
   refresh?(confirmed?: WorkspaceLibrarySnapshot): Promise<void>; managePhotos?(): void; manageLibrary?(): void; manageChannels?(): void;
-  services?: ReactNode; preferences?: ReactNode; setup?: ReactNode; recovery?: ReactNode; children?: ReactNode;
+  services?: ReactNode|((active:boolean)=>ReactNode); preferences?: ReactNode; setup?: ReactNode; recovery?: ReactNode; children?: ReactNode;
 }
 export function AssistantSettings({status, busy, blocked, run, close, library = null, assets = null, refresh, managePhotos, manageLibrary, manageChannels, services, preferences, setup: setupPanel, recovery, children}: SettingsProps) {
   const dialog = useRef<HTMLDialogElement>(null);
@@ -112,6 +112,6 @@ export function AssistantSettings({status, busy, blocked, run, close, library = 
       </div>
       {setupPanel}
       {(recovery || children) && <SettingsHelp kind="recovery" title="内容库连接排错与恢复">{recovery}{children}</SettingsHelp>}
-    </div></Tabs.TabPane><Tabs.TabPane itemKey="help" tab="帮助与排查"><div className="creator-settings-help" hidden={tab !== 'help'}><section aria-labelledby="settings-troubleshoot-title"><div className="creator-settings-help-heading"><h3 id="settings-troubleshoot-title">常用排查</h3><p>先检查状态，再按需要导出诊断或恢复连接。</p></div><div className="creator-settings-help-actions" ref={setHelpActions}/></section><section aria-labelledby="settings-guides-title"><div className="creator-settings-help-heading"><h3 id="settings-guides-title">使用说明</h3><p>按需展开查看操作步骤与注意事项。</p></div><div className="creator-settings-help-guides" ref={setHelpGuides}/></section></div></Tabs.TabPane><Tabs.TabPane tab="服务与模型" itemKey="services">{services}</Tabs.TabPane></Tabs></SettingsHelpTarget.Provider>
+    </div></Tabs.TabPane><Tabs.TabPane itemKey="help" tab="帮助与排查"><div className="creator-settings-help" hidden={tab !== 'help'}><section aria-labelledby="settings-troubleshoot-title"><div className="creator-settings-help-heading"><h3 id="settings-troubleshoot-title">常用排查</h3><p>先检查状态，再按需要导出诊断或恢复连接。</p></div><div className="creator-settings-help-actions" ref={setHelpActions}/></section><section aria-labelledby="settings-guides-title"><div className="creator-settings-help-heading"><h3 id="settings-guides-title">使用说明</h3><p>按需展开查看操作步骤与注意事项。</p></div><div className="creator-settings-help-guides" ref={setHelpGuides}/></section></div></Tabs.TabPane><Tabs.TabPane tab="服务与模型" itemKey="services">{typeof services==='function'?services(tab==='services'):services}</Tabs.TabPane></Tabs></SettingsHelpTarget.Provider>
   </dialog>;
 }

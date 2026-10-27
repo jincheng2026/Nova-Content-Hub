@@ -1,4 +1,4 @@
-import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness} from '../shared/service-contracts.ts';
+import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness,ServiceCredentialRequest,ServiceCredentialDisclosure} from '../shared/service-contracts.ts';
 import {readPlatformCatalog} from './platform-catalog.mts';
 import {ProductionController} from './production-controller.mts';
 import type {ProductionCallbacks} from './production-controller.mts';
@@ -45,7 +45,7 @@ function fail(code: string, message: string): never {
 }
 
 export interface ControllerServices {
-    productionServices?: {readServiceSettings(): ServiceSettingsView | Promise<ServiceSettingsView>; saveServiceSettings(input: ServiceSettingsPatch): Promise<ServiceSettingsView>; checkServiceReadiness(): Promise<ServiceReadiness>};
+    productionServices?: {readServiceSettings(): ServiceSettingsView | Promise<ServiceSettingsView>; saveServiceSettings(input: ServiceSettingsPatch): Promise<ServiceSettingsView>; revealServiceCredential(input:ServiceCredentialRequest):ServiceCredentialDisclosure|Promise<ServiceCredentialDisclosure>; checkServiceReadiness(): Promise<ServiceReadiness>};
     bootstrap?: Pick<BootstrapRecovery, 'readBootstrapRecovery' | 'resetMachineBinding'>;
     preferences?: Pick<Preferences, 'readPreferences' | 'savePreferences'>;
     reminders?: Pick<Reminders, 'readReminderStatus' | 'testReminder'>;
@@ -119,6 +119,7 @@ export class DesktopController {
     }
 
     readServiceSettings(input?: undefined) { validateInput('readServiceSettings', input); return this.service('productionServices').readServiceSettings(); }
+    revealServiceCredential(input:ServiceCredentialRequest) {validateInput('revealServiceCredential',input);return this.exclusive(()=>Promise.resolve(this.service('productionServices').revealServiceCredential(input)));}
     saveServiceSettings(input: ServiceSettingsPatch) { validateInput('saveServiceSettings', input); return this.exclusive(() => this.service('productionServices').saveServiceSettings(input)); }
     checkServiceReadiness(input?: undefined) { validateInput('checkServiceReadiness', input); return this.exclusive(() => this.service('productionServices').checkServiceReadiness()); }
     readPlatformCatalog(input?: undefined) { this.production.validate('readPlatformCatalog', input); return readPlatformCatalog(); }

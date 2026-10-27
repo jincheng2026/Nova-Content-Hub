@@ -1,4 +1,4 @@
-import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness} from './service-contracts.ts';
+import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness,ServiceCredentialRequest,ServiceCredentialDisclosure} from './service-contracts.ts';
 import type {ProductionInputs, ProductionResults, ProductionPending, ProductionWorkerOperations, ProductionFileKind} from './production-contracts.ts';
 import type {LocalFileKind, LocalFileResults, PhotoImportOptions} from './local-files.ts';
 import type {CoverInputs, CoverResults, CoverWorkerOperations, CoverPending, PhotoPending, CoverActionPending, Assistant} from './cover-contracts.ts';
@@ -127,6 +127,7 @@ export interface Status {
 
 export interface DesktopInputs extends ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     readServiceSettings: undefined;
+    revealServiceCredential: ServiceCredentialRequest;
     saveServiceSettings: ServiceSettingsPatch;
     checkServiceReadiness: undefined;
     choosePromptDocument: undefined;
@@ -148,6 +149,7 @@ export interface DesktopInputs extends ProductionInputs, CoverInputs, WorkspaceI
 
 export interface DesktopResults extends ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     readServiceSettings: ServiceSettingsView;
+    revealServiceCredential: ServiceCredentialDisclosure;
     saveServiceSettings: ServiceSettingsView;
     checkServiceReadiness: ServiceReadiness;
     choosePromptDocument: {title: string; body: string} | null;

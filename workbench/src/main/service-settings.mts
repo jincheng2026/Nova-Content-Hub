@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {defaultServiceSettings, serviceCredentials, serviceSettingsPatch, serviceSettingsValues} from '../shared/service-validation.ts';
-import type {ServiceCredential, ServiceSettingsPatch, ServiceSettingsValues, ServiceSettingsView} from '../shared/service-contracts.ts';
+import type {ServiceCredential,ServiceCredentialDisclosure, ServiceSettingsPatch, ServiceSettingsValues, ServiceSettingsView} from '../shared/service-contracts.ts';
 export interface ServiceEncryption {isEncryptionAvailable(): boolean; getSelectedStorageBackend?(): string; encryptString(text: string): Buffer; decryptString(bytes: Buffer): string}
 const fail = (code: string) => {throw Object.assign(new Error(code === 'ENCRYPTION_UNAVAILABLE' ? '系统安全存储不可用，请解锁钥匙串或配置系统凭据存储。' : '服务设置不可用；原设置文件已保留。'), {code});};
 export class ServiceSettingsStore {
@@ -29,6 +29,7 @@ export class ServiceSettingsStore {
         this.initialized=true; return this.read();
     }
     read(): ServiceSettingsView {if (!this.initialized) fail('SETTINGS_UNAVAILABLE'); return {values: structuredClone(this.values), credentials: {tikhub:{hasKey:!!this.encrypted.tikhub}, model:{hasKey:!!this.encrypted.model}, asr:{hasKey:!!this.encrypted.asr}}, encryptionAvailable:this.encryptionAvailable()};}
+    reveal(name:ServiceCredential):ServiceCredentialDisclosure {if(!serviceCredentials.includes(name))fail('INVALID_INPUT');return{service:name,key:this.secret(name)};}
     secret(name: ServiceCredential): string {if (!this.initialized) fail('SETTINGS_UNAVAILABLE'); if (!this.encryptionAvailable()) fail('ENCRYPTION_UNAVAILABLE'); const bytes=this.encrypted[name]; if (!bytes) fail('SERVICE_KEY_MISSING'); try {return this.encryption.decryptString(Buffer.from(bytes!,'base64'));} catch {return fail('ENCRYPTION_UNAVAILABLE');}}
     async update(patch: ServiceSettingsPatch): Promise<ServiceSettingsView> {
         const run=this.pending.then(async () => {

@@ -1,4 +1,4 @@
-import {serviceSettingsPatch} from './service-validation.ts';
+import {serviceSettingsPatch,serviceCredentials} from './service-validation.ts';
 import {productionDesktopInput} from './production-validation.ts';
 import {coverDesktopInput} from './cover-validation.ts';
 import {workspaceDesktopInput} from './workspace-validation.ts';
@@ -31,6 +31,7 @@ export function validateInput(method: DesktopMethod, input: unknown) {
     let valid: boolean;
     switch (method) {
         case 'saveServiceSettings': valid = serviceSettingsPatch(input); break;
+        case 'revealServiceCredential': valid = exact(input,['service']) && serviceCredentials.includes(input.service as typeof serviceCredentials[number]); break;
         case 'createContent':
             valid = exact(input, ['title', 'body']) && draft(input);
             break;

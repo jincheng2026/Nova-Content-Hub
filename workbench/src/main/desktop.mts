@@ -461,7 +461,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             }, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};
         }
     });
-    controller.services = {preferences, reminders, setup, productionServices: {readServiceSettings: () => serviceSettings.read(), saveServiceSettings: input => serviceSettings.update(input), checkServiceReadiness: () => serviceTools.checkReadiness()}, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
+    controller.services = {preferences, reminders, setup, productionServices: {readServiceSettings: () => serviceSettings.read(), saveServiceSettings: input => serviceSettings.update(input), revealServiceCredential: input => serviceSettings.reveal(input.service), checkServiceReadiness: () => serviceTools.checkReadiness()}, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
     preferences.onSaved = () => { if (!quitting) void reminders?.refresh(true); };
     resumeReminders = () => { if (!quitting) void reminders?.refresh(true); };
     powerMonitor.on('resume', resumeReminders);
@@ -481,7 +481,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     for (const method of CHANNELS) ipcMain.handle(`nova:${method}`, async (event, ...args) => {
         try {
             assertCaller(event, window?.webContents, args, method);
-            if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readServiceSettings', 'saveServiceSettings', 'checkServiceReadiness', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
+            if (initializationError && !['readBootstrapRecovery', 'resetMachineBinding', 'readPreferences', 'savePreferences', 'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness', 'readReminderStatus', 'testReminder', 'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'].includes(method)) throw initializationError;
             return {
                 ok: true,
                 value: await runOperation(() => (controller[method] as (input?: DesktopInputs[DesktopMethod]) => Promise<unknown>).call(controller, args[0] as DesktopInputs[DesktopMethod])).finally(() => { syncLibraryWatcher(); if (!quitting && ['openLibrary', 'openUpgradedLibrary', 'createLibrary', 'createContent', 'updateContent', 'trashContent', 'restoreContent', 'mutateWorkspace', 'recoverWorkspaceMutation', 'retryWorkspaceMutation'].includes(method)) void reminders?.refresh(true); })
