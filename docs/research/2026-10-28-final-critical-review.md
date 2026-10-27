@@ -71,3 +71,18 @@
 独立运行 `node --test workbench/test/service-settings-deferred.test.mjs`：**8/8 通过，240.561 毫秒**。覆盖零 native 的启动／读取／普通保存／清除、本地 readiness 和成功转写、缺 Key 优先返回、显式操作、拒绝和加解密异常后的密文保全、拒绝明文后端、旧 API、轮转脱敏及 observer 禁止派单。集成负责人提供的 82 项目标测试、typecheck 和隔离 UI 结果作为执行方证据，本审查未重复全量运行。
 
 范围限制保持明确：延迟探测修复的是启动、被动访问及本地 ASR 被迫访问钥匙串的问题。用户主动查看／替换 Key 或执行授权 provider 调用时，系统仍可请求许可，当前同步 native 调用仍可能等待用户；此补丁没有实现权限等待期间的独立凭据进程隔离。最终重新构建、真实安装和无需 Key 操作即可进入 Vault/原创作页的冷启动验收由集成负责人继续执行，本节不将单元测试替代该结果。
+
+## 随包 MP4 本地转写补丁定点审查
+
+本节只检查新增 `LOCAL_MEDIA_DECODE_SCRIPT`、localTranscribe 转码接点及既有 productionAsset 授权接点。原问题由执行方实测确认：随包 mlx_audio 读取 MP4 依赖 PATH 上的 ffmpeg/ffprobe，生产干净 PATH 下失败。最终补丁改用现有随包 timing-site 的 PyAV/native codecs；没有新增下载或系统 ffmpeg 依赖。本审查只读产品并追加本节，未修改产品／测试。
+
+最终差异未发现确定 P1/P2：
+
+- broker 仍先验证 task/attempt/claim/worker、ASR 授权、当前 reference 或 mediaGrant 和资产 hash，再把至多 64 MiB 的资产写入隔离临时目录。解码入口没有扩大到任意用户路径。productionAsset 实际返回 mp3/wav/mp4/m4a/webm/ogg/flac；新增转换覆盖 mp4/m4a/webm/ogg，其余沿用原入口。
+- 强制解复用器 mov/matroska/ogg，`protocol_whitelist=file`，并在审查建议后显式设置 `enable_drefs=0/use_absolute_path=0`，不依赖 MOV 外部引用的隐含默认值。输入只读，输出位于 mkdtemp 子目录、权限 0600；120 秒子进程上限和 16 kHz × 7200 秒采样上限约束时间与输出规模。成功或下游失败均经 finally 删除 PCM 目录。
+- 以 container start 为播放时间零点；音轨 PTS 的前置间隔写入静音，负起始样本裁掉，明显正时间重叠／无 PTS 拒绝，不能为缺时标编造对齐。Qwen 正文与 Whisper 词级计时消费同一个 WAV，未再次叠加偏移。原输入 SHA256、解码后 SHA256、containerOrigin、首样本偏移及静音数保留在 mediaDecode；原资产不改写。
+- 只在已发现的随包 runtime executable/modelPath 与当前选中配置一致、且模块为 mlx_audio/qwen_asr 时转换；手配引擎与 WAV/MP3/FLAC 路径保持原调用。没有修改固定请求中的原设置、预算、provider 或执行模型选择，也没有恢复隐式凭据读取。
+
+证据核对：`.local-probes/mp4-asr/contracts-green.log` 为 **62 项通过、0 失败、0 skipped，16.951 秒**。新增测试实际解码，PATH 限制为 `/usr/bin:/bin`；延迟测试现已 remux video 起点 0、audio 延迟 1 秒，断言静音不少于 14000 样本且总样本增加约 16000，避免仅 audio-only 容器归零的弱验证。另验证真实 PCM 转换后成功／下游失败清理（仅下游转写在这项合同测试中 stub）。
+
+最终显式 dref 限制版真实 broker 证据已读回：`docs/verification/production/2026-10-28-installed-050-asr/mp4-2026-10-27T21-28-42.863Z/{runner-result,service-summary}.json`。记录显示通过、13.157 秒本地转写、5 个词级时间段、原资产与 mediaDecode.originalSha256 一致、预算关闭、requestsUsed=0、外部 HTTPS 尝试 0、PCM 目录已清理、隔离样例已提交接受并生成归档回执。它使用新编译 ServiceTools 与冻结候选 native payload，**不是最终重新安装应用验收**；真人语音对齐和 GUI 均明确未验。本审查未重复模型运行，也不以这些合成样例结果承诺所有平台媒体或所有语言精度。

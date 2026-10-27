@@ -11,6 +11,49 @@ import {ServiceSettingsStore} from './service-settings.mts';
 import {customAsrBaseUrl,normalizeAsrSettings,serviceToolRequest} from '../shared/service-validation.ts';
 import type {NormalizedAsrSettings,ServiceCredential,ServiceReadiness,ServiceSettingsValues,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
 export const LOCAL_ASR_INIT_TIMEOUT_MS = 120_000;
+// Decode containers with the sealed runtime's native codecs. MLX's MP4 reader
+// otherwise searches PATH for ffmpeg/ffprobe, which are not delivery dependencies.
+export const LOCAL_MEDIA_DECODE_SCRIPT = `import sys,json,wave,hashlib,os
+sys.path.insert(0,sys.argv[1])
+import av
+source,destination=sys.argv[2:4]
+rate=16000
+limit=rate*7200
+written=0
+padding=0
+first=None
+formats={".mp4":"mov",".m4a":"mov",".webm":"matroska",".ogg":"ogg"}
+demuxer=formats[os.path.splitext(source)[1].lower()]
+with av.open(source,format=demuxer,options={"protocol_whitelist":"file","enable_drefs":"0","use_absolute_path":"0"}) as container:
+ if not container.streams.audio: raise ValueError("NO_AUDIO_STREAM")
+ stream=container.streams.audio[0]
+ origin=container.start_time or 0
+ resampler=av.AudioResampler(format="s16",layout="mono",rate=rate)
+ with wave.open(destination,"wb") as output:
+  os.chmod(destination,0o600)
+  output.setnchannels(1);output.setsampwidth(2);output.setframerate(rate)
+  def emit(frame):
+   global written,padding,first
+   if frame.pts is None or frame.time_base is None: raise ValueError("AUDIO_TIMESTAMPS_MISSING")
+   position=round((frame.pts*frame.time_base-origin/1000000)*rate)
+   if first is None: first=position
+   if position+frame.samples>limit: raise ValueError("DECODED_AUDIO_TOO_LONG")
+   if position<written-2 and position>=0: raise ValueError("AUDIO_TIMESTAMPS_OVERLAP")
+   gap=max(0,position-written)
+   padding+=gap
+   while gap:
+    count=min(gap,16000);output.writeframesraw(bytes(count*2));written+=count;gap-=count
+   samples=frame.to_ndarray().reshape(-1).astype("<i2",copy=False)
+   skip=max(0,written-position)
+   if skip<len(samples): output.writeframesraw(samples[skip:].tobytes());written+=len(samples)-skip
+  for frame in container.decode(stream):
+   for converted in resampler.resample(frame): emit(converted)
+  for converted in resampler.resample(None): emit(converted)
+ if not written: raise ValueError("NO_DECODED_AUDIO")
+ codec=stream.codec_context.name
+with open(source,"rb") as input: original=hashlib.file_digest(input,"sha256").hexdigest()
+with open(destination,"rb") as input: decoded=hashlib.file_digest(input,"sha256").hexdigest()
+print(json.dumps({"decoder":"bundled-pyav","pyavVersion":av.__version__,"codec":codec,"originalSha256":original,"decodedSha256":decoded,"sampleRate":rate,"channels":1,"samples":written,"containerOriginMs":origin/1000,"firstAudioSampleMs":first*1000/rate,"insertedSilenceSamples":padding,"timeline":"container-relative-presentation-timestamps"}))`;
 export const TIKHUB_CACHE_TTL_MS = 6*60*60*1000;
 type TikHubRequest = Extract<ServiceToolRequest,{tool:'tikhub'}>;
 export function tikHubHttpRequest(request:TikHubRequest):{url:string;method:'GET'|'POST';body?:string} {
@@ -209,6 +252,21 @@ print(json.dumps(found))`],LOCAL_ASR_INIT_TIMEOUT_MS,'LOCAL_ASR_INIT_TIMEOUT')).
         if(data.headers['x-api-status-code']!=='20000000')throw new ServiceToolError('PROVIDER_REJECTED',null);return data.data;
     }
     private async localTranscribe(audio:string,module:string,a:ServiceSettingsValues['asr']):Promise<unknown>{
+        if((module==='mlx_audio'||module==='qwen_asr')&&!['.wav','.mp3','.flac'].includes(path.extname(audio).toLowerCase())){
+            const runtime=await discoverLocalAsrRuntime(this.localRuntimeRoots);
+            if(runtime&&runtime.executable===a.localExecutable&&runtime.modelPath===a.localModelPath){
+                if(!runtime.timing)throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');
+                const directory=await fs.mkdtemp(path.join(os.tmpdir(),'nova-asr-pcm-'));
+                try{
+                    const decoded=path.join(directory,'audio.wav'),proof=JSON.parse((await run(runtime.executable,['-B','-I','-c',LOCAL_MEDIA_DECODE_SCRIPT,runtime.timing.pythonSitePath,audio,decoded],120000)).trim().split('\n').at(-1)!);
+                    const result=await this.localTranscribeDecoded(decoded,module,a) as Record<string,unknown>;
+                    return {...result,mediaDecode:proof};
+                }finally{await fs.rm(directory,{recursive:true,force:true});}
+            }
+        }
+        return this.localTranscribeDecoded(audio,module,a);
+    }
+    private async localTranscribeDecoded(audio:string,module:string,a:ServiceSettingsValues['asr']):Promise<unknown>{
         let script:string;
         if(module==='faster_whisper')script='import sys,json\nfrom faster_whisper import WhisperModel\nm=WhisperModel(sys.argv[1],device="cpu",compute_type="int8",local_files_only=True)\nsegments,info=m.transcribe(sys.argv[2])\ns=[{"startMs":round(x.start*1000),"endMs":round(x.end*1000),"text":x.text} for x in segments]\nprint(json.dumps({"text":"".join(x["text"] for x in s),"segments":s,"durationMs":round(info.duration*1000)},ensure_ascii=False))';
         else if(module==='qwen_asr')script='import sys,json\nfrom qwen_asr import Qwen3ASRModel\nm=Qwen3ASRModel.from_pretrained(sys.argv[1],device_map="cpu")\nr=m.transcribe(audio=sys.argv[2])\nprint(json.dumps({"text":"\\n".join(x.text for x in r),"segments":[],"timingSource":"none"},ensure_ascii=False))';
