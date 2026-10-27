@@ -1,5 +1,18 @@
+import {serializeProductionReference,productionReferenceHash,validateTranscriptReference} from './production-reference.mjs';
+const referenceError=(code,message)=>{throw Object.assign(new Error(message),{code});};
+const ordered=value=>Array.isArray(value)?value.map(ordered):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,ordered(value[key])])):value;
+const referenceEqual=(a,b)=>JSON.stringify(ordered(a))===JSON.stringify(ordered(b));
+const transcriptBinding=task=>task.request.parameters&&typeof task.request.parameters==='object'&&!Array.isArray(task.request.parameters)&&Object.hasOwn(task.request.parameters,'transcript')?task.request.parameters.transcript:undefined;
+function mergeReference(existing,incoming){
+    serializeProductionReference(incoming);if(!existing)return incoming;
+    serializeProductionReference(existing);
+    for(const key of ['id','url','title','platform','originalText','segments','analysis','mediaAssetHash','subtitleAssetHash'])if(!referenceEqual(existing[key],incoming[key]))referenceError('STALE_INPUT','原始逐字稿、时间轴或来源已变化；请使用明确的提取任务，不能用校对覆盖原证据。');
+    if((incoming.correctedText!==existing.correctedText||!referenceEqual(incoming.corrections,existing.corrections))&&!existing.originalText.trim())referenceError('INVALID_INPUT','没有原始逐字稿，不能采用校对结果。');
+    return {...existing,correctedText:incoming.correctedText,corrections:incoming.corrections};
+}
 // Adoption is an explicit UI action after receipt acceptance; submission alone is insufficient.
-export function productionArtifactDraft({task,attemptId,artifactId,creation,body,bodyHash}) {
+function artifactDraft({task,attemptId,artifactId,creation,body,bodyHash},verifiedReference) {
+    if(transcriptBinding(task)!==undefined&&!verifiedReference)referenceError('INVALID_INPUT','转写任务须先异步核验参考版本，再预览采用。');
     const error = (code,message) => {throw Object.assign(new Error(message),{code});};
     if(task.contentId !== creation.contentId) error('INVALID_INPUT','产物不属于当前内容。');
     const attempt=task.attempts.find(a=>a.id===attemptId);
@@ -22,7 +35,7 @@ export function productionArtifactDraft({task,attemptId,artifactId,creation,body
     case 'narrative': creationPatch={...creationPatch,narrative:artifact.text};action='保存叙事方案';break;
     case 'research': case 'transcript': {
         if(!Array.isArray(data.references) || !data.references.length)error('INVALID_INPUT','产物缺少完整 references 结构。');
-        const incoming=data.references;const merged=[...creation.references];for(const r of incoming){const index=merged.findIndex(x=>x.id===r.id);if(index<0)merged.push(r);else merged[index]=r;}
+        const incoming=data.references,seen=new Set();const merged=[...creation.references];for(const r of incoming){serializeProductionReference(r);if(seen.has(r.id))error('INVALID_INPUT','参考编号重复。');seen.add(r.id);const index=merged.findIndex(x=>x.id===r.id),next=verifiedReference??mergeReference(index<0?null:merged[index],r);if(index<0)merged.push(next);else merged[index]=next;}
         creationPatch={...creationPatch,references:merged};action='保存参考与转写';break;
     }
     case 'packaging': {
@@ -44,6 +57,7 @@ export function productionArtifactDraft({task,attemptId,artifactId,creation,body
 // Pure whole-result preview/adoption. Every artifact uses the same immutable body baseline.
 export function productionArtifactBundleDraft({task,attemptId,creation,body,bodyHash,preview=false}) {
     const error=(code,message)=>{throw Object.assign(new Error(message),{code});};
+    if(transcriptBinding(task)!==undefined)error('INVALID_INPUT','专用转写任务请逐项核验参考版本，不能混入整套采用。');
     const attempt=task.attempts.find(value=>value.id===attemptId),receipt=attempt?.receipt;
     if(task.contentId!==creation.contentId)error('INVALID_INPUT','整套产物不属于当前内容。');
     if(task.activeAttemptId!==attemptId || !attempt || !(preview?['submitted','accepted']:['accepted']).includes(attempt.status) || !receipt || receipt.taskId!==task.id || receipt.attemptId!==attemptId || receipt.requestHash!==task.requestHash || !/^[a-f0-9]{64}$/.test(receipt.sha256))error('ATTEMPT_INACTIVE','请先核对当前尝试的真实提交记录；采用前须人工验收。');
@@ -69,7 +83,7 @@ export function productionArtifactBundleDraft({task,attemptId,creation,body,body
         if(artifact.kind==='draft'){if(!artifact.text.trim())error('INVALID_INPUT','正文候选不能为空。');nextBody=artifact.text;creationPatch.confirmedBodyHash=null;}
         if(['research','transcript'].includes(artifact.kind)) {
             if(!Array.isArray(data.references)||!data.references.length||data.references.length>10000||!data.references.every(reference))error('INVALID_INPUT','参考产物缺少有效的完整 references 结构。');
-            for(const incoming of data.references){if(referenceIds.has(incoming.id))error('INVALID_INPUT','整套产物存在重复参考编号，请明确唯一版本。');referenceIds.add(incoming.id);const index=references.findIndex(value=>value.id===incoming.id);if(index<0)references.push(incoming);else references[index]=incoming;}
+            for(const incoming of data.references){if(referenceIds.has(incoming.id))error('INVALID_INPUT','整套产物存在重复参考编号，请明确唯一版本。');referenceIds.add(incoming.id);const index=references.findIndex(value=>value.id===incoming.id),next=mergeReference(index<0?null:references[index],incoming);if(index<0)references.push(next);else references[index]=next;}
             if(references.length>10000)error('INVALID_INPUT','合并后参考资料超过保存上限。');creationPatch.references=references;
         }
         if(artifact.kind==='packaging') {
@@ -85,4 +99,29 @@ export function productionArtifactBundleDraft({task,attemptId,creation,body,body
     }
     if(!owners.has('draft'))error('INVALID_INPUT','整套创作须包含一份完整正文。');
     return {creationPatch,body:nextBody,stale:false,action:'确认并采用整套结果'};
+}
+
+export function productionArtifactDraft(input){return artifactDraft(input);}
+
+// Clone before hashing so an asynchronous preview never silently rebases its reference.
+export async function prepareProductionArtifactDraft(input){
+    const snapshot=structuredClone(input),binding=transcriptBinding(snapshot.task);
+    if(binding===undefined)return productionArtifactDraft(snapshot);
+    const {task,creation,attemptId,artifactId}=snapshot;
+    if(!binding||typeof binding!=='object'||Array.isArray(binding)||Object.keys(binding).sort().join(',')!=='baselineHash,intent,referenceId,version'||binding.version!==1||!['extract','correct','reextract'].includes(binding.intent)||!/^([a-f0-9]{64})$/.test(binding.baselineHash)||task.kind!=='transcription'||task.accountId||task.request.parameters.workflow)referenceError('INVALID_INPUT','转写任务缺少有效的固定意图与参考版本。');
+    const current=creation.references.find(reference=>reference.id===binding.referenceId);
+    if(!current||await productionReferenceHash(current)!==binding.baselineHash)referenceError('STALE_INPUT','参考资料版本已变化，请基于当前参考重新创建任务。');
+    validateTranscriptReference(current,binding.intent,snapshot.missingAssetHashes??[]);
+    const artifact=task.attempts.find(attempt=>attempt.id===attemptId)?.result?.artifacts.find(value=>value.id===artifactId),incoming=artifact?.data?.references;
+    if(artifact?.kind!=='transcript'||!Array.isArray(incoming)||incoming.length!==1||incoming[0]?.id!==binding.referenceId||['suggestions','annotations','filming'].some(key=>Object.hasOwn(artifact.data,key)))referenceError('INVALID_INPUT','转写产物必须只包含本次固定参考，不能混入其他采用动作。');
+    const candidate=incoming[0];serializeProductionReference(candidate);
+    const mutable=binding.intent==='correct'?['correctedText','corrections']:binding.intent==='reextract'?['originalText','segments','correctedText','corrections','subtitleAssetHash']:['originalText','segments'];
+    for(const key of Object.keys(current))if(!mutable.includes(key)&&!referenceEqual(current[key],candidate[key]))referenceError('INVALID_INPUT','转写产物改变了本次意图之外的原始证据或参考字段。');
+    if(binding.intent!=='correct'&&!candidate.originalText.trim())referenceError('INVALID_INPUT','提取结果没有原始逐字稿，请保留失败并补充资料。');
+    const next={...current,...Object.fromEntries(mutable.map(key=>[key,candidate[key]]))};
+    if(binding.intent==='reextract'){
+        if(next.subtitleAssetHash!==current.subtitleAssetHash&&next.subtitleAssetHash&&(snapshot.missingAssetHashes??[]).includes(next.subtitleAssetHash))referenceError('INVALID_INPUT','新字幕资产缺失，请先导入可核验字幕。');
+        validateTranscriptReference(next,'reextract',snapshot.missingAssetHashes??[]);
+    }
+    return artifactDraft(snapshot,next);
 }

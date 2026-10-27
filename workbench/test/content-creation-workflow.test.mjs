@@ -40,3 +40,9 @@ test('workflow keeps one attempt across both waiting states and submitted result
   const repeated=await c.startProductionTask(input);assert.equal(repeated.snapshot.tasks.length,1);assert.match(repeated.message,/预览/);assert.equal(launches,1);
  }
 });
+
+test('desktop accepts an optional image avatar reference, rejects non-hash input and grants avatar URLs independently of screenshots',async t=>{
+ const {controller:c,library:l,parent}=await fixture(t),png=path.join(parent,'avatar.png');await fs.writeFile(png,Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aY9sAAAAASUVORK5CYII=','base64'));const asset=l.importAsset(png,{purpose:'photo'}),input={name:'头像账号',platform:'抖音',url:'',note:'',tags:[],images:[],reportIds:[],avatarAssetHash:asset.assetHash,expectedToken:l.readProduction().editToken};
+ assert.doesNotThrow(()=>validateInput('mutateProduction',{op:'saveAccount',input,mutationId:randomUUID()}));assert.throws(()=>validateInput('mutateProduction',{op:'saveAccount',input:{...input,avatarAssetHash:'file:///tmp/avatar.png'},mutationId:randomUUID()}),{code:'INVALID_INPUT'});
+ const p=await c.mutateProduction({op:'saveAccount',input,mutationId:randomUUID()});assert.equal(p.accounts[0].avatarAssetHash,asset.assetHash);const read=await c.readProduction();assert.equal(typeof read.assetUrls[asset.assetHash],'string');assert.equal(read.accounts[0].images.length,0);
+});

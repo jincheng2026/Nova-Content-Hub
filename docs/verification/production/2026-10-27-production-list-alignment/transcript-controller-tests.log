@@ -1,0 +1,11 @@
+✔ transcript task binds one saved reference by compact hash, preserves tools/budget and reuses the same active attempt (1953.99725ms)
+✔ transcript task rejects stale or missing reference before creating work; correction cannot start on empty original text (2772.90775ms)
+✔ transcript extract rejects known missing source bytes and URL-only references; account binding cannot be mixed in (953.267041ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5957.429833

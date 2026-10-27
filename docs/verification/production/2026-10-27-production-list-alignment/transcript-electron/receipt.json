@@ -1,0 +1,10 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "extract/correct/reextract are bound to individual saved references and reextract has an explicit confirmation",
+    "frozen before/after preview rejects stale body CAS without partial adoption, retains preview, and explicit fresh preview applies only the correction"
+  ]
+}

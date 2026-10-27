@@ -1,3 +1,4 @@
 import type {ProductionTask, ProductionCreation} from './production.js';
 export function productionArtifactDraft(input: {task: ProductionTask; attemptId: string; artifactId: string; creation: ProductionCreation; body: string; bodyHash: string}): {creationPatch: Partial<ProductionCreation>; body: string; stale: boolean; action: string};
 export function productionArtifactBundleDraft(input: {task: ProductionTask; attemptId: string; creation: ProductionCreation; body: string; bodyHash: string; preview?: boolean}): {creationPatch: Partial<ProductionCreation>; body: string; stale: boolean; action: string};
+export function prepareProductionArtifactDraft(input: {task: ProductionTask; attemptId: string; artifactId: string; creation: ProductionCreation; body: string; bodyHash: string; missingAssetHashes?:string[]}): Promise<{creationPatch: Partial<ProductionCreation>; body: string; stale: boolean; action: string}>;

@@ -1,0 +1,204 @@
+Browser tab: 1980823752, Title: "在下小曾｜资料核查与后续调研（验收）", URL: "http://[local-report]
+0 AXWebArea 在下小曾｜资料核查与后续调研（验收）, URL: [local-report]
+	1 container
+		2 heading 在下小曾｜资料核查与后续调研（验收）, Value: 1
+			3 text 在下小曾｜资料核查与后续调研（验收）
+		4 container 报告页
+			5 link Description: 第1页 已知事实与来源日期, Value: [local-report]
+			6 link Description: 第2页 后续研究问题、取样方法与证据缺口, Value: [local-report]
+	7 container 报告完整内容
+		8 AXWebArea 在下小曾｜资料核查与后续调研（验收）, URL: [local-report]
+			9 container page1
+				10 heading 在下小曾｜资料核查与后续调研（验收）, Value: 1
+					11 text 在下小曾｜资料核查与后续调研（验收）
+				12 container
+					13 text 资料核查与后续调研设计 · 调研任务  97059e58-dc5f-4ec6-9e80-991312f046ac  · 尝试  1e80803e-7cdd-4549-a7fb-37c5a9894b99
+				14 container
+					15 text 核查性质： 本报告仅依据内容库已保存的「在下小曾 o」账号备注，及其备注中 明确给出的抖音主页与代表作品链接 整理。属于 既有采集快照的整理 ， 非本次新采集 。报告生成过程未联网、未调用 TikHub、云端文字模型或语音 API。备注仅记录来源与采集快照， 不被视为逐字稿 ，亦不据此推断作品效果或市场结论。
+				16 container
+					17 text 已知快照时点： 2026-10-27（来自账号备注记载的当次真实 TikHub 快照）。本次任务未做任何新的数据获取，所有事实均来自该次快照与账号备注元数据。
+				18 heading 第 1 页 · 已知事实与来源日期, Value: 2
+					19 text 第 1 页 · 已知事实与来源日期
+				20 text 下表逐条列出当前可确认的已知事实、对应来源与记录/快照日期。来源仅限两类：① 内容库账号备注（含其中嵌入的链接）；② 内容库对象元数据（保存时间、标签）。
+				21 table
+					22 row
+						23 cell
+							24 text 项目
+						25 cell
+							26 text 已知事实
+						27 cell
+							28 text 来源
+						29 cell
+							30 text 日期
+					31 row
+						32 cell
+							33 text 账号定位
+						34 cell
+							35 text 用户指定的对标账号（用户主动指定，非系统自动发现）。
+						36 cell
+							37 text 账号备注原文
+						38 cell
+							39 text 2026-10-27
+					40 row
+						41 cell
+							42 text 采集方式
+						43 cell
+							44 text 2026-10-27 当次「真实 TikHub 快照」；备注称账号资料、首屏作品、单条作品与评论接口均已完成真实最小调用。
+						45 cell
+							46 text 账号备注原文
+						47 cell
+							48 text 2026-10-27
+					49 row
+						50 cell
+							51 text 平台
+						52 cell
+							53 text 抖音
+						54 cell
+							55 text 账号备注原文
+						56 cell
+							57 text 2026-10-27
+					58 row
+						59 cell
+							60 text 昵称
+						61 cell
+							62 text 在下小曾 o
+						63 cell
+							64 text 账号备注（TikHub 快照）
+						65 cell
+							66 text 2026-10-27
+					67 row
+						68 cell
+							69 text 粉丝数
+						70 cell
+							71 text 24,651
+						72 cell
+							73 text 账号备注（TikHub 快照）
+						74 cell
+							75 text 2026-10-27
+					76 row
+						77 cell
+							78 text UID
+						79 cell
+							80 text 97081769959
+						81 cell
+							82 text 账号备注（TikHub 快照）
+						83 cell
+							84 text 2026-10-27
+					85 row
+						86 cell
+							87 text 抖音主页
+						88 cell
+							89 link Description: douyin.com/user/MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E, Value: douyin.com/user/MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E?from_tab_name=main
+						90 cell
+							91 text 账号备注中明确来源
+						92 cell
+							93 text 2026-10-27
+					94 row
+						95 cell
+							96 text 代表作品
+						97 cell
+							98 link douyin.com/video/7683351511748840740
+							99 text 备注名称：Obsidian+Codex AI工作台
+						100 cell
+							101 text 账号备注中明确来源
+						102 cell
+							103 text 2026-10-27
+					104 row
+						105 cell
+							106 text 接口调用记录
+						107 cell
+							108 text 备注称账号资料、首屏作品、单条作品、评论接口已完成真实最小调用（指当次快照行为，非本次任务行为）。
+						109 cell
+							110 text 账号备注原文
+						111 cell
+							112 text 2026-10-27
+					113 row
+						114 cell
+							115 text 备注明示限制
+						116 cell
+							117 text 备注明确：此备注「仅记录来源与采集快照，不能据此推断内容效果或全部作品表现」；「日常付费预算仍关闭」。
+						118 cell
+							119 text 账号备注原文
+						120 cell
+							121 text 2026-10-27
+					122 row
+						123 cell
+							124 text 库内标签
+						125 cell
+							126 text 用户指定 AI工具 真实采集
+							127 text （标签为内容库分类标注，不等于已验证的内容结论）
+						128 cell
+							129 text 内容库账号标签元数据
+						130 cell
+							131 text 2026-10-27
+					132 row
+						133 cell
+							134 text 备注保存时间
+						135 cell
+							136 text 2026-10-27T07:25:58.954Z（账号对象 updatedAt）
+						137 cell
+							138 text 内容库对象元数据
+						139 cell
+							140 text 2026-10-27
+				141 container
+					142 text 备注未包含、本任务亦未新采集的内容： 具体作品清单与发布时间线、各作品的点赞/收藏/转发/完播等指标、评论原文与互动数据、账号简介全文、粉丝画像与增长趋势。这些均不在已知事实范围内，详见第 2 页「证据缺口」。
+			143 container page2
+				144 heading 第 2 页 · 后续研究问题、取样方法与证据缺口, Value: 2
+					145 text 第 2 页 · 后续研究问题、取样方法与证据缺口
+				146 heading 一、后续研究问题（待授权采集后回答）, Value: 2
+					147 text 一、后续研究问题（待授权采集后回答）
+				148 content list
+					149 container
+						150 text Q1 内容主题与结构： 该账号主要覆盖哪些 AI 工具/工作流？单条内容的选题、时长、结构（如「先示范结果、再讲步骤」）如何？—— 当前未知 。
+					151 container
+						152 text Q2 发布节奏： 更新频率、发布时段、是否系列化或固定栏目？—— 当前未知 。
+					153 container
+						154 text Q3 互动与受众： 评论区关注点、典型提问、粉丝地域/活跃时段？—— 当前未知 （本任务 comments=false，未授权评论采集）。
+					155 container
+						156 text Q4 表现与增长： 各作品点赞/收藏/转发/完播分布，粉丝增长趋势？—— 当前未知 。
+					157 container
+						158 text Q5 对标价值： 与我方内容定位的可借鉴点与可差异化点？—— 当前未知，需基于真实样本评估 。
+				159 heading 二、取样方法（授权后执行）, Value: 2
+					160 text 二、取样方法（授权后执行）
+				161 content list
+					162 container
+						163 text 工具与授权： 在冻结请求  tools  含 tikhub / model / asr 且预算可用时，经 TikHub 真实接口采集；备注已记「日常付费预算仍关闭」，真实调用须先在工作台开启并确认额度。本任务 comments=false，评论采集未被单独授权。
+					164 container
+						165 text 账号资料： 用 profile 接口取粉丝数、简介、认证状态等基础字段，并与 2026-10-27 快照做对账。
+					166 container
+						167 text 作品取样： 用 user-posts 取首屏及按表现排序的若干作品，记录 video id、标题、发布时间、指标；单条用 video 接口取详情。明确样本量与筛选口径，不自动扩大平台或时间范围。
+					168 container
+						169 text 评论取样： 仅当 comments=true 且受控工具与预算允许时，按作品分层采集，注明分母与层级覆盖；当前任务不适用。
+					170 container
+						171 text 转写： 如需原片/字幕，用 asr（本地优先 qwen3-asr）在授权工具内执行，保留时间轴与逐条校对差异。
+					172 container
+						173 text 可复算与费用： 记录每次采集的请求数、缓存命中、usage、已知金额依据；unknown 与已计量分开标注，不虚报本地运行成本为零。
+				174 heading 三、证据缺口（当前状态）, Value: 2
+					175 text 三、证据缺口（当前状态）
+				176 content list
+					177 container
+						178 AXListMarker •
+						179 text 缺口 1 — 作品层数据缺失： 备注未保存作品清单、各作品指标、发布时间线；本次未新采集。
+					180 container
+						181 AXListMarker •
+						182 text 缺口 2 — 互动层数据缺失： 评论原文、互动量、受众画像均不在已知范围内；且本任务未授权评论采集。
+					183 container
+						184 AXListMarker •
+						185 text 缺口 3 — 时间序列缺失： 唯一可靠来源为 2026-10-27 单次快照，不含增长趋势或历史对比。
+					186 container
+						187 AXListMarker •
+						188 text 缺口 4 — 不可推断项： 作品效果、市场结论、受众画像——备注已明示禁止据此推断，本报告未做此类推断。
+					189 container
+						190 AXListMarker •
+						191 text 缺口 5 — 预算状态： 日常付费预算关闭，真实接口调用须先在工作台开启并核对额度。
+					192 container
+						193 AXListMarker •
+						194 text 缺口 6 — 来源单一： 可核验来源仅为账号备注及其内嵌的两个链接，无第三方交叉验证。
+				195 heading 结论, Value: 2
+					196 text 结论
+				197 container
+					198 text 当前可交付内容仅为 资料核查 与 后续调研设计 ：已知事实限于上述账号备注与明确链接（时点 2026-10-27），其余均为待授权采集后基于真实样本回答的研究问题。正式分析、选题建议与对照结论，须待真实采集完成并核对后再行给出，不在本次「已有快照整理」范围内。
+				199 container
+					200 text 本报告为工作台真实验收任务产物；全部事实来自内容库已保存备注，未发起任何联网或外部服务调用。报告页与回执通过固定任务  97059e58-dc5f-4ec6-9e80-991312f046ac  提交。
+
+The focused UI element is 0 AXWebArea 在下小曾｜资料核查与后续调研（验收）, URL: [local-report]

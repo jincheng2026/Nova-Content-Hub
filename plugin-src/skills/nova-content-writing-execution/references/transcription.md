@@ -4,7 +4,21 @@
 
 先找可靠现成字幕和用户提供逐字稿，再决定是否识别音频。记录来源、语种、覆盖范围、时间码来源与复核状态。标题和发布描述不能充当原始逐字稿。
 
-ASR 只走共同契约的受控工具，输入当前任务已授权的媒体路径。已有合法媒体导入/下载能力时先取得原片；缺少入口或下载失败就说明缺什么，不能臆造媒体地址或读取其他用户目录。
+ASR 只走共同契约的受控工具，输入当前任务已授权的媒体资产编号。已有合法媒体导入/下载能力时先取得原片；缺少入口或下载失败就说明缺什么，不能臆造媒体地址或读取其他用户目录。
+
+### 受控 ASR 的实际入参
+
+优先使用随包命令 `RUN production asr --handoff UUID --file 绝对JSON路径`（或 `--stdin`）。专属提取／重新提取任务只传自己的 `{workerId,claimToken}`，命令使用冻结的参考 ID；整篇创作另传明确的 `referenceId`，不能在多份资料中猜测目标。此命令自动从完整 context 取得资产编号，校验领取身份，再向原受控服务请求一次；不会更换引擎、重试、提交或采用。校对任务不重新识别原音频。
+
+该入口固定 `allowCloud:false`，仅供本地识别，不能通过增加字段开启云端。云端转写仍须明确授权并沿共同契约调用，不得为通过本地失败而更改配置。读取返回 `result.serviceResult.data.text/segments`，同时保留 `result.referenceId/mediaAssetHash/requestedEngine` 作为来源说明；没有时间码时保留服务返回的空数组。
+
+字段名 `audioPath` 是历史命名：生产任务中必须填写 `result.creation.references` 对应条目的 **`mediaAssetHash`（64 位十六进制资产编号）**，不是绝对路径、文件 URL、参考 ID 或拼接出的 `资产/sha256/...` 路径。工作台核对该编号确实属于当前内容后，才读取资产、判断真实媒体类型并准备临时音频文件。不要自行读取资产目录来代替这一步。
+
+使用共同契约所述的随包服务客户端，请求只包含 `tool:'asr'`、当前 `taskId/attemptId`、自己领取时保存的 `workerId/claimToken`、新的 UUIDv4 `requestId`、上述 `audioPath: reference.mediaAssetHash`，以及本次确有云端上传授权时才允许为 true 的 `allowCloud`。描述文件路径取 context 顶层 `result.serviceDescriptorPath`，不要读取或输出其令牌。没有已登记媒体时先回报缺少导入材料，不把页面标题或发布文案当作识别结果。
+
+`INVALID_INPUT` 表示参数或资产绑定未通过校验，不能推断为权益未接入、模型不可用或缺少 MLX。先检查资产编号和请求字段；不改变权限的参数修正可以继续。`SERVICE_CONFIG_CHANGED` 表示当前设置与冻结请求不同，应回工作台重建任务；`CLAIM_MISMATCH`、费用未知和权限错误按共同契约停止相关操作。任何受控调用失败都不授权直接执行 Python/whisper、扫描其他模型环境、安装依赖或换引擎。用户明确要求 Qwen 时，其他引擎的成功不能算 Qwen 完成。
+
+本地引擎实际由服务返回结果证明；不要用 `pip` 列表的截断输出猜测运行时。无法完成指定识别时回写实际失败或等待状态，保留已完成材料并说明缺口，不提交声称满足全部要求的替代产物。
 
 遵守冻结的本地优先、仅本地或云端选择。本地依赖未就绪时回写实际原因；模型安装另依当前明确授权办理。仅本地不调用云端；本地失败不增加云端付费许可。云端授权、预算或计费状态不满足时停止相关调用，继续可用字幕整理。
 
@@ -25,5 +39,11 @@ ASR 只走共同契约的受控工具，输入当前任务已授权的媒体路�
 ## 交付
 
 提交 transcript，并用当前产物合同的 references 保留 originalText、correctedText、segments、corrections 和媒体/字幕 hash；校对状态、引擎、时码精度和缺段说明写在 artifact.text/允许的 data。不得增加 reference 未支持的键。
+
+固定请求含 `parameters.transcript` 时，只提交一份 `transcript` artifact、一个完整 reference，ID 必须为冻结的 `referenceId`。`extract` 只给空原稿参考填 `originalText/segments`，先有已保存媒体或字幕；`correct` 只改 `correctedText/corrections`，原文、时间轴、来源、媒体等其余字段原样保留；`reextract` 才可替换原文与时间轴，保留身份及媒体，明确返回新的校对字段，未生成新校对则用空字符串和空数组清除旧校对。任务期间参考变化时重建任务，不改冻结基线。
+
+没有固定意图的旧任务或整篇创作不能用相同 ID 覆盖已有原始证据。整篇产物需要保存新识别证据时，可新增带真实来源和同一已授权媒体 hash 的独立参考，保留已有记录；不能假冒已执行专属重新提取。最终由工作台完整预览并按预览时的内容版本采用，助手不直接改正文或参考文件。
+
+`RUN production status` 返回 `{ok,result}`；当前状态和回执位于 **`result.attempt.status`、`result.attempt.receipt`**。按共同契约核对 receipt 的绑定与哈希；不要在顶层找不到 receipt 时臆测需要签名服务、收费权益或某种授权模式。回执确实缺失时如实报告并停止宣称已核验。
 
 完成条件：每处改字有理由；原稿仍可读；时间段不凭空生成；所有后续引用知道自己使用的是原识别、校正版还是未确认片段。缺片段不妨碍交付已完成部分，但不能称完整转写。

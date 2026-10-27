@@ -1,0 +1,85 @@
+						253 图像 Michael
+						254 文本 Michael
+					255 按钮 消息中心
+					256 弹出式按钮 扫码 WorkBuddy 小程序
+				257 container
+					258 标题 WorkBuddy, 我帮你, Value: 1
+						259 文本 WorkBuddy, 我帮你
+					260 场景切换
+						261 单选按钮 办公, Value: 1
+							262 文本 办公
+						263 单选按钮 开发, Value: 0
+							264 文本 开发
+						265 单选按钮 设计, Value: 0
+							266 文本 设计
+					267 container
+						268 container
+							269 按钮 创作文档
+							270 按钮 金融服务
+							271 按钮 分析数据
+							272 按钮 制作PPT
+							273 按钮 深度研究
+							274 按钮 策划方案
+							275 按钮 定时任务
+						276 container
+							277 container
+								278 文本输入区 (settable) 请使用 nova-content-research-execution 执行工作台任务。
+任务编号：bf3c48c3-a14e-4d05-9738-4fa2bc5858d3
+先按 Skill 运行 production context --handoff bf3c48c3-a14e-4d05-9738-4fa2bc5858d3，完整读取冻结 REQUEST/context、正文与全部资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。
+
+nova-content-research-execution
+﻿
+​​
+									279 文本 请使用 nova-content-research-execution 执行工作台任务。
+									280 文本 任务编号：bf3c48c3-a14e-4d05-9738-4fa2bc5858d3
+									281 container
+										282 文本 先按 Skill 运行 production context --handoff bf3c48c3-a14e-4d05-9738-4fa2bc5858d3，完整读取冻结 REQUEST/context、正文与全部资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。
+										283 sortable nova-content-research-execution
+											284 container
+												285 图像
+												286 文本 nova-content-research-execution
+										287 text ﻿
+							288 container
+								289 组合框 (settable) 更多操作
+									290 图像
+								291 按钮 增强提示词
+									292 图像
+								293 组合框 (settable) Description: Select model: Hy3, Value: Hy3
+									294 图像
+									295 文本 Hy3
+								296 按钮 点击或长按 ⌥ 语音输入
+									297 图像
+								298 按钮 发送
+							299 弹出式按钮 内容库-恢复-20261019
+							300 组合框 (settable) 允许完全访问
+								301 文本 允许完全访问
+							302 container
+						303 按钮 最近 AI 行业变了什么，给我一份变更日志
+						304 按钮 每周五提醒我整理本周工作
+						305 按钮 帮我做一张自动汇总的月度收支表
+						306 按钮 每月定投1000元，5年后能有多少钱
+					307 文本 内容由 AI 生成，请核实重要信息
+				308 container
+					309 按钮 新标签页
+					310 按钮 进入全屏
+					311 按钮 收起右侧栏
+				312 container
+					313 文本 引用来源 (0)
+					314 按钮 关闭
+	315 关闭按钮
+	316 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	317 最小化按钮
+318 menu bar
+	319 WorkBuddy
+	320 编辑
+	321 查看
+	322 窗口
+	323 帮助
+
+The focused UI element is 278 文本输入区 (settable) 请使用 nova-content-research-execution 执行工作台任务。
+任务编号：bf3c48c3-a14e-4d05-9738-4fa2bc5858d3
+先按 Skill 运行 production context --handoff bf3c48c3-a14e-4d05-9738-4fa2bc5858d3，完整读取冻结 REQUEST/context、正文与全部资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。
+
+nova-content-research-execution
+﻿
+​​

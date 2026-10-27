@@ -124,14 +124,14 @@
 .content-collection-copy small { color:var(--semi-color-text-2); font-size:12px; }
 .content-collection-copy>span { color:var(--semi-color-text-2); font-size:11px; }
 .creator-content-library .content-table-wrap { overflow-x:auto; }
-.creator-content-library .content-table { min-width:810px; }
-.creator-content-library .content-table th:first-child { width:29%; }
-.creator-content-library .content-table th:nth-child(2) { width:14%; }
-.creator-content-library .content-table th:nth-child(3) { width:15%; }
-.creator-content-library .content-table th:nth-child(4) { width:12%; }
-.creator-content-library .content-table th:nth-child(5) { width:13%; }
-.creator-content-library .content-table th:last-child { width:17%; }
-.creator-content-library .content-table th,.creator-content-library .content-table td { padding:15px 14px; }
+.creator-content-library .content-table-wrap table.semi-table { table-layout:fixed; min-width:820px; }
+.creator-content-library .content-table-wrap .semi-table th:first-child { width:30%; }
+.creator-content-library .content-table-wrap .semi-table th:nth-child(2) { width:15%; }
+.creator-content-library .content-table-wrap .semi-table th:nth-child(3) { width:15%; }
+.creator-content-library .content-table-wrap .semi-table th:nth-child(4) { width:12%; }
+.creator-content-library .content-table-wrap .semi-table th:nth-child(5) { width:13%; }
+.creator-content-library .content-table-wrap .semi-table th:last-child { width:150px; }
+.creator-content-library .content-table-wrap .semi-table th,.creator-content-library .content-table-wrap .semi-table td { padding:15px 14px; }
 .creator-content-library .content-thumbnail { width:49px; height:56px; border-radius:6px; }
 .creator-content-library .content-thumbnail img { width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; border-radius:min(6px,4%); }
 .creator-content-library .content-title-cell { gap:5px; }
@@ -166,7 +166,7 @@
   .schedule-subheading { align-items:flex-start; flex-direction:column; }
   .creator-content-library .content-list-heading { flex-direction:column; align-items:flex-start; }
   .creator-content-library .content-list-heading .management-actions { width:100%; }
-  .creator-content-library .content-table th:nth-child(3),.creator-content-library .content-table td:nth-child(3) { display:table-cell; }
+  .creator-content-library .content-table-wrap .semi-table th:nth-child(3),.creator-content-library .content-table-wrap .semi-table td:nth-child(3) { display:table-cell; }
   .creator-content-library .content-thumbnail { display:grid; }
   .creator-content-library .content-row-actions { flex-direction:row; }
   .creator-schedule .creator-page-heading>.management-actions { flex-wrap:wrap; gap:7px; }
@@ -238,3 +238,7 @@
   .creator-overview .creator-overview-layout { grid-template-columns:minmax(0,1fr); }
   .creator-overview-layout>.creator-panel { min-height:0; }
 }
+
+/* Controls-01/03, Reading-02: real Semi columns keep an explicit operation width. */
+.creator-content-library .content-title-cell strong{line-height:21px;max-height:42px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.creator-content-library .content-row-actions{flex-wrap:nowrap;justify-content:flex-end;min-width:126px}.creator-content-library .content-row-actions .semi-button{white-space:nowrap;flex:none}.creator-content-library .content-channel-list{max-height:48px;overflow:auto;align-content:start}

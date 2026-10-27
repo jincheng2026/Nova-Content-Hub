@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-27T08:00:09.902Z",
+  "version": "0.3.56",
+  "platform": "darwin",
+  "arch": "arm64",
+  "dmg": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.3.56-darwin-arm64-preview.dmg",
+  "dmgSha256": "8018710dbb875cc5cd214c8dd5ba982c89cd71bb989b8823ea0665f477e623a9",
+  "dmgBytes": 286842157,
+  "dmgModifiedAt": "2026-10-27T07:54:33.099Z",
+  "source": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-12SIHj/mac-arm64/自媒体工作台.app",
+  "target": "/Applications/自媒体工作台.app",
+  "frozenTreeSha256": "d9565486008549cc31d4ac267d07760f05d99c183397b57098461b074e939fe4",
+  "entries": 1735,
+  "readOnlyMounted": true,
+  "nobrowse": true,
+  "dmgAppEqualsFrozenBuild": true,
+  "installedAppEqualsDmg": true,
+  "installedAppEqualsFrozenBuild": true,
+  "startedApplication": false,
+  "uiActions": false,
+  "detached": true
+}

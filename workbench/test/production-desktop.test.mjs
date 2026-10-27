@@ -18,6 +18,20 @@ async function fixture(t,callbacks={}){
  await controller.initialize();await controller.persist({...controller.binding,current:binding});return {controller,library,binding,parent,store};
 }
 const start={kind:'research',title:'测试任务',prompt:'仅测试本机契约，不调用服务',mode:'simple',comments:false};
+for(const host of ['codex','workbuddy'])test(`${host}: research, analysis and writing launch the selected agent without granting a text-model API`,async t=>{
+ const launches=[],settings=view();settings.values.model.modelId='legacy-saved-model';
+ const {controller:c}=await fixture(t,{launch:async(_binding,task)=>launches.push(task),serviceSettings:async()=>settings});
+ await c.persist({...c.binding,assistant:host});
+ for(const kind of ['research','analysis','writing']){
+  const result=await c.startProductionTask({...start,kind}),task=result.snapshot.tasks.at(-1);
+  assert.equal(result.opened,true);
+  assert.equal(task.attempts.at(-1).host,host);
+  assert.equal(launches.at(-1).taskId,task.id);
+  assert.deepEqual(task.request.tools,['tikhub','asr']);
+  assert.deepEqual(task.request.parameters.serviceConfig,{asr:settings.values.asr});
+ }
+ assert.equal(launches.length,3);
+});
 test('renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters',()=>{
  for(const op of ['claimTask','reserveCost'])assert.throws(()=>validateInput('mutateProduction',{op,input:{},mutationId:randomUUID()}),{code:'INVALID_INPUT'});
  assert.throws(()=>validateInput('actProductionTask',{taskId:randomUUID(),action:'accept'}),{code:'INVALID_INPUT'});
@@ -119,6 +133,7 @@ test('platform catalog exposes no caller-controlled endpoint and account platfor
   const account=saved.accounts.at(-1),result=await c.startProductionTask({...start,kind:'analysis',accountId:account.id,comments:true}),request=result.snapshot.tasks.at(-1).request;
   assert.equal(request.parameters.platform,platform);assert.equal(request.parameters.platformCollection,expected);
   assert.equal(request.tools.includes('tikhub'),expected!=='manual');assert.equal(request.parameters.comments,expected==='douyin');
+  assert.equal(request.tools.includes('model'),false);assert(request.tools.includes('asr'));
  }
  const before=(await c.readProduction()).tasks.length;
  await assert.rejects(c.startProductionTask({...start,accountId:randomUUID()}),{code:'NOT_FOUND'});

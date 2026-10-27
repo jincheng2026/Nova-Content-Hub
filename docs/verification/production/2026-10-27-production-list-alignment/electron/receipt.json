@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "avatar is distinct from screenshots and account actions align with long, short and empty content",
+    "complete account details distinguish accepted, submitted and manual report sources",
+    "report and task summaries keep actions separate from complete details",
+    "content table operation column remains fixed at both supported window sizes",
+    "radar long titles and empty authors preserve fixed operations and complete source evidence",
+    "independent avatar import and explicit save retain existing screenshot selection"
+  ]
+}

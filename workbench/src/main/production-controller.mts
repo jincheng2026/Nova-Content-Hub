@@ -1,3 +1,4 @@
+import {productionReferenceHash, validateTranscriptReference} from '../../../plugin-src/src/lib/file-library/production-reference.mjs';
 import {contentCreationPrompt} from '../shared/content-creation-workflow.ts';
 import {researchDepthRequirements} from '../shared/research-depth.ts';
 import {productionLaunchFailure} from './assistant-failure.mts';
@@ -29,7 +30,7 @@ export class ProductionController {
  decorate(snapshot:ProductionSnapshot):ProductionSnapshot {
   const next=structuredClone(snapshot);
   for(const task of next.tasks)for(const attempt of task.attempts)attempt.claimToken=null;
-  next.assetUrls=Object.fromEntries([...new Set(next.accounts.flatMap(a=>a.images))].filter(h=>!next.missingAssetHashes?.includes(h)).map(h=>[h,this.owner.covers.grant(h)]));
+  next.assetUrls=Object.fromEntries([...new Set(next.accounts.flatMap(a=>[...a.images,...(a.avatarAssetHash?[a.avatarAssetHash]:[])]))].filter(h=>!next.missingAssetHashes?.includes(h)).map(h=>[h,this.owner.covers.grant(h)]));
   return next;
  }
  async read(){return this.decorate(await this.owner.worker.call('productionRead',{binding:this.owner.current()}));}
@@ -73,15 +74,22 @@ export class ProductionController {
    if(!snapshot.creations.some(creation=>creation.contentId===input.contentId))snapshot=await this.write({...this.pendingBase(),kind:'mutate',op:'ensureCreation',input:{contentId:input.contentId,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
   }
   const settings=await this.callbacks.serviceSettings(),v=settings.values;
-  const bodyHash=input.contentId?(await this.owner.worker.call('productionCreation',{binding:b,contentId:input.contentId})).content.bodyHash:null;
+  const creationState=input.contentId?await this.owner.worker.call('productionCreation',{binding:b,contentId:input.contentId}):null,bodyHash=creationState?.content.bodyHash??null;
+  if(input.transcript){
+   const ref=creationState?.creation?.references.find(ref=>ref.id===input.transcript!.referenceId);if(!ref)fail('NOT_FOUND','找不到当前内容中已保存的参考资料。');
+   if(await productionReferenceHash(ref)!==input.transcript.expectedReferenceHash)fail('STALE_INPUT','参考资料已变化，请先保存并重新核对。');
+   validateTranscriptReference(ref,input.transcript.intent,snapshot.missingAssetHashes??[]);
+   const existing=[...snapshot.tasks].reverse().find(task=>{const p=task.request.parameters;if(task.contentId!==input.contentId||p===null||typeof p!=='object'||Array.isArray(p)||p.transcript===null||typeof p.transcript!=='object'||Array.isArray(p.transcript))return false;const a=task.attempts.find(a=>a.id===task.activeAttemptId);return p.transcript.referenceId===ref.id&&a&&['created','claimed','waiting-user','waiting-permission','submitted'].includes(a.status);});
+   if(existing){const p=existing.request.parameters as {transcript:{intent:string;baselineHash:string}};if(p.transcript.intent!==input.transcript.intent||p.transcript.baselineHash!==input.transcript.expectedReferenceHash)fail('INVALID_STATE','本条参考已有其他进行中的任务，请先在原任务中处理或明确取消。');const launched=await this.launch(existing.id);return {snapshot:await this.read(),...launched};}
+  }
   const serviceDescriptor=await this.callbacks.servicesDescriptor?.();
   const account=input.accountId?snapshot.accounts.find(account=>account.id===input.accountId&&!account.deletedAt):undefined;
   if(input.accountId&&!account)fail('NOT_FOUND','对标账号不存在，请刷新后重新选择。');
   const platformCollection=account?platformCollectionCapability(account.platform):null;
-  const parameters={...(input.workflow?{workflow:input.workflow}:{}),...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&(!account||platformCollection==='douyin'),budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
-  const tools=platformCollection==='manual'?['model','asr']:['tikhub','model','asr'];
+  const parameters={...(input.transcript?{transcript:{version:1,intent:input.transcript.intent,referenceId:input.transcript.referenceId,baselineHash:input.transcript.expectedReferenceHash}}:{}),...(input.workflow?{workflow:input.workflow}:{}),...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&(!account||platformCollection==='douyin'),budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
+  const tools=platformCollection==='manual'?['asr']:['tikhub','asr'];
   const prior=new Set(snapshot.tasks.map(t=>t.id));
-  const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.workflow==='content-creation'?contentCreationPrompt(input.prompt):input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+  const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.workflow==='content-creation'?contentCreationPrompt(input.prompt):input.transcript?`${input.prompt}\n\n本任务仅处理固定parameters.transcript.referenceId的已保存参考。intent=${input.transcript.intent}；基线由baselineHash固定。extract只提取原稿和真实时间轴；correct只生成校对后文本和逐项纠错，保留原始逐字稿、来源、媒体与原时间轴；reextract按用户明确要求重新提取原稿和时间轴，旧校对若无新版本应清空。由同一个助手对话完成并交回一份transcript artifact，其data.references必须恰有一条同id完整reference。不得另建参考ID或改写自己的正文，提交后等工作台前后预览与人工采用。没有时间戳证据时segments为空数组，不编造时码。`:input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
   const task=result.tasks.find(t=>!prior.has(t.id));if(!task)fail('PENDING_MUTATION','任务已写入但无法定位，请刷新原任务列表。');
   const launched=await this.launch(task.id);return {snapshot:await this.read(),...launched};
  });}

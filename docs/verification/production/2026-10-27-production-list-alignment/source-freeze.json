@@ -1,0 +1,28 @@
+{
+  "baseCommit": "45c7d2578f6affd9b988a03b98d1e4e6ad524106",
+  "frozenAt": "2026-10-27T08:40:38.473230+00:00",
+  "note": "Assigned source freeze only; controller file also contains preserved external agent-only service changes. Release version/build remains root responsibility.",
+  "sha256": {
+    "plugin-src/src/lib/file-library/production.d.ts": "2aca23d949a325a65816d66facf74fd58adca5c77d6a3e0c427c4e1e250f961e",
+    "plugin-src/src/lib/file-library/production.mjs": "2c00338faea10bf6162f4c8d888ff9ac5b597386a91b2fbe21de6204a9eb2ecc",
+    "plugin-src/src/lib/file-library/test/production-avatar.test.mjs": "7c67b0ed42124f5f3f142d99be9afc61d640d724c9d63f78a92805de85a8a12c",
+    "workbench/src/main/production-controller.mts": "f8e105357610501d279c4e072ec8c474d4f9843fbc609c89a021c78d3046237e",
+    "workbench/src/shared/production-contracts.ts": "c4df6596cf6adff00ee28c661350df4d1132bff82592fa9aa9cb9e647726b94a",
+    "workbench/src/shared/production-validation.ts": "758ea87066dd35c82fb00bd01100f2b3ade6803a8cb45d324afa687c477aa6ed",
+    "workbench/src/shared/production-report-status.ts": "f484ad3e3d6f231a1c0fc58699731fbbaccc9c493f7296adedb89b50c342ff75",
+    "workbench/src/renderer/production-dialog.tsx": "46a9de2371a37cc5e4b184946228c7cebc0330e32940caa4211b0e4bd7c3ec01",
+    "workbench/src/renderer/production-record-details.tsx": "d3fadb6a4b7c02503f0c3eba44b8a443b586b154d46f136ac658304b507ccf4d",
+    "workbench/src/renderer/production-workspace.tsx": "8252faa1fd61c29cd48105fe8b455f0aa2814ddf8d5c3d1b2688dfde6b28b445",
+    "workbench/src/renderer/production-workspace.css": "6ca3daab2f898b255b15c318f206088cf9625e70a74222adccb4ddf379111a14",
+    "workbench/src/renderer/creator-dashboard.css": "41f752e1fa7169bc5f45ce7d54a6a75a627c5fb7cac8847ff190688de3bb78aa",
+    "workbench/src/renderer/radar-workspace.tsx": "04b7aa8adb905f80f9e223d8472dc73af3f616016eed5b83533147fa454e15af",
+    "workbench/src/renderer/radar-workspace.css": "d37983a34291a53df3c97827a03b874935d7488b97c8b1057f1f3ba1d531e459",
+    "workbench/test/content-creation-workflow.test.mjs": "35ca6bacc91b241da9b485e52a7f260cd030849e0348ad6f5aecfb5396d9206e",
+    "workbench/test/production-report-status.test.mjs": "d7b23cdc8abdc4f01bcd9be3f2579a2ff0f89a7c4bd56dff44f232dece243143",
+    "workbench/test/production-transcript-task.test.mjs": "6662ea078ebd2e9ab2c3447f5c991b6677180a6488c6093dac5db546779dda2f",
+    "workbench/scripts/production-list-ui-probe.mjs": "11ec53b2c6ccfe561ff44e323df344674088b6eff8985834c71971e79fa4d498",
+    "workbench/scripts/production-transcript-ui-probe.mjs": "b4b4897ef44b6682948ea03a071c6283052be552f46064221b9c7db9a5906515",
+    "workbench/test-support/production-list-probe-entry.mjs": "1f4e64fe611474aa2220cd63c6f16ccebc65d9f24e1892eefa32bff8bf92e681",
+    "workbench/test-support/production-transcript-probe-entry.mjs": "9c0c48ce7f347bb542dc2b9f5005c77a4096b23bb7d1baadfa9c24b0195c9649"
+  }
+}

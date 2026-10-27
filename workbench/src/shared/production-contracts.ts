@@ -10,7 +10,9 @@ export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creat
 export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string; history: Core.ProductionHistory}
 export type ProductionManualOp = 'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
-export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string; accountId?: string; mode: 'simple'|'detailed'; comments: boolean; workflow?: 'content-creation'}
+export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
+export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}
+export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string; accountId?: string; mode: 'simple'|'detailed'; comments: boolean; workflow?: 'content-creation'; transcript?: ProductionTranscriptStart}
 export type ProductionAction = {taskId: string; action: 'cancel'|'retry'; host?: Core.ProductionHost} | {taskId: string; action: 'accept'; expectedToken: string; attemptId: string; receiptHash: string};
 export interface ProductionDraft {contentId: string; body: string; editToken: string; bodyHash: string; productionToken: string; creationPatch: Partial<ProductionCreation>}
 export type ProductionFileKind = 'images'|'report'|'media';

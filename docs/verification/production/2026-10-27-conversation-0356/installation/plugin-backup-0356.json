@@ -1,0 +1,15 @@
+{
+  "recordedAt": "2026-10-27T07:59:31.209Z",
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/plugin-config-0356-a8c0e4e5-449f-4da8-b39d-f6190c2348b5",
+  "opaqueFiles": [
+    "codex/config.toml",
+    "workbuddy/settings.json",
+    "workbuddy/plugins/known_marketplaces.json",
+    "workbuddy/plugins/installed_plugins.json",
+    "workbuddy/plugins/configured-plugins.json",
+    "codex/previous-plugin-0.3.55",
+    "workbuddy/previous-plugin-0.3.55"
+  ],
+  "credentialValuesParsed": false,
+  "previousVersion055Preserved": true
+}

@@ -3,6 +3,7 @@ import path from 'node:path';
 import {validRelease} from '../content.mjs';
 import {nativeHandoffDirectory} from '../bridge/native-handoff.mjs';
 import {collectRadar} from '../lib/file-library/radar-collector.mjs';
+import {productionAsr} from '../lib/service-tools/production-asr.mjs';
 import {readProductionHandoff,productionHandoffContext} from '../bridge/production-handoff.mjs';
 const MAX=2*1024*1024;
 const fail=(code,message)=>{throw Object.assign(new Error(message),{code});};
@@ -22,9 +23,9 @@ async function input(values){
 }
 export async function main(argv){
  try{
-  const [command='help',...rest]=argv,values={};if(!['help','context','status','claim','progress','submit','fail','import','collect-radar'].includes(command))fail('INVALID_ARGUMENTS','Unknown production command');
+  const [command='help',...rest]=argv,values={};if(!['help','context','status','claim','progress','submit','fail','import','collect-radar','asr'].includes(command))fail('INVALID_ARGUMENTS','Unknown production command');
   for(let i=0;i<rest.length;i++){const key=rest[i].slice(2);if(!rest[i].startsWith('--')||!['handoff','file','stdin'].includes(key)||Object.hasOwn(values,key))fail('INVALID_ARGUMENTS','Unknown or duplicate flag');if(key==='stdin')values[key]=true;else{values[key]=rest[++i];if(!values[key]||values[key].startsWith('--'))fail('INVALID_ARGUMENTS','Missing flag value');}}
-  const r=release();if(command==='help'){if(rest.length)fail('INVALID_ARGUMENTS','Help has no flags');process.stdout.write(JSON.stringify({ok:true,commands:['context','status','claim','progress','submit','fail','import','collect-radar'],usage:'production COMMAND --handoff UUID [--file ABSOLUTE_JSON | --stdin]'})+'\n');return 0;}
+  const r=release();if(command==='help'){if(rest.length)fail('INVALID_ARGUMENTS','Help has no flags');process.stdout.write(JSON.stringify({ok:true,commands:['context','status','claim','progress','submit','fail','import','collect-radar','asr'],usage:'production COMMAND --handoff UUID [--file ABSOLUTE_JSON | --stdin]'})+'\n');return 0;}
   if(r.AUTH_MODE!=='disabled')fail('AUTH_NOT_CONFIGURED','可信权益未接入，停止业务读写。');
   if(!values.handoff)fail('INVALID_ARGUMENTS','An explicit handoff is required');
   const envelope=readProductionHandoff(nativeHandoffDirectory(),values.handoff,r),{library,context}=productionHandoffContext(envelope),locator={taskId:envelope.task.taskId,attemptId:envelope.task.attemptId};
@@ -38,6 +39,8 @@ export async function main(argv){
     const parameters=context.task.request.parameters;
     if(parameters?.workflow!=='viral-radar'||parameters.budgetEnabled!==true||!context.task.request.tools.includes('tikhub'))fail('BUDGET_DISABLED','This radar task permits manual evidence only');
     result={radar:await collectRadar({query:parameters.query,allowedOperations:parameters.operations,identity:{...locator,claimToken:payload.claimToken,workerId:payload.workerId},descriptorPath:envelope.serviceDescriptorPath,maxRequests:Math.min(4,context.task.request.budget.amount)})};
+   }else if(command==='asr'){
+    result=await productionAsr({envelope,context,payload:raw});
    }else if(command==='import'){
     if(Object.keys(payload).some(k=>!['path','purpose','claimToken','workerId'].includes(k))||!['production-report','production-reference'].includes(payload.purpose)||typeof payload.path!=='string'||!path.isAbsolute(payload.path))fail('INVALID_INPUT','Invalid task import');
     if(context.task.activeAttemptId!==locator.attemptId||context.attempt.status!=='claimed'||context.attempt.claimToken!==payload.claimToken||!payload.workerId||context.attempt.workerId!==payload.workerId)fail('ATTEMPT_INACTIVE','Claim the active task before importing');
@@ -49,6 +52,6 @@ export async function main(argv){
     result={...library.readProductionContext(locator.taskId,locator.attemptId),mutationId:result.mutationId,...(result.archiveWarnings?.length?{archiveWarnings:result.archiveWarnings}:{})};
    }
   }
-  process.stdout.write(JSON.stringify({ok:true,result:envelope.serviceDescriptorPath?{...result,serviceDescriptorPath:envelope.serviceDescriptorPath}:result})+'\n');return 0;
+  process.stdout.write(JSON.stringify({ok:true,result:command!=='asr'&&envelope.serviceDescriptorPath?{...result,serviceDescriptorPath:envelope.serviceDescriptorPath}:result})+'\n');return 0;
  }catch(error){process.stdout.write(JSON.stringify({ok:false,code:error.code||'PRODUCTION_FAILED',message:error.message})+'\n');return 1;}
 }

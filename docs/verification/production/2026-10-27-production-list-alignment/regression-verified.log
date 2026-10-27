@@ -1,0 +1,46 @@
+✔ one submitted receipt previews the whole bundle without writes; one CAS save adopts all fields after acceptance (7418.969792ms)
+✔ bundle refuses stale baselines, duplicate field owners, mixed review/filming and one invalid artifact without partial writes (34163.228125ms)
+✔ packaging appends without changing a human selection; accepted save failure retains original body CAS for retry (5437.8845ms)
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (6664.65425ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (13673.393625ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (10633.599417ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (5617.256208ms)
+✔ fixed requests reject secret parameters and invalid JSON (1115.758375ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (4501.811292ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (3267.729083ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (1991.447333ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (6072.28275ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (1722.579125ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (3972.308625ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (2663.066667ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (2336.873667ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (3066.873417ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (1988.761417ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (2735.472042ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (3154.549375ms)
+✔ codex: research, analysis and writing launch the selected agent without granting a text-model API (11253.39425ms)
+✔ workbuddy: research, analysis and writing launch the selected agent without granting a text-model API (14851.173875ms)
+✔ renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters (4.48725ms)
+✔ read does not enable creation; explicit enable and draft save use real CAS versions (8055.7325ms)
+✔ launch failure preserves one task; comments require per-task consent and setting; budget is REQ without broker token (8207.442792ms)
+✔ production launch exposes safe preflight reasons, preserves task and redacts raw exception details (5385.793209ms)
+✔ codex/legacy: only created attempts launch conversations; active attempts only focus host and submitted results stay local (11276.238ms)
+✔ codex/content-creation: only created attempts launch conversations; active attempts only focus host and submitted results stay local (9635.957459ms)
+✔ workbuddy/legacy: only created attempts launch conversations; active attempts only focus host and submitted results stay local (8749.510625ms)
+✔ workbuddy/content-creation: only created attempts launch conversations; active attempts only focus host and submitted results stay local (8446.663292ms)
+✔ active tasks without a focus capability retain the original chat and never fall back to launching (2226.284791ms)
+✔ lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes (807.487958ms)
+✔ pending metadata is library-bound and required builds reject all production access (377.281917ms)
+✔ claim tokens are redacted and acceptance requires current attempt and exact receipt (5388.732ms)
+✔ unknown cost blocks retry until explicit reconciliation and clears matching service cache intent (3370.702083ms)
+✔ file recovery verifies the original bytes before importing a changed source (415.501ms)
+✔ platform catalog exposes no caller-controlled endpoint and account platform freezes collection capability (5233.026959ms)
+✔ research depth freezes distinct deliverables while preserving user scope, budget and other task kinds (5865.8275ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 109981.590959

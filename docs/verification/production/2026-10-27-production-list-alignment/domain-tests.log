@@ -1,0 +1,19 @@
+✔ legacy accounts without avatar remain readable; avatar saves survive old-client edits and stale CAS cannot replace them (1985.9605ms)
+✔ avatar asset is checked, missing originals stay editable and backup/restore retains an avatar absent from screenshots (3881.133375ms)
+✔ reference source bytes in saved creation and submitted candidates are checked and backed up independently (6978.491167ms)
+✔ content creation workflow validates scope, ensures creation once and reuses the active task after a launch failure (4768.375792ms)
+✔ workflow keeps one attempt across both waiting states and submitted result for each host without granting extra permissions (11510.037416ms)
+✔ desktop accepts an optional image avatar reference, rejects non-hash input and grants avatar URLs independently of screenshots (1587.846792ms)
+✔ report state follows exact submitted and accepted receipts; names or dangling references cannot create acceptance (2609.721542ms)
+✔ manual report metadata cannot impersonate receipt provenance; legacy exact source metadata remains readable (3115.101917ms)
+✔ transcript task binds one saved reference by compact hash, preserves tools/budget and reuses the same active attempt (4160.117459ms)
+✔ transcript task rejects stale or missing reference before creating work; correction cannot start on empty original text (2522.023917ms)
+✔ transcript extract rejects known missing source bytes and URL-only references; account binding cannot be mixed in (1704.1595ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18282.490791

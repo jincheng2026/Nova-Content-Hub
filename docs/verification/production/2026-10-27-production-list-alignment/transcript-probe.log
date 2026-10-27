@@ -1,0 +1,19 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2126 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-YwlVL2/bundle/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-YwlVL2/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-YwlVL2/bundle/workbench/dist/renderer/assets/index-CaxAel83.css                        548.72 kB │ gzip:  72.92 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-creation-probe-YwlVL2/bundle/workbench/dist/renderer/assets/index-CnbOJ2OR.js                       1,527.74 kB │ gzip: 430.79 kB
+
+✓ built in 7.99s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS extract/correct/reextract are bound to individual saved references and reextract has an explicit confirmation
+PASS frozen before/after preview rejects stale body CAS without partial adoption, retains preview, and explicit fresh preview applies only the correction
+PASS production transcript Electron probe; /Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-27-production-list-alignment/transcript-electron

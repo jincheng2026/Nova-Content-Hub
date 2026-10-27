@@ -1,6 +1,6 @@
 export type ProductionJSON = null | boolean | number | string | ProductionJSON[] | {[key: string]: ProductionJSON};
 export type ProductionHost = 'codex' | 'workbuddy';
-export interface ProductionAccount {id: string; name: string; platform: string; url: string; note: string; tags: string[]; images: string[]; reportIds: string[]; createdAt: string; updatedAt: string; deletedAt: string | null}
+export interface ProductionAccount {id: string; name: string; platform: string; url: string; note: string; tags: string[]; images: string[]; avatarAssetHash?: string | null; reportIds: string[]; createdAt: string; updatedAt: string; deletedAt: string | null}
 export interface ProductionReport {id: string; title: string; type: string; accountIds: string[]; sourceUrl: string | null; collectedAt: string | null; pages: {id: string; title: string; assetHash: string}[]; pageId: string; meta: ProductionJSON; createdAt: string; updatedAt: string; deletedAt: string | null}
 export interface ProductionReference {id: string; url: string | null; title: string; platform: string; originalText: string; correctedText: string; segments: {startMs: number; endMs: number; text: string}[]; corrections: {original: string; corrected: string; reason: string}[]; analysis: string; mediaAssetHash: string | null; subtitleAssetHash: string | null}
 export interface ProductionCandidate {id: string; text: string}
