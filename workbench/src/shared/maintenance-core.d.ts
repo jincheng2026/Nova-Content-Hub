@@ -12,6 +12,7 @@ declare module '*file-library/index.mjs' {
     export function upgradeLibrary(root: string, options: UpgradePins): ReturnType<typeof openLibrary>;
     export function inspectLibraryUpgrade(root: string, options: UpgradePins): {libraryId: string; schemaVersion: number; descriptorHash: string; upgradeComplete: boolean; upgradeRequired: boolean};
     export function verifyBackup(source: string): MaintenanceBackup & {verified: true; treeHash: string};
+    export function prepareRestoredLibrary(root: string, backup: {backupId: string; treeHash: string}): {interruptedAttempts: unknown[]; recoveredMutations: string[]; schemaVersion: number; upgradeRequired: boolean};
     export function restoreBackup(source: string, destination: string): {
         backupId: string; root: string; libraryId: string; outcome: 'committed';
         upgradeRequired: boolean; recoveredMutations: string[]; interruptedAttempts: unknown[];

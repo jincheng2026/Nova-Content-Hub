@@ -102,3 +102,5 @@ export function resolveVaultMutation(
     | {state: 'committed'; result: unknown}
     | {state: 'missing'}
     | {state: 'uncertain'};
+
+export {backupVault, verifyVaultBackup, restoreVaultBackup, inspectVaultCopy, migrateVault, inspectVaultRestore} from './backup.mjs';

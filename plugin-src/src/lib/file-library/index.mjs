@@ -2477,7 +2477,7 @@ function validateSchema4Transaction(tx) {
     }
 }
 
-function prepareRestoredLibrary(root, backup) {
+export function prepareRestoredLibrary(root, backup) {
     const info = descriptor(root, true);
     const pending = path.join(root, SYSTEM, '事务', '待恢复');
     const recoveredMutations = fs.readdirSync(pending).filter(name => UUID.test(name));

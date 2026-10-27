@@ -2,6 +2,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {createHash, randomUUID} from 'node:crypto';
 import {backupLibrary, verifyBackup, restoreBackup, inspectLibraryHealth, upgradeLibrary, inspectLibraryUpgrade, openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
+import {backupVault, verifyVaultBackup, restoreVaultBackup, inspectVaultCopy, migrateVault, inspectVaultRestore, VAULT_BACKUP_FORMAT, VAULT_COPY_FORMAT} from '../../../plugin-src/src/lib/vault/backup.mjs';
+import {vaultRootForRuntime} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {isRecord} from '../shared/contracts.ts';
 import {exact, fail, libraryBinding, uuid} from '../shared/validation.ts';
 import {maintenancePending} from '../shared/maintenance-validation.ts';
@@ -55,36 +57,78 @@ function boundDescriptor(binding: LibraryBinding) {
     if (!sameIdentity(directoryIdentity(binding.root), binding.rootIdentity)) fail('SOURCE_CHANGED', '内容库文件夹在核验时改变。');
     return descriptor;
 }
+function inspectMaintenanceLibrary(binding: LibraryBinding) {
+    const descriptorHash = boundDescriptor(binding).hash;
+    const root = vaultRootForRuntime(binding.root);
+    if (!root) {
+        if (path.basename(binding.root) === 'runtime' && path.basename(path.dirname(binding.root)) === '.workbench' && exists(path.join(path.dirname(binding.root), 'vault.json'))) fail('CORRUPT', '知识库运行绑定缺失，不能将运行资料当成完整知识库备份。请保留文件并明确重新打开知识库。');
+        return {descriptorHash};
+    }
+    const rootIdentity = directoryIdentity(root), descriptor = boundedJSON(path.join(root, '.workbench', 'vault.json'));
+    if (!isRecord(descriptor.value) || !uuid(descriptor.value.vaultId) || !isRecord(descriptor.value.rootIdentity) || descriptor.value.rootIdentity.dev !== rootIdentity.dev || descriptor.value.rootIdentity.ino !== rootIdentity.ino) fail('CONFLICT', '知识库根身份已改变，请使用明确迁移恢复入口。');
+    return {descriptorHash, vault: {root, vaultId: descriptor.value.vaultId, rootIdentity, descriptorHash: descriptor.hash}};
+}
 function inspectBackup(source: string) {
-    const rootIdentity = directoryIdentity(source), result = verifyBackup(source);
+    const rootIdentity = directoryIdentity(source);
+    if (exists(path.join(source, '.workbench', 'vault.json'))) {
+        const result = inspectVaultCopy(source);
+        if (!sameIdentity(rootIdentity, directoryIdentity(source))) fail('SOURCE_CHANGED', '迁移副本在核验时改变。');
+        return {backup: {source, rootIdentity, format: VAULT_COPY_FORMAT, backupId: result.backupId, libraryId: result.libraryId, treeHash: result.treeHash, descriptorHash: result.descriptorHash}, counts: result.counts, manifest: {source: {libraryId: result.libraryId, schemaVersion: 1}, startedAt: '', completedAt: ''}};
+    }
+    const manifestPath = path.join(source, 'manifest.json');
+    const format = exists(manifestPath) ? boundedJSON(manifestPath).value : null;
+    if (isRecord(format) && format.format === VAULT_BACKUP_FORMAT) {
+        const result = verifyVaultBackup(source);
+        if (!sameIdentity(rootIdentity, directoryIdentity(source))) fail('SOURCE_CHANGED', '备份文件夹在核验时改变。');
+        return {backup: {source, rootIdentity, format: VAULT_BACKUP_FORMAT, backupId: result.backupId, libraryId: result.libraryId, treeHash: result.treeHash, descriptorHash: result.descriptorHash}, counts: result.counts, manifest: result.manifest};
+    }
+    const result = verifyBackup(source);
     const descriptorHash = boundedJSON(path.join(source, 'data', '内容库.json')).hash;
     if (!sameIdentity(rootIdentity, directoryIdentity(source))) fail('SOURCE_CHANGED', '备份文件夹在核验时改变。');
     return {backup: {source, rootIdentity, backupId: result.backupId, libraryId: result.libraryId, treeHash: result.treeHash, descriptorHash}, counts: result.counts, manifest: result.manifest};
 }
 function checkedBackup(expected: BackupIdentity) {
     const result = inspectBackup(expected.source);
-    if (!sameIdentity(result.backup.rootIdentity, expected.rootIdentity) || ['backupId', 'libraryId', 'treeHash', 'descriptorHash'].some(key => result.backup[key as keyof BackupIdentity] !== expected[key as keyof BackupIdentity])) fail('SOURCE_CHANGED', '已选择的备份被更改或替换，请保留现场并重新选择。');
+    if (!sameIdentity(result.backup.rootIdentity, expected.rootIdentity) || ['backupId', 'libraryId', 'treeHash', 'descriptorHash', 'format'].some(key => result.backup[key as keyof BackupIdentity] !== expected[key as keyof BackupIdentity])) fail('SOURCE_CHANGED', '已选择的备份被更改或替换，请保留现场并重新选择。');
     return result;
 }
 function checkedParent(pending: MaintenancePending) {
     if (!sameIdentity(directoryIdentity(path.dirname(pending.destination)), pending.parentIdentity)) fail('SOURCE_CHANGED', '目标父文件夹已被替换，维护操作已停止。');
-    const source = pending.kind === 'backup' ? pending.binding.root : pending.kind === 'upgrade' ? pending.source.root : pending.backup.source;
+    const source = pending.kind === 'backup' ? pending.vault?.root ?? pending.binding.root : pending.kind === 'upgrade' ? pending.source.root : pending.backup.source;
     const relative = path.relative(path.resolve(source), path.resolve(pending.destination));
     if (!relative || !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative)) fail('UNSAFE_PATH', '新文件夹必须位于来源文件夹之外。');
 }
 function receipt(pending: MaintenancePending, counts: MaintenanceReceipt['counts'], recovered: boolean, upgradeRequired = false, interruptedAttempts = 0): MaintenanceReceipt {
-    return {kind: pending.kind, destinationName: path.basename(pending.destination), counts, recovered, upgradeRequired, interruptedAttempts};
+    const scope = pending.kind === 'backup' ? pending.vault ? 'vault' : 'library' : pending.kind === 'restore' ? pending.backup.format === VAULT_BACKUP_FORMAT ? 'vault' : pending.backup.format === VAULT_COPY_FORMAT ? 'vault-copy' : 'library' : 'library';
+    return {kind: pending.kind, destinationName: path.basename(pending.destination), counts, recovered, upgradeRequired, interruptedAttempts, scope};
 }
 function query(pending: MaintenancePending): MaintenanceReceipt {
     if (pending.kind === 'upgrade') fail('INVALID_INPUT', '升级记录请使用专用核验入口。');
     checkedParent(pending);
     if (pending.kind === 'backup') {
         const found = inspectBackup(pending.destination);
+        if ((found.backup.format === VAULT_BACKUP_FORMAT) !== !!pending.vault) fail('CONFLICT', '备份范围与本次操作不一致，运行资料不能冒充完整知识库。');
+        if (pending.vault) {
+            const source = found.manifest.source;
+            if (!('vaultId' in source) || source.vaultId !== pending.vault.vaultId ||
+                !('vaultDescriptorHash' in source) || source.vaultDescriptorHash !== pending.vault.descriptorHash ||
+                !('rootIdentity' in source) || !sameIdentity(source.rootIdentity, pending.vault.rootIdentity) ||
+                !('runtimeIdentity' in source) || !sameIdentity(source.runtimeIdentity, pending.binding.rootIdentity) ||
+                !('operationId' in found.manifest) || found.manifest.operationId !== pending.operationId)
+                fail('CONFLICT', '完整知识库备份与固定的操作、根身份或描述文件不一致。');
+        }
         if (found.backup.libraryId !== pending.binding.libraryId || found.backup.descriptorHash !== pending.descriptorHash || found.manifest.startedAt < pending.startedAt) fail('CONFLICT', '完整备份与本次固定的内容库身份不一致。');
         checkedParent(pending);
         return receipt(pending, found.counts, true);
     }
-    const source = checkedBackup(pending.backup), identity = directoryIdentity(pending.destination);
+    const source = checkedBackup(pending.backup);
+    if (pending.backup.format === VAULT_BACKUP_FORMAT || pending.backup.format === VAULT_COPY_FORMAT) {
+        const restored = inspectVaultRestore(pending.destination, {operationId: pending.operationId, backupId: pending.backup.backupId, treeHash: pending.backup.treeHash});
+        if (restored.libraryId !== pending.backup.libraryId || restored.restoredAt < pending.startedAt) fail('CONFLICT', '知识库恢复凭据与本次固定来源不一致。');
+        checkedParent(pending);
+        return receipt(pending, source.counts, true, false, restored.interruptedAttempts.length);
+    }
+    const identity = directoryIdentity(pending.destination);
     const descriptor = boundedJSON(path.join(pending.destination, '内容库.json'));
     if (descriptor.hash !== pending.backup.descriptorHash || !isRecord(descriptor.value) || descriptor.value.libraryId !== pending.backup.libraryId) fail('BACKUP_INCOMPLETE', '恢复结果缺少完整的内容库身份；请保留文件并另选新目标。');
     const provenance = path.join(pending.destination, '系统（别动）', '恢复来源');
@@ -226,7 +270,7 @@ export function executeMaintenance(op: keyof MaintenanceWorkerOperations, raw: u
     }
     if (op === 'inspectMaintenanceLibrary') {
         if (!exact(raw, ['binding']) || !libraryBinding(raw.binding) || !absolute(raw.binding.root)) fail('INVALID_INPUT', '内容库维护参数无效。');
-        return {descriptorHash: boundDescriptor(raw.binding).hash};
+        return inspectMaintenanceLibrary(raw.binding);
     }
     if (op === 'inspectLibraryBackup') {
         if (!exact(raw, ['source']) || !absolute(raw.source)) fail('INVALID_INPUT', '备份核验参数无效。');
@@ -238,13 +282,16 @@ export function executeMaintenance(op: keyof MaintenanceWorkerOperations, raw: u
     if (op === 'queryMaintenance') return query(pending);
     checkedParent(pending);
     if (pending.kind === 'backup') {
-        if (boundDescriptor(pending.binding).hash !== pending.descriptorHash) fail('SOURCE_CHANGED', '内容库身份在准备备份后改变。');
-        const result = backupLibrary(pending.binding.root, pending.destination);
+        const inspected = inspectMaintenanceLibrary(pending.binding);
+        if (inspected.descriptorHash !== pending.descriptorHash || JSON.stringify(inspected.vault) !== JSON.stringify(pending.vault)) fail('SOURCE_CHANGED', '内容库身份在准备备份后改变。');
+        const result = pending.vault ? backupVault(pending.vault.root, pending.destination, {operationId: pending.operationId, expectedLibraryId: pending.binding.libraryId, expectedRootIdentity: pending.vault.rootIdentity, expectedDescriptorHash: pending.descriptorHash, expectedRuntimeIdentity: pending.binding.rootIdentity, expectedVaultDescriptorHash: pending.vault.descriptorHash}) : backupLibrary(pending.binding.root, pending.destination);
         boundDescriptor(pending.binding);
         if (result.libraryId !== pending.binding.libraryId) fail('CONFLICT', '备份结果属于其他内容库。');
         return {...query(pending), recovered: false};
     }
     checkedBackup(pending.backup);
-    restoreBackup(pending.backup.source, pending.destination);
+    if (pending.backup.format === VAULT_BACKUP_FORMAT) restoreVaultBackup(pending.backup.source, pending.destination, {operationId: pending.operationId, expectedTreeHash: pending.backup.treeHash});
+    else if (pending.backup.format === VAULT_COPY_FORMAT) migrateVault(pending.backup.source, pending.destination, {operationId: pending.operationId, expectedTreeHash: pending.backup.treeHash});
+    else restoreBackup(pending.backup.source, pending.destination);
     return {...query(pending), recovered: false};
 }

@@ -59,8 +59,8 @@ export class Maintenance {
             const binding = structuredClone(c.current());
             const target = await this.destination('backup');
             if (!target) return null;
-            const {descriptorHash} = await c.worker.call('inspectMaintenanceLibrary', {binding});
-            return this.finish({...target, kind: 'backup', binding, descriptorHash});
+            const inspected = await c.worker.call('inspectMaintenanceLibrary', {binding});
+            return this.finish({...target, kind: 'backup', binding, ...inspected});
         });
     }
     verifyLibraryBackup() {
@@ -69,7 +69,7 @@ export class Maintenance {
             const source = await c.dialogs.libraryBackup?.();
             if (!source) return null;
             const result = await c.worker.call('inspectLibraryBackup', {source});
-            this.receipt = {kind: 'verify', destinationName: path.basename(source), counts: result.counts, recovered: false, upgradeRequired: false, interruptedAttempts: 0};
+            this.receipt = {kind: 'verify', destinationName: path.basename(source), counts: result.counts, recovered: false, upgradeRequired: false, interruptedAttempts: 0, scope: result.backup.format === 'nova-knowledge-vault-backup' ? 'vault' : result.backup.format === 'nova-knowledge-vault-copy' ? 'vault-copy' : 'library'};
             return this.receipt;
         });
     }
@@ -83,8 +83,22 @@ export class Maintenance {
             const target = await this.destination('restore');
             if (!target) return null;
             if (c.binding.current) {
-                const relative = path.relative(c.binding.current.root, target.destination);
-                if (!relative || !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative)) fail('UNSAFE_PATH', '请选择当前内容库之外的位置，恢复会建立独立的新内容库。');
+                // The saved runtime layout identifies the whole Vault even while its disk is detached.
+                // Restoring an independent backup must not require opening the broken current library.
+                const runtime = path.resolve(c.binding.current.root), runtimeParent = path.dirname(runtime);
+                const currentRoot = path.basename(runtime) === 'runtime' && path.basename(runtimeParent) === '.workbench' ? path.dirname(runtimeParent) : runtime;
+                const relative = path.relative(currentRoot, target.destination);
+                const rejectInside = () => fail('UNSAFE_PATH', '请选择当前内容库之外的位置，恢复会建立独立的新内容库。');
+                if (!relative || !relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative)) rejectInside();
+                let currentIdentity: {dev: bigint; ino: bigint} | null = null;
+                try { const info = await fs.lstat(currentRoot, {bigint: true}); if (info.isDirectory() && !info.isSymbolicLink()) currentIdentity = info; }
+                catch { /* Missing or unreadable current roots cannot block independent recovery. */ }
+                if (currentIdentity) for (let cursor = path.dirname(target.destination);; cursor = path.dirname(cursor)) {
+                    const ancestor = await fs.lstat(cursor, {bigint: true});
+                    if (ancestor.isSymbolicLink()) fail('UNSAFE_PATH', '恢复目标的祖先不能为符号链接。');
+                    if (ancestor.dev === currentIdentity.dev && ancestor.ino === currentIdentity.ino) rejectInside();
+                    if (path.dirname(cursor) === cursor) break;
+                }
             }
             return this.finish({...target, kind: 'restore', backup});
         });

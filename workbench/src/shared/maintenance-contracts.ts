@@ -10,7 +10,10 @@ export interface LibraryHealthReport {
     issues: {scope: 'root' | 'structure' | 'object' | 'asset' | 'transaction' | 'request' | 'publication'; kind?: 'workspace' | 'collection' | 'content' | 'prompt' | 'photo' | 'template'; id?: string; code: string; availability: 'unavailable' | 'unverified'}[];
 }
 export interface MaintenanceCounts { files: number; directories: number; bytes: number }
+export interface VaultMaintenanceBinding { root: string; vaultId: string; rootIdentity: RootIdentity; descriptorHash: string }
+export type MaintenanceScope = 'vault' | 'library' | 'vault-copy';
 export interface BackupIdentity {
+    format?: 'nova-knowledge-vault-backup' | 'nova-knowledge-vault-copy';
     source: string;
     rootIdentity: RootIdentity;
     backupId: string;
@@ -25,7 +28,7 @@ interface MaintenanceIntent {
     parentIdentity: RootIdentity;
 }
 export type MaintenancePending = MaintenanceIntent & (
-    { kind: 'backup'; binding: LibraryBinding; descriptorHash: string } |
+    { kind: 'backup'; binding: LibraryBinding; descriptorHash: string; vault?: VaultMaintenanceBinding } |
     { kind: 'restore'; backup: BackupIdentity } | UpgradeIntent
 );
 export interface UpgradeIntent {
@@ -42,6 +45,7 @@ export type UpgradePending = MaintenanceIntent & UpgradeIntent;
 export interface UpgradePreview { sourceName: string; backupName: string; destinationName: string }
 export interface UpgradeProgress { pending: UpgradePending; receipt: MaintenanceReceipt | null }
 export interface MaintenanceReceipt {
+    scope?: MaintenanceScope;
     kind: 'backup' | 'verify' | 'restore' | 'upgrade';
     destinationName: string;
     counts: MaintenanceCounts;
@@ -87,7 +91,7 @@ export interface MaintenanceResults {
 }
 export interface MaintenanceWorkerOperations {
     inspectLibraryHealth: {args: {binding: LibraryBinding}; result: LibraryHealthReport};
-    inspectMaintenanceLibrary: { args: {binding: LibraryBinding}; result: {descriptorHash: string} };
+    inspectMaintenanceLibrary: { args: {binding: LibraryBinding}; result: {descriptorHash: string; vault?: VaultMaintenanceBinding} };
     inspectLibraryBackup: { args: {source: string}; result: {backup: BackupIdentity; counts: MaintenanceCounts} };
     runMaintenance: { args: {pending: MaintenancePending}; result: MaintenanceReceipt };
     queryMaintenance: { args: {pending: MaintenancePending}; result: MaintenanceReceipt };

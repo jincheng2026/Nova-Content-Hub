@@ -9,7 +9,7 @@ const instant = (v: unknown): v is string => {
     return Number.isFinite(date.getTime()) && date.toISOString() === v;
 };
 export function backupIdentity(v: unknown): v is BackupIdentity {
-    return exact(v, ['source', 'rootIdentity', 'backupId', 'libraryId', 'treeHash', 'descriptorHash']) && filePath(v.source) && identity(v.rootIdentity) && uuid(v.backupId) && uuid(v.libraryId) && token(v.treeHash) && token(v.descriptorHash);
+    return exact(v, ['source', 'rootIdentity', 'backupId', 'libraryId', 'treeHash', 'descriptorHash', ...(isRecord(v) && Object.hasOwn(v, 'format') ? ['format'] : [])]) && (v.format === undefined || v.format === 'nova-knowledge-vault-backup' || v.format === 'nova-knowledge-vault-copy') && filePath(v.source) && identity(v.rootIdentity) && uuid(v.backupId) && uuid(v.libraryId) && token(v.treeHash) && token(v.descriptorHash);
 }
 export function maintenancePending(v: unknown): v is MaintenancePending {
     const common = ['operationId', 'startedAt', 'destination', 'parentIdentity', 'kind'];
@@ -22,7 +22,7 @@ export function maintenancePending(v: unknown): v is MaintenancePending {
         if (!identity(v.targetIdentity)) return false;
         return v.stage === 'upgrade' ? v.resultHash === null : v.stage === 'receipt' && token(v.resultHash);
     }
-    if (v.kind === 'backup') return exact(v, [...common, 'binding', 'descriptorHash']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && libraryBinding(v.binding) && filePath(v.binding.root) && token(v.descriptorHash);
+    if (v.kind === 'backup') return (v.vault === undefined || exact(v.vault, ['root', 'vaultId', 'rootIdentity', 'descriptorHash']) && filePath(v.vault.root) && uuid(v.vault.vaultId) && identity(v.vault.rootIdentity) && token(v.vault.descriptorHash)) && exact(v, [...common, 'binding', 'descriptorHash', ...(Object.hasOwn(v, 'vault') ? ['vault'] : [])]) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && libraryBinding(v.binding) && filePath(v.binding.root) && token(v.descriptorHash);
     return v.kind === 'restore' && exact(v, [...common, 'backup']) && uuid(v.operationId) && instant(v.startedAt) && filePath(v.destination) && identity(v.parentIdentity) && backupIdentity(v.backup);
 }
 export function maintenanceDesktopInput(method: string, input: unknown): boolean | undefined {

@@ -113,3 +113,6 @@ export function createVault(root) {
     );
     return initialize(root);
 }
+
+// Explicit maintenance operations never silently accept a moved/replaced root.
+export {backupVault, verifyVaultBackup, restoreVaultBackup, inspectVaultCopy, migrateVault, inspectVaultRestore} from './backup.mjs';
