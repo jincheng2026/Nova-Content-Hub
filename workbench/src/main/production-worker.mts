@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {reportNavigation} from './report-navigation.mts';
+import {reportNavigation,readRegisteredReportAttachment} from './report-navigation.mts';
 import {verifiedBoundReader} from './bound-reader.mts';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
@@ -12,7 +12,7 @@ import {productionPending} from '../shared/production-validation.ts';
 import type {ProductionWorkerOperations,ProductionPending,ProductionFile,ProductionCreationState} from '../shared/production-contracts.ts';
 import type {ProductionCoreLibrary} from '../shared/production-core.d.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-const ops=new Set(['productionObserverMutation','productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
+const ops=new Set(['productionObserverMutation','productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport','productionReportAttachment']);
 export const isProductionOperation=(op:unknown):op is keyof ProductionWorkerOperations=>typeof op==='string'&&ops.has(op);
 const same=(p:ProductionPending,b:LibraryBinding)=>p.binding.libraryId===b.libraryId&&p.binding.rootIdentity.dev===b.rootIdentity.dev&&p.binding.rootIdentity.ino===b.rootIdentity.ino;
 const creation=(l:ProductionCoreLibrary,id:string):ProductionCreationState=>{const v=l.readProductionCreation(id);return {content:{id:v.content.id,title:v.content.title,body:v.content.body,editToken:v.content.editToken,bodyHash:v.content.bodyHash,deletedAt:v.content.deletedAt},creation:v.creation,productionToken:v.productionToken,history:v.history};};
@@ -38,23 +38,27 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  requireWrite(mode);
  if(['productionObserverMutation','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant'].includes(op))return executeTool(op,args);
 
- const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReport'?null:['binding','pending'];
+ const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReportAttachment'?['binding','reportId','pageId','fingerprint','index']:op==='productionReport'?null:['binding','pending'];
  if(!(fields?exact(args,fields):typeof args==='object'&&args!==null&&Object.keys(args).every(k=>['binding','reportId','pageId'].includes(k)))||!args||!libraryBinding((args as {binding:unknown}).binding))fail('INVALID_INPUT','生产任务参数无效。');
- const a=args as {binding:LibraryBinding;pending?:ProductionPending;contentId?:string;assetHash?:string;reportId?:string;pageId?:string;taskId?:string};
+ const a=args as {binding:LibraryBinding;fingerprint?:string;index?:number;pending?:ProductionPending;contentId?:string;assetHash?:string;reportId?:string;pageId?:string;taskId?:string};
  if(!path.isAbsolute(a.binding.root)||a.binding.root.includes('\0'))fail('INVALID_INPUT','内容库路径无效。');
- if(op==='productionCreation'&&!uuid(a.contentId)||op==='productionReport'&&(!uuid(a.reportId)||a.pageId!==undefined&&!uuid(a.pageId)))fail('INVALID_INPUT','对象编号无效。');
+ if(op==='productionCreation'&&!uuid(a.contentId)||['productionReport','productionReportAttachment'].includes(op)&&(!uuid(a.reportId)||a.pageId!==undefined&&!uuid(a.pageId)))fail('INVALID_INPUT','对象编号无效。');
  if((op==='productionMutate'||op==='productionRecover')&&(!productionPending(a.pending)||!same(a.pending,a.binding)))fail('CONFLICT','待核验操作与当前内容库不一致。');
- const l=(['productionRead','productionCreation','productionReport','productionMedia'].includes(op)?verifiedBoundReader(a.binding):openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity})) as unknown as ProductionCoreLibrary;
+ const l=(['productionRead','productionCreation','productionReport','productionReportAttachment','productionMedia'].includes(op)?verifiedBoundReader(a.binding):openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity})) as unknown as ProductionCoreLibrary;
  if(op==='productionMedia'){if(!uuid(a.contentId)||!token(a.assetHash))fail('INVALID_INPUT','媒体引用无效。');const state=l.readProductionCreation(a.contentId!);if(!state.creation?.references.some(r=>r.mediaAssetHash===a.assetHash))fail('FORBIDDEN','仅可读取本文已登记原片。');const asset=l.readAsset(a.assetHash!);if(!['audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(asset.detectedType)||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体不可播放。');return {data:asset.data,detectedType:asset.detectedType};}
  if(op==='productionArchive'){if(!uuid(a.taskId))fail('INVALID_INPUT','任务编号无效。');return l.rebuildProductionArchive(a.taskId!);}
  if(op==='productionRead')return l.readProduction();
  if(op==='productionCreation')return creation(l,a.contentId!);
- if(op==='productionReport') {
+ if(op==='productionReport'||op==='productionReportAttachment') {
   const reports=l.readProduction().reports,report=reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
   if(!report||!page)fail('NOT_FOUND','报告页面不存在。');
   const asset=l.readAsset(page.assetHash);
   if(asset.bytes>8*1024*1024||!['text/plain','text/html'].includes(asset.detectedType))fail('INVALID_REPORT','报告不是受支持的 HTML。');
   const html=new TextDecoder('utf-8',{fatal:true}).decode(asset.data);
+  if(op==='productionReportAttachment'){
+   if(!uuid(a.pageId)||!token(a.fingerprint)||!Number.isInteger(a.index)||a.index!<0||a.index!>=500)fail('INVALID_INPUT','报告附件请求无效。');
+   const attachment=readRegisteredReportAttachment(a.binding,reports,report.id,page.id,html,a.fingerprint!,a.index!);if(!attachment)fail('CONFLICT','报告原件或附件已变化，请重新打开。');return attachment;
+  }
   return {html,report,navigation:reportNavigation(a.binding,reports,report.id,page.id,html)};
  }
  const pending=a.pending!;

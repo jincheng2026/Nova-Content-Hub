@@ -333,7 +333,7 @@ export async function startDesktop(options:StartOptions = {}) {
         creationHtml: readFileSync(path.join(here, '../production-creation.html'), 'utf8'),
         authorize: authorizeProductionPage,
         worker: {call: (op, args) => runOperation(async () => {
-            if (!['productionReport','productionMedia','jinchengSources','jinchengSourceCatalog','jinchengSourcePage','jinchengSourceAsset','jinchengSourceRequest'].includes(op) || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
+            if (!['productionReport','productionReportAttachment','productionMedia','jinchengSources','jinchengSourceCatalog','jinchengSourcePage','jinchengSourceAsset','jinchengSourceRequest'].includes(op) || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
             authorizeProductionPage(args.binding as LibraryBinding);
             return worker!.call(op, args);
         })},

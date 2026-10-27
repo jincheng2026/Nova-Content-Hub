@@ -87,3 +87,46 @@ test('trusted frame and parent bridges preserve anchors and reject wrong frame, 
  let prevented=0;for(const href of ['#here','https://example.com/work',f.href])clicks.click({target:{closest:()=>({getAttribute:()=>href})},preventDefault:()=>prevented++,stopImmediatePropagation:()=>{}});
  assert.equal(prevented,1);assert.equal(messages.length,1);assert.equal(messages[0].index,nav.links.findIndex(l=>l.href===f.href));assert.equal(messages[0].nonce,config.bridgeNonce);
 });
+test('provided CSV attachments use fixed navigation identities and escaped preview plus byte-exact download',async t=>{
+ const f=await reportFixture(t),main='2026-08-14_抖音AI教程赛道调研/内容作战手册.html',href=encodeURIComponent('作品资料表-60条.csv'),csv='\uFEFF标题,内容\r\n例子,"<img src=x onerror=evil()>"\r\n';
+ await f.put('2026-08-14_抖音AI教程赛道调研/作品资料表-60条.csv',csv);const mainHtml=await fs.readFile(path.join(f.root,'10_调研报告',main),'utf8');await f.put(main,mainHtml.replace('</body>',`<a href="${href}">下载CSV</a></body>`));
+ const result=await execute('productionReport',{binding:f.b,reportId:f.source.id},'disabled'),index=result.navigation.links.findIndex(l=>l.href===href),target=result.navigation.links[index]?.target;
+ assert.equal(target?.kind,'attachment');assert.ok(!JSON.stringify(target).includes('relativePath'));assert.ok(!JSON.stringify(target).includes('作品资料表'));
+ const args={binding:f.b,reportId:f.source.id,pageId:result.report.pageId,fingerprint:result.navigation.fingerprint,index},attachment=await execute('productionReportAttachment',args,'disabled');assert.deepEqual(Buffer.from(attachment.data),Buffer.from(csv));assert.equal(attachment.filename,'作品资料表-60条.csv');
+ await assert.rejects(()=>execute('productionReportAttachment',{...args,path:'../../file.csv'},'disabled'));
+ const service=await pageService(t,f),url=await service.openReport(f.b,f.source.id),wrapper=await(await fetch(url)).text(),config=wrapperConfig(wrapper),response=await fetch(url+'navigate',{method:'POST',headers:{Origin:new URL(url).origin,'Content-Type':'application/json'},body:JSON.stringify({pageId:config.pageId,index,fingerprint:config.fingerprint,nonce:config.bridgeNonce})});assert.equal(response.status,200);const destination=(await response.json()).url;
+ const preview=await(await fetch(destination)).text();assert.match(preview,/&lt;img src=x onerror=evil\(\)&gt;/);assert.doesNotMatch(preview,/<img\b|<script\b/);assert.match(preview,/下载原文件/);
+ const download=await fetch(destination+'download');assert.deepEqual(Buffer.from(await download.arrayBuffer()),Buffer.from(csv));assert.match(download.headers.get('content-disposition'),/attachment; filename="attachment.csv"; filename\*=UTF-8''/);assert.equal(download.headers.get('x-content-type-options'),'nosniff');
+ await f.put('2026-08-14_抖音AI教程赛道调研/作品资料表-60条.csv','changed');assert.notEqual((await fetch(destination)).status,200);assert.notEqual((await fetch(destination+'download')).status,200);await assert.rejects(()=>execute('productionReportAttachment',args,'disabled'));
+});
+test('a standalone original HTML page resolves MD/CSV/JSON only within one already registered internal source',async t=>{
+ const f=await reportFixture(t),base=path.join(f.root,'01_对标账号/调研/比较'),put=async(rel,value)=>{const file=path.join(base,rel);await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,value);};
+ await put('reports/research_report.html','<html><body>调研报告<a href="../研究结论.md">研究结论</a><a href="../normalized/明细.csv">明细</a><a href="../normalized/statistics.json">统计</a></body></html>');await put('研究结论.md','# 正文\n证据');await put('normalized/明细.csv','id,value\n1,2');await put('normalized/statistics.json','{"count":1}');
+ const report=f.library.readProduction().reports.find(r=>r.meta.vault.relativePath.endsWith('/reports/research_report.html'));assert.ok(!report.meta.vault.originalPages);assert.ok(!report.meta.vault.sourceId);
+ const result=await execute('productionReport',{binding:f.b,reportId:report.id},'disabled');assert.equal(result.navigation.links.length,3);assert.ok(result.navigation.links.every(l=>l.target?.kind==='attachment'));
+ for(let index=0;index<3;index++)assert.ok((await execute('productionReportAttachment',{binding:f.b,reportId:report.id,pageId:report.pageId,fingerprint:result.navigation.fingerprint,index},'disabled')).data.length>0);
+ const mapFile=path.join(f.root,'.workbench/source-map.json'),map=JSON.parse(await fs.readFile(mapFile,'utf8'));map.sources.push({...map.sources.find(s=>s.id==='accounts'),id:'accounts-duplicate'});await fs.writeFile(mapFile,JSON.stringify(map));
+ const ambiguous=await execute('productionReport',{binding:f.b,reportId:report.id},'disabled');assert.ok(ambiguous.navigation.links.every(l=>l.target===null));
+});
+test('attachment maps reject fake hrefs, non-text bytes, missing/catalog escapes and changed source authority',async t=>{
+ const f=await reportFixture(t),group='2026-08-14_抖音AI教程赛道调研',main=group+'/内容作战手册.html',base=path.join(f.root,'10_调研报告');
+ await f.put(group+'/valid.csv','name,value\n1,2');await f.put(group+'/nul.csv',Buffer.from('a\0b'));await f.put(group+'/binary.csv',Buffer.from([0xff,0xfe,0xff]));await f.put(group+'/oversize.csv',Buffer.alloc(8*1024*1024+1,65));await fs.writeFile(path.join(f.root,'outside.csv'),'outside');await fs.symlink(path.join(f.root,'outside.csv'),path.join(base,group,'alias.csv'));
+ const links=['valid.csv','nul.csv','binary.csv','missing.csv','alias.csv','../../outside.csv','..%2foutside.csv','valid.csv?x=1','oversize.csv'];
+ await f.put(main,'<html><body>'+links.map(href=>`<a href="${href}">附件</a>`).join('')+'<a data-href="fake.csv">示例</a><script>const example=\'<a href="script.csv">脚本示例</a>\';</script><!--<a href="comment.csv">注释</a>--></body></html>');
+ const result=await execute('productionReport',{binding:f.b,reportId:f.source.id},'disabled');assert.equal(result.navigation.links.length,9);assert.equal(result.navigation.links.filter(l=>l.target).length,1);assert.equal(result.navigation.links[0].target.kind,'attachment');
+ for(let index=1;index<9;index++)await assert.rejects(()=>execute('productionReportAttachment',{binding:f.b,reportId:f.source.id,pageId:result.report.pageId,fingerprint:result.navigation.fingerprint,index},'disabled'));
+ const reports=f.library.readProduction().reports,html=(await fs.readFile(path.join(base,main))).toString();
+ for(const mode of ['managed','deleted','explicit-invalid-source','stale-raw','stale-prepared']){
+  const copy=structuredClone(reports),source=copy.find(r=>r.id===f.source.id);if(mode==='managed')source.meta.vault.currentBody='managed-pages';if(mode==='deleted')source.deletedAt=new Date().toISOString();if(mode==='explicit-invalid-source')source.meta.vault.sourceId='missing-source';if(mode==='stale-raw')source.meta.vault.originalPages[0].hash='a'.repeat(64);if(mode==='stale-prepared')source.pages[0].assetHash='b'.repeat(64);
+  assert.ok(reportNavigation(f.b,copy,source.id,source.pages[0].id,html).links.every(l=>l.target===null),mode);
+ }
+});
+test('an explicitly remapped hidden or framework source root cannot expose report attachments',async t=>{
+ const f=await reportFixture(t),group='2026-08-14_抖音AI教程赛道调研',main=group+'/内容作战手册.html';await f.put(main,'<html><body><a href="data.csv">附件</a></body></html>');await f.put(group+'/data.csv','a,b');
+ const reports=f.library.readProduction().reports,source=reports.find(r=>r.id===f.source.id),html=await fs.readFile(path.join(f.root,'10_调研报告',main),'utf8'),mapFile=path.join(f.root,'.workbench/source-map.json'),map=JSON.parse(await fs.readFile(mapFile,'utf8'));
+ for(const hiddenRoot of ['.workbench/private-source','node_modules','skills']){
+  const destination=path.join(f.root,hiddenRoot,group);await fs.mkdir(path.dirname(destination),{recursive:true});await fs.cp(path.join(f.root,'10_调研报告',group),destination,{recursive:true});map.sources.find(s=>s.id==='reports').root=hiddenRoot;await fs.writeFile(mapFile,JSON.stringify(map));
+  const copy=structuredClone(source);copy.meta.vault.originalPages=copy.meta.vault.originalPages.map(p=>({...p,relativePath:p.relativePath.replace('10_调研报告',hiddenRoot)}));
+  assert.ok(reportNavigation(f.b,[copy],copy.id,copy.pages[0].id,html).links.every(l=>l.target===null),hiddenRoot);
+ }
+});

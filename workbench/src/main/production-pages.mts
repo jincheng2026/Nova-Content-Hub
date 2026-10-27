@@ -18,7 +18,7 @@ interface PageOptions {
  setReportPosition?(binding:LibraryBinding,reportId:string,pageId:string):Promise<void>;
  saveDraft(binding:LibraryBinding,input:ProductionDraft):Promise<ProductionCreationState>;
 }
-type Capability={binding:LibraryBinding;kind:'creation'|'report'|'source';id:string;pageId?:string;relativePath?:string;reportGuard?:{pageId:string;identity:string};reportFragment?:string};
+type Capability={binding:LibraryBinding;kind:'creation'|'report'|'source'|'attachment';id:string;pageId?:string;relativePath?:string;reportGuard?:{pageId:string;identity:string};reportFragment?:string;attachment?:{fingerprint:string;index:number;identity:string}};
 const escape=(s:string)=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]!));
 const sourceFingerprint=(page:{hash:string;api:Record<string,unknown>})=>createHash('sha256').update(JSON.stringify([page.hash,Object.fromEntries(Object.entries(page.api).filter(([key])=>key!=='/api/reviews').map(([key,value])=>[key,key==='/api/snapshot'&&value&&typeof value==='object'&&'data'in value?value.data:value]))])).digest('hex');
 const errorCode=(error:unknown)=>typeof error==='object'&&error!==null&&'code'in error?String(error.code):'IO_ERROR';
@@ -41,7 +41,7 @@ export class ProductionPages {
    server.listen(0,'127.0.0.1',()=>{if(this.closed){server.close();reject(Object.assign(new Error('服务已关闭。'),{code:'CLOSED'}));return;}const address=server.address() as AddressInfo;this.origin=`http://127.0.0.1:${address.port}`;server.unref();resolve(this.origin);});
   });return this.startupPromise;
  }
- private async open(capability:Capability){await this.options.authorize(capability.binding);const origin=await this.start();for(const [existing,cap] of this.capabilities)if(cap.kind===capability.kind&&cap.id===capability.id&&cap.pageId===capability.pageId&&cap.relativePath===capability.relativePath&&JSON.stringify(cap.reportGuard)===JSON.stringify(capability.reportGuard)&&cap.reportFragment===capability.reportFragment&&cap.binding.root===capability.binding.root&&cap.binding.libraryId===capability.binding.libraryId&&cap.binding.rootIdentity.dev===capability.binding.rootIdentity.dev&&cap.binding.rootIdentity.ino===capability.binding.rootIdentity.ino)return `${origin}/p/${existing}/`;const token=randomBytes(32).toString('hex');if(this.capabilities.size>=256)this.capabilities.delete(this.capabilities.keys().next().value!);this.capabilities.set(token,structuredClone(capability));return `${origin}/p/${token}/`;}
+ private async open(capability:Capability){await this.options.authorize(capability.binding);const origin=await this.start();for(const [existing,cap] of this.capabilities)if(cap.kind===capability.kind&&cap.id===capability.id&&cap.pageId===capability.pageId&&cap.relativePath===capability.relativePath&&JSON.stringify(cap.reportGuard)===JSON.stringify(capability.reportGuard)&&cap.reportFragment===capability.reportFragment&&JSON.stringify(cap.attachment)===JSON.stringify(capability.attachment)&&cap.binding.root===capability.binding.root&&cap.binding.libraryId===capability.binding.libraryId&&cap.binding.rootIdentity.dev===capability.binding.rootIdentity.dev&&cap.binding.rootIdentity.ino===capability.binding.rootIdentity.ino)return `${origin}/p/${existing}/`;const token=randomBytes(32).toString('hex');if(this.capabilities.size>=256)this.capabilities.delete(this.capabilities.keys().next().value!);this.capabilities.set(token,structuredClone(capability));return `${origin}/p/${token}/`;}
  openCreation(binding:LibraryBinding,contentId:string){return this.open({binding,kind:'creation',id:contentId});}
  openReport(binding:LibraryBinding,reportId:string,pageId?:string){return this.open({binding,kind:'report',id:reportId,...(pageId?{pageId}:{})});}
  openBoundSource(binding:LibraryBinding,sourceId:string,relativePath:string){return this.open({binding,kind:'source',id:sourceId,relativePath});}
@@ -57,6 +57,18 @@ export class ProductionPages {
   const sourceAsset=cap.kind==='source'&&req.method==='GET'&&match[2].startsWith('/file/');
   if(!sourceAsset&&(req.headers.origin!==undefined&&req.headers.origin!==this.origin||req.headers['sec-fetch-site']==='cross-site'))return this.send(res,403,'Forbidden','text/plain');
   if(cap.kind==='source')return this.handleBoundSource(req,res,cap,route,basePath);
+  if(cap.kind==='attachment'){
+   if(req.method!=='GET'||!['/','/download'].includes(route)||!cap.attachment||!cap.pageId)return this.send(res,404,'Not found','text/plain');
+   const fixed=cap.attachment,result=await this.options.worker.call('productionReportAttachment',{binding:cap.binding,reportId:cap.id,pageId:cap.pageId,fingerprint:fixed.fingerprint,index:fixed.index});
+   if(result.identity!==fixed.identity)fail('CONFLICT','报告附件已变化，请重新打开报告。');
+   if(route==='/download'){
+    if(/[\u0000-\u001f\u007f/\\]/.test(result.filename))fail('INVALID_INPUT','附件名称无效。');
+    const extension=/\.(?:csv|json|md|txt)$/i.exec(result.filename)?.[0].toLowerCase()??'.txt',encoded=encodeURIComponent(result.filename).replace(/[!'()*]/g,char=>'%'+char.charCodeAt(0).toString(16).toUpperCase());
+    res.writeHead(200,{'Content-Type':'application/octet-stream','Content-Disposition':`attachment; filename="attachment${extension}"; filename*=UTF-8''${encoded}`,'Content-Length':result.data.length,'Content-Security-Policy':"sandbox; default-src 'none'; frame-ancestors 'none'",'Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin'});res.end(Buffer.from(result.data));return;
+   }
+   const text=new TextDecoder('utf-8',{fatal:true}).decode(result.data);
+   return this.send(res,200,`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><title>${escape(result.filename)}</title><style>body{margin:24px;background:#F5F5F7;color:#1D1D1F;font:14px/1.6 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:white;padding:20px}a{color:#0071E3}</style></head><body><h1>${escape(result.filename)}</h1><p>原报告数据附件 · 只读预览</p><a href="${basePath}/download" download>下载原文件</a><pre>${escape(text)}</pre></body></html>`,'text/html; charset=utf-8',"default-src 'none'; style-src 'unsafe-inline'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
+  }
   if(cap.kind==='creation') {
    if(req.method==='GET'&&route==='/'){
     const nonce=randomBytes(20).toString('base64');
@@ -92,6 +104,12 @@ export class ProductionPages {
    const current=await this.options.worker.call('productionReport',{binding:cap.binding,reportId:cap.id,pageId});
    if(cap.reportGuard){const guarded=pageId===cap.reportGuard.pageId?current:await this.options.worker.call('productionReport',{binding:cap.binding,reportId:cap.id,pageId:cap.reportGuard.pageId});if(guarded.navigation.pageIdentity!==cap.reportGuard.identity)fail('CONFLICT','引用原件已变化，请重新打开报告。');}
    if(current.navigation.fingerprint!==fingerprint||JSON.stringify(current.navigation.links[index]?.target)!==JSON.stringify(target))fail('CONFLICT','报告原件已变化，请重新打开。');
+   if(target.kind==='attachment'){
+    const attachment=await this.options.worker.call('productionReportAttachment',{binding:cap.binding,reportId:cap.id,pageId,fingerprint,index});
+    if(attachment.identity!==target.identity)fail('CONFLICT','引用附件已变化，请重新打开。');
+    const url=await this.open({binding:cap.binding,kind:'attachment',id:cap.id,pageId,attachment:{fingerprint,index,identity:target.identity}});
+    return this.send(res,200,JSON.stringify({url}),'application/json; charset=utf-8');
+   }
    const destination=await this.options.worker.call('productionReport',{binding:cap.binding,reportId:target.reportId,pageId:target.pageId});
    if(destination.navigation.pageIdentity!==target.identity)fail('CONFLICT','引用页面已变化，请重新打开。');
    const url=await this.open({binding:cap.binding,kind:'report',id:target.reportId,pageId:target.pageId,reportGuard:{pageId:target.pageId,identity:target.identity},reportFragment:target.fragment});
