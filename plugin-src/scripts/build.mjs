@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {tmpdir} from 'node:os';
 import {syncBridge} from './sync-bridge.mjs';
+import {assertArtifactSafe, releaseSourceFilter} from './artifact-safety.mjs';
 import {HOST_EVENTS, validRelease} from '../src/content.mjs';
 import {bundleNode, writeLaunchers, cleanNodeEnv} from './bundled-node.mjs';
 
@@ -23,7 +24,7 @@ export function skillCapabilities(mode) {
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
 
 export function runtimeSourceFilter(input) {
-    return !['test', 'tests', '__tests__', '.DS_Store', 'README.md'].includes(basename(input)) && !/\.(?:test|spec)\.[cm]?[jt]s$/.test(basename(input)) && !['src/lib/browser-import', 'resources/builtin-templates', 'resources/图库'].some(relative => input === join(source, relative));
+    return releaseSourceFilter(input) && !['test', 'tests', '__tests__', '.DS_Store', 'README.md'].includes(basename(input)) && !/\.(?:test|spec)\.[cm]?[jt]s$/.test(basename(input)) && !['src/lib/browser-import', 'resources/builtin-templates', 'resources/图库'].some(relative => input === join(source, relative));
 }
 
 export function hooksFor(host, events) {
@@ -118,7 +119,7 @@ export async function build(mode) {
             .replace("const PACKAGE_KIND = 'execution';", "const PACKAGE_KIND = 'contract';");
         await writeFile(join(dest, 'dist/content.mjs'), cliSource);
         await cp(join(source, 'src/bridge/handoff.js'), join(dest, 'dist/handoff.js'));
-        await cp(join(source, 'schemas'), join(dest, 'schemas'), {recursive: true});
+        await cp(join(source, 'schemas'), join(dest, 'schemas'), {recursive: true, filter: releaseSourceFilter});
         await json(join(dest, 'dist/release.json'), release);
         await json(join(dest, 'contract.json'), {
             ...release,
@@ -133,21 +134,22 @@ export async function build(mode) {
         });
         await cp(join(source, 'README.md'), join(dest, 'README.md'));
         await writeFile(join(dest, 'PACKAGE-KIND.txt'), 'Contract-only preintegration package. Not an executable plugin distribution; bin/run-node requires separately installed Node. Use the cover package for a bundled runtime.\n');
-        await cp(join(source, 'references'), join(dest, 'references'), {recursive: true});
+        await cp(join(source, 'references'), join(dest, 'references'), {recursive: true, filter: releaseSourceFilter});
         await writeFile(join(dest, 'bin/run-node'), '#!/bin/sh\nset -eu\nROOT=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)\nexec node "$ROOT/dist/content.mjs" "$@"\n', {mode: 0o755});
         await writeFile(join(dest, 'bin/run-node.cmd'), '@echo off\r\nnode "%~dp0..\\dist\\content.mjs" %*\r\n');
         for (const name of skillNames) {
             const skill = join(dest, 'skills', name);
-            await cp(join(source, 'skills', name), skill, {recursive: true});
+            await cp(join(source, 'skills', name), skill, {recursive: true, filter: releaseSourceFilter});
             await mkdir(join(skill, 'scripts'), {recursive: true});
             await mkdir(join(skill, 'references'), {recursive: true});
             await writeFile(join(skill, 'scripts/content.mjs'), cliSource);
             await cp(join(source, 'src/bridge/handoff.js'), join(skill, 'scripts/handoff.js'));
-            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
+            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true, filter: releaseSourceFilter});
             await json(join(skill, 'scripts/release.json'), release);
-            await cp(join(source, 'references'), join(skill, 'references'), {recursive: true});
+            await cp(join(source, 'references'), join(skill, 'references'), {recursive: true, filter: releaseSourceFilter});
         }
         await manifests(dest, release, skillNames);
+        await assertArtifactSafe(dest);
         outputs.push({path: dest, pairId: release.pairId});
     }
     return outputs;
@@ -175,22 +177,22 @@ export async function buildCover(mode) {
         await cp(join(source, 'src'), join(target, 'plugin-src/src'), {recursive: true, filter: runtimeSourceFilter});
         // One release file serves both command spaces; compatibility paths never carry their own auth mode.
         await json(join(target, 'plugin-src/src/release.json'), release);
-        await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true});
+        await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true, filter: releaseSourceFilter});
         // WorkBuddy's global Skill scanner uses this root even when manifests specify a custom path.
-        await cp(join(source, 'skills'), join(target, 'skills'), {recursive: true});
-        await cp(join(source, 'references'), join(target, 'plugin-src/references'), {recursive: true});
+        await cp(join(source, 'skills'), join(target, 'skills'), {recursive: true, filter: releaseSourceFilter});
+        await cp(join(source, 'references'), join(target, 'plugin-src/references'), {recursive: true, filter: releaseSourceFilter});
         for (const name of skillNames) {
             const skill = join(target, 'skills', name);
             await mkdir(join(skill, 'scripts'), {recursive: true});
             await writeFile(join(skill, 'scripts/content.mjs'), "import { main } from '../../../plugin-src/src/content.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
-            await cp(join(source, 'references'), join(skill, 'references'), {recursive: true});
-            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true});
+            await cp(join(source, 'references'), join(skill, 'references'), {recursive: true, filter: releaseSourceFilter});
+            await cp(join(source, 'schemas'), join(skill, 'schemas'), {recursive: true, filter: releaseSourceFilter});
         }
         // Resource paths match the source tree; no dependency on the browser workbench.
         await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: runtimeSourceFilter});
         await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs' && runtimeSourceFilter(input)});
         await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
-        await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true});
+        await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true, filter: releaseSourceFilter});
         const legacySkill = join(target, 'cover-runtime/skills/nova-content-cover-execution/SKILL.md');
         await writeFile(legacySkill, (await readFile(legacySkill, 'utf8')).replaceAll('../../bin/', '../../../bin/').replaceAll('..\\..\\bin\\', '..\\..\\..\\bin\\'));
         await writeFile(join(target, 'cover-runtime/README.md'), '# 封面制作\n\n请从工作台发起制作，再到所选助手完成生成，回工作台查看和选择结果。此目录是配套插件所需的兼容入口，请完整保留。\n');
@@ -234,6 +236,7 @@ export async function buildCover(mode) {
             hashes,
             skills: skillCapabilities(release.AUTH_MODE)
         });
+        await assertArtifactSafe(target);
         outputs.push({path: target, pairId: release.pairId});
         process.stderr.write(`Built experimental ${release.AUTH_MODE} plugin for ${process.platform}/${process.arch}\n`);
     }

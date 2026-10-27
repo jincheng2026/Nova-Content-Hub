@@ -5,6 +5,7 @@ import {fileURLToPath} from 'node:url';
 import {isAbsolute, join, relative, sep} from 'node:path';
 import {allSkillNames, integrityPaths, releaseModes, skillCapabilities} from './build.mjs';
 import {archiveFor, nodeRelease} from './bundled-node.mjs';
+import {assertArtifactSafe} from './artifact-safety.mjs';
 import {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 export {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 
@@ -24,6 +25,7 @@ async function directory(path) {
 
 export async function validateRuntime(input, expected) {
     const snapshot = await snapshotPackage(input);
+    await assertArtifactSafe(input);
     if (!isDeepStrictEqual((await readdir(input)).sort(), packageEntries)) throw Error('Unexpected runtime package entries; rebuild from source without user files');
     if (snapshot['plugin-src/skills'] || !isDeepStrictEqual((await readdir(join(input, 'skills'))).sort(), [...allSkillNames].sort())) throw Error('Runtime Skills must use the single canonical skills directory');
     const release = await readJSON(join(input, 'plugin-src/src/release.json'));
@@ -78,13 +80,14 @@ export async function buildMarketplace(mode, {runtimeRoot = join(root, 'plugin/r
                 name, owner: {name: 'Nova Content Hub'}, metadata: {description},
                 plugins: [{name: release.appScope, source: './' + release.appScope, description, version: release.version}]
             });
-            await writeFile(join(stage, 'README.md'), `# ${description}\n\n请完整保留本目录，无需另外安装 Node。\n\n在工作台“配套插件与使用帮助”中点击“准备安装插件”，到 Codex 或 WorkBuddy 的插件页面添加本地市场，粘贴已复制的安装位置。找到 Nova Content Hub，按助手提示安装、启用并确认插件权限，然后回工作台检查连接。\n\n制作封面时，请到所选助手完成生成，再回工作台查看结果。封面可能使用已有的助手额度。${release.AUTH_MODE === 'required' ? '\n\n此受限版本暂不开放内容制作，请安装免费体验版。\n' : ''}`);
+            await writeFile(join(stage, 'README.md'), `# ${description}\n\n请完整保留本目录，无需另外安装 Node。\n\n在工作台“配套插件与使用帮助”中点击“准备安装插件”，到 Codex 或 WorkBuddy 的插件页面添加本地市场，粘贴已复制的安装位置。找到 Nova Content Hub，按助手提示安装、启用并确认插件权限，然后回工作台检查连接。\n\n制作封面时，请到所选助手完成生成，再回工作台查看结果。封面可能使用已有的助手额度。TikHub、模型和语音服务的 Key 不随包提供，请在工作台服务设置中自行填写；升级会保留本机已有设置。${release.AUTH_MODE === 'required' ? '\n\n此受限版本暂不开放内容制作，请安装免费体验版。\n' : ''}`);
             if (!isDeepStrictEqual(snapshot, await snapshotPackage(input)) || !isDeepStrictEqual(snapshot, await snapshotPackage(plugin))) throw Error('Runtime package changed before marketplace manifest');
             await json(join(stage, 'package-files.json'), {
                 format: 'nova-content-marketplace-package-files', schemaVersion: 1,
                 release: {...release, format: 'nova-content-plugin-release', schemaVersion: 1, experimental: true, platform: process.platform, arch: process.arch},
                 entries: snapshot
             });
+            await assertArtifactSafe(stage);
             await rm(target, {recursive: true, force: true});
             await rename(stage, target);
             outputs.push({path: target, marketplace: name, pairId: release.pairId, integritySha256: hash(await readFile(join(target, release.appScope, 'integrity.json'))), packageFilesSha256: hash(await readFile(join(target, 'package-files.json')))});

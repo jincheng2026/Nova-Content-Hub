@@ -9,6 +9,7 @@ import {releaseModes} from '../../plugin-src/scripts/build.mjs';
 import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
 import {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';
+import {assertArtifactSafe} from '../../plugin-src/scripts/artifact-safety.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -69,6 +70,7 @@ export function testingEnvironment(parent = process.env) {
 }
 
 export async function validateInstallerMarketplace(input, release, sealed) {
+    await assertArtifactSafe(input);
     const entries = await snapshotPackage(input);
     if (sealed && !isDeepStrictEqual(entries, sealed)) throw Error('Packaged marketplace changed from the sealed desktop stage');
     const plugin = path.join(input, release.appScope);
@@ -106,12 +108,17 @@ export function installerConfig(options, version) {
         // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.
         asar: false,
         npmRebuild: false,
+        // Runs before DMG/NSIS creation, including resources copied by builder.
+        afterPack: path.join(workbench, 'scripts/artifact-safety-hook.mjs'),
         files: [
             'package.json', 'workbench/package.json', 'workbench/dist/**/*',
             'plugin-src/src/lib/**/*', 'plugin-src/src/bridge/**/*', 'plugin-src/src/content.mjs',
             'plugin-src/resources/**/*', 'plugin-src/references/**/*', 'plugin-src/schemas/**/*',
             '!**/{test,tests,__tests__,scripts,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',
-            '!**/*.map', '!**/.DS_Store', '!package-lock.json'
+            '!**/*.map', '!**/.DS_Store', '!package-lock.json',
+            '!**/{fixture,fixtures,__fixtures__,logs,.local-probes}/**/*',
+            '!**/{credentials,service-settings,machine-binding,local-preferences}*.{json,json5,enc,db,sqlite,tmp,bak}',
+            '!**/*.log', '!**/内容库.json', '!**/.npmrc', '!**/.netrc'
         ],
         // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.
         extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']}],
@@ -166,6 +173,7 @@ export async function distribute(args = process.argv.slice(2)) {
     builderConfig.electronDownload = {force: false, checksums: readJSON(path.join(workbench, 'node_modules/electron/checksums.json'))};
     if (options.platform === 'darwin' && options.channel === 'preview') {
         const demo = buildDemoLibrary();
+        await assertArtifactSafe(demo, {allowGeneratedExampleLibrary:true});
         const appFolder = path.join(builderConfig.directories.output, options.arch === 'arm64' ? 'mac-arm64' : 'mac', '自媒体工作台.app');
         builderConfig.dmg = {...builderConfig.dmg, window: {width: 600, height: 450}, contents: [{x: 130, y: 150, type: 'file', path: appFolder}, {x: 450, y: 150, type: 'link', path: '/Applications'}, {x: 290, y: 330, type: 'dir', path: demo}]};
     }
@@ -181,6 +189,7 @@ export async function distribute(args = process.argv.slice(2)) {
         ? path.join(builderConfig.directories.output, `mac${suffix}`, `${builderConfig.productName}.app`, 'Contents/Resources')
         : path.join(builderConfig.directories.output, `win${suffix}-unpacked`, 'resources');
     await validateInstallerMarketplace(path.join(resources, 'plugin-marketplace'), pluginRelease, sealedMarketplace);
+    await assertArtifactSafe(resources);
     if (options.platform === 'darwin') console.log(`Validated macOS build copy archived: ${archiveMacOutput(builderConfig.directories.output, options.arch)}`);
     console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);
 }
