@@ -1,0 +1,97 @@
+Window: "自媒体工作台", App: 自媒体工作台.
+0 标准窗口 自媒体工作台, Secondary Actions: Raise
+	1 container 自媒体工作台
+		2 container
+			3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html
+				4 container 设置
+					5 container
+						6 标题 设置, Value: 2
+							7 文本 设置
+						8 文本 资料保存在你的本机内容库
+						9 按钮 关闭设置
+							10 文本 关闭设置
+					11 container
+						12 标签组
+							13 标签 (settable, integer) 常用设置, Value: 0
+							14 标签 (settable, integer) 帮助与排查, Value: 0
+							15 标签 (selected) 服务与模型, Value: 1
+						16 container 服务与模型
+							17 container 研究与创作服务
+								18 container
+									19 标题 研究与创作服务, Value: 6
+										20 文本 研究与创作服务
+									21 text AI 任务仍交给 Codex / WorkBuddy，由你在助手中选模型并提交。这里配置任务可用的采集、分析与语音服务。 Key 加密保存在本机，不随内容库备份；已配置的 Key 默认隐藏，点击“查看”可显示。新 Key 留空保留原值。
+								22 container
+									23 标题 TikHub 采集, Value: 6
+										24 文本 TikHub 采集
+									25 text TikHub Key 已配置 · 安全保存
+									26 安全文本栏 Description: 已保存的TikHub Key, Value: ••••••••
+									27 切换按钮 Description: 查看已保存的TikHub Key, Value: 0
+										28 文本 查看
+									29 文本 新 Key（可选，留空保留已保存的 Key）
+									30 安全文本栏 (settable) 新 Key（可选，留空保留已保存的 Key）, Placeholder: 填写新 Key 替换
+									31 按钮 Show password
+										32 图像 eye_closed_solid
+									33 按钮 清除 Key
+										34 文本 清除 Key
+									35 文本 用于抖音搜索、账号、作品与评论，调用可能计费。
+								36 container
+									37 标题 大模型分析, Value: 6
+										38 文本 大模型分析
+									39 文本 模型 / 接入点 ID
+									40 文本栏 (settable) 模型 / 接入点 ID, Value: doubao-seed-2-0-mini-260428
+									41 text 大模型 Key 已配置 · 安全保存
+									42 安全文本栏 Description: 已保存的大模型 Key, Value: ••••••••
+									43 切换按钮 Description: 查看已保存的大模型 Key, Value: 0
+										44 文本 查看
+									45 文本 新 Key（可选，留空保留已保存的 Key）
+									46 安全文本栏 (settable) 新 Key（可选，留空保留已保存的 Key）, Placeholder: 填写新 Key 替换
+									47 按钮 Show password
+										48 图像 eye_closed_solid
+									49 按钮 清除 Key
+										50 文本 清除 Key
+									51 开合三角标记 接口设置
+										52 文本 接口设置
+									53 文本 优先使用助手已有额度与本地模型。免费额度以提供方账户为准，额度未知或用尽时不会自动切换付费模型；API 调用仍需任务授权和预算。
+								54 container
+									55 标题 语音识别, Value: 6
+										56 文本 语音识别
+									57 text 识别方式 识别方式
+									58 组合框 (settable) 识别方式, Value: 仅本地
+										59 文本 仅本地
+										60 图像
+									61 text 已填写本地模型路径，保存时检查可用性。 本地识别失败时不会自动转付费云端。
+									62 开合三角标记 本地模型配置
+										63 文本 本地模型配置
+									64 文本 本地引擎
+									65 文本 本地引擎
+									66 组合框 (settable) 本地引擎, Value: Qwen3-ASR / Python
+										67 文本 Qwen3-ASR / Python
+										68 图像
+									69 文本 Python / whisper-cli 路径
+									70 文本栏 (settable) Python / whisper-cli 路径, Value: /Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python
+									71 文本 离线模型路径
+									72 文本栏 (settable) 离线模型路径, Value: /Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit
+									73 文本 使用绝对路径。Python 引擎填写模型目录；whisper.cpp 填写模型文件。此处不会安装软件或下载模型。
+								74 container
+									75 标题 调用预算与评论, Value: 6
+										76 文本 调用预算与评论
+									77 复选框 允许任务申请付费服务调用（默认关闭）, Value: 0
+									78 文本 允许任务申请付费服务调用（默认关闭）
+									79 复选框 开放评论采集能力（默认关闭）, Value: 0
+									80 文本 开放评论采集能力（默认关闭）
+									81 文本 TikHub 评论采集收费较高，分页可能多次计费。这里仅开放能力；每次调研仍需手动勾选，并受任务预算限制。实际费用以提供方账单为准。
+								82 按钮 保存并检查
+									83 文本 保存并检查
+								84 文本 服务设置已保存。本地路径与 mlx_audio 模块检查通过；实际音频识别仍在任务内验证。
+	85 关闭按钮
+	86 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	87 最小化按钮
+88 menu bar
+	89 自媒体工作台
+	90 文件
+	91 编辑
+	92 显示
+	93 窗口
+
+The focused UI element is 3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html

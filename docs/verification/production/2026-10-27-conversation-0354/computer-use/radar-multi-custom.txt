@@ -1,0 +1,5 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 35
+~							33 组合框 (settable) 粉丝上限, Value: 12345
++								72 图像
+The focused UI element is 38 组合框 (settable) 点赞下限, Value: 1000

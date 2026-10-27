@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-27T07:22:51.858Z",
+  "mode": "read-only installed-code inspection; no application/UI actions",
+  "workbuddy": {
+    "version": "5.8.3",
+    "parser": "renderer/assets/deeplink-CxS_KKxK.js",
+    "parserSha256": "1ac213b440e354db89b4efb26806e47f8e6ebb232a3b03be8c597f8de9206953",
+    "modelQueryParsed": true,
+    "coordinator": "renderer/assets/task-deeplink-coordinator-CTvLr3_j.js",
+    "modelForwardedToInputConfig": true,
+    "limitation": "Protocol accepts a host-specific model string. Account-available model IDs and catalog were not queried or guessed. Workbench external service model settings are not assumed to map to this host field."
+  },
+  "codex": {
+    "version": "26.1021.31345",
+    "parser": ".vite/build/bootstrap-CoL4UX0u.js",
+    "parserSha256": "74030b5da54e74b19317bf018a431c81bb627ae61930e6b98e8ec1cd37fff8d1",
+    "newThreadParserReadsModelField": false,
+    "observedNewThreadFields": [
+      "mode",
+      "originUrl",
+      "path",
+      "projectId",
+      "prompt",
+      "browserTabId",
+      "browserActive",
+      "browserUrl"
+    ],
+    "limitation": "Current installed new-thread parser does not read model. No support for workbench-driven model selection is claimed."
+  },
+  "launcherModelSelectionChanged": false,
+  "modelSelectedByUserInHost": true,
+  "uiActions": false,
+  "aiMessageSent": false
+}
