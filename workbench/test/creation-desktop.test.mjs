@@ -113,3 +113,20 @@ test('store reads used by source flush wait for the same-tick durable stash ack'
  const mutation=store.modify('seg-a|mine',()=>record('seg-a|mine','必须先暂存','ordered'));let observed=false;const read=store.all().then(records=>{observed=true;return records;});
  await new Promise(resolve=>setImmediate(resolve));assert.equal(observed,false);assert.equal(h.backend.writes.length,0);release();await mutation;assert.equal((await read)[0].after,'必须先暂存');assert.equal(h.backend.writes.length,1);
 });
+
+test('trusted original publication UI renders and saves all three slots through the real kit',async t=>{
+ const {spawn}=await import('node:child_process');
+ const {packagingBuildData}=await import('../../plugin-src/src/lib/creation-document/test/packaging-fixture.mjs');
+ const root=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'creation-publish-render-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
+ createVault(root);const source={sourceId:'drafts',documentId:'publication-render',relativePath:'05_内容草稿/T044/创作页.html'};
+ fs.mkdirSync(path.join(root,'05_内容草稿/T044'),{recursive:true});const {raw}=assembleCreationData(packagingBuildData());
+ fs.writeFileSync(path.join(root,source.relativePath),renderCreationHtml(raw));
+ const fingerprint=parseCreationHtml(fs.readFileSync(path.join(root,source.relativePath)),source).revision;
+ const sessionId=randomUUID(),html=creationFrameHtml(Buffer.from(renderCreationHtml(raw,{mode:'trusted-frame'})).toString(),{sessionId,pageId:raw.page_id,fingerprint,path:source.relativePath,stash:{version:'0',records:[],storage:{local:{},session:{}}}});
+ const result=path.join(root,'render-result.json'),config=path.join(root,'render-config.json');fs.writeFileSync(config,JSON.stringify({root,source,html,sessionId,fingerprint,result,userData:path.join(root,'.electron-user-data')}));
+ const {createRequire}=await import('node:module');const electron=createRequire(import.meta.url)('electron');
+ const runner=path.resolve(import.meta.dirname,'../../plugin-src/src/lib/creation-document/test/packaging-render-harness.mjs');
+ const status=await new Promise((resolve,reject)=>{const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;const child=spawn(electron,[runner,config],{env,stdio:['ignore','pipe','pipe']});let output='';const timer=setTimeout(()=>{child.kill('SIGTERM');reject(new Error('Electron publication render timed out: '+output));},45000);child.stdout.on('data',chunk=>{output+=chunk;});child.stderr.on('data',chunk=>{output+=chunk;});child.once('error',reject);child.once('exit',code=>{clearTimeout(timer);resolve({code,output});});});
+ const report=fs.existsSync(result)?JSON.parse(fs.readFileSync(result,'utf8')):null;assert.equal(status.code,0,JSON.stringify(report??status));assert.equal(report.ok,true,JSON.stringify(report));assert.equal(report.rendered.candidates,29);assert.equal(report.atomicHistory,true);assert.equal(report.closedAndReopened,true);assert.equal(report.otherFinalsPreserved,true);
+ if(process.env.NOVA_CREATION_RENDER_REPORT)fs.copyFileSync(result,process.env.NOVA_CREATION_RENDER_REPORT);
+});

@@ -20,7 +20,8 @@
   //   record 录制视图（整篇排成录屏清单，能复制给剪辑的画面脚本）。参考上的角色、对方画面、本地原片是主干就认的，有就显示
   // 建议类别的默认筛选：defaultCategories 是默认只看哪几类，只在 filterStages 列的阶段（以及以后的审稿视图）生效；
   //   其他阶段（例如写稿）默认显示全部类别。锦成点过类别按钮后按阶段分别记住。
-  var TRUNK = ['topbar', 'compare', 'notes', 'suggestions', 'reading', 'history', 'copy', 'extras', 'spare'];
+  //   publish 标题封面简介视图（2026-10-01 锦成定：逐字稿内容确认后 AI 出标题、封面文字、简介的候选，锦成挑、改，最后用哪个他定）
+  var TRUNK = ['topbar', 'compare', 'notes', 'suggestions', 'reading', 'history', 'copy', 'extras', 'spare', 'publish'];
   var TYPES = {
     '口播': {
       modules: TRUNK.concat(['narrative']),
@@ -59,9 +60,9 @@
   var BASIS_TEXT = { '你之前定的': '此前的决定', 'AI 自己的判断': 'AI 自行判断' }; // 「参考口播」「运营」原样
   var SOURCE_TEXT = { 'AI': 'AI 建议', '运营': '运营建议' };
   var FIELD_LABEL = { mine: '锦成版', note: '写给 AI 的话', proposed: '改成', decision: '决定', overall_note: '整体意见', approved: '内容已确认', recorded: '录完的定稿',
-    our_visual: '我方画面', visual_type: '画面类型', prompt: '要发送的内容' };
+    our_visual: '我方画面', visual_type: '画面类型', prompt: '要发送的内容', todo_me: '你录', todo_editor: '剪辑做', final: '你定的', text: '候选文字' };
   // 兜底模块用的叫法；不在表里的键直接显示键名。step 和画面相关的键是教程枝干的暂定名（和 creation_doc.py 的 KIND_LABELS、KEY_LABELS 一致）
-  var KIND_LABEL = { info: '页面信息', segment: '段落', suggestion: '建议', step: '录屏步骤' };
+  var KIND_LABEL = { info: '页面信息', segment: '段落', suggestion: '建议', step: '录屏步骤', pubslot: '发布文字', pubcand: '发布文字候选' };
   var LOCKED_LABEL = { visual: '画面', where: '在哪发', line: '对应口播', expect: '发完应该看到', caution: '录之前注意', role: '角色', video: '本地原片', why: '为什么没用上' };
   var REF_ROLE_CLASS = { '对标': 'r-main', '补充参考': 'r-extra', '效果样例': 'r-sample' };
   // 各种条目里有专门模块画的键；其余的键由兜底模块 extras 按原样列出。以后枝干模块画了哪些键，就加进这里
@@ -73,6 +74,7 @@
   };
   var REF_OWN = ['who', 'source_type', 'time', 'text', 'url', 'role', 'visual', 'video', 'why'];
   var EXPLAIN = '说明'; // 参考里的「说明」：不是谁的原话，用灰色说明样式，不显示时间和「看原片」，不参与「连续 8 字相同」
+  var PT_COLORS = 4; // 参考分析里讲法点的颜色种数，和 style.css 里 .pc0 到 .pc3 一致（页面第一次画分析时就要用，所以放在这里）
   var MERGE_MS = 2 * 60 * 1000; // 改动记录：两分钟内的保存合并算一版
   // 窄屏版式的分界，和 style.css 里两个顶栏媒体查询（min-width: 1200px / max-width: 1199px）保持一致。
   // 锦成常在客户端右侧约 650（有时 380）宽的面板里看；宽屏三行顶栏的第二行要约 1190 宽才排得下（「内容已确认」带上日期时最宽），
@@ -115,7 +117,7 @@
   var STAGE = String(info.locked.stage || '');
   function has(mod) { return CFG.modules.indexOf(mod) >= 0; }
   // 枝干模块画了的键和条目，兜底模块就不再重复列：画面栏管段落的画面类型、我方画面；录屏步骤模块管 step 条目
-  if (has('visual')) OWN_FIELDS.segment = OWN_FIELDS.segment.concat(['visual_type', 'our_visual']);
+  if (has('visual')) OWN_FIELDS.segment = OWN_FIELDS.segment.concat(['visual_type', 'our_visual', 'todo_me', 'todo_editor']);
   var steps = [];
   if (has('steps')) {
     others = others.filter(function (o) { if (o._kind === 'step') { steps.push(o); return false; } return true; });
@@ -136,6 +138,24 @@
   });
   function sugsOf(seg) { return sugs.filter(function (s) { return s.locked.segment === seg.id; }); }
   function segOf(sug) { return byId[sug.locked.segment] || null; }
+  // 发布文字：每样（标题、封面文字、简介）一条 pubslot，每个候选一条 pubcand，不交给兜底模块
+  var SLOTS = ['标题', '封面文字', '简介'];
+  var SLOT_HINT = {
+    '标题': '负责让人想点。和封面文字分工，不把同一句写两遍',
+    '封面文字': '负责一眼看懂冲突，一般 6 到 14 个字、一到两行。封面图另外用 Codex 做，这里只定字',
+    '简介': '写在视频旁边的话：为什么做这条、放稳一个观点。不写「评论区领取」这类引流的话'
+  };
+  var pubSlot = {}, pubCands = [];
+  if (has('publish')) {
+    others = others.filter(function (o) {
+      if (o._kind === 'pubslot') { var sl = o.locked.slot; if (sl && !pubSlot[sl]) pubSlot[sl] = o; return false; }
+      if (o._kind === 'pubcand') { pubCands.push(o); return false; }
+      return true;
+    });
+    pubCands.sort(function (a, b) { return (Number(a.locked.round) || 0) - (Number(b.locked.round) || 0) || (Number(a.locked.order) || 0) - (Number(b.locked.order) || 0) || a._pos - b._pos; });
+  }
+  function candsOf(slot) { return pubCands.filter(function (c) { return c.locked.slot === slot; }); }
+  function pubSlots() { return SLOTS.filter(function (k) { return pubSlot[k]; }).map(function (k) { return pubSlot[k]; }); }
 
   // ======================= 小工具 =======================
   function h(tag, attrs, kids) {
@@ -294,21 +314,25 @@
     return out;
   }
   function markedText(el, text, ranges, cls, extra) {
-    // extra：再叠几层标记，每层 [开始, 结束, 类名]（锦成版里批注框对着的原句；参考原文里讲法点的原句），
-    // 可以传一层或一个数组；和 ranges 可以重叠，重叠处几个类名都带上
+    // extra：再叠几层标记，每层 [开始, 结束, 类名, 记号]（锦成版里批注框对着的原句、修改建议改的那一句；参考原文里讲法点的原句），
+    // 可以传一层或一个数组；和 ranges 可以重叠，重叠处几个类名都带上。给了记号的，那几段字带 data-k（修改建议用它找这句在屏幕上的位置）
     clear(el);
     text = String(text || '');
-    var ex = !extra ? [] : Array.isArray(extra[0]) ? extra : [extra];
+    var ex = !extra || !extra.length ? [] : Array.isArray(extra[0]) ? extra : [extra];
     var cuts = [0, text.length];
     ranges.forEach(function (r) { cuts.push(r[0], r[1]); });
     ex.forEach(function (e) { cuts.push(e[0], e[1]); });
     cuts = cuts.filter(function (x, i, a) { return x >= 0 && x <= text.length && a.indexOf(x) === i; }).sort(function (a, b) { return a - b; });
     for (var i = 0; i + 1 < cuts.length; i++) {
-      var a = cuts[i], b = cuts[i + 1], names = [];
+      var a = cuts[i], b = cuts[i + 1], names = [], key = null;
       if (ranges.some(function (r) { return r[0] <= a && b <= r[1]; })) names.push(cls);
-      ex.forEach(function (e) { if (e[0] <= a && b <= e[1] && names.indexOf(e[2]) < 0) names.push(e[2]); });
+      ex.forEach(function (e) {
+        if (!(e[0] <= a && b <= e[1])) return;
+        String(e[2]).split(' ').forEach(function (n) { if (n && names.indexOf(n) < 0) names.push(n); });
+        if (e[3] && !key) key = e[3];
+      });
       var piece = text.slice(a, b);
-      el.appendChild(names.length ? h('span', { class: names.join(' ') }, piece) : document.createTextNode(piece));
+      el.appendChild(names.length ? h('span', { class: names.join(' '), 'data-k': key }, piece) : document.createTextNode(piece));
     }
     return el;
   }
@@ -380,6 +404,8 @@
     if (it._kind === 'segment') return '第 ' + it._no + ' 段';
     if (it._kind === 'suggestion') { var s = segOf(it); return (s ? '第 ' + s._no + ' 段' : '') + '建议「' + snippet(it.locked.original, 10) + '」'; }
     if (it._kind === 'info') return '页面信息';
+    if (it._kind === 'pubslot') return '「' + (it.locked.slot || '') + '」';
+    if (it._kind === 'pubcand') return '「' + (it.locked.slot || '') + '」候选「' + snippet(val(it.id, 'text'), 10) + '」';
     var os = byId[it.locked.segment];
     return (os && os._kind === 'segment' ? '第 ' + os._no + ' 段的' : '') + kindLabel(it._kind);
   }
@@ -390,10 +416,11 @@
   // ======================= 页面状态（只记在这台浏览器） =======================
   var saved = lsGet();
   var ST = {
-    view: saved.view === 'reading' || (saved.view === 'record' && has('record')) ? saved.view : (!saved.view && has('record') && STAGE === CFG.recordStage ? 'record' : 'compare'),
+    view: saved.view === 'reading' || (saved.view === 'record' && has('record')) || (saved.view === 'publish' && has('publish')) ? saved.view : (!saved.view && has('record') && STAGE === CFG.recordStage ? 'record' : 'compare'),
     seg: 0,
     font: Math.min(24, Math.max(14, Number(saved.font) || 17)),
     onlyPending: !!saved.onlyPending,
+    onlyMine: !!saved.onlyMine,
     catsBy: saved.catsBy && typeof saved.catsBy === 'object' ? saved.catsBy : {}, // 锦成点过的类别筛选，按阶段分别记（旧版只记一份的 cats 不再用）
     refsHidden: saved.refsHidden && typeof saved.refsHidden === 'object' ? saved.refsHidden : {},
     // 叙事卡展开还是收起：宽屏、窄屏分开记（锦成点过才记）；没点过时宽屏按类型配置，窄屏默认收起，第一屏先看稿子。
@@ -403,13 +430,17 @@
     baseOpen: {}, // 「和底稿比」锦成手动展开或收起过的段；没动过的按删改多少自动定
     activeSug: null,
     famOpen: {}, // 分析模式下每段展开的是哪一家的原文（只在这个窗口记）
-    draftDismissed: {}
+    draftDismissed: {},
+    walk: false, // 逐条看：采纳或不采纳以后自动跳到原文里的下一条待确认
+    walkAt: null, // 逐条看正看到的那条和它当时的位置（见 walkKey）
+    unfold: {}, // 收起的建议（已处理、无需修改、对不上了）里锦成点了「展开」的
+    flashSug: null // 刚点过的那条建议：原文里那一句闪一下
   };
   ST.narrOpen = typeof ST.narrOpenBy[layoutMode()] === 'boolean' ? ST.narrOpenBy[layoutMode()] : !!CFG.narrativeOpen && layoutMode() === 'wide';
   var segIdx = ssGet('jc-cp-seg-' + PID) || saved.seg;
   segs.forEach(function (s, i) { if (s.id === segIdx) ST.seg = i; });
   function persist() {
-    lsSet({ view: ST.view, font: ST.font, onlyPending: ST.onlyPending, catsBy: ST.catsBy, refsHidden: ST.refsHidden, narrOpenBy: ST.narrOpenBy, seg: segs[ST.seg] ? segs[ST.seg].id : '' });
+    lsSet({ view: ST.view, font: ST.font, onlyPending: ST.onlyPending, onlyMine: ST.onlyMine, catsBy: ST.catsBy, refsHidden: ST.refsHidden, narrOpenBy: ST.narrOpenBy, seg: segs[ST.seg] ? segs[ST.seg].id : '' });
     ssSet('jc-cp-seg-' + PID, segs[ST.seg] ? segs[ST.seg].id : '');
   }
 
@@ -418,7 +449,13 @@
   var segUi = {}; // 段 id → 这一段的元素
   var cardUi = {}; // 建议 id → 这张卡的元素
   var stepUi = {}; // 录屏步骤 id → 这张卡的元素（页面一开始画段落时就要用，所以放在这里）
+  var pubUi = {}, candUi = {}; // 发布文字：每样一张卡、每个候选的元素
   var extraTas = []; // 兜底模块画的文本框，刷新时一起调高度
+  // 建议卡对齐原文：卡片、锦成版变高变矮时（展开收起、打字、换字号）重新排（画段落时就要用，所以放在这里）
+  var alignTimer = 0, flashTimer = 0;
+  var RO = typeof window.ResizeObserver === 'function' ? new ResizeObserver(function () { scheduleAlign(); }) : null;
+  // 修改建议能不能排在锦成版右边一列：有参考的段要 1200 宽以上（参考、锦成版、建议三栏），没有参考的段 961 以上（和 style.css 里两栏的分界一致）
+  var SIDE_MQ = window.matchMedia ? window.matchMedia('(min-width: 1200px)') : null, SIDE_MQ_NOREF = window.matchMedia ? window.matchMedia('(min-width: 961px)') : null;
   clear(root);
   document.documentElement.style.setProperty('--fs', ST.font + 'px');
   if (has('topbar')) root.appendChild(buildTopbar());
@@ -430,6 +467,7 @@
   if (has('record')) R.main.appendChild(buildRecordHead());
   if (has('compare')) R.main.appendChild(buildCompare());
   if (has('reading')) R.main.appendChild(buildReading());
+  if (has('publish')) R.main.appendChild(buildPublish());
   if (has('spare')) add(R.main, buildSpare());
   if (has('extras')) add(R.main, buildPageExtras());
   R.main.appendChild(buildOverall());
@@ -452,7 +490,7 @@
     var typeLabel = TYPE ? TYPE + (TYPES[TYPE] ? '' : '（这个类型还没有专门的显示方式，先按通用方式显示）') : '未设置类型';
     var title = info.locked.title || document.title || '';
     // 计数：宽屏写「7 条待确认」「3 条待 AI 处理」，窄屏排成「待确认 7」「待 AI 处理 3」（「条」在窄屏藏起来）
-    R.counterSug = h('button', { type: 'button', class: 'counter c-sug', onclick: jumpFirstPendingSug, title: '跳到第一条待确认的建议' });
+    R.counterSug = h('button', { type: 'button', class: 'counter c-sug', onclick: function () { jumpFirstPendingSug(); }, title: '从第一条待确认的建议开始逐条看：采纳或不采纳以后自动跳到下一条' });
     R.counterNote = h('button', { type: 'button', class: 'counter c-note', onclick: jumpFirstPendingNote, title: '跳到第一条待 AI 处理的「写给 AI 的话」' });
     // 保存状态：宽屏由 kit 在 save-slot 里画整条；窄屏只显示圆点（黄、红或有冲突时带简短文字），点圆点弹出整条，悬停也能看全文
     R.saveShort = h('span', { class: 'save-short' });
@@ -469,6 +507,7 @@
       reading: h('button', { type: 'button', 'aria-pressed': 'false', onclick: function () { setView('reading'); } }, '通读')
     };
     if (has('record')) R.viewBtns.record = h('button', { type: 'button', 'aria-pressed': 'false', title: '整篇排成录屏清单：口播、画面、录屏步骤', onclick: function () { setView('record'); } }, '录制');
+    if (has('publish')) R.viewBtns.publish = h('button', { type: 'button', 'aria-pressed': 'false', class: 'vb-pub', title: '标题、封面文字、简介：逐字稿内容确认后 AI 出候选，你挑、改、定', onclick: function () { setView('publish'); } }, ['标题封面简介', R.pubDot = h('i', { class: 'nav-dot', hidden: true })]);
     R.onlyPending = h('input', { type: 'checkbox', onchange: function () { ST.onlyPending = R.onlyPending.checked; persist(); refreshAll(); } });
     R.onlyPending.checked = ST.onlyPending;
     R.nav = h('nav', { class: 'segnav', 'aria-label': '段落' });
@@ -510,15 +549,17 @@
       has('copy') ? h('button', { type: 'button', class: 'btn primary copy-tele', onclick: menuAct(copyTeleprompter), title: '只复制锦成版正文，按段落顺序排列，不含空行' }, '复制提词稿') : null,
       R.more,
       R.total,
-      h('div', { class: 'seg-switch', role: 'group', 'aria-label': '视图' }, [R.viewBtns.compare, has('reading') ? R.viewBtns.reading : null, R.viewBtns.record || null]),
+      h('div', { class: 'seg-switch', role: 'group', 'aria-label': '视图' }, [R.viewBtns.compare, has('reading') ? R.viewBtns.reading : null, R.viewBtns.record || null, R.viewBtns.publish || null]),
       h('span', { class: 'brk brk-b', 'aria-hidden': 'true' }),
-      R.nav
+      R.nav,
+      R.foldBtn = h('button', { type: 'button', class: 'btn fold-btn', 'aria-expanded': 'true', title: '收起顶栏：只留标题、保存状态、段落条和复制提词稿，给稿子腾地方', onclick: function () { toggleFold(); } }, '收起')
     ]));
     R.topbar = top;
+    if (foldPref()) setFoldUi(true);
     placeTopbar();
     if (window.matchMedia) { var mq = window.matchMedia(COMPACT_MQ); if (mq.addEventListener) mq.addEventListener('change', placeTopbar); else if (mq.addListener) mq.addListener(placeTopbar); }
     segs.forEach(function (s, i) {
-      var b = h('button', { type: 'button', class: 'nav-btn', onclick: function () { if (ST.view === 'reading') setView('compare'); goSeg(i, true); }, title: s.locked.title || '' }, [
+      var b = h('button', { type: 'button', class: 'nav-btn', onclick: function () { if (ST.view === 'reading' || ST.view === 'publish') setView('compare'); goSeg(i, true); }, title: s.locked.title || '' }, [
         h('b', null, String(i + 1)), h('span', { class: 'nav-t' }, snippet(s.locked.title, 7)), h('i', { class: 'nav-dot', hidden: true })
       ]);
       s._nav = b;
@@ -555,6 +596,22 @@
     R.saveInd.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
   function closePops() { toggleMore(false); toggleSavePop(false); }
+  // 顶栏收起：所有创作页共用一个偏好，存在这台浏览器里；收起后一行，展开回到原来的样子
+  function foldPref() { try { return localStorage.getItem('jc-cp-topfold') === '1'; } catch (e) { return false; } }
+  function setFoldUi(on) {
+    R.topbar.classList.toggle('folded', on);
+    R.foldBtn.textContent = on ? '展开' : '收起';
+    R.foldBtn.setAttribute('aria-expanded', on ? 'false' : 'true');
+    R.foldBtn.title = on ? '展开顶栏：显示阶段、计数、复制给 AI、内容已确认、更多、对照通读等' : '收起顶栏：只留标题、保存状态、段落条和复制提词稿，给稿子腾地方';
+  }
+  function toggleFold(on) {
+    if (!R.topbar) return;
+    on = on == null ? !R.topbar.classList.contains('folded') : !!on;
+    closePops();
+    setFoldUi(on);
+    try { localStorage.setItem('jc-cp-topfold', on ? '1' : '0'); } catch (e) { /* 存不了就只管这一次 */ }
+    refreshStickyPad();
+  }
   document.addEventListener('click', function (e) {
     if (!R.topbar) return;
     if (R.more.classList.contains('open') && !R.more.contains(e.target)) toggleMore(false);
@@ -712,31 +769,38 @@
     ui.baseDiff = h('div');
     ui.vsBase = h('details', { class: 'vs-base', open: true }, [ui.baseSum, ui.baseDiff]);
     ui.vsBase.addEventListener('toggle', function () { if (!ui.settingBase) ST.baseOpen[seg.id] = ui.vsBase.open; });
-    var mineCell = h('div', { class: 'mine-cell jc-field' }, [
+    // 有修改建议的段：锦成版左边留一条窄边，放每条待确认建议的编号（和右边建议卡上的编号一样），点编号看对应的卡
+    var hasSugs = has('suggestions') && sugsOf(seg).length > 0;
+    ui.gut = hasSugs ? h('div', { class: 'mine-gut' }) : null;
+    ui.wrap = h('div', { class: 'mine-wrap' + (hasSugs ? ' has-gut' : '') }, [ui.back, ui.mine, ui.gut]);
+    var mineCell = ui.mineCell = h('div', { class: 'mine-cell jc-field' }, [
       h('div', { class: 'cell-head' }, [h('b', null, '锦成版'), h('span', { class: 'muted' }, '可直接修改，停止输入 1 秒后自动保存'), ui.count]),
       ui.ctxPrev = seg._no > 1 ? h('button', { type: 'button', class: 'ctx ctx-prev', title: '点一下跳到上一段', onclick: function () { goSeg(seg._no - 2, true); } }) : null,
-      h('div', { class: 'mine-wrap' }, [ui.back, ui.mine]),
+      ui.wrap,
       ui.ctxNext = seg._no < segs.length ? h('button', { type: 'button', class: 'ctx ctx-next', title: '点一下跳到下一段', onclick: function () { goSeg(seg._no, true); } }) : null,
       has('visual') ? buildVisual(seg) : null,
       L.baseline != null ? ui.vsBase : null
     ]);
     ui.mine.addEventListener('input', function () { autoGrow(ui.mine); scheduleSeg(seg); });
+    ui.mine.addEventListener('click', function () { onMineClick(seg); });
     // 标题行
     ui.histBtn = has('history') ? h('button', { type: 'button', class: 'btn ghost small', onclick: function () { toggleHistory(seg); } }, '本段改动记录') : null;
     ui.head = h('div', { class: 'seg-head' }, [
       h('h2', null, [h('span', { class: 'no' }, String(seg._no)), L.title || '（无标题）']),
       CFG.showRole && L.role ? h('span', { class: 'role', title: '这段起什么作用' }, L.role) : null,
+      has('visual') && hasTodo(seg) ? (ui.whoTag = h('span', { class: 'who-tag', hidden: true })) : null,
       h('span', { class: 'grow' }),
       ui.histBtn
     ]);
     ui.hist = h('div', { class: 'hist-panel', hidden: true });
+    // 修改建议：宽屏放进两栏里当第三栏，排在锦成版右边；放不下时挪进锦成版那一栏、紧跟在锦成版下面（原文、下面跟着它的建议），仍按原文顺序。由 placeSugs 按宽窄挪
     var sec = h('section', { class: 'seg', id: 'seg-' + seg.id, 'data-seg': seg.id }, [
       ui.head,
       has('record') ? (ui.recFlag = h('p', { class: 'rec-flag', hidden: true })) : null,
-      h('div', { class: 'grid' + (refs.length ? '' : ' no-ref') }, [refCol, mineCell]),
+      ui.grid = h('div', { class: 'grid' + (refs.length ? '' : ' no-ref') + (hasSugs ? ' has-sugs' : '') }, [refCol, mineCell]),
+      has('suggestions') ? buildSugs(seg) : null,
       ui.hist,
       has('steps') ? buildSteps(seg) : null,
-      has('suggestions') ? buildSugs(seg) : null,
       has('notes') ? buildNote(seg) : null,
       has('extras') ? buildSegExtras(seg) : null,
       h('div', { class: 'seg-foot' }, [
@@ -750,30 +814,46 @@
   }
 
   // ---------- 建议卡 ----------
+  // 一段的建议排成一列，按改的那一句在锦成版里出现的先后排（见 sugOrder），编号和锦成版左边窄边上的编号一样。
+  // 宽屏这一列在锦成版右边，卡片尽量和它改的那一句对齐；放不下时退到锦成版下面。顶上「逐条看」：从第一条待确认开始一条一条过
   function buildSugs(seg) {
     var ui = segUi[seg.id], list = sugsOf(seg);
     ui.cards = h('div', { class: 'cards' });
     ui.sugHidden = h('p', { class: 'sug-hidden', hidden: true });
     ui.sugEmpty = h('p', { class: 'muted sug-empty', hidden: true });
     ui.catBar = h('div', { class: 'cat-bar' });
+    ui.walkBtn = h('button', { type: 'button', class: 'btn small walk-btn', title: '从这一段第一条待确认的开始，一条一条看；采纳或不采纳以后自动跳到原文里的下一条', onclick: function () { startWalk(seg); } }, '逐条看');
+    ui.walkText = h('span', { class: 'walk-text' });
+    ui.walkBar = h('div', { class: 'walk-bar', hidden: true }, [ui.walkText, h('span', { class: 'grow' }),
+      h('button', { type: 'button', class: 'btn small ghost', onclick: function () { skipWalk(); } }, '跳过这条'),
+      h('button', { type: 'button', class: 'btn small ghost', onclick: function () { stopWalk(); } }, '退出逐条看')]);
     list.forEach(function (sug) { ui.cards.appendChild(buildCard(sug)); });
     ui.sugBox = h('section', { class: 'sugs', hidden: !list.length }, [
-      h('div', { class: 'sugs-head' }, [h('h3', { title: CFG.sugNote }, CFG.sugTitle), h('span', { class: 'muted sugs-note' }, CFG.sugNote), h('span', { class: 'grow' }), ui.catBar]),
-      ui.cards, ui.sugEmpty, ui.sugHidden
+      h('div', { class: 'sugs-head' }, [h('h3', { title: CFG.sugNote }, CFG.sugTitle), ui.walkBtn, h('span', { class: 'muted sugs-note' }, CFG.sugNote), h('span', { class: 'grow' }), ui.catBar]),
+      ui.walkBar, ui.cards, ui.sugEmpty, ui.sugHidden
     ]);
+    if (RO) RO.observe(ui.mine);
     return ui.sugBox;
   }
-  // 建议卡：先给「原句 → 改成」的删改对照（删的划掉、加的下划线）、结论和按钮；
+  // 建议卡：先是编号和改的那一句（前一句的结尾、后一句的开头用灰字，中间是逐字的删改对照：删的划掉、加的下划线），再是结论和按钮；
   // 「为什么改」默认两行，超出的点「展开」；「依据」收成一个彩色小标签，点开看说明；「改成」的输入框点「先改再采纳」才出来。
   // 「改成」是空的表示整句删掉：卡片写「删掉这句」，采纳就从锦成版删去原句。
-  // 整张卡带 jc-field：这张卡里的格子（「改成」）有冲突时，kit 把冲突框挂在卡片最后，输入框收着也看得见。
+  // 已经定了的（采纳、不采纳）、结论是无需修改的、原句已经被改掉对不上的，默认收成一行，点「展开」看全。
+  // 整张卡带 jc-field：这张卡里的格子（「改成」）有冲突时，kit 把冲突框挂在卡片最后，输入框收着也看得见（有冲突时不收起）。
   function buildCard(sug) {
     var L = sug.locked, c = cardUi[sug.id] = {};
     var basis = L.basis && typeof L.basis === 'object' ? L.basis : { type: '', text: String(L.basis || '') };
     c.proposed = hasField(sug, 'proposed') ? h('textarea', { class: 'proposed', 'data-item': sug.id, 'data-field': 'proposed', autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: 2, 'aria-label': '改成' }) : null;
     if (c.proposed) { c.proposed.value = val(sug.id, 'proposed'); c.proposed.addEventListener('input', function () { autoGrow(c.proposed); updateCard(sug); }); }
-    c.editBox = c.proposed ? h('div', { class: 'edit-box', hidden: true }, [h('div', { class: 'lbl' }, '改成（改好后点「采纳」；清空表示删掉这句）'), c.proposed]) : null;
-    c.change = h('div', { class: 'change' });
+    // 改「改成」时，输入框就放在删改对照原来的位置（对照先藏起来，上面只留一行不会变的原句），打字时上面的字不跟着跳；
+    // 收起或定了以后再按改好的字重画对照（锦成 2026-10-09：「我想直接在这个地方去改」「在下面这个框输入东西的时候，上面不会变」）
+    c.origLine = c.proposed ? h('div', { class: 'orig-line' }) : null;
+    c.editBox = c.proposed ? h('div', { class: 'edit-box', hidden: true }, [c.origLine, h('div', { class: 'lbl' }, '改成（直接在这里改，改好后点「采纳」；清空表示删掉这句）'), c.proposed]) : null;
+    // 卡片上的删改对照：还没定、能采纳时点一下就打开「改成」输入框直接改（锦成 2026-10-09：「我想直接在右边的那个地方改，它也不让我去改」）
+    c.change = h('div', { class: 'change', onclick: function (e) {
+      if (!c.proposed || c.editing || val(sug.id, 'decision') || c.editFirst.disabled) return;
+      e.stopPropagation(); editFirst(sug, true);
+    } });
     if (L.reason) {
       c.reason = h('p', { class: 'reason clamp' }, [h('span', { class: 'k' }, '为什么改：'), String(L.reason)]);
       c.reasonMore = h('button', { type: 'button', class: 'reason-more', hidden: true, 'aria-expanded': 'false', onclick: function () {
@@ -792,26 +872,39 @@
     c.yes = h('button', { type: 'button', class: 'yes', onclick: function () { adopt(sug); } }, ['采纳 ', h('kbd', null, 'A')]);
     c.no = h('button', { type: 'button', onclick: function () { reject(sug); } }, ['不采纳 ', h('kbd', null, 'R')]);
     c.editFirst = c.proposed ? h('button', { type: 'button', class: 'edit-first', 'aria-expanded': 'false', onclick: function () { editFirst(sug); } }, '先改再采纳') : null;
-    c.pendingActs = h('div', { class: 'card-actions' }, [c.yes, c.no, c.editFirst]);
+    // 长建议在卡片里改看不全：先采纳，再把换进去的那部分在锦成版里选中，直接在锦成版里接着改（锦成 2026-10-09）
+    c.adoptEdit = h('button', { type: 'button', class: 'adopt-edit', title: '先把这条换进锦成版，再在锦成版里选中换进去的那部分，直接在锦成版里接着改', onclick: function () { adoptThenEdit(sug); } }, '采纳后在锦成版接着改');
+    c.pendingActs = h('div', { class: 'card-actions' }, [c.yes, c.no, c.editFirst, c.adoptEdit]);
     c.decided = h('span', { class: 'decided-text' });
     c.revoke = h('button', { type: 'button', title: '撤销这个决定，改回待确认', onclick: function () { revoke(sug); } }, '撤销决定');
     c.doneActs = h('div', { class: 'card-actions done', hidden: true }, [c.decided, c.revoke]);
     c.badge = h('span', { class: 'dec-badge' });
     c.verdict = L.verdict ? h('span', { class: 'verdict ' + (VERDICT_CLASS[L.verdict] || '') }, '结论：' + (VERDICT_TEXT[L.verdict] || L.verdict)) : null;
-    c.el = h('article', { class: 'card jc-field', 'data-sug': sug.id, tabindex: '-1', onclick: function (e) { if (!e.target.closest('button,textarea,a')) setActive(sug.id); }, onfocusin: function () { setActive(sug.id); } }, [
+    // 编号：和锦成版左边窄边上的一样；点了在锦成版里亮出这一句
+    c.num = h('button', { type: 'button', class: 'sug-no', title: '在锦成版里看这一句', onclick: function () { activateSug(sug, { text: true, force: true }); } });
+    // 收成一行时的样子：编号、状态、一小段原句或改后的句子、「展开」；点这一行任何地方都展开
+    c.foldNum = h('span', { class: 'sug-no' });
+    c.foldState = h('span', { class: 'fold-state' });
+    c.foldSnip = h('span', { class: 'fold-snip' });
+    c.foldRow = h('div', { class: 'fold-row', title: '点一下展开这条建议', onclick: function () { setFold(sug, false); } }, [c.foldNum, c.foldState, c.foldSnip, h('span', { class: 'fold-open' }, '展开')]);
+    c.foldBtn = h('button', { type: 'button', class: 'link fold-close', hidden: true, onclick: function () { setFold(sug, true); } }, '收起');
+    c.el = h('article', { class: 'card jc-field', 'data-sug': sug.id, tabindex: '-1', onclick: function (e) { if (!e.target.closest('button,textarea,a,.fold-row')) activateSug(sug, { text: true }); }, onfocusin: function () { setActive(sug.id); } }, [
+      c.foldRow,
       h('div', { class: 'card-head' }, [
+        c.num,
         L.category ? h('span', { class: 'cat' }, L.category) : null,
         c.verdict,
         c.basisTag,
         h('span', { class: 'by muted' }, SOURCE_TEXT[L.source || 'AI'] || (L.source + (/[A-Za-z0-9]$/.test(L.source) ? ' ' : '') + '建议')),
-        h('span', { class: 'grow' }), c.badge
+        h('span', { class: 'grow' }), c.badge, c.foldBtn
       ]),
       c.change,
+      c.editBox,
       c.reasonBox,
       c.basisText,
-      c.editBox,
       c.miss, c.warn, c.pendingActs, c.doneActs
     ]);
+    if (RO) RO.observe(c.el);
     return c.el;
   }
   function updateReason(c) { // 「为什么改」超过两行才给「展开」；卡片没显示出来时量不了，等显示时（换段、筛选、窗口变宽窄）再量
@@ -842,10 +935,239 @@
     return b.replace(/\n+$/, '') + new Array(Math.max(nb, na) + 1).join('\n') + a.replace(/^\n+/, '');
   }
 
+  // ---------- 建议贴着原文：每条建议改的是锦成版里哪一句、排第几（2026-09-28 锦成：「我看不到我的原文，根本不知道是否应该改」） ----------
+  // 待定的、不采纳的、结论是无需修改的，按「原句」在锦成版（他现在的稿子）里找；已采纳的按「改成」找（删句采纳以后没有位置）。
+  // 出现一处或几处都算找到（几处时取第一处，采纳按钮照旧变灰）。待定的找不到，就是这句已经被他改过，排到这段最后。
+  function propOf(sug) { var c = cardUi[sug.id]; return c && c.proposed ? c.proposed.value : val(sug.id, 'proposed'); }
+  function mineOf(seg) { var ui = segUi[seg.id]; return ui && ui.mine ? ui.mine.value : val(seg.id, 'mine'); }
+  function anchorOf(sug, mine) {
+    var dec = val(sug.id, 'decision'), took = dec === '采纳' || dec === '部分采纳';
+    var t = norm(took ? val(sug.id, 'proposed') : sug.locked.original), nm = norm(mine);
+    if (!t.trim()) return null;
+    var at = nm.indexOf(t);
+    return at < 0 ? null : { start: at, end: at + t.length, occ: countOcc(nm, t) };
+  }
+  // 一段建议的显示顺序：找得到位置的按位置排（同一处按生成的先后）；找不到的已处理建议其次；找不到的待定建议（对不上了）最后。
+  // 编号按这个顺序从 1 起。已采纳的按改后的句子找位置，还在原处，所以采纳、不采纳以后编号不变
+  // 待定的建议原句被锦成自己改掉了：用原句开头或结尾还剩下的一截（至少 6 个字、在稿子里只出现一次）找回大概的位置，
+  // 卡片留在原来的地方，不挪到这段最后（锦成 2026-10-09：「我改中间……右边的这个就会直接消失」）；一截都找不到才排到最后
+  function nearOf(sug, mine) {
+    var o = Array.from(norm(sug.locked.original || '')), nm = norm(mine);
+    for (var n = Math.min(14, o.length - 1); n >= 6; n--) {
+      var head = o.slice(0, n).join(''), tail = o.slice(-n).join('');
+      if (countOcc(nm, head) === 1) return nm.indexOf(head);
+      if (countOcc(nm, tail) === 1) return Math.max(0, nm.indexOf(tail) - (o.length - n));
+    }
+    return -1;
+  }
+  function sugOrder(seg, mine) {
+    if (mine == null) mine = mineOf(seg);
+    var list = sugsOf(seg).map(function (s, i) {
+      var a = anchorOf(s, mine), x = { sug: s, i: i, a: a, pos: a ? a.start : -1 };
+      if (!a && isUndecided(s)) x.pos = nearOf(s, mine);
+      return x;
+    });
+    var rank = function (x) { return x.pos >= 0 ? 0 : isUndecided(x.sug) ? 2 : 1; };
+    list.sort(function (x, y) { return rank(x) - rank(y) || (x.pos >= 0 && y.pos >= 0 ? x.pos - y.pos : 0) || x.i - y.i; });
+    list.forEach(function (x, k) { x.no = k + 1; x.miss = !x.a && isUndecided(x.sug); });
+    return list;
+  }
+  function pendingInOrder(seg) { return sugOrder(seg).filter(function (x) { return isUndecided(x.sug); }).map(function (x) { return x.sug; }); }
+  function allInOrder() { var out = []; segs.forEach(function (s) { sugOrder(s).forEach(function (x) { out.push(x.sug); }); }); return out; }
+  // 卡片上改的那一句的前后文：原句前面同一行有字，就取这些字的结尾；原句从行首开始，就取上一行的结尾（另起一行显示）。后文同理
+  var CTX_CHARS = 18;
+  function ctxAround(mine, start, end) {
+    var nm = norm(mine), before = nm.slice(0, start), after = nm.slice(end), out = { before: '', after: '', beforeBreak: false, afterBreak: false };
+    var ls = before.lastIndexOf('\n') + 1, same = before.slice(ls);
+    if (same.trim()) out.before = same;
+    else if (ls > 0) { var prev = before.slice(0, ls).replace(/\s+$/, ''); out.before = prev.slice(prev.lastIndexOf('\n') + 1); out.beforeBreak = !!out.before.trim(); }
+    var le = after.indexOf('\n'), rest = le < 0 ? after : after.slice(0, le);
+    if (rest.trim()) out.after = rest;
+    else if (le >= 0) { var next = after.slice(le).replace(/^\s+/, ''), e = next.indexOf('\n'); out.after = e < 0 ? next : next.slice(0, e); out.afterBreak = !!out.after.trim(); }
+    var b = Array.from(out.before.replace(/^\s+/, '')), a = Array.from(out.after.replace(/\s+$/, ''));
+    out.before = b.length > CTX_CHARS ? '…' + b.slice(-CTX_CHARS).join('') : b.join('');
+    out.after = a.length > CTX_CHARS ? a.slice(0, CTX_CHARS).join('') + '…' : a.join('');
+    return out;
+  }
+  // 锦成版底层：和参考连续 8 字相同的点线、批注框对着的原句（黄）、待确认的建议改的那一句（浅黄，当前这条蓝，删整句的红色删除线），
+  // 左边窄边上放编号。底层的字和文本框一字不差地叠在一起，所以只能标底色和线，不能往字里插编号
+  function paintMine(seg, mine) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.back) return;
+    if (mine == null) mine = mineOf(seg);
+    var refTexts = ui.refs.filter(function (r) { return ui.anaMode || !ST.refsHidden[r.who || '参考']; }).map(function (r) { return r.text || ''; });
+    var extra = [], qr = mineQuoteRange(seg, mine);
+    if (qr) extra.push([qr[0], qr[1], 'quote-mark']);
+    ui.marks = [];
+    if (ui.gut && norm(mine) === mine) sugOrder(seg, mine).forEach(function (x) {
+      if (!x.a || !isUndecided(x.sug) || !cardVisible(x.sug)) return;
+      var del = isDeletion(propOf(x.sug)), on = ST.activeSug === x.sug.id;
+      extra.push([x.a.start, x.a.end, 'sm' + (del ? ' sm-del' : '') + (on ? ' sm-on' : '') + (ST.flashSug === x.sug.id ? ' sm-flash' : ''), x.sug.id]);
+      ui.marks.push({ id: x.sug.id, no: x.no, del: del, on: on, start: x.a.start, end: x.a.end });
+    });
+    markedText(ui.back, mine + '\n', sameRanges(mine, refTexts), 'same', extra);
+    paintGutter(seg);
+  }
+  function markOf(sug) { var seg = segOf(sug), ui = seg && segUi[seg.id]; return ui && ui.back ? ui.back.querySelector('[data-k="' + sug.id + '"]') : null; }
+  function paintGutter(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.gut) return;
+    clear(ui.gut);
+    if (!ui.marks || !ui.marks.length || !ui.wrap.offsetParent) return;
+    var wr = ui.wrap.getBoundingClientRect(), last = -1e9;
+    ui.marks.forEach(function (m) {
+      var sp = ui.back.querySelector('[data-k="' + m.id + '"]'), g = byId[m.id];
+      if (!sp || !g) return;
+      var r = sp.getClientRects()[0] || sp.getBoundingClientRect(), top = Math.round(r.top - wr.top + r.height / 2 - 10);
+      if (top < last + 21) top = last + 21; // 同一行有两条：往下错开
+      last = top;
+      ui.gut.appendChild(h('button', { type: 'button', class: 'sm-no' + (m.del ? ' del' : '') + (m.on ? ' on' : ''), style: 'top:' + top + 'px', title: '第 ' + m.no + ' 条修改建议，点一下看这张卡',
+        'aria-label': '第 ' + m.no + ' 条修改建议', onclick: function () { activateSug(g, { card: true, force: true }); } }, String(m.no)));
+    });
+  }
+  // 点原文里标出来的那一句（光标落在里面）：对应的卡亮起来。宽屏卡片在右边，不在眼前就滚过去；窄屏卡片在下面，只亮不滚，免得改字时页面跳走
+  function onMineClick(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.mine || ST.view !== 'compare') return;
+    var a = ui.mine.selectionStart, b = ui.mine.selectionEnd;
+    if (a !== b) return;
+    var hit = (ui.marks || []).filter(function (m) { return a >= m.start && a <= m.end; })[0];
+    if (hit && byId[hit.id]) activateSug(byId[hit.id], { card: true, soft: true });
+  }
+  function sideBySide(ui) { // 建议这一列是不是排在锦成版右边（宽屏）；放不下时退到下面
+    return !!(ui && ui.sugBox && !ui.sugBox.hidden && ui.sugBox.offsetParent && ui.mineCell && ui.sugBox.getBoundingClientRect().left >= ui.mineCell.getBoundingClientRect().right - 2);
+  }
+  // 宽屏把建议这一列放进两栏里当第三栏；窄了挪进锦成版那一栏，紧跟在锦成版（和下一段开头那一行）下面：原文、下面跟着它的建议。
+  // 挪元素而不是只靠样式换排法：锦成版那一栏宽屏时钉在顶栏下面，建议排在它下面时要改成不钉住，否则往下翻会盖住卡片
+  function placeSugs(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.sugBox || !ui.grid || !ui.mineCell) return;
+    var noRef = ui.grid.classList.contains('no-ref'), mq = noRef ? SIDE_MQ_NOREF : SIDE_MQ;
+    var side = ui.grid.classList.contains('has-sugs') && !!(mq && mq.matches), after = ui.ctxNext || ui.wrap;
+    ui.grid.classList.toggle('side', side);
+    ui.mineCell.classList.toggle('has-cards', !side && !ui.sugBox.hidden);
+    if (side) { if (ui.sugBox.parentNode !== ui.grid) ui.grid.appendChild(ui.sugBox); }
+    else if (ui.sugBox.previousSibling !== after) ui.mineCell.insertBefore(ui.sugBox, after.nextSibling);
+  }
+  function placeAllSugs() { segs.forEach(placeSugs); refreshAfterValues(); }
+  [SIDE_MQ, SIDE_MQ_NOREF].forEach(function (mq) { if (!mq) return; if (mq.addEventListener) mq.addEventListener('change', placeAllSugs); else if (mq.addListener) mq.addListener(placeAllSugs); });
+  // 点卡片：原文那一句亮起来，宽屏时滚到眼前（锦成版那一栏钉在顶栏下面，常常已经在眼前，就只滚锦成版这一栏里面）；
+  // 点原文或左边的编号：对应的卡亮起来。o.text 亮原文那一句，o.card 亮卡片；o.force 窄屏也滚；
+  // o.soft（在原文里点字改稿时）卡片露出一点就不滚，免得改着字页面在动
+  function activateSug(sug, o) {
+    o = o || {};
+    var seg = segOf(sug);
+    if (!seg) return;
+    setActive(sug.id);
+    flashSug(sug);
+    var side = sideBySide(segUi[seg.id]);
+    if (o.text && (side || o.force)) revealSentence(sug);
+    if (o.card && (side || o.force)) revealCard(sug, o.soft);
+  }
+  function flashSug(sug) {
+    var seg = segOf(sug);
+    ST.flashSug = sug.id;
+    if (seg) paintMine(seg);
+    clearTimeout(flashTimer);
+    flashTimer = setTimeout(function () { ST.flashSug = null; if (seg) paintMine(seg); }, 1300);
+  }
+  function revealSentence(sug, cellOnly) {
+    var sp = markOf(sug), seg = segOf(sug), ui = seg && segUi[seg.id];
+    if (!sp || !ui) return;
+    var cell = ui.mineCell, r = sp.getBoundingClientRect(), cr = cell.getBoundingClientRect();
+    if (cell.scrollHeight > cell.clientHeight + 2 && (r.top < cr.top + 30 || r.bottom > cr.bottom - 20)) { cell.scrollTop += r.top - cr.top - 60; r = sp.getBoundingClientRect(); }
+    if (cellOnly) return;
+    var top = stickyHeight() + 8;
+    if (r.top < top || r.bottom > window.innerHeight - 8) window.scrollTo({ top: Math.max(0, window.scrollY + r.top - top - 60), behavior: 'smooth' });
+  }
+  function revealCard(sug, soft) {
+    var c = cardUi[sug.id];
+    if (!c || c.el.hidden) return;
+    var r = c.el.getBoundingClientRect();
+    if (soft && r.bottom > stickyHeight() + 40 && r.top < window.innerHeight - 40) return;
+    ensureVisible(c.el);
+  }
+  function ensureVisible(el) { // 整个元素已经在眼前就不动；不在就滚到顶栏下面一点（太高放不下时让它的顶露出来）
+    var r = el.getBoundingClientRect(), top = stickyHeight() + 8, vh = window.innerHeight;
+    if (r.top >= top && r.bottom <= vh - 8) return;
+    var dy = r.top < top || r.height > vh - top - 16 ? r.top - top - 12 : r.bottom - vh + 16;
+    window.scrollTo({ top: Math.max(0, window.scrollY + dy), behavior: 'smooth' });
+  }
+  function setFold(sug, fold) { ST.unfold[sug.id] = !fold; updateCard(sug); scheduleAlign(); }
+  // 宽屏时卡片尽量和它改的那一句对齐：每张卡的顶不高于那一句（放不下就往下顺延，不叠在一起）。
+  // 锦成版那一栏钉在顶栏下面，往下翻卡片时稿子一直在眼前，所以只按「没滚动时」的位置排一次
+  function scheduleAlign() {
+    if (alignTimer) return;
+    alignTimer = requestAnimationFrame(function () { alignTimer = 0; var s = segs[ST.seg]; if (s) { paintGutter(s); alignCards(s); } });
+  }
+  function alignCards(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.cards) return;
+    var items = sugOrder(seg).map(function (x) { return { x: x, el: cardUi[x.sug.id].el }; }).filter(function (o) { return !o.el.hidden; });
+    items.forEach(function (o) { o.el.style.marginTop = ''; });
+    if (ST.view !== 'compare' || !sideBySide(ui)) return;
+    var colTop = ui.sugBox.getBoundingClientRect().top, listTop = ui.cards.getBoundingClientRect().top - colTop;
+    var cellTop = ui.mineCell.getBoundingClientRect().top - ui.mineCell.scrollTop, y = 0;
+    items.forEach(function (o, k) {
+      var want = y + (k ? 10 : 0), sp = o.x.a && isUndecided(o.x.sug) ? markOf(o.x.sug) : null;
+      if (sp) want = Math.max(want, Math.round(sp.getBoundingClientRect().top - cellTop - listTop - 8));
+      o.el.style.marginTop = (want - y) + 'px';
+      y = want + o.el.offsetHeight;
+    });
+  }
+
+  // ---------- 逐条看：从第一条待确认开始，采纳或不采纳以后自动跳到原文里的下一条；这一段看完，自动到后面有待确认的那一段 ----------
+  // 一条建议在整篇里的先后：第几段、这段里找得到的在前（按位置）、对不上的在后。逐条看开始看一条时记下它的位置，
+  // 看完往后找；这样他看到一半直接在锦成版里改了这句（这条变成对不上、挪到这段最后），也还是接着看原文里它后面的那几条
+  function walkKey(sug) {
+    var seg = segOf(sug), x = seg ? sugOrder(seg).filter(function (o) { return o.sug === sug; })[0] : null;
+    return [seg ? seg._no : 1e9, x && x.a ? 0 : 1, x && x.a ? x.a.start : 0, x ? x.i : 0];
+  }
+  function keyAfter(a, b) { for (var k = 0; k < a.length; k++) if (a[k] !== b[k]) return a[k] > b[k]; return false; }
+  function startWalk(fromSeg) {
+    var all = allInOrder().filter(isUndecided);
+    var first = fromSeg ? all.filter(function (g) { return segOf(g) === fromSeg; })[0] : all[0];
+    if (!first) return toast(fromSeg ? '这一段没有待确认的修改建议' : '没有待确认的修改建议');
+    ST.walk = true;
+    document.body.classList.add('walking');
+    focusCard(first, true);
+  }
+  function stopWalk(msg) {
+    if (!ST.walk) return;
+    ST.walk = false;
+    document.body.classList.remove('walking');
+    refreshAll();
+    if (msg) toast(msg);
+  }
+  function walkNext(from) { // from：刚定了（或跳过）的那条
+    var base = ST.walkAt && ST.walkAt.id === from.id ? ST.walkAt.key : walkKey(from);
+    var next = null, nk = null;
+    sugs.forEach(function (g) {
+      if (g === from || !isUndecided(g) || !segOf(g)) return;
+      var k = walkKey(g);
+      if (keyAfter(k, base) && (!nk || keyAfter(nk, k))) { next = g; nk = k; }
+    });
+    if (!next) {
+      var left = sugs.filter(function (g) { return isUndecided(g) && segOf(g); }).length;
+      return stopWalk(left ? '后面没有待确认的了。前面还有 ' + left + ' 条跳过的，点顶上的「' + left + ' 条待确认」从头再看' : '修改建议都看完了');
+    }
+    var a = segOf(from), b = segOf(next);
+    if (a && b && a !== b) toast('第 ' + a._no + ' 段的看完了，接着看第 ' + b._no + ' 段');
+    focusCard(next, true);
+  }
+  function skipWalk() { var s = ST.activeSug && byId[ST.activeSug]; if (s && ST.walk) walkNext(s); else stopWalk(); }
+  function refreshWalkUi(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.walkBtn) return;
+    var left = pendingInOrder(seg).length;
+    ui.walkBtn.hidden = ST.walk || !left;
+    ui.walkBar.hidden = !ST.walk;
+    if (ST.walk) ui.walkText.textContent = left ? '逐条看：这一段还有 ' + left + ' 条待确认' : '逐条看：这一段的都看完了';
+  }
+
   // ---------- 参考分析（主干，编导的功课）：这一段参考怎么讲 ----------
   // 先结论，再按「讲法点」合并的几行（几家都这么讲的只出一句代表原句；谁独有、谁多做了单独一行），最后「可以借的」。
   // 同一种颜色＝同一个讲法点：展开原文时，那几句原句用同样的颜色标出来。原句都是生成时校验过、逐字出自原文的。
-  var PT_COLORS = 4;
   function coverText(p, famCount) {
     var who = Array.isArray(p.who) ? p.who : [];
     if (p.cover === '共性') return who.length >= famCount && famCount > 1 ? famCount + ' 家都这么讲' : who.join('、') + ' 都这么讲';
@@ -973,18 +1295,54 @@
 
   // ---------- 画面栏（教程枝干）：锦成版下面，这段用什么画面、观众看到什么 ----------
   // 画面类型点选（可以多选，存成「录屏、字卡」这样用顿号连起来的一格），我方画面是一小格文字；两格都是锦成可改、AI 也能改的
+  // 分工（2026-09-29 锦成定）：这条片子干活的只有锦成和剪辑，每段拆成「你录」「剪辑做」两格。
+  // 「你录」空着＝这段不用锦成动手；以「可选」开头＝录了更好、不录也能交。段标题旁的色块和录制清单顶上的总表都按这两格算
+  function hasTodo(seg) { return hasField(seg, 'todo_me') || hasField(seg, 'todo_editor'); }
+  function whoOf(seg) {
+    if (!hasTodo(seg)) return '';
+    var me = val(seg.id, 'todo_me').trim(), ed = val(seg.id, 'todo_editor').trim();
+    if (me) return /^[(（【]?可选/.test(me) ? 'opt' : 'me';
+    return ed ? 'editor' : '';
+  }
+  var WHO_TEXT = { me: '你要录屏', opt: '可选录屏', editor: '剪辑做' };
   function buildVisual(seg) {
-    var ui = segUi[seg.id], hasVt = hasField(seg, 'visual_type'), hasOv = hasField(seg, 'our_visual');
-    if (!hasVt && !hasOv) return null;
+    var ui = segUi[seg.id], hasVt = hasField(seg, 'visual_type'), hasOv = hasField(seg, 'our_visual'), todo = hasTodo(seg);
+    if (!hasVt && !hasOv && !todo) return null;
+    if (todo && !val(seg.id, 'our_visual').trim()) hasOv = false; // 有分工两格时，空着的「我方画面」不再画出来
     ui.vtBox = hasVt ? h('div', { class: 'vt-chips', role: 'group', 'aria-label': '第 ' + seg._no + ' 段画面类型' }) : null;
     ui.ov = hasOv ? h('textarea', { class: 'our-visual', 'data-item': seg.id, 'data-field': 'our_visual', autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: 1,
       placeholder: '这段观众看到什么，例如录屏停在哪一步、放哪张图', 'aria-label': '第 ' + seg._no + ' 段我方画面' }) : null;
     if (ui.ov) { ui.ov.value = val(seg.id, 'our_visual'); ui.ov.addEventListener('input', function () { autoGrow(ui.ov); }); }
-    return h('div', { class: 'visual-box' }, [
-      h('div', { class: 'vb-head' }, [h('b', null, '画面'), ui.vtBox]),
+    var todoBox = null;
+    if (todo) {
+      var mk = function (field, cls, label, ph) {
+        var ta = h('textarea', { class: 'todo-ta', 'data-item': seg.id, 'data-field': field, autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: 1,
+          placeholder: ph, 'aria-label': '第 ' + seg._no + ' 段' + label });
+        ta.value = val(seg.id, field);
+        ta.addEventListener('input', function () { autoGrow(ta); scheduleSeg(seg); scheduleRecord(); });
+        return { ta: ta, row: h('div', { class: 'todo-row ' + cls }, [h('b', { class: 'todo-who' }, label), ta]) };
+      };
+      var a = mk('todo_me', 'todo-me', '你录', '空着表示这段不用你动手；录了更好、不录也行的，开头写「可选」'), b = mk('todo_editor', 'todo-ed', '剪辑做', '剪辑在这段要找的图、做的字卡和动画');
+      ui.todoMe = a.ta; ui.todoEd = b.ta;
+      todoBox = h('div', { class: 'todo-box' }, [a.row, b.row]);
+    }
+    return h('div', { class: 'visual-box' + (todo ? ' has-todo' : '') }, [
+      h('div', { class: 'vb-head' }, [h('b', null, todo ? '分工' : '画面'), ui.vtBox]),
+      todoBox,
       ui.ov
     ]);
   }
+  function refreshWho(seg) {
+    var ui = segUi[seg.id];
+    if (!ui) return;
+    var w = whoOf(seg);
+    if (ui.sec) { ['who-me', 'who-opt', 'who-editor', 'who-none'].forEach(function (c) { ui.sec.classList.remove(c); }); if (hasTodo(seg)) ui.sec.classList.add('who-' + (w || 'none')); }
+    if (ui.whoTag) { ui.whoTag.hidden = !w; ui.whoTag.className = 'who-tag w-' + (w || 'none'); ui.whoTag.textContent = WHO_TEXT[w] || ''; }
+    if (ui.todoMe) autoGrow(ui.todoMe);
+    if (ui.todoEd) autoGrow(ui.todoEd);
+  }
+  var recTimer = 0;
+  function scheduleRecord() { if (recTimer) return; recTimer = requestAnimationFrame(function () { recTimer = 0; refreshRecord(); }); }
   function vtList(v) { return String(v || '').split(/[、,，;；\/+＋]+/).map(function (x) { return x.trim(); }).filter(Boolean); }
   function renderVt(seg) {
     var ui = segUi[seg.id];
@@ -1071,6 +1429,7 @@
     R.recordHead = h('section', { class: 'record-head', hidden: true }, [
       h('div', { class: 'rh-top' }, [h('b', null, '录制清单'), R.recStat, h('span', { class: 'grow' }),
         h('button', { type: 'button', class: 'btn', onclick: copyVisualScript, title: '每段一行：口播和画面，贴进飞书就是一张表，可以直接发给剪辑' }, '复制画面脚本')]),
+      R.recWho = h('div', { class: 'rec-who', hidden: true }),
       h('p', { class: 'rh-tip' }, '录屏时屏幕上打出来的字，要和观众在口播里听到的一致：口播没说的工具名、数字不要出现在提示词里。')
     ]);
     return R.recordHead;
@@ -1087,8 +1446,35 @@
       if (list.length) add(ui.recFlag, ['这段有 ' + list.length + ' 句要看录屏结果再写：', list.map(function (g, i) { return (i ? '、' : '') + '「' + snippet(g.locked.original, 24) + '」'; })]);
     });
     R.recStat.textContent = segs.length + ' 段，' + steps.length + ' 个录屏步骤' + (wait ? '，' + wait + ' 句录屏后再定' : '');
+    renderRecWho();
   }
-  function visualScript() { // 给剪辑的画面脚本：每段一行，口播（锦成版）和画面（类型加我方画面）
+  function renderRecWho() { // 分工总表：左边你要录的（必录在前、可选在后），右边剪辑做的；点一项跳到那一段
+    if (!R.recWho) return;
+    var withTodo = segs.filter(hasTodo);
+    R.recWho.hidden = !withTodo.length;
+    document.body.classList.toggle('only-mine', !!ST.onlyMine && withTodo.length > 0);
+    if (!withTodo.length) return;
+    clear(R.recWho);
+    var jump = function (s) { return function () { var ui = segUi[s.id]; if (ui && ui.sec) window.scrollTo(0, Math.max(0, ui.sec.getBoundingClientRect().top + window.scrollY - stickyHeight() - 8)); }; };
+    var item = function (s, w, text) {
+      return h('li', { class: 'rw-item w-' + w }, [h('button', { type: 'button', class: 'rw-go', onclick: jump(s) }, [h('b', null, '第 ' + s._no + ' 段'), ' ', s.locked.title || '']),
+        w === 'opt' ? h('span', { class: 'rw-opt' }, '可选') : (w === 'me' ? h('span', { class: 'rw-must' }, '必录') : null), h('span', { class: 'rw-text' }, snippet(text, 46))]);
+    };
+    var me = withTodo.filter(function (s) { return whoOf(s) === 'me'; }), opt = withTodo.filter(function (s) { return whoOf(s) === 'opt'; });
+    var ed = withTodo.filter(function (s) { return val(s.id, 'todo_editor').trim(); });
+    var mineList = me.map(function (s) { return item(s, 'me', val(s.id, 'todo_me')); }).concat(opt.map(function (s) { return item(s, 'opt', val(s.id, 'todo_me').replace(/^[(（【]?可选[)）】]?[：:，,\s]*/, '')); }));
+    var chk = h('input', { type: 'checkbox', onchange: function () { ST.onlyMine = chk.checked; persist(); renderRecWho(); } });
+    chk.checked = !!ST.onlyMine;
+    add(R.recWho, [
+      h('div', { class: 'rw-col rw-me' }, [h('div', { class: 'rw-head' }, [h('b', null, '你要录的'), h('span', null, me.length + ' 段必录' + (opt.length ? '，' + opt.length + ' 段可选' : '')), h('span', { class: 'grow' }),
+        h('label', { class: 'rw-only' }, [chk, ' 只看我要录的'])]),
+        mineList.length ? h('ul', null, mineList) : h('p', { class: 'muted' }, '这条不用你录屏')]),
+      h('div', { class: 'rw-col rw-ed' }, [h('div', { class: 'rw-head' }, [h('b', null, '剪辑做的'), h('span', null, ed.length + ' 段')]),
+        ed.length ? h('ul', null, ed.map(function (s) { return item(s, 'editor', val(s.id, 'todo_editor')); })) : h('p', { class: 'muted' }, '没有写剪辑要做的')])
+    ]);
+  }
+  function visualScript() { // 给剪辑的画面脚本：每段一行，口播（锦成版）和画面（类型加我方画面）；有分工两格时改成「剪辑做、你录的素材」
+    if (segs.some(hasTodo)) return todoScript();
     var rows = segs.map(function (s) {
       var vt = val(s.id, 'visual_type'), ov = val(s.id, 'our_visual');
       return { no: s._no, title: s.locked.title || '', say: val(s.id, 'mine').split('\n').map(function (l) { return l.trim(); }).filter(Boolean).join('\n'),
@@ -1099,6 +1485,18 @@
       return '<tr><td>' + r.no + ' ' + esc(r.title) + '</td><td>' + esc(r.say) + '</td><td>' + esc(r.see) + '</td></tr>';
     }).join('') + '</tbody></table>';
     var text = rows.map(function (r) { return '第 ' + r.no + ' 段 ' + r.title + '\n口播：' + r.say + '\n画面：' + (r.see || '（没写）'); }).join('\n\n');
+    return { html: html, text: text };
+  }
+  function todoScript() {
+    var rows = segs.map(function (s) {
+      return { no: s._no, title: s.locked.title || '', say: val(s.id, 'mine').split('\n').map(function (l) { return l.trim(); }).filter(Boolean).join('\n'),
+        ed: val(s.id, 'todo_editor').trim(), me: val(s.id, 'todo_me').trim() };
+    });
+    var esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>'); };
+    var html = '<table><thead><tr><th>段</th><th>口播</th><th>剪辑做</th><th>锦成录的素材</th></tr></thead><tbody>' + rows.map(function (r) {
+      return '<tr><td>' + r.no + ' ' + esc(r.title) + '</td><td>' + esc(r.say) + '</td><td>' + esc(r.ed || '无') + '</td><td>' + esc(r.me || '无，不用等') + '</td></tr>';
+    }).join('') + '</tbody></table>';
+    var text = rows.map(function (r) { return '第 ' + r.no + ' 段 ' + r.title + '\n口播：' + r.say + '\n剪辑做：' + (r.ed || '无') + '\n锦成录的素材：' + (r.me || '无，不用等'); }).join('\n\n');
     return { html: html, text: text };
   }
   function copyVisualScript() {
@@ -1128,6 +1526,111 @@
       h('div', { class: 'note-head' }, [h('b', null, '写给 AI 的话（不进稿子）'), ui.noteStatus]),
       ui.note, ui.draft, ui.reply
     ]);
+  }
+
+  // ---------- 标题封面简介（发布文字）：每样一张卡，上面是你定的那版，下面是 AI 的候选和参考视频的写法 ----------
+  // 「用这个」把候选文字填进「你定的」，同时把这个候选记成「选用」（同组提交）；之后可以在「你定的」里接着改，读回时 AI 能看出改了什么。
+  function buildPublish() {
+    R.publish = h('section', { class: 'publish wrap', hidden: true });
+    R.pubEmpty = h('div', { class: 'pub-empty' }, [
+      h('b', null, '还没有标题、封面文字和简介的候选'),
+      h('p', null, '逐字稿改好以后，在顶上勾「内容已确认」，回聊天说一声，AI 会在这里一次出齐三样候选：标题、封面文字、简介，每样都附参考视频是怎么写的。你点「用这个」或者直接改，最后用哪个你定。封面图不在这里做。')
+    ]);
+    R.publish.appendChild(R.pubEmpty);
+    pubSlots().forEach(function (p) { R.publish.appendChild(buildPubSlot(p)); });
+    return R.publish;
+  }
+  function buildPubSlot(p) {
+    var slot = p.locked.slot, u = pubUi[p.id] = {}, cands = candsOf(slot);
+    u.final = hasField(p, 'final') ? h('textarea', { class: 'pub-final', 'data-item': p.id, 'data-field': 'final', autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: slot === '简介' ? 4 : 2,
+      placeholder: '点下面某个候选的「用这个」，或者直接在这里写', 'aria-label': slot + '：你定的' }) : null;
+    if (u.final) { u.final.value = val(p.id, 'final'); u.final.addEventListener('input', function () { autoGrow(u.final); refreshPublish(); }); }
+    u.count = h('span', { class: 'muted pub-count' });
+    u.copy = h('button', { type: 'button', class: 'btn small', onclick: function () { var t = val(p.id, 'final').trim(); if (!t) return toast('「' + slot + '」还没定，先选一个候选或自己写'); copyText(t, '已复制' + slot); } }, '复制');
+    u.cands = h('div', { class: 'pub-cands' }, cands.map(buildCand));
+    var refs = Array.isArray(p.locked.refs) ? p.locked.refs.filter(function (r) { return r && r.text; }) : [];
+    u.note = hasField(p, 'note') ? h('textarea', { class: 'note', 'data-item': p.id, 'data-field': 'note', autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: 2,
+      placeholder: '哪个方向不对、想要什么感觉，写在这里，AI 按你的话再出一轮', 'aria-label': slot + '：写给 AI 的话' }) : null;
+    if (u.note) { u.note.value = val(p.id, 'note'); u.note.addEventListener('input', function () { autoGrow(u.note); refreshPublish(); refreshCounters(); }); }
+    u.noteStatus = h('span', { class: 'note-status' });
+    u.reply = h('div', { class: 'ai-reply', hidden: true });
+    return h('article', { class: 'pub-slot', 'data-slot': slot }, [
+      h('div', { class: 'pub-head' }, [h('h3', null, slot), h('span', { class: 'muted' }, SLOT_HINT[slot] || '')]),
+      u.final ? h('div', { class: 'pub-final-box jc-field' }, [h('div', { class: 'lbl' }, [h('b', null, '你定的'), u.count, h('span', { class: 'grow' }), u.copy]), u.final]) : null,
+      cands.length ? h('div', { class: 'lbl pub-cands-lbl' }, 'AI 的候选（' + cands.length + ' 个，文字可以直接改）') : h('p', { class: 'muted' }, 'AI 还没出这一样的候选'),
+      u.cands,
+      refs.length ? h('details', { class: 'pub-refs' }, [
+        h('summary', null, '参考视频怎么写的（' + refs.length + ' 条）'),
+        refs.map(function (r) { return h('div', { class: 'pub-ref' }, [h('div', { class: 'pub-ref-who' }, [h('b', null, String(r.who)), r.stat ? h('span', { class: 'muted' }, ' · ' + r.stat) : null]), h('div', { class: 'pub-ref-text' }, String(r.text))]); })
+      ]) : null,
+      u.note ? h('section', { class: 'note-box jc-field' }, [h('div', { class: 'note-head' }, [h('b', null, '写给 AI 的话'), u.noteStatus]), u.note, u.reply]) : null
+    ]);
+  }
+  function buildCand(c) {
+    var L = c.locked, u = candUi[c.id] = {}, b = L.basis && typeof L.basis === 'object' ? L.basis : null;
+    u.text = h('textarea', { class: 'pub-text', 'data-item': c.id, 'data-field': 'text', autocomplete: 'off', 'data-jc-wait': true, readonly: true, rows: L.slot === '简介' ? 4 : 1, 'aria-label': '候选文字' });
+    u.text.value = val(c.id, 'text');
+    u.text.addEventListener('input', function () { autoGrow(u.text); refreshPublish(); });
+    u.badge = h('span', { class: 'dec-badge' });
+    u.use = h('button', { type: 'button', class: 'yes', onclick: function () { useCand(c); } }, '用这个');
+    u.drop = h('button', { type: 'button', onclick: function () { setCand(c, '不用'); } }, '不用');
+    u.revoke = h('button', { type: 'button', onclick: function () { setCand(c, ''); } }, '撤销决定');
+    u.el = h('div', { class: 'pub-cand jc-field' }, [
+      h('div', { class: 'card-head' }, [
+        L.angle ? h('span', { class: 'cat' }, String(L.angle)) : null,
+        Number(L.round) > 1 ? h('span', { class: 'muted' }, '第 ' + L.round + ' 轮') : null,
+        b ? h('span', { class: 'basis-tag b-other', title: b.text || '' }, '依据：' + (b.type || '说明')) : null,
+        h('span', { class: 'grow' }), u.badge
+      ]),
+      u.text,
+      L.reason ? h('p', { class: 'reason' }, [h('span', { class: 'k' }, '为什么：'), String(L.reason), b && b.text ? h('span', { class: 'muted' }, '（' + b.text + '）') : null]) : null,
+      h('div', { class: 'card-actions' }, [u.use, u.drop, u.revoke])
+    ]);
+    return u.el;
+  }
+  function useCand(c) {
+    var slot = c.locked.slot, p = pubSlot[slot];
+    if (!p || !hasField(p, 'final')) return toast('这一样没有「你定的」那一格，请让 AI 检查页面');
+    var text = candUi[c.id] ? candUi[c.id].text.value : val(c.id, 'text'), old = val(p.id, 'final');
+    var steps = [{ item: p.id, field: 'final', old: old, new: text }, { item: c.id, field: 'decision', old: val(c.id, 'decision'), new: '选用' }];
+    if (candUi[c.id] && !same(text, kit.fileValue(c.id, 'text'))) steps.push({ item: c.id, field: 'text', old: kit.fileValue(c.id, 'text'), new: text, noUndo: true });
+    candsOf(slot).forEach(function (o) { if (o.id !== c.id && val(o.id, 'decision') === '选用') steps.push({ item: o.id, field: 'decision', old: '选用', new: '' }); });
+    applySteps(steps, '「' + slot + '」用候选「' + snippet(text, 10) + '」').then(function (ok) {
+      if (ok) toast(old.trim() && !same(old, text) ? '已填进「你定的」，原来写的可以按 ⌘Z 撤回' : '已填进「你定的」，可以接着在那一格里改');
+    });
+  }
+  function setCand(c, dec) {
+    applySteps([{ item: c.id, field: 'decision', old: val(c.id, 'decision'), new: dec }], dec ? '「' + c.locked.slot + '」候选标成' + dec : '撤销「' + c.locked.slot + '」候选的决定');
+  }
+  function refreshPublish() {
+    if (!R.publish) return;
+    var slots = pubSlots(), undecided = 0;
+    R.pubEmpty.hidden = !!pubCands.length;
+    slots.forEach(function (p) {
+      var u = pubUi[p.id], f = val(p.id, 'final');
+      if (!u) return;
+      if (u.final) { u.count.textContent = f.trim() ? ' ' + Array.from(f.replace(/\s/g, '')).length + ' 个字' + (p.locked.slot === '标题' && Array.from(f.replace(/\s/g, '')).length > 20 ? '（小红书标题最多 20 字，发小红书要再短一版）' : '') : ' 还没定'; autoGrow(u.final); }
+      if (!f.trim()) undecided++;
+      if (u.note) {
+        var s = aiState(p), pend = notePending(p, 'note'), v = val(p.id, 'note');
+        u.noteStatus.className = 'note-status ' + (pend ? 'st-pend' : s.reply && v.trim() ? 'st-done' : 'st-none');
+        u.noteStatus.textContent = pend ? '待 AI 处理' : s.reply && v.trim() ? 'AI 已处理' : '';
+        clear(u.reply); u.reply.hidden = !s.reply;
+        if (s.reply) add(u.reply, [h('b', null, pend ? 'AI 上次的回复：' : 'AI 已处理：'), h('span', null, s.reply)]);
+        autoGrow(u.note);
+      }
+    });
+    pubCands.forEach(function (c) {
+      var u = candUi[c.id], d = val(c.id, 'decision');
+      if (!u) return;
+      u.badge.textContent = d === '选用' ? '已选用' : d === '不用' ? '不用' : '';
+      u.badge.className = 'dec-badge' + (d === '选用' ? ' ok' : d === '不用' ? ' no' : '');
+      u.el.classList.toggle('is-used', d === '选用');
+      u.el.classList.toggle('is-dropped', d === '不用');
+      u.use.hidden = d === '选用'; u.drop.hidden = !!d; u.revoke.hidden = !d;
+      autoGrow(u.text);
+    });
+    if (R.pubDot) { R.pubDot.hidden = !(pubCands.length && undecided); R.pubDot.title = undecided ? undecided + ' 样还没定' : ''; }
   }
 
   // ---------- 兜底：专门模块还没做的格子和条目，按原样列出（只加不删：新加的键不会看不见，可改字段照样能改、能存） ----------
@@ -1195,15 +1698,15 @@
     return R.reading;
   }
   function renderReading() {
-    if (!R.readText) return;
+    if (!R.readText || ST.readEdit) return; // 正在通读里改某一段：先不重画，免得把输入框和光标冲掉；改好了再画
     clear(R.readText);
     var total = 0, need = RATE * (CFG.openingSeconds || 5), placed = false;
     segs.forEach(function (seg) { total += chars(val(seg.id, 'mine')); });
     clear(R.readHead);
-    add(R.readHead, [h('b', null, '通读'), h('span', { class: 'muted' }, '全稿 ' + total + ' 字，约 ' + fmtSecs(secs(total)) + '（每秒 ' + RATE + ' 字）。红色竖线是开头 ' + (CFG.openingSeconds || 5) + ' 秒说到的地方（第 ' + need + ' 字）。选中文字可以写给 AI。')]);
+    add(R.readHead, [h('b', null, '通读'), h('span', { class: 'muted' }, '全稿 ' + total + ' 字，约 ' + fmtSecs(secs(total)) + '（每秒 ' + RATE + ' 字）。红色竖线是开头 ' + (CFG.openingSeconds || 5) + ' 秒说到的地方（第 ' + need + ' 字）。选中文字可以写给 AI；点段落上方的「在这里改」或双击段落，可以直接改。')]);
     var seen = 0;
     segs.forEach(function (seg) {
-      var text = val(seg.id, 'mine'), n = chars(text), body = h('div', { class: 'r-text', 'data-quote-seg': seg.id });
+      var text = val(seg.id, 'mine'), n = chars(text), body = h('div', { class: 'r-text', 'data-quote-seg': seg.id, title: '双击在这里改这一段；选中文字可以写给 AI', ondblclick: function () { startReadEdit(seg); } });
       // 和提词稿一样按行排、不留空行；开头 5 秒线画在全稿第 need 个字后面
       text.split('\n').filter(function (l) { return l.trim(); }).forEach(function (line) {
         var ln = chars(line), row = h('p', { class: 'r-line' });
@@ -1220,13 +1723,55 @@
       });
       var pend = sugsOf(seg).filter(isUndecided);
       R.readText.appendChild(h('section', { class: 'r-seg', 'data-seg': seg.id }, [
-        h('div', { class: 'r-label' }, [h('span', { class: 'no' }, String(seg._no)), (seg.locked.title || '') + ' · ' + n + ' 字，约 ' + secs(n) + ' 秒', h('button', { type: 'button', class: 'link', onclick: function () { setView('compare'); goSeg(seg._no - 1, true); } }, '去对照里改')]),
+        h('div', { class: 'r-label' }, [h('span', { class: 'no' }, String(seg._no)), (seg.locked.title || '') + ' · ' + n + ' 字，约 ' + secs(n) + ' 秒', h('button', { type: 'button', class: 'link r-edit-btn', onclick: function () { startReadEdit(seg); } }, '在这里改'), h('button', { type: 'button', class: 'link', onclick: function () { setView('compare'); goSeg(seg._no - 1, true); } }, '去对照里改')]),
         body,
         pend.length ? h('button', { type: 'button', class: 'r-flag', onclick: function () { setView('compare'); goSeg(seg._no - 1, true); } },
           '这一段有 ' + pend.length + ' 条' + CFG.sugTitle + '待确认（' + catSummary(pend) + '），点击查看') : null
       ]));
     });
     if (CP && CP.src === 'read') paintQuote(); // 通读重画过，批注框对着的原句要重新标黄
+  }
+  // 通读里直接改（锦成 2026-10-09：「我希望这个创作页在我录制的时候也可以编辑」）：这一段原地换成输入框，
+  // 改的字转给对照里的锦成版那一格（同一格、同一套保存和撤销），拼音选字时不转，选完再转，拼音不会进文件
+  // 一段藏着的时候（在通读里改、在别的段、AI 改了文件）输入框量不了高度，字数变了框还是旧的高度，字会露到框外；
+  // 这一段重新显示出来时按现在的字数重新量一次（锦成 2026-10-09 截图：第六段的字跑到了框外面）
+  function regrowSeg(seg) {
+    var ui = seg && segUi[seg.id];
+    if (!ui) return;
+    var grow = function () { [ui.mine, ui.note].forEach(function (ta) { if (ta) autoGrow(ta); }); };
+    grow();
+    requestAnimationFrame(grow); // 切视图时这一段要等这一帧换完显示才量得到
+  }
+  function startReadEdit(seg) {
+    var ui = segUi[seg.id];
+    if (!ui || !ui.mine) return;
+    if (!kitReady() || ui.mine.readOnly) return toast('保存功能启动中，请稍后再试');
+    if (ST.readEdit) finishReadEdit();
+    var sec = R.readText.querySelector('.r-seg[data-seg="' + seg.id + '"]'), body = sec && sec.querySelector('.r-text');
+    if (!body) return;
+    var ta = h('textarea', { class: 'r-edit-box', autocomplete: 'off', 'aria-label': '在通读里改第 ' + seg._no + ' 段' }), comp = false;
+    ta.value = ui.mine.value;
+    var sync = function () { if (ui.mine.value === ta.value) return; ui.mine.value = ta.value; ui.mine.dispatchEvent(new Event('input', { bubbles: true })); };
+    ta.addEventListener('compositionstart', function () { comp = true; });
+    ta.addEventListener('compositionend', function () { comp = false; sync(); autoGrow(ta); });
+    ta.addEventListener('input', function () { autoGrow(ta); if (!comp) sync(); });
+    ta.addEventListener('keydown', function (e) { if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finishReadEdit(); } });
+    ta.addEventListener('blur', function () { setTimeout(function () { if (ST.readEdit && ST.readEdit.ta === ta && document.activeElement !== ta) finishReadEdit(); }, 150); });
+    var wrap = h('div', { class: 'r-edit' }, [ta, h('div', { class: 'r-edit-bar' }, [
+      h('span', { class: 'muted' }, '直接改，停笔 1 秒自动保存，和对照里你的稿子是同一份；按 Esc 或点别处收起'),
+      h('button', { type: 'button', class: 'btn r-edit-done', onmousedown: function (e) { e.preventDefault(); }, onclick: function () { finishReadEdit(); } }, '改好了')
+    ])]);
+    ST.readEdit = { seg: seg.id, ta: ta };
+    body.parentNode.replaceChild(wrap, body);
+    autoGrow(ta);
+    ta.focus({ preventScroll: true });
+  }
+  function finishReadEdit() {
+    if (!ST.readEdit) return;
+    var ta = ST.readEdit.ta;
+    if (ta) ta.dispatchEvent(new Event('compositionend')); // 万一选字到一半就收起，也把字转过去
+    ST.readEdit = null;
+    renderReading();
   }
   function catSummary(list) {
     var c = {};
@@ -1252,9 +1797,17 @@
   // ======================= 刷新显示 =======================
   function autoGrow(ta) {
     if (!ta || !ta.offsetParent) return;
-    var y = window.scrollY;
+    // 先记下页面和外面每一层能滚动的盒子（宽屏时锦成版那一栏自己会滚）滚到哪了：高度先设成 auto 的一瞬间盒子变矮，
+    // 浏览器会把它们的滚动位置压回去，长稿改到下面时整栏会跳回顶上（锦成 2026-10-08 报的问题），量完再还原
+    var y = window.scrollY, boxes = [];
+    for (var el = ta.parentElement; el && el !== document.body; el = el.parentElement) {
+      if (el.scrollTop) boxes.push([el, el.scrollTop]);
+    }
     ta.style.height = 'auto';
     ta.style.height = (ta.scrollHeight + ta.offsetHeight - ta.clientHeight) + 'px';
+    // 框变高以后外面那一栏可能多出一条滚动条、变窄，字就多折一行，再量一两次直到放得下（锦成 2026-10-09 截图：第六段的字跑到了框外面）
+    for (var k = 0; k < 3 && ta.scrollHeight > ta.clientHeight + 1; k++) ta.style.height = (ta.scrollHeight + ta.offsetHeight - ta.clientHeight) + 'px';
+    boxes.forEach(function (b) { if (b[0].scrollTop !== b[1]) b[0].scrollTop = b[1]; });
     if (window.scrollY !== y) window.scrollTo(window.scrollX, y);
   }
   var segTimers = {};
@@ -1267,10 +1820,9 @@
     if (!ui) return;
     var mine = ui.mine ? ui.mine.value : val(seg.id, 'mine'), n = chars(mine);
     ui.count.textContent = n + ' 字 · 约 ' + secs(n) + ' 秒';
-    // 和参考连续 8 字相同：锦成版画在文本框背后的底层上，参考里直接画
-    var refTexts = ui.refs.filter(function (r) { return ui.anaMode || !ST.refsHidden[r.who || '参考']; }).map(function (r) { return r.text || ''; });
-    var qr = mineQuoteRange(seg, mine);
-    markedText(ui.back, mine + '\n', sameRanges(mine, refTexts), 'same', qr ? [qr[0], qr[1], 'quote-mark'] : null);
+    placeSugs(seg); // 修改建议排在锦成版右边，还是两栏下面
+    // 和参考连续 8 字相同、批注对着的原句、修改建议改的那一句：锦成版画在文本框背后的底层上（见 paintMine），参考里直接画
+    paintMine(seg, mine);
     // 中译中：参考分析里标了「照着别家改写」的那家，和被照着的那家逐字相同的部分灰掉，剩下正常颜色的就是他改的地方
     var rn = refnoteOf[seg.id], mergedList = rn && Array.isArray(rn.locked.merged) ? rn.locked.merged : [];
     ui.refEls.forEach(function (x) {
@@ -1313,8 +1865,11 @@
     if (ui.note) autoGrow(ui.note);
     renderVt(seg);
     if (ui.ov) autoGrow(ui.ov);
+    refreshWho(seg);
     refreshCtx(seg);
     if (ui.sec) Array.prototype.forEach.call(ui.sec.querySelectorAll('textarea.extra-field, textarea.step-prompt'), autoGrow);
+    // 字变了，那几句的位置也变了：卡片重新对齐。当场排好（不等下一帧），免得刚换段、刚点完按钮时卡片还在挪，点到别处去
+    if (ui.sec && ui.sec.classList.contains('current')) alignCards(seg);
   }
   // 段和段之间的衔接：写这一段时，锦成版上面露出上一段的结尾，下面露出下一段的开头（起承转合要接得上）。
   // 取的是当前锦成版（他刚改过的也算），上一段取最后一两句、下一段取第一句
@@ -1369,6 +1924,10 @@
     if (!ui || !ui.sugBox) return;
     var list = sugsOf(seg), shown = list.filter(cardVisible), hiddenByCat = list.filter(function (s) { var c = s.locked.category; return c && effectiveCats().indexOf(c) < 0 && (!ST.onlyPending || isUndecided(s)); });
     list.forEach(function (s) { cardUi[s.id].el.hidden = !cardVisible(s); });
+    // 卡片按改的那一句在原文里的先后排（顺序变了才挪，免得打断正在点的按钮）
+    var want = sugOrder(seg).map(function (x) { return cardUi[x.sug.id].el; }), cur = ui.cards.children;
+    if (want.some(function (el, i) { return cur[i] !== el; })) want.forEach(function (el) { ui.cards.appendChild(el); });
+    refreshWalkUi(seg);
     ui.sugBox.hidden = !list.length;
     ui.sugEmpty.hidden = !!shown.length || !list.length;
     ui.sugEmpty.textContent = ST.onlyPending ? '当前筛选下，这一段没有待确认的修改建议' : '这一段的修改建议都被上方的类别筛选隐藏了';
@@ -1392,16 +1951,34 @@
     if (!c) return;
     var seg = segOf(sug), dec = val(sug.id, 'decision'), L = sug.locked;
     var prop = c.proposed ? c.proposed.value : val(sug.id, 'proposed');
-    var mine = seg ? val(seg.id, 'mine') : '', occ = countOcc(mine, L.original);
+    var mine = seg ? mineOf(seg) : '', occ = countOcc(mine, L.original);
     var del = isDeletion(prop);
-    c.el.className = 'card jc-field' + (dec === '采纳' ? ' is-adopted' : dec === '不采纳' ? ' is-rejected' : dec === '部分采纳' ? ' is-partial' : L.verdict === '不用改' ? ' is-keep' : ' is-pending') + (ST.activeSug === sug.id ? ' is-active' : '') + (del ? ' is-delete' : '');
-    // 原句 → 改成：一段删改对照；删整句时前面标「删掉这句」
+    var item = seg ? sugOrder(seg, mine).filter(function (x) { return x.sug === sug; })[0] : null, miss = !!(item && item.miss);
+    // 收成一行：已经定了的、结论是无需修改的、原句已经被改掉对不上的。锦成点了「展开」、逐条看正看到这一条、「改成」正在改或有冲突时不收
+    var foldable = !!dec || L.verdict === '不用改' || miss;
+    var hold = !!c.editing || !!c.el.querySelector('.jc-kit-cbox') || !!(c.proposed && c.proposed.classList.contains('jc-kit-locked')) || (ST.walk && ST.activeSug === sug.id);
+    var folded = foldable && !ST.unfold[sug.id] && !hold;
+    c.el.className = 'card jc-field' + (dec === '采纳' ? ' is-adopted' : dec === '不采纳' ? ' is-rejected' : dec === '部分采纳' ? ' is-partial' : L.verdict === '不用改' ? ' is-keep' : ' is-pending') + (ST.activeSug === sug.id ? ' is-active' : '') + (del ? ' is-delete' : '') +
+      (miss ? ' is-miss' : '') + (folded ? ' is-folded' : '');
+    var no = item ? String(item.no) : '';
+    c.num.textContent = no; c.foldNum.textContent = no; c.num.hidden = c.foldNum.hidden = !no;
+    c.num.title = item && item.a ? '在锦成版里看这一句' : '这一句在锦成版里找不到了';
+    c.foldState.textContent = dec ? (DECISION_TEXT[dec] || dec) : miss ? '你改过了' : L.verdict === '不用改' ? '无需修改' : '';
+    c.foldState.className = 'fold-state ' + (dec === '采纳' ? 'fs-ok' : dec === '不采纳' ? 'fs-no' : dec ? 'fs-part' : miss ? 'fs-miss' : 'fs-keep');
+    c.foldSnip.textContent = miss ? '这句你已经自己改过了：「' + snippet(L.original, 24) + '」' :
+      dec === '采纳' ? (del ? '删掉了「' + snippet(L.original, 24) + '」' : '换成「' + snippet(prop, 26) + '」') : '「' + snippet(L.original, 26) + '」';
+    c.foldBtn.hidden = !foldable || folded || hold;
+    // 改的是哪一句：前一句的结尾、后一句的开头用灰字，中间是原句 → 改成的逐字删改对照；删整句时前面标「删掉这句」
     clear(c.change);
-    var ops = diffChars(L.original || '', del ? '' : prop);
+    var ops = diffChars(L.original || '', del ? '' : prop), cx = item && item.a ? ctxAround(mine, item.a.start, item.a.end) : null;
     add(c.change, [
+      cx && cx.before ? h('span', { class: 'cx' }, cx.before) : null,
+      cx && cx.beforeBreak ? h('br') : null,
       del ? h('span', { class: 'del-tag' }, '删掉这句') : null,
       diffNode(ops),
-      !del && !diffStat(ops).changed ? h('span', { class: 'muted same-note' }, '（改成和原句一样）') : null
+      !del && !diffStat(ops).changed ? h('span', { class: 'muted same-note' }, '（改成和原句一样）') : null,
+      cx && cx.afterBreak ? h('br') : null,
+      cx && cx.after ? h('span', { class: 'cx' }, cx.after) : null
     ]);
     c.change.title = '原句：' + (L.original || '（缺少原句）') + '\n改成：' + (del ? '（删掉这句）' : prop);
     // 结论值是「待你定」（显示「建议修改」）的卡片还没决定时每张都一样，不显示结论标签，只留右上角的「待确认」
@@ -1413,9 +1990,12 @@
     c.decided.textContent = dec === '采纳' ? (del ? '已从锦成版删掉这句' : '已替换锦成版里的原句') : dec === '不采纳' ? '锦成版保持不变' : dec ? '决定：' + dec : '';
     c.revoke.disabled = !ready;
     c.yes.disabled = !ready || occ !== 1; c.no.disabled = !ready; if (c.editFirst) c.editFirst.disabled = !ready || occ !== 1;
+    c.adoptEdit.disabled = !ready || occ !== 1; c.adoptEdit.hidden = del; // 删整句没有换进去的字可选
+    c.change.classList.toggle('editable', !!c.proposed && !dec && !c.editing && occ === 1 && ready);
+    if (c.change.classList.contains('editable')) c.change.title = '点一下直接改「改成」\n' + c.change.title;
     c.yes.title = del ? '采纳：从锦成版删掉这句' : '采纳：用这句替换锦成版里的原句';
     c.miss.hidden = dec || occ === 1;
-    c.miss.textContent = occ === 0 ? '这句你已经改过，这条建议对不上了' : occ > 1 ? '这句在锦成版里出现了 ' + occ + ' 次，无法确定替换哪一处，请先在锦成版里改掉多余的，再采纳' : '';
+    c.miss.textContent = occ === 0 ? '这句你已经自己改过了，这条建议不能再一键采纳；想按它改，就照着上面的对照在锦成版里改' : occ > 1 ? '这句在锦成版里出现了 ' + occ + ' 次，无法确定替换哪一处，请先在锦成版里改掉多余的，再采纳' : '';
     var warn = L.verdict === '已定要改' && dec === '不采纳' ? '此前已决定要改，这次未采纳' : L.verdict === '不用改' && dec === '采纳' ? '结论是无需修改，这次已采纳' : '';
     c.warn.hidden = !warn; c.warn.textContent = warn;
     // 「改成」输入框：点了「先改再采纳」才出来；已经定了就收起；这一格被 kit 锁住（有冲突）时一直露着
@@ -1423,6 +2003,8 @@
       if (dec) c.editing = false;
       var locked = c.proposed.classList.contains('jc-kit-locked');
       c.editBox.hidden = !(c.editing || locked);
+      c.change.hidden = !c.editBox.hidden;
+      if (!c.editBox.hidden) { clear(c.origLine); add(c.origLine, [h('span', { class: 'k' }, '原句：'), String(L.original || '')]); }
       c.editFirst.textContent = c.editing ? '收起修改框' : '先改再采纳';
       c.editFirst.setAttribute('aria-expanded', c.editing ? 'true' : 'false');
       if (!c.editBox.hidden) autoGrow(c.proposed);
@@ -1450,7 +2032,8 @@
   function refreshCounters() {
     if (!R.counterSug) return;
     var ps = sugs.filter(isUndecided).length;
-    var pn = segs.filter(function (s) { return hasField(s, 'note') && notePending(s, 'note'); }).length + (hasField(info, 'overall_note') && notePending(info, 'overall_note') ? 1 : 0);
+    var pn = segs.filter(function (s) { return hasField(s, 'note') && notePending(s, 'note'); }).length + (hasField(info, 'overall_note') && notePending(info, 'overall_note') ? 1 : 0)
+      + pubSlots().filter(function (p) { return hasField(p, 'note') && notePending(p, 'note'); }).length;
     counterText(R.counterSug, ps, '待确认');
     R.counterSug.classList.toggle('zero', !ps);
     R.counterSug.hidden = !has('suggestions') || !sugs.length;
@@ -1520,7 +2103,9 @@
     refreshSaveInd();
     refreshStickyPad();
     refreshRecord();
+    refreshPublish();
     if (CP) placeComposer(false);
+    scheduleAlign();
   }
   var valuesTimer = 0;
   function refreshAfterValues() {
@@ -1539,8 +2124,9 @@
       if (s._nav) { s._nav.classList.toggle('now', j === i); s._nav.setAttribute('aria-current', j === i ? 'true' : 'false'); }
     });
     var seg = segs[i];
+    regrowSeg(seg);
     navIntoView(seg._nav);
-    var first = sugsOf(seg).filter(function (s) { return cardVisible(s) && isUndecided(s); })[0];
+    var first = pendingInOrder(seg).filter(cardVisible)[0]; // 原文里第一条待确认的
     ST.activeSug = first ? first.id : null;
     refreshSeg(seg);
     persist();
@@ -1560,16 +2146,21 @@
   }
   var stepsOpenBefore = null; // 进录制视图前各段「录屏步骤」开没开，出来时还原
   function setView(v) {
+    if (ST.readEdit && v !== 'reading') { var _e = ST.readEdit; ST.readEdit = null; if (_e.ta) _e.ta.dispatchEvent(new Event('compositionend')); }
     if (v === 'reading' && !R.reading) return;
     if (v === 'record' && !R.recordHead) return;
+    if (v === 'publish' && !R.publish) return;
     if (CP && v !== ST.view) { if (R.cpText.value.trim()) saveComposer(); else closeComposer(); } // 换视图后原文不在同一处了：写了字的先保存，空的直接关
+    if (v !== 'compare' && ST.walk) { ST.walk = false; document.body.classList.remove('walking'); } // 逐条看只在对照里
     var was = ST.view;
     ST.view = v;
     if (R.compare) R.compare.hidden = !(v === 'compare' || v === 'record'); // 录制视图用的就是对照区那些段落，只是排法不同
     if (R.reading) R.reading.hidden = v !== 'reading';
+    if (R.publish) R.publish.hidden = v !== 'publish';
     if (R.recordHead) R.recordHead.hidden = v !== 'record';
     document.body.classList.toggle('view-reading', v === 'reading');
     document.body.classList.toggle('view-record', v === 'record');
+    document.body.classList.toggle('view-publish', v === 'publish');
     if (v === 'record' && was !== 'record') {
       stepsOpenBefore = {};
       segs.forEach(function (s) { var b = segUi[s.id] && segUi[s.id].stepsBox; if (b) { stepsOpenBefore[s.id] = b.open; b.open = true; } });
@@ -1578,11 +2169,12 @@
       stepsOpenBefore = null;
     }
     if (v === 'reading') { renderReading(); if (R.recorded) autoGrow(R.recorded); }
-    else if (segs[ST.seg]) refreshSeg(segs[ST.seg]);
+    else if (segs[ST.seg]) { regrowSeg(segs[ST.seg]); refreshSeg(segs[ST.seg]); }
     persist();
     refreshAll();
     // 录制视图是一整张清单：切过去时从清单顶上看起；从录制切回对照时回到当前这一段（对照只显示这一段）
-    if (v === 'record' && was !== 'record' && R.recordHead) window.scrollTo(0, Math.max(0, R.recordHead.getBoundingClientRect().top + window.scrollY - stickyHeight() - 8));
+    if (v === 'publish' && was !== 'publish') window.scrollTo(0, 0);
+    else if (v === 'record' && was !== 'record' && R.recordHead) window.scrollTo(0, Math.max(0, R.recordHead.getBoundingClientRect().top + window.scrollY - stickyHeight() - 8));
     else if (v === 'compare' && was === 'record') goSeg(ST.seg, true);
   }
   function setFont(d) {
@@ -1595,30 +2187,33 @@
   }
   function setActive(id) {
     if (ST.activeSug === id) return;
+    var prev = ST.activeSug;
     ST.activeSug = id;
     sugs.forEach(function (s) { if (cardUi[s.id]) cardUi[s.id].el.classList.toggle('is-active', s.id === id); });
+    if (ST.walk && id && byId[id]) ST.walkAt = { id: id, key: walkKey(byId[id]) };
+    // 原文里那一句换成「当前」的颜色；逐条看时正看到的那条不收起（例如对不上了的那条要展开才能点「不采纳」）
+    [prev, id].forEach(function (x) { var g = x && byId[x], sg = g && segOf(g); if (!sg) return; paintMine(sg); if (ST.walk) updateCard(g); });
   }
-  function focusCard(sug) {
+  // 跳到一张卡（「看对应的修改建议」、逐条看）：这一类被筛掉了就先显示出来，换到那一段，卡片亮起来、滚到眼前，原文那一句也亮起来。
+  // walking：逐条看时只在卡片不在眼前时才滚，滚得少一点
+  function focusCard(sug, walking) {
     var seg = segOf(sug);
     if (!seg) return;
     var c = sug.locked.category;
     if (c && effectiveCats().indexOf(c) < 0) setCats(effectiveCats().concat([c]));
     if (ST.onlyPending && !isUndecided(sug)) { ST.onlyPending = false; persist(); }
     setView('compare');
-    goSeg(seg._no - 1, false);
+    if (!walking || segs[ST.seg] !== seg) goSeg(seg._no - 1, false);
     setActive(sug.id);
+    if (walking) ST.walkAt = { id: sug.id, key: walkKey(sug) };
     refreshAll();
+    alignCards(seg);
     var el = cardUi[sug.id].el;
-    el.scrollIntoView({ block: 'center' });
+    if (walking) { ensureVisible(el); revealSentence(sug, true); } else el.scrollIntoView({ block: 'center' });
+    flashSug(sug);
     el.classList.add('flash'); setTimeout(function () { el.classList.remove('flash'); }, 1400);
   }
-  function jumpFirstPendingSug() {
-    for (var i = 0; i < segs.length; i++) {
-      var p = sugsOf(segs[i]).filter(isUndecided)[0];
-      if (p) return focusCard(p);
-    }
-    toast('没有待确认的建议');
-  }
+  function jumpFirstPendingSug() { startWalk(null); } // 顶上「N 条待确认」：从第一条开始逐条看
   function jumpFirstPendingNote() {
     for (var i = 0; i < segs.length; i++) {
       var s = segs[i];
@@ -1629,12 +2224,14 @@
         return;
       }
     }
+    var pp = pubSlots().filter(function (p) { return hasField(p, 'note') && notePending(p, 'note'); })[0];
+    if (pp && pubUi[pp.id]) { setView('publish'); var pn = pubUi[pp.id].note; pn.scrollIntoView({ block: 'center' }); pn.focus({ preventScroll: true }); return; }
     if (R.overall && notePending(info, 'overall_note')) { R.overall.scrollIntoView({ block: 'center' }); R.overall.focus({ preventScroll: true }); return; }
     toast('没有待 AI 处理的话');
   }
 
   // ======================= 操作 =======================
-  function adopt(sug) {
+  function adopt(sug, then) {
     var seg = segOf(sug), L = sug.locked, c = cardUi[sug.id];
     if (!seg) return toast('找不到这条建议对应的段落，请让 AI 检查这条建议');
     if (!kitReady()) return toast('保存功能启动中，请稍后再试');
@@ -1649,25 +2246,44 @@
     if (c && c.proposed && !same(prop, kit.fileValue(sug.id, 'proposed'))) steps.push({ item: sug.id, field: 'proposed', old: kit.fileValue(sug.id, 'proposed'), new: prop, noUndo: true }); // 先改再采纳：改过的「改成」一起提交
     applySteps(steps, '采纳第 ' + seg._no + ' 段「' + snippet(L.original, 10) + '」' + (del ? '（删掉这句）' : '')).then(function (ok) {
       if (!ok) return;
-      toast(del ? '已采纳并从第 ' + seg._no + ' 段锦成版删掉这句' : '已采纳并替换第 ' + seg._no + ' 段锦成版里的原句');
-      nextActive(seg);
+      if (!then) toast(del ? '已采纳并从第 ' + seg._no + ' 段锦成版删掉这句' : '已采纳并替换第 ' + seg._no + ' 段锦成版里的原句');
+      afterDecide(sug, seg);
+      if (then) then(seg, prop);
+    });
+  }
+  function adoptThenEdit(sug) { // 采纳，再在锦成版里选中换进去的那部分，光标留在锦成版
+    adopt(sug, function (seg, prop) {
+      var ui = segUi[seg.id];
+      if (!ui || !ui.mine) return;
+      requestAnimationFrame(function () {
+        var v = norm(ui.mine.value), p = norm(prop), at = v.indexOf(p);
+        if (at < 0) return toast('已采纳；锦成版里没找到换进去的那句，请直接在锦成版里改');
+        activateSug(sug, { text: true, force: true });
+        ui.mine.focus({ preventScroll: true });
+        ui.mine.setSelectionRange(at, at + p.length);
+        revealSentence(sug, true);
+        toast('已采纳，换进去的部分在锦成版里选中了，直接改就行');
+      });
     });
   }
   function reject(sug) {
     var seg = segOf(sug);
     if (val(sug.id, 'decision')) return toast('这条建议' + (DECISION_TEXT[val(sug.id, 'decision')] || '已有决定') + '，如需重新决定，请先点卡片上的「撤销决定」');
     applySteps([{ item: sug.id, field: 'decision', old: val(sug.id, 'decision'), new: '不采纳' }], '不采纳' + (seg ? '第 ' + seg._no + ' 段' : '') + '「' + snippet(sug.locked.original, 10) + '」').then(function (ok) {
-      if (ok && seg) nextActive(seg);
+      if (ok && seg) afterDecide(sug, seg);
     });
   }
-  function editFirst(sug) { // 打开「改成」输入框并全选；再点一下收起（改过的字照样自动写回）
+  // 定了一条以后：逐条看时跳到原文里的下一条（这一段看完就到下一段）；没在逐条看就只把「当前」挪到这段第一条待确认的
+  function afterDecide(sug, seg) { if (ST.walk) walkNext(sug); else nextActive(seg); }
+  function editFirst(sug, caretEnd) { // 打开「改成」输入框并全选（点删改对照进来时光标放到最后）；再点一下收起（改过的字照样自动写回）
     var c = cardUi[sug.id];
     if (!c || !c.proposed) return;
     setActive(sug.id);
     c.editing = !c.editing;
     updateCard(sug);
     if (!c.editing) return;
-    c.proposed.focus(); c.proposed.select();
+    c.proposed.focus();
+    if (caretEnd) c.proposed.setSelectionRange(c.proposed.value.length, c.proposed.value.length); else c.proposed.select();
     toast('改好「改成」后点「采纳」；清空表示删掉这句');
   }
   function revoke(sug) {
@@ -1698,13 +2314,13 @@
     return null;
   }
   function nextActive(seg) {
-    var next = sugsOf(seg).filter(function (s) { return cardVisible(s) && isUndecided(s); })[0];
+    var next = pendingInOrder(seg).filter(cardVisible)[0];
     setActive(next ? next.id : null);
   }
   function toggleApprove() {
     var cur = val(info.id, 'approved');
     applySteps([{ item: info.id, field: 'approved', old: cur, new: cur ? '' : isoNow() }], cur ? '取消「内容已确认」' : '勾选「内容已确认」').then(function (ok) {
-      if (ok) toast(cur ? '已取消「内容已确认」' : '已勾选「内容已确认」，请回到聊天告知 AI');
+      if (ok) toast(cur ? '已取消「内容已确认」' : '已勾选「内容已确认」，请回到聊天告诉 AI；AI 会接着出标题、封面文字和简介的候选');
     });
   }
   function moveNoteToMine(seg) {
@@ -2078,6 +2694,16 @@
         if (pr) L.push('```text', pr, '```', '');
       });
     }
+    if (pubSlots().length) { // 发布文字：锦成定的那版和每个候选的决定，以页面为准
+      L.push('## 标题、封面文字、简介', '');
+      pubSlots().forEach(function (p) {
+        var f = val(p.id, 'final');
+        L.push('### ' + p.locked.slot + '（条目 id ' + p.id + '）', '', '- 你定的：' + (f.trim() ? f.trim().replace(/\n/g, ' / ') : '还没定'));
+        if (hasField(p, 'note') && notePending(p, 'note')) L.push('- 写给 AI 的话（待处理）：' + val(p.id, 'note').trim().replace(/\n/g, ' / '));
+        candsOf(p.locked.slot).forEach(function (c) { L.push('- 候选 ' + c.id + '：' + (val(c.id, 'decision') || '还没定') + '。' + val(c.id, 'text').replace(/\n/g, ' / ')); });
+        L.push('');
+      });
+    }
     var ex = [];
     [info].concat(segs, sugs, others).forEach(function (it) {
       if (!it || !it.id) return;
@@ -2154,7 +2780,7 @@
       e.preventDefault(); undo(e.shiftKey); return;
     }
     if (inField || e.metaKey || e.ctrlKey || e.altKey || e.isComposing) return;
-    if (ST.view === 'reading') return;
+    if (ST.view === 'reading' || ST.view === 'publish') return;
     if (k === 'j') { e.preventDefault(); goSeg(ST.seg + 1, true); }
     else if (k === 'k') { e.preventDefault(); goSeg(ST.seg - 1, true); }
     else if ((k === 'a' || k === 'r') && ST.view === 'compare') { // 录制视图里建议卡是藏着的，A、R 不动它
@@ -2163,7 +2789,7 @@
       e.preventDefault();
       if (k === 'a') { if (cardUi[s.id].yes.disabled) toast(cardUi[s.id].miss.textContent || '这条建议暂时无法采纳'); else adopt(s); } else reject(s);
     }
-    else if (k === 'escape') hidePop();
+    else if (k === 'escape') { hidePop(); if (ST.walk) stopWalk('已退出逐条看'); }
   });
 
   // ======================= 和 kit 接上 =======================
@@ -2185,8 +2811,10 @@
   // 给自动测试和调试用
   window.jcApp = {
     teleprompterText: teleprompterText, aiMarkdown: aiMarkdown, goSeg: goSeg, setView: setView, undo: function () { undo(false); }, redo: function () { undo(true); },
-    state: function () { return { view: ST.view, stage: STAGE, seg: segs[ST.seg] ? segs[ST.seg].id : null, activeSug: ST.activeSug, undo: undoStack.length, redo: redoStack.length, cats: effectiveCats(), catFilter: catFilterOn(), onlyPending: ST.onlyPending, others: others.length, compact: isCompact() }; },
-    saveLabel: saveLabel, replaceOnce: replaceOnce, closePops: closePops,
+    state: function () { return { view: ST.view, stage: STAGE, seg: segs[ST.seg] ? segs[ST.seg].id : null, activeSug: ST.activeSug, undo: undoStack.length, redo: redoStack.length, cats: effectiveCats(), catFilter: catFilterOn(), onlyPending: ST.onlyPending, others: others.length, compact: isCompact(), walk: ST.walk }; },
+    saveLabel: saveLabel, replaceOnce: replaceOnce, closePops: closePops, ctxAround: ctxAround, startWalk: function (segId) { startWalk(segId ? byId[segId] : null); },
+    order: function (segId) { var s = byId[segId]; return s ? sugOrder(s).map(function (x) { return { id: x.sug.id, no: x.no, start: x.a ? x.a.start : -1, near: x.pos, miss: x.miss }; }) : []; },
+    side: function (segId) { return sideBySide(segUi[segId]); },
     config: CFG, type: TYPE
   };
 })();

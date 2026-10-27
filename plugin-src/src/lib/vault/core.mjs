@@ -1029,6 +1029,31 @@ export function htmlBody(text) {
         return (Number.isFinite(x)?x:Infinity)-(Number.isFinite(y)?y:Infinity)||a.index-b.index;
     }).map(({item})=>item.fields.mine).join('\n\n');
 }
+/** Read only explicit metadata status lines, never quotations or instructions in the body. */
+export function topicCardStatus(snapshot, docs) {
+    const evidence=[];
+    for(const document of docs.filter(d=>d.section==='topics'&&d.format==='markdown')) {
+        const bytes=readBytes(snapshot.root,document.relativePath);
+        if(digest(bytes)!==document.hash)fail('CONFLICT','选题卡在状态读取时已变化，请重新读取：'+document.relativePath);
+        let fence=null;
+        for(const [index,line] of bytes.toString('utf8').split(/\r?\n/).entries()) {
+            const marker=line.trim().match(/^(`{3,}|~{3,})/);
+            if(marker){const kind=marker[1][0];if(fence===null)fence=kind;else if(fence===kind)fence=null;continue;}
+            if(fence!==null)continue;
+            if(/^\s*#{2,6}\s/.test(line))break;
+            const match=line.match(/^\s*(?:[-*]\s+)?(?:\*\*)?状态(?:\*\*)?\s*[：:](?:\*\*)?\s*(\S.*?)\s*$/);
+            if(!match)continue;
+            const status=match[1],pause=[...status.matchAll(/暂不做|暂缓|暂停|搁置|延期|顺延|推迟/g)].find(found=>{
+                const before=status.slice(0,found.index),after=status.slice(found.index+found[0].length);
+                return !/(?:不要|不用|无需|不必|不再|不应|不得|并不|没有|未|不|取消了?|解除)\s*$/.test(before)&&!/^\s*(?:已)?(?:取消|解除|结束)/.test(after);
+            });
+            const reason=pause?status.slice(pause.index).replace(/[）)\]】]+\s*$/g,'').trim():null;
+            evidence.push({origin:'topic-card-status',documentId:document.id,relativePath:document.relativePath,hash:document.hash,line:index+1,text:line,status,paused:!!pause,reason});
+        }
+    }
+    const selected=evidence.find(item=>item.paused)??evidence[0];
+    return {paused:evidence.some(item=>item.paused),status:selected?.status??null,reason:selected?.reason??null,evidence};
+}
 function publicationStatus(snapshot, docs, tNumber) {
     // Formal author-confirmed publication remains independent of recorded/已做 markers.
     for (const d of docs.filter(d => d.section === 'drafts')) {
@@ -1129,7 +1154,10 @@ function sourceEvidence(snapshot,docs,line) {
 export function resolveCurrentSource(snapshot,docs,pinned=null) {
     const overview=snapshot.documents.find(d=>d.relativePath===SECTIONS.drafts+'/00_草稿总览.md');
     const tNumber=docs[0]?.tNumber;
-    const line=overview?readBytes(snapshot.root,overview.relativePath).toString('utf8').split('\n').find(l=>new RegExp('^\\|\\s*'+tNumber+'\\s*\\|').test(l))??'':'';
+    const overviewLines=overview?readBytes(snapshot.root,overview.relativePath).toString('utf8').split('\n'):[];
+    const overviewIndex=overviewLines.findIndex(l=>new RegExp('^\\|\\s*'+tNumber+'\\s*\\|').test(l));
+    const line=overviewIndex>=0?overviewLines[overviewIndex]:'';
+    const overviewSection=overviewIndex<0?'':overviewLines.slice(0,overviewIndex).reverse().find(l=>/^#{1,6}\s/.test(l))?.replace(/^#{1,6}\s+/,'')??'';
     const state=sourceEvidence(snapshot,docs,line);
     const bodyDocs=docs.filter(d=>d.section==='drafts'&&!/(?:^|\/)(?:参考|素材|助手任务|任务归档|发布存档|历史|版本)(?:\/|_)/.test(d.relativePath)&&(
         /(?:^|[\/_])(?:定稿|最终稿|录制定稿|逐字稿|工作稿|正文|提词|创作页)/.test(d.relativePath)||d.format==='html'&&!!d.editAdapter));
@@ -1156,7 +1184,7 @@ export function resolveCurrentSource(snapshot,docs,pinned=null) {
     const conflict=(missingSelection?tNumber+' 的已选当前原件缺失，请恢复或明确重新选择：'+missingSelection.relativePath:null)??effectivePinned?.sourceConflict??(!effectivePinned&&declared.length>1? tNumber+' 的明确当前入口指向多个原件，请选择继续的来源':!effectivePinned&&!declared.length&&editableBodies.length>1?tNumber+' 有多个稿件而没有唯一当前入口，请选择继续的来源':null);
     if(!state.candidates.has(chosen.id))state.add(chosen,{origin:'topic-or-supporting-document',label:chosen.title});
     if(conflict){chosen={...chosen,writable:false,sourceConflict:conflict};if(!snapshot.issues.some(i=>i.code==='CURRENT_SOURCE_CONFLICT'&&i.relativePath===chosen.relativePath))snapshot.issues.push({code:'CURRENT_SOURCE_CONFLICT',message:conflict,relativePath:chosen.relativePath});}
-    return {document:chosen,sourceCandidates:[...state.candidates.values()],sourceResolution:missingSelection?'missing':conflict?'conflict':'resolved',sourceMissing:!!missingSelection,evidence:line?[{origin:'draft-overview',text:line}]:[]};
+    return {document:chosen,sourceCandidates:[...state.candidates.values()],sourceResolution:missingSelection?'missing':conflict?'conflict':'resolved',sourceMissing:!!missingSelection,evidence:line?[{origin:'draft-overview',documentId:overview.id,relativePath:overview.relativePath,hash:overview.hash,section:overviewSection,text:line}]:[]};
 }
 export function contentSources(snapshot, ignoredWorkingDraftId = null) {
     const groups = new Map();
@@ -1170,10 +1198,10 @@ export function contentSources(snapshot, ignoredWorkingDraftId = null) {
         const resolved=resolveCurrentSource(snapshot,docs,pinned),chosen=resolved.document,tNumber=docs[0].tNumber;
         const text=readBytes(snapshot.root,chosen.relativePath).toString('utf8');
         const body=chosen.format==='html'?(htmlBody(text)??'此 HTML 无可识别人工正文摘要，请打开完整原件：'+chosen.relativePath):text;
-        const publicationState=publicationStatus(snapshot,docs,tNumber);
+        const publicationState=publicationStatus(snapshot,docs,tNumber),topicStatus=topicCardStatus(snapshot,docs);
         const creationDocs=docs.filter(d=>d.format==='html').map(d=>({documentId:d.id,relativePath:d.relativePath,hash:d.hash,data:creationData(readBytes(snapshot.root,d.relativePath).toString('utf8'))})).filter(d=>d.data);
         const recorded=creationDocs.some(d=>d.data.items.some(i=>i.kind==='info'&&!!i.fields?.recorded?.trim()))||resolved.evidence.some(e=>/(?:录完|已录|录制完成)/.test(e.text)&&!/(?:未录|没录|未完成录制)/.test(e.text));
-        return {contentId,tNumber,...resolved,body,summaryOnly:chosen.format==='html',documents:docs,creationDocuments:creationDocs.map(({data,...d})=>d),recorded,
+        return {contentId,tNumber,...resolved,topicStatus,evidence:[...resolved.evidence,...topicStatus.evidence],body,summaryOnly:chosen.format==='html',documents:docs,creationDocuments:creationDocs.map(({data,...d})=>d),recorded,
             title:docs.find(d=>d.section==='topics')?.title??(path.basename(chosen.relativePath)==='正文.md'?path.basename(path.dirname(chosen.relativePath)).replace('_',' '):chosen.title),
             contentDirectory:chosen.section==='drafts'?(chosen.relativePath.match(/^(05_内容草稿\/(?:已做\/)?T\d{3,}_[^/]+)\//)?.[1]??path.posix.dirname(chosen.relativePath)):SECTIONS.drafts+'/'+tNumber+'_'+chosen.title.replace(/[<>:"/\\|?*]/g,'_').slice(0,80),
             published:publicationState==='已发布',publicationState};

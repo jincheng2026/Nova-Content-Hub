@@ -19,4 +19,4 @@ export function parseTopicOverview(markdown:string):TopicOverview {
 }
 export function workMatches(query:string,work:{tNumber:string;title:string;summary:string}){const q=query.trim().toLocaleLowerCase();if(!q)return true;const n=q.match(/^t?(\d+)$/);if(n)return Number(work.tNumber.replace(/^T/i,''))===Number(n[1])||work.tNumber.toLowerCase().startsWith('t'+n[1]);return `${work.tNumber} ${work.title} ${work.summary}`.toLocaleLowerCase().includes(q);}
 /** Explicit author publication entries are retained; recording or an 已做 folder alone never means published. */
-export function classifyWork(facts:{published:boolean;recorded:boolean;hasDraft:boolean;overviewStatus?:string}):'topics'|'doing'|'published'{return facts.published?'published':facts.recorded||facts.hasDraft?'doing':'topics';}
+export function classifyWork(facts:{published:boolean;recorded:boolean;hasDraft:boolean;paused?:boolean;overviewStatus?:string}):'topics'|'doing'|'published'{return facts.published?'published':facts.paused?'topics':facts.recorded||facts.hasDraft?'doing':'topics';}

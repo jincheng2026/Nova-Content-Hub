@@ -1,8 +1,51 @@
 {
   "format": "jincheng-creation-trusted-template",
-  "version": "jincheng-source-v1",
+  "version": "jincheng-source-v2",
   "source": "AIJinCheng/工具项目/内容工作台/creation-page",
   "files": {
+    "template/shell.html": {
+      "sha256": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1",
+      "bytes": 1304
+    },
+    "template/style.css": {
+      "sha256": "9c9448bcb8e0cd2dd8991fa5c982cd12630381e9b0cb3a642eff5b7c0b5b18f4",
+      "bytes": 59040,
+      "sourceVariant": "T044",
+      "sourceMarker": "jc-style"
+    },
+    "template/app.js": {
+      "sha256": "3380119d77e7202a8c9211d1fdf0c9b977ffcc73adb2755a10c4011696d8e647",
+      "bytes": 197830,
+      "sourceVariant": "T044",
+      "sourceMarker": "jc-app"
+    },
+    "kit/kit.js": {
+      "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+      "bytes": 61367
+    },
+    "creation_doc.py": {
+      "sha256": "874f9f9b96f64de563615128ee47e4e974895aef8b38cebc43ff26851e8a6734",
+      "bytes": 15208
+    },
+    "build_page.py": {
+      "sha256": "9f0d2d3796acca1099503e2468ebca481394ac34ee4f04ecbc5a3928a1fea940",
+      "bytes": 46743
+    },
+    "brain_page.py": {
+      "sha256": "b34966bebb6e05653c1ed4ac36cfd7b6e67bdb91e38be181da884443e36be5cf",
+      "bytes": 29552
+    },
+    "server/brain_save.py": {
+      "sha256": "90b3578085608ec9000970b7a41e804e2045c8e283f037017b2a7cf5139d02e8",
+      "bytes": 59022
+    },
+    "schema/creation-page.md": {
+      "sha256": "95f4445fac4a5c2e744de966ee3fa4e35781c1973e7b4b93c181b390b5c72475",
+      "bytes": 38796
+    }
+  },
+  "adaptation": "Frozen T044 marked app/style superset, original source shell and byte-identical shared kit. Extract only static marked template code; never ship or execute source jc-doc, HTML event attributes, or any other source scripts. Desktop adapters remain separate.",
+  "originalSourceFiles": {
     "template/shell.html": {
       "sha256": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1",
       "bytes": 1304
@@ -40,5 +83,110 @@
       "bytes": 38796
     }
   },
-  "adaptation": "Raw frozen app/style/kit/shell. Desktop transport adapters are separate; no source scripts executed."
+  "templateVariants": [
+    {
+      "workId": "T020",
+      "sourceRelativePath": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_创作页.html",
+      "htmlSha256": "892394eef1fbef23034100df7c29244e623c648b2721af6710d2db1cf7fcb17f",
+      "parts": {
+        "app": {
+          "sha256": "aed498bd0585f643ba7fc6986a68415fd9eb986a7375443316f7283f6cf4f872",
+          "bytes": 164874
+        },
+        "style": {
+          "sha256": "a9ca842d02f3438361385c0878e98c3016d6284ad2c36f6cb1a34e11fee7cc5a",
+          "bytes": 49652
+        },
+        "kit": {
+          "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+          "bytes": 61367
+        }
+      }
+    },
+    {
+      "workId": "T029",
+      "sourceRelativePath": "05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html",
+      "htmlSha256": "34def15e9d3692b21114f75401f6d17379795da0566c3a62a02ea1fd7a0b4d51",
+      "parts": {
+        "app": {
+          "sha256": "0e45ba73317e8cd721b65d38aa135471b7e0193601db3505c9e016cf8cb48c6b",
+          "bytes": 152302
+        },
+        "style": {
+          "sha256": "0a0f91ce1ba78e3df108b436449c5bcb8bcf5d03aa8bbda4399305af4a4fb71e",
+          "bytes": 47355
+        },
+        "kit": {
+          "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+          "bytes": 61367
+        }
+      }
+    },
+    {
+      "workId": "T026",
+      "sourceRelativePath": "05_内容草稿/已做/T026_书籍蒸馏成Skill/T026_创作页.html",
+      "htmlSha256": "c8cb386f643eb9e92aaf8058c629482b351c41f33a85734ff537c8f5475d620b",
+      "parts": {
+        "app": {
+          "sha256": "aa2272b34df41a2bfc567c7015099e0bdf8538fbc8fdd7a8f32b158de6fe2b35",
+          "bytes": 145860
+        },
+        "style": {
+          "sha256": "58e487524b79a1bd26823461949ad907ccd6ef1395d71f313754953ff2f03b30",
+          "bytes": 44184
+        },
+        "kit": {
+          "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+          "bytes": 61367
+        }
+      }
+    },
+    {
+      "workId": "T044",
+      "sourceRelativePath": "05_内容草稿/已做/T044_AI变现与执行力/T044_创作页.html",
+      "htmlSha256": "0c01d97a021f03ed3bfd3e1092443ed21a347fe4d1d086271b409a26b5f308ba",
+      "parts": {
+        "app": {
+          "sha256": "3380119d77e7202a8c9211d1fdf0c9b977ffcc73adb2755a10c4011696d8e647",
+          "bytes": 197830
+        },
+        "style": {
+          "sha256": "9c9448bcb8e0cd2dd8991fa5c982cd12630381e9b0cb3a642eff5b7c0b5b18f4",
+          "bytes": 59040
+        },
+        "kit": {
+          "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+          "bytes": 61367
+        }
+      }
+    }
+  ],
+  "selectedTemplate": "T044-static-superset",
+  "staticReview": {
+    "extraction": "jc-app/jc-style marked tag content, strip outer whitespace and append one newline",
+    "sameKitInAllFourSources": true,
+    "functionsRemovedVersusT020T029T026": [],
+    "retainedModules": [
+      "compare",
+      "reading",
+      "record",
+      "notes",
+      "suggestions",
+      "reference-analysis",
+      "skeleton",
+      "steps",
+      "copy",
+      "history",
+      "extras",
+      "spare"
+    ],
+    "addedOrRestoredModules": [
+      "publish: pubslot/pubcand/final",
+      "recording responsibility todo_me/todo_editor",
+      "inline reading edit",
+      "topbar fold",
+      "ordered suggestion anchors, context, walk and fold"
+    ],
+    "codeSafety": "No eval, Function constructor, script injection, fetch or XMLHttpRequest in selected app. Data DOM uses existing text nodes and escaped clipboard HTML; only original jcKit API writes fields. No writer body is present in template resources."
+  }
 }

@@ -19,7 +19,7 @@ test('regeneration preserves identity, every author field, unknown extensions an
 test('first build and regeneration use vault journal and preserve disk author edits',async(t)=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'creation-build-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));const vault=createVault(root);
  const descriptor=JSON.parse(fs.readFileSync(path.join(root,'.workbench/vault.json')));const source={sourceId:'drafts',documentId:'new-page',relativePath:'05_内容草稿/T001/创作页.html',vaultId:descriptor.vaultId};
- const input={work:{vaultId:descriptor.vaultId,workId:'T001'},source,data:data(),templateVersion:'jincheng-source-v1',mutationId:'build-page-0001'};
+ const input={work:{vaultId:descriptor.vaultId,workId:'T001'},source,data:data(),templateVersion:'jincheng-source-v2',mutationId:'build-page-0001'};
  const built=await api.buildCreationPage(root,input);assert.ok(built.pageId);let d=await api.readCreationDocument(root,source);const seg=d.items.find(x=>x.id==='seg-a');
  await api.commitCreationEdit(root,{source,pageId:d.pageId,baseRevision:d.revision,actor:{kind:'author'},mutationId:'author-edit-0001',edits:[{itemId:seg.id,field:'mine',before:seg.fields.mine,after:'原句只出现一次。作者补充',itemFingerprint:api.itemFingerprint(seg)}]});
  d=await api.readCreationDocument(root,source);await api.regenerateCreationPage(root,{...input,expectedRevision:d.revision,mutationId:'rebuild-page-0001'});const next=await api.readCreationDocument(root,source);assert.equal(next.pageId,built.pageId);assert.equal(next.items.find(x=>x.id==='seg-a').fields.mine,'原句只出现一次。作者补充');
@@ -38,7 +38,7 @@ test('reference analysis validates source quotes and skeleton family membership'
 });
 test('deleting an omitted old item requires a persisted author decision bound to revision and IDs',async(t)=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'creation-delete-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));createVault(root);const descriptor=JSON.parse(fs.readFileSync(path.join(root,'.workbench/vault.json')));
- const source={sourceId:'drafts',documentId:'new',relativePath:'05_内容草稿/T001/a.html',vaultId:descriptor.vaultId},input={work:{vaultId:descriptor.vaultId,workId:'T001'},source,data:data(),templateVersion:'jincheng-source-v1',mutationId:'build-delete-001'};
+ const source={sourceId:'drafts',documentId:'new',relativePath:'05_内容草稿/T001/a.html',vaultId:descriptor.vaultId},input={work:{vaultId:descriptor.vaultId,workId:'T001'},source,data:data(),templateVersion:'jincheng-source-v2',mutationId:'build-delete-001'};
  await api.buildCreationPage(root,input);const current=await api.readCreationDocument(root,source),missing=data();missing.items=[];
  await assert.rejects(api.regenerateCreationPage(root,{...input,data:missing,expectedRevision:current.revision,removeItemIds:['step-a'],authorDecisionId:'forged-decision',mutationId:'bad-delete-0001'}),/DECISION|ENOENT/);
  const decision=await api.confirmCreationRemoval(root,{source,expectedRevision:current.revision,itemIds:['step-a'],mutationId:'delete-decision-0001'});

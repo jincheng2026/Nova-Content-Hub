@@ -7,3 +7,9 @@ test('uses the last explicit shooting order, retains deferred and recorded facts
 });
 test('numeric search does not match another work merely mentioning the number',()=>{assert.equal(workMatches('20',{tNumber:'T029',title:'提到 T020',summary:''}),false);assert.equal(workMatches('20',{tNumber:'T020',title:'测试',summary:''}),true);});
 test('recorded is doing until actual publication evidence',()=>{assert.equal(classifyWork({published:false,recorded:true,hasDraft:true,overviewStatus:'已做'}),'doing');assert.equal(classifyWork({published:true,recorded:true,hasDraft:true}),'published');assert.equal(classifyWork({published:false,recorded:false,hasDraft:false,overviewStatus:'已做'}),'topics');});
+test('explicit author pause overrides draft/recording, while publication has priority',()=>{
+ assert.equal(classifyWork({published:false,recorded:false,hasDraft:true,paused:true}),'topics');
+ assert.equal(classifyWork({published:false,recorded:true,hasDraft:true,paused:true}),'topics');
+ assert.equal(classifyWork({published:true,recorded:true,hasDraft:true,paused:true}),'published');
+ assert.equal(classifyWork({published:false,recorded:false,hasDraft:true,paused:false}),'doing');
+});

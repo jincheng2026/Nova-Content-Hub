@@ -28,3 +28,7 @@ export function resumeVaultMutation(runtimeRoot:string,mutationId:string):unknow
 export function materializeVaultBody(...args:any[]):any;
 export function validateVaultRestoreSource(...args:any[]):any;
 export function restoreVaultSource(...args:any[]):any;
+
+export type TopicCardStatusEvidence={origin:'topic-card-status';documentId:string;relativePath:string;hash:string;line:number;text:string;status:string;paused:boolean;reason:string|null};
+export type TopicCardStatus={paused:boolean;status:string|null;reason:string|null;evidence:TopicCardStatusEvidence[]};
+export function topicCardStatus(snapshot:Pick<VaultSnapshot,'root'>,documents:VaultDocument[]):TopicCardStatus;
