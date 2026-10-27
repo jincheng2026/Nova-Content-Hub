@@ -102,7 +102,7 @@ export function installerConfig(options, version) {
         copyright: '© 2026 杭州新岛橙灵智能科技有限责任公司',
         electronVersion: '44.9.0',
         directories: {app: path.join(workbench, `dist-desktop/auth-${options.auth}`), output},
-        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 · 内容整理、模板学习与封面制作', author: {name: '杭州新岛橙灵智能科技有限责任公司'}},
+        extraMetadata: {version, description: options.channel === 'local' ? '自媒体工作台 local development build; no login required; not for distribution' : options.channel === 'testing' ? '自媒体工作台 restricted testing build; authentication unavailable' : '自媒体工作台 · 第二大脑与内容创作', author: {name: '杭州新岛橙灵智能科技有限责任公司'}},
         artifactName: `Nova-Content-Hub-${version}-${options.platform}-${options.arch}-${options.channel}.\${ext}`,
         publish: null,
         // Real-path file tools and sharp already run from a checked stage; keep their layout unchanged.
