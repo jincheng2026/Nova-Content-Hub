@@ -128,3 +128,57 @@
 本轮没有发现新增 P1/P2。automaticRefresh 在门禁分支直接返回，尚未清 changesPending，因此不丢待刷新信号。成功选择后的 needsReselect true→false 会触发新增 effect，且 finally 的 active/acting 解锁保留，正常库读取仍恢复。取消时状态仍为 needsReselect，finally 只刷新 status，不再读工作区；焦点与可见性事件同样被挡住。原 guard 对 dirty 和 managed drafts 的保护及用户保存/放弃流程完全未改，没有新增绕过草稿保护的入口；没有把既有 clearEditor 行为改成新自动丢弃。
 
 已读执行方隔离真实 Electron/完整 renderer 点击证据 `/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-selection-cancel-ui-zT4gFY/result.json`：受控 dialog 返回 null 后只有 openLibrary/status/status，sourceCalls 和 workerCalls 均为空，errors 为空，needsReselect 仍 true，binding SHA256 前后一致。它明确不声称真实 OS panel 或安装应用验收；执行方报告 types 通过。本审查没有重复跑全套，也没有竞争读取真实大库。该三行补丁可进入最终合批构建。
+
+
+## 原报告相对链接恢复：注册导航桥最终审查
+
+本节仅检查新增 `report-navigation.mts` 与 production-worker、production-pages、shared contract 接线。原『内容作战手册.html』引用 `../2026-08-17_AI需求全景/人群1-门外观望的普通人.html`，原包目标存在；隔离 iframe 的 UUID 路由改变相对基址，原链接实际无法由现有路由命中。这是已确认的原功能回归，不能把单页成功展示视为完整工作流等价。
+
+最终新增桥没有发现剩余确定 P1/P2：
+
+- `report-navigation.mts:19–27` 按段仅解码一次，拒绝协议、绝对路径、查询串、编码分隔符、残余百分号/重复编码、NUL 与规范化后的根外路径；只产生数据索引，不把请求路径直接交文件读取。未知路径先与 registry 比较，不读取未注册目标。
+- `:30–45` 同时校验源页与目标页当前未删除、currentBody=original、唯一 originalPages 登记、同 sourceId 的内部 reports 来源、原路径确属该来源、原文件 hash 与当前 prepareOfflineReport 后 assetHash。raw 与 prepared hash 分开，避免因离线 CSS 内联而误拒原目标。源/目标正文替换、来源缺失、管理正文与多候选歧义均不能进入可导航映射。
+- `:48–69` 的 fingerprint 包含源 report/page、源原件身份、展示 HTML hash 与有序完整映射，目标固定 report/page UUID 及当前身份。父 wrapper 验证 event.source、null origin、pageId 和 nonce；iframe 只交索引。nonce 是 wrapper 上下文标识，不被当作源脚本无法看到的秘密；权限来自服务端固定映射，未扩大为文件/API 访问。
+- `production-pages.mts` 的 POST /navigate 只接受 pageId/index/fingerprint/nonce，校验同 origin、JSON 和 4 KiB 上限；根据服务端保存的旧映射固定目标，再重取当前源完整 fingerprint 与目标 pageIdentity。签发 capability 后，目标实际 wrapper/page GET 再核 reportGuard，覆盖点击到载入之间的修改。既有 desktop authorize 对当前 binding 的 root/libraryId/dev/ino 复验仍保留；换库后旧 capability 不能继续读取。
+- 没有增加任意 path/file/URL 路由，没有放宽 iframe sandbox 或 CSP。纯本页 #anchor 不拦截，原折叠和隔离脚本仍保留，外部作品仍走既有 sources 通道。导航 context 有 256 条上限并在 close 清理。
+
+本轮复核发现且已修复一个 P2：最初跨文件 `#detail` 只追加到外层 wrapper URL，正文 iframe 没有 hash，无法定位正文。最终 fragment 固定进 capability、参与复用匹配，且只以 HTML 属性转义后的 fragment 追加到所选目标 iframe src；其他页不继承该锚点。
+
+独立验证：额外 12 条解析边界断言通过；新 `production-report-navigation.test.mjs` **5/5 通过，5.810 秒**，覆盖真实原 href 的 worker+HTTP capability、raw/prepared 差异、未知目标、失效/删除/管理正文/跨来源/歧义、编码逃逸和 VM 消息边界。fragment 实际 iframe 断言加入后，仅重跑对应 HTTP 测试 **1/1 通过，2.403 秒**，没有重复全仓或真实大库。执行负责人另确认 native/renderer typecheck、4 个相关测试文件 **12/12 通过，6.65 秒**及 diff whitespace 检查通过。
+
+范围限制：上述使用隔离真实 Vault、worker 与 HTTP 服务，并用原 href 构造 fixture；注入桥与父桥的事件校验用 VM 执行。执行方核查两个真实原 HTML 没有额外 meta CSP，但尚未在最终安装包浏览器/Electron 内点击真实『内容作战』链接。本审查未改原件、Demo、已安装应用或全局授权。源码可合批冻结；真实原页点击及最终安装验收仍需随最终构建记录，不据此宣称全部原工作流 100% 等价。
+
+
+## 原报告未列入 meta.pages 的来源附页：补充注册审查
+
+真实报告盘点发现 17 个链接指向原包已提供的来源材料附页（4 个不同锚点），该页不在 meta.pages 中。旧服务允许读取该原文件，仅恢复已有 registry 的跳转不足以覆盖原交互。本轮仅审 `resources.mjs` 的附页注册与升级投影测试；没有放宽导航服务为任意文件路由。
+
+最终代码检查：从声明页实际 a.href 中提取直接引用，按段单次解码，拒绝协议、绝对路径、查询串、编码分隔符、控制字符、二次编码、根外和隐藏文件。只接受同 sourceId、同目录且已在当前 snapshot 中的唯一 HTML sibling；未知、链接到别组和未扫描目标不读取。workbenchVisible=false 仍在附页处理前排除。附页列表先完整计算后才附加，因此不递归跟随附页里的新链接，范围受原来源快照数量与每页 8 MiB 限制。
+
+附页 UUID 使用既有 vaultId/sourceId/sourceRelativePath 规则，记录原始 hash，离线准备后另存 assetHash，并进入 originalPages 和 inventory。PROJECTION_POLICY_VERSION 4→5 已进入 inputFingerprint 和分类 fingerprint，旧输入未变也会重新分类，随后稳定缓存；既有 companion 管理档案、pageOverrides 和 managed markdown 的优先级保持原逻辑。附页只成为注册页，既有消息桥、目标版本 guard、当前库身份核对均未放宽。
+
+本轮发现并独立复现的 P2 已修：有效声明主页引用存在但非 HTML 的可选旁页时，初版 htmlBytes 抛错会被整个组的 catch 接住，导致 reports=[]。最终只对该附页记录 INVALID_INPUT issue 并跳过，保留声明主页；若以前已登记的附页随后损坏，保留历史报告并标 source-missing，不静默以坏数据覆盖。
+
+验证期间指出并加强了一个测试缺口：只删除 inputFingerprint 会命中 classified fingerprint 相同的早退，不能证明重投影保全。最终用例在保存作者数据后实际新增附页并修改声明主页 href，强制源 hash、inventory 和资源 entry 改变。独立运行这 **4 个重投影用例全部通过，13.127 秒**：metadata/deleted 的原 3 页 ID 保留并补第 4 页；managed-pages/managed-markdown 当前正文 exact 不变；标题、账号关联、deletedAt 与原附页字节保全。此前独立运行也通过了直接注册去重/稳定 ID、17 链接的 4 锚点映射、逃逸/隐藏/缺失快照/非递归边界与坏附页新库/已投影库保护；中间 3 个 fixture 断言失败是二次 saveReport 自身省略 accountIds 先清空关联，已在测试输入修正并先断言当前关联存在，未据此误报产品丢绑定。
+
+当前本轮代码无剩余可定位 P1/P2。实际旧 policy4 缓存升级与最终已安装报告点击的证据应随执行方产物记录；这里的定点源码及隔离测试不替代真实安装验收，也不把未提供的任意来源自动纳入权限。
+
+补充已核读执行方 `/tmp/nova-appendix-upgrade-audit.after.json`：真实旧源码生成的缓存 before 为 policy4、2 页；新源码同库打开后 policy5、3 页，reportId 不变，4 个原源文件 SHA256 清单不变，第二次 report 与 editToken 稳定。执行方新 8 项专项全部通过（18.61 秒）；48 项相关回归尚在执行，本审查不预报其通过。该旧缓存升级证据闭合本轮迁移验证缺口，最终安装后的真实点击仍另行验收。
+
+
+## 原报告六个文本附件：最小 reader 架构与定点复核
+
+本轮补充已核实原包提供且原服务支持的 6 个附件：珍妮报告的 3 个 CSV，以及 AI 科普独立 research_report.html 的研究结论 Markdown、视频明细 CSV、statistics.json。设计已直接与唯一实现负责人对齐，最终审查实际 helper/worker/HTTP capability/desktop allowlist/shared contract/worker-client 差异；不新增任意路径路由。
+
+当前实际补丁未发现剩余可定位 P1/P2：
+
+- 源报告仍须未删除、currentBody=original，并核对登记原件 raw hash 与 prepare 后的当前 page.assetHash。分组报告沿用 explicit sourceId/originalPages。独立单页 HTML 缺 sourceId 时，仅以 meta.vault 已登记原件 relativePath 匹配现有 source-map 的唯一内部根，重叠或缺失拒绝；显式无效 sourceId 不回退。实际 AI 科普原件位于默认 accounts/benchmark-accounts 来源，因此支持该现有角色，不把来源误限成 reports/materials，也不根据附件 href 推断更大的根。
+- 实际链接扫描剔除 comment 和 script/style/textarea/title/xmp 文本块，href 属性不匹配 data-href。单次分段解码与路径规范化后，只在当前已绑定来源 catalog 中精确匹配原页和 md/txt/csv/json 附件；catalog 每来源每轮映射最多取一次。未知、跨根、协议、查询串、符号链接、非 UTF-8 或含 NUL 的候选不可导航。resolved source root 自身也拒绝隐藏段、node_modules、skills 和备份目录，防止从框架目录内部开始遍历而漏掉根名称。
+- 8 MiB 限制并非仅在读取后判断：readBoundSourceCatalog 在 lstat 阶段过滤超限/硬链接，精确匹配后才调用 readBoundSourceFile；后者 core.readBytes 再执行打开前 stat 和打开后 fstat 的 8 MiB 检查。附件路径不能触发隐藏 .workbench 特殊大文件分支。
+- 导航 target 是 report/attachment union；附件仅返回固定 id/identity，原路径留在 worker 内。productionReportAttachment 严格接受 binding/reportId/pageId/fingerprint/index，不接收 path/URL/filename。capability 固定保存源 report/page、完整映射 fingerprint、index 与附件 identity。预览 GET 和 /download 每次重新校验当前库、源原件、映射与附件 expectedHash，过期内容不能借旧 cap 继续读取。
+- 预览是转义的标题和 pre，无附件脚本或 HTML 执行。UTF-8 decoder 可移除显示用 BOM；下载独立返回原 Uint8Array，保留 BOM、CRLF 和所有原字节，application/octet-stream + attachment + nosniff。文件名检查控制字符/分隔符，采用固定 ASCII fallback 与 RFC5987 filename*，不允许 CRLF 注入。下载是固定 cap 子路径，没有新增任意文件输入。
+- 原报告 sandbox/CSP 和既有外部作品 sources 通道保留。desktop worker allowlist 只增本固定附件读取操作，worker-client 把它归入已有 15 秒有界读重试，没有放宽 Vault deadline 或任务授权。
+
+独立运行新增正例 **2/2 通过，5.368 秒**：真实 Vault/worker/HTTP 测试覆盖 BOM+CRLF、恶意 HTML 文本转义、原字节下载、附件变化后预览/下载 cap 双拒绝，以及独立 HTML 对默认 accounts 来源的回溯和重叠拒绝。随后新负例 **1/1 通过，1.936 秒**，覆盖假 href、非法 UTF-8/NUL、缺失/symlink/逃根/查询串、managed/deleted/无效显式 source/原件及 prepared hash 失效。检查了最终新增框架源根专项与 sourceDirectory 的实际调用位置，没有因此重复全仓测试。
+
+本节仍是定点源码与隔离链路验收。6 个真实附件的完整映射和最终安装包的原页点击/下载应由集成证据另行确认；不把受控测试结果替代最终安装验收。

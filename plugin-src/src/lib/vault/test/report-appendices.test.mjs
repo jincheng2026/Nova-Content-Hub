@@ -44,7 +44,7 @@ test('17 real-shaped encoded appendix anchors map through the existing registere
 });
 test('appendix discovery rejects traversal, encoded separators, absent snapshots, hidden groups and transitive references',t=>{
  const f=fixture(t);f.put('珍妮/来源材料.html',f.html.replace('</body>','<a href="未引用.html">下一跳</a></body>'));
- const declared=fs.readFileSync(path.join(f.root,'10_调研报告/珍妮/账号.html'),'utf8');f.put('珍妮/账号.html',declared.replace('</body>',`<script>const example='<a href="未引用.html">example</a>';</script><!-- <a href="未引用.html">comment</a> --><textarea><a href="未引用.html">literal</a></textarea></body>`));
+ const declared=fs.readFileSync(path.join(f.root,'10_调研报告/珍妮/账号.html'),'utf8');f.put('珍妮/账号.html',declared.replace('</body>',`<a data-href="未引用.html">伪属性</a><script>const example='<a href="未引用.html">example</a>';</script><!-- <a href="未引用.html">comment</a> --><textarea><a href="未引用.html">literal</a></textarea></body>`));
  let group=classifyVaultResources(readVaultSnapshot(f.runtime)).reports.find(r=>r.record.title==='珍妮');assert.equal(group.originalPages.length,3);assert.ok(!group.originalPages.some(p=>p.document.relativePath.endsWith('/未引用.html')));
  const bad=['../珍妮/来源材料.html','../别组/其他.html','%2e%2e/别组/其他.html','来源%2f材料.html','来源%5c材料.html','%252e%252e.html','%00来源材料.html','来源材料.html?cache=1','/来源材料.html','https://other.invalid/来源材料.html','missing.html','库外.html','.hidden.html'];
  f.put('珍妮/账号.html','<html><body>'+bad.map(h=>`<a href="${h}">引用</a>`).join('')+'</body></html>');f.put('别组/其他.html','<html><body>其他组正文</body></html>');

@@ -1,0 +1,118 @@
+{
+  "before": {
+    "root": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-appendix-v4-upgrade-v8g5cX",
+    "binding": {
+      "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-appendix-v4-upgrade-v8g5cX/.workbench/runtime",
+      "libraryId": "11a242fb-dc04-48ea-aa2e-13a504aa5e1c",
+      "rootIdentity": {
+        "dev": "16777231",
+        "ino": "84203538"
+      }
+    },
+    "reportId": "b65129cc-9673-4d66-a4cc-727b0a60d470",
+    "pageCount": 2,
+    "policy": 4,
+    "sourceHashes": [
+      [
+        "meta.json",
+        "3fb03c2f87563c91e5e8d4fe186c05ab7d1a26b28d58bcf10b27f70f314b5091"
+      ],
+      [
+        "来源材料.html",
+        "5814404289d2cde8e5c3c4562b160ced7c9f2b302cac2aabbd88fc4147c3cd20"
+      ],
+      [
+        "评论.html",
+        "135f1751e0b655ee34c177e80c59693d3fc0a1886b4f6d478ffb364a57362da7"
+      ],
+      [
+        "账号.html",
+        "ca918df95eead974ae81c88df74de5fbf46e2aa40e348aa8466bc62d751ad0c3"
+      ]
+    ]
+  },
+  "sameReportId": true,
+  "afterPages": 3,
+  "afterPolicy": 5,
+  "sourceHashesUnchanged": true,
+  "secondReadStable": true,
+  "after": {
+    "id": "b65129cc-9673-4d66-a4cc-727b0a60d470",
+    "title": "珍妮",
+    "type": "调研",
+    "accountIds": [],
+    "sourceUrl": null,
+    "collectedAt": null,
+    "pages": [
+      {
+        "id": "dbe07ce8-2e1a-4b0e-a941-4b290d7ab46b",
+        "title": "账号",
+        "assetHash": "ca918df95eead974ae81c88df74de5fbf46e2aa40e348aa8466bc62d751ad0c3"
+      },
+      {
+        "id": "8a37141b-aad0-468b-a22d-a7290639936a",
+        "title": "评论",
+        "assetHash": "135f1751e0b655ee34c177e80c59693d3fc0a1886b4f6d478ffb364a57362da7"
+      },
+      {
+        "id": "d500f707-35c5-4e6b-a3c3-57136ebb085e",
+        "title": "来源材料",
+        "assetHash": "5814404289d2cde8e5c3c4562b160ced7c9f2b302cac2aabbd88fc4147c3cd20"
+      }
+    ],
+    "pageId": "dbe07ce8-2e1a-4b0e-a941-4b290d7ab46b",
+    "meta": {
+      "original": {
+        "title": "珍妮",
+        "pages": [
+          {
+            "file": "账号.html",
+            "title": "账号"
+          },
+          {
+            "file": "评论.html",
+            "title": "评论"
+          }
+        ]
+      },
+      "vault": {
+        "documentId": "doc-3c8ecf3ed0cdf9398dbc57461561be0a",
+        "relativePath": "10_调研报告/珍妮/meta.json",
+        "hash": "3fb03c2f87563c91e5e8d4fe186c05ab7d1a26b28d58bcf10b27f70f314b5091",
+        "format": "html",
+        "originalPages": [
+          {
+            "id": "dbe07ce8-2e1a-4b0e-a941-4b290d7ab46b",
+            "relativePath": "10_调研报告/珍妮/账号.html",
+            "hash": "ca918df95eead974ae81c88df74de5fbf46e2aa40e348aa8466bc62d751ad0c3"
+          },
+          {
+            "id": "8a37141b-aad0-468b-a22d-a7290639936a",
+            "relativePath": "10_调研报告/珍妮/评论.html",
+            "hash": "135f1751e0b655ee34c177e80c59693d3fc0a1886b4f6d478ffb364a57362da7"
+          },
+          {
+            "id": "d500f707-35c5-4e6b-a3c3-57136ebb085e",
+            "relativePath": "10_调研报告/珍妮/来源材料.html",
+            "hash": "5814404289d2cde8e5c3c4562b160ced7c9f2b302cac2aabbd88fc4147c3cd20"
+          }
+        ],
+        "htmlPolicyVersion": 5,
+        "previewMode": "isolated-html",
+        "currentBody": "original",
+        "status": "available",
+        "writable": true,
+        "preview": {
+          "complete": true,
+          "scriptExecution": "sandbox",
+          "generatedPageCount": 3,
+          "originalPath": "10_调研报告/珍妮/meta.json",
+          "scope": "原HTML、内联图表与评论层级在无主机权限的离线沙箱中阅读；外部网络请求已禁止"
+        }
+      }
+    },
+    "createdAt": "2026-10-27T22:57:53.334Z",
+    "updatedAt": "2026-10-27T22:58:22.957Z",
+    "deletedAt": null
+  }
+}

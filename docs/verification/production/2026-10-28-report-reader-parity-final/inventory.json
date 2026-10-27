@@ -1,0 +1,1636 @@
+{
+  "sourceCommitAtMeasurement": "ad32575a7d2fa8786e2eb348f86ad48c0253db80",
+  "method": "Read-only frozen resource assets and source files; classify new appendix in memory; call actual reportNavigation/readRegisteredReportAttachment. No runtime hydration or Demo writes. Anchor/media inventory uses Python HTMLParser actual static tags, excluding script raw text; 777 regex anchors is superseded by 767 actual tags.",
+  "scope": "Existing 48 frozen pages plus one provided same-directory appendix registered in memory (49); HTML and UTF-8 data links only, no live browser/HTTP or source mutation.",
+  "summary": {
+    "reports": 32,
+    "pages": 49,
+    "relativeHtmlOccurrences": 32,
+    "relativeAttachmentOccurrences": 6,
+    "relativeTotal": 38,
+    "mappedTotal": 38,
+    "unmappedTotal": 0,
+    "nonHttpNonAnchor": 38,
+    "extension:.html": 32,
+    "externalHttpAnchors": 9006,
+    "pureAnchors": 767,
+    "extension:.csv": 4,
+    "extension:.md": 1,
+    "extension:.json": 1,
+    "imageData": 6,
+    "attachmentCount": 6,
+    "allAttachmentBytesMatchSource": true
+  },
+  "originalRouterEvidence": {
+    "researchReports": {
+      "server": "server.mjs:658-660",
+      "fileReader": "lib/research-reports.mjs:74-97",
+      "behavior": "/research-reports/<group>/<file> serves existing in-root .html/.png/.csv/.json; membership in meta.pages is not required."
+    },
+    "secondBrain": {
+      "entry": "original second-brain README.md:24 (AI科普系列比较)",
+      "reader": "lib/second-brain.mjs:109-146",
+      "behavior": "resolveBrainAsset whitelists actual original href/src and permits .md/.txt/.csv/.json relative attachments using view/page.html base."
+    }
+  },
+  "pages": [
+    {
+      "reportId": "7574532e-ac0c-4dda-a85a-31b93d34aaa1",
+      "pageId": "be452be4-dd9b-47ab-a93a-64207894130a",
+      "reportTitle": "抖音 AI 教程赛道调研与内容作战",
+      "pageTitle": "内容作战手册（先看这个）",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-14_抖音AI教程赛道调研/内容作战手册.html",
+      "assetHash": "dd49b17a0e3e92acc630323e6a3ad4778dd782bc8f9a517731b0d1e7c865de55",
+      "sourceHash": "dd49b17a0e3e92acc630323e6a3ad4778dd782bc8f9a517731b0d1e7c865de55",
+      "counts": {},
+      "helperPageIdentity": "fa851b8e7de207a817f4c41686f9324579b8bd69eb900b5d407b9ff5d57e60dd"
+    },
+    {
+      "reportId": "7574532e-ac0c-4dda-a85a-31b93d34aaa1",
+      "pageId": "f43ff850-61ea-4e2d-ae9f-5f8f59c8d929",
+      "reportTitle": "抖音 AI 教程赛道调研与内容作战",
+      "pageTitle": "选题作战图",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-14_抖音AI教程赛道调研/选题作战图.html",
+      "assetHash": "ed69df460cae079a4c94f5bc42c46956d3a6f4c54cac7a1b3076b6c0bc297511",
+      "sourceHash": "ed69df460cae079a4c94f5bc42c46956d3a6f4c54cac7a1b3076b6c0bc297511",
+      "counts": {
+        "externalHttpAnchors": 111
+      },
+      "helperPageIdentity": "4f12ddbdebb9aeb41f7243f0d0cbdc540243b9f5631d8ccaeddf6b4ee7c40022"
+    },
+    {
+      "reportId": "7574532e-ac0c-4dda-a85a-31b93d34aaa1",
+      "pageId": "a2e4e6ce-c41f-4879-a395-dc8746139ced",
+      "reportTitle": "抖音 AI 教程赛道调研与内容作战",
+      "pageTitle": "评论需求洞察",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-14_抖音AI教程赛道调研/评论需求洞察.html",
+      "assetHash": "69001b89d2f164b92ea3b6733bfe46f088a6da3f154bf18d426eb5aed90d344f",
+      "sourceHash": "69001b89d2f164b92ea3b6733bfe46f088a6da3f154bf18d426eb5aed90d344f",
+      "counts": {},
+      "helperPageIdentity": "5d22c2b0ee05810990773b6ec21173bb055ed1f3fc433fad8399a82c2885f72b"
+    },
+    {
+      "reportId": "7574532e-ac0c-4dda-a85a-31b93d34aaa1",
+      "pageId": "7ce513ca-f2b1-40c4-ad8f-2aa9dcf9afaf",
+      "reportTitle": "抖音 AI 教程赛道调研与内容作战",
+      "pageTitle": "53 条爆款证据底仓",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-14_抖音AI教程赛道调研/research_report.html",
+      "assetHash": "dcbaf6459304c4ab3a17f050ac48db981ab464d8a8ee28927fa4807af0a08e5b",
+      "sourceHash": "dcbaf6459304c4ab3a17f050ac48db981ab464d8a8ee28927fa4807af0a08e5b",
+      "counts": {
+        "externalHttpAnchors": 2351
+      },
+      "helperPageIdentity": "f24c9f944f2f2e05d86819c6037cfbe058200dca71550284f7e13dd94df85686"
+    },
+    {
+      "reportId": "f6e26e02-8cff-43e8-ad66-5648e69d7a72",
+      "pageId": "d7047f2a-2c52-4dad-ad46-0419ae8f67a1",
+      "reportTitle": "何锦成账号评论区体检（近半月 7 条视频）",
+      "pageTitle": "评论区体检（含行动清单）",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-15_何锦成账号评论区体检/评论区体检.html",
+      "assetHash": "2e2a9a91c894c8cbc2f57ad60675ba8a52511330577c93680ed7e204e2642b6b",
+      "sourceHash": "2e2a9a91c894c8cbc2f57ad60675ba8a52511330577c93680ed7e204e2642b6b",
+      "counts": {},
+      "helperPageIdentity": "e986d924f3afbbe87d1cad4888f52d4ea890d5b73346b6919bf94b0def6bc541"
+    },
+    {
+      "reportId": "11dea09a-a5b4-432c-a297-e29406f1e829",
+      "pageId": "a5b7bda0-d050-48d7-ab13-e78ec96c4d39",
+      "reportTitle": "「曲率出逃」全漏斗洞察（抖音+视频号评论 725 条 + 学员自我介绍 56 人/全班约 90）",
+      "pageTitle": "全漏斗洞察：评论区声量×学员钱包对照＋五张洋葱＋成交机制＋4 条可拍脚本（2026-08-21 重做版）",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-15_曲率出逃评论洞察/评论区洞察.html",
+      "assetHash": "dc5897d7edab557c1b9c067b07a5a8be216e47afba0488115621ec3712ec2779",
+      "sourceHash": "dc5897d7edab557c1b9c067b07a5a8be216e47afba0488115621ec3712ec2779",
+      "counts": {},
+      "helperPageIdentity": "2d7aaf7fa11ff94da0ff7286cd0bd7fd0e9e1e140a7c93f123c8887daa624992"
+    },
+    {
+      "reportId": "11dea09a-a5b4-432c-a297-e29406f1e829",
+      "pageId": "deb0115d-245b-4f59-a5b8-d195bddec5b7",
+      "reportTitle": "「曲率出逃」全漏斗洞察（抖音+视频号评论 725 条 + 学员自我介绍 56 人/全班约 90）",
+      "pageTitle": "学员用户旅程",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-15_曲率出逃评论洞察/曲率出逃学员用户旅程.html",
+      "assetHash": "6257f79b79d59328f9d6ca7a19a70b75a8fcd0256e8e86ddf3604c55f368edca",
+      "sourceHash": "6257f79b79d59328f9d6ca7a19a70b75a8fcd0256e8e86ddf3604c55f368edca",
+      "counts": {
+        "externalHttpAnchors": 1
+      },
+      "helperPageIdentity": "172863deaece72cc7473739d9c50beae92bf84ea7672c9ccbcc7424686e23a0c"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "打开全景总图",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "assetHash": "2b59e8691f73a4846d940041caac6ce2b7170390cd8f0aec37d40d8eb4eb4c82",
+      "sourceHash": "2b59e8691f73a4846d940041caac6ce2b7170390cd8f0aec37d40d8eb4eb4c82",
+      "counts": {},
+      "helperPageIdentity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "fb9b56aa-8945-4560-af0a-9bc5292f259a",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "门外观望的普通人",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群1-门外观望的普通人.html",
+      "assetHash": "95a97e05d719c201e5ea99cfa1797515aef26a82d175c4904f9848e7636f30a4",
+      "sourceHash": "95a97e05d719c201e5ea99cfa1797515aef26a82d175c4904f9848e7636f30a4",
+      "counts": {},
+      "helperPageIdentity": "18720c60e16ffb2f4f410e870b54b2285f07e902a15e5c8b6c516bd1994bface"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "eb877f02-6887-4b69-accd-2677182fe404",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "动手期工具用户（C 线主力）",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群2-动手期工具用户.html",
+      "assetHash": "f6bfbc1e73a48ec66602b9e2cf874cf5f5a4e46205848f3c99f09da8cc608ec4",
+      "sourceHash": "f6bfbc1e73a48ec66602b9e2cf874cf5f5a4e46205848f3c99f09da8cc608ec4",
+      "counts": {},
+      "helperPageIdentity": "cc3dadd29896479d89606dc5a85a84d2c89d0dc2be60e930dfbe43985e0f3490"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "59dcf26e-11f5-4d9c-a636-388c5ffb690c",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "单位里写材料的人",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群3-单位里写材料的人.html",
+      "assetHash": "d59f44a556b69a67342155e8bcae429d8e0abd8b99aa27a33258a792ca61f325",
+      "sourceHash": "d59f44a556b69a67342155e8bcae429d8e0abd8b99aa27a33258a792ca61f325",
+      "counts": {},
+      "helperPageIdentity": "61493ad7b376ad91bbb5dd969155416fbdc57d86b07cee51498565e0e4435815"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "c065771d-c510-4112-a3bb-6f71733bb44c",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "老板与管理层（B 线核心）",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群4-老板与管理层.html",
+      "assetHash": "da93dac7b47204656244bbc76dcbe6836286de42497b7608a04ad2c26e3ace50",
+      "sourceHash": "da93dac7b47204656244bbc76dcbe6836286de42497b7608a04ad2c26e3ace50",
+      "counts": {},
+      "helperPageIdentity": "a19d2c4b73d19a595433ff352b1e7a97dcf32cfc69f52f01c53362d9b7ceedd1"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "8b71a6d8-4fe6-4e79-a57b-8e6567173089",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "乙方服务商与转型者",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群5-乙方服务商与转型者.html",
+      "assetHash": "6f42d95c9d9f757778cc4d2a88080c0851b9e143ea428719d119dabf9606c218",
+      "sourceHash": "6f42d95c9d9f757778cc4d2a88080c0851b9e143ea428719d119dabf9606c218",
+      "counts": {},
+      "helperPageIdentity": "300044556e2a4a1e461f036f7e7bdc794805c5db1153bdaecb68f7eb9f97d4dc"
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "5dde3600-add6-40a8-ab01-d95965b73d6a",
+      "reportTitle": "AI 需求全景",
+      "pageTitle": "知识付费与内容创业者",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群6-知识付费与内容创业者.html",
+      "assetHash": "e8c72ae10a22b9493044c9a5b191524481f39e680958bbc01aabec7a114692de",
+      "sourceHash": "e8c72ae10a22b9493044c9a5b191524481f39e680958bbc01aabec7a114692de",
+      "counts": {},
+      "helperPageIdentity": "5296d02e1e02d1ab16f7a93fb172a230b3eb7223ead589c1fb17426f0647fceb"
+    },
+    {
+      "reportId": "de117a9e-02d1-4c13-a1b1-18ab4d430d6c",
+      "pageId": "2e068645-c1a1-4641-a497-f445654dec2c",
+      "reportTitle": "「西门聪明蛋XD」博主拆解",
+      "pageTitle": "账号拆解：内容表达、作品对照与应用建议",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-21_西门聪明蛋XD博主拆解/账号拆解.html",
+      "assetHash": "bc4333102072a67a6b19f0ff73d6f7f713b0cc0dd4c04465db792aa8db2d970a",
+      "sourceHash": "bc4333102072a67a6b19f0ff73d6f7f713b0cc0dd4c04465db792aa8db2d970a",
+      "counts": {
+        "pureAnchors": 60,
+        "externalHttpAnchors": 1998
+      },
+      "helperPageIdentity": "724355ae61e2265bdcde9d1d9f89ba52ac1afa66a51d312507b1e615fe1aa8e4"
+    },
+    {
+      "reportId": "de117a9e-02d1-4c13-a1b1-18ab4d430d6c",
+      "pageId": "eb551b18-db84-44aa-a160-e9ac1bfc0934",
+      "reportTitle": "「西门聪明蛋XD」博主拆解",
+      "pageTitle": "评论区洞察：1,930 条顶层评论与具体问题",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-21_西门聪明蛋XD博主拆解/评论区洞察.html",
+      "assetHash": "c8238bc39d052ecbd8f6652d29929e545506ddca03d068ccb5c1bfcee95d5482",
+      "sourceHash": "c8238bc39d052ecbd8f6652d29929e545506ddca03d068ccb5c1bfcee95d5482",
+      "counts": {
+        "pureAnchors": 64,
+        "externalHttpAnchors": 1956
+      },
+      "helperPageIdentity": "ae007c75706ebe2a26132666f705a26846ce4a93b4e0fda42635617248ff739b"
+    },
+    {
+      "reportId": "e8d564e0-4b5f-4579-a9cf-dd0a30dc6e8f",
+      "pageId": "4aebaafe-baf5-4d45-a78e-fc866566e62a",
+      "reportTitle": "「大李书房一盏灯」博主拆解（抖音 10.6 万粉 · 62 天 44 条全量 · 1091 条评论 · 44 条口播逐字稿）",
+      "pageTitle": "评论区洞察：全场最高赞给了替他说人话的路人，而想动手的人排了三周队没人应——三形态对照＋七拨人＋六个没人接的需求＋四个内容方向",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-26_大李书房一盏灯博主拆解/评论区洞察.html",
+      "assetHash": "8a527c1436c390bef7c61515191ac02529bb4508d869c3ca3dc184b3068cc9b1",
+      "sourceHash": "8a527c1436c390bef7c61515191ac02529bb4508d869c3ca3dc184b3068cc9b1",
+      "counts": {},
+      "helperPageIdentity": "299e13521928b491a704a52cea463b6a036a1aa608b80d10fb594edea77fa9bd"
+    },
+    {
+      "reportId": "e8d564e0-4b5f-4579-a9cf-dd0a30dc6e8f",
+      "pageId": "5267c287-2154-4699-a599-03387a4353fe",
+      "reportTitle": "「大李书房一盏灯」博主拆解（抖音 10.6 万粉 · 62 天 44 条全量 · 1091 条评论 · 44 条口播逐字稿）",
+      "pageTitle": "账号拆解：概念科普＋教程送资料双引擎贡献 90.4% 的赞，逐字稿验证的「课堂仪式」贯穿全部爆款",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-08-26_大李书房一盏灯博主拆解/账号拆解.html",
+      "assetHash": "eced39598ec217d40d60d89f9203f6d09889cd283d7a666fe5077e5c6ba5447b",
+      "sourceHash": "eced39598ec217d40d60d89f9203f6d09889cd283d7a666fe5077e5c6ba5447b",
+      "counts": {},
+      "helperPageIdentity": "702fe8901e5896d44bf85f39664710a3e787b3a53d5156679dddab3e44e21721"
+    },
+    {
+      "reportId": "d4d7ecaf-15c7-4893-a9ae-30f512b85231",
+      "pageId": "eadd92de-213a-495c-ade0-6dc20f28d853",
+      "reportTitle": "「黄白」博主拆解",
+      "pageTitle": "账号研究：效果演示、作品对照与应用建议",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_黄白博主拆解/账号研究.html",
+      "assetHash": "104431d82e16b80ff9789dae2268603550cfdf6d2d823b3389a400cf106458fd",
+      "sourceHash": "104431d82e16b80ff9789dae2268603550cfdf6d2d823b3389a400cf106458fd",
+      "counts": {
+        "pureAnchors": 65,
+        "externalHttpAnchors": 283
+      },
+      "helperPageIdentity": "57a78802b2663a3cad8e8712ab22fbd1205137544f39054228bc2817ef0881d4"
+    },
+    {
+      "reportId": "d4d7ecaf-15c7-4893-a9ae-30f512b85231",
+      "pageId": "47cc91f0-86ad-44f1-aee2-5e264805c611",
+      "reportTitle": "「黄白」博主拆解",
+      "pageTitle": "评论区洞察：79 条非空评论与操作卡点",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_黄白博主拆解/评论区洞察.html",
+      "assetHash": "aedc9f8e3fc79cd4830abc68a7cce959a922e2fc2527a3d88c823cb6ccdeae7b",
+      "sourceHash": "aedc9f8e3fc79cd4830abc68a7cce959a922e2fc2527a3d88c823cb6ccdeae7b",
+      "counts": {
+        "pureAnchors": 40,
+        "externalHttpAnchors": 82
+      },
+      "helperPageIdentity": "483cee14f5971e48666aa793d827bd9449cb6760dc9f91edfbf0425fadff8a6e"
+    },
+    {
+      "reportId": "19d67744-cc83-4101-acea-70a74af312ae",
+      "pageId": "72dd9c9b-05c2-45c0-a0dd-7e7f9b57f87f",
+      "reportTitle": "「亚特兰大歌」博主拆解（用户提供：歌子师姐）",
+      "pageTitle": "账号研究：内容表达与同系列作品对照",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_亚特兰大歌_歌子师姐博主拆解/账号研究.html",
+      "assetHash": "7b7ef7c13520392abdab7e8bda09082fb312ac7061ce067ed4396898a876267b",
+      "sourceHash": "7b7ef7c13520392abdab7e8bda09082fb312ac7061ce067ed4396898a876267b",
+      "counts": {
+        "pureAnchors": 79,
+        "externalHttpAnchors": 213
+      },
+      "helperPageIdentity": "a813c7d641345d3f3b41048ebe2297ff0e7bed0c514fc8580deddaf5bb633724"
+    },
+    {
+      "reportId": "19d67744-cc83-4101-acea-70a74af312ae",
+      "pageId": "b4e1fafb-f7b2-4759-a616-3829762df1da",
+      "reportTitle": "「亚特兰大歌」博主拆解（用户提供：歌子师姐）",
+      "pageTitle": "评论区洞察：44 条评论与问题回应",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_亚特兰大歌_歌子师姐博主拆解/评论区洞察.html",
+      "assetHash": "87d066377069ee4be57b286fa02462aa4e4f0c91b64ae590fac69ae05f4f9c39",
+      "sourceHash": "87d066377069ee4be57b286fa02462aa4e4f0c91b64ae590fac69ae05f4f9c39",
+      "counts": {
+        "pureAnchors": 43,
+        "externalHttpAnchors": 48
+      },
+      "helperPageIdentity": "c3924bbb8bb60be868c03c1ecb7f139730b4b81712132f4de522297231446e4b"
+    },
+    {
+      "reportId": "84a1bcf3-d427-41bd-ad4b-c7ecd14df35d",
+      "pageId": "e5f5d102-01d2-489b-aa50-5361a689f7b5",
+      "reportTitle": "「张机」博主拆解",
+      "pageTitle": "内容与定位拆解：选择、条件与代价",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_张机博主拆解/账号研究.html",
+      "assetHash": "b6d90352d8712a7d246cb02f3e6d618c45809292138dc1eb5b13093654ba792b",
+      "sourceHash": "b6d90352d8712a7d246cb02f3e6d618c45809292138dc1eb5b13093654ba792b",
+      "counts": {
+        "pureAnchors": 156,
+        "externalHttpAnchors": 971
+      },
+      "helperPageIdentity": "4724ba9f131bf0cdea0f490c380d8b411043a4c90c7797463ec4c2582db4571f"
+    },
+    {
+      "reportId": "84a1bcf3-d427-41bd-ad4b-c7ecd14df35d",
+      "pageId": "0a61f07a-1c30-4940-ad43-9dd2b7929018",
+      "reportTitle": "「张机」博主拆解",
+      "pageTitle": "评论区洞察：观众想往前走，具体卡在哪里",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_张机博主拆解/评论区洞察.html",
+      "assetHash": "ff6ebab88bb7c95a960be0ad06321404913aa77981560d0d169525a67449dff1",
+      "sourceHash": "ff6ebab88bb7c95a960be0ad06321404913aa77981560d0d169525a67449dff1",
+      "counts": {
+        "pureAnchors": 87,
+        "externalHttpAnchors": 728
+      },
+      "helperPageIdentity": "4a37a2cb6b2485f2219e839305e0ca6b8c85abdf9514f4ad3dab0ed354f82a0f"
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "账号拆解：定位、内容、作品对照与变现",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "assetHash": "bfe919cabb974dbbf6942bd5a7d42ab8ce9facdd0eeaedafec5a038f5b5735de",
+      "sourceHash": "bfe919cabb974dbbf6942bd5a7d42ab8ce9facdd0eeaedafec5a038f5b5735de",
+      "counts": {
+        "pureAnchors": 97,
+        "externalHttpAnchors": 60
+      },
+      "helperPageIdentity": "4b80b308a2443561ceea9ae04c7357fd022abbf4f53a77786fe6ce48e13facc9"
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "ce4da74c-a8e8-4fff-afe4-b2d985f6a040",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "评论区洞察：179 条评论与具体需求",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/评论区洞察-珍妮丁丁说AI.html",
+      "assetHash": "c8cc3afa96b8d3ec41fdb88a2fc2f0738cba4d124db79aa39d170652cb7092f9",
+      "sourceHash": "c8cc3afa96b8d3ec41fdb88a2fc2f0738cba4d124db79aa39d170652cb7092f9",
+      "counts": {
+        "pureAnchors": 46,
+        "externalHttpAnchors": 180
+      },
+      "helperPageIdentity": "b37b7d9abfe691ac253d89ad0804625e7181339859c95d9e024ba5d92ac7df85"
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "珍妮丁丁说 AI · 来源材料",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "assetHash": "7c2bd3ec6c13f3192e56358317ec852a553976db6d613b599c07424ad4f9c25f",
+      "sourceHash": "7c2bd3ec6c13f3192e56358317ec852a553976db6d613b599c07424ad4f9c25f",
+      "counts": {
+        "externalHttpAnchors": 1
+      },
+      "helperPageIdentity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c"
+    },
+    {
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "reportTitle": "research_report",
+      "pageTitle": "research_report",
+      "sourceId": null,
+      "origin": "01_对标账号/调研/2026-09-09_AI科普系列比较/reports/research_report.html",
+      "assetHash": "990a1ec4c0b628c4ed52c3234eeb113e9bb1f9d6876263ec4fa36f8f640c4c22",
+      "sourceHash": "990a1ec4c0b628c4ed52c3234eeb113e9bb1f9d6876263ec4fa36f8f640c4c22",
+      "counts": {
+        "pureAnchors": 5,
+        "externalHttpAnchors": 10
+      },
+      "helperPageIdentity": "956cbcb913c4b51e21eb1bac1683133a0a9a619a4a2d3d09f2c80e46899c9dd6"
+    },
+    {
+      "reportId": "a196d161-f344-4842-a6e1-2076e3ceec34",
+      "pageId": "4a2acf0f-742c-4a57-af93-61fe9a6e0bfb",
+      "reportTitle": "四位博主的表达习惯拆解（清单 C：大李书房一盏灯 18 条、智能体阿朱 2 条、不喝九 10 条、向行2028 12 条）",
+      "pageTitle": "四位博主的表达习惯拆解（清单 C：大李书房一盏灯 18 条、智能体阿朱 2 条、不喝九 10 条、向行2028 12 条）",
+      "sourceId": null,
+      "origin": "01_对标账号/调研/2026-09-14_AI科普系列/表达习惯_逐账号/大李_阿朱_不喝九_向行.md",
+      "assetHash": "e596432a4217533e8d35cb928b3aee9e0c6be6c7317dfa1f75b3c2c2e52c9bfa",
+      "sourceHash": "841f0391361345a4fec9cf326431a70061b901bf3500a4df7b8d3ae9b5befa03",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "2dd9a507-9830-4941-ad06-66ea497ac709",
+      "pageId": "69f14632-cfcf-4ff2-a42b-0e451e776ebb",
+      "reportTitle": "批次 D 表达习惯拆解：FredTalk、小九学AI、屯点AI知识、森森AI日记",
+      "pageTitle": "批次 D 表达习惯拆解：FredTalk、小九学AI、屯点AI知识、森森AI日记",
+      "sourceId": null,
+      "origin": "01_对标账号/调研/2026-09-14_AI科普系列/表达习惯_逐账号/FredTalk_小九_屯点_森森.md",
+      "assetHash": "39a9697f642cf4a9f414d3256f3dd32a90392c43a5456075e742db65946508d7",
+      "sourceHash": "1bd96f2231cd574b17a294df7eaa29f13b885e27296c2698067b5e84738ed3b0",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "228ba087-15d3-46f5-a780-55e73ec75916",
+      "pageId": "b4c26dd4-056e-410a-a546-a2eff5800efb",
+      "reportTitle": "讲概念方法",
+      "pageTitle": "讲概念方法",
+      "sourceId": null,
+      "origin": "01_对标账号/调研/2026-09-14_AI科普系列/讲概念方法.md",
+      "assetHash": "5e4560f43b440ee75c0954be365eae91e633f7c0395ec53aa0d76806d821407b",
+      "sourceHash": "c40a56a87ced7f8f545e5e07ba7773f10a1126562a444805b676adf90853ec68",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "f698d767-54bd-45ca-a356-a8c919f3c9a5",
+      "pageId": "c7851cae-3cd0-44a0-a85e-7c0f2fe44311",
+      "reportTitle": "对标收入与商业模式比较",
+      "pageTitle": "对标收入与商业模式比较",
+      "sourceId": null,
+      "origin": "01_对标账号/对标收入与商业模式比较.html",
+      "assetHash": "b4a1a01ada82b3aee087d11c72f27dca3274df00fb9ad5bbb1963c6c1e5aa350",
+      "sourceHash": "b4a1a01ada82b3aee087d11c72f27dca3274df00fb9ad5bbb1963c6c1e5aa350",
+      "counts": {},
+      "helperPageIdentity": "c73bc62563b7b97ff3070b95d77b1c2aeeb4a5c1bbdb10f108c187757788896c"
+    },
+    {
+      "reportId": "6090c710-0430-4f1d-a6d4-418b5a27b92b",
+      "pageId": "d4bd3d93-e96b-4c97-a2c5-428b51ab6a7e",
+      "reportTitle": "Jerkk7777_关联账号与对标",
+      "pageTitle": "Jerkk7777_关联账号与对标",
+      "sourceId": null,
+      "origin": "01_对标账号/Jerkk7777_关联账号与对标.html",
+      "assetHash": "e17d8272ca5351349bd2bb7e89c0ffb33c104639199b9c8ac5effcc008d30ee4",
+      "sourceHash": "e17d8272ca5351349bd2bb7e89c0ffb33c104639199b9c8ac5effcc008d30ee4",
+      "counts": {
+        "externalHttpAnchors": 4
+      },
+      "helperPageIdentity": "d050649b6a38c7cd4703fa484196b2058fb8012a8dff6d420aba9c4593e80731"
+    },
+    {
+      "reportId": "12a9969f-b54a-40bf-abcd-471154074b37",
+      "pageId": "15b2ca38-4ac1-43d3-a77b-9d22f3da5322",
+      "reportTitle": "入库检查报告",
+      "pageTitle": "入库检查报告",
+      "sourceId": null,
+      "origin": "02_内容素材/_入库检查报告.md",
+      "assetHash": "184494019ae03d2ff4e3e254801a10bf1ceaf26628ba305e62433e2081eca586",
+      "sourceHash": "24b19fe6716d27ceffb7937d77e694774efaab36e5aeb91449fef8126dcd1a01",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "d035b837-45d5-4570-aac4-c30ecb1f1abd",
+      "pageId": "3542ad38-fa93-4c5b-aade-707c24118685",
+      "reportTitle": "第一篇发布复盘：【为什么你应该做AI自媒体？】",
+      "pageTitle": "第一篇发布复盘：【为什么你应该做AI自媒体？】",
+      "sourceId": null,
+      "origin": "06_发布复盘/001_【所有人都给我去做AI自媒体】_复盘.md",
+      "assetHash": "43ea9bc77c6b1476d9f8abcc7a30c8329f3014c49b1d3a6287c90fee7d1681be",
+      "sourceHash": "f72838a3f5e4f6d5d715bac34a561d1fc4fb3d4404f78e8b888879643e1afeae",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "1f98e744-e8b8-48c2-a165-4deb6f03ce23",
+      "pageId": "15f6360d-a894-47a2-afb1-7d993d3f0001",
+      "reportTitle": "发布复盘：【WorkBuddy 小白终极教程】",
+      "pageTitle": "发布复盘：【WorkBuddy 小白终极教程】",
+      "sourceId": null,
+      "origin": "06_发布复盘/002_【WorkBuddy小白终极教程】_复盘.md",
+      "assetHash": "2889493076b84fe5b5484982d863b00812214b9af6719ffbbeaaa66a86dea400",
+      "sourceHash": "d904c1520f5413d60d000349c6e59e95bbc861a7089cecce8bad4eaf1dc1d812",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "9108f918-d23d-4cf7-a772-bcb3f954ca2e",
+      "pageId": "d0a1dace-c919-4ee1-acc3-5d0996319108",
+      "reportTitle": "发布复盘：【不用折腾，2分钟调好WorkBuddy】（迁移复盘）",
+      "pageTitle": "发布复盘：【不用折腾，2分钟调好WorkBuddy】（迁移复盘）",
+      "sourceId": null,
+      "origin": "06_发布复盘/003_【2分钟调好WorkBuddy】_复盘.md",
+      "assetHash": "75e2d1cba5bbc74b116d50a88d97d74864858eea38503f36c4553430c5cf6792",
+      "sourceHash": "59bb2e5c623bcb4b2951a0f12dedcf1917ea0fce0f51bc578003244709e005c3",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "508654f5-d42a-47e9-aabe-1a37d20d3623",
+      "pageId": "3280c1ae-9f9c-4966-a994-265fc4bd12a4",
+      "reportTitle": "发布复盘：【新手安装这八个skill就够啦】",
+      "pageTitle": "发布复盘：【新手安装这八个skill就够啦】",
+      "sourceId": null,
+      "origin": "06_发布复盘/004_【新手安装这八个skill就够啦】_复盘.md",
+      "assetHash": "de9138f0cbd6c52e989377fe59bec199b87930f900216772ed2cc2e02cf50674",
+      "sourceHash": "74be96d354125f41dccb02cb526aa25038b6b469b1cfee559893f581642aa50c",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "00a356b7-fb10-466c-a46f-5cc320389778",
+      "pageId": "113607d3-1ad8-4003-a15a-5c91a13a45ce",
+      "reportTitle": "发布复盘：【workbuddy自媒体指南】（迁移复盘）",
+      "pageTitle": "发布复盘：【workbuddy自媒体指南】（迁移复盘）",
+      "sourceId": null,
+      "origin": "06_发布复盘/005_【workbuddy自媒体指南】_复盘.md",
+      "assetHash": "ef4d28eac02bbe60402fed138a5a348bbf07393436196d61eca34c06a046cdaf",
+      "sourceHash": "b01d4b5a8a21231b91f3b72b7cda66d48a6568248b6708c20c02dee92a817fca",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "ef9aeca6-88b2-457e-aee0-1f521fd2a494",
+      "pageId": "44d6d25e-fdba-48c0-a775-59d85b96532d",
+      "reportTitle": "发布复盘：【AI老瞎编？先做好这个设置】（迁移复盘）",
+      "pageTitle": "发布复盘：【AI老瞎编？先做好这个设置】（迁移复盘）",
+      "sourceId": null,
+      "origin": "06_发布复盘/006_【AI老瞎编先做好这个设置】_复盘.md",
+      "assetHash": "489504cba9b6b0e67fd4e6896d616d538d2fbfb0dda8b55f4549b2554de41d43",
+      "sourceHash": "e2cb84bbfd9aeaec0c3ab63d1a722a8d47d3ee23a4132e5b278507da0af5680d",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "61871316-c967-454a-af9e-dd83c0d9098a",
+      "pageId": "b15df92c-3e2c-4435-aed7-773f33249755",
+      "reportTitle": "2026-08至09视频复盘",
+      "pageTitle": "2026-08至09视频复盘",
+      "sourceId": null,
+      "origin": "06_发布复盘/2026-08至09视频复盘.html",
+      "assetHash": "f3ff62be0f36f9af845abce09e4c3e4573964b8d120cb38e0ba89e98108592d5",
+      "sourceHash": "f3ff62be0f36f9af845abce09e4c3e4573964b8d120cb38e0ba89e98108592d5",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "acf14508-ac11-4491-a97c-6f27443b2a61",
+      "pageId": "99b0589b-fc86-4e40-a980-922d10e26f60",
+      "reportTitle": "发布复盘：T011 工信部文件热点里的 FDE（最终标题待发布后填写）",
+      "pageTitle": "发布复盘：T011 工信部文件热点里的 FDE（最终标题待发布后填写）",
+      "sourceId": null,
+      "origin": "06_发布复盘/T011_【工信部文件热点里的FDE】_复盘.md",
+      "assetHash": "23ad332ba39b073501abb3e80d814a02e91b8034aedd19c4adf2d4b0163c2cfa",
+      "sourceHash": "08c9a1392611604e3a677b9da7e136815afafb9e1610316ca23c8ffb303b3b8e",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "2fc67351-b0d6-4a79-ad22-02a805914b0d",
+      "pageId": "2cf428c6-9c9c-4ad6-adbe-71f36de3ee36",
+      "reportTitle": "创作流程复盘（2026-10-12）",
+      "pageTitle": "创作流程复盘（2026-10-12）",
+      "sourceId": null,
+      "origin": "07_如何做自媒体/2026-10-12_创作流程复盘/创作流程复盘.md",
+      "assetHash": "b77b0cb49b8774b66663cf5c59a8b836a4f29bd48bdd0a7a83c8c3e85cfd9fd6",
+      "sourceHash": "ca7f066e6f3059206beadf1ca48ed510fd5b1ba0199ba33859fbf3d330ebc14f",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "bb13c7b3-5c03-42a9-ab72-490d33f673c5",
+      "pageId": "7897e322-3fdc-43d3-ad95-0bc27c046931",
+      "reportTitle": "教程视频 66 条聊天裁判报告",
+      "pageTitle": "教程视频 66 条聊天裁判报告",
+      "sourceId": null,
+      "origin": "08_原锦成来源/jincheng-original/methods/教程视频66条聊天裁判报告.md",
+      "assetHash": "3192947da3176c492c3f7feb099004afdacdea79067690b0e91343f7030855b8",
+      "sourceHash": "b5d7d7bbaa828a7278f7d37a7de98bcf433a9b040efa6754ba85d62b76ac9d4f",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "cd9d08b1-f7e2-4205-acec-9535a65fee11",
+      "pageId": "ea4192ad-aece-4cf2-a770-351796443c39",
+      "reportTitle": "2026-08-11「AI＋自媒体实战」已填写直播复盘表",
+      "pageTitle": "2026-08-11「AI＋自媒体实战」已填写直播复盘表",
+      "sourceId": null,
+      "origin": "08_原锦成来源/jincheng-original/methods/直播复盘/2026-08-11_AI加收钱实战直播复盘/已填写直播复盘表.md",
+      "assetHash": "ded60840628f0eb2102c5c87b693f61818245f0c3468d8a7689d361d9b7fbcfa",
+      "sourceHash": "676a36f71cd18b7e22766609cbd8be28dda04956bc0c41f34e3f3834138f25ba",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "2521d935-0ff3-4b29-aa1c-cdb7e6dbd24d",
+      "pageId": "634362ad-aadf-4267-adcd-d5ab9e7d30a9",
+      "reportTitle": "直播复盘",
+      "pageTitle": "直播复盘",
+      "sourceId": null,
+      "origin": "08_原锦成来源/jincheng-original/methods/直播复盘/2026-08-11_AI加收钱实战直播复盘/直播复盘.html",
+      "assetHash": "ba48124a5860f305d67cc9717e3de7e57caf60f58699490f8a71f88eb48ffd3b",
+      "sourceHash": "ba48124a5860f305d67cc9717e3de7e57caf60f58699490f8a71f88eb48ffd3b",
+      "counts": {
+        "pureAnchors": 10
+      },
+      "helperPageIdentity": "6f5448e604772e291473338516d6af0025f030add3716eba76f2654f90f9f2d7"
+    },
+    {
+      "reportId": "a241d2cb-66d5-4802-a131-c02fdb33f6cc",
+      "pageId": "58213fb1-e653-4a21-af60-37a19abdb9e9",
+      "reportTitle": "2026-08-11「AI＋自媒体实战」视频号直播复盘",
+      "pageTitle": "2026-08-11「AI＋自媒体实战」视频号直播复盘",
+      "sourceId": null,
+      "origin": "08_原锦成来源/jincheng-original/methods/直播复盘/2026-08-11_AI加收钱实战直播复盘/直播复盘.md",
+      "assetHash": "b8e4b0832949b1869444de87079581fdc4dba24a0b2df6931c92976fca88750e",
+      "sourceHash": "d986c7b5a19df8ee8303c9a19947ef4c3ac0851bdc3d97d3603e83c1924b120c",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "11ba769b-a7f3-42b0-afa9-aa5f9c84650c",
+      "pageId": "2321a748-11ad-4c2b-ab54-d287b0e79b7f",
+      "reportTitle": "知识付费直播复盘表模板",
+      "pageTitle": "知识付费直播复盘表模板",
+      "sourceId": null,
+      "origin": "08_原锦成来源/jincheng-original/methods/直播复盘/2026-08-12_电商直播数据复盘参考视频拆解/05-知识付费直播复盘表模板.md",
+      "assetHash": "6ff6a45f46f2747701b7b082a496066a9f04815224362ad7eeeb9a2aef2ea256",
+      "sourceHash": "e02cf0f7549a805cf89b5f21b40a7d998e956dfd3921a427706e92eae183a43d",
+      "counts": {},
+      "helperPageIdentity": null
+    },
+    {
+      "reportId": "ee0414de-415e-406b-a863-9df690dd5e53",
+      "pageId": "e8ce21fb-aadb-4ee9-a315-3596498d8237",
+      "reportTitle": "口播AI画面方案",
+      "pageTitle": "口播AI画面方案",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "origin": "08_原锦成来源/jincheng-original/reports/2026-09-29_AIGC-B-roll生产方案/口播AI画面方案.html",
+      "assetHash": "dab8a9bbdf05d84bb48719194a7bb22e9b94fba2430b830b5eb7ab58afc7ebd8",
+      "sourceHash": "5bdde31fd32b39d75103e7d59258a482449fe4ea605c023ae8da4776d2f9d6af",
+      "counts": {
+        "pureAnchors": 15,
+        "externalHttpAnchors": 9
+      },
+      "helperPageIdentity": "956291ac948d1f334b40e4c35dfe6162da280c1d1e70b61a83a5daac507df6a0"
+    }
+  ],
+  "relativeLinks": [
+    {
+      "reportId": "7574532e-ac0c-4dda-a85a-31b93d34aaa1",
+      "pageId": "be452be4-dd9b-47ab-a93a-64207894130a",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-14_抖音AI教程赛道调研/内容作战手册.html",
+      "href": "../2026-08-17_AI需求全景/人群1-门外观望的普通人.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "fb9b56aa-8945-4560-af0a-9bc5292f259a",
+        "identity": "18720c60e16ffb2f4f410e870b54b2285f07e902a15e5c8b6c516bd1994bface",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群1-门外观望的普通人.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "f6e26e02-8cff-43e8-ad66-5648e69d7a72",
+      "pageId": "d7047f2a-2c52-4dad-ad46-0419ae8f67a1",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-15_何锦成账号评论区体检/评论区体检.html",
+      "href": "../2026-08-17_AI需求全景/人群2-动手期工具用户.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "eb877f02-6887-4b69-accd-2677182fe404",
+        "identity": "cc3dadd29896479d89606dc5a85a84d2c89d0dc2be60e930dfbe43985e0f3490",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群2-动手期工具用户.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "11dea09a-a5b4-432c-a297-e29406f1e829",
+      "pageId": "a5b7bda0-d050-48d7-ab13-e78ec96c4d39",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-15_曲率出逃评论洞察/评论区洞察.html",
+      "href": "曲率出逃学员用户旅程.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "11dea09a-a5b4-432c-a297-e29406f1e829",
+        "pageId": "deb0115d-245b-4f59-a5b8-d195bddec5b7",
+        "identity": "172863deaece72cc7473739d9c50beae92bf84ea7672c9ccbcc7424686e23a0c",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-15_曲率出逃评论洞察/曲率出逃学员用户旅程.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群1-门外观望的普通人.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "fb9b56aa-8945-4560-af0a-9bc5292f259a",
+        "identity": "18720c60e16ffb2f4f410e870b54b2285f07e902a15e5c8b6c516bd1994bface",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群1-门外观望的普通人.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群2-动手期工具用户.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "eb877f02-6887-4b69-accd-2677182fe404",
+        "identity": "cc3dadd29896479d89606dc5a85a84d2c89d0dc2be60e930dfbe43985e0f3490",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群2-动手期工具用户.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群3-单位里写材料的人.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "59dcf26e-11f5-4d9c-a636-388c5ffb690c",
+        "identity": "61493ad7b376ad91bbb5dd969155416fbdc57d86b07cee51498565e0e4435815",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群3-单位里写材料的人.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群4-老板与管理层.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "c065771d-c510-4112-a3bb-6f71733bb44c",
+        "identity": "a19d2c4b73d19a595433ff352b1e7a97dcf32cfc69f52f01c53362d9b7ceedd1",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群4-老板与管理层.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群5-乙方服务商与转型者.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "8b71a6d8-4fe6-4e79-a57b-8e6567173089",
+        "identity": "300044556e2a4a1e461f036f7e7bdc794805c5db1153bdaecb68f7eb9f97d4dc",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群5-乙方服务商与转型者.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "href": "人群6-知识付费与内容创业者.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "5dde3600-add6-40a8-ab01-d95965b73d6a",
+        "identity": "5296d02e1e02d1ab16f7a93fb172a230b3eb7223ead589c1fb17426f0647fceb",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群6-知识付费与内容创业者.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "fb9b56aa-8945-4560-af0a-9bc5292f259a",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群1-门外观望的普通人.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "eb877f02-6887-4b69-accd-2677182fe404",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群2-动手期工具用户.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "59dcf26e-11f5-4d9c-a636-388c5ffb690c",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群3-单位里写材料的人.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "c065771d-c510-4112-a3bb-6f71733bb44c",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群4-老板与管理层.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "8b71a6d8-4fe6-4e79-a57b-8e6567173089",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群5-乙方服务商与转型者.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+      "pageId": "5dde3600-add6-40a8-ab01-d95965b73d6a",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/人群6-知识付费与内容创业者.html",
+      "href": "需求全景图.html",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "2427a757-1f8b-49cd-a83a-8ff1f3f27456",
+        "pageId": "98151904-e950-401d-ad28-4b355a95e5cc",
+        "identity": "38003fc852a3a104cadf832a7446efebcc0958007c6caddd1e3227befe2d3334",
+        "fragment": ""
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-08-17_AI需求全景/需求全景图.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#local-d7302f4d0e76",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#local-d7302f4d0e76"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "local-d7302f4d0e76"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#local-e7a480eb9428",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#local-e7a480eb9428"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "local-e7a480eb9428"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E4%BD%9C%E5%93%81%E8%B5%84%E6%96%99%E8%A1%A8-60%E6%9D%A1.csv",
+      "extension": ".csv",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "3ea411c96960b7ec0dac4cfb782df2bd52bbd1396ad1cec5da34118f79c99387",
+        "identity": "897dcbc5f756bdf7a4801ac42a65010eda66384a5a7d7a46c02d1253910fc34a"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/作品资料表-60条.csv",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E8%AF%84%E8%AE%BA%E4%B8%BB%E9%A2%98%E8%81%9A%E7%B1%BB-179%E6%9D%A1.csv",
+      "extension": ".csv",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "82e83b61f868b78d5bfbabf5a0afa83e8b4252696e7a6468444eb2066be37774",
+        "identity": "40ed3e28c1c1b294c759e575c8476f20f5dd46a1fe15df94de22e082e54bd6ca"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/评论主题聚类-179条.csv",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E8%AF%84%E8%AE%BA%E6%A0%B7%E6%9C%AC-179%E6%9D%A1.csv",
+      "extension": ".csv",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "aabf6e7056a0067c8d6346726c29d6e8e3068837463d6116b011a21630ef4726",
+        "identity": "9c2479b99bf3505502c699dc6c20653140ce555207f022e05e0a98dc59e9fc5b"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/评论样本-179条.csv",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#local-video",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#local-video"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "local-video"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "source": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/账号拆解报告-珍妮丁丁说AI.html",
+      "href": "%E6%9D%A5%E6%BA%90%E6%9D%90%E6%96%99.html#raw-cache",
+      "extension": ".html",
+      "mapped": true,
+      "target": {
+        "kind": "report",
+        "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+        "pageId": "a8464acb-7795-4071-a9bb-367af5b4150e",
+        "identity": "a0bf5f385e3f8e0937590a4685818d76258c53ddc7fcd0f9b8d7115d801c5d4c",
+        "fragment": "#raw-cache"
+      },
+      "resolvedVaultRelativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/来源材料.html",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": "raw-cache"
+      }
+    },
+    {
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "source": "01_对标账号/调研/2026-09-09_AI科普系列比较/reports/research_report.html",
+      "href": "../研究结论.md",
+      "extension": ".md",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "5cce4243933210bf33eaa75a70d122e06a270fd8d21339f58292613f8177f6df",
+        "identity": "93fbd86b42ced1b0ed1307c7b39a33006c8eece2e6716e607919b34e94da2d40"
+      },
+      "resolvedVaultRelativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/研究结论.md",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "source": "01_对标账号/调研/2026-09-09_AI科普系列比较/reports/research_report.html",
+      "href": "../normalized/视频明细_99条.csv",
+      "extension": ".csv",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "065a3cc239730d336c48303b5d0b267b9340d7354ba851500eefac32bf6306f4",
+        "identity": "a26e7285217e785dfe7dd42d8a5bc3b571b66f70cbd168f0eb177bf85b0a4579"
+      },
+      "resolvedVaultRelativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/normalized/视频明细_99条.csv",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    },
+    {
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "source": "01_对标账号/调研/2026-09-09_AI科普系列比较/reports/research_report.html",
+      "href": "../normalized/statistics.json",
+      "extension": ".json",
+      "mapped": true,
+      "target": {
+        "kind": "attachment",
+        "id": "02ba3474989f64b4832ed08d0e8891e4ae23ef21b61a3282ee9579f06fc6e489",
+        "identity": "ab300e9baeed9481e589b107486259283ab4f8f6bd8cba22fde4cdf8d7fb1acb"
+      },
+      "resolvedVaultRelativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/normalized/statistics.json",
+      "features": {
+        "literalSpace": false,
+        "encodedSpace": false,
+        "query": false,
+        "fragment": ""
+      }
+    }
+  ],
+  "attachments": [
+    {
+      "href": "%E4%BD%9C%E5%93%81%E8%B5%84%E6%96%99%E8%A1%A8-60%E6%9D%A1.csv",
+      "index": 2,
+      "filename": "作品资料表-60条.csv",
+      "bytes": 42214,
+      "sha256": "0c298ba3f2b2a84a1ba893008e3c8b86476e2aea632e3713eeb871b305d924d9",
+      "identity": "897dcbc5f756bdf7a4801ac42a65010eda66384a5a7d7a46c02d1253910fc34a",
+      "id": "3ea411c96960b7ec0dac4cfb782df2bd52bbd1396ad1cec5da34118f79c99387",
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "账号拆解：定位、内容、作品对照与变现",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "relativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/作品资料表-60条.csv",
+      "sourceBytes": 42214,
+      "sourceSha256": "0c298ba3f2b2a84a1ba893008e3c8b86476e2aea632e3713eeb871b305d924d9",
+      "returnedBytesMatchSource": true
+    },
+    {
+      "href": "%E8%AF%84%E8%AE%BA%E4%B8%BB%E9%A2%98%E8%81%9A%E7%B1%BB-179%E6%9D%A1.csv",
+      "index": 3,
+      "filename": "评论主题聚类-179条.csv",
+      "bytes": 48755,
+      "sha256": "64c03db6db20ee15e2a08d574513cfd08cc92d2ae35e460c377255d71c9c63a3",
+      "identity": "40ed3e28c1c1b294c759e575c8476f20f5dd46a1fe15df94de22e082e54bd6ca",
+      "id": "82e83b61f868b78d5bfbabf5a0afa83e8b4252696e7a6468444eb2066be37774",
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "账号拆解：定位、内容、作品对照与变现",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "relativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/评论主题聚类-179条.csv",
+      "sourceBytes": 48755,
+      "sourceSha256": "64c03db6db20ee15e2a08d574513cfd08cc92d2ae35e460c377255d71c9c63a3",
+      "returnedBytesMatchSource": true
+    },
+    {
+      "href": "%E8%AF%84%E8%AE%BA%E6%A0%B7%E6%9C%AC-179%E6%9D%A1.csv",
+      "index": 4,
+      "filename": "评论样本-179条.csv",
+      "bytes": 19332,
+      "sha256": "b017e6a8e08c32878c5dc9680cfa364e998fce2cce58ecc6fe6fd6805ec0a1f7",
+      "identity": "9c2479b99bf3505502c699dc6c20653140ce555207f022e05e0a98dc59e9fc5b",
+      "id": "aabf6e7056a0067c8d6346726c29d6e8e3068837463d6116b011a21630ef4726",
+      "reportId": "f1fb0197-d563-4cd6-ad69-e4fafc6743b9",
+      "pageId": "92d7a457-9250-4b4b-a0d4-8fd4921334c6",
+      "reportTitle": "「珍妮丁丁说AI」博主拆解",
+      "pageTitle": "账号拆解：定位、内容、作品对照与变现",
+      "sourceId": "jincheng-reports-jincheng-original",
+      "relativePath": "08_原锦成来源/jincheng-original/reports/2026-09-11_珍妮丁丁说AI博主拆解/评论样本-179条.csv",
+      "sourceBytes": 19332,
+      "sourceSha256": "b017e6a8e08c32878c5dc9680cfa364e998fce2cce58ecc6fe6fd6805ec0a1f7",
+      "returnedBytesMatchSource": true
+    },
+    {
+      "href": "../研究结论.md",
+      "index": 0,
+      "filename": "研究结论.md",
+      "bytes": 10473,
+      "sha256": "6ecdb01b129ed80d0092f94c0de76122af2085e0a88e410b56592b66f4ce4a2a",
+      "identity": "93fbd86b42ced1b0ed1307c7b39a33006c8eece2e6716e607919b34e94da2d40",
+      "id": "5cce4243933210bf33eaa75a70d122e06a270fd8d21339f58292613f8177f6df",
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "reportTitle": "research_report",
+      "pageTitle": "research_report",
+      "sourceId": "accounts (unique registered internal root 01_对标账号)",
+      "relativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/研究结论.md",
+      "sourceBytes": 10473,
+      "sourceSha256": "6ecdb01b129ed80d0092f94c0de76122af2085e0a88e410b56592b66f4ce4a2a",
+      "returnedBytesMatchSource": true
+    },
+    {
+      "href": "../normalized/视频明细_99条.csv",
+      "index": 1,
+      "filename": "视频明细_99条.csv",
+      "bytes": 50636,
+      "sha256": "421639a0cdb4ee38364eaf9d03b01c970dfb93f51479c2b7508e8bec4fda6db5",
+      "identity": "a26e7285217e785dfe7dd42d8a5bc3b571b66f70cbd168f0eb177bf85b0a4579",
+      "id": "065a3cc239730d336c48303b5d0b267b9340d7354ba851500eefac32bf6306f4",
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "reportTitle": "research_report",
+      "pageTitle": "research_report",
+      "sourceId": "accounts (unique registered internal root 01_对标账号)",
+      "relativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/normalized/视频明细_99条.csv",
+      "sourceBytes": 50636,
+      "sourceSha256": "421639a0cdb4ee38364eaf9d03b01c970dfb93f51479c2b7508e8bec4fda6db5",
+      "returnedBytesMatchSource": true
+    },
+    {
+      "href": "../normalized/statistics.json",
+      "index": 2,
+      "filename": "statistics.json",
+      "bytes": 11368,
+      "sha256": "a9077d3c2a9e886947193e006eea35a8e8e1780b465cb55898f982151521323e",
+      "identity": "ab300e9baeed9481e589b107486259283ab4f8f6bd8cba22fde4cdf8d7fb1acb",
+      "id": "02ba3474989f64b4832ed08d0e8891e4ae23ef21b61a3282ee9579f06fc6e489",
+      "reportId": "ed40314a-acea-4e5f-afa6-54e105cd45e3",
+      "pageId": "d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0",
+      "reportTitle": "research_report",
+      "pageTitle": "research_report",
+      "sourceId": "accounts (unique registered internal root 01_对标账号)",
+      "relativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/normalized/statistics.json",
+      "sourceBytes": 11368,
+      "sourceSha256": "a9077d3c2a9e886947193e006eea35a8e8e1780b465cb55898f982151521323e",
+      "returnedBytesMatchSource": true
+    }
+  ],
+  "verification": {
+    "finalTargeted": {
+      "command": "node --test plugin-src/src/lib/vault/test/report-appendices.test.mjs workbench/test/production-report-navigation.test.mjs workbench/test/production-pages.test.mjs workbench/test/production-worker-client.test.mjs workbench/test/report-sources.test.mjs",
+      "passed": 24,
+      "failed": 0,
+      "durationMs": 26630.7105
+    },
+    "projectionBaseline": {
+      "command": "node --test plugin-src/src/lib/vault/test/report-appendices.test.mjs plugin-src/src/lib/vault/test/resources.test.mjs plugin-src/src/lib/vault/test/jincheng-sources.test.mjs plugin-src/src/lib/vault/test/resource-read-performance.test.mjs",
+      "passed": 48,
+      "failed": 0,
+      "durationMs": 65797.699166,
+      "scope": "Before final href-attribute boundary and read-only attachments changes; final 24 targeted tests cover those final changes."
+    },
+    "typecheck": {
+      "command": "npm --prefix workbench run typecheck",
+      "native": "passed",
+      "renderer": "passed"
+    },
+    "diffCheck": {
+      "command": "git diff --check",
+      "result": "passed"
+    },
+    "criticalReview": "Astra independently reviewed appendix import and attachment/capability boundaries; no remaining confirmed P1/P2 reported.",
+    "pending": "Final frozen installed package click, actual anchor scroll and browser download are delegated to main thread; this evidence does not claim installed parity."
+  }
+}
