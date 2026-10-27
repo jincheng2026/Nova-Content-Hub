@@ -126,7 +126,7 @@ function referencedReportAppendices(snapshot,siblings,declaredPages,issues) {
     const appendices=[],seen=new Set(declaredPages.map(page=>page.document.id));
     const anchors=html=>html.replace(/<!--[\s\S]*?-->|<(script|style|textarea|title|xmp)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,'').matchAll(/<a\b[^>]*>/gi);
     for(const page of declaredPages)for(const anchor of anchors(page.html)){
-        const href=anchor[0].match(/\bhref\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);if(!href)continue;
+        const href=anchor[0].match(/(?:^|\s)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i);if(!href)continue;
         const name=reportAppendixName(reportHTMLEntities(href[1]??href[2]??href[3]));if(!name)continue;
         const candidates=siblings.filter(document=>path.posix.basename(document.relativePath)===name);if(candidates.length!==1)continue;
         const document=candidates[0];if(seen.has(document.id))continue;
