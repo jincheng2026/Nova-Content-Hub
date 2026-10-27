@@ -1,0 +1,52 @@
+{
+  "recordedAt": "2026-10-27T10:06:23.696047+00:00",
+  "version": "0.3.57",
+  "tag": "v0.3.57-preview-mac-arm64",
+  "sourceCommit": "a74f0df52e577b0874c63e127c82a1c1d7ce3156",
+  "nativeLaunch": true,
+  "libraryReopened": true,
+  "maskedTikHubKeyConfigured": true,
+  "settingsObserved": {
+    "mode": "免费本地优先",
+    "engine": "Qwen3-ASR / Python",
+    "maxRequests": 10,
+    "externalBudget": true,
+    "comments": true
+  },
+  "finder": {
+    "name": "自媒体工作台.app",
+    "kind": "应用程序(Apple芯片)",
+    "sizeBytes": 537649203,
+    "diskSize": "541 MB",
+    "modifiedAtLocal": "2026-10-27 17:52",
+    "version": "0.3.57",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "iconObserved": true
+  },
+  "rejections": [
+    {
+      "taskId": "bdc104a9-bbeb-43ae-a3dc-8a2bfeb6af10",
+      "status": "rejected",
+      "reason": "ASR engine fallback and invented tutorial facts",
+      "screenshot": "creation-rejected.png"
+    },
+    {
+      "taskId": "97059e58-dc5f-4ec6-9e80-991312f046ac",
+      "status": "rejected",
+      "reason": "Duplicate HTML pages and outdated budget assumptions",
+      "screenshot": "report-rejected.png"
+    }
+  ],
+  "original111TasksChanged": false,
+  "signature": "ad hoc; not notarized; preview only",
+  "platformGaps": [
+    "darwin-x64 native acceptance",
+    "win32-x64 native acceptance",
+    "win32-arm64 unsupported/unverified"
+  ],
+  "serviceGaps": [
+    "No new cloud ASR provider credentials",
+    "Full real-host success/waiting/recovery contract remains pending",
+    "Real bounded CDN download remains pending"
+  ]
+}
