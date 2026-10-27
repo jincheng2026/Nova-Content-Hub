@@ -23,6 +23,10 @@ function sourceFile(root, relative) {
 
 // bundleRoot comes from the packaged app, never from renderer input.
 export function installBuiltins(library, bundleRoot = defaultBundle) {
+    if(typeof library.withVaultBatch==='function')return library.withVaultBatch(()=>installPreparedBuiltins(library,bundleRoot));
+    return installPreparedBuiltins(library,bundleRoot);
+}
+function installPreparedBuiltins(library,bundleRoot) {
     const prompts = parse(sourceFile(bundleRoot, 'plugin-src/resources/builtin-prompts/catalog.json'));
     if (prompts.format !== 'nova-content-prompts' ||
         prompts.schemaVersion !== 1 || !Array.isArray(prompts.prompts)) throw new Error('内置目录格式不兼容');

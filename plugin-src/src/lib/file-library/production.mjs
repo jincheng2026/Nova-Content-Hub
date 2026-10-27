@@ -6,6 +6,7 @@ import {freezeCreatorContext,businessSkillForTask} from './production-creator-co
 import {readVaultTaskContext} from '../vault/index.mjs';
 import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {renderMarkdownReport} from '../vault/resources.mjs';
+import {researchMediaAuthorized,researchVideoAuthorized} from '../research-runtime/common.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -258,7 +259,7 @@ export function productionMethods(h) {
                 invalid(raw.markdown===undefined||text(raw.markdown,100000,false)&&raw.pages===undefined,'Manual report requires only bounded Markdown, without page overrides');
                 const inputPages=raw.markdown===undefined?raw.pages:[{title:raw.title,assetHash:storeProductionHtml(Buffer.from(renderMarkdownReport(raw.markdown,raw.title),'utf8'))}];
                 invalid(Array.isArray(inputPages) && inputPages.length > 0,'Report pages are required');
-                const pages = inputPages.map(x => {invalid(fields(x,['id','title','assetHash']),'Invalid report page'); const asset = readAssetInternal(root,x.assetHash); invalid(asset.bytes <= 2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Report must be UTF-8 HTML'); return {id:x.id || randomUUID(),title:x.title,assetHash:x.assetHash};});
+                const pages = inputPages.map(x => {invalid(fields(x,['id','title','assetHash']),'Invalid report page'); const asset = readAssetInternal(root,x.assetHash); invalid(asset.bytes <= 8*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Report must be UTF-8 HTML'); return {id:x.id || randomUUID(),title:x.title,assetHash:x.assetHash};});
                 const sourceMeta=plain(raw.meta)?Object.fromEntries(Object.entries(raw.meta).filter(([key])=>!['taskId','attemptId','artifactId','receiptHash'].includes(key))):raw.meta||{};
                 const reportMeta=raw.markdown===undefined?sourceMeta:{...(plain(sourceMeta)?sourceMeta:{originalMetadata:sourceMeta}),manualMarkdown:raw.markdown};
                 const r = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),title:raw.title,type:raw.type || '调研',accountIds:raw.accountIds || [],sourceUrl:raw.sourceUrl || null,collectedAt:raw.collectedAt || null,pages,pageId:raw.pageId || pages[0].id,meta:reportMeta,updatedAt:now};
@@ -327,7 +328,10 @@ export function productionMethods(h) {
             case 'registerMediaGrant': {
                 invalid(fields(raw,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash','assetHash']),'Invalid media grant fields');
                 const {t,a}=taskAttempt(p,raw,true),config=t.request.parameters?.media;
-                invalid(['claimed','waiting-user','waiting-permission'].includes(a.status) && t.contentId && !content(t.contentId).deletedAt && t.request.tools.includes('media') && t.request.tools.includes('tikhub') && fields(config,['version','maxDownloads','maxBytes']) && config.version===1 && config.maxDownloads===3 && config.maxBytes===67108864,'Media was not authorized in fixed request');
+                const research=researchMediaAuthorized(t);
+                if(research&&t.contentId)invalid(!content(t.contentId).deletedAt,'Content is trashed');
+                invalid(['claimed','waiting-user','waiting-permission'].includes(a.status) && (research || t.contentId && !content(t.contentId).deletedAt) && t.request.tools.includes('media') && t.request.tools.includes('tikhub') && fields(config,['version','maxDownloads','maxBytes']) && config.version===1 && config.maxDownloads===3 && config.maxBytes===67108864,'Media was not authorized in fixed request');
+                if(research)invalid(researchVideoAuthorized(t,p.costs,a.id,raw.videoId),'Media target was not authorized in fixed research request');
                 invalid(UUID.test(raw.sourceReceiptId) && UUID.test(raw.sourceRequestId) && UUID.test(raw.requestId) && raw.requestHash===t.requestHash && /^\d{1,32}$/.test(raw.videoId) && raw.canonicalUrl===`https://www.douyin.com/video/${raw.videoId}` && HASH.test(raw.responseHash) && HASH.test(raw.assetHash),'Invalid media receipt');
                 const source=p.costs.find(c=>c.taskId===t.id && c.attemptId===a.id && c.requestId===raw.sourceRequestId),proof=source?.usage;
                 invalid(source?.service==='tikhub' && source.status==='measured' && proof?.ok===true && proof.operation==='video' && proof.id===raw.videoId && ['sourceReceiptId','videoId','canonicalUrl','responseHash'].every(key=>proof[key]===raw[key]),'Media source receipt was not settled by broker');
@@ -348,7 +352,7 @@ export function productionMethods(h) {
                     const inputs=plain(artifact.data) && Array.isArray(artifact.data.pages) ? artifact.data.pages : artifact.assetHash ? [{title:artifact.title,assetHash:artifact.assetHash}] : [];
                     invalid(inputs.length>0 && inputs.length<=100,'Report artifact requires imported HTML pages');
                     invalid(new Set(inputs.map(page=>page?.assetHash)).size===inputs.length,'Different report pages require distinct HTML assets');
-                    const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
+                    const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=8*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
                     const details=plain(artifact.data)?artifact.data:{};invalid(details.type!=='viral-radar'&&!Object.hasOwn(details.meta??{},'radar'),'Radar reports require accepted receipt adoption');const r={id:randomUUID(),title:artifact.title,type:details.type??'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:details.sourceUrl??null,collectedAt:details.collectedAt??now,pages,pageId:pages[0].id,meta:{...(plain(details.meta)?details.meta:{}),taskId:t.id,attemptId:a.id,artifactId:artifact.id,receiptHash:a.receipt.sha256},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
                 }
                 for(const artifact of a.result.artifacts.filter(x => ['feedback','knowledge'].includes(x.kind))) {

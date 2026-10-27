@@ -102,9 +102,9 @@ test('legacy account/prompt/report edits and creations persist to Vault and reta
  snapshot=api.readProduction();
  api.mutateProduction('saveReport',{title:'新建报告',pages:report.pages,expectedToken:snapshot.editToken},{mutationId:randomUUID()});
  const docs=readVaultSnapshot(f.runtime).documents;
- assert.ok(docs.some(d=>d.relativePath.startsWith('07_提示词/新建提示_')));
+ assert.ok(docs.some(d=>d.relativePath.startsWith('11_提示词/新建提示_')));
  assert.ok(docs.some(d=>d.relativePath.startsWith('01_对标账号/')&&d.title==='新建账号'));
- assert.ok(docs.some(d=>d.relativePath.startsWith('02_内容素材/')&&d.title==='新建报告'));
+ assert.ok(docs.some(d=>d.relativePath.startsWith('10_调研报告/')&&d.title==='新建报告'));
  assert.equal(openLibrary(f.runtime).readProduction().accounts.filter(x=>x.name==='新建账号').length,1);
 });
 
@@ -176,7 +176,7 @@ test('missing source preserves history with a read-only status and reappearing s
 test('new manual Markdown report and explicit body edit keep Markdown as the current source',t=>{
  const f=fixture(t),api=openLibrary(f.runtime);let p=api.readProduction();
  p=api.mutateProduction('saveReport',{title:'手工报告',markdown:'原Markdown正文',expectedToken:p.editToken},{mutationId:randomUUID()});
- const r=p.reports[0],source=readVaultSnapshot(f.runtime).documents.find(d=>d.relativePath.startsWith('02_内容素材/'));
+ const r=p.reports[0],source=readVaultSnapshot(f.runtime).documents.find(d=>d.relativePath.startsWith('10_调研报告/'));
  assert.ok(source);assert.ok(fs.readFileSync(path.join(f.root,source.relativePath),'utf8').includes('原Markdown正文'));
  p=api.mutateProduction('saveReport',{id:r.id,title:'手工报告',markdown:'明确修改正文',expectedToken:p.editToken},{mutationId:randomUUID()});
  assert.match(fs.readFileSync(path.join(f.root,source.relativePath),'utf8'),/明确修改正文/);
@@ -194,17 +194,16 @@ test('real profile nickname aliases and explicit duplicate markers do not create
  const c=classifyVaultResources(readVaultSnapshot(f.runtime));assert.equal(c.accounts.length,1);assert.equal(c.accounts[0].record.name,'森森AI日记');assert.equal(c.reports.length,0);
 });
 
-test('oversized HTML report becomes validated safe static and JSON data pages without changing its source',t=>{
- const f=fixture(t),data=JSON.stringify({finding:'原始结构化结论',samples:['样本数据']}),html=`<!doctype html><html><body><h1>真实静态结论</h1><script>${' '.repeat(2*1024*1024)}</script><script type="application/json" id="dataset">${data}</script></body></html>`;
- f.put('01_对标账号/超限研究报告.html',html);
+test('large original HTML preserves charts and full data in the isolated reader without changing its source',t=>{
+ const f=fixture(t),data=JSON.stringify({finding:'原始结构化结论',samples:['样本数据']}),html=`<!doctype html><html><body><h1>真实结论</h1><script>${' '.repeat(2*1024*1024)}</script><script type="application/json" id="dataset">${data}</script></body></html>`;
+ f.put('01_对标账号/大页研究报告.html',html);
  const api=openLibrary(f.runtime),reports=api.readProduction().reports;
- assert.equal(reports.length,1);assert.ok(reports[0].pages.length>=2);
- const projected=reports[0].pages.map(p=>api.readAsset(p.assetHash).data);
- assert.ok(projected.every(b=>b.length<=2*1024*1024));
- assert.match(projected[0].toString(),/真实静态结论/);assert.doesNotMatch(projected[0].toString(),/<script/);
- assert.ok(projected.some(b=>b.toString().includes('原始结构化结论')));
- assert.equal(fs.readFileSync(path.join(f.root,'01_对标账号/超限研究报告.html'),'utf8'),html);
- assert.equal(reports[0].meta.vault.previewMode,'static-html-data');
+ assert.equal(reports.length,1);assert.equal(reports[0].pages.length,1);
+ assert.equal(api.readAsset(reports[0].pages[0].assetHash).data.toString(),html);
+ assert.equal(fs.readFileSync(path.join(f.root,'01_对标账号/大页研究报告.html'),'utf8'),html);
+ assert.equal(reports[0].meta.vault.previewMode,'isolated-html');
+ assert.equal(reports[0].meta.vault.preview.complete,true);
+ assert.equal(reports[0].meta.vault.preview.scriptExecution,'sandbox');
 });
 
 test('manual Markdown external edits become current report pages and editor Markdown while provenance input cannot move authority',t=>{
@@ -222,7 +221,7 @@ test('prompt enabled, favorite and builtin provenance remain source-backed acros
  const f=fixture(t),api=openLibrary(f.runtime);let p=api.createPrompt({title:'系统提示',body:'正文',builtinKey:'builtin-prompt:test',provenance:{source:'approved-seed'}},{mutationId:randomUUID()});
  p=api.setPromptFavorite(p.id,true,p.editToken,{mutationId:randomUUID()});
  p=api.setPromptEnabled(p.id,false,p.editToken,{mutationId:randomUUID()});
- const d=readVaultSnapshot(f.runtime).documents.find(x=>x.relativePath.startsWith('07_提示词/'));
+ const d=readVaultSnapshot(f.runtime).documents.find(x=>x.relativePath.startsWith('11_提示词/'));
  fs.appendFileSync(path.join(f.root,d.relativePath),'\n外部补充');
  const read=api.readPrompt(p.id);
  assert.equal(read.favorite,true);assert.equal(read.enabled,false);assert.equal(read.builtinKey,'builtin-prompt:test');assert.equal(read.provenance.source,'approved-seed');
@@ -263,10 +262,13 @@ for(const mode of ['external-edit','disappeared'])test(`resource ${mode} at jour
  if(mode==='external-edit')assert.match(fs.readFileSync(file,'utf8'),/外部新输入/);else assert.equal(reopened.readProduction().accounts[0].vaultSource.status,'source-missing');
 });
 
-test('every foreign HTML original becomes inert static text, preserving headings and table cells while dropping active navigation',t=>{
- const f=fixture(t),original='<!doctype html><html><head><script>globalThis.unsafeRan=true</script><meta http-equiv="refresh" content="0;url=http://127.0.0.1/landing"></head><body onload="globalThis.eventRan=true"><h1>静态报告</h1><table><tr><th>指标</th><th>数值</th></tr><tr><td>样本量</td><td>42</td></tr></table></body></html>';
- f.put('01_对标账号/外来报告.html',original);const api=openLibrary(f.runtime),r=api.readProduction().reports[0],asset=api.readAsset(r.pages[0].assetHash).data.toString();
- assert.notEqual(asset,original);assert.doesNotMatch(asset,/<script|<meta[^>]*refresh|<body[^>]*onload/i);assert.match(asset,/Content-Security-Policy/);assert.match(asset,/静态报告/);assert.match(asset,/指标/);assert.match(asset,/样本量/);assert.match(asset,/42/);assert.equal(fs.readFileSync(path.join(f.root,'01_对标账号/外来报告.html'),'utf8'),original);
+test('foreign HTML keeps its original DOM and scripts for the opaque isolated report reader',t=>{
+ const f=fixture(t),html='<!doctype html><html><head><script>globalThis.chart=42</script></head><body><h1>完整原报告</h1><canvas id="chart"></canvas><details><summary>评论</summary><p>楼内回复</p></details></body></html>';
+ f.put('01_对标账号/互动分析报告.html',html);
+ const api=openLibrary(f.runtime),report=api.readProduction().reports[0];
+ assert.equal(api.readAsset(report.pages[0].assetHash).data.toString(),html);
+ assert.equal(report.meta.vault.preview.scriptExecution,'sandbox');
+ assert.equal(fs.readFileSync(path.join(f.root,'01_对标账号/互动分析报告.html'),'utf8'),html);
 });
 
 for(const mode of ['metadata','managed-pages','managed-markdown'])test(`missing ${mode} HTML companion retains current source authority instead of reverting original report`,t=>{
@@ -295,4 +297,13 @@ for(const target of ['account','companion'])test(`unreadable ${target} managemen
  const source=target==='account'?current.accounts[0].vaultSource:current.reports[0].meta.vault;
  assert.equal(source.status,'source-missing');assert.equal(source.writable,false);
  fs.writeFileSync(file,saved);assert.equal(openLibrary(f.runtime).readProduction().reports[0].title,'当前报告');
+});
+
+test('new reports and prompts use declared root-contained output roles',t=>{
+ const f=fixture(t),api=openLibrary(f.runtime);const p=api.readProduction();
+ api.mutateProduction('saveReport',{title:'新输出报告',markdown:'业务报告正文',expectedToken:p.editToken},{mutationId:randomUUID()});
+ api.createPrompt({title:'新输出提示词',body:'业务提示词正文'},{mutationId:randomUUID()});
+ const docs=readVaultSnapshot(f.runtime).documents;
+ assert.ok(docs.some(d=>d.relativePath.startsWith('10_调研报告/新输出报告_')));
+ assert.ok(docs.some(d=>d.relativePath.startsWith('11_提示词/新输出提示词_')));
 });

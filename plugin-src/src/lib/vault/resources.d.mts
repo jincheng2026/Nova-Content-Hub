@@ -29,3 +29,5 @@ export function applyVaultResourceTransaction(runtimeRoot: string, transaction: 
     before: (Buffer | null)[]; after: Buffer[];
 }): void;
 export function annotateVaultResources<T>(runtimeRoot: string, value: T): T;
+/** Keeps original inline charts/scripts for the opaque, connect-none report reader. */
+export function prepareOfflineReport(html:string,source?:{root?:string;relativePath?:string}):string;

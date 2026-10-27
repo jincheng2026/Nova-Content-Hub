@@ -112,6 +112,8 @@ test('conversion refuses stale hash, occupied target, noncurrent source, unknown
 function interrupted(f, mid, result, before) {
     const receiptPath = path.join(f.root, '.workbench/mutations', `${mid}.json`), receipt = JSON.parse(fs.readFileSync(receiptPath, 'utf8'));
     receipt.status = 'pending';
+    // This fixture models an interrupted legacy journal, before the pending index migration.
+    fs.rmSync(path.join(f.root, '.workbench/pending-mutations-index.json'), {force: true});
     fs.writeFileSync(receiptPath, JSON.stringify(receipt));
     for (const name of ['SOURCE_OF_TRUTH.md', 'README.md']) fs.writeFileSync(path.join(f.root, name), before[name]);
     return receipt;
@@ -202,8 +204,13 @@ test('without overview a staged target never becomes current before the transact
         mutationId: mid
     });
     interrupted(f, mid, result, before);
+    // Keep the transaction pending while testing source selection; ordinary reads
+    // may now finish an otherwise recoverable receipt under the Vault lock.
+    fs.writeFileSync(path.join(f.root, 'README.md'), '外部编辑，待作者恢复');
     assert.equal(contentSources(readVaultSnapshot(f.runtime))[0].document.id, f.source.document.id);
     assert.equal(api.readContent(beforeContent.id).body, '人工当前稿一\n\n人工当前稿二');
+    assert.equal(resolveVaultMutation(f.runtime, mid).state, 'uncertain');
+    fs.writeFileSync(path.join(f.root, 'README.md'), before['README.md']);
     assert.equal(resolveVaultMutation(f.runtime, mid).state, 'committed');
     assert.equal(contentSources(readVaultSnapshot(f.runtime))[0].document.id, result.document.id);
 });

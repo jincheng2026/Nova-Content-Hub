@@ -1,11 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {readSourceMap, readBoundSourceCatalog, readBoundSourceFile} from './source-map.mjs';
 import {randomUUID} from 'node:crypto';
 import {bindingForRuntime, readBytes, digest, uuidFor, safe, json, writeJSON, mkdir, fail,
-    saveVaultDocument, createVaultDocument, queryVaultMutation, resumeVaultMutation} from './core.mjs';
+    saveVaultDocument, createVaultDocument, runMutation, queryVaultMutation, resumeVaultMutation} from './core.mjs';
 
 const STATE = '.workbench/resource-projection.json';
-const PROJECTION_POLICY_VERSION = 3;
+const PROJECTION_POLICY_VERSION = 4;
 const BLOCK = /<!-- nova-content-hub:resource\r?\n([\s\S]*?)\r?\n-->/g;
 const UUID = /^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
 const now = () => new Date().toISOString();
@@ -73,16 +74,69 @@ function reportCandidate(d,text) {
     return /(?:报告|复盘|分析报告|调研结论)/.test(path.posix.basename(p)) || (/(?:调研|报告库)\//.test(p)&&/分析|结论|方法|拆解|蒸馏/.test(d.title));
 }
 
+
+const RESOURCE_ROLES=new Set(['benchmark-accounts','reports','prompts']);
+const FORMAT={'.md':'markdown','.markdown':'markdown','.txt':'text','.html':'html','.htm':'html','.json':'json','.jsonl':'text'};
+function resourceSnapshot(snapshot){
+    if(!fs.existsSync(safe(snapshot.root,'.workbench/source-map.json',true)))return snapshot;
+    const documents=snapshot.documents.map(d=>({...d})),issues=[],boundSources=[];
+    for(const entry of readSourceMap(snapshot.root).sources.filter(s=>RESOURCE_ROLES.has(s.role))){
+        let catalog;
+        try{catalog=readBoundSourceCatalog(snapshot.root,{sourceId:entry.id});}catch(error){issues.push({sourceId:entry.id,relativePath:entry.root,code:error.code??'IO_ERROR',message:error.message});continue;}
+        boundSources.push(catalog.source);issues.push(...catalog.issues.map(i=>({...i,relativePath:i.relativePath??entry.root})));
+        for(const file of catalog.files){
+            if(entry.role==='reports'&&(file.relativePath.split('/').length!==2||!/(?:\.html?$|(?:^|\/)meta\.json$)/i.test(file.relativePath)))continue;
+            const relativePath=entry.mode==='internal'?path.posix.join(entry.root,file.relativePath):`${entry.id}/${file.relativePath}`;
+            const existing=entry.mode==='internal'?documents.find(d=>d.relativePath===relativePath):null;
+            const extra={explicitBinding:entry.mode==='linked'||!!entry.provenance,sourceId:entry.id,boundRole:entry.role,sourceRelativePath:file.relativePath,readRoot:catalog.source.root,readRelativePath:file.relativePath,sourceWritable:entry.mode==='internal'&&entry.writable};
+            if(existing){Object.assign(existing,extra,{section:entry.role==='benchmark-accounts'?'accounts':entry.role==='prompts'?'prompts':existing.section});continue;}
+            const format=FORMAT[path.extname(file.relativePath).toLowerCase()];if(!format)continue;
+            try{const data=readBoundSourceFile(snapshot.root,{sourceId:entry.id,relativePath:file.relativePath});documents.push({id:`source-${digest(entry.id+':'+file.relativePath).slice(0,32)}`,relativePath,hash:data.hash,format,section:entry.role==='benchmark-accounts'?'accounts':entry.role==='prompts'?'prompts':'materials',title:path.posix.basename(file.relativePath,path.posix.extname(file.relativePath)),bytes:data.bytes,writable:false,contentId:null,tNumber:null,...extra});}
+            catch(error){issues.push({sourceId:entry.id,relativePath,code:error.code??'IO_ERROR',message:error.message});}
+        }
+    }
+    return {...snapshot,documents,sourceIssues:issues,boundSources};
+}
+const sourceBytes=(snapshot,document)=>readBytes(document.readRoot??snapshot.root,document.readRelativePath??document.relativePath);
+function originalReportGroups(snapshot,out){
+    const grouped=new Set();
+    for(const meta of snapshot.documents.filter(d=>d.boundRole==='reports'&&d.format==='json'&&path.posix.basename(d.relativePath)==='meta.json'&&d.sourceRelativePath.split('/').length===2)){
+        try{
+            const metadata=JSON.parse(sourceBytes(snapshot,meta).toString('utf8')),directory=path.posix.dirname(meta.relativePath);
+            const siblings=snapshot.documents.filter(d=>d.sourceId===meta.sourceId&&d.format==='html'&&path.posix.dirname(d.relativePath)===directory);
+            for(const d of siblings)grouped.add(d.id);
+            if(metadata.workbenchVisible===false){for(const d of siblings)out.inventory.push({documentId:d.id,relativePath:d.relativePath,hash:d.hash,kind:'excluded',reason:'原报告meta明确隐藏；原件仍可按来源读取'});continue;}
+            const declared=Array.isArray(metadata.pages)&&metadata.pages.length?metadata.pages:siblings.map(d=>({file:path.posix.basename(d.relativePath),title:d.title})),pages=[];
+            for(const p of declared){
+                if(typeof p.file!=='string'||!p.file||/[\\/]/.test(p.file)||p.file.startsWith('.')){out.issues.push({code:'INVALID_REPORT_PAGE',relativePath:meta.relativePath,message:'原报告页路径无效，未越界读取'});continue;}
+                const d=siblings.find(d=>path.posix.basename(d.relativePath)===p.file);
+                if(!d){out.issues.push({code:'SOURCE_MISSING',relativePath:`${directory}/${p.file}`,message:'原报告声明页缺失'});continue;}
+                const bytes=sourceBytes(snapshot,d);if(digest(bytes)!==d.hash)fail('CONFLICT','报告在读取时变化');
+                pages.push({id:uuidFor(`${snapshot.vaultId}:${meta.sourceId}:${d.sourceRelativePath}`),title:typeof p.title==='string'?p.title:d.title,html:bytes.toString('utf8'),document:d});
+                out.inventory.push({documentId:d.id,relativePath:d.relativePath,hash:d.hash,kind:'report',reason:'原报告组内页面'});
+            }
+            if(!pages.length)continue;
+            const id=uuidFor(`${snapshot.vaultId}:source-report:${meta.sourceId}:${meta.sourceRelativePath}`),title=typeof metadata.title==='string'?metadata.title:path.posix.basename(directory).replace(/^\d{4}-\d{2}-\d{2}_/,'');
+            out.reports.push({kind:'report',id,document:{...meta,format:'html',hash:digest(JSON.stringify([meta.hash,pages.map(p=>[p.id,p.document.hash])]))},originalDocument:meta,record:{title,type:metadata.type??'调研',accountIds:[],sourceUrl:validURL(metadata.source)||null,collectedAt:typeof metadata.collectedAt==='string'&&/^\d{4}-\d\d-\d\dT/.test(metadata.collectedAt)?metadata.collectedAt:null,meta:{original:metadata}},text:'',body:pages[0].html,block:null,originalPages:pages});
+        }catch(error){out.issues.push({code:error.code??'CORRUPT',relativePath:meta.relativePath,message:error.message});}
+    }
+    return grouped;
+}
+
 /** Conservatively classify the one snapshot already read by the bridge. Every source gets an inventory entry. */
 export function classifyVaultResources(snapshot) {
-    const out={accounts:[],reports:[],prompts:[],inventory:[],issues:[]},companions=[];
+    snapshot=resourceSnapshot(snapshot);
+    const out={accounts:[],reports:[],prompts:[],inventory:[],issues:[...(snapshot.sourceIssues??[])]},companions=[];
+    const grouped=originalReportGroups(snapshot,out);
     for(const document of snapshot.documents){
+        if(grouped.has(document.id))continue;
+        if(document.boundRole==='prompts'&&document.readRoot&&fs.existsSync(safe(document.readRoot,'常用',true))&&!document.sourceRelativePath.startsWith('常用/')){out.inventory.push({documentId:document.id,relativePath:document.relativePath,hash:document.hash,kind:'excluded',reason:'原提示词工作台只列常用目录；历史方法与事件保留来源可读'});continue;}
         let text,block;
         const inv={documentId:document.id,relativePath:document.relativePath,hash:document.hash,kind:'excluded',reason:'不是结构化账号、提示词或报告'};
         out.inventory.push(inv);
         if(!['markdown','json','html','text'].includes(document.format))continue;
         try {
-            text=readBytes(snapshot.root,document.relativePath).toString('utf8');
+            text=sourceBytes(snapshot,document).toString('utf8');
             if(digest(text)!==document.hash)fail('CONFLICT','资源在投影读取时变化');
             block=management(text);
             if(block?.origin){companions.push({document,block,inv});inv.kind='companion';inv.reason='只读原件的可读管理档案';continue;}
@@ -92,18 +146,20 @@ export function classifyVaultResources(snapshot) {
             else if(document.section==='accounts'&&['markdown','json'].includes(document.format)&&!/(?:^|\/)(?:调研|其他|备份)\/|(?:总览|总表|总控|README|索引|待入库)/i.test(document.relativePath)){
                 let obj={};
                 if(document.format==='json'){try{obj=JSON.parse(body);}catch{}}
-                const name=obj.name??fm.name??fm.账号名称??field(body,['博主昵称','达人昵称','账号名称','账号名','博主名称','昵称','名称']),platform=obj.platform??fm.platform??field(body,['平台']);
+                const name=obj.account_name??obj.name??fm.name??fm.账号名称??field(body,['博主昵称','达人昵称','账号名称','账号名','博主名称','昵称','名称']),platform=obj.platform??fm.platform??field(body,['平台']);
                 if(typeof name==='string'&&name.trim()&&(platform||/账号档案|基础信息/.test(body))){
                     kind='account';record={name:name.trim(),platform:typeof platform==='string'&&platform.trim()?platform:'未知',url:validURL(obj.url??fm.url??field(body,['主页链接','主页','链接']))||validURL(body.match(/https?:\/\/[^\s<>"\])]+/)?.[0]),note:obj.note??body,tags:strings(obj.tags??fm.tags),images:[],avatarAssetHash:null,reportIds:[]};
                 }
             }
-            if(!kind&&(document.section==='prompts'||/^07_[^/]*提示词\//.test(document.relativePath))&&['markdown','text'].includes(document.format)&&!/(?:^|\/)(?:_?README|INDEX|_格式说明)(?:\.|$)/i.test(document.relativePath)){
-                kind='prompt';record={title:fm.title||document.title,body:promptBody,category:fm.category||fm.分类||'',tags:strings(fm.tags),when:fm.when||'',summary:fm.summary||''};
+            if(!kind&&(document.section==='prompts'||/^07_[^/]*提示词\//.test(document.relativePath))&&['markdown','text'].includes(document.format)&&!/(?:^|\/)(?:_.*|README|INDEX)(?:\.|$)/i.test(document.relativePath)){
+                kind='prompt';record={title:fm.title||document.title,body:promptBody,category:fm.category||fm.分类||(document.sourceRelativePath?.includes('/')?path.posix.basename(path.posix.dirname(document.sourceRelativePath)):''),tags:strings(Array.isArray(fm.tags)?fm.tags:typeof fm.tags==='string'?fm.tags.split(/[、,，]/).map(s=>s.trim()):[]),when:fm.when||'',summary:fm.summary||''};
             }
-            if(!kind&&(['research-report','report'].includes(fm.type)||['research-report','report'].includes(fm.kind)||reportCandidate(document,body))){kind='report';record={title:fm.title||document.title,type:document.section==='reviews'?'复盘':'调研',accountIds:[],sourceUrl:validURL(fm.sourceUrl)||null,collectedAt:null,meta:{}};}
+            if(!kind&&document.boundRole==='reports'&&document.format==='html'&&document.sourceRelativePath.split('/').length===2){kind='report';record={title:document.title,type:'调研',accountIds:[],meta:{}};}
+            if(!kind&&(['research-report','report'].includes(fm.type)||['research-report','report'].includes(fm.kind)||(!document.boundRole||document.boundRole!=='reports')&&reportCandidate(document,body))){kind='report';record={title:fm.title||document.title,type:document.section==='reviews'?'复盘':'调研',accountIds:[],sourceUrl:validURL(fm.sourceUrl)||null,collectedAt:null,meta:{}};}
             if(!kind||!plain(record))continue;
-            const id=UUID.test(block?.id??'')?block.id:uuidFor(`${snapshot.vaultId}:resource:${kind}:${document.id}`);
+            const id=UUID.test(block?.id??'')&&!document.explicitBinding?block.id:uuidFor(`${snapshot.vaultId}:resource:${kind}:${document.id}`);
             const source={kind,id,document,record:structuredClone(record),text,body:['prompt','report'].includes(kind)?promptBody:body,block};
+            if(kind==='account'&&document.sourceId){const dir=path.posix.dirname(document.readRelativePath);source.imageFiles=fs.readdirSync(dir==='.'?document.readRoot:safe(document.readRoot,dir)).filter(name=>/\.(?:png|jpe?g|webp)$/i.test(name)).sort((a,b)=>(a.startsWith('头像')?0:1)-(b.startsWith('头像')?0:1)||a.localeCompare(b)).map(name=>({root:document.readRoot,relativePath:path.posix.join(dir,name)}));}
             out[`${kind==='account'?'accounts':kind==='report'?'reports':'prompts'}`].push(source);
             inv.kind=kind;inv.resourceId=id;inv.reason=block?'明确工作台管理档案':'可辨识的原位资源';
         } catch(error){inv.kind='conflict';inv.reason=error.message;out.issues.push({code:error.code??'CORRUPT',relativePath:document.relativePath,message:error.message});}
@@ -111,7 +167,7 @@ export function classifyVaultResources(snapshot) {
     for(const {document,block,inv}of companions){
         const source=out.reports.find(x=>x.document.id===block.origin.documentId&&x.id===block.id);
         if(!source){inv.kind='conflict';inv.reason='关联原件缺失或标识不一致';out.issues.push({code:'SOURCE_MISSING',relativePath:document.relativePath,message:inv.reason});continue;}
-        source.record={...source.record,...block.record};source.block=block;source.companion=document;source.companionText=readBytes(snapshot.root,document.relativePath).toString('utf8');
+        source.record={...source.record,...block.record};source.block=block;source.companion=document;source.companionText=sourceBytes(snapshot,document).toString('utf8');
         if(block.bodyLayout==='after-block'){source.body=frontmatter(withoutBlock(source.companionText)).body;source.managedMarkdown=true;}
     }
     return out;
@@ -145,8 +201,10 @@ function loadState(root) {
 }
 function sourceEntry(s) {
     const foreignOriginal=s.kind==='report'&&s.document.format==='html'&&!s.managedMarkdown&&!s.block?.pageOverrides?.length;
-    return {documentId:s.document.id,relativePath:s.document.relativePath,hash:s.document.hash,format:s.document.format,
-        ...(foreignOriginal?{htmlPolicyVersion:PROJECTION_POLICY_VERSION,previewMode:/<script\b[^>]*\btype\s*=\s*["']application\/json["']/i.test(s.body)?'static-html-data':'static-html'}:{}),
+    return {documentId:s.document.id,relativePath:s.document.relativePath,hash:s.originalDocument?.hash??s.document.hash,format:s.document.format,
+        ...(s.document.sourceId&&s.document.explicitBinding?{sourceId:s.document.sourceId,sourceRelativePath:s.document.sourceRelativePath,sourceWritable:s.document.sourceWritable}:{}),
+        ...(s.originalPages?{originalPages:s.originalPages.map(p=>({id:p.id,relativePath:p.document.relativePath,hash:p.document.hash}))}:{}),
+        ...(foreignOriginal?{htmlPolicyVersion:PROJECTION_POLICY_VERSION,previewMode:'isolated-html'}:{}),
         ...(s.kind==='report'?{currentBody:s.block?.pageOverrides?.length?'managed-pages':s.managedMarkdown?'managed-markdown':'original'}:{}),
         ...(s.companion?{companion:{documentId:s.companion.id,relativePath:s.companion.relativePath,hash:s.companion.hash}}:{})};
 }
@@ -158,7 +216,7 @@ function markProjection(root,mid,kind,objectId,meta,body) {
 function htmlBytes(bytes) {
     let html;
     try{html=new TextDecoder('utf-8',{fatal:true}).decode(bytes);}catch{fail('INVALID_INPUT','报告必须是UTF-8 HTML');}
-    if(bytes.length>2*1024*1024||html.includes('\0')||!/<(?:!doctype\s+html|html|body|article|section)\b/i.test(html))fail('INVALID_INPUT','报告必须是至多2MiB的UTF-8 HTML');
+    if(bytes.length>8*1024*1024||html.includes('\0')||!/<(?:!doctype\s+html|html|body|article|section)\b/i.test(html))fail('INVALID_INPUT','报告必须是至多8MiB的UTF-8 HTML');
     return html;
 }
 function stagePage(vaultRoot,api,html) {
@@ -174,45 +232,28 @@ function stagePage(vaultRoot,api,html) {
 function reportPreviews(source) {
     const title=source.record.title;
     if(source.document.format!=='html'||source.managedMarkdown)return [{id:uuidFor(`${source.id}:page`),title,html:renderMarkdownReport(source.body,title)}];
-    // This is text extraction, not HTML sanitization: all extracted text is escaped below.
-    // No user-controlled DOM, navigation tag, script or event handler reaches the viewer.
-    const data=[];
-    for(const match of source.body.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script\s*>/gi)){
-        if(/\btype\s*=\s*["']application\/json["']/i.test(match[1])){
-            try{data.push(JSON.stringify(JSON.parse(match[2]),null,2));}catch{/* Invalid JSON stays in the untouched original. */}
-        }
-    }
-    const text=source.body.replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1\s*>/gi,'').replace(/<[^>]*>/g,'\n').replace(/\n[ \t]*\n/g,'\n\n').trim();
-    const sections=[{label:'静态正文',text},...data.map((text,i)=>({label:`结构化数据 ${i+1}`,text}))],pages=[];
-    for(const section of sections){
-        let part=0;
-        for(let i=0;i<Math.max(1,section.text.length);i+=150000){
-            const pageTitle=`${title} · ${section.label}${part?' '+(part+1):''}`;
-            const html=`<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'"><body><article><h1>${htmlEscape(pageTitle)}</h1><p>${Buffer.byteLength(source.body)>2*1024*1024?'此原件超过单页2MiB限制。':''}当前为安全静态预览，未执行脚本或动态图；完整原件仍保留在原位。</p>${section.label==='静态正文'?'':'<p>以下仅为原件附带的结构化数据分段，并非报告正文。</p>'}<pre>${htmlEscape(section.text.slice(i,i+150000))}</pre></article></body></html>`;
-            pages.push({id:uuidFor(`${source.id}:static:${section.label}:${part++}`),title:pageTitle,html});
-        }
-    }
-    return pages;
+    return (source.originalPages??[{id:uuidFor(`${source.id}:page`),title,html:source.body,document:source.document}]).map(p=>({...p,html:prepareOfflineReport(p.html,{root:p.document.readRoot??source.readRoot,relativePath:p.document.readRelativePath??p.document.relativePath})}));
 }
+
 function reportRecord(s,root,api,previous) {
     const r=s.record,overrides=s.block?.pageOverrides;
     const previews=Array.isArray(overrides)&&overrides.length?overrides:reportPreviews(s);
     const pages=previews.map(p=>({id:p.id,title:p.title,assetHash:stagePage(root,api,p.html)}));
     return {id:s.id,title:r.title,type:r.type||'调研',accountIds:strings(r.accountIds).filter(x=>UUID.test(x)),sourceUrl:validURL(r.sourceUrl)||null,collectedAt:r.collectedAt??null,pages,pageId:pages.some(p=>p.id===r.pageId)?r.pageId:pages[0].id,meta:{...(plain(r.meta)?r.meta:{}),...(typeof r.meta?.manualMarkdown==='string'&&!overrides?.length?{manualMarkdown:s.body}:{}),vault:{...sourceEntry(s),currentBody:overrides?.length?'managed-pages':s.managedMarkdown?'managed-markdown':'original',...(s.companion?{managedPath:s.companion.relativePath}:{})}},createdAt:previous?.createdAt??r.createdAt??now(),updatedAt:now(),deletedAt:r.deletedAt??null};
 }
-function accountRecord(s,previous) {
+function accountRecord(s,previous,api) {
     const r=s.record;
-    return {id:s.id,name:r.name,platform:r.platform||'未知',url:validURL(r.url),note:r.note??'',tags:strings(r.tags),images:strings(r.images),avatarAssetHash:r.avatarAssetHash??null,reportIds:strings(r.reportIds).filter(x=>UUID.test(x)),createdAt:previous?.createdAt??r.createdAt??now(),updatedAt:now(),deletedAt:r.deletedAt??null};
+    const imported=(s.imageFiles??[]).map(file=>{readBytes(file.root,file.relativePath);return api.importAsset(safe(file.root,file.relativePath),{purpose:'photo'}).assetHash;});
+    return {id:s.id,name:r.name,platform:r.platform||'未知',url:validURL(r.url),note:r.note??'',tags:strings(r.tags),images:imported.length?imported:strings(r.images),avatarAssetHash:r.avatarAssetHash??null,reportIds:strings(r.reportIds).filter(x=>UUID.test(x)),createdAt:previous?.createdAt??r.createdAt??now(),updatedAt:now(),deletedAt:r.deletedAt??null};
 }
 
 /** The runtime is a rebuildable projection. Source writes are handled before runtime capture below. */
 export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mutate}) {
-    const state=loadState(vaultRoot),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,snapshot.documents.map(d=>[d.id,d.hash])]));
+    const state=loadState(vaultRoot),classified=classifyVaultResources(snapshot),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,classified.inventory,classified.issues]));
     if(state.fingerprint===fingerprint)return;
-    const classified=classifyVaultResources(snapshot);
     const blocked=new Set();
     for(const issue of classified.issues)for(const [kind,group]of Object.entries(state.resources))for(const [id,entry]of Object.entries(group)){
-        if(entry.relativePath===issue.relativePath||entry.companion?.relativePath===issue.relativePath){entry.missing=true;entry.sourceIssue=issue;blocked.add(`${kind}:${id}`);}
+        if(entry.relativePath===issue.relativePath||entry.companion?.relativePath===issue.relativePath||entry.originalPages?.some(p=>p.relativePath===issue.relativePath)){entry.missing=true;entry.sourceIssue=issue;blocked.add(`${kind}:${id}`);}
     }
     const production=rawApi.readProduction(),next=structuredClone(production);
     delete next.editToken;delete next.mutationId;delete next.missingAssetHashes;
@@ -228,7 +269,7 @@ export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mut
             }
             const entry=sourceEntry(source);
             if(row&&JSON.stringify(previous)===JSON.stringify(entry))continue;
-            const record=kind==='account'?accountRecord(source,row):reportRecord(source,vaultRoot,rawApi,row);
+            const record=kind==='account'?accountRecord(source,row,rawApi):reportRecord({...source,readRoot:snapshot.root},vaultRoot,rawApi,row);
             if(row)Object.assign(row,record);else next[collection].push(record);
             state.resources[kind][source.id]=entry;changed=true;
         }
@@ -313,10 +354,12 @@ function resourceTransactionPlans(runtimeRoot,tx,{replay=false}={}) {
     const state=loadState(root),plans=changes.map(change=>{
         const resourceMid=uuidFor(`${mid}:resource:${change.kind}:${change.id}`),replayed=replay?receiptFor(runtimeRoot,resourceMid,change,mid):null,entry=state.resources[change.kind][change.id];
         if(replayed)return {change,resourceMid,replayed,entry};
+        if(entry?.sourceId&&entry.sourceWritable===false&&change.kind!=='report')fail('FORBIDDEN','已关联外部来源只读，请先显式导入库内再编辑');
+
         if(entry?.missing)fail('CONFLICT','原位资源来源缺失或不可辨识，当前仅可读取历史');
         let text='',target=entry;
         if(entry){
-            const sourceBytes=readSourceForMutation(root,entry.relativePath);
+            let sourceBytes;try{sourceBytes=entry.sourceId?readBoundSourceFile(root,{sourceId:entry.sourceId,relativePath:entry.sourceRelativePath}).data:readSourceForMutation(root,entry.relativePath);}catch(error){if(['ENOENT','ENOTDIR','SOURCE_NOT_AVAILABLE'].includes(error.code))fail('CONFLICT','原位资源来源已缺失');throw error;}
             if(digest(sourceBytes)!==entry.hash)fail('CONFLICT',`知识资源已在外部修改：${entry.relativePath}`);
             if(entry.companion){target=entry.companion;const companion=readSourceForMutation(root,target.relativePath);if(digest(companion)!==target.hash)fail('CONFLICT','报告管理档案已在外部修改');text=companion.toString('utf8');}
             else text=sourceBytes.toString('utf8');
@@ -333,6 +376,16 @@ function readSourceForMutation(root,relativePath){
 export function validateVaultResourceTransaction(runtimeRoot,tx){
     const context=resourceTransactionPlans(runtimeRoot,tx);
     if(context)for(const plan of context.plans)management(plan.text);
+}
+
+function createReportDocument(runtimeRoot,title,text,options){
+    return runMutation(runtimeRoot,{action:'create-report',title,text},options,()=>{
+        const root=bindingForRuntime(runtimeRoot).vaultRoot;
+        const name=title.trim().replace(/[<>:"/\\|?*\x00-\x1f]/g,'_').slice(0,60)||'未命名报告';
+        const relativePath='10_调研报告/'+name+'_'+digest(options.mutationId).slice(0,8)+'.md';
+        if(fs.existsSync(safe(root,relativePath,true)))fail('CONFLICT','报告目标已存在，未覆盖');
+        return {action:'create',path:relativePath,beforeHash:null,after:Buffer.from(text).toString('base64'),result:{document:{id:'doc-'+digest(relativePath).slice(0,32),section:'materials',title,relativePath,hash:digest(text),format:'markdown',writable:true,contentId:null,tNumber:null,bytes:Buffer.byteLength(text)},text}};
+    }).result;
 }
 
 export function applyVaultResourceTransaction(runtimeRoot,tx){
@@ -370,13 +423,13 @@ export function applyVaultResourceTransaction(runtimeRoot,tx){
                 text=prefix+encodeResourceBlock('',block).trim()+'\n'+record.meta.manualMarkdown;
             } else text=encodeResourceBlock(text,block);
             if(!entry||readOnly){
-                result=createVaultDocument(runtimeRoot,{section:change.kind==='account'?'accounts':change.kind==='prompt'?'prompts':'materials',title:record.name??record.title,text},{mutationId:resourceMid});
+                result=change.kind==='report'?createReportDocument(runtimeRoot,record.title,text,{mutationId:resourceMid}):createVaultDocument(runtimeRoot,{section:change.kind==='account'?'accounts':'prompts',title:record.name??record.title,text},{mutationId:resourceMid});
             } else result=saveVaultDocument(runtimeRoot,{id:plan.target.documentId,expectedHash:plan.target.hash,text},{mutationId:resourceMid});
         }
         const d=result.document;
         const resultBlock=management(result.text),authority=change.kind==='report'?{currentBody:resultBlock.pageOverrides?.length?'managed-pages':resultBlock.origin&&resultBlock.bodyLayout==='after-block'?'managed-markdown':'original'}:{};
         if(entry?.format==='html')state.resources[change.kind][change.id]={...entry,...authority,companion:{documentId:d.id,relativePath:d.relativePath,hash:d.hash}};
-        else state.resources[change.kind][change.id]={documentId:d.id,relativePath:d.relativePath,hash:d.hash,format:d.format,...authority};
+        else state.resources[change.kind][change.id]={...(entry??{}),documentId:d.id,relativePath:d.relativePath,hash:d.hash,format:d.format,...authority};
         if(change.kind==='report'&&authority.currentBody!=='original')delete state.resources.report[change.id].previewMode;
         delete state.fingerprint;writeJSON(root,STATE,state);
     }
@@ -387,13 +440,34 @@ export function applyVaultResourceTransaction(runtimeRoot,tx){
 export function annotateVaultResources(runtimeRoot,value) {
     const binding=bindingForRuntime(runtimeRoot);if(!binding)return value;
     const state=loadState(binding.vaultRoot);
-    const sourceView=entry=>({...entry,status:entry.missing?'source-missing':'available',writable:!entry.missing});
+    const sourceView=entry=>({...entry,status:entry.missing?'source-missing':'available',writable:!entry.missing&&entry.sourceWritable!==false});
     const prompt=p=>state.resources.prompt[p?.id]?{...p,provenance:{...(p.provenance??{}),vault:sourceView(state.resources.prompt[p.id])}}:p;
     if(Array.isArray(value))return value.map(prompt);
     if(!plain(value))return value;
     if(Array.isArray(value.reports))return {...value,accounts:value.accounts?.map(a=>state.resources.account[a.id]?{...a,vaultSource:sourceView(state.resources.account[a.id])}:a),reports:value.reports.map(r=>{
-        const source=state.resources.report[r.id];return source?{...r,meta:{...(r.meta??{}),vault:{...sourceView(source),...(source.previewMode?{preview:{complete:false,scriptExecution:false,generatedPageCount:r.pages.length,originalPath:source.relativePath,scope:'仅静态文本与附带JSON数据；未还原原排版、动态图和交互，可从资料页定位原件'}}:{})}}}:r;
+        const source=state.resources.report[r.id];return source?{...r,meta:{...(r.meta??{}),vault:{...sourceView(source),...(source.previewMode?{preview:{complete:true,scriptExecution:'sandbox',generatedPageCount:r.pages.length,originalPath:source.relativePath,scope:'原HTML、内联图表与评论层级在无主机权限的离线沙箱中阅读；外部网络请求已禁止'}}:{})}}}:r;
     })};
     if(value.snapshot)return {...value,snapshot:annotateVaultResources(runtimeRoot,value.snapshot)};
     return prompt(value);
+}
+
+/** Freeze only resources below the already bound root; external requests stay blocked by reader CSP. */
+export function prepareOfflineReport(html,{root,relativePath}={}) {
+    if(typeof html!=='string'||Buffer.byteLength(html)>8*1024*1024)fail('INVALID_INPUT','报告超过8MiB读取上限');
+    let total=Buffer.byteLength(html);const issues=[];
+    const read=(url,extensions)=>{
+        if(!root||typeof relativePath!=='string')throw Error('原报告未提供已绑定资源根');
+        if(typeof url!=='string'||/^(?:[a-z][a-z\d+.-]*:|\/\/|\/)/i.test(url)||/[?#]/.test(url))throw Error('外部或绝对资源未授权');
+        const rel=path.posix.normalize(path.posix.join(path.posix.dirname(relativePath),decodeURIComponent(url)));
+        if(!extensions.includes(path.posix.extname(rel).toLowerCase()))throw Error('资源类型未授权');
+        const bytes=readBytes(root,rel);total+=bytes.length;if(total>8*1024*1024)throw Error('离线资源总量超过8MiB');return bytes.toString('utf8');
+    };
+    html=html.replace(/<script\b([^>]*\bsrc\s*=\s*(?:"([^"]+)"|'([^']+)')[^>]*)>[\s\S]*?<\/script\s*>/gi,(whole,attrs,double,single)=>{try{const code=read(double??single,['.js']).replace(/<\/script/gi,'<\\/script'),body=/\bdefer\b/i.test(attrs)?`document.addEventListener('DOMContentLoaded',()=>{${code}\n});`:code;return `<script${attrs.replace(/\bsrc\s*=\s*(?:"[^"]*"|'[^']*')/i,'')}>${body}</script>`;}catch(error){issues.push(`${double??single}：${error.message}`);return whole;}});
+    html=html.replace(/<link\b[^>]*>/gi,whole=>{
+        if(!/\brel\s*=\s*["']stylesheet["']/i.test(whole))return whole;
+        const url=whole.match(/\bhref\s*=\s*(?:"([^"]+)"|'([^']+)')/i);if(!url)return whole;
+        try{return `<style>${read(url[1]??url[2],['.css']).replace(/<\/style/gi,'<\\/style')}</style>`;}catch(error){issues.push(`${url[1]??url[2]}：${error.message}`);return whole;}
+    });
+    if(issues.length){const notice=`<aside role="status" style="padding:12px;background:#FFF4E2;color:#7A4B00">本页保留原HTML；以下外部依赖未载入：${issues.map(htmlEscape).join('；')}</aside>`;html=/<body\b[^>]*>/i.test(html)?html.replace(/<body\b[^>]*>/i,m=>m+notice):notice+html;}
+    htmlBytes(Buffer.from(html));return html;
 }

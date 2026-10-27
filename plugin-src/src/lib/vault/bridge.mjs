@@ -45,6 +45,7 @@ export function makeVaultBridge(root) {
     const binding = bindingForRuntime(root);
     if (!binding) return null;
     let syncing = false,
+        batchDepth = 0,
         api,
         mutate,
         latest = [];
@@ -107,7 +108,7 @@ export function makeVaultBridge(root) {
         return mutate(...args);
     }
     function sync() {
-        if (syncing) return;
+        if (syncing || batchDepth) return;
         syncing = true;
         try {
             if (fs.existsSync(safe(binding.vaultRoot, projectionPath, true)))
@@ -245,6 +246,11 @@ export function makeVaultBridge(root) {
                     hash: source.document.hash,
                     writable: source.document.writable,
                     sourceConflict: source.document.sourceConflict ?? null,
+                    sourceResolution: source.sourceResolution,
+                    sourceCandidates: source.sourceCandidates,
+                    summaryOnly: source.summaryOnly,
+                    creationDocuments: source.creationDocuments,
+                    recorded: source.recorded,
                     contentDirectory: source.contentDirectory,
                     tNumber: source.tNumber,
                     publicationState: source.publicationState,
@@ -450,6 +456,22 @@ export function makeVaultBridge(root) {
         api = original;
         mutate = mutator;
         const out = {...api};
+        // Startup installs many unrelated builtins. Re-scanning the complete
+        // Vault for every prompt read made a large real library appear hung.
+        // Only trusted synchronous internal work may hold this snapshot; each
+        // underlying source mutation still enforces its own original-file CAS.
+        out.withVaultBatch = callback => {
+            sync();batchDepth++;
+            let succeeded=false;
+            try {
+                const result=callback(out);
+                if(result&&typeof result.then==='function')throw new TypeError('Vault batches must be synchronous');
+                succeeded=true;return result;
+            } finally {
+                batchDepth--;
+                if(!batchDepth&&succeeded)sync();
+            }
+        };
         for (const [name, fn] of Object.entries(api))
             if (typeof fn === 'function')
                 out[name] = (...args) => {

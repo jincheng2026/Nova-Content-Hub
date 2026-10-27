@@ -1505,7 +1505,7 @@ function importAssetInternal(root, sourcePath, options) {
     const data = read(staging);
     if (hash(data) !== assetHash || data.length !== total) fail('CORRUPT', 'Imported asset staging changed');
     const type = detectedType(data);
-    if (purpose === 'production-report' && (data.length > 2 * 1024 * 1024 || type !== 'text/plain' || !/<(?:!doctype\s+html|html|body|article|section)\b/i.test(data.toString('utf8')))) fail('INVALID_INPUT', 'Production report requires UTF-8 HTML of at most 2 MiB');
+    if (purpose === 'production-report' && (data.length > 8 * 1024 * 1024 || type !== 'text/plain' || !/<(?:!doctype\s+html|html|body|article|section)\b/i.test(data.toString('utf8')))) fail('INVALID_INPUT', 'Production report requires UTF-8 HTML of at most 8 MiB');
     if (purpose === 'production-reference' && !['image/png','image/jpeg','image/gif','image/webp','text/plain','application/json','audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(type)) fail('INVALID_INPUT','Unsupported production reference');
     if (purpose === 'template-structure' && !['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml', 'text/plain', 'application/json'].includes(type)) fail('INVALID_INPUT', 'Unsupported template structure type');
     if (type === 'image/svg+xml' && purpose !== 'template-structure') fail('INVALID_INPUT', 'SVG is accepted only as a structure reference');

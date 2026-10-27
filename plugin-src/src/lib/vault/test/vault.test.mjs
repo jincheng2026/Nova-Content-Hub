@@ -409,6 +409,7 @@ test('durable source pending receipt recovers after restart and refuses a third-
         r = JSON.parse(fs.readFileSync(receipt));
     fs.unlinkSync(path.join(root, out.document.relativePath));
     r.status = 'pending';
+    fs.rmSync(path.join(root, '.workbench/pending-mutations-index.json'), {force: true});
     fs.writeFileSync(receipt, JSON.stringify(r));
     openVault(root);
     assert.equal(
@@ -416,6 +417,7 @@ test('durable source pending receipt recovers after restart and refuses a third-
         '持久来源',
     );
     r.status = 'pending';
+    fs.rmSync(path.join(root, '.workbench/pending-mutations-index.json'), {force: true});
     fs.writeFileSync(receipt, JSON.stringify(r));
     fs.writeFileSync(
         path.join(root, out.document.relativePath),

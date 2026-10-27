@@ -13,3 +13,5 @@ export function boundReader(binding: LibraryBinding) {
     }
     return current.library;
 }
+/** A cached handle still runs a cheap guarded core read on each finite IPC. */
+export function verifiedBoundReader(binding:LibraryBinding){const library=boundReader(binding);library.readLibrarySettings();return library;}

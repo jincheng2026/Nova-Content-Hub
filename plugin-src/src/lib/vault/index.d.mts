@@ -21,6 +21,8 @@ export type VaultDocument = {
     hash: string;
     format: 'markdown' | 'html' | 'text' | 'json' | 'other';
     writable: boolean;
+    editAdapter?: 'creation-document';
+    sourceConflict?: string;
     contentId: string | null;
     tNumber: string | null;
     bytes: number;
@@ -49,7 +51,7 @@ export function readVaultSnapshot(runtimeRoot: string): VaultSnapshot | null;
 export function readVaultDocument(
     runtimeRoot: string,
     id: string,
-): {document: VaultDocument; text: string};
+): {document: VaultDocument; text: string; summaryOnly?:boolean; originalDocumentId?:string};
 export function saveVaultDocument(
     runtimeRoot: string,
     input: {id: string; expectedHash: string; text: string},
@@ -65,20 +67,15 @@ export function trashVaultDocument(
     input: {id: string; expectedHash: string},
     options: {mutationId: string},
 ): {trashed: true};
+export type SourceCandidate = {sourceId:string;documentId:string;relativePath:string;hash:string;format:VaultDocument['format'];evidence:unknown[];role?:'creation-page'|'final-script'|'working-draft'|'legacy-compare'|'topic-card'|'supporting';pageId?:string|null};
 export type VaultTaskContext = {
-    vault: {root: string; vaultId: string};
-    vaultRoot: string;
-    vaultId: string;
-    revision: string;
-    positioning: {
-        documentId: string;
-        relativePath: string;
-        hash: string;
-        text: string;
-    }[];
-    contentDirectory: string | null;
-    content: unknown;
-    privacy: string;
+    vault: {root:string;vaultId:string};vaultRoot:string;vaultId:string;revision:string;
+    positioning:{documentId:string;relativePath:string;hash:string;text:string}[];
+    sources?:import('./source-map.mjs').SourceBinding[];
+    sourceIssues?:{sourceId:string;code:string;message:string}[];
+    contentDirectory:string|null;
+    content:{contentId:string;tNumber:string;sourceDocumentId:string;relativePath:string;hash:string;writable:boolean;sourceConflict:string|null;sourceResolution:'resolved'|'conflict'|'missing';source:{sourceId:string;documentId:string;relativePath:string;hash:string};sourceCandidates:SourceCandidate[];evidence:unknown[];creationDocuments:{documentId:string;relativePath:string;hash:string;pageId?:string|null}[];summaryOnly:boolean;recorded:boolean;published:boolean;readOnlyReason:string|null;sourceMissing:boolean;relatedDocuments:{documentId:string;relativePath:string;hash:string}[]}|null;
+    privacy:string;
 };
 export function readVaultTaskContext(
     runtimeRoot: string,
@@ -104,3 +101,12 @@ export function resolveVaultMutation(
     | {state: 'uncertain'};
 
 export {backupVault, verifyVaultBackup, restoreVaultBackup, inspectVaultCopy, migrateVault, inspectVaultRestore} from './backup.mjs';
+
+export {createDefaultSourceMap,readSourceMap,resolveSource,linkSource,importSource,readSourceInventory} from './source-map.mjs';
+export {readBoundSourceCatalog,readBoundSourceFile} from './source-map.mjs';
+export {planJinchengSupplement,importJinchengSupplement} from './import-jincheng.mjs';
+export {readWorkFlow,appendStageArtifact,confirmCheckpoint,answerMetaQuestion,metaQuestionsForStage} from './workflow.mjs';
+export {saveTopicCandidates,adoptTopic,resolveCurrentWork,selectCurrentWork} from './topics.mjs';
+export type {WorkRef,CheckpointKind,AuthorEvidence,DecisionInput,WorkFlow} from './workflow.mjs';
+export type {SourceBinding,SourceRole,SourceMap} from './source-map.mjs';
+export type {TopicCandidate} from './topics.mjs';
