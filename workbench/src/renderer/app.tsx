@@ -244,7 +244,7 @@ function App() {
     }
 
     automaticRefresh.current = () => {
-        if (!changesPending.current || active.current || localPending.current || backgroundRefresh.current || document.hidden || !status?.currentName || status.busy) return;
+        if (!changesPending.current || active.current || localPending.current || backgroundRefresh.current || document.hidden || !status?.currentName || status.needsReselect || status.busy) return;
         changesPending.current = false;
         const epoch = epochRef.current;
         void backgroundAction(async () => {
@@ -270,7 +270,7 @@ function App() {
         document.addEventListener('visibilitychange', visible);
         return () => {unsubscribe(); window.removeEventListener('focus', focus); document.removeEventListener('visibilitychange', visible);};
     }, []);
-    useEffect(() => {if (!acting) automaticRefresh.current();}, [acting, status?.currentName]);
+    useEffect(() => {if (!acting) automaticRefresh.current();}, [acting, status?.currentName, status?.needsReselect]);
     useEffect(() => {
         const prevent = (event: BeforeUnloadEvent) => {
             if (dirtyRef.current || hasManagedDrafts()) {
@@ -331,7 +331,7 @@ function App() {
         } finally {
             try {
                 const next = await refreshStatus();
-                if (next.currentName && refreshWorkspaceAfter) {
+                if (next.currentName && !next.needsReselect && refreshWorkspaceAfter) {
                     try {
                         if (!background && succeeded) {
                             if (refreshWorkspaceOnSuccess) changesPending.current = true;

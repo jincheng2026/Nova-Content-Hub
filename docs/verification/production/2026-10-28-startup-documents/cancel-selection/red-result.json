@@ -1,0 +1,43 @@
+{
+  "scope": "isolated full built Electron renderer/native IPC, synthetic machine binding, only dialogs.library controlled to cancel; no installed-app or real OS panel claim",
+  "selections": 1,
+  "calls": [
+    "nova:openLibrary",
+    "nova:status",
+    "nova:status",
+    "nova:listContents",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:listContents",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:listContents",
+    "nova:status",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary"
+  ],
+  "sourceCalls": [
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary",
+    "nova:listContents",
+    "nova:readWorkspace",
+    "nova:listCoverAssets",
+    "nova:readWorkspaceLibrary"
+  ],
+  "workerCalls": [],
+  "errors": "请重新选择内容库以确认文件访问。（LIBRARY_NOT_READY）",
+  "needsReselect": true,
+  "before": "090bd0fc61302f42aa6c1302c68186cd6aeabdb0cbea90cc6a561ffed69080b3",
+  "after": "090bd0fc61302f42aa6c1302c68186cd6aeabdb0cbea90cc6a561ffed69080b3"
+}

@@ -1,0 +1,15 @@
+{
+  "scope": "isolated full built Electron renderer/native IPC, synthetic machine binding, only dialogs.library controlled to cancel; no installed-app or real OS panel claim",
+  "selections": 1,
+  "calls": [
+    "nova:openLibrary",
+    "nova:status",
+    "nova:status"
+  ],
+  "sourceCalls": [],
+  "workerCalls": [],
+  "errors": "",
+  "needsReselect": true,
+  "before": "fa8800fa73de82b5ce6276a861235f9af63e1e67ed0da6b2f2edad8f5e5fab37",
+  "after": "fa8800fa73de82b5ce6276a861235f9af63e1e67ed0da6b2f2edad8f5e5fab37"
+}

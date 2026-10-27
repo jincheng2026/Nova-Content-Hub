@@ -119,3 +119,12 @@
 独立运行最终 `node --test workbench/test/startup-access.test.mjs`：**10 项通过，0 失败、0 skipped，2.404 秒**。覆盖零旧源 worker 调用、binding 字节保全、IPC 门禁、取消/错选/绑定或保存失败、同安装恢复、exe/版本/路径/平台/架构变更、损坏/链接 receipt、空库、开发 harness、真实 visible Vault 同库重选、无 pending 更换不可访问旧库、creation 无 current 原恢复可用。执行负责人另报告 native/renderer typecheck 及相关 42 项回归通过；本审查未重复全仓测试或触碰真实用户库。
 
 最终结论：这轮定点范围没有剩余可定位 P1/P2，可以冻结源码进入重新构建和安装验证。先前 e3a1b44 候选的 Documents TCC 阻塞仍是已观察到的真实安装失败，不能被此单元测试结果覆盖；新包是否能在系统许可待定时先显示窗口，以及明确选库后的恢复，必须按最终安装产物记录。本审查没有触发、批准或操作系统权限界面。
+
+
+## 取消选库后的 renderer 刷新：三行最终复核
+
+本节仅复核 `app.tsx` 的三行条件差异：automaticRefresh 增加 needsReselect 拦截，nativeAction.finally 增加相同条件，自动刷新 effect 增加 needsReselect 依赖。此前真实安装候选取消 OpenPanel 后仍试图读取旧工作区并显示 LIBRARY_NOT_READY；这是真实 P2，原 native IPC 门禁虽保住源访问，renderer 仍需停止无效请求。
+
+本轮没有发现新增 P1/P2。automaticRefresh 在门禁分支直接返回，尚未清 changesPending，因此不丢待刷新信号。成功选择后的 needsReselect true→false 会触发新增 effect，且 finally 的 active/acting 解锁保留，正常库读取仍恢复。取消时状态仍为 needsReselect，finally 只刷新 status，不再读工作区；焦点与可见性事件同样被挡住。原 guard 对 dirty 和 managed drafts 的保护及用户保存/放弃流程完全未改，没有新增绕过草稿保护的入口；没有把既有 clearEditor 行为改成新自动丢弃。
+
+已读执行方隔离真实 Electron/完整 renderer 点击证据 `/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-selection-cancel-ui-zT4gFY/result.json`：受控 dialog 返回 null 后只有 openLibrary/status/status，sourceCalls 和 workerCalls 均为空，errors 为空，needsReselect 仍 true，binding SHA256 前后一致。它明确不声称真实 OS panel 或安装应用验收；执行方报告 types 通过。本审查没有重复跑全套，也没有竞争读取真实大库。该三行补丁可进入最终合批构建。
