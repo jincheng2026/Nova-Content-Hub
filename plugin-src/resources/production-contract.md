@@ -49,3 +49,9 @@
 按产物结构构建 `{"workerId":"自己的值","claimToken":"自己的值","result":{"summary":"实际结果","artifacts":[...]},"mutationId":"新UUIDv4"}`，运行 `RUN production submit --handoff UUID --file JSON`。成功后运行 status，核对当前 attempt、submitted、receipt.taskId/attemptId/requestHash/resultHash/sha256，保存回执。只有提交成功才告知已回传。
 
 产物提交、工作台人工验收 accepted、用户明确采用正文／参考／包装是不同步骤。 用户可在工作台将 submitted 结果明确拒绝为 rejected，保留原产物、回执及有来源的拒绝原因；助手不能替用户拒绝。rejected 不可重试、打开继续、验收或采用，不能用旧 claim 继续。用户须修改要求并明确创建新任务，才执行新的固定请求。skill 不代替用户 accept 或修改库内正文文件。恢复任务从 context 读当前状态；submitted/accepted/rejected/cancelled/failed 终态不继续写进度。已接单及等待中的任务没有可靠原会话标识时，工作台只打开对应助手，用户回原聊天继续；不新建聊天接管旧 claim，不猜测原会话。created 尝试的短启动指令已包含 Skill 与交接编号；先读取固定 context 中的全部请求，不要求用户复制或粘贴完整需求。
+
+整篇创作新增受控原片链路：仅新固定请求同时含 `tikhub`、`media` 与 `parameters.media:{version:1,maxDownloads:3,maxBytes:67108864}` 时可用。`production fetch-media --handoff UUID --stdin` 输入 `{claimToken,workerId,url}`，url 必须是 `https://www.douyin.com/video/数字编号`；短链需用户提供规范 URL。命令内部读取 TikHub video 详情，再用安全 sourceReceipt 请求 `tool:media,operation:fetch,sourceReceiptId`。媒体 broker 不接受 URL、本机路径、hash 或客户端 referenceId。TikHub 详情返回 `{videoId,canonicalUrl,title,description,sourceReceipt:{id,videoId,canonicalUrl,responseHash}}`；下载地址仅在受控 broker 内存中短期保留。来源 receipt 过期后可重读详情缓存取得新 receipt；已登记的本 attempt grant 可经 context 恢复，无需再次调用 TikHub。
+
+下载只允许 HTTPS 443、每一跳全公网 DNS 固定连接地址、至多三次跳转、90 秒总时限、64MiB 流式限制；拒绝 HTML、HLS、压缩与未知媒体类型。不携带 Cookie 或 Authorization。成功导入仅登记 `attempt.mediaGrants`，每 attempt 至多三个不同 receipt；不改变内容参考。用返回 grant.referenceId 执行 `production asr`，它从 context 已登记参考或本 attempt grant 组装最小 reference；将真实 ASR 结果填入 transcript artifact 的 reference 后 submit，等待用户采用。不得编造逐字稿或随意替换 hash。专用转写任务仍绑定冻结 referenceId、baselineHash、intent；纠错意图禁止重新 ASR。任务终结、取消或切 attempt 后 grant 只作审计，不再允许工具使用。
+
+`production import` 仅用于 `production-report` HTML；不能用助手提供的任意路径导入 `production-reference`。本地媒体由工作台明确选择；网络媒体只走上述受控 receipt 链路。费用仅按 TikHub 详情真实调用结算一次，媒体下载不再次记 TikHub 请求；失败或库切换不授予内容访问权。

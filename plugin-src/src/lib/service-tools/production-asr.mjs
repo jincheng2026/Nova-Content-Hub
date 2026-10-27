@@ -23,7 +23,8 @@ export async function productionAsr({envelope,context,payload},call=callServiceT
   if(!payload.referenceId)fail('INVALID_INPUT','整篇创作须显式提供一个已登记referenceId，不自动猜选媒体。');
   referenceId=payload.referenceId;
  }
- const reference=context.creation.references.find(value=>value.id===referenceId);
+ const registered=context.creation.references.find(value=>value.id===referenceId),grant=!binding&&attempt.mediaGrants?.find(value=>value.referenceId===referenceId&&value.requestHash===task.requestHash);
+ const reference=registered??(grant?{id:grant.referenceId,url:grant.canonicalUrl,title:`抖音 ${grant.videoId}`,platform:'抖音',originalText:'',correctedText:'',segments:[],corrections:[],analysis:'',mediaAssetHash:grant.assetHash,subtitleAssetHash:null}:null);
  if(!reference)fail('REFERENCE_NOT_FOUND','固定参考不存在，请回读context并核对referenceId。');
  serializeProductionReference(reference);
  if(binding){if(await productionReferenceHash(reference)!==binding.baselineHash)fail('STALE_INPUT','参考版本已变化，请基于当前参考重新创建提取任务。');validateTranscriptReference(reference,binding.intent);}
@@ -34,5 +35,5 @@ export async function productionAsr({envelope,context,payload},call=callServiceT
  let serviceResult;
  try{serviceResult=await call(envelope.serviceDescriptorPath,{taskId:task.id,attemptId:attempt.id,claimToken:payload.claimToken,workerId:payload.workerId,requestId:randomUUID(),tool:'asr',audioPath:reference.mediaAssetHash,allowCloud:false});}
  catch(error){const code=typeof error?.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';fail(code,`受控转写失败（${code}）；请记录真实错误，不重试或改用其他引擎。`);}
- return{referenceId,mediaAssetHash:reference.mediaAssetHash,requestedEngine:asr.localEngine,serviceResult};
+ return{referenceId,reference,mediaAssetHash:reference.mediaAssetHash,requestedEngine:asr.localEngine,serviceResult};
 }

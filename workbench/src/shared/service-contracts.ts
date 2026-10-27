@@ -20,7 +20,7 @@ export interface ServiceReadiness {localAsr: {available: boolean; reason: string
 export type TikHubOperation = 'douyin-search'|'user-search'|'profile'|'user-posts'|'video'|'comments'|'xhs-search'|'xhs-profile';
 export interface TikHubSearchFilters {sortType?: 'general'|'likes'|'latest'; timeRange?: 'any'|'day'|'week'|'half-year'; contentType?: 'any'|'video'|'image'}
 // The legacy model shape is validated only to return MODEL_SERVICE_DISABLED without rewriting old tasks.
-export type ServiceToolInput = {tool: 'tikhub'; operation: TikHubOperation; id: string; cursor?: string; search?: TikHubSearchFilters} | {tool: 'asr'; audioPath: string; allowCloud?: boolean} | {tool: 'model'; instruction: string; text: string};
+export type ServiceToolInput = {tool: 'tikhub'; operation: TikHubOperation; id: string; cursor?: string; search?: TikHubSearchFilters} | {tool:'media'; operation:'fetch'; sourceReceiptId:string} | {tool: 'asr'; audioPath: string; allowCloud?: boolean} | {tool: 'model'; instruction: string; text: string};
 export type ServiceToolRequest = ServiceToolInput & {taskId: string; attemptId: string; claimToken: string; workerId: string; requestId: string};
 export interface ServiceToolResult {data: unknown; service: string; requestsUsed: 0|1; collectedAt: string; cacheHit: boolean}
 export interface ServiceBrokerDescriptor {version: 1; host: '127.0.0.1'; port: number; token: string}

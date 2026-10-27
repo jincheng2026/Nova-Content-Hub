@@ -33,6 +33,7 @@ export interface ProductionWorkerOperations {
  productionContext:{args:{binding:LibraryBinding;taskId:string};result:Core.ProductionContext};
  productionReserve:{args:{binding:LibraryBinding;input:ProductionToolIdentity & {service:string;usage?:Core.ProductionJSON};mutationId:string};result:ProductionSnapshot};
  productionTaskMutation:{args:{binding:LibraryBinding;op:'recordCost';input:ProductionToolIdentity & {status:'actual'|'measured'|'estimated'|'unknown'|'cancelled';amount:number|null;usage?:Core.ProductionJSON};mutationId:string};result:ProductionSnapshot};
+ productionMediaGrant:{args:{binding:LibraryBinding;input:ProductionToolIdentity & {sourceReceiptId:string;sourceRequestId:string;requestHash:string;videoId:string;canonicalUrl:string;responseHash:string};source:string;mutationId:string};result:Core.ProductionMediaGrant};
  productionAsset:{args:{binding:LibraryBinding;taskId:string;attemptId:string;claimToken:string;workerId:string;audioPath:string};result:{data:Uint8Array;extension:string}};
 
  productionMedia:{args:{binding:LibraryBinding;contentId:string;assetHash:string};result:{data:Uint8Array;detectedType:string}};

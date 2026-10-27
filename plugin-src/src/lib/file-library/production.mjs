@@ -57,7 +57,8 @@ export function validateProductionMetadata(meta,kind,fail) {
     for (const t of p.tasks) {
         check(fields(t,['id','kind','title','contentId','accountId','request','requestHash','attempts','activeAttemptId','createdAt','updatedAt']) && KINDS.includes(t.kind) && text(t.title,500,false) && (t.contentId === null || UUID.test(t.contentId)) && (t.accountId === null || UUID.test(t.accountId)) && validRequest(t.request) && digest(t.request) === t.requestHash && objects(t.attempts) && t.attempts.length > 0 && t.attempts.some(a => a.id === t.activeAttemptId) && iso(t.createdAt) && iso(t.updatedAt),'task');
         for (const a of t.attempts) {
-            check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','rejection','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
+            check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','rejection','mediaGrants','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
+            check(a.mediaGrants===undefined || objects(a.mediaGrants) && a.mediaGrants.length<=3 && unique(a.mediaGrants.map(g=>g.sourceReceiptId)) && unique(a.mediaGrants.map(g=>g.referenceId)) && a.mediaGrants.every(g=>fields(g,['id','referenceId','assetHash','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash','createdAt']) && UUID.test(g.referenceId) && HASH.test(g.assetHash) && UUID.test(g.sourceReceiptId) && UUID.test(g.sourceRequestId) && g.requestHash===t.requestHash && /^\d{1,32}$/.test(g.videoId) && g.canonicalUrl===`https://www.douyin.com/video/${g.videoId}` && HASH.test(g.responseHash) && iso(g.createdAt)),'media grants');
             check(a.status==='rejected' ? fields(a.rejection,['reason','at']) && text(a.rejection.reason,2000,false) && a.rejection.reason===a.rejection.reason.trim() && !a.rejection.reason.includes('\0') && iso(a.rejection.at) : a.rejection===undefined,'rejection');
             check(a.id === t.activeAttemptId || !LIVE.includes(a.status),'retired attempt');
             check(['submitted','accepted','rejected'].includes(a.status) ? validResult(a.result) && fields(a.receipt,['sha256','taskId','attemptId','requestHash','resultHash']) && a.receipt.taskId === t.id && a.receipt.attemptId === a.id && a.receipt.requestHash === t.requestHash && a.receipt.resultHash === digest(a.result) && a.receipt.sha256 === digest({taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)}) : a.result === null && a.receipt === null,'receipt');
@@ -127,7 +128,7 @@ export function productionMethods(h) {
             invalid(task?.contentId===next.contentId&&task.activeAttemptId===record.attemptId&&attempt?.status==='accepted'&&attempt.receipt?.sha256===record.receiptHash,'Adoption requires current accepted receipt');
             invalid(!before.some(item=>item.taskId===record.taskId&&item.attemptId===record.attemptId&&item.artifactIds?.some(id=>record.artifactIds.includes(id))),'Artifact has already been adopted');
             const args={task,attemptId:record.attemptId,creation:previous,body:previousBody,bodyHash:bodyDigest(previousBody),now:record.at};
-            const all=attempt.result.artifacts.map(value=>value.id),candidate=record.artifactIds.length===all.length&&record.artifactIds.every(id=>all.includes(id))?productionArtifactBundleDraft(args):record.artifactIds.length===1?productionArtifactDraft({...args,artifactId:record.artifactIds[0]}):null;
+            const all=attempt.result.artifacts.map(value=>value.id),candidate=record.artifactIds.length===1?productionArtifactDraft({...args,artifactId:record.artifactIds[0]}):record.artifactIds.length===all.length&&record.artifactIds.every(id=>all.includes(id))?productionArtifactBundleDraft(args):null;
             invalid(candidate&&candidate.body===body,'Adoption must apply the receipted artifact body');
             for(const [key,value]of Object.entries(candidate.creationPatch))if(key!=='adoptions')invalid(JSON.stringify(value)===JSON.stringify(next[key]),'Adoption fields must match receipted artifact ownership');
         }
@@ -200,7 +201,7 @@ export function productionMethods(h) {
             invalid(c.deletedAt===null,'Previously added radar topic is trashed; restore the original topic');
             radarTopic={contentId,candidate};
         }
-        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost'];
+        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost','registerMediaGrant'];
         const token = raw.expectedToken;
         if (!workerOps.includes(op)) invalid(HASH.test(token),'A current production editToken is required');
         const out = mutate('update','default',{productionOp:op,productionInput:raw},token,options,'workspace',(meta) => {
@@ -279,9 +280,35 @@ export function productionMethods(h) {
             case 'failTask': {const {t,a} = taskAttempt(p,raw,true); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); invalid(fields(raw.failure,['code','message']) && text(raw.failure.code,100,false) && text(raw.failure.message,2000,false),'Failure reason required'); a.status = 'failed'; a.failure = raw.failure; a.updatedAt = t.updatedAt = now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
             case 'cancelTask': {const {t,a} = taskAttempt(p,raw); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); a.status='cancelled';a.updatedAt=t.updatedAt=now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
             case 'retryTask': {const {t,a} = taskAttempt(p,raw); invalid(!['submitted','accepted','rejected'].includes(a.status),'Submitted results require a user decision; rejected tasks require a new request'); if(p.costs.some(c => c.taskId === t.id && ['unknown','reserved'].includes(c.status))) fail('COST_UNKNOWN','Reconcile outstanding service costs before retry'); if(LIVE.includes(a.status)) {a.status='cancelled';a.updatedAt=now;} const next=newAttempt(raw.host || a.host,now);t.attempts.push(next);t.activeAttemptId=next.id;t.updatedAt=now;break;}
+            case 'registerMediaGrant': {
+                invalid(fields(raw,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash','assetHash']),'Invalid media grant fields');
+                const {t,a}=taskAttempt(p,raw,true),config=t.request.parameters?.media;
+                invalid(['claimed','waiting-user','waiting-permission'].includes(a.status) && t.contentId && !content(t.contentId).deletedAt && t.request.tools.includes('media') && t.request.tools.includes('tikhub') && fields(config,['version','maxDownloads','maxBytes']) && config.version===1 && config.maxDownloads===3 && config.maxBytes===67108864,'Media was not authorized in fixed request');
+                invalid(UUID.test(raw.sourceReceiptId) && UUID.test(raw.sourceRequestId) && UUID.test(raw.requestId) && raw.requestHash===t.requestHash && /^\d{1,32}$/.test(raw.videoId) && raw.canonicalUrl===`https://www.douyin.com/video/${raw.videoId}` && HASH.test(raw.responseHash) && HASH.test(raw.assetHash),'Invalid media receipt');
+                const source=p.costs.find(c=>c.taskId===t.id && c.attemptId===a.id && c.requestId===raw.sourceRequestId),proof=source?.usage;
+                invalid(source?.service==='tikhub' && source.status==='measured' && proof?.ok===true && proof.operation==='video' && proof.id===raw.videoId && ['sourceReceiptId','videoId','canonicalUrl','responseHash'].every(key=>proof[key]===raw[key]),'Media source receipt was not settled by broker');
+                const existing=a.mediaGrants?.find(g=>g.sourceReceiptId===raw.sourceReceiptId);
+                if(existing){invalid(['assetHash','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash'].every(key=>existing[key]===raw[key]),'Media receipt cannot be rebound');break;}
+                invalid((a.mediaGrants?.length??0)<config.maxDownloads,'Media download limit reached');
+                const asset=readAssetInternal(root,raw.assetHash);invalid(asset.bytes>0 && asset.bytes<=config.maxBytes && ['video/mp4','video/webm','audio/mp4','audio/mpeg','audio/wav','audio/x-wav','audio/ogg','audio/flac'].includes(asset.detectedType),'Invalid media asset');
+                const grant={id:randomUUID(),referenceId:randomUUID(),assetHash:raw.assetHash,sourceReceiptId:raw.sourceReceiptId,sourceRequestId:raw.sourceRequestId,requestHash:t.requestHash,videoId:raw.videoId,canonicalUrl:raw.canonicalUrl,responseHash:raw.responseHash,createdAt:now};
+                (a.mediaGrants??=[]).push(grant);a.updatedAt=t.updatedAt=now;break;
+            }
             case 'submitTask': {
                 const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(validResult(raw.result),'Invalid result artifacts');
                 for(const artifact of raw.result.artifacts) if(artifact.assetHash) checkAsset(artifact.assetHash);
+                const creation=t.contentId ? content(t.contentId).productionState || p.creations.find(c=>c.contentId===t.contentId) : null;
+                for(const artifact of raw.result.artifacts) if(['research','transcript'].includes(artifact.kind) && Array.isArray(artifact.data?.references)) for(const reference of artifact.data.references){
+                    invalid(plain(reference),'Invalid result reference');
+                    const prior=creation?.references.find(r=>r.id===reference.id);
+                    if(reference.mediaAssetHash!=null){
+                        const known=prior && prior.mediaAssetHash===reference.mediaAssetHash && prior.url===reference.url && prior.platform===reference.platform;
+                        const granted=a.mediaGrants?.some(g=>g.referenceId===reference.id && g.assetHash===reference.mediaAssetHash && g.canonicalUrl===reference.url && reference.platform==='抖音' && g.requestHash===t.requestHash);
+                        invalid(known || granted,'Reference media must belong to this creation or exact attempt grant');checkAsset(reference.mediaAssetHash);
+                    }
+                    if(reference.subtitleAssetHash!=null){invalid(prior && prior.subtitleAssetHash===reference.subtitleAssetHash,'Reference subtitles must belong to this creation');checkAsset(reference.subtitleAssetHash);}
+                }
+
                 a.result=structuredClone(raw.result);const receipt={taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)};a.receipt={...receipt,sha256:digest(receipt)};a.status='submitted';a.progress=100;a.updatedAt=t.updatedAt=now;
                 for(const artifact of a.result.artifacts.filter(x => x.kind === 'report' && t.request.parameters?.workflow!=='viral-radar')) {
                     const inputs=plain(artifact.data) && Array.isArray(artifact.data.pages) ? artifact.data.pages : artifact.assetHash ? [{title:artifact.title,assetHash:artifact.assetHash}] : [];
@@ -370,7 +397,7 @@ export function productionMethods(h) {
 
 export function productionAssetHashes(meta) {
     const hashes = new Set();
-    if(meta.production) {for(const a of meta.production.accounts){for(const h of a.images)hashes.add(h);if(a.avatarAssetHash)hashes.add(a.avatarAssetHash);}for(const r of meta.production.reports) for(const page of r.pages) hashes.add(page.assetHash);for(const t of meta.production.tasks)for(const a of t.attempts)for(const artifact of a.result?.artifacts||[]){if(artifact.assetHash)hashes.add(artifact.assetHash);if(['research','transcript'].includes(artifact.kind))for(const hash of referenceAssetHashes(artifact.data?.references))hashes.add(hash);}}
+    if(meta.production) {for(const a of meta.production.accounts){for(const h of a.images)hashes.add(h);if(a.avatarAssetHash)hashes.add(a.avatarAssetHash);}for(const r of meta.production.reports) for(const page of r.pages) hashes.add(page.assetHash);for(const t of meta.production.tasks)for(const a of t.attempts){for(const grant of a.mediaGrants??[])hashes.add(grant.assetHash);for(const artifact of a.result?.artifacts||[]){if(artifact.assetHash)hashes.add(artifact.assetHash);if(['research','transcript'].includes(artifact.kind))for(const hash of referenceAssetHashes(artifact.data?.references))hashes.add(hash);}}}
     for(const c of [...(meta.production?.creations || []),...(meta.productionState ? [meta.productionState] : [])]) for(const r of c.references) for(const k of ['mediaAssetHash','subtitleAssetHash']) if(r[k]) hashes.add(r[k]);
     return [...hashes];
 }

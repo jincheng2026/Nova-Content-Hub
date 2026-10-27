@@ -60,3 +60,7 @@
 在后台通读一次，检查主要收获是否明确、长句是否好念、称呼是否一致、所有数字/经历是否有来源、教程承诺是否能兑现。时长用实际试读或说明采用的估算口径；没有真实试读时明确未实测。
 
 当前稿、叙事和配套制作清单能相互对应；已确认部分保持一致；新候选和已采用版本分清。提交前按审稿方法核对 context 最新版本，正文变化时重新基于当前稿完成，不用旧建议覆盖。
+
+### 对标抖音原片与真实逐字稿
+
+若本任务冻结了 media 权限，已有规范作品 URL 可执行 `production fetch-media --handoff ID --stdin`，JSON 仅为 `{claimToken,workerId,url}`。短链不支持，需用户补充 `https://www.douyin.com/video/数字编号`。收到 grant 后以其 referenceId 执行 `production asr`；命令返回 reference 最小结构与真实识别结果。保留 reference 的 id/url/platform/mediaAssetHash，将真实 text/segments 写入 transcript artifact；分析另写 analysis，不改原始逐字稿。原片和逐字稿提交为候选，用户采用前不写入 creation。重新读取 context 可恢复本 attempt 的 mediaGrants；同一作品重用已有 grant。旧任务未冻结 media 时不扩权，不用 import 或路径绕过。费用未知、原片不可用或本地 ASR 失败时提交真实阻塞，不捏造转写。
