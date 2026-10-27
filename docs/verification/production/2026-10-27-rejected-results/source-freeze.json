@@ -1,0 +1,23 @@
+{
+  "baseCommit": "7ea1b9b438e7596e02ce1154437fe7a3316e7e1d",
+  "frozenAt": "2026-10-27T09:07:42.786896+00:00",
+  "sha256": {
+    "plugin-src/resources/production-contract.md": "5b2d820d0358bfa35792e09c42115f9971ccc09e1108294f72ba9771aa664f31",
+    "plugin-src/src/lib/file-library/production.mjs": "764311690904aa2cfe8adaaafceb39ee0db567ad815f0182ed4ec3c1852d68d8",
+    "plugin-src/src/lib/file-library/production.d.ts": "b0640e20a078ada8977abfa9e57a855835e610b94eb3d242ec7e11a331f82b5b",
+    "plugin-src/src/lib/file-library/production-archive.mjs": "9ab7db7cae4a849a8e04480711831384b52439ecb976490e359930f180ef5f17",
+    "workbench/src/main/production-controller.mts": "5a4e28f3bf3b37e955a004b49bef4131f25fd9a422099f2502fd6295b4c77446",
+    "workbench/src/shared/production-contracts.ts": "813cf53ff4f61950250ebcfb43af8573256abea18ae7a7d0a92a2a7e38f152c1",
+    "workbench/src/shared/production-validation.ts": "13ebc775d9a7826f041635098540865607a76eeade6a773968b0fabf48097d9e",
+    "workbench/src/shared/production-report-status.ts": "a0fa162046f4b3693b34e724221b4a99516c9c76eedf0a384e03a7a377450d10",
+    "workbench/src/renderer/production-workspace.tsx": "36a690fec9c46d046482f4bfeeb466692d562da79949e85fa5f6299f2ac2a61a",
+    "workbench/src/renderer/production-rejection.tsx": "c159d256646f2133b6920c6872db3115979d1a208be64fb96b772a5f4099c491",
+    "workbench/src/renderer/radar-workspace.tsx": "953330fbae1761abe74763104f56f2340081f5060519ae152682124c52bfaaf7",
+    "workbench/src/renderer/content-title-recommendations.tsx": "33cbb8564f5f33dd269e592e02ae8c70e91a09230a4926a3ad270c3a81770e08",
+    "plugin-src/src/lib/file-library/test/production-rejection.test.mjs": "c5fba76b27c0802c5d4eb0c5b1bf1873a773b8e95c92c165c49c578c6942b15e",
+    "workbench/test/production-rejection.test.mjs": "a38586c7c95d065c3159afc17f0e616c24b895eb4154c0cbb657627bf9747eb0",
+    "workbench/test/production-report-status.test.mjs": "7db9046d35558a827cdf504fb59c610872838e4527e93af2cf0534b10d6f16ed",
+    "workbench/scripts/production-rejection-ui-probe.mjs": "ff648ff2044b94c9676cadcaa59d6199ecc3502ef3faaeab72ea5d42060d9190",
+    "workbench/test-support/production-rejection-probe-entry.mjs": "f76dc5e845158ca3d502818a182daecf3dc2d274b656fce61d8693aaf9b5e0a6"
+  }
+}

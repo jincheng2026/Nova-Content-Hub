@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "invalid bundle preview leaves both bad submitted results rejectable without accepting",
+    "rejection freezes receipt/CAS, retains reason on conflict, and rejects two bad results without adopting or retrying",
+    "only a new explicit start creates a fresh task with revised requirements after rejection",
+    "rejected task details retain original result and archive while hiding retry/open/accept controls"
+  ]
+}

@@ -13,7 +13,7 @@ export interface ProductionMutation {op: ProductionManualOp; input: Record<strin
 export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
 export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}
 export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string; accountId?: string; mode: 'simple'|'detailed'; comments: boolean; workflow?: 'content-creation'; transcript?: ProductionTranscriptStart}
-export type ProductionAction = {taskId: string; action: 'cancel'|'retry'; host?: Core.ProductionHost} | {taskId: string; action: 'accept'; expectedToken: string; attemptId: string; receiptHash: string};
+export type ProductionAction = {taskId: string; action: 'cancel'|'retry'; host?: Core.ProductionHost} | {taskId: string; action: 'accept'; expectedToken: string; attemptId: string; receiptHash: string} | {taskId:string; action:'reject'; expectedToken:string; attemptId:string; receiptHash:string; reason:string};
 export interface ProductionDraft {contentId: string; body: string; editToken: string; bodyHash: string; productionToken: string; creationPatch: Partial<ProductionCreation>}
 export type ProductionFileKind = 'images'|'report'|'media';
 export interface ProductionFile {assetHash: string; originalName: string; detectedType: string; bytes: number; url?: string}

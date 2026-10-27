@@ -56,6 +56,7 @@ export class ProductionController {
  async launch(taskId:string):Promise<{opened:boolean;message?:string}> {
   const b=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding:b}),task=snapshot.tasks.find(t=>t.id===taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!task||!attempt)fail('NOT_FOUND','任务不存在。');
+  if(attempt.status==='rejected')fail('ATTEMPT_INACTIVE','此结果已拒绝。请修改要求并显式创建新任务。');
   if(['accepted','cancelled','failed'].includes(attempt.status))fail('ATTEMPT_INACTIVE','此任务已结束，请重试后打开。');
   if(attempt.status==='submitted')return {opened:false,message:'任务结果已提交，请在创作页或任务结果中预览并确认采用。'};
   if(attempt.status!=='created'){
@@ -112,14 +113,15 @@ export class ProductionController {
   this.owner.noPending();
   const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),task=snapshot.tasks.find(t=>t.id===input.taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!attempt)fail('NOT_FOUND','任务不存在。');
+  if(attempt.status==='rejected')fail('ATTEMPT_INACTIVE','此结果已拒绝。请修改要求并显式创建新任务。');
   if(input.host&&input.host!==attempt.host)await this.write({...this.pendingBase(),kind:'mutate',op:'retryTask',input:{taskId:input.taskId,host:input.host,expectedToken:snapshot.editToken}});
   return this.launch(input.taskId);
  });}
  actProductionTask(input:ProductionAction){this.validate('actProductionTask',input);return this.owner.exclusive(async()=>{
   const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),task=snapshot.tasks.find(t=>t.id===input.taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!attempt)fail('NOT_FOUND','任务不存在。');
-  const request=input.action==='accept'?{taskId:input.taskId,attemptId:input.attemptId,receiptHash:input.receiptHash,expectedToken:input.expectedToken}:input.action==='retry'?{taskId:input.taskId,host:input.host??attempt.host,expectedToken:snapshot.editToken}:{taskId:input.taskId,expectedToken:snapshot.editToken};
-  const written=await this.write({...this.pendingBase(),kind:'mutate',op:input.action==='accept'?'acceptTask':input.action==='retry'?'retryTask':'cancelTask',input:request}) as ProductionSnapshot;const current=await this.read();return {...current,...(written.archiveWarnings?.length?{archiveWarnings:written.archiveWarnings}:{})};
+  const request=input.action==='reject'?{taskId:input.taskId,attemptId:input.attemptId,receiptHash:input.receiptHash,expectedToken:input.expectedToken,reason:input.reason}:input.action==='accept'?{taskId:input.taskId,attemptId:input.attemptId,receiptHash:input.receiptHash,expectedToken:input.expectedToken}:input.action==='retry'?{taskId:input.taskId,host:input.host??attempt.host,expectedToken:snapshot.editToken}:{taskId:input.taskId,expectedToken:snapshot.editToken};
+  const written=await this.write({...this.pendingBase(),kind:'mutate',op:input.action==='reject'?'rejectTask':input.action==='accept'?'acceptTask':input.action==='retry'?'retryTask':'cancelTask',input:request}) as ProductionSnapshot;const current=await this.read();return {...current,...(written.archiveWarnings?.length?{archiveWarnings:written.archiveWarnings}:{})};
  });}
  openProductionLink(input:ProductionInputs['openProductionLink']){this.validate('openProductionLink',input);return this.owner.exclusive(async()=>{const message=await this.callbacks.open(this.owner.current(),input);return {opened:true as const,...(input.kind==='task-archive'&&message?{message}:{})};});}
  chooseProductionFiles(input:ProductionInputs['chooseProductionFiles']){this.validate('chooseProductionFiles',input);return this.owner.exclusive(async()=>{this.owner.noPending();const sources=await this.owner.dialogs.productionFiles?.(input.kind);if(!sources?.length)return null;const hashes:string[]=[];for(const source of sources){const stat=await fs.lstat(source);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>64*1024*1024)fail('INVALID_FILES','请选择64 MiB以内的普通文件。');hashes.push(createHash('sha256').update(await fs.readFile(source)).digest('hex'));}const files=await this.write({...this.pendingBase(),kind:'files',fileKind:input.kind,sources,hashes}) as ProductionFile[];return files.map(f=>({...f,...(input.kind==='images'?{url:this.owner.covers.grant(f.assetHash)}:{})}));});}

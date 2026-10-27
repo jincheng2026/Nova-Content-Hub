@@ -1,0 +1,42 @@
+✔ submitted archive writes full Markdown, structured facts, hashes and real CAS report links without changing receipt (4994.8705ms)
+✔ archive refuses traversal, live drafts and symlink output without writing outside the library (3125.662875ms)
+✔ edited projection is preserved with a warning and cannot silently become a new source fact (4532.36125ms)
+✔ projection publication failure leaves submission committed and rebuilding recovers the same receipt (2174.507792ms)
+✔ attempt and library archive bindings remain separate across retry and rebuild (5026.309584ms)
+✔ the four fixed archive categories are derived from task facts (6730.26975ms)
+✔ missing CAS references make archive not ready and are recoverable without changing the submitted evidence (2851.325083ms)
+✔ whole-library backup and restore preserve archive files and their relative CAS links (4018.851958ms)
+✔ one submitted receipt previews the whole bundle without writes; one CAS save adopts all fields after acceptance (5417.652709ms)
+✔ bundle refuses stale baselines, duplicate field owners, mixed review/filming and one invalid artifact without partial writes (19705.274167ms)
+✔ packaging appends without changing a human selection; accepted save failure retains original body CAS for retry (5458.548459ms)
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (4510.072084ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (8540.319708ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (4992.825666ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (4137.153459ms)
+✔ fixed requests reject secret parameters and invalid JSON (742.529333ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (3453.373292ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (2894.1615ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (1308.489ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (3148.282125ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (494.578209ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (1923.185292ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (1170.084042ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (868.856917ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (2175.159125ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (1286.463958ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (957.403708ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (1532.615667ms)
+✔ content creation workflow validates scope, ensures creation once and reuses the active task after a launch failure (7296.231542ms)
+✔ workflow keeps one attempt across both waiting states and submitted result for each host without granting extra permissions (18604.202833ms)
+✔ desktop accepts an optional image avatar reference, rejects non-hash input and grants avatar URLs independently of screenshots (2911.380708ms)
+✔ report state follows exact submitted and accepted receipts; names or dangling references cannot create acceptance (4010.582959ms)
+✔ manual report metadata cannot impersonate receipt provenance; legacy exact source metadata remains readable (5448.899375ms)
+✔ rejected report remains precisely associated and readable without being counted as accepted (4815.585125ms)
+ℹ tests 34
+ℹ suites 0
+ℹ pass 34
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44446.99025
