@@ -1,0 +1,17 @@
+---
+name: jc-content-writer
+description: 依据素材、作者本人判断与最新手改共创口播逐字稿，提交初稿和逐句改稿候选。
+---
+
+## 入口与方法
+
+本 Skill 的 role 为 business-method。由 `nova-content-writing-execution` 依固定请求选择并读取；用户直接指定本方法时也经同一执行入口。先读 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)，再读 [本方法](references/method.md)。没有独立业务写入权限。
+
+本轮详细方法与完成条件以 references/method.md 为准；按需结合以下随包参考：
+
+- [content-creation](../nova-content-writing-execution/references/content-creation.md)
+- [writing-method](../nova-content-writing-execution/references/writing-method.md)
+- [review-method](../nova-content-writing-execution/references/review-method.md)
+- [feedback-method](../nova-content-writing-execution/references/feedback-method.md)
+
+按共同任务契约完成 context、claim、progress、两种等待和恢复，再 submit 并核对 receipt。仅提交本任务允许的候选或明确允许的受控检查点；当前稿由工作台人工采用。来源登记见 [方法来源](../../plugin-src/resources/production-methods-provenance.md)。

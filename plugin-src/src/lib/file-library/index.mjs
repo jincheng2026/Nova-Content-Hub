@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import {makeVaultBridge,applyVaultSourceTransaction} from '../vault/bridge.mjs';
 import {productionMethods, validateProductionMetadata, productionAssetHashes} from './production.mjs';
 import path from 'node:path';
 import os from 'node:os';
@@ -613,6 +614,8 @@ function currentState(tx, targets) {
 
 function applyTransaction(root, tx, assertIdentity = () => {}) {
     assertIdentity();
+    applyVaultSourceTransaction(root, tx);
+    assertIdentity();
     const contentDir = path.join(root, KINDS[tx.kind].directory, tx.objectId);
     if (!safePath(contentDir, true)) {
         if (tx.intent.operation !== 'create') fail('RECOVERY_CONFLICT', 'Existing content directory disappeared');
@@ -722,6 +725,7 @@ function fields(value, patch = false) {
 }
 
 function library(root, initialInfo, rootIdentity) {
+    const vaultBridge = makeVaultBridge(root);
     function assertRootIdentity() {
         directory(root);
         const current = fs.lstatSync(root, {bigint: true});
@@ -820,7 +824,7 @@ function library(root, initialInfo, rootIdentity) {
             let meta;
             const now = new Date().toISOString();
             if (operation === 'create') {
-                contentId = forcedId || randomUUID();
+                contentId = forcedId || (kind === 'content' && vaultBridge && !vaultBridge.isSyncing() ? vaultBridge.contentIdForMutation(mutationId) : randomUUID());
                 objectId(kind, contentId);
                 const existingDir = path.join(root, KINDS[kind].directory, contentId);
                 if (safePath(existingDir, true)) {
@@ -858,6 +862,7 @@ function library(root, initialInfo, rootIdentity) {
             }
             const after = [jsonBytes(meta), ...(KINDS[kind].files.length === 2 ? [operation === 'create' || Object.hasOwn(input, 'body') ? Buffer.from(input.body) : before[1]] : [])];
             metadata(after[0], contentId, kind);
+            if (kind === 'content') vaultBridge?.validateMutation({operation, contentId, input, mutationId, before, after});
             const intent = {
                 schemaVersion: 3,
                 libraryId: initialInfo.libraryId,
@@ -973,7 +978,7 @@ function library(root, initialInfo, rootIdentity) {
         return {versions, truncated, limit, scanLimit, entryLimit, responseBytesLimit};
     }
 
-    return Object.freeze({
+    const api = Object.freeze({
         ...businessMethods(root, locked, mutate, list),
         ...productionMethods({root, libraryId: initialInfo.libraryId, locked, mutate, snapshot, result, metadata, fail, assertRootIdentity, ensureDirectory, syncDirectory, hook, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent, storeProductionHtml: bytes => {const sha=hash(bytes);ensureDirectory(path.dirname(assetPath(root,sha)));immutableFile(assetPath(root,sha),bytes,assertRootIdentity);return sha;}}),
         ...templateJobMethods({
@@ -1096,6 +1101,7 @@ function library(root, initialInfo, rootIdentity) {
             };
         }),
     });
+    return vaultBridge ? vaultBridge.wrap(api, mutate) : api;
 }
 
 function canonicalRoot(root) {

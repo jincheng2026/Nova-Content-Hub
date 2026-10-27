@@ -2,6 +2,8 @@ import {prepareResearchAdoption} from './production-research.mjs';
 import {validProductionComposition,validProductionAdoptions,migrateProductionComposition} from './production-composition.mjs';
 import {productionArtifactBundleDraft,productionArtifactDraft} from './production-artifacts.mjs';
 import {productionArchive} from './production-archive.mjs';
+import {freezeCreatorContext,businessSkillForTask} from './production-creator-context.mjs';
+import {readVaultTaskContext} from '../vault/index.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -105,7 +107,7 @@ export function productionMethods(h) {
     function rebuildProductionArchive(taskId){invalid(UUID.test(taskId),'Expected task UUID');return locked(()=>{const p=current().production||emptyProduction(),task=p.tasks.find(t=>t.id===taskId);return productionArchive({...h,task,reports:p.reports,readAsset:hash=>readAssetInternal(root,hash),assetPath:hash=>assetPath(root,hash)});});}
     function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const hash of new Set([...p.accounts.flatMap(a=>[...a.images,...(a.avatarAssetHash?[a.avatarAssetHash]:[])]),...p.creations.flatMap(c=>referenceAssetHashes(c.references)),...p.tasks.flatMap(t=>t.attempts.flatMap(a=>(a.result?.artifacts??[]).filter(a=>REFERENCE_ARTIFACTS.includes(a.kind)).flatMap(a=>referenceAssetHashes(a.data?.references))))])) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
     function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
-    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
+    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),creatorContext:t?.request.parameters?.creatorContext??null,businessMethod:t?.request.parameters?.businessMethodVersion??null,history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
     function trustedRadar(p,r) {
         if(r.type!=='viral-radar'||!plain(r.meta?.radar))return null;
         try {
@@ -289,7 +291,17 @@ export function productionMethods(h) {
                 invalid(KINDS.includes(raw.kind) && text(raw.title,500,false),'Invalid task kind or title');
                 const c = raw.contentId ? content(raw.contentId) : null; if(c) invalid(c.deletedAt === null,'Content is trashed');
                 if(raw.accountId) editable(find(p.accounts,raw.accountId,'account'));
-                const request = raw.request || {prompt:raw.prompt,parameters:raw.parameters ?? {},tools:raw.tools || [],budget:raw.budget || {amount:0,currency:'REQ'},bodyHash:Object.hasOwn(raw,'bodyHash') ? raw.bodyHash : c?.bodyHash || null};
+                const request = structuredClone(raw.request || {prompt:raw.prompt,parameters:raw.parameters ?? {},tools:raw.tools || [],budget:raw.budget || {amount:0,currency:'REQ'},bodyHash:Object.hasOwn(raw,'bodyHash') ? raw.bodyHash : c?.bodyHash || null});
+                invalid(plain(request.parameters),'Task parameters must be an object');
+                // Freeze the actual sources before hashing. Caller-supplied snapshots never
+                // replace the bound creator information or turn it into tool authorization.
+                const creatorContext=freezeCreatorContext(meta.profile,readVaultTaskContext(root,c?.id??null));
+                const method=businessSkillForTask(raw.kind,request.parameters,raw.accountId??null);
+                request.parameters={...request.parameters,creatorContext,...(method?{businessSkill:method.id,businessMethodVersion:method}:{})};
+                if(['positioning-interview','topic-suggestion'].includes(request.parameters.workflow)){
+                    request.tools=[];request.budget={amount:0,currency:'REQ'};
+                    request.parameters={...request.parameters,comments:false,budgetEnabled:false,maxRequestsPerTask:0};
+                }
                 invalid(validRequest(request),'Invalid fixed request; parameters must be bounded JSON without secrets');
                 if(c) invalid(request.bodyHash === c.bodyHash,'Fixed body hash is stale');
                 const a = newAttempt(raw.host || 'codex',now); p.tasks.push({id:raw.id || randomUUID(),kind:raw.kind,title:raw.title,contentId:c?.id || null,accountId:raw.accountId || null,request:structuredClone(request),requestHash:digest(request),attempts:[a],activeAttemptId:a.id,createdAt:now,updatedAt:now}); break;

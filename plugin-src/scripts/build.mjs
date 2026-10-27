@@ -1,6 +1,6 @@
 import {readFile, writeFile, mkdir, cp, rm, mkdtemp} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
-import {resolve, join, basename} from 'node:path';
+import path, {resolve, join, basename} from 'node:path';
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
@@ -14,11 +14,15 @@ const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
 export const skillNames = ['nova-content-template-study', 'nova-content-template-restore', 'nova-content-cover'];
 export const productionSkillNames = ['nova-content-research-execution', 'nova-content-writing-execution'];
-export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution', ...productionSkillNames];
+export const businessSkillRegistry = JSON.parse(fs.readFileSync(join(source, 'resources/business-skills.json'), 'utf8'));
+export const businessSkillNames = businessSkillRegistry.methods.map(method => method.id);
+export const allSkillNames = [...skillNames, 'nova-content-cover-execution', 'nova-content-template-execution', ...productionSkillNames, ...businessSkillNames];
 export function skillCapabilities(mode) {
     return Object.fromEntries(allSkillNames.map(name => [name, {
-        namespace: skillNames.includes(name) ? 'contract' : name.replace('nova-content-', '').replace('-execution', ''),
-        executable: !skillNames.includes(name) && mode === 'disabled'
+        role: skillNames.includes(name) ? 'contract' : businessSkillNames.includes(name) ? 'business-method' : 'executor',
+        namespace: skillNames.includes(name) ? 'contract' : businessSkillNames.includes(name) ? 'business-method' : name.replace('nova-content-', '').replace('-execution', ''),
+        executable: !skillNames.includes(name) && !businessSkillNames.includes(name) && mode === 'disabled',
+        ...(businessSkillNames.includes(name) ? {executor: businessSkillRegistry.methods.find(method => method.id === name).executor} : {})
     }]));
 }
 const json = (path, value) => writeFile(path, JSON.stringify(value, null, 2) + '\n');
@@ -73,21 +77,73 @@ export function integrityPaths(platform = process.platform) {
     };
     visit('src');
     const methodFiles=[];
-    const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const relative=`${directory}/${entry.name}`;if(entry.isDirectory())methods(relative);else if(entry.isFile()&&entry.name.endsWith('.md'))methodFiles.push(relative);}};
-    for(const name of productionSkillNames)methods(`skills/${name}/references`);
-    const support = ['plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
+    // Hash every actual Skill resource, including helpers, schemas and nested assets.
+    // A Markdown-only list silently misses dependencies when a method adds a script.
+    const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const item=`${directory}/${entry.name}`;if(!releaseSourceFilter(join(source,item)))continue;if(entry.isDirectory())methods(item);else if(entry.isFile())methodFiles.push(item);else throw Error('Skill resources must be regular files: '+item);}};
+    for(const name of allSkillNames)methods(`skills/${name}`);
+    const generatedResources=(directory,prefix)=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){if(!releaseSourceFilter(join(source,directory,entry.name)))continue;if(entry.isDirectory())generatedResources(`${directory}/${entry.name}`,`${prefix}/${entry.name}`);else if(entry.isFile())methodFiles.push(`${prefix}/${entry.name}`);}};
+    for(const name of skillNames){generatedResources('references',`skills/${name}/references`);generatedResources('schemas',`skills/${name}/schemas`);methodFiles.push(`skills/${name}/scripts/content.mjs`);}
+    const support = ['plugin-src/resources/business-skills.json', 'plugin-src/resources/business-skills-contract.md', 'plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
     return [...new Set([...modules, ...support, ...methodFiles, 'plugin-src/resources/production-methods-provenance.md', 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
         'runtime/manifest.json', 'runtime/launch.mjs', 'runtime/LICENSE', `runtime/${platform === 'win32' ? 'node.exe' : 'node'}`, 'bin/run-node', 'bin/run-node.cmd'])];
 }
 
-async function validateSkills() {
+// Package links always use POSIX semantics; only the final lookup uses the
+// target filesystem. Keep this boundary explicit for native Windows builders.
+export function resolveSkillReference(file, target, name, {sourceRoot = source, repoRoot = root, paths = path} = {}) {
+    const installed = paths.relative(sourceRoot, file).split(paths.sep).join('/');
+    const normalized = path.posix.resolve('/', path.posix.dirname(installed), target);
+    const local = paths.join(normalized.startsWith('/plugin-src/') ? repoRoot : sourceRoot, ...normalized.slice(1).split('/'));
+    const generatedRoot = ['references', 'schemas'].find(value => normalized.startsWith(`/skills/${name}/${value}/`));
+    const generated = skillNames.includes(name) && generatedRoot
+        ? paths.join(sourceRoot, generatedRoot, ...normalized.slice(`/skills/${name}/${generatedRoot}/`.length).split('/'))
+        : null;
+    return {installed, local, generated};
+}
+
+export async function validateSkills() {
+    if (businessSkillRegistry.format !== 'nova-business-skill-registry' || businessSkillRegistry.schemaVersion !== 1 || businessSkillRegistry.version !== 1 || new Set(allSkillNames).size !== allSkillNames.length) throw Error('Invalid business Skill registry');
+    if (!businessSkillNames.includes(businessSkillRegistry.defaultPositioningSkill)) throw Error('Missing default positioning Skill');
+    const discovered = fs.readdirSync(join(source, 'skills'), {withFileTypes:true}).filter(entry=>entry.isDirectory()).map(entry=>entry.name).sort();
+    if (JSON.stringify(discovered) !== JSON.stringify([...allSkillNames].sort())) throw Error('Skill directory and registry mismatch');
+    const resourcePath = dependency => {
+        if (typeof dependency !== 'string' || !/^(?:skills\/|plugin-src\/resources\/)/.test(dependency) || dependency.split('/').some(part => ['', '.', '..'].includes(part)) || dependency.includes('\\')) throw Error('Invalid business Skill dependency: '+dependency);
+        return join(dependency.startsWith('skills/') ? source : root, dependency);
+    };
+    for (const method of businessSkillRegistry.methods) {
+        if (method.role !== 'business-method' || !['adapted','adapted-from-history'].includes(method.status) || method.version !== 1 || !productionSkillNames.includes(method.executor) || !Array.isArray(method.workflows) || method.workflows.some(value=>typeof value!=='string'||!value)) throw Error('Invalid business Skill role: '+method.id);
+        if (!method.source?.files?.length || method.source.files.some(file=>!file.path || !/^[a-f0-9]{64}$/.test(file.sha256)) || !method.dependencies.includes(`skills/${method.id}/SKILL.md`)) throw Error('Missing business Skill provenance: '+method.id);
+        for (const dependency of method.dependencies) if (!fs.statSync(resourcePath(dependency)).isFile()) throw Error('Missing business Skill dependency: '+dependency);
+        if (method.source.kind === 'workspace-source') for (const file of method.source.files) {
+            const input=resourcePath(`skills/${file.path}`);
+            if(createHash('sha256').update(await readFile(input)).digest('hex')!==file.sha256) throw Error('Workspace Skill source changed; refresh registry provenance: '+file.path);
+        }
+    }
     for (const name of allSkillNames) {
         const text = await readFile(join(source, 'skills', name, 'SKILL.md'), 'utf8');
         const frontmatter = /^---\nname: ([^\n]+)\ndescription: ([^\n]+)\n---\n/.exec(text);
         if (!frontmatter || frontmatter[1] !== name || frontmatter[2].length < 10 || /TODO|\[INSERT/.test(text)) throw Error('Invalid Skill identity: ' + name);
-        if (skillNames.includes(name) ? !text.includes('executable:false') : productionSkillNames.includes(name) ? !text.includes('production-contract.md') || !text.includes('production-artifacts.md') : !text.includes('AUTH_NOT_CONFIGURED') || !text.includes('contract check-request') || !text.includes('submit')) throw Error('Invalid Skill capability: ' + name);
+        const method = businessSkillRegistry.methods.find(value=>value.id===name);
+        if (skillNames.includes(name) ? !text.includes('executable:false') : productionSkillNames.includes(name) ? !text.includes('production-contract.md') || !text.includes('production-artifacts.md') : method ? method.source.kind === 'workspace-source' ? !text.includes('production-contract.md') || !text.includes('production-artifacts.md') : !text.includes('business-method') || !text.includes('business-skills-contract.md') : !text.includes('AUTH_NOT_CONFIGURED') || !text.includes('contract check-request') || !text.includes('submit')) throw Error('Invalid Skill capability: ' + name);
+        const inspect = async directory => {
+            for (const entry of fs.readdirSync(directory,{withFileTypes:true})) {
+                const file=join(directory,entry.name);
+                if (entry.isDirectory()) {await inspect(file);continue;}
+                if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+                const markdown=await readFile(file,'utf8');
+                for (const match of markdown.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {
+                    const target=match[1].split('#')[0];
+                    if (!target || /^[a-z][a-z0-9+.-]*:/i.test(target)) continue;
+                    // Installed Skills live in package/skills, while shared resources
+                    // live in package/plugin-src/resources. Validate that real layout.
+                    const {installed, local, generated} = resolveSkillReference(file, target, name);
+                    if (!fs.existsSync(local) && !(generated&&fs.existsSync(generated))) throw Error(`Broken Skill reference: ${installed} -> ${target}`);
+                }
+            }
+        };
+        await inspect(join(source,'skills',name));
     }
 }
 

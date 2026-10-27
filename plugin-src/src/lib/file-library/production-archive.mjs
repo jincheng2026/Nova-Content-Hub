@@ -1,4 +1,5 @@
 import {productionArchiveCategory} from './production-archive-category.mjs';
+import {publishVaultProductionArchive} from './production-vault-archive.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash,randomUUID} from 'node:crypto';
@@ -42,7 +43,7 @@ export function productionArchive({root,libraryId,task,reports,assertRootIdentit
   const names=fs.readdirSync(home).sort(),expected=Object.keys(outputs).sort();let matches=JSON.stringify(names)===JSON.stringify(expected);
   for(const [name,bytes]of Object.entries(outputs)){const file=path.join(home,name),stat=safePath(file,true);if(!stat?.isFile()||stat.size!==Buffer.byteLength(bytes)){matches=false;continue;}const fd=fs.openSync(file,fs.constants.O_RDONLY|fs.constants.O_NOFOLLOW);try{if(!fs.readFileSync(fd).equals(Buffer.from(bytes)))matches=false;}finally{fs.closeSync(fd);}}
   if(!matches){reply.ready=false;warnings.push('归档文件或清单含人工修改、陌生文件或未完成写入，已保留现场；请另存整理内容后移走此投影目录，再重建。');}
-  return reply;
+  return publishVaultProductionArchive({root,task,attempt,archive:reply});
  }
  const staging=path.join(parent,`.nova-archive-${randomUUID()}`);ensureDirectory(staging);
  try{
@@ -53,5 +54,5 @@ export function productionArchive({root,libraryId,task,reports,assertRootIdentit
   try{assertRootIdentity();safePath(staging);for(const name of Object.keys(outputs)){const file=path.join(staging,name);if(safePath(file,true)?.isFile())fs.unlinkSync(file);}fs.rmdirSync(staging);}catch{}
   throw error;
  }
- return reply;
+ return publishVaultProductionArchive({root,task,attempt,archive:reply});
 }

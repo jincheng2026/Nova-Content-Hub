@@ -4,6 +4,7 @@ import os from 'node:os';
 import {randomUUID, createHash} from 'node:crypto';
 import {validRelease} from '../content.mjs';
 import {openLibrary} from '../lib/file-library/index.mjs';
+import {vaultRootForRuntime} from '../lib/vault/index.mjs';
 
 const MAX_BYTES = 64 * 1024;
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(value);
@@ -120,7 +121,7 @@ export async function prepareNativeHandoff(directory, binding, task, release, op
     const kind = options?.kind === undefined ? 'cover' : options.kind;
     taskFor(task, kind);
     const {library, context} = contextFor(binding, task, true, kind);
-    const id = randomUUID(), launch = hostURL(task.host, id, binding.root, options, kind, library, context);
+    const id = randomUUID(), launch = hostURL(task.host, id, vaultRootForRuntime(binding.root) || binding.root, options, kind, library, context);
     const before = directoryStat(directory, true);
     const envelope = {
         format: 'nova-content-native-handoff',

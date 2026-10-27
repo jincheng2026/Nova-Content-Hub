@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {openLibrary} from '../lib/file-library/index.mjs';
+import {vaultRootForRuntime,readVaultTaskContext} from '../lib/vault/index.mjs';
 import {validRelease} from '../content.mjs';
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
 const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
@@ -32,17 +33,19 @@ export function productionHandoffContext(envelope,launching=false){
  const attempt=context.attempt??context.task?.attempts.find(a=>a.id===envelope.task.attemptId);
  check(context.task?.requestHash===envelope.task.requestHash&&attempt?.host===envelope.task.host,'Fixed task changed');
  if(launching)check(context.task.activeAttemptId===attempt.id&&attempt.status==='created','Attempt is already claimed or no longer awaiting launch');
- return {library,context:{...context,attempt,...(envelope.serviceDescriptorPath ? {serviceDescriptorPath:envelope.serviceDescriptorPath} : {})}};
+ return {library,context:{...context,attempt,...(context.task.request.parameters?.workflow==='positioning-interview'?{positioningCheckpoint:readVaultTaskContext(envelope.binding.root,null)}:{}),...(envelope.serviceDescriptorPath ? {serviceDescriptorPath:envelope.serviceDescriptorPath} : {})}};
 }
 export async function prepareProductionHandoff(target,binding,task,release,options={}){
  releaseFor(release);bindingFor(binding);taskFor(task);
  const {context}=productionHandoffContext({binding,task},true),id=randomUUID();
  const expectedSkill=`nova-content-${productionExecutionCapability(context.task)}-execution`,skill=options.installedSkill||expectedSkill;
  check(skill===expectedSkill,'Installed skill does not match the fixed task capability');
- const prompt=[`请使用 ${skill} 执行工作台任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),`先按 Skill 运行 production context --handoff ${id}，完整读取冻结 REQUEST/context、正文与全部资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。`].join('\n');
+ const business=context.task.request.parameters?.businessSkill;
+ const businessSkill=typeof business==='string'&&/^[a-z][a-z0-9-]{0,100}$/.test(business)?business:null;
+ const prompt=[`请使用 ${skill} 执行工作台任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),...(businessSkill?[`本任务业务方法：${businessSkill}。读取固定 context 后按该方法执行，接单和提交继续使用 ${skill}。`]:[]),`先按 Skill 运行 production context --handoff ${id}，完整读取冻结 REQUEST/context、定位与公开边界、正文和相关资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。`].join('\n');
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
- url.searchParams.set(task.host==='codex'?'path':'cwd',binding.root);url.searchParams.set('prompt',prompt);
+ url.searchParams.set(task.host==='codex'?'path':'cwd',vaultRootForRuntime(binding.root)||binding.root);url.searchParams.set('prompt',prompt);
  if(url.href.length>2048)fail('内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。','HANDOFF_PATH_TOO_LONG');
  if(options.serviceDescriptorPath!==undefined)check(typeof options.serviceDescriptorPath==='string'&&path.isAbsolute(options.serviceDescriptorPath)&&!options.serviceDescriptorPath.includes('\0'),'Invalid service descriptor path');
  const before=directory(target,true),envelope={format:'nova-content-production-handoff',schemaVersion:1,handoffId:id,pairId:release.pairId,AUTH_MODE:release.AUTH_MODE,platform:release.platform,arch:release.arch,binding,task,...(options.serviceDescriptorPath ? {serviceDescriptorPath:options.serviceDescriptorPath} : {}),createdAt:new Date().toISOString()};

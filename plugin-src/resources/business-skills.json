@@ -1,0 +1,567 @@
+{
+  "format": "nova-business-skill-registry",
+  "schemaVersion": 1,
+  "version": 1,
+  "defaultPositioningSkill": "xindao-interview",
+  "routing": {
+    "requestParameter": "businessSkill",
+    "compatibleParameter": "businessMethod",
+    "positioningWorkflow": "positioning-interview",
+    "fallback": "executor-stage-method",
+    "unknownMethod": "stop-and-report-unavailable"
+  },
+  "methods": [
+    {
+      "id": "jc-media-research",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "research",
+        "account-analysis",
+        "viral-radar",
+        "reference-research"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "评论区洞察Skill公开版 2",
+        "files": [
+          {
+            "path": "jc-media-research/SKILL.md",
+            "sha256": "1a341e7f978ef9fca52ad9ab1d8c822b8e78c0efde44aab7b5dd55852892969e"
+          },
+          {
+            "path": "jc-media-research/references/account-report.md",
+            "sha256": "059ff85fd4292c49ab4f6a0f9dc5be6bfa7e99cdaf77b9ac2d564a14cf844238"
+          },
+          {
+            "path": "jc-media-research/references/data-contract.md",
+            "sha256": "790aa58927ff2671d60f6d45e95ea068f5bb049e8bc123ae25d11ea100b62132"
+          },
+          {
+            "path": "jc-media-research/references/evidence-analysis.md",
+            "sha256": "cc7cbb96a12330bbdb5068064f83031699f01449825f9d996256c8ab96dd632f"
+          },
+          {
+            "path": "jc-media-research/references/reporting-and-security.md",
+            "sha256": "2b3333927c372cdf6e4cf75d9d5ff609cbf05c323a567916c6dd0740bd804814"
+          },
+          {
+            "path": "jc-media-research/references/routes-and-gates.md",
+            "sha256": "d030ae4590703314fadd4bcc431460239fb9e85c187ad6cf52b5a9a0b92578e2"
+          },
+          {
+            "path": "jc-media-research/references/search-and-selection.md",
+            "sha256": "9728ad27f46aa6cd4782a133b69d6b70296255e7c1e43797df690a2ee9ed63f0"
+          },
+          {
+            "path": "jc-media-research/references/writing-and-feedback.md",
+            "sha256": "441484ea8ba0e68e02db3b32d97353ad9916c94b804a397c4afa105228aba3dc"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-media-research/SKILL.md",
+        "skills/jc-media-research/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "skills/nova-content-research-execution/references/research-method.md",
+        "skills/nova-content-research-execution/references/report-method.md",
+        "skills/nova-content-research-execution/references/viral-radar.md",
+        "skills/nova-content-writing-execution/references/video-analysis.md"
+      ]
+    },
+    {
+      "id": "jc-comment-visualize",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "comment-insight",
+        "reference-research"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "评论区洞察Skill公开版 2",
+        "files": [
+          {
+            "path": "jc-comment-visualize/SKILL.md",
+            "sha256": "add2cd7a79b31a77605291b5ab60c016c0f225ffd4dfd409e824c58efbbc4fe2"
+          },
+          {
+            "path": "jc-comment-visualize/references/chart-choice.md",
+            "sha256": "ac4d35817a1a35b197dffa3cf40da2e10361f86eb705cbb39eaeb562d642f805"
+          },
+          {
+            "path": "jc-comment-visualize/references/expression.md",
+            "sha256": "25c2eb73239f7742c4e2c428f6be2ac9d783f83229919ae8b5b50f8fecfebc8a"
+          },
+          {
+            "path": "jc-comment-visualize/references/labeling.md",
+            "sha256": "08da68a57f3be8d41ea8716188fdfd08eba382cc225e0df53e3e6c6be566707c"
+          },
+          {
+            "path": "jc-comment-visualize/references/page-spec.md",
+            "sha256": "c7a1f8ff8403da777db37c5d5dd104ba109d3c15d10359dac136d917cdfb7fd1"
+          },
+          {
+            "path": "jc-comment-visualize/references/report-contract.md",
+            "sha256": "341c74638c3f5749a42ac3c323aab7505df0e1f007af7c5348863aedf2514eb2"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-comment-visualize/SKILL.md",
+        "skills/jc-comment-visualize/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "skills/nova-content-research-execution/references/research-method.md",
+        "skills/nova-content-research-execution/references/report-method.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md"
+      ]
+    },
+    {
+      "id": "jc-benchmark-intake",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "benchmark-intake",
+        "reference-intake"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "第二大脑交接包_2026-10-16",
+        "files": [
+          {
+            "path": "jc-benchmark-intake/SKILL.md",
+            "sha256": "0c1f5ee02a4d197a1ceab19ecf21c2d38d00a626d4b0bc094e78ddaca479d8db"
+          },
+          {
+            "path": "jc-benchmark-intake/references/intake-contract.md",
+            "sha256": "f2df4c643b0b6deabb73575efc1a7de55984f36767affac00b2665c074385c1c"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-benchmark-intake/SKILL.md",
+        "skills/jc-benchmark-intake/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/reference-intake.md",
+        "skills/nova-content-writing-execution/references/transcription.md"
+      ]
+    },
+    {
+      "id": "jc-pattern-extractor",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "pattern-extraction"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "第二大脑交接包_2026-10-16",
+        "files": [
+          {
+            "path": "jc-pattern-extractor/SKILL.md",
+            "sha256": "d38e84894db147e912ecd76b29e7ef1f468aa8421d8ebd567a5d96a045b836f5"
+          },
+          {
+            "path": "jc-pattern-extractor/references/field-rules.md",
+            "sha256": "dacf85bfe9b5e70605a6e0a7afb30687b040526cf787c33e319c7e5b711924cc"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-pattern-extractor/SKILL.md",
+        "skills/jc-pattern-extractor/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md"
+      ]
+    },
+    {
+      "id": "jc-topic-generator",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "topic-generation"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "第二大脑交接包_2026-10-16",
+        "files": [
+          {
+            "path": "jc-topic-generator/SKILL.md",
+            "sha256": "9e0e6d5fda80051a0ca2d978a0c7f51dace3a1b25845a6718a2485ec5f1428bb"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-topic-generator/SKILL.md",
+        "skills/jc-topic-generator/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/reference-intake.md",
+        "skills/nova-content-writing-execution/references/writing-method.md"
+      ]
+    },
+    {
+      "id": "jc-content-writer",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "content-creation",
+        "draft-writing",
+        "revision"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "第二大脑交接包_2026-10-16",
+        "files": [
+          {
+            "path": "jc-content-writer/SKILL.md",
+            "sha256": "2766784438aafb79ee9ecf0048996012de53e187932d20ca648036dc1a7850b6"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-content-writer/SKILL.md",
+        "skills/jc-content-writer/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/content-creation.md",
+        "skills/nova-content-writing-execution/references/writing-method.md",
+        "skills/nova-content-writing-execution/references/review-method.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md"
+      ]
+    },
+    {
+      "id": "jc-video-analysis",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "video-analysis",
+        "reference-analysis"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "锦成工作台-同事版/content-feedback-loop",
+        "files": [
+          {
+            "path": "jc-video-analysis/SKILL.md",
+            "sha256": "5761d79243450007a3ab666eb93bd8b1172de4ac21a2988e3220b62a5f2514f5"
+          },
+          {
+            "path": "jc-video-analysis/references/analysis-method.md",
+            "sha256": "3f1ddc1d2941b0d782d6d07171a69242382537a5d310bb211836cbbe7cb883eb"
+          },
+          {
+            "path": "jc-video-analysis/references/拆法.md",
+            "sha256": "39bf512390f9403214ae7c27c3d6e56371f15158154ae4b09bfe9c47f853b5e0"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-video-analysis/SKILL.md",
+        "skills/jc-video-analysis/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/video-analysis.md",
+        "skills/nova-content-writing-execution/references/reference-intake.md"
+      ]
+    },
+    {
+      "id": "jc-jiaocheng-video",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "content-creation",
+        "tutorial-writing",
+        "narrative"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "锦成工作台-同事版/content-feedback-loop",
+        "files": [
+          {
+            "path": "jc-jiaocheng-video/SKILL.md",
+            "sha256": "8326aec447cba71b26d2a6b07ce29e210a38c2e3667b5471d1fa91ed1e4897fe"
+          },
+          {
+            "path": "jc-jiaocheng-video/references/evaluation.md",
+            "sha256": "c50a7ffafcb4b94496c32108c78b49cd4d4dc86a2b14e3a33296c7a9f8a905d7"
+          },
+          {
+            "path": "jc-jiaocheng-video/references/rafael-model-v1.md",
+            "sha256": "441a0158ca0bfd969dcdfdb76eca769939357bc2305d6472ca501e2d0fba324f"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-jiaocheng-video/SKILL.md",
+        "skills/jc-jiaocheng-video/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/writing-method.md",
+        "skills/nova-content-writing-execution/references/review-method.md",
+        "skills/nova-content-writing-execution/references/packaging-method.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md"
+      ]
+    },
+    {
+      "id": "jc-cover-copy",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "cover-copy",
+        "packaging"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "锦成工作台-同事版/content-feedback-loop",
+        "files": [
+          {
+            "path": "jc-cover-copy/SKILL.md",
+            "sha256": "329c539908506ebac45d3690a548454f60ba794769cc1ff73685cbc95a8ff60e"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-cover-copy/SKILL.md",
+        "skills/jc-cover-copy/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/packaging-method.md"
+      ]
+    },
+    {
+      "id": "jc-media-review",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "media-review",
+        "feedback"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "第二大脑交接包_2026-10-16",
+        "files": [
+          {
+            "path": "jc-media-review/SKILL.md",
+            "sha256": "cdf27dcd549c4339f60e06addaaae5f144d326e252179bcccc98f8e4a064bde0"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-media-review/SKILL.md",
+        "skills/jc-media-review/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md",
+        "skills/nova-content-research-execution/references/report-method.md"
+      ]
+    },
+    {
+      "id": "jc-publish-closeout",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "publish-closeout"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "锦成工作台-同事版/content-feedback-loop",
+        "files": [
+          {
+            "path": "jc-publish-closeout/SKILL.md",
+            "sha256": "0f3f87f4ceb64a2d1fcddde662280aa6b4367809ffa4e51b5ca73a0854d7d930"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-publish-closeout/SKILL.md",
+        "skills/jc-publish-closeout/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md",
+        "skills/nova-content-writing-execution/references/packaging-method.md"
+      ]
+    },
+    {
+      "id": "nova-workbench-writing-method",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted-from-history",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "workbench-writing",
+        "revision"
+      ],
+      "source": {
+        "kind": "historical-adaptation",
+        "package": "锦成工作台-同事版/Skill历史版本",
+        "files": [
+          {
+            "path": "jc-gongzuotai-write/2026-09-30T0803_1e8d3bef2b.md",
+            "sha256": "8829726488aa6cb8dbe4a2222f14b9c1ebe7728f376dd8c173e0a8a130f7b30c"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/nova-workbench-writing-method/SKILL.md",
+        "skills/nova-workbench-writing-method/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/nova-content-writing-execution/references/review-method.md",
+        "skills/nova-content-writing-execution/references/feedback-method.md"
+      ]
+    },
+    {
+      "id": "xindao-interview",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "positioning-interview"
+      ],
+      "source": {
+        "kind": "original-skill-adaptation",
+        "package": "xindao-interview.zip",
+        "files": [
+          {
+            "path": "xindao-interview/SKILL.md",
+            "sha256": "0baf910775f5a6470f15da32236dc0a706d79af93cfaa5a9e6b69b2bcd6b0d8b"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/xindao-interview/SKILL.md",
+        "skills/xindao-interview/references/method.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/xindao-interview/references/checkpoint-templates.md"
+      ]
+    },
+    {
+      "id": "xindao-xuanti",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "topic-suggestion"
+      ],
+      "source": {
+        "kind": "workspace-source",
+        "package": "Nova-Content-Hub/workspace",
+        "files": [
+          {
+            "path": "xindao-xuanti/SKILL.md",
+            "sha256": "84189cd06fd9fdb4d5972380e2aecfa07d5e919ca97ec44c5748281486e6601d"
+          },
+          {
+            "path": "xindao-xuanti/manifest.json",
+            "sha256": "752a933eb20a75e5047f596363e2f6b05d089c2d53bfebcf2334c58f7b0f18b0"
+          },
+          {
+            "path": "xindao-xuanti/references/candidate-menu.md",
+            "sha256": "fd8c56d6326843e37edc8ec423a2c547e16353886efaa7942edb1c593d675ce3"
+          },
+          {
+            "path": "xindao-xuanti/references/material-intake.md",
+            "sha256": "d360a94c47b474a39d728652b938a4965f4a5eb094fb25ce912ac14860ae2995"
+          },
+          {
+            "path": "xindao-xuanti/references/topic-expansion.md",
+            "sha256": "5af70b8cb10527f0ccfbe9978789a16ed1a3adbb83b37cfe93fd1b133ab2f027"
+          }
+        ]
+      },
+      "constraints": {
+        "tools": [],
+        "budget": 0,
+        "contract": "plugin-src/resources/business-skills-contract.md"
+      },
+      "dependencies": [
+        "skills/xindao-xuanti/SKILL.md",
+        "skills/xindao-xuanti/manifest.json",
+        "skills/xindao-xuanti/references/candidate-menu.md",
+        "skills/xindao-xuanti/references/material-intake.md",
+        "skills/xindao-xuanti/references/topic-expansion.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md"
+      ]
+    }
+  ],
+  "unavailable": [
+    {
+      "id": "jc-gongzuotai-write",
+      "reason": "仅取得历史Markdown快照；声明的schema、scripts和服务依赖未完整取得，使用明确命名的Nova方法适配。",
+      "replacement": "nova-workbench-writing-method"
+    }
+  ],
+  "disabled": [
+    {
+      "id": "jc-broll-judge",
+      "reason": "已停用B-roll，不启用。"
+    },
+    {
+      "id": "jc-video-broll",
+      "reason": "已停用B-roll，不启用。"
+    },
+    {
+      "id": "dbskill",
+      "reason": "不接入。"
+    }
+  ]
+}

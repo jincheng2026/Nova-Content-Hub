@@ -13,6 +13,10 @@ description: 执行自媒体工作台交来的调研任务编号，按冻结预�
 
 ## 按任务读取方法
 
+先读取 [业务方法 registry](../../plugin-src/resources/business-skills.json) 与 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)。冻结 `request.parameters.businessSkill`（兼容 `businessMethod`）有值时，按实际 `id` 读取对应业务 Skill 的 SKILL.md 及当次 references，并核对 executor 为本 Skill；未知或不匹配就说明不可用，不伪装安装。无显式方法时依 workflow/阶段选择，原有方法继续兜底。
+
+`workflow=topic-suggestion` 使用 [资料先行选题](../xindao-xuanti/SKILL.md)，只读用户资料与已有材料，不采集、零采集预算；工作台任务必须沿用本 Skill 的固定 handoff、候选和提交契约。其他研究默认选 [真实社媒研究](../jc-media-research/SKILL.md)，独立评论深读可按已授权范围选 [评论洞察](../jc-comment-visualize/SKILL.md)。每轮使用冻结 `context.creatorContext`（profile、vault 与 sha256）的适用定位（含已有 `_v0.1`），`context.vault` 当前源摘要只检查变化，不静默替换冻结定位；有影响的变化明确核对。旧任务 creatorContext 可为空，沿用已有明确目标并说明限制。用主要读者、支柱、暂不做及公开边界解释相关性，不向采集服务发全访谈。缺定位不强制重访。
+
 | 本轮工作 | 执行前必读 | 完成本轮的可检查结果 |
 | --- | --- | --- |
 | 冻结 parameters.workflow 为 viral-radar 的爆款雷达 | [雷达采样与交付](references/viral-radar.md) | 固定方向与平台、可复算指标、真实来源、明确缺口；不自动加入选题 |

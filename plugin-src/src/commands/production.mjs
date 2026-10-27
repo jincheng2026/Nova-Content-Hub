@@ -6,6 +6,7 @@ import {collectRadar} from '../lib/file-library/radar-collector.mjs';
 import {productionFetchMedia} from '../lib/service-tools/production-media.mjs';
 import {productionAsr} from '../lib/service-tools/production-asr.mjs';
 import {readProductionHandoff,productionHandoffContext} from '../bridge/production-handoff.mjs';
+import {savePositioningCheckpoint} from '../lib/file-library/positioning-checkpoint.mjs';
 const MAX=2*1024*1024;
 const fail=(code,message)=>{throw Object.assign(new Error(message),{code});};
 function release(){let r;try{r=JSON.parse(fs.readFileSync(new URL('../release.json',import.meta.url),'utf8'));}catch{fail('PACKAGE_NOT_BUILT','请使用已构建配套插件。');}if(!validRelease(r)||r.format!=='nova-content-plugin-release'||r.schemaVersion!==1||r.experimental!==true||r.productionReady!==false)fail('PACKAGE_INVALID','Invalid packaged release');if(r.platform!==process.platform||r.arch!==process.arch)fail('PLATFORM_MISMATCH','Package platform mismatch');return r;}
@@ -24,9 +25,9 @@ async function input(values){
 }
 export async function main(argv){
  try{
-  const [command='help',...rest]=argv,values={};if(!['help','context','status','claim','progress','submit','fail','import','collect-radar','asr','fetch-media'].includes(command))fail('INVALID_ARGUMENTS','Unknown production command');
+  const [command='help',...rest]=argv,values={};if(!['help','context','status','claim','progress','submit','fail','import','collect-radar','asr','fetch-media','checkpoint-positioning'].includes(command))fail('INVALID_ARGUMENTS','Unknown production command');
   for(let i=0;i<rest.length;i++){const key=rest[i].slice(2);if(!rest[i].startsWith('--')||!['handoff','file','stdin'].includes(key)||Object.hasOwn(values,key))fail('INVALID_ARGUMENTS','Unknown or duplicate flag');if(key==='stdin')values[key]=true;else{values[key]=rest[++i];if(!values[key]||values[key].startsWith('--'))fail('INVALID_ARGUMENTS','Missing flag value');}}
-  const r=release();if(command==='help'){if(rest.length)fail('INVALID_ARGUMENTS','Help has no flags');process.stdout.write(JSON.stringify({ok:true,commands:['context','status','claim','progress','submit','fail','import','collect-radar','asr','fetch-media'],usage:'production COMMAND --handoff UUID [--file ABSOLUTE_JSON | --stdin]'})+'\n');return 0;}
+  const r=release();if(command==='help'){if(rest.length)fail('INVALID_ARGUMENTS','Help has no flags');process.stdout.write(JSON.stringify({ok:true,commands:['context','status','claim','progress','submit','fail','import','collect-radar','asr','fetch-media','checkpoint-positioning'],usage:'production COMMAND --handoff UUID [--file ABSOLUTE_JSON | --stdin]'})+'\n');return 0;}
   if(r.AUTH_MODE!=='disabled')fail('AUTH_NOT_CONFIGURED','可信权益未接入，停止业务读写。');
   if(!values.handoff)fail('INVALID_ARGUMENTS','An explicit handoff is required');
   const envelope=readProductionHandoff(nativeHandoffDirectory(),values.handoff,r),{library,context}=productionHandoffContext(envelope),locator={taskId:envelope.task.taskId,attemptId:envelope.task.attemptId};
@@ -34,7 +35,9 @@ export async function main(argv){
   if(['context','status'].includes(command)){if(values.file||values.stdin)fail('INVALID_ARGUMENTS','Read has no input');result=context;}
   else{
    const raw=await input(values),{mutationId,...payload}=raw;
-   if(command==='collect-radar'){
+   if(command==='checkpoint-positioning'){
+    result=savePositioningCheckpoint({library,context,raw});
+   }else if(command==='collect-radar'){
     if(Object.keys(raw).some(k=>!['claimToken','workerId'].includes(k))||!envelope.serviceDescriptorPath)fail('INVALID_INPUT','Radar collection requires only the claimed worker identity and a configured broker');
     if(context.task.activeAttemptId!==locator.attemptId||context.attempt.status!=='claimed'||context.attempt.claimToken!==payload.claimToken||!payload.workerId||context.attempt.workerId!==payload.workerId)fail('ATTEMPT_INACTIVE','Claim the active task before radar collection');
     const parameters=context.task.request.parameters;

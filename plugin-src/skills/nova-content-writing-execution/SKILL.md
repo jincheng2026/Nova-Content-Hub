@@ -11,6 +11,10 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 
 ## 按阶段读取方法
 
+先读取 [业务方法 registry](../../plugin-src/resources/business-skills.json) 与 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)。冻结 `request.parameters.businessSkill`（兼容 `businessMethod`）有值时，按 registry 的 `id` 找到对应业务 Skill 并完整读取其 SKILL.md 与当前阶段 references；核对其 executor 为本 Skill。未登记或执行入口不匹配时说明不可用，不用近似名称替换。无显式方法时按当前 workflow/阶段选择，原有阶段方法继续作为兜底。方法只提供候选与允许检查点，不能改变固定请求的权限。
+
+`workflow=positioning-interview` 固定读取 [新岛定位访谈](../xindao-interview/SKILL.md)，续访先读 `context.positioningCheckpoint`，按共同契约保存已确认的逐关检查点并核对回执；不直接写任意定位文件。其他任务使用冻结 `context.creatorContext`（含 profile、vault 与 sha256）中的适用定位，含已有 `_v0.1`；`context.vault` 是当前源摘要，只用于检查源变化，不静默替换冻结快照。发现影响本轮的变化时明确核对，旧任务 creatorContext 为空则沿用其明确输入并记录限制。只使用相关确认事实和公开边界；未完成访谈不拦截已有库的明确任务。资料先行，最终标题可空；不因缺标题跳到包装阶段。
+
 | 本轮工作 | 执行前必读 | 完成条件 |
 | --- | --- | --- |
 | 固定 workflow 为 content-creation 的整篇创作 | [整篇创作](references/content-creation.md) | 同一聊天连续研究、拆解、叙事、正文与包装，同一回执交回整套结果 |
