@@ -1,3 +1,6 @@
+import {prepareResearchAdoption} from './production-research.mjs';
+import {validProductionComposition,validProductionAdoptions,migrateProductionComposition} from './production-composition.mjs';
+import {productionArtifactBundleDraft,productionArtifactDraft} from './production-artifacts.mjs';
 import {productionArchive} from './production-archive.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
@@ -30,12 +33,13 @@ export function defaultProductionCreation(contentId, number, now) {
     return {contentId,tNumber:`T${String(number).padStart(3,'0')}`,stage:'idea',kind:'other',references:[],analysis:'',narrative:'',suggestions:[],annotations:[],packaging:{titles:[],coverTexts:[],intros:[],selectedTitleId:null,selectedCoverTextId:null,selectedIntroId:null},confirmedBodyHash:null,filming:{shots:[],readThroughBodyHash:null,recordedBodyHash:null},createdAt:now,updatedAt:now};
 }
 export function validProductionCreation(c) {
-    if (!fields(c,['contentId','tNumber','stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','createdAt','updatedAt']) || !UUID.test(c.contentId) || !/^T[0-9]{3,}$/.test(c.tNumber) || !STAGES.includes(c.stage) || !['tutorial','spoken','science','other'].includes(c.kind) || !text(c.analysis) || !text(c.narrative) || !(c.confirmedBodyHash === null || HASH.test(c.confirmedBodyHash)) || !iso(c.createdAt) || !iso(c.updatedAt) || !Array.isArray(c.suggestions) || !Array.isArray(c.annotations) || !jsonOK(c.suggestions) || !jsonOK(c.annotations) || !objects(c.references)) return false;
+    if (!fields(c,['contentId','tNumber','stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','composition','adoptions','createdAt','updatedAt']) || !UUID.test(c.contentId) || !/^T[0-9]{3,}$/.test(c.tNumber) || !STAGES.includes(c.stage) || !['tutorial','spoken','science','other'].includes(c.kind) || !text(c.analysis) || !text(c.narrative) || !(c.confirmedBodyHash === null || HASH.test(c.confirmedBodyHash)) || !iso(c.createdAt) || !iso(c.updatedAt) || !Array.isArray(c.suggestions) || !Array.isArray(c.annotations) || !jsonOK(c.suggestions) || !jsonOK(c.annotations) || !objects(c.references)) return false;
+    if(c.composition!==undefined&&!validProductionComposition(c.composition,undefined,undefined,c.references.map(r=>r.id))||c.adoptions!==undefined&&!validProductionAdoptions(c.adoptions))return false;
     for (const r of c.references) if (!fields(r,['id','url','title','platform','originalText','correctedText','segments','corrections','analysis','mediaAssetHash','subtitleAssetHash']) || !(r.url === null || url(r.url)) || !['title','platform','originalText','correctedText','analysis'].every(k => text(r[k])) || !['mediaAssetHash','subtitleAssetHash'].every(k => r[k] === null || HASH.test(r[k])) || !Array.isArray(r.segments) || !r.segments.every(s => fields(s,['startMs','endMs','text']) && Number.isFinite(s.startMs) && s.startMs >= 0 && Number.isFinite(s.endMs) && s.endMs >= s.startMs && text(s.text)) || !Array.isArray(r.corrections) || !r.corrections.every(x => fields(x,['original','corrected','reason']) && ['original','corrected','reason'].every(k => text(x[k])))) return false;
     if (!objects(c.suggestions) || !c.suggestions.every(x=>fields(x,['id','bodyHash','quote','replacement','reason','status']) && HASH.test(x.bodyHash) && ['quote','replacement','reason'].every(k=>text(x[k])) && ['pending','accepted','rejected'].includes(x.status)) || !objects(c.annotations) || !c.annotations.every(x=>fields(x,['id','bodyHash','quote','text','status']) && HASH.test(x.bodyHash) && text(x.quote) && text(x.text) && ['open','resolved'].includes(x.status))) return false;
     if (c.filming !== undefined) {
         const f=c.filming;
-        if (!fields(f,['shots','readThroughBodyHash','recordedBodyHash']) || !Array.isArray(f.shots) || f.shots.length>200 || !objects(f.shots) || !f.shots.every(x=>fields(x,['id','quote','visual','owner','done']) && text(x.quote,100000,false) && text(x.visual,100000,false) && ['screen','self','editing'].includes(x.owner) && typeof x.done==='boolean') || !['readThroughBodyHash','recordedBodyHash'].every(k=>f[k]===null || HASH.test(f[k]))) return false;
+        if (!fields(f,['shots','readThroughBodyHash','recordedBodyHash']) || !Array.isArray(f.shots) || f.shots.length>200 || !objects(f.shots) || !f.shots.every(x=>fields(x,['id','quote','visual','owner','done','segmentId','optional','steps']) && text(x.quote,100000,false) && text(x.visual,100000,false) && ['screen','self','editing'].includes(x.owner) && typeof x.done==='boolean' && (x.segmentId===undefined||UUID.test(x.segmentId)) && (x.optional===undefined||typeof x.optional==='boolean') && (x.steps===undefined||objects(x.steps)&&x.steps.length<=200&&x.steps.every(step=>fields(step,['id','where','prompt','expect','caution'])&&['where','prompt','expect','caution'].every(key=>text(step[key]))))) || !['readThroughBodyHash','recordedBodyHash'].every(k=>f[k]===null || HASH.test(f[k]))) return false;
     }
     const p = c.packaging;
     return fields(p,['titles','coverTexts','intros','selectedTitleId','selectedCoverTextId','selectedIntroId']) && [['titles','selectedTitleId'],['coverTexts','selectedCoverTextId'],['intros','selectedIntroId']].every(([a,b]) => objects(p[a]) && p[a].every(x => fields(x,['id','text']) && text(x.text,10000,false)) && (p[b] === null || p[a].some(x => x.id === p[b])));
@@ -101,11 +105,37 @@ export function productionMethods(h) {
         return {t,a};
     }
     const newAttempt = (host,now) => {invalid(['codex','workbuddy'].includes(host),'Unknown assistant');return {id:randomUUID(),host,status:'created',claimToken:null,workerId:null,progress:0,message:'',failure:null,result:null,receipt:null,createdAt:now,updatedAt:now};};
-    function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
+    function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','composition','adoptions']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
+    function validateCompositionChange(previous,next,previousBody,body,patch) {
+        if(!next.composition)return;
+        if(previousBody!==body&&!Object.hasOwn(patch,'composition')) {
+            if(previous.composition?.bodyHash!==bodyDigest(previousBody))fail('STALE_INPUT','段落关联对应旧稿，请先核对段落后再保存。');
+            const migrated=migrateProductionComposition(previous.composition,previousBody,body);
+            if(migrated.unmatchedSegments.length)fail('STALE_INPUT','部分段落已改变或出现多次，关联保留；请在逐段稿件中核对后保存。');
+            next.composition=migrated.composition;
+        }
+        invalid(validProductionComposition(next.composition,body,bodyDigest(body),next.references.map(r=>r.id)),'Composition must identify current body and known references');
+        for(const segment of next.composition.segments)for(const link of segment.references){const reference=next.references.find(value=>value.id===link.referenceId);invalid(!link.quote||reference.originalText.includes(link.quote)||reference.correctedText.includes(link.quote),'Segment reference quote must come from preserved source');if(link.startMs!==null)invalid(reference.segments.some(value=>value.startMs<=link.startMs&&value.endMs>=link.endMs),'Segment reference time must belong to preserved source');}
+    }
+    function validateAdoptionChange(previous,next,previousBody,body,p) {
+        const before=previous.adoptions??[],after=next.adoptions??[];
+        invalid(after.length>=before.length&&before.every((item,index)=>JSON.stringify(item)===JSON.stringify(after[index])),'Adoption history is append-only');
+        for(const record of after.slice(before.length)) {
+            invalid(record.bodyHash===bodyDigest(body)&&Array.isArray(record.artifactIds)&&record.artifactIds.length>0,'Adoption must identify saved body and artifacts');
+            const task=p.tasks.find(value=>value.id===record.taskId),attempt=task?.attempts.find(value=>value.id===record.attemptId);
+            invalid(task?.contentId===next.contentId&&task.activeAttemptId===record.attemptId&&attempt?.status==='accepted'&&attempt.receipt?.sha256===record.receiptHash,'Adoption requires current accepted receipt');
+            invalid(!before.some(item=>item.taskId===record.taskId&&item.attemptId===record.attemptId&&item.artifactIds?.some(id=>record.artifactIds.includes(id))),'Artifact has already been adopted');
+            const args={task,attemptId:record.attemptId,creation:previous,body:previousBody,bodyHash:bodyDigest(previousBody),now:record.at};
+            const all=attempt.result.artifacts.map(value=>value.id),candidate=record.artifactIds.length===all.length&&record.artifactIds.every(id=>all.includes(id))?productionArtifactBundleDraft(args):record.artifactIds.length===1?productionArtifactDraft({...args,artifactId:record.artifactIds[0]}):null;
+            invalid(candidate&&candidate.body===body,'Adoption must apply the receipted artifact body');
+            for(const [key,value]of Object.entries(candidate.creationPatch))if(key!=='adoptions')invalid(JSON.stringify(value)===JSON.stringify(next[key]),'Adoption fields must match receipted artifact ownership');
+        }
+    }
     function validateFilmingChange(previous,next,body) {
         if (!next.filming) return;
         for (const shot of next.filming.shots) {
             const old=previous.filming?.shots.find(x=>x.id===shot.id);
+            if(shot.segmentId&&(!old||old.segmentId!==shot.segmentId))invalid(next.composition?.segments.some(segment=>segment.id===shot.segmentId&&body.slice(segment.start,segment.end).includes(shot.quote)),'Shot must belong to current segment');
             if (!old || old.quote!==shot.quote) invalid(body.indexOf(shot.quote)>=0 && body.indexOf(shot.quote)===body.lastIndexOf(shot.quote),'Shot quote must uniquely identify the current body');
         }
         for (const key of ['readThroughBodyHash','recordedBodyHash']) {
@@ -115,13 +145,26 @@ export function productionMethods(h) {
     }
     function mutateProduction(op,raw,options = {}) {
         invalid(plain(raw),'Expected operation input');
+        if(op==='adoptResearchReferences') {
+            invalid(fields(raw,['contentId','taskId','attemptId','receiptHash','artifactId','expectedToken','expectedContentToken'])&&['contentId','taskId','attemptId','artifactId'].every(key=>UUID.test(raw[key]))&&['receiptHash','expectedToken','expectedContentToken'].every(key=>HASH.test(raw[key])),'Research adoption requires identities and both version tokens');
+            mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
+                const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
+                const creation=meta.productionState||w.production?.creations.find(value=>value.contentId===raw.contentId);if(!creation)fail('INVALID_STATE','Enable creation first');
+                const patch=prepareResearchAdoption({snapshot:w.production||emptyProduction(),...raw,creation,bodyHash:content(raw.contentId).bodyHash,now:new Date().toISOString()}),next=patchCreation(creation,patch,new Date().toISOString());
+                for(const reference of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(reference[key])checkAsset(reference[key]);
+                meta.schemaVersion=5;meta.productionState=next;return meta;
+            });return readProduction();
+        }
         if(op==='saveCreation') {
             invalid(UUID.test(raw.contentId) && HASH.test(raw.expectedToken) && HASH.test(raw.expectedContentToken),'Creation, content and production tokens required');
             mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
                 const w=current();if(!meta.productionState && w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
                 const c=meta.productionState || w.production?.creations.find(x=>x.contentId===raw.contentId);if(!c)fail('INVALID_STATE','Enable creation first');
                 const next=patchCreation(c,raw.creationPatch || raw.patch,new Date().toISOString());
-                validateFilmingChange(c,next,content(raw.contentId).body);
+                const body=content(raw.contentId).body;
+                validateCompositionChange(c,next,body,body,raw.creationPatch||raw.patch);
+                validateAdoptionChange(c,next,body,body,w.production||emptyProduction());
+                validateFilmingChange(c,next,body);
                 for(const r of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(r[key])checkAsset(r[key]);
                 meta.schemaVersion=5;meta.productionState=next;return meta;
             });
@@ -305,6 +348,8 @@ export function productionMethods(h) {
             const previous=result(before,cid);if(bodyDigest(previous.body)!==input.expectedBodyHash) fail('STALE_INPUT','Body changed');
             const creation=meta.productionState || w.production?.creations.find(c=>c.contentId===cid);if(!creation) fail('INVALID_STATE','Enable creation first');
             const next=patchCreation(creation,input.creationPatch,new Date().toISOString());
+            validateCompositionChange(creation,next,previous.body,input.body,input.creationPatch);
+            validateAdoptionChange(creation,next,previous.body,input.body,w.production||emptyProduction());
             validateFilmingChange(creation,next,input.body);
             if(next.confirmedBodyHash!==null && next.confirmedBodyHash!==bodyDigest(input.body)) fail('INVALID_INPUT','Confirmed hash must identify the saved body');
             // An explicit confirmation in this save is valid only for the exact new body hash checked above.
