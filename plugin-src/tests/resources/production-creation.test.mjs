@@ -175,7 +175,7 @@ test('segment page updates the same body and persists UTF16 ranges on explicit s
  assert.equal(payload.body,'修改的第一段😀\n\n第二段。');assert.equal(payload.creationPatch.composition.bodyHash,bodyHash(payload.body));assert.equal(payload.body.slice(payload.creationPatch.composition.segments[1].start),'第二段。');
 });
 test('whole-text edits retain unmatched segment metadata and prevent silent save',async()=>{
- const f=await fixture({segmentRuntime:true});await vm.runInContext('draft.composition=segmentComposition',f.context);f.edit('完全重写后正文');await vm.runInContext('save()',f.context);
+ const f=await fixture({segmentRuntime:true});await vm.runInContext('segmentUpdate(segmentComposition)',f.context);f.edit('完全重写后正文');await vm.runInContext('save()',f.context);
  assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);assert.equal(f.get('body').value,'完全重写后正文');assert.match(f.get('notice').textContent,/段落关联待核对/);
 });
 
@@ -199,4 +199,13 @@ test('deleted old paragraph stays blocked until explicit removal then remaining 
  f.edit(body);await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);
  await vm.runInContext(`segmentAnchors[${JSON.stringify(composition.segments[1].id)}]='旧结尾'`,f.context);confirm().onclick();await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0,'missing old paragraph is not silently discarded');
  const remove=buttons(f.get('segment-content')).find(value=>value.textContent==='该段已删除，移除旧关联');assert.ok(remove);remove.onclick();confirm().onclick();await vm.runInContext('save()',f.context);const post=f.calls.find(value=>value.options.method==='POST');assert.ok(post);const patch=JSON.parse(post.options.body).creationPatch;assert.equal(patch.composition.segments.length,2);assert.ok(patch.composition.segments.some(value=>value.id===composition.segments[1].id));assert.equal(patch.composition.segments.some(value=>value.id===composition.segments[0].id),false);assert.equal(patch.filming.shots[0].id,shot.id);assert.equal(patch.filming.shots[0].segmentId,shot.segmentId);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('filmingNeedsReview(draft.filming.shots[0])',f.context),true);
+});
+
+test('full-body typing derives temporary new paragraphs from the last saved anchor baseline',async()=>{
+ const original='旧开头\n\n旧结尾',composition=productionCompositionRuntime().createComposition(original),f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition}});
+ for(const suffix of ['A','AA','ABA','ABA\n\n新','ABA\n\n新段落','ABA\n\n新段落 \n\t']){f.edit(original+'\n\n'+suffix);assert.equal(vm.runInContext('currentSegmentValid()',f.context),true,`typing ${suffix} must not turn a temporary gap into an old anchor`);for(const old of composition.segments)assert.ok(vm.runInContext('segmentComposition.segments.map(value=>value.id)',f.context).includes(old.id));}
+ const body=f.get('body').value;await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,1);await vm.runInContext('load()',f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('currentSegmentValid()',f.context),true);assert.ok(vm.runInContext("segmentRuntime().filmingScript($('body').value,segmentComposition,currentFilming())",f.context).includes('新段落'));
+});
+test('explicit segment metadata establishes a new anchor while navigation does not promote temporary gaps',async()=>{
+ const original='旧段落',composition=productionCompositionRuntime().createComposition(original),f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition}});f.edit(original+'\n\nA');const ids=vm.runInContext('segmentComposition.segments.map(value=>value.id).join()',f.context);await vm.runInContext('renderSegments()',f.context);assert.equal(vm.runInContext('segmentComposition.segments.map(value=>value.id).join()',f.context),ids);await vm.runInContext("segmentUpdate({...segmentComposition,segments:segmentComposition.segments.map((value,index)=>index===1?{...value,purpose:'明确关联的新段'}:value)})",f.context);f.edit(original+'\n\nAA');assert.equal(vm.runInContext('currentSegmentValid()',f.context),false,'an explicitly adopted new anchor still requires manual review when changed');await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);
 });
