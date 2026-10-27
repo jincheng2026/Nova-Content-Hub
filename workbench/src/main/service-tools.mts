@@ -99,15 +99,16 @@ function asrMultipart(data:Buffer,extension:string,modelId:string):{body:Buffer;
 }
 async function run(executable:string,args:string[],timeoutMs=10000):Promise<string> {return new Promise((resolve,reject)=>{const child=spawn(executable,args,{shell:false,windowsHide:true,env:{...process.env,HF_HUB_OFFLINE:'1',TRANSFORMERS_OFFLINE:'1',HF_DATASETS_OFFLINE:'1',HF_HUB_DISABLE_TELEMETRY:'1',PYTHONIOENCODING:'utf-8'}});let output='',size=0,settled=false;const end=(error?:unknown)=>{if(settled)return;settled=true;clearTimeout(timer);if(error)reject(error);else resolve(output);};const timer=setTimeout(()=>{child.kill();end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE'));},timeoutMs);child.stdout.on('data',(b:Buffer)=>{size+=b.length;if(size>4*1024*1024){child.kill();end(new ServiceToolError('RESPONSE_TOO_LARGE'));}else output+=b.toString('utf8');});child.stderr.on('data',()=>{});child.on('error',()=>end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));child.on('exit',code=>end(code===0?undefined:new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));});}
 interface CacheEntry {collectedAt:string;data?:unknown;unknown?:boolean;requestId?:string}
-interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string;config?:ServiceSettingsValues;audio?:Buffer}
-export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1;config?:ServiceSettingsValues}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
+export interface LocalAsrExecution {source:'configured'|'bundled-qwen';engine:ServiceSettingsValues['asr']['localEngine']}
+interface Prepared {service:string;requests:0|1;executionAsr?:ServiceSettingsValues['asr'];asrExecution?:LocalAsrExecution;cacheKey?:string;cached?:ServiceToolResult;localModule?:string;config?:ServiceSettingsValues;audio?:Buffer}
+export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1;config?:ServiceSettingsValues;asrExecution?:LocalAsrExecution}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
 export class ServiceTools {
     readonly settings:ServiceSettingsStore; readonly cachePath?:string; readonly localRuntimeRoots:readonly string[]; private cache=new Map<string,CacheEntry>();private loaded=false;private cacheQueue:Promise<unknown>=Promise.resolve();private inflight=new Set<string>();
     constructor(options:{settings:ServiceSettingsStore;cachePath?:string;localRuntimeRoots?:readonly string[]}){this.settings=options.settings;this.cachePath=options.cachePath;this.localRuntimeRoots=options.localRuntimeRoots??[];}
-    private async localConfig(a:ServiceSettingsValues['asr']):Promise<ServiceSettingsValues['asr']>{
-        if(a.localExecutable||a.localModelPath)return a;
+    private async localConfig(a:ServiceSettingsValues['asr']):Promise<{config:ServiceSettingsValues['asr'];source:LocalAsrExecution['source']}>{
+        if(a.localExecutable||a.localModelPath)return{config:a,source:'configured'};
         const runtime=await discoverLocalAsrRuntime(this.localRuntimeRoots);
-        return runtime?{...a,localEngine:runtime.engine,localExecutable:runtime.executable,localModelPath:runtime.modelPath}:a;
+        return runtime?{config:{...a,localEngine:runtime.engine,localExecutable:runtime.executable,localModelPath:runtime.modelPath},source:'bundled-qwen'}:{config:a,source:'configured'};
     }
     private async localModule(a:ServiceSettingsValues['asr']=this.settings.read().values.asr):Promise<string> {
         if (!path.isAbsolute(a.localExecutable)||!path.isAbsolute(a.localModelPath)) throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');
@@ -126,7 +127,7 @@ for name in ${JSON.stringify(modules)}:
 print(json.dumps(found))`],30000)).trim().split('\n').at(-1)!;
         try {const found=JSON.parse(result);if(Array.isArray(found)&&typeof found[0]==='string')return found[0];}catch{}throw new ServiceToolError('LOCAL_ASR_UNAVAILABLE');
     }
-    async checkReadiness():Promise<ServiceReadiness>{let available=false,reason='未找到适用本机的内置本地语音组件。可安装本机专用组件包，或在高级设置填写 Python 与完整离线模型路径；本次检查不下载模型。';try{const saved=this.settings.read().values.asr,a=await this.localConfig(saved),m=await this.localModule(a);available=true;reason=`${!saved.localExecutable&&!saved.localModelPath?'内置 Qwen3-ASR 组件':'本地语音组件'}的模型文件与 ${m} 实际导入检查通过；真实识别在任务中执行。`;}catch{}return{localAsr:{available,reason},encryptionAvailable:this.settings.encryptionAvailable()};}
+    async checkReadiness():Promise<ServiceReadiness>{let available=false,reason='未找到适用本机的内置本地语音组件。可安装本机专用组件包，或在高级设置填写 Python 与完整离线模型路径；本次检查不下载模型。';try{const saved=this.settings.read().values.asr,a=await this.localConfig(saved),m=await this.localModule(a.config);available=true;reason=`${!saved.localExecutable&&!saved.localModelPath?'内置 Qwen3-ASR 组件':'本地语音组件'}的模型文件与 ${m} 实际导入检查通过；真实识别在任务中执行。`;}catch{}return{localAsr:{available,reason},encryptionAvailable:this.settings.encryptionAvailable()};}
     private async loadCache(){if(this.loaded)return;this.loaded=true;if(!this.cachePath)return;try{const s=await fs.lstat(this.cachePath);if(!s.isFile()||s.isSymbolicLink()||s.size>32*1024*1024)throw new Error();const rows:unknown=JSON.parse(await fs.readFile(this.cachePath,'utf8'));if(!Array.isArray(rows)||rows.length>1000)throw new Error();for(const row of rows)if(Array.isArray(row)&&typeof row[0]==='string'&&row[1]&&typeof row[1].collectedAt==='string')this.cache.set(row[0],row[1]);}catch(error){if(error&&typeof error==='object'&&'code'in error&&error.code==='ENOENT')return;throw new ServiceToolError('CACHE_UNAVAILABLE');}}
     private async saveCache(){if(!this.cachePath)return;const run=this.cacheQueue.then(async()=>{while(this.cache.size>500){const victim=[...this.cache].find(([,e])=>!e.unknown);if(!victim)throw new ServiceToolError('CACHE_FULL');this.cache.delete(victim[0]);}const bytes=JSON.stringify([...this.cache]);if(Buffer.byteLength(bytes)>32*1024*1024)throw new ServiceToolError('CACHE_FULL');await fs.mkdir(path.dirname(this.cachePath!),{recursive:true,mode:0o700});const temp=`${this.cachePath}.${randomUUID()}.tmp`;try{await fs.writeFile(temp,bytes,{mode:0o600,flag:'wx'});await fs.rename(temp,this.cachePath!);}finally{await fs.rm(temp,{force:true});}});this.cacheQueue=run.catch(()=>{});await run;}
     async ensureTikHubVideoFreshness(id:string,notBefore:string):Promise<void>{
@@ -153,7 +154,7 @@ print(json.dumps(found))`],30000)).trim().split('\n').at(-1)!;
         if(request.tool==='media')throw new ServiceToolError('MEDIA_BROKER_REQUIRED');
         if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
         const asr=normalizeAsrSettings(s.values.asr);
-        if(asr.mode!=='cloud'){try{const local=await this.localConfig(asr);return{service:'asr',requests:0,localModule:await this.localModule(local),config:{...s.values,asr:local}};}catch(error){if(asr.mode==='local-only'||!request.allowCloud)throw error;}}
+        if(asr.mode!=='cloud'){try{const local=await this.localConfig(asr);return{service:'asr',requests:0,localModule:await this.localModule(local.config),config:s.values,executionAsr:local.config,asrExecution:{source:local.source,engine:local.config.localEngine}};}catch(error){if(asr.mode==='local-only'||!request.allowCloud)throw error;}}
         if(!request.allowCloud)throw new ServiceToolError('CLOUD_PERMISSION_REQUIRED');
         if(!s.values.budget.enabled)throw new ServiceToolError('BUDGET_DISABLED');
         const target=cloudAsrTarget(asr),audio=await readCloudAudio(request.audioPath,target.maxAudioBytes);this.settings.secret(target.credential);
@@ -167,7 +168,7 @@ print(json.dumps(found))`],30000)).trim().split('\n').at(-1)!;
         if(cacheKey&&this.inflight.has(cacheKey))throw new ServiceToolError('REQUEST_IN_PROGRESS');if(cacheKey)this.inflight.add(cacheKey);
         let reserved=false,started=false;
         try{
-            await hooks.beforeExecute?.({service:prepared.service,requests:prepared.requests,...(prepared.config?{config:structuredClone(prepared.config)}:{})});reserved=true;
+            await hooks.beforeExecute?.({service:prepared.service,requests:prepared.requests,...(prepared.config?{config:structuredClone(prepared.config)}:{}),...(prepared.asrExecution?{asrExecution:structuredClone(prepared.asrExecution)}:{})});reserved=true;
             let result:ServiceToolResult;
             if(prepared.cached)result=prepared.cached;
             else{
@@ -192,7 +193,7 @@ print(json.dumps(found))`],30000)).trim().split('\n').at(-1)!;
         }
         if(request.tool==='media')throw new ServiceToolError('MEDIA_BROKER_REQUIRED');
         if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
-        if(p.requests===0){const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>64*1024*1024)throw new ServiceToolError('INVALID_AUDIO');return this.localTranscribe(request.audioPath,p.localModule!,s.asr);}
+        if(p.requests===0){const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>64*1024*1024)throw new ServiceToolError('INVALID_AUDIO');return this.localTranscribe(request.audioPath,p.localModule!,p.executionAsr??s.asr);}
         const asr=normalizeAsrSettings(s.asr),target=cloudAsrTarget(asr),current=normalizeAsrSettings(this.settings.read().values.asr);
         // Bind the prepared request to the current provider/endpoint before reading a credential.
         if(current.mode!==asr.mode||JSON.stringify(cloudAsrTarget(current))!==JSON.stringify(target))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');

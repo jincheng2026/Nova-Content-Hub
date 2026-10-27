@@ -9,6 +9,7 @@ import {randomUUID,createHash} from 'node:crypto';
 import {downloadProductionMedia} from './production-media.mts';
 import type {LibraryBinding,Worker} from '../shared/contracts.ts';
 import type {ServiceSettingsValues,ServiceToolRequest} from '../shared/service-contracts.ts';
+import type {LocalAsrExecution} from './service-tools.mts';
 import {ServiceTools,ServiceToolError} from './service-tools.mts';
 import {ServiceToolBroker} from './service-broker.mts';
 import {researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
@@ -67,7 +68,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   else if(request.operation===radarProfileOperation(platform)){if(request.cursor!==undefined||!rows.some(x=>x.operation===searchOperation&&Array.isArray(x.radarAuthorIds)&&x.radarAuthorIds.includes(request.id))||rows.filter(x=>x.operation===request.operation).length>=radarPlatformSampleLimit(query,platform,frozen.operations))throw new ServiceToolError('RADAR_AUTHOR_FORBIDDEN');}
   else throw new ServiceToolError('RADAR_OPERATION_FORBIDDEN');
  }
- function checkResearch(context:ProductionContext,request:ServiceToolRequest){
+ function checkResearch(context:ProductionContext,request:ServiceToolRequest,prepared?:{requests:0|1;asrExecution?:LocalAsrExecution}){
   const task=context.task,frozen=parameters(task?.request.parameters);if(frozen.workflow!=='jincheng-research')return;
   const c=validateResearchConfig(frozen.researchRuntime);
   if(task?.contentId&&parameters(context.content).deletedAt)throw new ServiceToolError('CLAIM_MISMATCH');
@@ -79,7 +80,11 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
    if(used>=Math.min(c.maxRequests,task.request.budget.amount))throw new ServiceToolError('BUDGET_EXCEEDED');
   }else if(request.tool==='asr'){
    const asr=parameters(parameters(frozen.serviceConfig).asr);
-   if(!researchMediaAuthorized(task)||!['local-first','local-only'].includes(String(asr.mode))||asr.localEngine!=='qwen3-asr'||request.allowCloud!==false)throw new ServiceToolError('ASR_LOCAL_ONLY');
+   const automatic=asr.localExecutable===''&&asr.localModelPath==='';
+   if(!researchMediaAuthorized(task)||!['local-first','local-only'].includes(String(asr.mode))||(!automatic&&asr.localEngine!=='qwen3-asr')||request.allowCloud!==false)throw new ServiceToolError('ASR_LOCAL_ONLY');
+   // Empty user paths are resolved only by ServiceTools' checked bundled runtime.
+   // The frozen/current settings equality is still checked independently.
+   if(prepared&&(prepared.requests!==0||automatic&&(prepared.asrExecution?.source!=='bundled-qwen'||prepared.asrExecution.engine!=='qwen3-asr')))throw new ServiceToolError('ASR_LOCAL_ONLY');
   }else if(request.tool==='media'&&!researchMediaAuthorized(task))throw new ServiceToolError('MEDIA_NOT_AUTHORIZED');
  }
  function checkPublicationObservation(context:ProductionContext,request:ServiceToolRequest){
@@ -156,7 +161,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
      const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId});const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==identity.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
      if(context.snapshot.costs.some(c=>c.taskId===task.id&&['reserved','unknown'].includes(c.status)))throw new ServiceToolError('COST_UNKNOWN');
-     checkPublicationObservation(context,request);checkRadar(context,request);checkResearch(context,request);checkServiceConfig(context,request,prepared);checkAccountPlatform(context,request);
+     checkPublicationObservation(context,request);checkRadar(context,request);checkResearch(context,request,prepared);checkServiceConfig(context,request,prepared);checkAccountPlatform(context,request);
      const frozen=parameters(task.request.parameters),current=tools.settings.read().values;
      if(request.tool==='tikhub'&&request.operation==='comments'&&!(current.commentsEnabled&&frozen.comments===true&&current.budget.enabled&&frozen.budgetEnabled===true))throw new ServiceToolError('COMMENTS_DISABLED');
      if(prepared.requests===1){
