@@ -10,6 +10,22 @@
 2. 使用交接中的原任务编号运行 `RUN production context --handoff UUID`，保存完整结果。完整读取 `result.task.request`、正文、参考、账号与已采纳 knowledge。以 `result.attempt.host` 核对当前助手；以 `task.activeAttemptId === attempt.id` 核对当前尝试。requestHash 冻结输入，不从聊天猜测其他任务。
 3. 自行生成并私密保存 `workerId`（非空会话工作标识，最多 200 字符）及新的 UUIDv4 `claimToken`。运行 claim，JSON 为 `{"workerId":"自己的工作标识","claimToken":"新UUIDv4","mutationId":"新UUIDv4"}`。所有写操作以 `--file 绝对JSON路径` 或 `--stdin` 传入，不在命令行暴露正文与令牌。只领取 created 的当前 attempt；已被其他 worker 领取时停止，不从 context 取其令牌接管。恢复自己的尝试必须拿出之前保存的两个值。
 
+## 定位与业务方法
+
+新任务的 `task.request.parameters.creatorContext` 和 `context.creatorContext` 是启动时冻结的个人资料与适用定位版本，包含来源及哈希；后续写作、选题与研究优先使用其中与当前目标相关的已确认内容和公开边界。`context.vault` 是当前原位来源摘要，用于核对变化，不静默替换冻结版本。定位的私人经历和原访谈不自动传给采集服务。旧任务可能没有该字段，沿用明确输入并说明实际缺口。
+
+固定 `businessSkill` / `businessMethodVersion` 指定业务方法；读取随包 registry 中该方法与本轮 references，接单/提交仍由对应 executor 完成。方法没有独立的任意文件、安装、采集或发布权限。新建内容可以只有资料和想法，工作名称不是最终发布标题；`topic-suggestion` 只交候选，正文、包装和采用分别处理。定位和资料选题任务没有采集工具或预算。
+
+仅 `workflow=positioning-interview` 可保存用户逐关明确确认后的定位检查点。已有定位先读原文（含 `_v0.1` 等旧命名），从 `context.positioningCheckpoint.positioning` 取得当前文档身份和哈希；收到实际确认后先将当前尝试恢复为 claimed，再运行：
+
+```text
+RUN production checkpoint-positioning --handoff UUID --file ABSOLUTE_JSON
+```
+
+JSON 字段为自己的 `workerId/claimToken`、新 `mutationId`、`stage`（personal/account/content/packaging）、用户已确认的本关 `text`、真实答复原话 `confirmation`、实际确认时间 `confirmedAt`（ISO UTC）。已有目标文件必须同时携带当前 `documentId/expectedHash`；新建时省略两者。每个请求 JSON 保存后保持不变，响应丢失重放同一 JSON 和 mutationId。以返回的 document/hash 接续；不要用前一关旧 hash 覆盖后续文件。
+
+检查点只改定位总览/账号包装的受管理阶段，保留人工正文。第四关同时可恢复地登记包装与总览入口。它在与任务取消/切换互斥的临界区核对当前活跃 attempt 与领取身份，终态或退役凭据拒绝。`completedTask:false` 表示阶段已保存，整场仍在进行；任务最后继续 submit 和回读 receipt。CONFLICT 保留本地内容并重新读取，不能用强制覆盖解决。检查点的用户阶段确认不代替稿件采用、服务许可或发布授权。
+
 ## 按需澄清
 
 先读冻结请求、当前内容、已有参考、相关历史与设置，区分可自行查明的事实、用户已定的决策和真正未决的决策。事实先查；明确输入和已有授权直接沿用，不为开始执行再要求一轮确认。

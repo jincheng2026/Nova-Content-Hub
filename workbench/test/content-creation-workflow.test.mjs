@@ -10,6 +10,11 @@ import {BindingStore,validateBinding} from '../src/main/bindings.mts';
 import {execute} from '../src/main/worker.mts';
 import {validateInput} from '../src/shared/validation.ts';
 import {defaultServiceSettings} from '../src/shared/service-validation.ts';
+import {contentCreationPrompt} from '../src/shared/content-creation-workflow.ts';
+test('material-first creation waits for topic choice without requiring a final title',()=>{
+ const prompt=contentCreationPrompt('只有一段资料');
+ assert.match(prompt,/没有标题也可以开始/);assert.match(prompt,/xindao-xuanti/);assert.match(prompt,/waiting-user/);assert.match(prompt,/最终标题在正文明确后/);
+});
 const view=()=>({values:defaultServiceSettings(),credentials:{tikhub:{hasKey:false},model:{hasKey:false},asr:{hasKey:false}},encryptionAvailable:true});
 async function fixture(t,callbacks={}){
  const parent=await fs.mkdtemp(path.join(os.tmpdir(),'nova-production-desktop-'));t.after(()=>fs.rm(parent,{recursive:true,force:true}));
