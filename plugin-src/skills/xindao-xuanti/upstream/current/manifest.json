@@ -1,0 +1,20 @@
+{
+  "name": "xindao-xuanti",
+  "version": "0.1.0",
+  "owner": "nova-content-hub",
+  "status": "draft",
+  "maturity_tier": "method-draft",
+  "context_budget_tier": "light",
+  "permissions": [
+    "read-workbench-context",
+    "chat-delivery"
+  ],
+  "rollback_boundary": "plugin-src/skills/xindao-xuanti/",
+  "trust_boundary": "纯文本方法：不联网、不采集平台数据、不采评论、不上传用户素材、不调用付费服务",
+  "review_cadence": "每批真实资料试用后复核一次方法与菜单格式",
+  "release_gates": {
+    "secret_scan": true,
+    "source_scan": "交付文本不得出现第三方品牌名、方法名或出处字样",
+    "plain_language_scan": "面向用户的文字不得出现 references 中的内部术语与效果承诺语"
+  }
+}

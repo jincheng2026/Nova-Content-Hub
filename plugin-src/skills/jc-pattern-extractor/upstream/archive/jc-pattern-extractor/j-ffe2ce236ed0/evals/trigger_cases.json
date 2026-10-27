@@ -1,0 +1,40 @@
+{
+  "recommended_threshold": 0.34,
+  "description_required_concepts": ["pattern_target", "material", "extract_action"],
+  "positive_concepts": {
+    "pattern_target": ["内容规律", "规律提取", "规律汇总", "标题规律", "开头规律", "正文结构规律", "候选规律"],
+    "material": ["素材", "02_内容素材", "对标内容", "新内容", "汇总底稿", "六字段"],
+    "extract_action": ["提取", "提炼", "更新", "整理", "汇总", "补强", "增量"]
+  },
+  "negative_patterns": [
+    "写口播稿",
+    "写文稿",
+    "写一条",
+    "做选题",
+    "拆解这条",
+    "拆视频",
+    "为什么爆",
+    "帮我调研",
+    "采集",
+    "抓评论",
+    "翻译",
+    "下载"
+  ],
+  "should_trigger": [
+    {"text": "读取 02_内容素材，把每条素材整理进规律提取汇总", "family": "summary"},
+    {"text": "我搜集了新内容，帮我更新内容规律", "family": "incremental"},
+    {"text": "从这批对标素材里提炼标题规律和开头规律", "family": "extract"},
+    {"text": "基于汇总底稿更新正文结构规律，补强已有的候选规律", "family": "reinforce"},
+    {"text": "新入库了三条素材，增量更新规律汇总和三份规律文件", "family": "incremental"}
+  ],
+  "should_not_trigger": [
+    {"text": "帮我写一条关于知识库的口播稿", "family": "writing"},
+    {"text": "帮我做选题，看看下周发什么", "family": "topic"},
+    {"text": "翻译这篇英文文章", "family": "translate"},
+    {"text": "帮我调研抖音上的 AI 教程赛道", "family": "research"}
+  ],
+  "near_neighbor": [
+    {"text": "拆解这条对标视频，分析它为什么爆", "family": "video_analysis"},
+    {"text": "去小红书采集一批对标笔记下载入库", "family": "collection"}
+  ]
+}

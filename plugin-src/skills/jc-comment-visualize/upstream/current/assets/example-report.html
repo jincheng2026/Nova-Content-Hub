@@ -1,0 +1,474 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>合成示例：教程评论可以怎样阅读</title>
+<style>
+:root{color-scheme:light;--bg:#f5f5f7;--card:#fff;--ink:#1d1d1f;--muted:#666b73;--blue:#0071e3;--line:#e5e5ea;--nav-height:58px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 -apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}.wrap{max-width:1120px;margin:auto;padding:0 24px 64px}header{padding:58px 0 26px}h1{font-size:38px;line-height:1.2;margin:12px 0}h2{font-size:25px;line-height:1.35;margin:0 0 8px}h3{font-size:17px;line-height:1.5;margin:0 0 10px}p{margin:10px 0}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #80b6ed;outline-offset:3px}.eyebrow,.chapter-number{color:var(--blue);font-size:13px;font-weight:650}.lead,.note,.meta{color:var(--muted);font-size:13px}.lead{font-size:15px}.card{background:var(--card);border-radius:20px;padding:28px 30px;margin:22px 0;box-shadow:0 1px 3px #00000009}.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.finding{border:1px solid var(--line);border-radius:14px;padding:20px;margin:14px 0}.summary-grid .finding{margin:0}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:#fff;padding:16px 18px;border-radius:15px}.stat b{display:block;font-size:27px}.stat span{color:var(--muted);font-size:12px}.navbar{position:sticky;top:0;z-index:10;background:#f5f5f7ee;backdrop-filter:blur(18px);border-bottom:1px solid var(--line);margin:0 -8px}.nav-scroll{display:flex;gap:4px;padding:10px 8px;overflow-x:auto;scrollbar-width:thin;white-space:nowrap}.nav-link{color:var(--muted);font-size:14px;padding:7px 12px;border-radius:9px;flex:none}.nav-link[aria-current="location"]{color:var(--blue);background:#e7f1fd;font-weight:650}.nav-link.light{font-size:12px}section[id],article[id],tr[id],details[id]{scroll-margin-top:calc(var(--nav-height) + 18px)}.chart{width:100%;min-width:0}.chart-block{margin:20px 0;padding:16px;border:1px solid var(--line);border-radius:14px;min-width:0}.chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.chart-grid .chart-block{margin:0}.chart-controls,.toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:8px 0}.chart-controls label,.toolbar label{font-size:12px;color:var(--muted)}select,input{font:inherit;padding:6px 10px;border:1px solid #cdd2d9;background:#fff;border-radius:7px;max-width:100%}select{margin-left:6px}input{min-width:220px}.note{padding:10px 13px;background:#f7f8fa;border-radius:8px}.table-scroll{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--muted);font-size:12px}.num{font-variant-numeric:tabular-nums;white-space:nowrap}summary{cursor:pointer;color:var(--blue)}details{margin:12px 0}blockquote{margin:10px 0;padding:10px 16px;border-left:3px solid #b9d6f3;background:#f5f8fc;overflow-wrap:anywhere}blockquote p{white-space:pre-wrap}.badge{display:inline-block;font-size:11px;color:var(--muted);background:#f1f3f6;padding:2px 7px;border-radius:6px;margin-right:6px}.source-text{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.audit{font-size:12px;color:var(--muted);overflow-wrap:anywhere}footer{margin-top:25px;color:var(--muted);font-size:12px}@media(max-width:720px){.wrap{padding:0 14px 40px}header{padding-top:34px}h1{font-size:30px}.card{padding:22px 18px}h2{font-size:22px}.stats{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}.chart-block{padding:12px 8px}.summary-grid{grid-template-columns:1fr}.finding{padding:16px}.nav-link{padding:6px 10px}.chart-controls{gap:6px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}@media print{.navbar,.toolbar,.chart-controls{display:none}.card{box-shadow:none;border:1px solid #ddd}.wrap{max-width:none}body{background:#fff}.finding{break-inside:avoid}}
+
+.stats{grid-template-columns:repeat(3,minmax(0,1fr));margin:18px 0}.stat{background:#f5f7fa}.stat b{font-size:32px}.lead{max-width:850px;font-size:16px}.finding{border:0;border-top:1px solid var(--line);padding:28px 0;margin:0}.finding:first-of-type{border-top:0}.finding h3{font-size:20px}.finding p{max-width:900px}.secondary{color:#505863}.scope{color:#5f6670;font-size:14px;border-left:2px solid #d8dde5;padding-left:14px;margin-top:18px}blockquote{border-radius:0 10px 10px 0;margin:18px 0;padding:14px 18px}blockquote p{margin:0;font-size:15px}cite{display:block;color:var(--muted);font-size:12px;font-style:normal;margin-top:8px}.toolbar{margin:18px 0}.toolbar label{font-size:13px}button{font:inherit;cursor:pointer;border:1px solid #d6dce4;border-radius:8px;background:#fff;color:var(--blue);padding:7px 11px}.topic-chart{margin-top:22px}.topic-row{display:grid;grid-template-columns:minmax(150px,1.05fr) minmax(0,1fr) minmax(0,1.2fr);align-items:center;gap:22px;padding:18px 0;border-bottom:1px solid #edf0f4}.topic-row.selected{background:#f3f8fe;border-radius:8px}.topic-label{border:0;text-align:left;padding:8px 10px;font-weight:600;background:transparent}.topic-label[aria-pressed=true]{background:#e7f1fc}.measure{min-width:0;display:grid;grid-template-columns:minmax(0,1fr);gap:5px}.metric-label{color:var(--muted);font-size:11px}.measure b{font-size:13px;font-weight:550;line-height:1.5}.track{height:9px;background:#f1f3f5;border-radius:3px;overflow:hidden}.track i{display:block;height:100%;background:#247ccf;min-width:0}.likes .track i{background:#8b98aa}.evidence-panel{background:#f7f9fc;border-radius:12px;padding:20px;margin-top:20px}.evidence-panel h3{margin-bottom:8px}.evidence-panel blockquote{background:white}.empty{padding:22px;background:#f7f8fa;color:var(--muted);border-radius:10px}.comment-text{white-space:pre-wrap;min-width:280px;overflow-wrap:anywhere}#comment-table{min-width:760px}#comment-table th:first-child{width:55%}#comment-table tr:focus{outline:2px solid #a0c7ee;outline-offset:-2px}input{min-width:0;width:260px;max-width:100%}.source-text{margin-top:16px}.table-scroll{max-height:680px;overflow:auto}thead{position:sticky;top:0;background:white}footer{border-top:1px solid var(--line);padding-top:22px}[hidden]{display:none!important}
+@media(max-width:720px){.topic-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;padding:16px 0}.topic-label{grid-column:1/-1;padding:6px 0}.finding h3{font-size:18px}.finding{padding:24px 0}.stats{gap:8px}.stat{padding:12px 10px}.stat b{font-size:26px}.stat span{font-size:11px}.card{padding:22px 18px}.evidence-panel{padding:14px}blockquote{padding:12px}.toolbar label{width:100%}.toolbar label select{max-width:calc(100% - 50px)}}
+@media(max-width:370px){.stats{grid-template-columns:1fr}.stat{display:flex;align-items:center;gap:14px}.stat b{font-size:24px}}
+@media print{.table-scroll{max-height:none}tr[hidden]{display:table-row!important}.finding{break-inside:auto}.topic-row{break-inside:avoid}}
+
+</style><style>/* Shared reading layer. Append after either report template's base styles. */
+body.reading-report {
+  --bg: #fff;
+  --card: #fff;
+  --ink: #23313e;
+  --muted: #5e6b78;
+  --blue: #1d4f78;
+  --line: #dfe6ed;
+  --reading-surface: #f6f8fb;
+  --reading-tint: #edf3f8;
+  --reading-count: #1d4f78;
+  --reading-likes: #7d8fa1;
+  --reading-topic-columns: minmax(13rem, 1.05fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.85 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.reading-report *,
+body.reading-report *::before,
+body.reading-report *::after { box-sizing: border-box; }
+body.reading-report ::selection { background: #d9e7f2; color: #173e5d; }
+body.reading-report .wrap { max-width: 1160px; padding: 0 28px 72px; }
+body.reading-report header { padding: 48px 0 28px; }
+body.reading-report h1 { max-width: 24em; margin: 12px 0 18px; color: #173e5d; font-size: 36px; font-weight: 750; line-height: 1.35; }
+body.reading-report h2 { margin: 0 0 14px; color: #173e5d; font-size: 26px; font-weight: 750; line-height: 1.45; }
+body.reading-report h3 { color: var(--ink); font-size: 21px; font-weight: 700; line-height: 1.5; }
+body.reading-report h4 { font-size: 15px; line-height: 1.6; }
+body.reading-report p { margin: 0 0 14px; overflow-wrap: anywhere; }
+body.reading-report p:last-child { margin-bottom: 0; }
+body.reading-report strong { color: #173e5d; font-weight: 750; }
+body.reading-report .key-phrase { color: #173e5d; font-weight: 750; }
+body.reading-report .eyebrow,
+body.reading-report .chapter-number { color: var(--blue); font-size: 12px; font-weight: 700; line-height: 1.6; }
+body.reading-report .chapter-number { display: block; margin-bottom: 8px; }
+body.reading-report .lead { max-width: 46em; color: #4a5c6d; font-size: 16px; line-height: 1.85; }
+body.reading-report .meta,
+body.reading-report .audit { color: var(--muted); font-size: 12px; line-height: 1.8; }
+body.reading-report .note { margin: 16px 0; padding: 12px 15px; background: var(--reading-surface); border-radius: 4px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+body.reading-report a { color: var(--blue); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+body.reading-report :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 3px solid #427dad; outline-offset: 3px; }
+body.reading-report .card { min-width: 0; margin: 24px 0; padding: 28px 30px; border: 1px solid var(--line); border-radius: 6px; background: #fff; box-shadow: none; }
+
+/* Navigation and summary keep the reading order visible without narrow cards. */
+body.reading-report .navbar { margin: 0; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: var(--line); }
+body.reading-report .nav-scroll { gap: 4px; padding: 9px 0; }
+body.reading-report .nav-link { border-radius: 4px; padding: 8px 12px; color: var(--muted); font-size: 13px; }
+body.reading-report .nav-link[aria-current="location"] { background: var(--reading-tint); color: var(--blue); font-weight: 700; }
+body.reading-report .nav-link.light { font-size: 12px; }
+body.reading-report .summary-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+body.reading-report .summary-grid .finding { margin: 0; padding: 20px 22px; border: 1px solid var(--line); border-left: 3px solid #8aaac3; border-radius: 4px; background: var(--reading-surface); }
+body.reading-report .summary-copy { max-width: 42em; }
+body.reading-report .summary-copy p { max-width: 42em; line-height: 1.85; }
+body.reading-report .stats { gap: 12px; margin: 22px 0; }
+body.reading-report .stat { min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 4px; background: var(--reading-surface); }
+body.reading-report .stat b { color: var(--blue); font-size: 29px; font-weight: 750; line-height: 1.35; font-variant-numeric: tabular-nums; }
+body.reading-report .stat span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+body.reading-report .finding-index { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 20px 0 8px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+body.reading-report .finding-index li { min-width: 0; margin: 0; padding: 0; border-bottom: 1px solid var(--line); list-style: none; }
+body.reading-report .finding-index a { display: flex; align-items: baseline; gap: 12px; padding: 13px 0; color: var(--blue); font-size: 14px; line-height: 1.65; }
+body.reading-report .finding-index a > span { flex: 0 0 1.8em; color: #688297; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Findings: observation, supporting words, interpretation, then scope. */
+body.reading-report .finding { min-width: 0; margin: 0; padding: 30px 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+body.reading-report .finding:first-of-type { border-top: 0; }
+body.reading-report .finding:last-child { padding-bottom: 0; }
+body.reading-report .reading-heading { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 14px; }
+body.reading-report .reading-heading h3 { min-width: 0; margin: 0; color: #173e5d; font-size: 22px; font-weight: 750; line-height: 1.5; }
+body.reading-report .reading-number { display: inline-grid; flex: 0 0 2.25em; place-items: center; min-height: 2.15em; margin-top: 2px; border: 1px solid #d1dfeb; border-radius: 4px; background: var(--reading-tint); color: var(--blue); font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.4; }
+body.reading-report .badge { margin: 0 7px 9px 0; padding: 2px 7px; border: 1px solid var(--line); border-radius: 3px; background: #fff; color: var(--muted); font-size: 11px; line-height: 1.65; }
+body.reading-report .finding-observation { max-width: 48em; margin: 0 0 22px; color: #3c4f60; font-size: 16px; line-height: 1.85; }
+body.reading-report .finding-columns { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 22px; margin-top: 20px; }
+body.reading-report .finding-evidence,
+body.reading-report .finding-reasoning { min-width: 0; }
+body.reading-report .finding-columns > .finding-evidence:only-child { grid-column: 1 / -1; }
+body.reading-report .finding-evidence { padding: 18px; border: 1px solid var(--line); border-radius: 5px; background: var(--reading-surface); }
+body.reading-report .evidence-heading { margin: 0 0 13px; color: var(--blue); font-size: 13px; font-weight: 750; line-height: 1.65; }
+body.reading-report .finding-reasoning .evidence-heading { margin-bottom: 12px; }
+body.reading-report .reading-prose,
+body.reading-report .reasoning-paragraph,
+body.reading-report .finding-reasoning p,
+body.reading-report .recommendation-panel p { max-width: 42em; margin: 0 0 16px; color: var(--ink); font-size: 16px; font-weight: 400; line-height: 1.85; }
+body.reading-report .reading-prose:last-child,
+body.reading-report .reasoning-paragraph:last-child,
+body.reading-report .finding-reasoning p:last-child,
+body.reading-report .recommendation-panel p:last-child { margin-bottom: 0; }
+body.reading-report .quote-list { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 16px; }
+body.reading-report blockquote { min-width: 0; margin: 16px 0; padding: 13px 16px; border-left: 2px solid #9ab6cb; border-radius: 0; background: var(--reading-surface); color: var(--ink); overflow-wrap: anywhere; }
+body.reading-report blockquote p { max-width: none; margin: 0; font-size: 15px; font-weight: 400; line-height: 1.85; white-space: pre-wrap; }
+body.reading-report blockquote p + p { margin-top: 10px; }
+body.reading-report .quote-list > blockquote { margin: 0; padding: 0 0 0 12px; background: transparent; }
+body.reading-report .quote-list > blockquote:only-child { grid-column: 1 / -1; }
+body.reading-report .quote-label { display: inline-block; margin-bottom: 6px; color: var(--blue); font-size: 12px; font-weight: 700; line-height: 1.65; }
+body.reading-report cite { display: block; margin-top: 9px; color: var(--muted); font-size: 12px; font-style: normal; line-height: 1.75; overflow-wrap: anywhere; }
+body.reading-report cite a { text-decoration: underline; text-decoration-color: #b4c7d6; }
+body.reading-report .quote-list.quote-thread { grid-template-columns: minmax(0, 1fr); gap: 17px; padding-left: 13px; border-left: 2px solid #9ab6cb; }
+body.reading-report .quote-thread > blockquote { padding: 0; border: 0; }
+body.reading-report .quote-thread > blockquote + blockquote { padding-top: 16px; border-top: 1px solid var(--line); }
+body.reading-report .finding-context { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
+body.reading-report .finding-context p,
+body.reading-report .finding-context .secondary,
+body.reading-report .finding-context .scope { max-width: 54em; margin: 0 0 10px; padding-left: 0; border-left: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+body.reading-report .finding-context p:last-child { margin-bottom: 0; }
+body.reading-report .finding-context strong { color: #425b70; font-weight: 700; }
+body.reading-report details { margin: 14px 0; }
+body.reading-report summary { width: fit-content; max-width: 100%; padding: 5px 0; color: var(--blue); font-size: 14px; font-weight: 600; line-height: 1.7; cursor: pointer; }
+body.reading-report details[open] > summary { margin-bottom: 12px; }
+body.reading-report .finding-context details { margin: 8px 0 12px; }
+body.reading-report .finding-context summary { font-size: 13px; }
+body.reading-report .material-details { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+
+/* Recommendations remain readable as an action and a practical check. */
+body.reading-report .recommendation-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin: 18px 0; }
+body.reading-report .recommendation-action,
+body.reading-report .recommendation-check { min-width: 0; padding: 16px 18px; border-left: 3px solid #88a8c1; background: var(--reading-surface); }
+body.reading-report .recommendation-action { border-left-color: var(--blue); }
+body.reading-report .recommendation-check { border-left-color: #9cabb8; }
+body.reading-report .recommendation-sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; gap: 16px; margin-top: 18px; }
+body.reading-report .recommendation-sources > blockquote { margin: 0; }
+
+/* Quantities use a shared blue/gray legend and explicit independent scales. */
+body.reading-report .sample-composition { margin: 22px 0; }
+body.reading-report .sample-composition figcaption { margin-bottom: 10px; color: #425b70; font-size: 13px; font-weight: 700; }
+body.reading-report .sample-segments { display: flex; width: 100%; height: 12px; overflow: hidden; border-radius: 2px; background: #e6ebf0; }
+body.reading-report .sample-segments > span { display: block; flex: 0 0 auto; min-width: 0; height: 100%; }
+body.reading-report .sample-top { background: var(--reading-count); }
+body.reading-report .sample-reply { background: #8da8bd; }
+body.reading-report .sample-unknown { background: #d5dfe7; }
+body.reading-report .sample-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+body.reading-report .sample-legend > span { display: inline-flex; align-items: center; gap: 5px; }
+body.reading-report .sample-legend i { display: inline-block; flex: 0 0 9px; width: 9px; height: 9px; margin-right: 2px; border-radius: 1px; }
+body.reading-report .sample-legend b { color: #425b70; font-weight: 700; font-variant-numeric: tabular-nums; }
+body.reading-report .topic-chart { margin-top: 24px; }
+body.reading-report .chart-head,
+body.reading-report .topic-row { display: grid; grid-template-columns: var(--reading-topic-columns); align-items: center; column-gap: 24px; padding-right: 10px; padding-left: 10px; }
+body.reading-report .chart-head { padding-top: 12px; padding-bottom: 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: #425b70; font-size: 12px; font-weight: 700; line-height: 1.65; }
+body.reading-report .chart-head > span { min-width: 0; }
+body.reading-report .chart-head small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
+body.reading-report .topic-row { row-gap: 8px; padding-top: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--line); }
+body.reading-report .topic-row.selected { border-radius: 3px; background: var(--reading-tint); }
+body.reading-report .topic-label { min-width: 0; margin: 0; padding: 6px 0; border: 0; border-radius: 2px; background: transparent; color: var(--blue); text-align: left; font-size: 14px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+body.reading-report .topic-label[aria-pressed="true"] { background: transparent; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+body.reading-report .measure { --reading-value-width: 6em; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) var(--reading-value-width); align-items: center; gap: 6px 10px; font-size: 13px; }
+body.reading-report .measure.likes { --reading-value-width: 6.5em; }
+body.reading-report .metric-label { display: none; grid-column: 1 / -1; color: var(--muted); font-size: 11px; line-height: 1.5; }
+body.reading-report .measure b,
+body.reading-report .measure .number { color: var(--blue); font-size: 13px; font-weight: 700; line-height: 1.6; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+body.reading-report .measure.likes b,
+body.reading-report .measure.likes .number { color: #53687b; white-space: normal; overflow-wrap: anywhere; }
+body.reading-report .track { min-width: 0; height: 8px; overflow: hidden; border-radius: 2px; background: #e9eef3; }
+body.reading-report .track i { display: block; min-width: 0; height: 100%; background: var(--reading-count); }
+body.reading-report .likes .track i { background: var(--reading-likes); }
+body.reading-report .chart { width: 100%; min-width: 0; }
+body.reading-report .chart-block { padding: 18px; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+body.reading-report .chart-grid { gap: 18px; }
+
+/* Source tables and controls retain their existing filtering behavior. */
+body.reading-report .toolbar,
+body.reading-report .chart-controls { gap: 10px 14px; margin: 18px 0; }
+body.reading-report .toolbar label,
+body.reading-report .chart-controls label { color: var(--muted); font-size: 13px; }
+body.reading-report button,
+body.reading-report select,
+body.reading-report input { min-height: 38px; border: 1px solid #bdcbd6; border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-size: 14px; line-height: 1.5; }
+body.reading-report button { padding: 7px 11px; color: var(--blue); cursor: pointer; }
+body.reading-report button.topic-label { border: 0; background: transparent; padding: 6px 0; font-weight: 700; }
+body.reading-report input { min-width: 0; max-width: 100%; }
+body.reading-report .evidence-panel { margin-top: 22px; padding: 20px; border: 1px solid var(--line); border-radius: 5px; background: var(--reading-surface); }
+body.reading-report .evidence-panel blockquote { background: #fff; }
+body.reading-report .empty { border-radius: 4px; background: var(--reading-surface); color: var(--muted); }
+body.reading-report table { font-size: 13px; line-height: 1.8; }
+body.reading-report th,
+body.reading-report td { padding: 12px; border-color: var(--line); }
+body.reading-report th { color: #425b70; font-weight: 700; background: var(--reading-surface); }
+body.reading-report .comment-text,
+body.reading-report .source-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+body.reading-report .table-scroll { border: 1px solid var(--line); border-radius: 4px; }
+body.reading-report footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+@media (min-width: 1050px) {
+  body.reading-report .finding-columns { grid-template-columns: minmax(260px, 0.34fr) minmax(0, 0.66fr); gap: 28px; }
+  body.reading-report .finding-columns > .finding-evidence:only-child .quote-list:not(.quote-thread) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.reading-report .recommendation-panel { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
+}
+
+@media (min-width: 721px) and (max-width: 1049px) {
+  body.reading-report .wrap { padding-right: 24px; padding-left: 24px; }
+  body.reading-report .card { padding: 26px; }
+  body.reading-report .quote-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  body.reading-report .quote-list.quote-thread { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-head,
+  body.reading-report .topic-row { column-gap: 18px; }
+  body.reading-report .chart-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 720px) {
+  body.reading-report .wrap { padding: 0 16px 48px; }
+  body.reading-report header { padding: 30px 0 20px; }
+  body.reading-report h1 { font-size: 29px; line-height: 1.4; }
+  body.reading-report h2 { font-size: 23px; }
+  body.reading-report .card { margin: 18px 0; padding: 22px 18px; }
+  body.reading-report .lead { font-size: 15px; }
+  body.reading-report .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  body.reading-report .stat { padding: 12px; }
+  body.reading-report .stat b { font-size: 26px; }
+  body.reading-report .summary-grid .finding { padding: 17px 16px; }
+  body.reading-report .finding-index { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .finding { padding: 26px 0; }
+  body.reading-report .reading-heading { gap: 10px; }
+  body.reading-report .reading-heading h3 { font-size: 20px; }
+  body.reading-report .reading-number { margin-top: 1px; font-size: 13px; }
+  body.reading-report .finding-observation { margin-bottom: 18px; }
+  body.reading-report .finding-columns { gap: 20px; }
+  body.reading-report .finding-evidence { padding: 15px; }
+  body.reading-report .quote-list { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .recommendation-panel { gap: 16px; }
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check { padding: 14px 15px; }
+  body.reading-report .recommendation-sources { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-head { display: none; }
+  body.reading-report .topic-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; padding: 14px 0; }
+  body.reading-report .topic-label { grid-column: 1 / -1; }
+  body.reading-report .metric-label { display: block; }
+  body.reading-report .measure { column-gap: 7px; font-size: 12px; }
+  body.reading-report .measure b,
+  body.reading-report .measure .number { font-size: 12px; }
+  body.reading-report .chart-grid { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-block { padding: 14px 10px; }
+  body.reading-report .sample-legend { gap: 6px 14px; }
+  body.reading-report .navbar { margin: 0 -4px; }
+  body.reading-report .nav-scroll { padding-right: 4px; padding-left: 4px; }
+  body.reading-report .nav-link { min-height: 44px; padding: 10px; }
+  body.reading-report button,
+  body.reading-report input,
+  body.reading-report select,
+  body.reading-report summary { min-height: 44px; }
+  body.reading-report summary { padding: 9px 0; }
+  body.reading-report .toolbar label { width: 100%; }
+  body.reading-report .toolbar label select { max-width: calc(100% - 56px); }
+  body.reading-report .evidence-panel { padding: 15px; }
+  body.reading-report th,
+  body.reading-report td { padding: 10px; }
+}
+
+@media (max-width: 420px) {
+  body.reading-report .wrap { padding-right: 12px; padding-left: 12px; }
+  body.reading-report .card { padding: 20px 14px; }
+  body.reading-report h1 { font-size: 26px; }
+  body.reading-report h2 { font-size: 21px; }
+  body.reading-report .reading-heading h3 { font-size: 19px; }
+  body.reading-report .topic-row { grid-template-columns: minmax(0, 1fr); row-gap: 10px; }
+  body.reading-report .measure { grid-template-columns: minmax(0, 1fr) var(--reading-value-width); }
+  body.reading-report .finding-evidence { padding: 13px; }
+  body.reading-report .summary-grid .finding { padding: 16px 13px; }
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check { padding: 13px; }
+}
+
+@media (max-width: 370px) {
+  body.reading-report .stats { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .stat { display: flex; align-items: baseline; gap: 14px; }
+  body.reading-report .stat span { margin-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.reading-report,
+  body.reading-report *,
+  body.reading-report *::before,
+  body.reading-report *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  body.reading-report { color: #202a33; background: #fff; font-size: 10.5pt; line-height: 1.75; }
+  body.reading-report .wrap { max-width: none; margin: 0; padding: 0; }
+  body.reading-report header { padding: 0 0 14pt; }
+  body.reading-report h1 { font-size: 23pt; }
+  body.reading-report h2 { font-size: 17pt; }
+  body.reading-report h3,
+  body.reading-report .reading-heading h3 { font-size: 14pt; }
+  body.reading-report .navbar,
+  body.reading-report .toolbar,
+  body.reading-report .chart-controls,
+  body.reading-report .finding-index { display: none; }
+  body.reading-report .card { margin: 18pt 0; padding: 16pt 0 0; border: 0; border-top: 1px solid #ccd5dd; border-radius: 0; box-shadow: none; }
+  body.reading-report .finding { padding: 18pt 0; break-inside: auto; }
+  body.reading-report .summary-grid .finding { padding: 12pt; border: 1px solid #ccd5dd; background: #fff; }
+  body.reading-report .finding-columns,
+  body.reading-report .recommendation-panel,
+  body.reading-report .recommendation-sources,
+  body.reading-report .quote-list,
+  body.reading-report .finding-columns > .finding-evidence:only-child .quote-list:not(.quote-thread) { grid-template-columns: minmax(0, 1fr); gap: 14pt; }
+  body.reading-report .finding-evidence,
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check,
+  body.reading-report .evidence-panel { background: #fff; }
+  body.reading-report .reading-prose,
+  body.reading-report .reasoning-paragraph,
+  body.reading-report .finding-reasoning p,
+  body.reading-report .recommendation-panel p,
+  body.reading-report .finding-observation,
+  body.reading-report .lead { font-size: 10.5pt; }
+  body.reading-report blockquote { break-inside: avoid; background: #fff; }
+  body.reading-report blockquote p { font-size: 10pt; }
+  body.reading-report .finding-context p { font-size: 9pt; }
+  body.reading-report h2,
+  body.reading-report h3,
+  body.reading-report h4,
+  body.reading-report .reading-heading { break-after: avoid; }
+  body.reading-report p { widows: 3; orphans: 3; }
+  body.reading-report .table-scroll { max-height: none; overflow: visible; border: 0; }
+  body.reading-report table { min-width: 0; font-size: 8.5pt; }
+  body.reading-report #comment-table { min-width: 0; }
+  body.reading-report .comment-text { min-width: 0; }
+  body.reading-report thead { position: static; display: table-header-group; }
+  body.reading-report th,
+  body.reading-report td { padding: 6pt; }
+  body.reading-report .chart-head { display: grid; }
+  body.reading-report .chart-head,
+  body.reading-report .topic-row { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 12pt; }
+  body.reading-report .topic-label { grid-column: auto; }
+  body.reading-report .metric-label { display: none; }
+  body.reading-report .topic-row { break-inside: avoid; }
+  body.reading-report details::details-content { content-visibility: visible; }
+  body.reading-report details > :not(summary) { display: block; }
+  body.reading-report details > table { display: table; }
+  body.reading-report details > summary { min-height: 0; margin-bottom: 8pt; }
+  body.reading-report footer { margin-top: 20pt; font-size: 8.5pt; }
+}
+</style></head><body class="reading-report"><main class="wrap"><header><p class="eyebrow">评论区洞察</p><h1>合成示例：教程评论可以怎样阅读</h1><p class="lead">这是用于验证模板的合成数据，不是真实观众或账号结论。示例展示评论数量、获赞、原文与解释的阅读关系。</p><p class="meta">材料采集：合成数据，无真实采集日期</p></header><nav class="navbar" aria-label="报告章节"><div class="nav-scroll"><a class="nav-link" href="#overview">研究范围</a><a class="nav-link" href="#themes">评论在问什么</a><a class="nav-link" href="#findings">具体发现</a><a class="nav-link" href="#recommendations">可以怎样用</a><a class="nav-link" href="#originals">查原文</a><a class="nav-link" href="#coverage">采集说明</a></div></nav><section id="overview" class="card"><h2>这份报告看了哪些材料</h2><div class="stats"><div class="stat"><b>4</b><span>去重后评论</span></div><div class="stat"><b>1</b><span>涉及视频</span></div><div class="stat"><b>3</b><span>已复核评论</span></div></div><p class="reading-prose">SYNTHETIC：4 条合成评论，包含一级评论、回复与层级未知的情况。</p><figure class="sample-composition"><figcaption>本次评论的层级构成</figcaption><div class="sample-segments" role="img" aria-label="顶层评论 2 条；楼内回复 1 条；层级未知 1 条"><span class="sample-top" style="width:50.000000%"></span><span class="sample-reply" style="width:25.000000%"></span><span class="sample-unknown" style="width:25.000000%"></span></div><div class="sample-legend"><span><i class="sample-top"></i>顶层评论 <b>2</b> 条</span><span><i class="sample-reply"></i>楼内回复 <b>1</b> 条</span><span><i class="sample-unknown"></i>层级未知 <b>1</b> 条</span></div></figure><p class="meta">一级评论 2 条，楼内回复 1 条，层级未知 1 条。未复核 1 条。</p></section><section id="themes" class="card"><h2>评论在问什么</h2><p>评论条数和获赞分别展示。点主题名称可查看原话，两个条长使用各自的刻度。</p><div class="toolbar"><label>视频<select id="video-filter"><option value="all">全部视频</option><option value="sample-video">合成演示视频</option></select></label><label>层级<select id="level-filter"><option value="all">全部层级</option><option value="top" selected>一级评论</option><option value="reply">楼内回复</option><option value="unknown">层级未知</option></select></label><label>排序<select id="sort-filter"><option value="count">按评论条数</option><option value="likes">按获赞</option></select></label></div><p id="theme-scope" class="note" aria-live="polite">当前范围 2 条，其中 2 条已复核、2 条有需求标签。0 条已复核评论未归入需求主题。</p><p class="meta">一条评论可有多个主题，主题合计不能当作人数；未复核评论不进入主题统计。点赞不表示购买意愿，缺失值不补零。</p><div id="theme-chart" class="topic-chart"><div class="chart-head" aria-hidden="true"><span>需求主题</span><span>评论条数 <small>0 至 1</small></span><span>这些评论的获赞 <small>0 至 2</small></span></div><div class="topic-row"><button class="topic-label" type="button" data-topic="format" aria-pressed="false">导出后的格式问题</button><div class="measure"><span class="metric-label">评论条数</span><div class="track"><i style="width:100.0000%"></i></div><b>1 条</b></div><div class="measure likes"><span class="metric-label">这些评论的获赞</span><div class="track"><i style="width:100.0000%"></i></div><b>2 赞</b></div></div><div class="topic-row"><button class="topic-label" type="button" data-topic="steps" aria-pressed="false">希望有文字步骤</button><div class="measure"><span class="metric-label">评论条数</span><div class="track"><i style="width:100.0000%"></i></div><b>1 条</b></div><div class="measure likes"><span class="metric-label">这些评论的获赞</span><div class="track"><i style="width:0.0000%"></i></div><b>获赞未取得</b></div></div></div><div id="topic-evidence" class="evidence-panel" hidden></div></section><section id="findings" class="card"><h2>从这些评论能看出什么</h2><article id="finding-format-problem" class="finding"><div class="reading-heading"><span class="reading-number" aria-hidden="true">01</span><h3>装好工具后，还需要检查导出结果</h3></div><div class="finding-observation"><p class="reading-prose">合成评论里，一条留言提到导出的日期格式改变了。</p></div><div class="finding-columns"><div class="finding-evidence"><h4 class="evidence-heading">关键原话</h4><div class="quote-list"><blockquote><p data-original="comment:sample-1">SYNTHETIC：工具装好了，但导出的表格没有保留原来的日期格式。</p><cite>合成演示视频 · 一级评论 · 2 赞 · <a href="#source-780a5e35b8432eec2110" data-source="comment:sample-1">查看完整原文</a></cite></blockquote></div></div><div class="finding-reasoning"><h4 class="evidence-heading">怎样理解这些反应</h4><p class="reasoning-paragraph">教程可以展示完成后的文件，再核对日期等关键字段。示例中的问题具体到输出结果，可以直接设计复现步骤。</p></div></div><div class="finding-context"><p class="scope">这只是一条合成评论，不代表真实用户的普遍情况。</p></div></article></section><section id="recommendations" class="card"><h2>这些发现可以怎样用</h2><article class="finding"><div class="reading-heading"><span class="reading-number" aria-hidden="true">01</span><h3>把结果核对加入演示</h3></div><div class="recommendation-panel"><div class="recommendation-action"><h4 class="evidence-heading">具体怎么做</h4><p class="reading-prose">演示导出后打开文件，核对日期与原始内容是否一致。</p></div><div class="recommendation-check"><h4 class="evidence-heading">怎样检查是否有用</h4><p class="reading-prose">使用同一份样例文件，记录设置修改前后的日期显示。</p></div></div><p class="meta">依据：<a href="#finding-format-problem">装好工具后，还需要检查导出结果</a></p><div class="recommendation-sources"></div></article></section><section id="originals" class="card"><h2>查原文</h2><div class="toolbar"><label>查找评论<input id="comment-search" type="search" placeholder="输入评论中的文字"></label><button id="clear-filters" type="button">查看全部评论</button></div><p id="comment-count" class="meta" aria-live="polite"></p><div class="table-scroll"><table id="comment-table"><thead><tr><th>评论原文</th><th>获赞</th><th>层级与来源</th><th>需求主题</th></tr></thead><tbody><tr id="source-780a5e35b8432eec2110" data-cid="sample-1"><td class="comment-text" data-original="comment:sample-1">SYNTHETIC：工具装好了，但导出的表格没有保留原来的日期格式。</td><td class="num">2 赞</td><td>一级评论<br><a href="https://example.org/sample" target="_blank" rel="noopener noreferrer">合成演示视频</a></td><td>导出后的格式问题</td></tr><tr id="source-efbddc004d90ab71baba" data-cid="sample-2"><td class="comment-text" data-original="comment:sample-2">SYNTHETIC：请把步骤整理成文字，文档里的「赋能」是原文。</td><td class="num">获赞未取得</td><td>一级评论<br><a href="https://example.org/sample" target="_blank" rel="noopener noreferrer">合成演示视频</a></td><td>希望有文字步骤</td></tr><tr id="source-e5b175e3a4e24b396c88" data-cid="sample-3"><td class="comment-text" data-original="comment:sample-3">SYNTHETIC：收到，我会补充格式设置。</td><td class="num">0 赞</td><td>楼内回复<br><a href="https://example.org/sample" target="_blank" rel="noopener noreferrer">合成演示视频</a></td><td>未归入需求主题</td></tr><tr id="source-c77b989e0bd86462b261" data-cid="sample-4"><td class="comment-text" data-original="comment:sample-4">SYNTHETIC：日期格式</td><td class="num">7 赞</td><td>层级未知<br><a href="https://example.org/sample" target="_blank" rel="noopener noreferrer">合成演示视频</a></td><td>未复核标签：导出后的格式问题</td></tr></tbody></table></div></section><section id="coverage" class="card"><h2>采集说明</h2><p>原始返回 4 行，按 cid 去重后 4 条。平台显示评论总数：未取得。没有平台总数，不计算覆盖比例。</p><p class="reading-prose">离线合成示例，未调用采集接口。</p></section><footer>结论与建议依据本次列出的材料；可从每处引用返回完整原文。</footer></main><script id="comment-report-data" type="application/json">{"collected_at":"合成数据，无真实采集日期","comments":[{"cid":"sample-1","content_id":"sample-video","level":"top","likes":2,"reviewed":true,"source_url":"https://example.org/sample","text":"SYNTHETIC：工具装好了，但导出的表格没有保留原来的日期格式。","topic_ids":["format"],"video_title":"合成演示视频"},{"cid":"sample-2","content_id":"sample-video","level":"top","likes":null,"reviewed":true,"source_url":"https://example.org/sample","text":"SYNTHETIC：请把步骤整理成文字，文档里的「赋能」是原文。","topic_ids":["steps"],"video_title":"合成演示视频"},{"cid":"sample-3","content_id":"sample-video","level":"reply","likes":0,"reviewed":true,"source_url":"https://example.org/sample","text":"SYNTHETIC：收到，我会补充格式设置。","topic_ids":[],"video_title":"合成演示视频"},{"cid":"sample-4","content_id":"sample-video","level":"unknown","likes":7,"reviewed":false,"source_url":"https://example.org/sample","text":"SYNTHETIC：日期格式","topic_ids":["format"],"video_title":"合成演示视频"}],"coverage":{"collection_note":"离线合成示例，未调用采集接口。","note":"SYNTHETIC：4 条合成评论，包含一级评论、回复与层级未知的情况。","raw_rows":4,"reported_total":null,"reported_total_scope":"没有平台总数，不计算覆盖比例。"},"findings":[{"alternatives":"","citations":[{"quote":"SYNTHETIC：工具装好了，但导出的表格没有保留原来的日期格式。","source_id":"comment:sample-1"}],"explanation":"教程可以展示完成后的文件，再核对日期等关键字段。示例中的问题具体到输出结果，可以直接设计复现步骤。","id":"format-problem","observation":"合成评论里，一条留言提到导出的日期格式改变了。","scope":"这只是一条合成评论，不代表真实用户的普遍情况。","status":"observation","title":"装好工具后，还需要检查导出结果"}],"recommendations":[{"action":"演示导出后打开文件，核对日期与原始内容是否一致。","audience":"general","finding_ids":["format-problem"],"id":"check-output","own_citations":[],"title":"把结果核对加入演示","verification":"使用同一份样例文件，记录设置修改前后的日期显示。"}],"schema_version":2,"sources":[],"summary":"这是用于验证模板的合成数据，不是真实观众或账号结论。示例展示评论数量、获赞、原文与解释的阅读关系。","title":"合成示例：教程评论可以怎样阅读","topics":[{"description":"评论明确提出日期格式没有保留。","id":"format","label":"导出后的格式问题"},{"description":"评论直接请求文字整理。","id":"steps","label":"希望有文字步骤"}]}</script><script id="report-audit" type="application/json">{"findings_sha256":"75c6de1940887c9b192d514b1cc4ee2df2bae30af9ec425518c66e57d9e2d4ee","generator":"jc-comment-visualize","input_sha256":"771860cbc35d28fc6744f69a93845aec1baea1c5fee0fccd6fb7e5c45d25d8cc","statistics":{"levels":{"reply":1,"top":2,"unknown":1},"reviewed":3,"tagged":2,"topics":[{"cids":["sample-1"],"count":1,"description":"评论明确提出日期格式没有保留。","id":"format","label":"导出后的格式问题","likes":2,"likes_missing":0},{"cids":["sample-2"],"count":1,"description":"评论直接请求文字整理。","id":"steps","label":"希望有文字步骤","likes":null,"likes_missing":1}],"total":4,"unreviewed":1,"untagged":1},"validation_level":"L4","version":"2.1.0"}</script><script>(function (root) {
+  'use strict';
+  const num = value => Number(value).toLocaleString('zh-CN');
+  const escape = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const likesText = (value, missing = 0, hasRows = true) => !hasRows ? '无评论' : value === null ? '获赞未取得' : missing ? `已知 ${num(value)} 赞 · ${num(missing)} 条未取得` : `${num(value)} 赞`;
+  function statistics(data, video = 'all', level = 'all', sort = 'count') {
+    const comments = data.comments.filter(c => (video === 'all' || c.content_id === video) && (level === 'all' || c.level === level));
+    const reviewed = comments.filter(c => c.reviewed);
+    const topics = data.topics.map(t => {
+      const rows = reviewed.filter(c => c.topic_ids.includes(t.id));
+      const known = rows.filter(c => c.likes !== null);
+      return {...t, count: rows.length, likes: known.length ? known.reduce((sum,c) => sum + c.likes, 0) : null,
+        likes_missing: rows.length - known.length, cids: rows.map(c => c.cid)};
+    });
+    const key = sort === 'likes' ? 'likes' : 'count';
+    topics.sort((a,b) => (b[key] ?? -1) - (a[key] ?? -1) || b.count - a.count || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0));
+    return {total: comments.length, reviewed: reviewed.length, unreviewed: comments.length - reviewed.length,
+      tagged: reviewed.filter(c => c.topic_ids.length).length, untagged: reviewed.filter(c => !c.topic_ids.length).length,
+      levels: Object.fromEntries(['top','reply','unknown'].map(k => [k,comments.filter(c => c.level === k).length])), topics};
+  }
+  function chartHTML(stats, selected = '') {
+    if (!stats.reviewed) return '<p class="empty">当前范围没有已复核评论。可切换视频或评论层级。</p>';
+    if (!stats.topics.length) return '<p class="empty">当前材料未归纳需求主题，原文保留在下方。</p>';
+    if (!stats.topics.some(t => t.count)) return '<p class="empty">当前范围没有归入需求主题的已复核评论，原文仍可查看。</p>';
+    const maxCount = Math.max(1,...stats.topics.map(t => t.count));
+    const maxLikes = Math.max(1,...stats.topics.map(t => t.likes || 0));
+    const knownLikes = stats.topics.map(t => t.likes).filter(value => value !== null);
+    const likesLimit = knownLikes.length ? Math.max(...knownLikes) : null;
+    const likesScale = likesLimit === null ? '获赞未取得' : likesLimit === 0 ? '当前 0 赞' : `0 至 ${num(likesLimit)}`;
+    const head = `<div class="chart-head" aria-hidden="true"><span>需求主题</span><span>评论条数 <small>0 至 ${num(maxCount)}</small></span><span>这些评论的获赞 <small>${likesScale}</small></span></div>`;
+    return head + stats.topics.map(t => `<div class="topic-row${selected === t.id ? ' selected' : ''}"><button class="topic-label" type="button" data-topic="${escape(t.id)}" aria-pressed="${selected === t.id}">${escape(t.label)}</button><div class="measure"><span class="metric-label">评论条数</span><div class="track"><i style="width:${100*t.count/maxCount}%"></i></div><b>${num(t.count)} 条</b></div><div class="measure likes"><span class="metric-label">这些评论的获赞</span><div class="track"><i style="width:${100*(t.likes || 0)/maxLikes}%"></i></div><b>${likesText(t.likes,t.likes_missing,!!t.count)}</b></div></div>`).join('');
+  }
+  root.CommentReport = {statistics, chartHTML, likesText};
+  if (typeof document === 'undefined') return;
+  const node = document.getElementById('comment-report-data');
+  if (!node) return;
+  const data = JSON.parse(node.textContent);
+  const get = id => document.getElementById(id);
+  const controls = {video:get('video-filter'),level:get('level-filter'),sort:get('sort-filter'),search:get('comment-search')};
+  const rows = new Map(Array.from(document.querySelectorAll('tr[data-cid]'),row => [row.dataset.cid,row]));
+  let selectedTopic = '';
+  const current = () => statistics(data,controls.video?.value || 'all',controls.level?.value || 'all',controls.sort?.value || 'count');
+  function matches(c) {
+    return (!controls.video || controls.video.value === 'all' || c.content_id === controls.video.value) &&
+      (!controls.level || controls.level.value === 'all' || c.level === controls.level.value) &&
+      (!selectedTopic || c.reviewed && c.topic_ids.includes(selectedTopic)) &&
+      (!controls.search || c.text.toLocaleLowerCase().includes(controls.search.value.trim().toLocaleLowerCase()));
+  }
+  function filterTable() {
+    let visible = 0;
+    for (const c of data.comments) {
+      const row = rows.get(c.cid);
+      if (row) { row.hidden = !matches(c); if (!row.hidden) visible++; }
+    }
+    const name = data.topics.find(t => t.id === selectedTopic)?.label;
+    if (get('comment-count')) get('comment-count').textContent = `当前显示 ${num(visible)} / ${num(data.comments.length)} 条评论${name ? ' · ' + name : ''}。${visible ? '' : '没有匹配结果，可清除筛选。'}`;
+  }
+  function evidence(stats) {
+    const panel = get('topic-evidence');
+    if (!panel) return;
+    const topic = stats.topics.find(t => t.id === selectedTopic);
+    panel.hidden = !topic;
+    if (!topic) {panel.replaceChildren();return;}
+    const candidates = data.comments.filter(c => topic.cids.includes(c.cid)).sort((a,b) => (b.likes ?? -1) - (a.likes ?? -1));
+    const excerpts = candidates.slice(0,3).map(c => `<blockquote><p data-original="comment:${escape(c.cid)}">${escape(c.text)}</p><cite>${escape(c.video_title)} · ${likesText(c.likes)} · <a href="#${rows.get(c.cid)?.id || ''}" data-source="comment:${escape(c.cid)}">定位这条评论</a></cite></blockquote>`).join('');
+    panel.innerHTML = `<h3>${escape(topic.label)}</h3><p>${escape(topic.description)}</p><p class="meta">当前范围 ${num(topic.count)} 条。下方列出${Math.min(candidates.length,3)} 条原话；完整明细已按这个主题筛选。</p>${excerpts || '<p>当前范围没有属于该主题的已复核评论。</p>'}<a href="#originals">查看对应评论明细</a>`;
+  }
+  function update() {
+    const stats = current();
+    if (get('theme-chart')) get('theme-chart').innerHTML = chartHTML(stats,selectedTopic);
+    if (get('theme-scope')) get('theme-scope').textContent = `当前范围 ${num(stats.total)} 条，其中 ${num(stats.reviewed)} 条已复核、${num(stats.tagged)} 条有需求标签。${num(stats.untagged)} 条已复核评论未归入需求主题，${num(stats.unreviewed)} 条尚未复核。`;
+    evidence(stats);filterTable();
+  }
+  function resetFilters() {
+    if (controls.video) controls.video.value = 'all';
+    if (controls.level) controls.level.value = 'all';
+    if (controls.search) controls.search.value = '';
+    selectedTopic = '';update();
+  }
+  for (const control of [controls.video,controls.level,controls.sort]) control?.addEventListener('change',update);
+  controls.search?.addEventListener('input',filterTable);
+  get('clear-filters')?.addEventListener('click',resetFilters);
+  get('theme-chart')?.addEventListener('click',event => {
+    const button = event.target.closest('[data-topic]');
+    if (!button) return;
+    selectedTopic = selectedTopic === button.dataset.topic ? '' : button.dataset.topic;
+    update();
+    // Restore keyboard focus after replacing the rows.
+    Array.from(get('theme-chart').querySelectorAll('[data-topic]')).find(x => x.dataset.topic === button.dataset.topic)?.focus();
+  });
+  function revealSource(target, behavior = 'auto') {
+    if (target.matches('tr')) resetFilters();
+    if (target.matches('details')) target.open = true;
+    let parent = target.parentElement;
+    while (parent) {if (parent.matches('details')) parent.open = true; parent = parent.parentElement;}
+    target.setAttribute('tabindex','-1');
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:'start',behavior});
+  }
+  document.addEventListener('click',event => {
+    if (event.target.closest('a[href="#originals"]') && get('comment-browser')) get('comment-browser').open = true;
+    const link = event.target.closest('a[data-source]');
+    if (!link) return;
+    const target = get(link.getAttribute('href').slice(1));
+    if (!target) return;
+    event.preventDefault();
+    revealSource(target, matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth');
+    try {history.replaceState(null,'',link.getAttribute('href'));} catch (_) { /* File viewers may not expose History. */ }
+  });
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    const resize = () => document.documentElement.style.setProperty('--nav-height',`${navbar.offsetHeight}px`);
+    resize(); if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(navbar);
+  }
+  if (typeof IntersectionObserver !== 'undefined') {
+    const links = Array.from(document.querySelectorAll('.nav-link'));
+    const observer = new IntersectionObserver(entries => {
+      for (const entry of entries) if (entry.isIntersecting) for (const link of links) {
+        if (link.hash === '#' + entry.target.id) link.setAttribute('aria-current','location'); else link.removeAttribute('aria-current');
+      }
+    },{rootMargin:'-15% 0px -65% 0px'});
+    document.querySelectorAll('section[id]').forEach(section => observer.observe(section));
+  }
+  update();
+  function revealHash() {
+    const hash = root.location?.hash || '';
+    if (hash === '#originals' && get('comment-browser')) get('comment-browser').open = true;
+    if (!hash.startsWith('#source-')) return;
+    const target = get(hash.slice(1));
+    if (target) revealSource(target);
+  }
+  revealHash();
+  root.addEventListener?.('hashchange',revealHash);
+})(globalThis);
+</script></body></html>

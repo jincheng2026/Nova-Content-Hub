@@ -1,0 +1,105 @@
+{
+  "schema_version": "2.0.0-jc-lite",
+  "generated_at": "2026-09-27",
+  "package": {
+    "name": "jc-benchmark-intake",
+    "version": "1.2.0",
+    "owner": "Jincheng",
+    "maturity_tier": "governed",
+    "lifecycle_stage": null
+  },
+  "intent": {
+    "description": "对标内容入库助手。用户从抖音、小红书、视频号或其他社媒复制作品信息、分享链接，或已经下载图片、视频，要求「作为对标内容沉淀」「放进 02_内容素材」「把这条入库」时使用；完成去重、原文保存、媒体归档、视频校验、火山引擎逐字稿转写、时间码字幕和入库检查。不用于寻找对标内容、分析爆款、生成选题、提取规律或只做音视频转写。",
+    "job_to_be_done": "对标内容入库助手。用户从抖音、小红书、视频号或其他社媒复制作品信息、分享链接，或已经下载图片、视频，要求「作为对标内容沉淀」「放进 02_内容素材」「把这条入库」时使用；完成去重、原文保存、媒体归档、视频校验、火山引擎逐字稿转写、时间码字幕和入库检查。不用于寻找对标内容、分析爆款、生成选题、提取规律或只做音视频转写。",
+    "target_users": [
+      "skill author"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "exclusions": [],
+    "jc_defaults": {}
+  },
+  "triggers": {
+    "should_trigger": [
+      "这是社媒助手复制的抖音内容和下载好的视频，把它作为对标内容入库",
+      "把这条小红书笔记保存到 02_内容素材，图片也一起放进去",
+      "这条视频号内容我要长期对标，帮我沉淀进素材库",
+      "我已经下载了视频，把复制的作品信息和视频整理进对标内容库",
+      "检查这条对标内容是否重复，没有重复就归档到内容素材",
+      "把外面复制来的这条社媒内容放进第二大脑的 02_内容素材"
+    ],
+    "should_not_trigger": [
+      "去抖音搜索十条值得对标的内容",
+      "根据这些素材生成五个选题",
+      "读取新素材，更新标题规律和开头规律",
+      "帮我把这个选题写成一条口播稿",
+      "分析这条视频为什么爆"
+    ],
+    "near_neighbor": [
+      "把这个本地视频只转成逐字稿，不需要入库",
+      "帮我找几个抖音对标账号",
+      "我有一个新选题，帮我保存到选题库",
+      "把已经入库的十条素材做规律提取"
+    ]
+  },
+  "workflow": {
+    "router_rules": [],
+    "compact_workflow": [],
+    "gate_ladder": [],
+    "output_contract": []
+  },
+  "resources": {
+    "references": [
+      "references/intake-contract.md"
+    ],
+    "scripts": [
+      "scripts/backfill_srt.py",
+      "scripts/transcript_srt.py",
+      "scripts/validate_workspace.py"
+    ],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md",
+      "reports/skill-ir.json",
+      "reports/trigger-eval.json"
+    ]
+  },
+  "portability": {
+    "canonical_format": "agent-skills",
+    "adapter_targets": [
+      "claude",
+      "openai",
+      "generic",
+      "agent-skills-compatible"
+    ],
+    "activation": {},
+    "execution": {},
+    "trust": {
+      "source_tier": "local",
+      "remote_inline_execution": "forbid",
+      "remote_metadata_policy": "只使用用户提供材料、本地媒体和项目文件，不执行远程代码。"
+    },
+    "permissions": {
+      "network": "不需要网络；除非用户另行提供公开图片 URL，不扩展采集范围。",
+      "file_write": "只写 02_内容素材、入库检查报告和项目 .trash 中的可恢复转写中间版本。",
+      "subprocess": "只运行本地媒体检查、火山引擎豆包语音转写、本地时间码字幕生成、Skill 校验和文件移动命令。",
+      "interactive": "不需要交互式登录或授权。"
+    },
+    "degradation": {
+      "openai": "直接读取项目 SKILL.md 和本地资源执行。",
+      "claude": "直接读取项目 SKILL.md 和本地资源执行。",
+      "generic": "无 Skill 注入时按入库契约手动执行，但不得跳过校正版验收和最终清理。",
+      "agent-skills-compatible": "使用项目真源作为规范入口。"
+    }
+  },
+  "gates": {},
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

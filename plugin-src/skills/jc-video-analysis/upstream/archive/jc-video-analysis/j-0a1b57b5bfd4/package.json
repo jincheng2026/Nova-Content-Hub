@@ -1,0 +1,9 @@
+{
+  "name": "jc-video-analysis-local-asr",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local SenseVoice runtime for jc-video-analysis.",
+  "dependencies": {
+    "sherpa-onnx-node": "1.13.5"
+  }
+}

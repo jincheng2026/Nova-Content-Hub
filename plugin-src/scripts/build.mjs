@@ -9,6 +9,7 @@ import {syncBridge} from './sync-bridge.mjs';
 import {assertArtifactSafe, releaseSourceFilter} from './artifact-safety.mjs';
 import {HOST_EVENTS, validRelease} from '../src/content.mjs';
 import {bundleNode, writeLaunchers, cleanNodeEnv} from './bundled-node.mjs';
+import {validateMethodSources} from './method-sources.mjs';
 
 const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
@@ -82,8 +83,9 @@ export function integrityPaths(platform = process.platform) {
     const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const item=`${directory}/${entry.name}`;if(!releaseSourceFilter(join(source,item)))continue;if(entry.isDirectory())methods(item);else if(entry.isFile())methodFiles.push(item);else throw Error('Skill resources must be regular files: '+item);}};
     for(const name of allSkillNames)methods(`skills/${name}`);
     const generatedResources=(directory,prefix)=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){if(!releaseSourceFilter(join(source,directory,entry.name)))continue;if(entry.isDirectory())generatedResources(`${directory}/${entry.name}`,`${prefix}/${entry.name}`);else if(entry.isFile())methodFiles.push(`${prefix}/${entry.name}`);}};
+    generatedResources('resources/jincheng-creation','plugin-src/resources/jincheng-creation');
     for(const name of skillNames){generatedResources('references',`skills/${name}/references`);generatedResources('schemas',`skills/${name}/schemas`);methodFiles.push(`skills/${name}/scripts/content.mjs`);}
-    const support = ['plugin-src/resources/business-skills.json', 'plugin-src/resources/business-skills-contract.md', 'plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
+    const support = ['plugin-src/resources/business-skills.json', 'plugin-src/resources/business-skills-contract.md', 'plugin-src/resources/method-sources.json', 'plugin-src/resources/method-adaptation-contract.md', 'plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
     return [...new Set([...modules, ...support, ...methodFiles, 'plugin-src/resources/production-methods-provenance.md', 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
@@ -104,6 +106,7 @@ export function resolveSkillReference(file, target, name, {sourceRoot = source, 
 }
 
 export async function validateSkills() {
+    validateMethodSources(source);
     if (businessSkillRegistry.format !== 'nova-business-skill-registry' || businessSkillRegistry.schemaVersion !== 1 || businessSkillRegistry.version !== 1 || new Set(allSkillNames).size !== allSkillNames.length) throw Error('Invalid business Skill registry');
     if (!businessSkillNames.includes(businessSkillRegistry.defaultPositioningSkill)) throw Error('Missing default positioning Skill');
     const discovered = fs.readdirSync(join(source, 'skills'), {withFileTypes:true}).filter(entry=>entry.isDirectory()).map(entry=>entry.name).sort();
@@ -130,7 +133,9 @@ export async function validateSkills() {
         const inspect = async directory => {
             for (const entry of fs.readdirSync(directory,{withFileTypes:true})) {
                 const file=join(directory,entry.name);
-                if (entry.isDirectory()) {await inspect(file);continue;}
+                // The complete original payload has its own byte-level manifest.
+                // Only our adapter links are installed runtime link promises.
+                if (entry.isDirectory()) {if(entry.name!=='upstream')await inspect(file);continue;}
                 if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
                 const markdown=await readFile(file,'utf8');
                 for (const match of markdown.matchAll(/\[[^\]]*\]\(([^)]+)\)/g)) {

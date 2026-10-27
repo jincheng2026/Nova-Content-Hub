@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "threshold": 0.34,
+  "description_concepts": [
+    "extract_action",
+    "material",
+    "pattern_target"
+  ],
+  "missing_description_concepts": [],
+  "summary": {
+    "total": 11,
+    "passed": 11,
+    "false_positive": 0,
+    "false_negative": 0,
+    "pass_rate": 1.0
+  },
+  "failures": [],
+  "results": {
+    "should_trigger": [
+      {
+        "prompt": "读取 02_内容素材，把每条素材整理进规律提取汇总",
+        "family": "summary",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 1.0,
+        "matched_concepts": [
+          "extract_action",
+          "material",
+          "pattern_target"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "我搜集了新内容，帮我更新内容规律",
+        "family": "incremental",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 1.0,
+        "matched_concepts": [
+          "extract_action",
+          "material",
+          "pattern_target"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "从这批对标素材里提炼标题规律和开头规律",
+        "family": "extract",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 1.0,
+        "matched_concepts": [
+          "extract_action",
+          "material",
+          "pattern_target"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "基于汇总底稿更新正文结构规律，补强已有的候选规律",
+        "family": "reinforce",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 1.0,
+        "matched_concepts": [
+          "extract_action",
+          "material",
+          "pattern_target"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "新入库了三条素材，增量更新规律汇总和三份规律文件",
+        "family": "incremental",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 1.0,
+        "matched_concepts": [
+          "extract_action",
+          "material",
+          "pattern_target"
+        ],
+        "negative_pattern": null
+      }
+    ],
+    "should_not_trigger": [
+      {
+        "prompt": "帮我写一条关于知识库的口播稿",
+        "family": "writing",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "写一条"
+      },
+      {
+        "prompt": "帮我做选题，看看下周发什么",
+        "family": "topic",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "做选题"
+      },
+      {
+        "prompt": "翻译这篇英文文章",
+        "family": "translate",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "翻译"
+      },
+      {
+        "prompt": "帮我调研抖音上的 AI 教程赛道",
+        "family": "research",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "帮我调研"
+      }
+    ],
+    "near_neighbor": [
+      {
+        "prompt": "拆解这条对标视频，分析它为什么爆",
+        "family": "video_analysis",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "拆解这条"
+      },
+      {
+        "prompt": "去小红书采集一批对标笔记下载入库",
+        "family": "collection",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "采集"
+      }
+    ]
+  }
+}

@@ -8,124 +8,15 @@
     "compatibleParameter": "businessMethod",
     "positioningWorkflow": "positioning-interview",
     "fallback": "executor-stage-method",
-    "unknownMethod": "stop-and-report-unavailable"
+    "unknownMethod": "stop-and-report-unavailable",
+    "explicitOnly": [
+      "jc-jiaocheng-video",
+      "jc-cold-shower",
+      "jc-meta-skill"
+    ],
+    "sourceManifest": "plugin-src/resources/method-sources.json"
   },
   "methods": [
-    {
-      "id": "jc-media-research",
-      "version": 1,
-      "role": "business-method",
-      "status": "adapted",
-      "executor": "nova-content-research-execution",
-      "workflows": [
-        "research",
-        "account-analysis",
-        "viral-radar",
-        "reference-research"
-      ],
-      "source": {
-        "kind": "original-skill-adaptation",
-        "package": "评论区洞察Skill公开版 2",
-        "files": [
-          {
-            "path": "jc-media-research/SKILL.md",
-            "sha256": "1a341e7f978ef9fca52ad9ab1d8c822b8e78c0efde44aab7b5dd55852892969e"
-          },
-          {
-            "path": "jc-media-research/references/account-report.md",
-            "sha256": "059ff85fd4292c49ab4f6a0f9dc5be6bfa7e99cdaf77b9ac2d564a14cf844238"
-          },
-          {
-            "path": "jc-media-research/references/data-contract.md",
-            "sha256": "790aa58927ff2671d60f6d45e95ea068f5bb049e8bc123ae25d11ea100b62132"
-          },
-          {
-            "path": "jc-media-research/references/evidence-analysis.md",
-            "sha256": "cc7cbb96a12330bbdb5068064f83031699f01449825f9d996256c8ab96dd632f"
-          },
-          {
-            "path": "jc-media-research/references/reporting-and-security.md",
-            "sha256": "2b3333927c372cdf6e4cf75d9d5ff609cbf05c323a567916c6dd0740bd804814"
-          },
-          {
-            "path": "jc-media-research/references/routes-and-gates.md",
-            "sha256": "d030ae4590703314fadd4bcc431460239fb9e85c187ad6cf52b5a9a0b92578e2"
-          },
-          {
-            "path": "jc-media-research/references/search-and-selection.md",
-            "sha256": "9728ad27f46aa6cd4782a133b69d6b70296255e7c1e43797df690a2ee9ed63f0"
-          },
-          {
-            "path": "jc-media-research/references/writing-and-feedback.md",
-            "sha256": "441484ea8ba0e68e02db3b32d97353ad9916c94b804a397c4afa105228aba3dc"
-          }
-        ]
-      },
-      "dependencies": [
-        "skills/jc-media-research/SKILL.md",
-        "skills/jc-media-research/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-research-execution/SKILL.md",
-        "skills/nova-content-research-execution/references/research-method.md",
-        "skills/nova-content-research-execution/references/report-method.md",
-        "skills/nova-content-research-execution/references/viral-radar.md",
-        "skills/nova-content-writing-execution/references/video-analysis.md"
-      ]
-    },
-    {
-      "id": "jc-comment-visualize",
-      "version": 1,
-      "role": "business-method",
-      "status": "adapted",
-      "executor": "nova-content-research-execution",
-      "workflows": [
-        "comment-insight",
-        "reference-research"
-      ],
-      "source": {
-        "kind": "original-skill-adaptation",
-        "package": "评论区洞察Skill公开版 2",
-        "files": [
-          {
-            "path": "jc-comment-visualize/SKILL.md",
-            "sha256": "add2cd7a79b31a77605291b5ab60c016c0f225ffd4dfd409e824c58efbbc4fe2"
-          },
-          {
-            "path": "jc-comment-visualize/references/chart-choice.md",
-            "sha256": "ac4d35817a1a35b197dffa3cf40da2e10361f86eb705cbb39eaeb562d642f805"
-          },
-          {
-            "path": "jc-comment-visualize/references/expression.md",
-            "sha256": "25c2eb73239f7742c4e2c428f6be2ac9d783f83229919ae8b5b50f8fecfebc8a"
-          },
-          {
-            "path": "jc-comment-visualize/references/labeling.md",
-            "sha256": "08da68a57f3be8d41ea8716188fdfd08eba382cc225e0df53e3e6c6be566707c"
-          },
-          {
-            "path": "jc-comment-visualize/references/page-spec.md",
-            "sha256": "c7a1f8ff8403da777db37c5d5dd104ba109d3c15d10359dac136d917cdfb7fd1"
-          },
-          {
-            "path": "jc-comment-visualize/references/report-contract.md",
-            "sha256": "341c74638c3f5749a42ac3c323aab7505df0e1f007af7c5348863aedf2514eb2"
-          }
-        ]
-      },
-      "dependencies": [
-        "skills/jc-comment-visualize/SKILL.md",
-        "skills/jc-comment-visualize/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-research-execution/SKILL.md",
-        "skills/nova-content-research-execution/references/research-method.md",
-        "skills/nova-content-research-execution/references/report-method.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md"
-      ]
-    },
     {
       "id": "jc-benchmark-intake",
       "version": 1,
@@ -137,29 +28,106 @@
         "reference-intake"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "第二大脑交接包_2026-10-16",
+        "kind": "complete-original-with-adapter",
+        "package": "V/skills/jc-benchmark-intake",
         "files": [
           {
-            "path": "jc-benchmark-intake/SKILL.md",
+            "path": "README.md",
+            "sha256": "e56dc6ddc2400af2ad95d71ba0e951f47dd6c2226ff116cc79005cb2b52f3199"
+          },
+          {
+            "path": "SKILL.md",
             "sha256": "0c1f5ee02a4d197a1ceab19ecf21c2d38d00a626d4b0bc094e78ddaca479d8db"
           },
           {
-            "path": "jc-benchmark-intake/references/intake-contract.md",
+            "path": "agents/interface.yaml",
+            "sha256": "98e5c87da6fc29e8f001fc706edfa91baf85566a744546f5adbe9327daa2900a"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "3458d94de12a9193bc6c0f8469be6463a54dd161346d5ae02068a639c6f88479"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "63664a6245aa4b1279ada20bc77da4253a74d97228b2a4d895c1bd8f84725fd8"
+          },
+          {
+            "path": "references/intake-contract.md",
             "sha256": "f2df4c643b0b6deabb73575efc1a7de55984f36767affac00b2665c074385c1c"
+          },
+          {
+            "path": "reports/creation-handoff.md",
+            "sha256": "80ee6008bcf4e4fd6f7a4acb38b03135d7027b847ae27d2b8031ccd8119d43b1"
+          },
+          {
+            "path": "reports/prior-art-research.md",
+            "sha256": "8aa9967079ba964324040da2707f34577b202b0fa3fe7808c1c51163ab3ced32"
+          },
+          {
+            "path": "reports/skill-ir.json",
+            "sha256": "3ed25a6cc9ab4ec986444aebe0d2490a5fd5531ab130ba4b55b0b78dcb053ecc"
+          },
+          {
+            "path": "reports/trigger-eval.json",
+            "sha256": "bf70a403f320728ae34572e4a6058139099b4d98380c8e8c6ec1f071454b49a8"
+          },
+          {
+            "path": "scripts/backfill_srt.py",
+            "sha256": "703575e55683c409e70eb308bdd0f90dbb7fe28abe3cd4cd5fac25e0a62e6875"
+          },
+          {
+            "path": "scripts/transcript_srt.py",
+            "sha256": "871fc9b7c7eb4a8173a600ec81c0ba67e632308a1d1a00aeae87ba80018c7a9a"
+          },
+          {
+            "path": "scripts/validate_workspace.py",
+            "sha256": "c9d37ca759f31dc2e4e1b2035c7da10db2c11ef8e343a4e5d9c3007e3ee7ee0b"
+          },
+          {
+            "path": "tests/test_transcript_srt.py",
+            "sha256": "2e0f5255d916ac1e7520f315b3915fb4231669dc8bd0f350a9b366770cfa1144"
+          },
+          {
+            "path": "tests/test_validate_workspace.py",
+            "sha256": "f20358394b22b406d468436956ae7acfb3a3a54c890fbec06d7901535d48f3bc"
           }
         ]
       },
       "dependencies": [
         "skills/jc-benchmark-intake/SKILL.md",
-        "skills/jc-benchmark-intake/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/reference-intake.md",
-        "skills/nova-content-writing-execution/references/transcription.md"
-      ]
+        "skills/jc-benchmark-intake/references/method.md",
+        "skills/jc-benchmark-intake/upstream/current/README.md",
+        "skills/jc-benchmark-intake/upstream/current/METHOD.md",
+        "skills/jc-benchmark-intake/upstream/current/agents/interface.yaml",
+        "skills/jc-benchmark-intake/upstream/current/evals/trigger_cases.json",
+        "skills/jc-benchmark-intake/upstream/current/manifest.json",
+        "skills/jc-benchmark-intake/upstream/current/references/intake-contract.md",
+        "skills/jc-benchmark-intake/upstream/current/reports/creation-handoff.md",
+        "skills/jc-benchmark-intake/upstream/current/reports/prior-art-research.md",
+        "skills/jc-benchmark-intake/upstream/current/reports/skill-ir.json",
+        "skills/jc-benchmark-intake/upstream/current/reports/trigger-eval.json",
+        "skills/jc-benchmark-intake/upstream/current/scripts/backfill_srt.py",
+        "skills/jc-benchmark-intake/upstream/current/scripts/transcript_srt.py",
+        "skills/jc-benchmark-intake/upstream/current/scripts/validate_workspace.py",
+        "skills/jc-benchmark-intake/upstream/current/tests/test_transcript_srt.py",
+        "skills/jc-benchmark-intake/upstream/current/tests/test_validate_workspace.py"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-benchmark-intake:V:b352652cc1598dbc",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-benchmark-intake/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-pattern-extractor",
@@ -171,28 +139,71 @@
         "pattern-extraction"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "第二大脑交接包_2026-10-16",
+        "kind": "complete-original-with-adapter",
+        "package": "V/skills/jc-pattern-extractor",
         "files": [
           {
-            "path": "jc-pattern-extractor/SKILL.md",
+            "path": "README.md",
+            "sha256": "4a31c65516e653dbad4c5467e7d00f80fd197e929d539df868f248dbb3753b1a"
+          },
+          {
+            "path": "SKILL.md",
             "sha256": "d38e84894db147e912ecd76b29e7ef1f468aa8421d8ebd567a5d96a045b836f5"
           },
           {
-            "path": "jc-pattern-extractor/references/field-rules.md",
+            "path": "agents/interface.yaml",
+            "sha256": "efcad26d482de63e3877cf8379d2820c51bda6d2d662026ce42be8f2f99c00e8"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "77dd835c74df8c1633e075bc0766e38e0891456c8c20db0da7214a5a4e23f9f9"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "c11a135d5e1247402c2a92bf23f463881fcef3d2ee04982a877ef4b493e8b6fb"
+          },
+          {
+            "path": "references/field-rules.md",
             "sha256": "dacf85bfe9b5e70605a6e0a7afb30687b040526cf787c33e319c7e5b711924cc"
+          },
+          {
+            "path": "reports/trigger-eval.json",
+            "sha256": "6b196ac7b24aadafa14568375876b11a0ddffccd44609f004fb2678236cd9c7e"
+          },
+          {
+            "path": "scripts/check_patterns.py",
+            "sha256": "1f83548e03666c6d1d953694049190df5ed63f6f6dc8869d31562d6e85535242"
           }
         ]
       },
       "dependencies": [
         "skills/jc-pattern-extractor/SKILL.md",
-        "skills/jc-pattern-extractor/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md"
-      ]
+        "skills/jc-pattern-extractor/references/method.md",
+        "skills/jc-pattern-extractor/upstream/current/README.md",
+        "skills/jc-pattern-extractor/upstream/current/METHOD.md",
+        "skills/jc-pattern-extractor/upstream/current/agents/interface.yaml",
+        "skills/jc-pattern-extractor/upstream/current/evals/trigger_cases.json",
+        "skills/jc-pattern-extractor/upstream/current/manifest.json",
+        "skills/jc-pattern-extractor/upstream/current/references/field-rules.md",
+        "skills/jc-pattern-extractor/upstream/current/reports/trigger-eval.json",
+        "skills/jc-pattern-extractor/upstream/current/scripts/check_patterns.py"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-pattern-extractor:V:6b1836ee38438dc8",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-pattern-extractor/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-topic-generator",
@@ -204,25 +215,56 @@
         "topic-generation"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "第二大脑交接包_2026-10-16",
+        "kind": "complete-original-with-adapter",
+        "package": "V/skills/jc-topic-generator",
         "files": [
           {
-            "path": "jc-topic-generator/SKILL.md",
+            "path": "README.md",
+            "sha256": "fe25d2367d27414f32ee71d51a7a2cef10e4bb77f2a6746e2d04800443ac0ba2"
+          },
+          {
+            "path": "SKILL.md",
             "sha256": "9e0e6d5fda80051a0ca2d978a0c7f51dace3a1b25845a6718a2485ec5f1428bb"
+          },
+          {
+            "path": "agents/interface.yaml",
+            "sha256": "a2fae2612bf6a16d1f5770291bb6e22f6f68ab1edd6cdb0693a7f72f03e25281"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "70f499aebcee4382501c5fcccd5396d3637fae07e6f322f196f50d2d7760d0d1"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "c339f59b6d526583ad6c623467428647b69ee1832948d60e04739768772357cc"
           }
         ]
       },
       "dependencies": [
         "skills/jc-topic-generator/SKILL.md",
-        "skills/jc-topic-generator/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/reference-intake.md",
-        "skills/nova-content-writing-execution/references/writing-method.md"
-      ]
+        "skills/jc-topic-generator/references/method.md",
+        "skills/jc-topic-generator/upstream/current/README.md",
+        "skills/jc-topic-generator/upstream/current/METHOD.md",
+        "skills/jc-topic-generator/upstream/current/agents/interface.yaml",
+        "skills/jc-topic-generator/upstream/current/evals/trigger_cases.json",
+        "skills/jc-topic-generator/upstream/current/manifest.json"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-topic-generator:V:81c3e3de6abbd6f9",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-topic-generator/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-content-writer",
@@ -236,27 +278,489 @@
         "revision"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "第二大脑交接包_2026-10-16",
+        "kind": "complete-original-with-adapter",
+        "package": "V/skills/jc-content-writer",
         "files": [
           {
-            "path": "jc-content-writer/SKILL.md",
+            "path": "README.md",
+            "sha256": "1d65fb29cfbe704c6547cb2f55e8f8e6f56f1dd857093c021c78494bd81eeac9"
+          },
+          {
+            "path": "SKILL.md",
             "sha256": "2766784438aafb79ee9ecf0048996012de53e187932d20ca648036dc1a7850b6"
+          },
+          {
+            "path": "agents/interface.yaml",
+            "sha256": "37a3e32be95c4a3f72e4a707fca08e8fde559e0700be60a20d33b8ba67efa131"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "8784e46c529f3250138abb49ba8dc9048372335cebf51d9c3ae03ce414b64ca3"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "a60df95221f7ca627ca1dc452f321d59e63de80fb462baf66e94ab5097c06538"
           }
         ]
       },
       "dependencies": [
         "skills/jc-content-writer/SKILL.md",
-        "skills/jc-content-writer/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/content-creation.md",
-        "skills/nova-content-writing-execution/references/writing-method.md",
-        "skills/nova-content-writing-execution/references/review-method.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md"
-      ]
+        "skills/jc-content-writer/references/method.md",
+        "skills/jc-content-writer/upstream/current/README.md",
+        "skills/jc-content-writer/upstream/current/METHOD.md",
+        "skills/jc-content-writer/upstream/current/agents/interface.yaml",
+        "skills/jc-content-writer/upstream/current/evals/trigger_cases.json",
+        "skills/jc-content-writer/upstream/current/manifest.json"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-content-writer:V:c94f79735159f2c6",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-content-writer/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-media-review",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "media-review",
+        "feedback"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "V/skills/jc-media-review",
+        "files": [
+          {
+            "path": "README.md",
+            "sha256": "6841d6191bab79d54a39d23f91835681e554b582638502dafe1bff4f4b1cae36"
+          },
+          {
+            "path": "SKILL.md",
+            "sha256": "cdf27dcd549c4339f60e06addaaae5f144d326e252179bcccc98f8e4a064bde0"
+          },
+          {
+            "path": "agents/interface.yaml",
+            "sha256": "64495e6f5f46bd5d0cac669d0207f4b664108481769095b4702d1fe408a46d61"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "be4d7bfb43f16c06bc294f0363f53cb5d7204389ce137a64b6b948571cabe63a"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "5e0cbc993db74321268ac44c71959441e1be26b9d2931b60b945eda319c53371"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-media-review/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-media-review/references/method.md",
+        "skills/jc-media-review/upstream/current/README.md",
+        "skills/jc-media-review/upstream/current/METHOD.md",
+        "skills/jc-media-review/upstream/current/agents/interface.yaml",
+        "skills/jc-media-review/upstream/current/evals/trigger_cases.json",
+        "skills/jc-media-review/upstream/current/manifest.json"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-media-review:V:4d754db88b21c0e3",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-media-review/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-media-research",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "research",
+        "account-analysis",
+        "viral-radar",
+        "reference-research"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "C/jc-media-research",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "1a341e7f978ef9fca52ad9ab1d8c822b8e78c0efde44aab7b5dd55852892969e"
+          },
+          {
+            "path": "agents/openai.yaml",
+            "sha256": "27b6327228880cf5e311307ec36642ab22392c858e599866c134d9828110f84e"
+          },
+          {
+            "path": "assets/account-charts.mjs",
+            "sha256": "0dcfd22c52f0e12693215f9e4fd53f04b51ad33b52c63965b5b80aba0d88a965"
+          },
+          {
+            "path": "assets/account-template.html",
+            "sha256": "10912c5a2e761d8379c39f30c5b481482729ff30a700d0a8013a17a9eeb35cc5"
+          },
+          {
+            "path": "assets/page-template.html",
+            "sha256": "0f034f632df08a6fdd35348667babad64f6e00419dd77124c88b44323eb9e113"
+          },
+          {
+            "path": "assets/report-template.md",
+            "sha256": "252c8e26f4f5ba2c684cde2bf402484707a98a640a7c709145031c4095d66c90"
+          },
+          {
+            "path": "assets/shared/reading.css",
+            "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+          },
+          {
+            "path": "assets/user-profile.example.json",
+            "sha256": "9c6f8fc2fc4c9e538d80f00dbcab7ba1e130a64132b7d697bc1584640c8b73c8"
+          },
+          {
+            "path": "assets/vendor/LICENSE.echarts.txt",
+            "sha256": "634293835b43a6dd2094fa39182a3d9a6b9ca43b7fdb9ac354e8037af2a3093a"
+          },
+          {
+            "path": "assets/vendor/NOTICE.echarts.txt",
+            "sha256": "fa99ac3af859d0e13166906dc53a73ad34a08898da7e8ae83407275496e9e30c"
+          },
+          {
+            "path": "assets/vendor/echarts.min.js",
+            "sha256": "e84270bd0cd5bdf60fefc26d00c2a391cb2e81f4d26a7a9ee16185a54773a3cf"
+          },
+          {
+            "path": "assets/writing-template.html",
+            "sha256": "b8e7ed40eb839aa68c18db822a1994bf379f224c2bb828f41de696acb7d67521"
+          },
+          {
+            "path": "evals/evals.json",
+            "sha256": "4e9ceaba4c67a5b40c65f2d85c2bb7ffa25edfa422e75f46cb8e5859727672f7"
+          },
+          {
+            "path": "references/account-report.md",
+            "sha256": "059ff85fd4292c49ab4f6a0f9dc5be6bfa7e99cdaf77b9ac2d564a14cf844238"
+          },
+          {
+            "path": "references/data-contract.md",
+            "sha256": "790aa58927ff2671d60f6d45e95ea068f5bb049e8bc123ae25d11ea100b62132"
+          },
+          {
+            "path": "references/evidence-analysis.md",
+            "sha256": "cc7cbb96a12330bbdb5068064f83031699f01449825f9d996256c8ab96dd632f"
+          },
+          {
+            "path": "references/reporting-and-security.md",
+            "sha256": "2b3333927c372cdf6e4cf75d9d5ff609cbf05c323a567916c6dd0740bd804814"
+          },
+          {
+            "path": "references/routes-and-gates.md",
+            "sha256": "d030ae4590703314fadd4bcc431460239fb9e85c187ad6cf52b5a9a0b92578e2"
+          },
+          {
+            "path": "references/search-and-selection.md",
+            "sha256": "9728ad27f46aa6cd4782a133b69d6b70296255e7c1e43797df690a2ee9ed63f0"
+          },
+          {
+            "path": "references/writing-and-feedback.md",
+            "sha256": "441484ea8ba0e68e02db3b32d97353ad9916c94b804a397c4afa105228aba3dc"
+          },
+          {
+            "path": "scripts/account_report.py",
+            "sha256": "17d57f6c397a1496e55ba19be216c2385747203ed01b58fb306a87c010fdc8e1"
+          },
+          {
+            "path": "scripts/interaction_policy.py",
+            "sha256": "93d267a9d13bd7a1c2755aa93a47da18326ebc1884e1b5e25c6fdec1a06aab9f"
+          },
+          {
+            "path": "scripts/prepare_research.py",
+            "sha256": "6e18f84ad5ce2cca56a866dcd3724b7fe5d2c4c8ceac1edb7936813719036c4e"
+          },
+          {
+            "path": "scripts/qa_page.py",
+            "sha256": "6907467f726ff00909ed4c4a1289283ff07cbaeef6375612c7fddb04fc1df3b4"
+          },
+          {
+            "path": "scripts/render_charts.py",
+            "sha256": "8ebd4040af7d50cee0167002f2781b13836fb0eebe3aea70a0a3a0502d30d089"
+          },
+          {
+            "path": "scripts/render_report.py",
+            "sha256": "3dfdf57846b22207f00f540ef12cc3c3dfc68faff466bf2a74967ff110ec4aa7"
+          },
+          {
+            "path": "scripts/render_report_preview.py",
+            "sha256": "42150c4e8346545028b352e7aac82cb41868463d533cc5682413025eced30b76"
+          },
+          {
+            "path": "scripts/research_decisions.py",
+            "sha256": "05d52eff1eea3b1847b70070e86ce0bd509797431b3d1796e00a55436408296b"
+          },
+          {
+            "path": "scripts/serve_workbench.py",
+            "sha256": "8da5f3f7c31d5b648fce4875bcae1c445005b3ab0f4efeb1befbef8b4c2a4bd8"
+          },
+          {
+            "path": "scripts/shared/reading_layout.py",
+            "sha256": "4120c23682018bbb60eb1f24cd5cc6665064ce55f941feac6a83b8e9036edd49"
+          },
+          {
+            "path": "scripts/shared/volc_asr.py",
+            "sha256": "3a08d10c59093e97303b24d0d651f26086bb473189b49f7ffabe19c0c3c44188"
+          },
+          {
+            "path": "scripts/tikhub_guard.py",
+            "sha256": "a91070e36ab3d20a07c5ade95c157f98d2d3cc77649c8f78925683c3662fabce"
+          },
+          {
+            "path": "scripts/transcribe_segments.py",
+            "sha256": "7b8a4cab8cff8f2a236144b885287cdd7329e88388c699e1b558ae6758c61d57"
+          },
+          {
+            "path": "scripts/validate_and_package.py",
+            "sha256": "461da3fe2a9a6e046a5ec4e99215fc9e3a6ebe7e992d9b89a78a090a0aa3d8e3"
+          },
+          {
+            "path": "scripts/validate_transcript_ready.py",
+            "sha256": "67446991546e35aed62631d87e5f71e13b3b77ea5f69d68f8c9f06e40b018037"
+          },
+          {
+            "path": "tests/fixtures/edge_cases.json",
+            "sha256": "a32e5f39a57db248e5e5efa1a0cd9414f35517bb746b5f3702d6a8946c388c11"
+          },
+          {
+            "path": "tests/fixtures/sanitized_baseline.json",
+            "sha256": "263150ccf35cc57d574de2153ca6c69771edad513f8512dbd18c573712e389cf"
+          },
+          {
+            "path": "tests/fixtures/synthetic_decisions.json",
+            "sha256": "584a2a00cbe7aeea9a4e0560a3ce8ebe4ee708a9174da4e59802fe2ece33b064"
+          },
+          {
+            "path": "tests/test_account_report.py",
+            "sha256": "129147b5d034d90ece5aab1a33421831bbf7897005dd8fdf8c4391a9fa717d36"
+          },
+          {
+            "path": "tests/test_decisions.py",
+            "sha256": "3f3a5641386e693f5618a4d293a4b219846fd8689543c597c7d350c870faf52a"
+          },
+          {
+            "path": "tests/test_one_shot_ux.py",
+            "sha256": "86e7fd5a01c8b134ff256a40863e200ba0533a88f12fcbc1656642204629b603"
+          },
+          {
+            "path": "tests/test_pipeline.py",
+            "sha256": "0d013b94effd6a380bc6fdb9ac733d4697d59642261935e88989bc4bbad86b25"
+          },
+          {
+            "path": "tests/test_privacy.py",
+            "sha256": "aa2fba6218d7e71c2d554ee38684d5fe3dfca9d73e7e999059271e2a9363c8cf"
+          },
+          {
+            "path": "tests/test_report_renderer.py",
+            "sha256": "6f52eda15edecabf88863a620ff1e0172560423afbaa2444d76a4814e5a3d6fb"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-media-research/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "skills/jc-media-research/references/method.md",
+        "skills/jc-media-research/upstream/current/METHOD.md",
+        "skills/jc-media-research/upstream/current/agents/openai.yaml",
+        "skills/jc-media-research/upstream/current/assets/account-charts.mjs",
+        "skills/jc-media-research/upstream/current/assets/account-template.html",
+        "skills/jc-media-research/upstream/current/assets/page-template.html",
+        "skills/jc-media-research/upstream/current/assets/report-template.md",
+        "skills/jc-media-research/upstream/current/assets/shared/reading.css",
+        "skills/jc-media-research/upstream/current/assets/user-profile.example.json",
+        "skills/jc-media-research/upstream/current/assets/vendor/LICENSE.echarts.txt",
+        "skills/jc-media-research/upstream/current/assets/vendor/NOTICE.echarts.txt",
+        "skills/jc-media-research/upstream/current/assets/vendor/echarts.min.js",
+        "skills/jc-media-research/upstream/current/assets/writing-template.html",
+        "skills/jc-media-research/upstream/current/evals/evals.json",
+        "skills/jc-media-research/upstream/current/references/account-report.md",
+        "skills/jc-media-research/upstream/current/references/data-contract.md",
+        "skills/jc-media-research/upstream/current/references/evidence-analysis.md",
+        "skills/jc-media-research/upstream/current/references/reporting-and-security.md",
+        "skills/jc-media-research/upstream/current/references/routes-and-gates.md",
+        "skills/jc-media-research/upstream/current/references/search-and-selection.md",
+        "skills/jc-media-research/upstream/current/references/writing-and-feedback.md",
+        "skills/jc-media-research/upstream/current/scripts/account_report.py",
+        "skills/jc-media-research/upstream/current/scripts/interaction_policy.py",
+        "skills/jc-media-research/upstream/current/scripts/prepare_research.py",
+        "skills/jc-media-research/upstream/current/scripts/qa_page.py",
+        "skills/jc-media-research/upstream/current/scripts/render_charts.py",
+        "skills/jc-media-research/upstream/current/scripts/render_report.py",
+        "skills/jc-media-research/upstream/current/scripts/render_report_preview.py",
+        "skills/jc-media-research/upstream/current/scripts/research_decisions.py",
+        "skills/jc-media-research/upstream/current/scripts/serve_workbench.py",
+        "skills/jc-media-research/upstream/current/scripts/shared/reading_layout.py",
+        "skills/jc-media-research/upstream/current/scripts/shared/volc_asr.py",
+        "skills/jc-media-research/upstream/current/scripts/tikhub_guard.py",
+        "skills/jc-media-research/upstream/current/scripts/transcribe_segments.py",
+        "skills/jc-media-research/upstream/current/scripts/validate_and_package.py",
+        "skills/jc-media-research/upstream/current/scripts/validate_transcript_ready.py",
+        "skills/jc-media-research/upstream/current/tests/fixtures/edge_cases.json",
+        "skills/jc-media-research/upstream/current/tests/fixtures/sanitized_baseline.json",
+        "skills/jc-media-research/upstream/current/tests/fixtures/synthetic_decisions.json",
+        "skills/jc-media-research/upstream/current/tests/test_account_report.py",
+        "skills/jc-media-research/upstream/current/tests/test_decisions.py",
+        "skills/jc-media-research/upstream/current/tests/test_one_shot_ux.py",
+        "skills/jc-media-research/upstream/current/tests/test_pipeline.py",
+        "skills/jc-media-research/upstream/current/tests/test_privacy.py",
+        "skills/jc-media-research/upstream/current/tests/test_report_renderer.py"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-media-research:C:68c8fd40993c4b29",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-media-research/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-comment-visualize",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "comment-insight",
+        "reference-research"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "C/jc-comment-visualize",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "add2cd7a79b31a77605291b5ab60c016c0f225ffd4dfd409e824c58efbbc4fe2"
+          },
+          {
+            "path": "assets/example-report.html",
+            "sha256": "12f786b92a0613fbe91b83e2f271269f12f01b111bc01255fcad847248d4d5bd"
+          },
+          {
+            "path": "assets/reading.css",
+            "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+          },
+          {
+            "path": "assets/report-template.html",
+            "sha256": "1f19d647d09a852d5c81986606635694ef08e0a4f76e91394c348c2d656e5070"
+          },
+          {
+            "path": "assets/report.js",
+            "sha256": "5732baf68bb15b28a7ba2f8a0297558feb009fa820aa5aa0b28e74257b40a669"
+          },
+          {
+            "path": "references/chart-choice.md",
+            "sha256": "ac4d35817a1a35b197dffa3cf40da2e10361f86eb705cbb39eaeb562d642f805"
+          },
+          {
+            "path": "references/expression.md",
+            "sha256": "25c2eb73239f7742c4e2c428f6be2ac9d783f83229919ae8b5b50f8fecfebc8a"
+          },
+          {
+            "path": "references/labeling.md",
+            "sha256": "08da68a57f3be8d41ea8716188fdfd08eba382cc225e0df53e3e6c6be566707c"
+          },
+          {
+            "path": "references/page-spec.md",
+            "sha256": "c7a1f8ff8403da777db37c5d5dd104ba109d3c15d10359dac136d917cdfb7fd1"
+          },
+          {
+            "path": "references/report-contract.md",
+            "sha256": "341c74638c3f5749a42ac3c323aab7505df0e1f007af7c5348863aedf2514eb2"
+          },
+          {
+            "path": "scripts/check_report.py",
+            "sha256": "d56f05726007289f6212cc5d729dffca816604d895b59945f1ab0ae8728c0166"
+          },
+          {
+            "path": "scripts/publish_check.sh",
+            "sha256": "7db3b2ff05e515b71f7e77d060145101e932ddb8cef444c6ede5d31b5738fa8d"
+          },
+          {
+            "path": "scripts/reading_layout.py",
+            "sha256": "4120c23682018bbb60eb1f24cd5cc6665064ce55f941feac6a83b8e9036edd49"
+          },
+          {
+            "path": "scripts/render_report.py",
+            "sha256": "24863e4f2c04f08a744e22495eaa05f7664375ac508d633386dfe980718205d4"
+          },
+          {
+            "path": "tests/test_report.py",
+            "sha256": "8805386938142fce04fc4a1e8d916c69bda4c0b4b0366c3300e7f46aba94d4d2"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-comment-visualize/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "skills/jc-comment-visualize/references/method.md",
+        "skills/jc-comment-visualize/upstream/current/METHOD.md",
+        "skills/jc-comment-visualize/upstream/current/assets/example-report.html",
+        "skills/jc-comment-visualize/upstream/current/assets/reading.css",
+        "skills/jc-comment-visualize/upstream/current/assets/report-template.html",
+        "skills/jc-comment-visualize/upstream/current/assets/report.js",
+        "skills/jc-comment-visualize/upstream/current/references/chart-choice.md",
+        "skills/jc-comment-visualize/upstream/current/references/expression.md",
+        "skills/jc-comment-visualize/upstream/current/references/labeling.md",
+        "skills/jc-comment-visualize/upstream/current/references/page-spec.md",
+        "skills/jc-comment-visualize/upstream/current/references/report-contract.md",
+        "skills/jc-comment-visualize/upstream/current/scripts/check_report.py",
+        "skills/jc-comment-visualize/upstream/current/scripts/publish_check.sh",
+        "skills/jc-comment-visualize/upstream/current/scripts/reading_layout.py",
+        "skills/jc-comment-visualize/upstream/current/scripts/render_report.py",
+        "skills/jc-comment-visualize/upstream/current/tests/test_report.py"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-comment-visualize:C:8511f3dfce9b8277",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-comment-visualize/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-video-analysis",
@@ -269,33 +773,144 @@
         "reference-analysis"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "锦成工作台-同事版/content-feedback-loop",
+        "kind": "complete-original-with-adapter",
+        "package": "J/工具项目/content-feedback-loop/skills/jc-video-analysis",
         "files": [
           {
-            "path": "jc-video-analysis/SKILL.md",
+            "path": "SKILL.md",
             "sha256": "5761d79243450007a3ab666eb93bd8b1172de4ac21a2988e3220b62a5f2514f5"
           },
           {
-            "path": "jc-video-analysis/references/analysis-method.md",
+            "path": "agents/openai.yaml",
+            "sha256": "b80ba1e1327fc51866dbf0f4ed25ffa3fff43ac2946f9817b5668712d0f74a36"
+          },
+          {
+            "path": "references/analysis-method.md",
             "sha256": "3f1ddc1d2941b0d782d6d07171a69242382537a5d310bb211836cbbe7cb883eb"
           },
           {
-            "path": "jc-video-analysis/references/拆法.md",
+            "path": "references/拆法.md",
             "sha256": "39bf512390f9403214ae7c27c3d6e56371f15158154ae4b09bfe9c47f853b5e0"
           }
         ]
       },
       "dependencies": [
         "skills/jc-video-analysis/SKILL.md",
-        "skills/jc-video-analysis/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/video-analysis.md",
-        "skills/nova-content-writing-execution/references/reference-intake.md"
-      ]
+        "skills/jc-video-analysis/references/method.md",
+        "skills/jc-video-analysis/upstream/current/METHOD.md",
+        "skills/jc-video-analysis/upstream/current/agents/openai.yaml",
+        "skills/jc-video-analysis/upstream/current/references/analysis-method.md",
+        "skills/jc-video-analysis/upstream/current/references/拆法.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-video-analysis:J:7a294eda04589343",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-video-analysis/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-cover-copy",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "cover-copy",
+        "packaging"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/工具项目/content-feedback-loop/skills/jc-cover-copy",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "329c539908506ebac45d3690a548454f60ba794769cc1ff73685cbc95a8ff60e"
+          },
+          {
+            "path": "agents/openai.yaml",
+            "sha256": "55b4261e0f201ebcbed94dd5c667cfc561e86f8bd51f29406a14cb5269e99998"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-cover-copy/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-cover-copy/references/method.md",
+        "skills/jc-cover-copy/upstream/current/METHOD.md",
+        "skills/jc-cover-copy/upstream/current/agents/openai.yaml"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-cover-copy:J:e51cd5b62e529489",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-cover-copy/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-publish-closeout",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "publish-closeout"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/工具项目/content-feedback-loop/skills/jc-publish-closeout",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "0f3f87f4ceb64a2d1fcddde662280aa6b4367809ffa4e51b5ca73a0854d7d930"
+          },
+          {
+            "path": "agents/openai.yaml",
+            "sha256": "e075aba449f7a94b8502217e4425276bdc8c21b2ec617dc595c20b80880db822"
+          }
+        ]
+      },
+      "dependencies": [
+        "skills/jc-publish-closeout/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-publish-closeout/references/method.md",
+        "skills/jc-publish-closeout/upstream/current/METHOD.md",
+        "skills/jc-publish-closeout/upstream/current/agents/openai.yaml"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-publish-closeout:J:fbeed98b4fccff21",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-publish-closeout/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-jiaocheng-video",
@@ -309,156 +924,1060 @@
         "narrative"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "锦成工作台-同事版/content-feedback-loop",
+        "kind": "complete-original-with-adapter",
+        "package": "T/jc-jiaocheng-video",
         "files": [
           {
-            "path": "jc-jiaocheng-video/SKILL.md",
+            "path": "SKILL.md",
             "sha256": "8326aec447cba71b26d2a6b07ce29e210a38c2e3667b5471d1fa91ed1e4897fe"
           },
           {
-            "path": "jc-jiaocheng-video/references/evaluation.md",
+            "path": "agents/openai.yaml",
+            "sha256": "061cd62b9f2ea7a4c7acee59d6f6b975dcf50c30abd3a40c38be88486bdcd883"
+          },
+          {
+            "path": "references/evaluation.md",
             "sha256": "c50a7ffafcb4b94496c32108c78b49cd4d4dc86a2b14e3a33296c7a9f8a905d7"
           },
           {
-            "path": "jc-jiaocheng-video/references/rafael-model-v1.md",
+            "path": "references/rafael-model-v1.md",
             "sha256": "441a0158ca0bfd969dcdfdb76eca769939357bc2305d6472ca501e2d0fba324f"
+          },
+          {
+            "path": "references/锦成的口气.md",
+            "sha256": "0588ddb96e01ba92a4ff5120d36566ed3eda47c4bd0bf7c10fe0e71844f4fa16"
           }
         ]
       },
       "dependencies": [
         "skills/jc-jiaocheng-video/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
         "skills/jc-jiaocheng-video/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/writing-method.md",
-        "skills/nova-content-writing-execution/references/review-method.md",
-        "skills/nova-content-writing-execution/references/packaging-method.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md"
-      ]
+        "skills/jc-jiaocheng-video/upstream/current/METHOD.md",
+        "skills/jc-jiaocheng-video/upstream/current/agents/openai.yaml",
+        "skills/jc-jiaocheng-video/upstream/current/references/evaluation.md",
+        "skills/jc-jiaocheng-video/upstream/current/references/rafael-model-v1.md",
+        "skills/jc-jiaocheng-video/upstream/current/references/锦成的口气.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-jiaocheng-video:T:4a4d36aa30d434b8",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-jiaocheng-video/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
-      "id": "jc-cover-copy",
+      "id": "jc-gongzuotai-write",
       "version": 1,
       "role": "business-method",
       "status": "adapted",
-      "executor": "nova-content-writing-execution",
-      "workflows": [
-        "cover-copy",
-        "packaging"
-      ],
-      "source": {
-        "kind": "original-skill-adaptation",
-        "package": "锦成工作台-同事版/content-feedback-loop",
-        "files": [
-          {
-            "path": "jc-cover-copy/SKILL.md",
-            "sha256": "329c539908506ebac45d3690a548454f60ba794769cc1ff73685cbc95a8ff60e"
-          }
-        ]
-      },
-      "dependencies": [
-        "skills/jc-cover-copy/SKILL.md",
-        "skills/jc-cover-copy/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/packaging-method.md"
-      ]
-    },
-    {
-      "id": "jc-media-review",
-      "version": 1,
-      "role": "business-method",
-      "status": "adapted",
-      "executor": "nova-content-writing-execution",
-      "workflows": [
-        "media-review",
-        "feedback"
-      ],
-      "source": {
-        "kind": "original-skill-adaptation",
-        "package": "第二大脑交接包_2026-10-16",
-        "files": [
-          {
-            "path": "jc-media-review/SKILL.md",
-            "sha256": "cdf27dcd549c4339f60e06addaaae5f144d326e252179bcccc98f8e4a064bde0"
-          }
-        ]
-      },
-      "dependencies": [
-        "skills/jc-media-review/SKILL.md",
-        "skills/jc-media-review/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md",
-        "skills/nova-content-research-execution/references/report-method.md"
-      ]
-    },
-    {
-      "id": "jc-publish-closeout",
-      "version": 1,
-      "role": "business-method",
-      "status": "adapted",
-      "executor": "nova-content-writing-execution",
-      "workflows": [
-        "publish-closeout"
-      ],
-      "source": {
-        "kind": "original-skill-adaptation",
-        "package": "锦成工作台-同事版/content-feedback-loop",
-        "files": [
-          {
-            "path": "jc-publish-closeout/SKILL.md",
-            "sha256": "0f3f87f4ceb64a2d1fcddde662280aa6b4367809ffa4e51b5ca73a0854d7d930"
-          }
-        ]
-      },
-      "dependencies": [
-        "skills/jc-publish-closeout/SKILL.md",
-        "skills/jc-publish-closeout/references/method.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md",
-        "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md",
-        "skills/nova-content-writing-execution/references/packaging-method.md"
-      ]
-    },
-    {
-      "id": "nova-workbench-writing-method",
-      "version": 1,
-      "role": "business-method",
-      "status": "adapted-from-history",
       "executor": "nova-content-writing-execution",
       "workflows": [
         "workbench-writing",
         "revision"
       ],
       "source": {
-        "kind": "historical-adaptation",
-        "package": "锦成工作台-同事版/Skill历史版本",
+        "kind": "complete-original-with-adapter",
+        "package": "J/工具项目/内容工作台/creation-page",
         "files": [
           {
-            "path": "jc-gongzuotai-write/2026-09-30T0803_1e8d3bef2b.md",
-            "sha256": "8829726488aa6cb8dbe4a2222f14b9c1ebe7728f376dd8c173e0a8a130f7b30c"
+            "path": "SKILL.md",
+            "sha256": "6f1ea36da090db8029913a3101982be51f20336380fdf307341b006499dde86f"
+          },
+          {
+            "path": "brain_page.py",
+            "sha256": "b34966bebb6e05653c1ed4ac36cfd7b6e67bdb91e38be181da884443e36be5cf"
+          },
+          {
+            "path": "build_page.py",
+            "sha256": "9f0d2d3796acca1099503e2468ebca481394ac34ee4f04ecbc5a3928a1fea940"
+          },
+          {
+            "path": "creation_doc.py",
+            "sha256": "874f9f9b96f64de563615128ee47e4e974895aef8b38cebc43ff26851e8a6734"
+          },
+          {
+            "path": "install.sh",
+            "sha256": "cae37e5a7503a576091968f1293a33291823887cee1ee2393b9ab12159e06075"
+          },
+          {
+            "path": "kit/kit.js",
+            "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704"
+          },
+          {
+            "path": "schema/creation-page.md",
+            "sha256": "95f4445fac4a5c2e744de966ee3fa4e35781c1973e7b4b93c181b390b5c72475"
+          },
+          {
+            "path": "server/brain_save.py",
+            "sha256": "90b3578085608ec9000970b7a41e804e2045c8e283f037017b2a7cf5139d02e8"
+          },
+          {
+            "path": "server/service.sh",
+            "sha256": "d1b4d2eae7573dc94a07618aa3ed6dbe2f747aac2111bf6ebc5484575bcab485"
+          },
+          {
+            "path": "template/app.js",
+            "sha256": "aa2272b34df41a2bfc567c7015099e0bdf8538fbc8fdd7a8f32b158de6fe2b35"
+          },
+          {
+            "path": "template/shell.html",
+            "sha256": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1"
+          },
+          {
+            "path": "template/style.css",
+            "sha256": "58e487524b79a1bd26823461949ad907ccd6ef1395d71f313754953ff2f03b30"
+          },
+          {
+            "path": "tests/browser/cdp.mjs",
+            "sha256": "efc2e4eaf69036aab5c05e02414c11b87702dd5957d46c019b2acac6cd875ed7"
+          },
+          {
+            "path": "tests/browser/run_srv.py",
+            "sha256": "16b5f960d80991167dbb7b000134dde348cc4759559628efaff3aa54d519544f"
+          },
+          {
+            "path": "tests/browser/scenarios.mjs",
+            "sha256": "be7d9185872a881c4035a5a7efaec504f9dd0abd318e76f75dff86bd38a9da4f"
+          },
+          {
+            "path": "tests/browser/ui_cdp.mjs",
+            "sha256": "940f1e5047cec3e85e47ec4742fb011f4c01181ed2e5765bdb997c895460618c"
+          },
+          {
+            "path": "tests/browser/ui_scenarios.mjs",
+            "sha256": "9e2d820f19171d89eb0135ae957755635427afae3683396e6d611cb98ef95ea7"
+          },
+          {
+            "path": "tests/fixtures/kit-stub.js",
+            "sha256": "70a968e7b86e1a7329d75c8f6923b796c35658384927c9f8a4567249567db2aa"
+          },
+          {
+            "path": "tests/fixtures/simulate_ai.py",
+            "sha256": "3dbc4415bcc77ad11c5fb975d49c063884230f77a8dae800fce669eab346613a"
+          },
+          {
+            "path": "tests/fixtures/spike_pages.py",
+            "sha256": "cd7b0fa5546ab2bb1be008c3691adac28330d6fd9e1b37fc51cfedb78312810f"
+          },
+          {
+            "path": "tests/fixtures/template/app.js",
+            "sha256": "fa728197609c854926a27a6ec9826829dfe711a0591f3aac61b1d00ed131dbbe"
+          },
+          {
+            "path": "tests/fixtures/template/shell.html",
+            "sha256": "9cfc0e6d1bd29ff89852cd121e839b199b2a77fdb3ceef90c051ff78e33e88ba"
+          },
+          {
+            "path": "tests/fixtures/template/style.css",
+            "sha256": "71a1bfdb4e3ffcb6c43e3c6424d8d481b6513de06e72366e2d7bf46ea5356621"
+          },
+          {
+            "path": "tests/fixtures/tutorial_ext.json",
+            "sha256": "98278a0ef2c031c8055b3b3840a04487da31a8efde8fd40f44ee854532501ba1"
+          },
+          {
+            "path": "tests/fixtures/ui_small.json",
+            "sha256": "ff0fe0514d86f7f582e6c426a282a05136e2ecb63ced013d49e1de3ea2c130b8"
+          },
+          {
+            "path": "tests/support.py",
+            "sha256": "a1948bb632346ba104dafdb29fcff1214a1e76166d75f7b36242bcc20616995e"
+          },
+          {
+            "path": "tests/test_brain_page.py",
+            "sha256": "8068e441034fd5bb9e6d0c820d6905cc5e7cca790940610e150a22d9f8a703f2"
+          },
+          {
+            "path": "tests/test_browser.py",
+            "sha256": "1ac4e4bf4149984cb5933d489794f64ae068f1228831490e1585a9230cd8119c"
+          },
+          {
+            "path": "tests/test_build_page.py",
+            "sha256": "30dcdd8c568a3626ea5cd3fe0b0b6bc8ccf7fcc75f476948146439a97074e321"
+          },
+          {
+            "path": "tests/test_extension.py",
+            "sha256": "bb3837e11ffe8b15ad0ebfb955c2aab08810c7e95ad2bffd2750a273569c4302"
+          },
+          {
+            "path": "tests/test_files.py",
+            "sha256": "bf05ca22afc60749a1a72e17a52d3dc21ef1fa08400784792b673af17780a4e7"
+          },
+          {
+            "path": "tests/test_install.py",
+            "sha256": "603d2b111ed920328a9e1289c199efa14d732f7c8771aa48c0adcd9bfd968ae7"
+          },
+          {
+            "path": "tests/test_server.py",
+            "sha256": "545ba356d10eaa0ac3eb9783195fd53e9caf4e19eb89d0387fd145b239a17f23"
+          },
+          {
+            "path": "tests/test_template_serve.py",
+            "sha256": "1fa4532b879ac63fa988bd3bc775018a99de16fe07bdbb2685cb1fc405a75c1a"
+          },
+          {
+            "path": "tests/test_ui_browser.py",
+            "sha256": "f1187f5023eed9e1f850c67ef6381e03b901e3df4f56ea72ccbb8cd13c81011d"
+          },
+          {
+            "path": "tests/ui_mini_build.py",
+            "sha256": "d600b4fbf13f7cc3790aa75c7ffb37383dd4c5e3e94aa3487ad6159f225d6eec"
+          },
+          {
+            "path": "文案术语表.md",
+            "sha256": "5b856188ad9c04bf7f10c6034eb09622ad0fe1383ae8f44580692c58becdc613"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-gongzuotai-write:J:e3165223ff417f9b",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-gongzuotai-write/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-gongzuotai-write/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-gongzuotai-write/references/method.md",
+        "skills/jc-gongzuotai-write/upstream/current/METHOD.md",
+        "skills/jc-gongzuotai-write/upstream/current/brain_page.py",
+        "skills/jc-gongzuotai-write/upstream/current/build_page.py",
+        "skills/jc-gongzuotai-write/upstream/current/creation_doc.py",
+        "skills/jc-gongzuotai-write/upstream/current/install.sh",
+        "skills/jc-gongzuotai-write/upstream/current/kit/kit.js",
+        "skills/jc-gongzuotai-write/upstream/current/schema/creation-page.md",
+        "skills/jc-gongzuotai-write/upstream/current/server/brain_save.py",
+        "skills/jc-gongzuotai-write/upstream/current/server/service.sh",
+        "skills/jc-gongzuotai-write/upstream/current/template/app.js",
+        "skills/jc-gongzuotai-write/upstream/current/template/shell.html",
+        "skills/jc-gongzuotai-write/upstream/current/template/style.css",
+        "skills/jc-gongzuotai-write/upstream/current/tests/browser/cdp.mjs",
+        "skills/jc-gongzuotai-write/upstream/current/tests/browser/run_srv.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/browser/scenarios.mjs",
+        "skills/jc-gongzuotai-write/upstream/current/tests/browser/ui_cdp.mjs",
+        "skills/jc-gongzuotai-write/upstream/current/tests/browser/ui_scenarios.mjs",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/kit-stub.js",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/simulate_ai.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/spike_pages.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/template/app.js",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/template/shell.html",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/template/style.css",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/tutorial_ext.json",
+        "skills/jc-gongzuotai-write/upstream/current/tests/fixtures/ui_small.json",
+        "skills/jc-gongzuotai-write/upstream/current/tests/support.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_brain_page.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_browser.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_build_page.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_extension.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_files.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_install.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_server.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_template_serve.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/test_ui_browser.py",
+        "skills/jc-gongzuotai-write/upstream/current/tests/ui_mini_build.py",
+        "skills/jc-gongzuotai-write/upstream/current/文案术语表.md"
+      ]
+    },
+    {
+      "id": "nova-workbench-writing-method",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "workbench-writing",
+        "revision"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/工具项目/内容工作台/creation-page",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "6f1ea36da090db8029913a3101982be51f20336380fdf307341b006499dde86f"
+          },
+          {
+            "path": "brain_page.py",
+            "sha256": "b34966bebb6e05653c1ed4ac36cfd7b6e67bdb91e38be181da884443e36be5cf"
+          },
+          {
+            "path": "build_page.py",
+            "sha256": "9f0d2d3796acca1099503e2468ebca481394ac34ee4f04ecbc5a3928a1fea940"
+          },
+          {
+            "path": "creation_doc.py",
+            "sha256": "874f9f9b96f64de563615128ee47e4e974895aef8b38cebc43ff26851e8a6734"
+          },
+          {
+            "path": "install.sh",
+            "sha256": "cae37e5a7503a576091968f1293a33291823887cee1ee2393b9ab12159e06075"
+          },
+          {
+            "path": "kit/kit.js",
+            "sha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704"
+          },
+          {
+            "path": "schema/creation-page.md",
+            "sha256": "95f4445fac4a5c2e744de966ee3fa4e35781c1973e7b4b93c181b390b5c72475"
+          },
+          {
+            "path": "server/brain_save.py",
+            "sha256": "90b3578085608ec9000970b7a41e804e2045c8e283f037017b2a7cf5139d02e8"
+          },
+          {
+            "path": "server/service.sh",
+            "sha256": "d1b4d2eae7573dc94a07618aa3ed6dbe2f747aac2111bf6ebc5484575bcab485"
+          },
+          {
+            "path": "template/app.js",
+            "sha256": "aa2272b34df41a2bfc567c7015099e0bdf8538fbc8fdd7a8f32b158de6fe2b35"
+          },
+          {
+            "path": "template/shell.html",
+            "sha256": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1"
+          },
+          {
+            "path": "template/style.css",
+            "sha256": "58e487524b79a1bd26823461949ad907ccd6ef1395d71f313754953ff2f03b30"
+          },
+          {
+            "path": "tests/browser/cdp.mjs",
+            "sha256": "efc2e4eaf69036aab5c05e02414c11b87702dd5957d46c019b2acac6cd875ed7"
+          },
+          {
+            "path": "tests/browser/run_srv.py",
+            "sha256": "16b5f960d80991167dbb7b000134dde348cc4759559628efaff3aa54d519544f"
+          },
+          {
+            "path": "tests/browser/scenarios.mjs",
+            "sha256": "be7d9185872a881c4035a5a7efaec504f9dd0abd318e76f75dff86bd38a9da4f"
+          },
+          {
+            "path": "tests/browser/ui_cdp.mjs",
+            "sha256": "940f1e5047cec3e85e47ec4742fb011f4c01181ed2e5765bdb997c895460618c"
+          },
+          {
+            "path": "tests/browser/ui_scenarios.mjs",
+            "sha256": "9e2d820f19171d89eb0135ae957755635427afae3683396e6d611cb98ef95ea7"
+          },
+          {
+            "path": "tests/fixtures/kit-stub.js",
+            "sha256": "70a968e7b86e1a7329d75c8f6923b796c35658384927c9f8a4567249567db2aa"
+          },
+          {
+            "path": "tests/fixtures/simulate_ai.py",
+            "sha256": "3dbc4415bcc77ad11c5fb975d49c063884230f77a8dae800fce669eab346613a"
+          },
+          {
+            "path": "tests/fixtures/spike_pages.py",
+            "sha256": "cd7b0fa5546ab2bb1be008c3691adac28330d6fd9e1b37fc51cfedb78312810f"
+          },
+          {
+            "path": "tests/fixtures/template/app.js",
+            "sha256": "fa728197609c854926a27a6ec9826829dfe711a0591f3aac61b1d00ed131dbbe"
+          },
+          {
+            "path": "tests/fixtures/template/shell.html",
+            "sha256": "9cfc0e6d1bd29ff89852cd121e839b199b2a77fdb3ceef90c051ff78e33e88ba"
+          },
+          {
+            "path": "tests/fixtures/template/style.css",
+            "sha256": "71a1bfdb4e3ffcb6c43e3c6424d8d481b6513de06e72366e2d7bf46ea5356621"
+          },
+          {
+            "path": "tests/fixtures/tutorial_ext.json",
+            "sha256": "98278a0ef2c031c8055b3b3840a04487da31a8efde8fd40f44ee854532501ba1"
+          },
+          {
+            "path": "tests/fixtures/ui_small.json",
+            "sha256": "ff0fe0514d86f7f582e6c426a282a05136e2ecb63ced013d49e1de3ea2c130b8"
+          },
+          {
+            "path": "tests/support.py",
+            "sha256": "a1948bb632346ba104dafdb29fcff1214a1e76166d75f7b36242bcc20616995e"
+          },
+          {
+            "path": "tests/test_brain_page.py",
+            "sha256": "8068e441034fd5bb9e6d0c820d6905cc5e7cca790940610e150a22d9f8a703f2"
+          },
+          {
+            "path": "tests/test_browser.py",
+            "sha256": "1ac4e4bf4149984cb5933d489794f64ae068f1228831490e1585a9230cd8119c"
+          },
+          {
+            "path": "tests/test_build_page.py",
+            "sha256": "30dcdd8c568a3626ea5cd3fe0b0b6bc8ccf7fcc75f476948146439a97074e321"
+          },
+          {
+            "path": "tests/test_extension.py",
+            "sha256": "bb3837e11ffe8b15ad0ebfb955c2aab08810c7e95ad2bffd2750a273569c4302"
+          },
+          {
+            "path": "tests/test_files.py",
+            "sha256": "bf05ca22afc60749a1a72e17a52d3dc21ef1fa08400784792b673af17780a4e7"
+          },
+          {
+            "path": "tests/test_install.py",
+            "sha256": "603d2b111ed920328a9e1289c199efa14d732f7c8771aa48c0adcd9bfd968ae7"
+          },
+          {
+            "path": "tests/test_server.py",
+            "sha256": "545ba356d10eaa0ac3eb9783195fd53e9caf4e19eb89d0387fd145b239a17f23"
+          },
+          {
+            "path": "tests/test_template_serve.py",
+            "sha256": "1fa4532b879ac63fa988bd3bc775018a99de16fe07bdbb2685cb1fc405a75c1a"
+          },
+          {
+            "path": "tests/test_ui_browser.py",
+            "sha256": "f1187f5023eed9e1f850c67ef6381e03b901e3df4f56ea72ccbb8cd13c81011d"
+          },
+          {
+            "path": "tests/ui_mini_build.py",
+            "sha256": "d600b4fbf13f7cc3790aa75c7ffb37383dd4c5e3e94aa3487ad6159f225d6eec"
+          },
+          {
+            "path": "文案术语表.md",
+            "sha256": "5b856188ad9c04bf7f10c6034eb09622ad0fe1383ae8f44580692c58becdc613"
           }
         ]
       },
       "dependencies": [
         "skills/nova-workbench-writing-method/SKILL.md",
-        "skills/nova-workbench-writing-method/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/nova-content-writing-execution/references/review-method.md",
-        "skills/nova-content-writing-execution/references/feedback-method.md"
+        "skills/nova-workbench-writing-method/references/method.md",
+        "skills/nova-workbench-writing-method/upstream/current/METHOD.md",
+        "skills/nova-workbench-writing-method/upstream/current/brain_page.py",
+        "skills/nova-workbench-writing-method/upstream/current/build_page.py",
+        "skills/nova-workbench-writing-method/upstream/current/creation_doc.py",
+        "skills/nova-workbench-writing-method/upstream/current/install.sh",
+        "skills/nova-workbench-writing-method/upstream/current/kit/kit.js",
+        "skills/nova-workbench-writing-method/upstream/current/schema/creation-page.md",
+        "skills/nova-workbench-writing-method/upstream/current/server/brain_save.py",
+        "skills/nova-workbench-writing-method/upstream/current/server/service.sh",
+        "skills/nova-workbench-writing-method/upstream/current/template/app.js",
+        "skills/nova-workbench-writing-method/upstream/current/template/shell.html",
+        "skills/nova-workbench-writing-method/upstream/current/template/style.css",
+        "skills/nova-workbench-writing-method/upstream/current/tests/browser/cdp.mjs",
+        "skills/nova-workbench-writing-method/upstream/current/tests/browser/run_srv.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/browser/scenarios.mjs",
+        "skills/nova-workbench-writing-method/upstream/current/tests/browser/ui_cdp.mjs",
+        "skills/nova-workbench-writing-method/upstream/current/tests/browser/ui_scenarios.mjs",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/kit-stub.js",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/simulate_ai.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/spike_pages.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/template/app.js",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/template/shell.html",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/template/style.css",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/tutorial_ext.json",
+        "skills/nova-workbench-writing-method/upstream/current/tests/fixtures/ui_small.json",
+        "skills/nova-workbench-writing-method/upstream/current/tests/support.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_brain_page.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_browser.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_build_page.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_extension.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_files.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_install.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_server.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_template_serve.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/test_ui_browser.py",
+        "skills/nova-workbench-writing-method/upstream/current/tests/ui_mini_build.py",
+        "skills/nova-workbench-writing-method/upstream/current/文案术语表.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "nova-workbench-writing-method:J:e3165223ff417f9b",
+      "sourceStatus": "current",
+      "methodBody": "skills/nova-workbench-writing-method/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
+    },
+    {
+      "id": "jc-clarifier",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "clarify"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/内容创作/成稿/2026-08-11-十个jc-Skill分享教程/public-src/jc-clarifier",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "6cecd1ea5197fa3990ac69597405721c6f56e9ccdc71e192ad2d665b473d2b84"
+          },
+          {
+            "path": "evals/output_cases.yaml",
+            "sha256": "e0f763bbbe4257502b86be3a493787297cc661eca5571a71326474b0be374dc7"
+          },
+          {
+            "path": "evals/trigger_cases.yaml",
+            "sha256": "1debc6ddbbd50758e37868a4bdac875e13836a392cec689f8e076074ccfa11a9"
+          },
+          {
+            "path": "references/clarification-flow.md",
+            "sha256": "8bc11abb48ef0bcc68806c6a7150957e852fde266550578e7cc00120b35802bf"
+          },
+          {
+            "path": "references/goal-mode.md",
+            "sha256": "7b887e5dba95999aad98c9384cbf6ff97e66d86a0d56011a1e2144c3c120e50a"
+          },
+          {
+            "path": "references/output-contracts.md",
+            "sha256": "a441f6f50c6048f9723d41e2d240c25fbc2324c080b7129a9805de161b8b97ba"
+          },
+          {
+            "path": "references/question-bank.md",
+            "sha256": "f8da6b4701f203ce4700fb8ba66f7e6118d0e0bc044f31f3f8c262e9627584fd"
+          },
+          {
+            "path": "references/routing.md",
+            "sha256": "1c4ec833b7d080a4486d10d704bccf1fde0ddf38e2b7190750248e01b6c827e6"
+          },
+          {
+            "path": "references/scoring.md",
+            "sha256": "3fe5388e400f7e6f049d942e622c425f2feb4443791ed71ab3f49ee2563e64cd"
+          },
+          {
+            "path": "references/theory.md",
+            "sha256": "8862a88c8c0fb4633ffd0ec3ab7422d3ae2d153a0ffeee919fd70e9fe73cc667"
+          },
+          {
+            "path": "reports/output-risk-profile.md",
+            "sha256": "d3a204d0b031c9dd5040ad11e8940da4743a09125bd4eaa26b39edd9b1674785"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-clarifier:J:06d542a7e168fc8e",
+      "sourceStatus": "public-snapshot",
+      "methodBody": "skills/jc-clarifier/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-clarifier/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-clarifier/references/method.md",
+        "skills/jc-clarifier/upstream/current/METHOD.md",
+        "skills/jc-clarifier/upstream/current/evals/output_cases.yaml",
+        "skills/jc-clarifier/upstream/current/evals/trigger_cases.yaml",
+        "skills/jc-clarifier/upstream/current/references/clarification-flow.md",
+        "skills/jc-clarifier/upstream/current/references/goal-mode.md",
+        "skills/jc-clarifier/upstream/current/references/output-contracts.md",
+        "skills/jc-clarifier/upstream/current/references/question-bank.md",
+        "skills/jc-clarifier/upstream/current/references/routing.md",
+        "skills/jc-clarifier/upstream/current/references/scoring.md",
+        "skills/jc-clarifier/upstream/current/references/theory.md",
+        "skills/jc-clarifier/upstream/current/reports/output-risk-profile.md"
+      ]
+    },
+    {
+      "id": "jc-cold-shower",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "decision-review"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/内容创作/成稿/2026-08-11-十个jc-Skill分享教程/public-src/jc-cold-shower",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "98cdb7a0e18a170616254ab874aed29476d30461a38d075d5503396af3213bba"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-cold-shower:J:513d547a5b2b5752",
+      "sourceStatus": "public-snapshot",
+      "methodBody": "skills/jc-cold-shower/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-cold-shower/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-cold-shower/references/method.md",
+        "skills/jc-cold-shower/upstream/current/METHOD.md"
+      ]
+    },
+    {
+      "id": "jc-handoff",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "context-handoff"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/内容创作/成稿/2026-08-11-十个jc-Skill分享教程/public-src/jc-handoff",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "ef8be943e1869f395bc39be9aef91dfc1a62ab96522bb85022b0ac2a897c1f31"
+          },
+          {
+            "path": "evals/output_cases.yaml",
+            "sha256": "6fe0efb890eb85f4009a00b363fd5532967fe79ab9b7b1ea648a11a9fbaa7867"
+          },
+          {
+            "path": "references/evidence-collection.md",
+            "sha256": "37fcead4a4ebc66fabcba41a25a11461ad6d3d03136a5b7f6e2a7737e658a596"
+          },
+          {
+            "path": "references/extraction-rules.md",
+            "sha256": "048c959994637171ade17f82175745724283b6e87bdc3ba9d0bdaef1ee80dbef"
+          },
+          {
+            "path": "references/output-templates.md",
+            "sha256": "94a3922fb1ae40b59ff3c0128bb3632519f9a4438844d5df242f4a0ff14dbbc5"
+          },
+          {
+            "path": "references/session-types.md",
+            "sha256": "db2720923c2bbc7b441e765520e3d2251fd5ec50ab03f7c1d353f7232bf02ea9"
+          },
+          {
+            "path": "reports/output_quality_scorecard.md",
+            "sha256": "ab58cdb06c2026993bda3ff571920747c5f2cf9c6176201d385ad308faeb99b9"
+          },
+          {
+            "path": "scripts/redact-handoff.py",
+            "sha256": "4503529602be25044d5fa46408bfff4335e8855aba2b011f60fcddf18742d951"
+          },
+          {
+            "path": "scripts/resolve-session.sh",
+            "sha256": "a9cffa035f15a804a1062a07a0914f341bbd0d6c895c2827635f5422f1616ef1"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-handoff:J:f194133680d3baf2",
+      "sourceStatus": "public-snapshot",
+      "methodBody": "skills/jc-handoff/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-handoff/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-handoff/references/method.md",
+        "skills/jc-handoff/upstream/current/METHOD.md",
+        "skills/jc-handoff/upstream/current/evals/output_cases.yaml",
+        "skills/jc-handoff/upstream/current/references/evidence-collection.md",
+        "skills/jc-handoff/upstream/current/references/extraction-rules.md",
+        "skills/jc-handoff/upstream/current/references/output-templates.md",
+        "skills/jc-handoff/upstream/current/references/session-types.md",
+        "skills/jc-handoff/upstream/current/reports/output_quality_scorecard.md",
+        "skills/jc-handoff/upstream/current/scripts/redact-handoff.py",
+        "skills/jc-handoff/upstream/current/scripts/resolve-session.sh"
+      ]
+    },
+    {
+      "id": "jc-meta-skill",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "skill-governance"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/内容创作/成稿/2026-08-11-十个jc-Skill分享教程/public-src/jc-meta-skill",
+        "files": [
+          {
+            "path": "LICENSE",
+            "sha256": "986eb833d240c74c4ab803535420475b8837e2073cc583c820687e860ca617b8"
+          },
+          {
+            "path": "README.md",
+            "sha256": "b56d498dd5f6b8b35882d85fb21a9d043aa08a872d1c3187a9d44ae0fd17c571"
+          },
+          {
+            "path": "SKILL.md",
+            "sha256": "2ea479f73a06b8b39be6c307e441c5607b1a17286719bf07fb8e04c657feb5f6"
+          },
+          {
+            "path": "agents/interface.yaml",
+            "sha256": "edf3ef51a5f97a328d9e41c97c75aab2aabf76bee11bc5923ea64598fa07795e"
+          },
+          {
+            "path": "evals/trigger_cases.json",
+            "sha256": "ed85e7de65b0a90fb674695fe9bbed06e53e8cf99747e449df679500f408a5db"
+          },
+          {
+            "path": "manifest.json",
+            "sha256": "7ced2389c52d739ed28b5ab33ff0b247f83aa72fca7823c56d364d0de18053aa"
+          },
+          {
+            "path": "references/creation-handoff.md",
+            "sha256": "14c8377547d57639797c14e7487556e9fe203cd0de17f9185f2b3aae2bfb70cf"
+          },
+          {
+            "path": "references/eval-playbook.md",
+            "sha256": "17bda25b4da916fcf6fa617427576aa28ea1a087be5c0d1c173873922c135eee"
+          },
+          {
+            "path": "references/gate-selection.md",
+            "sha256": "93ae2423cd46eb89f86164b6eade8dab5814493d0f1469eb518ef45e4ad20180"
+          },
+          {
+            "path": "references/github-readme-playbook.md",
+            "sha256": "871d92cbb4c6aac6af301220ef05c0d6d8a1f02884d2ee81c2ea488345da0fb2"
+          },
+          {
+            "path": "references/governance.md",
+            "sha256": "a122efdcddb535e5482545a82efd343f25e4b9f4ddf0a8536142c9a2306db9aa"
+          },
+          {
+            "path": "references/intent-dialogue.md",
+            "sha256": "43fe1a64819b7f5801ccf5bd301e208b3f0d8b4f454025b3a532bcf600d9225d"
+          },
+          {
+            "path": "references/non-skill-decision-tree.md",
+            "sha256": "be020e8feceb5f1d69b909dab97dd6d3f2f86f216480e708b81d1b697cacf4f3"
+          },
+          {
+            "path": "references/operating-modes.md",
+            "sha256": "fbe494eaec68d446262b84a77c6cd78197f5f4bf33b2b04e1a42d9d826128fc1"
+          },
+          {
+            "path": "references/output-eval-method.md",
+            "sha256": "64ced556a8ca38f2b7d6223a40dbdf613840edf23f5b827b6445ebda0b860b96"
+          },
+          {
+            "path": "references/prior-art-research.md",
+            "sha256": "08460439c223ff2f29ff758024f8618590ff07fdf87c0cad6a859518a615bfd7"
+          },
+          {
+            "path": "references/prompt-design.md",
+            "sha256": "d6a587eaedf72531d781839f5ce30701da77c27da4eb633610afcf51986cae7c"
+          },
+          {
+            "path": "references/publishing.md",
+            "sha256": "5eb53e555e115e6cc2fd31b380471cbf67ce2508656f260277f47cf96efcb446"
+          },
+          {
+            "path": "references/qa-ladder.md",
+            "sha256": "a1ee5a8879d4f4520808a291a6db98ca13473d876570c62752904a4abf4d9e59"
+          },
+          {
+            "path": "references/resource-boundaries.md",
+            "sha256": "d6c97721dc6345a42c7346961bee7a180ac2343b84dfefaeb12ffd6d8ad56c38"
+          },
+          {
+            "path": "references/review-release-gates.md",
+            "sha256": "cef4491d5226bdffe25bf31f5d91ad8f3e52523f47e1df6df7840d767f62e784"
+          },
+          {
+            "path": "references/skill-archetypes.md",
+            "sha256": "5dde445d9f19edaada75135ab3aa18238b5474b27a3097fdd7247661d36afce1"
+          },
+          {
+            "path": "references/skill-architecture-design.md",
+            "sha256": "df61e9250f296271a526b62775de94f12a2df141e8ffe61cc13a041496991687"
+          },
+          {
+            "path": "references/skill-engineering-method.md",
+            "sha256": "4ac2205388df9faed116d7463a188af355f5d0294e2ec7433313ad4538da75d0"
+          },
+          {
+            "path": "references/skill-ir-method.md",
+            "sha256": "31d9d8907386079ee7e8c34962d87c3c29776bc34980c3f2e8ca44cd33fc3b55"
+          },
+          {
+            "path": "references/skillops-loop.md",
+            "sha256": "9c7404b12b8d815d8813a2de9e0aba3db823b89b59c1df3f0e7bfc8d6ec1bacb"
+          },
+          {
+            "path": "reports/creation-handoff.md",
+            "sha256": "fe3b7b65f685cb07cf498b0ff7a0bef7476930840450ad03d0c09b23d934696c"
+          },
+          {
+            "path": "reports/prior-art-research.md",
+            "sha256": "5217c1dce382c0561b452fc560b0c28eceabc6ac8c4f95b357ad0af65c1397ce"
+          },
+          {
+            "path": "reports/skill-ir.json",
+            "sha256": "419fb866619cf0d331159a15a8428ebcc02317d626da93413b048018d08cebed"
+          },
+          {
+            "path": "reports/trigger-eval.json",
+            "sha256": "f5ad848ed19c907f04498d96c97d63dc4a6fed1fd4c25274efc5206a9bfda9cc"
+          },
+          {
+            "path": "scripts/export_skill_ir.py",
+            "sha256": "73e6cc93a72e57801b2077544188e9fd5c823d8f46df8eda5d31ef9b0ef9b1bb"
+          },
+          {
+            "path": "scripts/publish_skill.py",
+            "sha256": "db07a7a8c4f16ab2b5b2d603382ef4202893cacde5bbb31a4533d9884fb3bd19"
+          },
+          {
+            "path": "scripts/release_check.py",
+            "sha256": "9ef3d3f3112abf403240abc15f18b7d6d56787afaa13001d1fb788057a138832"
+          },
+          {
+            "path": "scripts/research_prior_art.py",
+            "sha256": "e78f1c6f4583c321e0db842f4bf1e9b3f8c401121cd5073735873d88745640de"
+          },
+          {
+            "path": "scripts/search_skillsmp.py",
+            "sha256": "3d0935e9909b329e228f7508127115ee1cefa307cc979f39dabcb08287818477"
+          },
+          {
+            "path": "scripts/trigger_eval.py",
+            "sha256": "8901358ae8c5d0e1cb7c23eb4de0e55015f011f8a267848b67f80822f5d47866"
+          },
+          {
+            "path": "scripts/validate_skill.py",
+            "sha256": "1b2c7cd7f135125d191de0fabae2f07023c51a9a68d47e1f8eddad838a583459"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-meta-skill:J:14787f47997626fd",
+      "sourceStatus": "public-snapshot",
+      "methodBody": "skills/jc-meta-skill/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-meta-skill/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-meta-skill/references/method.md",
+        "skills/jc-meta-skill/upstream/current/LICENSE",
+        "skills/jc-meta-skill/upstream/current/README.md",
+        "skills/jc-meta-skill/upstream/current/METHOD.md",
+        "skills/jc-meta-skill/upstream/current/agents/interface.yaml",
+        "skills/jc-meta-skill/upstream/current/evals/trigger_cases.json",
+        "skills/jc-meta-skill/upstream/current/manifest.json",
+        "skills/jc-meta-skill/upstream/current/references/creation-handoff.md",
+        "skills/jc-meta-skill/upstream/current/references/eval-playbook.md",
+        "skills/jc-meta-skill/upstream/current/references/gate-selection.md",
+        "skills/jc-meta-skill/upstream/current/references/github-readme-playbook.md",
+        "skills/jc-meta-skill/upstream/current/references/governance.md",
+        "skills/jc-meta-skill/upstream/current/references/intent-dialogue.md",
+        "skills/jc-meta-skill/upstream/current/references/non-skill-decision-tree.md",
+        "skills/jc-meta-skill/upstream/current/references/operating-modes.md",
+        "skills/jc-meta-skill/upstream/current/references/output-eval-method.md",
+        "skills/jc-meta-skill/upstream/current/references/prior-art-research.md",
+        "skills/jc-meta-skill/upstream/current/references/prompt-design.md",
+        "skills/jc-meta-skill/upstream/current/references/publishing.md",
+        "skills/jc-meta-skill/upstream/current/references/qa-ladder.md",
+        "skills/jc-meta-skill/upstream/current/references/resource-boundaries.md",
+        "skills/jc-meta-skill/upstream/current/references/review-release-gates.md",
+        "skills/jc-meta-skill/upstream/current/references/skill-archetypes.md",
+        "skills/jc-meta-skill/upstream/current/references/skill-architecture-design.md",
+        "skills/jc-meta-skill/upstream/current/references/skill-engineering-method.md",
+        "skills/jc-meta-skill/upstream/current/references/skill-ir-method.md",
+        "skills/jc-meta-skill/upstream/current/references/skillops-loop.md",
+        "skills/jc-meta-skill/upstream/current/reports/creation-handoff.md",
+        "skills/jc-meta-skill/upstream/current/reports/prior-art-research.md",
+        "skills/jc-meta-skill/upstream/current/reports/skill-ir.json",
+        "skills/jc-meta-skill/upstream/current/reports/trigger-eval.json",
+        "skills/jc-meta-skill/upstream/current/scripts/export_skill_ir.py",
+        "skills/jc-meta-skill/upstream/current/scripts/publish_skill.py",
+        "skills/jc-meta-skill/upstream/current/scripts/release_check.py",
+        "skills/jc-meta-skill/upstream/current/scripts/research_prior_art.py",
+        "skills/jc-meta-skill/upstream/current/scripts/search_skillsmp.py",
+        "skills/jc-meta-skill/upstream/current/scripts/trigger_eval.py",
+        "skills/jc-meta-skill/upstream/current/scripts/validate_skill.py"
+      ]
+    },
+    {
+      "id": "jc-synthesis-research",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-research-execution",
+      "workflows": [
+        "synthesis-research"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/内容创作/成稿/2026-08-11-十个jc-Skill分享教程/public-src/jc-synthesis-research",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "18b2b2b9169dd771e4d39566d5a0055c4057087795adccb036ff1f72fe8472d4"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-synthesis-research:J:17de2eafae60039c",
+      "sourceStatus": "public-snapshot",
+      "methodBody": "skills/jc-synthesis-research/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-synthesis-research/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
+        "skills/jc-synthesis-research/references/method.md",
+        "skills/jc-synthesis-research/upstream/current/METHOD.md"
+      ]
+    },
+    {
+      "id": "jc-flowchart",
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "flowchart"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "J/个人IP与内容/skills/jc-flowchart",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "8e5b74bb7dd10c12c87fb287c3fbfe8fc175a4d26b154da82082386013a54cd4"
+          },
+          {
+            "path": "agents/openai.yaml",
+            "sha256": "7932bb2ae2173b4fb1f01bbae6477ae9d2a22fef4aa5291e4db5cdcf7757a5b3"
+          },
+          {
+            "path": "references/capability-map-tree.dsl.json",
+            "sha256": "000906e5ea0e2ece3ccbbcc73dfa450432f8b53446ddb020761c9eaf1906c348"
+          },
+          {
+            "path": "references/content-loop-board-annotated.dsl.json",
+            "sha256": "164497c60e70727465da25e7a6ac3118fc2f9b67236970db2d33804247889c93"
+          },
+          {
+            "path": "references/content-loop-board.dsl.json",
+            "sha256": "949816f0cd7e7163b77c1fc971f578c253da58fd282f076656df331df7d704b1"
+          },
+          {
+            "path": "references/content-loop-board.openapi.json",
+            "sha256": "ed53e8c464c93e80ef5bc98515af075e266d20532345c6a6f02cdf72501682f1"
+          },
+          {
+            "path": "references/content-loop-template.md",
+            "sha256": "12e91e32406bd33c4030f0366a445a5fe579a861426db48edc898cfd552addc8"
+          },
+          {
+            "path": "references/feishu-whiteboard.md",
+            "sha256": "ea2f8546c30ca1ca1af1f5cec61122cf894f5ef2b934143f07ff55bef1bf2c37"
+          },
+          {
+            "path": "references/flowchart-skeleton.json",
+            "sha256": "ab827ca3afb7b480fd6351b4f96ea963d2fe4c954717222da51c47af7b70a203"
+          },
+          {
+            "path": "references/patch_openapi.py",
+            "sha256": "fb2718dd6e0e0402b5cdf08f357c8c362063d65664ab1bf96dacba46325c7610"
+          }
+        ]
+      },
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-flowchart:J:d03adcfd0560fff8",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-flowchart/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "dependencies": [
+        "skills/jc-flowchart/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-flowchart/references/method.md",
+        "skills/jc-flowchart/upstream/current/METHOD.md",
+        "skills/jc-flowchart/upstream/current/agents/openai.yaml",
+        "skills/jc-flowchart/upstream/current/references/capability-map-tree.dsl.json",
+        "skills/jc-flowchart/upstream/current/references/content-loop-board-annotated.dsl.json",
+        "skills/jc-flowchart/upstream/current/references/content-loop-board.dsl.json",
+        "skills/jc-flowchart/upstream/current/references/content-loop-board.openapi.json",
+        "skills/jc-flowchart/upstream/current/references/content-loop-template.md",
+        "skills/jc-flowchart/upstream/current/references/feishu-whiteboard.md",
+        "skills/jc-flowchart/upstream/current/references/flowchart-skeleton.json",
+        "skills/jc-flowchart/upstream/current/references/patch_openapi.py"
       ]
     },
     {
@@ -471,24 +1990,46 @@
         "positioning-interview"
       ],
       "source": {
-        "kind": "original-skill-adaptation",
-        "package": "xindao-interview.zip",
+        "kind": "complete-original-with-adapter",
+        "package": "I/xindao-interview.zip!/xindao-interview",
         "files": [
           {
-            "path": "xindao-interview/SKILL.md",
+            "path": "README.md",
+            "sha256": "7508c5de9503693a75a41a9471adaa372ab641a34c2a9baa89dc83055bffa500"
+          },
+          {
+            "path": "SKILL.md",
             "sha256": "0baf910775f5a6470f15da32236dc0a706d79af93cfaa5a9e6b69b2bcd6b0d8b"
+          },
+          {
+            "path": "agents/openai.yaml",
+            "sha256": "3cc6a0c9ffdf096b04cc117af4eab4841363551f7f2306177c62d169741d3dd9"
           }
         ]
       },
       "dependencies": [
         "skills/xindao-interview/SKILL.md",
-        "skills/xindao-interview/references/method.md",
         "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
         "plugin-src/resources/production-contract.md",
         "plugin-src/resources/production-artifacts.md",
         "skills/nova-content-writing-execution/SKILL.md",
-        "skills/xindao-interview/references/checkpoint-templates.md"
-      ]
+        "skills/xindao-interview/references/method.md",
+        "skills/xindao-interview/upstream/current/README.md",
+        "skills/xindao-interview/upstream/current/METHOD.md",
+        "skills/xindao-interview/upstream/current/agents/openai.yaml"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "xindao-interview:I:95895e0f79499052",
+      "sourceStatus": "current",
+      "methodBody": "skills/xindao-interview/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "xindao-xuanti",
@@ -501,7 +2042,7 @@
       ],
       "source": {
         "kind": "workspace-source",
-        "package": "Nova-Content-Hub/workspace",
+        "package": "xindao-xuanti.zip",
         "files": [
           {
             "path": "xindao-xuanti/SKILL.md",
@@ -532,36 +2073,126 @@
       },
       "dependencies": [
         "skills/xindao-xuanti/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-research-execution/SKILL.md",
         "skills/xindao-xuanti/manifest.json",
         "skills/xindao-xuanti/references/candidate-menu.md",
         "skills/xindao-xuanti/references/material-intake.md",
         "skills/xindao-xuanti/references/topic-expansion.md",
-        "skills/nova-content-research-execution/SKILL.md",
-        "plugin-src/resources/business-skills-contract.md",
-        "plugin-src/resources/production-contract.md",
-        "plugin-src/resources/production-artifacts.md"
-      ]
+        "skills/xindao-xuanti/upstream/current/METHOD.md",
+        "skills/xindao-xuanti/upstream/current/manifest.json",
+        "skills/xindao-xuanti/upstream/current/references/candidate-menu.md",
+        "skills/xindao-xuanti/upstream/current/references/material-intake.md",
+        "skills/xindao-xuanti/upstream/current/references/topic-expansion.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "xindao-xuanti:X:a3778c4f28b16179",
+      "sourceStatus": "draft",
+      "methodBody": "skills/xindao-xuanti/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     }
   ],
   "unavailable": [
     {
-      "id": "jc-gongzuotai-write",
-      "reason": "仅取得历史Markdown快照；声明的schema、scripts和服务依赖未完整取得，使用明确命名的Nova方法适配。",
-      "replacement": "nova-workbench-writing-method"
+      "id": "jc-zhuanxie",
+      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+    },
+    {
+      "id": "jc-review-page",
+      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+    },
+    {
+      "id": "jc-cover-design",
+      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+    },
+    {
+      "id": "jc-kepu-video",
+      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
     }
   ],
   "disabled": [
     {
+      "id": "jc-chendian",
+      "reason": "原库停用决定，不进入默认或显式执行路由。"
+    },
+    {
       "id": "jc-broll-judge",
-      "reason": "已停用B-roll，不启用。"
+      "reason": "原库停用决定，不进入默认或显式执行路由。"
     },
     {
       "id": "jc-video-broll",
-      "reason": "已停用B-roll，不启用。"
+      "reason": "草稿，未验收、不启用。"
     },
     {
       "id": "dbskill",
-      "reason": "不接入。"
+      "reason": "本期不接入。"
+    }
+  ],
+  "archived": [
+    {
+      "id": "jc-broll-judge",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-broll-judge:J:fbc51dfd8cd6a9c7"
+      ]
+    },
+    {
+      "id": "jc-chendian",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-chendian:J:b92729173dc361ed"
+      ]
+    },
+    {
+      "id": "jc-feishuplan",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-feishuplan:J:66d766146b6363df"
+      ]
+    },
+    {
+      "id": "jc-group-digest",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-group-digest:J:f7444fc90ae2dd7f"
+      ]
+    },
+    {
+      "id": "jc-shouhui-ppt",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-shouhui-ppt:J:d28474b45d694504"
+      ]
+    },
+    {
+      "id": "jc-video-broll",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-video-broll:J:d144a019f89a4827"
+      ]
+    },
+    {
+      "id": "jc-wechatcli",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-wechatcli:J:4d6be3712c005303"
+      ]
+    },
+    {
+      "id": "jc-weekly-report",
+      "reason": "停用、草稿、仅历史或独立外部业务；只读随包，不路由。",
+      "versionIds": [
+        "jc-weekly-report:J:889ca2deec76aefa"
+      ]
     }
   ]
 }

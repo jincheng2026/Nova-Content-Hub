@@ -1,0 +1,35 @@
+{
+  "name": "jc-benchmark-intake",
+  "version": "1.2.0",
+  "owner": "Jincheng",
+  "updated_at": "2026-09-27",
+  "status": "active",
+  "maturity_tier": "governed",
+  "context_budget_tier": "production",
+  "source_of_truth": "AIJinCheng/个人IP与内容/第二大脑/skills/jc-benchmark-intake/",
+  "install_target": "~/.claude/skills/jc-benchmark-intake/",
+  "target_platforms": [
+    "claude",
+    "openai",
+    "generic",
+    "agent-skills-compatible"
+  ],
+  "permissions": [
+    "read user-provided clipboard text and local media",
+    "write under 02_内容素材",
+    "move validated transcript intermediates to the project .trash"
+  ],
+  "rollback_boundary": "All new items stage under 02_内容素材/.staging; validated transcript intermediates move recoverably to project .trash; existing items are never overwritten.",
+  "trust_boundary": "User-provided source text and locally validated media are evidence; copied claims are not verified facts.",
+  "review_cadence": "after first 3 real intakes, then when a new platform format fails",
+  "release_gates": {
+    "local": [
+      "validate_skill",
+      "trigger_eval",
+      "unit_tests",
+      "strict_target_validation",
+      "secret_scan"
+    ]
+  },
+  "upstream_inspiration": "PostPlus social-media-extractor, benchmark-to-brief and video-transcription mechanisms; adapted to local private Vault and SenseVoice Small"
+}

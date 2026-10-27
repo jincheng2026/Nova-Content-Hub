@@ -1,0 +1,14 @@
+{
+  "name": "jc-topic-generator",
+  "version": "1.0.0",
+  "owner": "Jincheng",
+  "updated_at": "2026-08-22",
+  "status": "active",
+  "maturity_tier": "prototype",
+  "context_budget_tier": "prototype",
+  "release_gates": {
+    "local": ["validate_skill", "trigger_eval"]
+  },
+  "source_of_truth": "AIJinCheng/个人IP与内容/第二大脑/skills/jc-topic-generator/",
+  "install_target": "~/.claude/skills/jc-topic-generator/"
+}

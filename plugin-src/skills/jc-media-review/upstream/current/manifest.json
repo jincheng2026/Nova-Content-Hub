@@ -1,0 +1,15 @@
+{
+  "name": "jc-media-review",
+  "display_name": "复盘助手",
+  "version": "1.1.0",
+  "owner": "Jincheng",
+  "updated_at": "2026-09-30",
+  "status": "active",
+  "maturity_tier": "personal",
+  "context_budget_tier": "personal",
+  "release_gates": {
+    "local_validate": true,
+    "publication": false
+  },
+  "provenance": "从 2026-08-24 第二大脑 001/002 复盘真实会话提炼（发布前建档、迁移复盘口径、TikHub 评论原话、三类轻复盘、候选动作否决与市场验证规矩各跑通一遍）；2026-09-30 按锦成同意的「复盘只写一处，就写在视频项目文件夹」「写原因时要带一个对照」改：数据只取视频项目文件夹 12 小时和 7 天，不再手报 24 小时，不再新建 06_发布复盘 单篇，经 content_feedback.py write-review 写入"
+}

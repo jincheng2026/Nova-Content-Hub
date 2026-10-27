@@ -1,0 +1,4 @@
+interface:
+  display_name: "短视频拆解"
+  short_description: "按锦成的角度一段一段拆参考短视频，再拆开头正文结尾和整条；一起拆时对比异同、按批注改进拆法"
+  default_prompt: "使用 $jc-video-analysis 拆这条参考短视频：先读 references/拆法.md，一段一段过每段八问，再拆开头正文结尾和整条。"

@@ -1,0 +1,714 @@
+{
+ "version": 2,
+ "nodes": [
+  {
+   "type": "frame",
+   "id": "root",
+   "x": 0,
+   "y": 0,
+   "layout": "vertical",
+   "width": "fit-content",
+   "height": "fit-content",
+   "gap": 90,
+   "padding": 40,
+   "alignItems": "center",
+   "fillColor": "#ffffff",
+   "borderColor": "#ffffff",
+   "borderWidth": 1,
+   "children": [
+    {
+     "type": "frame",
+     "id": "ROW",
+     "layout": "horizontal",
+     "width": "fit-content",
+     "height": "fit-content",
+     "gap": 90,
+     "padding": 0,
+     "alignItems": "stretch",
+     "fillColor": "#ffffff",
+     "borderColor": "#ffffff",
+     "borderWidth": 1,
+     "children": [
+      {
+       "type": "frame",
+       "id": "DATA",
+       "layout": "vertical",
+       "width": 240,
+       "height": "fill-container",
+       "gap": 44,
+       "padding": 20,
+       "alignItems": "center",
+       "fillColor": "#fafafa",
+       "borderColor": "#98a2b3",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "过程数据沉淀",
+         "fontSize": 15,
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S1",
+         "width": 200,
+         "height": "fit-content",
+         "text": "调研记录",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S2",
+         "width": 200,
+         "height": "fit-content",
+         "text": "拆解记录与判断",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S3",
+         "width": 200,
+         "height": "fit-content",
+         "text": "修改过程与最终资产",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S4",
+         "width": 200,
+         "height": "fit-content",
+         "text": "发布记录",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S5",
+         "width": 200,
+         "height": "fit-content",
+         "text": "平台数据与转化数据",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S6",
+         "width": 200,
+         "height": "fit-content",
+         "text": "复盘结论与下一轮假设",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#667085",
+         "textColor": "#344054"
+        }
+       ],
+       "justifyContent": "space-between"
+      },
+      {
+       "type": "frame",
+       "id": "MAIN",
+       "layout": "vertical",
+       "width": 400,
+       "height": "fit-content",
+       "gap": 40,
+       "padding": 24,
+       "alignItems": "center",
+       "fillColor": "#f8fbff",
+       "borderColor": "#315efb",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "一条内容的生产循环",
+         "fontSize": 15,
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "R",
+         "width": 320,
+         "height": "fit-content",
+         "text": "调研对标\n账号、视频、用户问题",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "D",
+         "width": 320,
+         "height": "fit-content",
+         "text": "拆解对标\n结构、开头、方法、判断",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C1",
+         "width": 320,
+         "height": "fit-content",
+         "text": "生成内容\n形成自己的观点与角度",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C2",
+         "width": 320,
+         "height": "fit-content",
+         "text": "AI 生成、人工调整、反复修改",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C3",
+         "width": 320,
+         "height": "fit-content",
+         "text": "保留最终内容资产\n逐字稿｜标题｜简介｜封面",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C4",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布前预测复盘\n预测亮点、风险、开头、完播、转化",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "P",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布\n人工发布、记录版本与时间",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "V1",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布后复盘\n12 小时数据复盘\n播放、完播、点赞、收藏、转发、评论",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        },
+        {
+         "type": "rect",
+         "id": "V2",
+         "width": 320,
+         "height": "fit-content",
+         "text": "后续转化复盘\n进线、咨询、成交、转化率",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        },
+        {
+         "type": "rect",
+         "id": "V3",
+         "width": 320,
+         "height": "fit-content",
+         "text": "定位问题\n选题｜开头｜表达｜制作｜分发｜转化",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "id": "BROW",
+     "layout": "horizontal",
+     "width": "fit-content",
+     "height": "fit-content",
+     "gap": 90,
+     "padding": 0,
+     "alignItems": "start",
+     "fillColor": "#ffffff",
+     "borderColor": "#ffffff",
+     "borderWidth": 1,
+     "children": [
+      {
+       "type": "rect",
+       "id": "SPACER",
+       "width": 240,
+       "height": 10,
+       "fillColor": "#ffffff",
+       "borderColor": "#ffffff",
+       "borderWidth": 0,
+       "text": ""
+      },
+      {
+       "type": "frame",
+       "id": "UPGRADE",
+       "layout": "vertical",
+       "width": 400,
+       "height": "fit-content",
+       "gap": 28,
+       "padding": 20,
+       "alignItems": "center",
+       "fillColor": "#f4fbf6",
+       "borderColor": "#5aad7a",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "复盘之后迭代什么",
+         "fontSize": 15,
+         "textColor": "#174b2b"
+        },
+        {
+         "type": "rect",
+         "id": "I1",
+         "width": 360,
+         "height": "fit-content",
+         "text": "主要迭代：Skill\n让下一次调研、拆解、生成、分析更有效",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#e9f7ef",
+         "borderColor": "#2f855a",
+         "textColor": "#174b2b"
+        },
+        {
+         "type": "rect",
+         "id": "I2",
+         "width": 360,
+         "height": "fit-content",
+         "text": "工作台的作用：承载与辅助\n更方便阅读、批注、修改、判断和查找",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#e9f7ef",
+         "borderColor": "#2f855a",
+         "textColor": "#174b2b"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "D",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "R"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C1",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "D"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C4",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "P",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C4"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V1",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "P"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "V1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "V2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S4",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S4"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S6",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S5"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S1",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "R"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S2",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "D"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "C2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "C3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S4",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "P"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S6",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "I2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#2f855a",
+    "lineWidth": 2,
+    "lineStyle": "dashed",
+    "endArrow": "arrow",
+    "from": "I1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "I1",
+    "fromAnchor": "bottom",
+    "toAnchor": "left",
+    "lineShape": "rightAngle",
+    "lineColor": "#2f855a",
+    "lineWidth": 3,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S6"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "R",
+    "fromAnchor": "right",
+    "toAnchor": "right",
+    "lineShape": "rightAngle",
+    "lineColor": "#2f855a",
+    "lineWidth": 3,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "I1",
+    "label": "回到下一轮"
+   }
+  }
+ ]
+}

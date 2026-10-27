@@ -1,0 +1,3 @@
+interface:
+  display_name: "jc-flowchart 流程图"
+  short_description: "画流程图、项目总控图、内容闭环图，默认落飞书画板；只改排版时保护原内容"

@@ -1,0 +1,76 @@
+interface:
+  display_name: "JC Meta Skill"
+  short_description: "Design, prompt, evaluate, govern, and safely publish agent skills"
+  default_prompt: "Use $jc-meta-skill as the single authority for this skill task. First decide whether the recurring job deserves a skill and capture users, inputs, outputs, exclusions, permissions, fact sources, and success criteria. Research relevant prior art and record keep/adapt/reject/invent. Design the lightest valid architecture: keep the root SKILL.md to routing, essential decisions, workflow, and output contract; put judgment in references, deterministic actions in scripts, cases in evals, and evidence in reports. Write behavior instructions as explicit actions, conditions, decision criteria, autonomy/ask/stop boundaries, failure handling, and testable acceptance checks; separate hard constraints, recommended defaults, and permitted judgment. Apply the generalization gate, run trigger and earned output checks, preserve rollback and evidence boundaries, and label unverified claims missing evidence. In the jc-meta-skill package itself, retain only Jincheng / 锦成 / JC as personal identity; do not store any other person's name, handle, profile URL, personally named project, or attribution. Audit-only requests remain read-only. Never publish, create a repository, push, or claim public installation without explicit authorization and verification."
+  examples:
+    - "把这个流程整理成一个架构清晰、提示词可执行的 agent skill"
+    - "审计这个 Skill 的目录架构和行为提示词，先不要改文件"
+    - "优化这个已有 skill，补 trigger eval 和发布门禁"
+    - "把这套 SOP、脚本和提示词封装成团队可复用的 skill 包"
+    - "先找采用信号和可信来源都明确的相关 skill，再取长补短创建一个可验证的 agent skill"
+    - "迁移这个旧 skill，并检查安装入口和递归发现风险"
+    - "只审计这个 skill 的路由与输出评估，先不要改文件"
+    - "把这个 skill 发布到 GitHub，并完成 PR、Release 和干净安装验证"
+    - "先 dry-run 检查这个 skill 是否具备安全发布条件"
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+    - "agent-skills-compatible"
+    - "vscode"
+  activation:
+    mode: "manual"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow catalog metadata and read-only source review; forbid unreviewed execution"
+    generated_public_claims: "evidence-bound"
+  permissions:
+    network: "skills.sh, SkillsMP API/catalog, and source-repository discovery/review; external research when needed; publishing only when requested"
+    file_write: "skill package files only unless user explicitly requests sync, publish, or install"
+    subprocess: "npx --yes skills find/add, bundled resilient dual-catalog research, validation, safe Git/gh PR/Release publication, clean-install verification, and packaging scripts; no separate discovery or publisher skill"
+    interactive: "avoid unless GitHub, installer, or platform auth requires it"
+  degradation:
+    openai: "metadata-adapter"
+    claude: "neutral-source-plus-adapter"
+    generic: "neutral-source"
+    agent-skills-compatible: "canonical-source"
+    vscode: "neutral-source-plus-review-notes"
+gates:
+  scaffold:
+    - "SKILL.md frontmatter"
+    - "README hook and natural trigger examples"
+    - "clear exclusions"
+  production:
+    - "jc-meta-skill is the single authoring authority"
+    - "prior-art research report or explicit missing evidence"
+    - "skills.sh and SkillsMP source-separated discovery or explicit catalog unavailability"
+    - "user-facing reference, lesson, rejection, advantage, and evidence handoff"
+    - "generalization gate for sample-driven core changes"
+    - "skill architecture design and resource placement checks"
+    - "prompt behavior, autonomy, failure handling, and acceptance checks"
+    - "agents/interface.yaml"
+    - "evals/trigger_cases.json"
+    - "scripts/validate_skill.py"
+    - "install and README verification"
+    - "root-only discoverable SKILL.md entrypoint"
+  library:
+    - "reports/skill-ir.json"
+    - "portability notes"
+    - "trust boundary"
+  governed:
+    - "output contract"
+    - "trust report or explicit missing evidence"
+    - "rollback boundary"
+    - "public claim guard"
+    - "blind-review integrity when human evidence is claimed"
+    - "local, PR, and published release readiness checked by executable gates"
+    - "manifest, Skill IR, trigger report, remote version, and release evidence remain consistent"
+    - "bundled publisher forbids direct default-branch push and released-version reuse"
+    - "README, MIT LICENSE, PR discussion/check state, Release, discovery and clean install are verified"

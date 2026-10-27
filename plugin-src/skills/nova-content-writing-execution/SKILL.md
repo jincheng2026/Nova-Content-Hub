@@ -7,11 +7,11 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 
 1. 按 [共同任务契约](../../plugin-src/resources/production-contract.md) 执行 doctor、context、claim；等待、恢复、取消、服务调用与提交均以它为准。Codex 与 WorkBuddy 使用同一流程。
 2. 完整读冻结请求、当前正文、参考、叙事、批注、建议决定及已采纳知识；只追溯与当前问题相关的历史任务和反馈。用户已确认的观点、口气和制作条件直接沿用。
-3. 根据本轮请求选择下面的方法；叙事等关键缺口按共同契约的“按需澄清”处理。明确要求直接写稿、局部修改或跳过参考时按其要求执行，已有明确输入直接沿用。
+3. 根据本轮请求选择下面的方法；已显式选择的完整业务方法优先保留其人的确认与阶段步骤，不以通用“直接给稿/整套提交”覆盖叙事或重点段确认。本人本轮明确改变工序时记录覆盖范围。教程方法仅在本人显式选择 jc-jiaocheng-video 时启用，不由一般写稿或 content-creation 自动套用。
 
 ## 按阶段读取方法
 
-先读取 [业务方法 registry](../../plugin-src/resources/business-skills.json) 与 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)。冻结 `request.parameters.businessSkill`（兼容 `businessMethod`）有值时，按 registry 的 `id` 找到对应业务 Skill 并完整读取其 SKILL.md 与当前阶段 references；核对其 executor 为本 Skill。未登记或执行入口不匹配时说明不可用，不用近似名称替换。无显式方法时按当前 workflow/阶段选择，原有阶段方法继续作为兜底。方法只提供候选与允许检查点，不能改变固定请求的权限。
+先读取 [业务方法 registry](../../plugin-src/resources/business-skills.json) 与 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)。冻结 `request.parameters.businessSkill`（兼容 `businessMethod`）有值时，按 registry 的 `id` 找到对应业务 Skill 并完整读取其 SKILL.md、methodBody 指定的 upstream/current/METHOD.md 与原文当前阶段 references/schema/模板；先读 method-adaptation-contract.md 做旧路径/服务/权限映射；核对其 executor 为本 Skill。未登记或执行入口不匹配时说明不可用，不用近似名称替换。无显式方法时按当前 workflow/阶段选择，原有阶段方法继续作为兜底。方法只提供候选与允许检查点，不能改变固定请求的权限。
 
 `workflow=positioning-interview` 固定读取 [新岛定位访谈](../xindao-interview/SKILL.md)，续访先读 `context.positioningCheckpoint`，按共同契约保存已确认的逐关检查点并核对回执；不直接写任意定位文件。其他任务使用冻结 `context.creatorContext`（含 profile、vault 与 sha256）中的适用定位，含已有 `_v0.1`；`context.vault` 是当前源摘要，只用于检查源变化，不静默替换冻结快照。发现影响本轮的变化时明确核对，旧任务 creatorContext 为空则沿用其明确输入并记录限制。只使用相关确认事实和公开边界；未完成访谈不拦截已有库的明确任务。资料先行，最终标题可空；不因缺标题跳到包装阶段。
 
@@ -35,3 +35,7 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 创作页始终使用工作台入口和同一正文；AI 提交 draft、建议及资料候选，用户人工采用后才更新正文。交付前重新读取 context 核对正文版本，按契约 submit 后回读 status/receipt；说明已交回什么、还需核对什么。素材缺失时保留真实缺口，不以填满阶段表代替完成。
 
 方法来源和本项目改写边界见 [方法来源登记](../../plugin-src/resources/production-methods-provenance.md)。
+
+## 锦成运行接点
+
+冻结workflow为 `jincheng-stage`、`jincheng-research` 或 `topic-suggestion` 时，执行前必须读取 [锦成业务阶段运行接点](../../plugin-src/resources/jincheng-runtime.md)，按当前stage运行受控原页、阶段文件或研究命令；继续使用本Skill的固定context、claim、等待、提交和回执合同。原方法正文与schema保持权威。

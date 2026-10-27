@@ -1,0 +1,330 @@
+/* Shared reading layer. Append after either report template's base styles. */
+body.reading-report {
+  --bg: #fff;
+  --card: #fff;
+  --ink: #23313e;
+  --muted: #5e6b78;
+  --blue: #1d4f78;
+  --line: #dfe6ed;
+  --reading-surface: #f6f8fb;
+  --reading-tint: #edf3f8;
+  --reading-count: #1d4f78;
+  --reading-likes: #7d8fa1;
+  --reading-topic-columns: minmax(13rem, 1.05fr) minmax(0, 1fr) minmax(0, 1.1fr);
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.85 -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body.reading-report *,
+body.reading-report *::before,
+body.reading-report *::after { box-sizing: border-box; }
+body.reading-report ::selection { background: #d9e7f2; color: #173e5d; }
+body.reading-report .wrap { max-width: 1160px; padding: 0 28px 72px; }
+body.reading-report header { padding: 48px 0 28px; }
+body.reading-report h1 { max-width: 24em; margin: 12px 0 18px; color: #173e5d; font-size: 36px; font-weight: 750; line-height: 1.35; }
+body.reading-report h2 { margin: 0 0 14px; color: #173e5d; font-size: 26px; font-weight: 750; line-height: 1.45; }
+body.reading-report h3 { color: var(--ink); font-size: 21px; font-weight: 700; line-height: 1.5; }
+body.reading-report h4 { font-size: 15px; line-height: 1.6; }
+body.reading-report p { margin: 0 0 14px; overflow-wrap: anywhere; }
+body.reading-report p:last-child { margin-bottom: 0; }
+body.reading-report strong { color: #173e5d; font-weight: 750; }
+body.reading-report .key-phrase { color: #173e5d; font-weight: 750; }
+body.reading-report .eyebrow,
+body.reading-report .chapter-number { color: var(--blue); font-size: 12px; font-weight: 700; line-height: 1.6; }
+body.reading-report .chapter-number { display: block; margin-bottom: 8px; }
+body.reading-report .lead { max-width: 46em; color: #4a5c6d; font-size: 16px; line-height: 1.85; }
+body.reading-report .meta,
+body.reading-report .audit { color: var(--muted); font-size: 12px; line-height: 1.8; }
+body.reading-report .note { margin: 16px 0; padding: 12px 15px; background: var(--reading-surface); border-radius: 4px; color: var(--muted); font-size: 13px; line-height: 1.8; }
+body.reading-report a { color: var(--blue); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+body.reading-report :is(a, button, select, input, summary, [tabindex]):focus-visible { outline: 3px solid #427dad; outline-offset: 3px; }
+body.reading-report .card { min-width: 0; margin: 24px 0; padding: 28px 30px; border: 1px solid var(--line); border-radius: 6px; background: #fff; box-shadow: none; }
+
+/* Navigation and summary keep the reading order visible without narrow cards. */
+body.reading-report .navbar { margin: 0; background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; border-color: var(--line); }
+body.reading-report .nav-scroll { gap: 4px; padding: 9px 0; }
+body.reading-report .nav-link { border-radius: 4px; padding: 8px 12px; color: var(--muted); font-size: 13px; }
+body.reading-report .nav-link[aria-current="location"] { background: var(--reading-tint); color: var(--blue); font-weight: 700; }
+body.reading-report .nav-link.light { font-size: 12px; }
+body.reading-report .summary-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+body.reading-report .summary-grid .finding { margin: 0; padding: 20px 22px; border: 1px solid var(--line); border-left: 3px solid #8aaac3; border-radius: 4px; background: var(--reading-surface); }
+body.reading-report .summary-copy { max-width: 42em; }
+body.reading-report .summary-copy p { max-width: 42em; line-height: 1.85; }
+body.reading-report .stats { gap: 12px; margin: 22px 0; }
+body.reading-report .stat { min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 4px; background: var(--reading-surface); }
+body.reading-report .stat b { color: var(--blue); font-size: 29px; font-weight: 750; line-height: 1.35; font-variant-numeric: tabular-nums; }
+body.reading-report .stat span { display: block; margin-top: 5px; color: var(--muted); font-size: 12px; line-height: 1.65; }
+body.reading-report .finding-index { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 28px; margin: 20px 0 8px; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+body.reading-report .finding-index li { min-width: 0; margin: 0; padding: 0; border-bottom: 1px solid var(--line); list-style: none; }
+body.reading-report .finding-index a { display: flex; align-items: baseline; gap: 12px; padding: 13px 0; color: var(--blue); font-size: 14px; line-height: 1.65; }
+body.reading-report .finding-index a > span { flex: 0 0 1.8em; color: #688297; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Findings: observation, supporting words, interpretation, then scope. */
+body.reading-report .finding { min-width: 0; margin: 0; padding: 30px 0; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+body.reading-report .finding:first-of-type { border-top: 0; }
+body.reading-report .finding:last-child { padding-bottom: 0; }
+body.reading-report .reading-heading { display: flex; align-items: flex-start; gap: 12px; margin: 0 0 14px; }
+body.reading-report .reading-heading h3 { min-width: 0; margin: 0; color: #173e5d; font-size: 22px; font-weight: 750; line-height: 1.5; }
+body.reading-report .reading-number { display: inline-grid; flex: 0 0 2.25em; place-items: center; min-height: 2.15em; margin-top: 2px; border: 1px solid #d1dfeb; border-radius: 4px; background: var(--reading-tint); color: var(--blue); font-size: 14px; font-weight: 750; font-variant-numeric: tabular-nums; line-height: 1.4; }
+body.reading-report .badge { margin: 0 7px 9px 0; padding: 2px 7px; border: 1px solid var(--line); border-radius: 3px; background: #fff; color: var(--muted); font-size: 11px; line-height: 1.65; }
+body.reading-report .finding-observation { max-width: 48em; margin: 0 0 22px; color: #3c4f60; font-size: 16px; line-height: 1.85; }
+body.reading-report .finding-columns { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 22px; margin-top: 20px; }
+body.reading-report .finding-evidence,
+body.reading-report .finding-reasoning { min-width: 0; }
+body.reading-report .finding-columns > .finding-evidence:only-child { grid-column: 1 / -1; }
+body.reading-report .finding-evidence { padding: 18px; border: 1px solid var(--line); border-radius: 5px; background: var(--reading-surface); }
+body.reading-report .evidence-heading { margin: 0 0 13px; color: var(--blue); font-size: 13px; font-weight: 750; line-height: 1.65; }
+body.reading-report .finding-reasoning .evidence-heading { margin-bottom: 12px; }
+body.reading-report .reading-prose,
+body.reading-report .reasoning-paragraph,
+body.reading-report .finding-reasoning p,
+body.reading-report .recommendation-panel p { max-width: 42em; margin: 0 0 16px; color: var(--ink); font-size: 16px; font-weight: 400; line-height: 1.85; }
+body.reading-report .reading-prose:last-child,
+body.reading-report .reasoning-paragraph:last-child,
+body.reading-report .finding-reasoning p:last-child,
+body.reading-report .recommendation-panel p:last-child { margin-bottom: 0; }
+body.reading-report .quote-list { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 16px; }
+body.reading-report blockquote { min-width: 0; margin: 16px 0; padding: 13px 16px; border-left: 2px solid #9ab6cb; border-radius: 0; background: var(--reading-surface); color: var(--ink); overflow-wrap: anywhere; }
+body.reading-report blockquote p { max-width: none; margin: 0; font-size: 15px; font-weight: 400; line-height: 1.85; white-space: pre-wrap; }
+body.reading-report blockquote p + p { margin-top: 10px; }
+body.reading-report .quote-list > blockquote { margin: 0; padding: 0 0 0 12px; background: transparent; }
+body.reading-report .quote-list > blockquote:only-child { grid-column: 1 / -1; }
+body.reading-report .quote-label { display: inline-block; margin-bottom: 6px; color: var(--blue); font-size: 12px; font-weight: 700; line-height: 1.65; }
+body.reading-report cite { display: block; margin-top: 9px; color: var(--muted); font-size: 12px; font-style: normal; line-height: 1.75; overflow-wrap: anywhere; }
+body.reading-report cite a { text-decoration: underline; text-decoration-color: #b4c7d6; }
+body.reading-report .quote-list.quote-thread { grid-template-columns: minmax(0, 1fr); gap: 17px; padding-left: 13px; border-left: 2px solid #9ab6cb; }
+body.reading-report .quote-thread > blockquote { padding: 0; border: 0; }
+body.reading-report .quote-thread > blockquote + blockquote { padding-top: 16px; border-top: 1px solid var(--line); }
+body.reading-report .finding-context { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
+body.reading-report .finding-context p,
+body.reading-report .finding-context .secondary,
+body.reading-report .finding-context .scope { max-width: 54em; margin: 0 0 10px; padding-left: 0; border-left: 0; color: var(--muted); font-size: 13px; line-height: 1.8; }
+body.reading-report .finding-context p:last-child { margin-bottom: 0; }
+body.reading-report .finding-context strong { color: #425b70; font-weight: 700; }
+body.reading-report details { margin: 14px 0; }
+body.reading-report summary { width: fit-content; max-width: 100%; padding: 5px 0; color: var(--blue); font-size: 14px; font-weight: 600; line-height: 1.7; cursor: pointer; }
+body.reading-report details[open] > summary { margin-bottom: 12px; }
+body.reading-report .finding-context details { margin: 8px 0 12px; }
+body.reading-report .finding-context summary { font-size: 13px; }
+body.reading-report .material-details { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--line); }
+
+/* Recommendations remain readable as an action and a practical check. */
+body.reading-report .recommendation-panel { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; margin: 18px 0; }
+body.reading-report .recommendation-action,
+body.reading-report .recommendation-check { min-width: 0; padding: 16px 18px; border-left: 3px solid #88a8c1; background: var(--reading-surface); }
+body.reading-report .recommendation-action { border-left-color: var(--blue); }
+body.reading-report .recommendation-check { border-left-color: #9cabb8; }
+body.reading-report .recommendation-sources { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); align-items: start; gap: 16px; margin-top: 18px; }
+body.reading-report .recommendation-sources > blockquote { margin: 0; }
+
+/* Quantities use a shared blue/gray legend and explicit independent scales. */
+body.reading-report .sample-composition { margin: 22px 0; }
+body.reading-report .sample-composition figcaption { margin-bottom: 10px; color: #425b70; font-size: 13px; font-weight: 700; }
+body.reading-report .sample-segments { display: flex; width: 100%; height: 12px; overflow: hidden; border-radius: 2px; background: #e6ebf0; }
+body.reading-report .sample-segments > span { display: block; flex: 0 0 auto; min-width: 0; height: 100%; }
+body.reading-report .sample-top { background: var(--reading-count); }
+body.reading-report .sample-reply { background: #8da8bd; }
+body.reading-report .sample-unknown { background: #d5dfe7; }
+body.reading-report .sample-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.75; }
+body.reading-report .sample-legend > span { display: inline-flex; align-items: center; gap: 5px; }
+body.reading-report .sample-legend i { display: inline-block; flex: 0 0 9px; width: 9px; height: 9px; margin-right: 2px; border-radius: 1px; }
+body.reading-report .sample-legend b { color: #425b70; font-weight: 700; font-variant-numeric: tabular-nums; }
+body.reading-report .topic-chart { margin-top: 24px; }
+body.reading-report .chart-head,
+body.reading-report .topic-row { display: grid; grid-template-columns: var(--reading-topic-columns); align-items: center; column-gap: 24px; padding-right: 10px; padding-left: 10px; }
+body.reading-report .chart-head { padding-top: 12px; padding-bottom: 12px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); color: #425b70; font-size: 12px; font-weight: 700; line-height: 1.65; }
+body.reading-report .chart-head > span { min-width: 0; }
+body.reading-report .chart-head small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
+body.reading-report .topic-row { row-gap: 8px; padding-top: 15px; padding-bottom: 15px; border-bottom: 1px solid var(--line); }
+body.reading-report .topic-row.selected { border-radius: 3px; background: var(--reading-tint); }
+body.reading-report .topic-label { min-width: 0; margin: 0; padding: 6px 0; border: 0; border-radius: 2px; background: transparent; color: var(--blue); text-align: left; font-size: 14px; font-weight: 700; line-height: 1.6; overflow-wrap: anywhere; }
+body.reading-report .topic-label[aria-pressed="true"] { background: transparent; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 5px; }
+body.reading-report .measure { --reading-value-width: 6em; min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) var(--reading-value-width); align-items: center; gap: 6px 10px; font-size: 13px; }
+body.reading-report .measure.likes { --reading-value-width: 6.5em; }
+body.reading-report .metric-label { display: none; grid-column: 1 / -1; color: var(--muted); font-size: 11px; line-height: 1.5; }
+body.reading-report .measure b,
+body.reading-report .measure .number { color: var(--blue); font-size: 13px; font-weight: 700; line-height: 1.6; font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+body.reading-report .measure.likes b,
+body.reading-report .measure.likes .number { color: #53687b; white-space: normal; overflow-wrap: anywhere; }
+body.reading-report .track { min-width: 0; height: 8px; overflow: hidden; border-radius: 2px; background: #e9eef3; }
+body.reading-report .track i { display: block; min-width: 0; height: 100%; background: var(--reading-count); }
+body.reading-report .likes .track i { background: var(--reading-likes); }
+body.reading-report .chart { width: 100%; min-width: 0; }
+body.reading-report .chart-block { padding: 18px; border: 1px solid var(--line); border-radius: 5px; background: #fff; }
+body.reading-report .chart-grid { gap: 18px; }
+
+/* Source tables and controls retain their existing filtering behavior. */
+body.reading-report .toolbar,
+body.reading-report .chart-controls { gap: 10px 14px; margin: 18px 0; }
+body.reading-report .toolbar label,
+body.reading-report .chart-controls label { color: var(--muted); font-size: 13px; }
+body.reading-report button,
+body.reading-report select,
+body.reading-report input { min-height: 38px; border: 1px solid #bdcbd6; border-radius: 4px; background: #fff; color: var(--ink); font: inherit; font-size: 14px; line-height: 1.5; }
+body.reading-report button { padding: 7px 11px; color: var(--blue); cursor: pointer; }
+body.reading-report button.topic-label { border: 0; background: transparent; padding: 6px 0; font-weight: 700; }
+body.reading-report input { min-width: 0; max-width: 100%; }
+body.reading-report .evidence-panel { margin-top: 22px; padding: 20px; border: 1px solid var(--line); border-radius: 5px; background: var(--reading-surface); }
+body.reading-report .evidence-panel blockquote { background: #fff; }
+body.reading-report .empty { border-radius: 4px; background: var(--reading-surface); color: var(--muted); }
+body.reading-report table { font-size: 13px; line-height: 1.8; }
+body.reading-report th,
+body.reading-report td { padding: 12px; border-color: var(--line); }
+body.reading-report th { color: #425b70; font-weight: 700; background: var(--reading-surface); }
+body.reading-report .comment-text,
+body.reading-report .source-text { white-space: pre-wrap; overflow-wrap: anywhere; }
+body.reading-report .table-scroll { border: 1px solid var(--line); border-radius: 4px; }
+body.reading-report footer { margin-top: 32px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.8; }
+
+@media (min-width: 1050px) {
+  body.reading-report .finding-columns { grid-template-columns: minmax(260px, 0.34fr) minmax(0, 0.66fr); gap: 28px; }
+  body.reading-report .finding-columns > .finding-evidence:only-child .quote-list:not(.quote-thread) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body.reading-report .recommendation-panel { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 24px; }
+}
+
+@media (min-width: 721px) and (max-width: 1049px) {
+  body.reading-report .wrap { padding-right: 24px; padding-left: 24px; }
+  body.reading-report .card { padding: 26px; }
+  body.reading-report .quote-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+  body.reading-report .quote-list.quote-thread { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-head,
+  body.reading-report .topic-row { column-gap: 18px; }
+  body.reading-report .chart-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 720px) {
+  body.reading-report .wrap { padding: 0 16px 48px; }
+  body.reading-report header { padding: 30px 0 20px; }
+  body.reading-report h1 { font-size: 29px; line-height: 1.4; }
+  body.reading-report h2 { font-size: 23px; }
+  body.reading-report .card { margin: 18px 0; padding: 22px 18px; }
+  body.reading-report .lead { font-size: 15px; }
+  body.reading-report .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  body.reading-report .stat { padding: 12px; }
+  body.reading-report .stat b { font-size: 26px; }
+  body.reading-report .summary-grid .finding { padding: 17px 16px; }
+  body.reading-report .finding-index { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .finding { padding: 26px 0; }
+  body.reading-report .reading-heading { gap: 10px; }
+  body.reading-report .reading-heading h3 { font-size: 20px; }
+  body.reading-report .reading-number { margin-top: 1px; font-size: 13px; }
+  body.reading-report .finding-observation { margin-bottom: 18px; }
+  body.reading-report .finding-columns { gap: 20px; }
+  body.reading-report .finding-evidence { padding: 15px; }
+  body.reading-report .quote-list { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .recommendation-panel { gap: 16px; }
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check { padding: 14px 15px; }
+  body.reading-report .recommendation-sources { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-head { display: none; }
+  body.reading-report .topic-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; padding: 14px 0; }
+  body.reading-report .topic-label { grid-column: 1 / -1; }
+  body.reading-report .metric-label { display: block; }
+  body.reading-report .measure { column-gap: 7px; font-size: 12px; }
+  body.reading-report .measure b,
+  body.reading-report .measure .number { font-size: 12px; }
+  body.reading-report .chart-grid { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .chart-block { padding: 14px 10px; }
+  body.reading-report .sample-legend { gap: 6px 14px; }
+  body.reading-report .navbar { margin: 0 -4px; }
+  body.reading-report .nav-scroll { padding-right: 4px; padding-left: 4px; }
+  body.reading-report .nav-link { min-height: 44px; padding: 10px; }
+  body.reading-report button,
+  body.reading-report input,
+  body.reading-report select,
+  body.reading-report summary { min-height: 44px; }
+  body.reading-report summary { padding: 9px 0; }
+  body.reading-report .toolbar label { width: 100%; }
+  body.reading-report .toolbar label select { max-width: calc(100% - 56px); }
+  body.reading-report .evidence-panel { padding: 15px; }
+  body.reading-report th,
+  body.reading-report td { padding: 10px; }
+}
+
+@media (max-width: 420px) {
+  body.reading-report .wrap { padding-right: 12px; padding-left: 12px; }
+  body.reading-report .card { padding: 20px 14px; }
+  body.reading-report h1 { font-size: 26px; }
+  body.reading-report h2 { font-size: 21px; }
+  body.reading-report .reading-heading h3 { font-size: 19px; }
+  body.reading-report .topic-row { grid-template-columns: minmax(0, 1fr); row-gap: 10px; }
+  body.reading-report .measure { grid-template-columns: minmax(0, 1fr) var(--reading-value-width); }
+  body.reading-report .finding-evidence { padding: 13px; }
+  body.reading-report .summary-grid .finding { padding: 16px 13px; }
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check { padding: 13px; }
+}
+
+@media (max-width: 370px) {
+  body.reading-report .stats { grid-template-columns: minmax(0, 1fr); }
+  body.reading-report .stat { display: flex; align-items: baseline; gap: 14px; }
+  body.reading-report .stat span { margin-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.reading-report,
+  body.reading-report *,
+  body.reading-report *::before,
+  body.reading-report *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  body.reading-report { color: #202a33; background: #fff; font-size: 10.5pt; line-height: 1.75; }
+  body.reading-report .wrap { max-width: none; margin: 0; padding: 0; }
+  body.reading-report header { padding: 0 0 14pt; }
+  body.reading-report h1 { font-size: 23pt; }
+  body.reading-report h2 { font-size: 17pt; }
+  body.reading-report h3,
+  body.reading-report .reading-heading h3 { font-size: 14pt; }
+  body.reading-report .navbar,
+  body.reading-report .toolbar,
+  body.reading-report .chart-controls,
+  body.reading-report .finding-index { display: none; }
+  body.reading-report .card { margin: 18pt 0; padding: 16pt 0 0; border: 0; border-top: 1px solid #ccd5dd; border-radius: 0; box-shadow: none; }
+  body.reading-report .finding { padding: 18pt 0; break-inside: auto; }
+  body.reading-report .summary-grid .finding { padding: 12pt; border: 1px solid #ccd5dd; background: #fff; }
+  body.reading-report .finding-columns,
+  body.reading-report .recommendation-panel,
+  body.reading-report .recommendation-sources,
+  body.reading-report .quote-list,
+  body.reading-report .finding-columns > .finding-evidence:only-child .quote-list:not(.quote-thread) { grid-template-columns: minmax(0, 1fr); gap: 14pt; }
+  body.reading-report .finding-evidence,
+  body.reading-report .recommendation-action,
+  body.reading-report .recommendation-check,
+  body.reading-report .evidence-panel { background: #fff; }
+  body.reading-report .reading-prose,
+  body.reading-report .reasoning-paragraph,
+  body.reading-report .finding-reasoning p,
+  body.reading-report .recommendation-panel p,
+  body.reading-report .finding-observation,
+  body.reading-report .lead { font-size: 10.5pt; }
+  body.reading-report blockquote { break-inside: avoid; background: #fff; }
+  body.reading-report blockquote p { font-size: 10pt; }
+  body.reading-report .finding-context p { font-size: 9pt; }
+  body.reading-report h2,
+  body.reading-report h3,
+  body.reading-report h4,
+  body.reading-report .reading-heading { break-after: avoid; }
+  body.reading-report p { widows: 3; orphans: 3; }
+  body.reading-report .table-scroll { max-height: none; overflow: visible; border: 0; }
+  body.reading-report table { min-width: 0; font-size: 8.5pt; }
+  body.reading-report #comment-table { min-width: 0; }
+  body.reading-report .comment-text { min-width: 0; }
+  body.reading-report thead { position: static; display: table-header-group; }
+  body.reading-report th,
+  body.reading-report td { padding: 6pt; }
+  body.reading-report .chart-head { display: grid; }
+  body.reading-report .chart-head,
+  body.reading-report .topic-row { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 12pt; }
+  body.reading-report .topic-label { grid-column: auto; }
+  body.reading-report .metric-label { display: none; }
+  body.reading-report .topic-row { break-inside: avoid; }
+  body.reading-report details::details-content { content-visibility: visible; }
+  body.reading-report details > :not(summary) { display: block; }
+  body.reading-report details > table { display: table; }
+  body.reading-report details > summary { min-height: 0; margin-bottom: 8pt; }
+  body.reading-report footer { margin-top: 20pt; font-size: 8.5pt; }
+}

@@ -42,8 +42,8 @@ test('registered methods have real provenance, a bundled executor and complete i
         }
     }
     assert.equal(businessSkillRegistry.methods.find(method=>method.id==='xindao-xuanti').source.kind,'workspace-source');
-    assert.equal(businessSkillRegistry.methods.find(method=>method.id==='nova-workbench-writing-method').source.kind,'historical-adaptation');
-    assert.equal(businessSkillRegistry.unavailable.find(method=>method.id==='jc-gongzuotai-write').replacement,'nova-workbench-writing-method');
+    assert.equal(businessSkillRegistry.methods.find(method=>method.id==='nova-workbench-writing-method').source.kind,'complete-original-with-adapter');
+    assert.equal(businessSkillRegistry.methods.find(method=>method.id==='jc-gongzuotai-write').bundleStatus,'complete-source-bundled');
 });
 
 test('business methods cannot acquire executor permission in either authorization mode',()=>{
@@ -60,7 +60,7 @@ test('business methods cannot acquire executor permission in either authorizatio
     for(const item of [...businessSkillRegistry.unavailable,...businessSkillRegistry.disabled])assert.ok(!allSkillNames.includes(item.id),item.id);
 });
 
-test('all nested business resources and executor references are covered by integrity, without private source payloads',()=>{
+test('all business resources are covered by integrity; active adapters contain no machine defaults',()=>{
     const hashed=new Set(integrityPaths());
     const visit=directory=>{
         for(const entry of fs.readdirSync(directory,{withFileTypes:true})){
@@ -68,7 +68,7 @@ test('all nested business resources and executor references are covered by integ
             if(entry.isDirectory()){visit(file);continue;}
             const relative=path.relative(source,file).split(path.sep).join('/');
             assert.ok(hashed.has(relative),relative);
-            if(/\.(md|json|ya?ml|py|mjs|sh)$/.test(file))assert.doesNotMatch(fs.readFileSync(file,'utf8'),/\/Users\/(?:hejincheng|mac)\/|(?:~|\$HOME)\/AIJinCheng|VOLC_SPEECH_API_KEY\s*=/,relative);
+            if(!relative.includes('/upstream/') && /\.(md|json|ya?ml|py|mjs|sh)$/.test(file))assert.doesNotMatch(fs.readFileSync(file,'utf8'),/\/Users\/(?:hejincheng|mac)\/|(?:~|\$HOME)\/AIJinCheng|VOLC_SPEECH_API_KEY\s*=/,relative);
         }
     };
     for(const name of [...businessSkillNames,...productionSkillNames])visit(path.join(source,'skills',name));

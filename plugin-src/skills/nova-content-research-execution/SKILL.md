@@ -36,3 +36,7 @@ description: 执行自媒体工作台交来的调研任务编号，按冻结预�
 按报告方法核对证据、数字、静态阅读和材料范围，再提交并回读 status 回执。说明已回传的产物、关键发现及缺口；人工验收与正文/参考采用遵循工作台流程。服务失败时继续不依赖该服务的分析，付费状态不明时按共同契约停止相关调用。
 
 方法来源和本项目改写边界见 [方法来源登记](../../plugin-src/resources/production-methods-provenance.md)。
+
+## 锦成运行接点
+
+冻结workflow为 `jincheng-stage`、`jincheng-research` 或 `topic-suggestion` 时，执行前必须读取 [锦成业务阶段运行接点](../../plugin-src/resources/jincheng-runtime.md)，按当前stage运行受控原页、阶段文件或研究命令；继续使用本Skill的固定context、claim、等待、提交和回执合同。原方法正文与schema保持权威。

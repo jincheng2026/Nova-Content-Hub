@@ -1,0 +1,15 @@
+{
+  "name": "jc-broll-judge",
+  "display_name": "B-roll 画面判定",
+  "version": "1.0.0",
+  "owner": "Jincheng",
+  "updated_at": "2026-08-24",
+  "status": "active",
+  "maturity_tier": "personal",
+  "context_budget_tier": "personal",
+  "release_gates": {
+    "local_validate": true,
+    "publication": false
+  },
+  "provenance": "2026-08-24 从锦成提供的 3 条参考视频逐秒拉片（61 张 1s 帧网格＋214 切镜点＋字幕对齐）提炼，经锦成对触发机制的口述判断校准，含其 97 万播放爆款反例检验；外部数据验证待实发回写"
+}

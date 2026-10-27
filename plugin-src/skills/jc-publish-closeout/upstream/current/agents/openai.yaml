@@ -1,0 +1,3 @@
+interface:
+  display_name: "锦成发布后收口"
+  short_description: "发布后自动归档、发现三平台作品并启动监控"

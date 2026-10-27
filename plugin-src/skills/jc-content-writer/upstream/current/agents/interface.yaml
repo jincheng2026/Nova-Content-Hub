@@ -1,0 +1,10 @@
+interface:
+  display_name: 锦成视频逐字稿助手
+  short_description: 第二大脑 vault 短视频口播逐字稿共创：素材包 → 本人访谈 → AI 初稿 → 逐句标注改稿 → 最终发布稿；不编造事实，本人回答与 AI 观点严格分开。
+  default_prompt: 帮我写【选题名称】
+compatibility:
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible

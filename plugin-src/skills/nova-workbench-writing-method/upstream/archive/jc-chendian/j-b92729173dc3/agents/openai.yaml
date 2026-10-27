@@ -1,0 +1,6 @@
+interface:
+  display_name: "内容沉淀"
+  short_description: "把当前会话中已确认的内容和正式资产一次性沉淀保存"
+  default_prompt: "Use $jc-chendian to save the finalized decisions and assets from this task."
+policy:
+  allow_implicit_invocation: false

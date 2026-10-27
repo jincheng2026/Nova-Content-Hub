@@ -1,0 +1,49 @@
+cases:
+  - id: should_trigger_prompt
+    user: "我不知道怎么跟 AI 说，帮我写个提示词"
+    expected: trigger
+    mode: complete_prompt
+    must_include:
+      - "BROK"
+      - "新聊天"
+
+  - id: should_trigger_fuzzy
+    user: "我有个想法但说不清楚，帮我澄清一下"
+    expected: trigger
+    mode: light_clarification
+    must_include:
+      - "选择题"
+      - "猜测"
+
+  - id: should_trigger_goal_explicit
+    user: "把这个任务写成 Codex /goal，让它自己跑完"
+    expected: trigger
+    mode: goal
+    must_include:
+      - "/goal"
+      - "验证"
+      - "暂停条件"
+
+  - id: should_not_trigger_direct_code
+    user: "直接帮我修这个 React bug，跑测试确认通过"
+    expected: do_not_trigger
+    reason: "用户要执行代码修复，不是提示词澄清"
+
+  - id: should_not_trigger_direct_article
+    user: "直接写一篇公众号文章，主题是 AI 学习方法"
+    expected: do_not_trigger
+    reason: "用户要最终成稿，不是提示词"
+
+  - id: should_not_goal_for_long_task_only
+    user: "这个任务比较长，你一直做到完成"
+    expected: trigger
+    mode: clarification_not_goal
+    must_not_include:
+      - "/goal"
+    reason: "长任务不是 Goal 显式触发"
+
+  - id: near_neighbor_brok
+    user: "这是我已经写好的 prompt，帮我精修 Role 和 Key Result"
+    expected: do_not_trigger
+    reason: "更适合 BROK 优化器"
+

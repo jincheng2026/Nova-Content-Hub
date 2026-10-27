@@ -1,0 +1,17 @@
+{
+  "should_trigger": [
+    {"prompt": "给《为什么你应该做AI自媒体？》的最终发布稿出分镜标注", "expect": "逐句判定并输出分镜标注表"},
+    {"prompt": "这篇逐字稿哪里用 AI 生成画面、哪里用我的录屏", "expect": "按第0问→禁区→五类触发流程判定"},
+    {"prompt": "AIGC 段的画面构想、字卡和时长参数列出来", "expect": "输出隐喻方案＋字卡层＋节奏参数"}
+  ],
+  "should_not_trigger": [
+    {"prompt": "帮我写【选题名称】的逐字稿", "route": "jc-content-writer"},
+    {"prompt": "拆解这条对标视频为什么爆", "route": "jc-video-analysis"},
+    {"prompt": "把这段 AIGC 画面生成出来", "route": "生成工具/剪辑链路；本 skill 只判定不生成"},
+    {"prompt": "按 0.5 秒帧拆解参考视频的动效证据", "route": "mine-video-reference"}
+  ],
+  "near_neighbor": [
+    {"prompt": "教程视频的口播和画面怎么分工", "route": "jc-jiaocheng-video 第 4 步管教程画面规划；本 skill 专管 AIGC/录屏取舍判定，可被其调用参考"},
+    {"prompt": "给视频配音效", "route": "remotion-sfx"}
+  ]
+}

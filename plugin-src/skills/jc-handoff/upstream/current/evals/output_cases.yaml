@@ -1,0 +1,55 @@
+cases:
+  - id: local_default_chat_and_file
+    prompt: "打包上下文，开新会话继续"
+    must_include:
+      - "docs/handoff-"
+      - "会话交接启动包"
+      - "恢复索引"
+    must_not_include:
+      - "只在聊天输出"
+
+  - id: long_session_compacted
+    prompt: "打包上下文，怕新会话完全没记忆"
+    must_include:
+      - "恢复索引"
+      - "JSONL"
+      - "Evidence"
+      - "missing"
+    must_not_include:
+      - "我凭记忆"
+      - "已完整覆盖所有细节"
+
+  - id: code_debug_handoff
+    prompt: "/handoff --debug 修 bug 到一半，已经排除缓存和竞态"
+    must_include:
+      - "Debug Chain"
+      - "Ruled out"
+      - "Next probe"
+      - "evidence"
+    must_not_include:
+      - "继续调试"
+
+  - id: knowledge_project
+    prompt: "给知识库整理任务做会话交接"
+    must_include:
+      - "已建立的知识资产"
+      - "核心洞察"
+      - "触发到引用关系"
+    must_not_include:
+      - "无相关文件"
+
+  - id: external_model
+    prompt: "给 Grok 开新会话用，做一个 handoff"
+    must_include:
+      - "不要假装能访问本地路径"
+      - "主上下文"
+      - "驱动提示词"
+    must_not_include:
+      - "直接读取本地文件"
+
+  - id: discussion_not_trigger
+    prompt: "我们讨论一下团队交接流程应该怎么设计"
+    must_include:
+      - "你是要做会话交接，还是在讨论交接这个话题？"
+    must_not_include:
+      - "会话交接启动包"

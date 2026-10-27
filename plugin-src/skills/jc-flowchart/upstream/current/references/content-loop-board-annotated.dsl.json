@@ -1,0 +1,1272 @@
+{
+ "version": 2,
+ "nodes": [
+  {
+   "type": "frame",
+   "id": "root",
+   "x": 0,
+   "y": 0,
+   "layout": "vertical",
+   "width": "fit-content",
+   "height": "fit-content",
+   "gap": 50,
+   "padding": 40,
+   "alignItems": "center",
+   "fillColor": "#ffffff",
+   "borderColor": "#ffffff",
+   "borderWidth": 1,
+   "children": [
+    {
+     "type": "frame",
+     "id": "LEGEND",
+     "layout": "horizontal",
+     "width": "fit-content",
+     "height": "fit-content",
+     "gap": 16,
+     "padding": 12,
+     "alignItems": "center",
+     "fillColor": "#ffffff",
+     "borderColor": "#e5e7eb",
+     "borderWidth": 1,
+     "borderRadius": 8,
+     "children": [
+      {
+       "type": "text",
+       "text": "图例：",
+       "fontSize": 13,
+       "textColor": "#374151"
+      },
+      {
+       "type": "rect",
+       "id": "L1",
+       "width": 150,
+       "height": "fit-content",
+       "text": "已 AI 化，在跑",
+       "borderWidth": 1,
+       "borderRadius": 8,
+       "fontSize": 12,
+       "fillColor": "#dcfce7",
+       "borderColor": "#16a34a",
+       "textColor": "#14532d"
+      },
+      {
+       "type": "rect",
+       "id": "L2",
+       "width": 150,
+       "height": "fit-content",
+       "text": "人工，且应该人工",
+       "borderWidth": 1,
+       "borderRadius": 8,
+       "fontSize": 12,
+       "fillColor": "#e0e7ff",
+       "borderColor": "#4f46e5",
+       "textColor": "#312e81"
+      },
+      {
+       "type": "rect",
+       "id": "L3",
+       "width": 220,
+       "height": "fit-content",
+       "text": "人工或模糊，可 AI 化但没做",
+       "borderWidth": 1,
+       "borderRadius": 8,
+       "fontSize": 12,
+       "fillColor": "#ffedd5",
+       "borderColor": "#ea580c",
+       "textColor": "#7c2d12"
+      },
+      {
+       "type": "rect",
+       "id": "L4",
+       "width": 210,
+       "height": "fit-content",
+       "text": "说不清现在怎么做 / 没做",
+       "borderWidth": 1,
+       "borderRadius": 8,
+       "fontSize": 12,
+       "fillColor": "#fee2e2",
+       "borderColor": "#dc2626",
+       "textColor": "#7f1d1d"
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "id": "ROW",
+     "layout": "horizontal",
+     "width": "fit-content",
+     "height": "fit-content",
+     "gap": 60,
+     "padding": 0,
+     "alignItems": "stretch",
+     "fillColor": "#ffffff",
+     "borderColor": "#ffffff",
+     "borderWidth": 1,
+     "children": [
+      {
+       "type": "frame",
+       "id": "DATA",
+       "layout": "vertical",
+       "width": 240,
+       "height": "fill-container",
+       "gap": 30,
+       "padding": 20,
+       "alignItems": "center",
+       "justifyContent": "space-between",
+       "fillColor": "#fafafa",
+       "borderColor": "#98a2b3",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "过程数据沉淀",
+         "fontSize": 15,
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S1",
+         "width": 200,
+         "height": "fit-content",
+         "text": "调研记录",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#16a34a",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S2",
+         "width": 200,
+         "height": "fit-content",
+         "text": "拆解记录与判断",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#16a34a",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S3",
+         "width": 200,
+         "height": "fit-content",
+         "text": "修改过程与最终资产",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#16a34a",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S4",
+         "width": 200,
+         "height": "fit-content",
+         "text": "发布记录",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#16a34a",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S5",
+         "width": 200,
+         "height": "fit-content",
+         "text": "平台数据与转化数据",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#ea580c",
+         "textColor": "#344054"
+        },
+        {
+         "type": "rect",
+         "id": "S6",
+         "width": 200,
+         "height": "fit-content",
+         "text": "复盘结论与下一轮假设",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#f3f4f6",
+         "borderColor": "#ea580c",
+         "textColor": "#344054"
+        }
+       ]
+      },
+      {
+       "type": "frame",
+       "id": "MAIN",
+       "layout": "vertical",
+       "width": 400,
+       "height": "fit-content",
+       "gap": 36,
+       "padding": 24,
+       "alignItems": "center",
+       "fillColor": "#f8fbff",
+       "borderColor": "#315efb",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "一条内容的生产循环",
+         "fontSize": 15,
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "R",
+         "width": 320,
+         "height": "fit-content",
+         "text": "调研对标\n账号、视频、用户问题",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "D",
+         "width": 320,
+         "height": "fit-content",
+         "text": "拆解对标\n结构、开头、方法、判断",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C1",
+         "width": 320,
+         "height": "fit-content",
+         "text": "生成内容\n形成自己的观点与角度",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C2",
+         "width": 320,
+         "height": "fit-content",
+         "text": "AI 生成、人工调整、反复修改",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "F1",
+         "width": 320,
+         "height": "fit-content",
+         "text": "拍摄",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eef2ff",
+         "borderColor": "#6366f1",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "F2",
+         "width": 320,
+         "height": "fit-content",
+         "text": "剪辑与字幕（剪辑师）",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eef2ff",
+         "borderColor": "#6366f1",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "F3",
+         "width": 320,
+         "height": "fit-content",
+         "text": "封面制作",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eef2ff",
+         "borderColor": "#6366f1",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "C3",
+         "width": 320,
+         "height": "fit-content",
+         "text": "保留最终内容资产\n逐字稿｜标题｜简介｜封面",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "C4",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布前预测复盘\n预测亮点、风险、开头、完播、转化",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "P",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布\n人工发布、记录版本与时间",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#eaf2ff",
+         "borderColor": "#315efb",
+         "textColor": "#102a63"
+        },
+        {
+         "type": "rect",
+         "id": "V1",
+         "width": 320,
+         "height": "fit-content",
+         "text": "发布后复盘\n12 小时数据复盘\n播放、完播、点赞、收藏、转发、评论",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        },
+        {
+         "type": "rect",
+         "id": "V2",
+         "width": 320,
+         "height": "fit-content",
+         "text": "后续转化复盘\n进线、咨询、成交、转化率",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        },
+        {
+         "type": "rect",
+         "id": "V3",
+         "width": 320,
+         "height": "fit-content",
+         "text": "定位问题\n选题｜开头｜表达｜制作｜分发｜转化",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#fff4e5",
+         "borderColor": "#d9822b",
+         "textColor": "#663c00"
+        }
+       ]
+      },
+      {
+       "type": "frame",
+       "id": "NOTES",
+       "layout": "vertical",
+       "width": 430,
+       "height": "fill-container",
+       "gap": 12,
+       "padding": 16,
+       "alignItems": "center",
+       "justifyContent": "space-between",
+       "fillColor": "#fffdf7",
+       "borderColor": "#d4b483",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "现在怎么做 · 用了什么 · 我的判断",
+         "fontSize": 15,
+         "textColor": "#5b4a1f"
+        },
+        {
+         "type": "rect",
+         "id": "K1",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 化｜jc-media-research 找对标、入库、看评论需求\n人拍板方向和选题；jc-topic-generator 闲置",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        },
+        {
+         "type": "rect",
+         "id": "K2",
+         "width": 398,
+         "height": "fit-content",
+         "text": "半 AI 化｜拆解在 jc-media-research 里顺手做\njc-video-analysis、jc-pattern-extractor 两个专用 Skill 没接进流程",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#ffedd5",
+         "borderColor": "#ea580c",
+         "textColor": "#7c2d12"
+        },
+        {
+         "type": "rect",
+         "id": "K3",
+         "width": 398,
+         "height": "fit-content",
+         "text": "人工·应人工｜观点和角度靠访谈式对话逼出来\nAI 只提候选，不代拟硬判断",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#e0e7ff",
+         "borderColor": "#4f46e5",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "K4",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 化｜jc-jiaocheng-video：工作稿 + 改稿日志\nAI 出稿、锦成逐句批注改稿到锁稿",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        },
+        {
+         "type": "rect",
+         "id": "K5",
+         "width": 398,
+         "height": "fit-content",
+         "text": "人工·应人工｜锦成真人出镜、录屏\n教程录屏清单由 jc-jiaocheng-video 规划",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#e0e7ff",
+         "borderColor": "#4f46e5",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "K6",
+         "width": 398,
+         "height": "fit-content",
+         "text": "人工（外包）｜剪辑师剪片、上字幕\n可 AI 预处理：jc-video-broll 出 B-roll、jc-srt 断句，交接包没定",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#ffedd5",
+         "borderColor": "#ea580c",
+         "textColor": "#7c2d12"
+        },
+        {
+         "type": "rect",
+         "id": "K7",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 化｜jc-cover-copy 出封面文字，jc-cover-design 生图\n锦成挑图",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        },
+        {
+         "type": "rect",
+         "id": "K8",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 化｜一条视频一个文件夹：内容.md、封面、成片\n档案结构来自 jc-publish-closeout",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        },
+        {
+         "type": "rect",
+         "id": "K9",
+         "width": 398,
+         "height": "fit-content",
+         "text": "没做｜草稿和档案里找不到任何发布前预测记录\nSkill 里有「发布前评审」一步，从没落地",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#fee2e2",
+         "borderColor": "#dc2626",
+         "textColor": "#7f1d1d"
+        },
+        {
+         "type": "rect",
+         "id": "K10",
+         "width": 398,
+         "height": "fit-content",
+         "text": "人工·应人工｜锦成手动发抖音、视频号、小红书\n多次实践后最稳定的方式，不改",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#e0e7ff",
+         "borderColor": "#4f46e5",
+         "textColor": "#312e81"
+        },
+        {
+         "type": "rect",
+         "id": "K11",
+         "width": 398,
+         "height": "fit-content",
+         "text": "半自动｜抖音看板定时抓数据，复盘时 TikHub 拉评论\n8 条视频的 12 小时/7 天观察点全是空的，监控没真正跑起来",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#ffedd5",
+         "borderColor": "#ea580c",
+         "textColor": "#7c2d12"
+        },
+        {
+         "type": "rect",
+         "id": "K12",
+         "width": 398,
+         "height": "fit-content",
+         "text": "没做｜进线、咨询、成交没有任何记录入口\n转化数据不在任何文件里",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#fee2e2",
+         "borderColor": "#dc2626",
+         "textColor": "#7f1d1d"
+        },
+        {
+         "type": "rect",
+         "id": "K13",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 整理 + 人判断｜jc-media-review 出「事实/观察/不能判断」\n锦成拍板下一篇改什么；9 条视频只有 7 份复盘",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "type": "frame",
+     "id": "BROW",
+     "layout": "horizontal",
+     "width": "fit-content",
+     "height": "fit-content",
+     "gap": 60,
+     "padding": 0,
+     "alignItems": "start",
+     "fillColor": "#ffffff",
+     "borderColor": "#ffffff",
+     "borderWidth": 1,
+     "children": [
+      {
+       "type": "rect",
+       "id": "SPACER",
+       "width": 240,
+       "height": 10,
+       "fillColor": "#ffffff",
+       "borderColor": "#ffffff",
+       "borderWidth": 0,
+       "text": ""
+      },
+      {
+       "type": "frame",
+       "id": "UPGRADE",
+       "layout": "vertical",
+       "width": 400,
+       "height": "fit-content",
+       "gap": 24,
+       "padding": 20,
+       "alignItems": "center",
+       "fillColor": "#f4fbf6",
+       "borderColor": "#5aad7a",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "text",
+         "text": "复盘之后迭代什么",
+         "fontSize": 15,
+         "textColor": "#174b2b"
+        },
+        {
+         "type": "rect",
+         "id": "I1",
+         "width": 360,
+         "height": "fit-content",
+         "text": "主要迭代：Skill\n让下一次调研、拆解、生成、分析更有效",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#e9f7ef",
+         "borderColor": "#16a34a",
+         "textColor": "#174b2b"
+        },
+        {
+         "type": "rect",
+         "id": "I2",
+         "width": 360,
+         "height": "fit-content",
+         "text": "工作台的作用：承载与辅助\n更方便阅读、批注、修改、判断和查找",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 14,
+         "fillColor": "#e9f7ef",
+         "borderColor": "#16a34a",
+         "textColor": "#174b2b"
+        }
+       ]
+      },
+      {
+       "type": "frame",
+       "id": "NOTEB",
+       "layout": "vertical",
+       "width": 430,
+       "height": "fit-content",
+       "gap": 0,
+       "padding": 16,
+       "alignItems": "center",
+       "fillColor": "#fffdf7",
+       "borderColor": "#d4b483",
+       "borderWidth": 2,
+       "borderRadius": 12,
+       "children": [
+        {
+         "type": "rect",
+         "id": "K14",
+         "width": 398,
+         "height": "fit-content",
+         "text": "AI 化｜jc-skill-writer、jc-meta-skill 改 Skill\n工作台：第二大脑 Obsidian、T016 对照页、抖音数据看板",
+         "borderWidth": 2,
+         "borderRadius": 8,
+         "fontSize": 12,
+         "fillColor": "#dcfce7",
+         "borderColor": "#16a34a",
+         "textColor": "#14532d"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "D",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "R"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C1",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "D"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "F1",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "F2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "F1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "F3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "F2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "F3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "C4",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "P",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "C4"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V1",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "P"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "V1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "V3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#315efb",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "V2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S4",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S4"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S6",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#667085",
+    "lineWidth": 2,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S5"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S1",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "R"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S2",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "D"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "C2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S3",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "C3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S4",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "P"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S5",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "S6",
+    "fromAnchor": "left",
+    "toAnchor": "right",
+    "lineShape": "straight",
+    "lineColor": "#98a2b3",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "arrow",
+    "from": "V3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K1",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "R"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K2",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "D"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K3",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "C1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K4",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "C2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K5",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "F1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K6",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "F2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K7",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "F3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K8",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "C3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K9",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "C4"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K10",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "P"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K11",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "V1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K12",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "V2"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "K13",
+    "fromAnchor": "right",
+    "toAnchor": "left",
+    "lineShape": "straight",
+    "lineColor": "#d4b483",
+    "lineWidth": 1,
+    "lineStyle": "dotted",
+    "endArrow": "none",
+    "from": "V3"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "I2",
+    "fromAnchor": "bottom",
+    "toAnchor": "top",
+    "lineShape": "straight",
+    "lineColor": "#2f855a",
+    "lineWidth": 2,
+    "lineStyle": "dashed",
+    "endArrow": "arrow",
+    "from": "I1"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "I1",
+    "fromAnchor": "bottom",
+    "toAnchor": "left",
+    "lineShape": "rightAngle",
+    "lineColor": "#2f855a",
+    "lineWidth": 3,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "S6"
+   }
+  },
+  {
+   "type": "connector",
+   "connector": {
+    "to": "R",
+    "fromAnchor": "right",
+    "toAnchor": "right",
+    "lineShape": "rightAngle",
+    "lineColor": "#2f855a",
+    "lineWidth": 3,
+    "lineStyle": "solid",
+    "endArrow": "arrow",
+    "from": "I1",
+    "label": "回到下一轮"
+   }
+  }
+ ]
+}

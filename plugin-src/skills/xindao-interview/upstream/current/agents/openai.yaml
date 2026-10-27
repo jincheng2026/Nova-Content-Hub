@@ -1,0 +1,4 @@
+interface:
+  display_name: "新岛定位访谈官（工作台版）"
+  short_description: "工作台初始化：一次问一个问题，用真实经历完成账号定位、内容边界与主页包装，每关确认后存档"
+  default_prompt: "使用 $xindao-interview 采访我，帮我完成工作台的定位初始化。"

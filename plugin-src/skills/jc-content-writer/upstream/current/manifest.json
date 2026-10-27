@@ -1,0 +1,15 @@
+{
+  "name": "jc-content-writer",
+  "display_name": "锦成视频逐字稿助手",
+  "version": "1.0.0",
+  "owner": "Jincheng",
+  "updated_at": "2026-09-01",
+  "status": "active",
+  "maturity_tier": "personal",
+  "context_budget_tier": "personal",
+  "release_gates": {
+    "local_validate": true,
+    "publication": false
+  },
+  "provenance": "从 2026-08-22/23 第二大脑 001 选题真实生产会话提炼（素材包、访谈、逐句标注改稿、锁稿全流程各跑通一遍）"
+}

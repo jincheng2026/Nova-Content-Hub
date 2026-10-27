@@ -1,0 +1,322 @@
+{
+  "ok": true,
+  "threshold": 0.34,
+  "description_concepts": [
+    "architecture",
+    "authoring_action",
+    "prompt_design",
+    "skill",
+    "source_material"
+  ],
+  "missing_description_concepts": [],
+  "summary": {
+    "total": 23,
+    "passed": 23,
+    "false_positive": 0,
+    "false_negative": 0,
+    "pass_rate": 1.0
+  },
+  "failures": [],
+  "results": {
+    "should_trigger": [
+      {
+        "prompt": "把这套 SOP 和脚本整理成一个可复用的 agent skill",
+        "family": "cn_workflow_to_skill",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "authoring_action",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "优化这个已有 skill，补齐架构设计、trigger eval 和发布门禁",
+        "family": "cn_upgrade_existing",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "architecture",
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "帮我设计这个 Skill 的目录结构，判断哪些内容放 SKILL.md、references 和 scripts",
+        "family": "cn_architecture_design",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "architecture",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "重写这个 agent skill 的行为提示词，补清楚停止条件、失败处理和验收标准",
+        "family": "cn_prompt_design",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "prompt_design",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Create an agent skill from this repeated workflow and design the smallest valid architecture.",
+        "family": "en_workflow_architecture",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.8,
+        "matched_concepts": [
+          "architecture",
+          "authoring_action",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Audit this skill prompt design for explicit actions, failure handling, and testable acceptance criteria.",
+        "family": "en_prompt_audit",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.8,
+        "matched_concepts": [
+          "authoring_action",
+          "prompt_design",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "先搜索同类 skill 并验源，再取长补短创建一个新的 agent skill",
+        "family": "cn_prior_art_synthesis",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "把这个旧 skill 迁移成新的可安装格式，并检查递归发现和安装入口",
+        "family": "cn_migrate_install_check",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "只审计这个 skill 的目录架构、提示词和输出评估，先不要改文件",
+        "family": "cn_audit_only",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.8,
+        "matched_concepts": [
+          "architecture",
+          "authoring_action",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Check whether this agent skill package installs cleanly and whether nested examples can be mis-discovered.",
+        "family": "en_install_discovery_audit",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "把这个 skill 发布到 GitHub，并完成 PR、Release 和干净安装验证",
+        "family": "cn_full_publish",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "先 dry-run 检查这个 skill 的 README、权限、版本和发布条件，不要写 GitHub",
+        "family": "cn_publish_dry_run",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "authoring_action",
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "把这个 skill 直接推 main 发布，如果不安全就改成规范 PR 流程",
+        "family": "cn_unsafe_publish_correction",
+        "expected_trigger": true,
+        "predicted_trigger": true,
+        "passed": true,
+        "score": 0.6,
+        "matched_concepts": [
+          "authoring_action",
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": null
+      }
+    ],
+    "should_not_trigger": [
+      {
+        "prompt": "解释一下什么是 agent skill，不要做成 skill",
+        "family": "explain_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "skill"
+        ],
+        "negative_pattern": "不要做成 skill"
+      },
+      {
+        "prompt": "把这篇文章翻译一下",
+        "family": "translate_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": "翻译一下"
+      },
+      {
+        "prompt": "帮我写个产品标题",
+        "family": "copywriting_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Summarize this random note in three bullets.",
+        "family": "summary_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.0,
+        "matched_concepts": [],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "Just explain the difference between prompts and skills.",
+        "family": "explain_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "source_material"
+        ],
+        "negative_pattern": "just explain"
+      },
+      {
+        "prompt": "把这个普通 Python 包发布到 PyPI",
+        "family": "non_skill_package_publish",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "authoring_action"
+        ],
+        "negative_pattern": "普通 Python 包"
+      }
+    ],
+    "near_neighbor": [
+      {
+        "prompt": "帮我看一下这个 README 顺不顺，但不要改成 skill",
+        "family": "readme_review_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "skill"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "头脑风暴几个插件名字，先不要打包发布",
+        "family": "brainstorm_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "authoring_action"
+        ],
+        "negative_pattern": "头脑风暴"
+      },
+      {
+        "prompt": "给这个脚本加一个 argparse 参数",
+        "family": "script_edit_only",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.2,
+        "matched_concepts": [
+          "source_material"
+        ],
+        "negative_pattern": null
+      },
+      {
+        "prompt": "给我写一段通用系统提示词，不需要做成可复用 skill",
+        "family": "prompt_only_not_skill",
+        "expected_trigger": false,
+        "predicted_trigger": false,
+        "passed": true,
+        "score": 0.4,
+        "matched_concepts": [
+          "skill",
+          "source_material"
+        ],
+        "negative_pattern": "不需要做成可复用 skill"
+      }
+    ]
+  }
+}

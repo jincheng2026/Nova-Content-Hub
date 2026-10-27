@@ -1,0 +1,11 @@
+interface:
+  display_name: 锦成选题助手
+  short_description: 读取第二大脑 vault 的定位与 02_内容素材，生成或增量追加候选选题到 04_选题库（00_选题总览.md + Txxx 单题文件）。
+  default_prompt: 请读取定位和 02_内容素材，生成 5—10 个候选选题，写入 04_选题库（选题总览 + Txxx 单题文件）。
+  incremental_prompt: 我搜集了新内容，帮我生成新选题。
+compatibility:
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible

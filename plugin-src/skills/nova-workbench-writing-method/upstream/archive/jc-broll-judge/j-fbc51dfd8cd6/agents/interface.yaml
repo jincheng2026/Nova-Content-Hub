@@ -1,0 +1,10 @@
+interface:
+  display_name: B-roll 画面判定
+  short_description: 逐句判定视频逐字稿配什么画面（AIGC B-roll／录屏／实拍截图／A-roll／字卡），输出给剪辑的分镜标注表；规则来自参考视频逐秒拉片实证，证明与操作段禁用 AIGC。
+  default_prompt: 给这篇逐字稿出分镜标注
+compatibility:
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible

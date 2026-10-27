@@ -1,0 +1,7 @@
+interface:
+  display_name: "锦成个人业务周报"
+  short_description: "一次收集全部业务信息，确认后自动生成并写入飞书周报"
+  default_prompt: "Use $jc-weekly-report to update this week's personal business report with one intake, one confirmation, and Feishu delivery."
+
+policy:
+  allow_implicit_invocation: true

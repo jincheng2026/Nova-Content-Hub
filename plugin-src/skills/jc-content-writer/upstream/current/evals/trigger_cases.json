@@ -1,0 +1,18 @@
+{
+  "should_trigger": [
+    {"prompt": "帮我写【正在学 AI 的人，为什么值得顺手做 AI 自媒体】", "expect": "启动第 0 步，读定位/选题/来源/规律后建素材包"},
+    {"prompt": "写选题库里的 T005，先出素材包", "expect": "启动，按 Txxx 选题文件条目走流程"},
+    {"prompt": "素材包我确认了，出 AI 初稿", "expect": "进入第 5 步生成初稿与 3 个标题候选"},
+    {"prompt": "初稿不像我的表达，逐句标注给我拍板", "expect": "第 6 步，在原文语境内逐句标注"}
+  ],
+  "should_not_trigger": [
+    {"prompt": "我搜集了新内容，帮我生成新选题", "route": "jc-topic-generator"},
+    {"prompt": "提取内容规律，更新标题规律文件", "route": "jc-pattern-extractor"},
+    {"prompt": "视频发布了，收口建档开始监控", "route": "jc-publish-closeout"},
+    {"prompt": "帮我写一条朋友圈文案", "route": "jincheng-pyq"}
+  ],
+  "near_neighbor": [
+    {"prompt": "拆解这条对标视频为什么爆", "route": "jc-video-analysis；本 skill 只承接拆解结果，不做拆解"},
+    {"prompt": "写一条 WorkBuddy 教程视频的逐字稿", "route": "教程类走 jc-jiaocheng-video；本 skill 面向第二大脑选题库产线"}
+  ]
+}

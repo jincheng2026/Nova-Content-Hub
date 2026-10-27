@@ -1,0 +1,81 @@
+{
+  "version": 2,
+  "nodes": [
+    {
+      "type": "frame", "id": "root", "x": 0, "y": 0,
+      "layout": "vertical", "width": "fit-content", "height": "fit-content",
+      "gap": 48, "padding": 40, "alignItems": "center",
+      "fillColor": "#FFFFFF", "borderColor": "#FFFFFF", "borderWidth": 1,
+      "children": [
+        { "type": "rect", "id": "goal", "width": 360, "height": 56, "text": "目标：做内容最终为了赚钱（广告 / 知识产品 / 服务）",
+          "fillColor": "#FEF3C7", "borderColor": "#F59E0B", "borderWidth": 2, "borderRadius": 8, "fontSize": 14, "textColor": "#78350F" },
+        {
+          "type": "frame", "id": "row", "layout": "horizontal", "width": "fit-content", "height": "fit-content",
+          "gap": 80, "padding": 0, "alignItems": "start",
+          "fillColor": "#FFFFFF", "borderColor": "#FFFFFF", "borderWidth": 1,
+          "children": [
+            {
+              "type": "frame", "id": "left", "layout": "vertical", "width": 220, "height": "fit-content",
+              "gap": 16, "padding": 16, "alignItems": "stretch",
+              "fillColor": "#F3F4F6", "borderColor": "#9CA3AF", "borderWidth": 2, "borderDash": "dashed", "borderRadius": 12,
+              "children": [
+                { "type": "text", "text": "过程数据沉淀", "fontSize": 14, "textColor": "#374151" },
+                { "type": "rect", "id": "l1", "width": "fill-container", "height": 48, "text": "调研记录 / 参考清单", "fillColor": "#FFFFFF", "borderColor": "#9CA3AF", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#374151" },
+                { "type": "rect", "id": "l2", "width": "fill-container", "height": 48, "text": "拆解判断 / 改稿过程", "fillColor": "#FFFFFF", "borderColor": "#9CA3AF", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#374151" },
+                { "type": "rect", "id": "l3", "width": "fill-container", "height": 48, "text": "逐字稿 / 标题 / 封面", "fillColor": "#FFFFFF", "borderColor": "#9CA3AF", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#374151" },
+                { "type": "rect", "id": "l4", "width": "fill-container", "height": 48, "text": "发布记录 / 复盘结论", "fillColor": "#FFFFFF", "borderColor": "#9CA3AF", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#374151" }
+              ]
+            },
+            {
+              "type": "frame", "id": "main", "layout": "vertical", "width": 260, "height": "fit-content",
+              "gap": 56, "padding": 0, "alignItems": "center",
+              "fillColor": "#FFFFFF", "borderColor": "#FFFFFF", "borderWidth": 1,
+              "children": [
+                { "type": "rect", "id": "m1", "width": 220, "height": 56, "text": "调研对标", "fillColor": "#DBEAFE", "borderColor": "#3B82F6", "borderWidth": 2, "borderRadius": 8, "fontSize": 15, "textColor": "#1E3A8A" },
+                { "type": "rect", "id": "m2", "width": 220, "height": 56, "text": "拆解对标", "fillColor": "#DBEAFE", "borderColor": "#3B82F6", "borderWidth": 2, "borderRadius": 8, "fontSize": 15, "textColor": "#1E3A8A" },
+                { "type": "rect", "id": "m3", "width": 220, "height": 56, "text": "生成内容（AI 初稿 → 人改稿 → 锁稿）", "fillColor": "#DBEAFE", "borderColor": "#3B82F6", "borderWidth": 2, "borderRadius": 8, "fontSize": 15, "textColor": "#1E3A8A" },
+                { "type": "diamond", "id": "m4", "width": 260, "height": 96, "text": "发布前预测\n哪里好 / 哪里有风险", "fillColor": "#FFFFFF", "borderColor": "#F59E0B", "borderWidth": 2, "fontSize": 13, "textColor": "#78350F" },
+                { "type": "rect", "id": "m5", "width": 220, "height": 56, "text": "人工发布", "fillColor": "#DBEAFE", "borderColor": "#3B82F6", "borderWidth": 2, "borderRadius": 8, "fontSize": 15, "textColor": "#1E3A8A" },
+                { "type": "rect", "id": "m6", "width": 220, "height": 72, "text": "发布后复盘\n12 小时数据 → 后续转化 → 定位问题", "fillColor": "#DBEAFE", "borderColor": "#3B82F6", "borderWidth": 2, "borderRadius": 8, "fontSize": 14, "textColor": "#1E3A8A" }
+              ]
+            },
+            {
+              "type": "frame", "id": "right", "layout": "vertical", "width": 220, "height": "fit-content",
+              "gap": 16, "padding": 16, "alignItems": "stretch",
+              "fillColor": "#F0FDF4", "borderColor": "#86EFAC", "borderWidth": 2, "borderDash": "dashed", "borderRadius": 12,
+              "children": [
+                { "type": "text", "text": "谁负责", "fontSize": 14, "textColor": "#166534" },
+                { "type": "rect", "id": "r1", "width": "fill-container", "height": 48, "text": "人：拍板、改稿、发布、判断", "fillColor": "#FFFFFF", "borderColor": "#86EFAC", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" },
+                { "type": "rect", "id": "r2", "width": "fill-container", "height": 48, "text": "AI / Skill：调研、转写、拆解、初稿", "fillColor": "#FFFFFF", "borderColor": "#86EFAC", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" },
+                { "type": "rect", "id": "r3", "width": "fill-container", "height": 48, "text": "工作台：承载、阅读、批注、检索", "fillColor": "#FFFFFF", "borderColor": "#86EFAC", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame", "id": "bottom", "layout": "horizontal", "width": "fit-content", "height": "fit-content",
+          "gap": 16, "padding": 16, "alignItems": "center",
+          "fillColor": "#ECFDF5", "borderColor": "#22C55E", "borderWidth": 2, "borderRadius": 12,
+          "children": [
+            { "type": "text", "text": "复盘之后迭代什么 →", "fontSize": 14, "textColor": "#166534" },
+            { "type": "rect", "id": "b1", "width": 130, "height": 44, "text": "调研 Skill", "fillColor": "#FFFFFF", "borderColor": "#22C55E", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" },
+            { "type": "rect", "id": "b2", "width": 130, "height": 44, "text": "拆解 Skill", "fillColor": "#FFFFFF", "borderColor": "#22C55E", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" },
+            { "type": "rect", "id": "b3", "width": 130, "height": 44, "text": "生成内容 Skill", "fillColor": "#FFFFFF", "borderColor": "#22C55E", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" },
+            { "type": "rect", "id": "b4", "width": 130, "height": 44, "text": "复盘 Skill", "fillColor": "#FFFFFF", "borderColor": "#22C55E", "borderWidth": 1, "borderRadius": 6, "fontSize": 13, "textColor": "#166534" }
+          ]
+        }
+      ]
+    },
+    { "type": "connector", "connector": { "from": "goal", "to": "m1", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m1", "to": "m2", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m2", "to": "m3", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m3", "to": "m4", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m4", "to": "m5", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2, "label": "够好" } },
+    { "type": "connector", "connector": { "from": "m5", "to": "m6", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#3B82F6", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m6", "to": "bottom", "fromAnchor": "bottom", "toAnchor": "top", "lineShape": "straight", "lineColor": "#22C55E", "lineWidth": 2 } },
+    { "type": "connector", "connector": { "from": "m1", "to": "l1", "fromAnchor": "left", "toAnchor": "right", "lineShape": "straight", "lineColor": "#BBBFC4", "lineWidth": 1, "lineStyle": "dashed", "endArrow": "none" } },
+    { "type": "connector", "connector": { "from": "m2", "to": "l2", "fromAnchor": "left", "toAnchor": "right", "lineShape": "straight", "lineColor": "#BBBFC4", "lineWidth": 1, "lineStyle": "dashed", "endArrow": "none" } },
+    { "type": "connector", "connector": { "from": "m3", "to": "l3", "fromAnchor": "left", "toAnchor": "right", "lineShape": "straight", "lineColor": "#BBBFC4", "lineWidth": 1, "lineStyle": "dashed", "endArrow": "none" } },
+    { "type": "connector", "connector": { "from": "m6", "to": "l4", "fromAnchor": "left", "toAnchor": "right", "lineShape": "straight", "lineColor": "#BBBFC4", "lineWidth": 1, "lineStyle": "dashed", "endArrow": "none" } }
+  ]
+}

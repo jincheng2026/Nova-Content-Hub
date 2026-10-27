@@ -1,69 +1,38 @@
-# 调研与创作方法来源登记
+# 完整业务方法来源与适配状态
 
-整理日期：2026-10-28。用途：说明随包方法的参考来源、重新组织方式和能力边界。此文件不包含源资料私人样本、账号内容、绝对路径或服务凭据。
+冻结登记日：2026-10-28。此文件替换此前“完整指南是摘要适配、未复制原程序、创作页只有历史快照”的过时声明。当前包把完整原件和当前运行适配明确分开，不据此声明全部业务或宿主已验收。
 
-## 来源与落点
+## 实际随包内容
 
-下表的路径是参考资料包内部的逻辑名称，供维护者识别；不是运行时依赖，也不是要求用户安装原包。实际写入入口仍为本插件的两个 production executor。独立业务方法已随包安装并由 registry 路由，见下节。
+21 个可发现 business-method，另有 7 个既有 contract/executor，共 28 个顶层 Skill 入口。完整来源 manifest 登记 53 个来源版本、418 个文件；当前方法正文、references、schema、模板、必要素材、校验/协议源码保留原字节。扫描以 SKILL.md 的 frontmatter.name 为准，不限父目录 `jc-*`：包含 `creation-page` 中的 jc-gongzuotai-write、`shengcai-pattern-extractor` 中同名方法的历史变体，以及候选改动目录的教程草稿。历史 Markdown 快照另列，不按文件mtime激活。
 
-| 参考资料 | 提取的方法要点 | 本项目落点 |
-| --- | --- | --- |
-| 评论区洞察 Skill 公开版，jc-media-research/references/search-and-selection.md | 问题驱动搜索、真实门槛、稳定 ID 去重、快照时点、高低样本可比性 | research-execution/references/research-method.md |
-| 同包 evidence-analysis.md、account-report.md | 原文深读、账号身份/持续价值/内容选择、独立重复证据、评论层级与分母、相关不代替因果 | research-method.md、report-method.md、writing-execution/references/video-analysis.md |
-| 同包 routes-and-gates.md、reporting-and-security.md | 按任务范围路由、证据不足降级、明细与图表一致、费用未知停止 | 两个 SKILL.md、research-method.md、report-method.md |
-| 同包 writing-and-feedback.md | 本人材料与参考区分、当前内容续接、局部修改、反馈保留证据 | reference-intake.md、writing-method.md、feedback-method.md |
-| 同事包 content-feedback-loop/skills/jc-video-analysis/SKILL.md 及 references/拆法.md、analysis-method.md | 分段问观众与作者问题、画面真实查看、信任与表达证据、开头/正文/结尾和整片分析、多参考与人工先拆 | writing-execution/references/video-analysis.md |
-| 同事包 content-feedback-loop/skills/jc-jiaocheng-video/SKILL.md 及 references/rafael-model-v1.md、evaluation.md | 具体收获与可信证明、教程/口播分支、叙事与完整稿、来源核对、制作分工、轻量自检、反馈及规则边界 | writing-method.md、review-method.md、feedback-method.md |
-| 同事包 content-feedback-loop/skills/jc-cover-copy/SKILL.md | 标题和封面互补、不同角度候选、短字数/换行、锁定文字交接 | writing-execution/references/packaging-method.md |
-| 同事包工作台需求重建中的分工总表、创作页设计决定；可读创作页模板 | 同一内容编号、原稿保护、批注读回、逐句决定、历史与制作交接 | review-method.md、feedback-method.md；具体 UI 另按代码与验收记录判断 |
-| 本项目《Qoder 调研与内容创作逐项实施清单》与生产任务/产物契约 | 本地优先、两宿主一致、显式人工采用、受控工具、候选回流与本期排除范围 | 全部方法的最终约束 |
+精确统计、逐文件 SHA256、字节数、内容树hash、全部同内容副本、选定状态与引用分类以 [method-sources.json](method-sources.json) 为准。安装/完整性按真实随包文件验证，不只数入口或Markdown。来源路径使用包内逻辑路径，不是产品的默认用户目录。
 
-## 适配决定
+| 来源标识 | 选定依据与随包状态 |
+| --- | --- |
+| V：第二大脑交接包_2026-10-16/第二大脑 | benchmark-intake、pattern-extractor、topic-generator、content-writer、media-review 的完整当前原件及全部目录资源。停用B-roll仅档案。 |
+| J：锦成工作台-同事版/数据和程序/AIJinCheng | video-analysis、cover-copy、publish-closeout、flowchart、creation-page 当前实现；澄清/冷水/交接/方法治理/综合调研是可用公开快照，不声称原机器当前已安装。其他历史/草稿/独立外部工具只读归档。 |
+| T：jc-jiaocheng-video-分享包 | 用户指定教程完整五文件；与J当前教程五个实文件一致。J内备份与候选改动单列，不替换当前原文。 |
+| C：评论区洞察Skill公开版 | media-research、comment-visualize 完整原件、全部12份references、报告模板/CSS/JS、脚本、测试与fixture。不同于J九月研究验收区版本，分别登记。 |
+| I：xindao-interview.zip | 原完整SKILL、README、agents配置；四关模板与确认纪律完整保留。当前固定context/checkpoint/CAS另映射。 |
+| X：xindao-xuanti.zip | 五实文件原字节与现有入口/reference/manifest一致，正式来源仍声明draft。直接文字模式与固定工作台任务模式保留；选题只决定讲什么，最终发布标题另属包装。 |
 
-- 方法用本项目任务语言重新组织为步骤、证据要求和完成条件；没有复制原程序、模板代码或私人案例全文。此登记不替第三方资料作版权/再分发授权声明。
-- 原包的默认付费预算、自动授权、云端优先、安装命令和私人目录均未移植。服务范围只认当前冻结请求、设置和共同契约。
-- 研究公开包的直接给稿与原写稿包的叙事确认存在差异。本项目依实施清单默认少量叙事对话；用户已给明确方向或要求直接给稿时直接执行，不再加确认环节。
-- 原包脚本图表不直接用于当前静态报告阅读器；关键数值和正文需要静态可读，图表另经真实数据转换与验收。
-- 口气样本、私人判断编号、身份故事与真实内容包未随包。个性化从用户自己的已授权材料和已采纳知识获得。
-- 科普、独立标题和简介采用可用资料上的通用适配，不宣称已取得同事完整私人规则。平台规则只按当前可靠来源核对，不把旧经验固化为现行政策。
-- 反馈总结、知识人工采纳和修改 skill 是不同动作。当前人工采纳不自动改代码、技能或旧规则。
+## 完整原件与运行入口
 
-## 能力与验证边界
+每个入口完整读取同目录 `upstream/current/SKILL.md` 与原分支依赖；`references/method.md` 是运行映射，不再冒充完整业务方法。`xindao-xuanti` 为保留原五文件，入口仍为原文，并由外围 [业务边界](business-skills-contract.md) 与 [适配契约](method-adaptation-contract.md) 约束保存和权限。工作台跳转应明确原方法ID、任务身份、用户本轮提示词及完整方法入口。
 
-方法文档能指导 Agent 生成和核对产物，但不能代替媒体下载/播放、分段编辑、版本恢复、录制清单 UI 等实现。现有 schema 承载不了的分析和制作安排以 artifact 文本/允许的数据交付；不添加未支持字段，不承诺已经有对应控件。
+`jc-gongzuotai-write` 已取得 creation-page 当前源实现：完整schema、creation_doc.py、brain_page.py、build_page.py、模板、kit、保存服务与测试均随包作为只读协议源。`nova-workbench-writing-method` 继续兼容旧任务ID，但同步指向完整当前原方法，不再声称仅取得历史文本。当前产品使用自己的受控Node adapter；原Python服务、旧端口、launchd未安装，来源存在不能替代实际功能验收。
 
-方法落地需要在真实任务中逐项验证来源读取、反馈回写和结果质量。Markdown 校验、引用链接检查与资源完整性只能证明文档可发现且随包，不能证明与原工作台质量一致。
+完整方法继续保留原作者判断与口气样本机制；其中原作者个人事实、历史平台经验和商业目的只是来源，不成为新用户事实或现行平台政策。当前用户自己的定位、已授权本人样本和事实优先。方法外判断库/正式档案按用户选择的库与明确关联来源读取，不能按旧HOME自动扫描。
 
-X 收藏、私域客服、运动、独立发布前评审页面、自动剪辑及自动社媒发布仍不属于本期方法新增授权。
+## 权限与状态
 
+- 完整原件中的命令保持可审计；随包脚本均以 `executable:false` 登记，安装/服务/采集/付费/自动批准/自动发布不因原文存在获得授权。本次只复制与静态核对，没有执行原脚本。
+- 当前业务入口可发现，role=business-method，执行权仍属于共同契约允许的executor。直接讨论可以文字交付；固定task才领取/提交，真实写入需显式库绑定和版本/CAS。
+- `sourceStatus` 区分 current、public-snapshot、historical、draft、disabled；`selected` 仅说明本轮选取；`bundleStatus=complete-source-bundled` 说明字节齐备；`runtimeStatus=contract-unverified` 说明真实业务与宿主契约尚待逐项验收。
+- jc-chendian、jc-broll-judge依据原库明确决定停用；jc-video-broll仍草稿；备份手绘PPT不作当前方法启用；飞书计划/周报、群日报、微信CLI是独立外部业务，只读档案且不路由。dbskill不接入。
+- jc-zhuanxie、jc-review-page、jc-cover-design、jc-kepu-video 只有引用，未取得完整包；registry列为unavailable，不能声称已安装或等价支持。旧私人库/报告数据不混入Skill正文，真实任务数据留绑定内容库。
 
-## 2026-10-28 业务方法安装登记
+## 验证边界
 
-本次实际新增14个business-method，连同原7个contract/executor共21个Skill。Codex通过skills目录发现，WorkBuddy通过显式manifest清单及同一skills目录发现。精确机器清单、source哈希、executor、workflow与依赖以[business-skills.json](business-skills.json)为准。
-
-各方法references/method.md是从已读真实原件重新整理的执行指南，同时链接现有Nova references；不是原Skill安装包的逐文件镜像。上游引用的私人知识库、真实口气样本、特定账号案例、凭据、默认HOME、安装/后台服务/自动批准/任意文件搬移脚本均不复制。其本来承担的写入、ASR、采集、CAS与回执责任统一转给当前executor；本次没有引入原包可执行脚本，也未执行原包脚本。构建递归校验实际随包的全部Skill文件与相对引用，不仅校验SKILL.md或Markdown后缀。
-
-| 随包方法 | 已取得的原件来源 | 适配状态 |
-| --- | --- | --- |
-| jc-media-research | 评论区洞察Skill公开版 2 / jc-media-research/SKILL.md | original-skill-adaptation |
-| jc-comment-visualize | 评论区洞察Skill公开版 2 / jc-comment-visualize/SKILL.md | original-skill-adaptation |
-| jc-benchmark-intake | 第二大脑交接包_2026-10-16 / jc-benchmark-intake/SKILL.md | original-skill-adaptation |
-| jc-pattern-extractor | 第二大脑交接包_2026-10-16 / jc-pattern-extractor/SKILL.md | original-skill-adaptation |
-| jc-topic-generator | 第二大脑交接包_2026-10-16 / jc-topic-generator/SKILL.md | original-skill-adaptation |
-| jc-content-writer | 第二大脑交接包_2026-10-16 / jc-content-writer/SKILL.md | original-skill-adaptation |
-| jc-video-analysis | 锦成工作台-同事版/content-feedback-loop / jc-video-analysis/SKILL.md | original-skill-adaptation |
-| jc-jiaocheng-video | 锦成工作台-同事版/content-feedback-loop / jc-jiaocheng-video/SKILL.md | original-skill-adaptation |
-| jc-cover-copy | 锦成工作台-同事版/content-feedback-loop / jc-cover-copy/SKILL.md | original-skill-adaptation |
-| jc-media-review | 第二大脑交接包_2026-10-16 / jc-media-review/SKILL.md | original-skill-adaptation |
-| jc-publish-closeout | 锦成工作台-同事版/content-feedback-loop / jc-publish-closeout/SKILL.md | original-skill-adaptation |
-| nova-workbench-writing-method | 锦成工作台-同事版/Skill历史版本 / jc-gongzuotai-write/2026-09-30T0803_1e8d3bef2b.md | historical-adaptation |
-| xindao-interview | xindao-interview.zip / xindao-interview/SKILL.md | original-skill-adaptation |
-| xindao-xuanti | Nova-Content-Hub/workspace / xindao-xuanti/SKILL.md | workspace-source |
-
-`jc-gongzuotai-write`只取得历史Markdown快照，原件声明的schema、build_page/brain_page/creation_doc及保存服务未完整取得，因此不以原名安装，明确使用`nova-workbench-writing-method`的当前运行时适配；旧目录与服务能力不能声称已具备。`jc-broll-judge`、`jc-video-broll`保持停用，dbskill不接入。未安装其他只被原件提到的Skill，不把引用等同已经取得。
-
-`xindao-interview`来自用户提供ZIP，保留四阶段、一次一问、真实事实、公开边界、逐关确认、续访与局部调整；原来从CWD找库、创建目录直接写文件、全局首次强制拦截改为冻结context、受控checkpoint、真实回读与按请求启动。已有`定位总览_v0.1.md`可沿用；每个后续任务读适用定位摘要，不把完整访谈发给采集服务。`xindao-xuanti`为当前工作区资料先行方法，原文件保留，由research executor外围契约限定固定请求、候选提交、零采集工具与零采集预算。
-
-原件中固定赛道、最低素材数、固定输出数量、默认付费额度、指定ASR与旧平台规则均改为本轮实际用户输入、冻结权限和当前可靠事实。资料先行、标题可空；现有用户无需先完成全访谈才能继续明确任务。后续新增标题或选题方法通过registry扩展，不要求页面添加一排Skill按钮。
-
-业务方法role=business-method，始终不获得独立executable权限；仅executor在disabled模式可执行其既有命令。required模式继续拒绝业务读写，contract-only包仍只包含原3个非执行契约Skill。本次构建与静态验证证明发现/依赖/完整性，不证明Codex或WorkBuddy真实安装、定位续访与切换助手已通过；真实宿主验收仍须逐项进行。
+完整性测试验证全部原文字节与依赖引用分类、发现入口、原名映射、两种模式、停用路由和权限边界。源码验证不等于真实Codex/WorkBuddy安装、业务质量、视频播放、报告视觉质量、原服务替代或跨平台运行。每个受支持助手仍须独立验证成功、两种等待及恢复、终态、原任务继续和切换；发布事实、归档、人工采用分别回读。原脚本测试也作为源证据随包，本次没有运行其安装/服务/采集测试。

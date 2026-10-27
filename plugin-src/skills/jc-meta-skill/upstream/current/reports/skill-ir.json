@@ -1,0 +1,219 @@
+{
+  "schema_version": "2.0.0-jc-lite",
+  "generated_at": "2026-08-13",
+  "package": {
+    "name": "jc-meta-skill",
+    "version": "3.0.0",
+    "owner": "Jincheng",
+    "maturity_tier": "governed",
+    "lifecycle_stage": "library"
+  },
+  "intent": {
+    "description": "Create or improve agent skills; design architecture and executable prompts; evaluate, govern, or safely publish. Excludes one-off answers, ordinary docs, translations, and non-skill packages.\n",
+    "job_to_be_done": "Create or improve agent skills; design architecture and executable prompts; evaluate, govern, or safely publish. Excludes one-off answers, ordinary docs, translations, and non-skill packages.\n",
+    "target_users": [
+      "skill author"
+    ],
+    "inputs": [],
+    "outputs": [],
+    "exclusions": [],
+    "jc_defaults": {
+      "skill_name_prefix": "jc-",
+      "max_preferred_hyphen_parts": 3,
+      "copyright": "Copyright (c) 锦成"
+    }
+  },
+  "triggers": {
+    "should_trigger": [
+      "把这套 SOP 和脚本整理成一个可复用的 agent skill",
+      "优化这个已有 skill，补齐架构设计、trigger eval 和发布门禁",
+      "帮我设计这个 Skill 的目录结构，判断哪些内容放 SKILL.md、references 和 scripts",
+      "重写这个 agent skill 的行为提示词，补清楚停止条件、失败处理和验收标准",
+      "Create an agent skill from this repeated workflow and design the smallest valid architecture.",
+      "Audit this skill prompt design for explicit actions, failure handling, and testable acceptance criteria.",
+      "先搜索同类 skill 并验源，再取长补短创建一个新的 agent skill",
+      "把这个旧 skill 迁移成新的可安装格式，并检查递归发现和安装入口",
+      "只审计这个 skill 的目录架构、提示词和输出评估，先不要改文件",
+      "Check whether this agent skill package installs cleanly and whether nested examples can be mis-discovered.",
+      "把这个 skill 发布到 GitHub，并完成 PR、Release 和干净安装验证",
+      "先 dry-run 检查这个 skill 的 README、权限、版本和发布条件，不要写 GitHub",
+      "把这个 skill 直接推 main 发布，如果不安全就改成规范 PR 流程"
+    ],
+    "should_not_trigger": [
+      "解释一下什么是 agent skill，不要做成 skill",
+      "把这篇文章翻译一下",
+      "帮我写个产品标题",
+      "Summarize this random note in three bullets.",
+      "Just explain the difference between prompts and skills.",
+      "把这个普通 Python 包发布到 PyPI"
+    ],
+    "near_neighbor": [
+      "帮我看一下这个 README 顺不顺，但不要改成 skill",
+      "头脑风暴几个插件名字，先不要打包发布",
+      "给这个脚本加一个 argparse 参数",
+      "给我写一段通用系统提示词，不需要做成可复用 skill"
+    ]
+  },
+  "workflow": {
+    "router_rules": [
+      "Route by the frontmatter `description`. Do not create a skill for a one-off answer, ordinary document, translation, explanation, or brainstorming request.",
+      "Once selected, `jc-meta-skill` owns skill authoring, architecture, prompt design, evaluation, packaging, and release preparation. Do not invoke another creator, discovery, or publisher unless the user explicitly requests comparison or this package is unavailable.",
+      "Match the requested action. Audit-only requests stay read-only; create, refactor, or package requests may write; publication requires explicit authorization.",
+      "Keep one discoverable root `SKILL.md`. Embedded examples use `SKILL.example.md` or `SKILL.fixture.md`.",
+      "In this package, personal identity is owner-only: keep only Jincheng / 锦成 / JC. Do not store any other person's name, handle, profile URL, personally named project, or attribution in current files or reports."
+    ],
+    "compact_workflow": [
+      "Qualify the request as a reusable skill or no-skill task.",
+      "Collect intent, boundaries, evidence sources, permissions, and success criteria.",
+      "Research existing solutions and record `keep / adapt / reject / invent`.",
+      "Design the smallest valid package architecture.",
+      "Write executable behavior instructions and failure handling.",
+      "Check generalization and remove sample-specific overfitting.",
+      "Write and run trigger cases, including positives, negatives, and near neighbors.",
+      "Complete the root package, `agents/interface.yaml`, and only the earned resources.",
+      "Run validation, tests, context, trust, and evidence checks proportional to risk.",
+      "Export Skill IR for Production+, public, or cross-platform packages.",
+      "Deliver the package with provenance, evidence boundaries, deliberate rejections, rollback notes, and unresolved `missing evidence`."
+    ],
+    "gate_ladder": [
+      "Decide whether the recurring job deserves a skill. If not, answer directly and create no package.",
+      "Capture users, repeated job, inputs, outputs, exclusions, permissions, fact sources, success criteria, target hosts, and publication intent. Ask only when missing information changes the package boundary or creates material risk.",
+      "Research prior art before new or substantial designs. Use [Prior-Art Research](references/prior-art-research.md) and synthesize `keep / adapt / reject / invent` without executing untrusted code. For this package's own reports, retain mechanisms and evidence limits without retaining third-party personal identifiers.",
+      "Choose the lightest valid mode and architecture with [Skill Architecture Design](references/skill-architecture-design.md). Create only resources that reduce ambiguity, repeated effort, route risk, or evidence risk.",
+      "Write behavior instructions with [Prompt Design](references/prompt-design.md). Use actions, conditions, order, decision criteria, stop conditions, failure handling, and testable acceptance criteria—not decorative personas or vague quality language.",
+      "Apply the [Generalization Gate](#generalization-gate), then write trigger cases before expanding the package.",
+      "Build the package and interface, run the earned checks, and report facts separately from inference and `missing evidence`."
+    ],
+    "output_contract": [
+      "a working skill directory whose root name, frontmatter, manifest, interface, scripts, tests, and internal references agree",
+      "a lean, trigger-aware root `SKILL.md`",
+      "architecture and prompt-design decisions in the proper resources",
+      "trigger cases and generated results for Production+",
+      "Skill IR, prior-art research, and creation handoff for Production+",
+      "validation results, rollback path, provenance, and explicit `missing evidence`",
+      "publication artifacts only when publication was authorized and verified"
+    ]
+  },
+  "resources": {
+    "references": [
+      "references/creation-handoff.md",
+      "references/eval-playbook.md",
+      "references/gate-selection.md",
+      "references/github-readme-playbook.md",
+      "references/governance.md",
+      "references/intent-dialogue.md",
+      "references/non-skill-decision-tree.md",
+      "references/operating-modes.md",
+      "references/output-eval-method.md",
+      "references/prior-art-research.md",
+      "references/prompt-design.md",
+      "references/publishing.md",
+      "references/qa-ladder.md",
+      "references/resource-boundaries.md",
+      "references/review-release-gates.md",
+      "references/skill-archetypes.md",
+      "references/skill-architecture-design.md",
+      "references/skill-engineering-method.md",
+      "references/skill-ir-method.md",
+      "references/skillops-loop.md"
+    ],
+    "scripts": [
+      "scripts/export_skill_ir.py",
+      "scripts/publish_skill.py",
+      "scripts/release_check.py",
+      "scripts/research_prior_art.py",
+      "scripts/search_skillsmp.py",
+      "scripts/trigger_eval.py",
+      "scripts/validate_skill.py"
+    ],
+    "evals": [
+      "evals/trigger_cases.json"
+    ],
+    "reports": [
+      "reports/creation-handoff.md",
+      "reports/prior-art-research.md",
+      "reports/skill-ir.json",
+      "reports/trigger-eval.json"
+    ]
+  },
+  "portability": {
+    "canonical_format": "agent-skills",
+    "adapter_targets": [
+      "openai",
+      "claude",
+      "generic",
+      "agent-skills-compatible",
+      "vscode"
+    ],
+    "activation": {
+      "mode": "manual",
+      "paths": []
+    },
+    "execution": {
+      "context": "inline",
+      "shell": "bash"
+    },
+    "trust": {
+      "source_tier": "local",
+      "remote_inline_execution": "forbid",
+      "remote_metadata_policy": "allow catalog metadata and read-only source review; forbid unreviewed execution",
+      "generated_public_claims": "evidence-bound"
+    },
+    "permissions": {
+      "network": "skills.sh, SkillsMP API/catalog, and source-repository discovery/review; external research when needed; publishing only when requested",
+      "file_write": "skill package files only unless user explicitly requests sync, publish, or install",
+      "subprocess": "npx --yes skills find/add, bundled resilient dual-catalog research, validation, safe Git/gh PR/Release publication, clean-install verification, and packaging scripts; no separate discovery or publisher skill",
+      "interactive": "avoid unless GitHub, installer, or platform auth requires it"
+    },
+    "degradation": {
+      "openai": "metadata-adapter",
+      "claude": "neutral-source-plus-adapter",
+      "generic": "neutral-source",
+      "agent-skills-compatible": "canonical-source",
+      "vscode": "neutral-source-plus-review-notes"
+    }
+  },
+  "gates": {
+    "scaffold": [
+      "SKILL.md frontmatter",
+      "README hook and natural trigger examples",
+      "clear exclusions"
+    ],
+    "production": [
+      "jc-meta-skill is the single authoring authority",
+      "prior-art research report or explicit missing evidence",
+      "skills.sh and SkillsMP source-separated discovery or explicit catalog unavailability",
+      "user-facing reference, lesson, rejection, advantage, and evidence handoff",
+      "generalization gate for sample-driven core changes",
+      "skill architecture design and resource placement checks",
+      "prompt behavior, autonomy, failure handling, and acceptance checks",
+      "agents/interface.yaml",
+      "evals/trigger_cases.json",
+      "scripts/validate_skill.py",
+      "install and README verification",
+      "root-only discoverable SKILL.md entrypoint"
+    ],
+    "library": [
+      "reports/skill-ir.json",
+      "portability notes",
+      "trust boundary"
+    ],
+    "governed": [
+      "output contract",
+      "trust report or explicit missing evidence",
+      "rollback boundary",
+      "public claim guard",
+      "blind-review integrity when human evidence is claimed",
+      "local, PR, and published release readiness checked by executable gates",
+      "manifest, Skill IR, trigger report, remote version, and release evidence remain consistent",
+      "bundled publisher forbids direct default-branch push and released-version reuse",
+      "README, MIT LICENSE, PR discussion/check state, Release, discovery and clean install are verified"
+    ]
+  },
+  "evidence_boundary": {
+    "generated_reports_are_evidence": true,
+    "planned_work_is_evidence": false,
+    "missing_external_or_human_evidence_label": "missing evidence",
+    "public_claim_policy": "claim only what local validation, install proof, human review, or provider-backed evidence actually supports"
+  }
+}

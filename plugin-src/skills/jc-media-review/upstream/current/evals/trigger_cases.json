@@ -1,0 +1,52 @@
+{
+  "should_trigger": [
+    {
+      "prompt": "复盘 T017",
+      "expect": "按编号找到视频项目文件夹，读 12 小时和 7 天数据（有草稿就在草稿上写），先给锦成看"
+    },
+    {
+      "prompt": "这条该复盘了",
+      "expect": "同上；7 天数据没齐时说明缺哪个平台哪个时间点"
+    },
+    {
+      "prompt": "建立复盘文件",
+      "expect": "不在 06_发布复盘 新建文件；复盘写进视频项目文件夹，锦成说行后用 write-review 写入"
+    },
+    {
+      "prompt": "做轻复盘，给我下一篇候选动作",
+      "expect": "六块写法＋最多 3 个候选，不替用户选；原因必须附对照、比比例"
+    },
+    {
+      "prompt": "这篇数据很低，没什么可复盘的",
+      "expect": "固定应答：单篇数据不足正常，价值在多篇对比，仍完成真实记录"
+    }
+  ],
+  "should_not_trigger": [
+    {
+      "prompt": "帮我写【选题名称】",
+      "route": "jc-jiaocheng-video"
+    },
+    {
+      "prompt": "视频发布了，冻结资产建档开始监控",
+      "route": "jc-publish-closeout"
+    },
+    {
+      "prompt": "我搜集了新内容，帮我生成新选题",
+      "route": "jc-topic-generator"
+    },
+    {
+      "prompt": "扒一下这条视频的评论区做深度洞察报告",
+      "route": "jc-comment-visualize"
+    }
+  ],
+  "near_neighbor": [
+    {
+      "prompt": "把 12 小时和 7 天数据自动采集回档案",
+      "route": "jc-publish-closeout 和后台定时任务；本 skill 只读采好的数写复盘"
+    },
+    {
+      "prompt": "分析这批评论提炼人群洞察",
+      "route": "jc-comment-visualize；本 skill 只原样记录关键评论"
+    }
+  ]
+}

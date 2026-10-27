@@ -1,0 +1,10 @@
+interface:
+  display_name: 复盘助手
+  short_description: 发布满 7 天后给这条视频写复盘，写在视频项目文件夹「最终复盘」一节：数据只用自动采的 12 小时和 7 天，原因必须附对照、比比例，先给用户看，用户说行再写入。
+  default_prompt: 这条该复盘了
+compatibility:
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible

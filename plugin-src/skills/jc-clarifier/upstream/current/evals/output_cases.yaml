@@ -1,0 +1,73 @@
+cases:
+  - id: brok_prompt_contract
+    mode: complete_prompt
+    input: "帮我写个提示词，让 AI 帮我设计社区园艺课的实操活动"
+    assertions:
+      must_include:
+        - "Background"
+        - "Role"
+        - "Objective"
+        - "Key Result"
+      must_not_include:
+        - "我现在帮你设计方案"
+        - "以下是打卡活动方案"
+
+  - id: goal_contract
+    mode: goal
+    input: "把修复这个前端页面的问题写成 /goal"
+    assertions:
+      must_include:
+        - "/goal"
+        - "验证"
+        - "约束"
+        - "边界"
+        - "迭代策略"
+        - "完成条件"
+        - "暂停条件"
+        - "预算"
+      must_not_include:
+        - "Background"
+        - "Role"
+
+  - id: prompt_only_boundary
+    mode: boundary
+    input: "别问了，直接帮我把 HTML 写出来"
+    assertions:
+      must_include:
+        - "开新聊天"
+      must_not_include:
+        - "<html"
+        - "<!DOCTYPE"
+
+  - id: no_vague_key_result
+    mode: complete_prompt
+    input: "帮我写提示词，让 AI 做得高级一点"
+    assertions:
+      must_not_include:
+        - "高级一点"
+        - "尽量完整"
+        - "效果好"
+      must_include:
+        - "验收"
+
+  - id: missing_info_gate_for_ip
+    mode: light_clarification
+    input: "我要做IP，目标是获客变现，产品有AI课程、咨询和IP陪跑，帮我写提示词"
+    assertions:
+      must_include:
+        - "还缺"
+        - "产品"
+        - "案例"
+        - "渠道"
+      must_not_include:
+        - "### 可复制到新聊天的提示词"
+
+  - id: prompt_with_missing_inputs_when_user_refuses_more_questions
+    mode: complete_prompt
+    input: "别问了，直接给我做IP定位提示词"
+    assertions:
+      must_include:
+        - "Missing Inputs"
+        - "Assumptions"
+        - "不要编造"
+        - "先补问"

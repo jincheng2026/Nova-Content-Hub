@@ -1,0 +1,25 @@
+{
+  "recommended_threshold": 0.34,
+  "positive_concepts": {
+    "topic": ["选题", "选题库", "选题总览", "候选选题"],
+    "material": ["内容素材", "素材", "新内容", "定位"],
+    "action": ["生成", "追加", "写入", "更新"]
+  },
+  "description_required_concepts": ["topic", "material", "action"],
+  "negative_patterns": ["口播稿", "正文", "文稿", "内容规律", "爆款标题", "拆解", "评论区"],
+  "should_trigger": [
+    {"text": "请读取定位和 02_内容素材，生成 5—10 个候选选题，写入 04_选题库（选题总览 + Txxx 单题文件）", "family": "first-run"},
+    {"text": "我搜集了新内容，帮我生成新选题", "family": "incremental"},
+    {"text": "帮我根据素材生成一批候选选题追加到选题库", "family": "incremental"}
+  ],
+  "should_not_trigger": [
+    {"text": "帮我把这条视频的评论区扒下来做人群分析", "family": "research"},
+    {"text": "帮我提取标题和开头的内容规律", "family": "pattern"},
+    {"text": "帮我拆解这条对标视频为什么爆", "family": "analysis"}
+  ],
+  "near_neighbor": [
+    {"text": "帮我把选题库里 T003 优化成爆款标题", "family": "title"},
+    {"text": "帮我把第 1 个选题写成完整正文文稿", "family": "draft"},
+    {"text": "帮我给这条选题写口播稿", "family": "script"}
+  ]
+}

@@ -1,0 +1,11 @@
+interface:
+  display_name: 锦成规律提取助手
+  short_description: 把 vault 里的对标素材整理成六字段汇总，并提炼标题、开头、正文结构三份规律文件，支持新素材增量更新。
+  default_prompt: 读取 02_内容素材，按六字段更新 03_内容规律/_规律提取汇总.md，然后生成或增量更新标题规律、开头规律、正文结构规律三份文件，完成后汇报素材数量、缺口清单和规律数量。
+
+compatibility:
+  adapter_targets:
+    - claude
+    - openai
+    - generic
+    - agent-skills-compatible

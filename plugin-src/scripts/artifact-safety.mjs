@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {isUtf8} from 'node:buffer';
+import {createHash} from 'node:crypto';
 import {gunzipSync, inflateRawSync} from 'node:zlib';
 
 // Release-only rules: no developer home, environment or runtime userData is read.
@@ -22,8 +23,13 @@ function pathRule(relative) {
 }
 
 export function releaseSourceFilter(input) {
-    return !pathRule(slash(input));
+    const relative=slash(input),rule=pathRule(relative);
+    // Original method test sources are immutable reference material, not our
+    // local probe/user fixtures. The final gate verifies their manifest hashes
+    // and still scans their full contents for credentials and local state.
+    return !rule || rule==='USER_DATA_OR_FIXTURE'&&upstreamTestSource(relative);
 }
+function upstreamTestSource(relative){return /(?:^|\/)skills\/[a-z0-9-]+\/upstream\/(?:current|archive)\/(?:[^/]+\/)*(?:tests|fixtures)(?:\/|$)/.test(relative)&&!/(?:^|\/)(?:logs|\.git)(?:\/|$)|\.(?:log|sqlite3?|db)$/i.test(relative);}
 
 const providerPayload = value => value.replace(/^(?:sk-(?:proj-|svcacct-|ant-api\d+-)?|gsk_)/, '');
 const placeholder = value => /^(?:<[^>]+>|\$\{[^}]+\}|(?:your|example|sample|mock|fake|dummy|test|placeholder|replace|insert)(?:[\s_:-].*)?|(?:x|\*|•){3,})$/i.test(providerPayload(value));
@@ -126,11 +132,18 @@ function archiveEntries(bytes, kind) {
 
 export async function assertArtifactSafe(input, {allowGeneratedExampleLibrary = false} = {}) {
     const findings = [], add = (file, rule) => findings.push({file, rule});
+    const methodEvidence=new Map();
+    const registerEvidence=(bytes,prefix,label)=>{
+        try{const manifest=JSON.parse(bytes.toString('utf8'));if(manifest.format!=='nova-method-sources'||manifest.schemaVersion!==1||!Array.isArray(manifest.versions))throw Error();for(const version of manifest.versions){if(version.executable!==false)throw Error();for(const file of version.files??[]){if(typeof file.installedPath!=='string'||!upstreamTestSource(file.installedPath)||file.installedPath.split('/').some(p=>!p||p==='.'||p==='..')||!/^[a-f0-9]{64}$/.test(file.sha256))continue;methodEvidence.set(prefix+file.installedPath,file.sha256);}}}catch{add(label,'METHOD_SOURCE_MANIFEST');}
+    };
+    const registerDirectory=directory=>{for(const name of ['plugin-src/resources/method-sources.json','resources/method-sources.json']){const location=path.join(directory,name);if(!fs.existsSync(location)||fs.lstatSync(location).isSymbolicLink())continue;const relative=slash(path.relative(path.resolve(input),directory)),prefix=relative?relative+'/':'';registerEvidence(fs.readFileSync(location),prefix,prefix+name);}};
+    const evidenceDirectory=file=>{const prefix=slash(file)+'/';return [...methodEvidence.keys()].some(name=>name.startsWith(prefix));};
+    const evidenceFile=(file,bytes)=>{const expected=methodEvidence.get(slash(file));return !!expected&&createHash('sha256').update(bytes).digest('hex')===expected;};
     let expanded = 0;
     const scan = (bytes, file, depth = 0) => {
         const clean = file.split('!').at(-1);
         const issue = pathRule(clean);
-        if (issue && !(allowGeneratedExampleLibrary && path.posix.basename(clean) === '内容库.json')) {add(file, issue); return;}
+        if (issue && !(allowGeneratedExampleLibrary && path.posix.basename(clean) === '内容库.json') && !(issue==='USER_DATA_OR_FIXTURE'&&upstreamTestSource(clean)&&evidenceFile(file,bytes))) {add(file, issue); return;}
         const kind = /\.zip$/i.test(clean) || bytes.subarray(0, 4).equals(Buffer.from([80,75,3,4])) ? 'zip' : /\.tar$/i.test(clean) || bytes.subarray(257, 262).toString() === 'ustar' ? 'tar' : /\.(?:gz|tgz)$/i.test(clean) || bytes[0] === 31 && bytes[1] === 139 ? 'gzip' : null;
         if (opaqueArchive.test(clean) || bytes.subarray(0, 6).equals(Buffer.from([55,122,188,175,39,28])) || bytes.subarray(0,4).toString() === 'Rar!') {add(file, 'ARCHIVE_UNSUPPORTED'); return;}
         if (kind) {
@@ -139,13 +152,14 @@ export async function assertArtifactSafe(input, {allowGeneratedExampleLibrary = 
                 const entries = kind === 'gzip'
                     ? [{name:path.posix.basename(clean).replace(/\.tgz$/i, '.tar').replace(/\.gz$/i, '') || 'payload', bytes:gunzipSync(bytes, {maxOutputLength:maxEntry})}]
                     : archiveEntries(bytes, kind);
+                for(const entry of entries){const name=slash(entry.name),suffix='plugin-src/resources/method-sources.json';if(name.endsWith(suffix)&&!entry.directory){const prefix=file+'!'+name.slice(0,-suffix.length);registerEvidence(entry.bytes,prefix,file+'!'+name);}}
                 for (const entry of entries) {
                     const name = slash(entry.name);
                     if (!name || /^[A-Za-z]:|^\//.test(name) || /[\u0000-\u001f\u007f]/.test(name) || name.split('/').includes('..')) {add(file, 'ARCHIVE_PATH'); continue;}
                     expanded += entry.bytes.length;
                     if (expanded > maxArchive) throw Error('ARCHIVE_LIMIT');
                     const relative = file + '!' + name;
-                    if (entry.directory) {const rule = pathRule(name.replace(/\/$/, '')); if (rule) add(relative, rule);}
+                    if (entry.directory) {const cleanName=name.replace(/\/$/, ''),rule = pathRule(cleanName); if (rule&&!(rule==='USER_DATA_OR_FIXTURE'&&upstreamTestSource(cleanName)&&evidenceDirectory(file+'!'+cleanName))) add(relative, rule);}
                     else scan(entry.bytes, relative, depth + 1);
                 }
             } catch (error) {add(file, error.code === 'ERR_BUFFER_TOO_LARGE' ? 'ARCHIVE_LIMIT' : /^ARCHIVE_/.test(error.message) ? error.message : 'ARCHIVE_INVALID');}
@@ -163,10 +177,11 @@ export async function assertArtifactSafe(input, {allowGeneratedExampleLibrary = 
         finally {fs.closeSync(handle);}
     };
     const walk = directory => {
+        registerDirectory(directory);
         for (const entry of fs.readdirSync(directory, {withFileTypes:true}).sort((a,b) => a.name.localeCompare(b.name))) {
             const absolute = path.join(directory, entry.name), file = slash(path.relative(root, absolute));
             const issue = pathRule(file);
-            if (issue && !(allowGeneratedExampleLibrary && entry.name === '内容库.json')) {add(file, issue); continue;}
+            if (issue && !(allowGeneratedExampleLibrary && entry.name === '内容库.json') && !(issue==='USER_DATA_OR_FIXTURE'&&upstreamTestSource(file)&&(entry.isDirectory()?evidenceDirectory(file):methodEvidence.has(file)))) {add(file, issue); continue;}
             const stat = fs.lstatSync(absolute);
             if (stat.isSymbolicLink()) {
                 let target; try {target = fs.realpathSync(absolute);} catch {add(file, 'SYMLINK_INVALID'); continue;}
