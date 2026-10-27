@@ -1,0 +1,81 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "b966653b-18b6-4d37-9b4d-7ce1b1d19037",
+  "category": "内容项目",
+  "taskId": "10a05315-6daa-4eec-a111-1b3620b375a6",
+  "attemptId": "274f212e-6ac7-4617-af57-46f7b496b426",
+  "status": "accepted",
+  "requestHash": "784bbd70ba3c0e29f08d7bfdd09a6015870b29625c03499d69325d85c76a0c45",
+  "receiptHash": "0bca8113716895b996bdae387476258ef000e89b2b52868455504de416e524da",
+  "receipt": {
+    "taskId": "10a05315-6daa-4eec-a111-1b3620b375a6",
+    "attemptId": "274f212e-6ac7-4617-af57-46f7b496b426",
+    "requestHash": "784bbd70ba3c0e29f08d7bfdd09a6015870b29625c03499d69325d85c76a0c45",
+    "resultHash": "542924ec4134b2b557c8c6bb32b80daed818c859effc015d77b4a5ba1a291211",
+    "sha256": "0bca8113716895b996bdae387476258ef000e89b2b52868455504de416e524da"
+  },
+  "task": {
+    "title": "Qwen3-ASR 1.7B 本地中文验证",
+    "kind": "transcription",
+    "contentId": "a510158c-902b-46ef-8bd4-5e0546e7aca6",
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "仅转写已登记的中文样本；不允许云端或任何付费服务调用。",
+    "parameters": {
+      "mode": "simple",
+      "comments": false,
+      "budgetEnabled": false,
+      "maxRequestsPerTask": 10,
+      "serviceConfig": {
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asr": {
+          "mode": "local-only",
+          "resourceId": "volc.bigasr.auc_turbo",
+          "localEngine": "qwen3-asr",
+          "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python",
+          "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit"
+        }
+      },
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 49314
+      }
+    },
+    "tools": [
+      "tikhub",
+      "model",
+      "asr"
+    ],
+    "budget": {
+      "amount": 0,
+      "currency": "REQ"
+    },
+    "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "result": {
+    "summary": "本地Qwen3-ASR真实中文转写结果，未调用云服务。",
+    "artifacts": [
+      {
+        "id": "a1e0dfc0-8328-452d-ae6e-8f6382ffbd96",
+        "kind": "transcript",
+        "title": "本地Qwen中文样本",
+        "text": "你好，语音测试。",
+        "assetHash": null,
+        "data": {
+          "engine": "qwen3-asr",
+          "collectedAt": "2026-10-27T07:04:49.888Z"
+        }
+      }
+    ]
+  },
+  "reports": [],
+  "submittedOrAcceptedAt": "2026-10-27T07:04:50.385Z"
+}

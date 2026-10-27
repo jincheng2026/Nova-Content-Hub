@@ -1,0 +1,228 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "keyword": "string",
+    "page": "string",
+    "ai_mode": "string",
+    "sort_type": "string",
+    "time_filter": "string",
+    "note_type": "string"
+  },
+  "data": {
+    "code": "number",
+    "success": "boolean",
+    "data": {
+      "request_dqa_instant": "boolean",
+      "ai_mode_enable": "boolean",
+      "items": {
+        "type": "array",
+        "length": 20,
+        "sample": {
+          "mix_track_id": "string",
+          "new_help_style": "boolean",
+          "model_type": "string",
+          "note": {
+            "update_time": "number",
+            "corner_tag_info": {
+              "type": "array",
+              "length": 2,
+              "sample": {
+                "text_en": "string",
+                "style": "number",
+                "icon": "string",
+                "type": "string",
+                "location": "number",
+                "text": "string"
+              }
+            },
+            "last_update_time": "number",
+            "id": "string",
+            "extract_text_enabled": "number",
+            "cover_image_index": "number",
+            "advanced_widgets_groups": {
+              "groups": {
+                "type": "array",
+                "length": 2,
+                "sample": {
+                  "mode": "number",
+                  "fetch_types": "object"
+                }
+              }
+            },
+            "has_music": "boolean",
+            "type": "string",
+            "tag_info": {
+              "title": "string",
+              "type": "string"
+            },
+            "collected_count": "number",
+            "user": {
+              "red_id": "string",
+              "red_official_verified": "boolean",
+              "userid": "string",
+              "red_official_verify_type": "number",
+              "nickname": "string",
+              "show_red_official_verify_icon": "boolean",
+              "track_duration": "number",
+              "followed": "boolean",
+              "images": "string"
+            },
+            "niced": "boolean",
+            "shared_count": "number",
+            "comments_count": "number",
+            "video_duration": "string",
+            "liked": "boolean",
+            "widgets_context": {
+              "type": "JSON string",
+              "decoded": {
+                "video": "boolean",
+                "origin_video_key": "string",
+                "flags": {
+                  "sound_track": "boolean"
+                },
+                "author_id": "string",
+                "author_name": "string",
+                "order_cooperate": "boolean",
+                "commercial_bridge_note": "boolean",
+                "video_duration": "number"
+              }
+            },
+            "debug_info_str": "string",
+            "nice_count": "number",
+            "note_attributes": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "video_info_v2": {
+              "capa": {
+                "is_user_select": "boolean",
+                "is_upload": "boolean",
+                "frame_ts": "number",
+                "duration": "number"
+              },
+              "consumer": {
+                "can_super_resolution": "boolean"
+              },
+              "image": {
+                "first_frame": "string",
+                "thumbnail": "string",
+                "thumbnail_dim": "string"
+              },
+              "media": {
+                "user_level": "number",
+                "video": {
+                  "biz_id": "string",
+                  "md5": "string",
+                  "stream_types": "object",
+                  "bound": "object",
+                  "height": "number",
+                  "width": "number",
+                  "duration": "number",
+                  "opaque1": "object",
+                  "drm_type": "number",
+                  "biz_name": "number",
+                  "hdr_type": "number"
+                },
+                "stream": {
+                  "h265": "object",
+                  "h266": "object",
+                  "av1": "object",
+                  "h264": "object"
+                },
+                "video_id": "number"
+              }
+            },
+            "result_from": "string",
+            "collected": "boolean",
+            "xsec_token": "string",
+            "click_score": "number",
+            "desc": "string",
+            "liked_count": "number",
+            "interaction_area": {
+              "type": "number",
+              "status": "boolean",
+              "text": "string"
+            },
+            "images_list": {
+              "type": "array",
+              "length": 1,
+              "sample": {
+                "fileid": "string",
+                "height": "number",
+                "url": "string",
+                "width": "number",
+                "original": "string",
+                "url_size_large": "string",
+                "trace_id": "string",
+                "need_load_original_image": "boolean"
+              }
+            },
+            "title": "string",
+            "geo_info": {
+              "distance": "string"
+            },
+            "timestamp": "number"
+          }
+        }
+      },
+      "search_dqa_new_page_exp": "number",
+      "can_cut": "boolean",
+      "strategy_info": {
+        "query_average_impression_count": "number",
+        "query_can_guide_to_feed": "boolean"
+      },
+      "cur_cut_number": "number",
+      "request_dqa": "number",
+      "query_type": "number",
+      "taxonomy1": "string",
+      "is_broad_query": "boolean",
+      "video_intent_grade_v3": "number",
+      "show_single_col": "boolean",
+      "query_debug_info": {
+        "is_forbidden": "boolean"
+      },
+      "query_intent": {
+        "search_ask_intent": "boolean",
+        "goodsIntent": "number",
+        "low_supply_intent": "boolean"
+      },
+      "service_status": {
+        "type": "JSON string",
+        "decoded": {
+          "filter": "string",
+          "note": "string",
+          "onebox": "string",
+          "cost": {
+            "all": "number",
+            "zone": "string"
+          }
+        }
+      },
+      "extra_info": {
+        "atmosphere_v3_enable": "string"
+      },
+      "search_pull_down_opt_exp": "number",
+      "dqa_authorized_user_by_shared": "boolean"
+    },
+    "msg": "string",
+    "search_id": "string",
+    "search_session_id": "string",
+    "page": "number",
+    "next_page": "number",
+    "debug_id": "string",
+    "debug_info": "string"
+  }
+}

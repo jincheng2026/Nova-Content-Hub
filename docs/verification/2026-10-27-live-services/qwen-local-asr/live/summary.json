@@ -1,0 +1,68 @@
+{
+  "startedAt": "2026-10-27T07:04:09.426Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "python": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python",
+  "model": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+  "expectedSpokenText": "你好，语音测试。",
+  "maxAsrCalls": 1,
+  "maxExternalServiceRequests": 0,
+  "actualExternalServiceRequests": 0,
+  "guiVerified": false,
+  "outcome": "passed",
+  "originalBudgetEnabled": false,
+  "cloudModelUnchanged": true,
+  "readiness": {
+    "available": true,
+    "reason": "本地路径与 mlx_audio 模块检查通过；实际音频识别仍在任务内验证。"
+  },
+  "audio": {
+    "bytes": 53474,
+    "sha256": "c49406af03a8d0f18653526bb8f69d536d36a49c7a368c77bd4a0259de07dd93",
+    "sampleRate": 16000
+  },
+  "frozen": {
+    "kind": "transcription",
+    "budget": {
+      "amount": 0,
+      "currency": "REQ"
+    },
+    "comments": false,
+    "asr": {
+      "mode": "local-only",
+      "resourceId": "volc.bigasr.auc_turbo",
+      "localEngine": "qwen3-asr",
+      "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python",
+      "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit"
+    }
+  },
+  "elapsedMs": 32895,
+  "response": {
+    "text": "你好，语音测试。",
+    "requestsUsed": 0,
+    "cacheHit": false,
+    "segmentCount": 0,
+    "durationMs": null,
+    "normalizedSpokenWordsMatch": true
+  },
+  "submission": {
+    "accepted": true,
+    "archiveReady": true,
+    "receiptHash": "0bca8113716895b996bdae387476258ef000e89b2b52868455504de416e524da"
+  },
+  "updatedAt": "2026-10-27T07:04:50.656Z",
+  "costs": [
+    {
+      "service": "asr",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "costStatus": "no-external-call",
+        "durationMs": null,
+        "requests": 0,
+        "ok": true
+      }
+    }
+  ],
+  "originalSettingsChanged": false
+}

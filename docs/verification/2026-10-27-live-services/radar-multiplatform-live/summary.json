@@ -1,0 +1,209 @@
+{
+  "http": [
+    {
+      "index": 1,
+      "path": "/api/v1/douyin/search/fetch_video_search_v2",
+      "startedAt": "2026-10-27T07:40:55.718Z",
+      "status": 200
+    },
+    {
+      "index": 2,
+      "path": "/api/v1/xiaohongshu/app_v2/search_notes",
+      "startedAt": "2026-10-27T07:40:59.614Z",
+      "status": 200
+    }
+  ],
+  "startedAt": "2026-10-27T07:40:54.648Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "query": {
+    "platform": "抖音",
+    "platforms": [
+      "抖音",
+      "小红书"
+    ],
+    "direction": "AI 工具教程",
+    "sampleLimit": 2,
+    "maxFollowers": 10000,
+    "minLikes": 1000,
+    "minRatio": 1,
+    "lookbackDays": 30
+  },
+  "maxHttpRequests": 2,
+  "originalSettingsChanged": false,
+  "realAssistantGui": false,
+  "checks": [
+    "任务启动适配被省略：当前Codex会话直接执行已领取的测试任务，不验证宿主GUI",
+    "真实createRadarTask冻结双平台各一候选/两次请求上限/无评论",
+    "真实采样器经broker/worker费用预留和结算，全平台最多两个候选，未补profile；缺粉丝保留null",
+    "真实观察经submit/receipt/accept/adopt形成临时库雷达报告"
+  ],
+  "calls": [
+    {
+      "operation": "douyin-search",
+      "startedAt": "2026-10-27T07:40:55.541Z",
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:40:59.303Z"
+    },
+    {
+      "operation": "xhs-search",
+      "startedAt": "2026-10-27T07:40:59.448Z",
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:41:03.451Z"
+    }
+  ],
+  "outcome": "two-platform-searches-complete",
+  "originalBudgetEnabled": false,
+  "originalCommentsEnabled": false,
+  "credentialHashVerified": true,
+  "phase": "collecting",
+  "collection": {
+    "requests": 2,
+    "unknownRequests": 0,
+    "cacheHits": 0,
+    "calls": [
+      {
+        "requestId": "53bacc04-8aa9-491e-990e-595a5d0c5b65",
+        "operation": "douyin-search",
+        "id": "AI 工具教程",
+        "requestsUsed": 1,
+        "cacheHit": false,
+        "collectedAt": "2026-10-27T07:40:59.303Z"
+      },
+      {
+        "requestId": "b2764577-0d65-4555-ab96-38220741af33",
+        "operation": "xhs-search",
+        "id": "AI 工具教程",
+        "requestsUsed": 1,
+        "cacheHit": false,
+        "collectedAt": "2026-10-27T07:41:03.451Z"
+      }
+    ],
+    "onePage": true,
+    "manualPlatforms": [],
+    "unsearchedPlatforms": [],
+    "unsearchedReasons": [],
+    "unverifiedAuthors": [
+      {
+        "platform": "小红书",
+        "authorId": "6721b042000000001d02c947",
+        "sourceId": "6accd6d8000000001b01ceb8"
+      }
+    ],
+    "stoppedReason": null,
+    "partial": true
+  },
+  "actualHttpRequests": 2,
+  "frozenRequest": {
+    "prompt": "执行低粉爆款雷达研究，固定查询：{\"platform\":\"抖音\",\"platforms\":[\"抖音\",\"小红书\"],\"direction\":\"AI 工具教程\",\"sampleLimit\":2,\"maxFollowers\":10000,\"minLikes\":1000,\"minRatio\":1,\"lookbackDays\":30}。遵守固定 parameters 的操作与预算；自动采集覆盖已接入的抖音和小红书，严格使用冻结 operations，旧任务不扩大授权；其他所选平台须补充可核验人工来源并明确缺口。全部平台合计最多 2 条候选（是上限，不保证数量），总量按授权自动平台均分、余数给前面所选平台；份额为零的平台不发请求并说明缺口。先为所有有份额且预算可覆盖的平台各取一次搜索首屏，再用剩余额度仅为本平台份额内缺粉丝且有真实作者 ID 的候选补一次作者资料。全部平台总请求上限为冻结额度、当前设置和4次中的较小值，预算不足或费用未知立即停止后续请求，粉丝、时间等缺失为 null 并标待核验；不得翻页、评论、模型调用、自动重试或扩词。未授权付费时用人工提供的可核验来源，指标缺失使用 null，不编造数据。提交唯一 research 产物，data.radar={schemaVersion:1,query:上述原样查询,collectedAt:ISO时间,candidates:[{platform,sourceId,url,title,author:{id,name,url,followers},metrics:{likes,comments,shares,saves,views},publishedAt:ISO或null,evidence:[来源与缺口]}]}。粉丝为采集时快照；最终数值判定由本地规则计算。付费采集请先 claim，再运行 production collect-radar --handoff 当前UUID --stdin，输入仅 {\"claimToken\":\"本次claim UUID\",\"workerId\":\"本次worker ID\"}。命令通过原有 service broker 使用冻结查询，返回 result.radar 作为采集证据；query 必须原样引用，在总采样上限内按平台选取候选，可补充其他所选平台的可核验人工来源；不得篡改自动采集指标，各候选 evidence 区分采集与人工来源；禁止改用其他采集命令扩大范围。仍由当前助手负责 progress/submit。",
+    "parameters": {
+      "workflow": "viral-radar",
+      "query": {
+        "platform": "抖音",
+        "platforms": [
+          "抖音",
+          "小红书"
+        ],
+        "direction": "AI 工具教程",
+        "sampleLimit": 2,
+        "maxFollowers": 10000,
+        "minLikes": 1000,
+        "minRatio": 1,
+        "lookbackDays": 30
+      },
+      "operations": [
+        "douyin-search",
+        "profile",
+        "xhs-search",
+        "xhs-profile"
+      ],
+      "search": {
+        "sortType": "likes",
+        "timeRange": "half-year",
+        "contentType": "any"
+      },
+      "comments": false,
+      "budgetEnabled": true,
+      "maxRequestsPerTask": 2,
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 57661
+      }
+    },
+    "tools": [
+      "tikhub"
+    ],
+    "budget": {
+      "amount": 2,
+      "currency": "REQ"
+    },
+    "bodyHash": null
+  },
+  "monetaryCost": "unknown; measured requests are not a price",
+  "receipt": {
+    "accepted": true,
+    "archiveReady": true,
+    "sha256": "1b227018dcc076c2c5b97600c663df9a4662599ecb4228509b9d476f850a65a2"
+  },
+  "platforms": [
+    {
+      "platform": "抖音",
+      "url": "https://www.iesdouyin.com/share/video/7663441916159167798/?region=US&mid=7663441930684025609&u_code=0&did=MS4wLjABAAAADnB2n6MqyD49SGF86RJgwFNkJkBPrC0ssf-O7OX3AyJq-QYCfOClZT7hszpQI3U0&iid=MS4wLjABAAAA_8asHJ-C725D4gVYwsduDW-PhX1OQErX2NrwoNvuYyykoC_kacbtOUJCUX0R8b-R&with_sec_did=1&video_share_track_ver=&titleType=title&share_sign=qcsdGiaUaNCX1AhoG6P9nVvqo3t4BqDa2euiVcknfo8-&share_version=320900&ts=1793086858&from_aid=615883&from_ssr=1&share_track_info=%7B%22link_description_type%22%3A%22%22%7D",
+      "followers": 407198,
+      "eligibility": "unqualified",
+      "reasons": [
+        "粉丝数未达到阈值",
+        "赞粉比未达到阈值",
+        "超出时间窗口"
+      ]
+    },
+    {
+      "platform": "小红书",
+      "url": "https://www.xiaohongshu.com/explore/6accd6d8000000001b01ceb8",
+      "followers": null,
+      "eligibility": "unknown",
+      "reasons": [
+        "粉丝数未知",
+        "赞粉比未知"
+      ]
+    }
+  ],
+  "updatedAt": "2026-10-27T07:41:04.557Z",
+  "costs": [
+    {
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true,
+        "operation": "douyin-search",
+        "id": "AI 工具教程",
+        "radarAuthorIds": []
+      }
+    },
+    {
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true,
+        "operation": "xhs-search",
+        "id": "AI 工具教程",
+        "radarAuthorIds": [
+          "6721b042000000001d02c947"
+        ]
+      }
+    }
+  ],
+  "protectedSettingsChanged": false,
+  "allowedConcurrentAsrChange": false
+}

@@ -23,9 +23,10 @@ test('fallback is a dated official snapshot including FAQ platforms and Telegram
  for (const name of ['TikTok', '抖音', '领英', '微信视频号', '微信公众号', '今日头条', 'Telegram']) assert.ok(catalog.platforms.some(item => item.name === name), name);
  assert.ok(!catalog.platforms.some(item => item.id === 'wechat_search'));
 });
-test('capability only recognizes integrated Douyin names; manual account prompt never silently maps a platform', () => {
+test('capability recognizes integrated Douyin and XHS names; manual account prompt never silently maps a platform', () => {
  for (const value of ['抖音', 'Douyin', ' douyin ']) assert.equal(platformCollectionCapability(value), 'douyin');
- for (const value of ['TikTok', '小红书', '我的旧平台', 'douyin-custom', '']) {
+ for(const value of ['小红书','Xiaohongshu','RedNote']){assert.equal(platformCollectionCapability(value),'xiaohongshu');assert.match(accountAnalysisPrompt({name:'账号甲',platform:value,url:''}),/小红书搜索与作者资料/);}
+ for (const value of ['TikTok', '我的旧平台', 'douyin-custom', '']) {
   assert.equal(platformCollectionCapability(value), 'manual');
   const prompt = accountAnalysisPrompt({name: '账号甲', platform: value, url: ''});
   assert.match(prompt, /仅分析已保存或用户手工提供/); assert.match(prompt, /不得调用抖音/);

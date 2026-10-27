@@ -102,11 +102,11 @@ test('multi-platform radar accepts custom bounded samples/days and preserves can
 });
 
 test('multi-platform collection samples custom counts within four requests and declares manual platform gaps',async()=>{
- const multi={...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:8,lookbackDays:730},calls=[];
+ const multi={...query,platform:'YouTube',platforms:['YouTube','抖音'],sampleLimit:8,lookbackDays:730},calls=[];
  const raw={data:{business_data:Array.from({length:10},(_,n)=>({data:{aweme_info:{aweme_id:String(n),author:{sec_uid:`sec-${n}`},statistics:{digg_count:200}}}}))}};
  const result=await collectRadar({query:multi,identity:{},descriptorPath:'/unused',maxRequests:4},async(_d,r)=>{calls.push(r);return {data:r.operation==='douyin-search'?raw:{data:{user:{follower_count:10}}},requestsUsed:1,collectedAt:at,cacheHit:false};});
  assert.deepEqual(result.query,multi);assert.equal(result.candidates.length,8);assert.equal(calls.length,4);assert(result.candidates.every(c=>c.platform==='抖音'));
- assert.deepEqual(result.collection.manualPlatforms,['小红书']);assert.equal(result.collection.partial,true);
+ assert.deepEqual(result.collection.manualPlatforms,['YouTube']);assert.equal(result.collection.partial,true);
 });
 
 

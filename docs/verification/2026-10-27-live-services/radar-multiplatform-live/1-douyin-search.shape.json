@@ -1,0 +1,1193 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "keyword": "string",
+    "cursor": "number",
+    "sort_type": "string",
+    "publish_time": "string",
+    "filter_duration": "string",
+    "content_type": "string",
+    "search_id": "string",
+    "backtrace": "string"
+  },
+  "data": {
+    "business_data": {
+      "type": "array",
+      "length": 7,
+      "sample": {
+        "data_id": "string",
+        "type": "number",
+        "data": {
+          "type": "number",
+          "aweme_info": {
+            "aweme_id": "string",
+            "desc": "string",
+            "create_time": "number",
+            "author": {
+              "uid": "string",
+              "short_id": "string",
+              "nickname": "string",
+              "gender": "number",
+              "signature": "string",
+              "avatar_larger": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "avatar_thumb": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "avatar_medium": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "birthday": "string",
+              "is_verified": "boolean",
+              "follow_status": "number",
+              "aweme_count": "number",
+              "following_count": "number",
+              "follower_count": "number",
+              "favoriting_count": "number",
+              "total_favorited": "number",
+              "is_block": "boolean",
+              "hide_search": "boolean",
+              "constellation": "number",
+              "location": "string",
+              "hide_location": "boolean",
+              "weibo_verify": "string",
+              "custom_verify": "string",
+              "unique_id": "string",
+              "bind_phone": "string",
+              "special_lock": "number",
+              "need_recommend": "number",
+              "is_binded_weibo": "boolean",
+              "weibo_name": "string",
+              "weibo_schema": "string",
+              "weibo_url": "string",
+              "story_open": "boolean",
+              "story_count": "number",
+              "has_facebook_token": "boolean",
+              "has_twitter_token": "boolean",
+              "fb_expire_time": "number",
+              "tw_expire_time": "number",
+              "has_youtube_token": "boolean",
+              "youtube_expire_time": "number",
+              "room_id": "number",
+              "live_verify": "number",
+              "authority_status": "number",
+              "verify_info": "string",
+              "shield_follow_notice": "number",
+              "shield_digg_notice": "number",
+              "shield_comment_notice": "number",
+              "school_name": "string",
+              "school_poi_id": "string",
+              "school_type": "number",
+              "share_info": {
+                "share_url": "string",
+                "share_weibo_desc": "string",
+                "share_desc": "string",
+                "share_title": "string",
+                "share_qrcode_url": {
+                  "uri": "string",
+                  "url_list": "object",
+                  "width": "number",
+                  "height": "number"
+                },
+                "share_title_myself": "string",
+                "share_title_other": "string",
+                "share_desc_info": "string"
+              },
+              "with_commerce_entry": "boolean",
+              "verification_type": "number",
+              "enterprise_verify_reason": "string",
+              "is_ad_fake": "boolean",
+              "followers_detail": "null",
+              "region": "string",
+              "account_region": "string",
+              "sync_to_toutiao": "number",
+              "commerce_user_level": "number",
+              "live_agreement": "number",
+              "platform_sync_info": "null",
+              "with_shop_entry": "boolean",
+              "is_discipline_member": "boolean",
+              "secret": "number",
+              "has_orders": "boolean",
+              "prevent_download": "boolean",
+              "show_image_bubble": "boolean",
+              "geofencing": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "unique_id_modify_time": "number",
+              "video_icon": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 0,
+                  "sample": null
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "ins_id": "string",
+              "google_account": "string",
+              "youtube_channel_id": "string",
+              "youtube_channel_title": "string",
+              "apple_account": "number",
+              "with_dou_entry": "boolean",
+              "with_fusion_shop_entry": "boolean",
+              "is_phone_binded": "boolean",
+              "accept_private_policy": "boolean",
+              "twitter_id": "string",
+              "twitter_name": "string",
+              "user_canceled": "boolean",
+              "has_email": "boolean",
+              "is_gov_media_vip": "boolean",
+              "live_agreement_time": "number",
+              "status": "number",
+              "create_time": "number",
+              "avatar_uri": "string",
+              "follower_status": "number",
+              "neiguang_shield": "number",
+              "comment_setting": "number",
+              "duet_setting": "number",
+              "reflow_page_gid": "number",
+              "reflow_page_uid": "number",
+              "user_rate": "number",
+              "download_setting": "number",
+              "download_prompt_ts": "number",
+              "react_setting": "number",
+              "live_commerce": "boolean",
+              "cover_url": {
+                "type": "array",
+                "length": 1,
+                "sample": {
+                  "uri": "string",
+                  "url_list": "object",
+                  "width": "number",
+                  "height": "number"
+                }
+              },
+              "language": "string",
+              "has_insights": "boolean",
+              "share_qrcode_uri": "string",
+              "item_list": "null",
+              "user_mode": "number",
+              "user_period": "number",
+              "has_unread_story": "boolean",
+              "new_story_cover": "null",
+              "is_star": "boolean",
+              "cv_level": "string",
+              "type_label": "null",
+              "ad_cover_url": "null",
+              "comment_filter_status": "number",
+              "avatar_168x168": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "avatar_300x300": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "relative_users": "null",
+              "cha_list": "null",
+              "sec_uid": "string",
+              "need_points": "null",
+              "homepage_bottom_toast": "null"
+            },
+            "music": {
+              "id": "number",
+              "id_str": "string",
+              "title": "string",
+              "author": "string",
+              "album": "string",
+              "cover_hd": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "cover_large": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "cover_medium": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "cover_thumb": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "play_url": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number",
+                "url_key": "string"
+              },
+              "schema_url": "string",
+              "source_platform": "number",
+              "start_time": "number",
+              "end_time": "number",
+              "duration": "number",
+              "extra": {
+                "type": "JSON string",
+                "decoded": {
+                  "aed_music_score": "number",
+                  "aed_singing_score": "number",
+                  "aggregate_exempt_conf": "object",
+                  "aigc_clip": "boolean",
+                  "beats": "object",
+                  "cover_colors": "null",
+                  "douyin_beats_info": "object",
+                  "dsp_switch": "number",
+                  "extract_item_id": "number",
+                  "has_edited": "number",
+                  "hotsoon_review_time": "number",
+                  "is_aed_music": "number",
+                  "is_red": "number",
+                  "is_subsidy_exp": "boolean",
+                  "long_pic_video_usable": "boolean",
+                  "music_label_id": "null",
+                  "music_tagging": "object",
+                  "review_unshelve_reason": "number",
+                  "reviewed": "number",
+                  "schedule_search_time": "number",
+                  "uniqa_speech_score": "number",
+                  "with_aed_model": "number"
+                }
+              },
+              "user_count": "number",
+              "position": "null",
+              "collect_stat": "number",
+              "status": "number",
+              "offline_desc": "string",
+              "owner_id": "string",
+              "owner_nickname": "string",
+              "is_original": "boolean",
+              "mid": "string",
+              "binded_challenge_id": "number",
+              "redirect": "boolean",
+              "is_restricted": "boolean",
+              "author_deleted": "boolean",
+              "is_del_video": "boolean",
+              "is_video_self_see": "boolean",
+              "owner_handle": "string",
+              "author_position": "null",
+              "prevent_download": "boolean",
+              "unshelve_countries": "null",
+              "prevent_item_download_status": "number",
+              "external_song_info": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "sec_uid": "string",
+              "avatar_thumb": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "avatar_medium": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "avatar_large": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "preview_start_time": "number",
+              "preview_end_time": "number",
+              "is_commerce_music": "boolean",
+              "is_original_sound": "boolean",
+              "audition_duration": "number",
+              "shoot_duration": "number",
+              "reason_type": "number",
+              "artists": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "lyric_short_position": "null",
+              "mute_share": "boolean",
+              "tag_list": "null",
+              "dmv_auto_show": "boolean",
+              "is_pgc": "boolean",
+              "is_matched_metadata": "boolean",
+              "is_audio_url_with_cookie": "boolean",
+              "music_chart_ranks": "null",
+              "can_background_play": "boolean",
+              "music_status": "number",
+              "video_duration": "number",
+              "pgc_music_type": "number",
+              "author_status": "number",
+              "search_impr": {
+                "entity_id": "string"
+              },
+              "artist_user_infos": "null",
+              "dsp_status": "number",
+              "musician_user_infos": "null",
+              "luna_info": {
+                "is_luna_user": "boolean"
+              },
+              "music_collect_count": "number",
+              "music_cover_atmosphere_color_value": "string",
+              "show_origin_clip": "boolean",
+              "talent_hashtag_name_list": "null"
+            },
+            "cha_list": {
+              "type": "array",
+              "length": 1,
+              "sample": {
+                "cid": "string",
+                "cha_name": "string",
+                "desc": "string",
+                "schema": "string",
+                "author": {
+                  "followers_detail": "null",
+                  "platform_sync_info": "null",
+                  "geofencing": "null",
+                  "cover_url": "null",
+                  "item_list": "null",
+                  "new_story_cover": "null",
+                  "type_label": "null",
+                  "ad_cover_url": "null",
+                  "relative_users": "null",
+                  "cha_list": "null",
+                  "need_points": "null",
+                  "homepage_bottom_toast": "null",
+                  "can_set_geofencing": "null",
+                  "white_cover_url": "null",
+                  "user_tags": "null",
+                  "ban_user_functions": "null",
+                  "card_entries": "null",
+                  "display_info": "null",
+                  "card_entries_not_display": "null",
+                  "card_sort_priority": "null",
+                  "interest_tags": "null",
+                  "link_item_list": "null",
+                  "user_permissions": "null",
+                  "offline_info_list": "null",
+                  "signature_extra": "null",
+                  "personal_tag_list": "null",
+                  "cf_list": "null",
+                  "im_role_ids": "null",
+                  "not_seen_item_id_list": "null",
+                  "follower_list_secondary_information_struct": "null",
+                  "endorsement_info_list": "null",
+                  "text_extra": "null",
+                  "contrail_list": "null",
+                  "data_label_list": "null",
+                  "not_seen_item_id_list_v2": "null",
+                  "special_people_labels": "null",
+                  "familiar_visitor_user": "null",
+                  "avatar_schema_list": "null",
+                  "profile_mob_params": "null",
+                  "verification_permission_ids": "null",
+                  "batch_unfollow_relation_desc": "null",
+                  "batch_unfollow_contain_tabs": "null",
+                  "creator_tag_list": "null",
+                  "private_relation_list": "null",
+                  "identity_labels": "null",
+                  "profile_component_disabled": "null",
+                  "profile_signature_components": "null",
+                  "webcast_preview_labels": "null"
+                },
+                "user_count": "number",
+                "share_info": {
+                  "share_url": "string",
+                  "share_weibo_desc": "string",
+                  "share_desc": "string",
+                  "share_title": "string",
+                  "bool_persist": "number",
+                  "share_title_myself": "string",
+                  "share_title_other": "string",
+                  "share_signature_url": "string",
+                  "share_signature_desc": "string",
+                  "share_quote": "string",
+                  "share_desc_info": "string"
+                },
+                "connect_music": {
+                  "type": "array",
+                  "length": 0,
+                  "sample": null
+                },
+                "type": "number",
+                "sub_type": "number",
+                "is_pgcshow": "boolean",
+                "collect_stat": "number",
+                "is_challenge": "number",
+                "view_count": "number",
+                "is_commerce": "boolean",
+                "hashtag_profile": "string",
+                "cha_attrs": "null",
+                "banner_list": "null",
+                "extra_attr": {
+                  "is_live": "boolean"
+                },
+                "show_items": "null",
+                "search_impr": {
+                  "entity_id": "string"
+                },
+                "challenge_status": "number",
+                "from_ugc_hashtag_bank": "string",
+                "insert_template_category_list": "null"
+              }
+            },
+            "video": {
+              "play_addr": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 4,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number",
+                "url_key": "string",
+                "data_size": "number",
+                "file_hash": "string",
+                "file_cs": "string"
+              },
+              "cover": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 3,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "height": "number",
+              "width": "number",
+              "dynamic_cover": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "origin_cover": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 3,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number"
+              },
+              "ratio": "string",
+              "download_addr": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 4,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number",
+                "data_size": "number",
+                "file_cs": "string"
+              },
+              "has_watermark": "boolean",
+              "bit_rate": {
+                "type": "array",
+                "length": 6,
+                "sample": {
+                  "gear_name": "string",
+                  "quality_type": "number",
+                  "bit_rate": "number",
+                  "play_addr": "object",
+                  "is_h265": "number",
+                  "is_bytevc1": "number",
+                  "HDR_type": "string",
+                  "HDR_bit": "string",
+                  "FPS": "number",
+                  "video_extra": "string",
+                  "format": "string"
+                }
+              },
+              "duration": "number",
+              "play_addr_265": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 4,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number",
+                "url_key": "string",
+                "data_size": "number",
+                "file_hash": "string",
+                "file_cs": "string"
+              },
+              "is_h265": "number",
+              "play_addr_h264": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 4,
+                  "sample": "string"
+                },
+                "width": "number",
+                "height": "number",
+                "url_key": "string",
+                "data_size": "number",
+                "file_hash": "string",
+                "file_cs": "string"
+              },
+              "cdn_url_expired": "number",
+              "animated_cover": {
+                "uri": "string",
+                "url_list": {
+                  "type": "array",
+                  "length": 2,
+                  "sample": "string"
+                }
+              },
+              "need_set_token": "boolean",
+              "CoverTsp": "number",
+              "is_callback": "boolean",
+              "tags": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "use_static_cover": "boolean",
+              "big_thumbs": {
+                "type": "array",
+                "length": 1,
+                "sample": {
+                  "img_num": "number",
+                  "uri": "string",
+                  "img_url": "string",
+                  "img_x_size": "number",
+                  "img_y_size": "number",
+                  "img_x_len": "number",
+                  "img_y_len": "number",
+                  "duration": "number",
+                  "interval": "number",
+                  "fext": "string",
+                  "uris": "object",
+                  "img_urls": "object"
+                }
+              },
+              "is_bytevc1": "number",
+              "meta": {
+                "type": "JSON string",
+                "decoded": {
+                  "bright_ratio_mean": "string",
+                  "brightness_mean": "string",
+                  "diff_overexposure_ratio": "string",
+                  "format": "string",
+                  "gear_vqm": "string",
+                  "hrids": "string",
+                  "is_cdn_peak": "string",
+                  "is_spatial_video": "string",
+                  "isad": "string",
+                  "net_info": "string",
+                  "overexposure_ratio_mean": "string",
+                  "qprf": "string",
+                  "sdgs": "string",
+                  "sr_score": "string",
+                  "std_brightness": "string",
+                  "strategy_tokens": "string",
+                  "title_info": "string",
+                  "volume_info": "string"
+                }
+              },
+              "is_source_HDR": "number",
+              "horizontal_type": "number",
+              "audio": {
+                "original_sound_infos": "null"
+              },
+              "bit_rate_audio": "null",
+              "format": "string",
+              "fuse_video_labels_v2": {
+                "Top1": {
+                  "type": "array",
+                  "length": 1,
+                  "sample": "object"
+                }
+              }
+            },
+            "share_url": "string",
+            "user_digged": "number",
+            "statistics": {
+              "aweme_id": "string",
+              "comment_count": "number",
+              "digg_count": "number",
+              "download_count": "number",
+              "play_count": "number",
+              "share_count": "number",
+              "forward_count": "number",
+              "lose_count": "number",
+              "lose_comment_count": "number",
+              "whatsapp_share_count": "number",
+              "digest": "string",
+              "exposure_count": "number",
+              "live_watch_count": "number",
+              "collect_count": "number",
+              "recommend_count": "number"
+            },
+            "status": {
+              "aweme_id": "string",
+              "is_delete": "boolean",
+              "allow_share": "boolean",
+              "allow_comment": "boolean",
+              "is_private": "boolean",
+              "with_goods": "boolean",
+              "private_status": "number",
+              "with_fusion_goods": "boolean",
+              "in_reviewing": "boolean",
+              "reviewed": "number",
+              "self_see": "boolean",
+              "is_prohibited": "boolean",
+              "download_status": "number",
+              "review_result": {
+                "review_status": "number"
+              },
+              "dont_share_status": "number",
+              "video_hide_search": "number",
+              "aweme_edit_info": {
+                "button_status": "number",
+                "button_toast": "string"
+              },
+              "part_see": "number",
+              "listen_video_status": "number",
+              "allow_friend_recommend": "boolean",
+              "allow_self_recommend_to_friend": "boolean",
+              "allow_friend_recommend_guide": "boolean"
+            },
+            "rate": "number",
+            "text_extra": {
+              "type": "array",
+              "length": 5,
+              "sample": {
+                "start": "number",
+                "end": "number",
+                "type": "number",
+                "hashtag_name": "string",
+                "hashtag_id": "string",
+                "is_commerce": "boolean",
+                "caption_start": "number",
+                "caption_end": "number"
+              }
+            },
+            "is_top": "number",
+            "share_info": {
+              "share_url": "string",
+              "share_weibo_desc": "string",
+              "share_desc": "string",
+              "share_title": "string",
+              "bool_persist": "number",
+              "share_title_myself": "string",
+              "share_title_other": "string",
+              "share_link_desc": "string",
+              "share_signature_url": "string",
+              "share_signature_desc": "string",
+              "share_quote": "string",
+              "share_desc_info": "string"
+            },
+            "distance": "string",
+            "video_labels": "null",
+            "is_vr": "boolean",
+            "duration": "number",
+            "aweme_type": "number",
+            "is_fantasy": "boolean",
+            "cmt_swt": "boolean",
+            "image_infos": "null",
+            "risk_infos": {
+              "vote": "boolean",
+              "warn": "boolean",
+              "risk_sink": "boolean",
+              "type": "number",
+              "content": "string"
+            },
+            "is_relieve": "boolean",
+            "sort_label": "string",
+            "position": "null",
+            "uniqid_position": "null",
+            "comment_list": "null",
+            "author_user_id": "number",
+            "bodydance_score": "number",
+            "geofencing": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "is_hash_tag": "number",
+            "is_pgcshow": "boolean",
+            "region": "string",
+            "video_text": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "vr_type": "number",
+            "collect_stat": "number",
+            "label_top_text": "null",
+            "promotions": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "group_id": "string",
+            "prevent_download": "boolean",
+            "nickname_position": "null",
+            "challenge_position": "null",
+            "item_comment_settings": "number",
+            "with_promotional_music": "boolean",
+            "xigua_task": {
+              "is_xigua_task": "boolean"
+            },
+            "long_video": "null",
+            "item_duet": "number",
+            "item_react": "number",
+            "without_watermark": "boolean",
+            "desc_language": "string",
+            "interaction_stickers": "null",
+            "misc_info": {
+              "type": "JSON string",
+              "decoded": {
+                "common_business_mob": {
+                  "type": "JSON string",
+                  "decoded": "object"
+                },
+                "is_teen_video": "number"
+              }
+            },
+            "origin_comment_ids": "null",
+            "commerce_config_data": "null",
+            "distribute_type": "number",
+            "video_control": {
+              "allow_download": "boolean",
+              "share_type": "number",
+              "show_progress_bar": "number",
+              "draft_progress_bar": "number",
+              "allow_duet": "boolean",
+              "allow_react": "boolean",
+              "prevent_download_type": "number",
+              "allow_dynamic_wallpaper": "boolean",
+              "timer_status": "number",
+              "allow_music": "boolean",
+              "allow_stitch": "boolean",
+              "allow_douplus": "boolean",
+              "allow_share": "boolean",
+              "share_grayed": "boolean",
+              "download_ignore_visibility": "boolean",
+              "duet_ignore_visibility": "boolean",
+              "share_ignore_visibility": "boolean",
+              "download_info": {
+                "level": "number"
+              },
+              "duet_info": {
+                "level": "number"
+              },
+              "allow_record": "boolean",
+              "disable_record_reason": "string",
+              "timer_info": {
+                "timer_status": "number"
+              },
+              "show_ai_corner": "boolean",
+              "show_watermark": "boolean"
+            },
+            "ad_aweme_source": "number",
+            "aweme_control": {
+              "can_forward": "boolean",
+              "can_share": "boolean",
+              "can_comment": "boolean",
+              "can_show_comment": "boolean"
+            },
+            "has_vs_entry": "boolean",
+            "commerce_info": {
+              "ad_source": "number",
+              "ad_type": "number",
+              "is_ad": "boolean"
+            },
+            "need_vs_entry": "boolean",
+            "is_preview": "number",
+            "anchors": "null",
+            "hybrid_label": "null",
+            "geofencing_regions": "null",
+            "have_dashboard": "boolean",
+            "search_extra": {
+              "optimize_text_extra": "null",
+              "double_columns_card_btm": {
+                "btm": "string",
+                "area_btm": {
+                  "digg_area": "string",
+                  "comment_area": "string",
+                  "collect_area": "string"
+                }
+              }
+            },
+            "poi_patch_info": {
+              "item_patch_poi_prompt_mark": "number",
+              "extra": "string"
+            },
+            "is_story": "number",
+            "report_action": "boolean",
+            "item_stitch": "number",
+            "story_ttl": "number",
+            "city": "string",
+            "cover_labels": "null",
+            "is_first_video": "boolean",
+            "nearby_level": "number",
+            "guide_btn_type": "number",
+            "is_in_scope": "boolean",
+            "poi_biz": {},
+            "images": "null",
+            "relation_labels": "null",
+            "horizontal_type": "number",
+            "is_karaoke": "boolean",
+            "impression_data": {
+              "group_id_list_a": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "group_id_list_b": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "similar_id_list_a": "null",
+              "similar_id_list_b": "null",
+              "group_id_list_c": {
+                "type": "array",
+                "length": 0,
+                "sample": null
+              },
+              "group_id_list_d": "null"
+            },
+            "item_share": "number",
+            "social_tag_list": "null",
+            "suggest_words": {
+              "suggest_words": {
+                "type": "array",
+                "length": 3,
+                "sample": {
+                  "words": "object",
+                  "scene": "string",
+                  "icon_url": "string",
+                  "hint_text": "string",
+                  "extra_info": "string"
+                }
+              }
+            },
+            "show_follow_button": {},
+            "duet_aggregate_in_music_tab": "boolean",
+            "is_duet_sing": "boolean",
+            "search_impr": {
+              "entity_id": "string",
+              "entity_type": "string"
+            },
+            "comment_permission_info": {
+              "comment_permission_status": "number",
+              "can_comment": "boolean",
+              "item_detail_entry": "boolean",
+              "press_entry": "boolean",
+              "toast_guide": "boolean"
+            },
+            "create_time_config": {
+              "font_color": "string",
+              "position": "number"
+            },
+            "original_images": "null",
+            "series_paid_info": {
+              "series_paid_status": "number",
+              "item_price": "number"
+            },
+            "img_bitrate": "null",
+            "comment_gid": "number",
+            "image_album_music_info": {
+              "begin_time": "number",
+              "end_time": "number",
+              "volume": "number"
+            },
+            "video_tag": {
+              "type": "array",
+              "length": 3,
+              "sample": {
+                "tag_id": "number",
+                "tag_name": "string",
+                "level": "number"
+              }
+            },
+            "is_collects_selected": "number",
+            "chapter_list": "null",
+            "ip_attribution": "string",
+            "should_open_ad_report": "boolean",
+            "feed_comment_config": {
+              "input_config_text": "string",
+              "common_flags": {
+                "type": "JSON string",
+                "decoded": {
+                  "api_ab": "string",
+                  "hashtag": "string",
+                  "item_author_nickname": "string",
+                  "mix_follower_count": "string",
+                  "video_labels_v2_tag1": "string",
+                  "video_labels_v2_tag2": "string",
+                  "video_type": "string"
+                }
+              },
+              "audio_comment_permission": "number",
+              "double_publish_limit": "number"
+            },
+            "is_image_beat": "boolean",
+            "dislike_dimension_list": "null",
+            "standard_bar_info_list": "null",
+            "photo_search_entrance": {
+              "ecom_type": "number"
+            },
+            "is_life_item": "boolean",
+            "image_list": "null",
+            "component_info_v2": {
+              "type": "JSON string",
+              "decoded": {
+                "desc_lines_limit": "number",
+                "hide_marquee": "boolean"
+              }
+            },
+            "common_bar_info": {
+              "type": "JSON string",
+              "decoded": {
+                "type": "array",
+                "length": 1,
+                "sample": {
+                  "id": "string",
+                  "view_type": "number",
+                  "business_type": "number",
+                  "schema": "string",
+                  "separator_dot": "object",
+                  "main_content": "object",
+                  "tail_icon": "object",
+                  "bar_container": "object",
+                  "extra": "string",
+                  "tracer_info": "string",
+                  "name": "string",
+                  "desc": "string",
+                  "show_strategy": "object",
+                  "priority": "number"
+                }
+              }
+            },
+            "item_warn_notification": {
+              "type": "number",
+              "show": "boolean",
+              "content": "string"
+            },
+            "origin_text_extra": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "preview_title": "string",
+            "preview_video_status": "number",
+            "guide_scene_info": {
+              "guide_scene_type": "number",
+              "feed_origin_gid_info_str": "string",
+              "diamond_expose_info_str": "string"
+            },
+            "disable_relation_bar": "number"
+          },
+          "card_info": {
+            "search_autoplay_business": "string"
+          },
+          "doc_type": "number",
+          "sub_card_list": "null",
+          "log_data": {
+            "search_id": "string"
+          },
+          "ui_info": {
+            "is_waterfall_layout": "number",
+            "quality_style_corner_type": "number"
+          },
+          "provider_doc_id": "number",
+          "provider_doc_id_str": "string",
+          "tab": "null",
+          "feedback": {
+            "url": "string"
+          },
+          "show_tab": "null",
+          "debug_diff_info": {},
+          "aweme_list": "null",
+          "send_back": "string",
+          "card_type": "number",
+          "card_style_type": "number",
+          "ecom_goods_list": "null",
+          "music_info_list": "null",
+          "debug_data": {
+            "filter_debug_info_list": "null"
+          },
+          "recommend_title": "string",
+          "card_type_name": "string",
+          "ops": "null",
+          "card_id": "string",
+          "qishui_music_list": "null",
+          "shoot_position_list": "null"
+        },
+        "log": {
+          "search_id": "string"
+        },
+        "card_id": "string"
+      }
+    },
+    "business_config": {
+      "keyword": "string",
+      "has_more": "number",
+      "is_filter_search": "number",
+      "search_nil_info": "null",
+      "next_page": {
+        "keyword": "string",
+        "search_request_id": "string",
+        "search_id": "string",
+        "cursor": "number",
+        "poi_search_info": "string"
+      },
+      "card_count": "number",
+      "extra_fresh_struct": "null",
+      "ad_info": "null",
+      "feelgood_msg": {},
+      "filter_bar": {},
+      "general_search_config": {
+        "keyword": "string"
+      },
+      "backtrace": "string",
+      "extra": {
+        "guide_search_words": "null",
+        "is_video_tab_double_column": "boolean",
+        "req_start_ts": "number",
+        "is_filter_search": "number"
+      },
+      "feedback": "null",
+      "pre_loadmore_config": "null",
+      "poi_search_info": "string"
+    },
+    "global_config": {
+      "hidden_filter": "boolean"
+    },
+    "status_code": "number",
+    "log_pb": {
+      "impr_id": "string",
+      "stab_extra": {
+        "traffic_identification": "string"
+      }
+    },
+    "extra": {
+      "now": "number",
+      "logid": "string",
+      "fatal_item_ids": {
+        "type": "array",
+        "length": 0,
+        "sample": null
+      },
+      "search_request_id": "string",
+      "device_score": "number",
+      "scenes": "null"
+    },
+    "log": {
+      "search_id": "string",
+      "impr_id": "string",
+      "search_keyword": "string"
+    },
+    "time_cost": {
+      "stream_inner": "number"
+    }
+  }
+}

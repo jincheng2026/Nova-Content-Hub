@@ -1,0 +1,82 @@
+{
+  "code": 200,
+  "message": "sample-eeae682f2b33",
+  "message_zh": "sample-bcd99314fd77",
+  "support": "sample-7f10cc296eb3",
+  "time": "sample-340c88d3f9db",
+  "time_stamp": 1793085248,
+  "time_zone": "sample-2d4bbedff807",
+  "docs": "https://example.invalid/redacted",
+  "cache_message": "sample-1bf3f11f1ecc",
+  "cache_message_zh": "sample-ece43f89537f",
+  "router": "sample-359628239621",
+  "params": {
+    "keyword": "sample-fada0921305e",
+    "cursor": 0
+  },
+  "data": {
+    "code": 0,
+    "data": {
+      "user_list": [
+        {
+          "monitor_id": 0,
+          "user_id": "sample-a7a4274a4650",
+          "nick_name": "sample-fada0921305e",
+          "avatar_url": "https://example.invalid/redacted",
+          "fans_cnt": 24651,
+          "like_cnt": 94381,
+          "publish_cnt": 127,
+          "new_like_cnt": 0,
+          "new_fans_cnt": 0,
+          "second_tag_name": "",
+          "monitor_status": 0,
+          "target_type": 0,
+          "target_cnt": 0,
+          "monitor_period": 0,
+          "notice_type": 0,
+          "notice_hour": 0,
+          "new_item_monitor": 0,
+          "new_item_target_type": 0,
+          "new_item_target_cnt": 0,
+          "fans_trends": null,
+          "fans_incr_rate": 0,
+          "nexus_id": 0,
+          "group_id": 0,
+          "group_name": ""
+        },
+        {
+          "monitor_id": 0,
+          "user_id": "sample-5e94af664e3c",
+          "nick_name": "sample-719b30771be2",
+          "avatar_url": "https://example.invalid/redacted",
+          "fans_cnt": 530160,
+          "like_cnt": 5624951,
+          "publish_cnt": 657,
+          "new_like_cnt": 0,
+          "new_fans_cnt": 0,
+          "second_tag_name": "",
+          "monitor_status": 0,
+          "target_type": 0,
+          "target_cnt": 0,
+          "monitor_period": 0,
+          "notice_type": 0,
+          "notice_hour": 0,
+          "new_item_monitor": 0,
+          "new_item_target_type": 0,
+          "new_item_target_cnt": 0,
+          "fans_trends": null,
+          "fans_incr_rate": 0,
+          "nexus_id": 0,
+          "group_id": 0,
+          "group_name": ""
+        }
+      ],
+      "has_more": true,
+      "cursor": 30
+    },
+    "extra": {
+      "now": 1793085247000
+    },
+    "message": ""
+  }
+}

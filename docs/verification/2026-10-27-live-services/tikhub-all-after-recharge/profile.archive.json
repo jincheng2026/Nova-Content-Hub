@@ -1,0 +1,488 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "e160e3ae-05df-4be2-93e2-d617e9c8f588",
+  "category": "调研报告",
+  "taskId": "e3e97216-675c-471e-bb46-e602bb60bc11",
+  "attemptId": "3ed48635-1cd8-4b36-b100-0a1aae57b313",
+  "status": "accepted",
+  "requestHash": "02cdb58ff1c08c43bf151d4a4a4d72830b1f858545a38249afd58ded3c25812d",
+  "receiptHash": "1ab1628dd7f75afd0d09c49a345c2fe4610d6ceff28e14a792c7b7379bc12870",
+  "receipt": {
+    "taskId": "e3e97216-675c-471e-bb46-e602bb60bc11",
+    "attemptId": "3ed48635-1cd8-4b36-b100-0a1aae57b313",
+    "requestHash": "02cdb58ff1c08c43bf151d4a4a4d72830b1f858545a38249afd58ded3c25812d",
+    "resultHash": "042594872fa197d110249af4a7ef0394e7a952cae99f23660cfeb20db46c0c60",
+    "sha256": "1ab1628dd7f75afd0d09c49a345c2fe4610d6ceff28e14a792c7b7379bc12870"
+  },
+  "task": {
+    "title": "真实TikHub profile",
+    "kind": "research",
+    "contentId": null,
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "用户授权的最小全能力验收。仅当前operation首屏一次；评论能力已单独授权。不重试、不翻页。",
+    "parameters": {
+      "mode": "simple",
+      "researchDepth": {
+        "label": "简单调研",
+        "goal": "先判断方向",
+        "suitable": "适合初步了解领域、筛选值得继续研究的方向。",
+        "deliverables": [
+          "相关账号与代表作品，附真实来源",
+          "主要内容方向、初步观察与选题建议"
+        ],
+        "effort": "优先已有资料，围绕问题做重点梳理。",
+        "constraints": "围绕用户本轮问题，不自动扩大平台、时间或样本范围。样本不足时如实交付缺口，不凑数；评论须本任务单独授权，所有采集遵守冻结预算，不保证固定时长或费用。"
+      },
+      "comments": false,
+      "budgetEnabled": true,
+      "maxRequestsPerTask": 1,
+      "serviceConfig": {
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asr": {
+          "mode": "local-only",
+          "resourceId": "volc.bigasr.auc_turbo",
+          "localEngine": "qwen3-asr",
+          "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python",
+          "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit"
+        }
+      },
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 51330
+      }
+    },
+    "tools": [
+      "tikhub",
+      "model",
+      "asr"
+    ],
+    "budget": {
+      "amount": 1,
+      "currency": "REQ"
+    },
+    "bodyHash": null
+  },
+  "result": {
+    "summary": "真实profile首屏调用完成，1REQ；金额以供应商账单为准。",
+    "artifacts": [
+      {
+        "id": "d5577f41-1884-4e61-af13-cf99be884739",
+        "kind": "research",
+        "title": "真实profile结果结构",
+        "text": "{\"code\":\"number\",\"request_id\":\"string\",\"message\":\"string\",\"message_zh\":\"string\",\"support\":\"string\",\"time\":\"string\",\"time_stamp\":\"number\",\"time_zone\":\"string\",\"docs\":\"string\",\"cache_message\":\"string\",\"cache_message_zh\":\"string\",\"cache_url\":\"string\",\"router\":\"string\",\"params\":{\"sec_user_id\":\"string\"},\"data\":{\"extra\":{\"fatal_item_ids\":\"null\",\"logid\":\"string\",\"now\":\"number\",\"search_request_id\":\"null\"},\"log_pb\":{\"impr_id\":\"string\"},\"status_code\":\"number\",\"status_msg\":\"null\",\"user\":{\"account_cert_info\":{\"type\":\"JSON string\",\"decoded\":{}},\"apple_account\":\"number\",\"avatar_168x168\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":3,\"sample\":\"string\"},\"width\":\"number\"},\"avatar_300x300\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":3,\"sample\":\"string\"},\"width\":\"number\"},\"avatar_is_digged\":\"boolean\",\"avatar_larger\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":2,\"sample\":\"string\"},\"width\":\"number\"},\"avatar_medium\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":3,\"sample\":\"string\"},\"width\":\"number\"},\"avatar_thumb\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":3,\"sample\":\"string\"},\"width\":\"number\"},\"aweme_count\":\"number\",\"aweme_count_correction_threshold\":\"number\",\"birthday\":\"string\",\"birthday_hide_level\":\"number\",\"can_set_item_cover\":\"boolean\",\"can_show_group_card\":\"number\",\"city\":\"string\",\"close_friend_type\":\"number\",\"commerce_info\":{\"challenge_list\":\"null\",\"head_image_list\":\"null\",\"offline_info_list\":\"null\",\"smart_phone_list\":\"null\",\"task_list\":\"null\"},\"commerce_user_info\":{\"ad_revenue_rits\":\"null\",\"has_ads_entry\":\"boolean\"},\"commerce_user_level\":\"number\",\"country\":\"string\",\"cover_and_head_image_info\":{\"cover_list\":\"null\",\"profile_cover_list\":{\"type\":\"array\",\"length\":1,\"sample\":{\"cover_url\":{\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":2,\"sample\":\"string\"}},\"dark_cover_color\":\"string\",\"light_cover_color\":\"string\"}}},\"cover_colour\":\"string\",\"cover_url\":{\"type\":\"array\",\"length\":2,\"sample\":{\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":2,\"sample\":\"string\"}}},\"custom_verify\":\"string\",\"disable_manual_refresh\":\"number\",\"district\":\"string\",\"dongtai_count\":\"number\",\"dynamic_cover\":{},\"elfemoji_status\":\"number\",\"enable_ai_double\":\"number\",\"enable_wish\":\"boolean\",\"enterprise_user_info\":{\"type\":\"JSON string\",\"decoded\":{\"commerce_info\":{\"offline_info_list\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"challenge_list\":\"null\",\"task_list\":\"null\",\"head_image_list\":\"null\",\"smart_phone_list\":\"null\"},\"homepage_bottom_toast\":\"null\",\"tab_ceiling_toast\":\"null\",\"limiters\":\"null\",\"attic_info\":\"null\",\"profile_edit_button\":\"null\",\"elite_center\":\"null\",\"enterprise_card_visibility\":\"boolean\",\"blue_label_edit_jump_url\":\"string\"}},\"enterprise_verify_reason\":\"string\",\"evaluation_count\":\"number\",\"familiar_confidence\":\"number\",\"favorite_permission\":\"number\",\"favoriting_count\":\"number\",\"follow_guide\":\"boolean\",\"follow_status\":\"number\",\"follower_count\":\"number\",\"follower_request_status\":\"number\",\"follower_status\":\"number\",\"followers_detail\":{\"type\":\"array\",\"length\":3,\"sample\":{\"app_name\":\"string\",\"apple_id\":\"string\",\"download_url\":\"string\",\"fans_count\":\"number\",\"icon\":\"string\",\"name\":\"string\",\"open_url\":\"string\",\"package_name\":\"string\"}},\"following_count\":\"number\",\"forward_count\":\"number\",\"gender\":\"number\",\"general_permission\":{\"fans_page_toast\":\"number\",\"following_follower_list_toast\":\"number\",\"is_hit_active_fans_grayed\":\"boolean\"},\"has_e_account_role\":\"boolean\",\"has_subscription\":\"boolean\",\"hide_request_update\":\"number\",\"identity_labels\":{\"type\":\"array\",\"length\":1,\"sample\":{\"background_color_dark\":\"string\",\"background_color_light\":\"string\",\"force_show\":\"boolean\",\"icon_url_dark\":\"string\",\"icon_url_light\":\"string\",\"identity_label_id\":\"number\",\"mob_params\":{\"type\":\"JSON string\",\"decoded\":{\"tag_type\":\"string\"}},\"text\":\"string\",\"text_color_dark\":\"string\",\"text_color_light\":\"string\"}},\"im_primary_role_id\":\"number\",\"im_role_ids\":{\"type\":\"array\",\"length\":3,\"sample\":\"number\"},\"image_send_exempt\":\"boolean\",\"ins_id\":\"string\",\"ip_location\":\"string\",\"is_activity_user\":\"boolean\",\"is_ban\":\"boolean\",\"is_block\":\"boolean\",\"is_blocked\":\"boolean\",\"is_effect_artist\":\"boolean\",\"is_gov_media_vip\":\"boolean\",\"is_im_oversea_user\":\"number\",\"is_mix_user\":\"boolean\",\"is_not_show\":\"boolean\",\"is_series_user\":\"boolean\",\"is_sharing_profile_user\":\"number\",\"is_star\":\"boolean\",\"life_story_block\":{\"life_story_block\":\"boolean\"},\"live_commerce\":\"boolean\",\"live_status\":\"number\",\"location\":\"string\",\"mate_add_permission\":\"number\",\"mate_relation\":{\"mate_apply_forward\":\"number\",\"mate_apply_reverse\":\"number\",\"mate_status\":\"number\"},\"max_follower_count\":\"number\",\"message_chat_entry\":\"boolean\",\"mix_count\":\"number\",\"module_diff_conf\":{\"forbid_company_edit\":\"number\",\"forbid_post_work_company_banner\":\"number\",\"forbid_post_work_playlet_bar\":\"number\",\"forbid_settings_permission\":\"number\",\"forbid_settings_two_list\":\"number\",\"forbid_social_tag\":\"number\"},\"mplatform_followers_count\":\"number\",\"nickname\":\"string\",\"original_musician\":{\"digg_count\":\"number\",\"music_card_data\":{\"artist_id\":\"string\",\"artist_name\":\"string\",\"music_tab_style\":\"number\",\"self_switch\":\"number\"},\"music_count\":\"number\",\"music_used_count\":\"number\"},\"pigeon_daren_status\":\"string\",\"pigeon_daren_warn_tag\":\"string\",\"profile_component_disabled\":{\"type\":\"array\",\"length\":4,\"sample\":\"string\"},\"profile_mob_params\":{\"type\":\"array\",\"length\":1,\"sample\":{\"event_key\":\"string\",\"mob_params\":{\"type\":\"JSON string\",\"decoded\":{\"landing_reason\":\"string\"}}}},\"profile_show\":{\"identify_auth_infos\":\"null\"},\"profile_tab_info\":{\"profile_landing_tab\":\"number\",\"profile_tab_list\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"profile_tab_list_v2\":{\"type\":\"array\",\"length\":1,\"sample\":{\"id\":\"number\",\"name_en\":\"string\",\"sub_tabs\":\"null\"}}},\"profile_tab_type\":\"number\",\"province\":\"string\",\"public_collects_count\":\"number\",\"publish_landing_tab\":\"number\",\"r_fans_group_info\":{},\"recommend_reason_relation\":\"string\",\"recommend_user_reason_source\":\"number\",\"repined_count_strategy\":\"number\",\"risk_notice_text\":\"string\",\"room_id\":\"number\",\"room_id_str\":\"string\",\"sec_uid\":\"string\",\"secret\":\"number\",\"series_count\":\"number\",\"share_info\":{\"bool_persist\":\"number\",\"life_share_ext\":{\"type\":\"JSON string\",\"decoded\":{\"life_share_id\":\"string\"}},\"share_desc\":\"string\",\"share_image_url\":{\"url_list\":\"null\"},\"share_qrcode_url\":{\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":3,\"sample\":\"string\"}},\"share_title\":\"string\",\"share_url\":\"string\",\"share_weibo_desc\":\"string\"},\"short_id\":\"string\",\"show_favorite_list\":\"boolean\",\"show_subscription\":\"boolean\",\"signature\":\"string\",\"signature_display_lines\":\"number\",\"signature_extra\":{\"type\":\"array\",\"length\":1,\"sample\":{\"end\":\"number\",\"hashtag_id\":\"string\",\"hashtag_name\":\"string\",\"is_commerce\":\"boolean\",\"sec_uid\":\"string\",\"start\":\"number\",\"type\":\"number\",\"user_id\":\"string\"}},\"signature_language\":\"string\",\"social_negative_user\":\"number\",\"social_real_relation_type\":\"number\",\"special_follow_status\":\"number\",\"store_region\":\"string\",\"story_tab_empty\":\"boolean\",\"sync_to_toutiao\":\"number\",\"tab_settings\":{\"private_tab\":{\"private_tab_style\":\"number\",\"show_private_tab\":\"boolean\"}},\"template_count\":\"number\",\"total_favorited\":\"number\",\"total_favorited_correction_threshold\":\"number\",\"twitter_id\":\"string\",\"twitter_name\":\"string\",\"uid\":\"string\",\"unique_id\":\"string\",\"urge_detail\":{\"ctl_map\":{\"type\":\"JSON string\",\"decoded\":{\"button_background_url\":\"string\",\"urge_type\":\"string\",\"dispose_to_moment\":\"string\",\"next_urge_type\":\"string\",\"button_text\":\"string\",\"toast\":\"string\"}},\"user_urged\":\"number\"},\"use_diverse_digg_style\":\"boolean\",\"user_age\":\"number\",\"user_not_see\":\"number\",\"user_not_show\":\"number\",\"user_permissions\":{\"type\":\"array\",\"length\":1,\"sample\":{\"key\":\"string\",\"value\":\"string\"}},\"verification_type\":\"number\",\"video_cover\":{},\"video_icon\":{\"height\":\"number\",\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"width\":\"number\"},\"watch_status\":\"boolean\",\"white_cover_url\":{\"type\":\"array\",\"length\":2,\"sample\":{\"uri\":\"string\",\"url_list\":{\"type\":\"array\",\"length\":2,\"sample\":\"string\"}}},\"with_commerce_enterprise_tab_entry\":\"boolean\",\"with_commerce_entry\":\"boolean\",\"with_fusion_shop_entry\":\"boolean\",\"with_new_goods\":\"boolean\",\"youtube_channel_id\":\"string\",\"youtube_channel_title\":\"string\"}}}",
+        "assetHash": null,
+        "data": {
+          "operation": "profile",
+          "collectedAt": "2026-10-27T07:13:45.960Z",
+          "requestsUsed": 1,
+          "sanitizedSample": {
+            "code": 200,
+            "message": "sample-eeae682f2b33",
+            "message_zh": "sample-bcd99314fd77",
+            "support": "sample-7f10cc296eb3",
+            "time": "sample-853d72a77be9",
+            "time_stamp": 1793085225,
+            "time_zone": "sample-2d4bbedff807",
+            "docs": "https://example.invalid/redacted",
+            "cache_message": "sample-1bf3f11f1ecc",
+            "cache_message_zh": "sample-ece43f89537f",
+            "router": "sample-18046557c0e6",
+            "params": {
+              "sec_user_id": "sample-a7a4274a4650"
+            },
+            "data": {
+              "extra": {
+                "fatal_item_ids": null,
+                "logid": "sample-8b407a2dbaa3",
+                "now": 1793085225000,
+                "search_request_id": null
+              },
+              "log_pb": {
+                "impr_id": "sample-8b407a2dbaa3"
+              },
+              "status_code": 0,
+              "status_msg": null,
+              "user": {
+                "account_cert_info": "{}",
+                "apple_account": 0,
+                "avatar_168x168": {
+                  "height": 720,
+                  "uri": "sample-69db3c8edb9d",
+                  "url_list": [
+                    "https://example.invalid/redacted",
+                    "https://example.invalid/redacted"
+                  ],
+                  "width": 720
+                },
+                "avatar_300x300": {
+                  "height": 720,
+                  "uri": "sample-69db3c8edb9d",
+                  "url_list": [
+                    "https://example.invalid/redacted",
+                    "https://example.invalid/redacted"
+                  ],
+                  "width": 720
+                },
+                "avatar_is_digged": false,
+                "avatar_larger": {
+                  "height": 720,
+                  "uri": "sample-69db3c8edb9d",
+                  "url_list": [
+                    "https://example.invalid/redacted",
+                    "https://example.invalid/redacted"
+                  ],
+                  "width": 720
+                },
+                "avatar_medium": {
+                  "height": 720,
+                  "uri": "sample-69db3c8edb9d",
+                  "url_list": [
+                    "https://example.invalid/redacted",
+                    "https://example.invalid/redacted"
+                  ],
+                  "width": 720
+                },
+                "avatar_thumb": {
+                  "height": 720,
+                  "uri": "sample-69db3c8edb9d",
+                  "url_list": [
+                    "https://example.invalid/redacted",
+                    "https://example.invalid/redacted"
+                  ],
+                  "width": 720
+                },
+                "aweme_count": 107,
+                "aweme_count_correction_threshold": -1,
+                "birthday": "",
+                "birthday_hide_level": 0,
+                "can_set_item_cover": false,
+                "can_show_group_card": 1,
+                "city": "",
+                "close_friend_type": 0,
+                "commerce_info": {
+                  "challenge_list": null,
+                  "head_image_list": null,
+                  "offline_info_list": null,
+                  "smart_phone_list": null,
+                  "task_list": null
+                },
+                "commerce_user_info": {
+                  "ad_revenue_rits": null,
+                  "has_ads_entry": true
+                },
+                "commerce_user_level": 0,
+                "country": "",
+                "cover_and_head_image_info": {
+                  "cover_list": null,
+                  "profile_cover_list": [
+                    {
+                      "cover_url": {
+                        "uri": "sample-659ebb79b473",
+                        "url_list": [
+                          "https://example.invalid/redacted",
+                          "https://example.invalid/redacted"
+                        ]
+                      },
+                      "dark_cover_color": "sample-5ff47957a053",
+                      "light_cover_color": "sample-5ff47957a053"
+                    }
+                  ]
+                },
+                "cover_colour": "sample-013f3f99a9ff",
+                "cover_url": [
+                  {
+                    "uri": "sample-659ebb79b473",
+                    "url_list": [
+                      "https://example.invalid/redacted",
+                      "https://example.invalid/redacted"
+                    ]
+                  },
+                  {
+                    "uri": "sample-6e74c0e66020",
+                    "url_list": [
+                      "https://example.invalid/redacted",
+                      "https://example.invalid/redacted"
+                    ]
+                  }
+                ],
+                "custom_verify": "",
+                "disable_manual_refresh": 0,
+                "district": "",
+                "dongtai_count": 0,
+                "dynamic_cover": {},
+                "elfemoji_status": -1,
+                "enable_ai_double": 0,
+                "enable_wish": false,
+                "enterprise_user_info": "{\"commerce_info\":{\"offline_info_list\":[],\"challenge_list\":null,\"task_list\":null,\"head_image_list\":null,\"smart_phone_list\":null},\"homepage_bottom_toast\":null,\"tab_ceiling_toast\":null,\"limiters\":null,\"attic_info\":null,\"profile_edit_button\":null,\"elite_center\":null,\"enterprise_card_visibility\":false,\"blue_label_edit_jump_url\":\"sample-6569876f56e2\"}",
+                "enterprise_verify_reason": "",
+                "evaluation_count": 0,
+                "familiar_confidence": 0,
+                "favorite_permission": 1,
+                "favoriting_count": 0,
+                "follow_guide": true,
+                "follow_status": 0,
+                "follower_count": 24651,
+                "follower_request_status": 0,
+                "follower_status": 0,
+                "followers_detail": [
+                  {
+                    "app_name": "sample-a333a064fae4",
+                    "apple_id": "1111111111",
+                    "download_url": "https://example.invalid/redacted",
+                    "fans_count": 24651,
+                    "icon": "https://example.invalid/redacted",
+                    "name": "sample-d077d0b18e19",
+                    "open_url": "sample-ffc36c07988f",
+                    "package_name": "sample-6268383b0b4f"
+                  },
+                  {
+                    "app_name": "sample-c363418b6fa9",
+                    "apple_id": "111111111",
+                    "download_url": "https://example.invalid/redacted",
+                    "fans_count": 0,
+                    "icon": "https://example.invalid/redacted",
+                    "name": "sample-43ecd886aac5",
+                    "open_url": "sample-3de2f2f4f14b",
+                    "package_name": "sample-a7b3786eb705"
+                  }
+                ],
+                "following_count": 34,
+                "forward_count": 0,
+                "gender": 0,
+                "general_permission": {
+                  "fans_page_toast": 1,
+                  "following_follower_list_toast": 1,
+                  "is_hit_active_fans_grayed": false
+                },
+                "has_e_account_role": false,
+                "has_subscription": false,
+                "hide_request_update": 0,
+                "identity_labels": [
+                  {
+                    "background_color_dark": "sample-e343d2427b3a",
+                    "background_color_light": "sample-36b26ede7a8c",
+                    "force_show": true,
+                    "icon_url_dark": "",
+                    "icon_url_light": "",
+                    "identity_label_id": 11,
+                    "mob_params": "{\"tag_type\":\"sample-59584284aa32\"}",
+                    "text": "sample-c34514435b3c",
+                    "text_color_dark": "sample-9ad564a75da0",
+                    "text_color_light": "sample-f55f03a5de5c"
+                  }
+                ],
+                "im_primary_role_id": 8,
+                "im_role_ids": [
+                  8,
+                  19
+                ],
+                "image_send_exempt": false,
+                "ins_id": "",
+                "ip_location": "sample-88a94ed74e71",
+                "is_activity_user": false,
+                "is_ban": false,
+                "is_block": false,
+                "is_blocked": false,
+                "is_effect_artist": false,
+                "is_gov_media_vip": false,
+                "is_im_oversea_user": 0,
+                "is_mix_user": true,
+                "is_not_show": false,
+                "is_series_user": false,
+                "is_sharing_profile_user": 0,
+                "is_star": false,
+                "life_story_block": {
+                  "life_story_block": false
+                },
+                "live_commerce": false,
+                "live_status": 0,
+                "location": "",
+                "mate_add_permission": 1,
+                "mate_relation": {
+                  "mate_apply_forward": 0,
+                  "mate_apply_reverse": 0,
+                  "mate_status": 0
+                },
+                "max_follower_count": 24651,
+                "message_chat_entry": true,
+                "mix_count": 6,
+                "module_diff_conf": {
+                  "forbid_company_edit": 1,
+                  "forbid_post_work_company_banner": 1,
+                  "forbid_post_work_playlet_bar": 1,
+                  "forbid_settings_permission": 1,
+                  "forbid_settings_two_list": 1,
+                  "forbid_social_tag": 1
+                },
+                "mplatform_followers_count": 24651,
+                "nickname": "sample-fada0921305e",
+                "original_musician": {
+                  "digg_count": 0,
+                  "music_card_data": {
+                    "artist_id": "1",
+                    "artist_name": "",
+                    "music_tab_style": 0,
+                    "self_switch": 1
+                  },
+                  "music_count": 0,
+                  "music_used_count": 0
+                },
+                "pigeon_daren_status": "",
+                "pigeon_daren_warn_tag": "",
+                "profile_component_disabled": [
+                  "sample-742d7c5ef15d",
+                  "sample-1227e62c3992"
+                ],
+                "profile_mob_params": [
+                  {
+                    "event_key": "sample-e32b4e8b3589",
+                    "mob_params": "{\"landing_reason\":\"sample-ee6c4dff25f2\"}"
+                  }
+                ],
+                "profile_show": {
+                  "identify_auth_infos": null
+                },
+                "profile_tab_info": {
+                  "profile_landing_tab": 0,
+                  "profile_tab_list": [],
+                  "profile_tab_list_v2": [
+                    {
+                      "id": 0,
+                      "name_en": "sample-e0ee8bb50685",
+                      "sub_tabs": null
+                    }
+                  ]
+                },
+                "profile_tab_type": 0,
+                "province": "",
+                "public_collects_count": 0,
+                "publish_landing_tab": 3,
+                "r_fans_group_info": {},
+                "recommend_reason_relation": "",
+                "recommend_user_reason_source": 0,
+                "repined_count_strategy": 1,
+                "risk_notice_text": "",
+                "room_id": 0,
+                "room_id_str": "1",
+                "sec_uid": "sample-a7a4274a4650",
+                "secret": 0,
+                "series_count": 0,
+                "share_info": {
+                  "bool_persist": 1,
+                  "life_share_ext": "{\"life_share_id\":\"sample-03d32d19dca7\"}",
+                  "share_desc": "sample-fc64ffc3013a",
+                  "share_image_url": {
+                    "url_list": null
+                  },
+                  "share_qrcode_url": {
+                    "uri": "sample-b259cf06d6f2",
+                    "url_list": [
+                      "https://example.invalid/redacted",
+                      "https://example.invalid/redacted"
+                    ]
+                  },
+                  "share_title": "sample-4186eb370ffd",
+                  "share_url": "sample-7625474d6c78",
+                  "share_weibo_desc": "sample-fc64ffc3013a"
+                },
+                "short_id": "1",
+                "show_favorite_list": false,
+                "show_subscription": false,
+                "signature": "sample-d21f4ede2530",
+                "signature_display_lines": 5,
+                "signature_extra": [
+                  {
+                    "end": 31,
+                    "hashtag_id": "",
+                    "hashtag_name": "",
+                    "is_commerce": false,
+                    "sec_uid": "",
+                    "start": 21,
+                    "type": 0,
+                    "user_id": "1111111111111111"
+                  }
+                ],
+                "signature_language": "sample-68bca10eea2b",
+                "social_negative_user": 0,
+                "social_real_relation_type": 0,
+                "special_follow_status": 0,
+                "store_region": "sample-99718584df2d",
+                "story_tab_empty": false,
+                "sync_to_toutiao": 0,
+                "tab_settings": {
+                  "private_tab": {
+                    "private_tab_style": 1,
+                    "show_private_tab": false
+                  }
+                },
+                "template_count": 0,
+                "total_favorited": 94381,
+                "total_favorited_correction_threshold": -1,
+                "twitter_id": "",
+                "twitter_name": "",
+                "uid": "11111111111",
+                "unique_id": "sample-ee74bdc3bde6",
+                "urge_detail": {
+                  "ctl_map": "{\"button_background_url\":\"https://example.invalid/redacted\",\"urge_type\":\"\",\"dispose_to_moment\":\"1\",\"next_urge_type\":\"sample-37a8eec1ce19\",\"button_text\":\"sample-ff5267298a1a\",\"toast\":\"sample-4b46ea4889ca\"}",
+                  "user_urged": 0
+                },
+                "use_diverse_digg_style": false,
+                "user_age": 31,
+                "user_not_see": 0,
+                "user_not_show": 1,
+                "user_permissions": [
+                  {
+                    "key": "sample-f95b81cfd1eb",
+                    "value": "1"
+                  }
+                ],
+                "verification_type": 0,
+                "video_cover": {},
+                "video_icon": {
+                  "height": 720,
+                  "uri": "",
+                  "url_list": [],
+                  "width": 720
+                },
+                "watch_status": false,
+                "white_cover_url": [
+                  {
+                    "uri": "sample-659ebb79b473",
+                    "url_list": [
+                      "https://example.invalid/redacted",
+                      "https://example.invalid/redacted"
+                    ]
+                  },
+                  {
+                    "uri": "sample-7be63806bba1",
+                    "url_list": [
+                      "https://example.invalid/redacted",
+                      "https://example.invalid/redacted"
+                    ]
+                  }
+                ],
+                "with_commerce_enterprise_tab_entry": false,
+                "with_commerce_entry": false,
+                "with_fusion_shop_entry": false,
+                "with_new_goods": false,
+                "youtube_channel_id": "",
+                "youtube_channel_title": ""
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "reports": [],
+  "submittedOrAcceptedAt": "2026-10-27T07:13:46.445Z"
+}

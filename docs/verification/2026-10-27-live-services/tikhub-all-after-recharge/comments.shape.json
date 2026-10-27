@@ -1,0 +1,192 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "aweme_id": "string",
+    "cursor": "string",
+    "count": "string"
+  },
+  "data": {
+    "status_code": "number",
+    "comments": {
+      "type": "array",
+      "length": 20,
+      "sample": {
+        "cid": "string",
+        "text": "string",
+        "aweme_id": "string",
+        "create_time": "number",
+        "digg_count": "number",
+        "status": "number",
+        "user": {
+          "uid": "string",
+          "short_id": "string",
+          "nickname": "string",
+          "avatar_thumb": {
+            "uri": "string",
+            "url_list": {
+              "type": "array",
+              "length": 3,
+              "sample": "string"
+            },
+            "width": "number",
+            "height": "number"
+          },
+          "unique_id": "string",
+          "is_ad_fake": "boolean",
+          "followers_detail": "null",
+          "region": "string",
+          "commerce_user_level": "number",
+          "platform_sync_info": "null",
+          "secret": "number",
+          "geofencing": "null",
+          "cover_url": "null",
+          "item_list": "null",
+          "new_story_cover": "null",
+          "type_label": "null",
+          "ad_cover_url": "null",
+          "relative_users": "null",
+          "cha_list": "null",
+          "sec_uid": "string",
+          "need_points": "null",
+          "homepage_bottom_toast": "null",
+          "can_set_geofencing": "null",
+          "white_cover_url": "null",
+          "user_tags": "null",
+          "ban_user_functions": {
+            "type": "array",
+            "length": 0,
+            "sample": null
+          },
+          "card_entries": "null",
+          "display_info": "null",
+          "card_entries_not_display": "null",
+          "card_sort_priority": "null",
+          "interest_tags": "null",
+          "link_item_list": "null",
+          "user_permissions": "null",
+          "offline_info_list": "null",
+          "signature_extra": "null",
+          "personal_tag_list": "null",
+          "cf_list": "null",
+          "im_role_ids": "null",
+          "not_seen_item_id_list": "null",
+          "follower_list_secondary_information_struct": "null",
+          "endorsement_info_list": "null",
+          "text_extra": "null",
+          "contrail_list": "null",
+          "data_label_list": "null",
+          "not_seen_item_id_list_v2": "null",
+          "special_people_labels": "null",
+          "familiar_visitor_user": "null",
+          "avatar_schema_list": "null",
+          "profile_mob_params": "null",
+          "verification_permission_ids": "null",
+          "batch_unfollow_relation_desc": "null",
+          "batch_unfollow_contain_tabs": "null",
+          "creator_tag_list": "null",
+          "private_relation_list": "null",
+          "identity_labels": "null",
+          "profile_component_disabled": "null",
+          "profile_signature_components": "null",
+          "webcast_preview_labels": "null",
+          "follow_area": "null"
+        },
+        "reply_id": "string",
+        "user_digged": "number",
+        "reply_comment": "null",
+        "text_extra": {
+          "type": "array",
+          "length": 0,
+          "sample": null
+        },
+        "label_text": "string",
+        "label_type": "number",
+        "reply_comment_total": "number",
+        "reply_to_reply_id": "string",
+        "is_author_digged": "boolean",
+        "user_buried": "boolean",
+        "label_list": "null",
+        "is_hot": "boolean",
+        "text_music_info": "null",
+        "image_list": "null",
+        "is_note_comment": "number",
+        "ip_label": "string",
+        "can_share": "boolean",
+        "item_comment_total": "number",
+        "level": "number",
+        "video_list": "null",
+        "sort_tags": {
+          "type": "JSON string",
+          "decoded": {
+            "eco_level_8": "number",
+            "reply_0": "number",
+            "eco_level_5": "number",
+            "eco_level_10": "number",
+            "eco_level_11": "number"
+          }
+        },
+        "is_user_tend_to_reply": "boolean",
+        "content_type": "number",
+        "is_folded": "boolean",
+        "comment_token": "string",
+        "enter_from": "string",
+        "decorated_emoji_info": "null",
+        "ent_parachute_tip": "number",
+        "merge_comment_label": "null",
+        "can_collect": "boolean"
+      }
+    },
+    "cursor": "number",
+    "has_more": "number",
+    "reply_style": "number",
+    "total": "number",
+    "extra": {
+      "now": "number",
+      "fatal_item_ids": "null",
+      "scenes": "null"
+    },
+    "log_pb": {
+      "impr_id": "string"
+    },
+    "hotsoon_filtered_count": "number",
+    "user_commented": "number",
+    "fast_response_comment": {
+      "constant_response_words": {
+        "type": "array",
+        "length": 3,
+        "sample": "string"
+      },
+      "timed_response_words": {
+        "type": "array",
+        "length": 3,
+        "sample": "string"
+      }
+    },
+    "comment_config": {},
+    "general_comment_config": {},
+    "show_management_entry_point": "number",
+    "comment_common_data": "string",
+    "folded_comment_count": "number",
+    "need_fix_total": "boolean",
+    "comment_insert_bars": "null",
+    "sort_tags_report_map": {
+      "type": "JSON string",
+      "decoded": {
+        "eco_level_10": "string",
+        "eco_level_8": "string"
+      }
+    }
+  }
+}

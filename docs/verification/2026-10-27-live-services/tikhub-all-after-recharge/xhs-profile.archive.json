@@ -1,0 +1,314 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "e160e3ae-05df-4be2-93e2-d617e9c8f588",
+  "category": "调研报告",
+  "taskId": "b67b44b4-8265-49b4-b2d7-f30720f9a86f",
+  "attemptId": "66860b15-e552-46c6-bb8e-16c69b5f18b8",
+  "status": "accepted",
+  "requestHash": "02cdb58ff1c08c43bf151d4a4a4d72830b1f858545a38249afd58ded3c25812d",
+  "receiptHash": "1e0ac8e24d2518d2bb89966d9d382e1f9ece3b53c7ac920a765863a71c53e60f",
+  "receipt": {
+    "taskId": "b67b44b4-8265-49b4-b2d7-f30720f9a86f",
+    "attemptId": "66860b15-e552-46c6-bb8e-16c69b5f18b8",
+    "requestHash": "02cdb58ff1c08c43bf151d4a4a4d72830b1f858545a38249afd58ded3c25812d",
+    "resultHash": "6b85f0c9d5dcafefeda402fc686edb1fcfbd671f58cfdaa63e08b1f29d65de2a",
+    "sha256": "1e0ac8e24d2518d2bb89966d9d382e1f9ece3b53c7ac920a765863a71c53e60f"
+  },
+  "task": {
+    "title": "真实TikHub xhs-profile",
+    "kind": "research",
+    "contentId": null,
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "用户授权的最小全能力验收。仅当前operation首屏一次；评论能力已单独授权。不重试、不翻页。",
+    "parameters": {
+      "mode": "simple",
+      "researchDepth": {
+        "label": "简单调研",
+        "goal": "先判断方向",
+        "suitable": "适合初步了解领域、筛选值得继续研究的方向。",
+        "deliverables": [
+          "相关账号与代表作品，附真实来源",
+          "主要内容方向、初步观察与选题建议"
+        ],
+        "effort": "优先已有资料，围绕问题做重点梳理。",
+        "constraints": "围绕用户本轮问题，不自动扩大平台、时间或样本范围。样本不足时如实交付缺口，不凑数；评论须本任务单独授权，所有采集遵守冻结预算，不保证固定时长或费用。"
+      },
+      "comments": false,
+      "budgetEnabled": true,
+      "maxRequestsPerTask": 1,
+      "serviceConfig": {
+        "model": {
+          "provider": "volc",
+          "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+          "modelId": "doubao-seed-2-0-mini-260428"
+        },
+        "asr": {
+          "mode": "local-only",
+          "resourceId": "volc.bigasr.auc_turbo",
+          "localEngine": "qwen3-asr",
+          "localExecutable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python",
+          "localModelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit"
+        }
+      },
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 51330
+      }
+    },
+    "tools": [
+      "tikhub",
+      "model",
+      "asr"
+    ],
+    "budget": {
+      "amount": 1,
+      "currency": "REQ"
+    },
+    "bodyHash": null
+  },
+  "result": {
+    "summary": "真实xhs-profile首屏调用完成，1REQ；金额以供应商账单为准。",
+    "artifacts": [
+      {
+        "id": "cc2b5f64-9b1a-4317-92dd-fb78f1593005",
+        "kind": "research",
+        "title": "真实xhs-profile结果结构",
+        "text": "{\"code\":\"number\",\"request_id\":\"string\",\"message\":\"string\",\"message_zh\":\"string\",\"support\":\"string\",\"time\":\"string\",\"time_stamp\":\"number\",\"time_zone\":\"string\",\"docs\":\"string\",\"cache_message\":\"string\",\"cache_message_zh\":\"string\",\"cache_url\":\"string\",\"router\":\"string\",\"params\":{\"user_id\":\"string\"},\"data\":{\"success\":\"boolean\",\"data\":{\"tab_visible\":{\"collect\":\"boolean\",\"note\":\"boolean\",\"seed\":\"boolean\",\"like\":\"boolean\"},\"collected_poi_num\":\"number\",\"blocked\":\"boolean\",\"ip_location\":\"string\",\"liked\":\"number\",\"follows\":\"number\",\"collected\":\"number\",\"is_login_user_pro_account\":\"boolean\",\"result\":{\"success\":\"boolean\",\"message\":\"string\",\"code\":\"number\"},\"recommend_info\":\"string\",\"real_name_info\":\"string\",\"default_collection_tab\":\"string\",\"red_official_verify_base_info\":\"string\",\"block_view_to_user\":\"boolean\",\"red_club_info\":{\"red_club_url\":\"string\",\"redclubscore\":\"number\",\"red_club\":\"boolean\",\"red_club_level\":\"number\"},\"share_link\":\"string\",\"banner_info\":{\"image\":\"string\",\"bg_color\":\"string\",\"like_status\":\"boolean\"},\"share_info\":{\"title\":\"string\",\"content\":\"string\"},\"identity_deeplink\":\"string\",\"red_official_verify_type\":\"number\",\"imageb\":\"string\",\"show_extra_info_button\":\"boolean\",\"avatar_like_status\":\"boolean\",\"collected_product_num\":\"number\",\"collected_notes_num\":\"number\",\"location_jump\":\"boolean\",\"desc\":\"string\",\"location\":\"string\",\"remark_name\":\"string\",\"hula_tabs\":{\"tab_id_selected\":\"string\",\"all_show_tab_config\":{\"type\":\"array\",\"length\":1,\"sample\":{\"tab_id\":\"string\",\"tab_name\":\"string\",\"tab_index_weight\":\"number\"}}},\"is_recommend_level_illegal\":\"boolean\",\"seller_info\":{\"tab_code_names\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"is_tab_goods_first\":\"boolean\",\"tab_goods_api_version\":\"number\"},\"ndiscovery\":\"number\",\"avatar_handle_entry_list\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"userid\":\"string\",\"college_info\":{\"enrollment_year\":\"number\",\"college_name\":\"string\"},\"collected_movie_num\":\"number\",\"fstatus\":\"string\",\"identity_label_migrated\":\"boolean\",\"collected_brand_num\":\"number\",\"avatar_pendant\":{\"current_user_pendant\":\"boolean\",\"current_user_pet\":\"boolean\"},\"user_widget_switch\":\"boolean\",\"tags\":{\"type\":\"array\",\"length\":3,\"sample\":{\"name\":\"string\",\"tag_type\":\"string\"}},\"red_official_verified\":\"boolean\",\"community_rule_url\":\"string\",\"note_num_stat\":{\"liked\":\"number\",\"posted\":\"number\",\"collected\":\"number\"},\"blocking\":\"boolean\",\"collected_book_num\":\"number\",\"red_id\":\"string\",\"mute_view_to_user\":\"boolean\",\"block_view_from_user\":\"boolean\",\"recommend_info_icon\":\"string\",\"sec_account_deeplink\":\"string\",\"interactions\":{\"type\":\"array\",\"length\":3,\"sample\":{\"is_private\":\"boolean\",\"count\":\"number\",\"type\":\"string\",\"name\":\"string\",\"toast\":\"string\"}},\"red_official_verify_content\":\"string\",\"desc_at_users\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"level\":{\"number\":\"number\",\"image_link\":\"string\"},\"nickname\":\"string\",\"user_desc_info\":{\"desc_keywords_switch\":\"boolean\",\"desc_at_users\":{\"type\":\"array\",\"length\":0,\"sample\":null},\"desc_with_placeholder\":\"string\",\"button\":{\"original\":{\"button_content\":\"string\",\"translation_strategy\":\"number\"},\"replace\":{\"button_content\":\"string\",\"translation_strategy\":\"number\"}},\"desc\":\"string\",\"trans_api_param\":{\"biz_id\":\"string\",\"text_inputs\":{\"type\":\"array\",\"length\":1,\"sample\":{\"key\":\"string\",\"content\":\"string\"}},\"biz_type\":\"string\"}},\"gender\":\"number\",\"user_role_type\":\"number\",\"nboards\":\"number\",\"tab_public\":{\"seed\":\"boolean\",\"collection\":\"boolean\",\"collection_board\":\"boolean\",\"collection_note\":\"boolean\"},\"fans\":\"number\",\"collected_tags_num\":\"number\",\"images\":\"string\",\"brand_account_info\":{\"conversions\":{\"type\":\"array\",\"length\":1,\"sample\":{\"sub_title\":\"string\",\"is_shop\":\"boolean\",\"id\":\"string\",\"is_red_shop\":\"boolean\",\"link\":\"string\",\"name\":\"string\",\"icon\":\"string\"}}},\"share_info_v2\":{\"title\":\"string\",\"content\":\"string\"},\"zhong_tong_bar_info\":{\"conversions\":{\"type\":\"array\",\"length\":1,\"sample\":{\"id\":\"string\",\"icon\":\"string\",\"name\":\"string\",\"sub_title\":\"string\",\"link\":\"string\"}}},\"real_name_deep_target\":\"number\"},\"code\":\"number\",\"msg\":\"string\",\"debug_id\":\"string\",\"debug_info\":\"string\"}}",
+        "assetHash": null,
+        "data": {
+          "operation": "xhs-profile",
+          "collectedAt": "2026-10-27T07:14:26.992Z",
+          "requestsUsed": 1,
+          "sanitizedSample": {
+            "code": 200,
+            "message": "sample-eeae682f2b33",
+            "message_zh": "sample-bcd99314fd77",
+            "support": "sample-7f10cc296eb3",
+            "time": "sample-c51ca4a85bf0",
+            "time_stamp": 1793085266,
+            "time_zone": "sample-2d4bbedff807",
+            "docs": "https://example.invalid/redacted",
+            "cache_message": "sample-1bf3f11f1ecc",
+            "cache_message_zh": "sample-ece43f89537f",
+            "router": "sample-4e95467f39a5",
+            "params": {
+              "user_id": "23f511198f99bb5840cfb96c"
+            },
+            "data": {
+              "success": true,
+              "data": {
+                "tab_visible": {
+                  "collect": false,
+                  "note": true,
+                  "seed": true,
+                  "like": false
+                },
+                "collected_poi_num": 0,
+                "blocked": false,
+                "ip_location": "sample-303b1fa993cf",
+                "liked": 458045,
+                "follows": 129,
+                "collected": 205055,
+                "is_login_user_pro_account": false,
+                "result": {
+                  "success": true,
+                  "message": "sample-aee408847d35",
+                  "code": 0
+                },
+                "recommend_info": "",
+                "real_name_info": "",
+                "default_collection_tab": "sample-edb465624291",
+                "red_official_verify_base_info": "",
+                "block_view_to_user": false,
+                "red_club_info": {
+                  "red_club_url": "https://example.invalid/redacted",
+                  "redclubscore": 0,
+                  "red_club": false,
+                  "red_club_level": 0
+                },
+                "share_link": "https://example.invalid/redacted",
+                "banner_info": {
+                  "image": "https://example.invalid/redacted",
+                  "bg_color": "111111",
+                  "like_status": false
+                },
+                "share_info": {
+                  "title": "sample-7db0d384413c",
+                  "content": "sample-5391ea79d9c1"
+                },
+                "identity_deeplink": "sample-a5932c11959f",
+                "red_official_verify_type": 0,
+                "imageb": "https://example.invalid/redacted",
+                "show_extra_info_button": false,
+                "avatar_like_status": false,
+                "collected_product_num": 0,
+                "collected_notes_num": 0,
+                "location_jump": false,
+                "desc": "sample-5391ea79d9c1",
+                "location": "",
+                "remark_name": "",
+                "hula_tabs": {
+                  "tab_id_selected": "sample-edb465624291",
+                  "all_show_tab_config": [
+                    {
+                      "tab_id": "sample-edb465624291",
+                      "tab_name": "sample-8a7525b1492f",
+                      "tab_index_weight": 0
+                    }
+                  ]
+                },
+                "is_recommend_level_illegal": false,
+                "seller_info": {
+                  "tab_code_names": [],
+                  "is_tab_goods_first": true,
+                  "tab_goods_api_version": 1
+                },
+                "ndiscovery": 395,
+                "avatar_handle_entry_list": [],
+                "userid": "23f511198f99bb5840cfb96c",
+                "college_info": {
+                  "enrollment_year": 2019,
+                  "college_name": "sample-07a6d4925ba8"
+                },
+                "collected_movie_num": 0,
+                "fstatus": "sample-140bedbf9c3f",
+                "identity_label_migrated": false,
+                "collected_brand_num": 0,
+                "avatar_pendant": {
+                  "current_user_pendant": false,
+                  "current_user_pet": false
+                },
+                "user_widget_switch": false,
+                "tags": [
+                  {
+                    "name": "sample-c1dd13262ca4",
+                    "tag_type": "sample-50e0d250228d"
+                  },
+                  {
+                    "name": "sample-50319786b6f1",
+                    "tag_type": "sample-50e0d250228d"
+                  }
+                ],
+                "red_official_verified": false,
+                "community_rule_url": "https://example.invalid/redacted",
+                "note_num_stat": {
+                  "liked": 458045,
+                  "posted": 395,
+                  "collected": 205055
+                },
+                "blocking": false,
+                "collected_book_num": 0,
+                "red_id": "sample-0573eef91ff4",
+                "mute_view_to_user": false,
+                "block_view_from_user": false,
+                "recommend_info_icon": "",
+                "sec_account_deeplink": "sample-e7d51a1fd16a",
+                "interactions": [
+                  {
+                    "is_private": true,
+                    "count": 129,
+                    "type": "sample-12681deafadf",
+                    "name": "sample-344b4271ca01",
+                    "toast": "sample-130112e288c4"
+                  },
+                  {
+                    "is_private": true,
+                    "toast": "sample-9d58ff274274",
+                    "type": "sample-e777fa6e8509",
+                    "name": "sample-a145ab342a4a",
+                    "count": 31130
+                  }
+                ],
+                "red_official_verify_content": "",
+                "desc_at_users": [],
+                "level": {
+                  "number": 0,
+                  "image_link": ""
+                },
+                "nickname": "sample-7db0d384413c",
+                "user_desc_info": {
+                  "desc_keywords_switch": true,
+                  "desc_at_users": [],
+                  "desc_with_placeholder": "sample-5391ea79d9c1",
+                  "button": {
+                    "original": {
+                      "button_content": "sample-8fe147696fbf",
+                      "translation_strategy": 2
+                    },
+                    "replace": {
+                      "button_content": "sample-3dde3743aec7",
+                      "translation_strategy": 3
+                    }
+                  },
+                  "desc": "sample-5391ea79d9c1",
+                  "trans_api_param": {
+                    "biz_id": "sample-8c9ab4a58b3f",
+                    "text_inputs": [
+                      {
+                        "key": "sample-97864e878fe1",
+                        "content": "sample-5391ea79d9c1"
+                      }
+                    ],
+                    "biz_type": "sample-fb1d877bc310"
+                  }
+                },
+                "gender": 2,
+                "user_role_type": 6,
+                "nboards": 0,
+                "tab_public": {
+                  "seed": true,
+                  "collection": false,
+                  "collection_board": true,
+                  "collection_note": true
+                },
+                "fans": 31130,
+                "collected_tags_num": 0,
+                "images": "https://example.invalid/redacted",
+                "brand_account_info": {
+                  "conversions": [
+                    {
+                      "sub_title": "sample-d1bf045bb524",
+                      "is_shop": false,
+                      "id": "11",
+                      "is_red_shop": false,
+                      "link": "sample-fb7e7b7207bd",
+                      "name": "sample-28c7d3f8b75d",
+                      "icon": "https://example.invalid/redacted"
+                    }
+                  ]
+                },
+                "share_info_v2": {
+                  "title": "sample-fbe5f4d62ee1",
+                  "content": "sample-78ee10b8ae05"
+                },
+                "zhong_tong_bar_info": {
+                  "conversions": [
+                    {
+                      "id": "11",
+                      "icon": "https://example.invalid/redacted",
+                      "name": "sample-28c7d3f8b75d",
+                      "sub_title": "sample-d1bf045bb524",
+                      "link": "sample-fb7e7b7207bd"
+                    }
+                  ]
+                },
+                "real_name_deep_target": 1
+              },
+              "code": 0,
+              "msg": "sample-053461ce86d2",
+              "debug_id": "sample-58cafacfb5e9",
+              "debug_info": "sample-20e14ca39a13"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "reports": [],
+  "submittedOrAcceptedAt": "2026-10-27T07:14:27.913Z"
+}

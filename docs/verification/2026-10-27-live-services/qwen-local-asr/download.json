@@ -1,0 +1,60 @@
+{
+  "startedAt": "2026-10-27T06:52:29.064467+00:00",
+  "repoId": "mlx-community/Qwen3-ASR-1.7B-8bit",
+  "revision": "a8379a2e2f9e313c9292cdf1af4055ab56d50d55",
+  "localPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+  "authenticated": false,
+  "outcome": "downloaded",
+  "completedAt": "2026-10-27T07:03:31.919010+00:00",
+  "files": [
+    {
+      "name": ".gitattributes",
+      "bytes": 1519
+    },
+    {
+      "name": "README.md",
+      "bytes": 1008
+    },
+    {
+      "name": "chat_template.json",
+      "bytes": 1161
+    },
+    {
+      "name": "config.json",
+      "bytes": 7188
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 142
+    },
+    {
+      "name": "merges.txt",
+      "bytes": 1671853
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 2463307541,
+      "sha256": "bf304b009cc7eca79283056f787b44c952d24ac22cec787b39732bba3c23c13c"
+    },
+    {
+      "name": "model.safetensors.index.json",
+      "bytes": 78968
+    },
+    {
+      "name": "preprocessor_config.json",
+      "bytes": 330
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 12487
+    },
+    {
+      "name": "vocab.json",
+      "bytes": 2776833
+    }
+  ],
+  "totalActualBytes": 2467859030,
+  "verifiedAt": "2026-10-27T07:04:07.436675+00:00",
+  "expectedSizeMatches": true,
+  "weightSha256MatchesRegistry": true
+}

@@ -1,0 +1,11 @@
+import type {RadarQuery} from '../../../../workbench/src/shared/radar-contracts.ts';
+export function radarPlatforms(query:RadarQuery):string[];
+export function radarPlatform(platform:string):string;
+export function radarOperations(platform:string):string[];
+export function radarSearchOperation(platform:string):'douyin-search'|'xhs-search'|null;
+export function radarProfileOperation(platform:string):'profile'|'xhs-profile'|null;
+export function radarQueryOperations(query:RadarQuery):string[];
+export function radarAutomaticPlatforms(query:RadarQuery,allowedOperations?:string[]):string[];
+export function radarPlatformSampleLimit(query:RadarQuery,platform:string,allowedOperations?:string[]):number;
+export function radarPlannedPlatforms(query:RadarQuery,allowedOperations?:string[]):string[];
+export function radarRequestLimit(query:RadarQuery,currentMax?:number):number;

@@ -1,0 +1,240 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "user_id": "string"
+  },
+  "data": {
+    "success": "boolean",
+    "data": {
+      "tab_visible": {
+        "collect": "boolean",
+        "note": "boolean",
+        "seed": "boolean",
+        "like": "boolean"
+      },
+      "collected_poi_num": "number",
+      "blocked": "boolean",
+      "ip_location": "string",
+      "liked": "number",
+      "follows": "number",
+      "collected": "number",
+      "is_login_user_pro_account": "boolean",
+      "result": {
+        "success": "boolean",
+        "message": "string",
+        "code": "number"
+      },
+      "recommend_info": "string",
+      "real_name_info": "string",
+      "default_collection_tab": "string",
+      "red_official_verify_base_info": "string",
+      "block_view_to_user": "boolean",
+      "red_club_info": {
+        "red_club_url": "string",
+        "redclubscore": "number",
+        "red_club": "boolean",
+        "red_club_level": "number"
+      },
+      "share_link": "string",
+      "banner_info": {
+        "image": "string",
+        "bg_color": "string",
+        "like_status": "boolean"
+      },
+      "share_info": {
+        "title": "string",
+        "content": "string"
+      },
+      "identity_deeplink": "string",
+      "red_official_verify_type": "number",
+      "imageb": "string",
+      "show_extra_info_button": "boolean",
+      "avatar_like_status": "boolean",
+      "collected_product_num": "number",
+      "collected_notes_num": "number",
+      "location_jump": "boolean",
+      "desc": "string",
+      "location": "string",
+      "remark_name": "string",
+      "hula_tabs": {
+        "tab_id_selected": "string",
+        "all_show_tab_config": {
+          "type": "array",
+          "length": 1,
+          "sample": {
+            "tab_id": "string",
+            "tab_name": "string",
+            "tab_index_weight": "number"
+          }
+        }
+      },
+      "is_recommend_level_illegal": "boolean",
+      "seller_info": {
+        "tab_code_names": {
+          "type": "array",
+          "length": 0,
+          "sample": null
+        },
+        "is_tab_goods_first": "boolean",
+        "tab_goods_api_version": "number"
+      },
+      "ndiscovery": "number",
+      "avatar_handle_entry_list": {
+        "type": "array",
+        "length": 0,
+        "sample": null
+      },
+      "userid": "string",
+      "college_info": {
+        "enrollment_year": "number",
+        "college_name": "string"
+      },
+      "collected_movie_num": "number",
+      "fstatus": "string",
+      "identity_label_migrated": "boolean",
+      "collected_brand_num": "number",
+      "avatar_pendant": {
+        "current_user_pendant": "boolean",
+        "current_user_pet": "boolean"
+      },
+      "user_widget_switch": "boolean",
+      "tags": {
+        "type": "array",
+        "length": 3,
+        "sample": {
+          "name": "string",
+          "tag_type": "string"
+        }
+      },
+      "red_official_verified": "boolean",
+      "community_rule_url": "string",
+      "note_num_stat": {
+        "liked": "number",
+        "posted": "number",
+        "collected": "number"
+      },
+      "blocking": "boolean",
+      "collected_book_num": "number",
+      "red_id": "string",
+      "mute_view_to_user": "boolean",
+      "block_view_from_user": "boolean",
+      "recommend_info_icon": "string",
+      "sec_account_deeplink": "string",
+      "interactions": {
+        "type": "array",
+        "length": 3,
+        "sample": {
+          "is_private": "boolean",
+          "count": "number",
+          "type": "string",
+          "name": "string",
+          "toast": "string"
+        }
+      },
+      "red_official_verify_content": "string",
+      "desc_at_users": {
+        "type": "array",
+        "length": 0,
+        "sample": null
+      },
+      "level": {
+        "number": "number",
+        "image_link": "string"
+      },
+      "nickname": "string",
+      "user_desc_info": {
+        "desc_keywords_switch": "boolean",
+        "desc_at_users": {
+          "type": "array",
+          "length": 0,
+          "sample": null
+        },
+        "desc_with_placeholder": "string",
+        "button": {
+          "original": {
+            "button_content": "string",
+            "translation_strategy": "number"
+          },
+          "replace": {
+            "button_content": "string",
+            "translation_strategy": "number"
+          }
+        },
+        "desc": "string",
+        "trans_api_param": {
+          "biz_id": "string",
+          "text_inputs": {
+            "type": "array",
+            "length": 1,
+            "sample": {
+              "key": "string",
+              "content": "string"
+            }
+          },
+          "biz_type": "string"
+        }
+      },
+      "gender": "number",
+      "user_role_type": "number",
+      "nboards": "number",
+      "tab_public": {
+        "seed": "boolean",
+        "collection": "boolean",
+        "collection_board": "boolean",
+        "collection_note": "boolean"
+      },
+      "fans": "number",
+      "collected_tags_num": "number",
+      "images": "string",
+      "brand_account_info": {
+        "conversions": {
+          "type": "array",
+          "length": 1,
+          "sample": {
+            "sub_title": "string",
+            "is_shop": "boolean",
+            "id": "string",
+            "is_red_shop": "boolean",
+            "link": "string",
+            "name": "string",
+            "icon": "string"
+          }
+        }
+      },
+      "share_info_v2": {
+        "title": "string",
+        "content": "string"
+      },
+      "zhong_tong_bar_info": {
+        "conversions": {
+          "type": "array",
+          "length": 1,
+          "sample": {
+            "id": "string",
+            "icon": "string",
+            "name": "string",
+            "sub_title": "string",
+            "link": "string"
+          }
+        }
+      },
+      "real_name_deep_target": "number"
+    },
+    "code": "number",
+    "msg": "string",
+    "debug_id": "string",
+    "debug_info": "string"
+  }
+}

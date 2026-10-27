@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-10-27T07:06:10.782447+00:00",
+  "platform": "darwin",
+  "arch": "arm64",
+  "memoryBytes": 17179869184,
+  "runtime": {
+    "path": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv",
+    "allocatedBytes": 474537984,
+    "logicalRegularFileBytes": 451427552
+  },
+  "model": {
+    "path": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+    "allocatedBytes": 2470174720,
+    "logicalRegularFileBytes": 2467861734
+  },
+  "wholeIndependentDirectory": {
+    "path": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen",
+    "allocatedBytes": 2944712704,
+    "logicalRegularFileBytes": 2919289286
+  },
+  "modelConfig": {
+    "model_type": "qwen3_asr",
+    "architectures": [
+      "Qwen3ASRForConditionalGeneration"
+    ],
+    "quantization": {
+      "group_size": 64,
+      "bits": 8,
+      "mode": "affine"
+    }
+  },
+  "knownChineseAudio": {
+    "sampleRate": 16000,
+    "channels": 1,
+    "sampleWidth": 2,
+    "frames": 24689,
+    "durationMs": 1543
+  },
+  "localRuntimeRetained": true,
+  "oldFasterWhisperRuntimeModified": false,
+  "referenceApplicationModified": false,
+  "productionApplicationSourceModified": false,
+  "diagnosticHarnessAdded": true
+}

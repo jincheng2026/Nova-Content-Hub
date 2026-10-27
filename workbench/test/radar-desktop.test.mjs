@@ -15,7 +15,7 @@ test('radar desktop freezes query, operations and min(current,4) budget while ma
  const {controller:manual}=await fixture(t,{budget:0});assert.deepEqual((await manual.createRadarTask(query)).snapshot.tasks[0].request.tools,[]);
 });
 test('radar broker enforces frozen platform/query/filter/author policy before provider and persists author allowance over restart',async t=>{
- const f=await fixture(t),created=await f.controller.createRadarTask({...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:12}),task=created.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'radar-test'};f.library.mutateProduction('claimTask',identity);
+ const f=await fixture(t),created=await f.controller.createRadarTask({...query,platform:'YouTube',platforms:['YouTube','抖音'],sampleLimit:12}),task=created.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'radar-test'};f.library.mutateProduction('claimTask',identity);
  const encryption={isEncryptionAvailable:()=>true,getSelectedStorageBackend:()=> 'keychain',encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'service.json'),encryption});await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'test-key'}});
  const tools=new ServiceTools({settings});let invocations=0;tools.invoke=async request=>{invocations++;return request.operation==='douyin-search'?{data:{business_data:[{data:{aweme_info:{aweme_id:'123',author:{sec_uid:'missing-fans'}}}},{data:{aweme_info:{aweme_id:'124',author:{sec_uid:'known-fans',follower_count:50}}}}]}}:{data:{user:{follower_count:20}}};};
  const descriptor=path.join(f.dir,'broker.json'),owner={worker:f.worker,current:()=>f.binding};let broker=productionToolBroker(owner,tools,descriptor);await broker.start();t.after(()=>broker.stop());
@@ -64,8 +64,38 @@ test('multi-platform desktop freezes all selections and custom ranges while reta
  const multi={...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:12,lookbackDays:730};
  assert.doesNotThrow(()=>validateInput('createRadarTask',multi));
  const task=(await c.createRadarTask(multi)).snapshot.tasks.at(-1);
- assert.deepEqual(task.request.parameters.query,multi);assert.deepEqual(task.request.parameters.operations,['douyin-search','profile']);assert.equal(task.request.budget.amount,4);
- const manual=(await c.createRadarTask({...multi,platforms:['小红书','YouTube']})).snapshot.tasks.at(-1);
+ assert.deepEqual(task.request.parameters.query,multi);assert.deepEqual(task.request.parameters.operations,['xhs-search','xhs-profile','douyin-search','profile']);assert.equal(task.request.budget.amount,4);
+ const manual=(await c.createRadarTask({...multi,platform:'YouTube',platforms:['YouTube','Telegram']})).snapshot.tasks.at(-1);
  assert.equal(manual.request.budget.amount,0);assert.deepEqual(manual.request.tools,[]);
  const {controller:limited}=await fixture(t,{budget:2});assert.equal((await limited.createRadarTask(multi)).snapshot.tasks.at(-1).request.budget.amount,2);
+});
+
+test('XHS and Douyin profiles stay bound to their own sampled search authors and survive broker restart',async t=>{
+ const f=await fixture(t),multi={...query,platforms:['抖音','小红书'],sampleLimit:2},created=await f.controller.createRadarTask(multi),task=created.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'multi-radar-test'};f.library.mutateProduction('claimTask',identity);
+ const source=new URL('../../docs/verification/2026-10-27-live-services/tikhub-all-after-recharge/',import.meta.url),read=async op=>JSON.parse(await fs.readFile(new URL(`${op}.fixture.json`,source),'utf8'));
+ const dy=await read('douyin-search'),xhs=await read('xhs-search'),dyId='1'.repeat(24),xhsId='2'.repeat(24),outsideQuota='3'.repeat(24);
+ dy.data.business_data[0].data.aweme_info.author={sec_uid:dyId};xhs.data.data.items[0].note.user.userid=xhsId;xhs.data.data.items[1].note.user.userid=outsideQuota;
+ const encryption={isEncryptionAvailable:()=>true,encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'settings.json'),encryption});await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'test-key'}});
+ const tools=new ServiceTools({settings});let invoked=0;tools.invoke=async r=>{invoked++;return r.operation==='douyin-search'?dy:r.operation==='xhs-search'?xhs:r.operation==='profile'?{data:{user:{follower_count:20}}}:{data:{data:{fans:30}}};};
+ const file=path.join(f.dir,'multi-broker.json'),owner={worker:f.worker,current:()=>f.binding};let broker=productionToolBroker(owner,tools,file);await broker.start();t.after(()=>broker.stop());
+ const call=(operation,id,extra={})=>callServiceTool(file,{...identity,requestId:randomUUID(),tool:'tikhub',operation,id,...extra});
+ await call('douyin-search',multi.direction,{search:radarSearchFilters(multi)});
+ await assert.rejects(call('xhs-profile',dyId),{code:'RADAR_AUTHOR_FORBIDDEN'});
+ await call('xhs-search',multi.direction,{search:radarSearchFilters(multi)});
+ const costs=f.library.readProduction().costs;assert.deepEqual(costs[0].usage.radarAuthorIds,[dyId]);assert.deepEqual(costs[1].usage.radarAuthorIds,[xhsId]);
+ await broker.stop();broker=productionToolBroker(owner,tools,file);await broker.start();
+ for(const [operation,id]of [['profile',xhsId],['xhs-profile',dyId],['xhs-profile',outsideQuota]])await assert.rejects(call(operation,id),{code:'RADAR_AUTHOR_FORBIDDEN'});
+ await call('profile',dyId);await call('xhs-profile',xhsId);assert.equal(invoked,4);assert.equal(f.library.readProduction().costs.reduce((n,c)=>n+c.amount,0),4);
+});
+
+test('XHS account analysis freezes the correct capability and never enables Douyin comments',async t=>{
+ const f=await fixture(t);f.values.commentsEnabled=true;let snapshot=await f.controller.readProduction();snapshot=await f.controller.mutateProduction({op:'saveAccount',input:{name:'XHS fixture',platform:'小红书',url:'https://www.xiaohongshu.com/user/profile/'+'1'.repeat(24),note:'fixture only',tags:[],images:[],reportIds:[],expectedToken:snapshot.editToken},mutationId:randomUUID()});
+ const account=snapshot.accounts.at(-1),created=await f.controller.startProductionTask({kind:'analysis',title:'XHS capability',prompt:'fixture only',mode:'simple',comments:true,accountId:account.id}),task=created.snapshot.tasks.at(-1);
+ assert.equal(task.request.parameters.platformCollection,'xiaohongshu');assert.equal(task.request.parameters.comments,false);assert(task.request.tools.includes('tikhub'));
+ const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'xhs-account-test'};f.library.mutateProduction('claimTask',identity);
+ const encryption={isEncryptionAvailable:()=>true,encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'xhs-settings.json'),encryption});await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'fixture-key'}});
+ const tools=new ServiceTools({settings});let calls=[];tools.invoke=async request=>{calls.push(request.operation);return{data:{data:{fans:5}}};};const file=path.join(f.dir,'xhs-broker.json'),broker=productionToolBroker({worker:f.worker,current:()=>f.binding},tools,file);await broker.start();t.after(()=>broker.stop());
+ const call=operation=>callServiceTool(file,{...identity,requestId:randomUUID(),tool:'tikhub',operation,id:operation.endsWith('search')?'fixture':'1'.repeat(24)});
+ for(const operation of ['douyin-search','profile','user-posts','video','comments','user-search'])await assert.rejects(call(operation),{code:'PLATFORM_OPERATION_FORBIDDEN'});
+ await call('xhs-search');await call('xhs-profile');assert.deepEqual(calls,['xhs-search','xhs-profile']);
 });

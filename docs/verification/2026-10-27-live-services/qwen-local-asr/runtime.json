@@ -1,0 +1,170 @@
+{
+  "python": "3.11.16",
+  "machine": "arm64",
+  "mlx_audio": "0.6.2",
+  "mlx": "0.32.4",
+  "loadModelSignature": "(model_path: Union[str, pathlib.Path], lazy: bool = False, strict: bool = False, **kwargs: Any) -> mlx.nn.layers.base.Module",
+  "bareModelHasGenerate": false,
+  "sourceFile": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/lib/python3.11/site-packages/mlx_audio/stt/models/qwen3_asr/qwen3_asr.py",
+  "packages": [
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5"
+    },
+    {
+      "name": "anyio",
+      "version": "4.15.1"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1"
+    },
+    {
+      "name": "click",
+      "version": "8.5.0"
+    },
+    {
+      "name": "filelock",
+      "version": "4.2.4"
+    },
+    {
+      "name": "fsspec",
+      "version": "2026.9.0"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "hf-xet",
+      "version": "1.7.0"
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.16.0"
+    },
+    {
+      "name": "httpx2",
+      "version": "2.16.0"
+    },
+    {
+      "name": "huggingface_hub",
+      "version": "2.3.0"
+    },
+    {
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "name": "Jinja2",
+      "version": "3.1.6"
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4"
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2"
+    },
+    {
+      "name": "miniaudio",
+      "version": "1.71"
+    },
+    {
+      "name": "mlx",
+      "version": "0.32.4"
+    },
+    {
+      "name": "mlx-audio",
+      "version": "0.6.2"
+    },
+    {
+      "name": "mlx-metal",
+      "version": "0.32.4"
+    },
+    {
+      "name": "numpy",
+      "version": "2.4.6"
+    },
+    {
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.12"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "name": "regex",
+      "version": "2026.9.29"
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0"
+    },
+    {
+      "name": "safetensors",
+      "version": "0.8.0"
+    },
+    {
+      "name": "scipy",
+      "version": "1.17.1"
+    },
+    {
+      "name": "sentencepiece",
+      "version": "0.2.2"
+    },
+    {
+      "name": "shellingham",
+      "version": "1.5.4"
+    },
+    {
+      "name": "sounddevice",
+      "version": "0.5.6"
+    },
+    {
+      "name": "tokenizers",
+      "version": "0.23.3"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1"
+    },
+    {
+      "name": "transformers",
+      "version": "5.21.0"
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.5"
+    },
+    {
+      "name": "typer",
+      "version": "0.27.3"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "zstandard",
+      "version": "0.25.0"
+    }
+  ],
+  "modelWrapperDelegatesTo": "Qwen3ASRModel via __getattr__",
+  "coreHasGenerate": true,
+  "coreGenerateSignature": "(self, audio: Union[str, mlx.core.array, numpy.ndarray, List[Union[str, mlx.core.array, numpy.ndarray]]], *, max_tokens: int = 8192, batch_size: int = 1, temperature: float = 0.0, top_p: float = 1.0, top_k: int = 0, min_p: float = 0.0, min_tokens_to_keep: int = 1, repetition_penalty: Optional[float] = None, repetition_context_size: int = 100, language: Union[str, NoneType, List[Optional[str]]] = None, prefill_step_size: int = 2048, chunk_duration: float = 1200.0, min_chunk_duration: float = 1.0, verbose: bool = False, stream: bool = False, system_prompt: str | None = None, hotwords: Optional[List[str]] = None, **kwargs) -> Union[mlx_audio.stt.models.base.STTOutput, List[mlx_audio.stt.models.base.STTOutput], Generator[mlx_audio.stt.models.qwen3_asr.qwen3_asr.StreamingResult, NoneType, NoneType]]"
+}

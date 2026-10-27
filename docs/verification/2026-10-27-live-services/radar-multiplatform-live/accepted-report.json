@@ -1,0 +1,112 @@
+{
+  "id": "68c0802e-9716-4fbd-a793-9eb045c29ec8",
+  "title": "AI 工具教程 · 低粉爆款",
+  "type": "viral-radar",
+  "accountIds": [],
+  "sourceUrl": null,
+  "collectedAt": "2026-10-27T07:41:03.451Z",
+  "pages": [
+    {
+      "id": "dcfc04a0-1aac-462d-9126-f236edaa44df",
+      "title": "雷达采集报告",
+      "assetHash": "b6a8841f353e46d1543ababaea7c5f4458cf5e96bc1047096c717c965c8209e2"
+    }
+  ],
+  "pageId": "dcfc04a0-1aac-462d-9126-f236edaa44df",
+  "meta": {
+    "radar": {
+      "schemaVersion": 1,
+      "query": {
+        "platform": "抖音",
+        "platforms": [
+          "抖音",
+          "小红书"
+        ],
+        "direction": "AI 工具教程",
+        "sampleLimit": 2,
+        "maxFollowers": 10000,
+        "minLikes": 1000,
+        "minRatio": 1,
+        "lookbackDays": 30
+      },
+      "taskId": "1a72ec01-d950-4cf9-9116-d5189c67142f",
+      "attemptId": "d615f81b-16d7-46d8-8884-bba3020c4d52",
+      "receiptHash": "1b227018dcc076c2c5b97600c663df9a4662599ecb4228509b9d476f850a65a2",
+      "collectedAt": "2026-10-27T07:41:03.451Z",
+      "candidates": [
+        {
+          "id": "e10cb5ed-1aec-49ff-a924-d5be13b4ab1e",
+          "sourceKey": "douyin:7663441916159167798",
+          "platform": "抖音",
+          "sourceId": "7663441916159167798",
+          "url": "https://www.iesdouyin.com/share/video/7663441916159167798/?region=US&mid=7663441930684025609&u_code=0&did=MS4wLjABAAAADnB2n6MqyD49SGF86RJgwFNkJkBPrC0ssf-O7OX3AyJq-QYCfOClZT7hszpQI3U0&iid=MS4wLjABAAAA_8asHJ-C725D4gVYwsduDW-PhX1OQErX2NrwoNvuYyykoC_kacbtOUJCUX0R8b-R&with_sec_did=1&video_share_track_ver=&titleType=title&share_sign=qcsdGiaUaNCX1AhoG6P9nVvqo3t4BqDa2euiVcknfo8-&share_version=320900&ts=1793086858&from_aid=615883&from_ssr=1&share_track_info=%7B%22link_description_type%22%3A%22%22%7D",
+          "title": "实景转VR的效果到底怎么做？今天三步搞定 #AI#AI特效#AI工具#AI教程#AIGC",
+          "author": {
+            "id": "MS4wLjABAAAANTkJbyIKtN6ugXaQyT1iH6I60Hk2tvARXWDaqwuO81VXgPLh8XUwtxR-csysUYEi",
+            "name": "卡卡AI控",
+            "url": "https://www.douyin.com/user/MS4wLjABAAAANTkJbyIKtN6ugXaQyT1iH6I60Hk2tvARXWDaqwuO81VXgPLh8XUwtxR-csysUYEi",
+            "followers": 407198
+          },
+          "metrics": {
+            "likes": 15556,
+            "comments": 85,
+            "shares": 1025,
+            "saves": 744,
+            "views": 0,
+            "likeFollowerRatio": 0.03820254519914145
+          },
+          "publishedAt": "2026-07-17T10:28:40.000Z",
+          "collectedAt": "2026-10-27T07:41:03.451Z",
+          "evidence": [
+            "TikHub douyin-search 首屏；粉丝为采集时快照"
+          ],
+          "eligibility": "unqualified",
+          "reasons": [
+            "粉丝数未达到阈值",
+            "赞粉比未达到阈值",
+            "超出时间窗口"
+          ],
+          "decision": "pending",
+          "topicId": null
+        },
+        {
+          "id": "da17024f-aa1f-470c-aaed-3c8ac81b0440",
+          "sourceKey": "xiaohongshu:6accd6d8000000001b01ceb8",
+          "platform": "小红书",
+          "sourceId": "6accd6d8000000001b01ceb8",
+          "url": "https://www.xiaohongshu.com/explore/6accd6d8000000001b01ceb8",
+          "title": "🔥当你意识到自己正在变老！附教程",
+          "author": {
+            "id": "6721b042000000001d02c947",
+            "name": "喵笔三花",
+            "url": "https://www.xiaohongshu.com/user/profile/6721b042000000001d02c947",
+            "followers": null
+          },
+          "metrics": {
+            "likes": 148437,
+            "comments": 572,
+            "shares": 1896,
+            "saves": 28365,
+            "views": null,
+            "likeFollowerRatio": null
+          },
+          "publishedAt": "2026-10-13T09:32:17.000Z",
+          "collectedAt": "2026-10-27T07:41:03.451Z",
+          "evidence": [
+            "TikHub xhs-search 首屏；粉丝为采集时快照；未提供播放数时保留未知"
+          ],
+          "eligibility": "unknown",
+          "reasons": [
+            "粉丝数未知",
+            "赞粉比未知"
+          ],
+          "decision": "pending",
+          "topicId": null
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-10-27T07:41:04.249Z",
+  "updatedAt": "2026-10-27T07:41:04.249Z",
+  "deletedAt": null
+}

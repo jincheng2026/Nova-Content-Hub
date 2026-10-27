@@ -1,0 +1,60 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "keyword": "string",
+    "cursor": "number"
+  },
+  "data": {
+    "code": "number",
+    "data": {
+      "user_list": {
+        "type": "array",
+        "length": 28,
+        "sample": {
+          "monitor_id": "number",
+          "user_id": "string",
+          "nick_name": "string",
+          "avatar_url": "string",
+          "fans_cnt": "number",
+          "like_cnt": "number",
+          "publish_cnt": "number",
+          "new_like_cnt": "number",
+          "new_fans_cnt": "number",
+          "second_tag_name": "string",
+          "monitor_status": "number",
+          "target_type": "number",
+          "target_cnt": "number",
+          "monitor_period": "number",
+          "notice_type": "number",
+          "notice_hour": "number",
+          "new_item_monitor": "number",
+          "new_item_target_type": "number",
+          "new_item_target_cnt": "number",
+          "fans_trends": "null",
+          "fans_incr_rate": "number",
+          "nexus_id": "number",
+          "group_id": "number",
+          "group_name": "string"
+        }
+      },
+      "has_more": "boolean",
+      "cursor": "number"
+    },
+    "extra": {
+      "now": "number"
+    },
+    "message": "string"
+  }
+}

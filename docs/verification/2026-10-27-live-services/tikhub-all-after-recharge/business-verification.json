@@ -1,0 +1,84 @@
+{
+  "verifiedAt": "2026-10-27T07:16:36.250Z",
+  "checks": [
+    {
+      "operation": "profile",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": null,
+      "businessDataObserved": true,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "user-posts",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": null,
+      "businessDataObserved": 21,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "video",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": null,
+      "innerSuccess": null,
+      "businessDataObserved": true,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "comments",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": null,
+      "businessDataObserved": 20,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "user-search",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": null,
+      "businessDataObserved": 28,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "douyin-search",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": null,
+      "businessDataObserved": 7,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "xhs-search",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": true,
+      "businessDataObserved": 20,
+      "requestsUsed": 1,
+      "accepted": true
+    },
+    {
+      "operation": "xhs-profile",
+      "providerEnvelopeCode": 200,
+      "innerStatusCode": 0,
+      "innerSuccess": true,
+      "businessDataObserved": true,
+      "requestsUsed": 1,
+      "accepted": true
+    }
+  ],
+  "totalHttpRequests": 8,
+  "totalMeasuredReq": 8,
+  "monetaryCost": "unknown",
+  "originalSettingsChanged": false,
+  "protectedSettingsChanged": false,
+  "originalBudgetEnabled": false,
+  "originalCommentsEnabled": false
+}

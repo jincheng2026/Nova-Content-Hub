@@ -1,0 +1,354 @@
+{
+  "startedAt": "2026-10-27T07:13:39.534Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "target": {
+    "secUid": "MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E",
+    "url": "https://www.douyin.com/user/MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E"
+  },
+  "maxHttpRequests": 10,
+  "plannedUniqueOperations": 8,
+  "retries": 0,
+  "pagination": false,
+  "commentsAuthorization": "User explicitly authorized all TikHub capabilities after recharge; one default page of comments only.",
+  "guiVerified": false,
+  "results": [
+    {
+      "operation": "profile",
+      "taskId": "e3e97216-675c-471e-bb46-e602bb60bc11",
+      "startedAt": "2026-10-27T07:13:40.368Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:13:45.960Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "1ab1628dd7f75afd0d09c49a345c2fe4610d6ceff28e14a792c7b7379bc12870"
+      }
+    },
+    {
+      "operation": "user-posts",
+      "taskId": "7518bd57-e492-46f7-b546-a15a6e719949",
+      "startedAt": "2026-10-27T07:13:47.101Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:13:50.644Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "bb43ca8242b74ded02beb469ba76f450eb19e79559ffcdbf631ad5d6e44d08c8"
+      }
+    },
+    {
+      "operation": "video",
+      "taskId": "270e9a1f-9a78-4640-8197-bcdc5e3610f6",
+      "startedAt": "2026-10-27T07:13:52.778Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:13:58.169Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "2f97f48b8930d7a8f40a4bac1e5cc5e30f845381a38eeabbbf678eda3eb09ce0"
+      }
+    },
+    {
+      "operation": "comments",
+      "taskId": "8684f961-2b59-494b-8013-64ea091feb00",
+      "startedAt": "2026-10-27T07:14:00.367Z",
+      "frozenComments": true,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:14:02.608Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "a5dc7de2fdd355cdf9f773c6b426fde6679b60155388a4484f2fc6a67fd326a4"
+      }
+    },
+    {
+      "operation": "user-search",
+      "taskId": "b5f224b7-8c0c-43ca-8d46-19190498258b",
+      "startedAt": "2026-10-27T07:14:05.039Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:14:08.136Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "b664c8652f4414ae4e4af742185a12b7950ad161977949111f3ed8e13b1b3273"
+      }
+    },
+    {
+      "operation": "douyin-search",
+      "taskId": "b6c076ac-6c61-4625-a784-4bcef6f3b0e8",
+      "startedAt": "2026-10-27T07:14:09.745Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:14:14.372Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "d0544958dcca507f1aa072646b0b7b1c6cdc021d936a7ad12540a6d2e193d7d1"
+      }
+    },
+    {
+      "operation": "xhs-search",
+      "taskId": "a991295f-c02e-4f49-9172-27fe36cc098c",
+      "startedAt": "2026-10-27T07:14:17.118Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:14:21.764Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "c8957abb78970d2ad123e5eb01bbc3a44f0c44d673417d7f628af02abd08d9c5"
+      }
+    },
+    {
+      "operation": "xhs-profile",
+      "taskId": "b67b44b4-8265-49b4-b2d7-f30720f9a86f",
+      "startedAt": "2026-10-27T07:14:24.173Z",
+      "frozenComments": false,
+      "budget": {
+        "amount": 1,
+        "currency": "REQ"
+      },
+      "ok": true,
+      "requestsUsed": 1,
+      "cacheHit": false,
+      "collectedAt": "2026-10-27T07:14:26.992Z",
+      "receipt": {
+        "accepted": true,
+        "archiveReady": true,
+        "sha256": "1e0ac8e24d2518d2bb89966d9d382e1f9ece3b53c7ac920a765863a71c53e60f"
+      }
+    }
+  ],
+  "http": [
+    {
+      "index": 1,
+      "path": "/api/v1/douyin/app/v3/handler_user_profile",
+      "startedAt": "2026-10-27T07:13:40.638Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 15084,
+      "providerCode": "200"
+    },
+    {
+      "index": 2,
+      "path": "/api/v1/douyin/app/v3/fetch_user_post_videos",
+      "startedAt": "2026-10-27T07:13:47.335Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 1478757,
+      "providerCode": "200"
+    },
+    {
+      "index": 3,
+      "path": "/api/v1/douyin/app/v3/fetch_one_video_v2",
+      "startedAt": "2026-10-27T07:13:53.348Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 95454,
+      "providerCode": "200"
+    },
+    {
+      "index": 4,
+      "path": "/api/v1/douyin/app/v3/fetch_video_comments",
+      "startedAt": "2026-10-27T07:14:00.679Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 64963,
+      "providerCode": "200"
+    },
+    {
+      "index": 5,
+      "path": "/api/v1/douyin/search/fetch_user_search_v2",
+      "startedAt": "2026-10-27T07:14:05.390Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 18841,
+      "providerCode": "200"
+    },
+    {
+      "index": 6,
+      "path": "/api/v1/douyin/search/fetch_video_search_v2",
+      "startedAt": "2026-10-27T07:14:10.066Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 493776,
+      "providerCode": "200"
+    },
+    {
+      "index": 7,
+      "path": "/api/v1/xiaohongshu/app_v2/search_notes",
+      "startedAt": "2026-10-27T07:14:17.558Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 178902,
+      "providerCode": "200"
+    },
+    {
+      "index": 8,
+      "path": "/api/v1/xiaohongshu/app_v2/get_user_info",
+      "startedAt": "2026-10-27T07:14:24.869Z",
+      "sent": true,
+      "httpStatus": 200,
+      "responseBytes": 6609,
+      "providerCode": "200"
+    }
+  ],
+  "credentialHashVerified": true,
+  "originalBudgetEnabled": false,
+  "originalCommentsEnabled": false,
+  "account": {
+    "nickname": "在下小曾 o",
+    "url": "https://www.douyin.com/user/MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E",
+    "secUid": "MS4wLjABAAAA_MwbLwyLnMARlAErwvPwmlhVlvG_NOgc80_3TeHIj-E",
+    "followerCount": 24651,
+    "uid": "97081769959"
+  },
+  "video": {
+    "awemeId": "7683351511748840740",
+    "url": "https://www.douyin.com/video/7683351511748840740",
+    "description": "用Obsidian+Codex搭了一个超实用的AI工作台 全流程提效工作台，可以帮我扒取每日热点，对标博主动态，找选题，拆解爆文，文案创作、发布，以及数据复盘，让内容生产更系统化、流程化   #AI工具  #超级个体 #个人工作台 #AI工作台   #胡楚靓工作台"
+  },
+  "outcome": "all-eight-passed",
+  "updatedAt": "2026-10-27T07:14:28.554Z",
+  "actualHttpRequests": 8,
+  "costs": [
+    {
+      "taskId": "e3e97216-675c-471e-bb46-e602bb60bc11",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "7518bd57-e492-46f7-b546-a15a6e719949",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "270e9a1f-9a78-4640-8197-bcdc5e3610f6",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "8684f961-2b59-494b-8013-64ea091feb00",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "b5f224b7-8c0c-43ca-8d46-19190498258b",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "b6c076ac-6c61-4625-a784-4bcef6f3b0e8",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "a991295f-c02e-4f49-9172-27fe36cc098c",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    },
+    {
+      "taskId": "b67b44b4-8265-49b4-b2d7-f30720f9a86f",
+      "service": "tikhub",
+      "status": "measured",
+      "amount": 1,
+      "usage": {
+        "costStatus": "unknown",
+        "requests": 1,
+        "ok": true
+      }
+    }
+  ],
+  "originalSettingsChanged": false,
+  "protectedSettingsChanged": false,
+  "allowedConcurrentAsrChange": false
+}

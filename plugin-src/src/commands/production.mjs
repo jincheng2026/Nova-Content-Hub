@@ -37,7 +37,7 @@ export async function main(argv){
     if(context.task.activeAttemptId!==locator.attemptId||context.attempt.status!=='claimed'||context.attempt.claimToken!==payload.claimToken||!payload.workerId||context.attempt.workerId!==payload.workerId)fail('ATTEMPT_INACTIVE','Claim the active task before radar collection');
     const parameters=context.task.request.parameters;
     if(parameters?.workflow!=='viral-radar'||parameters.budgetEnabled!==true||!context.task.request.tools.includes('tikhub'))fail('BUDGET_DISABLED','This radar task permits manual evidence only');
-    result={radar:await collectRadar({query:parameters.query,identity:{...locator,claimToken:payload.claimToken,workerId:payload.workerId},descriptorPath:envelope.serviceDescriptorPath,maxRequests:Math.min(4,context.task.request.budget.amount)})};
+    result={radar:await collectRadar({query:parameters.query,allowedOperations:parameters.operations,identity:{...locator,claimToken:payload.claimToken,workerId:payload.workerId},descriptorPath:envelope.serviceDescriptorPath,maxRequests:Math.min(4,context.task.request.budget.amount)})};
    }else if(command==='import'){
     if(Object.keys(payload).some(k=>!['path','purpose','claimToken','workerId'].includes(k))||!['production-report','production-reference'].includes(payload.purpose)||typeof payload.path!=='string'||!path.isAbsolute(payload.path))fail('INVALID_INPUT','Invalid task import');
     if(context.task.activeAttemptId!==locator.attemptId||context.attempt.status!=='claimed'||context.attempt.claimToken!==payload.claimToken||!payload.workerId||context.attempt.workerId!==payload.workerId)fail('ATTEMPT_INACTIVE','Claim the active task before importing');

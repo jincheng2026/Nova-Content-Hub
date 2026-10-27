@@ -1,7 +1,7 @@
 import {contentCreationPrompt} from '../shared/content-creation-workflow.ts';
 import {researchDepthRequirements} from '../shared/research-depth.ts';
 import {productionLaunchFailure} from './assistant-failure.mts';
-import {radarQueryOperations,radarSearchFilters,radarPrompt} from '../../../plugin-src/src/lib/file-library/radar.mjs';
+import {radarQueryOperations,radarSearchFilters,radarPrompt,radarRequestLimit} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {publicEndpoint} from './service-tools.mts';
 import type {RadarQuery,RadarAdopt,RadarDecision,RadarReport} from '../shared/radar-contracts.ts';
 import {platformCollectionCapability} from '../shared/platform-catalog.ts';
@@ -78,7 +78,7 @@ export class ProductionController {
   const account=input.accountId?snapshot.accounts.find(account=>account.id===input.accountId&&!account.deletedAt):undefined;
   if(input.accountId&&!account)fail('NOT_FOUND','对标账号不存在，请刷新后重新选择。');
   const platformCollection=account?platformCollectionCapability(account.platform):null;
-  const parameters={...(input.workflow?{workflow:input.workflow}:{}),...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
+  const parameters={...(input.workflow?{workflow:input.workflow}:{}),...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&(!account||platformCollection==='douyin'),budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
   const tools=platformCollection==='manual'?['model','asr']:['tikhub','model','asr'];
   const prior=new Set(snapshot.tasks.map(t=>t.id));
   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.workflow==='content-creation'?contentCreationPrompt(input.prompt):input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
@@ -87,7 +87,7 @@ export class ProductionController {
  });}
  createRadarTask(input:RadarQuery){this.validate('createRadarTask',input);return this.owner.exclusive(async()=>{
   this.owner.noPending();const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),settings=await this.callbacks.serviceSettings(),v=settings.values,ops=radarQueryOperations(input),query=structuredClone(input);
-  const budget=v.budget.enabled&&ops.length?Math.min(4,1+query.sampleLimit,v.budget.maxRequestsPerTask):0,descriptor=await this.callbacks.servicesDescriptor?.();
+  const budget=v.budget.enabled&&ops.length?radarRequestLimit(query,v.budget.maxRequestsPerTask):0,descriptor=await this.callbacks.servicesDescriptor?.();
   const parameters={workflow:'viral-radar',query,operations:budget?ops:[],search:radarSearchFilters(query),comments:false,budgetEnabled:budget>0,maxRequestsPerTask:budget,...(descriptor?{serviceDescriptor:{version:descriptor.version,host:descriptor.host,port:descriptor.port}}:{})};
   const prior=new Set(snapshot.tasks.map(t=>t.id));
   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:'research',title:`${query.direction} · 低粉爆款雷达`,prompt:radarPrompt(query)+(budget?'':' 本次未授权付费采集；只接受用户材料与可核验人工来源。'),contentId:null,accountId:null,host:this.owner.binding.assistant??'codex',parameters,tools:budget?['tikhub']:[],budget:{amount:budget,currency:'REQ'},bodyHash:null,expectedToken:snapshot.editToken}}) as ProductionSnapshot;

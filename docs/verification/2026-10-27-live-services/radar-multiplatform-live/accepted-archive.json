@@ -1,0 +1,228 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "c4747468-77e8-4747-9442-498a3d2bfae2",
+  "category": "调研报告",
+  "taskId": "1a72ec01-d950-4cf9-9116-d5189c67142f",
+  "attemptId": "d615f81b-16d7-46d8-8884-bba3020c4d52",
+  "status": "accepted",
+  "requestHash": "05cbe8ff2ca1a65aa9fbc763da73827fac059a693f862bcfeb095525fb14bfeb",
+  "receiptHash": "1b227018dcc076c2c5b97600c663df9a4662599ecb4228509b9d476f850a65a2",
+  "receipt": {
+    "taskId": "1a72ec01-d950-4cf9-9116-d5189c67142f",
+    "attemptId": "d615f81b-16d7-46d8-8884-bba3020c4d52",
+    "requestHash": "05cbe8ff2ca1a65aa9fbc763da73827fac059a693f862bcfeb095525fb14bfeb",
+    "resultHash": "c8f76e3618d4f7bd01675432fdc785751dbafbbeed525c589eaabc2fcb34bbcc",
+    "sha256": "1b227018dcc076c2c5b97600c663df9a4662599ecb4228509b9d476f850a65a2"
+  },
+  "task": {
+    "title": "AI 工具教程 · 低粉爆款雷达",
+    "kind": "research",
+    "contentId": null,
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "执行低粉爆款雷达研究，固定查询：{\"platform\":\"抖音\",\"platforms\":[\"抖音\",\"小红书\"],\"direction\":\"AI 工具教程\",\"sampleLimit\":2,\"maxFollowers\":10000,\"minLikes\":1000,\"minRatio\":1,\"lookbackDays\":30}。遵守固定 parameters 的操作与预算；自动采集覆盖已接入的抖音和小红书，严格使用冻结 operations，旧任务不扩大授权；其他所选平台须补充可核验人工来源并明确缺口。全部平台合计最多 2 条候选（是上限，不保证数量），总量按授权自动平台均分、余数给前面所选平台；份额为零的平台不发请求并说明缺口。先为所有有份额且预算可覆盖的平台各取一次搜索首屏，再用剩余额度仅为本平台份额内缺粉丝且有真实作者 ID 的候选补一次作者资料。全部平台总请求上限为冻结额度、当前设置和4次中的较小值，预算不足或费用未知立即停止后续请求，粉丝、时间等缺失为 null 并标待核验；不得翻页、评论、模型调用、自动重试或扩词。未授权付费时用人工提供的可核验来源，指标缺失使用 null，不编造数据。提交唯一 research 产物，data.radar={schemaVersion:1,query:上述原样查询,collectedAt:ISO时间,candidates:[{platform,sourceId,url,title,author:{id,name,url,followers},metrics:{likes,comments,shares,saves,views},publishedAt:ISO或null,evidence:[来源与缺口]}]}。粉丝为采集时快照；最终数值判定由本地规则计算。付费采集请先 claim，再运行 production collect-radar --handoff 当前UUID --stdin，输入仅 {\"claimToken\":\"本次claim UUID\",\"workerId\":\"本次worker ID\"}。命令通过原有 service broker 使用冻结查询，返回 result.radar 作为采集证据；query 必须原样引用，在总采样上限内按平台选取候选，可补充其他所选平台的可核验人工来源；不得篡改自动采集指标，各候选 evidence 区分采集与人工来源；禁止改用其他采集命令扩大范围。仍由当前助手负责 progress/submit。",
+    "parameters": {
+      "workflow": "viral-radar",
+      "query": {
+        "platform": "抖音",
+        "platforms": [
+          "抖音",
+          "小红书"
+        ],
+        "direction": "AI 工具教程",
+        "sampleLimit": 2,
+        "maxFollowers": 10000,
+        "minLikes": 1000,
+        "minRatio": 1,
+        "lookbackDays": 30
+      },
+      "operations": [
+        "douyin-search",
+        "profile",
+        "xhs-search",
+        "xhs-profile"
+      ],
+      "search": {
+        "sortType": "likes",
+        "timeRange": "half-year",
+        "contentType": "any"
+      },
+      "comments": false,
+      "budgetEnabled": true,
+      "maxRequestsPerTask": 2,
+      "serviceDescriptor": {
+        "version": 1,
+        "host": "127.0.0.1",
+        "port": 57661
+      }
+    },
+    "tools": [
+      "tikhub"
+    ],
+    "budget": {
+      "amount": 2,
+      "currency": "REQ"
+    },
+    "bodyHash": null
+  },
+  "result": {
+    "summary": "最小真实采样：2条；不降低门槛。",
+    "artifacts": [
+      {
+        "id": "45075985-1aab-4eba-89fe-5e570bafc0f2",
+        "kind": "research",
+        "title": "抖音与小红书真实采样",
+        "text": "按已冻结方向和门槛采样，仅用于临时库验收，未写入用户内容库。",
+        "assetHash": null,
+        "data": {
+          "radar": {
+            "schemaVersion": 1,
+            "query": {
+              "platform": "抖音",
+              "platforms": [
+                "抖音",
+                "小红书"
+              ],
+              "direction": "AI 工具教程",
+              "sampleLimit": 2,
+              "maxFollowers": 10000,
+              "minLikes": 1000,
+              "minRatio": 1,
+              "lookbackDays": 30
+            },
+            "collectedAt": "2026-10-27T07:41:03.451Z",
+            "candidates": [
+              {
+                "id": "e10cb5ed-1aec-49ff-a924-d5be13b4ab1e",
+                "sourceKey": "douyin:7663441916159167798",
+                "platform": "抖音",
+                "sourceId": "7663441916159167798",
+                "url": "https://www.iesdouyin.com/share/video/7663441916159167798/?region=US&mid=7663441930684025609&u_code=0&did=MS4wLjABAAAADnB2n6MqyD49SGF86RJgwFNkJkBPrC0ssf-O7OX3AyJq-QYCfOClZT7hszpQI3U0&iid=MS4wLjABAAAA_8asHJ-C725D4gVYwsduDW-PhX1OQErX2NrwoNvuYyykoC_kacbtOUJCUX0R8b-R&with_sec_did=1&video_share_track_ver=&titleType=title&share_sign=qcsdGiaUaNCX1AhoG6P9nVvqo3t4BqDa2euiVcknfo8-&share_version=320900&ts=1793086858&from_aid=615883&from_ssr=1&share_track_info=%7B%22link_description_type%22%3A%22%22%7D",
+                "title": "实景转VR的效果到底怎么做？今天三步搞定 #AI#AI特效#AI工具#AI教程#AIGC",
+                "author": {
+                  "id": "MS4wLjABAAAANTkJbyIKtN6ugXaQyT1iH6I60Hk2tvARXWDaqwuO81VXgPLh8XUwtxR-csysUYEi",
+                  "name": "卡卡AI控",
+                  "url": "https://www.douyin.com/user/MS4wLjABAAAANTkJbyIKtN6ugXaQyT1iH6I60Hk2tvARXWDaqwuO81VXgPLh8XUwtxR-csysUYEi",
+                  "followers": 407198
+                },
+                "metrics": {
+                  "likes": 15556,
+                  "comments": 85,
+                  "shares": 1025,
+                  "saves": 744,
+                  "views": 0,
+                  "likeFollowerRatio": 0.03820254519914145
+                },
+                "publishedAt": "2026-07-17T10:28:40.000Z",
+                "collectedAt": "2026-10-27T07:41:03.451Z",
+                "evidence": [
+                  "TikHub douyin-search 首屏；粉丝为采集时快照"
+                ],
+                "eligibility": "unqualified",
+                "reasons": [
+                  "粉丝数未达到阈值",
+                  "赞粉比未达到阈值",
+                  "超出时间窗口"
+                ],
+                "decision": "pending",
+                "topicId": null
+              },
+              {
+                "id": "da17024f-aa1f-470c-aaed-3c8ac81b0440",
+                "sourceKey": "xiaohongshu:6accd6d8000000001b01ceb8",
+                "platform": "小红书",
+                "sourceId": "6accd6d8000000001b01ceb8",
+                "url": "https://www.xiaohongshu.com/explore/6accd6d8000000001b01ceb8",
+                "title": "🔥当你意识到自己正在变老！附教程",
+                "author": {
+                  "id": "6721b042000000001d02c947",
+                  "name": "喵笔三花",
+                  "url": "https://www.xiaohongshu.com/user/profile/6721b042000000001d02c947",
+                  "followers": null
+                },
+                "metrics": {
+                  "likes": 148437,
+                  "comments": 572,
+                  "shares": 1896,
+                  "saves": 28365,
+                  "views": null,
+                  "likeFollowerRatio": null
+                },
+                "publishedAt": "2026-10-13T09:32:17.000Z",
+                "collectedAt": "2026-10-27T07:41:03.451Z",
+                "evidence": [
+                  "TikHub xhs-search 首屏；粉丝为采集时快照；未提供播放数时保留未知"
+                ],
+                "eligibility": "unknown",
+                "reasons": [
+                  "粉丝数未知",
+                  "赞粉比未知"
+                ],
+                "decision": "pending",
+                "topicId": null
+              }
+            ],
+            "collection": {
+              "requests": 2,
+              "unknownRequests": 0,
+              "cacheHits": 0,
+              "calls": [
+                {
+                  "requestId": "53bacc04-8aa9-491e-990e-595a5d0c5b65",
+                  "operation": "douyin-search",
+                  "id": "AI 工具教程",
+                  "requestsUsed": 1,
+                  "cacheHit": false,
+                  "collectedAt": "2026-10-27T07:40:59.303Z"
+                },
+                {
+                  "requestId": "b2764577-0d65-4555-ab96-38220741af33",
+                  "operation": "xhs-search",
+                  "id": "AI 工具教程",
+                  "requestsUsed": 1,
+                  "cacheHit": false,
+                  "collectedAt": "2026-10-27T07:41:03.451Z"
+                }
+              ],
+              "onePage": true,
+              "manualPlatforms": [],
+              "unsearchedPlatforms": [],
+              "unsearchedReasons": [],
+              "unverifiedAuthors": [
+                {
+                  "platform": "小红书",
+                  "authorId": "6721b042000000001d02c947",
+                  "sourceId": "6accd6d8000000001b01ceb8"
+                }
+              ],
+              "stoppedReason": null,
+              "partial": true
+            }
+          }
+        }
+      }
+    ]
+  },
+  "reports": [
+    {
+      "id": "68c0802e-9716-4fbd-a793-9eb045c29ec8",
+      "title": "AI 工具教程 · 低粉爆款",
+      "type": "viral-radar",
+      "pages": [
+        {
+          "id": "dcfc04a0-1aac-462d-9126-f236edaa44df",
+          "title": "雷达采集报告",
+          "assetHash": "b6a8841f353e46d1543ababaea7c5f4458cf5e96bc1047096c717c965c8209e2"
+        }
+      ],
+      "sourceUrl": null,
+      "collectedAt": "2026-10-27T07:41:03.451Z",
+      "taskId": "1a72ec01-d950-4cf9-9116-d5189c67142f",
+      "attemptId": "d615f81b-16d7-46d8-8884-bba3020c4d52"
+    }
+  ],
+  "submittedOrAcceptedAt": "2026-10-27T07:41:03.932Z"
+}

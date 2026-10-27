@@ -1,0 +1,20 @@
+{
+  "result": "pass",
+  "networkRequests": 0,
+  "userSettingsRead": false,
+  "windowVisible": false,
+  "renderer": "real React/Semi in isolated Electron",
+  "widths": [
+    1100,
+    700
+  ],
+  "redBaseline": "XHS was incorrectly displayed as manual",
+  "greenAssertions": [
+    "both integrated platforms automatic",
+    "global budget and sample policy",
+    "zero-share platform skipped with reason",
+    "exact selections and sample1 submitted"
+  ],
+  "screenshotsManuallyInspected": true,
+  "platform": "darwin-arm64"
+}

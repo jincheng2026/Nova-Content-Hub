@@ -1,0 +1,69 @@
+{
+  "checkedAt": "2026-10-27T06:51:34.145988+00:00",
+  "source": "https://huggingface.co/api/models/mlx-community/Qwen3-ASR-1.7B-8bit?blobs=true",
+  "repoId": "mlx-community/Qwen3-ASR-1.7B-8bit",
+  "revision": "a8379a2e2f9e313c9292cdf1af4055ab56d50d55",
+  "gated": false,
+  "license": "apache-2.0",
+  "files": [
+    {
+      "name": ".gitattributes",
+      "bytes": 1519,
+      "sha256": null
+    },
+    {
+      "name": "README.md",
+      "bytes": 1008,
+      "sha256": null
+    },
+    {
+      "name": "chat_template.json",
+      "bytes": 1161,
+      "sha256": null
+    },
+    {
+      "name": "config.json",
+      "bytes": 7188,
+      "sha256": null
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 142,
+      "sha256": null
+    },
+    {
+      "name": "merges.txt",
+      "bytes": 1671853,
+      "sha256": null
+    },
+    {
+      "name": "model.safetensors",
+      "bytes": 2463307541,
+      "sha256": "bf304b009cc7eca79283056f787b44c952d24ac22cec787b39732bba3c23c13c"
+    },
+    {
+      "name": "model.safetensors.index.json",
+      "bytes": 78968,
+      "sha256": null
+    },
+    {
+      "name": "preprocessor_config.json",
+      "bytes": 330,
+      "sha256": null
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 12487,
+      "sha256": null
+    },
+    {
+      "name": "vocab.json",
+      "bytes": 2776833,
+      "sha256": null
+    }
+  ],
+  "totalExpectedBytes": 2467859030,
+  "referenceModel": "Qwen/Qwen3-ASR-1.7B (MLX); reference quantization was not recorded",
+  "chosenVariant": "8bit from upstream supported-model README",
+  "pinnedMetadataSource": "https://huggingface.co/api/models/mlx-community/Qwen3-ASR-1.7B-8bit/revision/a8379a2e2f9e313c9292cdf1af4055ab56d50d55?blobs=true"
+}

@@ -1,4 +1,5 @@
 /** Public documentation metadata only. Presence here never enables a service operation. */
+import {radarPlatform} from '../../../plugin-src/src/lib/file-library/radar-policy.mjs';
 export const PLATFORM_CATALOG_SOURCE = 'https://api.tikhub.io/openapi.json';
 export const PLATFORM_CATALOG_SNAPSHOT_AT = '2026-10-26T16:43:16.946Z';
 export interface PlatformCatalogEntry {id: string; name: string; aliases: string[]}
@@ -24,12 +25,12 @@ export function parsePlatformCatalog(document: unknown, checkedAt: string): Plat
  if (!roots.size || roots.size > 100) throw new Error('Invalid platform directory');
  return {platforms: [...roots].map(entry), source: PLATFORM_CATALOG_SOURCE, checkedAt, version: typeof spec.info?.version === 'string' ? spec.info.version.slice(0, 100) : '未知版本', status: 'live', origin: 'live'};
 }
-/** Only the explicitly integrated Douyin operations count; never infer from catalog entries. */
-export function platformCollectionCapability(platform: string): 'douyin'|'manual' {
- return ['抖音', 'douyin'].includes(platform.trim().toLocaleLowerCase()) ? 'douyin' : 'manual';
+/** Only the two explicitly integrated platform operation sets count. */
+export function platformCollectionCapability(platform: string): 'douyin'|'xiaohongshu'|'manual' {
+ const name=radarPlatform(platform);return name==='douyin'||name==='xiaohongshu'?name:'manual';
 }
 export function accountAnalysisPrompt(account: {name: string; platform: string; url: string}) {
- const scope = platformCollectionCapability(account.platform) === 'douyin' ? '仅可使用已接入的抖音操作，并遵守服务配置、预算与本次授权。' : '本工作台尚未接入此平台采集。仅分析已保存或用户手工提供的资料，不得调用抖音或其他平台采集工具，不得把此账号映射为抖音。缺少资料时等待用户补充。';
+ const capability=platformCollectionCapability(account.platform),scope=capability==='douyin'?'仅可使用已接入的抖音操作，并遵守服务配置、预算与本次授权。':capability==='xiaohongshu'?'仅可使用已接入的小红书搜索与作者资料操作，当前没有小红书评论采集；遵守服务配置、预算与本次授权，不得替换为抖音操作。':'本工作台尚未接入此平台采集。仅分析已保存或用户手工提供的资料，不得调用抖音或其他平台采集工具，不得把此账号映射为抖音。缺少资料时等待用户补充。';
  return `分析${account.platform}账号 ${account.name}（${account.url || '未提供主页'}）的定位、选题与叙事表达，保留可核验来源。${scope}`;
 }
 export const DEFAULT_REPORT_TYPES = ['调研', '账号拆解', '选题研究', '内容分析', '行业趋势', '竞品分析', '复盘'];

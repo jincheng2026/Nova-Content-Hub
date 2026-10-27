@@ -1,0 +1,29 @@
+{
+  "checkedAt": "2026-10-27T07:16:36.154Z",
+  "mode": "structural replay of redacted real response; source IDs and strings are placeholders",
+  "freshHttpRequests": 0,
+  "source": "douyin-search.fixture.json",
+  "sampleRows": 2,
+  "normalizedCandidates": 1,
+  "profileFollowerCount": 24651,
+  "sourceQueriesWereReal": true,
+  "actualRadarTaskLaunched": false,
+  "candidateMetrics": [
+    {
+      "metrics": {
+        "likes": 121,
+        "comments": 34,
+        "shares": 52,
+        "saves": 75,
+        "views": 0,
+        "likeFollowerRatio": 0.0049085229808121375
+      },
+      "eligibility": "unqualified",
+      "reasons": [
+        "粉丝数未达到阈值",
+        "点赞数未达到阈值",
+        "赞粉比未达到阈值"
+      ]
+    }
+  ]
+}

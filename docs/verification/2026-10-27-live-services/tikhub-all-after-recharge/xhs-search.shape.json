@@ -1,0 +1,184 @@
+{
+  "code": "number",
+  "request_id": "string",
+  "message": "string",
+  "message_zh": "string",
+  "support": "string",
+  "time": "string",
+  "time_stamp": "number",
+  "time_zone": "string",
+  "docs": "string",
+  "cache_message": "string",
+  "cache_message_zh": "string",
+  "cache_url": "string",
+  "router": "string",
+  "params": {
+    "keyword": "string",
+    "page": "string",
+    "ai_mode": "string"
+  },
+  "data": {
+    "code": "number",
+    "success": "boolean",
+    "data": {
+      "ai_mode_enable": "boolean",
+      "request_dqa_instant": "boolean",
+      "search_dqa_new_page_exp": "number",
+      "items": {
+        "type": "array",
+        "length": 20,
+        "sample": {
+          "mix_track_id": "string",
+          "new_help_style": "boolean",
+          "model_type": "string",
+          "note": {
+            "has_music": "boolean",
+            "geo_info": {
+              "distance": "string"
+            },
+            "liked": "boolean",
+            "click_score": "number",
+            "title": "string",
+            "result_from": "string",
+            "collected_count": "number",
+            "collected": "boolean",
+            "nice_count": "number",
+            "comments_count": "number",
+            "niced": "boolean",
+            "cover_image_index": "number",
+            "note_attributes": {
+              "type": "array",
+              "length": 0,
+              "sample": null
+            },
+            "tag_info": {
+              "title": "string",
+              "type": "string"
+            },
+            "type": "string",
+            "images_list": {
+              "type": "array",
+              "length": 11,
+              "sample": {
+                "fileid": "string",
+                "height": "number",
+                "need_load_original_image": "boolean",
+                "width": "number",
+                "original": "string",
+                "url_size_large": "string",
+                "trace_id": "string",
+                "url": "string"
+              }
+            },
+            "id": "string",
+            "corner_tag_info": {
+              "type": "array",
+              "length": 2,
+              "sample": {
+                "text_en": "string",
+                "icon": "string",
+                "style": "number",
+                "type": "string",
+                "location": "number",
+                "text": "string"
+              }
+            },
+            "user": {
+              "userid": "string",
+              "red_official_verified": "boolean",
+              "track_duration": "number",
+              "red_official_verify_type": "number",
+              "followed": "boolean",
+              "show_red_official_verify_icon": "boolean",
+              "red_id": "string",
+              "nickname": "string",
+              "images": "string"
+            },
+            "timestamp": "number",
+            "extract_text_enabled": "number",
+            "debug_info_str": "string",
+            "interaction_area": {
+              "type": "number",
+              "status": "boolean",
+              "text": "string"
+            },
+            "widgets_context": {
+              "type": "JSON string",
+              "decoded": {
+                "flags": {},
+                "author_id": "string",
+                "author_name": "string",
+                "order_cooperate": "boolean",
+                "commercial_bridge_note": "boolean"
+              }
+            },
+            "xsec_token": "string",
+            "liked_count": "number",
+            "desc": "string",
+            "update_time": "number",
+            "last_update_time": "number",
+            "advanced_widgets_groups": {
+              "groups": {
+                "type": "array",
+                "length": 2,
+                "sample": {
+                  "mode": "number",
+                  "fetch_types": {
+                    "type": "array",
+                    "length": 34,
+                    "sample": "string"
+                  }
+                }
+              }
+            },
+            "shared_count": "number"
+          }
+        }
+      },
+      "can_cut": "boolean",
+      "strategy_info": {
+        "query_average_impression_count": "number",
+        "query_can_guide_to_feed": "boolean"
+      },
+      "cur_cut_number": "number",
+      "request_dqa": "number",
+      "query_type": "number",
+      "taxonomy1": "string",
+      "is_broad_query": "boolean",
+      "video_intent_grade_v3": "number",
+      "show_single_col": "boolean",
+      "query_debug_info": {
+        "is_forbidden": "boolean"
+      },
+      "query_intent": {
+        "search_ask_intent": "boolean",
+        "goodsIntent": "number",
+        "low_supply_intent": "boolean"
+      },
+      "service_status": {
+        "type": "JSON string",
+        "decoded": {
+          "filter": "string",
+          "note": "string",
+          "onebox": "string",
+          "cost": {
+            "all": "number",
+            "zone": "string"
+          }
+        }
+      },
+      "extra_info": {
+        "atmosphere_v3_enable": "string"
+      },
+      "search_pull_down_opt_exp": "number",
+      "dqa_authorized_user_by_shared": "boolean"
+    },
+    "msg": "string",
+    "search_id": "string",
+    "search_session_id": "string",
+    "page": "number",
+    "next_page": "number",
+    "debug_id": "string",
+    "debug_info": "string"
+  }
+}
