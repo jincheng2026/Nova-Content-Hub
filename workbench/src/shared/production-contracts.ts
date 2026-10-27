@@ -8,7 +8,7 @@ export interface ProductionAnnotation {id: string; bodyHash: string; quote: stri
 export interface ProductionCreation extends Omit<Core.ProductionCreation, 'suggestions'|'annotations'> {suggestions: ProductionSuggestion[]; annotations: ProductionAnnotation[]}
 export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creations'> {creations: ProductionCreation[]; assetUrls?: Record<string,string>}
 export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string; history: Core.ProductionHistory}
-export type ProductionManualOp = 'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
+export type ProductionManualOp = 'adoptResearchReferences'|'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
 export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
 export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}
@@ -33,6 +33,7 @@ export interface ProductionWorkerOperations {
  productionContext:{args:{binding:LibraryBinding;taskId:string};result:Core.ProductionContext};
  productionReserve:{args:{binding:LibraryBinding;input:ProductionToolIdentity & {service:string;usage?:Core.ProductionJSON};mutationId:string};result:ProductionSnapshot};
  productionTaskMutation:{args:{binding:LibraryBinding;op:'recordCost';input:ProductionToolIdentity & {status:'actual'|'measured'|'estimated'|'unknown'|'cancelled';amount:number|null;usage?:Core.ProductionJSON};mutationId:string};result:ProductionSnapshot};
+ productionMediaGrant:{args:{binding:LibraryBinding;input:ProductionToolIdentity & {sourceReceiptId:string;sourceRequestId:string;requestHash:string;videoId:string;canonicalUrl:string;responseHash:string};source:string;mutationId:string};result:Core.ProductionMediaGrant};
  productionAsset:{args:{binding:LibraryBinding;taskId:string;attemptId:string;claimToken:string;workerId:string;audioPath:string};result:{data:Uint8Array;extension:string}};
 
  productionMedia:{args:{binding:LibraryBinding;contentId:string;assetHash:string};result:{data:Uint8Array;detectedType:string}};

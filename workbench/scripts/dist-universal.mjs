@@ -4,6 +4,7 @@ import {fileURLToPath} from 'node:url';
 import {isDeepStrictEqual} from 'node:util';
 import {snapshotPackage} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {assertDistribution, installerConfig, testingEnvironment} from './dist.mjs';
+import {assertArtifactSafe} from '../../plugin-src/scripts/artifact-safety.mjs';
 import {assertSeparatePaths, assertSourceUnchanged, copyNativeArtifact, resolveDestination, sourceIdentity, validateNativeArtifact} from './native-payload.mjs';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
@@ -66,6 +67,7 @@ export function createUniversalHooks(artifacts, source, universalArch = 4) {
             fs.mkdirSync(directory);
             for (const artifact of artifacts) await copyNativeArtifact(artifact, path.join(directory, `darwin-${artifact.arch}`), source);
             await verify(directory);
+            await assertArtifactSafe(path.dirname(directory));
             combined = directory;
             copied = true;
         },
@@ -76,6 +78,7 @@ export function createUniversalHooks(artifacts, source, universalArch = 4) {
         async verifyFinished() {
             if (!copied) throw Error('Builder never assembled the universal native payloads');
             await verify(combined);
+            await assertArtifactSafe(path.dirname(combined));
             for (const artifact of artifacts) await validateNativeArtifact(artifact.path, source, artifact.arch);
         }
     };

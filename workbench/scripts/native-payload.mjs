@@ -6,6 +6,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {snapshotPackage} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {archiveFor, nodeRelease} from '../../plugin-src/scripts/bundled-node.mjs';
 import {integrityPaths} from '../../plugin-src/scripts/build.mjs';
+import {assertArtifactSafe} from '../../plugin-src/scripts/artifact-safety.mjs';
 
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
 const hash = file => createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -78,6 +79,7 @@ function verifySharp(root, arch, version, entries) {
 export async function validateNativeTree(input, source, arch) {
     if (!['x64', 'arm64'].includes(arch)) throw Error('Unsupported native payload architecture');
     const entries = await snapshotPackage(input);
+    await assertArtifactSafe(input);
     const config = source.config;
     const release = {...config, format: 'nova-content-desktop-release', schemaVersion: 1, pairId: `${config.appScope}@${config.version}:p${config.protocolVersion}:disabled`, experimental: true, productionReady: false, platform: 'darwin', arch};
     if (config.AUTH_MODE !== 'disabled' || config.prototype !== true || config.appScope !== 'nova-content-hub' || config.productId !== config.appScope || config.protocolVersion !== 1) throw Error('Native payload must be the free experimental release');

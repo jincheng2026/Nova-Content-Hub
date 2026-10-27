@@ -1,6 +1,7 @@
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
+import {productionReferenceHash,validateTranscriptReference} from '../../../plugin-src/src/lib/file-library/production-reference.mjs';
 import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {validateImportedRaster} from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import {exact,libraryBinding,uuid,token,requireWrite,fail} from '../shared/validation.ts';
@@ -8,7 +9,7 @@ import {productionPending} from '../shared/production-validation.ts';
 import type {ProductionWorkerOperations,ProductionPending,ProductionFile,ProductionCreationState} from '../shared/production-contracts.ts';
 import type {ProductionCoreLibrary} from '../shared/production-core.d.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-const ops=new Set(['productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
+const ops=new Set(['productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
 export const isProductionOperation=(op:unknown):op is keyof ProductionWorkerOperations=>typeof op==='string'&&ops.has(op);
 const same=(p:ProductionPending,b:LibraryBinding)=>p.binding.libraryId===b.libraryId&&p.binding.rootIdentity.dev===b.rootIdentity.dev&&p.binding.rootIdentity.ino===b.rootIdentity.ino;
 const creation=(l:ProductionCoreLibrary,id:string):ProductionCreationState=>{const v=l.readProductionCreation(id);return {content:{id:v.content.id,title:v.content.title,body:v.content.body,editToken:v.content.editToken,bodyHash:v.content.bodyHash,deletedAt:v.content.deletedAt},creation:v.creation,productionToken:v.productionToken,history:v.history};};
@@ -32,7 +33,7 @@ async function files(l:ProductionCoreLibrary,p:Extract<ProductionPending,{kind:'
 }
 export async function executeProduction(op:keyof ProductionWorkerOperations,args:unknown,mode:'required'|'disabled'='required'):Promise<ProductionWorkerOperations[keyof ProductionWorkerOperations]['result']> {
  requireWrite(mode);
- if(['productionContext','productionReserve','productionTaskMutation','productionAsset'].includes(op))return executeTool(op,args);
+ if(['productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant'].includes(op))return executeTool(op,args);
 
  const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReport'?null:['binding','pending'];
  if(!(fields?exact(args,fields):typeof args==='object'&&args!==null&&Object.keys(args).every(k=>['binding','reportId','pageId'].includes(k)))||!args||!libraryBinding((args as {binding:unknown}).binding))fail('INVALID_INPUT','生产任务参数无效。');
@@ -57,7 +58,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
   if(pending.kind==='files')return {found:false};
   const receipt=l.queryMutation(pending.mutationId);
   if(!receipt)return {found:false};
-  if(receipt.objectKind!==(pending.kind==='draft'||pending.op==='saveCreation'?'content':'workspace')||receipt.objectId!==(pending.kind==='draft'||pending.op==='saveCreation'?pending.input.contentId:'default'))fail('CONFLICT','事务回执不属于原操作。');
+  if(receipt.objectKind!==(pending.kind==='draft'||['saveCreation','adoptResearchReferences'].includes(pending.op)?'content':'workspace')||receipt.objectId!==(pending.kind==='draft'||['saveCreation','adoptResearchReferences'].includes(pending.op)?pending.input.contentId:'default'))fail('CONFLICT','事务回执不属于原操作。');
   // Replaying the exact transaction verifies its persisted request digest before clearing recovery intent.
   if(pending.kind==='mutate')l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});
   else {const i=pending.input;l.saveProductionDraft(i.contentId,{body:i.body,expectedBodyHash:i.bodyHash,expectedProductionToken:i.productionToken,creationPatch:i.creationPatch},i.editToken,{mutationId:pending.mutationId});}
@@ -69,16 +70,36 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  return creation(l,i.contentId);
 }
 
-function executeTool(op:keyof ProductionWorkerOperations,args:unknown):ProductionWorkerOperations[keyof ProductionWorkerOperations]['result'] {
- const fields=op==='productionContext'?['binding','taskId']:op==='productionAsset'?['binding','taskId','attemptId','claimToken','workerId','audioPath']:op==='productionReserve'?['binding','input','mutationId']:['binding','op','input','mutationId'];
+async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Promise<ProductionWorkerOperations[keyof ProductionWorkerOperations]['result']> {
+ const fields=op==='productionMediaGrant'?['binding','input','source','mutationId']:op==='productionContext'?['binding','taskId']:op==='productionAsset'?['binding','taskId','attemptId','claimToken','workerId','audioPath']:op==='productionReserve'?['binding','input','mutationId']:['binding','op','input','mutationId'];
  if(!exact(args,fields)||!libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','工具调用参数无效。');
  const l=openLibrary(args.binding.root,{expectedLibraryId:args.binding.libraryId,expectedRootIdentity:args.binding.rootIdentity}) as unknown as ProductionCoreLibrary;
  if(op==='productionContext'){if(!uuid(args.taskId))fail('INVALID_INPUT','任务编号无效。');return l.readProductionContext(args.taskId);}
+ if(op==='productionMediaGrant') {
+  const i=args.input;
+  if(!uuid(args.mutationId)||!exact(i,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash'])||!uuid(i.taskId)||!uuid(i.attemptId)||!uuid(i.claimToken)||!uuid(i.requestId)||!uuid(i.sourceReceiptId)||!uuid(i.sourceRequestId)||!token(i.requestHash)||!token(i.responseHash)||typeof i.workerId!=='string'||i.workerId.length>200||typeof i.videoId!=='string'||!/^\d{1,32}$/.test(i.videoId)||i.canonicalUrl!==`https://www.douyin.com/video/${i.videoId}`||typeof args.source!=='string'||!path.isAbsolute(args.source))fail('INVALID_INPUT','媒体授权参数无效。');
+  const context=l.readProductionContext(i.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===i.attemptId);
+  if(!task||task.activeAttemptId!==i.attemptId||attempt?.claimToken!==i.claimToken||attempt.workerId!==i.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.contentId||!context.creation||l.readProductionCreation(task.contentId).content.deletedAt||!task.request.tools.includes('media'))fail('CLAIM_MISMATCH','下载已结束，但原任务或内容已失效。');
+  const stat=await fs.lstat(args.source);if(!stat.isFile()||stat.isSymbolicLink()||stat.size<1||stat.size>64*1024*1024)fail('INVALID_INPUT','下载媒体不可用。');
+  const asset=l.importAsset(args.source,{purpose:'production-reference'});
+  const result=l.mutateProduction('registerMediaGrant',{...i,assetHash:asset.assetHash},{mutationId:args.mutationId});
+  const grant=result.tasks.find(t=>t.id===i.taskId)?.attempts.find(a=>a.id===i.attemptId)?.mediaGrants?.find(g=>g.sourceReceiptId===i.sourceReceiptId);
+  if(!grant)fail('INVALID_INPUT','媒体授权登记未完成。');return grant;
+ }
  if(op==='productionAsset') {
   if(!uuid(args.taskId)||!uuid(args.attemptId)||!uuid(args.claimToken)||typeof args.workerId!=='string'||!token(args.audioPath))fail('INVALID_INPUT','音频只接受已登记的资产编号。');
   const context=l.readProductionContext(args.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===args.attemptId);
   if(!task||!attempt||task.activeAttemptId!==attempt.id||attempt.claimToken!==args.claimToken||attempt.workerId!==args.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))fail('CLAIM_MISMATCH','工具调用不属于当前运行中的任务。');
-  if(!context.creation?.references.some(r=>r.mediaAssetHash===args.audioPath))fail('INVALID_INPUT','该媒体没有登记到当前内容的参考资料。');
+  if(!task.contentId||!task.request.tools.includes('asr')||l.readProductionCreation(task.contentId).content.deletedAt)fail('INVALID_INPUT','任务内容或转写权限已失效。');
+  const frozen=task.request.parameters as Record<string,unknown>,transcript=frozen?.transcript;
+  if(transcript!==undefined){
+   const binding=transcript as Record<string,unknown>;
+   if(!exact(binding,['version','referenceId','baselineHash','intent'])||binding.version!==1||!uuid(binding.referenceId)||!token(binding.baselineHash)||!['extract','reextract'].includes(String(binding.intent))||task.kind!=='transcription'||task.accountId||frozen.workflow)fail('INVALID_INPUT','固定转写意图不允许本次提取。');
+   const reference=context.creation?.references.find(r=>r.id===binding.referenceId);
+   if(!reference||reference.mediaAssetHash!==args.audioPath||await productionReferenceHash(reference)!==binding.baselineHash)fail('STALE_INPUT','固定参考或基线已变化。');
+   validateTranscriptReference(reference,binding.intent as 'extract'|'reextract');
+  }
+  if(!context.creation?.references.some(r=>r.mediaAssetHash===args.audioPath)&&!attempt.mediaGrants?.some(g=>g.assetHash===args.audioPath&&g.requestHash===task.requestHash))fail('INVALID_INPUT','该媒体没有登记到当前内容的参考资料。');
   const asset=l.readAsset(args.audioPath);
   const extensions:Record<string,string>={'audio/mpeg':'.mp3','audio/wav':'.wav','audio/x-wav':'.wav','video/mp4':'.mp4','audio/mp4':'.m4a','video/webm':'.webm','audio/ogg':'.ogg','audio/flac':'.flac'};
   const extension=extensions[asset.detectedType];if(!extension||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体格式或大小不受支持。');

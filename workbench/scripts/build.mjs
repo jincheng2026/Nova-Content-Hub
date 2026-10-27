@@ -7,6 +7,7 @@ import {buildCover, runtimeSourceFilter} from '../../plugin-src/scripts/build.mj
 import {buildMarketplace} from '../../plugin-src/scripts/marketplace-builder.mjs';
 import {syncBridge} from '../../plugin-src/scripts/sync-bridge.mjs';
 import {checkAppIcons} from './build-app-icons.mjs';
+import {assertArtifactSafe, releaseSourceFilter} from '../../plugin-src/scripts/artifact-safety.mjs';
 import {validateBuildConfig, validateResources, validateRelease} from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
@@ -46,7 +47,7 @@ for (const mode of modes) {
     fs.copyFileSync(path.join(root, 'plugin-src/resources/production-creation.html'), path.join(dist, 'production-creation.html'));
     fs.cpSync(path.join(workbench, '.native'), dist, {
         recursive: true,
-        filter: source => !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs', 'resident-probe.mjs'].includes(path.basename(source))
+        filter: source => releaseSourceFilter(source) && !['probe.mjs', 'lifecycle-probe.mjs', 'cover-probe.mjs', 'resident-probe.mjs'].includes(path.basename(source))
     });
     fs.writeFileSync(path.join(target, 'workbench/package.json'), JSON.stringify({
         type: 'module',
@@ -113,5 +114,6 @@ for (const mode of modes) {
         stdio: 'pipe',
         timeout: 15000
     });
+    await assertArtifactSafe(target);
     console.log(`Built experimental desktop auth-${mode} for ${process.platform}/${process.arch}; productionReady=false`);
 }

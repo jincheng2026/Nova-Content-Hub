@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "one requirement and one primary action; advanced tools collapsed before creation is enabled",
+    "Layout-01 Controls-01 Reading-03 primary action reachable 1280x860",
+    "Layout-01 Controls-01 Reading-03 primary action reachable 960x680",
+    "first click ensures creation internally; failed launch repeats the same task and attempt",
+    "both waiting states foreground the registered assistant app, preserve the session limitation, and retain the original task/chat and never launch a replacement",
+    "dirty advanced fields block generation and adoption while retaining all saved data",
+    "one preview shows all submitted artifacts and does not write body or creation fields",
+    "accept followed by save failure shows accepted-but-not-adopted, retains preview, and writes no partial fields",
+    "retry saves the full original preview baseline in one CAS and preserves manual packaging selection"
+  ]
+}

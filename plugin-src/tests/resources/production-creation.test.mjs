@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import vm from 'node:vm';
 import {webcrypto,createHash} from 'node:crypto';
+import {productionCompositionRuntime} from '../../src/lib/file-library/production-composition.mjs';
 import {acceptReviewSuggestion, reviewParagraphs, quotePosition} from '../../src/lib/file-library/production-review.mjs';
 const html=fs.readFileSync(new URL('../../resources/production-creation.html',import.meta.url),'utf8');
 const script=html.match(/<script>([\s\S]*?)<\/script>/)[1];
@@ -17,7 +18,7 @@ async function fixture(overrides={}){
  if(overrides.history)initial.history=overrides.history;Object.assign(initial.content,overrides.content);Object.assign(initial.creation,overrides.creation);let state=structuredClone(initial),conflict=false;
  const descendants=()=>{const result=[];const visit=e=>{result.push(e);for(const child of e.children)visit(child);};for(const e of elements.values())visit(e);return result;};
  const get=id=>{const found=descendants().find(e=>e.id===id);if(found)return found;if(!elements.has(id))elements.set(id,new Element());return elements.get(id);};
- const context=vm.createContext({document:{getElementById:get,createElement:tag=>{const element=new Element();element.tagName=tag;return element;},querySelectorAll:()=>[]},window:{novaCreation:{basePath:'/p/'+'a'.repeat(64)},addEventListener(){},confirm:()=>true},crypto:webcrypto,TextEncoder,URL,structuredClone,fetch:async(url,options={})=>{
+ const context=vm.createContext({document:{getElementById:get,createElement:tag=>{const element=new Element();element.tagName=tag;return element;},querySelectorAll:()=>[]},window:{...(overrides.segmentRuntime?{productionComposition:productionCompositionRuntime()}:{}),novaCreation:{basePath:'/p/'+'a'.repeat(64)},addEventListener(){},confirm:()=>true},crypto:webcrypto,TextEncoder,URL,structuredClone,fetch:async(url,options={})=>{
   calls.push({url,options});if(options.method==='POST'){
    if(conflict)return{ok:false,status:409,json:async()=>({error:{code:'CONFLICT'}})};
    const payload=JSON.parse(options.body);state={...state,content:{...state.content,body:payload.body,bodyHash:bodyHash(payload.body),editToken:'next-content-token'},productionToken:'next-production-token',creation:{...state.creation,...payload.creationPatch}};
@@ -164,4 +165,47 @@ test('a new selection cannot reattach an unfinished annotation or filming descri
 
 test('routine load and save use the compact saved status while errors remain visible',async()=>{
  const f=await fixture();assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('一次明确保存');await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('保留冲突输入');f.conflict();await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,false);assert.match(f.get('notice').textContent,/冲突/);
+});
+
+test('segment page updates the same body and persists UTF16 ranges on explicit save',async()=>{
+ const f=await fixture({segmentRuntime:true,content:{body:'第一段😀\n\n第二段。',bodyHash:bodyHash('第一段😀\n\n第二段。')}});
+ assert.equal(vm.runInContext('draft.composition===undefined',f.context),true);
+ await vm.runInContext("const first=segmentComposition.segments[0]; const result=segmentRuntime().replaceSegment({body:$('body').value,composition:segmentComposition,segmentId:first.id,replacement:'修改的第一段😀'}); $('body').value=result.body; segmentBody=result.body; segmentUpdate(result.composition);",f.context);
+ await vm.runInContext('save()',f.context);const payload=JSON.parse(f.calls.find(value=>value.options.method==='POST').options.body);
+ assert.equal(payload.body,'修改的第一段😀\n\n第二段。');assert.equal(payload.creationPatch.composition.bodyHash,bodyHash(payload.body));assert.equal(payload.body.slice(payload.creationPatch.composition.segments[1].start),'第二段。');
+});
+test('whole-text edits retain unmatched segment metadata and prevent silent save',async()=>{
+ const f=await fixture({segmentRuntime:true});await vm.runInContext('segmentUpdate(segmentComposition)',f.context);f.edit('完全重写后正文');await vm.runInContext('save()',f.context);
+ assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);assert.equal(f.get('body').value,'完全重写后正文');assert.match(f.get('notice').textContent,/段落关联待核对/);
+});
+
+test('explicit HTML split and merge preserve body bytes and deletion keeps recoverable shots',async()=>{
+ const body='第一段\n\n第二段',f=await fixture({segmentRuntime:true,content:{body,bodyHash:bodyHash(body)}});
+ await vm.runInContext("$('segment-body-input').selectionStart=1; changeSegmentStructure('split',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('segmentComposition.segments.length',f.context),3);
+ await vm.runInContext("changeSegmentStructure('merge',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('segmentComposition.segments.length',f.context),2);
+ await vm.runInContext("draft.filming={shots:[{id:crypto.randomUUID(),segmentId:segmentComposition.segments[0].id,quote:'第一段',visual:'旧画面',owner:'screen',done:true}],readThroughBodyHash:null,recordedBodyHash:null}; changeSegmentStructure('delete',segmentComposition.segments[0].id)",f.context);assert.equal(f.get('body').value,'\n\n第二段');assert.equal(vm.runInContext('draft.filming.shots.length',f.context),1);assert.equal(vm.runInContext('filmingNeedsReview(draft.filming.shots[0])',f.context),true);
+});
+
+test('whole-body inserted paragraphs save reopen and export every paragraph while keeping old IDs',async()=>{
+ const original='旧开头\n\n旧结尾';
+ for(const body of ['新增开头\n\n'+original,'旧开头\n\n新增中段\n\n旧结尾',original+'\n\n新增结尾']){
+  const composition=productionCompositionRuntime().createComposition(original),f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition}});f.edit(body);await vm.runInContext('save()',f.context);const post=f.calls.find(value=>value.options.method==='POST');assert.ok(post,'new paragraph must be savable');const saved=JSON.parse(post.options.body).creationPatch.composition;assert.equal(saved.segments.length,3);for(const old of composition.segments)assert.ok(saved.segments.some(value=>value.id===old.id));await vm.runInContext('load()',f.context);assert.equal(vm.runInContext('segmentComposition.segments.length',f.context),3);const script=vm.runInContext("segmentRuntime().filmingScript($('body').value,segmentComposition,currentFilming())",f.context);for(const paragraph of body.split('\n\n'))assert.ok(script.includes(paragraph));assert.equal(vm.runInContext('segmentComposition.segments.map(value=>value.id).join() ',f.context),saved.segments.map(value=>value.id).join());
+ }
+});
+
+test('deleted old paragraph stays blocked until explicit removal then remaining anchors and new gaps save together',async()=>{
+ const original='旧开头\n\n旧结尾',composition=productionCompositionRuntime().createComposition(original),shot={id:crypto.randomUUID(),segmentId:composition.segments[0].id,quote:'旧开头',visual:'保留的旧镜头',owner:'screen',done:true},f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition,filming:{shots:[shot],readThroughBodyHash:null,recordedBodyHash:null}}}),body='旧结尾\n\n新增结尾';
+ const buttons=element=>[...(element.tagName==='button'?[element]:[]),...element.children.flatMap(buttons)],confirm=()=>buttons(f.get('segment-content')).find(value=>value.textContent==='确认段落新位置');
+ f.edit(body);await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);
+ await vm.runInContext(`segmentAnchors[${JSON.stringify(composition.segments[1].id)}]='旧结尾'`,f.context);confirm().onclick();await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0,'missing old paragraph is not silently discarded');
+ const remove=buttons(f.get('segment-content')).find(value=>value.textContent==='该段已删除，移除旧关联');assert.ok(remove);remove.onclick();confirm().onclick();await vm.runInContext('save()',f.context);const post=f.calls.find(value=>value.options.method==='POST');assert.ok(post);const patch=JSON.parse(post.options.body).creationPatch;assert.equal(patch.composition.segments.length,2);assert.ok(patch.composition.segments.some(value=>value.id===composition.segments[1].id));assert.equal(patch.composition.segments.some(value=>value.id===composition.segments[0].id),false);assert.equal(patch.filming.shots[0].id,shot.id);assert.equal(patch.filming.shots[0].segmentId,shot.segmentId);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('filmingNeedsReview(draft.filming.shots[0])',f.context),true);
+});
+
+test('full-body typing derives temporary new paragraphs from the last saved anchor baseline',async()=>{
+ const original='旧开头\n\n旧结尾',composition=productionCompositionRuntime().createComposition(original),f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition}});
+ for(const suffix of ['A','AA','ABA','ABA\n\n新','ABA\n\n新段落','ABA\n\n新段落 \n\t']){f.edit(original+'\n\n'+suffix);assert.equal(vm.runInContext('currentSegmentValid()',f.context),true,`typing ${suffix} must not turn a temporary gap into an old anchor`);for(const old of composition.segments)assert.ok(vm.runInContext('segmentComposition.segments.map(value=>value.id)',f.context).includes(old.id));}
+ const body=f.get('body').value;await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,1);await vm.runInContext('load()',f.context);assert.equal(f.get('body').value,body);assert.equal(vm.runInContext('currentSegmentValid()',f.context),true);assert.ok(vm.runInContext("segmentRuntime().filmingScript($('body').value,segmentComposition,currentFilming())",f.context).includes('新段落'));
+});
+test('explicit segment metadata establishes a new anchor while navigation does not promote temporary gaps',async()=>{
+ const original='旧段落',composition=productionCompositionRuntime().createComposition(original),f=await fixture({segmentRuntime:true,content:{body:original,bodyHash:bodyHash(original)},creation:{composition}});f.edit(original+'\n\nA');const ids=vm.runInContext('segmentComposition.segments.map(value=>value.id).join()',f.context);await vm.runInContext('renderSegments()',f.context);assert.equal(vm.runInContext('segmentComposition.segments.map(value=>value.id).join()',f.context),ids);await vm.runInContext("segmentUpdate({...segmentComposition,segments:segmentComposition.segments.map((value,index)=>index===1?{...value,purpose:'明确关联的新段'}:value)})",f.context);f.edit(original+'\n\nAA');assert.equal(vm.runInContext('currentSegmentValid()',f.context),false,'an explicitly adopted new anchor still requires manual review when changed');await vm.runInContext('save()',f.context);assert.equal(f.calls.filter(value=>value.options.method==='POST').length,0);
 });

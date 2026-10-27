@@ -8,10 +8,11 @@ export function douyinRows(raw:unknown):Record<string,any>[];
 export function douyinProfileFollowers(raw:unknown):number|null;
 export function xhsRows(raw:unknown):Record<string,any>[];
 export function xhsProfileFollowers(raw:unknown):number|null;
-export function radarSampleRows(raw:unknown,query:RadarQuery,platform:string,allowedOperations?:string[]):Record<string,any>[];
+export function radarSampleRows(raw:unknown,query:RadarQuery,platform:string,allowedOperations?:string[],collectedAt?:string):Record<string,any>[];
 export function radarRowAuthor(row:Record<string,any>,platform:string):{id:string|null;followers:number|null};
-export function radarMissingAuthorIds(raw:unknown,query:RadarQuery,platform:string,allowedOperations?:string[]):string[];
-export function normalizeRadarCandidate(raw:unknown,query:RadarQuery,collectedAt:string):RadarCandidate;
+export function radarMissingAuthorIds(raw:unknown,query:RadarQuery,platform:string,allowedOperations?:string[],collectedAt?:string):string[];
+/** angle is emitted only when source evidence supplies a non-empty string; legacy candidates omit it. */
+export function normalizeRadarCandidate(raw:unknown,query:RadarQuery,collectedAt:string):RadarCandidate & {angle?:string};
 export function normalizeDouyinRadar(raw:unknown,query:RadarQuery,collectedAt:string,profiles?:Record<string,number|null>,allowedOperations?:string[]):RadarCandidate[];
 export function normalizeXhsRadar(raw:unknown,query:RadarQuery,collectedAt:string,profiles?:Record<string,number|null>,allowedOperations?:string[]):RadarCandidate[];
 export function radarArtifactCandidates(task:ProductionTask,attemptId:string,receiptHash:string):RadarReport;

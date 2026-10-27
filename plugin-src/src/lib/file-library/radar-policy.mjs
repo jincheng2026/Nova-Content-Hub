@@ -9,3 +9,14 @@ export const radarAutomaticPlatforms=(query,allowedOperations)=>radarPlatforms(q
 export function radarPlatformSampleLimit(query,platform,allowedOperations){const platforms=radarAutomaticPlatforms(query,allowedOperations),index=platforms.findIndex(value=>radarPlatform(value)===radarPlatform(platform)),limit=query.sampleLimit;if(index<0||!Number.isInteger(limit)||limit<1||limit>100)return 0;return Math.floor(limit/platforms.length)+(index<limit%platforms.length?1:0);}
 export const radarPlannedPlatforms=(query,allowedOperations)=>radarAutomaticPlatforms(query,allowedOperations).filter(platform=>radarPlatformSampleLimit(query,platform,allowedOperations)>0);
 export function radarRequestLimit(query,currentMax=4){const searches=radarPlannedPlatforms(query).length;if(!searches||!Number.isInteger(query.sampleLimit)||query.sampleLimit<1||query.sampleLimit>100||!Number.isInteger(currentMax)||currentMax<1)return 0;return Math.min(4,searches+query.sampleLimit,currentMax);}
+
+/** Latest source observation is selected by evidence time, independently of report adoption order. */
+export function radarLatestEntries(reports){
+ const latest=new Map(),decisions=new Map();let order=0;
+ for(const entry of reports)for(const candidate of entry.radar.candidates){
+  const prior=latest.get(candidate.sourceKey),stamp=Date.parse(candidate.collectedAt),rank=Number.isFinite(stamp)?stamp:-Infinity;
+  if(!prior||rank>=prior.rank)latest.set(candidate.sourceKey,{entry,candidate,rank,order:order++});
+  if(candidate.decision!=='pending')decisions.set(candidate.sourceKey,{decision:candidate.decision,topicId:candidate.topicId});
+ }
+ return [...latest.values()].sort((a,b)=>b.rank-a.rank||b.order-a.order).map(({entry,candidate})=>({...entry,candidate:{...candidate,...decisions.get(candidate.sourceKey)}}));
+}

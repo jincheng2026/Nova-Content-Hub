@@ -17,3 +17,16 @@ research 可在 data.accounts 提交新发现的对标账号：`[{name,platform,
 feedback/knowledge artifacts 在成功提交时自动保存为来源关联任务、attempt 与 artifact 的记录：feedback 为反馈，knowledge 为待采纳候选。提交成功不代表知识已采纳；用户人工决定后才进入 accepted，skill 不自动重复写一份记录。
 
 叙事或审稿产物可附 data.filming：`{shots:[{id,quote,visual,owner:"screen"|"self"|"editing",done:false}],readThroughBodyHash:null,recordedBodyHash:null}`。分镜引用当前正文唯一原句，画面与录制分工为候选；通读和录完由用户按当前正文明确确认。
+
+
+## 稳定段落与录屏步骤
+
+正文仍只保存于 content.body（候选为 draft.text）。draft 可带 data.composition：`{version:1,bodyHash,segments:[{id,start,end,title,purpose,references:[{referenceId,role,quote,startMs,endMs,visual}],visual}]}`。bodyHash 是 draft.text 的 UTF-8 SHA256；start/end 为 JavaScript UTF-16 索引，左闭右开，不能重叠、越界或切开代理对；id 为稳定 UUIDv4。role 为 primary/support/example，startMs/endMs 同为 null 或已核验字幕范围。quote 逐字出自对应参考原文或校正版。只有范围与元数据，没有第二份段落正文。未提交 composition 时，工作台从正文确定性分段；旧创作只在内存预览，首次显式保存才落盘。
+
+独立制作安排可附 data.filming，保留旧分镜字段，并可加 `segmentId`、`optional:boolean`、`steps:[{id,where,prompt,expect,caution}]`。steps 的文字字段均为字符串。使用段落 UUID 关联正文，提示词只进入 steps.prompt。用户按版本确认通读和录完；采用候选清单时完成状态全部重置。整套创作不夹带 filming。
+
+单项 analysis 可带 `data.referenceAnalyses:[{referenceId,baselineHash,analysis}]`，baselineHash 由 productionReferenceHash 对完整已保存参考计算。工作台核对版本后仅更新 analysis；research/transcript 对原始证据的覆盖保护继续生效。该扩展暂不混入整套创作。
+
+`parameters.workflow === "content-creation"` 的整套结果必须各有一项 draft、analysis、narrative、packaging；拆解与叙事非空，包装的 titles、coverTexts、intros 各至少一项有效候选。关键资料缺失时回写等待或失败，不能伪完成。普通单项任务继续按原契约提交。
+
+采用记录 adoptions 由工作台在用户采用已验收回执时登记 taskId、attemptId、receiptHash、采用后正文 bodyHash、at 和 artifactIds。助手产物不填写该字段，普通保存不能伪造或改写采用历史。

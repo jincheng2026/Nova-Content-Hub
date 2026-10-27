@@ -1,0 +1,19 @@
+
+> nova-content-hub-workbench@0.3.57 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.3.57 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+
+> nova-content-hub-workbench@0.3.57 typecheck:renderer
+> tsc -p tsconfig.renderer.json
+
+src/renderer/production-workspace.tsx(291,379): error TS2304: Cannot find name 'researchSources'.
+src/renderer/production-workspace.tsx(291,402): error TS7006: Parameter 'source' implicitly has an 'any' type.
+src/renderer/production-workspace.tsx(291,431): error TS2339: Property 'id' does not exist on type '(kind: "analysis" | "packaging" | "research" | "review" | "transcription" | "writing", title: string, instruction: string) => Promise<void>'.
+src/renderer/production-workspace.tsx(291,472): error TS7006: Parameter 'source' implicitly has an 'any' type.
+src/renderer/production-workspace.tsx(291,544): error TS2304: Cannot find name 'setResearchSource'.
+src/renderer/segment-workspace.tsx(45,147): error TS2339: Property 'segments' does not exist on type 'never'.
+src/renderer/segment-workspace.tsx(45,160): error TS7006: Parameter 'value' implicitly has an 'any' type.

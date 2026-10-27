@@ -1,0 +1,138 @@
+{
+  "recordedAt": "2026-10-27T09:58:49.835Z",
+  "version": "0.3.57",
+  "marketRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "marketFilesSha256": "00419c066ab23b77d7f4cb548cefd6f9efdd1e5373532e8fd70916d5b3a0a083",
+  "officialCliCommands": [
+    {
+      "host": "codex",
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "--json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "host": "codex",
+      "args": [
+        "plugin",
+        "add",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--json"
+      ],
+      "exitCode": 0
+    },
+    {
+      "host": "workbuddy",
+      "args": [
+        "plugin",
+        "marketplace",
+        "add",
+        "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace"
+      ],
+      "exitCode": 0
+    },
+    {
+      "host": "workbuddy",
+      "args": [
+        "plugin",
+        "update",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "realDoctorPassed": true,
+      "payloadMatches": true,
+      "guiOpened": false
+    }
+  ],
+  "hosts": [
+    {
+      "host": "codex",
+      "root": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.57",
+      "treeSha256": "75ce3f23ba53a978c0a0818f01cb6e13895228e5f2fb1409f210d6b3e5155d5d",
+      "entries": 589,
+      "prior056Preserved": false
+    },
+    {
+      "host": "workbuddy",
+      "root": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.3.57",
+      "treeSha256": "ef28a4ff52975ef5afae6eb2f91861bfc315686c65280e9a9aecb4da80d4f5ae",
+      "entries": 590,
+      "prior056Preserved": true
+    }
+  ],
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/plugin-config-0357-e5373d81-bdc1-43cb-91bf-04f2e83cdbc1",
+  "sourceBudgetAndKeysChanged": false,
+  "applicationStarted": false,
+  "uiActions": false,
+  "aiMessageSent": false,
+  "reloadNote": "Start a fresh host task with a newly generated 0.3.57 handoff; old 0.3.56 handoff locators do not match this release."
+}

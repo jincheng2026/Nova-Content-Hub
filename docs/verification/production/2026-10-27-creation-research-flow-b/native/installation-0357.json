@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-27T09:58:05.304Z",
+  "version": "0.3.57",
+  "source": "/Users/mac/.codex/worktrees/creation-research-flow-b/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-1MKI6U/mac-arm64/自媒体工作台.app",
+  "target": "/Applications/自媒体工作台.app",
+  "treeSha256": "01a1f6047bafb019548d7f17394761e3e7d33ebeaf68d1ebd3c7c966c625d85c",
+  "previousTreeSha256": "d9565486008549cc31d4ac267d07760f05d99c183397b57098461b074e939fe4",
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-da8c1fdb-02a3-4285-ae60-33287952f233",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "phase": "published-awaiting-native-launch",
+  "backup": "/Users/mac/Library/Application Support/Nova 内容库恢复留档/release-0357-direct-prefill-dfcc7eb2-e64e-4561-815a-2e90087b8ccd",
+  "settingsOpaqueCopies": [
+    "machine-binding.json",
+    "service-settings.json",
+    "local-preferences.json"
+  ],
+  "settingsUnchanged": true,
+  "libraryUnchanged": true,
+  "libraryTreeSha256": "37786b9591c2be5158e3ac72d0ee9924998b316c16e46a24955af5e9ef64e1b5",
+  "previousAppPreserved": true,
+  "sourceAppUnchanged": true,
+  "launchServices": {
+    "previousUnregistered": true,
+    "newAppRegistered": true
+  },
+  "startedApplication": false
+}

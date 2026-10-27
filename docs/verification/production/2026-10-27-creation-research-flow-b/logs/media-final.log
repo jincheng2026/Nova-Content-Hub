@@ -1,0 +1,36 @@
+✔ media pins public DNS at each HTTPS hop without cookies, auth or redirect forwarding (283.2095ms)
+✔ media refuses mixed public/private or synthetic DNS for cdn-private.example.invalid (64.324167ms)
+✔ media refuses mixed public/private or synthetic DNS for api.tikhub.io (106.082625ms)
+✔ media revalidates redirect DNS and refuses private destinations before connecting (44.247ms)
+✔ media refuses unsafe endpoint http://example.invalid/video (36.306458ms)
+✔ media refuses unsafe endpoint https://example.invalid:444/video (38.028708ms)
+✔ media refuses unsafe endpoint https://credentials@example.invalid/video (37.748958ms)
+✔ media allows at most three redirects and cleans every failed download directory (45.099166ms)
+✔ media rejects HTML and removes its private temp files (40.398334ms)
+✔ media rejects HLS and removes its private temp files (50.670042ms)
+✔ media rejects unknown MIME and removes its private temp files (46.560209ms)
+✔ media rejects compressed body and removes its private temp files (50.137583ms)
+✔ media rejects forged media magic and removes its private temp files (56.751ms)
+✔ media rejects oversized Content-Length and removes its private temp files (38.390166ms)
+✔ media rejects invalid Content-Length and removes its private temp files (53.750542ms)
+✔ media rejects empty body and removes its private temp files (75.829625ms)
+✔ media enforces streaming size when Content-Length is absent (453.180459ms)
+✔ DNS lookup is bounded by remaining total deadline and clears timers without network (70.159166ms)
+✔ media wire schema accepts only receipt identity, never URLs, hashes, paths or client reference IDs (4.331709ms)
+✔ grant needs frozen authorization and settled source proof; replay preserves server reference and costs (3230.0835ms)
+✔ grant limit and exact reference ownership block unrelated assets and expire after terminal state (2175.577084ms)
+✔ fetch-media derives receipt requests, rejects shortlinks, and recovers existing grant without TikHub (1030.402334ms)
+✔ ASR derives candidate reference from current grant without changing creation (1413.445542ms)
+✔ video source summary never exposes download URLs and settles missing/mismatched media once (3014.639125ms)
+✔ report references cannot borrow media or subtitles registered to another content (4659.503041ms)
+✔ legacy accepted report cannot authorize another content's media at adoption (1685.505ms)
+✔ legacy accepted research cannot authorize another content's media at adoption (1841.73475ms)
+✔ accepted report retains exact attempt grant as evidence for manual research adoption (2057.035042ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21448.450583

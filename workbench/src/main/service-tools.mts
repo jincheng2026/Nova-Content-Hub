@@ -124,6 +124,7 @@ export class ServiceTools {
             if(entry&&Date.now()-Date.parse(entry.collectedAt)<TIKHUB_CACHE_TTL_MS)return{service:'tikhub',requests:0,cacheKey,cached:{data:entry.data,service:'tikhub',requestsUsed:0,collectedAt:entry.collectedAt,cacheHit:true}};
             this.settings.secret('tikhub');return{service:'tikhub',requests:1,cacheKey};
         }
+        if(request.tool==='media')throw new ServiceToolError('MEDIA_BROKER_REQUIRED');
         if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
         const asr=normalizeAsrSettings(s.values.asr);
         if(asr.mode!=='cloud'){try{return{service:'asr',requests:0,localModule:await this.localModule(asr),config:s.values};}catch(error){if(asr.mode==='local-only'||!request.allowCloud)throw error;}}
@@ -134,6 +135,7 @@ export class ServiceTools {
     }
     async execute(request:ServiceToolRequest,hooks:ServiceExecutionHooks={}):Promise<ServiceToolResult>{
         // Historical model requests stay readable, but may never reach settings, secrets or budget.
+        if(request.tool==='media')throw new ServiceToolError('MEDIA_BROKER_REQUIRED');
         if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
         const prepared=await this.prepare(request);if(prepared.requests===1&&!this.settings.read().values.budget.enabled)throw new ServiceToolError('BUDGET_DISABLED');const {cacheKey}=prepared;
         if(cacheKey&&this.inflight.has(cacheKey))throw new ServiceToolError('REQUEST_IN_PROGRESS');if(cacheKey)this.inflight.add(cacheKey);
@@ -162,6 +164,7 @@ export class ServiceTools {
             const response=await boundedHttps(http.url,{method:http.method,headers:{Authorization:`Bearer ${this.settings.secret('tikhub')}`,'Content-Type':'application/json'},...(http.body?{body:http.body}:{})});
             if(response.data&&typeof response.data==='object'&&'code'in response.data&&response.data.code!==200&&response.data.code!==0)throw new ServiceToolError('PROVIDER_REJECTED',null);return response.data;
         }
+        if(request.tool==='media')throw new ServiceToolError('MEDIA_BROKER_REQUIRED');
         if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
         if(p.requests===0){const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>64*1024*1024)throw new ServiceToolError('INVALID_AUDIO');return this.localTranscribe(request.audioPath,p.localModule!,s.asr);}
         const asr=normalizeAsrSettings(s.asr),target=cloudAsrTarget(asr),current=normalizeAsrSettings(this.settings.read().values.asr);

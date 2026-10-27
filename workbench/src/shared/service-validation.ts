@@ -33,7 +33,7 @@ const uuid = (v: unknown) => typeof v === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-
 export function serviceToolRequest(v: unknown): v is ServiceToolRequest {
     if (!record(v) || !bounded(v.workerId,200) || !String(v.workerId).trim() || !['taskId','attemptId','claimToken','requestId'].every(k => uuid(v[k]))) return false;
     const base = ['tool','taskId','attemptId','claimToken','workerId','requestId'];
-    const allowed = v.tool === 'tikhub' ? ['operation','id','cursor','search'] : v.tool === 'asr' ? ['audioPath','allowCloud'] : v.tool === 'model' ? ['instruction','text'] : [];
+    const allowed = v.tool === 'tikhub' ? ['operation','id','cursor','search'] : v.tool === 'media' ? ['operation','sourceReceiptId'] : v.tool === 'asr' ? ['audioPath','allowCloud'] : v.tool === 'model' ? ['instruction','text'] : [];
     if (!allowed.length || Object.keys(v).some(k => ![...base,...allowed].includes(k))) return false;
     if (v.tool === 'tikhub') {
         if (!['douyin-search','user-search','profile','user-posts','video','comments','xhs-search','xhs-profile'].includes(String(v.operation)) || !bounded(v.id,512) || !String(v.id).trim()) return false;
@@ -47,6 +47,7 @@ export function serviceToolRequest(v: unknown): v is ServiceToolRequest {
         }
         return true;
     }
+    if (v.tool === 'media') return v.operation==='fetch' && uuid(v.sourceReceiptId);
     if (v.tool === 'asr') return bounded(v.audioPath, 4096) && String(v.audioPath).length > 0 && (v.allowCloud === undefined || typeof v.allowCloud === 'boolean');
     return bounded(v.instruction, 32000) && bounded(v.text, 200000) && String(v.instruction).trim().length > 0;
 }

@@ -1,3 +1,4 @@
+import {compositionBodyHash,createProductionComposition,validProductionComposition} from './production-composition.mjs';
 import {serializeProductionReference,productionReferenceHash,validateTranscriptReference} from './production-reference.mjs';
 const referenceError=(code,message)=>{throw Object.assign(new Error(message),{code});};
 const ordered=value=>Array.isArray(value)?value.map(ordered):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,ordered(value[key])])):value;
@@ -16,12 +17,19 @@ function artifactDraft({task,attemptId,artifactId,creation,body,bodyHash},verifi
     const error = (code,message) => {throw Object.assign(new Error(message),{code});};
     if(task.contentId !== creation.contentId) error('INVALID_INPUT','产物不属于当前内容。');
     const attempt=task.attempts.find(a=>a.id===attemptId);
-    if(task.activeAttemptId!==attemptId || attempt?.status!=='accepted' || !attempt.receipt || attempt.receipt.requestHash!==task.requestHash || attempt.receipt.attemptId!==attemptId) error('ATTEMPT_INACTIVE','请先人工验收当前尝试。');
+    if(task.activeAttemptId!==attemptId || attempt?.status!=='accepted' || !attempt.receipt || attempt.receipt.taskId!==task.id || !/^[a-f0-9]{64}$/.test(attempt.receipt.sha256) || attempt.receipt.requestHash!==task.requestHash || attempt.receipt.attemptId!==attemptId) error('ATTEMPT_INACTIVE','请先人工验收当前尝试。');
     const artifact=attempt.result?.artifacts.find(a=>a.id===artifactId);if(!artifact)error('NOT_FOUND','找不到产物。');
     const stale=task.request.bodyHash!==bodyHash;
     if(stale && ['draft','analysis','narrative'].includes(artifact.kind)) error('STALE_INPUT','正文版本已变化，请基于当前正文重新生成。');
     let creationPatch={},nextBody=body,action='保存此产物';
     const data=artifact.data && typeof artifact.data==='object' && !Array.isArray(artifact.data) ? artifact.data : {};
+    if(Object.hasOwn(data,'referenceAnalyses')) {
+        if(artifact.kind!=='analysis'||Object.keys(data).some(key=>key!=='referenceAnalyses')||!Array.isArray(data.referenceAnalyses)||!data.referenceAnalyses.length||data.referenceAnalyses.length>10000)error('INVALID_INPUT','参考拆解须由独立 analysis 产物提交，仅包含 referenceAnalyses。');
+        const ids=new Set(),references=structuredClone(creation.references);
+        for(const update of data.referenceAnalyses){if(!update||typeof update!=='object'||Array.isArray(update)||Object.keys(update).sort().join(',')!=='analysis,baselineHash,referenceId'||!/^([a-f0-9]{64})$/.test(update.baselineHash)||typeof update.analysis!=='string'||!update.analysis.trim()||update.analysis.length>100000||ids.has(update.referenceId))error('INVALID_INPUT','参考拆解缺少唯一参考、版本或有效内容。');ids.add(update.referenceId);const reference=references.find(value=>value.id===update.referenceId);if(!reference||compositionBodyHash(serializeProductionReference(reference))!==update.baselineHash)error('STALE_INPUT','参考资料已变化，请基于当前证据重新拆解。');reference.analysis=update.analysis;}
+        creationPatch.references=references;
+    }
+
     if(data.filming){if(stale)error('STALE_INPUT','拍摄清单对应旧版正文，请重新核对。');creationPatch.filming={...data.filming,shots:Array.isArray(data.filming.shots)?data.filming.shots.map(shot=>({...shot,done:false})):data.filming.shots,readThroughBodyHash:null,recordedBodyHash:null};}
     if(data.suggestions || data.annotations) {
         if(stale)error('STALE_INPUT','审稿结果对应旧版正文，请重新审稿。');
@@ -30,7 +38,7 @@ function artifactDraft({task,attemptId,artifactId,creation,body,bodyHash},verifi
         return {creationPatch,body,stale,action:'保存审稿建议与批注'};
     }
     switch(artifact.kind) {
-    case 'draft': nextBody=artifact.text;creationPatch={...creationPatch,confirmedBodyHash:null};action='采用此正文候选';break;
+    case 'draft': nextBody=artifact.text;creationPatch={...creationPatch,confirmedBodyHash:null,composition:draftComposition(artifact)};action='采用此正文候选';break;
     case 'analysis': creationPatch={...creationPatch,analysis:artifact.text};action='保存拆解';break;
     case 'narrative': creationPatch={...creationPatch,narrative:artifact.text};action='保存叙事方案';break;
     case 'research': case 'transcript': {
@@ -55,7 +63,7 @@ function artifactDraft({task,attemptId,artifactId,creation,body,bodyHash},verifi
 }
 
 // Pure whole-result preview/adoption. Every artifact uses the same immutable body baseline.
-export function productionArtifactBundleDraft({task,attemptId,creation,body,bodyHash,preview=false}) {
+export function productionArtifactBundleDraft({task,attemptId,creation,body,bodyHash,preview=false,now=new Date().toISOString()}) {
     const error=(code,message)=>{throw Object.assign(new Error(message),{code});};
     if(transcriptBinding(task)!==undefined)error('INVALID_INPUT','专用转写任务请逐项核验参考版本，不能混入整套采用。');
     const attempt=task.attempts.find(value=>value.id===attemptId),receipt=attempt?.receipt;
@@ -77,10 +85,11 @@ export function productionArtifactBundleDraft({task,attemptId,creation,body,body
         if(!order.includes(artifact.kind)||!uuid.test(artifact.id)||ids.has(artifact.id)||!text(artifact.text,200000))error('INVALID_INPUT','整套产物包含不支持或重复的项目，请修正后重新提交。');
         ids.add(artifact.id);
         const data=artifact.data===null?{}:artifact.data;
-        if(!object(data)||['suggestions','annotations','filming'].some(key=>Object.hasOwn(data,key)))error('INVALID_INPUT','整套创作不能混入审稿或拍摄确认，请分别处理。');
+        if(!object(data)||['suggestions','annotations','filming','adoptions'].some(key=>Object.hasOwn(data,key)))error('INVALID_INPUT','整套创作不能混入审稿或拍摄确认，请分别处理。');
+        if(['analysis','narrative'].includes(artifact.kind)&&Object.keys(data).length||artifact.kind==='draft'&&Object.keys(data).some(key=>key!=='composition')||['research','transcript'].includes(artifact.kind)&&Object.keys(data).some(key=>key!=='references'))error('INVALID_INPUT','产物包含不属于其类别的字段。');
         if(['analysis','narrative','draft','packaging'].includes(artifact.kind)){if(owners.has(artifact.kind))error('INVALID_INPUT','整套产物对同一字段存在多个候选，请明确唯一版本。');owners.add(artifact.kind);}
         if(['analysis','narrative'].includes(artifact.kind)){if(!text(artifact.text))error('INVALID_INPUT','拆解或叙事超出长度限制。');creationPatch[artifact.kind]=artifact.text;}
-        if(artifact.kind==='draft'){if(!artifact.text.trim())error('INVALID_INPUT','正文候选不能为空。');nextBody=artifact.text;creationPatch.confirmedBodyHash=null;}
+        if(artifact.kind==='draft'){if(!artifact.text.trim())error('INVALID_INPUT','正文候选不能为空。');nextBody=artifact.text;creationPatch.confirmedBodyHash=null;creationPatch.composition=draftComposition(artifact);}
         if(['research','transcript'].includes(artifact.kind)) {
             if(!Array.isArray(data.references)||!data.references.length||data.references.length>10000||!data.references.every(reference))error('INVALID_INPUT','参考产物缺少有效的完整 references 结构。');
             for(const incoming of data.references){if(referenceIds.has(incoming.id))error('INVALID_INPUT','整套产物存在重复参考编号，请明确唯一版本。');referenceIds.add(incoming.id);const index=references.findIndex(value=>value.id===incoming.id),next=mergeReference(index<0?null:references[index],incoming);if(index<0)references.push(next);else references[index]=next;}
@@ -98,15 +107,32 @@ export function productionArtifactBundleDraft({task,attemptId,creation,body,body
         }
     }
     if(!owners.has('draft'))error('INVALID_INPUT','整套创作须包含一份完整正文。');
+    if(task.request.parameters?.workflow==='content-creation'&&(!['draft','analysis','narrative','packaging'].every(kind=>owners.has(kind))||!creationPatch.analysis?.trim()||!creationPatch.narrative?.trim()||!['titles','coverTexts','intros'].every(key=>(creationPatch.packaging?.[key]??[]).some(value=>value.text.trim()))))error('INVALID_INPUT','整篇创作须交齐正文、拆解、叙事和标题／封面文字／简介候选；缺口请回写失败或等待，不能标为整套完成。');
+    if(!validProductionComposition(creationPatch.composition,nextBody,compositionBodyHash(nextBody),references.map(value=>value.id)))error('INVALID_INPUT','段落范围、正文版本或参考关联无效。');
+    if(!preview)creationPatch.adoptions=adoptionHistory({task,attemptId,creation,body:nextBody,artifactIds:items.map(value=>value.id),now});
     return {creationPatch,body:nextBody,stale:false,action:'确认并采用整套结果'};
 }
 
-export function productionArtifactDraft(input){return artifactDraft(input);}
+function draftComposition(artifact) {
+    if(artifact.data?.composition!==undefined){if(!validProductionComposition(artifact.data.composition,artifact.text,compositionBodyHash(artifact.text)))referenceError('INVALID_INPUT','正文产物的段落范围或版本无效。');return structuredClone(artifact.data.composition);}
+    let index=0;return createProductionComposition(artifact.text,()=>{const value=compositionBodyHash(`${artifact.id}:${index++}`);return `${value.slice(0,8)}-${value.slice(8,12)}-4${value.slice(13,16)}-8${value.slice(17,20)}-${value.slice(20,32)}`;});
+}
+function adoptionHistory({task,attemptId,creation,body,artifactIds,now=new Date().toISOString()}) {
+    const receipt=task.attempts.find(value=>value.id===attemptId)?.receipt;
+    if((creation.adoptions??[]).some(value=>value.taskId===task.id&&value.attemptId===attemptId&&value.artifactIds?.some(id=>artifactIds.includes(id))))referenceError('ALREADY_ADOPTED','此提交的产物已经采用，不能重复加入。');
+    return [...(creation.adoptions??[]),{taskId:task.id,attemptId,receiptHash:receipt.sha256,bodyHash:compositionBodyHash(body),at:now,artifactIds}];
+}
+function withAdoption(input,result){if(transcriptBinding(input.task)!==undefined)return result;return {...result,creationPatch:{...result.creationPatch,adoptions:adoptionHistory({...input,body:result.body,artifactIds:[input.artifactId]})}};}
+export function productionArtifactDraft(input){return withAdoption(input,artifactDraft(input));}
 
 // Clone before hashing so an asynchronous preview never silently rebases its reference.
 export async function prepareProductionArtifactDraft(input){
     const snapshot=structuredClone(input),binding=transcriptBinding(snapshot.task);
-    if(binding===undefined)return productionArtifactDraft(snapshot);
+    if(binding===undefined){
+        const artifact=snapshot.task.attempts.find(value=>value.id===snapshot.attemptId)?.result?.artifacts.find(value=>value.id===snapshot.artifactId);
+        if(Array.isArray(artifact?.data?.referenceAnalyses))for(const update of artifact.data.referenceAnalyses){const reference=snapshot.creation.references.find(value=>value.id===update.referenceId);if(!reference||await productionReferenceHash(reference)!==update.baselineHash)referenceError('STALE_INPUT','参考资料版本已变化，请基于当前参考重新拆解。');}
+        return productionArtifactDraft(snapshot);
+    }
     const {task,creation,attemptId,artifactId}=snapshot;
     if(!binding||typeof binding!=='object'||Array.isArray(binding)||Object.keys(binding).sort().join(',')!=='baselineHash,intent,referenceId,version'||binding.version!==1||!['extract','correct','reextract'].includes(binding.intent)||!/^([a-f0-9]{64})$/.test(binding.baselineHash)||task.kind!=='transcription'||task.accountId||task.request.parameters.workflow)referenceError('INVALID_INPUT','转写任务缺少有效的固定意图与参考版本。');
     const current=creation.references.find(reference=>reference.id===binding.referenceId);
@@ -123,5 +149,5 @@ export async function prepareProductionArtifactDraft(input){
         if(next.subtitleAssetHash!==current.subtitleAssetHash&&next.subtitleAssetHash&&(snapshot.missingAssetHashes??[]).includes(next.subtitleAssetHash))referenceError('INVALID_INPUT','新字幕资产缺失，请先导入可核验字幕。');
         validateTranscriptReference(next,'reextract',snapshot.missingAssetHashes??[]);
     }
-    return artifactDraft(snapshot,next);
+    return withAdoption(snapshot,artifactDraft(snapshot,next));
 }
