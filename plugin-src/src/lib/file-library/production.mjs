@@ -4,6 +4,7 @@ import {productionArtifactBundleDraft,productionArtifactDraft} from './productio
 import {productionArchive} from './production-archive.mjs';
 import {freezeCreatorContext,businessSkillForTask} from './production-creator-context.mjs';
 import {readVaultTaskContext} from '../vault/index.mjs';
+import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -124,6 +125,14 @@ export function productionMethods(h) {
         if (t.activeAttemptId !== a.id) fail('ATTEMPT_INACTIVE','Attempt was retired');
         if (worker && (!a.claimToken || a.claimToken !== i.claimToken || a.workerId !== i.workerId)) fail('CLAIM_MISMATCH','Worker does not own this attempt');
         return {t,a};
+    }
+    function checkpointPositioning(input){
+        invalid(plain(input)&&UUID.test(input.taskId)&&UUID.test(input.attemptId),'Positioning checkpoint requires the fixed task locator');
+        return locked(()=>{
+            const {t,a}=taskAttempt(current().production||emptyProduction(),input,true);
+            const {taskId,attemptId,...raw}=input;
+            return applyPositioningCheckpoint({root,context:{task:t,attempt:a},raw});
+        });
     }
     const newAttempt = (host,now) => {invalid(['codex','workbuddy'].includes(host),'Unknown assistant');return {id:randomUUID(),host,status:'created',claimToken:null,workerId:null,progress:0,message:'',failure:null,result:null,receipt:null,createdAt:now,updatedAt:now};};
     function patchCreation(c,patch,now) {invalid(fields(patch,['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','composition','adoptions']),'Invalid creation patch'); const n = {...c,...structuredClone(patch),updatedAt:now}; invalid(validProductionCreation(n),'Invalid creation state'); return n;}
@@ -413,7 +422,7 @@ export function productionMethods(h) {
             meta.schemaVersion=5;meta.productionState=next;return meta;
         });
     }
-    return {rebuildProductionArchive,readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
+    return {rebuildProductionArchive,readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,checkpointPositioning,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
 }
 
 export function productionAssetHashes(meta) {

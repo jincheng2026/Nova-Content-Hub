@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import {createHash} from 'node:crypto';
+import {LibraryError} from './index.mjs';
 
 const registryURL = new URL('../../../resources/business-skills.json', import.meta.url);
 const digest = value => createHash('sha256').update(JSON.stringify(value)).digest('hex');
@@ -14,7 +15,7 @@ export function freezeCreatorContext(profile, vaultContext) {
     };
     const context = {schemaVersion: 1, profile: publicProfile, vault: vaultContext ?? null};
     const bytes = JSON.stringify(context);
-    if (bytes.length > 65_000) throw Object.assign(new Error('本次定位资料过长，请先整理定位摘要后开始任务；原资料已保留。'), {code: 'INPUT_TOO_LARGE'});
+    if (bytes.length > 65_000) throw new LibraryError('INPUT_TOO_LARGE','本次定位资料过长，请先整理定位摘要后开始任务；原资料已保留。');
     return {...context, sha256: digest(context)};
 }
 
@@ -26,16 +27,16 @@ export function businessSkillForTask(kind, parameters = {}, accountId = null) {
         registry = JSON.parse(bytes.toString('utf8'));
     } catch (error) {
         if (error.code === 'ENOENT') return null;
-        throw Object.assign(new Error('配套业务方法目录不可读取，请修复匹配版本的插件。'), {code: 'CORRUPT'});
+        throw new LibraryError('CORRUPT','配套业务方法目录不可读取，请修复匹配版本的插件。');
     }
-    if (registry?.format !== 'nova-business-skill-registry' || registry.schemaVersion !== 1 || !Array.isArray(registry.methods)) throw Object.assign(new Error('配套业务方法目录格式不匹配。'), {code: 'CORRUPT'});
+    if (registry?.format !== 'nova-business-skill-registry' || registry.schemaVersion !== 1 || !Array.isArray(registry.methods)) throw new LibraryError('CORRUPT','配套业务方法目录格式不匹配。');
     const explicit = parameters.businessSkill ?? parameters.businessMethod;
     const methods = registry.methods.filter(method => plain(method) && method.role === 'business-method' && method.status !== 'disabled');
     const executor=kind==='research'||kind==='analysis'&&accountId?'nova-content-research-execution':'nova-content-writing-execution';
     if (explicit !== undefined) {
         const selected = methods.find(method => method.id === explicit);
-        if (!selected) throw Object.assign(new Error('本次业务方法未包含在配套插件中，请更新插件后重试。'), {code: 'SKILL_NOT_AVAILABLE'});
-        if(selected.executor!==executor)throw Object.assign(new Error('业务方法与本次任务的执行能力不匹配，请选择适用方法。'),{code:'INVALID_INPUT'});
+        if (!selected) throw new LibraryError('SKILL_NOT_AVAILABLE','本次业务方法未包含在配套插件中，请更新插件后重试。');
+        if(selected.executor!==executor)throw new LibraryError('INVALID_INPUT','业务方法与本次任务的执行能力不匹配，请选择适用方法。');
         return {id: selected.id, version: selected.version, registryVersion: registry.version};
     }
     const preferred = parameters.workflow === 'positioning-interview' ? 'xindao-interview'

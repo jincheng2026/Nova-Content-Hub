@@ -68,6 +68,24 @@ test('confirmed positioning checkpoints persist, replay across later stages and 
     assert(fs.readFileSync(path.join(root,first.document.relativePath),'utf8').includes('## 账号要说什么'));
     assert.throws(()=>save({...raw,text:'没有确认的另一个说法'}),{code:'INVALID_INPUT'});
     assert.throws(()=>save({...raw,mutationId:randomUUID(),stage:'content',documentId:first.document.id,expectedHash:first.document.hash}),{code:'CONFLICT'});
+    assert.throws(()=>save({...raw,mutationId:randomUUID(),stage:'content',expectedHash:account.document.hash}),{code:'CONFLICT'});
+    const packagingRaw={...raw,mutationId:randomUUID(),stage:'packaging',text:'采用真实昵称与简介，维持现有头像。'};
+    const packaging=save(packagingRaw);
+    assert.match(packaging.document.relativePath,/账号包装\.md$/);
+    assert(packaging.overview);
+    const overviewPath=path.join(root,packaging.overview.relativePath);
+    assert(fs.readFileSync(overviewPath,'utf8').includes('nova-positioning:packaging:start'));
+    assert.deepEqual(save(packagingRaw),packaging);
+});
+test('cancelled or switched attempts cannot save a checkpoint through a stale context',t=>{
+    const {root,library}=fixture(t),task=start(library,{workflow:'positioning-interview'}),identity=claim(library,task),stale=library.readProductionContext(task.id);
+    const raw={workerId:identity.workerId,claimToken:identity.claimToken,mutationId:randomUUID(),stage:'personal',text:'已确认事实。',confirmation:'对。',confirmedAt:'2026-10-27T16:10:00.000Z'};
+    library.mutateProduction('cancelTask',{taskId:task.id,expectedToken:library.readProduction().editToken});
+    assert.throws(()=>savePositioningCheckpoint({library,context:stale,raw}),{code:'ATTEMPT_INACTIVE'});
+    assert(!fs.existsSync(path.join(root,'00_个人背景/定位总览.md')));
+    library.mutateProduction('retryTask',{taskId:task.id,host:'workbuddy',expectedToken:library.readProduction().editToken});
+    assert.throws(()=>savePositioningCheckpoint({library,context:stale,raw}),{code:'ATTEMPT_INACTIVE'});
+    assert(!fs.existsSync(path.join(root,'00_个人背景/定位总览.md')));
 });
 test('a submitted candidate is archived inside its content directory and tampering is preserved',t=>{
     const {root,binding,library}=fixture(t),content=library.createContent({title:'',body:'先记录我的资料。'}),task=start(library,{contentId:content.id}),identity=claim(library,task);
