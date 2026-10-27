@@ -4,10 +4,11 @@ import Card from '@douyinfe/semi-ui-19/lib/es/card';
 import Input from '@douyinfe/semi-ui-19/lib/es/input';
 import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
 import type {ServiceCredential,ServiceCredentialDisclosure, ServiceReadiness, ServiceSettingsPatch, ServiceSettingsValues, ServiceSettingsView} from '../shared/service-contracts.ts';
-import {defaultServiceSettings} from '../shared/service-validation.ts';
+import {customAsrBaseUrl,defaultServiceSettings,normalizeAsrSettings,validCustomAsrBaseUrl,validAsrModelId} from '../shared/service-validation.ts';
 import {PopupSelect} from './semi-controls.tsx';
 import {useManagedDraftGuard} from './library-panels.tsx';
 import './service-settings.css';
+import {localOnlyServiceDraft} from './service-settings-draft.ts';
 export interface ServiceSettingsProps {
     value: ServiceSettingsView | null;
     busy?: boolean;
@@ -25,7 +26,7 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
     function hideSavedKey(){revealSequence.current++;setDisclosed(null);setRevealing(null);}
     useEffect(()=>()=>{revealSequence.current++;},[]);
     useEffect(()=>{if(!active)hideSavedKey();},[active]);
-    useEffect(()=>{hideSavedKey();},[value,values.model.provider,values.model.baseUrl,values.model.modelId,values.asr.mode,values.asr.localEngine,values.asr.localExecutable,values.asr.localModelPath]);
+    useEffect(()=>{hideSavedKey();},[value,values.asr.mode,values.asr.localEngine,values.asr.localExecutable,values.asr.localModelPath,values.asr.resourceId,values.asr.cloud?.provider,values.asr.cloud?.groqModel,values.asr.cloud?.customBaseUrl,values.asr.cloud?.customModelId]);
     async function toggleSavedKey(service:ServiceCredential){
         if(disclosed?.service===service){hideSavedKey();return;}
         const sequence=++revealSequence.current;setDisclosed(null);setRevealing(service);setNotice('');
@@ -39,18 +40,32 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
     useEffect(() => {if (value) return; let live = true; void onLoad().then(next => {if (live) {setSaved(next); setValues(next.values);}}).catch(() => {if (live) setNotice('服务设置读取失败，请关闭后重新打开设置。');}).finally(() => {if (live) setLoading(false);}); return () => {live = false;};}, []);
     useEffect(() => {if (value && !dirty) {setSaved(value); setValues(value.values); setLoading(false);}}, [value]);
     const blocked = busy || saving || loading || !saved || !active;
-    const model = (patch: Partial<ServiceSettingsValues['model']>) => setValues({...values, model: {...values.model, ...patch}});
-    const asr = (patch: Partial<ServiceSettingsValues['asr']>) => setValues({...values, asr: {...values.asr, ...patch}});
+    const currentAsr=normalizeAsrSettings(values.asr),cloud=currentAsr.cloud,cloudMode=currentAsr.mode==='cloud';
+    const asr = (patch: Partial<ServiceSettingsValues['asr']>) => setValues(current=>({...current,asr:{...normalizeAsrSettings(current.asr),...patch}}));
+    function changeAsrMode(mode:ServiceSettingsValues['asr']['mode']) {
+        hideSavedKey();
+        if(mode==='local-only'){
+            const restored=localOnlyServiceDraft(values,saved?.values??defaultServiceSettings(),keys);
+            setValues(restored.values);setKeys(restored.keys);setNotice('已切换为仅本地；未保存的云端配置与 Key 修改已放弃，已保存配置保留。');
+        }else asr({mode});
+    }
+    const setCloud=(patch:Partial<typeof cloud>)=>asr({cloud:{...cloud,...patch}});
+    const cloudPreset=cloud.provider==='groq'?cloud.groqModel:cloud.provider;
+    const endpoint=(value:string)=>{try{return customAsrBaseUrl(value);}catch{return value;}};
+    const priorCustom=saved?normalizeAsrSettings(saved.values.asr).cloud.customBaseUrl:'';
+    const customRebind=!!saved?.credentials.custom?.hasKey&&endpoint(priorCustom)!==endpoint(cloud.customBaseUrl);
+    const customNeedsKey=customRebind&&!Object.hasOwn(keys,'custom');
+    const customInvalid=(cloud.provider==='custom'||cloud.customBaseUrl!=='')&&!validCustomAsrBaseUrl(cloud.customBaseUrl)||(cloud.provider==='custom'||cloud.customModelId!=='')&&!validAsrModelId(cloud.customModelId);
     const keyInput = (name: ServiceCredential, label: string) => <div className="service-settings-key">
-        <label htmlFor={saved?.credentials[name].hasKey?`service-saved-key-${name}`:`service-key-${name}`}>{label}</label>
-        <span className="service-settings-key-status">{keys[name] === null ? '保存后清除' : typeof keys[name] === 'string' ? '保存后替换' : saved?.credentials[name].hasKey ? '已配置 · 安全保存' : '未配置'}</span>
-        {saved?.credentials[name].hasKey&&<div className="service-settings-key-saved"><Input id={`service-saved-key-${name}`} aria-label={`已保存的${label}`} type={disclosed?.service===name?'text':'password'} readonly autoComplete="off" value={disclosed?.service===name?disclosed.key:'••••••••'}/><Button id={`service-key-reveal-${name}`} aria-controls={`service-saved-key-${name}`} aria-label={`${disclosed?.service===name?'隐藏':'查看'}已保存的${label}`} aria-pressed={disclosed?.service===name} theme="borderless" loading={revealing===name} disabled={blocked||!saved.encryptionAvailable||keys[name]===null} onClick={()=>void toggleSavedKey(name)}>{disclosed?.service===name?'隐藏':'查看'}</Button></div>}
-        {saved?.credentials[name].hasKey&&<label htmlFor={`service-key-${name}`}>新 Key（可选，留空保留已保存的 Key）</label>}
-        <Input id={`service-key-${name}`} type="password" mode="password" autoComplete="new-password" value={keys[name] ?? ''} disabled={blocked || !saved?.encryptionAvailable || keys[name] === null} placeholder={saved?.credentials[name].hasKey ? '填写新 Key 替换' : '填写 Key'} onChange={text => {hideSavedKey();setKeys(current => {const next = {...current}; if (text) next[name] = text; else delete next[name]; return next;});}}/>
-        {(saved?.credentials[name].hasKey || Object.hasOwn(keys, name)) && <div className="service-settings-key-actions"><Button id={`service-key-clear-${name}`} theme="borderless" type={keys[name] === null ? 'primary' : 'danger'} disabled={blocked} onClick={() => {hideSavedKey();setKeys(current => {const next = {...current}; if (current[name] === null || !saved?.credentials[name].hasKey) delete next[name]; else next[name] = null; return next;});}}>{keys[name] === null ? '撤销清除' : saved?.credentials[name].hasKey ? '清除 Key' : '清空输入'}</Button></div>}
+        <label htmlFor={saved?.credentials[name]?.hasKey?`service-saved-key-${name}`:`service-key-${name}`}>{label}</label>
+        <span className="service-settings-key-status">{keys[name] === null ? '保存后清除' : typeof keys[name] === 'string' ? '保存后替换' : name==='custom'&&customRebind ? '旧地址 Key · 等待重新填写' : saved?.credentials[name]?.hasKey ? '已配置 · 安全保存' : '未配置'}</span>
+        {saved?.credentials[name]?.hasKey&&<div className="service-settings-key-saved"><Input id={`service-saved-key-${name}`} aria-label={`已保存的${label}`} type={disclosed?.service===name?'text':'password'} readonly autoComplete="off" value={disclosed?.service===name?disclosed.key:'••••••••'}/><Button id={`service-key-reveal-${name}`} aria-controls={`service-saved-key-${name}`} aria-label={`${disclosed?.service===name?'隐藏':'查看'}已保存的${label}`} aria-pressed={disclosed?.service===name} theme="borderless" loading={revealing===name} disabled={blocked||!saved.encryptionAvailable||keys[name]===null||name==='custom'&&customRebind} onClick={()=>void toggleSavedKey(name)}>{disclosed?.service===name?'隐藏':'查看'}</Button></div>}
+        {saved?.credentials[name]?.hasKey&&<label htmlFor={`service-key-${name}`}>{name==='custom'&&customRebind?'新地址 Key（重新填写，或明确清除旧 Key）':'新 Key（可选，留空保留已保存的 Key）'}</label>}
+        <Input id={`service-key-${name}`} type="password" mode="password" autoComplete="new-password" value={keys[name] ?? ''} disabled={blocked || !saved?.encryptionAvailable || keys[name] === null} placeholder={saved?.credentials[name]?.hasKey ? '填写新 Key 替换' : '填写 Key'} onChange={text => {hideSavedKey();setKeys(current => {const next = {...current}; if (text) next[name] = text; else delete next[name]; return next;});}}/>
+        {(saved?.credentials[name]?.hasKey || Object.hasOwn(keys, name)) && <div className="service-settings-key-actions"><Button id={`service-key-clear-${name}`} theme="borderless" type={keys[name] === null ? 'primary' : 'danger'} disabled={blocked} onClick={() => {hideSavedKey();setKeys(current => {const next = {...current}; if (current[name] === null || !saved?.credentials[name]?.hasKey) delete next[name]; else next[name] = null; return next;});}}>{keys[name] === null ? '撤销清除' : saved?.credentials[name]?.hasKey ? '清除 Key' : '清空输入'}</Button></div>}
     </div>;
     async function saveAndCheck() {
-        if (blocked) return;
+        if (blocked || customNeedsKey || customInvalid) return;
         hideSavedKey();
         setSaving(true); setNotice('');
         let current = saved!;
@@ -64,28 +79,35 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
                     return;
                 }
             }
-            if (current.values.asr.mode === 'volc') {setNotice('服务设置已保存。云端识别将在任务授权后调用。'); return;}
+            if (normalizeAsrSettings(current.values.asr).mode === 'cloud') {setNotice('服务设置已保存。云端识别将在任务授权后调用。'); return;}
             try {const result = await onCheck(); setNotice(`服务设置已保存。${result.localAsr.reason}`);}
             catch {setNotice('服务设置已保存；本地模型检查未完成，可再次点击“保存并检查”重试。');}
         } finally {setSaving(false);}
     }
     const localConfigured = !!values.asr.localExecutable && !!values.asr.localModelPath;
-    const cloudFields = <>{keyInput('asr', '火山语音专用 Key')}<label htmlFor="service-asr-resource">语音资源 ID</label><Input id="service-asr-resource" value={values.asr.resourceId} disabled={blocked} onChange={resourceId => asr({resourceId})}/><p>需单独开通火山语音。语音 Key 与大模型 Key 分开保存；仅在本次任务明确授权后上传音频。</p></>;
+    const cloudFields = <>
+      <label htmlFor="service-asr-provider">云端服务</label><PopupSelect id="service-asr-provider" value={cloudPreset} disabled={blocked} onChange={preset=>{
+        hideSavedKey();setCloud(preset==='volc'||preset==='custom'?{provider:preset}:{provider:'groq',groqModel:preset as typeof cloud.groqModel});
+      }}><option value="whisper-large-v3-turbo">Groq · Whisper Large V3 Turbo</option><option value="whisper-large-v3">Groq · Whisper Large V3</option><option value="volc">火山语音 · 极速版</option><option value="custom">自定义兼容 ASR</option></PopupSelect>
+      {cloud.provider==='groq'&&<>{keyInput('groq','Groq 语音 Key')}<p>提供免费计划，额度以账户为准；已升级账户或超出免费额度时可能计费。单文件最大 25 MB，本次任务仍需授权并受请求次数上限约束。</p></>}
+      {cloud.provider==='volc'&&<>{keyInput('asr','火山语音专用 Key')}<label htmlFor="service-asr-resource">极速版语音资源 ID</label><Input id="service-asr-resource" value={values.asr.resourceId} disabled={blocked} onChange={resourceId=>asr({resourceId})}/><p>当前接入极速版 volc.bigasr.auc_turbo，需单独开通。标准版 2.0 暂未接入；控制台的“20 小时”试用包不能证明极速版可用，适用资源与额度以账户为准。</p></>}
+      {cloud.provider==='custom'&&<>
+        <label htmlFor="service-asr-custom-url">API 基础地址（HTTPS）</label><Input id="service-asr-custom-url" value={cloud.customBaseUrl} disabled={blocked} placeholder="https://asr.example.com/v1" onChange={customBaseUrl=>setCloud({customBaseUrl})}/>
+        <label htmlFor="service-asr-custom-model">语音模型 ID</label><Input id="service-asr-custom-model" value={cloud.customModelId} disabled={blocked} placeholder="服务商提供的语音模型 ID" onChange={customModelId=>setCloud({customModelId})}/>
+        {keyInput('custom','自定义 ASR Key')}
+        {customRebind&&<p role="alert">接口地址已修改。请重新填写此地址的 Key，或明确清除旧 Key 后保存；已保存的旧 Key 不会发送到新地址。</p>}
+        {customInvalid&&<p role="status">请填写有效的 HTTPS 基础地址与语音模型 ID。</p>}
+        <p>用于兼容的语音转文字接口，单文件最大 25 MB；实际格式、额度与收费以服务商为准。修改接口地址后需要重新填写 Key。</p>
+      </>}
+      <p>各提供方的 Key 独立加密保存；仅在本次任务明确授权后上传音频，不自动切换提供方。</p>
+    </>;
     return <form className="service-settings" aria-label="研究与创作服务" onSubmit={event => {event.preventDefault(); void saveAndCheck();}}>
-      <Card title="研究与创作服务"><p>AI 任务仍交给 Codex / WorkBuddy，由你在助手中选模型并提交。这里配置任务可用的采集、分析与语音服务。</p><p>Key 加密保存在本机，不随内容库备份；已配置的 Key 默认隐藏，点击“查看”可显示。新 Key 留空保留原值。</p>{saved && !saved.encryptionAvailable && <p role="alert">系统安全存储当前不可用，暂不能保存或使用新 Key。请先解锁钥匙串或配置系统凭据存储。</p>}{loading && <p role="status">正在读取服务设置…</p>}</Card>
+      <Card title="研究与创作服务"><p>调研、账号分析及所有文字分析与创作均由你选择的 Codex / WorkBuddy 助手完成。这里配置 TikHub 采集与语音识别；工作台直连云端模型仅用于语音转文字。</p><p>Key 加密保存在本机，不随内容库备份；已配置的 Key 默认隐藏，点击“查看”可显示。新 Key 留空保留原值。</p>{saved && !saved.encryptionAvailable && <p role="alert">系统安全存储当前不可用，暂不能保存或使用新 Key。请先解锁钥匙串或配置系统凭据存储。</p>}{loading && <p role="status">正在读取服务设置…</p>}</Card>
       <Card title="TikHub 采集">{keyInput('tikhub', 'TikHub Key')}<p>用于抖音搜索、账号、作品与评论，调用可能计费。</p></Card>
-      <Card title="大模型分析">
-        <label htmlFor="service-model-id">模型 / 接入点 ID</label><Input id="service-model-id" value={values.model.modelId} disabled={blocked} onChange={modelId => model({modelId})}/>
-        {keyInput('model', '大模型 Key')}
-        <details className="service-settings-details"><summary>接口设置</summary><div className="service-settings-detail-body">
-          <label htmlFor="service-model-provider">提供方</label><PopupSelect id="service-model-provider" value={values.model.provider} disabled={blocked} onChange={provider => model({provider: provider as ServiceSettingsValues['model']['provider']})}><option value="volc">火山方舟</option><option value="compatible">兼容 Chat Completions</option></PopupSelect>
-          <label htmlFor="service-model-url">API 基础地址（HTTPS）</label><Input id="service-model-url" value={values.model.baseUrl} disabled={blocked} onChange={baseUrl => model({baseUrl})}/><p>填写基础地址，例如 https://ark.cn-beijing.volces.com/api/v3。</p>
-        </div></details>
-        <p>优先使用助手已有额度与本地模型。免费额度以提供方账户为准，额度未知或用尽时不会自动切换付费模型；API 调用仍需任务授权和预算。</p>
-      </Card>
       <Card title="语音识别">
-        <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={values.asr.mode} disabled={blocked} onChange={mode => asr({mode: mode as ServiceSettingsValues['asr']['mode']})}><option value="local-first">优先本地</option><option value="local-only">仅本地</option><option value="volc">火山语音</option></PopupSelect>
-        {values.asr.mode !== 'volc' && <>
+        <p>默认使用免费的本地识别（faster-whisper）。云端识别仅在本次任务明确授权后使用；本地失败不会自动取得云端授权。</p>
+        <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={currentAsr.mode} disabled={blocked} onChange={mode => changeAsrMode(mode as ServiceSettingsValues['asr']['mode'])}><option value="local-first">免费本地优先</option><option value="local-only">仅本地</option><option value="cloud">云端识别（需授权）</option></PopupSelect><p>选择“仅本地”会放弃未保存的云端配置与 Key 修改，已保存配置保留。</p>
+        {!cloudMode && <>
           <p>{localConfigured ? '已填写本地模型路径，保存时检查可用性。' : '请展开配置已安装的本地模型。'}本地识别失败时不会自动转付费云端。</p>
           <details className="service-settings-details" open={!localConfigured}><summary>本地模型配置</summary><div className="service-settings-detail-body">
             <label htmlFor="service-asr-engine">本地引擎</label><PopupSelect id="service-asr-engine" value={values.asr.localEngine} disabled={blocked} onChange={localEngine => asr({localEngine: localEngine as ServiceSettingsValues['asr']['localEngine']})}><option value="faster-whisper">faster-whisper / Python</option><option value="qwen3-asr">Qwen3-ASR / Python</option><option value="whisper-cpp">whisper.cpp</option></PopupSelect>
@@ -93,14 +115,16 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
             <label htmlFor="service-asr-model">离线模型路径</label><Input id="service-asr-model" value={values.asr.localModelPath} disabled={blocked} onChange={localModelPath => asr({localModelPath})}/><p>使用绝对路径。Python 引擎填写模型目录；whisper.cpp 填写模型文件。此处不会安装软件或下载模型。</p>
           </div></details>
         </>}
-        {values.asr.mode === 'volc' ? cloudFields : values.asr.mode === 'local-first' && <details className="service-settings-details"><summary>云端备用配置（可选）</summary><div className="service-settings-detail-body">{cloudFields}</div></details>}
+        {cloudMode ? cloudFields : values.asr.mode === 'local-first' && <details className="service-settings-details"><summary>云端备用配置（可选）</summary><div className="service-settings-detail-body">{cloudFields}</div></details>}
       </Card>
       <Card title="调用预算与评论">
-        <Checkbox checked={values.budget.enabled} disabled={blocked} onChange={event => setValues({...values, budget: {...values.budget, enabled: !!event.target.checked}})}>允许任务申请付费服务调用（默认关闭）</Checkbox>
+        <p>免费计划与试用资格由提供方账户决定；开启此项允许任务申请外部服务，不代表一定扣费。所有云端识别仍需本次任务明确授权。</p>
+        <Checkbox checked={values.budget.enabled} disabled={blocked} onChange={event => setValues({...values, budget: {...values.budget, enabled: !!event.target.checked}})}>允许任务申请外部服务调用（可能计费，默认关闭）</Checkbox>
         {values.budget.enabled && <><label htmlFor="service-request-budget">每任务请求次数上限（1–100）</label><Input id="service-request-budget" type="number" min={1} max={100} value={String(values.budget.maxRequestsPerTask)} disabled={blocked} onChange={text => setValues({...values, budget: {...values.budget, maxRequestsPerTask: Number(text)}})}/></>}
         <Checkbox checked={values.commentsEnabled} disabled={blocked} onChange={event => setValues({...values, commentsEnabled: !!event.target.checked})}>开放评论采集能力（默认关闭）</Checkbox>
         <p>TikHub 评论采集收费较高，分页可能多次计费。这里仅开放能力；每次调研仍需手动勾选，并受任务预算限制。实际费用以提供方账单为准。</p>
       </Card>
-      <div className="service-settings-actions"><Button htmlType="submit" theme="solid" loading={saving} disabled={blocked}>{values.asr.mode === 'volc' ? '保存设置' : '保存并检查'}</Button>{dirty && <Button disabled={blocked} onClick={() => {hideSavedKey();if (saved) setValues(saved.values); setKeys({}); setNotice('已放弃本次修改。');}}>放弃修改</Button>}</div>{notice && <p className="service-settings-notice" role="status">{notice}</p>}
+      {(customNeedsKey||customInvalid)&&(!cloudMode||cloud.provider!=='custom')&&<p role="alert">自定义接口配置尚未完成。请在“云端识别”的“自定义兼容 ASR”中补全地址、模型和需要重新填写的 Key，或放弃本次修改。</p>}
+      <div className="service-settings-actions"><Button htmlType="submit" theme="solid" loading={saving} disabled={blocked||customNeedsKey||customInvalid}>{cloudMode ? '保存设置' : '保存并检查'}</Button>{dirty && <Button disabled={blocked} onClick={() => {hideSavedKey();if (saved) setValues(saved.values); setKeys({}); setNotice('已放弃本次修改。');}}>放弃修改</Button>}</div>{notice && <p className="service-settings-notice" role="status">{notice}</p>}
     </form>;
 }

@@ -4,6 +4,7 @@ import http from 'node:http';
 import {pathToFileURL} from 'node:url';
 const fail=code=>{throw Object.assign(new Error(code),{code});};
 export async function callServiceTool(descriptorPath,request){
+ if(request?.tool==='model')fail('MODEL_SERVICE_DISABLED');
  const stat=await fs.lstat(descriptorPath);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>2048||process.platform!=='win32'&&(stat.mode&0o077))fail('UNSAFE_BROKER_DESCRIPTOR');
  const d=JSON.parse(await fs.readFile(descriptorPath,'utf8'));
  if(d.version!==1||d.host!=='127.0.0.1'||!Number.isInteger(d.port)||d.port<1||d.port>65535||typeof d.token!=='string'||!/^[A-Za-z0-9_-]{43}$/.test(d.token)||Object.keys(d).sort().join(',')!=='host,port,token,version')fail('INVALID_BROKER_DESCRIPTOR');

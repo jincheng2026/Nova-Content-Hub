@@ -7,8 +7,8 @@ import https from 'node:https';
 import {spawn} from 'node:child_process';
 import {createHash,randomUUID} from 'node:crypto';
 import {ServiceSettingsStore} from './service-settings.mts';
-import {serviceToolRequest} from '../shared/service-validation.ts';
-import type {ServiceReadiness,ServiceSettingsValues,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
+import {customAsrBaseUrl,normalizeAsrSettings,serviceCredentials,serviceToolRequest} from '../shared/service-validation.ts';
+import type {NormalizedAsrSettings,ServiceCredential,ServiceReadiness,ServiceSettingsValues,ServiceToolRequest,ServiceToolResult} from '../shared/service-contracts.ts';
 export const TIKHUB_CACHE_TTL_MS = 6*60*60*1000;
 type TikHubRequest = Extract<ServiceToolRequest,{tool:'tikhub'}>;
 export function tikHubHttpRequest(request:TikHubRequest):{url:string;method:'GET'|'POST';body?:string} {
@@ -26,7 +26,7 @@ export function tikHubHttpRequest(request:TikHubRequest):{url:string;method:'GET
     for(const[k,v]of Object.entries(params))url.searchParams.set(k,String(v));
     return{url:url.href,method:'GET'};
 }
-export class ServiceToolError extends Error {code:string; requestsUsed:0|1|null; constructor(code:string,requestsUsed:0|1|null=0){super(code === 'COST_UNKNOWN' ? '上次请求费用未确认，请先人工核验账单再继续。' : code === 'LOCAL_ASR_UNAVAILABLE' ? '本地语音依赖或模型不可用，请检查已保存的路径与 Python 模块；本次没有调用云端。' : '服务调用未完成；请检查配置或任务授权后继续。');this.code=code;this.requestsUsed=requestsUsed;}}
+export class ServiceToolError extends Error {code:string; requestsUsed:0|1|null; constructor(code:string,requestsUsed:0|1|null=0){super(code === 'MODEL_SERVICE_DISABLED' ? '文本分析与创作由当前选择的 Codex / WorkBuddy 助手完成；工作台仅提供采集与语音识别服务。' : code === 'COST_UNKNOWN' ? '上次请求费用未确认，请先人工核验账单再继续。' : code === 'LOCAL_ASR_UNAVAILABLE' ? '本地语音依赖或模型不可用，请检查已保存的路径与 Python 模块；本次没有调用云端。' : '服务调用未完成；请检查配置或任务授权后继续。');this.code=code;this.requestsUsed=requestsUsed;}}
 export function publicAddress(address:string):boolean {
     if (isIP(address)===4) {const [a,b,c]=address.split('.').map(Number);return !(a===0||a===10||a===127||a>=224||a===169&&b===254||a===172&&b>=16&&b<=31||a===192&&(b===0||b===168||b===88&&c===99)||a===100&&b>=64&&b<=127||a===198&&(b===18||b===19||b===51)||a===203&&b===0);}
     if (isIP(address)===6) {const v=address.toLowerCase();const parts=v.split(':');return /^[23][0-9a-f]{3}:/.test(v)&&!(parts[0]==='2001'&&(parseInt(parts[1]||'0',16)<0x200||parseInt(parts[1],16)===0xdb8))&&!v.startsWith('2002:')&&!v.startsWith('3fff:');}
@@ -39,7 +39,7 @@ export async function publicEndpoint(input:string,resolver:(hostname:string,opti
     let addresses;let dnsTimer:ReturnType<typeof setTimeout>|undefined;try {addresses=isIP(host)?[{address:host,family:isIP(host)}]:await Promise.race([resolver(host,{all:true,verbatim:true}),new Promise<never>((_resolve,reject)=>{dnsTimer=setTimeout(()=>reject(new Error('DNS_TIMEOUT')),6000);})]);} catch {throw new ServiceToolError('DNS_FAILED');} finally {clearTimeout(dnsTimer);}
     // Some system TUN proxies return benchmark-range synthetic DNS for these fixed providers.
     // TLS still verifies the original hostname, requests remain pinned, and redirects stay disabled.
-    const fixedProvider=['api.tikhub.io','ark.cn-beijing.volces.com','openspeech.bytedance.com'].includes(url.hostname);
+    const fixedProvider=['api.tikhub.io','ark.cn-beijing.volces.com','openspeech.bytedance.com','api.groq.com'].includes(url.hostname);
     const synthetic=(address:string)=>isIP(address)===4&&/^198\.(18|19)\./.test(address);
     const pairedSyntheticAlias=(address:string)=>{
         if(isIP(address)!==6)return false;
@@ -54,9 +54,9 @@ export async function publicEndpoint(input:string,resolver:(hostname:string,opti
     const selected=addresses.find(a=>synthetic(a.address))??addresses[0];
     return {url,address:selected.address,family:selected.family};
 }
-export async function boundedHttps(input:string,options:{method?:string;headers?:Record<string,string>;body?:string;maxBytes?:number;timeoutMs?:number}={}):Promise<{data:unknown;headers:Record<string,string|string[]|undefined>}> {
-    const {url,address,family}=await publicEndpoint(input);
+export async function boundedHttps(input:string,options:{method?:string;headers?:Record<string,string>;body?:string|Buffer;maxBytes?:number;timeoutMs?:number}={}):Promise<{data:unknown;headers:Record<string,string|string[]|undefined>}> {
     const body=options.body; if (body&&Buffer.byteLength(body)>24*1024*1024) throw new ServiceToolError('REQUEST_TOO_LARGE');
+    const {url,address,family}=await publicEndpoint(input);
     return new Promise((resolve,reject)=>{
         let sent=false,done=false; const finish=(error?:ServiceToolError,value?:{data:unknown;headers:Record<string,string|string[]|undefined>})=>{if(done)return;done=true;clearTimeout(timer);if(error)reject(error);else resolve(value!);};
         const req=https.request(url,{method:options.method??'GET',headers:{'User-Agent':'Nova-Content-Hub',...options.headers,...(body?{'Content-Length':String(Buffer.byteLength(body))}:{})},rejectUnauthorized:true,servername:url.hostname,family,lookup:(_host,_options,cb)=>{cb(null,address,family);},agent:false},res=>{
@@ -69,9 +69,36 @@ export async function boundedHttps(input:string,options:{method?:string;headers?
         req.on('finish',()=>{sent=true;});req.on('error',()=>finish(new ServiceToolError('NETWORK_FAILED',sent?null:0)));req.end(body);
     });
 }
+const CLOUD_AUDIO_MAX_BYTES=25_000_000;
+const audioTypes:Record<string,string>={'.flac':'audio/flac','.mp3':'audio/mpeg','.mp4':'video/mp4','.mpeg':'audio/mpeg','.mpga':'audio/mpeg','.m4a':'audio/mp4','.ogg':'audio/ogg','.wav':'audio/wav','.webm':'video/webm'};
+function cloudAsrTarget(a:NormalizedAsrSettings):{url:string;credential:ServiceCredential;modelId:string;maxAudioBytes:number}{
+    if(a.cloud.provider==='volc'){
+        if(a.resourceId!=='volc.bigasr.auc_turbo')throw new ServiceToolError('ASR_RESOURCE_UNSUPPORTED');
+        return{url:'https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash',credential:'asr',modelId:a.resourceId,maxAudioBytes:16*1024*1024};
+    }
+    if(a.cloud.provider==='groq')return{url:'https://api.groq.com/openai/v1/audio/transcriptions',credential:'groq',modelId:a.cloud.groqModel,maxAudioBytes:CLOUD_AUDIO_MAX_BYTES};
+    return{url:`${customAsrBaseUrl(a.cloud.customBaseUrl)}/audio/transcriptions`,credential:'custom',modelId:a.cloud.customModelId,maxAudioBytes:CLOUD_AUDIO_MAX_BYTES};
+}
+async function readCloudAudio(file:string,maxBytes:number):Promise<Buffer>{
+    const extension=path.extname(file).toLowerCase();if(!audioTypes[extension])throw new ServiceToolError('INVALID_AUDIO');
+    let handle:Awaited<ReturnType<typeof fs.open>>|undefined;
+    try {
+        const link=await fs.lstat(file);if(!link.isFile()||link.isSymbolicLink()||link.size<1||link.size>maxBytes)throw new Error();
+        handle=await fs.open(file,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW??0));const stat=await handle.stat();if(!stat.isFile()||stat.size!==link.size||stat.size>maxBytes)throw new Error();
+        const data=Buffer.alloc(stat.size);let offset=0;
+        while(offset<data.length){const {bytesRead}=await handle.read(data,offset,data.length-offset,offset);if(!bytesRead)throw new Error();offset+=bytesRead;}
+        if((await handle.read(Buffer.alloc(1),0,1,offset)).bytesRead)throw new Error();return data;
+    }catch{throw new ServiceToolError('INVALID_AUDIO');}finally{await handle?.close();}
+}
+function asrMultipart(data:Buffer,extension:string,modelId:string):{body:Buffer;contentType:string}{
+    const boundary=`nova-asr-${randomUUID()}`,parts:Buffer[]=[];
+    for(const [name,value]of [['model',modelId],['response_format','json']])parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="${name}"\r\n\r\n${value}\r\n`));
+    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="audio${extension}"\r\nContent-Type: ${audioTypes[extension]}\r\n\r\n`),data,Buffer.from(`\r\n--${boundary}--\r\n`));
+    return {body:Buffer.concat(parts),contentType:`multipart/form-data; boundary=${boundary}`};
+}
 async function run(executable:string,args:string[],timeoutMs=10000):Promise<string> {return new Promise((resolve,reject)=>{const child=spawn(executable,args,{shell:false,windowsHide:true,env:{...process.env,HF_HUB_OFFLINE:'1',TRANSFORMERS_OFFLINE:'1',HF_DATASETS_OFFLINE:'1',PYTHONIOENCODING:'utf-8'}});let output='',size=0,settled=false;const end=(error?:unknown)=>{if(settled)return;settled=true;clearTimeout(timer);if(error)reject(error);else resolve(output);};const timer=setTimeout(()=>{child.kill();end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE'));},timeoutMs);child.stdout.on('data',(b:Buffer)=>{size+=b.length;if(size>4*1024*1024){child.kill();end(new ServiceToolError('RESPONSE_TOO_LARGE'));}else output+=b.toString('utf8');});child.stderr.on('data',()=>{});child.on('error',()=>end(new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));child.on('exit',code=>end(code===0?undefined:new ServiceToolError('LOCAL_ASR_UNAVAILABLE')));});}
 interface CacheEntry {collectedAt:string;data?:unknown;unknown?:boolean;requestId?:string}
-interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string;config?:ServiceSettingsValues}
+interface Prepared {service:string;requests:0|1;cacheKey?:string;cached?:ServiceToolResult;localModule?:string;config?:ServiceSettingsValues;audio?:Buffer}
 export interface ServiceExecutionHooks {beforeExecute?(prepared:{service:string;requests:0|1;config?:ServiceSettingsValues}):Promise<void>;afterExecute?(result:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}):Promise<void>}
 export class ServiceTools {
     readonly settings:ServiceSettingsStore; readonly cachePath?:string; private cache=new Map<string,CacheEntry>();private loaded=false;private cacheQueue:Promise<unknown>=Promise.resolve();private inflight=new Set<string>();
@@ -97,11 +124,17 @@ export class ServiceTools {
             if(entry&&Date.now()-Date.parse(entry.collectedAt)<TIKHUB_CACHE_TTL_MS)return{service:'tikhub',requests:0,cacheKey,cached:{data:entry.data,service:'tikhub',requestsUsed:0,collectedAt:entry.collectedAt,cacheHit:true}};
             this.settings.secret('tikhub');return{service:'tikhub',requests:1,cacheKey};
         }
-        if(request.tool==='model'){if(!s.values.model.modelId.trim())throw new ServiceToolError('MODEL_ID_MISSING');this.settings.secret('model');await publicEndpoint(s.values.model.baseUrl);return{service:'model',requests:1,config:s.values};}
-        if(s.values.asr.mode!=='volc'){try{return{service:'asr',requests:0,localModule:await this.localModule(s.values.asr),config:s.values};}catch(error){if(s.values.asr.mode==='local-only'||!request.allowCloud)throw error;}}
-        if(!request.allowCloud)throw new ServiceToolError('CLOUD_PERMISSION_REQUIRED');if(s.values.asr.resourceId!=='volc.bigasr.auc_turbo')throw new ServiceToolError('ASR_RESOURCE_UNSUPPORTED');this.settings.secret('asr');return{service:'asr',requests:1,config:s.values};
+        if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
+        const asr=normalizeAsrSettings(s.values.asr);
+        if(asr.mode!=='cloud'){try{return{service:'asr',requests:0,localModule:await this.localModule(asr),config:s.values};}catch(error){if(asr.mode==='local-only'||!request.allowCloud)throw error;}}
+        if(!request.allowCloud)throw new ServiceToolError('CLOUD_PERMISSION_REQUIRED');
+        if(!s.values.budget.enabled)throw new ServiceToolError('BUDGET_DISABLED');
+        const target=cloudAsrTarget(asr),audio=await readCloudAudio(request.audioPath,target.maxAudioBytes);this.settings.secret(target.credential);
+        return{service:'asr',requests:1,config:s.values,audio};
     }
     async execute(request:ServiceToolRequest,hooks:ServiceExecutionHooks={}):Promise<ServiceToolResult>{
+        // Historical model requests stay readable, but may never reach settings, secrets or budget.
+        if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
         const prepared=await this.prepare(request);if(prepared.requests===1&&!this.settings.read().values.budget.enabled)throw new ServiceToolError('BUDGET_DISABLED');const {cacheKey}=prepared;
         if(cacheKey&&this.inflight.has(cacheKey))throw new ServiceToolError('REQUEST_IN_PROGRESS');if(cacheKey)this.inflight.add(cacheKey);
         let reserved=false,started=false;
@@ -115,14 +148,13 @@ export class ServiceTools {
                 if(cacheKey){this.cache.set(cacheKey,{collectedAt:result.collectedAt,data:result.data});await this.saveCache();}
             }
             const usage:Record<string,number|string|null>={costStatus:prepared.requests===0?'no-external-call':'unknown'};
-            if(request.tool==='model'&&result.data&&typeof result.data==='object'&&'usage' in result.data){const raw=result.data.usage;if(raw&&typeof raw==='object')for(const key of ['prompt_tokens','completion_tokens','total_tokens','input_tokens','output_tokens']){const value=(raw as Record<string,unknown>)[key];if(typeof value==='number'&&Number.isFinite(value)&&value>=0)usage[key]=value;}}
             if(request.tool==='asr'){usage.durationMs=null;const data=result.data as Record<string,unknown>|null;if(data&&typeof data.durationMs==='number'&&Number.isFinite(data.durationMs)&&data.durationMs>=0)usage.durationMs=data.durationMs;}
             reserved=false;await hooks.afterExecute?.({service:prepared.service,requestsUsed:result.requestsUsed,ok:true,usage});return result;
         }catch(error){const code=error&&typeof error==='object'&&'code'in error&&typeof error.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';const safe=error instanceof ServiceToolError?error:new ServiceToolError(code,started&&prepared.requests===1?null:0);if(cacheKey&&safe.requestsUsed===0&&!prepared.cached){this.cache.delete(cacheKey);await this.saveCache();}if(cacheKey&&safe.requestsUsed===null)this.cache.set(cacheKey,{collectedAt:new Date().toISOString(),unknown:true,requestId:request.requestId});if(reserved)await hooks.afterExecute?.({service:prepared.service,requestsUsed:prepared.requests===0?0:safe.requestsUsed,ok:false});throw safe;
         }finally{if(cacheKey)this.inflight.delete(cacheKey);}
     }
     async reconcileCost(requestId:string):Promise<void>{await this.loadCache();for(const [key,entry] of this.cache)if(entry.unknown&&entry.requestId===requestId)this.cache.delete(key);await this.saveCache();}
-    private scrub(data:unknown):unknown{let json=JSON.stringify(data);for(const name of ['tikhub','model','asr'] as const){try{const key=this.settings.secret(name);if(key)json=json.split(JSON.stringify(key).slice(1,-1)).join('[redacted]');}catch{}}return JSON.parse(json);}
+    private scrub(data:unknown):unknown{let json=JSON.stringify(data);for(const name of serviceCredentials){try{const key=this.settings.secret(name);if(key)json=json.split(JSON.stringify(key).slice(1,-1)).join('[redacted]');}catch{}}return JSON.parse(json);}
     private async invoke(request:ServiceToolRequest,p:Prepared):Promise<unknown>{
         const s=p.config??this.settings.read().values;
         if(request.tool==='tikhub'){
@@ -130,10 +162,19 @@ export class ServiceTools {
             const response=await boundedHttps(http.url,{method:http.method,headers:{Authorization:`Bearer ${this.settings.secret('tikhub')}`,'Content-Type':'application/json'},...(http.body?{body:http.body}:{})});
             if(response.data&&typeof response.data==='object'&&'code'in response.data&&response.data.code!==200&&response.data.code!==0)throw new ServiceToolError('PROVIDER_REJECTED',null);return response.data;
         }
-        if(request.tool==='model')return(await boundedHttps(`${s.model.baseUrl.replace(/\/$/,'')}/chat/completions`,{method:'POST',headers:{Authorization:`Bearer ${this.settings.secret('model')}`,'Content-Type':'application/json'},body:JSON.stringify({model:s.model.modelId,messages:[{role:'system',content:request.instruction},{role:'user',content:request.text}],stream:false})})).data;
-        const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>(p.requests===0?64:16)*1024*1024)throw new ServiceToolError('INVALID_AUDIO');
-        if(p.requests===0)return this.localTranscribe(request.audioPath,p.localModule!,s.asr);
-        const data=(await boundedHttps('https://openspeech.bytedance.com/api/v3/auc/bigmodel/recognize/flash',{method:'POST',headers:{'Content-Type':'application/json','X-Api-Key':this.settings.secret('asr'),'X-Api-Resource-Id':s.asr.resourceId,'X-Api-Request-Id':request.requestId,'X-Api-Sequence':'-1'},body:JSON.stringify({user:{uid:'nova-workbench'},audio:{data:(await fs.readFile(request.audioPath)).toString('base64')},request:{model_name:'bigmodel',enable_itn:true,enable_punc:true}}),timeoutMs:180000}));
+        if(request.tool==='model')throw new ServiceToolError('MODEL_SERVICE_DISABLED');
+        if(p.requests===0){const st=await fs.lstat(request.audioPath);if(!st.isFile()||st.isSymbolicLink()||st.size>64*1024*1024)throw new ServiceToolError('INVALID_AUDIO');return this.localTranscribe(request.audioPath,p.localModule!,s.asr);}
+        const asr=normalizeAsrSettings(s.asr),target=cloudAsrTarget(asr),current=normalizeAsrSettings(this.settings.read().values.asr);
+        // Bind the prepared request to the current provider/endpoint before reading a credential.
+        if(current.mode!==asr.mode||JSON.stringify(cloudAsrTarget(current))!==JSON.stringify(target))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
+        const key=this.settings.secret(target.credential),audio=p.audio!;
+        if(asr.cloud.provider!=='volc'){
+            const multipart=asrMultipart(audio,path.extname(request.audioPath).toLowerCase(),target.modelId);
+            const response=await boundedHttps(target.url,{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':multipart.contentType},body:multipart.body,timeoutMs:180000});
+            if(!response.data||typeof response.data!=='object'||!('text'in response.data)||typeof response.data.text!=='string')throw new ServiceToolError('INVALID_PROVIDER_RESPONSE',null);
+            return response.data;
+        }
+        const data=await boundedHttps(target.url,{method:'POST',headers:{'Content-Type':'application/json','X-Api-Key':key,'X-Api-Resource-Id':asr.resourceId,'X-Api-Request-Id':request.requestId,'X-Api-Sequence':'-1'},body:JSON.stringify({user:{uid:'nova-workbench'},audio:{data:audio.toString('base64')},request:{model_name:'bigmodel',enable_itn:true,enable_punc:true}}),timeoutMs:180000});
         if(data.headers['x-api-status-code']!=='20000000')throw new ServiceToolError('PROVIDER_REJECTED',null);return data.data;
     }
     private async localTranscribe(audio:string,module:string,a:ServiceSettingsValues['asr']):Promise<unknown>{

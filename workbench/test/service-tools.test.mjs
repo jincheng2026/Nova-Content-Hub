@@ -54,6 +54,28 @@ test('successful TikHub collection caches traceable data and charges a single re
 });
 test('unknown provider cost blocks replay across restart until explicit manual reconciliation',async t=>{const {dir,store}=await fixture(t);await store.update({keys:{tikhub:'secret'},values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:10}}});const file=path.join(dir,'cache.json'),tools=new ServiceTools({settings:store,cachePath:file}),a=request();tools.invoke=async()=>{throw new ServiceToolError('NETWORK_FAILED',null);};let settlement;await assert.rejects(tools.execute(a,{afterExecute:async p=>settlement=p}),{code:'NETWORK_FAILED'});assert.equal(settlement.requestsUsed,null);const reopened=new ServiceTools({settings:store,cachePath:file});await assert.rejects(reopened.execute(request()),{code:'COST_UNKNOWN'});await reopened.reconcileCost(a.requestId);reopened.invoke=async()=>({ok:true});assert.equal((await reopened.execute(request())).requestsUsed,1);});
 test('known validation failure and local failure use zero requests; cloud requires explicit permission before reserve',async t=>{const {store}=await fixture(t);const tools=new ServiceTools({settings:store});let reserved=0;await assert.rejects(tools.execute(request({tool:'asr',audioPath:'/does-not-exist',operation:undefined,id:undefined}),{beforeExecute:async()=>reserved++}),{code:'INVALID_INPUT'});assert.equal(reserved,0);const asr={taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'test-worker',requestId:randomUUID(),tool:'asr',audioPath:'/does-not-exist'};await store.update({values:{...defaultServiceSettings(),asr:{...defaultServiceSettings().asr,mode:'volc'}}});await assert.rejects(tools.execute(asr,{beforeExecute:async()=>reserved++}),{code:'CLOUD_PERMISSION_REQUIRED'});assert.equal(reserved,0);});
+test('default ASR stays local and free; missing local dependencies never grant cloud permission',async t=>{
+ const {store}=await fixture(t),tools=new ServiceTools({settings:store});
+ const asr={taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'local-default',requestId:randomUUID(),tool:'asr',audioPath:'/unused-audio'};
+ // Empty installed paths exercise real local preflight; no cloud key or budget is configured.
+ await assert.rejects(tools.execute(asr),{code:'LOCAL_ASR_UNAVAILABLE',requestsUsed:0});
+ // Isolate the optional installed speech engine: free local execution needs no cloud consent or paid budget.
+ tools.localModule=async()=> 'faster_whisper';tools.invoke=async(_request,prepared)=>{assert.equal(prepared.requests,0);return{text:'本地识别',durationMs:1200};};
+ const outcomes=[];const result=await tools.execute(asr,{beforeExecute:async p=>outcomes.push(p.requests),afterExecute:async p=>outcomes.push(p.usage)});
+ assert.equal(result.requestsUsed,0);assert.deepEqual(outcomes,[0,{costStatus:'no-external-call',durationMs:1200}]);
+});
+
+test('cloud ASR remains available only with explicit permission and an enabled paid budget',async t=>{
+ const {store,dir}=await fixture(t),tools=new ServiceTools({settings:store});await store.update({values:{...defaultServiceSettings(),asr:{...defaultServiceSettings().asr,mode:'volc'}},keys:{asr:'speech-only-key'}});
+ const asr={taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'cloud-asr',requestId:randomUUID(),tool:'asr',audioPath:path.join(dir,'test.wav')};
+ await fs.writeFile(asr.audioPath,Buffer.from('fixture audio'));
+ await assert.rejects(tools.execute(asr),{code:'CLOUD_PERMISSION_REQUIRED',requestsUsed:0});
+ await assert.rejects(tools.execute({...asr,allowCloud:true}),{code:'BUDGET_DISABLED',requestsUsed:0});
+ await store.update({values:{...store.read().values,budget:{enabled:true,maxRequestsPerTask:1}}});
+ // Provider HTTP transport is covered separately; this seam prevents any paid external test request.
+ tools.invoke=async(_request,prepared)=>{assert.equal(prepared.service,'asr');assert.equal(prepared.requests,1);return{text:'授权云端转写'};};
+ const result=await tools.execute({...asr,allowCloud:true});assert.equal(result.service,'asr');assert.equal(result.requestsUsed,1);assert.equal(result.data.text,'授权云端转写');
+});
 test('loopback broker requires token, rejects Origin and serves bounded requests through stdin client API',async t=>{const {dir}=await fixture(t),file=path.join(dir,'broker.json');let calls=0;const broker=new ServiceToolBroker({descriptorPath:file,execute:async()=>{calls++;return {data:{ok:true},requestsUsed:0,service:'tikhub',cacheHit:true,collectedAt:new Date().toISOString()};}});const d=await broker.start();t.after(()=>broker.stop());assert.equal(d.host,'127.0.0.1');assert.equal((await callServiceTool(file,request())).data.ok,true);assert.equal(calls,1);const code=await new Promise(resolve=>{const req=http.request({host:d.host,port:d.port,path:'/execute',method:'POST',headers:{Authorization:`Bearer ${d.token}`,Origin:'https://evil.test','Content-Type':'application/json'}},res=>{res.resume();resolve(res.statusCode);});req.end(JSON.stringify(request()));});assert.equal(code,403);assert.equal(calls,1);});
 test('production broker verifies frozen comment consent and budgets before provider calls',async t=>{const {dir,store}=await fixture(t);await store.update({keys:{tikhub:'secret'},values:{...defaultServiceSettings(),commentsEnabled:true,budget:{enabled:true,maxRequestsPerTask:10}}});const r=request({operation:'comments'}),context={task:{id:r.taskId,activeAttemptId:r.attemptId,attempts:[{id:r.attemptId,claimToken:r.claimToken,workerId:'test-worker',status:'claimed'}],request:{tools:['tikhub'],parameters:{comments:false,budgetEnabled:true},budget:{amount:10,currency:'REQ'}}},snapshot:{costs:[]}};let called=0;const tools=new ServiceTools({settings:store,cachePath:path.join(dir,'cache.json')});tools.invoke=async()=>{called++;return{ok:true};};const owner={current:()=>({libraryId:randomUUID(),root:dir}),worker:{call:async op=>{assert.equal(op,'productionContext');return context;}}};const broker=productionToolBroker(owner,tools,path.join(dir,'prod-broker.json'));await broker.start();t.after(()=>broker.stop());await assert.rejects(callServiceTool(path.join(dir,'prod-broker.json'),r),{code:'COMMENTS_DISABLED'});assert.equal(called,0);});
 test('production broker reserves and settles every call independently and cache hits cost zero',async t=>{
@@ -70,7 +92,25 @@ test('production ASR only copies registered bytes to private temp and local usag
 });
 test('public DNS validation checks every answer and keeps the selected address for pinning',async()=>{await assert.rejects(publicEndpoint('https://provider.example/api',async()=>[{address:'8.8.8.8',family:4},{address:'127.0.0.1',family:4}]),{code:'UNSAFE_ENDPOINT'});await assert.rejects(publicEndpoint('https://provider.example/api',async()=>[{address:'2606:4700:4700::1111',family:6},{address:'fc00::1',family:6}]),{code:'UNSAFE_ENDPOINT'});const endpoint=await publicEndpoint('https://provider.example/api',async()=>[{address:'8.8.8.8',family:4},{address:'1.1.1.1',family:4}]);assert.equal(endpoint.address,'8.8.8.8');assert.equal(endpoint.url.hostname,'provider.example');assert.equal(endpoint.family,4);});
 
-test('model usage keeps only actual finite provider counters without inventing a monetary charge',async t=>{const {store}=await fixture(t),tools=new ServiceTools({settings:store});await store.update({values:{...defaultServiceSettings(),budget:{enabled:true,maxRequestsPerTask:3}}});tools.prepare=async()=>({service:'model',requests:1});tools.invoke=async()=>({choices:[],usage:{prompt_tokens:120,completion_tokens:45,total_tokens:165,secret:'never-ledger',input_tokens:-1,output_tokens:null}});let outcome;const r=request();delete r.operation;delete r.id;Object.assign(r,{tool:'model',instruction:'分析手工资料',text:'已授权正文'});await tools.execute(r,{afterExecute:async value=>{outcome=value;}});assert.deepEqual(outcome.usage,{costStatus:'unknown',prompt_tokens:120,completion_tokens:45,total_tokens:165});assert.equal(outcome.requestsUsed,1);});
+test('disabled model service rejects before settings, credentials, preparation or budget hooks',async t=>{
+ const {store}=await fixture(t);const tools=new ServiceTools({settings:store});
+ const model={taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'agent-only',requestId:randomUUID(),tool:'model',instruction:'分析',text:'原始资料'};
+ await assert.rejects(tools.execute(model),{code:'MODEL_SERVICE_DISABLED',requestsUsed:0});
+ store.read=()=>assert.fail('disabled model must not read settings');
+ tools.prepare=()=>assert.fail('disabled model must not prepare a request');
+ await assert.rejects(tools.execute(model,{beforeExecute:()=>assert.fail('disabled model must not reserve budget'),afterExecute:()=>assert.fail('disabled model has no cost to settle')}),{code:'MODEL_SERVICE_DISABLED',requestsUsed:0});
+});
+
+test('stdin service client rejects disabled model before opening its descriptor',async()=>{
+ await assert.rejects(callServiceTool('/missing-descriptor',{tool:'model'}),{code:'MODEL_SERVICE_DISABLED'});
+});
+
+test('authenticated broker rejects legacy model requests without delegating to production or provider',async t=>{
+ const {dir}=await fixture(t);const broker=new ServiceToolBroker({descriptorPath:path.join(dir,'disabled-model-broker.json'),execute:()=>assert.fail('model must not enter execution or reservation')});const d=await broker.start();t.after(()=>broker.stop());
+ const model={taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'agent-only',requestId:randomUUID(),tool:'model',instruction:'分析',text:'资料'};
+ const result=await new Promise((resolve,reject)=>{const req=http.request({host:d.host,port:d.port,path:'/execute',method:'POST',headers:{Authorization:`Bearer ${d.token}`,'Content-Type':'application/json'}},res=>{let data='';res.setEncoding('utf8');res.on('data',chunk=>data+=chunk);res.on('end',()=>resolve({status:res.statusCode,body:JSON.parse(data)}));});req.on('error',reject);req.end(JSON.stringify(model));});
+ assert.deepEqual(result,{status:400,body:{ok:false,error:{code:'MODEL_SERVICE_DISABLED'}}});
+});
 
 test('fixed official providers support system TUN synthetic DNS while compatible/private endpoints remain blocked',async()=>{const resolver=async()=>[{address:'198.18.0.120',family:4}];assert.equal((await publicEndpoint('https://api.tikhub.io/api/v1/test',resolver)).address,'198.18.0.120');assert.equal((await publicEndpoint('https://ark.cn-beijing.volces.com/api/v3',resolver)).url.hostname,'ark.cn-beijing.volces.com');await assert.rejects(publicEndpoint('https://compatible.example/api/v3',resolver),{code:'UNSAFE_ENDPOINT'});await assert.rejects(publicEndpoint('https://api.tikhub.io/api/v1/test',async()=>[{address:'127.0.0.1',family:4}]),{code:'UNSAFE_ENDPOINT'});});
 

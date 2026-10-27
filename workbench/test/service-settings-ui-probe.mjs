@@ -24,9 +24,10 @@ async function probeMain(root){
  const click=id=>run(`document.getElementById(${JSON.stringify(id)}).click()`);
  try{
   await win.loadFile(path.join(root,'dist/index.html'));await wait('document.getElementById("service-key-tikhub")');
-  assert.equal(await run('document.querySelectorAll(".service-settings-key-saved input[readonly]").length'),3,'configured keys need a visible saved-key field');
+  assert.equal(await run('document.querySelectorAll(".service-settings-key-saved input[readonly]").length'),2,'configured keys need a visible saved-key field');
+  assert.equal(await run('!!document.querySelector("[id^=service-model-], #service-key-model, #service-key-reveal-model")'),false,'general model settings must not be exposed');
   assert.equal(await run('window.reveals.length'),0,'mount must not disclose any saved credential');
-  for(const name of ['tikhub','model','asr']){
+  for(const name of ['tikhub','asr']){
    assert.equal(await run(`document.getElementById('service-saved-key-${name}').value`),'••••••••');
    await click(`service-key-reveal-${name}`);await wait(`document.getElementById('service-saved-key-${name}').value==='fake-saved-${name}'`);
    assert.equal(await run(`document.getElementById('service-saved-key-${name}').readOnly`),true);
@@ -34,14 +35,14 @@ async function probeMain(root){
   }
   await click('service-key-reveal-tikhub');await wait('document.getElementById("service-saved-key-tikhub").value==="fake-saved-tikhub"');await run('window.setActive(false)');await wait('document.getElementById("service-saved-key-tikhub").value==="••••••••"');await run('window.setActive(true)');await wait('!document.getElementById("service-key-reveal-tikhub").disabled');
   await run('window.pauseReveal=true');await click('service-key-reveal-tikhub');await wait('!!window.finishReveal');
-  await run('window.oldRevealFinish=window.finishReveal;window.pauseReveal=false');await click('service-key-reveal-model');await run('window.oldRevealFinish()');
-  await wait('document.getElementById("service-saved-key-model").value==="fake-saved-model"');
+  await run('window.oldRevealFinish=window.finishReveal;window.pauseReveal=false');await click('service-key-reveal-asr');await run('window.oldRevealFinish()');
+  await wait('document.getElementById("service-saved-key-asr").value==="fake-saved-asr"');
   assert.equal(await run('document.getElementById("service-saved-key-tikhub").value'),'••••••••','changing viewed service hides prior key');
-  await click('service-key-reveal-model');
+  await click('service-key-reveal-asr');
   await run('window.pauseReveal=true');await click('service-key-reveal-asr');await wait('window.reveals.at(-1)==="asr"');
   await run('window.setMounted(false)');await wait('!document.querySelector(".service-settings")');await run('window.finishReveal();window.pauseReveal=false;window.setMounted(true)');await wait('document.getElementById("service-saved-key-asr")');
   assert.equal(await run('document.getElementById("service-saved-key-asr").value'),'••••••••','late response must not survive settings unmount');
-  await run('window.failReveal=true');await click('service-key-reveal-model');await wait('document.body.textContent.includes("查看失败")');assert.equal(await run('document.body.textContent.includes("fake-private-error")'),false);await run('window.failReveal=false');
+  await run('window.failReveal=true');await click('service-key-reveal-asr');await wait('document.body.textContent.includes("查看失败")');assert.equal(await run('document.body.textContent.includes("fake-private-error")'),false);await run('window.failReveal=false');
   await run('document.querySelector(".service-settings-actions button[type=submit]").click()');await wait('document.body.textContent.includes("服务设置已保存")');assert.equal(await run('window.saves.length'),0,'masked values must not be resubmitted as keys');
   await click('service-key-clear-tikhub');assert.equal(await run('window.saves.length'),0,'clear must wait for explicit save');await wait('document.body.textContent.includes("保存后清除")');
   await run('document.querySelector(".service-settings-actions button[type=submit]").click()');await wait('window.saves.length===1');assert.deepEqual(await run('window.saves[0].keys'),{tikhub:null});

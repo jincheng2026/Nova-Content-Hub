@@ -1,4 +1,6 @@
 import fs from 'node:fs/promises';
+import {isDeepStrictEqual} from 'node:util';
+import {normalizeAsrSettings,serviceAsrSettings} from '../shared/service-validation.ts';
 import {validRadarQuery,radarQueryOperations,radarSearchFilters,radarPlatforms,radarSearchOperation,radarProfileOperation,radarPlatformSampleLimit,radarMissingAuthorIds,radarRequestLimit} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import type {ProductionContext} from '../../../plugin-src/src/lib/file-library/production.d.ts';
 import os from 'node:os';
@@ -20,7 +22,8 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   const expected=parameters(parameters(frozen.serviceConfig)[request.tool]),current=tools.settings.read().values[request.tool];
   // Check what will actually execute as well as current settings: current may return to A after preparing B.
   const actual=[current,...(prepared?[prepared.config?.[request.tool]??{}]:[])];
-  if(actual.some(config=>Object.keys(expected).length!==Object.keys(config).length||Object.entries(config).some(([key,value])=>expected[key]!==value)))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
+  const equivalent=(config:unknown)=>request.tool==='asr'?serviceAsrSettings(expected)&&serviceAsrSettings(config)&&isDeepStrictEqual(normalizeAsrSettings(expected),normalizeAsrSettings(config)):isDeepStrictEqual(expected,config);
+  if(actual.some(config=>!equivalent(config)))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
  }
  function checkAccountPlatform(context:ProductionContext,request:ServiceToolRequest){
   if(request.tool!=='tikhub')return;const collection=parameters(context.task?.request.parameters).platformCollection;

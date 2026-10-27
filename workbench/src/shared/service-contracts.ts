@@ -1,9 +1,16 @@
-export type ServiceCredential = 'tikhub' | 'model' | 'asr';
+export type ServiceCredential = 'tikhub' | 'model' | 'asr' | 'groq' | 'custom';
+export interface CloudAsrSettings {provider: 'volc'|'groq'|'custom'; groqModel: 'whisper-large-v3-turbo'|'whisper-large-v3'; customBaseUrl: string; customModelId: string}
+export interface AsrSettings {
+    // volc is accepted only as the legacy cloud-mode spelling.
+    mode: 'local-first'|'local-only'|'cloud'|'volc'; resourceId: string; localEngine: 'faster-whisper'|'whisper-cpp'|'qwen3-asr'; localExecutable: string; localModelPath: string; cloud?: CloudAsrSettings;
+}
+export interface NormalizedAsrSettings extends Omit<AsrSettings,'mode'|'cloud'> {mode: 'local-first'|'local-only'|'cloud'; cloud: CloudAsrSettings}
 export interface ServiceCredentialRequest {service:ServiceCredential}
 export interface ServiceCredentialDisclosure {service:ServiceCredential;key:string}
 export interface ServiceSettingsValues {
+    // Retained solely for encrypted legacy settings compatibility; no executable model service.
     model: {provider: 'volc'|'compatible'; baseUrl: string; modelId: string};
-    asr: {mode: 'local-first'|'local-only'|'volc'; resourceId: string; localEngine: 'faster-whisper'|'whisper-cpp'|'qwen3-asr'; localExecutable: string; localModelPath: string};
+    asr: AsrSettings;
     budget: {enabled: boolean; maxRequestsPerTask: number};
     commentsEnabled: boolean;
 }
@@ -12,6 +19,7 @@ export interface ServiceSettingsView {values: ServiceSettingsValues; credentials
 export interface ServiceReadiness {localAsr: {available: boolean; reason: string}; encryptionAvailable: boolean}
 export type TikHubOperation = 'douyin-search'|'user-search'|'profile'|'user-posts'|'video'|'comments'|'xhs-search'|'xhs-profile';
 export interface TikHubSearchFilters {sortType?: 'general'|'likes'|'latest'; timeRange?: 'any'|'day'|'week'|'half-year'; contentType?: 'any'|'video'|'image'}
+// The legacy model shape is validated only to return MODEL_SERVICE_DISABLED without rewriting old tasks.
 export type ServiceToolInput = {tool: 'tikhub'; operation: TikHubOperation; id: string; cursor?: string; search?: TikHubSearchFilters} | {tool: 'asr'; audioPath: string; allowCloud?: boolean} | {tool: 'model'; instruction: string; text: string};
 export type ServiceToolRequest = ServiceToolInput & {taskId: string; attemptId: string; claimToken: string; workerId: string; requestId: string};
 export interface ServiceToolResult {data: unknown; service: string; requestsUsed: 0|1; collectedAt: string; cacheHit: boolean}

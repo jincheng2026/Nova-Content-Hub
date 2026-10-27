@@ -29,6 +29,7 @@ export class ServiceToolBroker {
             const body=await new Promise<Buffer>((resolve,reject)=>{let size=0;const parts:Buffer[]=[];timer=setTimeout(()=>reject(new Error('BODY_TIMEOUT')),10000);req.on('data',(chunk:Buffer)=>{size+=chunk.length;if(size>256*1024)reject(new Error('BODY_TOO_LARGE'));else parts.push(chunk);});req.on('end',()=>resolve(Buffer.concat(parts)));req.on('error',reject);});clearTimeout(timer);
             let request:unknown;try{request=JSON.parse(body.toString('utf8'));}catch{reply(400,{ok:false,error:{code:'INVALID_INPUT'}});return;}
             if(!serviceToolRequest(request)){reply(400,{ok:false,error:{code:'INVALID_INPUT'}});return;}
+            if(request.tool==='model'){reply(400,{ok:false,error:{code:'MODEL_SERVICE_DISABLED'}});return;}
             const value=await this.options.execute(request);reply(200,{ok:true,value});
         }catch(error){const code=error&&typeof error==='object'&&'code'in error&&typeof error.code==='string'&&/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';reply(400,{ok:false,error:{code,...(error&&typeof error==='object'&&'httpStatus'in error&&typeof error.httpStatus==='number'&&Number.isInteger(error.httpStatus)&&error.httpStatus>=400&&error.httpStatus<=599?{httpStatus:error.httpStatus}:{}),...(error&&typeof error==='object'&&'providerCode'in error&&typeof error.providerCode==='string'&&/^[A-Za-z0-9_.:-]{1,80}$/.test(error.providerCode)?{providerCode:error.providerCode}:{})}});}finally{clearTimeout(timer);this.active--;if(this.active===0)this.drain?.();}
     }
