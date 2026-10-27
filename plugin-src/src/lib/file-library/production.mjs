@@ -11,6 +11,7 @@ const STAGES = ['idea','research','references','transcription','analysis','narra
 const KINDS = ['research','transcription','analysis','writing','packaging','review'];
 const STATES = ['created','claimed','waiting-user','waiting-permission','submitted','accepted','rejected','failed','cancelled'];
 const LIVE = ['created','claimed','waiting-user','waiting-permission'];
+const REFERENCE_ARTIFACTS = ['research','transcript','report'];
 const ARTIFACTS = ['report','research','transcript','analysis','narrative','draft','packaging','feedback','knowledge'];
 const plain = v => !!v && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
 const bodyDigest = value => createHash('sha256').update(value).digest('hex');
@@ -85,8 +86,24 @@ export function productionMethods(h) {
         if (missing && !safePath(assetPath(root,hash),true)) return false;
         readAssetInternal(root,hash); return true;
     }
+    function validateReferenceAssetOwnership(task,attempt,references,p) {
+        invalid(task && attempt,'Reference assets require a source task and attempt');
+        // Adoption is authorized by the evidence source, never by the destination creation.
+        // Terminal grants remain valid evidence for explicit adoption; tool access checks live state separately.
+        const sourceCreation=task.contentId ? content(task.contentId).productionState || p.creations.find(c=>c.contentId===task.contentId) : null;
+        for(const reference of references) {
+            invalid(plain(reference),'Invalid result reference');
+            const prior=sourceCreation?.references.find(r=>r.id===reference.id);
+            if(reference.mediaAssetHash!=null) {
+                const known=prior && prior.mediaAssetHash===reference.mediaAssetHash && prior.url===reference.url && prior.platform===reference.platform;
+                const granted=attempt.mediaGrants?.some(g=>g.referenceId===reference.id && g.assetHash===reference.mediaAssetHash && g.canonicalUrl===reference.url && reference.platform==='抖音' && g.requestHash===task.requestHash);
+                invalid(known || granted,'Reference media must belong to this creation or exact attempt grant');checkAsset(reference.mediaAssetHash);
+            }
+            if(reference.subtitleAssetHash!=null){invalid(prior && prior.subtitleAssetHash===reference.subtitleAssetHash && prior.url===reference.url && prior.platform===reference.platform,'Reference subtitles must belong to this creation');checkAsset(reference.subtitleAssetHash);}
+        }
+    }
     function rebuildProductionArchive(taskId){invalid(UUID.test(taskId),'Expected task UUID');return locked(()=>{const p=current().production||emptyProduction(),task=p.tasks.find(t=>t.id===taskId);return productionArchive({...h,task,reports:p.reports,readAsset:hash=>readAssetInternal(root,hash),assetPath:hash=>assetPath(root,hash)});});}
-    function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const hash of new Set([...p.accounts.flatMap(a=>[...a.images,...(a.avatarAssetHash?[a.avatarAssetHash]:[])]),...p.creations.flatMap(c=>referenceAssetHashes(c.references)),...p.tasks.flatMap(t=>t.attempts.flatMap(a=>(a.result?.artifacts??[]).filter(a=>['research','transcript'].includes(a.kind)).flatMap(a=>referenceAssetHashes(a.data?.references))))])) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
+    function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const hash of new Set([...p.accounts.flatMap(a=>[...a.images,...(a.avatarAssetHash?[a.avatarAssetHash]:[])]),...p.creations.flatMap(c=>referenceAssetHashes(c.references)),...p.tasks.flatMap(t=>t.attempts.flatMap(a=>(a.result?.artifacts??[]).filter(a=>REFERENCE_ARTIFACTS.includes(a.kind)).flatMap(a=>referenceAssetHashes(a.data?.references))))])) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
     function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
     function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
     function trustedRadar(p,r) {
@@ -152,7 +169,9 @@ export function productionMethods(h) {
             mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
                 const w=current();if(w.editToken!==raw.expectedToken)fail('CONFLICT','Production state changed');
                 const creation=meta.productionState||w.production?.creations.find(value=>value.contentId===raw.contentId);if(!creation)fail('INVALID_STATE','Enable creation first');
-                let patch;try{patch=prepareResearchAdoption({snapshot:w.production||emptyProduction(),...raw,creation,bodyHash:content(raw.contentId).bodyHash,now:new Date().toISOString()});}catch(error){if(['STALE_INPUT','CONFLICT','INVALID_INPUT'].includes(error?.code))fail(error.code,error.message);throw error;}const next=patchCreation(creation,patch,new Date().toISOString());
+                let patch;try{patch=prepareResearchAdoption({snapshot:w.production||emptyProduction(),...raw,creation,bodyHash:content(raw.contentId).bodyHash,now:new Date().toISOString()});}catch(error){if(['STALE_INPUT','CONFLICT','INVALID_INPUT'].includes(error?.code))fail(error.code,error.message);throw error;}const sourceTask=w.production?.tasks.find(task=>task.id===raw.taskId),sourceAttempt=sourceTask?.attempts.find(attempt=>attempt.id===raw.attemptId),sourceArtifact=sourceAttempt?.result?.artifacts.find(artifact=>artifact.id===raw.artifactId);
+                if(Array.isArray(sourceArtifact?.data?.references))validateReferenceAssetOwnership(sourceTask,sourceAttempt,sourceArtifact.data.references,w.production);
+                const next=patchCreation(creation,patch,new Date().toISOString());
                 for(const reference of next.references)for(const key of ['mediaAssetHash','subtitleAssetHash'])if(reference[key])checkAsset(reference[key]);
                 meta.schemaVersion=5;meta.productionState=next;return meta;
             });return readProduction();
@@ -297,17 +316,7 @@ export function productionMethods(h) {
             case 'submitTask': {
                 const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(validResult(raw.result),'Invalid result artifacts');
                 for(const artifact of raw.result.artifacts) if(artifact.assetHash) checkAsset(artifact.assetHash);
-                const creation=t.contentId ? content(t.contentId).productionState || p.creations.find(c=>c.contentId===t.contentId) : null;
-                for(const artifact of raw.result.artifacts) if(['research','transcript'].includes(artifact.kind) && Array.isArray(artifact.data?.references)) for(const reference of artifact.data.references){
-                    invalid(plain(reference),'Invalid result reference');
-                    const prior=creation?.references.find(r=>r.id===reference.id);
-                    if(reference.mediaAssetHash!=null){
-                        const known=prior && prior.mediaAssetHash===reference.mediaAssetHash && prior.url===reference.url && prior.platform===reference.platform;
-                        const granted=a.mediaGrants?.some(g=>g.referenceId===reference.id && g.assetHash===reference.mediaAssetHash && g.canonicalUrl===reference.url && reference.platform==='抖音' && g.requestHash===t.requestHash);
-                        invalid(known || granted,'Reference media must belong to this creation or exact attempt grant');checkAsset(reference.mediaAssetHash);
-                    }
-                    if(reference.subtitleAssetHash!=null){invalid(prior && prior.subtitleAssetHash===reference.subtitleAssetHash,'Reference subtitles must belong to this creation');checkAsset(reference.subtitleAssetHash);}
-                }
+                for(const artifact of raw.result.artifacts) if(REFERENCE_ARTIFACTS.includes(artifact.kind) && Array.isArray(artifact.data?.references)) validateReferenceAssetOwnership(t,a,artifact.data.references,p);
 
                 a.result=structuredClone(raw.result);const receipt={taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)};a.receipt={...receipt,sha256:digest(receipt)};a.status='submitted';a.progress=100;a.updatedAt=t.updatedAt=now;
                 for(const artifact of a.result.artifacts.filter(x => x.kind === 'report' && t.request.parameters?.workflow!=='viral-radar')) {
@@ -397,7 +406,7 @@ export function productionMethods(h) {
 
 export function productionAssetHashes(meta) {
     const hashes = new Set();
-    if(meta.production) {for(const a of meta.production.accounts){for(const h of a.images)hashes.add(h);if(a.avatarAssetHash)hashes.add(a.avatarAssetHash);}for(const r of meta.production.reports) for(const page of r.pages) hashes.add(page.assetHash);for(const t of meta.production.tasks)for(const a of t.attempts){for(const grant of a.mediaGrants??[])hashes.add(grant.assetHash);for(const artifact of a.result?.artifacts||[]){if(artifact.assetHash)hashes.add(artifact.assetHash);if(['research','transcript'].includes(artifact.kind))for(const hash of referenceAssetHashes(artifact.data?.references))hashes.add(hash);}}}
+    if(meta.production) {for(const a of meta.production.accounts){for(const h of a.images)hashes.add(h);if(a.avatarAssetHash)hashes.add(a.avatarAssetHash);}for(const r of meta.production.reports) for(const page of r.pages) hashes.add(page.assetHash);for(const t of meta.production.tasks)for(const a of t.attempts){for(const grant of a.mediaGrants??[])hashes.add(grant.assetHash);for(const artifact of a.result?.artifacts||[]){if(artifact.assetHash)hashes.add(artifact.assetHash);if(REFERENCE_ARTIFACTS.includes(artifact.kind))for(const hash of referenceAssetHashes(artifact.data?.references))hashes.add(hash);}}}
     for(const c of [...(meta.production?.creations || []),...(meta.productionState ? [meta.productionState] : [])]) for(const r of c.references) for(const k of ['mediaAssetHash','subtitleAssetHash']) if(r[k]) hashes.add(r[k]);
     return [...hashes];
 }

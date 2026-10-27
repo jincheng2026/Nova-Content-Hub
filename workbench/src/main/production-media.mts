@@ -13,7 +13,14 @@ export async function downloadProductionMedia(input:string):Promise<{directory:s
   await fs.chmod(directory,0o700);
   let next=input;
   for(let hop=0;hop<=3;hop++) {
-   const target=await publicEndpoint(next,async(host,options)=>{const addresses=await lookup(host,options);if(addresses.some(entry=>!publicAddress(entry.address)))throw new ServiceToolError('UNSAFE_ENDPOINT');return addresses;});
+   const target=await publicEndpoint(next,async(host,options)=>{
+    const remaining=deadline-Date.now();if(remaining<=0)throw new ServiceToolError('NETWORK_TIMEOUT');
+    let timer:ReturnType<typeof setTimeout>|undefined;
+    try {
+     const addresses=await Promise.race([lookup(host,options),new Promise<never>((_resolve,reject)=>{timer=setTimeout(()=>reject(new ServiceToolError('NETWORK_TIMEOUT')),Math.min(6000,remaining));})]);
+     if(addresses.some(entry=>!publicAddress(entry.address)))throw new ServiceToolError('UNSAFE_ENDPOINT');return addresses;
+    }finally{clearTimeout(timer);}
+   });
    // publicEndpoint permits synthetic TUN addresses for fixed API providers; media never does.
    if(!publicAddress(target.address)||Date.now()>=deadline)throw new ServiceToolError('UNSAFE_ENDPOINT');
    const response=await new Promise<import('node:http').IncomingMessage>((resolve,reject)=>{

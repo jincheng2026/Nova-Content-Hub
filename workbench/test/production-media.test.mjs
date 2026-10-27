@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {createLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
 import {productionFetchMedia} from '../../plugin-src/src/lib/service-tools/production-media.mjs';
 import {productionAsr} from '../../plugin-src/src/lib/service-tools/production-asr.mjs';
@@ -13,11 +13,11 @@ import {defaultServiceSettings} from '../src/shared/service-validation.ts';
 import {executeProduction} from '../src/main/production-worker.mts';
 const media={version:1,maxDownloads:3,maxBytes:67108864};
 const sha='1'.repeat(64);
-async function fixture(t,{authorized=true}={}){
+async function fixture(t,{authorized=true,kind='writing'}={}){
  const root=await fs.mkdtemp(path.join(os.tmpdir(),'nova-media-contract-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));
  const l=createLibrary(path.join(root,'library')),c=l.createContent({title:'media contract',body:'原正文'}),mutate=(op,input)=>l.mutateProduction(op,{...input,expectedToken:l.readProduction().editToken});
  mutate('ensureCreation',{contentId:c.id});
- const task=mutate('createTask',{kind:'writing',title:'media contract',prompt:'fixture',contentId:c.id,host:'codex',parameters:{workflow:'content-creation',budgetEnabled:true,...(authorized?{media}:{}),serviceConfig:{asr:{mode:'local-only',localEngine:'qwen3-asr'}}},tools:authorized?['tikhub','media','asr']:['tikhub','asr'],budget:{amount:10,currency:'REQ'},bodyHash:l.readProductionCreation(c.id).content.bodyHash}).tasks[0];
+ const task=mutate('createTask',{kind,title:'media contract',prompt:'fixture',contentId:c.id,host:'codex',parameters:{workflow:'content-creation',budgetEnabled:true,...(authorized?{media}:{}),serviceConfig:{asr:{mode:'local-only',localEngine:'qwen3-asr'}}},tools:authorized?['tikhub','media','asr']:['tikhub','asr'],budget:{amount:10,currency:'REQ'},bodyHash:l.readProductionCreation(c.id).content.bodyHash}).tasks[0];
  const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'media-contract'},binding={root:l.info.root,libraryId:l.info.libraryId,rootIdentity:l.info.rootIdentity};mutate('claimTask',identity);
  const wav=Buffer.alloc(44);wav.write('RIFF');wav.write('WAVE',8);const file=path.join(root,'fixture.wav');await fs.writeFile(file,wav);const asset=l.importAsset(file,{purpose:'production-reference'});
  const source={sourceReceiptId:randomUUID(),sourceRequestId:randomUUID(),requestHash:task.requestHash,videoId:'12345',canonicalUrl:'https://www.douyin.com/video/12345',responseHash:sha};
@@ -69,4 +69,34 @@ test('video source summary never exposes download URLs and settles missing/misma
  const first=await call();assert.equal(first.data.sourceReceipt.videoId,'12345');assert.equal(JSON.stringify(first).includes('private-download'),false);assert.equal(first.data.title,'title');
  for(let i=0;i<2;i++){const result=await call();assert.equal(result.data.mediaUnavailable,true);assert.equal('sourceReceipt' in result.data,false);}
  assert.equal(f.context().snapshot.costs.length,3);assert(f.context().snapshot.costs.every(c=>c.status==='measured'&&c.amount===1));
+});
+
+async function reportAsset(f){const file=path.join(path.dirname(f.binding.root),'report.html');await fs.writeFile(file,'<!doctype html><html><body>Legitimate report</body></html>');return f.l.importAsset(file,{purpose:'production-report'}).assetHash;}
+const referenceFor=(assetHash,id=randomUUID())=>({id,url:'https://www.douyin.com/video/12345',title:'other source',platform:'抖音',originalText:'source evidence',correctedText:'',segments:[],corrections:[],analysis:'',mediaAssetHash:assetHash,subtitleAssetHash:null});
+async function otherCreation(f,reference){const c=f.l.createContent({title:'other content',body:'other body'});f.l.mutateProduction('ensureCreation',{contentId:c.id,expectedToken:f.l.readProduction().editToken});if(reference){const state=f.l.readProductionCreation(c.id);f.l.mutateProduction('saveCreation',{contentId:c.id,expectedToken:f.l.readProduction().editToken,expectedContentToken:state.content.editToken,patch:{references:[reference]}});}return c;}
+test('report references cannot borrow media or subtitles registered to another content',async t=>{
+ const f=await fixture(t,{kind:'research'}),reference=referenceFor(f.asset.assetHash),other=await otherCreation(f,reference),html=await reportAsset(f);
+ const artifact={id:randomUUID(),kind:'report',title:'valid report',text:'valid report',assetHash:html,data:{references:[reference]}};
+ assert.throws(()=>f.l.mutateProduction('submitTask',{...f.identity,result:{summary:'report',artifacts:[artifact]}}),/exact attempt grant/);
+ assert.throws(()=>f.l.mutateProduction('submitTask',{...f.identity,result:{summary:'report',artifacts:[{...artifact,data:{references:[{...reference,mediaAssetHash:null,subtitleAssetHash:f.asset.assetHash}]}}]}}),/subtitles/);
+ assert.equal(f.context().attempt.status,'claimed');assert.equal(f.context().snapshot.reports.length,0);assert.equal(f.l.readProductionCreation(other.id).creation.references[0].mediaAssetHash,f.asset.assetHash);
+});
+for(const kind of ['report','research'])test(`legacy accepted ${kind} cannot authorize another content's media at adoption`,async t=>{
+ const f=await fixture(t,{kind:'research'}),stolen=referenceFor(f.asset.assetHash),target=await otherCreation(f,stolen),artifact={id:randomUUID(),kind,title:'accepted legacy evidence',text:'legacy evidence',assetHash:kind==='report'?await reportAsset(f):null,data:{references:[{...stolen,mediaAssetHash:null}]}};
+ f.l.mutateProduction('submitTask',{...f.identity,result:{summary:'legacy fixture',artifacts:[artifact]}});const receipt=f.context().attempt.receipt;
+ f.l.mutateProduction('acceptTask',{taskId:f.task.id,attemptId:f.identity.attemptId,receiptHash:receipt.sha256,expectedToken:f.l.readProduction().editToken});
+ // Model metadata persisted by an older version that did not enforce source ownership.
+ const filename=path.join(f.binding.root,'库配置','default','配置.json'),meta=JSON.parse(await fs.readFile(filename,'utf8')),task=meta.production.tasks.find(t=>t.id===f.task.id),attempt=task.attempts[0];
+ attempt.result.artifacts[0].data.references[0].mediaAssetHash=f.asset.assetHash;
+ const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');attempt.receipt.resultHash=hash(attempt.result);const {sha256,...identity}=attempt.receipt;attempt.receipt.sha256=hash(identity);await fs.writeFile(filename,JSON.stringify(meta));
+ assert.throws(()=>f.l.mutateProduction('adoptResearchReferences',{contentId:target.id,taskId:task.id,attemptId:attempt.id,receiptHash:attempt.receipt.sha256,artifactId:artifact.id,expectedToken:f.l.readProduction().editToken,expectedContentToken:f.l.readProductionCreation(target.id).content.editToken}),/exact attempt grant/);
+ assert.equal(f.l.readProductionCreation(target.id).creation.adoptions?.length??0,0);
+});
+test('accepted report retains exact attempt grant as evidence for manual research adoption',async t=>{
+ const f=await fixture(t,{kind:'research'});f.sourceCost();f.register();const grant=f.context().attempt.mediaGrants[0],target=await otherCreation(f),reference=referenceFor(grant.assetHash,grant.referenceId),artifact={id:randomUUID(),kind:'report',title:'grant-backed report',text:'report',assetHash:await reportAsset(f),data:{references:[reference]}};
+ f.l.mutateProduction('submitTask',{...f.identity,result:{summary:'report',artifacts:[artifact]}});const receiptHash=f.context().attempt.receipt.sha256;
+ f.l.mutateProduction('acceptTask',{taskId:f.task.id,attemptId:f.identity.attemptId,receiptHash,expectedToken:f.l.readProduction().editToken});
+ f.l.mutateProduction('adoptResearchReferences',{contentId:target.id,taskId:f.task.id,attemptId:f.identity.attemptId,receiptHash,artifactId:artifact.id,expectedToken:f.l.readProduction().editToken,expectedContentToken:f.l.readProductionCreation(target.id).content.editToken});
+ assert.equal(f.l.readProductionCreation(target.id).creation.references[0].mediaAssetHash,grant.assetHash);
+ await assert.rejects(executeProduction('productionAsset',{binding:f.binding,...f.identity,audioPath:grant.assetHash},'disabled'),{code:'CLAIM_MISMATCH'});
 });
