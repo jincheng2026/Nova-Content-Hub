@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     },
     onWorkspaceChanged: listener => {
         if (typeof listener !== 'function') throw new TypeError('Expected a workspace listener');
-        const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'changed' || value === 'progress' || value === 'unavailable') listener(value); };
+        const receive = (_event: IpcRendererEvent, value: unknown) => { if (value === 'source' || value === 'changed' || value === 'progress' || value === 'unavailable') listener(value); };
         ipcRenderer.on('nova:workspace-changed', receive);
         return () => { ipcRenderer.removeListener('nova:workspace-changed', receive); };
     },
@@ -70,6 +70,14 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     status: () => ipcRenderer.invoke('nova:status'),
     copyPrompt: input => ipcRenderer.invoke('nova:copyPrompt', input),
     readWorkspace: () => ipcRenderer.invoke('nova:readWorkspace'),
+    readVault: () => ipcRenderer.invoke('nova:readVault'),
+    readVaultDocument: input => ipcRenderer.invoke('nova:readVaultDocument', input),
+    saveVaultDocument: input => ipcRenderer.invoke('nova:saveVaultDocument', input),
+    createVaultDocument: input => ipcRenderer.invoke('nova:createVaultDocument', input),
+    trashVaultDocument: input => ipcRenderer.invoke('nova:trashVaultDocument', input),
+    revealVaultDocument: input => ipcRenderer.invoke('nova:revealVaultDocument', input),
+    recoverVaultMutation: input => ipcRenderer.invoke('nova:recoverVaultMutation', input),
+
     readWorkspaceContent: input => ipcRenderer.invoke('nova:readWorkspaceContent', input),
     readWorkspaceLibrary: () => ipcRenderer.invoke('nova:readWorkspaceLibrary'),
     openPublicationLink: input => ipcRenderer.invoke('nova:openPublicationLink', input),

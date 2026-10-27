@@ -1,3 +1,4 @@
+import type {VaultInputs,VaultResults,VaultWorkerOperations,VaultPending} from './vault-contracts.ts';
 import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness,ServiceCredentialRequest,ServiceCredentialDisclosure} from './service-contracts.ts';
 import type {ProductionInputs, ProductionResults, ProductionPending, ProductionWorkerOperations, ProductionFileKind} from './production-contracts.ts';
 import type {LocalFileKind, LocalFileResults, PhotoImportOptions} from './local-files.ts';
@@ -108,6 +109,7 @@ export interface PendingView {
 }
 
 export interface Status {
+    vaultPending?: boolean;
     busy: boolean;
     currentName: string | null;
     needsReselect: boolean;
@@ -125,7 +127,7 @@ export interface Status {
     maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
+export interface DesktopInputs extends VaultInputs, ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     readServiceSettings: undefined;
     revealServiceCredential: ServiceCredentialRequest;
     saveServiceSettings: ServiceSettingsPatch;
@@ -147,7 +149,7 @@ export interface DesktopInputs extends ProductionInputs, CoverInputs, WorkspaceI
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
+export interface DesktopResults extends VaultResults, ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     readServiceSettings: ServiceSettingsView;
     revealServiceCredential: ServiceCredentialDisclosure;
     saveServiceSettings: ServiceSettingsView;
@@ -171,7 +173,7 @@ export interface DesktopResults extends ProductionResults, CoverResults, Workspa
 
 export type DesktopMethod = keyof DesktopResults;
 export type Reply<T> = { ok: true; value: T } | { ok: false; error: { code: string; message: string } };
-export type WorkspaceChange = 'changed' | 'progress' | 'unavailable';
+export type WorkspaceChange = 'source' | 'changed' | 'progress' | 'unavailable';
 export type ContentHub = { [K in DesktopMethod]: (input?: DesktopInputs[K]) => Promise<Reply<DesktopResults[K]>> } & {
     importLocalFiles<K extends LocalFileKind>(kind: K, files: File[], photo?: PhotoImportOptions): Promise<Reply<LocalFileResults[K]>>;
     onWorkspaceChanged(listener: (change: WorkspaceChange) => void): () => void;
@@ -189,6 +191,7 @@ export interface Binding {
     photoPending?: PhotoPending | null;
     coverActionPending?: CoverActionPending | null;
     coverPending?: CoverPending | null;
+    vaultPending?: VaultPending | null;
     workspacePending?: WorkspacePending | null;
     templatePending?: TemplatePending | null;
     maintenancePending?: MaintenancePending | null;
@@ -200,7 +203,7 @@ export interface Binding {
     needsReselect?: boolean
 }
 
-export interface WorkerOperations extends ProductionWorkerOperations, CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
+export interface WorkerOperations extends VaultWorkerOperations, ProductionWorkerOperations, CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
     bind: { args: { destination: string }; result: LibraryBinding };
     createLibrary: { args: { root: string; rootIdentity: RootIdentity; mutationId: string }; result: LibraryBinding };
     queryCreation: {

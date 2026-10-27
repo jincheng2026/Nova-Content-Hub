@@ -1,6 +1,7 @@
 import type {Page} from './workspace-pages.tsx';
 
 const paths: Record<Page | 'library' | 'settings' | 'research', string> = {
+    vault:'M3 5h7l2 2h9v14H3z M7 12h10 M7 16h6',
     overview: 'M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z',
     templates: 'M4 3h16v18H4z M4 9h16 M10 9v12',
     content: 'M5 3h10l4 4v14H5z M14 3v5h5 M9 12h6 M9 16h6',

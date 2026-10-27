@@ -424,7 +424,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     }
     const preferences = new Preferences({file: path.join(app.getPath('userData'), 'local-preferences.json'), login: app});
     try { await preferences.initialize(); } catch { serviceErrors.push('PREFERENCES_UNAVAILABLE'); }
-    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.templatePending && !controller.binding.maintenancePending && !controller.binding.seedPending && !controller.binding.productionPending;
+    const canRemind = (libraryId: string) => !initializationError && preferences.initialized && release.AUTH_MODE === 'disabled' && controller.binding?.current?.libraryId === libraryId && !controller.binding.needsReselect && !controller.binding.vaultPending && !controller.binding.pending && !controller.binding.creation && !controller.binding.workspacePending && !controller.binding.templatePending && !controller.binding.maintenancePending && !controller.binding.seedPending && !controller.binding.productionPending;
     reminders = new Reminders({
         file: path.join(app.getPath('userData'), 'daily-reminder.json'),
         preferences: () => preferences.values,
@@ -453,7 +453,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         contextSummary: () => {
             const binding = controller.binding;
             return {bindingPresent: !!binding?.current, bindingBackupName, libraryHealth: controller.maintenance.currentHealth(), recovery: {
-                content: !!binding?.pending, workspace: !!binding?.workspacePending, template: !!binding?.templatePending, creation: !!binding?.creation,
+                content: !!binding?.pending || !!binding?.vaultPending, workspace: !!binding?.workspacePending, template: !!binding?.templatePending, creation: !!binding?.creation,
                 photo: !!binding?.photoPending, cover: !!binding?.coverPending, coverAction: !!binding?.coverActionPending,
                 maintenance: !!binding?.maintenancePending, seed: !!binding?.seedPending, needsReselect: !!binding?.needsReselect
             }, errorCodes: [...serviceErrors, ...(bootstrapReason !== 'none' ? ['BINDING_INVALID'] : []), ...(initializationError ? [errorInfo(initializationError).code] : [])]};

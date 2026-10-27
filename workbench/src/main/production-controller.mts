@@ -69,6 +69,20 @@ export class ProductionController {
  }
  startProductionTask(input:ProductionStart){this.validate('startProductionTask',input);return this.owner.exclusive(async()=>{
   this.owner.noPending();const b=this.owner.current();let snapshot=await this.owner.worker.call('productionRead',{binding:b});
+  if(input.workflow==='positioning-interview'||input.workflow==='topic-suggestion'){
+   const bodyHash=input.contentId?(await this.owner.worker.call('productionCreation',{binding:b,contentId:input.contentId})).content.bodyHash:null;
+   const source=input.source?await this.owner.worker.call('vaultDocument',{binding:b,id:input.source.documentId}):null;
+   if(source&&(source.document.hash!==input.source!.expectedHash||source.document.contentId!==(input.contentId??null)))fail('CONFLICT','推荐选题的资料版本或关联内容已变化，请重新读取后再开始。');
+   const topicSource=source?{documentId:source.document.id,hash:source.document.hash,relativePath:source.document.relativePath}:null;
+   const topicRequestHash=input.workflow==='topic-suggestion'?createHash('sha256').update(JSON.stringify({contentId:input.contentId??null,bodyHash,source:topicSource,prompt:input.prompt})).digest('hex'):null;
+   const prompt=source?`${input.prompt}\n\n固定资料来源：${source.document.relativePath}\n资料原文（超长时保留可读取范围，版本已固定）：\n${source.text.slice(0,Math.max(0,95000-input.prompt.length-500))}`:input.prompt;
+   const existing=[...snapshot.tasks].reverse().find(task=>task.contentId===(input.contentId??null)&&task.request.parameters!==null&&typeof task.request.parameters==='object'&&!Array.isArray(task.request.parameters)&&task.request.parameters.workflow===input.workflow&&(input.workflow!=='topic-suggestion'||task.request.parameters.topicRequestHash===topicRequestHash)&&task.attempts.some(attempt=>attempt.id===task.activeAttemptId&&['created','claimed','waiting-user','waiting-permission','submitted'].includes(attempt.status)));
+   if(existing){const launched=await this.launch(existing.id);return {snapshot:await this.read(),...launched};}
+   const prior=new Set(snapshot.tasks.map(task=>task.id));
+   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt,contentId:input.contentId??null,accountId:null,host:this.owner.binding.assistant??'codex',parameters:{workflow:input.workflow,businessSkill:input.workflow==='positioning-interview'?'xindao-interview':'xindao-xuanti',...(topicRequestHash?{topicRequestHash,topicSource}:{}),mode:'simple',comments:false,budgetEnabled:false,maxRequestsPerTask:0},tools:[],budget:{amount:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+   const task=result.tasks.find(task=>!prior.has(task.id));if(!task)fail('PENDING_MUTATION','任务已保留，请在助手任务中继续。');
+   const launched=await this.launch(task.id);return {snapshot:await this.read(),...launched};
+  }
   if(input.workflow==='content-creation'){
    const existing=[...snapshot.tasks].reverse().find(task=>task.contentId===input.contentId&&task.request.parameters!==null&&typeof task.request.parameters==='object'&&!Array.isArray(task.request.parameters)&&task.request.parameters.workflow==='content-creation'&&task.attempts.some(attempt=>attempt.id===task.activeAttemptId&&['created','claimed','waiting-user','waiting-permission','submitted'].includes(attempt.status)));
    if(existing){const launched=await this.launch(existing.id);return {snapshot:await this.read(),...launched};}

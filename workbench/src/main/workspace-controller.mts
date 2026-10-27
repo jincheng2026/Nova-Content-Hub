@@ -15,7 +15,7 @@ type WorkspaceBinding = Binding & {workspacePending?: WorkspacePending | null};
 export interface WorkspaceOwner {
     binding: WorkspaceBinding;
     authMode: 'required' | 'disabled';
-    worker: WorkspaceWorker;
+    worker: WorkspaceWorker & Pick<import('../shared/contracts.ts').Worker,'call'>;
     dialogs: {templateFolder?(): Promise<string | null>; templateImages?(): Promise<string[] | null>; material?(): Promise<string | null>; export?(defaultName: string): Promise<string | null>};
     covers: {grant(assetHash: string): string};
     openPublicationURL?: (url: string) => Promise<void>;
@@ -78,9 +78,8 @@ export class WorkspaceController {
         return this.owner.exclusive(async () => {
             if (!this.owner.revealFolder) fail('NOT_READY', '此安装尚未配置文件管理器入口。');
             const binding = this.owner.current();
-            const info = await fs.lstat(binding.root, {bigint: true});
-            if (!info.isDirectory() || info.isSymbolicLink() || String(info.dev) !== binding.rootIdentity.dev || String(info.ino) !== binding.rootIdentity.ino) fail('LIBRARY_NOT_READY', '内容库原目录已改变，请重新连接后再查看。');
-            try { this.owner.revealFolder(binding.root); }
+            const root=await this.owner.worker.call('vaultLocation',{binding});
+            try { this.owner.revealFolder(root); }
             catch { fail('FOLDER_OPEN_FAILED', '系统未能显示内容库文件夹，请稍后重试。'); }
             return {revealed: true};
         });

@@ -1,3 +1,5 @@
+import {isVaultOperation,executeVault} from './vault-worker.mts';
+import {inspectVault,openVault,createVault} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {isProductionOperation, executeProduction} from './production-worker.mts';
 import {boundReader} from './bound-reader.mts';
 import {isCoverOperation, executeCover} from './cover-worker.mts';
@@ -7,7 +9,7 @@ import {isMaintenanceOperation, executeMaintenance} from './maintenance-worker.m
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import {validateRelease} from './boundary.mts';
-import {openLibrary, createLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
+import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {isRecord, errorInfo} from '../shared/contracts.ts';
 import {exact, uuid, identity, libraryBinding, mutation, requireWrite, fail} from '../shared/validation.ts';
 import type {Content, WorkerOperations, WorkerOperation, LibraryBinding, WorkspaceSnapshot, WorkspacePlan} from '../shared/contracts.ts';
@@ -60,7 +62,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
     return {contents, prompts, channels};
 }
 
-type DelegatedOperation = keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
+type DelegatedOperation = keyof import('../shared/vault-contracts.ts').VaultWorkerOperations | keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
     bind: ['destination'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
@@ -73,6 +75,7 @@ const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = 
 };
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
+    if (isVaultOperation(op)) return executeVault(op,args,mode);
     if (isProductionOperation(op)) return executeProduction(op, args, mode);
     if (isCoverOperation(op)) return executeCover(op, args, mode);
     if (isTemplateOperation(op)) return executeTemplate(op, args, mode);
@@ -94,17 +97,12 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
         const stat = await fs.lstat(args.root as string, {bigint: true});
         if (!stat.isDirectory() || stat.isSymbolicLink() || stat.dev.toString() !== expected.dev || stat.ino.toString() !== expected.ino) fail('CONFLICT', '新库创建位置已被替换；保留原目标以供核验。');
         if (op === 'queryCreation' && (await fs.readdir(args.root as string)).length === 0) return null;
-        const descriptor = op === 'queryCreation' ? JSON.parse(await fs.readFile(path.join(args.root as string, '内容库.json'), 'utf8')) as {
-            libraryId: string
-        } : null;
-        const library = op === 'createLibrary' ? createLibrary(args.root as string, {expectedRootIdentity: expected}) : openLibrary(args.root as string, {
-            expectedLibraryId: descriptor!.libraryId,
-            expectedRootIdentity: expected
-        });
-        if (library.info.rootIdentity.dev !== expected.dev || library.info.rootIdentity.ino !== expected.ino) fail('CONFLICT', 'Library creation target changed');
-        return bindingOf(library);
+        const current=op==='createLibrary'?createVault(args.root as string):inspectVault(args.root as string).recognized?openVault(args.root as string):bindingOf(openLibrary(args.root as string));
+        const after=await fs.lstat(args.root as string,{bigint:true});
+        if(!after.isDirectory()||after.isSymbolicLink()||String(after.dev)!==expected.dev||String(after.ino)!==expected.ino)fail('CONFLICT','新库创建位置已改变，原创建意图保留。');
+        return current;
     }
-    if (op === 'bind') return bindingOf(openLibrary(args.destination as string));
+    if (op === 'bind') {const root=args.destination as string;return inspectVault(root).recognized?openVault(root):bindingOf(openLibrary(root));}
     const binding = args.binding as unknown as LibraryBinding;
     const library = ['workspace', 'list', 'readContent'].includes(op as string) ? boundReader(binding) : bound(binding);
     if (op === 'workspace') return workspace(library);

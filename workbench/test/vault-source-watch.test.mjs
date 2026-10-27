@@ -1,0 +1,21 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {EventEmitter} from 'node:events';
+import {createVault,readVaultSnapshot} from '../../plugin-src/src/lib/vault/index.mjs';
+import {LibraryWatcher} from '../src/main/library-watch.mts';
+test('Vault source edits and file renames refresh source data while runtime task progress remains lightweight',t=>{
+ const root=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'nova-vault-source-watch-')),binding=createVault(root),handles=[],events=[];
+ t.mock.timers.enable({apis:['setTimeout','setInterval']});
+ t.mock.method(fs,'watch',(watched,options,callback)=>{assert.deepEqual(options,{recursive:true});const handle=Object.assign(new EventEmitter(),{watched,callback,closed:false,close(){this.closed=true;}});handles.push(handle);return handle;});
+ const watcher=new LibraryWatcher({notify:event=>events.push(event)});t.after(()=>{watcher.close();fs.rmSync(root,{recursive:true,force:true});});
+ watcher.bind(binding);const source=handles.find(h=>h.watched===root),runtime=handles.find(h=>h.watched===binding.root);assert.ok(source,'must subscribe to the explicit source root');assert.ok(runtime,'must retain runtime subscription');
+ const index=path.join(root,'.workbench','projection.json'),before=fs.existsSync(index)?fs.readFileSync(index):null;
+ const relative='02_内容素材/外部编辑.md';fs.writeFileSync(path.join(root,relative),'新建原位资料');source.callback('rename',relative);source.callback('change',relative);t.mock.timers.tick(300);assert.deepEqual(events,['changed','source']);assert.ok(readVaultSnapshot(binding.root).documents.some(d=>d.relativePath===relative));
+ const renamed='02_内容素材/改名后的资料.md';fs.renameSync(path.join(root,relative),path.join(root,renamed));source.callback('rename',relative);source.callback('rename',renamed);t.mock.timers.tick(300);assert.deepEqual(events,['changed','source','source']);const docs=readVaultSnapshot(binding.root).documents;assert.ok(docs.some(d=>d.relativePath===renamed));assert.ok(!docs.some(d=>d.relativePath===relative));
+ source.callback('change','.workbench/projection.json');source.callback('change','.workbench/runtime/内容/id/内容.json');source.callback('change','02_内容素材/.暂存.md');t.mock.timers.tick(300);assert.equal(events.length,3);assert.deepEqual(fs.existsSync(index)?fs.readFileSync(index):null,before,'watcher and source reads never rebuild or write an index');
+ const rid='11111111-1111-4111-8111-111111111111';runtime.callback('change',`内容/id/封面任务/${rid}/尝试/${rid}/进度.json`);assert.equal(events.at(-1),'progress');
+ watcher.bind(null);assert.ok(source.closed&&runtime.closed);source.callback('change',renamed);runtime.callback('change','内容/id/正文.md');t.mock.timers.tick(300);assert.equal(events.length,4);
+});

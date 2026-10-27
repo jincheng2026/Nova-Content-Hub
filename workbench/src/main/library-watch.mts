@@ -1,6 +1,7 @@
+import {vaultRootForRuntime} from '../../../plugin-src/src/lib/vault/index.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
-import type {LibraryBinding} from '../shared/contracts.ts';
+import type {LibraryBinding,WorkspaceChange} from '../shared/contracts.ts';
 
 const DEBOUNCE_MS = 300;
 const MAX_WAIT_MS = 2_000;
@@ -62,9 +63,9 @@ export class LibraryWatcher {
     private binding: LibraryBinding | null = null;
     private generation = 0;
     private stop: (() => void) | null = null;
-    private notify: (change: 'changed' | 'progress' | 'unavailable') => void;
+    private notify: (change: WorkspaceChange) => void;
 
-    constructor({notify}: {notify: (change: 'changed' | 'progress' | 'unavailable') => void}) {
+    constructor({notify}: {notify: (change: WorkspaceChange) => void}) {
         this.notify = change => {
             // A closing renderer must not turn an advisory refresh into a failed library operation.
             try { notify(change); } catch {}
@@ -78,7 +79,9 @@ export class LibraryWatcher {
         const pinned = {...binding, rootIdentity: {...binding.rootIdentity}}, generation = this.generation;
         this.binding = pinned;
         const current = () => this.generation === generation;
-        let watcher: fs.FSWatcher | null = null, unavailable = false, watchGeneration = 0;
+        let watchers: fs.FSWatcher[] = [], unavailable = false, watchGeneration = 0;
+        let sourceRoot:string|null|undefined, sourceChanged=false, runtimeChanged=false;
+        const checkRoots=()=>{checkBinding(pinned);const resolved=vaultRootForRuntime(pinned.root);if(sourceRoot===undefined)sourceRoot=resolved;else if(resolved!==sourceRoot)throw new Error('Vault source binding changed');if(sourceRoot)safeStat(sourceRoot);};
         let debounce: ReturnType<typeof setTimeout> | null = null, maximum: ReturnType<typeof setTimeout> | null = null;
         const clearPending = () => {
             if (debounce) clearTimeout(debounce);
@@ -87,29 +90,32 @@ export class LibraryWatcher {
         };
         const closeWatcher = () => {
             watchGeneration += 1;
-            const retired = watcher;
-            watcher = null;
-            if (!retired) return;
-            retired.removeAllListeners();
+            const retired = watchers;
+            watchers = [];
+            for(const watcher of retired){
+            watcher.removeAllListeners();
             // A queued native error may arrive after close; never leave a retired emitter unhandled.
-            retired.on('error', () => {});
-            try { retired.close(); } catch { retired.unref?.(); }
+            watcher.on('error', () => {});
+            try { watcher.close(); } catch { watcher.unref?.(); }
+            }
         };
         const lost = () => {
             if (!current()) return;
-            clearPending();
+            clearPending();sourceChanged=runtimeChanged=false;
             closeWatcher();
             if (!unavailable) { unavailable = true; this.notify('unavailable'); }
         };
         const flush = () => {
             if (!current()) return;
             clearPending();
-            try { checkBinding(pinned); } catch { lost(); return; }
-            this.notify('changed');
+            try { checkRoots(); } catch { lost(); return; }
+            const source=sourceChanged,runtime=runtimeChanged;sourceChanged=runtimeChanged=false;
+            if(source)this.notify('source');if(runtime)this.notify('changed');
         };
-        const changed = (_event: string, filename: string | Buffer | null) => {
+        const changed = (_event: string, filename: string | Buffer | null, source=false) => {
             if (!current() || unavailable || !businessChange(filename)) return;
-            if (/^(?:内容[\\/][^\\/]+[\\/]封面任务|模板[\\/][^\\/]+[\\/]学习任务)[\\/][0-9a-f-]{36}[\\/]尝试[\\/][0-9a-f-]{36}[\\/]进度\.json$/.test(filename?.toString().normalize('NFC') ?? '')) {this.notify('progress'); return;}
+            if (!source&&/^(?:内容[\\/][^\\/]+[\\/]封面任务|模板[\\/][^\\/]+[\\/]学习任务)[\\/][0-9a-f-]{36}[\\/]尝试[\\/][0-9a-f-]{36}[\\/]进度\.json$/.test(filename?.toString().normalize('NFC') ?? '')) {this.notify('progress'); return;}
+            if(source)sourceChanged=true;else runtimeChanged=true;
             if (debounce) clearTimeout(debounce);
             debounce = setTimeout(flush, DEBOUNCE_MS);
             if (!maximum) maximum = setTimeout(flush, MAX_WAIT_MS);
@@ -117,13 +123,14 @@ export class LibraryWatcher {
         const arm = () => {
             if (!current()) return;
             try {
-                checkBinding(pinned);
+                checkRoots();
                 const activeWatch = watchGeneration;
-                watcher = fs.watch(pinned.root, {recursive: true}, (event, filename) => { if (activeWatch === watchGeneration) changed(event, filename); });
-                const failed = () => { if (activeWatch === watchGeneration) lost(); };
-                watcher.on('error', failed);
-                watcher.on('close', failed);
-                checkBinding(pinned);
+                for(const root of [pinned.root,...(sourceRoot?[sourceRoot]:[])]){
+                    const watcher=fs.watch(root,{recursive:true},(event,filename)=>{if(activeWatch===watchGeneration)changed(event,filename,root!==pinned.root);});
+                    watchers.push(watcher);const failed=()=>{if(activeWatch===watchGeneration)lost();};
+                    watcher.on('error',failed);watcher.on('close',failed);
+                }
+                checkRoots();
             } catch { lost(); return; }
             unavailable = false;
             this.notify('changed');
@@ -131,8 +138,8 @@ export class LibraryWatcher {
         // shortcut: fs.watch can omit business events; polling checks identity only, focus/manual refresh remains the fallback.
         const probe = setInterval(() => {
             if (!current()) return;
-            if (!watcher) { arm(); return; }
-            try { checkBinding(pinned); } catch { lost(); }
+            if (!watchers.length) { arm(); return; }
+            try { checkRoots(); } catch { lost(); }
         }, IDENTITY_CHECK_MS);
         probe.unref?.();
         this.stop = () => { clearInterval(probe); clearPending(); closeWatcher(); };

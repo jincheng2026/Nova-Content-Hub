@@ -1,3 +1,5 @@
+import {VaultController} from './vault-controller.mts';
+import type {VaultInputs} from '../shared/vault-contracts.ts';
 import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness,ServiceCredentialRequest,ServiceCredentialDisclosure} from '../shared/service-contracts.ts';
 import {readPlatformCatalog} from './platform-catalog.mts';
 import {ProductionController} from './production-controller.mts';
@@ -69,6 +71,8 @@ export class DesktopController {
     production: ProductionController;
     covers: Covers;
     workspace: WorkspaceController;
+    vault: VaultController;
+    displayRoot: {bindingRoot:string;root:string}|null = null;
     templates: TemplateController;
     maintenance: Maintenance;
     services: ControllerServices;
@@ -114,9 +118,18 @@ export class DesktopController {
         this.production = new ProductionController(this, productionCallbacks ?? {launch: async () => fail('NOT_READY', '助手尚未配置。'), open: async () => fail('NOT_READY', '本地创作页尚未配置。'), serviceSettings: async () => fail('NOT_READY', '服务尚未配置。')});
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
+        this.vault = new VaultController(this);
         this.templates = new TemplateController(this, {readTemplateAssistantSetup: readTemplateAssistantSetup ?? (async host => ({host, ready: false, skill: null, reason: 'unconfigured'})), launchTemplate: launchTemplate ?? (async () => fail('NOT_READY', '当前构建未配置模板助手交接。'))});
         this.maintenance = new Maintenance(this);
     }
+
+    readVault(input?:undefined){return this.vault.readVault(input);}
+    readVaultDocument(input:VaultInputs['readVaultDocument']){return this.vault.readVaultDocument(input);}
+    saveVaultDocument(input:VaultInputs['saveVaultDocument']){return this.vault.saveVaultDocument(input);}
+    createVaultDocument(input:VaultInputs['createVaultDocument']){return this.vault.createVaultDocument(input);}
+    trashVaultDocument(input:VaultInputs['trashVaultDocument']){return this.vault.trashVaultDocument(input);}
+    revealVaultDocument(input:VaultInputs['revealVaultDocument']){return this.vault.revealVaultDocument(input);}
+    recoverVaultMutation(input:VaultInputs['recoverVaultMutation']){return this.vault.recoverVaultMutation(input);}
 
     readServiceSettings(input?: undefined) { validateInput('readServiceSettings', input); return this.service('productionServices').readServiceSettings(); }
     revealServiceCredential(input:ServiceCredentialRequest) {validateInput('revealServiceCredential',input);return this.exclusive(()=>Promise.resolve(this.service('productionServices').revealServiceCredential(input)));}
@@ -312,18 +325,22 @@ export class DesktopController {
 
     async initialize() {
         this.binding = await this.store.load();
+        if(this.binding.current){try{const root=await this.worker.call('vaultLocation',{binding:this.binding.current});this.displayRoot={bindingRoot:this.binding.current.root,root};}catch{/* Existing recovery paths remain available when the source is unavailable. */}}
         if ((this.binding.libraryId || this.binding.started) && this.binding.current === undefined) this.binding.needsReselect = true;
     }
 
+    async refreshDisplayRoot(binding:LibraryBinding){const root=await this.worker.call('vaultLocation',{binding});this.displayRoot={bindingRoot:binding.root,root};}
+
     async status(): Promise<Status> {
         return {
+            vaultPending: !!this.binding.vaultPending,
             productionPending: !!this.binding.productionPending,
             assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
             workspacePending: this.workspace.view(),
             templatePending: this.templates.view(),
             maintenance: this.maintenance.readMaintenanceStatus(),
         busy: this.busy,
-            currentName: this.binding.current ? path.basename(this.binding.current.root) : null,
+            currentName: this.binding.current ? path.basename(this.displayRoot?.bindingRoot===this.binding.current.root?this.displayRoot.root:this.binding.current.root) : null,
             needsReselect: this.binding.needsReselect === true,
             pending: this.binding.pending ? this.pendingView ?? this.uncertain() : null,
             creating: !!this.binding.creation,
@@ -347,7 +364,7 @@ export class DesktopController {
     }
 
     noPending(allowSeedRetry = false) {
-        if (this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.templatePending || this.binding.maintenancePending || this.binding.productionPending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
+        if (this.binding.vaultPending || this.binding.pending || this.binding.creation || this.binding.photoPending || this.binding.coverPending || this.binding.coverActionPending || this.binding.workspacePending || this.binding.templatePending || this.binding.maintenancePending || this.binding.productionPending || !allowSeedRetry && this.binding.seedPending) fail('PENDING_MUTATION', '操作结果待核实；请先核验当前操作，不能换库或开始第二笔写入。');
     }
 
     async maySwitch() {
@@ -366,6 +383,7 @@ export class DesktopController {
             if (!destination) return;
             const current = await this.worker.call('bind', {destination});
             await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+            await this.refreshDisplayRoot(current);
             if (this.authMode === 'disabled') await this.covers.seed();
         });
     }
@@ -374,7 +392,7 @@ export class DesktopController {
         requireWrite(this.authMode);
         return this.exclusive(async () => {
             await this.maySwitch();
-            const root = await this.dialogs.destination(path.join(this.documents, '我的内容库'));
+            const root = await this.dialogs.destination(path.join(this.documents, '我的知识库'));
             if (!root) return;
             // Reserve a fresh directory before dispatch; a lost response can only inspect this inode.
             let stat;
@@ -392,6 +410,7 @@ export class DesktopController {
             await this.persist({...emptyBinding(), assistant: this.binding.assistant, current: this.binding.current ?? null, creation});
             const current = await this.worker.call('createLibrary', creation);
             await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+            await this.refreshDisplayRoot(current);
             if (this.authMode === 'disabled') await this.covers.seed();
         });
     }
@@ -514,6 +533,7 @@ export class DesktopController {
                     return null;
                 }
                 await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+                await this.refreshDisplayRoot(current);
                 if (this.authMode === 'disabled') await this.covers.seed();
                 this.creationMissing = false;
             }
@@ -530,6 +550,7 @@ export class DesktopController {
                 const found = await this.worker.call('queryCreation', reservation);
                 const current = found ?? await this.worker.call('createLibrary', reservation);
                 await this.persist({...emptyBinding(), assistant: this.binding.assistant, current});
+                await this.refreshDisplayRoot(current);
                 if (this.authMode === 'disabled') await this.covers.seed();
                 this.creationMissing = false;
                 return null;
