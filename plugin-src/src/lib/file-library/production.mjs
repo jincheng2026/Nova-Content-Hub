@@ -6,7 +6,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{1
 const HASH = /^[a-f0-9]{64}$/;
 const STAGES = ['idea','research','references','transcription','analysis','narrative','writing','ready','published'];
 const KINDS = ['research','transcription','analysis','writing','packaging','review'];
-const STATES = ['created','claimed','waiting-user','waiting-permission','submitted','accepted','failed','cancelled'];
+const STATES = ['created','claimed','waiting-user','waiting-permission','submitted','accepted','rejected','failed','cancelled'];
 const LIVE = ['created','claimed','waiting-user','waiting-permission'];
 const ARTIFACTS = ['report','research','transcript','analysis','narrative','draft','packaging','feedback','knowledge'];
 const plain = v => !!v && typeof v === 'object' && !Array.isArray(v) && [Object.prototype,null].includes(Object.getPrototypeOf(v));
@@ -53,9 +53,10 @@ export function validateProductionMetadata(meta,kind,fail) {
     for (const t of p.tasks) {
         check(fields(t,['id','kind','title','contentId','accountId','request','requestHash','attempts','activeAttemptId','createdAt','updatedAt']) && KINDS.includes(t.kind) && text(t.title,500,false) && (t.contentId === null || UUID.test(t.contentId)) && (t.accountId === null || UUID.test(t.accountId)) && validRequest(t.request) && digest(t.request) === t.requestHash && objects(t.attempts) && t.attempts.length > 0 && t.attempts.some(a => a.id === t.activeAttemptId) && iso(t.createdAt) && iso(t.updatedAt),'task');
         for (const a of t.attempts) {
-            check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
+            check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','rejection','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
+            check(a.status==='rejected' ? fields(a.rejection,['reason','at']) && text(a.rejection.reason,2000,false) && a.rejection.reason===a.rejection.reason.trim() && !a.rejection.reason.includes('\0') && iso(a.rejection.at) : a.rejection===undefined,'rejection');
             check(a.id === t.activeAttemptId || !LIVE.includes(a.status),'retired attempt');
-            check(['submitted','accepted'].includes(a.status) ? validResult(a.result) && fields(a.receipt,['sha256','taskId','attemptId','requestHash','resultHash']) && a.receipt.taskId === t.id && a.receipt.attemptId === a.id && a.receipt.requestHash === t.requestHash && a.receipt.resultHash === digest(a.result) && a.receipt.sha256 === digest({taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)}) : a.result === null && a.receipt === null,'receipt');
+            check(['submitted','accepted','rejected'].includes(a.status) ? validResult(a.result) && fields(a.receipt,['sha256','taskId','attemptId','requestHash','resultHash']) && a.receipt.taskId === t.id && a.receipt.attemptId === a.id && a.receipt.requestHash === t.requestHash && a.receipt.resultHash === digest(a.result) && a.receipt.sha256 === digest({taskId:t.id,attemptId:a.id,requestHash:t.requestHash,resultHash:digest(a.result)}) : a.result === null && a.receipt === null,'receipt');
         }
     }
     for (const r of [...p.feedback,...p.knowledge]) check(UUID.test(r.id) && (r.contentId === null || UUID.test(r.contentId)) && text(r.text,100000,false) && text(r.source,500,false) && iso(r.createdAt),'record');
@@ -234,7 +235,7 @@ export function productionMethods(h) {
             case 'progressTask': {const {t,a} = taskAttempt(p,raw,true); if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(['claimed','waiting-user','waiting-permission'].includes(raw.status) && Number.isFinite(raw.progress) && raw.progress >= a.progress && raw.progress <= 100 && text(raw.message,10000),'Invalid progress'); a.status = raw.status; a.progress = raw.progress; a.message = raw.message; a.updatedAt = t.updatedAt = now; break;}
             case 'failTask': {const {t,a} = taskAttempt(p,raw,true); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); invalid(fields(raw.failure,['code','message']) && text(raw.failure.code,100,false) && text(raw.failure.message,2000,false),'Failure reason required'); a.status = 'failed'; a.failure = raw.failure; a.updatedAt = t.updatedAt = now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
             case 'cancelTask': {const {t,a} = taskAttempt(p,raw); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); a.status='cancelled';a.updatedAt=t.updatedAt=now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
-            case 'retryTask': {const {t,a} = taskAttempt(p,raw); invalid(!['submitted','accepted'].includes(a.status),'Submitted task requires acceptance'); if(p.costs.some(c => c.taskId === t.id && ['unknown','reserved'].includes(c.status))) fail('COST_UNKNOWN','Reconcile outstanding service costs before retry'); if(LIVE.includes(a.status)) {a.status='cancelled';a.updatedAt=now;} const next=newAttempt(raw.host || a.host,now);t.attempts.push(next);t.activeAttemptId=next.id;t.updatedAt=now;break;}
+            case 'retryTask': {const {t,a} = taskAttempt(p,raw); invalid(!['submitted','accepted','rejected'].includes(a.status),'Submitted results require a user decision; rejected tasks require a new request'); if(p.costs.some(c => c.taskId === t.id && ['unknown','reserved'].includes(c.status))) fail('COST_UNKNOWN','Reconcile outstanding service costs before retry'); if(LIVE.includes(a.status)) {a.status='cancelled';a.updatedAt=now;} const next=newAttempt(raw.host || a.host,now);t.attempts.push(next);t.activeAttemptId=next.id;t.updatedAt=now;break;}
             case 'submitTask': {
                 const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(validResult(raw.result),'Invalid result artifacts');
                 for(const artifact of raw.result.artifacts) if(artifact.assetHash) checkAsset(artifact.assetHash);
@@ -252,6 +253,12 @@ export function productionMethods(h) {
                 } break;
             }
             case 'acceptTask': {const {t,a}=taskAttempt(p,raw);invalid(a.status==='submitted' && raw.receiptHash===a.receipt.sha256,'Acceptance requires submitted receipt');a.status='accepted';a.updatedAt=t.updatedAt=now;break;}
+            case 'rejectTask': {
+                invalid(fields(raw,['taskId','attemptId','receiptHash','expectedToken','reason']) && UUID.test(raw.taskId) && UUID.test(raw.attemptId) && HASH.test(raw.receiptHash) && text(raw.reason,2000,false) && !raw.reason.includes('\0'),'Rejection requires exact attempt, receipt and a bounded reason');
+                const {t,a}=taskAttempt(p,raw);invalid(a.status==='submitted' && raw.receiptHash===a.receipt.sha256,'Rejection requires the current submitted receipt');
+                const reason=raw.reason.trim();a.status='rejected';a.rejection={reason,at:now};a.updatedAt=t.updatedAt=now;
+                p.feedback.push({id:randomUUID(),contentId:t.contentId,text:reason,source:`用户拒绝 task:${t.id} attempt:${a.id} receipt:${a.receipt.sha256}`,createdAt:now});break;
+            }
             case 'reserveCost': {
                 const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running');
                 invalid(text(raw.requestId,200,false) && text(raw.service,100,false),'Cost requires request and service');
@@ -295,7 +302,7 @@ export function productionMethods(h) {
             return readProduction();
         }
         const projected=project(out);
-        if(['submitTask','acceptTask'].includes(op))try{const archive=rebuildProductionArchive(raw.taskId);if(archive.warnings.length)projected.archiveWarnings=archive.warnings;}catch(error){projected.archiveWarnings=[`任务回执已保存，知识目录投影待重建（${/^[A-Z_]+$/.test(error.code)?error.code:'IO_ERROR'}）。`];}
+        if(['submitTask','acceptTask','rejectTask'].includes(op))try{const archive=rebuildProductionArchive(raw.taskId);if(archive.warnings.length)projected.archiveWarnings=archive.warnings;}catch(error){projected.archiveWarnings=[`任务回执已保存，知识目录投影待重建（${/^[A-Z_]+$/.test(error.code)?error.code:'IO_ERROR'}）。`];}
         return projected;
     }
     function saveProductionDraft(cid,input,editToken,options={}) {

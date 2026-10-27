@@ -14,7 +14,7 @@ interface Props {
     adopt(candidate: ContentTitleRecommendation): boolean;
     showTasks(): void;
 }
-const statuses: Record<string, string> = {created: '待发送给助手', claimed: '助手处理中', 'waiting-user': '等待你补充信息', 'waiting-permission': '等待宿主权限确认', submitted: '已提交，待人工验收', accepted: '已人工验收', failed: '任务失败', cancelled: '任务已取消'};
+const statuses: Record<string, string> = {created: '待发送给助手', claimed: '助手处理中', 'waiting-user': '等待你补充信息', 'waiting-permission': '等待宿主权限确认', submitted: '已提交，待人工验收', accepted: '已人工验收', rejected: '已拒绝结果', failed: '任务失败', cancelled: '任务已取消'};
 export function ContentTitleRecommendations({content, dirty, busy, conflict, run, adopt, showTasks}: Props) {
     const [open, setOpen] = useState(false), [pending, setPending] = useState(false), [notice, setNotice] = useState('');
     const [data, setData] = useState<{state: ProductionCreationState; snapshot: ProductionSnapshot} | null>(null);

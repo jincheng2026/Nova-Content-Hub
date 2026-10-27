@@ -1,0 +1,16 @@
+✔ codex: submitted rejection preserves receipt, records exact feedback atomically and is terminal (4956.63925ms)
+✔ workbuddy: submitted rejection preserves receipt, records exact feedback atomically and is terminal (7229.976375ms)
+✔ rejection requires exact current attempt, receipt, CAS and bounded nonempty reason; failures leave result and feedback intact (2857.33675ms)
+✔ metadata only permits a rejected attempt with bounded reason, timestamp and its original receipt (838.562875ms)
+✔ rejected workers cannot add business calls or arbitrary costs; an existing reservation can still settle truthfully (1137.021875ms)
+✔ codex: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (4513.250166ms)
+✔ workbuddy: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (5443.068084ms)
+✔ a lost rejection reply persists strict recovery intent and replay never duplicates feedback or changes receipt (4809.6895ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17170.686167

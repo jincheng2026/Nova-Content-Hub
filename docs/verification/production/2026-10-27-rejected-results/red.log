@@ -1,0 +1,127 @@
+✖ codex: submitted rejection preserves receipt, records exact feedback atomically and is terminal (2891.034375ms)
+✖ workbuddy: submitted rejection preserves receipt, records exact feedback atomically and is terminal (3728.423791ms)
+✔ rejection requires exact current attempt, receipt, CAS and bounded nonempty reason; failures leave result and feedback intact (1921.239167ms)
+✖ metadata only permits a rejected attempt with bounded reason, timestamp and its original receipt (810.556ms)
+✖ codex: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (6434.683458ms)
+✖ workbuddy: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (2166.635917ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 1
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9526.533709
+
+✖ failing tests:
+
+test at plugin-src/src/lib/file-library/test/production-rejection.test.mjs:11:41
+✖ codex: submitted rejection preserves receipt, records exact feedback atomically and is terminal (2891.034375ms)
+  Error [LibraryError]: Unknown production operation
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:47:11)
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:273:22
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:854:28
+      at locked (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:744:21)
+      at mutate (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:811:16)
+      at Object.mutateProduction (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:162:21)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:11:211)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17) {
+    code: 'INVALID_INPUT',
+    mutationId: '2e78b26a-f0e3-4503-89ba-3c82c8600165',
+    pendingRecovery: false
+  }
+
+test at plugin-src/src/lib/file-library/test/production-rejection.test.mjs:11:41
+✖ workbuddy: submitted rejection preserves receipt, records exact feedback atomically and is terminal (3728.423791ms)
+  Error [LibraryError]: Unknown production operation
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:47:11)
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:273:22
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:854:28
+      at locked (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:744:21)
+      at mutate (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:811:16)
+      at Object.mutateProduction (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:162:21)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:11:211)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18) {
+    code: 'INVALID_INPUT',
+    mutationId: 'afd14211-efe6-4c7c-89fc-55bb970ee7cf',
+    pendingRecovery: false
+  }
+
+test at plugin-src/src/lib/file-library/test/production-rejection.test.mjs:13:1
+✖ metadata only permits a rejected attempt with bounded reason, timestamp and its original receipt (810.556ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "Invalid production attempt"
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:13:970)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: Invalid production attempt
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:13:201)
+        at check (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:44:41)
+        at validateProductionMetadata (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:56:13)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:13:321
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/production-rejection.test.mjs:13:970)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:969:18),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at workbench/test/production-rejection.test.mjs:22:41
+✖ codex: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (6434.683458ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "操作拒绝额外、路径或无效字段。"
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1004)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: 操作拒绝额外、路径或无效字段。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:14:25)
+        at validateInput (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:28:25)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1021
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1004)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
+
+test at workbench/test/production-rejection.test.mjs:22:41
+✖ workbuddy: a rejected workflow cannot open/retry/accept or block a newly explicit revised request (2166.635917ms)
+  AssertionError [ERR_ASSERTION]: Got unwanted exception.
+  Actual message: "操作拒绝额外、路径或无效字段。"
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1004)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: Error: 操作拒绝额外、路径或无效字段。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:14:25)
+        at validateInput (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:28:25)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1021
+        at getActual (node:assert:611:5)
+        at strict.doesNotThrow (node:assert:779:32)
+        at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/production-rejection.test.mjs:22:1004)
+        at async Test.run (node:internal/test_runner/test:1404:7)
+        at async Test.processPendingSubtests (node:internal/test_runner/test:969:7),
+    expected: undefined,
+    operator: 'doesNotThrow',
+    diff: 'simple'
+  }
