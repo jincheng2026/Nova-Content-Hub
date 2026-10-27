@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-10-27T06:26:51.881Z",
+  "settingsFile": "/Users/mac/Library/Application Support/Nova 内容库技术验证/service-settings.json",
+  "modifiedAt": "2026-10-27T06:24:02.471Z",
+  "bytes": 742,
+  "budget": {
+    "enabled": false,
+    "maxRequestsPerTask": 10
+  },
+  "credentials": {
+    "tikhub": {
+      "hasKey": true
+    },
+    "model": {
+      "hasKey": true
+    },
+    "asr": {
+      "hasKey": false
+    }
+  },
+  "readOnly": true
+}

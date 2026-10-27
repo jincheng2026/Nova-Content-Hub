@@ -2,7 +2,7 @@
 import {app,safeStorage} from 'electron';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
 import {ServiceSettingsStore} from '../src/main/service-settings.mjs';
 import {ServiceTools} from '../src/main/service-tools.mjs';
@@ -21,11 +21,13 @@ const startedAt=new Date().toISOString(),calls=[],checks=[];
 const query={platform:'抖音',direction:'AI 工具教程',sampleLimit:1,maxFollowers:10000,minLikes:1000,minRatio:1,lookbackDays:30};
 let broker,library,identity,controller;
 const summary={startedAt,platform:process.platform,arch:process.arch,query,maxHttpRequests:2,originalSettingsChanged:null,realAssistantGui:false,checks,calls,outcome:'started'};
+function responseShape(value,depth=0){if(value===null)return'null';if(depth>8)return typeof value;if(Array.isArray(value))return{type:'array',length:value.length,sample:value.length?responseShape(value[0],depth+1):null};if(value&&typeof value==='object')return Object.fromEntries(Object.entries(value).slice(0,120).map(([key,item])=>[key,responseShape(item,depth+1)]));if(typeof value==='string'&&/^[\[{]/.test(value)){try{return{type:'JSON string',decoded:responseShape(JSON.parse(value),depth+1)};}catch{}}return typeof value;}
 async function save(){await fs.writeFile(path.join(evidence,'summary.json'),JSON.stringify({...summary,updatedAt:new Date().toISOString(),costs:library?.readProduction().costs.map(({service,status,amount,usage})=>({service,status,amount,usage}))},null,2)+'\n');}
 try{
  await save();
  const settings=new ServiceSettingsStore({filePath:path.join(temp,'settings.json'),encryption:safeStorage});await settings.initialize();const view=settings.read();
  assert(view.credentials.tikhub.hasKey,'TikHub Key is not configured');
+ if(process.env.NOVA_EXPECTED_TIKHUB_KEY_SHA256){assert(/^[0-9a-f]{64}$/.test(process.env.NOVA_EXPECTED_TIKHUB_KEY_SHA256));summary.credentialHashVerified=createHash('sha256').update(settings.secret('tikhub')).digest('hex')===process.env.NOVA_EXPECTED_TIKHUB_KEY_SHA256;assert(summary.credentialHashVerified,'Configured TikHub key does not match the user-provided key hash');}
  await settings.update({values:{...view.values,budget:{enabled:true,maxRequestsPerTask:2},commentsEnabled:false}});
  const tools=new ServiceTools({settings,cachePath:path.join(temp,'cache.json')});
  library=createLibrary(path.join(temp,'library'));const binding={root:library.info.root,libraryId:library.info.libraryId,rootIdentity:library.info.rootIdentity};
@@ -41,7 +43,7 @@ try{
  summary.phase='collecting';await save();
  const radar=await collectRadar({query:task.request.parameters.query,identity,descriptorPath,maxRequests:2},async(location,request)=>{
   assert(calls.length<2,'Live request cap exceeded');const call={operation:request.operation,startedAt:new Date().toISOString()};calls.push(call);
-  try{const result=await callServiceTool(location,request);Object.assign(call,{ok:true,requestsUsed:result.requestsUsed,cacheHit:result.cacheHit,collectedAt:result.collectedAt});return result;}
+  try{const result=await callServiceTool(location,request);Object.assign(call,{ok:true,requestsUsed:result.requestsUsed,cacheHit:result.cacheHit,collectedAt:result.collectedAt});await fs.writeFile(path.join(evidence,`${calls.length}-${request.operation}.shape.json`),JSON.stringify(responseShape(result.data),null,2)+'\n');return result;}
   catch(error){Object.assign(call,{ok:false,code:error.code??'SERVICE_FAILED',httpStatus:error.httpStatus??null,providerCode:error.providerCode??null});throw error;}
  });
  assert(radar.candidates.length<=1);summary.outcome=radar.candidates.length?'collected-one':'no-candidate';summary.collection={requests:radar.collection.requests,stoppedReason:radar.collection.stoppedReason,partial:radar.collection.partial};

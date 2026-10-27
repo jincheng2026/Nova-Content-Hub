@@ -4,7 +4,8 @@
 
 ## 本次实际请求
 
-- TikHub：`current-radar/summary.json`。北京时间13:33:31，从真实 `createRadarTask` 冻结“AI 工具教程”、1个候选、最多2REQ、无评论，经 claim → collectRadar → broker → worker/账本 → TikHub 发出唯一一次抖音搜索，HTTP402、`PROVIDER_REJECTED`。立即停止，没有分页、作者资料、评论、重试或其他平台调用。供应商错误码为null，错误正文未保存，不能据此认定具体余额不足或套餐原因；按服务端拒绝计费/配额请求、具体原因待核验处理。账本0REQ是应用对402的请求量分类，不是供应商人民币账单证明。
+- TikHub首轮：`current-radar/summary.json`。北京时间13:33:31，从真实 `createRadarTask` 冻结“AI 工具教程”、1个候选、最多2REQ、无评论，经 claim → collectRadar → broker → worker/账本 → TikHub 发出本轮唯一一次抖音搜索，HTTP402、`PROVIDER_REJECTED`。立即停止，没有分页、作者资料、评论、重试或其他平台调用。供应商错误码为null，错误正文未保存，不能据此认定具体余额不足或套餐原因；按服务端拒绝计费/配额请求、具体原因待核验处理。账本0REQ是应用对402的请求量分类，不是供应商人民币账单证明。
+- 用户指定Key复验：用户随后明确提供TikHub Key并要求保存后验证。主线程通过真实工作台保存，隔离helper先用safeStorage解密并与用户提供Key的SHA256比对，`credentialHashVerified:true`后才发请求。`new-tikhub-key-radar/summary.json`记录北京时间14:25:47本轮唯一一次搜索仍HTTP402、providerCode:null，立即停止，没有第二次请求；原文件SHA256不变。`post-check.json`复核原预算开关仍为false、TikHub/model状态已配置；Key匹配不代表供应商采集可用，不推断具体余额原因，也不绕过402。此次是用户重新授权后的复验，不是对上一轮自动重试。
 - 火山方舟：`current-model-asr/summary.json`。用户明确确认已开启“安心体验模式”后，北京时间13:39:36只发出一次真实推理。实际响应模型 `doubao-seed-2-0-mini-260428`，正文 `OK`，prompt46、completion21、total67 tokens，其中reasoning20。经真实调研任务冻结配置、claim、broker、费用预留/结算、submit、回执和accept，产物1个；直接从临时知识目录读出的 `research-archive.json` 为accepted归档，回执hash与本次提交一致。没有复用原先70tokens结果冒充本次请求。
 - 本地ASR：同一 `current-model-asr/summary.json`。使用系统 `say` 合成已知中文“你好，语音测试。”并转为16kHz WAV，登记真实媒体资产、关联转写任务，再经同一broker执行一次本地faster-whisper。音频1543ms，响应8字符、1段，0外部REQ，submit/accept均成功。`asr-text-verification.json` 核对实际响应hash精确匹配“你好,語音測試。”，简繁与标点归一后与输入词句一致。不是纯音、空识别或只有模块存在检查；该短样本不代表长音频质量已验收。
 - 本地语言模型：`current-local-language-model.json`。实际保存配置只有volc模型，没有本地LLM端点；11434、1234的真实TCP连接均ECONNREFUSED，8000可连但单独lsof观察owner为ssh，未据此推断模型服务或发送HTTP/推理。没有发现标准位置的Ollama、LM Studio或Ollama模型目录。常见端口与位置检查不排除其他端点。当前设置校验拒绝本地HTTP，受控公网请求也对loopback返回 `UNSAFE_ENDPOINT`；尚无已支持的本地LLM接入能力。本地ASR不能代替本地语言模型。
