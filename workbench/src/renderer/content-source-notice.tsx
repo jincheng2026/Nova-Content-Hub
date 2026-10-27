@@ -17,7 +17,7 @@ export function ContentSourceNotice({contentId,busy,dirty,access,converted,run}:
  async function establish(){
   if(!source?.workingDraftAvailable||active.current||busy||dirty)return;
   active.current=true;setWorking(true);setError('');
-  try{const next=await run(()=>invoke('createVaultWorkingDraft',{id:source.document.id,expectedHash:source.document.hash}));if(!next){setError('工作稿尚未确认，原稿保留；请查看保存结果并核验待处理记录。');return;}setSource(next);await converted();accessRef.current(next.document.writable);}
+  try{const next=await run(()=>invoke('createVaultWorkingDraft',{id:source.document.id,expectedHash:source.document.hash}));if(!next){setError('工作稿尚未确认，原稿保留；请查看保存结果并核验待处理记录。');return;}setSource(next);accessRef.current(next.document.writable);await converted();}
   catch(issue){setError(`${errorInfo(issue).message} 原稿保留；如有待核验记录，请先在内容库中核验。`);accessRef.current(false);}
   finally{active.current=false;setWorking(false);}
  }

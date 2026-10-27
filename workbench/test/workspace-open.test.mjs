@@ -55,6 +55,6 @@ test('reveal requests only the original bound directory and refuses replacements
     assert.deepEqual(f.revealed, [f.root]);
     await fs.rename(f.root, path.join(f.parent, 'original'));
     await fs.mkdir(f.root);
-    await assert.rejects(f.controller.revealLibraryFolder(), {code: 'LIBRARY_NOT_READY'});
+    await assert.rejects(f.controller.revealLibraryFolder(), {code: 'CONFLICT'});
     assert.deepEqual(f.revealed, [f.root]);
 });
