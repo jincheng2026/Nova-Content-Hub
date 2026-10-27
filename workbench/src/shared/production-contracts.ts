@@ -8,7 +8,7 @@ export interface ProductionAnnotation {id: string; bodyHash: string; quote: stri
 export interface ProductionCreation extends Omit<Core.ProductionCreation, 'suggestions'|'annotations'> {suggestions: ProductionSuggestion[]; annotations: ProductionAnnotation[]}
 export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creations'> {creations: ProductionCreation[]; assetUrls?: Record<string,string>}
 export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string; history: Core.ProductionHistory}
-export type ProductionManualOp = 'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
+export type ProductionManualOp = 'adoptResearchReferences'|'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
 export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
 export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}

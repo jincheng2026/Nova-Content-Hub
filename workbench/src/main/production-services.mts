@@ -93,7 +93,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     afterExecute:async outcome=>{if(outcome.ok&&initial.isRadar)successOutcome=outcome;else await settle(outcome);}
    });
    let radarAuthorIds:string[]|undefined;
-   if(initial.isRadar&&request.tool==='tikhub'&&['douyin-search','xhs-search'].includes(request.operation)){const context=await runQueue(()=>owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId})),frozen=parameters(context.task?.request.parameters);if(frozen.workflow==='viral-radar'&&validRadarQuery(frozen.query)&&Array.isArray(frozen.operations)){const platform=radarPlatforms(frozen.query).find(value=>radarSearchOperation(value)===request.operation);if(platform)radarAuthorIds=radarMissingAuthorIds(result.data,frozen.query,platform,frozen.operations);}}
+   if(initial.isRadar&&request.tool==='tikhub'&&['douyin-search','xhs-search'].includes(request.operation)){const context=await runQueue(()=>owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId})),frozen=parameters(context.task?.request.parameters);if(frozen.workflow==='viral-radar'&&validRadarQuery(frozen.query)&&Array.isArray(frozen.operations)){const platform=radarPlatforms(frozen.query).find(value=>radarSearchOperation(value)===request.operation);if(platform)radarAuthorIds=radarMissingAuthorIds(result.data,frozen.query,platform,frozen.operations,result.collectedAt);}}
    if(successOutcome)await settle(successOutcome,radarAuthorIds);
    return result;
   }finally{if(temp)await fs.rm(temp,{recursive:true,force:true});}

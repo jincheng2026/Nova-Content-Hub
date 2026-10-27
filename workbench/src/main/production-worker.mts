@@ -57,7 +57,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
   if(pending.kind==='files')return {found:false};
   const receipt=l.queryMutation(pending.mutationId);
   if(!receipt)return {found:false};
-  if(receipt.objectKind!==(pending.kind==='draft'||pending.op==='saveCreation'?'content':'workspace')||receipt.objectId!==(pending.kind==='draft'||pending.op==='saveCreation'?pending.input.contentId:'default'))fail('CONFLICT','事务回执不属于原操作。');
+  if(receipt.objectKind!==(pending.kind==='draft'||['saveCreation','adoptResearchReferences'].includes(pending.op)?'content':'workspace')||receipt.objectId!==(pending.kind==='draft'||['saveCreation','adoptResearchReferences'].includes(pending.op)?pending.input.contentId:'default'))fail('CONFLICT','事务回执不属于原操作。');
   // Replaying the exact transaction verifies its persisted request digest before clearing recovery intent.
   if(pending.kind==='mutate')l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});
   else {const i=pending.input;l.saveProductionDraft(i.contentId,{body:i.body,expectedBodyHash:i.bodyHash,expectedProductionToken:i.productionToken,creationPatch:i.creationPatch},i.editToken,{mutationId:pending.mutationId});}

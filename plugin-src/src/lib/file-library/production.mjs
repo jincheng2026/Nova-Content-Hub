@@ -137,7 +137,7 @@ export function productionMethods(h) {
         for (const shot of next.filming.shots) {
             const old=previous.filming?.shots.find(x=>x.id===shot.id);
             if(shot.segmentId&&(!old||old.segmentId!==shot.segmentId))invalid(next.composition?.segments.some(segment=>segment.id===shot.segmentId&&body.slice(segment.start,segment.end).includes(shot.quote)),'Shot must belong to current segment');
-            if (!old || old.quote!==shot.quote) invalid(body.indexOf(shot.quote)>=0 && body.indexOf(shot.quote)===body.lastIndexOf(shot.quote),'Shot quote must uniquely identify the current body');
+            if ((!old || old.quote!==shot.quote) && !shot.segmentId) invalid(body.indexOf(shot.quote)>=0 && body.indexOf(shot.quote)===body.lastIndexOf(shot.quote),'Shot quote must uniquely identify the current body');
         }
         for (const key of ['readThroughBodyHash','recordedBodyHash']) {
             const value=next.filming[key];
@@ -286,6 +286,7 @@ export function productionMethods(h) {
                 for(const artifact of a.result.artifacts.filter(x => x.kind === 'report' && t.request.parameters?.workflow!=='viral-radar')) {
                     const inputs=plain(artifact.data) && Array.isArray(artifact.data.pages) ? artifact.data.pages : artifact.assetHash ? [{title:artifact.title,assetHash:artifact.assetHash}] : [];
                     invalid(inputs.length>0 && inputs.length<=100,'Report artifact requires imported HTML pages');
+                    invalid(new Set(inputs.map(page=>page?.assetHash)).size===inputs.length,'Different report pages require distinct HTML assets');
                     const pages=inputs.map(page=>{invalid(plain(page) && HASH.test(page.assetHash) && text(page.title,500,false),'Invalid report page');const asset=readAssetInternal(root,page.assetHash);invalid(asset.bytes<=2*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Invalid report HTML asset');return {id:randomUUID(),title:page.title,assetHash:page.assetHash};});
                     const details=plain(artifact.data)?artifact.data:{};invalid(details.type!=='viral-radar'&&!Object.hasOwn(details.meta??{},'radar'),'Radar reports require accepted receipt adoption');const r={id:randomUUID(),title:artifact.title,type:details.type??'调研',accountIds:t.accountId?[t.accountId]:[],sourceUrl:details.sourceUrl??null,collectedAt:details.collectedAt??now,pages,pageId:pages[0].id,meta:{...(plain(details.meta)?details.meta:{}),taskId:t.id,attemptId:a.id,artifactId:artifact.id,receiptHash:a.receipt.sha256},createdAt:now,updatedAt:now,deletedAt:null};p.reports.push(r);if(t.accountId)find(p.accounts,t.accountId,'account').reportIds.push(r.id);
                 }

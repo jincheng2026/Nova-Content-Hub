@@ -1,3 +1,4 @@
+import {productionCompositionRuntime} from '../../../plugin-src/src/lib/file-library/production-composition.mjs';
 import http from 'node:http';
 import {randomBytes} from 'node:crypto';
 import type {AddressInfo} from 'node:net';
@@ -52,7 +53,7 @@ export class ProductionPages {
    if(req.method==='GET'&&route==='/'){
     const nonce=randomBytes(20).toString('base64');
     const config=JSON.stringify({basePath}).replace(/</g,'\\u003c');
-    const html=this.options.creationHtml.replace(/<script\b/gi,`<script nonce="${nonce}"`).replace('</head>',`<script nonce="${nonce}">window.novaCreation=${config};</script></head>`);
+    const html=this.options.creationHtml.replace('/* __PRODUCTION_COMPOSITION_RUNTIME__ */',`window.productionComposition = (${productionCompositionRuntime.toString()})();`).replace(/<script\b/gi,`<script nonce="${nonce}"`).replace('</head>',`<script nonce="${nonce}">window.novaCreation=${config};</script></head>`);
     return this.send(res,200,html,'text/html; charset=utf-8',`default-src 'none'; script-src 'nonce-${nonce}'; style-src 'unsafe-inline'; connect-src 'self'; media-src 'self'; img-src data:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`);
    }
    const media=/^\/media\/([a-f0-9]{64})$/.exec(route);

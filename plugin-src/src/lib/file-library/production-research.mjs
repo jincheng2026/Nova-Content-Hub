@@ -10,9 +10,10 @@ export function researchReferenceCatalog(snapshot) {
   const attempt=task.attempts.find(item=>item.id===task.activeAttemptId),receipt=attempt?.receipt;
   if(attempt?.status!=='accepted'||receipt?.taskId!==task.id||receipt.attemptId!==attempt.id||receipt.requestHash!==task.requestHash)continue;
   for(const artifact of attempt.result?.artifacts??[]) {
-   if(!['research','transcript'].includes(artifact.kind)||!record(artifact.data)||!Array.isArray(artifact.data.references))continue;
+   if(!['research','transcript','report'].includes(artifact.kind))continue;
+   const incoming=record(artifact.data)&&Array.isArray(artifact.data.references)?artifact.data.references:artifact.kind==='report'&&artifact.text.trim()?[{id:artifact.id,url:null,title:artifact.title+'（报告摘要）',platform:'调研报告',originalText:artifact.text,correctedText:'',segments:[],corrections:[],analysis:'报告全文与原始证据保留在来源任务归档；此项仅为已提交的文字摘要。',mediaAssetHash:null,subtitleAssetHash:null}]:[];
    const references=[];let valid=true;
-   for(const reference of artifact.data.references){try{serializeProductionReference(reference);references.push(reference);}catch{valid=false;break;}}
+   for(const reference of incoming){try{serializeProductionReference(reference);references.push(reference);}catch{valid=false;break;}}
    if(valid&&references.length&&new Set(references.map(item=>item.id)).size===references.length)entries.push({taskId:task.id,attemptId:attempt.id,receiptHash:receipt.sha256,artifactId:artifact.id,title:task.title,summary:artifact.text,references:structuredClone(references)});
   }
  }
