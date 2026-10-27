@@ -1,0 +1,105 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {randomUUID} from 'node:crypto';
+import {rootPath,identity,safe,mkdir,atomic,readBytes,digest} from '../vault/core.mjs';
+import {validateResearchConfig,deriveResearchVideoIds,fail,object,hash,canonical} from './common.mjs';
+import {validateTranscript,normalizeAsrResult} from './transcript.mjs';
+import {buildCorrectedSubtitles} from './subtitles.mjs';
+import {prepareContentRecords} from './normalize.mjs';
+import {validateTopicDataset,freezeTopicFindings,renderTopicReport} from './topic-report.mjs';
+import {freezeFindings,computeAccount,renderAccountReport,validateCitations} from './report.mjs';
+import {validateCommentReport,freezeCommentFindings,renderCommentReport,renderReferenceCard} from './comment-report.mjs';
+export {validateResearchConfig,researchMediaAuthorized} from './common.mjs';
+export {validateTranscript,normalizeAsrResult,subtitles} from './transcript.mjs';
+export {buildCorrectedSubtitles,validateSubtitleCues,transcriptBody,spokenText} from './subtitles.mjs';
+export {freezeFindings,computeAccount,renderAccountReport,validateCitations,accountChartSpecs} from './report.mjs';
+export {validateCommentReport,freezeCommentFindings,renderCommentReport,renderReferenceCard} from './comment-report.mjs';
+export {prepareContentRecords,parseCount,extractServiceRows} from './normalize.mjs';
+export {validateTopicDataset,freezeTopicFindings,renderTopicReport} from './topic-report.mjs';
+const now=()=>new Date().toISOString();
+const commentLevel=s=>['reference-card','diagnostic'].includes(s.config.commentMode)?'L2':s.config.commentMode==='audience-depth'?'L3':'L4';
+const working=(s,part)=>`${s.config.outputDirectory}/${s.config.route==='intake'?'.staging/':''}${part}`;
+const filename=v=>{if(typeof v!=='string'||!/^[-a-zA-Z0-9_]{1,100}$/.test(v))fail('INVALID_INPUT');return v;};
+/** All provider work uses the existing main-process broker. This module never fetches, spawns Python or reads credentials. */
+export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readMedia,assetRoot,readiness,authorize}={}){
+ const root=rootPath(vaultRoot),expected=identity(root);
+ const check=()=>{const current=identity(root);if(current.dev!==expected.dev||current.ino!==expected.ino)fail('ROOT_REPLACED','所选知识库根目录已替换。');};
+ const locator=id=>`.workbench/research-runtime/${filename(id)}.json`;
+ const read=relative=>JSON.parse(readBytes(root,relative).toString('utf8'));
+ const load=id=>{check();const loc=read(locator(id)),state=read(loc.path);if(state.config?.researchId!==id||state.config.outputDirectory!==path.posix.dirname(loc.path)&&!(state.stage==='intake-finalized'&&loc.path===`.trash/jincheng-research/${id}/research-runtime.json`))fail('CORRUPT');validateResearchConfig(state.config);return{state,relative:loc.path,expectedHash:digest(readBytes(root,loc.path))};};
+ const write=(relative,data,expectedHash=null)=>{check();mkdir(root,path.posix.dirname(relative));atomic(root,relative,Buffer.isBuffer(data)?data:Buffer.from(typeof data==='string'?data:JSON.stringify(data,null,2)+'\n'),expectedHash);return relative;};
+ const persist=loaded=>{loaded.state.updatedAt=now();write(loaded.relative,loaded.state,loaded.expectedHash);loaded.expectedHash=digest(readBytes(root,loaded.relative));};
+ const locked=async(id,fn)=>{
+  check();mkdir(root,'.workbench/research-runtime');const lock=safe(root,`.workbench/research-runtime/${filename(id)}.lock`,true);let fd;
+  try{fd=fs.openSync(lock,'wx',0o600);}catch(e){if(e.code==='EEXIST')fail('RESEARCH_BUSY','研究由另一操作持有；异常退出后需人工核对锁和费用，不能自动重试。');throw e;}
+  try{fs.writeFileSync(fd,JSON.stringify({pid:process.pid,at:now()}));return await fn();}finally{fs.closeSync(fd);fs.unlinkSync(lock);}
+ };
+ const approved=async(state,action,input)=>{if(state.stage==='intake-finalized')fail('INTAKE_FINALIZED','素材已正式入库；后续修订需新固定任务，不能改写原验收。');if(authorize)await authorize({config:structuredClone(state.config),action,input});};
+ const api={
+  async prepare(input){const c=validateResearchConfig(input);return locked(c.researchId,async()=>{
+   if(fs.existsSync(safe(root,locator(c.researchId),true)))fail('CONFLICT','此研究编号已存在；请恢复原任务。');
+   if(c.route==='intake'&&fs.existsSync(safe(root,`${c.outputDirectory}/.staging`,true)))fail('CONFLICT','此素材已有暂存证据；保留旧任务，不能混入新的转写批次。');
+   const relative=`${c.outputDirectory}/research-runtime.json`,state={format:'jincheng-research-runtime',version:1,config:c,stage:'prepared',createdAt:now(),updatedAt:now(),requests:[],media:[],transcripts:[],dataset:null,findings:null,report:null,limitations:[]};
+   await approved(state,'prepare',c);write(relative,state);write(locator(c.researchId),{version:1,path:relative});return structuredClone(state);
+  });},
+  status(id){return structuredClone(load(id).state);},
+  async readiness(){return readiness?readiness():{localAsr:{available:false,reason:'未绑定本机语音服务；本适配器不安装 Python、Qwen 模型或原来源包。'},capabilities:{node:true,network:false}};},
+  normalizeContent(id,input){const s=load(id).state;if(!object(input)||Object.keys(input).some(k=>!['rows','asOf'].includes(k)))fail('INVALID_INPUT');return prepareContentRecords(input.rows,{platform:s.config.platform,asOf:input.asOf});},
+  async collect(id,input){return locked(id,async()=>{
+   const l=load(id),s=l.state,c=s.config;
+   if(!object(input)||Object.keys(input).some(k=>!['operation','id','cursor','search'].includes(k))||!c.operations.includes(input.operation)||typeof input.id!=='string'||input.id.length>300||input.operation==='comments'&&!c.comments)fail('RESEARCH_OPERATION_FORBIDDEN');
+   const isVideo=['video','comments'].includes(input.operation),allowed=isVideo?[...(c.videoIds??[]),...(s.samples?.videoIds??[])]:c.targetIds;
+   if(!allowed.includes(input.id))fail('RESEARCH_TARGET_FORBIDDEN','采集对象未列入固定研究请求；需先明确更新任务。');
+   if(s.findings)fail('FINDINGS_FROZEN');
+   const key=hash(input),existing=s.requests.find(r=>r.key===key);
+   if(existing?.status==='complete')return read(existing.path);
+   if(existing)fail('RESEARCH_REQUEST_UNSETTLED','原请求尚未结清；回读费用和错误，不自动重试。');
+   if(s.requests.length>=c.maxRequests)fail('RESEARCH_REQUEST_LIMIT');
+   if(typeof executeService!=='function')fail('SERVICE_UNAVAILABLE');await approved(s,'collect',input);
+   const req={id:randomUUID(),key,input:structuredClone(input),status:'started',at:now()};s.requests.push(req);persist(l);
+   try{const result=await executeService({tool:'tikhub',...input,requestId:req.id});const relative=working(s,`raw/tikhub/${req.id}.json`);await approved(s,'archive-collection',input);write(relative,{request:input,collectedAt:result.collectedAt??now(),requestsUsed:result.requestsUsed,cacheHit:result.cacheHit??false,data:result.data});req.status='complete';req.path=relative;req.responseHash=hash(result.data);s.stage='collected';persist(l);return read(relative);}
+   catch(error){req.status='failed';req.error=/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';s.stage='blocked';persist(l);throw error;}
+  });},
+  async deriveSamples(id){return locked(id,async()=>{const l=load(id),s=l.state,c=s.config;if(s.findings)fail('FINDINGS_FROZEN');if(!c.sampleLimit||c.route!=='account')fail('RESEARCH_TARGET_FORBIDDEN');const req=s.requests.find(r=>r.status==='complete'&&r.input.operation==='user-posts'&&c.targetIds.includes(r.input.id));if(!req)fail('RESEARCH_RECEIPT_REQUIRED');const receipt=read(req.path);if(!req.responseHash||hash(receipt.data)!==req.responseHash)fail('CONFLICT');const videoIds=deriveResearchVideoIds(receipt.data,c.sampleLimit);await approved(s,'derive-samples',{requestId:req.id,responseHash:req.responseHash,videoIds});s.samples={requestId:req.id,responseHash:req.responseHash,videoIds};persist(l);return structuredClone(s.samples);});},
+  async download(id,videoId){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');if(![...(s.config.videoIds??[]),...(s.samples?.videoIds??[])].includes(videoId)||!s.config.operations.includes('video')||s.config.platform!=='douyin')fail('RESEARCH_TARGET_FORBIDDEN');const previous=s.media.find(m=>m.videoId===videoId);if(previous)return structuredClone(previous);if(s.media.length>=3)fail('MEDIA_DOWNLOAD_LIMIT');if(typeof fetchMedia!=='function')fail('MEDIA_BROKER_REQUIRED');await approved(s,'download',{videoId});const result=await fetchMedia({videoId,url:`https://www.douyin.com/video/${videoId}`});const grant=result.grant??result.data??result;if(typeof grant.assetHash!=='string'||!/^[a-f0-9]{64}$/.test(grant.assetHash)||grant.videoId!==videoId||grant.canonicalUrl!==`https://www.douyin.com/video/${videoId}`)fail('INVALID_MEDIA_GRANT');const media={...grant,videoId};
+   if(readMedia){const file=await readMedia(grant),bytes=Buffer.from(file.data);if(!/^\.(?:mp4|webm|mp3|m4a|wav|ogg|flac)$/.test(file.extension)||!bytes.length||bytes.length>67108864||hash(bytes)!==grant.assetHash)fail('INVALID_MEDIA_GRANT','归档原片字节与本次登记资产不一致。');await approved(s,'archive-media',{videoId,assetHash:grant.assetHash});media.originalPath=working(s,`raw/media/${videoId}-${grant.assetHash.slice(0,12)}${file.extension}`);write(media.originalPath,bytes);}
+   s.media.push(media);write(working(s,`raw/media/${videoId}.json`),media);s.stage='media-ready';persist(l);return structuredClone(media);});},
+  async transcribe(id,videoId){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');const media=s.media.find(m=>m.videoId===videoId);if(!media)fail('ASR_MEDIA_REQUIRED');if(typeof executeService!=='function')fail('SERVICE_UNAVAILABLE');const previous=s.transcripts.find(x=>x.videoId===videoId);if(previous)return structuredClone(previous);await approved(s,'transcribe',{videoId,assetHash:media.assetHash});const result=await executeService({tool:'asr',requestId:randomUUID(),audioPath:media.assetHash,allowCloud:false}),raw=normalizeAsrResult(result);raw.manifest.source_sha256=media.assetHash;raw.manifest.requested_engine='qwen3-asr';const dir=working(s,`transcripts/${videoId}`);await approved(s,'archive-transcript',{videoId});write(`${dir}/manifest.json`,raw.manifest);write(`${dir}/raw/transcript.txt`,raw.rawText);write(`${dir}/raw/segments.jsonl`,raw.segments.map(x=>JSON.stringify(x)).join('\n')+'\n');const entry={videoId,directory:dir,status:'raw_transcribed',hasTiming:raw.segments.length>0};s.transcripts.push(entry);s.stage='awaiting-correction';persist(l);return{...entry,...raw};});},
+  async correct(id,videoId,input){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');const entry=s.transcripts.find(x=>x.videoId===videoId);if(!entry)fail('TRANSCRIPT_NOT_FOUND');if(!object(input)||Object.keys(input).some(k=>!['correctedText','segments','durationSeconds','timePrecision','alignmentReviewed','corrections','reviewedBy'].includes(k))||typeof input.reviewedBy!=='string'||!input.reviewedBy.trim()||!Array.isArray(input.corrections))fail('INVALID_INPUT','校正需保留逐项修改及复核人，不能隐式确认。');
+   const rawManifest=read(`${entry.directory}/manifest.json`),rawSegments=readBytes(root,`${entry.directory}/raw/segments.jsonl`).toString('utf8').trim().split('\n').filter(Boolean).map(x=>JSON.parse(x)),segments=input.segments??rawSegments;
+   const manifest={...rawManifest,status:'corrected_validated',segment_count:segments.length,duration_seconds:input.durationSeconds??rawManifest.duration_seconds,time_precision:input.timePrecision??rawManifest.time_precision,alignment_reviewed:input.alignmentReviewed===true,reviewed_by:input.reviewedBy,reviewed_at:now()};
+   if(!segments.length)manifest.evidence_kind='reviewed_text';const validation=validateTranscript({manifest,correctedText:input.correctedText,segments});const original=readBytes(root,`${entry.directory}/raw/transcript.txt`).toString('utf8');if(input.corrections.length>10000||input.corrections.some(c=>!object(c)||Object.keys(c).some(k=>!['original','corrected','reason'].includes(k))||!['original','corrected','reason'].every(k=>typeof c[k]==='string')||!c.reason.trim()||!original.includes(c.original)||!input.correctedText.includes(c.corrected)))fail('INVALID_INPUT','校正明细必须回到原稿、校正版及具体修改依据。');let subtitle;try{subtitle=buildCorrectedSubtitles(input.correctedText,rawSegments,manifest.duration_seconds);}catch(e){if(!['SUBTITLE_TIMING_REQUIRED','SUBTITLE_TEXT_MISMATCH','SUBTITLE_INVALID','SUBTITLE_ALIGNMENT_TOO_LARGE'].includes(e.code))throw e;entry.subtitleValidation={ok:false,code:e.code,message:e.message};}await approved(s,'correct',{videoId,input});
+   const version=hash({manifest,correctedText:input.correctedText,segments,corrections:input.corrections}),dir=`${entry.directory}/corrected/${version}`;
+   write(`${dir}/manifest.json`,manifest);write(`${dir}/transcript_corrected.md`,input.correctedText);write(`${dir}/segments.jsonl`,segments.map(x=>JSON.stringify(x)).join('\n')+'\n');write(`${dir}/corrections.json`,input.corrections);if(subtitle){write(`${dir}/transcript_corrected.srt`,subtitle.srt);write(`${dir}/subtitle-validation.json`,subtitle.validation);entry.subtitleValidation=subtitle.validation;}
+   entry.status='corrected_validated';entry.correctedDirectory=dir;entry.validation=validation;s.stage='transcript-reviewed';persist(l);return structuredClone(entry);
+  });},
+  async finalizeIntake(id,input){return locked(id,async()=>{
+   const l=load(id),s=l.state;if(s.stage==='intake-finalized')return structuredClone(s.intake);
+   if(s.config.route!=='intake'||!object(input)||Object.keys(input).some(k=>!['videoId','title','platform','author','publishedAt'].includes(k))||!['videoId','title','platform'].every(k=>typeof input[k]==='string'&&input[k].trim())||input.title.length>500||!['抖音','douyin'].includes(input.platform)||['author','publishedAt'].some(k=>input[k]!==undefined&&(typeof input[k]!=='string'||input[k].length>500)))fail('INVALID_INPUT');
+   const media=s.media.find(m=>m.videoId===input.videoId),entry=s.transcripts.find(t=>t.videoId===input.videoId);
+   if(s.media.length!==1||!media?.originalPath||entry?.status!=='corrected_validated'||!entry.subtitleValidation?.ok||!entry.correctedDirectory)fail('INTAKE_NOT_READY','正式视频素材须有唯一原片、完整校正版和已通过原标准的同名字幕；本地Qwen无时间输出时不能宣布入库完成。');
+   const corrected=readBytes(root,`${entry.correctedDirectory}/transcript_corrected.md`).toString('utf8'),srt=readBytes(root,`${entry.correctedDirectory}/transcript_corrected.srt`).toString('utf8');
+   const source=safe(root,media.originalPath),st=fs.lstatSync(source);if(!st.isFile()||st.isSymbolicLink()||st.nlink!==1||st.size>67108864)fail('INVALID_MEDIA_GRANT');const fd=fs.openSync(source,fs.constants.O_RDONLY|(fs.constants.O_NOFOLLOW??0));let bytes;try{bytes=fs.readFileSync(fd);}finally{fs.closeSync(fd);}if(hash(bytes)!==media.assetHash)fail('CONFLICT','原片在验收前变化。');
+   const base=s.config.outputDirectory,extension=path.posix.extname(media.originalPath),originalPath=`${base}/视频${extension}`,transcriptPath=`${base}/转写/校正版逐字稿/${input.videoId}.md`,subtitlePath=`${base}/转写/校正版逐字稿/${input.videoId}.srt`,notePath=`${base}/笔记信息.md`;
+   const note=`# ${input.title}\n\n> 入库日期：${now().slice(0,10)}\n\n| 字段 | 内容 |\n| --- | --- |\n| 平台 | ${input.platform} |\n| 作者 | ${input.author??'未提供'} |\n| 作品ID | ${input.videoId} |\n| 原始链接 | ${media.canonicalUrl} |\n| 发布时间 | ${input.publishedAt??'未取得'} |\n| 原片SHA256 | ${media.assetHash} |\n\n## 原片\n\n[[视频${extension}]]\n\n## 校正版逐字稿\n\n[[转写/校正版逐字稿/${input.videoId}.md]]\n\n## 时间码字幕\n\n[[转写/校正版逐字稿/${input.videoId}.srt]]\n\n${corrected}\n`;
+   await approved(s,'finalize-intake',input);const publish=(relative,data)=>{if(fs.existsSync(safe(root,relative,true))){const st=fs.lstatSync(safe(root,relative));if(!st.isFile()||st.nlink!==1||st.size>67108864||hash(fs.readFileSync(safe(root,relative)))!==hash(Buffer.isBuffer(data)?data:Buffer.from(data)))fail('CONFLICT','正式素材已有不同版本，未覆盖。');}else write(relative,data);};
+   publish(originalPath,bytes);publish(transcriptPath,corrected);publish(subtitlePath,srt);publish(notePath,note);
+   const staging=`${base}/.staging`,archive=`.trash/jincheng-research/${id}`;mkdir(root,archive);if(fs.existsSync(safe(root,staging,true))){if(fs.existsSync(safe(root,`${archive}/intermediate`,true)))fail('CONFLICT','中间证据归档已存在，请核对原任务。');fs.renameSync(safe(root,staging),safe(root,`${archive}/intermediate`,true));}
+   s.intake={originalPath,transcriptPath,subtitlePath,notePath,source_sha256:media.assetHash,subtitleValidation:entry.subtitleValidation,intermediateArchive:`${archive}/intermediate`,verifiedAt:now()};s.stage='intake-finalized';persist(l);
+   const archivedState=`${archive}/research-runtime.json`;write(archivedState,s);const loc=locator(id),oldLoc=digest(readBytes(root,loc));write(loc,{version:1,path:archivedState},oldLoc);if(digest(readBytes(root,l.relative))!==l.expectedHash)fail('CONFLICT');fs.unlinkSync(safe(root,l.relative));return structuredClone(s.intake);
+  });},
+  async saveDataset(id,payload){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');if(s.config.route==='comments')validateCommentReport(payload,commentLevel(s)==='L4'?'L3':commentLevel(s));else if(s.config.route==='topic')validateTopicDataset(payload);else{computeAccount(payload);validateCitations(payload);}await approved(s,'save-dataset',payload);const relative=`${s.config.outputDirectory}/normalized/dataset-${hash(payload)}.json`;if(!fs.existsSync(safe(root,relative,true)))write(relative,payload);s.dataset={path:relative,sha256:hash(payload)};s.stage='analyzed';persist(l);return structuredClone(s.dataset);});},
+  async freeze(id){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)return structuredClone(s.findings);if(!s.dataset)fail('DATASET_REQUIRED');const payload=read(s.dataset.path);if(hash(payload)!==s.dataset.sha256)fail('CONFLICT');const frozen=s.config.route==='comments'?freezeCommentFindings(payload,commentLevel(s)==='L4'?'L3':commentLevel(s)):s.config.route==='topic'?freezeTopicFindings(payload):freezeFindings(payload);await approved(s,'freeze-findings',frozen);const relative=`${s.config.outputDirectory}/findings/object-findings-${frozen.sha256}.json`;write(relative,frozen);s.findings={path:relative,sha256:frozen.sha256,corpus_sha256:frozen.corpus_sha256};s.stage='findings-frozen';persist(l);return structuredClone(s.findings);});},
+  async advise(id,{findingsHash,advice,ownSources=[]}){return locked(id,async()=>{
+   const l=load(id),s=l.state;if(!s.findings||s.findings.sha256!==findingsHash||!Array.isArray(advice)||advice.length>100||!Array.isArray(ownSources)||ownSources.length>100||ownSources.some(v=>!object(v)||v.kind!=='own_material'))fail('FROZEN_FINDINGS_REQUIRED');
+   const frozen=read(s.findings.path);if(hash(frozen.object_findings)!==findingsHash)fail('CONFLICT');
+   const payload={...frozen.object_findings,sources:[...(frozen.object_findings.sources??[]),...ownSources]};
+   if(s.config.route==='comments')validateCommentReport({...payload,recommendations:[...payload.recommendations,...advice],frozen_findings_sha256:frozen.findings_sha256},commentLevel(s));
+   else{validateCitations({...payload,personal_advice:advice});for(const item of advice){if(!Array.isArray(item.own_citations)||!item.own_citations.length||item.own_citations.some(c=>!ownSources.some(v=>v.source_id===c.source_id)))fail('INVALID_CITATION','个人建议须引用冻结后单独读入的本人材料。');}}
+   await approved(s,'personal-advice',{findingsHash,advice,ownSources});const body={findingsHash,advice,ownSources},relative=`${s.config.outputDirectory}/findings/personal-advice-${hash(body)}.json`;
+   if(!fs.existsSync(safe(root,relative,true)))write(relative,body);s.advice={path:relative,sha256:hash(body)};persist(l);return structuredClone(s.advice);
+  });},
+  async render(id){return locked(id,async()=>{const l=load(id),s=l.state;if(!s.findings)fail('FROZEN_FINDINGS_REQUIRED');const frozen=read(s.findings.path);if(hash(frozen.object_findings)!==s.findings.sha256)fail('CONFLICT');const advice=s.advice?read(s.advice.path):null;if(advice&&(advice.findingsHash!==s.findings.sha256||hash(advice)!==s.advice.sha256))fail('CONFLICT');const comments=s.config.route==='comments',base={...frozen.object_findings,sources:[...(frozen.object_findings.sources??[]),...(advice?.ownSources??[])]},payload=comments?{...base,recommendations:[...frozen.object_findings.recommendations,...(advice?.advice??[])],frozen_findings_sha256:frozen.findings_sha256}:{...base,personal_advice:advice?.advice??[]};await approved(s,'render-report',payload);const card=comments&&s.config.commentMode==='reference-card',html=comments?(card?renderReferenceCard(payload):await renderCommentReport(payload,{level:commentLevel(s)})):s.config.route==='topic'?await renderTopicReport(payload):await renderAccountReport(payload,{assetRoot}),relative=`${s.config.outputDirectory}/${card?'洞察卡':'报告'}-${hash(html).slice(0,12)}${card?'.md':'-报告.html'}`;await approved(s,'publish-report',payload);if(!fs.existsSync(safe(root,relative,true)))write(relative,html);s.report={relativePath:relative,sha256:hash(html),findingsHash:s.findings.sha256,mechanicalValidation:'passed',visualValidation:'pending'};s.stage='report-generated';persist(l);return structuredClone(s.report);});},
+ };
+ return api;
+}

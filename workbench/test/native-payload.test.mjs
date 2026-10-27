@@ -1,3 +1,4 @@
+import {hydrateMethodEvidence} from './support/method-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -55,6 +56,7 @@ async function fixture(t, arch = 'arm64') {
     const market = path.join(stage, 'workbench/plugin-marketplace');
     const plugin = path.join(market, config.appScope);
     for (const file of integrityPaths('darwin')) write(path.join(plugin, file), 'fixture only; never executed');
+    hydrateMethodEvidence(plugin);
     write(path.join(plugin, 'runtime/node'), macho(arch), 0o755);
     fs.chmodSync(path.join(plugin, 'runtime/node'), 0o755);
     sharp(plugin, arch);

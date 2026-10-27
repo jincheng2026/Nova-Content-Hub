@@ -1,0 +1,83 @@
+{
+  "at": "2026-10-27T19:52:58.177Z",
+  "version": "0.5.0",
+  "scope": "Packaging preflight only; electron-builder and DMG generation not executed by this probe",
+  "platform": "darwin",
+  "arch": "arm64",
+  "extraResource": {
+    "from": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/local-asr-release-v2/darwin-arm64",
+    "to": "local-asr/darwin-arm64",
+    "filter": [
+      "**/*"
+    ],
+    "selectedFiles": 10945,
+    "manifestSha256": "2783e2cc5284cada58a0006180781efb6f0b4f86b790664943f1deeababdd234",
+    "files": 10944,
+    "bytes": 3644489419
+  },
+  "signIgnore": [
+    "[/\\\\]Contents[/\\\\]Resources[/\\\\]plugin-marketplace(?:[/\\\\]|$)",
+    "[/\\\\]Contents[/\\\\]Resources[/\\\\]local-asr(?:[/\\\\]|$)"
+  ],
+  "reportAssets": [
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-template.html",
+      "bytes": 4287,
+      "sha256": "10912c5a2e761d8379c39f30c5b481482729ff30a700d0a8013a17a9eeb35cc5"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/shared/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/vendor/echarts.min.js",
+      "bytes": 1030855,
+      "sha256": "e84270bd0cd5bdf60fefc26d00c2a391cb2e81f4d26a7a9ee16185a54773a3cf"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-charts.mjs",
+      "bytes": 6274,
+      "sha256": "0dcfd22c52f0e12693215f9e4fd53f04b51ad33b52c63965b5b80aba0d88a965"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/account_report.py",
+      "bytes": 28670,
+      "sha256": "17d57f6c397a1496e55ba19be216c2385747203ed01b58fb306a87c010fdc8e1"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/page-template.html",
+      "bytes": 9640,
+      "sha256": "0f034f632df08a6fdd35348667babad64f6e00419dd77124c88b44323eb9e113"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/render_report.py",
+      "bytes": 76374,
+      "sha256": "3dfdf57846b22207f00f540ef12cc3c3dfc68faff466bf2a74967ff110ec4aa7"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report-template.html",
+      "bytes": 7293,
+      "sha256": "1f19d647d09a852d5c81986606635694ef08e0a4f76e91394c348c2d656e5070"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report.js",
+      "bytes": 9666,
+      "sha256": "5732baf68bb15b28a7ba2f8a0297558feb009fa820aa5aa0b28e74257b40a669"
+    }
+  ],
+  "requiredReportPathsIncluded": 10,
+  "currentStage": {
+    "validated": false,
+    "reason": "Required report runtime asset is missing: plugin-src/skills/jc-media-research/upstream/current/assets/account-template.html"
+  },
+  "scriptsSha256": {
+    "workbench/scripts/build.mjs": "8c1119ab6f0bde79b52dff6d726c2fefdbee0c9a72b9aba2e746d5b0479c70ec",
+    "workbench/scripts/dist.mjs": "92e60faba0360f75faf56977d099eab36534a85fa0327d017d1f7475943e0d73"
+  }
+}

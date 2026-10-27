@@ -8,6 +8,7 @@ import {buildMarketplace} from '../../plugin-src/scripts/marketplace-builder.mjs
 import {syncBridge} from '../../plugin-src/scripts/sync-bridge.mjs';
 import {checkAppIcons} from './build-app-icons.mjs';
 import {assertArtifactSafe, releaseSourceFilter} from '../../plugin-src/scripts/artifact-safety.mjs';
+import {reportRuntimeRoots,validateReportRuntimeAssets} from './dist.mjs';
 import {validateBuildConfig, validateResources, validateRelease} from '../src/main/boundary.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
@@ -92,11 +93,12 @@ for (const mode of modes) {
         platform: process.platform,
         arch: process.arch
     }), null, 2) + '\n');
-    for (const relative of ['plugin-src/src/lib', 'plugin-src/resources', 'plugin-src/src/bridge', 'plugin-src/src/content.mjs', 'plugin-src/references', 'plugin-src/schemas']) {
+    for (const relative of ['plugin-src/src/lib', 'plugin-src/resources', 'plugin-src/src/bridge', 'plugin-src/src/content.mjs', 'plugin-src/references', 'plugin-src/schemas', ...reportRuntimeRoots]) {
         const destination = path.join(target, relative);
         fs.mkdirSync(path.dirname(destination), {recursive: true});
         fs.cpSync(path.join(root, relative), destination, {recursive: true, filter: runtimeSourceFilter});
     }
+    await validateReportRuntimeAssets(target,root);
     const {type: _type, devDependencies: _devDependencies, ...runtimePackage} = packageJSON;
     fs.writeFileSync(path.join(target, 'package.json'), JSON.stringify({
         ...runtimePackage,

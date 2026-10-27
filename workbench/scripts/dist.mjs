@@ -2,8 +2,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
+import {FileMatcher} from 'app-builder-lib/out/fileMatcher.js';
 import {buildDemoLibrary} from './build-demo-library.mjs';
 import {releaseModes} from '../../plugin-src/scripts/build.mjs';
 import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketplace-builder.mjs';
@@ -81,6 +82,32 @@ export async function validateInstallerMarketplace(input, release, sealed) {
     return entries;
 }
 
+export const reportRuntimeRoots = ['plugin-src/skills/jc-media-research/upstream/current','plugin-src/skills/jc-comment-visualize/upstream/current'];
+export const reportRuntimeFiles = [
+    ...['assets/account-template.html','assets/shared/reading.css','assets/vendor/echarts.min.js','assets/account-charts.mjs','scripts/account_report.py','assets/page-template.html','scripts/render_report.py'].map(file=>`${reportRuntimeRoots[0]}/${file}`),
+    ...['assets/report-template.html','assets/reading.css','assets/report.js'].map(file=>`${reportRuntimeRoots[1]}/${file}`)
+];
+const digestFile = async file => {const digest=createHash('sha256');for await(const bytes of fs.createReadStream(file))digest.update(bytes);return digest.digest('hex');};
+export async function validateReportRuntimeAssets(directory, sourceRoot = path.resolve(workbench,'..')) {
+    const result=[];
+    for(const relative of reportRuntimeFiles){const file=path.join(directory,relative),source=path.join(sourceRoot,relative);if(!fs.existsSync(file)||!fs.lstatSync(file).isFile())throw Error(`Required report runtime asset is missing: ${relative}`);const sha256=await digestFile(file);if(sha256!==await digestFile(source))throw Error(`Report runtime asset changed: ${relative}`);result.push({path:relative,bytes:fs.statSync(file).size,sha256});}
+    return result;
+}
+export function validateReportPackagingRules(config) {
+    const root=config.directories.app,selected=new FileMatcher(root,path.resolve('unused-package-target'),value=>value,config.files).createFilter();
+    for(const relative of reportRuntimeFiles)if(!selected(path.join(root,relative),{isDirectory:()=>false}))throw Error(`Installer excludes required report runtime asset: ${relative}`);
+}
+export async function validateLocalAsrPayload(directory, target, sealedManifestSha256) {
+    const manifestPath=path.join(directory,'payload-manifest.json'),stat=fs.lstatSync(manifestPath);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>16*1024*1024)throw Error('Invalid local ASR payload manifest');
+    const manifestSha256=await digestFile(manifestPath);if(sealedManifestSha256&&manifestSha256!==sealedManifestSha256)throw Error('Packaged local ASR manifest changed from sealed source');
+    const manifest=readJSON(manifestPath),runtime=readJSON(path.join(directory,'runtime.json'));if(manifest.version!==1||!Array.isArray(manifest.files)||manifest.files.length>50000||runtime.version!==1||runtime.platform!==target.platform||runtime.arch!==target.arch||runtime.engine!=='qwen3-asr'||runtime.timing?.engine!=='faster-whisper')throw Error('Local ASR payload target or timing runtime mismatch');
+    const names=new Set(['payload-manifest.json']);let bytes=0;
+    for(const file of manifest.files){if(typeof file.path!=='string'||file.path.includes('\\')||file.path.split('/').some(p=>!p||p==='.'||p==='..')||path.isAbsolute(file.path)||names.has(file.path)||!Number.isSafeInteger(file.bytes)||file.bytes<0||!/^[a-f0-9]{64}$/.test(file.sha256))throw Error('Invalid local ASR payload entry');names.add(file.path);const absolute=path.join(directory,file.path),s=fs.lstatSync(absolute);if(!s.isFile()||s.isSymbolicLink()||s.size!==file.bytes)throw Error(`Local ASR payload size or file type mismatch: ${file.path}`);if(await digestFile(absolute)!==file.sha256)throw Error(`Local ASR payload hash mismatch: ${file.path}`);bytes+=s.size;}
+    const walk=relative=>{for(const item of fs.readdirSync(path.join(directory,relative),{withFileTypes:true})){const name=relative?`${relative}/${item.name}`:item.name;if(item.isDirectory())walk(name);else if(!item.isFile()||!names.has(name))throw Error(`Unlisted local ASR payload file: ${name}`);}};walk('');
+    if(typeof runtime.executable!=='string'||!names.has(runtime.executable))throw Error('Local ASR executable is not sealed');if(target.platform!=='win32'&&!(fs.statSync(path.join(directory,runtime.executable)).mode&0o111))throw Error('Local ASR executable mode lost');
+    return{manifestSha256,files:manifest.files.length,bytes};
+}
+
 export function archiveMacOutput(output, arch) {
     const name = arch === 'x64' ? 'mac' : `mac-${arch}`;
     const source = path.join(output, name);
@@ -96,6 +123,8 @@ export function archiveMacOutput(output, arch) {
 export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
+    const localAsr=path.join(workbench,'..','.local-probes/local-asr-release-v2',`${options.platform}-${options.arch}`);
+    const localAsrResources=options.platform==='darwin'&&options.arch==='arm64'&&fs.existsSync(path.join(localAsr,'runtime.json'))?[{from:localAsr,to:`local-asr/${options.platform}-${options.arch}`,filter:['**/*']}]:[];
     return {
         appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',
         productName: options.channel === 'local' ? '自媒体工作台开发版' : options.channel === 'testing' ? '自媒体工作台测试版' : '自媒体工作台',
@@ -114,21 +143,25 @@ export function installerConfig(options, version) {
             'package.json', 'workbench/package.json', 'workbench/dist/**/*',
             'plugin-src/src/lib/**/*', 'plugin-src/src/bridge/**/*', 'plugin-src/src/content.mjs',
             'plugin-src/resources/**/*', 'plugin-src/references/**/*', 'plugin-src/schemas/**/*',
-            '!**/{test,tests,__tests__,scripts,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',
-            '!**/*.map', '!**/.DS_Store', '!package-lock.json',
+            'plugin-src/skills/jc-media-research/upstream/current/**/*','plugin-src/skills/jc-comment-visualize/upstream/current/**/*',
+            '!**/{test,tests,__tests__,runtime,release}/**/*', '!**/*{.test,.spec}.*', '!**/*probe.mjs',
+            '!**/*.map', '!**/.DS_Store', '!package-lock.json', '!workbench/scripts/**/*', '!plugin-src/scripts/**/*', '!scripts/**/*',
             '!**/{fixture,fixtures,__fixtures__,logs,.local-probes}/**/*',
             '!**/{credentials,service-settings,machine-binding,local-preferences}*.{json,json5,enc,db,sqlite,tmp,bak}',
             '!**/*.log', '!**/内容库.json', '!**/.npmrc', '!**/.netrc'
         ],
         // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.
-        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']}],
+        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']},...localAsrResources],
         mac: {
             target: [{target: 'dmg', arch: [options.arch]}],
             icon: path.join(icons, 'icon.icns'),
             category: 'public.app-category.productivity',
             identity: '-', hardenedRuntime: false, notarize: false,
-            // Preserve sealed Node and plugin native libraries; the app and desktop sharp still get signed.
-            signIgnore: ['[/\\\\]Contents[/\\\\]Resources[/\\\\]plugin-marketplace(?:[/\\\\]|$)'],
+            // Both sealed resource trees must remain byte-identical through app signing.
+            signIgnore: [
+                '[/\\\\]Contents[/\\\\]Resources[/\\\\]plugin-marketplace(?:[/\\\\]|$)',
+                '[/\\\\]Contents[/\\\\]Resources[/\\\\]local-asr(?:[/\\\\]|$)'
+            ],
             minimumSystemVersion: '13.0'
         },
         dmg: {sign: false},
@@ -169,6 +202,11 @@ export async function distribute(args = process.argv.slice(2)) {
         console.log(`Fresh portable native payload for universal preview assembly: ${payload}`);
     }
     const builderConfig = installerConfig(options, config.version);
+    validateReportPackagingRules(builderConfig);
+    const sealedReports=await validateReportRuntimeAssets(builderConfig.directories.app);
+    const asrResource=builderConfig.extraResources.find(resource=>resource.to===`local-asr/${options.platform}-${options.arch}`);
+    if(options.channel==='preview'&&options.platform==='darwin'&&options.arch==='arm64'&&!asrResource)throw Error('Apple Silicon preview requires the verified offline Qwen + Whisper resource payload.');
+    const sealedAsr=asrResource?await validateLocalAsrPayload(asrResource.from,options):null;
     // Use checksums from the locked Electron package, retaining archive validation without a network-only checksum fetch.
     builderConfig.electronDownload = {force: false, checksums: readJSON(path.join(workbench, 'node_modules/electron/checksums.json'))};
     if (options.platform === 'darwin' && options.channel === 'preview') {
@@ -189,6 +227,8 @@ export async function distribute(args = process.argv.slice(2)) {
         ? path.join(builderConfig.directories.output, `mac${suffix}`, `${builderConfig.productName}.app`, 'Contents/Resources')
         : path.join(builderConfig.directories.output, `win${suffix}-unpacked`, 'resources');
     await validateInstallerMarketplace(path.join(resources, 'plugin-marketplace'), pluginRelease, sealedMarketplace);
+    if(!isDeepStrictEqual(await validateReportRuntimeAssets(path.join(resources,'app')),sealedReports))throw Error('Packaged report runtime assets changed from sealed stage');
+    if(asrResource&&sealedAsr)await validateLocalAsrPayload(path.join(resources,asrResource.to),options,sealedAsr.manifestSha256);
     await assertArtifactSafe(resources);
     if (options.platform === 'darwin') console.log(`Validated macOS build copy archived: ${archiveMacOutput(builderConfig.directories.output, options.arch)}`);
     console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);

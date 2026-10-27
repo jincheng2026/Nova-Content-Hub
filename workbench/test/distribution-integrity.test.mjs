@@ -1,3 +1,4 @@
+import {hydrateMethodEvidence} from './support/method-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -24,6 +25,7 @@ async function fixture(t, auth) {
     const runtimeRoot = path.join(directory, 'runtime');
     const plugin = path.join(runtimeRoot, `auth-${auth}`);
     for (const file of integrityPaths()) write(path.join(plugin, file), `fixture ${file}`);
+    hydrateMethodEvidence(plugin);
     fs.mkdirSync(path.join(plugin, 'node_modules'));
     for (const file of ['README.md', 'package.json', 'package-lock.json']) write(path.join(plugin, file), '{}\n');
     json(path.join(plugin, 'plugin-src/src/release.json'), {...release, format: 'nova-content-plugin-release', schemaVersion: 1, experimental: true, platform: process.platform, arch: process.arch});
