@@ -1,4 +1,5 @@
-import {radarOperations,radarSearchFilters,radarPrompt} from '../../../plugin-src/src/lib/file-library/radar.mjs';
+import {researchDepthRequirements} from '../shared/research-depth.ts';
+import {radarQueryOperations,radarSearchFilters,radarPrompt} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {publicEndpoint} from './service-tools.mts';
 import type {RadarQuery,RadarAdopt,RadarDecision,RadarReport} from '../shared/radar-contracts.ts';
 import {platformCollectionCapability} from '../shared/platform-catalog.ts';
@@ -62,7 +63,7 @@ export class ProductionController {
   const account=input.accountId?snapshot.accounts.find(account=>account.id===input.accountId&&!account.deletedAt):undefined;
   if(input.accountId&&!account)fail('NOT_FOUND','对标账号不存在，请刷新后重新选择。');
   const platformCollection=account?platformCollectionCapability(account.platform):null;
-  const parameters={...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
+  const parameters={...(account?{platform:account.platform,platformCollection}:{}),mode:input.mode,...(input.kind==='research'?{researchDepth:researchDepthRequirements(input.mode)}:{}),comments:input.comments&&v.commentsEnabled&&platformCollection!=='manual',budgetEnabled:v.budget.enabled,maxRequestsPerTask:v.budget.maxRequestsPerTask,serviceConfig:{model:v.model,asr:v.asr},...(serviceDescriptor?{serviceDescriptor:{version:serviceDescriptor.version,host:serviceDescriptor.host,port:serviceDescriptor.port}}:{})};
   const tools=platformCollection==='manual'?['model','asr']:['tikhub','model','asr'];
   const prior=new Set(snapshot.tasks.map(t=>t.id));
   const result=await this.write({...this.pendingBase(),kind:'mutate',op:'createTask',input:{kind:input.kind,title:input.title,prompt:input.prompt,contentId:input.contentId??null,accountId:input.accountId??null,host:this.owner.binding.assistant??'codex',parameters,tools,budget:{amount:v.budget.enabled?v.budget.maxRequestsPerTask:0,currency:'REQ'},bodyHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot;
@@ -70,7 +71,7 @@ export class ProductionController {
   const launched=await this.launch(task.id);return {snapshot:await this.read(),...launched};
  });}
  createRadarTask(input:RadarQuery){this.validate('createRadarTask',input);return this.owner.exclusive(async()=>{
-  this.owner.noPending();const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),settings=await this.callbacks.serviceSettings(),v=settings.values,ops=radarOperations(input.platform),query=structuredClone(input);
+  this.owner.noPending();const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),settings=await this.callbacks.serviceSettings(),v=settings.values,ops=radarQueryOperations(input),query=structuredClone(input);
   const budget=v.budget.enabled&&ops.length?Math.min(4,1+query.sampleLimit,v.budget.maxRequestsPerTask):0,descriptor=await this.callbacks.servicesDescriptor?.();
   const parameters={workflow:'viral-radar',query,operations:budget?ops:[],search:radarSearchFilters(query),comments:false,budgetEnabled:budget>0,maxRequestsPerTask:budget,...(descriptor?{serviceDescriptor:{version:descriptor.version,host:descriptor.host,port:descriptor.port}}:{})};
   const prior=new Set(snapshot.tasks.map(t=>t.id));
@@ -95,9 +96,9 @@ export class ProductionController {
   const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),task=snapshot.tasks.find(t=>t.id===input.taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!attempt)fail('NOT_FOUND','任务不存在。');
   const request=input.action==='accept'?{taskId:input.taskId,attemptId:input.attemptId,receiptHash:input.receiptHash,expectedToken:input.expectedToken}:input.action==='retry'?{taskId:input.taskId,host:input.host??attempt.host,expectedToken:snapshot.editToken}:{taskId:input.taskId,expectedToken:snapshot.editToken};
-  await this.write({...this.pendingBase(),kind:'mutate',op:input.action==='accept'?'acceptTask':input.action==='retry'?'retryTask':'cancelTask',input:request});return this.read();
+  const written=await this.write({...this.pendingBase(),kind:'mutate',op:input.action==='accept'?'acceptTask':input.action==='retry'?'retryTask':'cancelTask',input:request}) as ProductionSnapshot;const current=await this.read();return {...current,...(written.archiveWarnings?.length?{archiveWarnings:written.archiveWarnings}:{})};
  });}
- openProductionLink(input:ProductionInputs['openProductionLink']){this.validate('openProductionLink',input);return this.owner.exclusive(async()=>{await this.callbacks.open(this.owner.current(),input);return {opened:true as const};});}
+ openProductionLink(input:ProductionInputs['openProductionLink']){this.validate('openProductionLink',input);return this.owner.exclusive(async()=>{const message=await this.callbacks.open(this.owner.current(),input);return {opened:true as const,...(input.kind==='task-archive'&&message?{message}:{})};});}
  chooseProductionFiles(input:ProductionInputs['chooseProductionFiles']){this.validate('chooseProductionFiles',input);return this.owner.exclusive(async()=>{this.owner.noPending();const sources=await this.owner.dialogs.productionFiles?.(input.kind);if(!sources?.length)return null;const hashes:string[]=[];for(const source of sources){const stat=await fs.lstat(source);if(!stat.isFile()||stat.isSymbolicLink()||stat.size>64*1024*1024)fail('INVALID_FILES','请选择64 MiB以内的普通文件。');hashes.push(createHash('sha256').update(await fs.readFile(source)).digest('hex'));}const files=await this.write({...this.pendingBase(),kind:'files',fileKind:input.kind,sources,hashes}) as ProductionFile[];return files.map(f=>({...f,...(input.kind==='images'?{url:this.owner.covers.grant(f.assetHash)}:{})}));});}
  saveProductionDraft(input:ProductionDraft){this.validate('saveProductionDraft',input);return this.owner.exclusive(async()=>await this.write({...this.pendingBase(),kind:'draft',input}) as ProductionCreationState);}
  readProductionPending(input?:undefined){this.validate('readProductionPending',input);return Promise.resolve({pending:!!this.owner.binding.productionPending,message:this.owner.binding.productionPending?'上次操作结果尚待核验。原输入与事务编号已保留，重试将只核验并继续原操作。':''});}

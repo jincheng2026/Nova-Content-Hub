@@ -1,5 +1,5 @@
 import fs from 'node:fs/promises';
-import {validRadarQuery,radarOperations,radarSearchFilters,douyinRows} from '../../../plugin-src/src/lib/file-library/radar.mjs';
+import {validRadarQuery,radarQueryOperations,radarSearchFilters,douyinRows} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import type {ProductionContext} from '../../../plugin-src/src/lib/file-library/production.d.ts';
 import os from 'node:os';
 import path from 'node:path';
@@ -14,7 +14,7 @@ const parameters=(value:unknown):Record<string,unknown>=>value&&typeof value==='
 export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceTools,descriptorPath:string,runQueue:ProductionRunQueue=action=>action()):ServiceToolBroker {
  function checkRadar(context:ProductionContext,request:ServiceToolRequest){
   const task=context.task;if(!task)return;const frozen=parameters(task.request.parameters);if(frozen.workflow!=='viral-radar')return;
-  const query=frozen.query;if(!validRadarQuery(query)||request.tool!=='tikhub'||!Array.isArray(frozen.operations)||!frozen.operations.includes(request.operation)||!radarOperations(query.platform).includes(request.operation))throw new ServiceToolError('RADAR_OPERATION_FORBIDDEN');
+  const query=frozen.query;if(!validRadarQuery(query)||request.tool!=='tikhub'||!Array.isArray(frozen.operations)||!frozen.operations.includes(request.operation)||!radarQueryOperations(query).includes(request.operation))throw new ServiceToolError('RADAR_OPERATION_FORBIDDEN');
   const prior=context.snapshot.costs.filter(c=>c.taskId===task.id),rows=prior.filter(c=>c.attemptId===request.attemptId).map(c=>parameters(c.usage));
   if(prior.length>=Math.min(4,1+query.sampleLimit)||rows.some(x=>x.operation===request.operation&&x.id===request.id))throw new ServiceToolError('RADAR_REQUEST_LIMIT');
   if(request.operation==='douyin-search'){if(request.id!==query.direction||(request.cursor!==undefined&&request.cursor!=='0')||!request.search||Object.keys(radarSearchFilters(query)).some(k=>parameters(request.search)[k]!==parameters(radarSearchFilters(query))[k])||rows.some(x=>x.operation==='douyin-search'))throw new ServiceToolError('RADAR_QUERY_MISMATCH');}

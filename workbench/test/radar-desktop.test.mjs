@@ -10,12 +10,12 @@ test('radar desktop freezes query, operations and min(current,4) budget while ma
  const {controller:c}=await fixture(t,{budget:20});const result=await c.createRadarTask(query),request=result.snapshot.tasks[0].request;
  assert.equal(request.budget.amount,4);assert.deepEqual(request.parameters.query,query);assert.deepEqual(request.parameters.operations,['douyin-search','profile']);assert.deepEqual(request.tools,['tikhub']);assert.equal(request.parameters.comments,false);
  const other=(await c.createRadarTask({...query,platform:'YouTube'})).snapshot.tasks.at(-1).request;assert.equal(other.budget.amount,0);assert.deepEqual(other.tools,[]);assert.deepEqual(other.parameters.operations,[]);
- for(const input of [{...query,sampleLimit:4},{...query,tools:['model']},{...query,budget:999}])assert.throws(()=>validateInput('createRadarTask',input),{code:'INVALID_INPUT'});
+ for(const input of [{...query,sampleLimit:101},{...query,tools:['model']},{...query,budget:999}])assert.throws(()=>validateInput('createRadarTask',input),{code:'INVALID_INPUT'});
  assert.throws(()=>validateInput('openRadarSource',{url:'https://example.com'}),{code:'INVALID_INPUT'});
  const {controller:manual}=await fixture(t,{budget:0});assert.deepEqual((await manual.createRadarTask(query)).snapshot.tasks[0].request.tools,[]);
 });
 test('radar broker enforces frozen platform/query/filter/author policy before provider and persists author allowance over restart',async t=>{
- const f=await fixture(t),created=await f.controller.createRadarTask(query),task=created.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'radar-test'};f.library.mutateProduction('claimTask',identity);
+ const f=await fixture(t),created=await f.controller.createRadarTask({...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:12}),task=created.snapshot.tasks[0],identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'radar-test'};f.library.mutateProduction('claimTask',identity);
  const encryption={isEncryptionAvailable:()=>true,getSelectedStorageBackend:()=> 'keychain',encryptString:s=>Buffer.from(s),decryptString:b=>b.toString()},settings=new ServiceSettingsStore({filePath:path.join(f.dir,'service.json'),encryption});await settings.initialize();await settings.update({values:f.values,keys:{tikhub:'test-key'}});
  const tools=new ServiceTools({settings});let invocations=0;tools.invoke=async request=>{invocations++;return request.operation==='douyin-search'?{data:{business_data:[{data:{aweme_info:{aweme_id:'123',author:{sec_uid:'missing-fans'}}}},{data:{aweme_info:{aweme_id:'124',author:{sec_uid:'known-fans',follower_count:50}}}}]}}:{data:{user:{follower_count:20}}};};
  const descriptor=path.join(f.dir,'broker.json'),owner={worker:f.worker,current:()=>f.binding};let broker=productionToolBroker(owner,tools,descriptor);await broker.start();t.after(()=>broker.stop());
@@ -56,4 +56,16 @@ test('controller recovery completes the canonical reference after a parent recei
  reopened.mutateProduction('saveCreation',{contentId,expectedToken:state.productionToken,expectedContentToken:state.content.editToken,patch:{narrative:'用户在parent提交后继续编辑的叙事'}});
  p=await c.recoverProductionPending({action:'retry'});state=reopened.readProductionCreation(contentId);
  assert.equal((await c.readProductionPending()).pending,false);assert.equal(state.creation.narrative,'用户在parent提交后继续编辑的叙事');assert.deepEqual(state.creation.references.find(x=>x.id===reference.id),reference);assert.equal(state.creation.references.filter(x=>x.url==='https://www.douyin.com/video/123').length,1);assert.equal(state.content.body,'');assert.equal(p.creations.length,1);assert.equal(p.reports[0].meta.radar.candidates[0].topicId,contentId);
+});
+
+
+test('multi-platform desktop freezes all selections and custom ranges while retaining one global request budget',async t=>{
+ const {controller:c}=await fixture(t,{budget:20});
+ const multi={...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:12,lookbackDays:730};
+ assert.doesNotThrow(()=>validateInput('createRadarTask',multi));
+ const task=(await c.createRadarTask(multi)).snapshot.tasks.at(-1);
+ assert.deepEqual(task.request.parameters.query,multi);assert.deepEqual(task.request.parameters.operations,['douyin-search','profile']);assert.equal(task.request.budget.amount,4);
+ const manual=(await c.createRadarTask({...multi,platforms:['小红书','YouTube']})).snapshot.tasks.at(-1);
+ assert.equal(manual.request.budget.amount,0);assert.deepEqual(manual.request.tools,[]);
+ const {controller:limited}=await fixture(t,{budget:2});assert.equal((await limited.createRadarTask(multi)).snapshot.tasks.at(-1).request.budget.amount,2);
 });

@@ -1,0 +1,28 @@
+(node:1802) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ confirmed create remains saved when list refresh fails; retry refresh cannot create a duplicate (11.66625ms)
+✔ edits during updateContent keep the new draft and prevent leave/close success (2.82475ms)
+✔ edits during listContents keep the new draft and prevent leave/close success (1.098625ms)
+✔ concurrent reread result is preserved as disk conflict and never treated as the submitted draft (0.878833ms)
+✔ keeping a conflict as a new document leaves the external version intact and creates with no original editToken (2.489417ms)
+✔ managed notes/publication drafts use App navigation and native close guards (3.165666ms)
+✔ a background workspace read cannot delay a confirmed save or overwrite edits typed afterward (5.24175ms)
+✔ recommended title enters the original draft and only original Save writes it with the original CAS token (1.068209ms)
+✔ recommended title cannot overwrite typing or a newer editor version (0.642958ms)
+✔ only a current manually accepted packaging receipt contributes title recommendations (14.186792ms)
+✔ saved packaging and accepted flat title artifacts remain readable without changing human choices (0.529958ms)
+✔ old body recommendations are explicitly marked and every title carries the editor CAS version (0.221833ms)
+✔ adoption refuses unsaved edits, another content, stale read, trashed content and invalid title (0.232417ms)
+✔ radar desktop freezes query, operations and min(current,4) budget while manual platforms never inherit Douyin (13908.987291ms)
+✔ radar broker enforces frozen platform/query/filter/author policy before provider and persists author allowance over restart (14288.14325ms)
+✔ radar adoption and topic decision keep durable original intent through a lost worker reply (11641.120083ms)
+✔ controller recovery completes the canonical reference after a parent receipt exists and preserves intervening creation edits (17874.453917ms)
+✔ multi-platform desktop freezes all selections and custom ranges while retaining one global request budget (4149.166208ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62713.160166

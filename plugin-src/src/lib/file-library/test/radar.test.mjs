@@ -10,14 +10,14 @@ const at='2026-10-27T00:00:00.000Z';
 const evidence=(id='123')=>({platform:query.platform,sourceId:id,url:`https://www.douyin.com/video/${id}`,title:'<script>alert(1)</script>',author:{id:'sec-test',name:'作者',followers:10},metrics:{likes:200},publishedAt:'2026-10-26T00:00:00.000Z',evidence:['真实来源 & 缺口']});
 function fixture(t){const parent=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'nova-radar-'));t.after(()=>{__testing.setHook(undefined);fs.rmSync(parent,{recursive:true,force:true});});return {root:path.join(parent,'lib'),l:createLibrary(path.join(parent,'lib'))};}
 const mutate=(l,op,input={},options)=>l.mutateProduction(op,{expectedToken:l.readProduction().editToken,...input},options);
-function accepted(l,id='123',host='codex'){
- const task=mutate(l,'createTask',{kind:'research',title:'雷达',prompt:'雷达',host,parameters:{workflow:'viral-radar',query},tools:[],budget:{amount:0,currency:'REQ'}}).tasks.at(-1);
+function accepted(l,id='123',host='codex',fixed=query,candidates=[evidence(id)]){
+ const task=mutate(l,'createTask',{kind:'research',title:'雷达',prompt:'雷达',host,parameters:{workflow:'viral-radar',query:fixed},tools:[],budget:{amount:0,currency:'REQ'}}).tasks.at(-1);
  const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'test'};l.mutateProduction('claimTask',identity);
- const p=l.mutateProduction('submitTask',{...identity,result:{summary:'来源证据',artifacts:[{id:randomUUID(),kind:'research',title:'雷达',text:'首屏',assetHash:null,data:{radar:{schemaVersion:1,query,collectedAt:at,candidates:[evidence(id)]}}}]}}),a=p.tasks.at(-1).attempts[0];
+ const p=l.mutateProduction('submitTask',{...identity,result:{summary:'来源证据',artifacts:[{id:randomUUID(),kind:'research',title:'雷达',text:'首屏',assetHash:null,data:{radar:{schemaVersion:1,query:fixed,collectedAt:at,candidates}}}]}}),a=p.tasks.at(-1).attempts[0];
  mutate(l,'acceptTask',{taskId:task.id,attemptId:a.id,receiptHash:a.receipt.sha256});return {taskId:task.id,attemptId:a.id,receiptHash:a.receipt.sha256};
 }
 test('radar unknown metrics stay null; ratios require positive followers; date and threshold checks deterministic',()=>{
- assert(validRadarQuery(query));assert(!validRadarQuery({...query,sampleLimit:4}));
+ assert(validRadarQuery(query));assert(!validRadarQuery({...query,sampleLimit:101}));
  const c=normalizeRadarCandidate({...evidence(),author:{followers:''},metrics:{likes:'200',comments:null},publishedAt:null},query,at);
  assert.equal(c.author.followers,null);assert.equal(c.metrics.comments,null);assert.equal(c.metrics.likeFollowerRatio,null);assert.equal(c.eligibility,'unknown');
  assert.equal(normalizeRadarCandidate({...evidence(),author:{followers:0}},query,at).metrics.likeFollowerRatio,null);
@@ -88,4 +88,45 @@ test('collector uses one search and at most three missing-author profiles, no mo
  assert.equal(calls.length,4);assert.equal(calls[0].search.sortType,'likes');assert.deepEqual(calls.map(c=>c.operation),['douyin-search','profile','profile','profile']);assert.equal(data.candidates.length,3);
  await assert.rejects(collectRadar({query:{...query,platform:'YouTube'},identity:{},descriptorPath:'/unused'},()=>assert.fail('must not invoke')),{code:'RADAR_MANUAL_ONLY'});
  let count=0;await assert.rejects(collectRadar({query,identity:{},descriptorPath:'/unused'},async()=>{count++;throw Object.assign(new Error('timeout'),{code:'COST_UNKNOWN'});}),{code:'COST_UNKNOWN'});assert.equal(count,1);
+});
+
+
+test('multi-platform radar accepts custom bounded samples/days and preserves candidate platform identity',()=>{
+ const multi={...query,platforms:['抖音','小红书'],sampleLimit:12,lookbackDays:730};
+ assert.equal(validRadarQuery(multi),true);
+ for(const patch of [{platforms:[]},{platforms:['小红书','抖音']},{platforms:['抖音','抖音']},{sampleLimit:1.5},{sampleLimit:101},{lookbackDays:3651}])assert.equal(validRadarQuery({...multi,...patch}),false);
+ const red=normalizeRadarCandidate({...evidence('same'),platform:'小红书',url:'https://www.xiaohongshu.com/explore/same'},multi,at);
+ const douyin=normalizeRadarCandidate(evidence('same'),multi,at);
+ assert.equal(red.platform,'小红书');assert.equal(red.sourceKey,'xiaohongshu:same');assert.notEqual(red.id,douyin.id);
+ assert.throws(()=>normalizeRadarCandidate({...evidence(),platform:'YouTube'},multi,at),{code:'INVALID_INPUT'});
+});
+
+test('multi-platform collection samples custom counts within four requests and declares manual platform gaps',async()=>{
+ const multi={...query,platform:'小红书',platforms:['小红书','抖音'],sampleLimit:8,lookbackDays:730},calls=[];
+ const raw={data:{business_data:Array.from({length:10},(_,n)=>({data:{aweme_info:{aweme_id:String(n),author:{sec_uid:`sec-${n}`},statistics:{digg_count:200}}}}))}};
+ const result=await collectRadar({query:multi,identity:{},descriptorPath:'/unused',maxRequests:4},async(_d,r)=>{calls.push(r);return {data:r.operation==='douyin-search'?raw:{data:{user:{follower_count:10}}},requestsUsed:1,collectedAt:at,cacheHit:false};});
+ assert.deepEqual(result.query,multi);assert.equal(result.candidates.length,8);assert.equal(calls.length,4);assert(result.candidates.every(c=>c.platform==='抖音'));
+ assert.deepEqual(result.collection.manualPlatforms,['小红书']);assert.equal(result.collection.partial,true);
+});
+
+
+test('multi-platform receipt keeps exact frozen selections and separates same IDs across platforms',t=>{
+ const {l}=fixture(t),multi={...query,platforms:['抖音','小红书'],sampleLimit:12,lookbackDays:730};
+ const receipt=accepted(l,'same','codex',multi,[evidence('same'),{...evidence('same'),platform:'小红书',url:'https://www.xiaohongshu.com/explore/same'}]);
+ const report=mutate(l,'adoptRadarResult',receipt).reports[0].meta.radar;
+ assert.deepEqual(report.query,multi);assert.equal(report.candidates.length,2);assert.equal(new Set(report.candidates.map(c=>c.sourceKey)).size,2);
+ const task=structuredClone(l.readProduction().tasks[0]),a=task.attempts[0],radar=a.result.artifacts[0].data.radar;
+ const hash=v=>createHash('sha256').update(JSON.stringify(v)).digest('hex');
+ const seal=()=>{a.receipt.resultHash=hash(a.result);a.receipt.sha256=hash({taskId:task.id,attemptId:a.id,requestHash:task.requestHash,resultHash:a.receipt.resultHash});};
+ radar.query.platforms=['小红书','抖音'];seal();assert.throws(()=>radarArtifactCandidates(task,a.id,a.receipt.sha256),{code:'INVALID_INPUT'});
+ radar.query=multi;radar.candidates[1].platform='YouTube';seal();assert.throws(()=>radarArtifactCandidates(task,a.id,a.receipt.sha256),{code:'INVALID_INPUT'});
+});
+
+
+test('legacy frozen single-platform queries keep whitespace-compatible acceptance',t=>{
+ const {l}=fixture(t),legacy={...query,platform:' 抖音 '};
+ assert.equal(validRadarQuery(legacy),true);assert.equal(validRadarQuery({...legacy,platforms:[' 抖音 ']}),false);
+ const receipt=accepted(l,'legacy','codex',legacy,[{...evidence('legacy'),platform:' 抖音 '}]);
+ const report=mutate(l,'adoptRadarResult',receipt).reports[0].meta.radar;
+ assert.deepEqual(report.query,legacy);assert.equal(report.candidates[0].sourceKey,'douyin:legacy');
 });

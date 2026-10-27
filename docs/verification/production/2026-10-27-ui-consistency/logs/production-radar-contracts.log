@@ -1,0 +1,46 @@
+✔ legacy creations without filming remain valid and persist through current draft saves (3479.417292ms)
+✔ filming schema rejects bad hashes, duplicate IDs, invalid owners and missing fields (0.387625ms)
+✔ confirmations bind the exact current body, survive same-body edits and become stale after body changes (9345.673875ms)
+✔ new or changed shot quotes must uniquely match the current body; existing stale references are retained (10345.034959ms)
+✔ history only exposes validated committed body versions for the current content and bounded summaries to agents (6295.750291ms)
+✔ restoring preserves latest overlays and unrelated workspace updates; stale content and legacy production CAS reject (14609.005917ms)
+✔ version and response budgets explicitly truncate and never return partial restorable bodies (26947.548625ms)
+✔ committed marker corruption is rejected before historical text is returned (3057.048833ms)
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (5629.636708ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (12015.113667ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (10002.470458ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (7115.479083ms)
+✔ fixed requests reject secret parameters and invalid JSON (1283.269208ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (4402.633375ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (6851.457834ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (2352.962167ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (7896.619375ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (2697.211541ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (6350.493625ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (3523.632833ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (2768.690959ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (5994.859458ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (3680.442333ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (1874.800583ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (3246.314875ms)
+✔ radar unknown metrics stay null; ratios require positive followers; date and threshold checks deterministic (8.411042ms)
+✔ codex: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (14820.293208ms)
+✔ workbuddy: accepted receipt produces durable escaped report, empty topic with references and cross-batch source dedupe (15314.38725ms)
+✔ accepted query comparisons tolerate key order while retaining exact field values and full receipt integrity (3468.398708ms)
+✔ forged/mismatched artifacts are refused; a rejected candidate cannot become a topic (4775.925833ms)
+✔ ordinary manual reports and assistant report artifacts cannot inject radar type or reserved metadata (5093.27875ms)
+✔ interruption after child topic publication recovers the exact source without duplicates (10595.05675ms)
+✔ child recovery keeps a subsequently registered creation and its user narrative while attaching the source (10593.222167ms)
+✔ rejected sources retain their decision in later batches and parent publication interruption replays once (11982.985917ms)
+✔ collector uses one search and at most three missing-author profiles, no model/comments/retry (7.588125ms)
+✔ multi-platform radar accepts custom bounded samples/days and preserves candidate platform identity (0.298792ms)
+✔ multi-platform collection samples custom counts within four requests and declares manual platform gaps (0.649542ms)
+✔ multi-platform receipt keeps exact frozen selections and separates same IDs across platforms (4613.566875ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 88205.102167

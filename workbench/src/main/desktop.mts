@@ -1,3 +1,4 @@
+import {productionArchiveDirectory} from './production-archive.mts';
 import {assistantSessionURL} from '../shared/task-progress.ts';
 import {prepareNativeHandoff, nativeHandoffDirectory, openNativeHandoff} from '../../../plugin-src/src/bridge/native-handoff.mjs';
 import {prepareProductionHandoff} from '../../../plugin-src/src/bridge/production-handoff.mjs';
@@ -212,6 +213,12 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
                 }, {capability});
             },
             open: async (binding, target) => {
+                if (target.kind === 'task-archive') {
+                    const archive = await worker!.call('productionArchive', {binding, taskId: target.id});
+                    const directory = await productionArchiveDirectory(binding, archive);
+                    if (await shell.openPath(directory)) fail('OPEN_FAILED', '归档文件已保存，系统未能打开目录，请稍后重试。');
+                    return '知识归档目录已重建并打开。';
+                }
                 let url: string;
                 if (target.kind === 'account') {
                     const snapshot = await worker!.call('productionRead', {binding});

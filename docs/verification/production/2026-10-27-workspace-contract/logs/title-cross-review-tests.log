@@ -1,0 +1,12 @@
+✔ only a current manually accepted packaging receipt contributes title recommendations (478.260833ms)
+✔ saved packaging and accepted flat title artifacts remain readable without changing human choices (1.2445ms)
+✔ old body recommendations are explicitly marked and every title carries the editor CAS version (0.956208ms)
+✔ adoption refuses unsaved edits, another content, stale read, trashed content and invalid title (0.435209ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1801.432125

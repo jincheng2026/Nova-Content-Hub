@@ -5,6 +5,8 @@ export function radarId(value:string):string;
 export function radarSearchFilters(query:RadarQuery):{sortType:'likes';timeRange:'day'|'week'|'half-year'|'any';contentType:'any'};
 export function radarPlatform(platform:string):string;
 export function radarOperations(platform:string):string[];
+export function radarPlatforms(query:RadarQuery):string[];
+export function radarQueryOperations(query:RadarQuery):string[];
 export function douyinRows(raw:unknown):Record<string,any>[];
 export function douyinProfileFollowers(raw:unknown):number|null;
 export function normalizeRadarCandidate(raw:unknown,query:RadarQuery,collectedAt:string):RadarCandidate;

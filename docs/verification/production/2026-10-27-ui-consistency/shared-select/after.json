@@ -1,0 +1,203 @@
+{
+  "platform": "darwin",
+  "arch": "arm64",
+  "records": [
+    {
+      "width": 1440,
+      "expanded": [
+        {
+          "id": "p0",
+          "top": 437.3828125,
+          "bottom": 962.5234375,
+          "buttonBottom": 945.5234375,
+          "rightInset": 17,
+          "bodyHeight": 523.140625,
+          "height": 525.140625
+        },
+        {
+          "id": "p2",
+          "top": 437.3828125,
+          "bottom": 962.5234375,
+          "buttonBottom": 945.5234375,
+          "rightInset": 17,
+          "bodyHeight": 523.140625,
+          "height": 525.140625
+        },
+        {
+          "id": "p3",
+          "top": 437.3828125,
+          "bottom": 962.5234375,
+          "buttonBottom": 945.5234375,
+          "rightInset": 17,
+          "bodyHeight": 523.140625,
+          "height": 525.140625
+        },
+        {
+          "id": "p1",
+          "top": 437.3828125,
+          "bottom": 962.5234375,
+          "buttonBottom": 945.5234375,
+          "rightInset": 17,
+          "bodyHeight": 523.140625,
+          "height": 525.140625
+        }
+      ]
+    },
+    {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "cards": [
+        {
+          "id": "p0",
+          "top": 437.3828125,
+          "bottom": 692.1640625,
+          "buttonBottom": 675.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        },
+        {
+          "id": "p2",
+          "top": 437.3828125,
+          "bottom": 692.1640625,
+          "buttonBottom": 675.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        },
+        {
+          "id": "p3",
+          "top": 437.3828125,
+          "bottom": 692.1640625,
+          "buttonBottom": 675.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        },
+        {
+          "id": "p1",
+          "top": 437.3828125,
+          "bottom": 692.1640625,
+          "buttonBottom": 675.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        }
+      ]
+    },
+    {
+      "width": 960,
+      "expanded": [
+        {
+          "id": "p0",
+          "top": 533.3828125,
+          "bottom": 933.7421875,
+          "buttonBottom": 916.7421875,
+          "rightInset": 17,
+          "bodyHeight": 398.359375,
+          "height": 400.359375
+        },
+        {
+          "id": "p2",
+          "top": 533.3828125,
+          "bottom": 933.7421875,
+          "buttonBottom": 916.7421875,
+          "rightInset": 17,
+          "bodyHeight": 398.359375,
+          "height": 400.359375
+        },
+        {
+          "id": "p3",
+          "top": 949.7421875,
+          "bottom": 1162.9296875,
+          "buttonBottom": 1145.9296875,
+          "rightInset": 17,
+          "bodyHeight": 211.1875,
+          "height": 213.1875
+        },
+        {
+          "id": "p1",
+          "top": 949.7421875,
+          "bottom": 1162.9296875,
+          "buttonBottom": 1145.9296875,
+          "rightInset": 17,
+          "bodyHeight": 211.1875,
+          "height": 213.1875
+        }
+      ]
+    },
+    {
+      "viewport": [
+        960,
+        680
+      ],
+      "cards": [
+        {
+          "id": "p0",
+          "top": 533.3828125,
+          "bottom": 788.1640625,
+          "buttonBottom": 771.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        },
+        {
+          "id": "p2",
+          "top": 533.3828125,
+          "bottom": 788.1640625,
+          "buttonBottom": 771.1640625,
+          "rightInset": 17,
+          "bodyHeight": 252.78125,
+          "height": 254.78125
+        },
+        {
+          "id": "p3",
+          "top": 804.1640625,
+          "bottom": 1017.3515625,
+          "buttonBottom": 1000.3515625,
+          "rightInset": 17,
+          "bodyHeight": 211.1875,
+          "height": 213.1875
+        },
+        {
+          "id": "p1",
+          "top": 804.1640625,
+          "bottom": 1017.3515625,
+          "buttonBottom": 1000.3515625,
+          "rightInset": 17,
+          "bodyHeight": 211.1875,
+          "height": 213.1875
+        }
+      ]
+    },
+    {
+      "viewport": [
+        1440,
+        1000
+      ],
+      "channelInput": {
+        "width": 200,
+        "paddingLeft": "12px",
+        "paddingRight": "12px",
+        "focused": true,
+        "placeholder": "输入关键词筛选，可多选"
+      }
+    },
+    {
+      "viewport": [
+        960,
+        680
+      ],
+      "channelInput": {
+        "width": 200,
+        "paddingLeft": "12px",
+        "paddingRight": "12px",
+        "focused": true,
+        "placeholder": "输入关键词筛选，可多选"
+      }
+    }
+  ],
+  "failures": []
+}

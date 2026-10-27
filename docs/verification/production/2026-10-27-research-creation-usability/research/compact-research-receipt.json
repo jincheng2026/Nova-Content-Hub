@@ -1,0 +1,191 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-27T03:32:55.781Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.53",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.53:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "name": "account modal centered over unchanged wall 1440x1000",
+      "detail": {
+        "x": 360,
+        "y": 207.859375,
+        "width": 720,
+        "height": 584.28125,
+        "right": 1080,
+        "bottom": 792.140625,
+        "footerBottom": 791.140625,
+        "footerTop": 726.140625,
+        "scrollHeight": 421,
+        "clientHeight": 421,
+        "viewport": [
+          1440,
+          1000
+        ]
+      }
+    },
+    {
+      "name": "native Tab boundary stays within account modal 1440x1000",
+      "detail": true
+    },
+    {
+      "name": "research mode comparison and footer reachable 1440x1000",
+      "detail": {
+        "x": 360,
+        "y": 116.078125,
+        "width": 720,
+        "height": 767.84375,
+        "right": 1080,
+        "bottom": 883.921875,
+        "footerBottom": 882.921875,
+        "footerTop": 817.921875,
+        "scrollHeight": 605,
+        "clientHeight": 605,
+        "viewport": [
+          1440,
+          1000
+        ]
+      }
+    },
+    {
+      "name": "account modal centered over unchanged wall 960x680",
+      "detail": {
+        "x": 120,
+        "y": 47.859375,
+        "width": 720,
+        "height": 584.28125,
+        "right": 840,
+        "bottom": 632.140625,
+        "footerBottom": 631.140625,
+        "footerTop": 566.140625,
+        "scrollHeight": 421,
+        "clientHeight": 421,
+        "viewport": [
+          960,
+          680
+        ]
+      }
+    },
+    {
+      "name": "native Tab boundary stays within account modal 960x680",
+      "detail": true
+    },
+    {
+      "name": "research mode comparison and footer reachable 960x680",
+      "detail": {
+        "x": 120,
+        "y": 24,
+        "width": 720,
+        "height": 632,
+        "right": 840,
+        "bottom": 656,
+        "footerBottom": 655,
+        "footerTop": 590,
+        "scrollHeight": 605,
+        "clientHeight": 469,
+        "viewport": [
+          960,
+          680
+        ]
+      }
+    },
+    {
+      "name": "untouched account modal cancellation does not create managed dirty draft; opener focus restored",
+      "detail": true
+    },
+    {
+      "name": "long note keeps internal scrolling and footer in viewport",
+      "detail": {
+        "x": 120,
+        "y": 24,
+        "width": 720,
+        "height": 632,
+        "right": 840,
+        "bottom": 656,
+        "footerBottom": 655,
+        "footerTop": 590,
+        "scrollHeight": 481,
+        "clientHeight": 469,
+        "viewport": [
+          960,
+          680
+        ]
+      }
+    },
+    {
+      "name": "platform alias search popup Esc affects only popup; cancelled draft resumes and saves through IPC",
+      "detail": true
+    },
+    {
+      "name": "nested image Escape closes only image viewer and returns focus to outer draft",
+      "detail": true
+    },
+    {
+      "name": "standalone shared image viewer close also restores its connected opener",
+      "detail": true
+    },
+    {
+      "name": "stale CAS shows error inside modal and retains field values; explicit discard releases guard and original mutation recovery remains available",
+      "detail": true
+    },
+    {
+      "name": "retained meaningful account draft has explicit discard and allows navigation after discard",
+      "detail": true
+    },
+    {
+      "name": "report import modal bounded with existing report wall",
+      "detail": {
+        "x": 120,
+        "y": 99.2109375,
+        "width": 720,
+        "height": 481.578125,
+        "right": 840,
+        "bottom": 580.7890625,
+        "footerBottom": 579.7890625,
+        "footerTop": 514.7890625,
+        "scrollHeight": 318,
+        "clientHeight": 318,
+        "viewport": [
+          960,
+          680
+        ]
+      }
+    },
+    {
+      "name": "creatable report type and import draft retained across modal cancellation",
+      "detail": true
+    },
+    {
+      "name": "pending task keeps modal open and cancellation disabled until launch finishes",
+      "detail": true
+    },
+    {
+      "name": "research cancellation preserves title/prompt/explicit comments; task creates only after explicit submit with launch mocked",
+      "detail": true
+    }
+  ],
+  "paidRequests": 0,
+  "assistantLaunchMocked": true,
+  "designRules": {
+    "Surface-03": "native modal bounds, focus, Escape, popup and nested image tested",
+    "Controls-02": "alias-search platform and creatable reports preserved",
+    "Reading-02": "long text internally scrolls",
+    "Acceptance-01": "renderer typecheck and isolated Electron probe",
+    "Acceptance-02": "1440x1000 and 960x680 screenshots for visual review",
+    "Acceptance-03": "native local Electron only; no installer/Windows/Intel validation"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await run('document.querySelector(\"#radar-limit-lookbackDays\").textContent.includes(\"730\")&&document.querySelector(\"#radar-limit-sampleLimit\").textContent.includes(\"12\")&&document.querySelector(\"#radar-platform\").textContent.includes(\"小红书\")'))\n",
+  "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert(await run('document.querySelector(\"#radar-limit-lookbackDays\").textContent.includes(\"730\")&&document.querySelector(\"#radar-limit-sampleLimit\").textContent.includes(\"12\")&&document.querySelector(\"#radar-platform\").textContent.includes(\"小红书\")'))\n\n    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-Kcf7lz/bundle/workbench/dist/main/production-probe-entry.mjs:86:3)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-production-probe-Kcf7lz/bundle/workbench/dist/main/desktop.mjs:579:5)",
+  "checks": [
+    {
+      "name": "real UI creates fixed radar task through sandbox IPC; disabled budget leaves all paid tools unavailable",
+      "detail": {
+        "geometry": {
+          "width": 712.800048828125,
+          "height": 530.9029541015625,
+          "left": 283.6000061035156,
+          "top": 154.54852294921875,
+          "viewport": [
+            1280,
+            828
+          ],
+          "buttons": [
+            {
+              "text": "取消",
+              "bottom": 668.6215209960938
+            },
+            {
+              "text": "创建并打开助手",
+              "bottom": 668.6215209960938
+            }
+          ]
+        },
+        "query": {
+          "platform": "抖音",
+          "platforms": [
+            "抖音",
+            "小红书"
+          ],
+          "direction": "AI 工具教程",
+          "sampleLimit": 12,
+          "maxFollowers": 4321,
+          "minLikes": 1500,
+          "minRatio": 2,
+          "lookbackDays": 730
+        }
+      }
+    },
+    {
+      "name": "both waiting states recover and submitted receipt is explicitly accepted then adopted into durable radar HTML report",
+      "detail": true
+    },
+    {
+      "name": "add-topic creates an empty-body topic with source reference and repeated calls reuse its durable identity",
+      "detail": {
+        "topicId": "d2b27a7e-afa8-45da-abd9-09e1d249734e"
+      }
+    },
+    {
+      "name": "new topic appears in existing directory immediately and edits save through original content action",
+      "detail": true
+    },
+    {
+      "name": "topic reopens original content; unknown metrics remain unknown; rejection survives navigation",
+      "detail": true
+    },
+    {
+      "name": "radar plus seven existing pages render without horizontal overflow at 1280x860 and 960x680; modal actions remain reachable",
+      "detail": true
+    }
+  ]
+}

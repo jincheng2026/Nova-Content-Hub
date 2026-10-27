@@ -975,7 +975,7 @@ function library(root, initialInfo, rootIdentity) {
 
     return Object.freeze({
         ...businessMethods(root, locked, mutate, list),
-        ...productionMethods({root, locked, mutate, snapshot, result, metadata, fail, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent, storeProductionHtml: bytes => {const sha=hash(bytes);ensureDirectory(path.dirname(assetPath(root,sha)));immutableFile(assetPath(root,sha),bytes,assertRootIdentity);return sha;}}),
+        ...productionMethods({root, libraryId: initialInfo.libraryId, locked, mutate, snapshot, result, metadata, fail, assertRootIdentity, ensureDirectory, syncDirectory, hook, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent, storeProductionHtml: bytes => {const sha=hash(bytes);ensureDirectory(path.dirname(assetPath(root,sha)));immutableFile(assetPath(root,sha),bytes,assertRootIdentity);return sha;}}),
         ...templateJobMethods({
             root, libraryId: initialInfo.libraryId, locked, mutate, assertRootIdentity,
             snapshot, result, metadata, hash, jsonBytes, read, safePath, directory,

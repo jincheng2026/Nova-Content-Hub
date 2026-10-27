@@ -1,4 +1,7 @@
 import {RadarWorkspace} from './radar-workspace.tsx';
+import {ContentTitleRecommendations} from './content-title-recommendations.tsx';
+import {adoptTitleRecommendation} from '../shared/content-title-recommendations.ts';
+import type {ContentTitleRecommendation} from '../shared/content-title-recommendations.ts';
 import {ProductionWorkspace, ContentProduction, ProductionContentDirectory} from './production-workspace.tsx';
 import {ServiceSettings} from './service-settings.tsx';
 import './production-navigation.css';
@@ -137,6 +140,16 @@ function App() {
         setDraft(draftRef.current);
         setDisk(null);
     };
+    function adoptRecommendedTitle(candidate: ContentTitleRecommendation): boolean {
+        if (active.current || status?.busy || disk) return false;
+        try {
+            const next = adoptTitleRecommendation(baseRef.current, draftRef.current, candidate);
+            draftRef.current = next;
+            dirtyRef.current = true;
+            setDraft(next);
+            return true;
+        } catch (failure) {report(failure); return false;}
+    }
     const clearEditor = () => {
         epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;
         setDraft(null);
@@ -683,7 +696,7 @@ function App() {
                                                        value={draft.title} onChange={value => setDraft({
             ...draft,
             title: value
-        })}/><label htmlFor="content-body">正文</label><TextArea id="content-body" className="semi-control-text" disabled={busy || !!blocked}
+        })}/><ContentTitleRecommendations key={`${libraryEpoch}:${base?.id ?? 'new'}`} content={base} dirty={dirty} busy={busy || !!blocked} conflict={!!disk} run={nativeAction} adopt={adoptRecommendedTitle} showTasks={() => void navigate('tasks')}/><label htmlFor="content-body">正文</label><TextArea id="content-body" className="semi-control-text" disabled={busy || !!blocked}
                                                                  maxLength={1_000_000} value={draft.body}
                                                                  onChange={value => setDraft({
                                                                      ...draft,

@@ -91,3 +91,22 @@ test('platform catalog exposes no caller-controlled endpoint and account platfor
  await assert.rejects(c.startProductionTask({...start,accountId:randomUUID()}),{code:'NOT_FOUND'});
  assert.equal((await c.readProduction()).tasks.length,before,'unknown accounts cannot create misleading collection tasks');
 });
+
+// A depth selection must reach the frozen request as an actionable scope without granting extra budget.
+test('research depth freezes distinct deliverables while preserving user scope, budget and other task kinds',async t=>{
+ const settings=view();settings.values.budget={enabled:true,maxRequestsPerTask:2};
+ const {controller:c}=await fixture(t,{serviceSettings:async()=>settings});
+ const simple=(await c.startProductionTask({...start,mode:'simple'})).snapshot.tasks.at(-1).request;
+ const detailed=(await c.startProductionTask({...start,mode:'detailed'})).snapshot.tasks.at(-1).request;
+ assert.equal(simple.parameters.researchDepth.goal,'先判断方向');
+ assert.equal(detailed.parameters.researchDepth.goal,'为具体创作做准备');
+ assert(simple.parameters.researchDepth.deliverables.length<detailed.parameters.researchDepth.deliverables.length);
+ for(const request of [simple,detailed]) {
+  assert.equal(request.prompt,start.prompt);
+  assert.deepEqual(request.budget,{amount:2,currency:'REQ'});
+  assert.equal(request.parameters.comments,false);
+  assert.match(request.parameters.researchDepth.constraints,/样本不足/);
+ }
+ const writing=(await c.startProductionTask({...start,kind:'writing',mode:'detailed'})).snapshot.tasks.at(-1).request;
+ assert.equal(writing.parameters.researchDepth,undefined);
+});

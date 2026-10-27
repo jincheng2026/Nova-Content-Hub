@@ -46,7 +46,7 @@ export async function main(argv){
     if(Object.keys(payload).some(k=>['taskId','attemptId','expectedToken'].includes(k)))fail('INVALID_INPUT','Cannot override task binding');
     const op={claim:'claimTask',progress:'progressTask',submit:'submitTask',fail:'failTask'}[command];
     result=library.mutateProduction(op,{...locator,...payload},{mutationId});
-    result={...library.readProductionContext(locator.taskId,locator.attemptId),mutationId:result.mutationId};
+    result={...library.readProductionContext(locator.taskId,locator.attemptId),mutationId:result.mutationId,...(result.archiveWarnings?.length?{archiveWarnings:result.archiveWarnings}:{})};
    }
   }
   process.stdout.write(JSON.stringify({ok:true,result:envelope.serviceDescriptorPath?{...result,serviceDescriptorPath:envelope.serviceDescriptorPath}:result})+'\n');return 0;

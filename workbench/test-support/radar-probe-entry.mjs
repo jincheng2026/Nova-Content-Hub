@@ -28,19 +28,33 @@ startDesktop({show:false,userData:path.join(root,'machine'),dialogs:{library:asy
   assert(geometry.width<=724&&geometry.left>40);assert(geometry.buttons.every(b=>b.bottom<=geometry.viewport[1]));
   await shot('radar-query');
   await run('document.querySelector(".radar-query-body details").open=true');
+  await click('#radar-platform');await wait('[...document.querySelectorAll(".semi-select-option")].some(e=>e.textContent.trim()==="小红书")');
+  await run('[...document.querySelectorAll(".semi-select-option")].find(e=>e.textContent.trim()==="小红书").click()');
+  await run('document.querySelector("#radar-direction").focus()');
+  for(const [key,value]of [['lookbackDays','730'],['sampleLimit','12']]){
+   await click(`#radar-limit-${key}`);await input(`#radar-limit-${key} input`,value);
+   await run(`document.querySelector('#radar-limit-${key} input').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',code:'Escape',bubbles:true}))`);
+   assert(await run('!!document.querySelector("dialog[open]")'));
+   await run('document.querySelector("#radar-platform").focus()');
+   assert.equal(await run(`document.querySelector('#radar-limit-${key}').textContent.includes('${value}')`),true);
+  }
   for(const [key,value]of [['maxFollowers','4321'],['minLikes','1500'],['minRatio','错误数值']]){await click(`#radar-limit-${key}`);await wait(`document.querySelector('#radar-limit-${key} input')`);await input(`#radar-limit-${key} input`,value);await run('document.querySelector("#radar-platform").focus()');}
   assert(await run('[...document.querySelectorAll("dialog[open] button")].find(b=>b.textContent.includes("创建并打开助手")).disabled'));
   await click('#radar-limit-minRatio');await input('#radar-limit-minRatio input','2');await run('document.querySelector("#radar-platform").focus()');
+  await textClick('取消','document.querySelector("dialog[open]")');await click('#radar-new');
+  await wait('document.querySelector("dialog[open]")');await run('document.querySelector(".radar-query-body details").open=true');
+  assert(await run('document.querySelector("#radar-limit-lookbackDays").textContent.includes("730")&&document.querySelector("#radar-limit-sampleLimit").textContent.includes("12")&&document.querySelector("#radar-platform").textContent.includes("小红书")'));
+  await shot('radar-custom-1280');
   await textClick('创建并打开助手','document.querySelector("dialog[open]")');
   await wait('!document.querySelector("dialog[open]")');assert.equal(launches.length,1);
   const library=openLibrary(fixture.library),snapshot=await bridge('readProduction'),task=snapshot.tasks.at(-1),attempt=task.attempts.at(-1),query=task.request.parameters.query;
-  assert.equal(query.maxFollowers,4321);assert.equal(query.minLikes,1500);assert.equal(query.minRatio,2);assert.equal(task.request.parameters.workflow,'viral-radar');assert.equal(task.request.parameters.comments,false);assert.deepEqual(task.request.tools,[]);assert.equal(task.request.budget.amount,0);
+  assert.deepEqual(query.platforms,['抖音','小红书']);assert.equal(query.lookbackDays,730);assert.equal(query.sampleLimit,12);assert.equal(query.maxFollowers,4321);assert.equal(query.minLikes,1500);assert.equal(query.minRatio,2);assert.equal(task.request.parameters.workflow,'viral-radar');assert.equal(task.request.parameters.comments,false);assert.deepEqual(task.request.tools,[]);assert.equal(task.request.budget.amount,0);
   record('real UI creates fixed radar task through sandbox IPC; disabled budget leaves all paid tools unavailable',{geometry,query});
   const identity={taskId:task.id,attemptId:attempt.id,claimToken:randomUUID(),workerId:'synthetic-radar-contract-probe'};
   const mutate=(op,input)=>library.mutateProduction(op,input,{mutationId:randomUUID()});
   mutate('claimTask',identity);
   for(const [status,progress]of [['waiting-user',10],['claimed',20],['waiting-permission',30],['claimed',40]])mutate('progressTask',{...identity,status,progress,message:'隔离契约测试：'+status});
-  const now=new Date().toISOString(),candidates=[['910000000001','符合条件的合成选题',500,5000],['910000000002','缺少粉丝数的合成来源',null,4000],['910000000003','未达门槛的合成来源',90000,5]].map(([sourceId,title,followers,likes])=>({platform:query.platform,sourceId,url:`https://www.douyin.com/video/${sourceId}`,title,author:{id:sourceId,name:'合成作者',url:null,followers},metrics:{likes,comments:null,shares:null,saves:null,views:null},publishedAt:now,collectedAt:now,evidence:['合成测试资料，不是真实TikHub采集结果']}));
+  const now=new Date().toISOString(),candidates=[['910000000001','符合条件的合成选题',500,5000],['910000000002','缺少粉丝数的合成来源',null,4000],['910000000003','未达门槛的合成来源',90000,5]].map(([sourceId,title,followers,likes])=>({platform:sourceId==='910000000002'?'小红书':query.platform,sourceId,url:sourceId==='910000000002'?`https://www.xiaohongshu.com/explore/${sourceId}`:`https://www.douyin.com/video/${sourceId}`,title,author:{id:sourceId,name:'合成作者',url:null,followers},metrics:{likes,comments:null,shares:null,saves:null,views:null},publishedAt:now,collectedAt:now,evidence:['合成测试资料，不是真实TikHub采集结果']}));
   mutate('submitTask',{...identity,result:{summary:'隔离契约样本：1条符合、1条待核验、1条不符合。',artifacts:[{id:randomUUID(),kind:'research',title:'雷达合成结果',text:'用于验证UI、事务与回执，不能作为真实选题来源。',assetHash:null,data:{radar:{schemaVersion:1,query,collectedAt:now,candidates}}}]}});
   await click('#refresh-workspace');await wait('[...document.querySelectorAll(".radar-task button")].some(b=>b.textContent.trim()==="查看结果")');
   await textClick('查看结果');await wait('document.querySelector("#radar-result-review")');await shot('radar-result-review');
@@ -64,11 +78,21 @@ startDesktop({show:false,userData:path.join(root,'machine'),dialogs:{library:asy
    window.setContentSize(width,height);await wait(`innerWidth===${width}&&innerHeight===${height}`);
    await run('[...document.querySelectorAll(".radar-toolbar button")].find(b=>b.textContent.startsWith("全部")).click()');await wait('document.querySelectorAll(".radar-row").length===3');await shot(`radar-all-${width}`);
    assert(await run('document.documentElement.scrollWidth<=innerWidth'));
-   await click('#radar-new');await wait('document.querySelector("dialog[open]")');await shot(`radar-query-${width}`);assert(await run('[...document.querySelectorAll("dialog[open] .production-dialog-footer button")].every(b=>b.getBoundingClientRect().bottom<=innerHeight)'));await textClick('取消','document.querySelector("dialog[open]")');
+   await click('#radar-new');await wait('document.querySelector("dialog[open]")');await run('document.querySelector(".radar-query-body details").open=true');await shot(`radar-query-${width}`);assert(await run('[...document.querySelectorAll("dialog[open] .production-dialog-footer button")].every(b=>b.getBoundingClientRect().bottom<=innerHeight)'));await textClick('取消','document.querySelector("dialog[open]")');
    for(const page of ['accounts','reports','content','overview','calendar','templates','prompts']){await click(`#nav-${page}`);await wait(`document.querySelector('#nav-${page}').getAttribute('aria-current')==='page'`);await shot(`${page}-${width}`);assert(await run('document.documentElement.scrollWidth<=innerWidth'));}
    await click('#nav-radar');
   }
   record('radar plus seven existing pages render without horizontal overflow at 1280x860 and 960x680; modal actions remain reachable');
+  const settings=await bridge('readServiceSettings');
+  await bridge('saveServiceSettings',{values:{...settings.values,budget:{enabled:true,maxRequestsPerTask:2}}});
+  await click('#radar-new');await wait('document.querySelector(".radar-budget")?.textContent.includes("最多 2 次外部请求")');
+  await run('document.querySelector(".radar-query-body details").open=true');await shot('radar-budget-two-960');
+  await textClick('取消','document.querySelector("dialog[open]")');
+  await bridge('saveServiceSettings',{values:settings.values});
+  await click('#radar-new');await wait('document.querySelector(".radar-budget")?.textContent.includes("本次未开放付费采集")');
+  await textClick('取消','document.querySelector("dialog[open]")');
+  record('custom days/sample and multiselect survive Escape, blur, cancel and reopening; fresh settings cap the UI budget at two, then zero requests');
+
   await fs.writeFile(path.join(evidence,'radar-ui-receipt.json'),JSON.stringify({passed:true,at:new Date().toISOString(),release,platform:process.platform,arch:process.arch,checks,paidRequests:0,syntheticCandidates:true,realHosts:false,scope:'Native Electron sandbox/preload/IPC/worker/durable isolated library; candidate fixture and external host launches simulated; separate live-service evidence records HTTP402.'},null,2)+'\n');
   app.quit();
  }catch(error){console.error(error);await shot('radar-ui-failure').catch(()=>{});await fs.writeFile(path.join(evidence,'radar-ui-failure.json'),JSON.stringify({error:String(error),stack:error.stack,checks},null,2));app.exit(1);}

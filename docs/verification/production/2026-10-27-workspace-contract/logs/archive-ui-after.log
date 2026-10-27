@@ -1,0 +1,25 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2122 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-xAAZ1j/bundle/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-xAAZ1j/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-xAAZ1j/bundle/workbench/dist/renderer/assets/index-HH3HvrkN.css                        542.22 kB │ gzip:  71.98 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-xAAZ1j/bundle/workbench/dist/renderer/assets/index-Dc984QT8.js                       1,497.48 kB │ gzip: 421.51 kB
+
+✓ built in 2.60s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS unsubmitted task offers no archive open action
+PASS submitted receipt shows library archive location and transient warning
+PASS archive button uses real IPC and correct task without AI launch or acceptance
+PASS open failure retains submitted receipt and reports visible error
+PASS knowledge archive lists only submitted/accepted receipt facts; knowledge candidate remains unaccepted
+PASS knowledge archive open preserves unsaved manual input without AI launch
+PASS knowledge archive narrow page has no horizontal overflow
+PASS archive linked content uses existing content navigation without changing body or launching AI
+PASS Electron production smoke; evidence: /Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-27-workspace-contract/archive-after

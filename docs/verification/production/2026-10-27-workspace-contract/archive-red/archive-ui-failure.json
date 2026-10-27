@@ -1,0 +1,10 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: submitted receipt must expose archive directory action\n\nfalse !== true\n",
+  "stack": "AssertionError [ERR_ASSERTION]: submitted receipt must expose archive directory action\n\nfalse !== true\n\n    at ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-a3kgFj/bundle/workbench/dist/main/production-archive-probe-entry.mjs:37:10)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-a3kgFj/bundle/workbench/dist/main/desktop.mjs:579:5)",
+  "checks": [
+    {
+      "name": "unsubmitted task offers no archive open action",
+      "detail": true
+    }
+  ]
+}

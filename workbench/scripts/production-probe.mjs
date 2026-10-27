@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import {spawn} from 'node:child_process';
+import {spawn,execFileSync} from 'node:child_process';
+import {build} from 'vite';
 import {fileURLToPath} from 'node:url';
 import {randomUUID} from 'node:crypto';
 import electron from 'electron';
@@ -16,6 +17,17 @@ try {
     await fs.mkdir(evidence, {recursive: true});
     const bundle = path.join(root, 'bundle');
     await fs.cp(path.join(workbench, 'dist-desktop/auth-disabled'), bundle, {recursive: true});
+    if (process.env.NOVA_RADAR_SOURCE_PROBE === '1') {
+        // Recompile only this isolated bundle; do not replace shared distribution output.
+        const dist = path.join(bundle, 'workbench/dist');
+        execFileSync(process.execPath,[path.join(workbench,'node_modules/typescript/bin/tsc'),'-p',path.join(workbench,'tsconfig.native.json'),'--outDir',dist],{stdio:'inherit'});
+        const renderer=path.join(dist,'renderer');
+        await build({configFile:false,root:path.join(workbench,'src/renderer'),base:'./',oxc:{jsx:{runtime:'automatic'}},build:{outDir:renderer,emptyOutDir:true,modulePreload:false,sourcemap:false,target:'chrome148'}});
+        const entries={},mimes={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png'};
+        for(const file of await fs.readdir(renderer,{recursive:true}))if((await fs.stat(path.join(renderer,file))).isFile())entries['/'+file]={file,mime:mimes[path.extname(file)]};
+        await fs.writeFile(path.join(dist,'renderer-resources.json'),JSON.stringify({format:'nova-desktop-renderer-resources',schemaVersion:1,entries}));
+        for(const base of [path.join(bundle,'plugin-src/src/lib/file-library'),path.join(bundle,'workbench/plugin-marketplace/nova-content-hub/plugin-src/src/lib/file-library')])for(const file of ['radar.mjs','radar-collector.mjs','radar.d.mts'])await fs.copyFile(path.join(workbench,'../plugin-src/src/lib/file-library',file),path.join(base,file));
+    }
     const library = createLibrary(path.join(root, 'library'));
     const mutate = (op, input) => library.mutateProduction(op, {...input, expectedToken: library.readProduction().editToken, ...(op === 'saveCreation' ? {expectedContentToken: library.readProductionCreation(input.contentId).content.editToken} : {})}, {mutationId: randomUUID()});
     const content = library.createContent({title: '把 AI 工具讲清楚：从问题到解决方案', body: '很多人收藏了 AI 工具，却不知道从哪里开始。\n\n先找到一个真实的小问题，再展示可以复现的步骤。每个关键判断保留来源，最后邀请读者动手试一遍。'});

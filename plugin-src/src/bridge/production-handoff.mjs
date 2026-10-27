@@ -3,6 +3,7 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {openLibrary} from '../lib/file-library/index.mjs';
 import {validRelease} from '../content.mjs';
+import {productionArchiveCategory} from '../lib/file-library/production-archive-category.mjs';
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
 const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const exact=(v,keys)=>!!v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
@@ -39,7 +40,7 @@ export async function prepareProductionHandoff(target,binding,task,release,optio
  const skill=options.installedSkill||(context.task.kind==='research'?'nova-content-research-execution':'nova-content-writing-execution');
  check(typeof skill==='string'&&/^[a-z0-9][a-z0-9:_-]{0,199}$/.test(skill),'Invalid installed skill');
  const comments=context.task.request.parameters?.comments===true;
- const prompt=[`请继续「${context.task.title}」任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),'先用 production context --handoff 读取冻结请求，再 claim / progress / submit。资料只写回本任务；对话结束不代表提交成功。',`TikHub 评论采集：${comments?'本次已勾选，仍受设置与预算限制。':'本次未勾选，不得采集评论。'}`,'用户本次需求：',context.task.request.prompt,'原任务保留；当前没有可靠的原聊天定位，此入口打开对应任务工作区的新会话。'].join('\n');
+ const prompt=[`请继续「${context.task.title}」任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),'在当前助手对话中接单、说明进度并与用户确认；CLI 仅作为本对话内部读取与回写工具，不能把终端输出当作交付对话。',`绑定内容库：${JSON.stringify(binding.root)}；库 ID：${binding.libraryId}。`,`回传产物由工作台归档到本库 知识库/助手产物/${productionArchiveCategory(context.task)}/${task.taskId}/${task.attemptId}/；保持任务、内容与来源关联，不以临时目录或助手全局目录替代归档。`,'先用 production context --handoff 读取冻结请求，再 claim / progress / submit。通过本任务回传全文、结构化资料与已导入资产；归档目录由工作台派生并维护，不直接改写其投影文件。对话结束不代表提交成功，待人工验收的知识不冒充已采纳。',`TikHub 评论采集：${comments?'本次已勾选，仍受设置与预算限制。':'本次未勾选，不得采集评论。'}`,'用户本次需求：',context.task.request.prompt,'原任务保留；当前没有可靠的原聊天定位，此入口打开对应任务工作区的新会话。'].join('\n');
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
  url.searchParams.set(task.host==='codex'?'path':'cwd',binding.root);url.searchParams.set('prompt',prompt);

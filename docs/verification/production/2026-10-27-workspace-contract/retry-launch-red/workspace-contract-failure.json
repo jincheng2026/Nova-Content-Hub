@@ -1,0 +1,36 @@
+{
+  "error": "Error: Timeout waiting for native launch",
+  "stack": "Error: Timeout waiting for native launch\n    at waitNative (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-rCAOiC/bundle/workbench/dist/main/workspace-contract-probe-entry.mjs:18:109)\n    at async ready (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-rCAOiC/bundle/workbench/dist/main/workspace-contract-probe-entry.mjs:44:102)\n    at async startDesktop (file:///private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-rCAOiC/bundle/workbench/dist/main/desktop.mjs:579:5)",
+  "checks": [
+    {
+      "name": "account desktop search and platform align",
+      "detail": {
+        "searchTop": 242.59375,
+        "selectTop": 242.59375,
+        "viewport": [
+          1440,
+          1000
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "name": "report desktop search and type align with single-line date label",
+      "detail": {
+        "searchTop": 285.390625,
+        "selectTop": 285.390625,
+        "dateHeight": 34,
+        "viewport": [
+          1440,
+          1000
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "name": "continue launcher failure is visible and preserves original task",
+      "detail": true
+    }
+  ],
+  "images": []
+}

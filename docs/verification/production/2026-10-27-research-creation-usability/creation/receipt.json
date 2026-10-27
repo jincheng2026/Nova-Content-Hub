@@ -1,0 +1,92 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "syntheticCapability": true,
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "saveVisible": true,
+      "noHorizontalOverflow": true,
+      "threeViews": true
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "saveVisible": true,
+      "noHorizontalOverflow": true,
+      "threeViews": true
+    }
+  ],
+  "rules": [
+    "Foundation-01",
+    "Foundation-02",
+    "Foundation-03",
+    "Layout-02",
+    "Surface-01",
+    "Controls-01",
+    "Controls-02",
+    "Reading-02",
+    "Interaction-03"
+  ],
+  "ruleChecks": [
+    {
+      "id": "Foundation-01",
+      "result": "Specified cool gray, white surfaces and blue selection",
+      "evidence": "compare-1440x1000.png"
+    },
+    {
+      "id": "Foundation-02",
+      "result": "Specified #0071E3 white primary and #6E6E73 secondary text; error uses words",
+      "evidence": "conflict-960x680.png"
+    },
+    {
+      "id": "Foundation-03",
+      "result": "24px heading, 14px body and 13px secondary; Mac/Windows Chinese font fallback",
+      "evidence": "compare-960x680.png"
+    },
+    {
+      "id": "Layout-02",
+      "result": "One compact gradient header and sticky save; routine success stays in header",
+      "evidence": "compare-960x680.png"
+    },
+    {
+      "id": "Surface-01",
+      "result": "Solid white reading cards; inline annotation uses inset gray surface",
+      "evidence": "annotation-960x680.png"
+    },
+    {
+      "id": "Controls-01",
+      "result": "One save action, duplicate return buttons removed; filming add reachable at 960x680",
+      "evidence": "recording-960x680.png"
+    },
+    {
+      "id": "Controls-02",
+      "result": "Tabs accept arrows, Home and End; original explicit save semantics retained",
+      "evidence": "receipt.json"
+    },
+    {
+      "id": "Reading-02",
+      "result": "Full review scrolls; full long title available inside bounded More menu",
+      "evidence": "long-title-960x680.png"
+    },
+    {
+      "id": "Interaction-03",
+      "result": "Original capability URL, CAS, conflicts, history and one body retained; no new dependency",
+      "evidence": "receipt.json"
+    }
+  ],
+  "longTitle": true,
+  "unfinishedComposerPreserved": true,
+  "singleBody": true,
+  "noAutomaticSave": true,
+  "selectionAnnotation": true,
+  "selectionFilming": true,
+  "atomicSave": true,
+  "consecutiveSuggestions": true,
+  "keyboardTabs": true,
+  "conflictPreservesDraft": true,
+  "emptyDraftGuidance": true,
+  "consoleErrors": []
+}

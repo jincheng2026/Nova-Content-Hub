@@ -1,0 +1,19 @@
+✔ renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters (1.290667ms)
+✔ read does not enable creation; explicit enable and draft save use real CAS versions (1879.788458ms)
+✔ launch failure preserves one task; comments require per-task consent and setting; budget is REQ without broker token (2167.078333ms)
+✔ lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes (985.632ms)
+✔ pending metadata is library-bound and required builds reject all production access (485.396958ms)
+✔ claim tokens are redacted and acceptance requires current attempt and exact receipt (2354.152ms)
+✔ unknown cost blocks retry until explicit reconciliation and clears matching service cache intent (5416.516375ms)
+✔ file recovery verifies the original bytes before importing a changed source (1488.429041ms)
+✔ platform catalog exposes no caller-controlled endpoint and account platform freezes collection capability (3716.27475ms)
+✔ research depth freezes distinct deliverables while preserving user scope, budget and other task kinds (1197.259292ms)
+✔ a research question supplies a bounded title when the optional title is blank (0.674167ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19895.795333

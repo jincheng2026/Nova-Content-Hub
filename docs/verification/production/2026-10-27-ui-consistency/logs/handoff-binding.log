@@ -1,0 +1,12 @@
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (3164.842583ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (1931.467375ms)
+✔ long complete prompts stay available through manual clipboard fallback (874.29475ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (5261.894125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 11435.764917

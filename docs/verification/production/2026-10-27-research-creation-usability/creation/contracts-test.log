@@ -1,0 +1,32 @@
+✔ creation page saves the fixed content through its capability using original CAS tokens (18.002166ms)
+✔ a conflict retains unsaved text, shows the latest body and blocks stale re-submission (2.093833ms)
+✔ manual edits clear a previous content confirmation without changing saved tokens (1.679959ms)
+✔ HTML embeds the same pure review rules consumed by React (0.3305ms)
+✔ independent suggestions can be accepted consecutively and save atomically without mutating source artifacts (5.174667ms)
+✔ overlapping, externally stale, ambiguous and user-edited suggestions stay stale and never replace handwritten text (4.400834ms)
+✔ a manual change outside otherwise intact quotes prevents automatic rebasing (1.714208ms)
+✔ long paragraph quotes and annotation markers scroll the exact source into view at the end (2.122834ms)
+✔ review paragraph derivation preserves every body character including multiline quotes and overlapping occurrences (0.295375ms)
+✔ newly duplicated quotes are not rebased even when their old range was disjoint (0.841958ms)
+✔ an overlapping quote that survives a containing replacement is never silently rebased (2.208792ms)
+✔ history search and explicit restore fill the same body draft and preserve original CAS and stale suggestions (2.65425ms)
+✔ registered reference media uses the same capability and timestamp playback preserves transcript text (1.733458ms)
+✔ filming checklist adds anchored shots, requires completed shots for recording and saves through unchanged CAS (3.87875ms)
+✔ filming confirmations become visibly stale after body editing and invalid quotes never alter body (2.260708ms)
+✔ creation views keep one untouched body draft and switch only the relevant workspace (1.89775ms)
+✔ selecting a sentence reuses it for an inline annotation and filming without dirtying or saving the draft (1.79875ms)
+✔ empty creation draft gives actionable guidance and no invented body or automatic changes (1.202292ms)
+✔ a new selection cannot reattach an unfinished annotation or filming description to another sentence (1.672333ms)
+✔ routine load and save use the compact saved status while errors remain visible (2.57125ms)
+✔ creation capabilities share one loopback startup and inject the fixed page endpoint with nonce CSP (749.289125ms)
+✔ creation writes require matching Origin, JSON and server-fixed content, and stale CAS produces 409 (759.637375ms)
+✔ capabilities deny query alterations and cross-library use; reports keep all HTML in network-free sandbox (2066.859125ms)
+✔ reference media is bound to this content and range playback cannot read arbitrary assets (768.0085ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4674.905167

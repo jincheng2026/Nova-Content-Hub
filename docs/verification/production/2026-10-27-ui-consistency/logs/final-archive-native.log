@@ -1,0 +1,11 @@
+✔ archive worker accepts a bound task ID only and opens no AI or arbitrary source paths (2390.625666ms)
+✔ desktop archive path guard rejects an output ancestor changed to a symlink (1875.351334ms)
+✔ desktop acceptance preserves archive warnings while the receipt remains accepted and no mutation stays pending (4586.548083ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9012.388959

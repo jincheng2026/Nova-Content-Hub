@@ -1,0 +1,5 @@
+{
+  "error": "Error: Timeout: document.querySelector(\".production-workspace>.production-notice\")?.textContent.includes(\"助手未成功打开\") / 自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n提示词与知识\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 助手任务\n\n助手任务\n本机保存\n刷新\n研究与创作\n助手任务\n\n所有 AI 动作交给外部助手，提交与人工验收分开记录。\n\n新建调研\n启动失败仍保留原任务\n\n等待助手接单 · Codex · 第 1 次尝试\n\n等待助手按固定任务契约回写进度。\n\n继续原任务\n取消任务\n重试\n切换至 WorkBuddy",
+  "stack": "Error: Timeout: document.querySelector(\".production-workspace>.production-notice\")?.textContent.includes(\"助手未成功打开\") / 自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n提示词与知识\n内容库\n设置\nlibrary\n\n资料保存在你的本机\n\n工作空间 / 助手任务\n\n助手任务\n本机保存\n刷新\n研究与创作\n助手任务\n\n所有 AI 动作交给外部助手，提交与人工验收分开记录。\n\n新建调研\n启动失败仍保留原任务\n\n等待助手接单 · Codex · 第 1 次尝试\n\n等待助手按固定任务契约回写进度。\n\n继续原任务\n取消任务\n重试\n切换至 WorkBuddy",
+  "checks": []
+}

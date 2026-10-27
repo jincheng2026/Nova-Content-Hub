@@ -73,7 +73,7 @@ async function main(root,evidence,baseline){
    await key('Down');await key('Return');await wait('document.querySelector(".channel-selected-name")?.textContent==="自定义直播渠道"');
    await type('渠道 02');assert.deepEqual(await options(),['渠道 02']);await run('[...document.querySelectorAll(".semi-select-option")].find(e=>e.textContent==="渠道 02").click()');await paint();
    assert.equal(await run('document.querySelectorAll(".channel-selected-name").length'),2,'multiple selection retained');
-   await type('不存在');assert.deepEqual(await options(),[]);assert.ok(await run('document.body.innerText.includes("没有匹配的渠道")'));await shot('channels-no-match-'+width);
+   await type('不存在');assert.deepEqual(await options(),[]);assert.ok(await run('document.body.innerText.includes("没有匹配的选项")'));await shot('channels-no-match-'+width);
    assert.equal(await run('document.querySelectorAll(".channel-selected-name").length'),2,'no-match query preserves selections');await type('');assert.ok((await options()).includes('渠道 00'),'clear query restores list');
    await key('Escape');await wait('!document.querySelector(".semi-select-option-list-wrapper")');await shot('channels-selected-'+width);
    check(await run('document.documentElement.scrollWidth<=innerWidth'),'metadata page fits width');

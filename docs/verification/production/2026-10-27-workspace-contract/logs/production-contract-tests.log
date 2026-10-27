@@ -1,0 +1,38 @@
+✔ creation allocation is monotonic, body remains canonical, CAS and mutation replay preserve history (6483.213917ms)
+✔ codex: claim, both wait states, resume, submission, manual acceptance and retired attempt (5962.090791ms)
+✔ workbuddy: claim, both wait states, resume, submission, manual acceptance and retired attempt (10453.306834ms)
+✔ REQ reserves one call, local zero, duplicates cannot pay twice, unknown blocks until human reconciliation (6134.753209ms)
+✔ fixed requests reject secret parameters and invalid JSON (1422.21175ms)
+✔ adoption requires accepted current attempt and matching content/body, packaging keeps human selections (4140.400208ms)
+✔ missing account image remains readable while corrupt and unsafe assets fail; HTML indexed with all pages (3703.896ms)
+✔ published transaction is recovered and same request mutation replay returns original outcome (1461.678792ms)
+✔ restore retires live production attempts and prevents unknown reserved call from blind retry (11092.504375ms)
+✔ audio bytes are immutable production references and report import enforces HTML limit (2208.818875ms)
+✔ submitted multi-page HTML report automatically indexes all pages, and packaging adoption preserves selected values (7741.201334ms)
+✔ fixed task refuses caller stale source body hash and metadata-only saveCreation preserves canonical body (5688.541167ms)
+✔ metadata-only creation saves cannot overwrite a newer draft or selection (4985.894ms)
+✔ cancelled in-flight calls can settle actual usage and feedback remains sourced candidate knowledge (7384.395166ms)
+✔ explicit confirmation of edited body is accepted atomically and unrelated workspace progress cannot block saved-overlay edits (4338.520792ms)
+✔ report artifacts preserve declared type, source, collection time and companion metadata (2923.696791ms)
+✔ filming artifact adoption keeps the plan but cannot mark human recording confirmations or completed shots (4163.310458ms)
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (5741.111208ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (3482.933ms)
+✔ long complete prompts stay available through manual clipboard fallback (1603.259625ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (20274.290333ms)
+✔ renderer forbids internal task tools, paths, partial acceptance and untrusted task parameters (40.8195ms)
+✔ read does not enable creation; explicit enable and draft save use real CAS versions (8232.495709ms)
+✔ launch failure preserves one task; comments require per-task consent and setting; budget is REQ without broker token (11501.522834ms)
+✔ lost mutation reply persists exact intent; same-id recovery avoids duplicate records and blocks interleaved writes (4827.395375ms)
+✔ pending metadata is library-bound and required builds reject all production access (1203.03825ms)
+✔ claim tokens are redacted and acceptance requires current attempt and exact receipt (7727.875292ms)
+✔ unknown cost blocks retry until explicit reconciliation and clears matching service cache intent (13181.080584ms)
+✔ file recovery verifies the original bytes before importing a changed source (4745.224667ms)
+✔ platform catalog exposes no caller-controlled endpoint and account platform freezes collection capability (23209.3935ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 91242.318291

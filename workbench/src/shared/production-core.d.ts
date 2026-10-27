@@ -1,6 +1,7 @@
 import type {ProductionCreationState, ProductionSnapshot} from './production-contracts.ts';
 import type {ProductionMutation} from '../../../plugin-src/src/lib/file-library/production.d.ts';
 export interface ProductionCoreLibrary {
+ rebuildProductionArchive(taskId:string):import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionArchive;
  readProduction(): ProductionSnapshot;
  readProductionContext(taskId:string):import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionContext;
  readProductionCreation(contentId:string): ProductionCreationState & {history: import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionHistory};

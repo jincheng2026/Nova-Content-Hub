@@ -1,3 +1,4 @@
+import {productionArchive} from './production-archive.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -77,6 +78,7 @@ export function productionMethods(h) {
         if (missing && !safePath(assetPath(root,hash),true)) return false;
         readAssetInternal(root,hash); return true;
     }
+    function rebuildProductionArchive(taskId){invalid(UUID.test(taskId),'Expected task UUID');return locked(()=>{const p=current().production||emptyProduction(),task=p.tasks.find(t=>t.id===taskId);return productionArchive({...h,task,reports:p.reports,readAsset:hash=>readAssetInternal(root,hash),assetPath:hash=>assetPath(root,hash)});});}
     function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const a of p.accounts) for (const hash of a.images) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
     function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
     function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
@@ -289,7 +291,9 @@ export function productionMethods(h) {
             }
             return readProduction();
         }
-        return project(out);
+        const projected=project(out);
+        if(['submitTask','acceptTask'].includes(op))try{const archive=rebuildProductionArchive(raw.taskId);if(archive.warnings.length)projected.archiveWarnings=archive.warnings;}catch(error){projected.archiveWarnings=[`任务回执已保存，知识目录投影待重建（${/^[A-Z_]+$/.test(error.code)?error.code:'IO_ERROR'}）。`];}
+        return projected;
     }
     function saveProductionDraft(cid,input,editToken,options={}) {
         invalid(fields(input,['body','expectedBodyHash','expectedProductionToken','creationPatch']) && text(input.body,4*1024*1024) && HASH.test(input.expectedBodyHash) && HASH.test(input.expectedProductionToken),'Invalid production draft');
@@ -305,7 +309,7 @@ export function productionMethods(h) {
             meta.schemaVersion=5;meta.productionState=next;return meta;
         });
     }
-    return {readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
+    return {rebuildProductionArchive,readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
 }
 
 export function productionAssetHashes(meta) {

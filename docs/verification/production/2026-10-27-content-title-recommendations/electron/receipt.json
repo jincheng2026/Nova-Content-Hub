@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "rendererRebuilt": true,
+  "existingTemporaryDesktopBundle": true,
+  "assistantLaunchSimulated": true,
+  "checks": [
+    "accepted packaging title is available without enabling creation; submitted title cannot be adopted; reading does not change title",
+    "title recommendations wrap with no horizontal overflow 1280x860",
+    "title recommendations wrap with no horizontal overflow 960x680",
+    "generation creates the existing content-bound packaging task with fixed saved body and unchecked comments",
+    "unsaved manual title blocks generation and adoption without writing content",
+    "explicit adoption changes only original title draft and preserves saved title and body until Save",
+    "original Save persists adopted title using existing content update with body unchanged",
+    "keyboard Space collapses inline recommendation panel"
+  ]
+}

@@ -8,7 +8,7 @@ import {productionPending} from '../shared/production-validation.ts';
 import type {ProductionWorkerOperations,ProductionPending,ProductionFile,ProductionCreationState} from '../shared/production-contracts.ts';
 import type {ProductionCoreLibrary} from '../shared/production-core.d.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-const ops=new Set(['productionContext','productionReserve','productionTaskMutation','productionAsset','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
+const ops=new Set(['productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
 export const isProductionOperation=(op:unknown):op is keyof ProductionWorkerOperations=>typeof op==='string'&&ops.has(op);
 const same=(p:ProductionPending,b:LibraryBinding)=>p.binding.libraryId===b.libraryId&&p.binding.rootIdentity.dev===b.rootIdentity.dev&&p.binding.rootIdentity.ino===b.rootIdentity.ino;
 const creation=(l:ProductionCoreLibrary,id:string):ProductionCreationState=>{const v=l.readProductionCreation(id);return {content:{id:v.content.id,title:v.content.title,body:v.content.body,editToken:v.content.editToken,bodyHash:v.content.bodyHash,deletedAt:v.content.deletedAt},creation:v.creation,productionToken:v.productionToken,history:v.history};};
@@ -34,14 +34,15 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  requireWrite(mode);
  if(['productionContext','productionReserve','productionTaskMutation','productionAsset'].includes(op))return executeTool(op,args);
 
- const fields=op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReport'?null:['binding','pending'];
+ const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReport'?null:['binding','pending'];
  if(!(fields?exact(args,fields):typeof args==='object'&&args!==null&&Object.keys(args).every(k=>['binding','reportId','pageId'].includes(k)))||!args||!libraryBinding((args as {binding:unknown}).binding))fail('INVALID_INPUT','生产任务参数无效。');
- const a=args as {binding:LibraryBinding;pending?:ProductionPending;contentId?:string;assetHash?:string;reportId?:string;pageId?:string};
+ const a=args as {binding:LibraryBinding;pending?:ProductionPending;contentId?:string;assetHash?:string;reportId?:string;pageId?:string;taskId?:string};
  if(!path.isAbsolute(a.binding.root)||a.binding.root.includes('\0'))fail('INVALID_INPUT','内容库路径无效。');
  if(op==='productionCreation'&&!uuid(a.contentId)||op==='productionReport'&&(!uuid(a.reportId)||a.pageId!==undefined&&!uuid(a.pageId)))fail('INVALID_INPUT','对象编号无效。');
  if((op==='productionMutate'||op==='productionRecover')&&(!productionPending(a.pending)||!same(a.pending,a.binding)))fail('CONFLICT','待核验操作与当前内容库不一致。');
  const l=openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity}) as unknown as ProductionCoreLibrary;
  if(op==='productionMedia'){if(!uuid(a.contentId)||!token(a.assetHash))fail('INVALID_INPUT','媒体引用无效。');const state=l.readProductionCreation(a.contentId!);if(!state.creation?.references.some(r=>r.mediaAssetHash===a.assetHash))fail('FORBIDDEN','仅可读取本文已登记原片。');const asset=l.readAsset(a.assetHash!);if(!['audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(asset.detectedType)||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体不可播放。');return {data:asset.data,detectedType:asset.detectedType};}
+ if(op==='productionArchive'){if(!uuid(a.taskId))fail('INVALID_INPUT','任务编号无效。');return l.rebuildProductionArchive(a.taskId!);}
  if(op==='productionRead')return l.readProduction();
  if(op==='productionCreation')return creation(l,a.contentId!);
  if(op==='productionReport') {

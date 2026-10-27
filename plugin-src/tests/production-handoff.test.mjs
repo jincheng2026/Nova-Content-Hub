@@ -16,6 +16,9 @@ function fixture(t,host='codex',prompt='请根据手工资料完成调研。') {
 for(const host of ['codex','workbuddy'])test(`${host}: full prompt, frozen request, dynamic broker locator, retirement and release denial`,async t=>{
  const f=fixture(t,host,'第一段\n第二段，完整中文用户需求'),descriptor=path.join(f.dir,'service.json'),prepared=await prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release,{serviceDescriptorPath:descriptor});
  assert(prepared.prompt.includes('第一段\n第二段'));assert(prepared.prompt.includes('未勾选'));assert.equal(new URL(prepared.url).protocol,host+':');
+ assert.equal(new URL(prepared.url).searchParams.get(host==='codex'?'path':'cwd'),f.binding.root);
+ assert(prepared.prompt.includes(JSON.stringify(f.binding.root)));assert(prepared.prompt.includes(f.binding.libraryId));
+ assert(prepared.prompt.includes('知识库/助手产物/调研报告/'));assert(prepared.prompt.includes('在当前助手对话'));
  const envelope=readProductionHandoff(path.join(f.dir,'handoffs'),prepared.id,release),context=productionHandoffContext(envelope).context;assert.equal(context.serviceDescriptorPath,descriptor);assert.equal(context.task.requestHash,f.task.requestHash);assert(!JSON.stringify(context.task.request).includes(descriptor));
  f.lib.mutateProduction('cancelTask',{taskId:f.task.id,expectedToken:f.lib.readProduction().editToken});await assert.rejects(prepareProductionHandoff(path.join(f.dir,'handoffs'),f.binding,f.locator,release),{code:'INVALID_HANDOFF'});
  assert.throws(()=>readProductionHandoff(path.join(f.dir,'handoffs'),prepared.id,{...release,AUTH_MODE:'required',pairId:'nova-content-hub@0.2.0:p1:required'}),{code:'AUTH_NOT_CONFIGURED'});

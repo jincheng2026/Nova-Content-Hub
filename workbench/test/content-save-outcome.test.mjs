@@ -4,18 +4,19 @@ import fs from 'node:fs/promises';
 import vm from 'node:vm';
 import {stripTypeScriptTypes} from 'node:module';
 import {errorInfo} from '../src/shared/contracts.ts';
+import {adoptTitleRecommendation} from '../src/shared/content-title-recommendations.ts';
 
 // Execute App's real save/leave state without JSX or a native content library.
 const source = await fs.readFile(new URL('../src/renderer/app.tsx', import.meta.url), 'utf8');
 const appStart = source.indexOf('function App() {'), layoutStart = source.indexOf('    const currentCollection =');
 assert.ok(appStart >= 0 && layoutStart > appStart, 'App logic boundary must exist before compiling the save fixture');
-const compiled = stripTypeScriptTypes(source.slice(appStart, layoutStart) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, draft, base, disk, error, dirty};}');
+const compiled = stripTypeScriptTypes(source.slice(appStart, layoutStart) + '\nreturn {save, guard, load, setDraft, setDisk, retainDraftAsNew, adoptRecommendedTitle, draft, base, disk, error, dirty};}');
 function fixture() {
   const slots = [], calls = []; let cursor = 0, failure = '', pause, committed, managed = false;
   const context = vm.createContext({
     useState(initial) {const i=cursor++; if (!(i in slots)) slots[i]=initial; return [slots[i], value=>{slots[i]=typeof value==='function'?value(slots[i]):value;}];},
     useRef(initial) {const i=cursor++; return slots[i]??={current:initial};}, useMemo: fn=>fn(), useEffect() {}, useLayoutEffect() {},
-    errorInfo, hasManagedDrafts:()=>managed, document:{hidden:false},
+    errorInfo, adoptTitleRecommendation, hasManagedDrafts:()=>managed, document:{hidden:false},
     async invoke(method, input) {
       calls.push({method,input});
       if(pause?.method===method) {const wait=pause.wait; pause=null; await wait;}
@@ -66,4 +67,23 @@ test('a background workspace read cannot delay a confirmed save or overwrite edi
   assert.equal(await f.render().save(),true);
   f.render().setDraft({...draft,body:'typed after save'});f.render();release();await new Promise(resolve=>setImmediate(resolve));
   assert.equal(f.render().draft.body,'typed after save');assert.equal(f.render().dirty,true);assert.equal(f.render().base.editToken,'committed-token');
+});
+
+
+test('recommended title enters the original draft and only original Save writes it with the original CAS token',async()=>{
+  const f=fixture(),base={...disk,title:'原标题',body:'不变的正文'},candidate={key:'title',contentId:base.id,editToken:base.editToken,text:'AI 推荐标题',source:'已验收任务',stale:false};
+  f.render().load(base);
+  assert.equal(f.render().adoptRecommendedTitle(candidate),true);
+  assert.equal(f.render().dirty,true);assert.equal(f.render().draft.title,'AI 推荐标题');assert.equal(f.render().draft.body,'不变的正文');
+  assert.equal(f.calls.length,0,'adoption must never invoke a write');
+  assert.equal(await f.render().save(),true);
+  const update=f.calls.find(call=>call.method==='updateContent');
+  assert.deepEqual(JSON.parse(JSON.stringify(update.input)),{id:'original',editToken:'external-token',title:'AI 推荐标题',body:'不变的正文'});
+});
+test('recommended title cannot overwrite typing or a newer editor version',()=>{
+  const f=fixture(),base={...disk,title:'原标题',body:'正文'},candidate={key:'title',contentId:base.id,editToken:base.editToken,text:'AI 推荐标题',source:'已验收任务',stale:false};
+  f.render().load(base);f.render().setDraft({title:'我的未保存标题',body:base.body});
+  assert.equal(f.render().adoptRecommendedTitle(candidate),false);assert.equal(f.render().draft.title,'我的未保存标题');
+  f.render().load({...base,editToken:'newer'});
+  assert.equal(f.render().adoptRecommendedTitle(candidate),false);assert.equal(f.render().draft.title,'原标题');assert.equal(f.calls.length,0);
 });

@@ -1,0 +1,70 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-27T05:16:24.476Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.53",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.53:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "platform": "darwin",
+  "arch": "arm64",
+  "checks": [
+    {
+      "name": "unsubmitted task offers no archive open action",
+      "detail": true
+    },
+    {
+      "name": "submitted receipt shows library archive location and transient warning",
+      "detail": true
+    },
+    {
+      "name": "archive button uses real IPC and correct task without AI launch or acceptance",
+      "detail": true
+    },
+    {
+      "name": "open failure retains submitted receipt and reports visible error",
+      "detail": true
+    },
+    {
+      "name": "knowledge archive lists only submitted/accepted receipt facts; knowledge candidate remains unaccepted",
+      "detail": true
+    },
+    {
+      "name": "knowledge archive open preserves unsaved manual input without AI launch",
+      "detail": true
+    },
+    {
+      "name": "knowledge archive narrow page has no horizontal overflow",
+      "detail": [
+        960,
+        680
+      ]
+    },
+    {
+      "name": "archive linked content uses existing content navigation without changing body or launching AI",
+      "detail": true
+    }
+  ],
+  "paidRequests": 0,
+  "assistantLaunchMocked": true,
+  "shellOpenMocked": true,
+  "scope": "real renderer/preload/IPC/controller/worker; transient warning injected; disk projection is outside this UI probe",
+  "designRules": [
+    "Surface-01",
+    "Controls-01",
+    "Reading-02",
+    "Acceptance-01",
+    "Acceptance-02",
+    "Acceptance-03"
+  ]
+}

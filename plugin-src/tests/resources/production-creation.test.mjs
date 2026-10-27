@@ -129,3 +129,39 @@ test('filming confirmations become visibly stale after body editing and invalid 
  f.get('filming-quote').value='不存在的句子';f.get('filming-visual').value='展示画面';f.get('filming-owner').value='screen';f.get('filming-add').onclick();assert.equal(vm.runInContext('draft.filming.shots.length',f.context),0);assert.equal(f.get('body').value,'更新后的唯一正文');
  await f.get('filming-read').onclick();assert.equal(vm.runInContext('draft.filming.readThroughBodyHash',f.context),bodyHash('更新后的唯一正文'));assert.equal(vm.runInContext('draft.filming.recordedBodyHash',f.context),hash);
 });
+
+
+test('creation views keep one untouched body draft and switch only the relevant workspace',async()=>{
+ const f=await fixture();f.edit('保留切换前的手写稿');
+ await vm.runInContext("setView('reading')",f.context);
+ assert.equal(f.get('compare-view').hidden,true);assert.equal(f.get('reading-view').hidden,false);assert.equal(f.get('recording-view').hidden,true);
+ assert.equal(f.get('view-reading')['aria-selected'],'true');assert.equal(f.get('body').value,'保留切换前的手写稿');
+ await vm.runInContext("setView('recording')",f.context);assert.equal(f.get('recording-view').hidden,false);assert.equal(f.get('reading-view').hidden,true);
+ await vm.runInContext("setView('compare')",f.context);assert.equal(f.get('compare-view').hidden,false);assert.equal(f.get('body').value,'保留切换前的手写稿');
+ assert.equal(f.calls.filter(c=>c.options.method==='POST').length,0);
+ await vm.runInContext('save()',f.context);assert.equal(JSON.parse(f.calls.find(c=>c.options.method==='POST').options.body).body,'保留切换前的手写稿');
+});
+test('selecting a sentence reuses it for an inline annotation and filming without dirtying or saving the draft',async()=>{
+ const f=await fixture();f.get('body').selectionStart=0;f.get('body').selectionEnd=4;
+ f.get('body').listeners.select();assert.equal(f.get('selection-tools').hidden,false);assert.equal(f.get('annotation-quote').value,'保留原文');assert.equal(f.get('save').disabled,true);
+ f.get('quote').onclick();assert.equal(f.get('annotation-composer').hidden,false);assert.equal(f.get('annotation-text').focused,true);
+ f.get('annotation-text').value='这句保留现场演示';await f.get('add-annotation').onclick();assert.equal(vm.runInContext('draft.annotations[0].quote',f.context),'保留原文');
+ f.get('selection-filming').onclick();assert.equal(f.get('recording-view').hidden,false);assert.equal(f.get('filming-quote').value,'保留原文');assert.equal(f.get('filming-visual').focused,true);
+ assert.equal(f.get('body').value,'保留原文');assert.equal(f.calls.filter(c=>c.options.method==='POST').length,0);
+});
+test('empty creation draft gives actionable guidance and no invented body or automatic changes',async()=>{
+ const f=await fixture({content:{body:'',bodyHash:bodyHash('')}});assert.equal(f.get('empty-draft').hidden,false);assert.equal(f.get('body').value,'');assert.equal(f.get('save').disabled,true);
+ f.edit('我写下第一句');assert.equal(f.get('empty-draft').hidden,true);assert.equal(f.get('body').value,'我写下第一句');assert.equal(f.calls.filter(c=>c.options.method==='POST').length,0);
+});
+
+test('a new selection cannot reattach an unfinished annotation or filming description to another sentence',async()=>{
+ const body='第一句。第二句。',f=await fixture({content:{body,bodyHash:bodyHash(body)}});
+ f.get('body').selectionStart=0;f.get('body').selectionEnd=4;f.get('body').listeners.select();f.get('quote').onclick();f.get('annotation-text').value='只针对第一句的批注';
+ f.get('body').selectionStart=4;f.get('body').selectionEnd=8;f.get('body').listeners.select();assert.equal(f.get('annotation-quote').value,'第一句。');f.get('quote').onclick();assert.equal(f.get('annotation-quote').value,'第一句。');assert.equal(f.get('annotation-text').value,'只针对第一句的批注');
+ f.get('filming-quote').value='第一句。';f.get('filming-visual').value='第一句的演示画面';f.get('selection-filming').onclick();assert.equal(f.get('filming-quote').value,'第一句。');assert.equal(f.get('filming-visual').value,'第一句的演示画面');
+ for(const view of ['reading','recording','compare'])vm.runInContext(`setView('${view}')`,f.context);assert.equal(f.get('annotation-text').value,'只针对第一句的批注');assert.equal(f.get('annotation-quote').value,'第一句。');assert.equal(f.get('body').value,body);assert.equal(f.calls.filter(c=>c.options.method==='POST').length,0);
+});
+
+test('routine load and save use the compact saved status while errors remain visible',async()=>{
+ const f=await fixture();assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('一次明确保存');await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,true);assert.equal(f.get('draft-status').textContent,'已保存到工作台');f.edit('保留冲突输入');f.conflict();await vm.runInContext('save()',f.context);assert.equal(f.get('notice').hidden,false);assert.match(f.get('notice').textContent,/冲突/);
+});

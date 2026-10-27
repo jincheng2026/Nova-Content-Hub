@@ -1,0 +1,136 @@
+{
+  "passed": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "syntheticIPC": true,
+  "checks": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "cards": [
+        {
+          "top": 232.390625,
+          "bottom": 597.5859375,
+          "actionTop": 527.5859375,
+          "actionBottom": 574.5859375
+        },
+        {
+          "top": 232.390625,
+          "bottom": 597.5859375,
+          "actionTop": 527.5859375,
+          "actionBottom": 574.5859375
+        },
+        {
+          "top": 232.390625,
+          "bottom": 597.5859375,
+          "actionTop": 527.5859375,
+          "actionBottom": 574.5859375
+        },
+        {
+          "top": 232.390625,
+          "bottom": 597.5859375,
+          "actionTop": 527.5859375,
+          "actionBottom": 574.5859375
+        },
+        {
+          "top": 615.5859375,
+          "bottom": 979.78125,
+          "actionTop": 909.78125,
+          "actionBottom": 956.78125
+        },
+        {
+          "top": 615.5859375,
+          "bottom": 979.78125,
+          "actionTop": 909.78125,
+          "actionBottom": 956.78125
+        }
+      ]
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "cards": [
+        {
+          "top": 228.390625,
+          "bottom": 592.5859375,
+          "actionTop": 522.5859375,
+          "actionBottom": 569.5859375
+        },
+        {
+          "top": 228.390625,
+          "bottom": 592.5859375,
+          "actionTop": 522.5859375,
+          "actionBottom": 569.5859375
+        },
+        {
+          "top": 610.5859375,
+          "bottom": 975.78125,
+          "actionTop": 905.78125,
+          "actionBottom": 952.78125
+        },
+        {
+          "top": 610.5859375,
+          "bottom": 975.78125,
+          "actionTop": 905.78125,
+          "actionBottom": 952.78125
+        },
+        {
+          "top": 993.78125,
+          "bottom": 1357.9765625,
+          "actionTop": 1287.9765625,
+          "actionBottom": 1334.9765625
+        },
+        {
+          "top": 993.78125,
+          "bottom": 1357.9765625,
+          "actionTop": 1287.9765625,
+          "actionBottom": 1334.9765625
+        }
+      ]
+    },
+    {
+      "width": 600,
+      "height": 800,
+      "cards": [
+        {
+          "top": 228.390625,
+          "bottom": 592.5859375,
+          "actionTop": 522.5859375,
+          "actionBottom": 569.5859375
+        },
+        {
+          "top": 610.5859375,
+          "bottom": 974.78125,
+          "actionTop": 904.78125,
+          "actionBottom": 951.78125
+        },
+        {
+          "top": 992.78125,
+          "bottom": 1357.9765625,
+          "actionTop": 1287.9765625,
+          "actionBottom": 1334.9765625
+        },
+        {
+          "top": 1375.9765625,
+          "bottom": 1740.171875,
+          "actionTop": 1670.171875,
+          "actionBottom": 1717.171875
+        },
+        {
+          "top": 1758.171875,
+          "bottom": 2122.3671875,
+          "actionTop": 2052.3671875,
+          "actionBottom": 2099.3671875
+        },
+        {
+          "top": 2140.3671875,
+          "bottom": 2504.5625,
+          "actionTop": 2434.5625,
+          "actionBottom": 2481.5625
+        }
+      ]
+    }
+  ],
+  "fullBodyAccessible": true,
+  "keyboardDetails": true
+}

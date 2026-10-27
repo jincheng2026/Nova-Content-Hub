@@ -1,0 +1,10 @@
+/* Foundation-01/02/03, Surface-01, Controls-01, Reading-02: inline candidates retain the original editor and explicit save. */
+.content-title-recommendations{min-width:0;margin:4px 0 14px}
+.content-title-recommendations-panel{display:grid;gap:12px;padding:16px;background:var(--surface-inset,#FAFAFC);border:1px solid rgba(0,0,0,.08);border-radius:12px;min-width:0}
+.content-title-recommendations-panel p{margin:0;overflow-wrap:anywhere;font-size:13px;line-height:1.6;color:var(--muted,#6E6E73)}
+.content-title-recommendations-panel .actions{margin:0;flex-wrap:wrap}
+.content-title-recommendations-panel summary{cursor:pointer;color:var(--accent,#0071E3);min-height:36px;align-content:center;overflow-wrap:anywhere}
+.content-title-candidates{display:grid;gap:0;min-width:0}
+.content-title-candidate{display:grid;justify-items:start;gap:8px;min-width:0;padding:14px 0;border-top:1px solid rgba(0,0,0,.08)}
+.content-title-candidate .content-title-candidate-text{font-size:14px;color:var(--ink,#1D1D1F);white-space:pre-wrap}
+.content-title-recommendations-panel .content-title-notice{padding:10px 12px;border-radius:10px;background:#F2F7FD;color:#1D1D1F;white-space:pre-wrap}

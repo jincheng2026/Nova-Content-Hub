@@ -1,0 +1,26 @@
+vite v8.3.4 building client environment for production...
+transforming...
+✓ 2121 modules transformed.
+rendering chunks...
+computing gzip size...
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-kobHbP/bundle/workbench/dist/renderer/index.html                                         0.38 kB │ gzip:   0.29 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-kobHbP/bundle/workbench/dist/renderer/assets/nova-content-hub-icon-512-A1Ow6cZT.png    263.83 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-kobHbP/bundle/workbench/dist/renderer/assets/index-HH3HvrkN.css                        542.22 kB │ gzip:  71.98 kB
+../../../../../private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-workspace-contract-probe-kobHbP/bundle/workbench/dist/renderer/assets/index-BGwcuUpa.js                       1,494.80 kB │ gzip: 420.66 kB
+
+✓ built in 8.16s
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+PASS account desktop search and platform align
+PASS report desktop search and type align with single-line date label
+PASS continue launcher failure is visible and preserves original task
+PASS retry and switch open the new assistant attempt; failed launch stays visible and can continue original task
+PASS codex poll fallback, both waits/resumes and original host after global assistant changes; submitted receipt requires explicit acceptance
+PASS codex retry/switch immediately launch correct new attempt; cancel preserves contract and fixed request
+PASS workbuddy poll fallback, both waits/resumes and original host after global assistant changes; submitted receipt requires explicit acceptance
+PASS workbuddy retry/switch immediately launch correct new attempt; cancel preserves contract and fixed request
+PASS tasks narrow viewport no horizontal document overflow
+PASS Electron production smoke; evidence: /Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-27-workspace-contract/retry-launch-after

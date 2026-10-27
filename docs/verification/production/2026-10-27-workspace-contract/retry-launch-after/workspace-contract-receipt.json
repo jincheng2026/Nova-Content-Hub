@@ -1,0 +1,94 @@
+{
+  "passed": true,
+  "recordedAt": "2026-10-27T03:33:27.021Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.3.53",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.3.53:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "name": "account desktop search and platform align",
+      "detail": {
+        "searchTop": 242.59375,
+        "selectTop": 242.59375,
+        "viewport": [
+          1440,
+          1000
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "name": "report desktop search and type align with single-line date label",
+      "detail": {
+        "searchTop": 285.390625,
+        "selectTop": 285.390625,
+        "dateHeight": 34,
+        "viewport": [
+          1440,
+          1000
+        ],
+        "overflow": false
+      }
+    },
+    {
+      "name": "continue launcher failure is visible and preserves original task",
+      "detail": true
+    },
+    {
+      "name": "retry and switch open the new assistant attempt; failed launch stays visible and can continue original task",
+      "detail": true
+    },
+    {
+      "name": "codex poll fallback, both waits/resumes and original host after global assistant changes; submitted receipt requires explicit acceptance",
+      "detail": true
+    },
+    {
+      "name": "codex retry/switch immediately launch correct new attempt; cancel preserves contract and fixed request",
+      "detail": true
+    },
+    {
+      "name": "workbuddy poll fallback, both waits/resumes and original host after global assistant changes; submitted receipt requires explicit acceptance",
+      "detail": true
+    },
+    {
+      "name": "workbuddy retry/switch immediately launch correct new attempt; cancel preserves contract and fixed request",
+      "detail": true
+    },
+    {
+      "name": "tasks narrow viewport no horizontal document overflow",
+      "detail": [
+        960,
+        680
+      ]
+    }
+  ],
+  "paidRequests": 0,
+  "realLibrary": false,
+  "assistantLaunchMocked": true,
+  "limitations": [
+    "real host launch, original conversation location and host approval monitoring are not exercised",
+    "native Electron darwin-arm64 only; no installer, Intel Mac or Windows validation"
+  ],
+  "designRules": {
+    "Foundation-04": "both wait, failed, cancelled, submitted, accepted states shown with text",
+    "Controls-01": "terminal actions and explicit acceptance verified",
+    "Reading-02": "expanded long result screenshot",
+    "Acceptance-01": "native IPC/worker roundtrip and fixed-request assertions",
+    "Acceptance-02": "1440x1000 and 960x680 screenshots",
+    "Acceptance-03": "isolated local Electron only"
+  }
+}
