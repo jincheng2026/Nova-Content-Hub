@@ -3,6 +3,13 @@ import type {IpcRendererEvent} from 'electron';
 
 const {contextBridge, ipcRenderer, webUtils} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    readJinchengPublication: input => ipcRenderer.invoke('nova:readJinchengPublication', input),
+    mutateJinchengPublication: input => ipcRenderer.invoke('nova:mutateJinchengPublication', input),
+    confirmJinchengCheckpoint: input => ipcRenderer.invoke('nova:confirmJinchengCheckpoint', input),
+    saveJinchengAuthorAnalysis: input => ipcRenderer.invoke('nova:saveJinchengAuthorAnalysis', input),
+    openCreationPage: input => ipcRenderer.invoke('nova:openCreationPage', input),
+    creationPageRequest: input => ipcRenderer.invoke('nova:creationPageRequest', input),
+    closeCreationPage: input => ipcRenderer.invoke('nova:closeCreationPage', input),
     importLocalFiles: async (kind, files, photo) => {
         try {
             if (!['material', 'template', 'photo'].includes(kind) || !Array.isArray(files) || files.length < 1 || files.length > (kind === 'template' ? 50 : 1)) throw new Error('请选择允许数量的本机文件。');
@@ -72,6 +79,15 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     readWorkspace: () => ipcRenderer.invoke('nova:readWorkspace'),
     readVault: () => ipcRenderer.invoke('nova:readVault'),
     readVaultContentSource: input => ipcRenderer.invoke('nova:readVaultContentSource', input),
+    readVaultWorkContext: input => ipcRenderer.invoke('nova:readVaultWorkContext', input),
+    readVaultWorkDirectory: () => ipcRenderer.invoke('nova:readVaultWorkDirectory'),
+    readVaultTopicMenus: () => ipcRenderer.invoke('nova:readVaultTopicMenus'),
+    readVaultSources: () => ipcRenderer.invoke('nova:readVaultSources'),
+    openVaultSourcePage: input => ipcRenderer.invoke('nova:openVaultSourcePage',input),
+    chooseVaultSource: input => ipcRenderer.invoke('nova:chooseVaultSource',input),
+    adoptVaultTopic: input => ipcRenderer.invoke('nova:adoptVaultTopic',input),
+    selectVaultCurrentWork: input => ipcRenderer.invoke('nova:selectVaultCurrentWork', input),
+    revealVaultContentDirectory: input => ipcRenderer.invoke('nova:revealVaultContentDirectory', input),
     readVaultDocument: input => ipcRenderer.invoke('nova:readVaultDocument', input),
     saveVaultDocument: input => ipcRenderer.invoke('nova:saveVaultDocument', input),
     createVaultWorkingDraft: input => ipcRenderer.invoke('nova:createVaultWorkingDraft', input),

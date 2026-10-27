@@ -1,4 +1,10 @@
+import {PublicationController} from './publication-controller.mts';
+import type {PublicationMutation} from '../shared/publication-runtime-contracts.ts';
+import {StageController} from './stage-controller.mts';
+import type {StageInputs} from '../shared/stage-contracts.ts';
 import {VaultController} from './vault-controller.mts';
+import {CreationController} from './creation-controller.mts';
+import type {CreationInputs} from '../shared/creation-contracts.ts';
 import type {VaultInputs} from '../shared/vault-contracts.ts';
 import type {ServiceSettingsView, ServiceSettingsPatch, ServiceReadiness,ServiceCredentialRequest,ServiceCredentialDisclosure} from '../shared/service-contracts.ts';
 import {readPlatformCatalog} from './platform-catalog.mts';
@@ -69,9 +75,12 @@ export class DesktopController {
         return this.covers.choosePhoto(selection.photo!, selection.sources[0]);
     }
     production: ProductionController;
+    publicationRuntime: PublicationController;
+    stages: StageController;
     covers: Covers;
     workspace: WorkspaceController;
     vault: VaultController;
+    creation: CreationController;
     displayRoot: {bindingRoot:string;root:string}|null = null;
     templates: TemplateController;
     maintenance: Maintenance;
@@ -119,12 +128,31 @@ export class DesktopController {
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
         this.vault = new VaultController(this);
+        this.publicationRuntime = new PublicationController(this);
+        this.stages = new StageController(this);
+        this.creation = new CreationController(this);
         this.templates = new TemplateController(this, {readTemplateAssistantSetup: readTemplateAssistantSetup ?? (async host => ({host, ready: false, skill: null, reason: 'unconfigured'})), launchTemplate: launchTemplate ?? (async () => fail('NOT_READY', '当前构建未配置模板助手交接。'))});
         this.maintenance = new Maintenance(this);
     }
 
+    readJinchengPublication(input:{contentId:string}){return this.publicationRuntime.read(input);}
+    mutateJinchengPublication(input:PublicationMutation){return this.publicationRuntime.mutate(input);}
+    confirmJinchengCheckpoint(input:StageInputs['confirmJinchengCheckpoint']){return this.stages.run('confirmJinchengCheckpoint',input);}
+    saveJinchengAuthorAnalysis(input:StageInputs['saveJinchengAuthorAnalysis']){return this.stages.run('saveJinchengAuthorAnalysis',input);}
     readVault(input?:undefined){return this.vault.readVault(input);}
+    openCreationPage(input:CreationInputs['openCreationPage']){return this.creation.openCreationPage(input);}
+    creationPageRequest(input:CreationInputs['creationPageRequest']){return this.creation.creationPageRequest(input);}
+    closeCreationPage(input:CreationInputs['closeCreationPage']){return this.creation.closeCreationPage(input);}
     readVaultContentSource(input:VaultInputs['readVaultContentSource']){return this.vault.readVaultContentSource(input);}
+    readVaultWorkContext(input:VaultInputs['readVaultWorkContext']){return this.vault.readVaultWorkContext(input);}
+    readVaultWorkDirectory(input?:undefined){return this.vault.readVaultWorkDirectory(input);}
+    readVaultTopicMenus(input?:undefined){return this.vault.readVaultTopicMenus(input);}
+    readVaultSources(input?:undefined){return this.vault.readVaultSources(input);}
+    chooseVaultSource(input:VaultInputs['chooseVaultSource']){return this.vault.chooseVaultSource(input);}
+    openVaultSourcePage(input:VaultInputs['openVaultSourcePage']){return this.vault.openVaultSourcePage(input);}
+    adoptVaultTopic(input:VaultInputs['adoptVaultTopic']){return this.vault.adoptVaultTopic(input);}
+    selectVaultCurrentWork(input:VaultInputs['selectVaultCurrentWork']){return this.vault.selectVaultCurrentWork(input);}
+    revealVaultContentDirectory(input:VaultInputs['revealVaultContentDirectory']){return this.vault.revealVaultContentDirectory(input);}
     readVaultDocument(input:VaultInputs['readVaultDocument']){return this.vault.readVaultDocument(input);}
     saveVaultDocument(input:VaultInputs['saveVaultDocument']){return this.vault.saveVaultDocument(input);}
     createVaultWorkingDraft(input:VaultInputs['createVaultWorkingDraft']){return this.vault.createVaultWorkingDraft(input);}

@@ -1,4 +1,7 @@
+import {publicationRuntimeInput} from './publication-runtime-validation.ts';
+import {stageDesktopInput} from './stage-validation.ts';
 import {vaultDesktopInput} from './vault-validation.ts';
+import {creationDesktopInput} from './creation-validation.ts';
 import {serviceSettingsPatch,serviceCredentials} from './service-validation.ts';
 import {productionDesktopInput} from './production-validation.ts';
 import {coverDesktopInput} from './cover-validation.ts';
@@ -24,7 +27,7 @@ export const libraryBinding = (v: unknown): v is LibraryBinding => exact(v, ['ro
 export function validateInput(method: DesktopMethod, input: unknown) {
     const ref = (v: unknown) => exact(v, ['id', 'editToken']) && uuid(v.id) && token(v.editToken);
     const draft = (v: Record<string, unknown>) => typeof v.title === 'string' && v.title.length <= 500 && typeof v.body === 'string' && v.body.length <= 1_000_000;
-    const delegated = vaultDesktopInput(method,input) ?? productionDesktopInput(method, input) ?? coverDesktopInput(method, input) ?? workspaceDesktopInput(method, input) ?? maintenanceDesktopInput(method, input) ?? preferencesDesktopInput(method, input) ?? setupDesktopInput(method, input) ?? bootstrapDesktopInput(method, input) ?? templateDesktopInput(method, input);
+    const delegated = publicationRuntimeInput(method,input) ?? stageDesktopInput(method,input) ?? creationDesktopInput(method,input) ?? vaultDesktopInput(method,input) ?? productionDesktopInput(method, input) ?? coverDesktopInput(method, input) ?? workspaceDesktopInput(method, input) ?? maintenanceDesktopInput(method, input) ?? preferencesDesktopInput(method, input) ?? setupDesktopInput(method, input) ?? bootstrapDesktopInput(method, input) ?? templateDesktopInput(method, input);
     if (delegated !== undefined) {
         if (!delegated) fail('INVALID_INPUT', '操作拒绝额外、路径或无效字段。');
         return;

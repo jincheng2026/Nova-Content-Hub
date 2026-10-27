@@ -7,7 +7,12 @@ const text = (value:unknown,max:number) => typeof value==='string' && value.leng
 export function vaultDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method){
  case 'readVault':return input===undefined;
- case 'readVaultContentSource':return exact(input,['contentId'])&&uuid(input.contentId);
+ case 'readVaultWorkDirectory':case 'readVaultTopicMenus':case 'readVaultSources':return input===undefined;
+ case 'openVaultSourcePage':return exact(input,['sourceId','relativePath'])&&vaultDocumentId(input.sourceId)&&typeof input.relativePath==='string'&&input.relativePath.length<2000&&!/^[\\/]|^[A-Za-z]:/.test(input.relativePath)&&!input.relativePath.split(/[\\/]/).some(part=>!part||part==='..'||part==='.')&&!input.relativePath.includes('\0');
+ case 'chooseVaultSource':return exact(input,['role'])&&['benchmark-accounts','topics','drafts','materials','market-patterns','official-archives','archive-analysis','judgments','methods','author-evidence','cases','reports','prompts','visual-assets','bookmarks'].includes(input.role as string);
+ case 'adoptVaultTopic':return exact(input,['sessionId','candidateId','expectedHash','decisionText','mutationId'])&&typeof input.sessionId==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(input.sessionId)&&typeof input.candidateId==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(input.candidateId)&&token(input.expectedHash)&&text(input.decisionText,2000)&&!!String(input.decisionText).trim()&&uuid(input.mutationId);
+ case 'readVaultContentSource':case 'readVaultWorkContext':case 'revealVaultContentDirectory':return exact(input,['contentId'])&&uuid(input.contentId);
+ case 'selectVaultCurrentWork':return exact(input,['contentId','documentId','expectedHash','expectedRevision','decisionText'])&&uuid(input.contentId)&&vaultDocumentId(input.documentId)&&token(input.expectedHash)&&token(input.expectedRevision)&&text(input.decisionText,2000)&&!!String(input.decisionText).trim();
  case 'readVaultDocument':case 'revealVaultDocument':return exact(input,['id'])&&vaultDocumentId(input.id);
  case 'saveVaultDocument':return exact(input,['id','expectedHash','text'])&&vaultDocumentId(input.id)&&token(input.expectedHash)&&text(input.text,1_000_000);
  case 'createVaultDocument':return exact(input,['section','title','text'])&&vaultSections.includes(input.section as typeof vaultSections[number])&&text(input.title,500)&&text(input.text,1_000_000);

@@ -5,12 +5,12 @@ import type {VaultText} from '../shared/vault-contracts.ts';
 import {invoke} from './client.ts';
 import {errorInfo} from '../shared/contracts.ts';
 
-export function ContentSourceNotice({contentId,busy,dirty,access,converted,run}:{contentId:string;busy:boolean;dirty:boolean;access(editable:boolean):void;converted():Promise<void>;run<T>(action:()=>Promise<T>):Promise<T|undefined>}){
+export function ContentSourceNotice({contentId,busy,dirty,access,converted,run,original}:{contentId:string;busy:boolean;dirty:boolean;access(editable:boolean):void;converted():Promise<void>;run<T>(action:()=>Promise<T>):Promise<T|undefined>;original?(id:string|null):void}){
  const [source,setSource]=useState<VaultText|null>(null),[loading,setLoading]=useState(true),[working,setWorking]=useState(false),[error,setError]=useState(''),[retry,setRetry]=useState(0);
  const active=useRef(false),accessRef=useRef(access),dirtyRef=useRef(dirty);accessRef.current=access;dirtyRef.current=dirty;
  useEffect(()=>{
   let cancelled=false;setLoading(true);accessRef.current(false);
-  invoke('readVaultContentSource',{contentId}).then(value=>{if(cancelled)return;setSource(value);setError('');accessRef.current(!value||value.document.writable);}).catch(issue=>{if(!cancelled){setError(errorInfo(issue).message);accessRef.current(false);}}).finally(()=>{if(!cancelled)setLoading(false);});
+  invoke('readVaultContentSource',{contentId}).then(value=>{if(cancelled)return;setSource(value);setError('');accessRef.current(!value||value.document.writable&&!value.document.sourceConflict);original?.(!value?.document.sourceConflict&&value?.document.format==='html'&&value.workingDraftAvailable?value.document.id:null);}).catch(issue=>{if(!cancelled){setError(errorInfo(issue).message);accessRef.current(false);}}).finally(()=>{if(!cancelled)setLoading(false);});
   const changed=()=>{if(!dirtyRef.current&&!active.current)setRetry(value=>value+1);};window.addEventListener('nova-vault-source-changed',changed);
   return()=>{cancelled=true;window.removeEventListener('nova-vault-source-changed',changed);};
  },[contentId,retry]);
@@ -23,6 +23,8 @@ export function ContentSourceNotice({contentId,busy,dirty,access,converted,run}:
  }
  if(loading)return <p role="status">正在核对当前稿件来源…</p>;
  if(error)return <Banner type="warning" closeIcon={null} description={<><p>{error}</p><Button disabled={busy||working} onClick={()=>setRetry(value=>value+1)}>重新核对稿件来源</Button></>}/>;
+ if(source?.document.sourceConflict)return <Banner type="warning" closeIcon={null} description={source.document.sourceConflict+' 请在原选题与全部文件中明确选择当前入口。'}/>;
  if(!source||source.document.writable)return null;
+ if(source.document.format==='html'&&source.workingDraftAvailable)return <p className="vault-source-path">原创作页 · {source.document.relativePath}</p>;
  return <Banner type="info" closeIcon={null} description={<><p>{source.workingDraftAvailable?'当前人工稿来自 HTML。建立工作稿后，可在这一篇内容中继续编辑，原 HTML 保留。':'当前来源格式只供阅读，可定位原件；也可以将想法另存为新内容。'}</p><p className="vault-source-path">{source.document.relativePath}</p>{source.workingDraftAvailable&&<Button id="establish-content-working-draft" theme="solid" disabled={busy||working||dirty} loading={working} onClick={()=>void establish()}>建立可编辑工作稿</Button>}<Button disabled={busy||working} onClick={()=>void invoke('revealVaultDocument',{id:source.document.id}).catch(issue=>setError(errorInfo(issue).message))}>定位原文件</Button>{dirty&&<p>已有本地修改，请先保留到新内容，或放弃本次修改后再建立工作稿。</p>}</>}/>;
 }

@@ -1,0 +1,73 @@
+{
+  "scope": "real T029 fixture only; built-in cover seeding bypassed in injected probe",
+  "phase": "edit",
+  "at": "2026-10-27T19:26:07.968Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "version": "0.4.0",
+  "steps": [
+    "Wait for real renderer ready",
+    "Renderer ready; open isolated Vault",
+    "Vault opened; locate T029 original page",
+    "Warm verified bound reader with current source fingerprint before input",
+    "Open real Semi Vault page and search T029",
+    "Open original HTML document in Semi modal",
+    "T029 original kit ready in opaque sandbox inside real Semi modal",
+    "Original compare, reading and recording view buttons expose their real sections",
+    "Original mine/note inputs durably save through kit and native writer",
+    "Original adoption button commits mine and decision as one group",
+    "Scoped dialog close and Esc preserve failed input; real retry obtains durable ack",
+    "Original selection composer draft obtains native durable ack before exit",
+    "Dialog closes after durable drain"
+  ],
+  "windowBounds": {
+    "x": 224,
+    "y": 129,
+    "width": 1280,
+    "height": 860
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 828,
+    "dpr": 2
+  },
+  "sections": {
+    "cards": 16,
+    "packaging": false,
+    "reading": true,
+    "record": true,
+    "refs": 14,
+    "segments": 7
+  },
+  "segment": "seg-hz2jxk9w",
+  "mine": "把这三个 Skill 用好了，你的 WorkBuddy 才算真正发挥出 100% 的实力。\n三个 Skill 的安装指令，我都整理到知识库啦。\n我是锦成，这是 AI 实操系列的第 21 期，我们下期再见。\n原生桥正文验收",
+  "note": "原生桥批注验收",
+  "adoption": {
+    "fields": {
+      "decision": "不采纳",
+      "proposed": "再让 WorkBuddy 帮你配置到 YAML 文件里。"
+    },
+    "id": "sug-xwytmz6j",
+    "locked": {
+      "basis": {
+        "text": "狗爷聊AI 0:54「再让 WorkBuddy 帮你配置到对应的 YAML 文件里」；千雪AI 0:53 说的是 env 文件",
+        "type": "参考口播"
+      },
+      "category": "口径",
+      "original": "再让 WorkBuddy 帮你配置到 env 文件里。",
+      "reason": "两家这里说法不一样：千雪说 env 文件，狗爷说 YAML 文件。看左边两家原话，选一个。",
+      "segment": "seg-rrupqkzy",
+      "source": "AI",
+      "verdict": "待你定"
+    },
+    "segment": "seg-rrupqkzy"
+  },
+  "adoptedMine": "再让 WorkBuddy 帮你配置到 YAML 文件里。",
+  "designRules": {
+    "Controls-01": "Semi wrapper actions remain operable",
+    "Reading-02": "Original long content preserved in scrollable frame",
+    "Acceptance-01": "Native test passes",
+    "Acceptance-02": "1280x860 window screenshots captured; actual viewport recorded; wider visual review pending",
+    "Acceptance-03": "darwin-arm64 Electron only; no installer/cross-platform claim"
+  }
+}

@@ -1,6 +1,7 @@
 import type {Page} from './workspace-pages.tsx';
 
 const paths: Record<Page | 'library' | 'settings' | 'research', string> = {
+    bookmarks:'M6 3h12v18l-6-4-6 4z',
     vault:'M3 5h7l2 2h9v14H3z M7 12h10 M7 16h6',
     overview: 'M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z',
     templates: 'M4 3h16v18H4z M4 9h16 M10 9v12',

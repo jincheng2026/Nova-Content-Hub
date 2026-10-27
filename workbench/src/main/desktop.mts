@@ -33,6 +33,8 @@ import {isMacInstallationBackupExecutable} from './mac-installation.mts';
 import {ServiceSettingsStore} from './service-settings.mts';
 import {ServiceTools} from './service-tools.mts';
 import {productionToolBroker} from './production-services.mts';
+import {createPublicationCollector} from './publication-collector.mts';
+import {createPublicationObserver} from './publication-observer.mts';
 import {ProductionPages} from './production-pages.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
@@ -43,6 +45,8 @@ interface StartOptions {
     show?: boolean;
     userData?: string;
     marketRoot?: string;
+    localRuntimeRoots?: readonly string[];
+    publicationObserver?: boolean;
     dialogs?: Dialogs;
     onConsoleMessage?: (message: string) => void;
     ready?: (context: {
@@ -63,7 +67,8 @@ const existingUserData = path.join(app.getPath('appData'), 'Nova 内容库技术
 app.setName('自媒体工作台');
 if (existsSync(existingUserData)) app.setPath('userData', existingUserData);
 
-export async function startDesktop({show = true, userData, marketRoot, dialogs, ready, onConsoleMessage}: StartOptions = {}) {
+export async function startDesktop(options:StartOptions = {}) {
+    const {show = true, userData, marketRoot, dialogs, ready, onConsoleMessage}=options;
     if (process.platform === 'darwin' && isMacInstallationBackupExecutable(process.execPath)) { app.quit(); return; }
     if (userData) app.setPath('userData', userData);
     const resources = validateResources(JSON.parse(readFileSync(path.join(here, '../renderer-resources.json'), 'utf8')));
@@ -86,6 +91,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     let libraryWatcher: LibraryWatcher | undefined;
     let productionPages: ProductionPages | undefined;
     let productionBroker: ReturnType<typeof productionToolBroker> | undefined;
+    let publicationObserver: ReturnType<typeof createPublicationObserver> | undefined;
     const serviceErrors: string[] = [];
     let quitting = false, quitReady = false;
     let resumeReminders: (() => void) | undefined;
@@ -101,13 +107,15 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         quitting = true;
         // will-quit follows the resident draft-save guard; accepted writes must release their locks before worker termination.
         libraryWatcher?.close();
+        // Keep the broker and shared worker queue alive through observer result/unknown bookkeeping.
+        const publicationDrain = publicationObserver?.stop({timeoutMs:10000,writeTimeoutMs:3000});
         reminders?.dispose();
         if (resumeReminders) {
             powerMonitor.removeListener('resume', resumeReminders);
             powerMonitor.removeListener('unlock-screen', resumeReminders);
         }
         // Stop new browser/tool requests and settle accepted service calls before closing the shared queue.
-        void Promise.allSettled([productionPages?.close(), productionBroker?.stop()]).then(() => runOperation.close()).then(() => {
+        void Promise.resolve(publicationDrain).then(() => Promise.allSettled([productionPages?.close(), productionBroker?.stop()])).then(() => runOperation.close()).then(() => {
             worker?.stop();
             resourceWorker?.stop();
             tray?.destroy();
@@ -128,8 +136,10 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     }
     session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
     session.defaultSession.setPermissionCheckHandler(() => false);
-    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url))}));
+    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url) || controller.creation.resource(details.url)!==null)}));
     protocol.handle('nova-content', async request => {
+        const creation=request.method==='GET'?controller.creation.resource(request.url):null;
+        if(creation!==null)return new Response(creation,{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors nova-content://app"}});
         if (request.method === 'GET' && controller.covers.allows(request.url)) {
             try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
@@ -167,7 +177,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
     const serviceSettings = new ServiceSettingsStore({filePath: path.join(app.getPath('userData'), 'service-settings.json'), encryption: safeStorage});
     try { await serviceSettings.initialize(); } catch { serviceErrors.push('SETTINGS_UNAVAILABLE'); }
-    const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json')});
+    const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json'),localRuntimeRoots:options.localRuntimeRoots??[path.join(process.resourcesPath,'local-asr',`${process.platform}-${process.arch}`)]});
     const serviceDescriptorPath = path.join(app.getPath('userData'), 'production-services.json');
     const controller: DesktopController = new DesktopController({
         copyText: text => clipboard.writeText(text),
@@ -264,6 +274,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
                 return selected.canceled ? null : selected.filePaths;
             },
             async promptDocument() { const selected = await dialog.showOpenDialog(window, { title: '选择提示词文件', properties: ['openFile'], filters: [{ name: 'Markdown 或文本', extensions: ['md', 'markdown', 'txt'] }] }); return selected.canceled ? null : selected.filePaths[0] ?? null; },
+            async sourceRoot(role) {const selected=await dialog.showOpenDialog(window,{title:role==='visual-assets'?'关联原视觉资料文件夹':role==='bookmarks'?'关联 X 收藏文件夹':'关联已有资料文件夹',properties:['openDirectory']});return selected.canceled?null:selected.filePaths[0]??null;},
             async templateFolder() {const selected = await dialog.showOpenDialog(window, {title: '选择同一模板的图片文件夹（仅第一层，最多50张）', properties: ['openDirectory']}); return selected.canceled ? null : selected.filePaths[0] ?? null;},
             async templateImages() {
                 const selected = await dialog.showOpenDialog(window, {title: '选择同一模板组的风格样张（最多50张，共256 MiB）', properties: ['openFile', 'multiSelections'], filters: [{name: 'PNG、JPEG、WebP 或 GIF 图片', extensions: ['png', 'jpg', 'jpeg', 'webp', 'gif']}]});
@@ -305,6 +316,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             },
         },
     });
+    controller.creation.openLocalFile = async filename => {const error=await shell.openPath(filename);if(error)throw new Error(error);};
     const authorizeProductionPage = (binding: LibraryBinding) => {
         requireWrite(release.AUTH_MODE);
         if (quitting) fail('FORBIDDEN', '工作台正在退出。');
@@ -320,7 +332,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         creationHtml: readFileSync(path.join(here, '../production-creation.html'), 'utf8'),
         authorize: authorizeProductionPage,
         worker: {call: (op, args) => runOperation(async () => {
-            if (!['productionReport','productionMedia'].includes(op) || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
+            if (!['productionReport','productionMedia','jinchengSources','jinchengSourceCatalog','jinchengSourcePage','jinchengSourceAsset','jinchengSourceRequest'].includes(op) || !('binding' in args)) fail('FORBIDDEN', '页面请求无效。');
             authorizeProductionPage(args.binding as LibraryBinding);
             return worker!.call(op, args);
         })},
@@ -340,6 +352,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
             finally { syncLibraryWatcher(); }
         })
     });
+    controller.vault.openBoundSource=async(binding,sourceId,relativePath)=>{authorizeProductionPage(binding);const url=await productionPages!.openBoundSource(binding,sourceId,relativePath);await shell.openExternal(url);};
     productionBroker = productionToolBroker({worker, current: () => {
         requireWrite(release.AUTH_MODE);
         return controller.current();
@@ -460,13 +473,21 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         }
     });
     controller.services = {preferences, reminders, setup, productionServices: {readServiceSettings: () => serviceSettings.read(), saveServiceSettings: input => serviceSettings.update(input), revealServiceCredential: input => serviceSettings.reveal(input.service), checkServiceReadiness: () => serviceTools.checkReadiness()}, bootstrap: {readBootstrapRecovery, resetMachineBinding: input => bootstrap.resetMachineBinding(input)}};
+    const collector=createPublicationCollector({controller:controller.production,worker,descriptorPath:serviceDescriptorPath,settings:serviceSettings,runOperation:operation=>runOperation(operation,'background'),ensureVideoFreshness:(id,targetAt)=>serviceTools.ensureTikHubVideoFreshness(id,targetAt)});
+    publicationObserver=createPublicationObserver({
+        worker:{call:(op,args)=>runOperation(()=>worker!.call(op,args),'background')},
+        listBindings:()=>!quitting&&release.AUTH_MODE==='disabled'&&controller.binding?.current&&!controller.binding.needsReselect?[controller.binding.current]:[],
+        isCollectionReady:()=>collector.isReady(),collectOnce:collector.collectOnce,
+        onDue:()=>{if(!quitting&&!window.isDestroyed())window.webContents.send('nova:workspace-changed','progress');},
+        onError:error=>{const code=errorInfo(error).code;if(!serviceErrors.includes(code))serviceErrors.push(code);}
+    });
     preferences.onSaved = () => { if (!quitting) void reminders?.refresh(true); };
-    resumeReminders = () => { if (!quitting) void reminders?.refresh(true); };
+    resumeReminders = () => { if (!quitting) {void reminders?.refresh(true);void publicationObserver?.tick();} };
     powerMonitor.on('resume', resumeReminders);
     powerMonitor.on('unlock-screen', resumeReminders);
     window.webContents.setWindowOpenHandler(() => ({action: 'deny'}));
     window.webContents.on('will-navigate', event => event.preventDefault());
-    window.webContents.on('will-frame-navigate', event => event.preventDefault());
+    window.webContents.on('will-frame-navigate', event => {if(event.isMainFrame||controller.creation.resource(event.url)===null)event.preventDefault();});
     window.webContents.on('will-attach-webview', event => event.preventDefault());
     ipcMain.handle('nova:importLocalFiles', async (event, ...args) => {
         try {
@@ -499,6 +520,7 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
     await window.loadURL(PAGE);
     syncLibraryWatcher();
     reminders.start();
+    if(options.publicationObserver!==false)publicationObserver.start();
     await ready?.({window, controller, worker, release, tray});
     await confirmInstalledApplication(app).catch(() => {});
 }

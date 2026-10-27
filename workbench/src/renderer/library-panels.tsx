@@ -2,7 +2,7 @@ import {isSelectableTemplate} from '../shared/template-availability.ts';
 import {DataTable, ListToolbar, List, ImageList} from './list-primitives.tsx';
 import {CoverImageViewer, ImagePreviewButton} from './cover-image-viewer.tsx';
 import {FileDropzone} from './file-dropzone.tsx';
-import {useEffect, useMemo, useRef, useState, type ReactNode} from 'react';
+import {createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import TextArea from '@douyinfe/semi-ui-19/lib/es/input/textarea';
 import Checkbox from '@douyinfe/semi-ui-19/lib/es/checkbox';
@@ -58,18 +58,33 @@ export function useManagedDraftGuard(dirty: boolean) {
   const identity = useRef(Symbol('inline-editor'));
   useEffect(() => { if (dirty) managedDrafts.add(identity.current); else managedDrafts.delete(identity.current); return () => { managedDrafts.delete(identity.current); }; }, [dirty]);
 }
+// Each dialog owns only the close guards registered by its own descendants.
+const ManagedCloseScope = createContext<Set<() => Promise<void>> | null>(null);
+export function useManagedCloseGuard(guard: () => Promise<void>) {
+  const scope = useContext(ManagedCloseScope), latest = useRef(guard); latest.current = guard;
+  useEffect(() => { if (!scope) return; const callback = () => latest.current(); scope.add(callback); return () => { scope.delete(callback); }; }, [scope]);
+}
 async function reloadManagedWorkspace(props: WorkspaceManagementProps, apply: (library: WorkspaceLibrarySnapshot) => void) {
   if (props.busy) return;
   await props.run(async () => { const library = await invoke('readWorkspaceLibrary'); apply(library); await props.refresh(library); }, {refreshWorkspaceOnSuccess: false});
 }
 export function ManagementDialog({title, close, busy, dirty, children}: {title: string; close(): void; busy: boolean; dirty?: boolean; children: ReactNode}) {
   const dialog = useRef<HTMLDialogElement>(null), identity = useRef(Symbol('editor'));
-  const [minimized, setMinimized] = useState(false), [confirmClose, setConfirmClose] = useState(false);
+  const [minimized, setMinimized] = useState(false), [confirmClose, setConfirmClose] = useState(false), [closing, setClosing] = useState(false), [closeError, setCloseError] = useState('');
+  const closeGuards = useRef(new Set<() => Promise<void>>()), closeActive = useRef(false);
   useEffect(() => { dialog.current?.showModal(); return () => { managedDrafts.delete(identity.current); }; }, []);
   useEffect(() => { if (dirty === undefined) return; if (dirty) managedDrafts.add(identity.current); else managedDrafts.delete(identity.current); }, [dirty]);
   const markChanged = () => { if (dirty === undefined) managedDrafts.add(identity.current); };
-  const requestClose = () => { if (dirty ?? managedDrafts.has(identity.current)) setConfirmClose(true); else close(); };
-  return <>{minimized && <div className="management-resume"><p>「{title}」的填写内容已保留。处理工作台提示后，可继续编辑。</p><Button onClick={() => { setMinimized(false); dialog.current?.showModal(); }}>继续编辑</Button></div>}<dialog ref={dialog} className="management-dialog" aria-label={title} onClickCapture={event => { if (event.target instanceof Element && event.target.closest('form button, form .semi-checkbox')) markChanged(); }} onInputCapture={markChanged} onChangeCapture={markChanged} onCancel={event => { event.preventDefault(); if (!busy) requestClose(); }}><div className="dialog-heading"><h2>{title}</h2><div className="management-actions"><Button onClick={() => { dialog.current?.close(); setMinimized(true); }}>暂时收起</Button><Button disabled={busy} onClick={requestClose}>关闭</Button></div></div>{confirmClose && <div role="alert"><p>填写内容尚未保存。关闭会放弃这次编辑，已经写入内容库的记录不受影响。</p><Button disabled={busy} onClick={close}>放弃填写并关闭</Button><Button onClick={() => setConfirmClose(false)}>继续填写</Button></div>}{children}</dialog></>;
+  const requestClose = async (discard = false) => {
+    if (busy || closeActive.current) return;
+    closeActive.current = true; setClosing(true); setCloseError('');
+    try {
+      for (const guard of closeGuards.current) await guard();
+      if (!discard && (dirty ?? managedDrafts.has(identity.current))) setConfirmClose(true); else close();
+    } catch (error) { setCloseError(error instanceof Error ? error.message : '当前输入还没有保全，请重试或复制后继续。'); }
+    finally { closeActive.current = false; setClosing(false); }
+  };
+  return <ManagedCloseScope.Provider value={closeGuards.current}>{minimized && <div className="management-resume"><p>「{title}」的填写内容已保留。处理工作台提示后，可继续编辑。</p><Button onClick={() => { setMinimized(false); dialog.current?.showModal(); }}>继续编辑</Button></div>}<dialog ref={dialog} className="management-dialog" aria-label={title} onClickCapture={event => { if (event.target instanceof Element && event.target.closest('form button, form .semi-checkbox')) markChanged(); }} onInputCapture={markChanged} onChangeCapture={markChanged} onCancel={event => { event.preventDefault(); if (!busy) void requestClose(); }}><div className="dialog-heading"><h2>{title}</h2><div className="management-actions"><Button onClick={() => { dialog.current?.close(); setMinimized(true); }}>暂时收起</Button><Button disabled={busy || closing} onClick={() => void requestClose()}>关闭</Button></div></div>{closeError && <p role="alert">{closeError}</p>}{confirmClose && <div role="alert"><p>填写内容尚未保存。关闭会放弃这次编辑，已经写入内容库的记录不受影响。</p><Button disabled={busy || closing} onClick={() => void requestClose(true)}>放弃填写并关闭</Button><Button onClick={() => setConfirmClose(false)}>继续填写</Button></div>}{children}</dialog></ManagedCloseScope.Provider>;
 }
 function PhotoEditor({photo, props, close}: {photo: WorkspaceLibraryPhoto; props: WorkspaceManagementProps; close(): void}) {
   const [title, setTitle] = useState(photo.title), [own, setOwn] = useState(photo.isOwnPhoto);

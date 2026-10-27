@@ -1,0 +1,44 @@
+{
+  "scope": "real T029 fixture only; built-in cover seeding bypassed in injected probe",
+  "phase": "reopen",
+  "at": "2026-10-27T19:26:34.218Z",
+  "platform": "darwin",
+  "arch": "arm64",
+  "version": "0.4.0",
+  "steps": [
+    "Wait for real renderer ready",
+    "Renderer ready; open isolated Vault",
+    "Vault opened; locate T029 original page",
+    "Warm verified bound reader with current source fingerprint before input",
+    "Open real Semi Vault page and search T029",
+    "Open original HTML document in Semi modal",
+    "T029 original kit ready in opaque sandbox inside real Semi modal",
+    "Second Electron process restores exact saved mine/note/adoption and unsubmitted composer draft"
+  ],
+  "windowBounds": {
+    "x": 224,
+    "y": 129,
+    "width": 1280,
+    "height": 860
+  },
+  "viewport": {
+    "width": 1280,
+    "height": 828,
+    "dpr": 2
+  },
+  "sections": {
+    "cards": 16,
+    "packaging": false,
+    "reading": true,
+    "record": true,
+    "refs": 14,
+    "segments": 7
+  },
+  "designRules": {
+    "Controls-01": "Semi wrapper actions remain operable",
+    "Reading-02": "Original long content preserved in scrollable frame",
+    "Acceptance-01": "Native test passes",
+    "Acceptance-02": "1280x860 window screenshots captured; actual viewport recorded; wider visual review pending",
+    "Acceptance-03": "darwin-arm64 Electron only; no installer/cross-platform claim"
+  }
+}

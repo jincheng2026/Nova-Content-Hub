@@ -69,7 +69,13 @@ export function importSource(root,{sourceId,selectedEntries,expectedHashes}){
 export function readSourceInventory(root){
     const sources=[],issues=[];
     for(const entry of readSourceMap(root).sources){
-        try{const resolved=resolveSource(root,entry.id),entryPath=entry.role==='visual-assets'?'public/hub.html':entry.role==='bookmarks'?'X书签工作台.html':null;let entryReady=false;if(resolved.available&&entryPath){try{const stat=fs.lstatSync(safe(resolved.root,entryPath));entryReady=stat.isFile()&&!stat.isSymbolicLink()&&stat.nlink===1;}catch{}}sources.push({...resolved,...(entryPath?{entryPath,entryReady}:{}),projection:entry.mode==='internal'?'vault-scan':'bound-source'});if(!resolved.available)issues.push({sourceId:entry.id,code:'SOURCE_NOT_AVAILABLE',message:entry.role+' 来源尚未提供：'+resolved.root});}
+        try{
+            const resolved=resolveSource(root,entry.id);
+            const paths=entry.role==='visual-assets'?['public/hub.html','public/index.html','public/cover-collection.html','public/face-expression-study/index.html']:entry.role==='bookmarks'?['X书签工作台.html']:[];
+            const entries=paths.map(relativePath=>{let available=false;if(resolved.available)try{const st=fs.lstatSync(safe(resolved.root,relativePath));available=st.isFile()&&!st.isSymbolicLink()&&st.nlink===1;}catch{}return {relativePath,available};});
+            sources.push({...resolved,...(paths.length?{entryPath:paths[0],entryReady:entries[0].available,entries}:{}),projection:entry.mode==='internal'?'vault-scan':'bound-source'});
+            if(!resolved.available)issues.push({sourceId:entry.id,code:'SOURCE_NOT_AVAILABLE',message:entry.role+' 来源尚未提供：'+resolved.root});
+        }
         catch(e){sources.push({...entry,available:false,writable:false,projection:'not-loaded'});issues.push({sourceId:entry.id,code:e.code??'IO_ERROR',message:e.message});}
     }
     return {sources,issues};

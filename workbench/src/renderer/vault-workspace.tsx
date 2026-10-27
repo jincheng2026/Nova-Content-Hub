@@ -1,3 +1,6 @@
+import {JinchengStageActions} from './jincheng-stage-actions.tsx';
+import {JinchengSourceStatus} from './jincheng-source-status.tsx';
+import {CreationFrame} from './creation-frame.tsx';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {listenVaultRecovery,reconcileVaultEditor} from '../shared/vault-editor-recovery.ts';
 import type {VaultEditorSubmission} from '../shared/vault-editor-recovery.ts';
@@ -22,6 +25,7 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
  const [sourceUnavailable,setSourceUnavailable]=useState(false),[conflict,setConflict]=useState(false),[confirmReload,setConfirmReload]=useState(false);
  useEffect(()=>listenVaultRecovery(window,recovery=>{const next=reconcileVaultEditor({...local.current,submission:submission.current},recovery);if(!next)return;submission.current=null;setCurrent(next.current);setText(next.text);setSourceUnavailable(next.sourceUnavailable);setConflict(next.conflict);setMessage(next.message);void saved().catch(error=>setMessage(errorInfo(error).message));}),[]);
  const readonly=!!current&&!current.document.writable;
+ const originalCreation=!!current?.workingDraftAvailable&&current.document.format==='html';
  const dirty=current?text!==current.text:!!title||!!text;
  async function save(){
   if(active.current||busy||readonly||sourceUnavailable||conflict)return;
@@ -51,12 +55,13 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
  return <ManagementDialog title={current?.document.title||'新建资料'} dirty={dirty} busy={busy||working} close={close}>
   <div className="vault-document-form">
    {current?<p className="vault-source-path">来源：{current.document.relativePath}</p>:<><label>分类<PopupSelect value={category} disabled={working} onChange={value=>setCategory(value as VaultSection)}>{vaultSections.map(value=><option key={value} value={value}>{labels[value]}</option>)}</PopupSelect></label><label>名称（可稍后填写）<Input aria-label="资料名称" value={title} maxLength={500} disabled={working} onChange={setTitle}/></label></>}
-   {readonly&&<Banner type="info" closeIcon={null} description={current?.workingDraftAvailable?"这是从原 HTML 读取的人工当前稿。建立可编辑工作稿后，原 HTML 保留，后续改稿在同一内容目录继续。":"此格式保留原文件，仅供阅读。可在文件管理器中定位原件。"}/>}
-   <label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>
+   {originalCreation&&current&&<CreationFrame documentId={current.document.id} busy={busy||working}/>}
+   {!originalCreation&&readonly&&<Banner type="info" closeIcon={null} description={current?.workingDraftAvailable?"这是从原 HTML 读取的人工当前稿。建立可编辑工作稿后，原 HTML 保留，后续改稿在同一内容目录继续。":"此格式保留原文件，仅供阅读。可在文件管理器中定位原件。"}/>}
+   {!originalCreation&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
    <p role="status">{message}</p>
    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
    {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
-   <div className="actions">{current?.workingDraftAvailable&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict} onClick={()=>void establishWorkingDraft()}>建立可编辑工作稿</Button>}{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
+   <div className="actions">{current?.workingDraftAvailable&&!originalCreation&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict} onClick={()=>void establishWorkingDraft()}>建立可编辑工作稿</Button>}{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
    {current&&!readonly&&<details className="vault-document-more"><summary>更多操作</summary>{dirty?<p>请先保存或放弃本次修改，再回收资料。</p>:confirmTrash?<div role="alert"><p>将原资料移入知识库回收区，保留恢复原件的机会。</p><Button type="danger" disabled={working} onClick={()=>void trash()}>确认移入回收区</Button><Button onClick={()=>setConfirmTrash(false)}>取消</Button></div>:<Button type="danger" theme="borderless" onClick={()=>setConfirmTrash(true)}>移入回收区</Button>}</details>}
   </div>
  </ManagementDialog>;
@@ -77,6 +82,8 @@ export function VaultWorkspace({busy,openContent,showTasks,openResources,openAcc
   {message&&<Banner type="warning" closeIcon={null} description={message}/>}
   {snapshot?<>
    <div className="vault-positioning"><div><h3>个人定位</h3><p>{positioningTask?'已有定位访谈，可从原任务继续。':snapshot.positioning.status==='available'?'已找到定位资料，可以阅读并按需调整。':snapshot.positioning.status==='partial'?'已有部分定位资料，可接着梳理。':'先记录资料和想法，也可以随时梳理定位。'}</p></div><div className="actions"><Button disabled={busy||working} loading={working} onClick={()=>void positioning()}>{positioningLabel}</Button><Button theme="borderless" disabled={busy||working} onClick={showTasks}>助手任务</Button></div></div>
+   <JinchengStageActions title="资料入库、定题与规律" busy={busy||working} actions={['intake','topics','patterns']} showTasks={showTasks}/>
+   <JinchengSourceStatus roles={['benchmark-accounts','reports','prompts','visual-assets','official-archives','archive-analysis','methods']} busy={busy||working} title="独立资料与外部来源"/>
    <ListToolbar search={{label:'搜索知识库资料',placeholder:'搜索名称、原路径或 T 号',value:query,change:value=>{setQuery(value);setPage(1);}}}><label>分类<PopupSelect value={section} onChange={value=>{setSection(value);setPage(1);}}><option value="all">全部资料</option>{vaultSections.map(value=><option value={value} key={value}>{labels[value]}</option>)}<option value="other">未知格式</option></PopupSelect></label></ListToolbar>
    <DataTable rows={rows.slice((currentPage-1)*pageSize,currentPage*pageSize)} total={rows.length} page={currentPage} pageSize={pageSize} onPageChange={setPage} onPageSizeChange={setPageSize} disabled={busy||working} label="知识库资料分页" columns={[
     {title:'资料',key:'title',render:(_,item)=><><Button theme="borderless" className="vault-document-link" disabled={working} onClick={()=>void read(item)}>{item.title||'未命名资料'}</Button><p className="vault-source-path">{item.relativePath}</p></>},

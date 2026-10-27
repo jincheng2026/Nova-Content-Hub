@@ -1,7 +1,9 @@
 import path from 'node:path';
+import {verifiedBoundReader} from './bound-reader.mts';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
 import {productionReferenceHash,validateTranscriptReference} from '../../../plugin-src/src/lib/file-library/production-reference.mjs';
+import {researchMediaAuthorized,researchVideoAuthorized} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {validateImportedRaster} from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import {exact,libraryBinding,uuid,token,requireWrite,fail} from '../shared/validation.ts';
@@ -9,7 +11,7 @@ import {productionPending} from '../shared/production-validation.ts';
 import type {ProductionWorkerOperations,ProductionPending,ProductionFile,ProductionCreationState} from '../shared/production-contracts.ts';
 import type {ProductionCoreLibrary} from '../shared/production-core.d.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-const ops=new Set(['productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
+const ops=new Set(['productionObserverMutation','productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport']);
 export const isProductionOperation=(op:unknown):op is keyof ProductionWorkerOperations=>typeof op==='string'&&ops.has(op);
 const same=(p:ProductionPending,b:LibraryBinding)=>p.binding.libraryId===b.libraryId&&p.binding.rootIdentity.dev===b.rootIdentity.dev&&p.binding.rootIdentity.ino===b.rootIdentity.ino;
 const creation=(l:ProductionCoreLibrary,id:string):ProductionCreationState=>{const v=l.readProductionCreation(id);return {content:{id:v.content.id,title:v.content.title,body:v.content.body,editToken:v.content.editToken,bodyHash:v.content.bodyHash,deletedAt:v.content.deletedAt},creation:v.creation,productionToken:v.productionToken,history:v.history};};
@@ -20,7 +22,7 @@ async function files(l:ProductionCoreLibrary,p:Extract<ProductionPending,{kind:'
   if(!path.isAbsolute(source)||source.includes('\0'))fail('INVALID_FILES','必须选择本机普通文件。');
   const stat=await fs.lstat(source),ext=path.extname(source).toLowerCase();
   const extensions=p.fileKind==='images'?['.png','.jpg','.jpeg','.webp','.gif']:p.fileKind==='report'?['.html','.htm']:['.mp3','.mp4','.m4a','.wav','.webm','.ogg','.flac','.mov'];
-  if(!stat.isFile()||stat.isSymbolicLink()||stat.size>(p.fileKind==='report'?2:64)*1024*1024||!extensions.includes(ext))fail('INVALID_FILES','文件格式、大小或位置不可用。');
+  if(!stat.isFile()||stat.isSymbolicLink()||stat.size>(p.fileKind==='report'?8:64)*1024*1024||!extensions.includes(ext))fail('INVALID_FILES','文件格式、大小或位置不可用。');
   if(createHash('sha256').update(await fs.readFile(source)).digest('hex')!==p.hashes[index])fail('STALE_INPUT','选择的源文件已改变，请保留原文件后恢复或明确放弃本次导入。');
   if(p.fileKind==='images')await validateImportedRaster(await fs.readFile(source));
   if(p.fileKind==='report'){const bytes=await fs.readFile(source);let html;try{html=new TextDecoder('utf-8',{fatal:true}).decode(bytes);}catch{fail('INVALID_FILES','报告必须为 UTF-8 HTML。');}if(!/<(?:!doctype\s+html|html|body|article|section)\b/i.test(html!))fail('INVALID_FILES','请选择完整 HTML 报告。');}
@@ -33,7 +35,7 @@ async function files(l:ProductionCoreLibrary,p:Extract<ProductionPending,{kind:'
 }
 export async function executeProduction(op:keyof ProductionWorkerOperations,args:unknown,mode:'required'|'disabled'='required'):Promise<ProductionWorkerOperations[keyof ProductionWorkerOperations]['result']> {
  requireWrite(mode);
- if(['productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant'].includes(op))return executeTool(op,args);
+ if(['productionObserverMutation','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant'].includes(op))return executeTool(op,args);
 
  const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReport'?null:['binding','pending'];
  if(!(fields?exact(args,fields):typeof args==='object'&&args!==null&&Object.keys(args).every(k=>['binding','reportId','pageId'].includes(k)))||!args||!libraryBinding((args as {binding:unknown}).binding))fail('INVALID_INPUT','生产任务参数无效。');
@@ -41,7 +43,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  if(!path.isAbsolute(a.binding.root)||a.binding.root.includes('\0'))fail('INVALID_INPUT','内容库路径无效。');
  if(op==='productionCreation'&&!uuid(a.contentId)||op==='productionReport'&&(!uuid(a.reportId)||a.pageId!==undefined&&!uuid(a.pageId)))fail('INVALID_INPUT','对象编号无效。');
  if((op==='productionMutate'||op==='productionRecover')&&(!productionPending(a.pending)||!same(a.pending,a.binding)))fail('CONFLICT','待核验操作与当前内容库不一致。');
- const l=openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity}) as unknown as ProductionCoreLibrary;
+ const l=(['productionRead','productionCreation','productionReport','productionMedia'].includes(op)?verifiedBoundReader(a.binding):openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity})) as unknown as ProductionCoreLibrary;
  if(op==='productionMedia'){if(!uuid(a.contentId)||!token(a.assetHash))fail('INVALID_INPUT','媒体引用无效。');const state=l.readProductionCreation(a.contentId!);if(!state.creation?.references.some(r=>r.mediaAssetHash===a.assetHash))fail('FORBIDDEN','仅可读取本文已登记原片。');const asset=l.readAsset(a.assetHash!);if(!['audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(asset.detectedType)||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体不可播放。');return {data:asset.data,detectedType:asset.detectedType};}
  if(op==='productionArchive'){if(!uuid(a.taskId))fail('INVALID_INPUT','任务编号无效。');return l.rebuildProductionArchive(a.taskId!);}
  if(op==='productionRead')return l.readProduction();
@@ -50,7 +52,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
   const report=l.readProduction().reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
   if(!report||!page)fail('NOT_FOUND','报告页面不存在。');
   const asset=l.readAsset(page.assetHash);
-  if(asset.bytes>2*1024*1024||!['text/plain','text/html'].includes(asset.detectedType))fail('INVALID_REPORT','报告不是受支持的 HTML。');
+  if(asset.bytes>8*1024*1024||!['text/plain','text/html'].includes(asset.detectedType))fail('INVALID_REPORT','报告不是受支持的 HTML。');
   return {html:new TextDecoder('utf-8',{fatal:true}).decode(asset.data),report};
  }
  const pending=a.pending!;
@@ -74,12 +76,22 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
  const fields=op==='productionMediaGrant'?['binding','input','source','mutationId']:op==='productionContext'?['binding','taskId']:op==='productionAsset'?['binding','taskId','attemptId','claimToken','workerId','audioPath']:op==='productionReserve'?['binding','input','mutationId']:['binding','op','input','mutationId'];
  if(!exact(args,fields)||!libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','工具调用参数无效。');
  const l=openLibrary(args.binding.root,{expectedLibraryId:args.binding.libraryId,expectedRootIdentity:args.binding.rootIdentity}) as unknown as ProductionCoreLibrary;
+ if(op==='productionObserverMutation'){
+  const i=args.input,operation=args.op;
+  if(typeof operation!=='string'||!['claimTask','submitTask','failTask'].includes(operation)||!uuid(args.mutationId)||!exact(i,['taskId','attemptId','claimToken','workerId',...(operation==='submitTask'?['result']:operation==='failTask'?['failure']:[])])||!uuid(i.taskId)||!uuid(i.attemptId)||!uuid(i.claimToken)||i.workerId!=='native-publication-observer')fail('INVALID_INPUT','原生观察任务身份无效。');
+  const context=l.readProductionContext(i.taskId),task=context.task,p=task?.request.parameters as Record<string,unknown>|undefined,scope=p?.publicationScope as Record<string,unknown>|undefined;
+  if(!task||task.activeAttemptId!==i.attemptId||task.kind!=='research'||task.contentId!==null||task.accountId!==null||p?.workflow!=='publication-observe'||p.executor!=='native-observer'||p.comments!==false||p.budgetEnabled!==true||p.maxRequestsPerTask!==1||task.request.budget.amount!==1||task.request.budget.currency!=='REQ'||task.request.tools.length!==1||task.request.tools[0]!=='tikhub'||!scope||typeof scope.postId!=='string'||!/^\d{1,32}$/.test(scope.postId)||!['12h','7d'].includes(String(scope.checkpoint))||!uuid(scope.consentId)||!uuid(scope.reservationId)||!uuid(scope.requestId))fail('PUBLICATION_OPERATION_FORBIDDEN','仅可领取或提交冻结的原生发布观察任务。');
+  return l.mutateProduction(operation as 'claimTask'|'submitTask'|'failTask',i,{mutationId:args.mutationId});
+ }
  if(op==='productionContext'){if(!uuid(args.taskId))fail('INVALID_INPUT','任务编号无效。');return l.readProductionContext(args.taskId);}
  if(op==='productionMediaGrant') {
   const i=args.input;
   if(!uuid(args.mutationId)||!exact(i,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash'])||!uuid(i.taskId)||!uuid(i.attemptId)||!uuid(i.claimToken)||!uuid(i.requestId)||!uuid(i.sourceReceiptId)||!uuid(i.sourceRequestId)||!token(i.requestHash)||!token(i.responseHash)||typeof i.workerId!=='string'||i.workerId.length>200||typeof i.videoId!=='string'||!/^\d{1,32}$/.test(i.videoId)||i.canonicalUrl!==`https://www.douyin.com/video/${i.videoId}`||typeof args.source!=='string'||!path.isAbsolute(args.source))fail('INVALID_INPUT','媒体授权参数无效。');
   const context=l.readProductionContext(i.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===i.attemptId);
-  if(!task||task.activeAttemptId!==i.attemptId||attempt?.claimToken!==i.claimToken||attempt.workerId!==i.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.contentId||!context.creation||l.readProductionCreation(task.contentId).content.deletedAt||!task.request.tools.includes('media'))fail('CLAIM_MISMATCH','下载已结束，但原任务或内容已失效。');
+  const research=researchMediaAuthorized(task);
+  if(task?.contentId&&l.readProductionCreation(task.contentId).content.deletedAt)fail('CLAIM_MISMATCH','当前内容已在回收站，原任务不能继续读取或登记原片。');
+  if(!task||task.activeAttemptId!==i.attemptId||attempt?.claimToken!==i.claimToken||attempt.workerId!==i.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!research&&(!task.contentId||!context.creation||l.readProductionCreation(task.contentId).content.deletedAt)||!task.request.tools.includes('media'))fail('CLAIM_MISMATCH','下载已结束，但原任务或内容已失效。');
+  if(research&&!researchVideoAuthorized(task,context.snapshot.costs,i.attemptId,i.videoId))fail('MEDIA_NOT_AUTHORIZED','该原片不在固定研究来源中。');
   const stat=await fs.lstat(args.source);if(!stat.isFile()||stat.isSymbolicLink()||stat.size<1||stat.size>64*1024*1024)fail('INVALID_INPUT','下载媒体不可用。');
   const asset=l.importAsset(args.source,{purpose:'production-reference'});
   const result=l.mutateProduction('registerMediaGrant',{...i,assetHash:asset.assetHash},{mutationId:args.mutationId});
@@ -90,7 +102,9 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
   if(!uuid(args.taskId)||!uuid(args.attemptId)||!uuid(args.claimToken)||typeof args.workerId!=='string'||!token(args.audioPath))fail('INVALID_INPUT','音频只接受已登记的资产编号。');
   const context=l.readProductionContext(args.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===args.attemptId);
   if(!task||!attempt||task.activeAttemptId!==attempt.id||attempt.claimToken!==args.claimToken||attempt.workerId!==args.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))fail('CLAIM_MISMATCH','工具调用不属于当前运行中的任务。');
-  if(!task.contentId||!task.request.tools.includes('asr')||l.readProductionCreation(task.contentId).content.deletedAt)fail('INVALID_INPUT','任务内容或转写权限已失效。');
+  const research=researchMediaAuthorized(task);
+  if(task?.contentId&&l.readProductionCreation(task.contentId).content.deletedAt)fail('CLAIM_MISMATCH','当前内容已在回收站，原任务不能继续读取或登记原片。');
+  if(!task.request.tools.includes('asr')||!research&&(!task.contentId||l.readProductionCreation(task.contentId).content.deletedAt))fail('INVALID_INPUT','任务内容或转写权限已失效。');
   const frozen=task.request.parameters as Record<string,unknown>,transcript=frozen?.transcript;
   if(transcript!==undefined){
    const binding=transcript as Record<string,unknown>;

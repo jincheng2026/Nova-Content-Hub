@@ -1,0 +1,16 @@
+import {exact,uuid,token} from './validation.ts';
+const text=(v:unknown,max=2000)=>typeof v==='string'&&v.trim().length>0&&v.length<=max&&!v.includes('\0');
+const date=(v:unknown)=>typeof v==='string'&&Number.isFinite(Date.parse(v));
+export function publicationRuntimeInput(method:string,input:unknown):boolean|undefined {
+ if(method==='readJinchengPublication')return exact(input,['contentId'])&&uuid(input.contentId);
+ if(method!=='mutateJinchengPublication')return undefined;
+ if(!input||typeof input!=='object'||Array.isArray(input))return false;const v=input as Record<string,unknown>;
+ const base=['op','contentId','mutationId','expectedRevision','decisionText','decisionAt'];if(!uuid(v.contentId)||!uuid(v.mutationId)||!token(v.expectedRevision)||!text(v.decisionText)||!date(v.decisionAt))return false;
+ if(v.op==='associate-archive')return exact(v,[...base,'sourceId','videoId','manifestPath','expectedSourceHash'])&&typeof v.sourceId==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(v.sourceId)&&typeof v.videoId==='string'&&/^[a-zA-Z0-9_-]{1,100}$/.test(v.videoId)&&text(v.manifestPath,2000)&&!(v.manifestPath as string).includes('\\')&&!(v.manifestPath as string).startsWith('/')&&!(v.manifestPath as string).split('/').some(part=>!part||part==='.'||part==='..')&&/(^|\/)\.system\/manifest\.json$/.test(v.manifestPath as string)&&token(v.expectedSourceHash);
+ if(v.op==='record')return exact(v,[...base,'publication','finalScript','contentPackageId'])&&(exact(v.publication,['platform','title','description','cover','url','publishedAt'])||exact(v.publication,['platform','title','description','cover','url','publishedAt','postId']))&&text(v.publication.platform,100)&&text(v.publication.title,1000)&&typeof v.publication.description==='string'&&v.publication.description.length<=20000&&text(v.publication.cover)&&text(v.publication.url)&&date(v.publication.publishedAt)&&exact(v.finalScript,['text','hash'])&&text(v.finalScript.text,500000)&&token(v.finalScript.hash)&&(v.contentPackageId===null||text(v.contentPackageId,100));
+ if(v.op==='enable-observation')return exact(v,[...base,'enabled','provider','maxRequestsPerCheckpoint','maxUnits'])&&typeof v.enabled==='boolean'&&v.provider==='tikhub'&&v.maxRequestsPerCheckpoint===1&&v.maxUnits===1;
+ if(v.op==='snapshot')return exact(v,[...base,'platform','checkpoint','collectedAt','rawEvidence','metrics','delayReason'])&&text(v.platform,100)&&['12h','7d'].includes(v.checkpoint as string)&&date(v.collectedAt)&&text(v.rawEvidence,2000000)&&!!v.metrics&&typeof v.metrics==='object'&&!Array.isArray(v.metrics)&&Object.keys(v.metrics).length>0&&Object.keys(v.metrics).length<=100&&Object.values(v.metrics).every(x=>x===null||typeof x==='number'&&Number.isFinite(x)&&x>=0)&&(v.delayReason===null||text(v.delayReason));
+ if(v.op==='confirm-review')return exact(v,[...base,'candidateId','candidateHash','selectedActionIndex'])&&uuid(v.candidateId)&&token(v.candidateHash)&&(v.selectedActionIndex===null||Number.isInteger(v.selectedActionIndex)&&(v.selectedActionIndex as number)>=0&&(v.selectedActionIndex as number)<=2);
+ if(v.op==='decide-knowledge')return exact(v,[...base,'candidateId','candidateHash','decision'])&&uuid(v.candidateId)&&token(v.candidateHash)&&['accept','reject'].includes(v.decision as string);
+ return false;
+}

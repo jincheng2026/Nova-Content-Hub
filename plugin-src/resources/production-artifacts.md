@@ -30,3 +30,7 @@ feedback/knowledge artifacts 在成功提交时自动保存为来源关联任务
 `parameters.workflow === "content-creation"` 的整套结果必须各有一项 draft、analysis、narrative、packaging；拆解与叙事非空，包装的 titles、coverTexts、intros 各至少一项有效候选。关键资料缺失时回写等待或失败，不能伪完成。普通单项任务继续按原契约提交。
 
 采用记录 adoptions 由工作台在用户采用已验收回执时登记 taskId、attemptId、receiptHash、采用后正文 bodyHash、at 和 artifactIds。助手产物不填写该字段，普通保存不能伪造或改写采用历史。
+
+## 锦成原位产物
+
+`jincheng-stage` 与 `jincheng-research` 先按 [锦成业务阶段运行接点](jincheng-runtime.md) 的受控命令保存同T原HTML/阶段文件或独立研究目录，再在普通artifact.data附真实文件path/hash/artifactId与可读text并走原提交回执。body摘要不用于重建原创作页；作者字段与阶段确认不由assistant产物声明。topic-suggestion的research artifact使用data.topicCandidates（1—4个候选，各含id/title/description/change/audience/coverage/titleExample/caution）与data.sourceRefs，作者选定才建T。

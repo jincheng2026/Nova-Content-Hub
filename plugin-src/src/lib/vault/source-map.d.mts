@@ -1,5 +1,5 @@
 export type SourceRole = 'bookmarks'|'benchmark-accounts'|'topics'|'drafts'|'materials'|'market-patterns'|'official-archives'|'archive-analysis'|'judgments'|'methods'|'author-evidence'|'cases'|'reports'|'prompts'|'visual-assets';
-export type SourceBinding = {id:string;role:SourceRole;mode:'internal'|'linked';root:string;format:string;authority:'official'|'analysis-copy'|'candidate';writable:boolean;available?:boolean;entryPath?:string;entryReady?:boolean;rootIdentity?:{dev:string;ino:string}};
+export type SourceBinding = {id:string;role:SourceRole;mode:'internal'|'linked';root:string;format:string;authority:'official'|'analysis-copy'|'candidate';writable:boolean;available?:boolean;entryPath?:string;entryReady?:boolean;entries?:{relativePath:string;available:boolean}[];rootIdentity?:{dev:string;ino:string}};
 export type SourceMap = {format:'nova-vault-source-map';schemaVersion:1;sources:SourceBinding[];imports:SourceImport[]};
 export type SourceImport = {id:string;sourceId:string;sourceRoot:string;at:string;status:'registered';entries:{relativePath:string;hash:string}[]};
 export function createDefaultSourceMap(root:string,options?:{createDirectories?:boolean}):SourceMap;

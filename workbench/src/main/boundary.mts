@@ -5,12 +5,17 @@ import type {IpcMainInvokeEvent, WebContents} from 'electron';
 
 export const PAGE = 'nova-content://app/index.html';
 export const CHANNELS = Object.freeze([
+    'readJinchengPublication', 'mutateJinchengPublication',
+    'confirmJinchengCheckpoint', 'saveJinchengAuthorAnalysis',
+    'openCreationPage', 'creationPageRequest', 'closeCreationPage',
+    'readVaultWorkDirectory','readVaultTopicMenus','adoptVaultTopic','readVaultSources',
+    'openVaultSourcePage','chooseVaultSource',
     'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness',
     'createRadarTask', 'adoptRadarResult', 'decideRadarCandidate', 'openRadarSource', 'readPlatformCatalog', 'readProduction', 'mutateProduction', 'startProductionTask', 'openProductionTask', 'actProductionTask', 'openProductionLink', 'chooseProductionFiles', 'readProductionCreation', 'saveProductionDraft', 'readProductionPending', 'recoverProductionPending',
     'readTemplateProgress', 'continueBoundTemplate', 'readCoverProgress', 'continueBoundCover', 'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',
     'readBootstrapRecovery', 'resetMachineBinding',
     'choosePromptDocument', 'chooseTemplateImages', 'chooseContentMaterial', 'readContentMaterial', 'exportContentMaterial',
-    'readVault', 'readVaultContentSource', 'readVaultDocument', 'saveVaultDocument', 'createVaultWorkingDraft', 'createVaultDocument', 'trashVaultDocument', 'revealVaultDocument', 'recoverVaultMutation',
+    'readVault', 'readVaultContentSource', 'readVaultWorkContext', 'selectVaultCurrentWork', 'revealVaultContentDirectory', 'readVaultDocument', 'saveVaultDocument', 'createVaultWorkingDraft', 'createVaultDocument', 'trashVaultDocument', 'revealVaultDocument', 'recoverVaultMutation',
     'status', 'listContents', 'readWorkspace', 'copyPrompt',
     'createLibrary', 'openLibrary', 'readContent', 'createContent', 'updateContent', 'trashContent', 'restoreContent',
     'queryPendingMutation', 'retryPendingMutation', 'resolvePendingMutation', 'listCoverAssets', 'retryBuiltins', 'choosePhoto',
@@ -22,7 +27,7 @@ export const CHANNELS = Object.freeze([
     'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',
     'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'
 ] satisfies DesktopMethod[]);
-export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' nova-content://assets; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'";
+export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' nova-content://assets; connect-src 'none'; frame-src nova-content://creation; object-src 'none'; base-uri 'none'; form-action 'none'";
 const MIME: Record<string, string> = {
     html: 'text/html; charset=utf-8',
     js: 'text/javascript; charset=utf-8',

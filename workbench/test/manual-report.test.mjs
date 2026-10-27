@@ -22,5 +22,5 @@ for(const vault of [false,true])test(`manual report ${vault?'Vault':'legacy'}: b
  const html=library.readAsset(report.pages[0].assetHash).data.toString('utf8');
  assert(!html.includes('<script>'));assert(html.includes('&lt;script&gt;'));
  assert.equal(library.readProduction().reports.length,1);
- if(vault){const files=fs.readdirSync(path.join(root,'02_内容素材'),{recursive:true}).filter(name=>name.endsWith('.md'));assert(files.some(name=>fs.readFileSync(path.join(root,'02_内容素材',name),'utf8').includes(markdown)));}
+ if(vault){const files=fs.readdirSync(path.join(root,'10_调研报告'),{recursive:true}).filter(name=>name.endsWith('.md'));assert(files.some(name=>fs.readFileSync(path.join(root,'10_调研报告',name),'utf8').includes(markdown)));}
 });

@@ -1,0 +1,4 @@
+.creation-frame-workspace{min-width:0;width:100%;background:var(--surface,#fff);border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.08)}
+.creation-frame-workspace iframe{display:block;width:100%;height:max(660px,calc(100vh - 260px));border:0;background:white}
+.creation-frame-status{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 14px;border-bottom:1px solid rgba(0,0,0,.08);color:var(--text-secondary,#6e6e73);font-size:13px}
+@media(max-width:800px){.creation-frame-workspace iframe{height:calc(100vh - 210px);min-height:500px}.creation-frame-status{flex-wrap:wrap}}

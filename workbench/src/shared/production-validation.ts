@@ -1,3 +1,4 @@
+import {jinchengStages,validResearchBrief} from './stage-validation.ts';
 import {vaultDocumentId} from './vault-validation.ts';
 import {validRadarQuery} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {isRecord} from './contracts.ts';
@@ -44,13 +45,16 @@ export function productionDesktopInput(method:string,input:unknown):boolean|unde
  case 'readPlatformCatalog':case 'readProduction':case 'readProductionPending':return input===undefined;
  case 'mutateProduction':return exact(input,['op','input','mutationId'])&&uuid(input.mutationId)&&productionMutationInput(input.op,input.input);
  case 'startProductionTask':{
-  if(!optionalKeys(input,['kind','title','prompt','mode','comments'],['contentId','accountId','workflow','businessSkill','source','transcript'])||!isRecord(input))return false;
-  const positioning=input.workflow==='positioning-interview',topics=input.workflow==='topic-suggestion';
-  if(input.source!==undefined&&(!topics||!exact(input.source,['documentId','expectedHash'])||!vaultDocumentId(input.source.documentId)||!token(input.source.expectedHash)))return false;
+  if(!optionalKeys(input,['kind','title','prompt','mode','comments'],['contentId','accountId','workflow','businessSkill','stage','researchBrief','source','transcript'])||!isRecord(input))return false;
+  if(input.stage!==undefined&&(!jinchengStages.includes(input.stage as string)||input.workflow!=='jincheng-stage'))return false;
+  if(input.researchBrief!==undefined&&(!validResearchBrief(input.researchBrief)||input.kind!=='research'&&!(input.workflow==='jincheng-stage'&&input.stage==='intake')))return false;
+  const positioning=input.workflow==='positioning-interview',topics=input.workflow==='topic-suggestion',stage=input.workflow==='jincheng-stage';
+  if(input.source!==undefined&&(!(topics||stage)||!exact(input.source,['documentId','expectedHash'])||!vaultDocumentId(input.source.documentId)||!token(input.source.expectedHash)))return false;
   if(positioning&&(input.kind!=='writing'||input.contentId!==null||input.accountId!==null||input.comments!==false||input.mode!=='simple'||input.businessSkill!=='xindao-interview'||input.transcript!==undefined))return false;
   if(topics&&(input.kind!=='research'||!(input.contentId===null||uuid(input.contentId))||input.accountId!==null||input.comments!==false||input.mode!=='simple'||input.businessSkill!=='xindao-xuanti'||input.transcript!==undefined))return false;
-  if(!positioning&&!topics&&(input.businessSkill!==undefined||!['contentId','accountId'].every(k=>input[k]===undefined||uuid(input[k]))))return false;
-  if(input.workflow!==undefined&&!positioning&&!topics&&!(input.workflow==='content-creation'&&input.kind==='writing'&&uuid(input.contentId)))return false;
+  if(stage&&(typeof input.businessSkill!=='string'||!/^(?:jc-[a-z0-9-]+|nova-workbench-writing-method)$/.test(input.businessSkill)||!['contentId','accountId'].every(k=>input[k]===undefined||input[k]===null||uuid(input[k]))||input.transcript!==undefined))return false;
+  if(!positioning&&!topics&&!stage&&((input.businessSkill!==undefined&&!((input.kind==='research'||input.kind==='analysis'&&uuid(input.accountId))&&input.businessSkill==='jc-media-research'))||!['contentId','accountId'].every(k=>input[k]===undefined||uuid(input[k]))))return false;
+  if(input.workflow!==undefined&&!positioning&&!topics&&!stage&&!(input.workflow==='content-creation'&&input.kind==='writing'&&uuid(input.contentId)))return false;
   return (input.transcript===undefined||(input.workflow===undefined&&input.accountId===undefined&&input.kind==='transcription'&&uuid(input.contentId)&&exact(input.transcript,['intent','referenceId','expectedReferenceHash'])&&['extract','correct','reextract'].includes(input.transcript.intent as string)&&uuid(input.transcript.referenceId)&&token(input.transcript.expectedReferenceHash)))&&kinds.includes(input.kind as string)&&text(input.title,500)&&!!(input.title as string).trim()&&text(input.prompt,input.workflow==='content-creation'||input.transcript!==undefined?95000:100000)&&!!(input.prompt as string).trim()&&['simple','detailed'].includes(input.mode as string)&&typeof input.comments==='boolean';
  }
  case 'openProductionTask':return optionalKeys(input,['taskId'],['host'])&&isRecord(input)&&uuid(input.taskId)&&(input.host===undefined||host(input.host));

@@ -1,4 +1,8 @@
+import {isPublicationOperation,executePublication} from './publication-worker.mts';
+import {isStageOperation,executeStage} from './stage-worker.mts';
 import {isVaultOperation,executeVault} from './vault-worker.mts';
+import {executeCreation} from './creation-worker.mts';
+import {isJinchengSourceOperation,executeJinchengSource} from './jincheng-source-worker.mts';
 import {inspectVault,openVault,createVault} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {isProductionOperation, executeProduction} from './production-worker.mts';
 import {boundReader} from './bound-reader.mts';
@@ -62,7 +66,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
     return {contents, prompts, channels};
 }
 
-type DelegatedOperation = keyof import('../shared/vault-contracts.ts').VaultWorkerOperations | keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
+type DelegatedOperation = keyof import('../shared/publication-runtime-contracts.ts').PublicationRuntimeWorkerOperations | keyof import('../shared/stage-contracts.ts').StageWorkerOperations | keyof import('../shared/jincheng-source-contracts.ts').JinchengSourceWorkerOperations | keyof import('../shared/creation-contracts.ts').CreationWorkerOperations | keyof import('../shared/vault-contracts.ts').VaultWorkerOperations | keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
     bind: ['destination'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
@@ -75,6 +79,10 @@ const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = 
 };
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
+    if(isPublicationOperation(op))return executePublication(op,args,mode);
+    if(isStageOperation(op))return executeStage(op,args,mode);
+    if(op==='creationPage')return executeCreation(args,mode);
+    if(isJinchengSourceOperation(op))return executeJinchengSource(op,args,mode);
     if (isVaultOperation(op)) return executeVault(op,args,mode);
     if (isProductionOperation(op)) return executeProduction(op, args, mode);
     if (isCoverOperation(op)) return executeCover(op, args, mode);
@@ -100,9 +108,10 @@ export async function execute(op: unknown, args: unknown, mode: 'required' | 'di
         const current=op==='createLibrary'?createVault(args.root as string):inspectVault(args.root as string).recognized?openVault(args.root as string):bindingOf(openLibrary(args.root as string));
         const after=await fs.lstat(args.root as string,{bigint:true});
         if(!after.isDirectory()||after.isSymbolicLink()||String(after.dev)!==expected.dev||String(after.ino)!==expected.ino)fail('CONFLICT','新库创建位置已改变，原创建意图保留。');
+        boundReader(current);
         return current;
     }
-    if (op === 'bind') {const root=args.destination as string;return inspectVault(root).recognized?openVault(root):bindingOf(openLibrary(root));}
+    if (op === 'bind') {const root=args.destination as string,current=inspectVault(root).recognized?openVault(root):bindingOf(openLibrary(root));boundReader(current);return current;}
     const binding = args.binding as unknown as LibraryBinding;
     const library = ['workspace', 'list', 'readContent'].includes(op as string) ? boundReader(binding) : bound(binding);
     if (op === 'workspace') return workspace(library);

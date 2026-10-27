@@ -1,6 +1,6 @@
 import {templateStudyComplete} from './template-study-state.mts';
 import {isTemplateCatalogSelectable, templateCatalogFields} from './template-catalog.mts';
-import {boundReader, forgetBoundReader} from './bound-reader.mts';
+import {boundReader, verifiedBoundReader, forgetBoundReader} from './bound-reader.mts';
 import {errorInfo} from '../shared/contracts.ts';
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
@@ -98,7 +98,7 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
       }));
     } catch (error) { forgetBoundReader(); throw error; }
   }
-  const library = ['coverAssets', 'readCover', 'readCoverProgress'].includes(op) ? boundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  const library = ['seed', 'coverAssets', 'readCover', 'readCoverProgress'].includes(op) ? verifiedBoundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
   if (op === 'readCoverProgress') return library.readCoverProgress(raw.contentId as string);
   if (op === 'seed') { installBuiltins(library); return; }
   if (op === 'importPhoto') {

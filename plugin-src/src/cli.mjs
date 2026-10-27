@@ -7,6 +7,10 @@ export async function main(argv) {
     if (namespace === 'contract') return contract(args);
     if (namespace === 'hook') return contract(['hook', ...args]);
     if (namespace === 'production') { const {main: production} = await import('./commands/production.mjs'); return production(args); }
+    if (namespace === 'jincheng-creation') { const {main} = await import('./commands/jincheng-creation.mjs'); return main(args); }
+    if (namespace === 'jincheng-publish') { const {main} = await import('./commands/jincheng-publish.mjs'); return main(args); }
+    if (namespace === 'jincheng-workflow') { const {main} = await import('./commands/jincheng-workflow.mjs'); return main(args); }
+    if (namespace === 'jincheng-research') { const {main: research} = await import('./commands/jincheng-research.mjs'); return research(args); }
     if (namespace === 'template') {
         const {main: template} = await import('./commands/template.mjs');
         return template(args);
@@ -18,7 +22,7 @@ export async function main(argv) {
     const ok = namespace === 'help' && args.length === 0;
     process.stdout.write(JSON.stringify({
         ok, ...(ok ? {} : {code: 'INVALID_ARGUMENTS'}),
-        namespaces: ['contract', 'cover', 'template', 'production', 'hook', 'doctor'], productionReady: false,
+        namespaces: ['contract', 'cover', 'template', 'production', 'jincheng-research', 'jincheng-creation', 'jincheng-workflow', 'jincheng-publish', 'hook', 'doctor'], productionReady: false,
         message: '显式使用 contract、cover 或 template 命令空间；原型请求只供契约校验。'
     }) + '\n');
     return ok ? 0 : 1;

@@ -25,7 +25,7 @@ JSON 顶层只有 `{claimToken,workerId,input?}`。库、T 内容、当前来源
 | `jincheng-creation reply` | `{itemId,handledNote,reply,expectedFingerprint,mutationId}` | 按最新意见指纹追加AI回复；意见变化后重新处理 |
 | `jincheng-creation append-item` | `{item,expectedRevision,mutationId}` | 原schema的refnote/skeleton/step，或cover-copy阶段的pubslot/pubcand |
 
-阶段kind映射：narrative→narrative；key-segment→key-segments；writing/tutorial/revision→complete-draft；analysis-ai/analysis-author→analysis-comparison；cover-copy→packaging；review/patterns→review；closeout→archive。tutorial先交叙事，再交重点段，最后完整稿。叙事与重点段的准确版本均由作者在工作台确认后，writing/tutorial才允许完整稿或完整HTML生成。新版本须重新确认。approved、recorded、发布事实仍使用各自原件字段，阶段ledger不替代它们。
+阶段kind映射：narrative→narrative；key-segment→key-segments；writing/tutorial/revision→complete-draft；analysis-ai/analysis-author→analysis-comparison；cover-copy→packaging；review/patterns→review；closeout→archive。显式选择stage=tutorial或业务方法jc-jiaocheng-video时，先交叙事，再交重点段（开头、最需判断的一段和结尾），准确版本均由作者确认后才生成完整稿/完整HTML。普通jc-content-writer按原方法的素材包→逐问访谈→本人确认素材包→AI初稿推进，不额外强加教程叙事/重点段检查点，也不因缺少这些教程产物阻止从已有真实资料续写。用户已明确开展并登记的叙事、重点段或作者先拆仍须沿用准确版本的作者确认；产物变化、重新打开或未确认时，先回到对应阶段，不能借普通写稿绕过已选择的阶段。素材包的本人确认继续按原方法与共同等待契约真实停等，不由assistant产物自述为已确认。approved、recorded、发布事实仍使用各自原件字段，阶段ledger不替代它们。
 
 作者先拆路线先运行read，提示作者在工作台“阶段确认与作者先拆”写下自己的判断，然后按共同契约回写waiting-user。作者保存后再读workflow；authorAnalysisConfirmed为true后才提交AI差异。差异产物由作者继续确认/拒绝/重新讨论。助手命令不接受author-analysis产物或作者evidence，不能把聊天中的自述当作者已确认。
 

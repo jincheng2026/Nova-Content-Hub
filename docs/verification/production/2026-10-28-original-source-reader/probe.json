@@ -1,0 +1,315 @@
+[
+  {
+    "kind": "report",
+    "initial": {
+      "buttons": [
+        {
+          "data": {
+            "topic": "access"
+          },
+          "text": "工具入口、版本与设备"
+        },
+        {
+          "data": {
+            "topic": "website"
+          },
+          "text": "开发、上线与后续维护"
+        },
+        {
+          "data": {
+            "topic": "resources"
+          },
+          "text": "教程、资料与交流入口"
+        },
+        {
+          "data": {
+            "topic": "workflow"
+          },
+          "text": "具体工作与内容制作"
+        },
+        {
+          "data": {
+            "topic": "proof"
+          },
+          "text": "效果、用途与适用条件"
+        },
+        {
+          "data": {
+            "topic": "learning"
+          },
+          "text": "从哪里开始与怎样学习"
+        },
+        {
+          "data": {
+            "topic": "feedback"
+          },
+          "text": "已经尝试后的反馈"
+        },
+        {
+          "data": {
+            "topic": "summary"
+          },
+          "text": "请 AI 整理视频"
+        }
+      ],
+      "cards": 6,
+      "images": 0,
+      "text": "评论区洞察\n\n西门聪明蛋XD：评论里的人在做什么、卡在哪里\n\n22 条作品下的 1,930 条顶层记录显示，问题从进入工具、做出产物，继续延伸到上线、找客户和求职。已尝试的反馈与仍在入门的追问并存，较低点赞不能用来判断谁没有行动。\n\n材料采集：2026-08-21，北京时间 16:08—16:38；本轮于 2026-09-11 离线复核\n\n研究范围\n评论在问什么\n具体发现\n可以怎样用\n查原文\n采集说明\n这份报告看了哪些材料\n1,930\n去重后评论\n22\n涉及视频\n1,930\n已复核评论\n\n已逐条阅读 1,930 条去重顶层记录；其中 211 条长度达到 35 字，逐条保留解释。按原始返回顺序和 cid 对账，主题由语义复核，可重叠。843 条未归主题的赞美、闲聊、推广、噪声等仍保留。23 条原始无文字记录仅显示明确注记，注记不是观众原话，CSV 的 raw_text 保持空值。\n\n一级评论 1,930 条，楼内回复 0 条，层级未知 0 条。未复核 0 条。\n\n评论在问什么\n\n评论条数和",
+      "title": "西门聪明蛋XD：评论里的人在做什么、卡在哪里",
+      "filter": {
+        "count": "当前显示 249 / 1,930 条评论 · 工具入口、版本与设备。",
+        "selected": "工具入口、版本与设备"
+      },
+      "charts": {
+        "canvas": 0,
+        "details": 39,
+        "echarts": "undefined",
+        "svg": 0,
+        "tables": 1
+      }
+    },
+    "errors": [],
+    "status": ""
+  },
+  {
+    "kind": "vi",
+    "initial": {
+      "buttons": [
+        {
+          "data": {},
+          "text": "我的选择\n0"
+        },
+        {
+          "data": {
+            "category": "featured"
+          },
+          "text": "先看这 8 组\n8"
+        },
+        {
+          "data": {
+            "category": "all"
+          },
+          "text": "全部样本\n39"
+        },
+        {
+          "data": {
+            "category": "cover"
+          },
+          "text": "视频封面\n21"
+        },
+        {
+          "data": {
+            "category": "ppt"
+          },
+          "text": "PPT\n7"
+        },
+        {
+          "data": {
+            "category": "web"
+          },
+          "text": "网站\n5"
+        },
+        {
+          "data": {
+            "category": "illustration"
+          },
+          "text": "文章配图\n6"
+        },
+        {
+          "data": {
+            "status": "all"
+          },
+          "text": "全部判断\n39"
+        }
+      ],
+      "cards": 0,
+      "images": 8,
+      "text": "锦\n锦成/视觉筛选\n秋芝封面 VI\n已保存到本地\n我的选择\n0\n\n从已有作品开始\n\n先看这 8 组\n8\n全部样本\n39\n视频封面\n21\nPPT\n7\n网站\n5\n文章配图\n6\n\n这次的判断\n\n全部判断\n39\n还没判断\n39\n喜欢\n0\n想调整\n0\n不喜欢\n0\n待定\n0\n\n先选直觉喜欢的，再比较细节。\n\n所有判断都可以随时改。\n\nJINCHENG · VISUAL SELECTION\n\n选出你想延续的样子。\n\n从过去的作品里看图、比较、留意见。以前喜欢过的，也由你重新判断。\n\n39\n组精选样本\n75 张图 · 4 种使用场景\n先看这 8 组\n\n每个场景先看两组，感受不同表达。\n\n8 组作品\n⌕\n曾明确收藏\n点开看大图\n视频封面\nV01\n奶油白底与人物托举\n\n把标题、本人和产品物体放在最前面，适合判断简洁到什么程度。\n\n喜欢\n想调整\n不喜欢\n对比\n首图曾明确喜欢\n3 张 · 点开看\nPPT\nP01\n黑红力量与同题试验\n\n内容和图解相同，能直接比较黑红配色、笔触粗细和标题字形带来的差别。\n\n喜欢\n想",
+      "title": "锦成 · 视觉筛选",
+      "debug": {
+        "api": "object",
+        "fetch": "async(input,options={})=>{const key=route(input instanceof Request?input.url:input),method=String(options.method||'GET')",
+        "scripts": 2
+      },
+      "direct": {
+        "items": 39
+      },
+      "controls": {
+        "buttons": [
+          {
+            "data": {
+              "status": "all"
+            },
+            "text": "全部判断39"
+          },
+          {
+            "data": {
+              "status": "unrated"
+            },
+            "text": "还没判断39"
+          },
+          {
+            "data": {
+              "status": "like"
+            },
+            "text": "喜欢0"
+          },
+          {
+            "data": {
+              "status": "adjust"
+            },
+            "text": "想调整0"
+          },
+          {
+            "data": {
+              "status": "no"
+            },
+            "text": "不喜欢0"
+          }
+        ],
+        "notes": [
+          {
+            "data": {
+              "note": "V01"
+            },
+            "id": "detail-note"
+          },
+          {
+            "data": {},
+            "id": "overall-note"
+          }
+        ]
+      },
+      "saveStatus": "选择与备注已保存到当前第二大脑。"
+    },
+    "errors": [],
+    "status": "选择与备注已保存到当前第二大脑。"
+  },
+  {
+    "kind": "collection",
+    "initial": {
+      "buttons": [
+        {
+          "data": {},
+          "text": "导入选择"
+        },
+        {
+          "data": {},
+          "text": "导出我的选择"
+        },
+        {
+          "data": {},
+          "text": "上一条"
+        },
+        {
+          "data": {},
+          "text": "下一条"
+        },
+        {
+          "data": {},
+          "text": "只看已选"
+        },
+        {
+          "data": {},
+          "text": "小图浏览"
+        },
+        {
+          "data": {
+            "open": "workbuddy-official-more:C01"
+          },
+          "text": ""
+        },
+        {
+          "data": {
+            "pick": "workbuddy-official-more:C01"
+          },
+          "text": "选这张"
+        }
+      ],
+      "cards": 60,
+      "images": 60,
+      "text": "JINCHENG / COVER COLLECTION\n我的封面\n\n同一条内容，放在一起选。喜欢的可以多选，拿不准的加入对比。\n\n527张候选\n28条内容\n0张已选\n已选与原封面对比\n导入选择\n导出我的选择\n上一条\n全部内容\nworkbuddy：AI 自媒体工作流闭环了！\nFDE 的春天来了\n最惊艳的6条提示词\n0基础轻松做拼贴杂志风动画\n学AI的人都应该去做AI自媒体\n做自媒体审美越高越容易难产\nDsh保姆级入门教程\nAI老瞎编？先做好这个设置\nworkbuddy自媒体指南\n新手安装这八个skill就够啦\nWorkBuddy小白终极教程\n2分钟调好WorkBuddy\nCodex额度用不完的秘密\n为什么AI越强人越要慢下来\n1分钟学会用AI做出高审美PPT\nAI自动剪辑跑通太不容易了\nAI个人工作台搭建\nAI剪辑Skill正式开源\nAI正在让我们变得更ADHD\ncodex-gpt全面崩溃\n为什么越会用AI人反而越容易累\n最好用的Vibe-Coding提示词\n3招让Codex任务不断档\nW",
+      "title": "我的封面 · 锦成 VI",
+      "debug": {
+        "api": "object",
+        "fetch": "async(input,options={})=>{const key=route(input instanceof Request?input.url:input),method=String(options.method||'GET')",
+        "scripts": 2
+      },
+      "direct": {
+        "items": 39
+      },
+      "saveStatus": "当前页有 10 张图片的原件未包含在来源包中。"
+    },
+    "errors": [],
+    "status": "当前页有 10 张图片的原件未包含在来源包中。"
+  },
+  {
+    "kind": "bookmarks",
+    "initial": {
+      "buttons": [
+        {
+          "data": {},
+          "text": "\n        工作队列与筛选今日建议\n        展开\n      "
+        },
+        {
+          "data": {
+            "view": "all"
+          },
+          "text": "00\n全部书签\n586"
+        },
+        {
+          "data": {
+            "view": "today"
+          },
+          "text": "01\n今日建议\n5"
+        },
+        {
+          "data": {
+            "view": "candidates"
+          },
+          "text": "02\n内容候选\n232"
+        },
+        {
+          "data": {
+            "view": "practice"
+          },
+          "text": "03\n先实操后输出\n431"
+        },
+        {
+          "data": {
+            "view": "producing"
+          },
+          "text": "04\n生产中\n0"
+        },
+        {
+          "data": {
+            "view": "produced"
+          },
+          "text": "05\n已产出\n0"
+        },
+        {
+          "data": {
+            "view": "notes"
+          },
+          "text": "06\n有备注\n0"
+        }
+      ],
+      "cards": 5,
+      "images": 0,
+      "text": "SIGNAL DESK\nX 书签工作台\n@WindFrostx\n586 BOOKMARKS · 来源快照\n自动链路待验证 · X 未验证 · 飞书未验证 · 下次运行未知\nWORKSPACE / 工作队列\n00\n全部书签\n586\n01\n今日建议\n5\n02\n内容候选\n232\n03\n先实操后输出\n431\n04\n生产中\n0\n05\n已产出\n0\n06\n有备注\n0\nTOPIC / 主题\n全部\n586\nAI 使用与智能体\n300\n内容与 IP 选题\n68\n流量与平台运营\n18\n产品、商业与变现\n50\n开源、编程与自动化\n54\n设计、视频与视觉\n41\n行业观点与趋势\n20\n成长、认知与方法\n32\n其他与待归档\n3\nINTENT / 用途\n全部\n586\nAI 技巧\n394\nIP 选题\n186\n优质分享\n351\n流量参考\n104\n待精读\n58\nWORKFLOW / 处理类型\n全部\n586\n实操\n301\n内容\n99\n实操+内容\n130\n资料\n56\nDECISION / 人工决策\n全部\n586\n系统推荐\n586",
+      "title": "X 书签内容生产工作台",
+      "debug": {
+        "api": "object",
+        "fetch": "async(input,options={})=>{const key=route(input instanceof Request?input.url:input),method=String(options.method||'GET')",
+        "scripts": 3
+      },
+      "direct": "Error: 此离线页面未取得该资源或操作：/api/catalogue",
+      "data": {
+        "items": 586,
+        "visible": 5
+      }
+    },
+    "errors": [],
+    "status": "选择与备注已保存到当前第二大脑。"
+  }
+]
