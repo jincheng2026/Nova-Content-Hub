@@ -26,7 +26,8 @@ export function productionLaunchFailure(error: unknown): string {
         NOT_READY: '助手启动预检未通过（NOT_READY），请在设置中检查助手与配套插件。',
         HANDOFF_CANCELLED: '已取消打开助手，完整提示词已保留在剪贴板。',
         COPY_FAILED: '完整提示词复制失败，请重新打开此任务。',
-        INVALID_HANDOFF: '任务交接校验未通过，请刷新原任务后重试。'
+        INVALID_HANDOFF: '任务交接校验未通过，请刷新原任务后重试。',
+        HANDOFF_PATH_TOO_LONG: '内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。'
     };
     return prefix + (Object.hasOwn(safe, code) ? safe[code] : '系统未能打开助手，请检查助手安装后在助手任务列表重试。');
 }

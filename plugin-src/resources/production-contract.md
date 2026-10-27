@@ -44,4 +44,4 @@
 
 按产物结构构建 `{"workerId":"自己的值","claimToken":"自己的值","result":{"summary":"实际结果","artifacts":[...]},"mutationId":"新UUIDv4"}`，运行 `RUN production submit --handoff UUID --file JSON`。成功后运行 status，核对当前 attempt、submitted、receipt.taskId/attemptId/requestHash/resultHash/sha256，保存回执。只有提交成功才告知已回传。
 
-产物提交、工作台人工验收 accepted、用户明确采用正文／参考／包装是不同步骤。skill 不代替用户 accept 或修改库内正文文件。恢复任务从 context 读当前状态；submitted/accepted/cancelled/failed 终态不继续写进度。原会话没有可靠标识时使用工作台的新会话降级提示，禁止猜测原会话。
+产物提交、工作台人工验收 accepted、用户明确采用正文／参考／包装是不同步骤。skill 不代替用户 accept 或修改库内正文文件。恢复任务从 context 读当前状态；submitted/accepted/cancelled/failed 终态不继续写进度。已接单及等待中的任务没有可靠原会话标识时，工作台只打开对应助手，用户回原聊天继续；不新建聊天接管旧 claim，不猜测原会话。created 尝试的短启动指令已包含 Skill 与交接编号；先读取固定 context 中的全部请求，不要求用户复制或粘贴完整需求。

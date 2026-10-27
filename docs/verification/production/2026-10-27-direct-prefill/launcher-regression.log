@@ -1,0 +1,98 @@
+✔ legacy browser requests without a trusted fixed local request never create a private-content URI (28.43025ms)
+✔ all browser intents start naturally and preserve complete data without unrelated image instructions (6.618542ms)
+✔ each request kind controls its own intent and retains host skill activation and resume routing (11.730542ms)
+✔ long browser content stays available for preview/export without a private-content URI or attachment workaround (16.819125ms)
+✔ display names are bounded data and required auth or unsupported resume remain refused (1.485ms)
+✔ prototype bridge is generated from the pure canonical bridge and retains fixed host routing (44.313417ms)
+✔ sync --check detects drift without repairing or executing the generated bridge (948.35175ms)
+✔ browser image requests preserve visible selected requirements in JSON and long attachment fallback (230.564ms)
+✔ browser requirement summaries admit only positive safe integer count and a two-integer pixel tuple (45.9695ms)
+✔ all browser intents and request kinds expose original input outside the JSON with safe fences (2.509208ms)
+✔ blocked browser launch does not copy or open and leaves existing manual preview/export paths intact (6.232541ms)
+✔ legacy Codex continuation without fixed local context is refused while its exported request remains complete (1.520417ms)
+✔ real built workspace, request, handoff and authored catalog satisfy independent JSON Schema 2020-12 (494.52975ms)
+✔ independent schemas and runtime reject malformed envelopes and nested requests (31.728375ms)
+✔ runtime adds cross-field binding and UTF8 limits that structural schemas cannot express (41.035417ms)
+✔ browser exports remain complete but automatic host URLs require a fixed desktop request (225.726208ms)
+✔ required browser simulation and runtime flags never authorize a real content-bearing launch (63.37575ms)
+✔ actual packaged check-handoff validates both modes without echoing project content or executing (352.812541ms)
+✔ bundled native hook context is minimal guidance and cannot acknowledge business success (993.934583ms)
+✔ all fifteen self-media designs build bounded requests accepted by the packaged CLI (5602.853542ms)
+✔ both delivered bundles include actual AI reference bytes and their reproducible prompts (410.746208ms)
+✔ independent design schema rejects invalid nested design, reference and review records (7.2455ms)
+✔ codex envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (4015.95625ms)
+✔ workbuddy envelope resolves exact bound attempt and URL shows intent, names and installed Skill without private payload (5048.749041ms)
+✔ codex exact template handoff names the selected template and requests study plus restoration (2081.158875ms)
+✔ codex ratio-minimum template handoff names the selected template and requests study plus restoration (3513.473292ms)
+✔ workbuddy exact template handoff names the selected template and requests study plus restoration (2587.942916ms)
+✔ workbuddy ratio-minimum template handoff names the selected template and requests study plus restoration (3329.645709ms)
+✔ codex annotation intent requires the fixed candidate and matching reference material, with complete annotations local (3635.759584ms)
+✔ workbuddy annotation intent requires the fixed candidate and matching reference material, with complete annotations local (2159.964ms)
+✔ codex composition references are separately counted fixed inputs and all selected hashes are required for claim (1826.367125ms)
+✔ workbuddy composition references are separately counted fixed inputs and all selected hashes are required for claim (2383.063334ms)
+✔ hostile and long names remain bounded descriptive strings while fixed instructions and Skill stay intact (1330.788292ms)
+✔ empty display names and deleted templates keep a natural cover prompt (1095.746417ms)
+✔ URL budget prunes optional names and preserves the short fixed task for long library paths (1177.054667ms)
+✔ native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels (1046.231375ms)
+✔ release and request/host validation stop before creating an envelope (783.959333ms)
+✔ unverified or arbitrary Skill options cannot open an ordinary task (1154.971584ms)
+✔ long workspace paths refuse before writing instead of bypassing the 2048 character URL limit (1100.458042ms)
+✔ launching stale or inactive attempts refuses; historical envelope still permits core status/replay checks (1731.009792ms)
+✔ malformed, oversized, symlink and cross-pair envelopes fail closed (872.250542ms)
+✔ same-ID library clone cannot be recovered or mutated through a stale machine locator (1456.085083ms)
+✔ codex exact keeps every selected requirement local and restores exact bytes and roles across retry and host change (7751.161167ms)
+✔ codex ratio-minimum keeps every selected requirement local and restores exact bytes and roles across retry and host change (4150.414458ms)
+✔ workbuddy exact keeps every selected requirement local and restores exact bytes and roles across retry and host change (4617.21175ms)
+✔ workbuddy ratio-minimum keeps every selected requirement local and restores exact bytes and roles across retry and host change (5592.118375ms)
+✔ execution Skills require actual complete input reads and a visible checklist before claim and generation (3.548583ms)
+✔ codex keeps complete 10000 character requirements local with short direct launch (801.174ms)
+✔ workbuddy keeps complete 10000 character requirements local with short direct launch (786.552084ms)
+✔ direct native handoff never touches the clipboard or paste confirmation (0.678875ms)
+✔ formal launcher refuses obsolete manual-paste handoffs before clipboard or external effects (0.335833ms)
+✔ codex template notes keep all 10000 characters in the local fixed request (1529.1255ms)
+✔ workbuddy template notes keep all 10000 characters in the local fixed request (1232.089708ms)
+✔ a custom first-line refinement requirement is never removed as a generated prefix (1654.51175ms)
+✔ short handoff keeps long private instructions only in the immutable local request (1078.119208ms)
+✔ cover progress is isolated, revision guarded and cannot resurrect an ended attempt (1949.157541ms)
+✔ template progress is isolated, revision guarded and cannot resurrect an ended attempt (3277.572041ms)
+✔ cover damaged or swapped progress stays advisory, session ownership and safe paths fail closed (1313.800125ms)
+✔ template damaged or swapped progress stays advisory, session ownership and safe paths fail closed (2119.861792ms)
+✔ cover copied or replaced library roots cannot reuse the original assistant session (1087.873625ms)
+✔ template copied or replaced library roots cannot reuse the original assistant session (2485.196416ms)
+✔ codex handoff directs frozen selected cover text without copying private text into the launch URL (1607.38125ms)
+✔ workbuddy handoff directs frozen selected cover text without copying private text into the launch URL (1448.437959ms)
+✔ cover execution contract requires exact frozen text in actual image prompt with legacy title fallback (1.520334ms)
+✔ codex: 100000 private characters load from fixed context with direct prefill and zero clipboard actions (1499.553959ms)
+✔ workbuddy: 100000 private characters load from fixed context with direct prefill and zero clipboard actions (2407.170708ms)
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (4241.772166ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (1660.12ms)
+✔ codex: long private requests stay local while the complete fixed-context bootstrap is directly prefilled (732.957958ms)
+✔ workbuddy: long private requests stay local while the complete fixed-context bootstrap is directly prefilled (657.534167ms)
+✔ codex: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation (3555.844042ms)
+✔ workbuddy: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation (2750.887125ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (6976.916291ms)
+file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/production-controller.mts:4
+import {radarQueryOperations,radarSearchFilters,radarPrompt,radarRequestLimit} from '../../../plugin-src/src/lib/file-library/radar.mjs';
+                                                            ^^^^^^^^^^^^^^^^^
+SyntaxError: The requested module '../../../plugin-src/src/lib/file-library/radar.mjs' does not provide an export named 'radarRequestLimit'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:455:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:553:5)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v24.20.0
+✖ workbench/test/production-desktop.test.mjs (1011.734959ms)
+ℹ tests 74
+ℹ suites 0
+ℹ pass 73
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 87529.288958
+
+✖ failing tests:
+
+test at workbench/test/production-desktop.test.mjs:1:1
+✖ workbench/test/production-desktop.test.mjs (1011.734959ms)
+  'test failed'

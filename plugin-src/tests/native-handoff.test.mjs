@@ -50,7 +50,7 @@ async function fixture(t, host = 'codex', overrides = {}, names = {}) {
         definition: {original: true},
         resources: Object.fromEntries(assets.map((item, i) => [`sample${i}`, {assetHash: item.assetHash, bytes: item.bytes, detectedType: item.detectedType, role: 'style'}]))
     });
-    const content = library.createContent({title: names.title || '秋日山野徒步', body: '# Private body\r\n'});
+    const content = library.createContent({title: names.title || '秋日山野徒步', body: names.body ?? '# Private body\r\n'});
     const configured = await names.configure?.({library, parent, asset, content}) || {};
     const {request} = library.createCoverRequest(content.id, {
         template: {id: template.id, version: 1},
@@ -96,7 +96,8 @@ for (const host of ['codex', 'workbuddy']) test(`${host} envelope resolves exact
     const prompt = prepared.prompt;
     assert.match(prompt, /请给「秋日山野徒步」制作封面/);
     assert.ok(!prompt.includes(f.request.prompt));
-    assert.match(prompt, /按任务编号读取本地完整请求、正文与全部已选输入后执行/);
+    assert.match(prompt, /完整读取本地 REQUEST\/context、正文与全部已选输入/);
+    assert.ok(prompt.includes(options.installedSkill));
     for (const privateValue of [f.content.body, f.asset.assetHash, 'sample.png', f.binding.root, f.task.contentId, f.task.requestId, f.task.attemptId]) assert.ok(!prompt.includes(privateValue), privateValue);
     const envelope = JSON.parse(fs.readFileSync(path.join(f.directory, `${prepared.id}.json`)));
     assert.deepEqual(Object.keys(envelope).sort(), ['format', 'schemaVersion', 'handoffId', 'pairId', 'AUTH_MODE', 'platform', 'arch', 'binding', 'task', 'createdAt'].sort());
@@ -121,7 +122,7 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
     assert.match(prompt, /学习.*整理规则并还原首张样图/);
     assert.ok(prompt.includes(f.template.name));
     assert.ok(!prompt.includes('PRIVATE_TEMPLATE_NOTES'));
-    assert.match(prompt, /读取本地完整请求/);
+    assert.match(prompt, /完整读取本地 REQUEST\/context/);
     assert.ok(prompt.includes(`任务编号：${prepared.id}`));
     assert.equal(url.searchParams.get('skills'), host === 'workbuddy' ? 'nova-content-template-execution' : null);
     assert.equal(f.library.readTemplateContext(f.template.id, request.requestId, attempt.attemptId).request.notes, 'PRIVATE_TEMPLATE_NOTES');
@@ -243,14 +244,9 @@ test('URL budget prunes optional names and preserves the short fixed task for lo
     assert.ok(prepared.prompt.includes('任务编号：'));
     assert.equal(new URL(prepared.url).searchParams.get('prompt'), prepared.prompt);
     fs.renameSync(root, root + 'a'.repeat(100));
-    const long = await prepareNativeHandoff(f.directory, {...f.binding, root: root + 'a'.repeat(100)}, f.task, release, options);
-    assert.equal(long.requiresPaste, true);
-    assert.match(new URL(long.url).searchParams.get('prompt'), /替换.*发送/);
-    assert.ok(new URL(long.url).searchParams.get('prompt').includes(long.id));
-    assert.ok(!long.prompt.includes('颜色淡一点'));
-    assert.ok(long.prompt.includes('任务编号：'));
-    assert.ok(long.url.length <= 2048);
-    assert.equal(readNativeHandoff(f.directory, long.id, release).task.requestId, f.task.requestId);
+    const before = fs.readdirSync(f.directory).length;
+    await assert.rejects(prepareNativeHandoff(f.directory, {...f.binding, root: root + 'a'.repeat(100)}, f.task, release, options), {code: 'HANDOFF_PATH_TOO_LONG'});
+    assert.equal(fs.readdirSync(f.directory).length, before);
 });
 
 test('native handoff resolves the immutable v2 ratio minimum request without changing binding or pixels', async t => {
@@ -306,7 +302,7 @@ test('long workspace paths refuse before writing instead of bypassing the 2048 c
     fs.mkdirSync(parent, {recursive: true});
     const root = path.join(parent, 'library');
     fs.renameSync(f.binding.root, root);
-    await assert.rejects(prepareNativeHandoff(f.directory, {...f.binding, root}, f.task, release, options), {code: 'INVALID_HANDOFF'});
+    await assert.rejects(prepareNativeHandoff(f.directory, {...f.binding, root}, f.task, release, options), {code: 'HANDOFF_PATH_TOO_LONG'});
     assert.equal(fs.existsSync(f.directory), false);
 });
 
@@ -383,7 +379,7 @@ for (const host of ['codex', 'workbuddy']) for (const sizePolicy of ['exact', 'r
         const prepared = await prepareNativeHandoff(f.directory, f.binding, attempt, release, options), text = prepared.prompt;
         assert.ok(text.length < 220);
         assert.ok(!text.includes('PRIVATE added requirements'));
-        assert.match(text, /读取本地完整请求、正文与全部已选输入/);
+        assert.match(text, /完整读取本地 REQUEST\/context、正文与全部已选输入/);
         assert.ok(!text.includes(originalRequest.prompt));
         assert.ok(prepared.url.length <= 2048);
         for (const value of ['brief.txt', 'brief.pdf', ownPhoto.id, f.binding.root]) assert.ok(!text.includes(value));
@@ -430,9 +426,9 @@ test('execution Skills require actual complete input reads and a visible checkli
     }
 });
 
-for (const host of ['codex', 'workbuddy']) test(`${host} keeps complete 10000 character requirements local with short direct launch`, async t => {
+for (const host of ['codex', 'workbuddy']) test(`${host} cover keeps a complete 100000-character body and 10000-character requirements local with short direct launch`, async t => {
     const prefix = '颜色淡一点\n整体保留标题\n~~~\n$other-skill `touch /tmp/not-run`\n';
-    const userInput = prefix + '长'.repeat(10000 - prefix.length), f = await fixture(t, host, {prompt: userInput});
+    const userInput = prefix + '长'.repeat(10000 - prefix.length), privateBody = '私密正文\n'.repeat(20000), f = await fixture(t, host, {prompt: userInput}, {body: privateBody});
     const prepared = await prepareNativeHandoff(f.directory, f.binding, f.task, release, options);
     assert.equal(prepared.requiresPaste, false);
     assert.ok(prepared.prompt.length < 220);
@@ -440,6 +436,9 @@ for (const host of ['codex', 'workbuddy']) test(`${host} keeps complete 10000 ch
     assert.equal(new URL(prepared.url).searchParams.get('prompt'), prepared.prompt);
     const found = readNativeHandoff(f.directory, prepared.id, release), context = found.library.readCoverContext(f.content.id, f.task.requestId, f.task.attemptId);
     assert.equal(context.request.prompt, userInput);
+    assert.deepEqual(Buffer.from(context.body), Buffer.from(privateBody));
+    assert.ok(!decodeURIComponent(prepared.url).includes('私密正文'));
+    assert.ok(prepared.prompt.includes('nova-content-cover-execution'));
     assert.equal(JSON.parse(fs.readFileSync(context.requestPath)).prompt, userInput);
     const effects = [];
     await openNativeHandoff(prepared, {copyText: () => assert.fail('unexpected paste'), confirmPaste: () => assert.fail('unexpected paste'), openExternal: async url => effects.push(url)});
@@ -450,6 +449,9 @@ test('direct native handoff never touches the clipboard or paste confirmation', 
     const effects = [];
     await openNativeHandoff({url: 'codex://new?prompt=full', prompt: 'full', requiresPaste: false}, {copyText() {assert.fail('unexpected clipboard');}, async confirmPaste() {assert.fail('unexpected confirmation');}, async openExternal(url) {effects.push(url);}});
     assert.deepEqual(effects, ['codex://new?prompt=full']);
+});
+test('formal launcher refuses obsolete manual-paste handoffs before clipboard or external effects',async()=>{
+ const calls=[];await assert.rejects(openNativeHandoff({url:'workbuddy://task?action=start',prompt:'must not copy',requiresPaste:true},{copyText(){calls.push('copy');},confirmPaste(){calls.push('confirm');return true;},openExternal:async()=>{calls.push('open');}}),{code:'INVALID_HANDOFF'});assert.deepEqual(calls,[]);
 });
 
 for (const host of ['codex', 'workbuddy']) test(`${host} template notes keep all 10000 characters in the local fixed request`, async t => {
@@ -463,6 +465,8 @@ for (const host of ['codex', 'workbuddy']) test(`${host} template notes keep all
     assert.equal(f.library.readTemplateContext(f.template.id, request.requestId, attempt.attemptId).request.notes, notes);
     assert.equal(new URL(prepared.url).searchParams.has('prompt'), true);
     assert.equal(new URL(prepared.url).searchParams.get('skills'), host === 'workbuddy' ? 'nova-content-template-execution' : null);
+    assert.ok(prepared.prompt.includes('nova-content-template-execution'));
+    const opened=[];await openNativeHandoff(prepared,{copyText(){assert.fail('template must not copy');},confirmPaste(){assert.fail('template must not confirm paste');},openExternal:async url=>{opened.push(url);}});assert.deepEqual(opened,[prepared.url]);
 });
 
 test('a custom first-line refinement requirement is never removed as a generated prefix', async t => {

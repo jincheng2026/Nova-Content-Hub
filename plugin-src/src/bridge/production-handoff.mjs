@@ -3,7 +3,6 @@ import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {openLibrary} from '../lib/file-library/index.mjs';
 import {validRelease} from '../content.mjs';
-import {productionArchiveCategory} from '../lib/file-library/production-archive-category.mjs';
 const uuid=v=>typeof v==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/.test(v);
 const hash=v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const exact=(v,keys)=>!!v&&typeof v==='object'&&!Array.isArray(v)&&Object.keys(v).length===keys.length&&keys.every(k=>Object.hasOwn(v,k));
@@ -26,6 +25,7 @@ function releaseFor(release){
 }
 function bindingFor(b){check(exact(b,['root','libraryId','rootIdentity'])&&typeof b.root==='string'&&path.isAbsolute(b.root)&&!b.root.includes('\0')&&uuid(b.libraryId)&&exact(b.rootIdentity,['dev','ino'])&&[b.rootIdentity.dev,b.rootIdentity.ino].every(v=>typeof v==='string'&&/^(0|[1-9][0-9]*)$/.test(v)),'Invalid library binding');}
 function taskFor(t){check(exact(t,['taskId','attemptId','requestHash','host'])&&uuid(t.taskId)&&uuid(t.attemptId)&&hash(t.requestHash)&&['codex','workbuddy'].includes(t.host),'Invalid task locator');}
+export function productionExecutionCapability(task){return task.kind==='research'||task.kind==='analysis'&&typeof task.accountId==='string'&&task.accountId.length>0?'research':'writing';}
 export function productionHandoffContext(envelope,launching=false){
  const library=openLibrary(envelope.binding.root,{expectedLibraryId:envelope.binding.libraryId,expectedRootIdentity:envelope.binding.rootIdentity});
  const context=library.readProductionContext(envelope.task.taskId,envelope.task.attemptId);
@@ -37,21 +37,20 @@ export function productionHandoffContext(envelope,launching=false){
 export async function prepareProductionHandoff(target,binding,task,release,options={}){
  releaseFor(release);bindingFor(binding);taskFor(task);
  const {context}=productionHandoffContext({binding,task},true),id=randomUUID();
- const skill=options.installedSkill||(context.task.kind==='research'?'nova-content-research-execution':'nova-content-writing-execution');
- check(typeof skill==='string'&&/^[a-z0-9][a-z0-9:_-]{0,199}$/.test(skill),'Invalid installed skill');
- const comments=context.task.request.parameters?.comments===true;
- const prompt=[`请继续「${context.task.title}」任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),'在当前助手对话中接单、说明进度并与用户确认；CLI 仅作为本对话内部读取与回写工具，不能把终端输出当作交付对话。',`绑定内容库：${JSON.stringify(binding.root)}；库 ID：${binding.libraryId}。`,`回传产物由工作台归档到本库 知识库/助手产物/${productionArchiveCategory(context.task)}/${task.taskId}/${task.attemptId}/；保持任务、内容与来源关联，不以临时目录或助手全局目录替代归档。`,'先用 production context --handoff 读取冻结请求，再 claim / progress / submit。通过本任务回传全文、结构化资料与已导入资产；归档目录由工作台派生并维护，不直接改写其投影文件。对话结束不代表提交成功，待人工验收的知识不冒充已采纳。',`TikHub 评论采集：${comments?'本次已勾选，仍受设置与预算限制。':'本次未勾选，不得采集评论。'}`,'用户本次需求：',context.task.request.prompt,'原任务保留；当前没有可靠的原聊天定位，此入口打开对应任务工作区的新会话。'].join('\n');
+ const expectedSkill=`nova-content-${productionExecutionCapability(context.task)}-execution`,skill=options.installedSkill||expectedSkill;
+ check(skill===expectedSkill,'Installed skill does not match the fixed task capability');
+ const prompt=[`请使用 ${skill} 执行工作台任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),`先按 Skill 运行 production context --handoff ${id}，完整读取冻结 REQUEST/context、正文与全部资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。`].join('\n');
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
  url.searchParams.set(task.host==='codex'?'path':'cwd',binding.root);url.searchParams.set('prompt',prompt);
- const requiresPaste=url.href.length>2048;if(requiresPaste)url.searchParams.set('prompt',`请用工作台已复制的完整需求替换本段，再手动发送。任务编号：${id}`);check(url.href.length<=2048,'Library path too long');
+ if(url.href.length>2048)fail('内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。','HANDOFF_PATH_TOO_LONG');
  if(options.serviceDescriptorPath!==undefined)check(typeof options.serviceDescriptorPath==='string'&&path.isAbsolute(options.serviceDescriptorPath)&&!options.serviceDescriptorPath.includes('\0'),'Invalid service descriptor path');
  const before=directory(target,true),envelope={format:'nova-content-production-handoff',schemaVersion:1,handoffId:id,pairId:release.pairId,AUTH_MODE:release.AUTH_MODE,platform:release.platform,arch:release.arch,binding,task,...(options.serviceDescriptorPath ? {serviceDescriptorPath:options.serviceDescriptorPath} : {}),createdAt:new Date().toISOString()};
  const bytes=Buffer.from(JSON.stringify(envelope)+'\n');check(bytes.length<=65536,'Handoff too large');
  const fd=fs.openSync(path.join(target,`${id}.production.json`),fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);
  try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
  check(same(before,directory(target)),'Handoff directory changed');productionHandoffContext(envelope,true);
- return {id,url:url.href,prompt,requiresPaste};
+ return {id,url:url.href,prompt,requiresPaste:false};
 }
 export function readProductionHandoff(target,id,release){
  releaseFor(release);check(uuid(id),'Invalid handoff ID');

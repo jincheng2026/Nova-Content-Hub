@@ -1,0 +1,88 @@
+{
+  "recordedAt": "2026-10-27T07:36:06.881Z",
+  "status": "owner sources frozen; no packaging performed",
+  "coverage": "capability-matrix.json",
+  "regression": {
+    "passed": 89,
+    "failed": 0
+  },
+  "focusBoundary": {
+    "passed": 5,
+    "failed": 0
+  },
+  "nativeTypecheckExitCode": 0,
+  "sourceFiles": [
+    {
+      "file": "README.md",
+      "sha256": "541b130e465a7ea146233779052b05596a400a0002f17031ed06f464ece84af2"
+    },
+    {
+      "file": "plugin-src/README.md",
+      "sha256": "35bd464be43ce4b227dccb490797eb88d4f2905113148e7ded21580cc70c9a40"
+    },
+    {
+      "file": "plugin-src/resources/production-contract.md",
+      "sha256": "769196a63a29e80d784d842738251ebb514dd29e06afa6eaa40f51a20fe22e81"
+    },
+    {
+      "file": "plugin-src/skills/nova-content-research-execution/SKILL.md",
+      "sha256": "ab70e503f2775ad7dcad8eb948aaa171c968101e2cc4d33bfb84731e527a0927"
+    },
+    {
+      "file": "plugin-src/src/bridge/handoff.js",
+      "sha256": "53c35a6ae2561c985befc6e9cce130719b3b2bb16d578982b6bc7319be8122d5"
+    },
+    {
+      "file": "plugin-src/src/bridge/native-handoff.mjs",
+      "sha256": "f689f74753f286a83ef20436eeedbdf973e3fb1dd3eff4fcbb200fe06f981df2"
+    },
+    {
+      "file": "plugin-src/src/bridge/production-handoff.mjs",
+      "sha256": "f7493b51f38c4fd8abc282bbab307e5a7bde5922134b9f400271543d7852b150"
+    },
+    {
+      "file": "plugin-src/src/bridge/production-handoff.d.mts",
+      "sha256": "d580bb93707dce91807a8fed28902d9992299db46d07f5648088b79a06b3c638"
+    },
+    {
+      "file": "plugin-src/src/lib/browser-import/legacy/shared/handoff.js",
+      "sha256": "c345db4ec62c57e88141630dd44121c3dc1a6bd22ed7fbc0a0caaf084ea8504f"
+    },
+    {
+      "file": "workbench/prototype/shared/handoff.js",
+      "sha256": "c345db4ec62c57e88141630dd44121c3dc1a6bd22ed7fbc0a0caaf084ea8504f"
+    },
+    {
+      "file": "workbench/src/main/assistant-failure.mts",
+      "sha256": "8c0e426fdceb99ccd6fd36a850f1c9398eb4427f0942d1b2de6687c1b564feea"
+    },
+    {
+      "file": "workbench/src/main/desktop.mts",
+      "sha256": "5eff9b9e8c74ac2c5fe6a102a4235a7c09950bfd463bb900a86c6c6afe273f45"
+    },
+    {
+      "file": "workbench/src/shared/shared-core.d.ts",
+      "sha256": "43714afc93d55a4202b5fc0b37ab78e3df57de8a8fb8723a1cce264ac71cca37"
+    },
+    {
+      "file": "plugin-src/tests/bridge.test.mjs",
+      "sha256": "b05b0c08e01b51f8bac858e41f6f30dc6de7bf8fbb95bd921cf5134d9f949522"
+    },
+    {
+      "file": "plugin-src/tests/native-handoff.test.mjs",
+      "sha256": "6309d61810c5f88dba018ee2386824fa5dd300b44f221e2675dedb6e947650b1"
+    },
+    {
+      "file": "plugin-src/tests/production-handoff.test.mjs",
+      "sha256": "abd1c25ed0d425f67d673ce378180e6e1bebe56a231320af4f73e22e29b59245"
+    },
+    {
+      "file": "plugin-src/tests/integration/handoff-schema.test.mjs",
+      "sha256": "240896c319cfb9531e9311abc93f6f12abd0f6cca7768559cdeb9505853fb9f6"
+    }
+  ],
+  "remainingRootCheck": "Parallel XHS platform assertion and matching new-package GUI verification.",
+  "uiActions": false,
+  "aiMessageSent": false,
+  "realLibraryMutations": false
+}

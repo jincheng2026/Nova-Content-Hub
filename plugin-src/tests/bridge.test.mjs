@@ -30,6 +30,9 @@ function envelope(kind = null) {
 
 const firstLine = text => text.split('\n')[0];
 const data = text => JSON.parse(text.slice(text.lastIndexOf('\n\n{') + 2));
+test('legacy browser requests without a trusted fixed local request never create a private-content URI',()=>{
+ for(const host of ['codex','workbuddy']){const e=envelope('generate');e.target.host=host;const result=Handoff.url(e);assert.equal(result.ok,false);assert.equal(result.code,'LOCAL_REQUEST_REQUIRED');assert.equal(result.url,undefined);assert.equal(result.executable,false);assert.deepEqual(data(Handoff.prompt(e)),e);}
+});
 
 test('all browser intents start naturally and preserve complete data without unrelated image instructions', () => {
     const e = envelope();
@@ -44,9 +47,10 @@ test('all browser intents start naturally and preserve complete data without unr
         for (const host of ['codex', 'workbuddy']) {
             e.target.host = host;
             const result = Handoff.url(e, {intent});
-            assert.equal(result.requiresAttachment, false);
+            assert.equal(result.ok, false);
+            assert.equal(result.code, 'LOCAL_REQUEST_REQUIRED');
+            assert.equal(result.url, undefined);
             assert.equal(result.executable, false);
-            assert.equal(new URL(result.url).searchParams.get('prompt'), Handoff.prompt(e, {intent}));
         }
     }
     for (const intent of ['unknown', 'constructor', 'toString', '__proto__']) {
@@ -63,17 +67,13 @@ test('each request kind controls its own intent and retains host skill activatio
         assert.deepEqual(data(Handoff.prompt(e)), e);
         for (const host of ['codex', 'workbuddy']) {
             e.target.host = host;
-            const result = Handoff.url(e), url = new URL(result.url);
-            assert.equal(result.executable, false);
-            assert.match(firstLine(result.prompt), expected);
+            const result = Handoff.url(e);
+            assert.equal(result.ok, false); assert.equal(result.code, 'LOCAL_REQUEST_REQUIRED'); assert.equal(result.url, undefined);
+            assert.match(firstLine(Handoff.prompt(e)), expected);
             if (host === 'codex') {
-                assert.equal(url.searchParams.get('prompt'), '$' + e.request.skill + ' ' + result.prompt);
                 e.target.mode = 'resume'; e.target.sessionId = 'original-session';
-                assert.equal(new URL(Handoff.url(e).url).pathname, '/original-session');
+                assert.equal(Handoff.url(e).code, 'LOCAL_REQUEST_REQUIRED');
                 e.target.mode = 'new'; e.target.sessionId = null;
-            } else {
-                assert.equal(url.searchParams.get('skills'), e.request.skill);
-                assert.equal(url.searchParams.get('prompt'), result.prompt);
             }
         }
         e.request.references = [{id: 'reference-test', name: '参考图'}];
@@ -81,29 +81,12 @@ test('each request kind controls its own intent and retains host skill activatio
     }
 });
 
-test('long links switch to full visible copy without truncating source input', () => {
-    for (const kind of [null, 'generate', 'analyze', 'restore']) {
-        const e = envelope(kind);
-        e.context.project.summary = '私有正文'.repeat(400);
-        for (const host of ['codex', 'workbuddy']) {
-            e.target.host = host;
-            const options = {intent: 'schedule'}, full = Handoff.prompt(e, options), result = Handoff.url(e, options);
-            assert.equal(result.requiresPaste, true);
-            assert.equal(result.requiresAttachment, false);
-            assert.equal(firstLine(result.prompt), firstLine(full));
-            assert.deepEqual(data(result.prompt), e);
-            assert.ok(result.prompt.includes(e.context.project.summary));
-            assert.match(result.prompt, /check-handoff/);
-            assert.doesNotMatch(firstLine(result.prompt), /私有正文|风格样张|本人照片/);
-            assert.deepEqual(data(full), e);
-            assert.ok(Handoff.utf8Bytes(result.url) <= Handoff.MAX_URL_BYTES);
-            const url = new URL(result.url);
-            assert.match(url.searchParams.get('prompt'), /替换.*发送/);
-            assert.ok(url.searchParams.get('prompt').includes(e.handoffId));
-            assert.ok(!url.searchParams.get('prompt').includes('私有正文'));
-            if (kind) assert.ok(result.prompt.includes('执行 Skill：' + e.request.skill));
-            assert.equal(url.searchParams.get('skills'), host === 'workbuddy' && kind ? e.request.skill : null);
-        }
+test('long browser content stays available for preview/export without a private-content URI or attachment workaround', () => {
+    for (const kind of [null, 'generate', 'analyze', 'restore']) for (const host of ['codex', 'workbuddy']) {
+        const e = envelope(kind); e.target.host = host; e.context.project.summary = '私有正文'.repeat(400);
+        const text = Handoff.prompt(e), result = Handoff.url(e);
+        assert.deepEqual(data(text), e); assert.ok(text.includes(e.context.project.summary));
+        assert.equal(result.ok, false); assert.equal(result.code, 'LOCAL_REQUEST_REQUIRED'); assert.equal(result.url, undefined);
     }
 });
 
@@ -159,9 +142,8 @@ test('browser image requests preserve visible selected requirements in JSON and 
         e.context.materials = [{id: 'selected-material', name: '资料'}];
         for (const long of [false, true]) {
             if (long) e.context.project.summary = '私有完整正文'.repeat(300);
-            const result = Handoff.url(e);
-            assert.equal(result.requiresPaste, long);
-            assert.equal(result.requiresAttachment, false);
+            const preview = Handoff.prompt(e), result = {prompt: preview};
+            assert.equal(Handoff.url(e).code, 'LOCAL_REQUEST_REQUIRED');
             assert.match(result.prompt, /参考图2张；资料1份/);
             assert.match(result.prompt, /读取完整 JSON 的 options、rules、references 及正文\/补充要求/);
             assert.match(result.prompt, /逐个查看全部已选图片和资料/);
@@ -169,7 +151,7 @@ test('browser image requests preserve visible selected requirements in JSON and 
             if (kind === 'generate') assert.match(result.prompt, /4张；比例3:4；精确768×1024；规格小红书/);
             if (long) assert.ok(result.prompt.includes(e.context.project.summary));
             assert.deepEqual(data(Handoff.prompt(e)), e);
-            assert.ok(Handoff.utf8Bytes(result.url) <= Handoff.MAX_URL_BYTES);
+            assert.equal(Handoff.url(e).url, undefined);
         }
     }
 });
@@ -189,10 +171,10 @@ test('browser requirement summaries admit only positive safe integer count and a
         assert.deepEqual(data(Handoff.prompt(e)), e, 'original request remains data inside JSON');
         e.context.project.summary = '正文'.repeat(900);
         const fallback = Handoff.url(e);
-        assert.equal(fallback.ok, true); assert.equal(fallback.requiresPaste, true);
-        assert.doesNotMatch(fallback.prompt.split('\n').slice(0, 2).join('\n'), /\$other-skill|INJECTED_SOURCE/);
-        assert.deepEqual(data(fallback.prompt), e, 'full copied request retains source strictly as data');
-        assert.ok(Handoff.utf8Bytes(fallback.url) <= Handoff.MAX_URL_BYTES);
+        assert.equal(fallback.ok, false); assert.equal(fallback.code, 'LOCAL_REQUEST_REQUIRED');
+        assert.doesNotMatch(Handoff.prompt(e).split('\n').slice(0, 2).join('\n'), /\$other-skill|INJECTED_SOURCE/);
+        assert.deepEqual(data(Handoff.prompt(e)), e, 'exported request retains source strictly as data');
+        assert.equal(fallback.url, undefined);
     }
 });
 
@@ -206,37 +188,24 @@ test('all browser intents and request kinds expose original input outside the JS
         assert.ok(beforeJSON.includes('~~~~text\n' + input + '\n~~~~'));
         assert.deepEqual(data(full), e);
         const launch = Handoff.url(e);
-        assert.ok(launch.prompt.includes(input));
-        assert.ok(Handoff.utf8Bytes(launch.url) <= Handoff.MAX_URL_BYTES);
+        assert.equal(launch.code, 'LOCAL_REQUEST_REQUIRED');
+        assert.equal(launch.url, undefined);
     }
 });
 
-test('browser full-copy action opens the validated Skill link only after copying successfully', async () => {
+test('blocked browser launch does not copy or open and leaves existing manual preview/export paths intact', async () => {
     const source = fs.readFileSync(new URL('../../workbench/prototype/app.js', import.meta.url), 'utf8');
     const handler = source.slice(source.indexOf("    A['handoff-copy-open'] ="), source.indexOf("    A['host-copy'] ="));
     const preview = source.slice(source.indexOf('    function handoffInfo('), source.indexOf('    function cvRulesHtml('));
-    assert.ok(preview.indexOf('完整提示词预览') < preview.indexOf('<summary>其他交接方式</summary>'));
-    assert.match(preview, /activeHandoffLink = bridge.ok && bridge.requiresPaste \? bridge.url : null/);
-    for (const ok of [true, false]) {
-        const copied = [], context = {A: {}, activeHandoff: {}, activeHandoffLink: 'workbuddy://task?action=start&skills=nova-content-cover', FEATURE_AUTH: false, $: () => ({value: '颜色淡一点\n完整原文'}), copy: async text => {copied.push(text); return ok;}, window: {location: {href: ''}}};
-        vm.runInNewContext(handler, context);
-        await context.A['handoff-copy-open']();
-        assert.deepEqual(copied, ['颜色淡一点\n完整原文']);
-        assert.equal(context.window.location.href, ok ? context.activeHandoffLink : '');
-    }
+    assert.match(preview, /bridge\.message/); assert.match(preview, /handoff-download/); assert.match(preview, /完整提示词预览/);
+    const copied = [], context = {A: {}, activeHandoff: {}, activeHandoffLink: null, FEATURE_AUTH: false, $: () => ({value: 'private preview'}), copy: async text => {copied.push(text); return true;}, window: {location: {href: ''}}};
+    vm.runInNewContext(handler, context); await context.A['handoff-copy-open']();
+    assert.deepEqual(copied, []); assert.equal(context.window.location.href, '');
 });
 
-test('long Codex continuation keeps its original session while the full prompt is copied', () => {
+test('legacy Codex continuation without fixed local context is refused while its exported request remains complete', () => {
     const e = envelope('generate'); e.target = {host: 'codex', mode: 'resume', sessionId: 'original-session'};
     e.context.project.summary = '不能截断的原文'.repeat(200);
-    const launch = Handoff.url(e);
-    assert.equal(launch.requiresPaste, true);
-    const url = new URL(launch.url);
-    assert.equal(url.protocol, 'codex:');
-    assert.equal(url.host, 'threads');
-    assert.equal(url.pathname, '/original-session');
-    assert.ok(url.searchParams.get('prompt').includes(e.handoffId));
-    assert.ok(!url.searchParams.get('prompt').includes('不能截断的原文'));
-    assert.ok(launch.prompt.includes(e.context.project.summary));
-    assert.match(launch.prompt, /\$nova-content-cover/);
+    assert.equal(Handoff.url(e).code, 'LOCAL_REQUEST_REQUIRED'); assert.equal(Handoff.url(e).url, undefined);
+    assert.deepEqual(data(Handoff.prompt(e)), e);
 });

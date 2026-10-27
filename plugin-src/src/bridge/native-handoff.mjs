@@ -100,7 +100,7 @@ function hostURL(host, id, root, options, kind, library, context) {
     const candidateId = kind === 'cover' && /^以所附候选原图（([0-9a-f-]{36})）为基础，按以下批注修改；/.exec(request.prompt)?.[1];
     const candidate = candidateId && context.content.candidates.find(item => item.id === candidateId);
     const refinement = candidate && request.materials.some(item => item.role === 'reference' && item.assetHash === candidate.assetHash && item.originalName === `候选修改参考-${candidateId}.png`);
-    const prompt = () => [kind === 'template' ? `请学习${name.length ? `「${name.join('')}」模板` : '这组模板'}，整理规则并还原首张样图。` : refinement ? `请按批注修改${name.length ? `「${name.join('')}」的封面` : '这篇内容的封面'}，交回新候选。` : `请给${name.length ? `「${name.join('')}」` : '这篇内容'}制作封面，交回工作台。`, `任务编号：${id}`, ...(host === 'codex' ? [`$${skill}`] : []), '请按任务编号读取本地完整请求、正文与全部已选输入后执行。', ...(kind === 'cover' && request.coverText !== undefined ? ['封面文字采用固定请求 coverText，逐字保留换行。'] : [])].join('\n');
+    const prompt = () => [kind === 'template' ? `请学习${name.length ? `「${name.join('')}」模板` : '这组模板'}，整理规则并还原首张样图。` : refinement ? `请按批注修改${name.length ? `「${name.join('')}」的封面` : '这篇内容的封面'}，交回新候选。` : `请给${name.length ? `「${name.join('')}」` : '这篇内容'}制作封面，交回工作台。`, `任务编号：${id}`, host === 'codex' ? `$${skill}` : `执行 Skill：${skill}`, '先通过该 Skill 按任务编号完整读取本地 REQUEST/context、正文与全部已选输入，再执行。', ...(kind === 'cover' && request.coverText !== undefined ? ['封面文字采用固定请求 coverText，逐字保留换行。'] : [])].join('\n');
     const url = host === 'codex' ? new URL('codex://new') : new URL('workbuddy://task');
     if (host === 'workbuddy') {
         url.searchParams.set('action', 'start');
@@ -109,12 +109,9 @@ function hostURL(host, id, root, options, kind, library, context) {
     url.searchParams.set(host === 'workbuddy' ? 'cwd' : 'path', root);
     url.searchParams.set('prompt', prompt());
     while (url.href.length > 2048 && name.length) {name.pop(); url.searchParams.set('prompt', prompt());}
-    const requiresPaste = url.href.length > 2048;
     const text = prompt();
-    // WorkBuddy rejects task links without prompt, payloadId or promptContentBlocks.
-    if (requiresPaste) url.searchParams.set('prompt', `请用工作台已复制的完整需求替换本段，再手动发送。任务编号：${id}`);
-    if (url.href.length > 2048) refuse('INVALID_HANDOFF', '助手交接链接超过系统长度限制，请使用路径较短的内容库。');
-    return {url: url.href, prompt: text, requiresPaste};
+    if (url.href.length > 2048) refuse('HANDOFF_PATH_TOO_LONG', '内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。');
+    return {url: url.href, prompt: text, requiresPaste: false};
 }
 
 export async function prepareNativeHandoff(directory, binding, task, release, options) {
@@ -154,11 +151,8 @@ export async function prepareNativeHandoff(directory, binding, task, release, op
     return {id, ...launch};
 }
 
-export async function openNativeHandoff(handoff, {copyText, confirmPaste, openExternal}) {
-    if (handoff.requiresPaste) {
-        await copyText(handoff.prompt);
-        if (!await confirmPaste(handoff.prompt)) refuse('HANDOFF_CANCELLED', '已取消打开助手；完整提示词仍在剪贴板，固定请求保留，可稍后继续。');
-    }
+export async function openNativeHandoff(handoff, {openExternal}) {
+    if (handoff.requiresPaste) refuse('INVALID_HANDOFF', '此旧交接需要手动粘贴，请从工作台重新打开固定任务以自动预填。');
     await openExternal(handoff.url);
 }
 

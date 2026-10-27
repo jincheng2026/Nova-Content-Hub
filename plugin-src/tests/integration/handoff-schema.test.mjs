@@ -116,42 +116,17 @@ test('runtime adds cross-field binding and UTF8 limits that structural schemas c
     assertSchema('handoff', huge);
     assert.equal(Handoff.validate(huge).code, 'INPUT_TOO_LARGE');
 });
-test('host URLs encode content, require explicit resume targets and fall back to an attached JSON for long content', () => {
+test('browser exports remain complete but automatic host URLs require a fixed desktop request', () => {
     const made = workspace(), e = made.envelope;
-    const template = clone(e.context.template);
-    e.request = null;
-    e.context.template = null;
-    e.context.materials = [];
-    e.context.references = [];
-    e.context.project.name = '标题包含 & ? # 中文';
-    e.context.project.summary = '';
-    for (const host of ['codex', 'workbuddy']) {
-        e.target = {host, mode: 'new', sessionId: null};
-        const output = Handoff.url(e, {release: made.release});
-        assert.equal(output.ok, true);
-        const u = new URL(output.url);
-        assert.equal(u.protocol, host + ':');
-        assert.ok(u.searchParams.get('prompt').includes('标题包含 & ? # 中文'));
-        const prompt = u.searchParams.get('prompt');
-        assert.deepEqual(JSON.parse(prompt.slice(prompt.indexOf('\n\n') + 2)), e);
-        assert.match(prompt.split('\n')[0], /标题包含 & \? # 中文.*确认下一步/);
-        assert.doesNotMatch(prompt, /风格样张|本人照片/);
-        assert.equal(u.searchParams.get('cwd'), null);
-        assert.equal(u.searchParams.get('path'), null);
-        assert.equal(made.task.state, 'handoff');
+    for (const host of ['codex','workbuddy']) {
+        e.target = {host,mode:'new',sessionId:null};
+        const output = Handoff.url(e,{release:made.release});
+        assert.equal(output.ok,false); assert.equal(output.code,'LOCAL_REQUEST_REQUIRED'); assert.equal(output.url,undefined);
+        const preview=Handoff.prompt(e); assert.deepEqual(JSON.parse(preview.slice(preview.lastIndexOf('\n\n{')+2)),e);
+        assert.equal(made.task.state,'handoff');
     }
-    e.target = {host: 'codex', mode: 'resume', sessionId: 'session-original'};
-    assert.equal(new URL(Handoff.url(e).url).pathname, '/session-original');
-    e.target.host = 'workbuddy';
-    assert.equal(Handoff.url(e).code, 'RESUME_UNAVAILABLE');
-    e.target = {host: 'codex', mode: 'new', sessionId: null};
-    e.context.template = template;
-    e.context.template.fixed = Array(10).fill('风格约束'.repeat(100));
-    const long = Handoff.url(e);
-    assert.equal(long.requiresAttachment, true);
-    assert.ok(Handoff.utf8Bytes(long.url) < 6000);
-    assert.match(long.prompt, /附上交接 JSON/);
-    assert.doesNotMatch(long.prompt, /风格约束/);
+    e.target={host:'codex',mode:'resume',sessionId:'session-original'};assert.equal(Handoff.url(e).code,'LOCAL_REQUEST_REQUIRED');
+    e.target.host='workbuddy';assert.equal(Handoff.url(e).code,'RESUME_UNAVAILABLE');
 });
 test('required browser simulation and runtime flags never authorize a real content-bearing launch', () => {
     const made = workspace('required');

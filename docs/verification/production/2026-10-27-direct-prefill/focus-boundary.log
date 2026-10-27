@@ -1,0 +1,13 @@
+✔ codex/legacy: only created attempts launch conversations; active attempts only focus host and submitted results stay local (8503.546ms)
+✔ codex/content-creation: only created attempts launch conversations; active attempts only focus host and submitted results stay local (7092.577458ms)
+✔ workbuddy/legacy: only created attempts launch conversations; active attempts only focus host and submitted results stay local (8125.411084ms)
+✔ workbuddy/content-creation: only created attempts launch conversations; active attempts only focus host and submitted results stay local (6741.728875ms)
+✔ active tasks without a focus capability retain the original chat and never fall back to launching (1675.558208ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 32549.104084

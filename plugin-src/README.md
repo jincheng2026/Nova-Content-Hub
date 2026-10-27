@@ -48,8 +48,8 @@ JSON。SessionStart 仅注入产品版本、构建模式与不可执行的使用
 
 原型 HANDOFF.json 上限 64 KiB，嵌入 request 仍限 16 KiB；原型协议 URL 由 `plugin-src/src/bridge/handoff.js` 提供；
 `workbench/prototype/shared/handoff.js` 是生成副本，执行 `node plugin-src/scripts/sync-bridge.mjs` 更新，`--check`
-检测漂移。构建只校验漂移，不静默修复。此纯桥接模块保留固定 Codex/WorkBuddy 路由并拒绝未知宿主，不导入系统启动能力。真实桌面交接另由
-`bridge/native-handoff.mjs` 核验已绑定库与固定尝试，写本机定位文件并仅把短 handoff ID 放入 URL；OS 启动留主进程。CLI 不打开
+检测漂移。构建只校验漂移，不静默修复。此纯桥接模块不导入系统启动能力；旧浏览器请求没有可信的固定本地读取入口，业务 URL 返回 LOCAL_REQUEST_REQUIRED，引导桌面保存固定任务，手动导入、预览与导出不受影响。真实桌面交接另由
+`bridge/native-handoff.mjs` 核验已绑定库与固定尝试，写本机定位文件并自动预填 handoff ID、显式 Skill 与先读完整 REQUEST/context 的短指令；production-handoff.mjs 使用同样的固定请求方式。完整用户需求不进入 URI，不访问剪贴板或要求手动粘贴；路径超过启动容量时明确拒绝。OS 启动留主进程。CLI 不打开
 URL，不把“打开助手”当成接单或生图成功。跨宿主保持尝试来源，不能声称完整聊天迁移。五份原型 schemas 与所需 references/许可随每个独立
 Skill 打包。
 
