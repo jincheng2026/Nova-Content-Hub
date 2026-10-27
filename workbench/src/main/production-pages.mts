@@ -5,8 +5,10 @@ import type {LibraryBinding,Worker} from '../shared/contracts.ts';
 import type {ProductionCreationState,ProductionDraft} from '../shared/production-contracts.ts';
 import {productionDraft} from '../shared/production-validation.ts';
 import {fail} from '../shared/validation.ts';
+import {reportSources} from './report-sources.mts';
 interface PageOptions {
  worker:Worker;
+ openSource?(binding:LibraryBinding,url:string):Promise<void>;
  creationHtml:string;
  authorize(binding:LibraryBinding):void|Promise<void>;
  readCreation(binding:LibraryBinding,contentId:string):Promise<ProductionCreationState>;
@@ -69,6 +71,17 @@ export class ProductionPages {
     const input={...body,contentId:cap.id};if(!productionDraft(input))fail('INVALID_INPUT','创作草稿字段无效。');
     return this.send(res,200,JSON.stringify(await this.options.saveDraft(cap.binding,input as ProductionDraft)),'application/json; charset=utf-8');
    }
+  } else if(req.method==='POST'&&route==='/source') {
+   if(req.headers.origin!==this.origin||!/^application\/json(?:\s*;\s*charset=utf-8)?$/i.test(req.headers['content-type']??''))return this.send(res,403,'Forbidden','text/plain');
+   const chunks:Buffer[]=[];let size=0;for await(const chunk of req){size+=chunk.length;if(size>4096)return this.send(res,413,'Payload too large','text/plain');chunks.push(chunk);}
+   let input:unknown;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'));}catch{fail('INVALID_INPUT','来源请求无效。');}
+   if(!input||typeof input!=='object'||Array.isArray(input)||Object.keys(input).sort().join(',')!=='index,pageId')fail('INVALID_INPUT','来源请求无效。');
+   const {pageId,index}=input as {pageId:string;index:number};
+   if(!/^[0-9a-f-]{36}$/.test(pageId)||!Number.isInteger(index)||index<0||index>=100)fail('INVALID_INPUT','来源请求无效。');
+   const result=await this.options.worker.call('productionReport',{binding:cap.binding,reportId:cap.id,pageId});
+   const source=reportSources(result.html,result.report.sourceUrl)[index];
+   if(!source||!this.options.openSource)fail('NOT_READY','此来源暂不可打开，请复制链接核查。');
+   await this.options.openSource(cap.binding,source);return this.send(res,200,JSON.stringify({opened:true}),'application/json; charset=utf-8');
   } else if(req.method==='GET') {
    const page=/^\/(?:view|page)\/([0-9a-f-]{36})$/.exec(route),pageId=page?.[1]??cap.pageId;
    if(route!=='/'&&!page)return this.send(res,404,'Not found','text/plain');
@@ -77,7 +90,10 @@ export class ProductionPages {
    const selected=pageId??result.report.pageId;
    if(route.startsWith('/view/')&&pageId)await this.options.setReportPosition?.(cap.binding,cap.id,pageId);
    const nav=result.report.pages.map(p=>`<a href="${basePath}/view/${p.id}"${p.id===selected?' aria-current="page"':''}>${escape(p.title)}</a>`).join('');
-   return this.send(res,200,`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(result.report.title)}</title><style>body{margin:0;background:#F5F5F7;color:#1D1D1F;font:14px/1.6 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif}header{padding:16px 24px;background:white}h1{font-size:24px;margin:0 0 8px}nav{display:flex;gap:12px;flex-wrap:wrap}a{color:#0071E3}a[aria-current]{font-weight:700}iframe{width:100%;height:calc(100vh - 130px);border:0;background:white}</style></head><body><header><h1>${escape(result.report.title)}</h1><nav aria-label="报告页">${nav}</nav></header><iframe title="报告完整内容" sandbox="allow-scripts" src="${basePath}/page/${selected}"></iframe></body></html>`,'text/html; charset=utf-8',"default-src 'none'; style-src 'unsafe-inline'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'");
+   const sources=reportSources(result.html,result.report.sourceUrl),nonce=randomBytes(20).toString('base64');
+   const sourceList=sources.map((url,index)=>`<li><button type="button" data-source="${index}">打开来源 ${index+1}</button><span>${escape(url)}</span></li>`).join('');
+   const config=JSON.stringify({basePath,pageId:selected}).replace(/</g,'\\u003c');
+   return this.send(res,200,`<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(result.report.title)}</title><style>body{margin:0;background:#F5F5F7;color:#1D1D1F;font:14px/1.6 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif}header{padding:16px 24px;background:white}h1{font-size:24px;margin:0 0 8px}nav{display:flex;gap:12px;flex-wrap:wrap}a,button{color:#0071E3}a[aria-current]{font-weight:700}button{font:inherit;background:#FAFAFC;border:1px solid #ddd;border-radius:10px;padding:5px 12px;cursor:pointer}li{display:flex;align-items:start;gap:12px;margin:8px 0}li span{overflow-wrap:anywhere}iframe{width:100%;height:calc(100vh - 130px);border:0;background:white}</style></head><body><header><h1>${escape(result.report.title)}</h1><nav aria-label="报告页">${nav}</nav>${sources.length?`<details><summary>核查本页原始来源（${sources.length}）</summary><p>通过此处打开原始作品；报告正文保持隔离阅读。</p><ul>${sourceList}</ul></details>`:''}<p id="source-status" role="status"></p></header><iframe title="报告完整内容" sandbox="allow-scripts" src="${basePath}/page/${selected}"></iframe><script nonce="${nonce}">const config=${config};document.querySelectorAll('[data-source]').forEach(button=>button.addEventListener('click',async()=>{const status=document.getElementById('source-status');button.disabled=true;try{const response=await fetch(config.basePath+'/source',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({pageId:config.pageId,index:Number(button.dataset.source)})});if(!response.ok)throw Error();status.textContent='已请求在浏览器打开来源。';}catch{status.textContent='来源未打开，请检查链接或网络后重试。';}finally{button.disabled=false;}}));</script></body></html>`,'text/html; charset=utf-8',`default-src 'none'; script-src 'nonce-${nonce}'; connect-src 'self'; style-src 'unsafe-inline'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'`);
   }
   this.send(res,405,'Method not allowed','text/plain');
  }

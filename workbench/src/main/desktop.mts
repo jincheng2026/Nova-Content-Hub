@@ -1,3 +1,4 @@
+import {publicEndpoint} from './service-tools.mts';
 import {productionArchiveDirectory} from './production-archive.mts';
 import {assistantSessionURL} from '../shared/task-progress.ts';
 import {prepareNativeHandoff, nativeHandoffDirectory, openNativeHandoff} from '../../../plugin-src/src/bridge/native-handoff.mjs';
@@ -311,6 +312,11 @@ export async function startDesktop({show = true, userData, marketRoot, dialogs, 
         if (current.libraryId !== binding.libraryId || current.root !== binding.root || current.rootIdentity.dev !== binding.rootIdentity.dev || current.rootIdentity.ino !== binding.rootIdentity.ino) fail('FORBIDDEN', '页面所属内容库已切换，请从当前内容库重新打开。');
     };
     productionPages = new ProductionPages({
+        openSource: (binding, url) => runOperation(async () => {
+            authorizeProductionPage(binding);
+            const checked = await publicEndpoint(url);
+            await shell.openExternal(checked.url.href);
+        }),
         creationHtml: readFileSync(path.join(here, '../production-creation.html'), 'utf8'),
         authorize: authorizeProductionPage,
         worker: {call: (op, args) => runOperation(async () => {
