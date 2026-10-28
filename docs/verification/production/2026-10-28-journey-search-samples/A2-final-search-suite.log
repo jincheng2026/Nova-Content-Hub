@@ -1,0 +1,27 @@
+✔ new keyword policy derives registered response-order samples and downloads through detail receipt and worker grant (4833.556667ms)
+✔ desktop start freezes an explicitly selected keyword policy while an old brief stays search-only (1764.861ms)
+✔ search sampling excludes advertisements, image posts, empty video records and author IDs (0.754584ms)
+✔ keyword queries, pagination, caller IDs and old search-only permissions are rejected before a provider call (5542.477708ms)
+✔ a registered search source is fixed, cannot refresh on a new request, and never resets on retry (5615.747708ms)
+✔ altered raw responses and local sample lists cannot replace the registered search evidence (3451.123ms)
+✔ wrong task, attempt, query, hashes, extra ID and epoch evidence fail at direct broker authorization (4271.647375ms)
+✔ a budget sufficient only for search cannot pay for the derived video detail request (4006.070459ms)
+✔ unsupported search shapes preserve the original response and settle its successful cost (2942.691541ms)
+✔ a successful provider charge is settled even when the search response has no JSON data (2231.275542ms)
+✔ media registration rejects a detail receipt linked to a different derived search source (3144.351375ms)
+✔ a cached runtime media entry still needs its exact current registered grant (4197.897125ms)
+✔ concurrent direct broker searches reserve the single fixed page only once (1425.803833ms)
+✔ a journey research checkpoint accepts the registered JSON response hash and advances without a new service call (6864.711542ms)
+✔ a cancelled journey epoch cannot reuse its search evidence for new detail or cached download (5020.705167ms)
+✔ new search policy requires exact bounded video scope and cannot acquire comments or caller-selected IDs (0.681667ms)
+✔ a policy in parameters never grants a tool missing from the immutable task request (1712.828709ms)
+✔ successful zero-cost cache receipts authorize samples but unknown outcomes never do (5386.792958ms)
+✔ the actual fixed CLI handoff uses the same registered evidence resolver through media archive (2995.592792ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 65838.652333

@@ -1,0 +1,27 @@
+✔ reference-card delivery keeps validated Markdown and readable static HTML without raising evidence level (31.942916ms)
+✔ reference-card delivery rejects wrong citations and escapes authored HTML (89.238375ms)
+✔ runtime reference card renders HTML, imports through fixed CLI claim and submits the exact asset (27467.384791ms)
+✔ codex: ASR CLI derives identity and registered media hash, fixes local-only, never prints descriptor (21903.309333ms)
+✔ workbuddy: ASR CLI derives identity and registered media hash, fixes local-only, never prints descriptor (13272.675709ms)
+✔ content creation requires explicit reference and rejects caller overrides or another worker before broker (7976.186417ms)
+✔ typed extraction uses only the frozen reference, rejects another ID or a changed baseline (5147.418458ms)
+✔ typed correction and frozen cloud-only service cannot be invoked by the local ASR command (3561.983792ms)
+✔ one controlled ASR failure is returned without retry, alternate engine, entitlement guess or secret detail (2714.066833ms)
+✔ media wire schema accepts only receipt identity, never URLs, hashes, paths or client reference IDs (112.106167ms)
+✔ grant needs frozen authorization and settled source proof; replay preserves server reference and costs (10963.329208ms)
+✔ grant limit and exact reference ownership block unrelated assets and expire after terminal state (17836.836417ms)
+✔ fetch-media derives receipt requests, rejects shortlinks, and recovers existing grant without TikHub (3563.66125ms)
+✔ ASR derives candidate reference from current grant without changing creation (1768.579708ms)
+✔ video source summary never exposes download URLs and settles missing/mismatched media once (2476.683375ms)
+✔ report references cannot borrow media or subtitles registered to another content (1736.536083ms)
+✔ legacy accepted report cannot authorize another content's media at adoption (1942.240833ms)
+✔ legacy accepted research cannot authorize another content's media at adoption (2999.630958ms)
+✔ accepted report retains exact attempt grant as evidence for manual research adoption (3234.053666ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 56193.373041

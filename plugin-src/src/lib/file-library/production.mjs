@@ -6,7 +6,7 @@ import {freezeCreatorContext,businessSkillForTask} from './production-creator-co
 import {readVaultTaskContext} from '../vault/index.mjs';
 import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {renderMarkdownReport} from '../vault/resources.mjs';
-import {researchMediaAuthorized,researchVideoAuthorized} from '../research-runtime/common.mjs';
+import {researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized,validateResearchConfig,hash as researchConfigHash} from '../research-runtime/common.mjs';
 import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt} from './content-journey.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
@@ -398,6 +398,7 @@ export function productionMethods(h) {
                 invalid(['claimed','waiting-user','waiting-permission'].includes(a.status) && (research || t.contentId && !content(t.contentId).deletedAt) && t.request.tools.includes('media') && t.request.tools.includes('tikhub') && fields(config,['version','maxDownloads','maxBytes']) && config.version===1 && config.maxDownloads===3 && config.maxBytes===67108864,'Media was not authorized in fixed request');
                 if(research)invalid(researchVideoAuthorized(t,p.costs,a.id,raw.videoId),'Media target was not authorized in fixed research request');
                 invalid(UUID.test(raw.sourceReceiptId) && UUID.test(raw.sourceRequestId) && UUID.test(raw.requestId) && raw.requestHash===t.requestHash && /^\d{1,32}$/.test(raw.videoId) && raw.canonicalUrl===`https://www.douyin.com/video/${raw.videoId}` && HASH.test(raw.responseHash) && HASH.test(raw.assetHash),'Invalid media receipt');
+                if(research&&!researchGrantAuthorized(t,p.costs,a.id,raw))fail('MEDIA_NOT_AUTHORIZED','The video detail receipt does not belong to the registered sample source');
                 const source=p.costs.find(c=>c.taskId===t.id && c.attemptId===a.id && c.requestId===raw.sourceRequestId),proof=source?.usage;
                 invalid(source?.service==='tikhub' && source.status==='measured' && proof?.ok===true && proof.operation==='video' && proof.id===raw.videoId && ['sourceReceiptId','videoId','canonicalUrl','responseHash'].every(key=>proof[key]===raw[key]),'Media source receipt was not settled by broker');
                 const existing=a.mediaGrants?.find(g=>g.sourceReceiptId===raw.sourceReceiptId);
@@ -440,6 +441,14 @@ export function productionMethods(h) {
                 if(p.costs.some(c=>c.taskId===t.id && c.requestId===raw.requestId)) fail('REQUEST_ALREADY_RESERVED','Request already reserved; inspect the existing result before replay');
                 if(p.costs.some(c=>c.taskId===t.id && c.status==='unknown')) fail('COST_UNKNOWN','An unknown cost blocks further calls');
                 invalid(t.request.tools.includes(raw.service),'Service was not authorized in fixed request');
+                if(raw.service==='tikhub'&&t.request.parameters?.researchRuntime?.sampleDerivation){
+                    const config=validateResearchConfig(t.request.parameters.researchRuntime),usage=raw.usage;
+                    if(usage?.operation==='douyin-search'){
+                        if(usage.id!==config.targetIds[0]||usage.searchParamsHash!==researchConfigHash(config.searchScope)||usage.policyHash!==researchConfigHash(config.sampleDerivation))fail('RESEARCH_QUERY_MISMATCH','Search reservation does not match the frozen query');
+                        if(p.costs.some(cost=>cost.taskId===t.id&&cost.usage?.operation==='douyin-search'))fail('RESEARCH_REQUEST_LIMIT','The fixed search page already has a reservation');
+                    }else if(!['video','comments'].includes(usage?.operation)||!config.operations.includes(usage.operation)||usage.operation==='comments'&&!config.comments||!researchVideoAuthorized(t,p.costs,a.id,usage?.id))fail('RESEARCH_OPERATION_FORBIDDEN','The request is not in the registered search sample');
+                }
+
                 if(t.journeyMember){const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),members=new Set(parent.journeyState.members.map(member=>member.taskId)),costs=p.costs.filter(cost=>members.has(cost.taskId));if(costs.some(cost=>['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Outstanding journey costs block further service requests');const total=costs.filter(cost=>cost.status!=='cancelled').reduce((sum,cost)=>sum+(cost.amount??1),0);if(total+(raw.usage?.requests??1)>parent.request.parameters.limits.maxRequestsTotal)fail('BUDGET_EXCEEDED','The total journey budget is exhausted');}
                 const units=raw.usage?.requests ?? 1; invalid([0,1].includes(units),'Requests must be 0 or 1');
                 if(p.costs.filter(c=>c.taskId===t.id && c.status!=='cancelled').reduce((n,c)=>n+(c.amount ?? 1),0)+units>t.request.budget.amount) fail('BUDGET_EXCEEDED','Fixed request budget is exhausted');

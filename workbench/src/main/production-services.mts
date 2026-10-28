@@ -1,3 +1,4 @@
+import {researchResponseDigest} from '../../../plugin-src/src/lib/research-runtime/samples.mjs';
 import fs from 'node:fs/promises';
 import {isDeepStrictEqual} from 'node:util';
 import {normalizeAsrSettings,serviceAsrSettings} from '../shared/service-validation.ts';
@@ -12,7 +13,8 @@ import type {ServiceSettingsValues,ServiceToolRequest} from '../shared/service-c
 import type {LocalAsrExecution} from './service-tools.mts';
 import {ServiceTools,ServiceToolError} from './service-tools.mts';
 import {ServiceToolBroker} from './service-broker.mts';
-import {researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
+import {researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized,matchesResearchSearch,createResearchSearchEvidence,readResearchSearchEvidence,researchGrantAuthorized,researchSearchReservation} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
+import type {ResearchSearchEvidence} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 export interface ProductionServiceOwner {worker:Worker;current():LibraryBinding}
 export type ProductionRunQueue = <T>(action:()=>Promise<T>)=>Promise<T>;
 const parameters=(value:unknown):Record<string,unknown>=>value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};
@@ -78,6 +80,10 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   if(request.tool==='tikhub'){
    const video=['video','comments'].includes(request.operation),ids=video?c.videoIds??[]:c.targetIds;
    if(!c.operations.includes(request.operation)||!(ids.includes(request.id)||video&&researchVideoAuthorized(task,context.snapshot.costs,request.attemptId,request.id))||request.operation==='comments'&&!c.comments)throw new ServiceToolError('RESEARCH_OPERATION_FORBIDDEN');
+   if(c.sampleDerivation&&request.operation==='douyin-search'){
+    if(!matchesResearchSearch(c,request))throw new ServiceToolError('RESEARCH_QUERY_MISMATCH');
+    if(context.snapshot.costs.some(cost=>cost.taskId===task.id&&(parameters(cost.usage).operation==='douyin-search'||parameters(cost.usage).researchSampleEvidence)))throw new ServiceToolError('RESEARCH_REQUEST_LIMIT');
+   }
    const used=context.snapshot.costs.filter(cost=>cost.taskId===task.id&&cost.status!=='cancelled').reduce((sum,cost)=>sum+(cost.amount??1),0);
    if(used>=Math.min(c.maxRequests,task.request.budget.amount))throw new ServiceToolError('BUDGET_EXCEEDED');
   }else if(request.tool==='asr'){
@@ -119,7 +125,10 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
    if(request.tool==='media')checkMedia(context);
    const frozen=parameters(task.request.parameters),current=tools.settings.read().values;
    if(request.tool==='tikhub'&&request.operation==='comments'&&!(current.commentsEnabled&&frozen.comments===true&&current.budget.enabled&&frozen.budgetEnabled===true))throw new ServiceToolError('COMMENTS_DISABLED');
-   return {binding,workerId:attempt.workerId,isRadar:frozen.workflow==='viral-radar',isPublicationObservation,requestHash:task.requestHash};
+   const isSearchPolicy=frozen.workflow==='jincheng-research'&&!!parameters(frozen.researchRuntime).sampleDerivation;
+   const sample=isSearchPolicy&&request.tool==='tikhub'&&request.operation==='video'?readResearchSearchEvidence(task,context.snapshot.costs,attempt.id):null,researchSampleSource=sample?{sourceRequestId:sample.sourceRequestId,responseHash:sample.responseHash,policyHash:sample.policyHash}:undefined;
+   const searchReservation=isSearchPolicy&&request.tool==='tikhub'&&request.operation==='douyin-search'?researchSearchReservation(validateResearchConfig(frozen.researchRuntime),request):undefined;
+   return {binding,workerId:attempt.workerId,isSearchPolicy,researchSampleSource,searchReservation,fixedResearchTask:task,isRadar:frozen.workflow==='viral-radar',isPublicationObservation,requestHash:task.requestHash};
   });
   const identity={taskId:request.taskId,attemptId:request.attemptId,claimToken:request.claimToken,workerId:initial.workerId,requestId:request.requestId};
   let temp:string|undefined;
@@ -131,10 +140,11 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
      const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId}),task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))throw new ServiceToolError('CLAIM_MISMATCH');checkMedia(context);
      if(task.journeyMember)await owner.worker.call('productionAuthority',{binding:initial.binding,input:{taskId:task.id,attemptId:attempt.id,claimToken:request.claimToken,workerId:request.workerId}});
-     const existing=attempt.mediaGrants?.find(g=>g.sourceReceiptId===request.sourceReceiptId&&g.requestHash===task.requestHash);if(existing)return existing;
+     const existing=attempt.mediaGrants?.find(g=>g.sourceReceiptId===request.sourceReceiptId&&g.requestHash===task.requestHash);if(existing){if(!researchGrantAuthorized(task,context.snapshot.costs,attempt.id,existing))throw new ServiceToolError('MEDIA_NOT_AUTHORIZED');return existing;}
      receipt=receipts.get(request.sourceReceiptId);
      if(!receipt||receipt.expires<Date.now()||receipt.libraryId!==initial.binding.libraryId||receipt.root!==initial.binding.root||receipt.taskId!==task.id||receipt.attemptId!==attempt.id||receipt.workerId!==request.workerId||receipt.claimToken!==request.claimToken||receipt.requestHash!==task.requestHash)throw new ServiceToolError('MEDIA_RECEIPT_EXPIRED');
      if(task.journeyMember){const parent=context.snapshot.tasks.find(parent=>parent.id===task.journeyMember!.journeyId),members=new Set(parent?.journeyState?.members.map(member=>member.taskId)),videos=new Set(context.snapshot.tasks.filter(task=>members.has(task.id)).flatMap(task=>task.attempts.flatMap(attempt=>(attempt.mediaGrants??[]).map(grant=>grant.videoId)))),limit=parameters(parameters(parent?.request.parameters).limits).mediaCount,pending=[...receipts.values()].filter(receipt=>members.has(receipt.taskId)&&receipt.busy).length;if(typeof limit!=='number'||!videos.has(receipt.videoId)&&videos.size+pending>=limit)throw new ServiceToolError('MEDIA_DOWNLOAD_LIMIT');}
+     if(!researchGrantAuthorized(task,context.snapshot.costs,attempt.id,{...receipt,sourceReceiptId:receipt.id,sourceRequestId:receipt.requestId}))throw new ServiceToolError('MEDIA_NOT_AUTHORIZED');
      if(receipt.busy)throw new ServiceToolError('REQUEST_IN_PROGRESS');
      const pending=[...receipts.values()].filter(r=>r.taskId===task.id&&r.attemptId===attempt.id&&r.busy).length;
      if((attempt.mediaGrants?.length??0)+pending>=3)throw new ServiceToolError('MEDIA_DOWNLOAD_LIMIT');receipt.busy=true;
@@ -157,8 +167,8 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     temp=await fs.mkdtemp(path.join(os.tmpdir(),'nova-production-asr-'));const audioPath=path.join(temp,`audio${audio.extension}`);await fs.writeFile(audioPath,audio.data,{flag:'wx',mode:0o600});input={...request,audioPath};
    }
    let successOutcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}|undefined;
-   const settle=(outcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>},radarAuthorIds?:string[],sourceProof?:{sourceReceiptId:string;videoId:string;canonicalUrl:string;responseHash:string},researchProof?:{researchVideoIds:string[];responseHash:string})=>runQueue(async()=>{
-    await owner.worker.call('productionTaskMutation',{binding:initial.binding,op:'recordCost',input:{...identity,status:outcome.requestsUsed===null?'unknown':'measured',amount:outcome.requestsUsed,usage:{...outcome.usage,...sourceProof,...researchProof,requests:outcome.requestsUsed,ok:outcome.ok,...(request.tool==='tikhub'&&(initial.isRadar||request.operation==='video'||request.operation==='user-posts')?{operation:request.operation,id:request.id}:{}),...(radarAuthorIds?{radarAuthorIds}:{})}},mutationId:randomUUID()});
+   const settle=(outcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>},radarAuthorIds?:string[],sourceProof?:{sourceReceiptId:string;videoId:string;canonicalUrl:string;responseHash:string;researchSampleSource?:{sourceRequestId:string;responseHash:string;policyHash:string}},researchProof?:{researchVideoIds?:string[];responseHash:string;researchSampleEvidence?:ResearchSearchEvidence})=>runQueue(async()=>{
+    await owner.worker.call('productionTaskMutation',{binding:initial.binding,op:'recordCost',input:{...identity,status:outcome.requestsUsed===null?'unknown':'measured',amount:outcome.requestsUsed,usage:{...outcome.usage,...sourceProof,...researchProof,requests:outcome.requestsUsed,ok:outcome.ok,...(request.tool==='tikhub'&&(initial.isRadar||initial.isSearchPolicy||request.operation==='video'||request.operation==='user-posts')?{operation:request.operation,id:request.id}:{}),...(radarAuthorIds?{radarAuthorIds}:{})}},mutationId:randomUUID()});
    });
    const result=await tools.execute(input,{
     beforeExecute:async prepared=>runQueue(async()=>{
@@ -174,13 +184,19 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
       const used=context.snapshot.costs.filter(c=>c.taskId===task.id&&c.status!=='cancelled').reduce((sum,c)=>sum+(c.amount??1),0);
       if(used+1>(initial.isRadar?Math.min(current.budget.maxRequestsPerTask,frozenRadarLimit(context),validRadarQuery(frozen.query)?radarRequestLimit(frozen.query):0):current.budget.maxRequestsPerTask))throw new ServiceToolError('BUDGET_EXCEEDED');
      }
-     await owner.worker.call('productionReserve',{binding:initial.binding,input:{...identity,service:prepared.service,usage:{requests:prepared.requests,...(initial.isRadar&&request.tool==='tikhub'?{operation:request.operation,id:request.id}:{})}},mutationId:randomUUID()});
+     await owner.worker.call('productionReserve',{binding:initial.binding,input:{...identity,service:prepared.service,usage:{requests:prepared.requests,...(initial.searchReservation??{}),...((initial.isRadar||initial.isSearchPolicy)&&request.tool==='tikhub'?{operation:request.operation,id:request.id}:{})}},mutationId:randomUUID()});
     }),
-    afterExecute:async outcome=>{if(outcome.ok&&(initial.isRadar||request.tool==='tikhub'&&['video','user-posts'].includes(request.operation)))successOutcome=outcome;else await settle(outcome);}
+    afterExecute:async outcome=>{if(outcome.ok&&(initial.isRadar||request.tool==='tikhub'&&['video','user-posts','douyin-search'].includes(request.operation)))successOutcome=outcome;else await settle(outcome);}
    });
+   if(initial.isSearchPolicy&&request.tool==='tikhub'&&request.operation==='douyin-search'&&successOutcome){
+    let evidence:ResearchSearchEvidence|undefined,responseHash:string|undefined;
+    try{responseHash=researchResponseDigest(result.data);}catch{/* Missing JSON data cannot authorize samples, but cannot erase a charge. */}
+    try{evidence=createResearchSearchEvidence(initial.fixedResearchTask,request.attemptId,request,result.data);}catch{/* A successful charge is still settled for an unsupported response shape. */}
+    await settle(successOutcome,undefined,undefined,responseHash?{responseHash,...(evidence?{researchSampleEvidence:evidence}:{})}:undefined);return result;
+   }
    if(request.tool==='tikhub'&&request.operation==='user-posts'&&successOutcome){
     const context=await runQueue(()=>owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId})),frozen=parameters(context.task?.request.parameters);let proof:{researchVideoIds:string[];responseHash:string}|undefined;
-    if(frozen.workflow==='jincheng-research'){const config=validateResearchConfig(frozen.researchRuntime);if(config.sampleLimit){try{proof={researchVideoIds:deriveResearchVideoIds(result.data,config.sampleLimit),responseHash:createHash('sha256').update(JSON.stringify(result.data)).digest('hex')};}catch{proof=undefined;}}}
+    if(frozen.workflow==='jincheng-research'){const config=validateResearchConfig(frozen.researchRuntime);if(config.sampleLimit){try{proof={researchVideoIds:deriveResearchVideoIds(result.data,config.sampleLimit),responseHash:researchResponseDigest(result.data)};}catch{proof=undefined;}}}
     await settle(successOutcome,undefined,undefined,proof);return result;
    }
    let radarAuthorIds:string[]|undefined;
@@ -189,9 +205,9 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     // Paid response is settled once even if no downloadable media can be granted.
     let source:ReturnType<typeof mediaSource>|undefined,sourceReceipt:{id:string;videoId:string;canonicalUrl:string;responseHash:string}|undefined;
     const canonicalUrl=`https://www.douyin.com/video/${request.id}`;
-    try{source=mediaSource(result.data,request.id);sourceReceipt={id:randomUUID(),videoId:request.id,canonicalUrl,responseHash:createHash('sha256').update(JSON.stringify(result.data)).digest('hex')};}catch{source=undefined;}
+    try{source=mediaSource(result.data,request.id);sourceReceipt={id:randomUUID(),videoId:request.id,canonicalUrl,responseHash:researchResponseDigest(result.data)};}catch{source=undefined;}
     // Receipt parsing/hashing must never hide a successful provider charge.
-    await settle(successOutcome,undefined,sourceReceipt?{sourceReceiptId:sourceReceipt.id,videoId:sourceReceipt.videoId,canonicalUrl:sourceReceipt.canonicalUrl,responseHash:sourceReceipt.responseHash}:undefined);
+    await settle(successOutcome,undefined,sourceReceipt?{sourceReceiptId:sourceReceipt.id,videoId:sourceReceipt.videoId,canonicalUrl:sourceReceipt.canonicalUrl,responseHash:sourceReceipt.responseHash,...(initial.researchSampleSource?{researchSampleSource:initial.researchSampleSource}:{})}:undefined);
     if(source&&sourceReceipt){for(const [key,receipt]of receipts)if(receipt.expires<Date.now()&&!receipt.busy)receipts.delete(key);while(receipts.size>=256){const victim=[...receipts].find(([,entry])=>!entry.busy);if(!victim)throw new ServiceToolError('MEDIA_RECEIPT_LIMIT');receipts.delete(victim[0]);}receipts.set(sourceReceipt.id,{...sourceReceipt,url:source.url,requestId:request.requestId,taskId:request.taskId,attemptId:request.attemptId,workerId:request.workerId,claimToken:request.claimToken,requestHash:initial.requestHash,libraryId:initial.binding.libraryId,root:initial.binding.root,expires:Date.now()+15*60*1000});}
     return{...result,data:{videoId:request.id,canonicalUrl,title:source?.title??'',description:source?.description??'',...(sourceReceipt?{sourceReceipt}:{mediaUnavailable:true}),...(initial.isPublicationObservation?{observationEvidence:observationEvidence(result.data,request.id)}:{})}};
    }

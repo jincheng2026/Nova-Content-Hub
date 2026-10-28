@@ -1,0 +1,19 @@
+✔ reviewed transcript preserves original timing limits and uncertainty ranges (12.029333ms)
+✔ one dataset drives account figures; missing values, comment levels and citations are truthful (97.636125ms)
+✔ findings freeze binds full corpus and separates personal advice (0.540208ms)
+✔ explicit vault directory persists raw→review→frozen report without overwriting historical files (436.925416ms)
+✔ registered original media, unaligned Qwen text, reviewed correction and personal advice stay separate (733.6435ms)
+✔ timed material finalization leaves exact formal originals and moves intermediate evidence to trash (2071.525584ms)
+✔ standalone account research grants require exact frozen video and settled proof; no creation is fabricated (3482.378083ms)
+✔ research broker rejects unfrozen objects and cloud fallback before invoking a provider (1229.345583ms)
+✔ desktop research adapter resolves selected Vault and refuses reads after claim ends (2557.327917ms)
+✔ offline report assets over 2 MiB retain complete HTML while the 8 MiB limit stays enforced (903.135708ms)
+✔ account response derives bounded sample authority on the same attempt; forged and other-attempt video IDs remain blocked (4796.871ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 13567.06975

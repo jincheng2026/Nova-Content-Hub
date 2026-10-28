@@ -1,3 +1,4 @@
+import {researchResponseDigest} from '../research-runtime/samples.mjs';
 import {validateResearchConfig,canonical,hash} from '../research-runtime/common.mjs';
 import {LibraryError} from './index.mjs';
 import {readWorkFlow} from '../vault/workflow.mjs';
@@ -95,7 +96,7 @@ export function journeyCheckpoint(runtimeRoot,root,child,production){
   let state;
   try{const locator=JSON.parse(readBytes(vaultRoot,`.workbench/research-runtime/${config.researchId}.json`));if(locator.path!==`${config.outputDirectory}/research-runtime.json`)fail('CONFLICT','Research locator changed');state=JSON.parse(readBytes(vaultRoot,locator.path));}catch(error){if(error.code==='ENOENT')fail('CHECKPOINT_REQUIRED','The fixed research report is not saved');throw error;}
   if(canonical(state.config)!==canonical(config)||state.stage!=='report-generated'||!state.findings||!state.report||state.report.findingsHash!==state.findings.sha256||state.report.mechanicalValidation!=='passed'||!state.report.relativePath.startsWith(config.outputDirectory+'/')||digest(readBytes(vaultRoot,state.report.relativePath))!==state.report.sha256)fail('CHECKPOINT_REQUIRED','The exact fixed research report has not been verified');
-  for(const request of state.requests){const cost=production.costs.find(cost=>cost.taskId===child.id&&cost.attemptId===child.activeAttemptId&&cost.requestId===request.id);if(request.status!=='complete'||!cost||cost.status!=='measured'||cost.usage?.ok!==true||hash(JSON.parse(readBytes(vaultRoot,request.path)).data)!==request.responseHash)fail('CHECKPOINT_REQUIRED','Research requires settled registered response evidence');}
+  for(const request of state.requests){const cost=production.costs.find(cost=>cost.taskId===child.id&&cost.attemptId===child.activeAttemptId&&cost.requestId===request.id);if(request.status!=='complete'||!cost||cost.status!=='measured'||cost.usage?.ok!==true||(request.responseHashAlgorithm==='json-stringify-sha256-v1'?researchResponseDigest(JSON.parse(readBytes(vaultRoot,request.path)).data):hash(JSON.parse(readBytes(vaultRoot,request.path)).data))!==request.responseHash)fail('CHECKPOINT_REQUIRED','Research requires settled registered response evidence');}
   return {taskId:child.id,stepId:child.journeyMember.stepId,kind:'research',artifactId:config.researchId,hash:state.report.sha256,path:state.report.relativePath,decisionId:null};
  }
  const kind={'author-materials':'author-materials','analysis-ai':'analysis-comparison',writing:'complete-draft',tutorial:'complete-draft',kepu:'complete-draft','review-page':'review','cover-copy':'packaging','cover-design':'cover-design'}[stage];

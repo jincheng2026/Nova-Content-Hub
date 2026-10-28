@@ -1,9 +1,10 @@
+import {deriveSearchSamples,researchResponseDigest} from './samples.mjs';
 import {atProductionCommit} from '../production-authority.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {rootPath,identity,safe,mkdir,atomic,readBytes,digest} from '../vault/core.mjs';
-import {validateResearchConfig,deriveResearchVideoIds,fail,object,hash,canonical} from './common.mjs';
+import {validateResearchConfig,deriveResearchVideoIds,matchesResearchSearch,fail,object,hash,canonical} from './common.mjs';
 import {validateTranscript,normalizeAsrResult} from './transcript.mjs';
 import {buildCorrectedSubtitles} from './subtitles.mjs';
 import {prepareContentRecords} from './normalize.mjs';
@@ -26,7 +27,7 @@ const commentLevel=s=>['reference-card','diagnostic'].includes(s.config.commentM
 const working=(s,part)=>`${s.config.outputDirectory}/${s.config.route==='intake'?'.staging/':''}${part}`;
 const filename=v=>{if(typeof v!=='string'||!/^[-a-zA-Z0-9_]{1,100}$/.test(v))fail('INVALID_INPUT');return v;};
 /** All provider work uses the existing main-process broker. This module never fetches, spawns Python or reads credentials. */
-export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readMedia,assetRoot,readiness,authorize}={}){
+export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readMedia,assetRoot,readiness,authorize,resolveSampleEvidence}={}){
  const root=rootPath(vaultRoot),expected=identity(root);
  const check=()=>{const current=identity(root);if(current.dev!==expected.dev||current.ino!==expected.ino)fail('ROOT_REPLACED','所选知识库根目录已替换。');};
  const locator=id=>`.workbench/research-runtime/${filename(id)}.json`;
@@ -45,6 +46,15 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
   try{fs.writeFileSync(fd,JSON.stringify({pid:process.pid,at:now()}));return await fn();}finally{fs.closeSync(fd);fs.unlinkSync(lock);}
  };
  const approved=async(state,action,input)=>{if(state.stage==='intake-finalized')fail('INTAKE_FINALIZED','素材已正式入库；后续修订需新固定任务，不能改写原验收。');if(authorize)await authorize({config:structuredClone(state.config),action,input});};
+ const verifiedSearchSamples=async(state,request,grant)=>{
+  const config=state.config;if(!config.sampleDerivation)fail('RESEARCH_TARGET_FORBIDDEN');
+  if(!request||request.status!=='complete'||!matchesResearchSearch(config,request.input)||request.responseHashAlgorithm!=='json-stringify-sha256-v1'||typeof resolveSampleEvidence!=='function')fail('RESEARCH_RECEIPT_REQUIRED');
+  const raw=read(request.path);if(canonical(raw.request)!==canonical(request.input)||researchResponseDigest(raw.data)!==request.responseHash)fail('CONFLICT','搜索原始响应与已登记版本不一致。');
+  const samples=deriveSearchSamples(raw.data,config.sampleDerivation.limit),evidence=await resolveSampleEvidence(request.id,grant);
+  if(!evidence||evidence.sourceRequestId!==request.id||evidence.responseHash!==request.responseHash||evidence.keyword!==config.targetIds[0]||evidence.searchParamsHash!==hash(config.searchScope)||evidence.policyHash!==hash(config.sampleDerivation)||canonical(evidence.samples)!==canonical(samples)||canonical(evidence.videoIds)!==canonical(samples.map(sample=>sample.videoId)))fail('RESEARCH_RECEIPT_REQUIRED','搜索样本须来自同一成功注册收据。');
+  if(state.samples&&canonical(state.samples)!==canonical(evidence))fail('CONFLICT','本研究已固定另一份样本来源，不能通过刷新或分页换批次。');if(grant?.originalPath&&hash(readIntakeFile(root,grant.originalPath))!==grant.assetHash)fail('CONFLICT','已归档原片字节与登记资产不一致。');return structuredClone(evidence);
+ };
+ const currentSearchSamples=(state,grant)=>verifiedSearchSamples(state,state.requests.find(request=>request.id===state.samples?.sourceRequestId),grant);
  const api={
   async prepare(input){const c=validateResearchConfig(input);return locked(c.researchId,async()=>{
    if(fs.existsSync(safe(root,locator(c.researchId),true)))fail('CONFLICT','此研究编号已存在；请恢复原任务。');
@@ -58,7 +68,8 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
   async collect(id,input){return locked(id,async()=>{
    const l=load(id),s=l.state,c=s.config;
    if(!object(input)||Object.keys(input).some(k=>!['operation','id','cursor','search'].includes(k))||!c.operations.includes(input.operation)||typeof input.id!=='string'||input.id.length>300||input.operation==='comments'&&!c.comments)fail('RESEARCH_OPERATION_FORBIDDEN');
-   const isVideo=['video','comments'].includes(input.operation),allowed=isVideo?[...(c.videoIds??[]),...(s.samples?.videoIds??[])]:c.targetIds;
+   if(c.sampleDerivation&&input.operation==='douyin-search'&&!matchesResearchSearch(c,input))fail('RESEARCH_QUERY_MISMATCH');
+   const isVideo=['video','comments'].includes(input.operation);if(c.sampleDerivation&&isVideo)await currentSearchSamples(s);const allowed=isVideo?[...(c.videoIds??[]),...(s.samples?.videoIds??[])]:c.targetIds;
    if(!allowed.includes(input.id))fail('RESEARCH_TARGET_FORBIDDEN','采集对象未列入固定研究请求；需先明确更新任务。');
    if(s.findings)fail('FINDINGS_FROZEN');
    const key=hash(input),existing=s.requests.find(r=>r.key===key);
@@ -67,16 +78,16 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
    if(s.requests.length>=c.maxRequests)fail('RESEARCH_REQUEST_LIMIT');
    if(typeof executeService!=='function')fail('SERVICE_UNAVAILABLE');await approved(s,'collect',input);
    const req={id:randomUUID(),key,input:structuredClone(input),status:'started',at:now()};s.requests.push(req);persist(l);
-   try{const result=await executeService({tool:'tikhub',...input,requestId:req.id});const relative=working(s,`raw/tikhub/${req.id}.json`);await approved(s,'archive-collection',input);write(relative,{request:input,collectedAt:result.collectedAt??now(),requestsUsed:result.requestsUsed,cacheHit:result.cacheHit??false,data:result.data});req.status='complete';req.path=relative;req.responseHash=hash(result.data);s.stage='collected';persist(l);return read(relative);}
+   try{const result=await executeService({tool:'tikhub',...input,requestId:req.id});const relative=working(s,`raw/tikhub/${req.id}.json`);await approved(s,'archive-collection',input);write(relative,{request:input,collectedAt:result.collectedAt??now(),requestsUsed:result.requestsUsed,cacheHit:result.cacheHit??false,data:result.data});req.status='complete';req.path=relative;req.responseHash=c.sampleDerivation&&input.operation==='douyin-search'?researchResponseDigest(result.data):hash(result.data);if(c.sampleDerivation&&input.operation==='douyin-search')req.responseHashAlgorithm='json-stringify-sha256-v1';s.stage='collected';persist(l);return read(relative);}
    catch(error){req.status='failed';req.error=/^[A-Z_]{1,80}$/.test(error.code)?error.code:'SERVICE_FAILED';s.stage='blocked';persist(l);throw error;}
   });},
-  async deriveSamples(id){return locked(id,async()=>{const l=load(id),s=l.state,c=s.config;if(s.findings)fail('FINDINGS_FROZEN');if(!c.sampleLimit||c.route!=='account')fail('RESEARCH_TARGET_FORBIDDEN');const req=s.requests.find(r=>r.status==='complete'&&r.input.operation==='user-posts'&&c.targetIds.includes(r.input.id));if(!req)fail('RESEARCH_RECEIPT_REQUIRED');const receipt=read(req.path);if(!req.responseHash||hash(receipt.data)!==req.responseHash)fail('CONFLICT');const videoIds=deriveResearchVideoIds(receipt.data,c.sampleLimit);await approved(s,'derive-samples',{requestId:req.id,responseHash:req.responseHash,videoIds});s.samples={requestId:req.id,responseHash:req.responseHash,videoIds};persist(l);return structuredClone(s.samples);});},
+  async deriveSamples(id){return locked(id,async()=>{const l=load(id),s=l.state,c=s.config;if(s.findings)fail('FINDINGS_FROZEN');if(c.sampleDerivation){const request=s.samples?s.requests.find(request=>request.id===s.samples.sourceRequestId):s.requests.find(request=>request.status==='complete'&&matchesResearchSearch(c,request.input)),evidence=await verifiedSearchSamples(s,request);await approved(s,'derive-samples',evidence);if(!s.samples){s.samples=evidence;persist(l);}return structuredClone(evidence);}if(!c.sampleLimit||c.route!=='account')fail('RESEARCH_TARGET_FORBIDDEN');const req=s.requests.find(r=>r.status==='complete'&&r.input.operation==='user-posts'&&c.targetIds.includes(r.input.id));if(!req)fail('RESEARCH_RECEIPT_REQUIRED');const receipt=read(req.path);if(!req.responseHash||hash(receipt.data)!==req.responseHash)fail('CONFLICT');const videoIds=deriveResearchVideoIds(receipt.data,c.sampleLimit);await approved(s,'derive-samples',{requestId:req.id,responseHash:req.responseHash,videoIds});s.samples={requestId:req.id,responseHash:req.responseHash,videoIds};persist(l);return structuredClone(s.samples);});},
   async download(id,videoId){return locked(id,async()=>{
-   const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');if(![...(s.config.videoIds??[]),...(s.samples?.videoIds??[])].includes(videoId)||!s.config.operations.includes('video')||s.config.platform!=='douyin')fail('RESEARCH_TARGET_FORBIDDEN');
+   const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');if(s.config.sampleDerivation)await currentSearchSamples(s,s.media.find(media=>media.videoId===videoId));if(![...(s.config.videoIds??[]),...(s.samples?.videoIds??[])].includes(videoId)||!s.config.operations.includes('video')||s.config.platform!=='douyin')fail('RESEARCH_TARGET_FORBIDDEN');
    const previous=s.media.find(m=>m.videoId===videoId),intake=s.config.route==='intake';
    if(previous&&(!intake||s.intakes?.[videoId]))return structuredClone(previous);
    if(!previous&&intake){const duplicates=findIntakeDuplicates(root,{videoId,canonicalUrl:`https://www.douyin.com/video/${videoId}`});if(duplicates.length)throw Object.assign(new Error('素材已在知识库，停止新下载和转写；请查看现有目录。'),{code:'INTAKE_DUPLICATE',matches:duplicates});}
-   if(!previous&&s.media.length>=3)fail('MEDIA_DOWNLOAD_LIMIT');if(typeof fetchMedia!=='function')fail('MEDIA_BROKER_REQUIRED');await approved(s,'download',{videoId});
+   if(!previous&&s.media.length>=(s.config.sampleDerivation?.limit??3))fail('MEDIA_DOWNLOAD_LIMIT');if(typeof fetchMedia!=='function')fail('MEDIA_BROKER_REQUIRED');await approved(s,'download',{videoId});
    const result=await fetchMedia({videoId,url:`https://www.douyin.com/video/${videoId}`}),grant=result.grant??result.data??result;
    if(typeof grant.assetHash!=='string'||!/^[a-f0-9]{64}$/.test(grant.assetHash)||grant.videoId!==videoId||grant.canonicalUrl!==`https://www.douyin.com/video/${videoId}`||previous&&previous.assetHash!==grant.assetHash)fail('INVALID_MEDIA_GRANT');
    const media={...grant,videoId},source=intakeSource(result.source??previous?.source,videoId);if(source)media.source=source;
@@ -91,7 +102,7 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
    if(previous)s.media[s.media.indexOf(previous)]=media;else s.media.push(media);
    const mediaPath=working(s,`raw/media/${videoId}.json`),old=fs.existsSync(safe(root,mediaPath,true))?digest(readBytes(root,mediaPath)):null;write(mediaPath,media,old);s.stage='media-ready';persist(l);return structuredClone(media);
   });},
-  async transcribe(id,videoId){return locked(id,async()=>{const l=load(id),s=l.state;if(s.findings)fail('FINDINGS_FROZEN');const media=s.media.find(m=>m.videoId===videoId);if(!media)fail('ASR_MEDIA_REQUIRED');if(typeof executeService!=='function')fail('SERVICE_UNAVAILABLE');const previous=s.transcripts.find(x=>x.videoId===videoId);if(previous)return structuredClone(previous);await approved(s,'transcribe',{videoId,assetHash:media.assetHash});const result=await executeService({tool:'asr',requestId:randomUUID(),audioPath:media.assetHash,allowCloud:false}),raw=normalizeAsrResult(result);raw.manifest.source_sha256=media.assetHash;raw.manifest.requested_engine='qwen3-asr';const dir=working(s,`transcripts/${videoId}`);await approved(s,'archive-transcript',{videoId});write(`${dir}/manifest.json`,raw.manifest);write(`${dir}/raw/transcript.txt`,raw.rawText);write(`${dir}/raw/segments.jsonl`,raw.segments.map(x=>JSON.stringify(x)).join('\n')+'\n');const entry={videoId,directory:dir,status:'raw_transcribed',hasTiming:raw.segments.length>0};s.transcripts.push(entry);s.stage='awaiting-correction';persist(l);return{...entry,...raw};});},
+  async transcribe(id,videoId){return locked(id,async()=>{const l=load(id),s=l.state;if(s.config.sampleDerivation)await currentSearchSamples(s,s.media.find(media=>media.videoId===videoId));if(s.findings)fail('FINDINGS_FROZEN');const media=s.media.find(m=>m.videoId===videoId);if(!media)fail('ASR_MEDIA_REQUIRED');if(typeof executeService!=='function')fail('SERVICE_UNAVAILABLE');const previous=s.transcripts.find(x=>x.videoId===videoId);if(previous)return structuredClone(previous);await approved(s,'transcribe',{videoId,assetHash:media.assetHash});const result=await executeService({tool:'asr',requestId:randomUUID(),audioPath:media.assetHash,allowCloud:false}),raw=normalizeAsrResult(result);raw.manifest.source_sha256=media.assetHash;raw.manifest.requested_engine='qwen3-asr';const dir=working(s,`transcripts/${videoId}`);await approved(s,'archive-transcript',{videoId});write(`${dir}/manifest.json`,raw.manifest);write(`${dir}/raw/transcript.txt`,raw.rawText);write(`${dir}/raw/segments.jsonl`,raw.segments.map(x=>JSON.stringify(x)).join('\n')+'\n');const entry={videoId,directory:dir,status:'raw_transcribed',hasTiming:raw.segments.length>0};s.transcripts.push(entry);s.stage='awaiting-correction';persist(l);return{...entry,...raw};});},
   async correct(id,videoId,input){return locked(id,async()=>{const l=load(id),s=l.state;if(s.intakes?.[videoId]||s.stage==='intake-finalized')fail('INTAKE_FINALIZED');if(s.findings)fail('FINDINGS_FROZEN');const entry=s.transcripts.find(x=>x.videoId===videoId);if(!entry)fail('TRANSCRIPT_NOT_FOUND');if(!object(input)||Object.keys(input).some(k=>!['correctedText','segments','durationSeconds','timePrecision','alignmentReviewed','corrections','reviewedBy'].includes(k))||typeof input.reviewedBy!=='string'||!input.reviewedBy.trim()||!Array.isArray(input.corrections))fail('INVALID_INPUT','校正需保留逐项修改及复核人，不能隐式确认。');
    const rawManifest=read(`${entry.directory}/manifest.json`),rawSegments=readBytes(root,`${entry.directory}/raw/segments.jsonl`).toString('utf8').trim().split('\n').filter(Boolean).map(x=>JSON.parse(x)),segments=input.segments??rawSegments;
    const manifest={...rawManifest,status:'corrected_validated',segment_count:segments.length,duration_seconds:input.durationSeconds??rawManifest.duration_seconds,time_precision:input.timePrecision??rawManifest.time_precision,alignment_reviewed:input.alignmentReviewed===true,reviewed_by:input.reviewedBy,reviewed_at:now()};

@@ -1,0 +1,78 @@
+{
+  "status": "A2 product frozen; 49 directed tests passed; final desktop typecheck has an external-owner report-search error",
+  "anchor": "e0230d0",
+  "currentHead": "b24fe68dc402f713bc442b18a5dd0ebd06584e57",
+  "files": {
+    "plugin-src/src/commands/jincheng-research.mjs": "fc80a083c2184f24f29c6471f3372240467625f1b89bc9c1a6c7488a9c51995e",
+    "plugin-src/src/lib/file-library/production.mjs": "f5141dac35bb74df93ccb009ef79828f5e3de60d3588135793288f0f8a55b208",
+    "plugin-src/src/lib/file-library/content-journey.mjs": "a9ddb4e355a327f6977da2e4a6ff0f30251e50cbe73c62535604948128114596",
+    "plugin-src/src/lib/research-runtime/common.mjs": "0dd709ba1403652737a9fdd9660b6ba5f3642de3f9df10ad5cca4d32bed842ed",
+    "plugin-src/src/lib/research-runtime/common.d.mts": "b8bccbd8fdbb2fa808ca628d0ed43ecf63940750c2b890e67ac698739db496f7",
+    "plugin-src/src/lib/research-runtime/index.mjs": "53c6814ec9d0891ab468c424753ac491672fb8b3587f208eb26d7b79a2a52a15",
+    "plugin-src/src/lib/research-runtime/index.d.mts": "ec02d5e5035dcaabb771ba2622223a7651a9ccd5aa059d913e3cd8fda5555dbb",
+    "plugin-src/src/lib/research-runtime/samples.mjs": "cfa3aac5e8e61bc151060894b6e1ebad893d89fb215c55a64fba694c2160a576",
+    "plugin-src/src/lib/research-runtime/samples.d.mts": "e222f134eee3decdf7875c57d29a2efe3d3a6f87b90876b593bfd57a4fd2493b",
+    "workbench/src/main/jincheng-research-services.mts": "3e2de89b4e328f1d866f5d92592bb453d8bb695ead9be41b6fc149a7d5efe03f",
+    "workbench/src/main/production-services.mts": "6d0f61178e82320e7c31826ba50c9155d3b8abdc287cf91c180424e932229a39",
+    "workbench/src/main/production-worker.mts": "c1db9220fa9709e20c08d2786dd777eae73c3733051881c0871d438435d984cf",
+    "workbench/src/main/production-controller.mts": "d41ad28c40f79ec9812eb6f8cc457cab4e78612c8a1bacd4c2cf468a11344288",
+    "workbench/src/shared/stage-contracts.ts": "197c260ab901ad7287577af7aa247a711b9173b38a6fc2fff1c88188272a4c9c",
+    "workbench/src/shared/stage-validation.ts": "9b9ce80fc03c387496fd96678c17281aebc1a22eb87adac707d4b6d0add4a6a7",
+    "workbench/test/research-search-samples.test.mjs": "120022502b04cdca76b089019d90c9dd1ece0ae0dc7ddf62d9e4d502cd02e9d9"
+  },
+  "u6RenderTail": {
+    "sha256": "2a2def710dbc5e117b14dd80bf6a8bf70f1c2a2de37a581a9ef32a0f6aa62502",
+    "unchanged": true
+  },
+  "stagedByJ": false,
+  "committedByJ": false,
+  "boundaries": [
+    "No real provider, model, credentials, real library or GUI used.",
+    "B/C author migration and evidence rebinding remain separate deliveries."
+  ],
+  "verification": {
+    "newSearchSuite": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "exit": 0,
+      "log": ".local-probes/journey-planning/A2-final-search-suite.log"
+    },
+    "oldAccountAndRuntime": {
+      "tests": 11,
+      "pass": 11,
+      "fail": 0,
+      "exit": 0,
+      "log": ".local-probes/journey-planning/A2-account-regression.log"
+    },
+    "legacyMediaAsrAndU6": {
+      "tests": 19,
+      "pass": 19,
+      "fail": 0,
+      "exit": 0,
+      "log": ".local-probes/journey-planning/A2-final-compatibility.log"
+    },
+    "strongerCacheGrantChecks": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "exit": 0,
+      "log": ".local-probes/journey-planning/A2-cache-final.log"
+    },
+    "desktopTypecheck": {
+      "exit": 1,
+      "diagnostics": [
+        "workbench/src/main/report-search.mts:37: PostCSS Document_ vs ContainerWithChildren; outside J owner"
+      ],
+      "log": ".local-probes/journey-planning/A2-final-typecheck.log"
+    },
+    "priorA2Typecheck": {
+      "exit": 0,
+      "log": ".local-probes/journey-planning/A2-typecheck-4.log"
+    },
+    "diffCheck": {
+      "exit": 0
+    }
+  },
+  "changedSinceFreeze": []
+}

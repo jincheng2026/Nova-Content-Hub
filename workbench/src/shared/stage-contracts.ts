@@ -3,7 +3,7 @@ import type {VaultWorkContext} from './vault-contracts.ts';
 import type {CheckpointKind} from '../../../plugin-src/src/lib/vault/workflow.mjs';
 export type JinchengStage='intake'|'analysis-author'|'analysis-ai'|'narrative'|'key-segment'|'writing'|'tutorial'|'kepu'|'review-page'|'cover-design'|'synthesis'|'revision'|'cover-copy'|'closeout'|'review'|'research'|'comments'|'patterns';
 export interface SynthesisBrief {depth:'orientation'|'issue'|'generative';question:string;purpose:string;timeBoundary:string;scopeBoundary:string}
-export interface ResearchBrief {route:'account'|'topic'|'comments'|'intake';platform:'douyin'|'xiaohongshu'|'manual';targetIds:string[];videoIds?:string[];commentMode?:'report'|'audience-depth'|'reference-card'|'diagnostic'}
+export interface ResearchBrief {route:'account'|'topic'|'comments'|'intake';platform:'douyin'|'xiaohongshu'|'manual';targetIds:string[];videoIds?:string[];commentMode?:'report'|'audience-depth'|'reference-card'|'diagnostic';sampleDerivation?:import('../../../plugin-src/src/lib/research-runtime/common.mjs').ResearchSampleDerivation;searchScope?:import('../../../plugin-src/src/lib/research-runtime/common.mjs').ResearchSearchScope}
 export interface StageInputs {
  confirmJinchengCheckpoint:{contentId:string;kind:CheckpointKind;artifactId:string;artifactHash:string;expectedRevision:string;decision:'confirm'|'reopen'|'reject';decisionText:string};
  saveJinchengAuthorAnalysis:{contentId:string;text:string;expectedRevision:string};
