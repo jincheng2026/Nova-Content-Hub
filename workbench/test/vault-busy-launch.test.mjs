@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+import {EventEmitter} from 'node:events';
+import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
+import {openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
+import {executeProduction} from '../src/main/production-worker.mts';
+import {WorkerClient} from '../src/main/worker-client.mts';
+import {ProductionController} from '../src/main/production-controller.mts';
+test('an external live Vault lock releases before the same readonly task request opens its assistant once',async t=>{
+ const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'nova-vault-launch-busy-'))),binding=createVault(root),library=openLibrary(binding.root);
+ const task=library.mutateProduction('createTask',{kind:'writing',title:'定位测试',prompt:'只验证本地跳转控制。',host:'codex',parameters:{workflow:'positioning-interview'},tools:[],budget:{amount:0,currency:'REQ'},expectedToken:library.readProduction().editToken}).tasks[0];
+ const core=new URL('../../plugin-src/src/lib/vault/core.mjs',import.meta.url).href;
+ const child=spawn(process.execPath,['--input-type=module','-e',`import {withVaultLock} from ${JSON.stringify(core)};withVaultLock(process.argv[1],()=>{console.log('LOCKED');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,700);});`,root],{stdio:['ignore','pipe','pipe']});
+ const ended=new Promise(resolve=>child.once('exit',resolve));t.after(async()=>{if(child.exitCode===null)child.kill();await ended;fs.rmSync(root,{recursive:true,force:true});});
+ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);child.once('exit',code=>{if(code)reject(Error('Lock holder failed'));});});
+ const requests=[],launched=[];const worker=new WorkerClient(()=>{const adapter=new EventEmitter();adapter.kill=()=>adapter.emit('exit');adapter.postMessage=request=>{requests.push(structuredClone(request));executeProduction(request.op,request.args,'disabled').then(value=>adapter.emit('message',{id:request.id,ok:true,value}),error=>adapter.emit('message',{id:request.id,ok:false,error:{code:error.code,message:error.message}}));};return adapter;});t.after(()=>worker.stop());
+ const controller=new ProductionController({current:()=>binding,worker,covers:{grant:()=>''}},{launch:async(b,locator)=>launched.push({b,locator}),serviceSettings:async()=>({})});
+ assert.deepEqual(await controller.launch(task.id),{opened:true});assert.equal(launched.length,1);assert.equal(launched[0].locator.taskId,task.id);
+ assert.ok(requests.length>1&&requests.length<=7);for(const request of requests)assert.deepEqual(request,requests[0]);
+ assert.equal(library.readProduction().tasks.length,1);await ended;
+});

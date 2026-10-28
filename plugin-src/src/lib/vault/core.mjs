@@ -768,7 +768,7 @@ export function withVaultLock(root, fn) {
                 fs.rmdirSync(lock);
                 return withVaultLock(root, fn);
             }
-            fail('NOT_READY', '知识库正由另一项写入操作使用，请稍后重试');
+            fail('VAULT_BUSY', '知识库正由另一项写入操作使用，请稍后重试');
         }
         throw e;
     }

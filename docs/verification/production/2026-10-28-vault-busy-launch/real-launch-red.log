@@ -1,0 +1,21 @@
+✖ an external live Vault lock releases before the same readonly task request opens its assistant once (2748.047709ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3846.032667
+
+✖ failing tests:
+
+test at workbench/test/vault-busy-launch.test.mjs:13:1
+✖ an external live Vault lock releases before the same readonly task request opens its assistant once (2748.047709ms)
+  Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
+      at EventEmitter.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:48:50)
+      at EventEmitter.emit (node:events:514:28)
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-busy-launch.test.mjs:20:343
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
+    code: 'NOT_READY'
+  }

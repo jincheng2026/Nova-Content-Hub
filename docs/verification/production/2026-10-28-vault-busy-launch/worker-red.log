@@ -1,0 +1,45 @@
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (7.905041ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (3.659666ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (4.779125ms)
+✔ readonly non-BUSY failures are returned once (1.721875ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (5.287917ms)
+✖ Vault contention retries only the exact finite read, with a bounded friendly failure (3.675583ms)
+✔ Vault contention never replays a mutation (1.050125ms)
+✔ unrelated NOT_READY failures never retry (0.234042ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 7
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 311.020375
+
+✖ failing tests:
+
+test at workbench/test/worker-client-busy.test.mjs:82:1
+✖ Vault contention retries only the exact finite read, with a bounded friendly failure (3.675583ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:85:2)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
+        at EventEmitter.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:48:50)
+        at EventEmitter.emit (node:events:514:28)
+        at child.postMessage (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:13:15)
+        at send (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:66:35)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:95:13
+        at new Promise (<anonymous>)
+        at WorkerClient.call (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:62:16)
+        at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:83:68)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1397:25),
+    operator: 'rejects',
+    diff: 'simple'
+  }
