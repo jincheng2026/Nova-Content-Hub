@@ -1,0 +1,95 @@
+{
+  "requirement": "A15-runtime-source-distribution-minimum",
+  "status": "implementation-and-isolated-fixture-verified; final-artifact-not-built",
+  "baselineCommit": "30d15299dc2f0dbfd0a19a35ccae4cf139abb72e",
+  "verificationHead": "dfb4c2109fb8d1af9b4cf6fa8da9eb865b19eb5c",
+  "verificationPlatform": "darwin-arm64",
+  "fullSource": {
+    "versions": 58,
+    "files": 1039
+  },
+  "fullSourceManifestSha256": "64b861b767b349c714b2b0ebefc27c53c5422c058da44516b11ce608df89d13c",
+  "runtimeSource": {
+    "versions": 58,
+    "files": 1034,
+    "policy": {
+      "id": "explicit-private-cover-defaults-v1",
+      "resource": "plugin-src/resources/method-runtime-distribution.json",
+      "sha256": "90b17cac42ab28b19409a32fb741a5a48a3e4d900399507c702f12104d4e5811"
+    },
+    "treeSha256Scope": "original-source-tree",
+    "omitted": [
+      {
+        "installedPath": "skills/jc-cover-design/upstream/current/assets/my-face-alt.JPG",
+        "sha256": "91315cb5c301c86a8accc03cb6b08305435b4e28e95e5a91c48f168f9017afa3",
+        "reason": "Original author personal identity photo; not a distributable current-user default.",
+        "bytes": 199500
+      },
+      {
+        "installedPath": "skills/jc-cover-design/upstream/current/assets/my-face-neutral.JPG",
+        "sha256": "30f4f230a1ce49266785a9945c12d81db48629189df2a87785bd8b8ce880db37",
+        "reason": "Original author personal identity photo; not a distributable current-user default.",
+        "bytes": 637174
+      },
+      {
+        "installedPath": "skills/jc-cover-design/upstream/current/assets/my-face-studio-default.JPG",
+        "sha256": "0a3a716f69d5200c4cc6f7a127fc9c7a4720c3977e567e8d1760c7a17a9ac121",
+        "reason": "Original author personal identity photo; not a distributable current-user default.",
+        "bytes": 2367565
+      },
+      {
+        "installedPath": "skills/jc-cover-design/upstream/current/assets/my-face.png",
+        "sha256": "045aa9b0351e64ec7f40a7f853206a6416f40b2772e0ef7db1cedc7a5565d54d",
+        "reason": "Original author personal identity photo; not a distributable current-user default.",
+        "bytes": 1331268
+      },
+      {
+        "installedPath": "skills/jc-cover-design/upstream/current/config.md",
+        "sha256": "d99fc8cb9dc8a85c0b87d54a69ead338b01b69ed35b5583a9e7dd7b679752ccb",
+        "reason": "Original author identity choices and personal preferences; use independent frozen-request runtime mapping.",
+        "bytes": 1224
+      }
+    ]
+  },
+  "fourMethodPackage": {
+    "sourceFiles": 621,
+    "runtimeFiles": 616,
+    "includesPackageInstallationNote": true
+  },
+  "tests": [
+    {
+      "log": "implementation-tests.txt",
+      "tests": 42,
+      "passed": 41,
+      "failed": 0,
+      "skipped": 1,
+      "skip": "real native market integration requires NOVA_MARKETPLACE_INTEGRATION=1 and actual build; deliberately not run"
+    },
+    {
+      "log": "safety-business-tests.txt",
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "log": "distribution-tests.txt",
+      "tests": 7,
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0,
+      "note": "latest rerun after strengthening unregistered-source fixture; overlaps first suite"
+    }
+  ],
+  "originalSourcesModified": false,
+  "artifactSafetyModified": false,
+  "methodSourcesValidatorModified": false,
+  "originalScriptsExecuted": false,
+  "actualBuildRun": false,
+  "gaps": [
+    "No new runtime/marketplace/installer has been built or installed by this task. Existing generated packages still contain the old payload and are not credited with this policy.",
+    "Remaining case images/corpora/author text distribution rights were not inferred or cleared by this exact five-file policy.",
+    "No real Codex/WorkBuddy task or native Windows/Intel Mac acceptance was performed.",
+    "Student entitlement service, signing/notarization and final system artifact evidence remain separate requirements."
+  ]
+}

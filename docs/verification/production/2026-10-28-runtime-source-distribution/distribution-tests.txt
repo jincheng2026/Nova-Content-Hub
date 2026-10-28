@@ -1,0 +1,15 @@
+✔ integrity selects the same runtime subset while the full original evidence remains valid (235.111083ms)
+✔ runtime copy carries 1034 unchanged source files and source provenance, preserving original methods and templates (2070.789959ms)
+✔ runtime gate rejects old full-source manifests, malformed distribution, missing and altered included payloads (14040.117208ms)
+✔ all five denied paths and all five exact byte hashes fail even after rename or manifest resurrection (5137.395125ms)
+✔ unregistered upstream files cannot be copied around source validation or added to a runtime package (2007.118834ms)
+✔ cover runtime context requires this frozen request own-photo and never falls back to historical defaults or examples (1.096042ms)
+✔ runtime distribution manifest must be a regular snapshot-bound file, not a link to another valid copy (1668.9485ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25288.409875

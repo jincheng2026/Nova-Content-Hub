@@ -1,0 +1,51 @@
+✔ complete upstream methods are byte-addressed and every bundled resource is verified (423.938ms)
+✔ discovered adapters require their full method and do not claim legacy service installation (9.825542ms)
+✔ topic selection keeps direct conversation and fixed task modes (2.721292ms)
+✔ explicit tutorial gates and research/comment methods remain in complete original bodies (1.604542ms)
+✔ archive-only sources never become active routes, and sources grant no external execution authority (4.864417ms)
+✔ critical current bodies retain the independently frozen original hashes (2.041584ms)
+✔ jc-zhuanxie routes only as a non-executable complete original method with immutable ZIP evidence (349.381458ms)
+✔ jc-review-page routes only as a non-executable complete original method with immutable ZIP evidence (210.201791ms)
+✔ jc-cover-design routes only as a non-executable complete original method with immutable ZIP evidence (160.247083ms)
+✔ jc-kepu-video routes only as a non-executable complete original method with immutable ZIP evidence (283.246542ms)
+✔ new method registration preserves ordinary writing/transcription defaults and isolates actual cover generation (0.833708ms)
+✔ four-method source manifests and installed references pass the existing validators (318.027834ms)
+✔ the four bundled method trees pass the existing artifact credential and local-state gate (332.130834ms)
+✔ cover source references resolve relative to their source file and unwrap Markdown angle destinations (0.427833ms)
+✔ both local catalogs resolve from the movable market root to the same byte-identical package (17424.070375ms)
+✔ the build-owned complete manifest detects changed business libraries, Node and sharp independently of installed integrity (11605.521167ms)
+▶ unsafe or inconsistent packages fail before replacing an existing market
+  ✔ release (7016.463083ms)
+  ✔ foreign architecture (4463.322459ms)
+  ✔ Node bytes (3895.223709ms)
+  ✔ missing hash (3869.708625ms)
+  ✔ claimed contract capability (4295.50025ms)
+  ✔ duplicate source Skill directory (4147.339625ms)
+  ✔ unexpected root Skill (17297.633791ms)
+  ✔ legacy manifest Skill path with updated integrity (3733.874833ms)
+  ✔ foreign Node lock with updated integrity (4191.455875ms)
+  ✔ old full-source manifest resealed into integrity (3554.520458ms)
+  ✔ private photo renamed into dependency files (3750.078375ms)
+  ✔ altered original method resealed into integrity (3819.958708ms)
+  ✔ user data (4162.460334ms)
+✔ unsafe or inconsistent packages fail before replacing an existing market (68201.395ms)
+✔ package and output symlink escapes are refused; source cannot be overwritten (14186.246584ms)
+﹣ real native market and simulated host cache run fixed Node from an unrelated cwd (5.841375ms) # SKIP
+✔ integrity selects the same runtime subset while the full original evidence remains valid (395.409959ms)
+✔ runtime copy carries 1034 unchanged source files and source provenance, preserving original methods and templates (2470.05275ms)
+✔ runtime gate rejects old full-source manifests, malformed distribution, missing and altered included payloads (3589.835167ms)
+✔ all five denied paths and all five exact byte hashes fail even after rename or manifest resurrection (5720.677583ms)
+✔ unregistered upstream files cannot be copied around source validation or added to a runtime package (2065.077417ms)
+✔ cover runtime context requires this frozen request own-photo and never falls back to historical defaults or examples (3.583667ms)
+✔ runtime distribution manifest must be a regular snapshot-bound file, not a link to another valid copy (1954.623208ms)
+✔ nested marketplace permits only hash-registered immutable original test evidence (37.106084ms)
+✔ a source evidence manifest cannot waive credential screening (7.529ms)
+✔ unregistered app fixtures and machine files remain excluded (10.055459ms)
+ℹ tests 42
+ℹ suites 0
+ℹ pass 41
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 1
+ℹ todo 0
+ℹ duration_ms 111940.633875

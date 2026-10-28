@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {runtimeMethodSourceFilter} from '../scripts/method-runtime-distribution.mjs';
 import {businessSkillRegistry, businessSkillNames, productionSkillNames, allSkillNames, integrityPaths, skillCapabilities, validateSkills, resolveSkillReference} from '../scripts/build.mjs';
 
 const source=fileURLToPath(new URL('../',import.meta.url));
@@ -60,14 +61,14 @@ test('business methods cannot acquire executor permission in either authorizatio
     for(const item of [...businessSkillRegistry.unavailable,...businessSkillRegistry.disabled])assert.ok(!allSkillNames.includes(item.id),item.id);
 });
 
-test('all business resources are covered by integrity; active adapters contain no machine defaults',()=>{
+test('all distributed business resources are covered by integrity; source-only evidence stays in the repository',()=>{
     const hashed=new Set(integrityPaths());
     const visit=directory=>{
         for(const entry of fs.readdirSync(directory,{withFileTypes:true})){
             const file=path.join(directory,entry.name);
             if(entry.isDirectory()){visit(file);continue;}
             const relative=path.relative(source,file).split(path.sep).join('/');
-            assert.ok(hashed.has(relative),relative);
+            assert.equal(hashed.has(relative),runtimeMethodSourceFilter(file,source),relative);
             if(!relative.includes('/upstream/') && /\.(md|json|ya?ml|py|mjs|sh)$/.test(file))assert.doesNotMatch(fs.readFileSync(file,'utf8'),/\/Users\/(?:hejincheng|mac)\/|(?:~|\$HOME)\/AIJinCheng|VOLC_SPEECH_API_KEY\s*=/,relative);
         }
     };

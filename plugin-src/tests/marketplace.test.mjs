@@ -9,6 +9,7 @@ import {fileURLToPath} from 'node:url';
 import {allSkillNames, integrityPaths, releaseModes, skillNames, skillCapabilities} from '../scripts/build.mjs';
 import {archiveFor, nodeRelease} from '../scripts/bundled-node.mjs';
 import {buildMarketplace, main, snapshotPackage} from '../scripts/marketplace-builder.mjs';
+import {copyRuntimeMethodSkills} from '../scripts/method-runtime-distribution.mjs';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -29,6 +30,9 @@ async function fixture(t) {
             await mkdir(dirname(join(input, path)), {recursive: true});
             await writeFile(join(input, path), 'fixture ' + path, {mode: path.startsWith('bin/') || path === 'runtime/node' ? 0o755 : 0o644});
         }
+        const methodManifest = await copyRuntimeMethodSkills(join(root, 'plugin-src'), input);
+        await json(join(input, 'plugin-src/resources/method-sources.json'), methodManifest);
+        for (const name of ['method-runtime-distribution.json', 'method-runtime-context.json', 'method-runtime-context.mjs']) await cp(join(root, 'plugin-src/resources', name), join(input, 'plugin-src/resources', name));
         await mkdir(join(input, 'node_modules'), {recursive: true});
         for (const path of ['README.md', 'package.json', 'package-lock.json']) await writeFile(join(input, path), '{}\n');
         await json(join(input, 'plugin-src/src/release.json'), {...release, format: 'nova-content-plugin-release', schemaVersion: 1, experimental: true, platform: process.platform, arch: process.arch});
@@ -192,6 +196,21 @@ test('unsafe or inconsistent packages fail before replacing an existing market',
             integrity.hashes['runtime/manifest.json'] = hash(await readFile(path));
             await json(integrityPath, integrity);
         }, /Node lock/],
+        ['old full-source manifest resealed into integrity', async input => {
+            const relative = 'plugin-src/resources/method-sources.json';
+            await cp(join(root, 'plugin-src/resources/method-sources.json'), join(input, relative));
+            const integrity = await readJSON(join(input, 'integrity.json'));
+            integrity.hashes[relative] = hash(await readFile(join(input, relative)));
+            await json(join(input, 'integrity.json'), integrity);
+        }, /distribution/],
+        ['private photo renamed into dependency files', input => cp(join(root, 'plugin-src/skills/jc-cover-design/upstream/current/assets/my-face-alt.JPG'), join(input, 'node_modules/innocent-image.bin')), /distribution/],
+        ['altered original method resealed into integrity', async input => {
+            const relative = 'skills/jc-cover-design/upstream/current/METHOD.md';
+            await writeFile(join(input, relative), 'changed original method');
+            const integrity = await readJSON(join(input, 'integrity.json'));
+            integrity.hashes[relative] = hash(await readFile(join(input, relative)));
+            await json(join(input, 'integrity.json'), integrity);
+        }, /distribution/],
         ['user data', input => writeFile(join(input, 'user-library.json'), 'private user data'), /Unexpected runtime package entries/]
     ];
     for (const [name, mutate, pattern] of changes) await t.test(name, async t => {

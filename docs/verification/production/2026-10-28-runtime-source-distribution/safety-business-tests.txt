@@ -1,0 +1,27 @@
+✔ Skill reference mapping uses package paths on both POSIX and Windows filesystems (1.130625ms)
+✔ registered methods have real provenance, a bundled executor and complete installed dependencies (304.994542ms)
+✔ business methods cannot acquire executor permission in either authorization mode (0.831459ms)
+✔ all distributed business resources are covered by integrity; source-only evidence stays in the repository (153.297791ms)
+✔ copy filters exclude local state, fixtures and logs without excluding service implementation (1.43675ms)
+✔ sealed artifacts reject copied local state by path without reading it (17.245209ms)
+✔ only empty environment examples may ship (7.086625ms)
+✔ detects hardcoded credentials but reports only paths and rule identifiers (11.065458ms)
+✔ ordinary token fields, env reads, provider enums, hashes and mock examples are permitted (11.999584ms)
+✔ archives are checked recursively including gzip, tar, zip, unsafe paths and opaque formats (24.635042ms)
+✔ symlink escapes and over-limit archives fail closed (195.270792ms)
+✔ credentials hidden under a different extension remain detectable (2.81575ms)
+✔ packaging hook checks final copied resources before generating installers (14.56175ms)
+✔ fresh settings require the user’s own keys while reopening retains local encrypted settings (47.242875ms)
+✔ service-scoped JSON credentials and environment-shaped names are rejected without treating ordinary token data as secrets (4.666917ms)
+✔ generated demo library allowance still rejects real content and local key stores (5.432792ms)
+✔ unquoted YAML, INI and shell credential scalars are rejected without exposing their values (8.729125ms)
+✔ bare credential rules preserve environment references, code variables and explicit placeholders (3.060084ms)
+✔ provider-prefixed placeholders share literal detection rules without exempting ordinary provider keys (8.507667ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 556.589583

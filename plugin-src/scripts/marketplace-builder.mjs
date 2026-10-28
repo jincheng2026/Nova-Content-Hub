@@ -6,6 +6,7 @@ import {isAbsolute, join, relative, sep} from 'node:path';
 import {allSkillNames, integrityPaths, releaseModes, skillCapabilities} from './build.mjs';
 import {archiveFor, nodeRelease} from './bundled-node.mjs';
 import {assertArtifactSafe} from './artifact-safety.mjs';
+import {validateRuntimeDistribution} from './method-runtime-distribution.mjs';
 import {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 export {snapshotPackage} from '../src/lib/package-snapshot.mjs';
 
@@ -26,6 +27,7 @@ async function directory(path) {
 export async function validateRuntime(input, expected) {
     const snapshot = await snapshotPackage(input);
     await assertArtifactSafe(input);
+    await validateRuntimeDistribution(input, {snapshot});
     if (!isDeepStrictEqual((await readdir(input)).sort(), packageEntries)) throw Error('Unexpected runtime package entries; rebuild from source without user files');
     if (snapshot['plugin-src/skills'] || !isDeepStrictEqual((await readdir(join(input, 'skills'))).sort(), [...allSkillNames].sort())) throw Error('Runtime Skills must use the single canonical skills directory');
     const release = await readJSON(join(input, 'plugin-src/src/release.json'));

@@ -1,0 +1,18 @@
+{
+  "format": "nova-cover-method-runtime-context",
+  "schemaVersion": 1,
+  "identitySource": "frozen-cover-request-only",
+  "resolver": "method-runtime-context.mjs#resolveCoverMethodRuntimeContext",
+  "precedence": "This mapping replaces historical personal defaults before following original METHOD branches; it does not alter original method bytes.",
+  "branches": [
+    {"source":"upstream/current/METHOD.md:16","historicalRead":"config.md: identity, model, local preferences","runtimeRead":"request.photo + matching request.inputs own-photo; request.prompt/templateDefinition; the current request schema has no model field: use the actual host tool capability or report it unavailable; never inherit the original author model"},
+    {"source":"upstream/current/config.md:2-5","historicalRead":"default/alternate/neutral/laughing my-face files","runtimeRead":"Only the single own-photo selected in this request; absent identity => waiting-user. Expression choices may be described, never select another person or old author photo."},
+    {"source":"upstream/current/config.md:7-10","historicalRead":"personal composition preferences and model","runtimeRead":"Frozen request prompt, templateDefinition, ratio, pixels, count, outputFormat; the current request schema has no model field; report the host tool actually available, with no inherited personal model/preference/default aspect ratio."},
+    {"source":"upstream/current/references/face-reference-policy.md:6-10,48","historicalRead":"config default identity, expression alternatives, missing-file fallback","runtimeRead":"request.photo with exactly matching own-photo input; expression follows user confirmation. Missing/mismatched own-photo => waiting-user; no historical/default/example fallback."},
+    {"source":"upstream/current/references/科技姐聊AI.md:9-10","historicalRead":"Jincheng identity and config-selected face","runtimeRead":"Current request identity only. Other real people in cases are for visual observation/text translation and cannot become model identity input."},
+    {"source":"upstream/current/CHANGELOG.md:29,33 and upstream/package/安装说明.md:30","historicalRead":"author default-photo history, replace author photos locally","runtimeRead":"Read-only historical evidence; no installation/change-config instruction. Request own-photo and current-user confirmation govern this task."}
+  ],
+  "missingIdentity": "waiting-user",
+  "historicalFallback": false,
+  "exampleIdentityFallback": false
+}

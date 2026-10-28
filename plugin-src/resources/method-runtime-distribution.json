@@ -1,0 +1,13 @@
+{
+  "format": "nova-method-runtime-distribution-policy",
+  "schemaVersion": 1,
+  "id": "explicit-private-cover-defaults-v1",
+  "scope": "Exact paths and exact byte hashes only; other examples and corpora have not been classified as private or cleared for redistribution by this policy.",
+  "omitted": [
+    {"installedPath":"skills/jc-cover-design/upstream/current/assets/my-face-alt.JPG","sha256":"91315cb5c301c86a8accc03cb6b08305435b4e28e95e5a91c48f168f9017afa3","reason":"Original author personal identity photo; not a distributable current-user default."},
+    {"installedPath":"skills/jc-cover-design/upstream/current/assets/my-face-neutral.JPG","sha256":"30f4f230a1ce49266785a9945c12d81db48629189df2a87785bd8b8ce880db37","reason":"Original author personal identity photo; not a distributable current-user default."},
+    {"installedPath":"skills/jc-cover-design/upstream/current/assets/my-face-studio-default.JPG","sha256":"0a3a716f69d5200c4cc6f7a127fc9c7a4720c3977e567e8d1760c7a17a9ac121","reason":"Original author personal identity photo; not a distributable current-user default."},
+    {"installedPath":"skills/jc-cover-design/upstream/current/assets/my-face.png","sha256":"045aa9b0351e64ec7f40a7f853206a6416f40b2772e0ef7db1cedc7a5565d54d","reason":"Original author personal identity photo; not a distributable current-user default."},
+    {"installedPath":"skills/jc-cover-design/upstream/current/config.md","sha256":"d99fc8cb9dc8a85c0b87d54a69ead338b01b69ed35b5583a9e7dd7b679752ccb","reason":"Original author identity choices and personal preferences; use independent frozen-request runtime mapping."}
+  ]
+}

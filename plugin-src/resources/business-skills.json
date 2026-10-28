@@ -2231,7 +2231,9 @@
         "skills/nova-content-writing-execution/SKILL.md",
         "skills/jc-cover-design/references/method.md",
         "skills/jc-cover-design/upstream/current/METHOD.md",
-        "skills/nova-content-cover-execution/SKILL.md"
+        "skills/nova-content-cover-execution/SKILL.md",
+        "plugin-src/resources/method-runtime-context.json",
+        "plugin-src/resources/method-runtime-context.mjs"
       ],
       "modes": [
         "direct-conversation",

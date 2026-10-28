@@ -10,6 +10,7 @@ import {assertArtifactSafe, releaseSourceFilter} from './artifact-safety.mjs';
 import {HOST_EVENTS, validRelease} from '../src/content.mjs';
 import {bundleNode, writeLaunchers, cleanNodeEnv} from './bundled-node.mjs';
 import {validateMethodSources} from './method-sources.mjs';
+import {copyRuntimeMethodSkills, runtimeMethodSourceFilter, validateRuntimeDistribution} from './method-runtime-distribution.mjs';
 
 const source = fileURLToPath(new URL('../', import.meta.url));
 const root = resolve(source, '..');
@@ -80,12 +81,12 @@ export function integrityPaths(platform = process.platform) {
     const methodFiles=[];
     // Hash every actual Skill resource, including helpers, schemas and nested assets.
     // A Markdown-only list silently misses dependencies when a method adds a script.
-    const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const item=`${directory}/${entry.name}`;if(!releaseSourceFilter(join(source,item)))continue;if(entry.isDirectory())methods(item);else if(entry.isFile())methodFiles.push(item);else throw Error('Skill resources must be regular files: '+item);}};
+    const methods=directory=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){const item=`${directory}/${entry.name}`;if(!runtimeMethodSourceFilter(join(source,item)))continue;if(entry.isDirectory())methods(item);else if(entry.isFile())methodFiles.push(item);else throw Error('Skill resources must be regular files: '+item);}};
     for(const name of allSkillNames)methods(`skills/${name}`);
     const generatedResources=(directory,prefix)=>{for(const entry of fs.readdirSync(join(source,directory),{withFileTypes:true})){if(!releaseSourceFilter(join(source,directory,entry.name)))continue;if(entry.isDirectory())generatedResources(`${directory}/${entry.name}`,`${prefix}/${entry.name}`);else if(entry.isFile())methodFiles.push(`${prefix}/${entry.name}`);}};
     generatedResources('resources/jincheng-creation','plugin-src/resources/jincheng-creation');
     for(const name of skillNames){generatedResources('references',`skills/${name}/references`);generatedResources('schemas',`skills/${name}/schemas`);methodFiles.push(`skills/${name}/scripts/content.mjs`);}
-    const support = ['plugin-src/resources/business-skills.json', 'plugin-src/resources/business-skills-contract.md', 'plugin-src/resources/method-sources.json', 'plugin-src/resources/method-adaptation-contract.md', 'plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
+    const support = ['plugin-src/resources/method-runtime-distribution.json', 'plugin-src/resources/method-runtime-context.json', 'plugin-src/resources/method-runtime-context.mjs', 'plugin-src/resources/business-skills.json', 'plugin-src/resources/business-skills-contract.md', 'plugin-src/resources/method-sources.json', 'plugin-src/resources/method-adaptation-contract.md', 'plugin-src/resources/production-contract.md', 'plugin-src/resources/production-artifacts.md', 'plugin-src/resources/production/examples.json', 'plugin-src/resources/production/LICENSE.txt'];
     return [...new Set([...modules, ...support, ...methodFiles, 'plugin-src/resources/production-methods-provenance.md', 'plugin-src/resources/production-creation.html','plugin-src/src/release.json', 'plugin-src/src/cli.mjs', 'plugin-src/src/content.mjs', 'plugin-src/src/commands/cover.mjs', 'plugin-src/src/commands/template.mjs', 'plugin-src/src/lib/file-library/template-jobs.mjs', 'plugin-src/src/bridge/handoff.js', 'plugin-src/src/bridge/native-handoff.mjs', 'cover-runtime/cli.mjs',
         ...allSkillNames.map(name => `skills/${name}/SKILL.md`), 'cover-runtime/skills/nova-content-cover-execution/SKILL.md',
         'hooks/codex.json', 'hooks/hooks.json', 'hooks/workbuddy.json', '.codex-plugin/plugin.json', '.codebuddy-plugin/plugin.json',
@@ -240,7 +241,7 @@ export async function buildCover(mode) {
         await json(join(target, 'plugin-src/src/release.json'), release);
         await cp(join(source, 'schemas'), join(target, 'plugin-src/schemas'), {recursive: true, filter: releaseSourceFilter});
         // WorkBuddy's global Skill scanner uses this root even when manifests specify a custom path.
-        await cp(join(source, 'skills'), join(target, 'skills'), {recursive: true, filter: releaseSourceFilter});
+        const runtimeMethods = await copyRuntimeMethodSkills(source, target);
         await cp(join(source, 'references'), join(target, 'plugin-src/references'), {recursive: true, filter: releaseSourceFilter});
         for (const name of skillNames) {
             const skill = join(target, 'skills', name);
@@ -251,6 +252,7 @@ export async function buildCover(mode) {
         }
         // Resource paths match the source tree; no dependency on the browser workbench.
         await cp(join(source, 'resources'), join(target, 'plugin-src/resources'), {recursive: true, filter: runtimeSourceFilter});
+        await json(join(target, 'plugin-src/resources/method-sources.json'), runtimeMethods);
         await cp(join(source, 'compat/cover-runtime'), join(target, 'plugin-src/compat/cover-runtime'), {recursive: true, filter: input => basename(input) !== 'build.mjs' && runtimeSourceFilter(input)});
         await writeFile(join(target, 'cover-runtime/cli.mjs'), "import {main} from '../plugin-src/src/commands/cover.mjs';\nprocess.exitCode = await main(process.argv.slice(2));\n");
         await cp(join(source, 'skills/nova-content-cover-execution'), join(target, 'cover-runtime/skills/nova-content-cover-execution'), {recursive: true, filter: releaseSourceFilter});
@@ -297,6 +299,7 @@ export async function buildCover(mode) {
             hashes,
             skills: skillCapabilities(release.AUTH_MODE)
         });
+        await validateRuntimeDistribution(target);
         await assertArtifactSafe(target);
         outputs.push({path: target, pairId: release.pairId});
         process.stderr.write(`Built experimental ${release.AUTH_MODE} plugin for ${process.platform}/${process.arch}\n`);

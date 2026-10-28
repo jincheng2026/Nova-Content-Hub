@@ -1,6 +1,6 @@
 # 完整方法与运行适配契约
 
-本文件只改变环境接续、保存通道与权限，不以通用摘要替换方法。可发现入口先完整读取 `upstream/current/METHOD.md`（原 SKILL.md 字节只改文件名，避免嵌套激活），按原分支读 references、schema、模板和必要资源。逐文件 SHA256、字节数、来源副本与状态见 [method-sources.json](method-sources.json)，路由见 [business-skills.json](business-skills.json)。原件逐字节保留，旧路径和命令是待映射的历史上下文，不是当前授权。原件脚本只读审核，本次没有执行原脚本、安装或启动服务。
+本文件只改变环境接续、保存通道与权限，不以通用摘要替换方法。可发现入口先完整读取 `upstream/current/METHOD.md`（原 SKILL.md 字节只改文件名，避免嵌套激活），按原分支读 references、schema、模板和必要资源。逐文件 SHA256、字节数、来源副本与状态见 [method-sources.json](method-sources.json)，路由见 [business-skills.json](business-skills.json)。仓库原件逐字节完整保留；运行包按独立分发策略提供原字节子集，清单 distribution 记录完整源清单 SHA256、未分发路径/理由/hash，原 treeSha256 只指源树。旧路径和命令是待映射的历史上下文，不是当前授权。原件脚本只读审核，本次没有执行原脚本、安装或启动服务。
 
 ## 进入模式与优先级
 
@@ -41,9 +41,9 @@
 | nova-workbench-writing-method | 兼容既有方法ID，现已取得当前创作页全包，指向同一完整原方法 | 不再以“只得历史文本”冒充现状；兼容ID不建第二份正文，验收同jc-gongzuotai-write。 |
 | jc-zhuanxie | 原始识别、分段复核、校正版、manifest/validation与字级时间分支 | 受控 ASR 的 originalText/correctedText/segments/corrections、媒体hash与完整可读验收证据；原脚本不执行，provider/预算/媒体取冻结请求。外部 jc-qiepian-chupian/scripts/transcribe_chars.mjs 未随包，独立字级切片分支仍待接入。 |
 | jc-review-page | 原稿原样、唯一最小建议片段、九类依据、must/optional/keep/wait和本人手改 | 已有页回同一 jc-doc suggest/read，作者稿和CAS仍是唯一真源；无原页先交可读候选，旧 localStorage 网页和 Python 构建器不运行，不冒称已编辑落文件。 |
-| jc-cover-design | 完整案例、风格、视觉命题、指定中文、人物和审美门 | writing 方法只交设计/提示词候选及人工确认；实际图另用现有 nova-content-cover-execution 的固定 cover 请求和回执。generationExecutor 仅后续交接说明，不自动路由；包中人像/案例是来源证据，不成为本人或默认VI。 |
+| jc-cover-design | 完整案例、风格、视觉命题、指定中文、人物和审美门 | writing 方法只交设计/提示词候选及人工确认；实际图另用现有 nova-content-cover-execution 的固定 cover 请求和回执。generationExecutor 仅后续交接说明，不自动路由；四张作者本人照片及个人 config 不随运行包分发，独立 method-runtime-context 映射各历史选图分支；当前本人只取固定请求 own-photo，缺图 waiting-user，不回退作者/案例。案例仅观察与文字转译，不成为本人或默认VI。 |
 | jc-kepu-video | 显式方法、叙事/框架双确认、先摆真实参考、逐段本人口述、四查和改稿日志 | 当前用户真实定位/样本与同T受控 checkpoint；原页CAS、稳定ID和历史保全，原 compare_server/注册脚本不运行。普通概念解释不自动成为科普视频制作。 |
-| jc-cover-copy | 当前定稿、已定标题、禁词与真实台账；三角度文字候选 | 人确认后设计交接；保留指定字、换行、强调与禁误导，包装无权改逐字稿；jc-cover-design 完整包已取得，设计候选与实际 cover 固定请求分别交接。 |
+| jc-cover-copy | 当前定稿、已定标题、禁词与真实台账；三角度文字候选 | 人确认后设计交接；保留指定字、换行、强调与禁误导，包装无权改逐字稿；jc-cover-design 完整源包已取得，运行包使用明确分发子集，设计候选与实际 cover 固定请求分别交接。 |
 | jc-media-research | 原路由、真实搜索/选样、原文深读、账号/作品/写稿隔离、完整数据合同 | 当前受控采集替provider；L4/L3/快卡与材料对账完整保留，findings先冻结再给本人建议，原文/统计/图表同源；本轮未授权的采集/费用停止。 |
 | jc-comment-visualize | 授权评论与回复、逐条证据、标签、分母、图表选择与静态阅读合同 | 研究对象与本人应用建议隔离；引用/统计来自同一冻结材料。完整report模板/CSS/JS/校验源保留，报告可读性和真实数据需实际验收。 |
 | jc-media-review | 当前发布快照、本人反馈、同题/同类对照，事实/观察/原因假设分开 | 最多三个下一条动作候选先给本人；正式复盘与原视频档案关联；不手改程序区，采纳不自动改skill。 |

@@ -8,6 +8,7 @@ import {createHash} from 'node:crypto';
 import {businessSkillForTask} from '../src/lib/file-library/production-creator-context.mjs';
 import {skillCapabilities,integrityPaths,validateSkills} from '../scripts/build.mjs';
 import {validateMethodSources} from '../scripts/method-sources.mjs';
+import {deriveRuntimeMethodSources} from '../scripts/method-runtime-distribution.mjs';
 import {assertArtifactSafe} from '../scripts/artifact-safety.mjs';
 const root=fileURLToPath(new URL('../',import.meta.url));
 const registry=JSON.parse(fs.readFileSync(path.join(root,'resources/business-skills.json'),'utf8'));
@@ -34,8 +35,10 @@ for(const [id,want] of Object.entries(expected)) test(`${id} routes only as a no
  const body=fs.readFileSync(path.join(root,method.methodBody));
  assert.equal(createHash('sha256').update(body).digest('hex'),want.sha);
  const tracked=new Set(integrityPaths());
+ const runtimeVersion=deriveRuntimeMethodSources(root).versions.find(item=>item.versionId===version.versionId);
+ const included=new Set(runtimeVersion.files.map(file=>file.installedPath));
  for(const file of version.files) {
-  assert.ok(tracked.has(file.installedPath),file.installedPath);
+  assert.equal(tracked.has(file.installedPath),included.has(file.installedPath),file.installedPath);
   assert.equal(path.basename(file.installedPath)==='SKILL.md',false);
   assert.equal(fs.lstatSync(path.join(root,file.installedPath)).isSymbolicLink(),false);
   if(/\.(?:py|sh|mjs|js)$/.test(file.sourcePath)) {assert.equal(file.executable,false);assert.equal(fs.statSync(path.join(root,file.installedPath)).mode&0o111,0);}
