@@ -1,0 +1,35 @@
+✔ real trash API pins profile identity and replays without losing restoration (1728.517666ms)
+✔ real trash API pins materials identity and replays without losing restoration (1743.795125ms)
+✔ real trash API pins patterns identity and replays without losing restoration (1815.175333ms)
+✔ legacy trash mutation can be replayed after upgrade without promoting its restore authority (1193.430292ms)
+✔ profile roundtrip restores original document and persists an independent receipt (2251.477667ms)
+✔ materials roundtrip restores original document and persists an independent receipt (2155.237875ms)
+✔ patterns roundtrip restores original document and persists an independent receipt (1810.556458ms)
+✔ replaying restore returns original result and never overwrites a later edit (808.733167ms)
+✔ occupied original path refuses restore and leaves both files intact (544.494333ms)
+✔ rejects changed trash bytes (554.978833ms)
+✔ rejects missing trash bytes (642.937875ms)
+✔ rejects symlink trash bytes (727.187166ms)
+✔ rejects hardlink trash bytes (747.401875ms)
+✔ legacy receipt is visible with an explicit identity limitation (738.008708ms)
+✔ receipt metadata outside request checksum cannot authorize restore (901.48525ms)
+✔ request checksum, document identity and original path are verified (3200.902917ms)
+✔ a valid receipt and bytes copied to another vault cannot restore (1552.349084ms)
+✔ content trash projection and managed final assets never enter ordinary trash (1552.715959ms)
+✔ renderer may submit only trashId and expectedHash (626.198125ms)
+✔ a copied receipt with a matching vault id still refuses another physical root (1032.187708ms)
+✔ linked original directories and managed final paths cannot receive a document restore (1099.738833ms)
+✔ ordinary old libraries gain no inferred Vault authority (0.902708ms)
+✔ formal publication archive and analysis source subtrees are outside ordinary document trash (606.483959ms)
+✔ trash searches the entire collection before 20/50/100 paging and category filtering (6.370917ms)
+✔ restore callback receives only receipt identity/hash; an error survives filtering (2.280541ms)
+✔ removing the final page clamps to existing entries and untrusted records cannot restore (0.857625ms)
+✔ switching libraries ignores a late restore response and never refreshes the new library (0.938083ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 21699.0135

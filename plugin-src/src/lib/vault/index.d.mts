@@ -1,3 +1,4 @@
+export {listVaultDocumentTrash,restoreVaultDocument} from './document-trash.mjs';
 export type RootIdentity = {dev: string; ino: string};
 export type LibraryBinding = {
     root: string;

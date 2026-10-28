@@ -9,6 +9,7 @@ export const CHANNELS = Object.freeze([
     'readJinchengPublication', 'mutateJinchengPublication',
     'confirmJinchengCheckpoint', 'saveJinchengAuthorAnalysis',
     'openCreationPage', 'creationPageRequest', 'closeCreationPage',
+    'listVaultDocumentTrash','restoreVaultDocument',
     'readDocumentView','readDocumentReference','openDocumentExternalReference',
     'readVaultWorkDirectory','readVaultTopicMenus','adoptVaultTopic','readVaultSources',
     'openVaultSourcePage','openVaultReference','revealVaultReference','chooseVaultSource',

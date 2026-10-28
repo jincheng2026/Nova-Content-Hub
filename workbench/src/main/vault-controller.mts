@@ -13,6 +13,8 @@ export class VaultController {
  }
  openBoundSource?:(binding:import('../shared/contracts.ts').LibraryBinding,sourceId:string,relativePath:string)=>Promise<void>;
  constructor(owner:DesktopController){this.owner=owner;}
+ listVaultDocumentTrash(input?:undefined){validateInput('listVaultDocumentTrash',input);const requested=structuredClone(this.owner.binding.current);return this.documentRead(()=>{const binding=this.owner.current();if(JSON.stringify(binding)!==JSON.stringify(requested))fail('CONFLICT','知识库已变化，请刷新回收区。');return this.owner.worker.call('vaultDocumentTrash',{binding});});}
+ restoreVaultDocument(input:VaultInputs['restoreVaultDocument']){return this.mutate('restoreVaultDocument',input) as Promise<VaultText & {trashId:string}>;}
  readDocumentView(input:VaultInputs['readDocumentView']){validateInput('readDocumentView',input);return this.documentRead(()=>{this.owner.noPending();return this.owner.worker.call('documentView',{binding:this.owner.current(),input});});}
  readDocumentReference(input:VaultInputs['readDocumentReference']){validateInput('readDocumentReference',input);return this.documentRead(()=>{this.owner.noPending();return this.owner.worker.call('documentReference',{binding:this.owner.current(),input});});}
  openDocumentExternalReference(input:VaultInputs['openDocumentExternalReference']){validateInput('openDocumentExternalReference',input);requireWrite(this.owner.authMode);return this.documentRead(async()=>{

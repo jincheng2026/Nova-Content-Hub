@@ -1,0 +1,37 @@
+✔ only exact top-level sender with no renderer arguments can invoke business (2.692333ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (1.282167ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.708709ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (34.235875ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.556416ms)
+✔ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (2250.252833ms)
+✔ another external edit after recovery still rejects the acknowledged old version without overwriting it (6467.559083ms)
+✔ finite Vault IPC rejects renderer paths, extra fields, invalid sections, excess text and workflow privileges (2.302791ms)
+✔ new and open dialogs cancelled leave binding and filesystem unchanged (1420.713042ms)
+✔ new Vault binds its runtime and exposes source root name/location; old library remains readable (10067.853917ms)
+✔ Vault save preserves durable intent across lost response, recovers idempotently and enforces source conflicts (2144.833542ms)
+✔ Vault writes cannot bypass required auth or another pending operation (1112.3005ms)
+✔ positioning starts or resumes the same writing task with fixed business method and zero tools/budget (1995.563042ms)
+✔ topic suggestions use saved idea context and never mutate its title or body (4432.101958ms)
+✔ synthesis freezes its three-depth brief without a T number or social-media collection contract (4096.651042ms)
+✔ cover design freezes a valid explicit ratio and rejects stray or missing ratios (3189.932042ms)
+✔ unavailable external ASR never blocks a synthesis task with no ASR tools (4828.623667ms)
+✔ P3: live recovery delivery binds the retained create form to the committed document (0.744625ms)
+✔ P3: later local edits survive, use the fresh hash and flag divergent external content (2.899667ms)
+✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.147375ms)
+✔ discarded saves preserve the author draft beside the latest external version and keep comparison required (0.27025ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (7.621666ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (12.304375ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (2.821792ms)
+✔ readonly non-BUSY failures are returned once (0.3555ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.293333ms)
+✔ Vault contention retries only the exact finite read, with a bounded friendly failure (0.480917ms)
+✔ Vault contention never replays a mutation (1.199125ms)
+✔ unrelated NOT_READY failures never retry (1.598792ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 33887.307375

@@ -7,6 +7,8 @@ export const vaultDocumentId = (value:unknown):value is string => typeof value==
 const text = (value:unknown,max:number) => typeof value==='string' && value.length<=max && !value.includes('\0') && new TextEncoder().encode(value).byteLength<=max;
 export function vaultDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method){
+ case 'listVaultDocumentTrash':return input===undefined;
+ case 'restoreVaultDocument':return exact(input,['trashId','expectedHash'])&&typeof input.trashId==='string'&&/^[a-zA-Z0-9_-]{8,100}$/.test(input.trashId)&&token(input.expectedHash);
  case 'readDocumentView':return exact(input,['documentId','expectedHash','scope'])&&typeof input.documentId==='string'&&/^(?:doc-|source-|reading-)[a-f0-9]{32,64}$/.test(input.documentId)&&token(input.expectedHash)&&token(input.scope);
  case 'readDocumentReference':case 'openDocumentExternalReference':return (exact(input,['documentId','expectedHash','refId','targetIdentity','scope'])||exact(input,['documentId','expectedHash','refId','targetIdentity','scope','intent']))&&typeof input.documentId==='string'&&/^(?:doc-|source-|reading-)[a-f0-9]{32,64}$/.test(input.documentId)&&token(input.expectedHash)&&token(input.refId)&&token(input.targetIdentity)&&token(input.scope)&&(input.intent===undefined||['embed','navigate'].includes(input.intent as string));
  case 'revealVaultReference':return exact(input,['id','target'])&&vaultDocumentId(input.id)&&text(input.target,2000)&&!!input.target;
@@ -26,5 +28,5 @@ export function vaultDesktopInput(method:string,input:unknown):boolean|undefined
  }
 }
 export function vaultPending(value:unknown):value is VaultPending {
- return exact(value,['method','input','mutationId','binding']) && ['saveFinalAssets','saveVaultDocument','createVaultDocument','createVaultWorkingDraft','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&(value.method==='saveFinalAssets'?finalAssetsDesktopInput(value.method,value.input):vaultDesktopInput(value.method as string,value.input))===true;
+ return exact(value,['method','input','mutationId','binding']) && ['restoreVaultDocument','saveFinalAssets','saveVaultDocument','createVaultDocument','createVaultWorkingDraft','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&(value.method==='saveFinalAssets'?finalAssetsDesktopInput(value.method,value.input):vaultDesktopInput(value.method as string,value.input))===true;
 }

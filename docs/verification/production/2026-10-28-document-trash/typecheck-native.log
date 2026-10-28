@@ -1,0 +1,6 @@
+workbench/src/main/desktop.mts(225,47): error TS2345: Argument of type '{ id: string; url: string | null; prompt: string; requiresPaste: boolean; }' is not assignable to parameter of type '{ url: string; prompt: string; requiresPaste: boolean; }'.
+  Types of property 'url' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.
+workbench/src/main/production-controller.mts(84,56): error TS2339: Property 'provider' does not exist on type 'AsrSettings'.
+workbench/src/main/production-controller.mts(84,76): error TS2367: This comparison appears to be unintentional because the types '"faster-whisper" | "qwen3-asr" | "whisper-cpp"' and '"external"' have no overlap.

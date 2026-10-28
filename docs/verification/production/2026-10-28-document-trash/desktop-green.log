@@ -1,0 +1,17 @@
+✔ ordinary trash and restore travel through exact desktop APIs and durable mutation recovery (3848.494541ms)
+✔ trash desktop requests reject renderer paths, roots, mutation IDs and extra fields (0.431875ms)
+✔ trash reads queue behind a finite desktop operation instead of failing during background refresh (2151.720958ms)
+✔ restore cannot bypass desktop authorization, pending intent, or worker binding identity (5143.439459ms)
+✔ a queued trash read remains pinned to the requested library identity (3110.668166ms)
+✔ the finite trash read retries the same worker request on Vault contention without replaying writes (10.973625ms)
+✔ sandbox preload and sender boundary expose exactly the narrow trash channels (232.324334ms)
+✔ actual vault workspace exposes receipt restore, refreshes committed results and follows external source changes (22.925333ms)
+✔ actual vault workspace drops late trash reads after the bound library scope changes (4.0325ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15199.989417

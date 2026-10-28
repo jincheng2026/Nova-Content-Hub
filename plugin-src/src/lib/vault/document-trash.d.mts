@@ -6,5 +6,5 @@ export interface VaultDocumentTrashEntry {
 export interface VaultDocumentRestoreInput {trashId:string;expectedHash:string}
 export function listVaultDocumentTrash(runtimeRoot:string):VaultDocumentTrashEntry[];
 export function restoreVaultDocument(runtimeRoot:string,input:VaultDocumentRestoreInput,options:{mutationId:string}):{
-  trashId:string;document:{id:string;section:VaultDocumentTrashSection;title:string;relativePath:string;hash:string;format:'markdown'|'json'|'text'|'other';writable:boolean;contentId:null;tNumber:null;bytes:number};text:string;
+  trashId:string;document:import('./index.mjs').VaultDocument;text:string;
 };

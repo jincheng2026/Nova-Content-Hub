@@ -153,6 +153,8 @@ export class DesktopController {
     readDocumentReference(input:VaultInputs['readDocumentReference']){return this.vault.readDocumentReference(input);}
     openDocumentExternalReference(input:VaultInputs['openDocumentExternalReference']){return this.vault.openDocumentExternalReference(input);}
     readVault(input?:undefined){return this.vault.readVault(input);}
+    listVaultDocumentTrash(input?:undefined){return this.vault.listVaultDocumentTrash(input);}
+    restoreVaultDocument(input:VaultInputs['restoreVaultDocument']){return this.vault.restoreVaultDocument(input);}
     openCreationPage(input:CreationInputs['openCreationPage']){return this.creation.openCreationPage(input);}
     creationPageRequest(input:CreationInputs['creationPageRequest']){return this.creation.creationPageRequest(input);}
     closeCreationPage(input:CreationInputs['closeCreationPage']){return this.creation.closeCreationPage(input);}

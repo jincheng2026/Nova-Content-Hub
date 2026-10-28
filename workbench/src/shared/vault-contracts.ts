@@ -1,3 +1,4 @@
+import type {VaultDocumentTrashEntry,VaultDocumentRestoreInput} from '../../../plugin-src/src/lib/vault/document-trash.mjs';
 import type {DocumentViewInput,DocumentReferenceInput,DocumentView,DocumentReferenceResult} from './document-reading-contracts.ts';
 import type {FinalAssetsInputs} from './final-assets-contracts.ts';
 import type {FinalAssetsView} from '../../../plugin-src/src/lib/final-assets/index.mjs';
@@ -10,6 +11,8 @@ export interface VaultDocument {id:string;section:VaultSection;title:string;rela
 export interface VaultSnapshot {readingScope?:string;root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
 export interface VaultText {readingScope?:string;document:VaultDocument;text:string;workingDraftAvailable?:boolean}
 export interface VaultInputs {
+ listVaultDocumentTrash:undefined;
+ restoreVaultDocument:VaultDocumentRestoreInput;
  readDocumentView:DocumentViewInput & {scope:string};
  readDocumentReference:DocumentReferenceInput & {scope:string};
  openDocumentExternalReference:DocumentReferenceInput & {scope:string};
@@ -36,6 +39,8 @@ export interface VaultInputs {
  recoverVaultMutation:{action:'retry'|'discard'};
 }
 export interface VaultResults {
+ listVaultDocumentTrash:VaultDocumentTrashEntry[];
+ restoreVaultDocument:VaultText & {trashId:string};
  readDocumentView:DocumentView;
  readDocumentReference:DocumentReferenceResult;
  openDocumentExternalReference:{opened:true};
@@ -60,12 +65,13 @@ export interface VaultResults {
  revealVaultDocument:{revealed:true};
  recoverVaultMutation:VaultRecovery|null;
 }
-export type VaultMutationMethod = 'saveFinalAssets'|'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
+export type VaultMutationMethod = 'restoreVaultDocument'|'saveFinalAssets'|'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
 export type VaultPending = {mutationId:string;binding:Pick<LibraryBinding,'libraryId'|'rootIdentity'>} & {[K in VaultMutationMethod]:{method:K;input:VaultInputs[K]}}[VaultMutationMethod];
 export type VaultMutationResult=VaultText|{trashed:true}|FinalAssetsView;
 export type VaultResolution = {state:'committed';result:VaultMutationResult}|{state:'missing'}|{state:'uncertain'};
 export type VaultRecovery = Pick<VaultPending,'mutationId'|'method'|'input'> & {outcome:'committed'|'discarded';result:VaultMutationResult|null;current:VaultText|null};
 export interface VaultWorkerOperations {
+ vaultDocumentTrash:{args:{binding:LibraryBinding};result:VaultDocumentTrashEntry[]};
  documentView:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentView']};result:DocumentView};
  documentReference:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentReference']};result:DocumentReferenceResult};
  documentExternalReference:{args:{binding:LibraryBinding;input:VaultInputs['openDocumentExternalReference']};result:string};

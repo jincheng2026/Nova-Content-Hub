@@ -1,0 +1,80 @@
+✔ only exact top-level sender with no renderer arguments can invoke business (3.146708ms)
+✔ static protocol maps only exact manifest resources and refuses URL normalization (1.440625ms)
+✔ release/resource configuration fails closed and scripts retain strict CSP (0.552417ms)
+✔ machine binding survives fresh store and refuses malformed or symlink state (54.7605ms)
+✔ worker exit rejects operation, next query starts fresh worker, shutdown cannot respawn (0.6085ms)
+✔ a replaced unrelated linked root does not block the exact healthy source while its own reads stay closed (2303.106375ms)
+✔ native document IPC resolves real internal/profile references without recovery, projection, or any disk write (2571.053875ms)
+✔ IPC rejects arbitrary paths, old hash, missing scope, switched library and malicious reference fields (6425.092167ms)
+✖ linked IDs match actual registered source identity and fail closed on loss/replacement without cross-source lookup (2855.303209ms)
+✔ native reads refuse both machine pending and filesystem pending while preserving bytes and pending records (1505.50825ms)
+✔ all three narrow IPC channels retain top-frame and exact-field validation; only image CSP gains blob (0.629542ms)
+✔ actual sandbox preload exposes only fixed channels and forwards identity requests unchanged (42.118875ms)
+✔ explicit linked catalogs share one native global budget and report incomplete sources visibly (1337.027291ms)
+✔ concurrent page reference reads serialize through the real exclusive worker boundary (1830.277625ms)
+✔ reading after a source event waits for an already-running exclusive action before revalidating current scope (2401.798625ms)
+✔ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (3152.724833ms)
+✔ another external edit after recovery still rejects the acknowledged old version without overwriting it (2770.882292ms)
+✔ finite Vault IPC rejects renderer paths, extra fields, invalid sections, excess text and workflow privileges (14.04725ms)
+✔ new and open dialogs cancelled leave binding and filesystem unchanged (2127.650875ms)
+✔ new Vault binds its runtime and exposes source root name/location; old library remains readable (7834.372458ms)
+✔ Vault save preserves durable intent across lost response, recovers idempotently and enforces source conflicts (2885.146417ms)
+✔ Vault writes cannot bypass required auth or another pending operation (1330.943792ms)
+✔ positioning starts or resumes the same writing task with fixed business method and zero tools/budget (2928.278083ms)
+✔ topic suggestions use saved idea context and never mutate its title or body (4255.687125ms)
+✔ synthesis freezes its three-depth brief without a T number or social-media collection contract (2637.084042ms)
+✔ cover design freezes a valid explicit ratio and rejects stray or missing ratios (3944.564167ms)
+✔ unavailable external ASR never blocks a synthesis task with no ASR tools (3005.607583ms)
+✔ P3: live recovery delivery binds the retained create form to the committed document (0.934292ms)
+✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.550542ms)
+✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.43ms)
+✔ discarded saves preserve the author draft beside the latest external version and keep comparison required (0.205875ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (15.927333ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (18.623709ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (2.610792ms)
+✔ readonly non-BUSY failures are returned once (0.618042ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (1.339375ms)
+✔ Vault contention retries only the exact finite read, with a bounded friendly failure (9.85325ms)
+✔ Vault contention never replays a mutation (0.58075ms)
+✔ unrelated NOT_READY failures never retry (0.197875ms)
+ℹ tests 39
+ℹ suites 0
+ℹ pass 38
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 32326.710791
+
+✖ failing tests:
+
+test at workbench/test/document-reading-integration.test.mjs:32:1
+✖ linked IDs match actual registered source identity and fail closed on loss/replacement without cross-source lookup (2855.303209ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    Comparison {
+  +   code: 'SOURCE_NOT_AVAILABLE'
+  -   code: 'CONFLICT'
+    }
+  
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/document-reading-integration.test.mjs:35:215)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: 已绑定来源暂不可完整读取，请恢复后重试。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:18:77)
+        at Object.resolveRegisteredDocument [as resolveDocument] (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:142:26)
+        at contextFor (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:229:48)
+        at Object.readDocumentView (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:278:31)
+        at executeVault (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/vault-worker.mts:36:40)
+        at execute (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker.mts:88:38)
+        at Object.call (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/document-reading-integration.test.mjs:6:459)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/vault-controller.mts:18:176
+        at DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:404:26)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/vault-controller.mts:12:254,
+    expected: { code: 'CONFLICT' },
+    operator: 'rejects',
+    diff: 'simple'
+  }

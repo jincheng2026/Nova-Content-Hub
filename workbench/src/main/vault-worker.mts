@@ -1,3 +1,4 @@
+import {listVaultDocumentTrash,restoreVaultDocument} from '../../../plugin-src/src/lib/vault/document-trash.mjs';
 import {createDocumentReadingService,documentReadingScope,registeredLinkedDocuments,registeredLinkedDocumentLocation} from './document-reading.mts';
 import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
 import {saveFinalAssets} from '../../../plugin-src/src/lib/final-assets/index.mjs';
@@ -21,10 +22,10 @@ const documentReading = createDocumentReadingService();
 let documentBinding = '';
 function readingFor(binding:LibraryBinding){const next=JSON.stringify(binding);if(next!==documentBinding){documentReading.clear();documentBinding=next;}return documentReading;}
 function workContext(binding:LibraryBinding,contentId:string){const context=readVaultTaskContext(binding.root,contentId),root=vaultRootForRuntime(binding.root);return context?{...context,workflow:root&&context.content?readWorkFlow(root,{vaultId:context.vaultId,workId:context.content.tNumber}):null}:null;}
-export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['documentView','documentReference','documentExternalReference','vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
+export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultDocumentTrash','documentView','documentReference','documentExternalReference','vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
 export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'required'|'disabled') {
  const documentOperation=['documentView','documentReference','documentExternalReference'].includes(op);
- const fields=documentOperation?['binding','input']:op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
+ const fields=documentOperation?['binding','input']:op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultDocumentTrash','vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
@@ -61,6 +62,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   if(!fs.statSync(location).isDirectory())fail('NOT_FOUND','此引用不是素材文件夹；可阅读或定位已索引文件。');
   return location;
  }
+ if(op==='vaultDocumentTrash')return listVaultDocumentTrash(binding.root);
  if(op==='vaultRead'){const snapshot=readVaultSnapshot(binding.root);if(!snapshot)return null;const linked=registeredLinkedDocuments(binding,{maxEntries:Math.max(0,20_000-snapshot.documents.length)});return {...snapshot,revision:digest(JSON.stringify([snapshot.revision,linked.documents.map(document=>[document.id,document.hash])])),documents:[...snapshot.documents,...linked.documents],issues:[...snapshot.issues,...linked.issues],readingScope:documentReadingScope(binding)};}
  if(op==='vaultTopicMenus')return readTopicMenus(binding);
  if(op==='vaultAdoptTopic'){if(!vaultDesktopInput('adoptVaultTopic',args.input))fail('INVALID_INPUT','选题选择请求无效。');return adoptVaultTopic(binding,args.input as import('../shared/vault-contracts.ts').VaultInputs['adoptVaultTopic'],mode);}
@@ -101,6 +103,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   if(pending.binding.libraryId!==binding.libraryId||pending.binding.rootIdentity.dev!==binding.rootIdentity.dev||pending.binding.rootIdentity.ino!==binding.rootIdentity.ino)fail('CONFLICT','资料变更绑定的知识库已改变。');
   const options={mutationId:pending.mutationId};
   if(pending.method==='saveFinalAssets'){const input=pending.input;if(typeof fileLibrary.ensureSelectedCoverDecoded!=='function')fail('NOT_READY','已选封面验证能力尚未就绪。');return fileLibrary.ensureSelectedCoverDecoded(binding.root,{contentId:input.contentId}).then(()=>{verifyBoundRoot(binding);return saveFinalAssets(binding.root,input,options);});}
+  if(pending.method==='restoreVaultDocument')return restoreVaultDocument(binding.root,pending.input,options);
   if(pending.method==='saveVaultDocument')return saveVaultDocument(binding.root,pending.input,options);
   if(pending.method==='createVaultWorkingDraft')return createVaultWorkingDraft(binding.root,pending.input,options);
   if(pending.method==='createVaultDocument')return createVaultDocument(binding.root,pending.input,options);

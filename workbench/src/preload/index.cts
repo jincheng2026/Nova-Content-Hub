@@ -86,6 +86,8 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     readDocumentView: input => ipcRenderer.invoke('nova:readDocumentView', input),
     readDocumentReference: input => ipcRenderer.invoke('nova:readDocumentReference', input),
     openDocumentExternalReference: input => ipcRenderer.invoke('nova:openDocumentExternalReference', input),
+    listVaultDocumentTrash: () => ipcRenderer.invoke('nova:listVaultDocumentTrash'),
+    restoreVaultDocument: input => ipcRenderer.invoke('nova:restoreVaultDocument',input),
     readVault: () => ipcRenderer.invoke('nova:readVault'),
     readVaultContentSource: input => ipcRenderer.invoke('nova:readVaultContentSource', input),
     readVaultWorkContext: input => ipcRenderer.invoke('nova:readVaultWorkContext', input),

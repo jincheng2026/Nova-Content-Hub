@@ -1,3 +1,4 @@
+export {listVaultDocumentTrash,restoreVaultDocument} from './document-trash.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
