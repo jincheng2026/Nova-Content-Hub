@@ -75,7 +75,7 @@ export interface WorkspaceDocument extends WorkspaceEntity {
     publicationEvents: WorkspacePublicationEvent[]; candidates: WorkspaceCandidate[];
     coverVariants: {id: string; name: string; ratio: string; preferredTemplateId: string | null; selectedCandidateId: string | null}[];
 }
-export interface WorkspaceContentDetails extends WorkspaceDocument { recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
+export interface WorkspaceContentDetails extends WorkspaceDocument { tNumber?: string; recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
 export interface WorkspaceLibraryCollection extends WorkspaceDocument { dateRange: {start: string | null; end: string | null}; memberIds: string[] }
 export interface WorkspaceLibrarySettings {
     editToken: string; profile: WorkspaceProfile; defaults: WorkspaceDefaults;

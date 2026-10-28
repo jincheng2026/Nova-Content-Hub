@@ -140,6 +140,12 @@ test('doing and published empty directories both retain the shared page-size con
   const f=fixture({mode,counts:[0,0,0]}),tree=await f.ready();assert.equal(pager(tree,'选题列表分页').props.total,0);
  }
 });
+test('doing defaults to latest numbered work while original shooting order remains selectable',async()=>{
+ const f=fixture({mode:'doing',counts:[0,0,3],overviewText:'## 近三天内容安排\n|日期|安排|对应选题|\n|---|---|---|\n|2026-10-28|拍摄顺序|T2001 T2002|'});let tree=await f.ready();
+ assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
+ tree=change(f,'在做排序','plan');assert.deepEqual(ids(tree),['T2001','T2002','T2003']);
+ tree=change(f,'在做排序','recent');assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
+});
 
 test('long card summaries preserve the complete body behind explicit expansion',async()=>{
  const f=fixture({counts:[1,0,0]}),tree=await f.ready();

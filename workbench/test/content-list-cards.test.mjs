@@ -64,3 +64,13 @@ test('collections use the same descending numeric name order',()=>{
  const f=fixture({library:{collections,contentDetails:[],settings:{channels:[]}}});let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();
  assert.deepEqual(view.buttons.filter(button=>button['data-collection-id']).map(button=>button['data-collection-id']),['group-10','group-2','group-1']);
 });
+test('a new untitled work remains visible by native T number, searchable and first under number order',()=>{
+ const contents=[{id:'old',title:'T050 旧内容',body:''},{id:'new',title:'未定标题',body:''}];
+ const library={collections:[],settings:{channels:[]},contentDetails:[{id:'old',tNumber:'T050',createdAt:'2026-10-27',updatedAt:'2026-10-27',candidates:[],plans:[],channelIds:[]},{id:'new',tNumber:'T051',createdAt:'2026-10-28',updatedAt:'2026-10-28',candidates:[],plans:[],channelIds:[]}]};
+ const f=fixture({contents,library});let view=f.render();
+ view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('number');view=f.render();
+ assert.ok(view.html.indexOf('data-content-id="new"')<view.html.indexOf('data-content-id="old"'));assert.match(view.html,/T051 未定标题/);
+ f.props.query='T051';view=f.render();assert.match(view.html,/data-content-id="new"/);assert.doesNotMatch(view.html,/data-content-id="old"/);
+ view.buttons.find(button=>button.children==='列表').onClick();view=f.render();assert.deepEqual(view.tables[0].rows.map(item=>item.id),['new']);
+ assert.equal(view.tables[0].total,1);
+});

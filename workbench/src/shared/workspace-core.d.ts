@@ -43,6 +43,7 @@ interface TemplatePackage {
     resources: Record<string, {assetHash: string; bytes: number; detectedType: string; role: 'style'}>;
 }
 export interface WorkspaceCoreLibrary {
+    readProduction?(): {creations: {contentId: string; tNumber: string}[]};
     importAsset(source: string, input: {purpose: 'template-reference' | 'material'}): {assetHash: string};
     readAsset(assetHash: string): {assetHash: string; bytes: number; detectedType: string; data: Uint8Array};
     listContents(): WorkspaceCoreDocument[];
