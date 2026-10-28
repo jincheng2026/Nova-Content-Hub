@@ -1,3 +1,4 @@
+import {assertProductionRecordMutation} from './production-record-policy.mjs';
 import {prepareResearchAdoption} from './production-research.mjs';
 import {validProductionComposition,validProductionAdoptions,migrateProductionComposition} from './production-composition.mjs';
 import {productionArtifactBundleDraft,productionArtifactDraft} from './production-artifacts.mjs';
@@ -282,6 +283,7 @@ export function productionMethods(h) {
         const out = mutate('update','default',{productionOp:op,productionInput:raw},token,options,'workspace',(meta) => {
             const now = new Date().toISOString(), p = structuredClone(meta.production || emptyProduction());
             meta.schemaVersion = 2; meta.production = p;
+            if(['saveAccount','trashAccount','restoreAccount','saveReport','trashReport','restoreReport'].includes(op))assertProductionRecordMutation(root,p,op,raw);
             const editable = a => {if (a.deletedAt !== null) fail('INVALID_STATE','Record is trashed');};
             if(['cancelTask','retryTask','acceptTask','rejectTask'].includes(op)){const task=p.tasks.find(task=>task.id===raw.taskId);if(task?.journeyState||task?.journeyMember)fail('JOURNEY_COORDINATED','Use the content journey coordinator for member lifecycle changes');}
             if(['submitTask','failTask','reserveCost','registerMediaGrant'].includes(op)&&p.tasks.find(task=>task.id===raw.taskId)?.journeyState)fail('JOURNEY_COORDINATED','The root cannot execute or submit business work');
@@ -294,7 +296,7 @@ export function productionMethods(h) {
                 const a = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),name:raw.name,platform:raw.platform,url:raw.url || '',note:raw.note || '',tags:raw.tags || [],images:raw.images || [],avatarAssetHash:Object.hasOwn(raw,'avatarAssetHash')?raw.avatarAssetHash:old?.avatarAssetHash??null,reportIds:raw.reportIds || [],updatedAt:now};
                 for (const hash of a.images) checkAsset(hash,old?.images.includes(hash));
                 if(a.avatarAssetHash && checkAsset(a.avatarAssetHash,old?.avatarAssetHash===a.avatarAssetHash))invalid(['image/png','image/jpeg','image/webp'].includes(readAssetInternal(root,a.avatarAssetHash).detectedType),'Avatar must be a PNG, JPEG or WebP image');
-                for (const rid of a.reportIds) editable(find(p.reports,rid,'report'));
+                for (const rid of a.reportIds){const report=find(p.reports,rid,'report');if(report.deletedAt!==null)invalid(old?.reportIds.includes(rid),'Cannot add a trashed report association');}
                 if (old) Object.assign(old,a); else p.accounts.push(a); break;
             }
             case 'trashAccount': case 'restoreAccount': {const a = find(p.accounts,raw.id,'account'); invalid(op === 'restoreAccount' ? a.deletedAt !== null : a.deletedAt === null,'Account is already in requested state'); a.deletedAt = op === 'trashAccount' ? now : null; a.updatedAt = now; break;}
@@ -303,13 +305,14 @@ export function productionMethods(h) {
                 const old = raw.id ? find(p.reports,raw.id,'report') : null; if (old) editable(old);
                 invalid(raw.type!=='viral-radar' && old?.type!=='viral-radar'&&!Object.hasOwn(raw.meta??{},'radar'),'Radar reports require receipt-based adoption and dedicated decisions');
                 invalid(raw.markdown===undefined||text(raw.markdown,100000,false)&&raw.pages===undefined,'Manual report requires only bounded Markdown, without page overrides');
-                const inputPages=raw.markdown===undefined?raw.pages:[{title:raw.title,assetHash:storeProductionHtml(Buffer.from(renderMarkdownReport(raw.markdown,raw.title),'utf8'))}];
+                const inputPages=raw.markdown===undefined?raw.pages:[{...(old?.pages.length===1&&typeof old.meta?.manualMarkdown==='string'?{id:old.pages[0].id}:{}),title:raw.title,assetHash:storeProductionHtml(Buffer.from(renderMarkdownReport(raw.markdown,raw.title),'utf8'))}];
                 invalid(Array.isArray(inputPages) && inputPages.length > 0,'Report pages are required');
                 const pages = inputPages.map(x => {invalid(fields(x,['id','title','assetHash']),'Invalid report page'); const asset = readAssetInternal(root,x.assetHash); invalid(asset.bytes <= 8*1024*1024 && ['text/plain','text/html'].includes(asset.detectedType) && /<(?:!doctype\s+html|html|body|article|section)\b/i.test(asset.data.toString('utf8')),'Report must be UTF-8 HTML'); return {id:x.id || randomUUID(),title:x.title,assetHash:x.assetHash};});
                 const sourceMeta=plain(raw.meta)?Object.fromEntries(Object.entries(raw.meta).filter(([key])=>!['taskId','attemptId','artifactId','receiptHash'].includes(key))):raw.meta||{};
                 const reportMeta=raw.markdown===undefined?sourceMeta:{...(plain(sourceMeta)?sourceMeta:{originalMetadata:sourceMeta}),manualMarkdown:raw.markdown};
                 const r = {...(old || {id:randomUUID(),createdAt:now,deletedAt:null}),title:raw.title,type:raw.type || '调研',accountIds:raw.accountIds || [],sourceUrl:raw.sourceUrl || null,collectedAt:raw.collectedAt || null,pages,pageId:raw.pageId || pages[0].id,meta:reportMeta,updatedAt:now};
-                for (const aid of r.accountIds) editable(find(p.accounts,aid,'account'));
+                invalid(pages.some(x=>x.id===r.pageId),'Current report page must remain in the report');
+                for (const aid of r.accountIds){const account=find(p.accounts,aid,'account');if(account.deletedAt!==null)invalid(old?.accountIds.includes(aid),'Cannot add a trashed account association');}
                 if(old) Object.assign(old,r); else p.reports.push(r);
                 for(const a of p.accounts) {a.reportIds = a.reportIds.filter(id => id !== r.id); if(r.accountIds.includes(a.id)) a.reportIds.push(r.id);} break;
             }
@@ -335,7 +338,7 @@ export function productionMethods(h) {
                 if(!creation){creation=defaultProductionCreation(radarTopic.contentId,p.nextTNumber++,now);creation.references=[{id:radarId(`radar-reference:${original.sourceKey}`),url:original.url,title:original.title,platform:original.platform,originalText:'',correctedText:'',segments:[],corrections:[],analysis:`雷达来源 ${original.sourceKey}；粉丝 ${original.author.followers??'未知'}；点赞 ${original.metrics.likes??'未知'}；赞粉比 ${original.metrics.likeFollowerRatio??'未知'}。采集 ${original.collectedAt}。${original.angle?`\n可借鉴角度：${original.angle}`:''}`,mediaAssetHash:null,subtitleAssetHash:null}];p.creations.push(creation);}
                 for(const report of p.reports.filter(x=>trustedRadar(p,x)))for(const candidate of report.meta?.radar?.candidates??[])if(candidate.sourceKey===original.sourceKey&&candidate.decision==='pending'){candidate.decision='added';candidate.topicId=radarTopic.contentId;report.updatedAt=now;}break;
             }
-            case 'trashReport': {const r = find(p.reports,raw.id,'report'); editable(r); r.deletedAt = now; r.updatedAt = now; break;}
+            case 'trashReport': case 'restoreReport': {const r=find(p.reports,raw.id,'report');invalid(op==='restoreReport'?r.deletedAt!==null:r.deletedAt===null,'Report is already in requested state');r.deletedAt=op==='trashReport'?now:null;r.updatedAt=now;break;}
             case 'setReportPosition': {const r = find(p.reports,raw.id,'report'); editable(r); invalid(r.pages.some(x => x.id === raw.pageId),'Unknown page'); r.pageId = raw.pageId; r.updatedAt = now; break;}
             case 'ensureCreation': {
                 const c = content(raw.contentId); invalid(c.deletedAt === null,'Content is trashed');

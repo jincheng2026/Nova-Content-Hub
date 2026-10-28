@@ -1,3 +1,5 @@
+import {productionLibraryScope} from './production-record-scope.mts';
+import {scopedProductionRecordOps} from '../shared/production-contracts.ts';
 import {validContentJourneyStart,type ContentJourneyStart} from '../shared/content-journey-contracts.ts';
 import {externalAsrIdentity} from './external-asr.mts';
 import {vaultRootForRuntime} from '../../../plugin-src/src/lib/vault/index.mjs';
@@ -59,7 +61,7 @@ export class ProductionController {
   if(pending.kind==='mutate'&&pending.op==='reconcileCost'&&this.callbacks.costReconciled){const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),cost=snapshot.costs.find(c=>c.id===pending.input.id);if(!cost)fail('PENDING_MUTATION','费用核验结果无法定位。');await this.callbacks.costReconciled(cost.requestId);}
  }
  pendingBase(mutationId:string=randomUUID()){const b=this.owner.current();return {mutationId,binding:{libraryId:b.libraryId,rootIdentity:{...b.rootIdentity}}};}
- mutateProduction(input:ProductionMutation){this.validate('mutateProduction',input);return this.owner.exclusive(async()=>{await this.write({...this.pendingBase(input.mutationId),kind:'mutate',op:input.op,input:input.input});return this.read();});}
+ mutateProduction(input:ProductionMutation){this.validate('mutateProduction',input);return this.owner.exclusive(async()=>{if(scopedProductionRecordOps.has(input.op)&&input.scope!==productionLibraryScope(this.owner.current()))fail('CONFLICT','内容库已变化，请重新读取账号或报告后再修改。');await this.write({...this.pendingBase(input.mutationId),kind:'mutate',op:input.op,input:input.input});return this.read();});}
  async launch(taskId:string):Promise<{opened:boolean;message?:string}> {
   const b=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding:b}),task=snapshot.tasks.find(t=>t.id===taskId),attempt=task?.attempts.find(a=>a.id===task.activeAttemptId);
   if(!task||!attempt)fail('NOT_FOUND','任务不存在。');

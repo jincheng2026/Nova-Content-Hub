@@ -1,3 +1,4 @@
+import {productionLibraryScope} from './production-record-scope.mts';
 import {executeReportSearch} from './report-search-worker.mts';
 import {productionRecordPermissions} from '../../../plugin-src/src/lib/file-library/production-record-policy.mjs';
 import path from 'node:path';
@@ -50,7 +51,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  const l=(['productionRead','productionCreation','productionReport','productionReportAttachment','productionMedia'].includes(op)?verifiedBoundReader(a.binding):openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity})) as unknown as ProductionCoreLibrary;
  if(op==='productionMedia'){if(!uuid(a.contentId)||!token(a.assetHash))fail('INVALID_INPUT','媒体引用无效。');const state=l.readProductionCreation(a.contentId!);if(!state.creation?.references.some(r=>r.mediaAssetHash===a.assetHash))fail('FORBIDDEN','仅可读取本文已登记原片。');const asset=l.readAsset(a.assetHash!);if(!['audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(asset.detectedType)||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体不可播放。');return {data:asset.data,detectedType:asset.detectedType};}
  if(op==='productionArchive'){if(!uuid(a.taskId))fail('INVALID_INPUT','任务编号无效。');return l.rebuildProductionArchive(a.taskId!);}
- if(op==='productionRead'){const snapshot=l.readProduction();return {...snapshot,libraryScope:createHash('sha256').update(JSON.stringify(a.binding)).digest('hex'),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
+ if(op==='productionRead'){const snapshot=l.readProduction();return {...snapshot,libraryScope:productionLibraryScope(a.binding),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
  if(op==='productionCreation')return creation(l,a.contentId!);
  if(op==='productionReport'||op==='productionReportAttachment') {
   const reports=l.readProduction().reports,report=reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
@@ -76,7 +77,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
   return {found:true,objectId:receipt.objectId};
  }
  if(pending.kind==='files')return files(l,pending);
- if(pending.kind==='mutate'){const snapshot=l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});return {...snapshot,libraryScope:createHash('sha256').update(JSON.stringify(a.binding)).digest('hex'),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
+ if(pending.kind==='mutate'){const snapshot=l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});return {...snapshot,libraryScope:productionLibraryScope(a.binding),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
  const i=pending.input;l.saveProductionDraft(i.contentId,{body:i.body,expectedBodyHash:i.bodyHash,expectedProductionToken:i.productionToken,creationPatch:i.creationPatch},i.editToken,{mutationId:pending.mutationId});
  return creation(l,i.contentId);
 }
