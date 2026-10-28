@@ -13,7 +13,7 @@ import type {ServiceSettingsValues,ServiceToolRequest} from '../shared/service-c
 import type {LocalAsrExecution} from './service-tools.mts';
 import {ServiceTools,ServiceToolError} from './service-tools.mts';
 import {ServiceToolBroker} from './service-broker.mts';
-import {withResearchEvidence,researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized,matchesResearchSearch,createResearchSearchEvidence,readResearchSearchEvidence,researchGrantAuthorized,researchSearchReservation} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
+import {hash as researchHash,withResearchEvidence,researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized,matchesResearchSearch,createResearchSearchEvidence,readResearchSearchEvidence,researchGrantAuthorized,researchSearchReservation} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 import type {ResearchSearchEvidence} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 export interface ProductionServiceOwner {worker:Worker;current():LibraryBinding}
 export type ProductionRunQueue = <T>(action:()=>Promise<T>)=>Promise<T>;
@@ -167,7 +167,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     temp=await fs.mkdtemp(path.join(os.tmpdir(),'nova-production-asr-'));const audioPath=path.join(temp,`audio${audio.extension}`);await fs.writeFile(audioPath,audio.data,{flag:'wx',mode:0o600});input={...request,audioPath};
    }
    let successOutcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>}|undefined;
-   const settle=(outcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>},radarAuthorIds?:string[],sourceProof?:{sourceReceiptId:string;videoId:string;canonicalUrl:string;responseHash:string;researchSampleSource?:{sourceRequestId:string;responseHash:string;policyHash:string}},researchProof?:{researchVideoIds?:string[];responseHash:string;researchSampleEvidence?:ResearchSearchEvidence})=>runQueue(async()=>{
+   const settle=(outcome:{service:string;requestsUsed:0|1|null;ok:boolean;usage?:Record<string,number|string|null>},radarAuthorIds?:string[],sourceProof?:{sourceReceiptId:string;videoId:string;canonicalUrl:string;responseHash:string;researchDeliveryHash?:string;researchSampleSource?:{sourceRequestId:string;responseHash:string;policyHash:string}},researchProof?:{researchVideoIds?:string[];responseHash:string;researchSampleEvidence?:ResearchSearchEvidence})=>runQueue(async()=>{
     await owner.worker.call('productionTaskMutation',{binding:initial.binding,op:'recordCost',input:{...identity,status:outcome.requestsUsed===null?'unknown':'measured',amount:outcome.requestsUsed,usage:{...outcome.usage,...sourceProof,...researchProof,requests:outcome.requestsUsed,ok:outcome.ok,...(request.tool==='tikhub'&&(initial.isRadar||initial.isSearchPolicy||request.operation==='video'||request.operation==='user-posts')?{operation:request.operation,id:request.id}:{}),...(radarAuthorIds?{radarAuthorIds}:{})}},mutationId:randomUUID()});
    });
    const result=await tools.execute(input,{
@@ -206,10 +206,13 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     let source:ReturnType<typeof mediaSource>|undefined,sourceReceipt:{id:string;videoId:string;canonicalUrl:string;responseHash:string}|undefined;
     const canonicalUrl=`https://www.douyin.com/video/${request.id}`;
     try{source=mediaSource(result.data,request.id);sourceReceipt={id:randomUUID(),videoId:request.id,canonicalUrl,responseHash:researchResponseDigest(result.data)};}catch{source=undefined;}
+    // Provider and delivered envelopes have different hash semantics. Freeze
+    // both so continuation can verify the exact persisted normalized response.
+    const delivery={videoId:request.id,canonicalUrl,title:source?.title??'',description:source?.description??'',...(sourceReceipt?{sourceReceipt}:{mediaUnavailable:true}),...(initial.isPublicationObservation?{observationEvidence:observationEvidence(result.data,request.id)}:{})};
     // Receipt parsing/hashing must never hide a successful provider charge.
-    await settle(successOutcome,undefined,sourceReceipt?{sourceReceiptId:sourceReceipt.id,videoId:sourceReceipt.videoId,canonicalUrl:sourceReceipt.canonicalUrl,responseHash:sourceReceipt.responseHash,...(initial.researchSampleSource?{researchSampleSource:initial.researchSampleSource}:{})}:undefined);
+    await settle(successOutcome,undefined,sourceReceipt?{sourceReceiptId:sourceReceipt.id,videoId:sourceReceipt.videoId,canonicalUrl:sourceReceipt.canonicalUrl,responseHash:sourceReceipt.responseHash,researchDeliveryHash:researchHash(delivery),...(initial.researchSampleSource?{researchSampleSource:initial.researchSampleSource}:{})}:undefined);
     if(source&&sourceReceipt){for(const [key,receipt]of receipts)if(receipt.expires<Date.now()&&!receipt.busy)receipts.delete(key);while(receipts.size>=256){const victim=[...receipts].find(([,entry])=>!entry.busy);if(!victim)throw new ServiceToolError('MEDIA_RECEIPT_LIMIT');receipts.delete(victim[0]);}receipts.set(sourceReceipt.id,{...sourceReceipt,url:source.url,requestId:request.requestId,taskId:request.taskId,attemptId:request.attemptId,workerId:request.workerId,claimToken:request.claimToken,requestHash:initial.requestHash,libraryId:initial.binding.libraryId,root:initial.binding.root,expires:Date.now()+15*60*1000});}
-    return{...result,data:{videoId:request.id,canonicalUrl,title:source?.title??'',description:source?.description??'',...(sourceReceipt?{sourceReceipt}:{mediaUnavailable:true}),...(initial.isPublicationObservation?{observationEvidence:observationEvidence(result.data,request.id)}:{})}};
+    return{...result,data:delivery};
    }
    if(successOutcome)await settle(successOutcome,radarAuthorIds);
    return result;

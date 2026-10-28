@@ -35,7 +35,7 @@ export function deriveResearchVideoIds(response,limit){
 }
 const reboundResearch=Symbol('trusted-journey-evidence');
 /** Trusted adapter attachment; symbols cannot arrive through assistant JSON. */
-export function withResearchEvidence(task,evidence){if(!task||!evidence)return task;const copy={...task};Object.defineProperty(copy,reboundResearch,{value:evidence});return copy;}
+export function withResearchEvidence(task,evidence){if(!task||!evidence)return task;const copy={...task};const bound={...evidence,sourceTask:withResearchEvidence(evidence.sourceTask,evidence.inherited)};Object.defineProperty(copy,reboundResearch,{value:bound});return copy;}
 export function researchEvidenceGrants(task){return task?.[reboundResearch]?.mediaGrants??[];}
 export function researchVideoAuthorized(task,costs,attemptId,videoId){
  try {const c=validateResearchConfig(task.request.parameters.researchRuntime),bound=task[reboundResearch];if(!c.sampleDerivation&&bound&&researchVideoAuthorized(bound.sourceTask,bound.costs,bound.sourceAttemptId,videoId))return true;if(c.sampleDerivation)return readResearchSearchEvidence(task,costs,attemptId).videoIds.includes(videoId);return !!c.videoIds?.includes(videoId)||!!c.sampleLimit&&costs.some(cost=>cost.taskId===task.id&&cost.attemptId===attemptId&&cost.service==='tikhub'&&cost.status==='measured'&&cost.usage?.ok===true&&cost.usage.operation==='user-posts'&&c.targetIds.includes(cost.usage.id)&&Array.isArray(cost.usage.researchVideoIds)&&cost.usage.researchVideoIds.length<=c.sampleLimit&&cost.usage.researchVideoIds.includes(videoId)&&typeof cost.usage.responseHash==='string');}catch{return false;}
