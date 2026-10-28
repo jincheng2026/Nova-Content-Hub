@@ -403,7 +403,7 @@ export function productionMethods(h) {
                 for(const cost of p.costs.filter(cost=>memberIds.has(cost.taskId)&&cost.status==='reserved')){cost.status='unknown';cost.amount=null;cost.updatedAt=now;}break;
             }
             case 'advanceJourney': {
-                invalid(fields(raw,['rootClaim','expectedJourneyRevision','expectedStepId'])&&plain(raw.rootClaim),'Invalid journey advance input');
+                invalid(fields(raw,['rootClaim','expectedJourneyRevision','expectedStepId'])&&plain(raw.rootClaim)&&fields(raw.rootClaim,['taskId','attemptId','claimToken','workerId']),'Invalid journey advance input');
                 const {t:parent,a:owner}=taskAttempt(p,raw.rootClaim,true),state=parent.journeyState;
                 invalid(state&&['claimed','waiting-user','waiting-permission'].includes(owner.status),'Claim the journey before advancing');
                 if(state.revision!==raw.expectedJourneyRevision||state.activeStepId!==raw.expectedStepId)fail('CONFLICT','Journey changed; read its latest context');

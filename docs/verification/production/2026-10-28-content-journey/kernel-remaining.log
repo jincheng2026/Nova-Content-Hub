@@ -1,0 +1,21 @@
+✔ advance waits for a real exact author checkpoint and retires the old child atomically (4344.070625ms)
+✔ independent reservation processes cannot spend the same last journey request twice (2887.9825ms)
+✔ WAL recovery replays an interrupted advance without duplicating its checkpoint or child (4559.800083ms)
+✔ a revoked upstream author decision blocks direct later writes while preserving the original page (3394.090333ms)
+✔ writing rejects an externally changed frozen manuscript before its first business commit (3741.19475ms)
+✔ advance rejects the current child changed source without freezing that change into a successor (3454.980708ms)
+✔ a confirmed original page advances through exact same-step suggestion receipts but rejects external bytes (7154.977541ms)
+✔ an exact author save refresh retires the old step and a manuscript edit invalidates later checkpoints (8770.539208ms)
+✔ controlled continuation consumes one secret without persisting it and generic claims cannot bypass it (4247.671084ms)
+✔ continuation blocks unsettled costs, reissue invalidates the old challenge and cancel never revives old ownership (4776.8205ms)
+✔ journey author materials require typed same-work sources, three author answers and choices (4359.939583ms)
+✔ an expired one-time continuation cannot be claimed and never revives its original owner (4278.876458ms)
+✔ two independent continuation claimants consume exactly one challenge (6719.193625ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63151.785916

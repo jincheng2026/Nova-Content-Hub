@@ -1,0 +1,22 @@
+✔ stage scope rejects fake author input, unrelated source and short URL guessing (2.006125ms)
+✔ author-first hides AI output until trusted author analysis; confirms exact versions and rejects after cancellation (5771.146375ms)
+✔ ordinary writing builds original HTML from existing materials without tutorial checkpoints, and retains author protections (5005.410833ms)
+✔ explicit tutorial requires exact narrative and key-segment confirmations before a complete HTML build (9516.995ms)
+✔ ordinary writing honors an explicitly started narrative and refuses its stale confirmation after the version changes (7698.628041ms)
+✔ desktop start freezes explicit research scope, sample limit and budget; omitted scope is manual with zero tools (7421.859542ms)
+✔ kepu enforces narrative/framework/each author segment/readthrough before original HTML, with exact replay and reopen gates (10553.364917ms)
+✔ review creates one editable supporting page while preserving exact manuscript and current source; existing page gets CAS suggestions (2801.138666ms)
+✔ synthesis works without T and freezes readable report/source ledger under the claimed attempt; cancellation invalidates old claim (2535.302ms)
+✔ cover design remains a writing candidate until exact author confirmation; waits resume and cancelled/retried identities stay invalid (3987.069875ms)
+✔ review-page generic suggest cannot bypass author confirmation or nine reason types (3470.851167ms)
+✔ registered current jc-doc uses its own writable protocol for ordinary revision suggestions (2493.878834ms)
+✔ existing review page can replay the same acknowledged mutation after response loss without duplicating suggestions (2083.001792ms)
+✔ review-page never guesses a historical HTML when no current jc-doc or fixed review entry is selected (1422.864791ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 64963.1925

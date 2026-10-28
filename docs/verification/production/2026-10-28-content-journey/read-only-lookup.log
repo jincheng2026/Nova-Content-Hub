@@ -1,0 +1,12 @@
+✔ lookup requires an explicit absolute vault and stable T and reads without writes or old secrets (1854.0985ms)
+✔ lookup reports pending runtime recovery without acquiring a lock or repairing files (815.458ms)
+✔ the actual lookup CLI process preserves every file hash and timestamp (925.835125ms)
+✔ lookup reports same-T source ambiguity and rejects a physically replaced vault without repair (803.231667ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4526.423334

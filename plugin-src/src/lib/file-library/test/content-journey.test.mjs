@@ -51,6 +51,7 @@ test('a member claim requires the active root secret and the same worker and hos
  const snapshot=f.library.mutateProduction('claimTask',worker);
  assert.equal(snapshot.tasks.find(task=>task.id===child.id).attempts[0].status,'claimed');
  assert.equal(snapshot.tasks.find(task=>task.id===parent.id).attempts[0].claimToken,null);
+ assert.throws(()=>f.library.mutateProduction('advanceJourney',{rootClaim:{...owner,challenge:'must-never-enter-intent'},expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId}),{code:'INVALID_INPUT'});
  assert.throws(()=>f.library.mutateProduction('submitTask',{...owner,result:{summary:'假完成',artifacts:[{id:randomUUID(),kind:'draft',title:'假',text:'假',assetHash:null,data:null}]}}),{code:'JOURNEY_COORDINATED'});
  assert.throws(()=>f.library.mutateProduction('submitTask',{...worker,result:{summary:'泛用draft假完成',artifacts:[{id:randomUUID(),kind:'draft',title:'假',text:'材料摘要不是完整原页',assetHash:null,data:null}]}}),{code:'JOURNEY_COORDINATED'});
  for(const op of ['retryTask','cancelTask','acceptTask','rejectTask'])assert.throws(()=>f.library.mutateProduction(op,{taskId:child.id,expectedToken:f.library.readProduction().editToken}),{code:'JOURNEY_COORDINATED'});

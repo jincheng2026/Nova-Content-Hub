@@ -1,0 +1,37 @@
+✔ codex/research report: private 100000-character fixed request uses the matching direct Skill without copy or send (1110.7205ms)
+✔ codex/account analysis: private 100000-character fixed request uses the matching direct Skill without copy or send (1723.174083ms)
+✔ codex/viral radar: private 100000-character fixed request uses the matching direct Skill without copy or send (1550.430041ms)
+✔ codex/content creation: private 100000-character fixed request uses the matching direct Skill without copy or send (1381.084541ms)
+✔ codex/title and packaging: private 100000-character fixed request uses the matching direct Skill without copy or send (1324.705167ms)
+✔ codex/transcription: private 100000-character fixed request uses the matching direct Skill without copy or send (1502.072667ms)
+✔ codex/content analysis: private 100000-character fixed request uses the matching direct Skill without copy or send (1536.031666ms)
+✔ codex/review: private 100000-character fixed request uses the matching direct Skill without copy or send (1382.722625ms)
+✔ workbuddy/research report: private 100000-character fixed request uses the matching direct Skill without copy or send (1362.423083ms)
+✔ workbuddy/account analysis: private 100000-character fixed request uses the matching direct Skill without copy or send (1681.393666ms)
+✔ workbuddy/viral radar: private 100000-character fixed request uses the matching direct Skill without copy or send (1311.759084ms)
+✔ workbuddy/content creation: private 100000-character fixed request uses the matching direct Skill without copy or send (1573.56475ms)
+✔ workbuddy/title and packaging: private 100000-character fixed request uses the matching direct Skill without copy or send (1327.752541ms)
+✔ workbuddy/transcription: private 100000-character fixed request uses the matching direct Skill without copy or send (1340.711625ms)
+✔ workbuddy/content analysis: private 100000-character fixed request uses the matching direct Skill without copy or send (1356.4045ms)
+✔ workbuddy/review: private 100000-character fixed request uses the matching direct Skill without copy or send (1407.791792ms)
+✔ codex: 100000 private characters load from fixed context with direct prefill and zero clipboard actions (1262.149ms)
+✔ workbuddy: 100000 private characters load from fixed context with direct prefill and zero clipboard actions (1103.866708ms)
+✔ codex: full prompt, frozen request, dynamic broker locator, retirement and release denial (1562.985875ms)
+✔ workbuddy: full prompt, frozen request, dynamic broker locator, retirement and release denial (1466.513ms)
+✔ codex: long private requests stay local while the complete fixed-context bootstrap is directly prefilled (1087.046ms)
+✔ workbuddy: long private requests stay local while the complete fixed-context bootstrap is directly prefilled (1359.227709ms)
+✔ codex: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation (3296.600542ms)
+✔ workbuddy: claimed and waiting tasks keep original handoff readable but cannot prepare another conversation (2885.225875ms)
+✔ built CLI preserves worker identity, both waits, submit receipt and manual acceptance (6435.978959ms)
+✔ current-chat handoffs are stable per attempt and can be rebuilt after a lost preparation response (1016.224083ms)
+✔ opening only reads; a dirty draft blocks start and migration and keeps full source text readable (6.93875ms)
+✔ explicit start freezes ordinary materials-only range without inventing research or tutorial gates (5.642417ms)
+✔ new chat migration requires the explicit dialog action; original-chat text never invokes migration (45.2635ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 44521.021584
