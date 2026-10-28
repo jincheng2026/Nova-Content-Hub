@@ -6,6 +6,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import {randomUUID,createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
+import {createRequire} from 'node:module';
 
 const root=process.env.NOVA_FINAL_ASSETS_PROBE_ROOT;
 assert.ok(root&&path.isAbsolute(root)&&/^nova-(?:detail-continuation|final-assets)-/.test(path.basename(root)),'Explicit isolated fixture required');
@@ -22,6 +23,7 @@ const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
 const evidence={at:new Date().toISOString(),phase,number,desktop,scope:'Isolated Vault; actual React/Semi; fixture image only; not installed-app or real-model acceptance',steps:[],views:{}};
 // Seed before starting Electron's background readers. Direct fixture writes must
 // never race the app's own worker; the UI only uses the finite native bridge.
+async function prepareFixture(){
 const runtime=path.join(root,'第二大脑/.workbench/runtime');
 const {openLibrary}=await import(pathToFileURL(path.join(businessBase,'file-library/index.mjs')).href);
 const core=await import(pathToFileURL(path.join(businessBase,'vault/core.mjs')).href);
@@ -37,7 +39,7 @@ const library=openLibrary(runtime);library.listContents();
 const work=core.contentSources({root:binding.vaultRoot,vaultId:binding.vaultId,...core.scan(binding.vaultRoot,binding.vaultId)}).find(item=>item.tNumber===number);assert.ok(work);
 const packaging=library.readCoverPackaging({contentId:work.contentId});assert.equal(packaging.kind,'jc-doc');
 if(phase==='save'){
- const {default:sharp}=await import(pathToFileURL(path.resolve(path.dirname(desktop),'../../../node_modules/sharp/lib/index.js')).href);
+ const sharp=createRequire(desktop)('sharp');
  const fixtureBytes=await sharp({create:{width:120,height:160,channels:3,background:'#0071e3'}}).png().toBuffer();
  const image=path.join(root,'final-assets-fixture.png');await fs.writeFile(image,fixtureBytes);
  const asset=library.importAsset(image,{purpose:'template-reference'}),template=library.createTemplate({name:'最终资产验收专用示例',definition:{accepted:false},resources:{sample:{assetHash:asset.assetHash,bytes:asset.bytes,detectedType:asset.detectedType,role:'style'}}});
@@ -49,6 +51,10 @@ if(phase==='save'){
  library.selectContentCover(work.contentId,committed.candidateIds[0],library.readContent(work.contentId).editToken,{mutationId:randomUUID()});
  evidence.fixtureCandidate={candidateId:committed.candidateIds[0],assetHash:hash(fixtureBytes),requestHash:request.requestHash,notRealModelGeneration:true};
 }
+return packaging;
+}
+let packaging;
+try{packaging=await prepareFixture();}catch(error){await fs.writeFile(path.join(out,'fixture-failure.json'),JSON.stringify({at:new Date().toISOString(),message:String(error),stack:error.stack}));app.exit(1);throw error;}
 const deadline=setTimeout(()=>app.exit(2),300000);
 startDesktop({show:false,publicationObserver:false,userData:path.join(root,'machine'),marketRoot:process.env.NOVA_FINAL_ASSETS_MARKET??path.resolve('workbench/dist-desktop/auth-disabled/workbench/plugin-marketplace'),dialogs:{library:async()=>path.join(root,'第二大脑'),maintenanceParent:async()=>exportsRoot},async ready({window,controller,release}){
  const run=source=>window.webContents.executeJavaScript(source);
@@ -87,14 +93,25 @@ startDesktop({show:false,publicationObserver:false,userData:path.join(root,'mach
    const prior=JSON.parse(await fs.readFile(path.join(root,'evidence/final-assets',number,'save/result.json'),'utf8'));assert.equal(prior.passed,true);assert.deepEqual(evidence.bundle,prior.bundle);assert.deepEqual(evidence.binding,prior.binding);evidence.steps.push('Independent process reopens identical bundle, cover and library identities');
   }
   const directoriesBefore=new Set(await fs.readdir(exportsRoot));await button('导出这一版');
+  await dom(`document.querySelector('.final-assets-panel')?.innerText.includes('已核验并导出到 ')`,'native export completion feedback');
   const exportedName=await wait(async()=>{const entries=await fs.readdir(exportsRoot,{withFileTypes:true});return entries.find(entry=>entry.isDirectory()&&!entry.name.startsWith('.')&&!directoriesBefore.has(entry.name))?.name;},'complete exported directory');
   const exported=path.join(exportsRoot,exportedName),manifestBytes=await fs.readFile(path.join(exported,'manifest.json'));assert.equal(hash(manifestBytes),view.selected.manifestHash);
   const manifest=JSON.parse(manifestBytes);for(const file of manifest.files){const bytes=await fs.readFile(path.join(exported,file.name));assert.equal(bytes.length,file.bytes);assert.equal(hash(bytes),file.sha256);}
   evidence.export={name:exportedName,allManifestHashesMatch:true};
   for(const [width,height]of [[1280,860],[960,680]]){window.setSize(width,height);await run(`document.querySelector('.final-assets-panel').scrollIntoView({block:'start',behavior:'instant'})`);await shot('window-'+width);assert.ok(evidence.views['window-'+width].scrollWidth<=evidence.views['window-'+width].width);}
+  if(phase==='save'){
+   const beforeJobs=(await bridge('readCover',{contentId:row.contentId})).jobs.length;
+   await button('制作封面');
+   await dom(`document.querySelector('.cover-create-dialog[open] .cover-content-summary h3')?.textContent===${JSON.stringify(packaging.fields.title.value)}`,'original adopted title in real cover composer');
+   await dom(`(()=>{const imgs=[...document.querySelectorAll('.cover-create-dialog[open] .cover-template-pane img')].filter(e=>{const r=e.getBoundingClientRect();return r.width>0&&r.height>0&&r.top<innerHeight&&r.bottom>0});return imgs.length>0&&imgs.every(e=>e.complete&&e.naturalWidth>0)})()`,'visible template samples fully loaded');
+   assert.equal(await run(`!!document.querySelector('.cover-create-dialog[open] #cover-title')`),false,'original packaging is not another editor');
+   for(const [width,height]of [[1280,860],[960,680]]){window.setSize(width,height);await dom(`['cover-ratio','cover-count','generate-cover'].every(id=>{const e=document.getElementById(id),r=e?.getBoundingClientRect();return r&&r.top>=0&&r.bottom<=innerHeight})`,'composer controls reachable in '+width);await shot('cover-source-'+width);}
+   await button('暂时收起');assert.equal((await bridge('readCover',{contentId:row.contentId})).jobs.length,beforeJobs);
+   evidence.steps.push('Real cover composer reads adopted original packaging, has no second title editor, and opening it creates no task');
+  }
   const after=(await bridge('readVaultWorkDirectory')).find(item=>item.tNumber===number);assert.deepEqual({recorded:after.recorded,published:after.published,sourceResolution:after.sourceResolution},evidence.beforeFacts);
   assert.equal(hash(await fs.readFile(sourceFile)),evidence.originalSourceHash);assert.equal((await bridge('readCoverPackaging',{contentId:row.contentId})).script.manuscriptSource.documentId,source.documentId);
   evidence.steps.push('Exact original packaging and current manuscript survive save/export; source bytes and publication facts unchanged','Saved cover renders through verified local resource','Every exported byte matches immutable manifest','Actual 1440, 1280 and 960px layouts captured');evidence.passed=true;
- }catch(error){evidence.passed=false;evidence.failure={message:String(error),stack:error.stack};evidence.body=await run('document.body.innerText').catch(()=>null);await shot('failure').catch(()=>{});
+ }catch(error){evidence.passed=false;evidence.failure={message:String(error),stack:error.stack};evidence.body=await run('document.body.innerText').catch(()=>null);evidence.images=await run(`[...document.querySelectorAll('img')].map(e=>({src:e.currentSrc||e.src,complete:e.complete,naturalWidth:e.naturalWidth,visible:e.getClientRects().length>0}))`).catch(()=>null);await shot('failure').catch(()=>{});
  }finally{await fs.writeFile(path.join(out,'result.json'),JSON.stringify(evidence,null,2));clearTimeout(deadline);console.log(JSON.stringify({phase,passed:evidence.passed,steps:evidence.steps,failure:evidence.failure}));app.exit(evidence.passed?0:1);}
 }}).catch(async error=>{await fs.writeFile(path.join(out,'startup-failure.json'),JSON.stringify({message:String(error),stack:error.stack}));console.error(error);app.exit(1);});

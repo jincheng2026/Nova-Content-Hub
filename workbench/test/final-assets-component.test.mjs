@@ -23,3 +23,31 @@ test('switching to saved history exposes only its contents/actions and returning
  display='saved';html=render();assert.match(html,/历史B标题/);assert.doesNotMatch(html,/当前A标题|当前A稿/);assert.equal(buttons.some(button=>button.children==='保存这一版'),false);assert.equal(checks.length,0);
  buttons.find(button=>button.children==='返回本次预览').onClick();html=render();assert.match(html,/当前A标题/);assert.equal(checks[0].checked,true);buttons.find(button=>button.children==='保存这一版').onClick();assert.equal(saved,1);
 });
+test('panel success, copy, export, cancel and recovery use information status while actual request failures remain warnings',async()=>{
+ const {FinalAssetsDraft}=await import('../src/renderer/final-assets-state.ts');
+ const state=[],refs=[],effects=[],registered=[];let cursor=0,refCursor=0,effectCursor=0,failPreview=false,cancelExport=false,recover;
+ const hookReact={...React,useState:initial=>{const index=cursor++;if(!(index in state))state[index]=initial;return [state[index],value=>{state[index]=typeof value==='function'?value(state[index]):value;}];},useRef:initial=>{const index=refCursor++;return refs[index]??(refs[index]={current:initial});},useEffect:effect=>{const index=effectCursor++;if(!registered[index]){registered[index]=true;effects.push(effect);}}};
+ const local={exports:{}},contentId='19458f29-bb58-4835-bfdc-c7b866f22a2c';
+ const fixedPreview={...preview,contentId,warnings:[]},view={contentId,work:{workId:'T044'},issues:[],bundles:[{bundleId:'B',adoptedAt:'2026-10-28',complete:true,issues:[]}],current:{bundleId:'B'},selected:{...selected,bundleId:'B',manifestHash:'a'.repeat(64),relativeDirectory:'最终资产/版本/B'}};
+ vm.runInNewContext(generated.output.find(item=>item.type==='chunk').code,{module:local,exports:local.exports,Event,structuredClone,window:{dispatchEvent(){}},require:id=>{
+  if(id==='react')return hookReact;if(id==='react/jsx-runtime')return require(id);
+  if(id.endsWith('/button'))return ({children,...props})=>{buttons.push({children,...props});return React.createElement('button',{disabled:props.disabled},children);};
+  if(id.endsWith('/banner'))return ({type,description,role})=>React.createElement('div',{'data-notice-type':type,role:role??'alert'},description);
+  if(id.endsWith('/select'))return ()=>null;
+  if(id.endsWith('final-assets-state.ts'))return {FinalAssetsDraft};
+  if(id.endsWith('contracts.ts'))return {errorInfo:error=>({message:error.message})};
+  if(id.endsWith('vault-editor-recovery.ts'))return {listenVaultRecovery:(_target,listener)=>{recover=listener;return()=>{};}};
+  if(id.endsWith('client.ts'))return {invoke:async method=>{if(method==='previewFinalAssets'){if(failPreview)throw Error('请求失败，保留本次预览');return fixedPreview;}if(method==='readCoverPackaging')return {kind:'legacy'};if(method==='exportFinalAssets')return cancelExport?{cancelled:true}:{cancelled:false,directory:'/export/verified'};return view;}};
+  if(id.endsWith('cover-image-viewer.tsx'))return {ImagePreviewButton:({url,label})=>React.createElement('img',{src:url,alt:label})};return {};
+ }});
+ const render=()=>{cursor=0;refCursor=0;effectCursor=0;buttons.length=0;const tree=local.exports.FinalAssetsPanel({contentId,documents:[],busy:false,flush:async()=>{},makeCover:()=>{}});return renderToStaticMarkup(tree);};
+ const settle=()=>new Promise(resolve=>setImmediate(resolve));
+ const click=async name=>{render();const button=buttons.find(button=>button.children===name);assert.ok(button,name);assert.equal(button.disabled,false,name);button.onClick();await settle();return render();};
+ render();for(const effect of effects)effect();await settle();
+ await click('预览最终资产');let html=await click('保存这一版');assert.match(html,/role="status"[^>]*>四项最终资产已保存/);
+ html=await click('复制逐字稿');assert.match(html,/role="status"[^>]*>已复制/);
+ html=await click('导出这一版');assert.match(html,/role="status"[^>]*>已核验并导出/);
+ cancelExport=true;html=await click('导出这一版');assert.match(html,/role="status"[^>]*>已取消导出/);
+ recover({method:'saveFinalAssets',input:{contentId},outcome:'committed'});await settle();html=render();assert.match(html,/role="status"[^>]*>上次保存已确认/);
+ failPreview=true;html=await click('预览最终资产');assert.match(html,/data-notice-type="warning" role="alert"[^>]*>请求失败/);
+});

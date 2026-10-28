@@ -66,7 +66,7 @@ protocol.registerSchemesAsPrivileged([{
 // Keep the existing machine binding location while changing the public application name.
 const existingUserData = path.join(app.getPath('appData'), 'Nova 内容库技术验证');
 app.setName('自媒体工作台');
-if (existsSync(existingUserData)) app.setPath('userData', existingUserData);
+if (!app.commandLine.hasSwitch('user-data-dir') && existsSync(existingUserData)) app.setPath('userData', existingUserData);
 
 export async function startDesktop(options:StartOptions = {}) {
     const {show = true, userData, marketRoot, dialogs, ready, onConsoleMessage}=options;

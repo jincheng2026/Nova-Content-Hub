@@ -7,6 +7,7 @@ import {createHash} from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {pathToFileURL} from 'node:url';
 import {snapshotPackage} from '../../plugin-src/src/lib/package-snapshot.mjs';
+import {validateRuntimeDistribution} from '../../plugin-src/scripts/method-runtime-distribution.mjs';
 
 const output=process.env.NOVA_PLUGIN_ACCEPTANCE_OUT;
 assert.ok(output&&path.isAbsolute(output),'Explicit evidence file required');
@@ -23,7 +24,8 @@ const integrity=await read(path.join(pkg,'integrity.json'));
 for(const [file,hash] of Object.entries(integrity.hashes))assert.equal(snapshot[file]?.sha256,hash,file);
 const sources=await read(path.join(pkg,'plugin-src/resources/method-sources.json'));
 for(const source of sources.versions)for(const file of source.files){assert.equal(snapshot[file.installedPath]?.sha256,file.sha256,file.installedPath);}
-const report={at:new Date().toISOString(),release,marketplaceSha256:createHash('sha256').update(await fs.readFile(path.join(market,'package-files.json'))).digest('hex'),payloadEntries:Object.keys(snapshot).length,integrityFiles:Object.keys(integrity.hashes).length,sourceVersions:sources.versions.length,hosts:[],runtime:[],limits:['No model, image generation, paid service or business task submission','Current assistant chat not hot-reloaded','Apple Silicon macOS only']};
+const distribution=await validateRuntimeDistribution(pkg,{snapshot});
+const report={at:new Date().toISOString(),release,marketplaceSha256:createHash('sha256').update(await fs.readFile(path.join(market,'package-files.json'))).digest('hex'),payloadEntries:Object.keys(snapshot).length,integrityFiles:Object.keys(integrity.hashes).length,sourceVersions:sources.versions.length,sourceFiles:sources.versions.reduce((sum,item)=>sum+item.files.length,0),distribution,hosts:[],runtime:[],limits:['No model, image generation, paid service or business task submission','Current assistant chat not hot-reloaded','Apple Silicon macOS only']};
 const {installedAssistantSkill}=await import(pathToFileURL(path.join(resources,'app/workbench/dist/main/assistant-skill.mjs')).href);
 const {launchWithAssistantRuntime}=await import(pathToFileURL(path.join(resources,'app/workbench/dist/main/assistant-runtime.mjs')).href);
 function selectedRecords(value){
