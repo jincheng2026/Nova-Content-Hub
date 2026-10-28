@@ -1,0 +1,41 @@
+✔ full Vault API is available independently of legacy runtime backup (0.619166ms)
+✔ complete package includes user files and runtime; restoration preserves identity of content and allows edits (5579.576417ms)
+✔ verify rejects modified hashes and extra tree members (3444.899958ms)
+✔ backup refuses target inside entire Vault and symlinks without touching source (2141.161166ms)
+✔ source mutation during copy leaves partial evidence without completion seal (2460.001834ms)
+✔ explicit migration accepts copied Vault, ordinary open rejects it, and never changes copied source (4589.045125ms)
+✔ restore receipt is tied to exact operation and destination identity; repeat never overwrites (5137.304958ms)
+✔ codex: restore retires created, claimed and both waiting attempts while preserving source claims (13689.171208ms)
+✔ workbuddy: restore retires created, claimed and both waiting attempts while preserving source claims (8922.774917ms)
+✔ source mutation at completion publication cannot leave a successful backup seal (1342.631458ms)
+✔ machine mutation lock foreign stays at source and cannot block restored or migrated editing (4759.880583ms)
+✔ machine mutation lock partial stays at source and cannot block restored or migrated editing (5588.568208ms)
+✔ machine mutation lock unknown stays at source and cannot block restored or migrated editing (4199.302667ms)
+✔ case filesystem alias cannot create backup inside original Vault (848.606792ms)
+✔ unicode filesystem alias cannot create backup inside original Vault (1611.356458ms)
+✔ earlier full Vault package with a machine lock still verifies and restores to an editable independent copy (3062.076917ms)
+✔ upgrade pipeline keeps source business files, requires independent receipt, and opens only the pinned copy (2018.306792ms)
+✔ a final marker followed by an actual open failure cannot publish an operation receipt (1691.624542ms)
+✔ query proves a lost restore response and pins the completed target before continuation (3236.788583ms)
+✔ partial backup and partial restored target are preserved and never overwritten (1134.607041ms)
+✔ replacement of the pinned copy blocks upgrade and operation receipt cannot move to another intent (3847.168459ms)
+✔ future, already-current, and pre4 formats are rejected by read-only selection with explicit guidance codes (558.389958ms)
+✔ upgrade IPC refuses renderer paths and persisted upgrade intent works without a current binding (512.670083ms)
+✔ worker pins entire Vault and restores through the existing finite pending operations (4431.080167ms)
+✔ worker refuses a target in visible Vault area, and does not downgrade missing or forged full format (3216.311459ms)
+✔ migration copy is selected explicitly through restore and source descriptor remains unchanged (4418.485875ms)
+✔ legacy library package verification and restoration stay compatible (4254.4515ms)
+✔ desktop persists fixed full Vault intent and recovers a lost response without issuing a second copy (3075.670042ms)
+✔ desktop lost restore response retains intent and query proves existing independent copy (5718.068667ms)
+✔ a missing Vault runtime marker is a repairable error, never an automatic runtime-only backup downgrade (1893.98175ms)
+✔ external backup restores when current Vault is moved, while saved current binding stays intact (7367.916167ms)
+✔ external backup restores when current Vault is missing, while saved current binding stays intact (5079.226083ms)
+✔ restore rejects target in current visible Vault and keeps original pending protections (2787.547417ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 67638.788833
