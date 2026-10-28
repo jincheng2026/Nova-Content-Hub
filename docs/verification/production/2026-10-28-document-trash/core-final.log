@@ -1,0 +1,31 @@
+✔ real trash API pins profile identity and replays without losing restoration (2439.8615ms)
+✔ real trash API pins materials identity and replays without losing restoration (2340.982292ms)
+✔ real trash API pins patterns identity and replays without losing restoration (3680.31875ms)
+✔ legacy trash mutation can be replayed after upgrade without promoting its restore authority (1946.446042ms)
+✔ profile roundtrip restores original document and persists an independent receipt (2948.396167ms)
+✔ materials roundtrip restores original document and persists an independent receipt (4270.12375ms)
+✔ patterns roundtrip restores original document and persists an independent receipt (2732.7455ms)
+✔ replaying restore returns original result and never overwrites a later edit (1424.074375ms)
+✔ occupied original path refuses restore and leaves both files intact (1209.416833ms)
+✔ rejects changed trash bytes (1345.907167ms)
+✔ rejects missing trash bytes (1528.943042ms)
+✔ rejects symlink trash bytes (1113.423166ms)
+✔ rejects hardlink trash bytes (579.588625ms)
+✔ legacy receipt is visible with an explicit identity limitation (729.189125ms)
+✔ receipt metadata outside request checksum cannot authorize restore (618.833834ms)
+✔ request checksum, document identity and original path are verified (3330.749167ms)
+✔ a valid receipt and bytes copied to another vault cannot restore (1810.561917ms)
+✔ content trash projection and managed final assets never enter ordinary trash (1069.3105ms)
+✔ renderer may submit only trashId and expectedHash (627.555042ms)
+✔ a copied receipt with a matching vault id still refuses another physical root (1445.618208ms)
+✔ linked original directories and managed final paths cannot receive a document restore (1497.872292ms)
+✔ ordinary old libraries gain no inferred Vault authority (1.152208ms)
+✔ formal publication archive and analysis source subtrees are outside ordinary document trash (708.202542ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29277.445458

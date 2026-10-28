@@ -1,0 +1,27 @@
+✖ legacy trash mutation can be replayed after upgrade without promoting its restore authority (917.14225ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1066.759916
+
+✖ failing tests:
+
+test at plugin-src/src/lib/vault/test/document-trash-core.test.mjs:18:1
+✖ legacy trash mutation can be replayed after upgrade without promoting its restore authority (917.14225ms)
+  Error [LibraryError]: mutationId 已用于另一项请求
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:35:11)
+      at runMutationUnlocked (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:726:13)
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:790:9
+      at withVaultLock (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:781:16)
+      at runMutation (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:789:12)
+      at trashVaultDocument (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:949:5)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/document-trash-core.test.mjs:22:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17) {
+    code: 'INVALID_INPUT'
+  }

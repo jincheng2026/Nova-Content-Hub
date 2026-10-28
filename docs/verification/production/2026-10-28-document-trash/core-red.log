@@ -1,0 +1,74 @@
+✖ real trash API pins profile identity and replays without losing restoration (1354.666833ms)
+✖ real trash API pins materials identity and replays without losing restoration (1591.2485ms)
+✖ real trash API pins patterns identity and replays without losing restoration (1183.606375ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 0
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4357.721583
+
+✖ failing tests:
+
+test at plugin-src/src/lib/vault/test/document-trash-core.test.mjs:9:57
+✖ real trash API pins profile identity and replays without losing restoration (1354.666833ms)
+  AssertionError [ERR_ASSERTION]: 旧版回收记录缺少知识库身份，不能安全恢复
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/document-trash-core.test.mjs:12:96)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at plugin-src/src/lib/vault/test/document-trash-core.test.mjs:9:57
+✖ real trash API pins materials identity and replays without losing restoration (1591.2485ms)
+  AssertionError [ERR_ASSERTION]: 旧版回收记录缺少知识库身份，不能安全恢复
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/document-trash-core.test.mjs:12:96)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at plugin-src/src/lib/vault/test/document-trash-core.test.mjs:9:57
+✖ real trash API pins patterns identity and replays without losing restoration (1183.606375ms)
+  AssertionError [ERR_ASSERTION]: 旧版回收记录缺少知识库身份，不能安全恢复
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/document-trash-core.test.mjs:12:96)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

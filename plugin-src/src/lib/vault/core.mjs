@@ -565,6 +565,17 @@ function applyReceiptUnlocked(root, r) {
     if (bytes && (bytes.toString('base64') !== r.after || bytes.length > LIMIT))
         fail('CORRUPT', '知识事务正文编码无效');
     if (isManagedFinalAssetPath(r.path)) fail('CONFLICT', '普通文件事务不能改写托管最终资产版本');
+    if (r.request.action === 'trash' && r.request.documentTrash !== undefined) {
+        const pins = r.request.documentTrash, descriptor = json(root, '.workbench/vault.json'), actual = identity(root);
+        if (!pins || Object.keys(pins).sort().join(',') !== 'rootIdentity,schemaVersion,vaultId' ||
+            pins.schemaVersion !== 1 || pins.vaultId !== descriptor.vaultId ||
+            !pins.rootIdentity || Object.keys(pins.rootIdentity).sort().join(',') !== 'dev,ino' ||
+            pins.rootIdentity.dev !== actual.dev || pins.rootIdentity.ino !== actual.ino ||
+            descriptor.rootIdentity?.dev !== actual.dev || descriptor.rootIdentity?.ino !== actual.ino ||
+            r.action !== 'trash' || r.request.input?.id !== docID(r.path) ||
+            r.request.input.expectedHash !== r.beforeHash || r.after !== null)
+            fail('CONFLICT', '资料回收事务不属于当前知识库或原文件版本');
+    }
     const target = safe(root, r.path, true);
     const before = exists(root, r.path) ? readBytes(root, r.path) : null;
     const current = before === null ? null : digest(before),
@@ -934,19 +945,34 @@ export function trashVaultDocument(runtimeRoot, input, options) {
         typeof input.expectedHash !== 'string'
     )
         fail('INVALID_INPUT', '回收知识文件参数无效');
-    runMutation(runtimeRoot, {action: 'trash', input}, options, () => {
-        const {document} = readVaultDocument(runtimeRoot, input.id);
-        if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件回收操作删除');
-        if (document.hash !== input.expectedHash)
-            fail('CONFLICT', '知识文件已被外部修改，不能回收');
-        return {
-            action: 'trash',
-            path: document.relativePath,
-            beforeHash: document.hash,
-            after: null,
-        };
+    const binding = vaultState(runtimeRoot), documentTrash = {schemaVersion: 1, vaultId: binding.vaultId, rootIdentity: binding.rootIdentity};
+    return withVaultReadLock(binding.root, () => {
+        let request = {action: 'trash', input, documentTrash};
+        const mid = mutationID(options), previousPath = `.workbench/mutations/${mid}.json`;
+        if (exists(binding.root, previousPath)) {
+            const previous = json(binding.root, previousPath);
+            // An upgrade may finish/replay the exact legacy intent; it never acquires
+            // the new identity proof required by ordinary document restoration.
+            if (previous.request?.action === 'trash' && previous.request.documentTrash === undefined)
+                request = {action: 'trash', input};
+        }
+        runMutationUnlocked(runtimeRoot, request, options, (b) => {
+            if (b.vaultId !== documentTrash.vaultId || b.rootIdentity.dev !== documentTrash.rootIdentity.dev || b.rootIdentity.ino !== documentTrash.rootIdentity.ino)
+                fail('CONFLICT', '知识库在回收前已变化');
+            const {document} = readVaultDocument(runtimeRoot, input.id);
+            if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件回收操作删除');
+            if (document.hash !== input.expectedHash)
+                fail('CONFLICT', '知识文件已被外部修改，不能回收');
+            return {
+                action: 'trash',
+                path: document.relativePath,
+                beforeHash: document.hash,
+                after: null,
+                deletedAt: new Date().toISOString(),
+            };
+        });
+        return {trashed: true};
     });
-    return {trashed: true};
 }
 export function materializeVaultBody(
     runtimeRoot,
