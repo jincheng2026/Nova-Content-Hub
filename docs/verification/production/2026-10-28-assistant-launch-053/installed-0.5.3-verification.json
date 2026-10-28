@@ -1,0 +1,80 @@
+{
+  "at": "2026-10-28T09:02:06.993Z",
+  "scope": "Actual installed application and paired host caches; doctor/preflight only, no business generation or provider calls",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.3",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.3:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "verified": true
+    }
+  ],
+  "metadata": {
+    "name": "自媒体工作台",
+    "version": "0.5.3",
+    "build": "0.5.3",
+    "copyright": "© 2026 杭州新岛橙灵智能科技有限责任公司"
+  },
+  "signatureVerified": true,
+  "preservation": {
+    "expectedFiles": 11457,
+    "unchanged": 11457,
+    "missing": 0,
+    "changed": 0,
+    "settings": {
+      "machine-binding.json": true,
+      "local-preferences.json": true,
+      "service-settings.json": true
+    }
+  },
+  "installedModuleSha256": "5d0ffc30b45f146e4d293e715adbb636b57591e582be2b368b4a2e77b7045f5f"
+}

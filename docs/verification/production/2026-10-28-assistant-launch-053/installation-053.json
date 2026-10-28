@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-28T08:59:59.074565+00:00",
+  "installedVersion": "0.5.3",
+  "previousVersion": "0.5.2",
+  "productCommit": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "dmg": {
+    "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+    "bytes": 330741464,
+    "sha256": "dd483940f7340690ef256c166b55f6c128e9e4dd33a48d282992bc2bef2daf99",
+    "modified": "2026-10-28T08:52:46.011Z",
+    "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg"
+  },
+  "source": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-053-final-install-u0bo7zcq/自媒体工作台.app",
+  "target": "/Applications/自媒体工作台.app",
+  "backup": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/assistant-launch-053/private-backup/自媒体工作台-0.5.2-before-0.5.3.app",
+  "copiedSignatureVerified": true,
+  "normalQuit": true,
+  "libraryDirectoryUntouched": true,
+  "modelDirectoryUntouched": true
+}
