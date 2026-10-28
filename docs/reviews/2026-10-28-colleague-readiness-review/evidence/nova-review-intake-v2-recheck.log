@@ -1,0 +1,10 @@
+✔ version 2 frozen intake requires registered source metadata while old fixed requests remain compatible (1720.129667ms)
+✔ contract version 2 can be frozen only for intake and unsupported contract versions are rejected (377.797209ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2201.188292

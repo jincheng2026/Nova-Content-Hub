@@ -1,0 +1,6 @@
+{
+  "root": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/media-codec-release-v1/darwin-arm64",
+  "identity": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+  "minimumMacOS": "14.0.0",
+  "validation": "offline-codec-self-test"
+}

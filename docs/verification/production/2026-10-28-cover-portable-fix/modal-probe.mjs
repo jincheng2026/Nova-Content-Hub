@@ -1,0 +1,30 @@
+// Real Chromium rendering of synthetic components: no production data, IPC or installed application.
+import {build} from '/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/vite/dist/node/index.js';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+const repo='/Users/mac/code/dashboard/Nova-Content-Hub', out=path.dirname(new URL(import.meta.url).pathname);
+const temp=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'nova-modal-corners-')));
+const entry=path.join(repo,'workbench/modal-corners-probe.html'), jsx=path.join(repo,'workbench/modal-corners-probe.tsx');
+try {
+await fs.writeFile(entry,'<div id="root"></div><script type="module" src="./modal-corners-probe.tsx"></script>');
+await fs.writeFile(jsx,`import React from 'react'; import {createRoot} from 'react-dom/client';
+import Modal from '@douyinfe/semi-ui-19/lib/es/modal';
+import {ProductionDialog} from './src/renderer/production-dialog';
+import {ManagementDialog} from './src/renderer/library-panels';
+import {PopupSelect} from './src/renderer/semi-controls';
+
+import './src/renderer/style.css';
+window.renderCase=(kind)=>createRoot(document.getElementById('root')).render(kind==='semi'?<Modal visible title="Semi 公共模态" footer={<button>关闭</button>}><div style={{background:'white',margin:'-24px',padding:24}}>正文面板</div></Modal>:kind==='management'?<ManagementDialog title="管理弹窗 · 长正文" close={()=>{}} busy={false} dirty={false}><p>{'长正文。'.repeat(1200)}</p><button id="last">末尾可达</button></ManagementDialog>:<ProductionDialog title="共创口播稿" close={()=>{}} busy={false} initialFocus="#pick" notice=""><div className="production-dialog-body"><label>共创方式</label><PopupSelect id="pick" value="a" onChange={()=>{}}><option value="a">科普视频</option>{Array.from({length:20},(_,i)=><option key={i} value={String(i)}>共创方式 {i}</option>)}</PopupSelect><p>{'资料及要求。'.repeat(900)}</p><button id="last">末尾可达</button></div><footer className="production-dialog-footer"><button id="close">取消</button><button>交给助手共创</button></footer></ProductionDialog>);
+window.renderCase(new URLSearchParams(location.search).get('kind')||'production');`);
+await build({configFile:false,root:path.join(repo,'workbench'),base:'./',oxc:{jsx:{runtime:'automatic'}},build:{outDir:path.join(temp,'dist'),emptyOutDir:true,modulePreload:false,rollupOptions:{input:entry}}});
+const {chromium}=await import('/Users/mac/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
+const http=await import('node:http');const server=http.createServer(async(req,res)=>{try{const file=path.join(temp,'dist',new URL(req.url,'http://localhost').pathname);res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(await fs.readFile(file))}catch{res.statusCode=404;res.end()}});await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});const results=[];
+try{for(const kind of ['production','management','semi'])for(const [width,height] of [[1280,860],[960,680]]){const page=await browser.newPage({viewport:{width,height}});page.on('pageerror',e=>console.error(e));page.on('console',m=>{if(m.type()==='error')console.error(m.text())});await page.goto('http://127.0.0.1:'+server.address().port+'/modal-corners-probe.html?kind='+kind);await page.locator('dialog[open],.semi-modal-content').waitFor();await page.waitForTimeout(300);
+results.push(await page.evaluate(kind=>{const d=document.querySelector('dialog[open],.semi-modal-content'),s=getComputedStyle(d),b=d.getBoundingClientRect(),scroll=document.querySelector('.production-dialog-body')||d;scroll.scrollTop=scroll.scrollHeight;return {kind,viewport:[innerWidth,innerHeight],radius:s.borderRadius,overflow:s.overflow,rect:{x:b.x,y:b.y,width:b.width,height:b.height},scroll:{client:scroll.clientHeight,total:scroll.scrollHeight,top:scroll.scrollTop}}},kind));await page.screenshot({path:path.join(out,kind+'-'+width+'.png')});
+if(kind==='production'&&width===960){await page.evaluate(()=>document.querySelector('dialog').style.overflow='visible');await page.screenshot({path:path.join(out,'production-before-960.png')});await page.evaluate(()=>document.querySelector('dialog').style.overflow='');}
+if(kind==='production'){await page.evaluate(()=>document.querySelector('.production-dialog-body').scrollTop=0);await page.evaluate(()=>document.querySelector('dialog').style.maxHeight='260px');await page.getByRole('combobox').click();await page.waitForTimeout(300);results.push(await page.evaluate(()=>{const h=document.querySelector('.semi-dialog-popup-host'),p=h?.querySelector('.semi-select-option-list'),d=document.querySelector('dialog').getBoundingClientRect(),b=p?.getBoundingClientRect();return {kind:'popup',width:innerWidth,exists:!!p,hostPosition:h&&getComputedStyle(h).position,popupRect:b&&{x:b.x,y:b.y,width:b.width,height:b.height},bottomOutside:!!b&&b.bottom>d.bottom,lastHit:b&&document.elementFromPoint(b.x+30,Math.min(b.bottom-5,innerHeight-5))?.className}}));await page.screenshot({path:path.join(out,'popup-'+width+'.png')});}await page.close();}await fs.writeFile(path.join(out,'modal-results.json'),JSON.stringify(results,null,2));for(const result of results){if(result.kind==='popup'){assert.equal(result.exists,true);assert.equal(result.bottomOutside,true);assert.equal(result.lastHit,'semi-select-option')}else{assert.equal(result.radius,'24px');assert.ok(['auto','hidden'].includes(result.overflow));if(result.kind!=='semi'){assert.ok(result.scroll.top>0);assert.equal(result.scroll.top+result.scroll.client,result.scroll.total)}}}console.log('PASS: six modal surfaces and two escaping popup hit tests');}finally{await browser.close();server.close()}
+}finally{await fs.rm(entry,{force:true});await fs.rm(jsx,{force:true});await fs.rm(temp,{recursive:true,force:true})}

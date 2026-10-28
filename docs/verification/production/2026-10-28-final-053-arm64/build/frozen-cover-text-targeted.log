@@ -1,0 +1,10 @@
+✔ codex freezes selected cover text through recovery, retry and host switch without changing title or body (7124.964791ms)
+✔ workbuddy freezes selected cover text through recovery, retry and host switch without changing title or body (7178.735ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14644.454417

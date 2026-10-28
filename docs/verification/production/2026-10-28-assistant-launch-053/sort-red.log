@@ -1,0 +1,144 @@
+✔ all contents opens in cards and changing to list preserves the visible filtered content (19.815375ms)
+✔ card title opens the original content while cover action preserves its generate intent (1.720208ms)
+✔ cards and list share pagination instead of a second content projection (7.427791ms)
+✔ a true collection keeps its existing table presentation (0.999667ms)
+✖ search, name sorting and cover-state filters act on the same content in either presentation (5.607875ms)
+✖ name order is descending with numeric titles before pagination in both cards and lists (9.146167ms)
+✖ collections use the same descending numeric name order (4.905667ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 4
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 373.674333
+
+✖ failing tests:
+
+test at workbench/test/content-list-cards.test.mjs:47:1
+✖ search, name sorting and cover-state filters act on the same content in either presentation (5.607875ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(view.html.indexOf('data-content-id="z"')<view.html.indexOf('data-content-id="a"'))
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/content-list-cards.test.mjs:49:121)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at workbench/test/content-list-cards.test.mjs:54:1
+✖ name order is descending with numeric titles before pagination in both cards and lists (9.146167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'id-1',
+  +   'id-2',
+  +   'id-3',
+  +   'id-4',
+  +   'id-5',
+  +   'id-6',
+  +   'id-7',
+  +   'id-8',
+  +   'id-9',
+  +   'id-10',
+  +   'id-11',
+  +   'id-12',
+  +   'id-13',
+  +   'id-14',
+  +   'id-15',
+  +   'id-16',
+  +   'id-17',
+  +   'id-18',
+  +   'id-19',
+  -   'id-23',
+  -   'id-22',
+  -   'id-21',
+      'id-20',
+  -   'id-19',
+  -   'id-18',
+  -   'id-17',
+  -   'id-16',
+  -   'id-15',
+  -   'id-14',
+  -   'id-13',
+  -   'id-12',
+  -   'id-11',
+  -   'id-10',
+  -   'id-9',
+  -   'id-8',
+  -   'id-7',
+  -   'id-6',
+  -   'id-5',
+  -   'id-4'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/content-list-cards.test.mjs:57:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [
+      'id-1',  'id-2',  'id-3',
+      'id-4',  'id-5',  'id-6',
+      'id-7',  'id-8',  'id-9',
+      'id-10', 'id-11', 'id-12',
+      'id-13', 'id-14', 'id-15',
+      'id-16', 'id-17', 'id-18',
+      'id-19', 'id-20'
+    ],
+    expected: [
+      'id-23', 'id-22', 'id-21',
+      'id-20', 'id-19', 'id-18',
+      'id-17', 'id-16', 'id-15',
+      'id-14', 'id-13', 'id-12',
+      'id-11', 'id-10', 'id-9',
+      'id-8',  'id-7',  'id-6',
+      'id-5',  'id-4'
+    ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/content-list-cards.test.mjs:62:1
+✖ collections use the same descending numeric name order (4.905667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'group-1',
+  +   'group-2',
+      'group-10',
+  -   'group-2',
+  -   'group-1'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/content-list-cards.test.mjs:65:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'group-1', 'group-2', 'group-10' ],
+    expected: [ 'group-10', 'group-2', 'group-1' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

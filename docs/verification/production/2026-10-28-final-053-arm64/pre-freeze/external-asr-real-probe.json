@@ -1,0 +1,35 @@
+{
+  "candidate": {
+    "id": "42ce1232ccd540ad333209dbe47a4ea05b5bfcbab74f632a1e82151ea396843c",
+    "executable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python3",
+    "modelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit"
+  },
+  "result": {
+    "candidate": {
+      "id": "42ce1232ccd540ad333209dbe47a4ea05b5bfcbab74f632a1e82151ea396843c",
+      "executable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python3",
+      "modelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+      "module": "mlx_audio"
+    },
+    "status": "ready",
+    "reason": "mlx_audio 已通过真实短音频识别；未验证 MP4 解码（需要此 Python 的 av 依赖）；未验证真实时间码。",
+    "capabilities": {
+      "text": true,
+      "timestamps": false,
+      "mp4Decode": false
+    },
+    "frozen": {
+      "id": "42ce1232ccd540ad333209dbe47a4ea05b5bfcbab74f632a1e82151ea396843c",
+      "executable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python3",
+      "modelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+      "module": "mlx_audio",
+      "identity": "f403b624bffd9d18ce6fe6b6df28c04fe4c660b4451d0d4fc96de608f7527b61"
+    },
+    "sampleText": "你好，语音测试。",
+    "checkedAt": "2026-10-28T07:59:29.034Z"
+  },
+  "realMs": 6224,
+  "cachedMs": 2,
+  "cachedReady": true,
+  "scope": "isolated temp evidence; existing interpreter/model read-only; fixed offline Python socket guard"
+}

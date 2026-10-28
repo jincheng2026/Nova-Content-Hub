@@ -1,0 +1,126 @@
+[
+  {
+    "viewport": [
+      1280,
+      860
+    ],
+    "overflow": "visible",
+    "borderRadius": "24px",
+    "point": {
+      "x": 213,
+      "y": 832
+    },
+    "cornerTarget": "production-dialog-footer",
+    "bodyScrollable": true,
+    "bodyReachedEnd": true,
+    "footerWithinViewport": true,
+    "footerFocused": true,
+    "popupEscapesClip": true,
+    "dialogRect": {
+      "x": 210,
+      "y": 24,
+      "width": 860,
+      "height": 812
+    },
+    "cornerRGBA": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "state": "before"
+  },
+  {
+    "viewport": [
+      1280,
+      860
+    ],
+    "overflow": "hidden",
+    "borderRadius": "24px",
+    "point": {
+      "x": 213,
+      "y": 832
+    },
+    "cornerTarget": "production-dialog production-record-dialog",
+    "bodyScrollable": true,
+    "bodyReachedEnd": true,
+    "footerWithinViewport": true,
+    "footerFocused": true,
+    "popupEscapesClip": true,
+    "dialogRect": {
+      "x": 210,
+      "y": 24,
+      "width": 860,
+      "height": 812
+    },
+    "cornerRGBA": [
+      143,
+      143,
+      145,
+      255
+    ],
+    "state": "after"
+  },
+  {
+    "viewport": [
+      960,
+      680
+    ],
+    "overflow": "visible",
+    "borderRadius": "24px",
+    "point": {
+      "x": 53,
+      "y": 652
+    },
+    "cornerTarget": "production-dialog-footer",
+    "bodyScrollable": true,
+    "bodyReachedEnd": true,
+    "footerWithinViewport": true,
+    "footerFocused": true,
+    "popupEscapesClip": true,
+    "dialogRect": {
+      "x": 50,
+      "y": 24,
+      "width": 860,
+      "height": 632
+    },
+    "cornerRGBA": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "state": "before"
+  },
+  {
+    "viewport": [
+      960,
+      680
+    ],
+    "overflow": "hidden",
+    "borderRadius": "24px",
+    "point": {
+      "x": 53,
+      "y": 652
+    },
+    "cornerTarget": "production-dialog production-record-dialog",
+    "bodyScrollable": true,
+    "bodyReachedEnd": true,
+    "footerWithinViewport": true,
+    "footerFocused": true,
+    "popupEscapesClip": true,
+    "dialogRect": {
+      "x": 50,
+      "y": 24,
+      "width": 860,
+      "height": 632
+    },
+    "cornerRGBA": [
+      143,
+      143,
+      145,
+      255
+    ],
+    "state": "after"
+  }
+]

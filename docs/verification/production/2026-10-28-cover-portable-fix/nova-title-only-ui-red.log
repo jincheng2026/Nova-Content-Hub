@@ -1,0 +1,43 @@
+(node:32788) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cover preparation flushes author edits before reading original packaging and submits identity instead of caller text (43.5555ms)
+✔ changed or unavailable original sources block without legacy packaging fallback (28.106166ms)
+✔ source input rejects caller cover text and arbitrary paths while legacy inputs remain compatible (0.637667ms)
+✔ a failed author flush prevents the packaging read and cannot prepare a request (0.628958ms)
+✔ original packaging renders full source text as read-only fields and shows explicit candidate selection (5.513458ms)
+✔ unavailable packaging renders an actionable error instead of any editable title or legacy text (0.3155ms)
+✔ cover-only topic context is visible as reference and never labelled as an existing manuscript (0.29025ms)
+✔ legacy creation pages show the exact manuscript and keep long content collapsible (0.193375ms)
+✔ persisted cover fingerprints accept a bounded source identity and reject arbitrary paths (0.491583ms)
+✖ an empty saved draft is labelled title-only without claiming a manuscript exists (0.630833ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 368.749166
+
+✖ failing tests:
+
+test at workbench/test/cover-original-packaging.test.mjs:59:1
+✖ an empty saved draft is labelled title-only without claiming a manuscript exists (0.630833ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /尚未写正文/. Input:
+  
+  '<details class="cover-body-details"><summary>已保存正文 · 0 字</summary><p style="white-space:pre-wrap;overflow-wrap:anywhere">正文为空</p></details>'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/cover-original-packaging.test.mjs:61:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '<details class="cover-body-details"><summary>已保存正文 · 0 字</summary><p style="white-space:pre-wrap;overflow-wrap:anywhere">正文为空</p></details>',
+    expected: /尚未写正文/,
+    operator: 'match',
+    diff: 'simple'
+  }

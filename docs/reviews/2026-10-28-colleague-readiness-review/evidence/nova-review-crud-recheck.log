@@ -1,0 +1,22 @@
+{ case: 'F1', remainingDocuments: 0, contentTrash: 0, receiptDirs: 1 }
+{
+  case: 'F2',
+  first: 'CONFLICT',
+  discardConflictFlag: false,
+  hashRefreshed: false,
+  second: 'CONFLICT',
+  keptInput: '本人编辑'
+}
+{
+  case: 'F3',
+  reportFound: true,
+  pageIdentity: null,
+  links: [
+    {
+      href: 'data.csv',
+      target: null,
+      message: '此报告引用未提供，或原注册页面已变化；请通过报告目录核查。'
+    }
+  ],
+  fingerprint: '6c58f461ac43d8119c2235bf6dbefdeb1e4004f02bcb33bf4d2619985ded42cb'
+}

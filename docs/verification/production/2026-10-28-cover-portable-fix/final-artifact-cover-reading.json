@@ -1,0 +1,29 @@
+{
+  "version": "0.5.3",
+  "frozenSource": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-cEgLKV/mac-arm64/自媒体工作台.app",
+  "scope": "Read-only frozen final packaged code against current explicit application binding; no generation and no source writes",
+  "rows": [
+    {
+      "work": "T029",
+      "kind": "legacy",
+      "context": "manuscript",
+      "issues": [],
+      "scriptPresent": true
+    },
+    {
+      "work": "T001",
+      "kind": "legacy",
+      "context": "topic",
+      "issues": [],
+      "scriptPresent": false
+    },
+    {
+      "work": "T051",
+      "kind": "legacy",
+      "context": "title-only",
+      "issues": [],
+      "scriptPresent": false
+    }
+  ]
+}

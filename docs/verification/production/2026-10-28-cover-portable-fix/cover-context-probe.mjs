@@ -1,0 +1,28 @@
+// Real Chromium rendering of synthetic components: no production data, IPC or installed application.
+import {build} from '/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/vite/dist/node/index.js';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+import os from 'node:os';
+import path from 'node:path';
+import {spawn} from 'node:child_process';
+const repo='/Users/mac/code/dashboard/Nova-Content-Hub', out=path.dirname(new URL(import.meta.url).pathname);
+const temp=await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(),'nova-cover-context-')));
+const entry=path.join(repo,'workbench/cover-context-probe.html'), jsx=path.join(repo,'workbench/cover-context-probe.tsx');
+try {
+await fs.writeFile(entry,'<div id="root"></div><script type="module" src="./cover-context-probe.tsx"></script>');
+await fs.writeFile(jsx,`import React from 'react';import {createRoot} from 'react-dom/client';import {CoverPanel} from './src/renderer/covers';import './src/renderer/style.css';
+const kind=new URLSearchParams(location.search).get('kind')||'topic';
+const content={id:'synthetic-content',title:'只按真实已保存标题制作封面',body:kind==='manuscript'?'已完成的正文内容。完整显示并核对。':'',editToken:'synthetic-token',deletedAt:null};
+const context=kind==='topic'?{kind,text:'这是已保存选题参考，不是已完成正文。'}:kind==='manuscript'?{kind,text:'已完成的正文内容。完整显示并核对。'}:{kind:'title-only'};
+const packaging={kind:'legacy',contentId:content.id,context,script:kind==='manuscript'?{text:content.body}:null};
+const sample='data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="300" height="400"><rect width="300" height="400" fill="#e8f1fc"/><text x="30" y="150" font-size="24">合成模板</text></svg>');
+const assets={templates:[{id:'synthetic-template',version:1,name:'合成验收模板',description:'仅用于组件渲染验收',builtin:true,accepted:true,aiTested:true,studyComplete:true,samples:[{assetHash:'a'.repeat(64),url:sample,width:300,height:400}]}],photos:[]};
+const cover={content,jobs:[],candidates:[],selectedCandidateId:null};window.mockCalls=[];window.contentHub=new Proxy({},{get:(_,method)=>async input=>{window.mockCalls.push({method,input});if(method==='readCoverDesigns')return {ok:true,value:[]};if(method==='readCoverPackaging')return {ok:true,value:packaging};if(method==='readProductionCreation')return {ok:true,value:{content,creation:{packaging:{coverTexts:[],selectedCoverTextId:null}}}};if(method==='generateCover')return {ok:true,value:{...cover,launchRequested:false}};throw Error('Unexpected synthetic IPC '+String(method));}});
+createRoot(document.getElementById('root')).render(<CoverPanel status={{currentName:'合成验收库',assistant:'codex'}} content={content} dirty={false} busy={false} blocked={false} refreshToken={0} startOpenKey={1} readAutomatically={async()=>({assets,cover})} run={async action=>action()} onContent={()=>{}}/>);`);
+await build({configFile:false,root:path.join(repo,'workbench'),base:'./',oxc:{jsx:{runtime:'automatic'}},build:{outDir:path.join(temp,'dist'),emptyOutDir:true,modulePreload:false,rollupOptions:{input:entry}}});
+const {chromium}=await import('/Users/mac/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
+const http=await import('node:http');const server=http.createServer(async(req,res)=>{try{const file=path.join(temp,'dist',new URL(req.url,'http://localhost').pathname);res.setHeader('Content-Type',file.endsWith('.js')?'text/javascript':file.endsWith('.css')?'text/css':'text/html');res.end(await fs.readFile(file))}catch{res.statusCode=404;res.end()}});await new Promise(r=>server.listen(0,'127.0.0.1',r));
+const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});const results=[];
+try{for(const kind of ['topic','manuscript','title-only'])for(const [width,height] of [[1280,860],[960,680]]){const page=await browser.newPage({viewport:{width,height}});page.on('pageerror',e=>console.error(e));await page.goto('http://127.0.0.1:'+server.address().port+'/cover-context-probe.html?kind='+kind);await page.locator('#generate-cover').waitFor();await page.waitForFunction(()=>!document.querySelector('#generate-cover').disabled);await page.waitForTimeout(200);if(kind!=='title-only')await page.locator('.cover-body-details summary').click();
+const result=await page.evaluate(kind=>{const d=document.querySelector('.cover-create-dialog'),b=document.querySelector('#generate-cover'),r=b.getBoundingClientRect();return {kind,viewport:[innerWidth,innerHeight],text:d.innerText,enabled:!b.disabled,buttonRect:{x:r.x,y:r.y,width:r.width,height:r.height},buttonWithinViewport:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight}},kind);assert.ok(result.enabled);assert.ok(result.buttonWithinViewport);if(kind==='topic')assert.ok(result.text.includes('选题内容仅作参考'));if(kind==='title-only')assert.ok(result.text.includes('尚未写正文'));if(kind==='manuscript')assert.ok(result.text.includes('已保存正文'));await page.screenshot({path:path.join(out,'cover-context-'+kind+'-'+width+'.png')});await page.locator('#generate-cover').click();await page.waitForFunction(()=>window.mockCalls.some(c=>c.method==='generateCover'));result.calls=await page.evaluate(()=>window.mockCalls);results.push(result);await page.close();}await fs.writeFile(path.join(out,'cover-context-results.json'),JSON.stringify(results,null,2));console.log('PASS: six CoverPanel context renders and synthetic generate IPC calls');}finally{await browser.close();server.close()}
+}finally{await fs.rm(entry,{force:true});await fs.rm(jsx,{force:true});await fs.rm(temp,{recursive:true,force:true})}

@@ -1,0 +1,15 @@
+✔ kepu build recovers same frozen request after EIO at 叙事与框架.md (3800.8105ms)
+✔ kepu build recovers same frozen request after EIO at 后台准确说法.md (3840.736584ms)
+✔ kepu build recovers same frozen request after EIO at 创作过程.json (3979.760375ms)
+✔ kepu pending build refuses changed source (3989.27575ms)
+✔ kepu pending build refuses changed confirmation (3807.189292ms)
+✔ kepu pending build refuses changed companion (3730.838916ms)
+✔ kepu pending build refuses changed artifact (3700.386042ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27014.717875

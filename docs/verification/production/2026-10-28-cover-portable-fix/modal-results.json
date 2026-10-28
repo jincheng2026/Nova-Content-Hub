@@ -1,0 +1,150 @@
+[
+  {
+    "kind": "production",
+    "viewport": [
+      1280,
+      860
+    ],
+    "radius": "24px",
+    "overflow": "hidden",
+    "rect": {
+      "x": 280,
+      "y": 24,
+      "width": 720,
+      "height": 812
+    },
+    "scroll": {
+      "client": 680,
+      "total": 2957,
+      "top": 2277
+    }
+  },
+  {
+    "kind": "popup",
+    "width": 1280,
+    "exists": true,
+    "hostPosition": "fixed",
+    "popupRect": {
+      "x": 307,
+      "y": 460,
+      "width": 666,
+      "height": 252
+    },
+    "bottomOutside": true,
+    "lastHit": "semi-select-option"
+  },
+  {
+    "kind": "production",
+    "viewport": [
+      960,
+      680
+    ],
+    "radius": "24px",
+    "overflow": "hidden",
+    "rect": {
+      "x": 120,
+      "y": 24,
+      "width": 720,
+      "height": 632
+    },
+    "scroll": {
+      "client": 500,
+      "total": 2957,
+      "top": 2457
+    }
+  },
+  {
+    "kind": "popup",
+    "width": 960,
+    "exists": true,
+    "hostPosition": "fixed",
+    "popupRect": {
+      "x": 147,
+      "y": 370,
+      "width": 666,
+      "height": 252
+    },
+    "bottomOutside": true,
+    "lastHit": "semi-select-option"
+  },
+  {
+    "kind": "management",
+    "viewport": [
+      1280,
+      860
+    ],
+    "radius": "24px",
+    "overflow": "auto",
+    "rect": {
+      "x": 260,
+      "y": 32,
+      "width": 760,
+      "height": 796
+    },
+    "scroll": {
+      "client": 794,
+      "total": 2530,
+      "top": 1736
+    }
+  },
+  {
+    "kind": "management",
+    "viewport": [
+      960,
+      680
+    ],
+    "radius": "24px",
+    "overflow": "auto",
+    "rect": {
+      "x": 100,
+      "y": 32,
+      "width": 760,
+      "height": 616
+    },
+    "scroll": {
+      "client": 614,
+      "total": 2530,
+      "top": 1916
+    }
+  },
+  {
+    "kind": "semi",
+    "viewport": [
+      1280,
+      860
+    ],
+    "radius": "24px",
+    "overflow": "hidden",
+    "rect": {
+      "x": 416,
+      "y": 80,
+      "width": 448,
+      "height": 176
+    },
+    "scroll": {
+      "client": 174,
+      "total": 174,
+      "top": 0
+    }
+  },
+  {
+    "kind": "semi",
+    "viewport": [
+      960,
+      680
+    ],
+    "radius": "24px",
+    "overflow": "hidden",
+    "rect": {
+      "x": 256,
+      "y": 80,
+      "width": 448,
+      "height": 176
+    },
+    "scroll": {
+      "client": 174,
+      "total": 174,
+      "top": 0
+    }
+  }
+]

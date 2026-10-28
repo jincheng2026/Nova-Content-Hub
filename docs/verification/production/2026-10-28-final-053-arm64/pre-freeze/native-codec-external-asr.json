@@ -1,0 +1,85 @@
+{
+  "at": "2026-10-28T08:11:18.900Z",
+  "scope": "Actual independent codec plus existing external MLX; generated Chinese sample only; no author data, credentials, network or model weights copied",
+  "candidate": {
+    "id": "42ce1232ccd540ad333209dbe47a4ea05b5bfcbab74f632a1e82151ea396843c",
+    "executable": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/venv/bin/python3",
+    "modelPath": "/Users/mac/Library/Application Support/NovaIsland/NovaContentHub/local-asr-qwen/models/Qwen3-ASR-1.7B-8bit",
+    "module": "mlx_audio",
+    "identity": "f403b624bffd9d18ce6fe6b6df28c04fe4c660b4451d0d4fc96de608f7527b61"
+  },
+  "result": {
+    "data": {
+      "text": "你好，语音测试。",
+      "segments": [],
+      "timingSource": "none",
+      "mediaDecode": {
+        "decoder": "bundled-pyav",
+        "pyavVersion": "18.1.0",
+        "codec": "aac",
+        "originalSha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+        "decodedSha256": "a6785efa47fc7930fea2d2a63e683cb775ab7d72ecc9e5585980b59489568daf",
+        "sampleRate": 16000,
+        "channels": 1,
+        "samples": 28672,
+        "containerOriginMs": 0,
+        "firstAudioSampleMs": 0,
+        "insertedSilenceSamples": 0,
+        "timeline": "container-relative-presentation-timestamps"
+      }
+    },
+    "service": "asr",
+    "requestsUsed": 0,
+    "collectedAt": "2026-10-28T08:11:18.883Z",
+    "cacheHit": false
+  },
+  "mediaProof": {
+    "version": 1,
+    "engine": "pyav",
+    "decoder": "bundled-pyav",
+    "pyavVersion": "18.1.0",
+    "originalSha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+    "bytes": 18877,
+    "extension": ".mp4",
+    "container": {
+      "format": "mov",
+      "durationSeconds": 1.8
+    },
+    "video": {
+      "streamIndex": 0,
+      "codec": "h264",
+      "width": 160,
+      "height": 120,
+      "decodedFrames": 1
+    },
+    "audio": {
+      "streamIndex": 1,
+      "codec": "aac",
+      "sampleRate": 16000,
+      "channels": 1,
+      "decodedSamples": 1024
+    },
+    "cover": {
+      "sha256": "1c768b7d11d0ee5d7d7ee0ffe413dbe0a247e0ee8e5174686aba418130902a83",
+      "mediaType": "image/png",
+      "width": 160,
+      "height": 120,
+      "bytes": 428,
+      "captureTimestampSeconds": 0
+    },
+    "checks": {
+      "header": "passed",
+      "sha256": "passed",
+      "containerProbe": "passed",
+      "videoDecode": "passed",
+      "audioDecode": "passed",
+      "coverScreenshot": "passed"
+    },
+    "toolAdaptation": {
+      "file": "native-header-and-sha256",
+      "ffprobe": "pyav-container-and-stream-probe",
+      "ffmpegDecode": "pyav-short-video-and-audio-decode",
+      "screenshot": "pyav-decoded-frame-to-png"
+    }
+  }
+}

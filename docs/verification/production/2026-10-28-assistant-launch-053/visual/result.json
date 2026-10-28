@@ -1,0 +1,99 @@
+{
+  "rules": [
+    "Surface-03",
+    "Controls-01",
+    "Reading-02",
+    "Acceptance-01",
+    "Acceptance-02"
+  ],
+  "views": [
+    {
+      "width": 1280,
+      "height": 860,
+      "radius": "24px",
+      "overflow": "hidden",
+      "scrollable": true,
+      "atEnd": true,
+      "footerVisible": true,
+      "focused": "close-detail",
+      "corners": [
+        {
+          "x": 282,
+          "y": 26,
+          "hitFooter": false
+        },
+        {
+          "x": 998,
+          "y": 26,
+          "hitFooter": false
+        },
+        {
+          "x": 282,
+          "y": 802,
+          "hitFooter": false
+        },
+        {
+          "x": 998,
+          "y": 802,
+          "hitFooter": false
+        }
+      ]
+    },
+    {
+      "width": 960,
+      "height": 680,
+      "radius": "24px",
+      "overflow": "hidden",
+      "scrollable": true,
+      "atEnd": true,
+      "footerVisible": true,
+      "focused": "close-detail",
+      "corners": [
+        {
+          "x": 122,
+          "y": 26,
+          "hitFooter": false
+        },
+        {
+          "x": 838,
+          "y": 26,
+          "hitFooter": false
+        },
+        {
+          "x": 122,
+          "y": 622,
+          "hitFooter": false
+        },
+        {
+          "x": 838,
+          "y": 622,
+          "hitFooter": false
+        }
+      ]
+    }
+  ],
+  "cardOrder": [
+    "c47",
+    "c46",
+    "c45",
+    "c44",
+    "c43",
+    "c42",
+    "c41",
+    "c40",
+    "c39",
+    "c38",
+    "c37",
+    "c36",
+    "c35",
+    "c34",
+    "c33",
+    "c32",
+    "c31",
+    "c30",
+    "c29",
+    "c28"
+  ],
+  "dropdown": true,
+  "passed": true
+}

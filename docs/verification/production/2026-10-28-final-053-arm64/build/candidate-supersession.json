@@ -1,0 +1,5 @@
+{
+  "supersededSource": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "supersededArtifacts": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览-兼容修复前-3c73e80",
+  "reason": "Legacy schema1/2 retry/host-change compatibility regression confirmed with upgraded inspector boundary. New frozen build pending."
+}

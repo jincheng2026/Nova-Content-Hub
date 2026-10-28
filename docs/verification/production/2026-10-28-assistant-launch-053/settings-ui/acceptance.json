@@ -1,0 +1,15 @@
+{
+  "environment": "macOS arm64, Electron renderer with synthetic IPC fixture",
+  "source": "workbench/test/assistant-settings-ui-probe.mjs",
+  "rules": {
+    "Controls-01": "Existing Semi action buttons remain reachable; keyboard Tab/Enter verified",
+    "Surface-03": "Existing settings dialog retains focus, Esc and scroll behavior",
+    "Reading-02": "Complete shared version mismatch and recovery instructions visibly wrap without clipping; viewport checks 1280x860, 960x680, 390x844",
+    "Acceptance-01": "Native/renderer typecheck and Electron settings probe passed",
+    "Acceptance-02": "Synthetic IPC renderer screenshots; version mismatch screenshot manually inspected; final installed application verification remains separate"
+  },
+  "limitations": [
+    "No Windows or Intel Mac native verification in this agent",
+    "No actual assistant task sent or paid service invoked"
+  ]
+}

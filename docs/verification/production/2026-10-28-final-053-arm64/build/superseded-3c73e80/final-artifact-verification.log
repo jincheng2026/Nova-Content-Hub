@@ -1,0 +1,47 @@
+{
+  "frozenSource": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app",
+  "codec": {
+    "root": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app/Contents/Resources/media-codec/darwin-arm64",
+    "identity": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+    "minimumMacOS": "14.0.0",
+    "validation": "offline-codec-self-test",
+    "manifestEntries": 694,
+    "payloadBytes": 73639571,
+    "fullTreeBytes": 73759801
+  },
+  "plugin": {
+    "zip": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+    "manifest": {
+      "bytes": 404616,
+      "sha256": "08449fade6f02ec57da093b9998b4ee499abb8605d55e4361fb9015756291017"
+    },
+    "entries": 2070,
+    "runtimeEntries": 2062,
+    "stageAppAndZipSnapshotsExactMatch": true,
+    "AppleDoubleEntries": []
+  },
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+      "bytes": 330740733,
+      "sha256": "d97874093ed230be732c9ae114ffb9b6923f4124fa3a9083ad1261e4db2d968d"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 341680,
+      "sha256": "8210b4a928035c2099f66a8451a01d22cb53844af01390245c06069ec1c2d4c4"
+    },
+    {
+      "name": "Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035090,
+      "sha256": "516d1342bb4dc48e9afdb6e056ce023a6de2f5f1d20160bce064365acaedb506"
+    }
+  ],
+  "pending": [
+    "Root final DMG artifact and Finder UI acceptance",
+    "Root installation and same-version host-plugin validation",
+    "Intel Mac and Windows native builds/install/run acceptance",
+    "Remaining same-chat content journey described in 0.5.3 closeout"
+  ]
+}

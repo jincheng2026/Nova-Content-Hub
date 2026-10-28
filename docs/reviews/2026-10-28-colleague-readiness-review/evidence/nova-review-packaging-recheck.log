@@ -1,0 +1,13 @@
+✔ post-packaging validation rejects Node, dependency, inventory and catalog mutations (19323.411166ms)
+✔ source inventory and runtime are validated before their tree can be sealed (9000.661417ms)
+✔ same-commit, lockfile, mode and toolchain pairing cannot be bypassed by the other artifact (6034.366291ms)
+✔ payload mutation and escaping or absolute symlinks fail closed (9681.88175ms)
+✔ foreign Node and sharp binaries are rejected even when manifests are resealed consistently (5888.483625ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 28661.346292

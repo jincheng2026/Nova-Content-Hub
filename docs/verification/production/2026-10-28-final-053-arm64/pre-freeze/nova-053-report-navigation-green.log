@@ -1,0 +1,19 @@
+✔ registered original relative links produce fixed same-source report/page targets; raw and prepared hashes differ safely (1046.829958ms)
+✔ report navigation issues only validated target capabilities and preserves wrapper navigation, anchors, sources and sandbox (2021.443334ms)
+✔ deleted, modified, stale, unregistered, cross-source and ambiguous pages cannot enter the capability whitelist (1251.15375ms)
+✔ reference resolution rejects root escapes, encoded separators, repeated encoding, protocols and queries (0.424334ms)
+✔ trusted frame and parent bridges preserve anchors and reject wrong frame, origin, nonce or page before host navigation (1619.829709ms)
+✔ provided CSV attachments use fixed navigation identities and escaped preview plus byte-exact download (1941.019166ms)
+✔ a standalone original HTML page resolves MD/CSV/JSON only within one already registered internal source (2227.658042ms)
+✔ attachment maps reject fake hrefs, non-text bytes, missing/catalog escapes and changed source authority (3777.741625ms)
+✔ an explicitly remapped hidden or framework source root cannot expose report attachments (2050.31725ms)
+✔ registered readonly report tabs remain readable without attempting to persist position (2112.86475ms)
+✔ explicitly linked readonly report groups navigate registered pages and CSV appendices within that bound source (4381.091667ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22628.557542

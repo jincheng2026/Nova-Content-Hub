@@ -1,0 +1,40 @@
+✔ first generation retains original regions and safely roundtrips complete fields (43.644292ms)
+✔ regeneration preserves identity, every author field, unknown extensions and AI reply (3.77625ms)
+✔ first build and regeneration use vault journal and preserve disk author edits (1622.130291ms)
+✔ generated standalone page cannot probe or save to an old local service (7.151084ms)
+✔ reference analysis validates source quotes and skeleton family membership (0.28925ms)
+✔ deleting an omitted old item requires a persisted author decision bound to revision and IDs (1529.813459ms)
+✔ strict edit group is atomic, preserves unknown extensions and author ownership (19.437875ms)
+✔ kit saves independent groups while refusing every member of a conflicting group (119.098875ms)
+✔ synthesis has three explicit depths and bounded question; never accepts a social route (1.418042ms)
+✔ synthesis renders readable MD/HTML/References and a matching source ledger with escaped user input (14.984125ms)
+✔ review preserves original byte for byte, nine reason identities, four verdicts, and precise insert/delete suggestions (15.648375ms)
+✔ kepu candidate rejects zero segments, invented generic versions, absent speech/reference/checks, and missing framework pins (1.139084ms)
+✔ cover design freezes complete spec and structural anchor, never accepts source paths or author identity assets (0.424042ms)
+✔ cover design accepts the selected standard or custom integer ratio rather than forcing the historical 3:4 default (0.257375ms)
+✔ every current framework segment stays visible with its own confirmation, reopen and rejection controls (7.960625ms)
+✔ the explicit new creation entry opens the existing writing dialog without launching a task (6.611167ms)
+✔ existing stage menus stay closed until the author chooses a method (0.986542ms)
+✔ four original methods have distinct explicit entries; synthesis shows its own depth and question boundaries without starting tools (5.2905ms)
+✔ stage scope rejects fake author input, unrelated source and short URL guessing (4.127375ms)
+✔ author-first hides AI output until trusted author analysis; confirms exact versions and rejects after cancellation (3494.453167ms)
+✔ ordinary writing builds original HTML from existing materials without tutorial checkpoints, and retains author protections (2916.546209ms)
+✔ explicit tutorial requires exact narrative and key-segment confirmations before a complete HTML build (5670.586042ms)
+✔ ordinary writing honors an explicitly started narrative and refuses its stale confirmation after the version changes (4319.969625ms)
+✔ desktop start freezes explicit research scope, sample limit and budget; omitted scope is manual with zero tools (5589.788292ms)
+✔ kepu enforces narrative/framework/each author segment/readthrough before original HTML, with exact replay and reopen gates (9700.333958ms)
+✔ review creates one editable supporting page while preserving exact manuscript and current source; existing page gets CAS suggestions (2248.303583ms)
+✔ synthesis works without T and freezes readable report/source ledger under the claimed attempt; cancellation invalidates old claim (1408.924166ms)
+✔ cover design remains a writing candidate until exact author confirmation; waits resume and cancelled/retried identities stay invalid (2199.189083ms)
+✔ review-page generic suggest cannot bypass author confirmation or nine reason types (2439.998417ms)
+✔ registered current jc-doc uses its own writable protocol for ordinary revision suggestions (3858.241375ms)
+✔ existing review page can replay the same acknowledged mutation after response loss without duplicating suggestions (2918.320916ms)
+✔ review-page never guesses a historical HTML when no current jc-doc or fixed review entry is selected (3200.052209ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 50585.611667

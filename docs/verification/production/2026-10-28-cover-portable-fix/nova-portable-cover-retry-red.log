@@ -1,0 +1,23 @@
+✖ codex: a colleague's manuscript cover survives reopen, retry and switching assistant (8713.893333ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9039.634125
+
+✖ failing tests:
+
+test at workbench/test/cover-portable-context.test.mjs:31:82
+✖ codex: a colleague's manuscript cover survives reopen, retry and switching assistant (8713.893333ms)
+  Error: 正文或标题已改变，请使用当前内容重新准备封面。
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/shared/validation.ts:19:25)
+      at Covers.newAttempt (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/covers.mts:176:254)
+      at async DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:399:20)
+      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/cover-portable-context.test.mjs:39:14)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'STALE_INPUT'
+  }

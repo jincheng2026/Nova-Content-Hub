@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-28T08:11:26.450Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.2",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.2:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "verified": true
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "verified": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "verified": true
+    }
+  ]
+}

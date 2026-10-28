@@ -1,0 +1,13 @@
+✔ ordinary writing builds original HTML from existing materials without tutorial checkpoints, and retains author protections (2855.095208ms)
+✔ explicit tutorial requires exact narrative and key-segment confirmations before a complete HTML build (8392.761708ms)
+✔ ordinary writing honors an explicitly started narrative and refuses its stale confirmation after the version changes (5061.431042ms)
+✔ kepu enforces narrative/framework/each author segment/readthrough before original HTML, with exact replay and reopen gates (8087.548167ms)
+✔ review creates one editable supporting page while preserving exact manuscript and current source; existing page gets CAS suggestions (2734.742291ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27286.810542

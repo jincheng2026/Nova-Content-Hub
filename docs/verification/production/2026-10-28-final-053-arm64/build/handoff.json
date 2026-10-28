@@ -1,0 +1,99 @@
+{
+  "frozenSource": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "parentSource": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-cEgLKV/mac-arm64/自媒体工作台.app",
+  "desktop": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览",
+  "completedAt": "2026-10-28T08:55:47.184Z",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "version": "0.5.3",
+  "AUTH_MODE": "disabled",
+  "experimental": true,
+  "productionReady": false,
+  "acceptance": {
+    "built": true,
+    "staticArtifactChecks": true,
+    "installed": false,
+    "appRun": false,
+    "FinderSystemUI": false,
+    "hostPluginsUpdated": false,
+    "codecNativeSelfTest": true
+  },
+  "signing": {
+    "type": "ad-hoc",
+    "deepStrictVerify": true,
+    "notarized": false,
+    "TeamIdentifier": null
+  },
+  "minimumMacOS": {
+    "appDeclared": "13.0",
+    "codecRequired": "14.0.0",
+    "note": "Independent media codec requires macOS 14; app metadata remains frozen at 13.0. No macOS 13 codec validation is claimed."
+  },
+  "artifacts": [
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+      "bytes": 330741464,
+      "sha256": "dd483940f7340690ef256c166b55f6c128e9e4dd33a48d282992bc2bef2daf99",
+      "modified": "2026-10-28T08:52:46.011Z"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 341579,
+      "sha256": "02f9723bbfcefe44046caffe60d0aa8f39c47dff1773cce30ec74a845cf399b4",
+      "modified": "2026-10-28T08:53:02.385Z"
+    },
+    {
+      "name": "Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035090,
+      "sha256": "fa4bb906f68a3fbd72f9be2b4f9e712431fb47d675984eabb8b92f4ba78f4d1f",
+      "modified": "2026-10-28T08:53:45.793Z"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 350,
+      "sha256": "1e7f87a569896d2ab4f626c6b6cceb95532f8c73e0b5df3c240f527437c68ead",
+      "modified": "2026-10-28T08:54:34.797Z"
+    },
+    {
+      "name": "临时候选-待最终产物验收.txt",
+      "bytes": 333,
+      "sha256": "67387eeaf7c856563e0218c3bdd255db2b8f2b21391900355af8efc65e01527d",
+      "modified": "2026-10-28T08:51:45.802Z"
+    }
+  ],
+  "regression": {
+    "newDedicated": 8,
+    "existingCoverTextTargeted": 2,
+    "combinedCoversAndPortable": 48,
+    "failures": 0,
+    "skipped": 0,
+    "typecheck": "native and renderer exit0"
+  },
+  "sources": {
+    "patch": "legacy-upgrade-fix.patch",
+    "red": "legacy-upgrade-RED.log",
+    "green": "legacy-upgrade-GREEN.log",
+    "regression": "cover-upgrade-regression.log",
+    "build": "dist-frozen.log",
+    "artifactVerification": "final-artifact-verification.json",
+    "zip": "final-zip-verification.json",
+    "appTree": "app-tree-snapshot.json",
+    "codecManifest": "media-codec-manifest.json",
+    "pluginManifest": "plugin-package-files.json"
+  },
+  "oldCandidate": {
+    "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览-兼容修复前-3c73e80",
+    "evidence": "superseded-3c73e80",
+    "superseded": true
+  },
+  "retainedWorktree": true,
+  "pendingOwner": "Root",
+  "pending": [
+    "Root final DMG artifact and Finder UI acceptance",
+    "Root installation and same-version host-plugin validation",
+    "Intel Mac and Windows native builds/install/run acceptance",
+    "Remaining same-chat content journey described in 0.5.3 closeout"
+  ]
+}

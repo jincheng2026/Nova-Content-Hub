@@ -1,0 +1,20 @@
+(node:32953) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cover preparation flushes author edits before reading original packaging and submits identity instead of caller text (30.792333ms)
+✔ changed or unavailable original sources block without legacy packaging fallback (14.968542ms)
+✔ source input rejects caller cover text and arbitrary paths while legacy inputs remain compatible (0.641708ms)
+✔ a failed author flush prevents the packaging read and cannot prepare a request (0.818791ms)
+✔ original packaging renders full source text as read-only fields and shows explicit candidate selection (5.249ms)
+✔ unavailable packaging renders an actionable error instead of any editable title or legacy text (0.21825ms)
+✔ cover-only topic context is visible as reference and never labelled as an existing manuscript (0.2635ms)
+✔ legacy creation pages show the exact manuscript and keep long content collapsible (0.196541ms)
+✔ persisted cover fingerprints accept a bounded source identity and reject arbitrary paths (0.438166ms)
+✔ an empty saved draft is labelled title-only without claiming a manuscript exists (0.178209ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 232.963958

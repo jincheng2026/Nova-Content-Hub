@@ -1,0 +1,30 @@
+The following is a diff from the previous accessibility tree for Window: "“自媒体工作台”简介" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 0-33, 290-308, 317-376
++317 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise
++	318 滚动区
++		319 图像 Icon
++		320 text Help: 自媒体工作台, Value: 自媒体工作台 639.1 MB 修改时间： 今天 16:51
++		321 滚动区
++			322 文本栏 (disabled) Description: 标签编辑器, Placeholder: 添加标签…
++		323 显示三角形 Value: 1, ID: General
++		324 text 通用： 种类： 应用程序(Apple芯片) 大小： 639,078,498 字节（磁盘上的647.2 MB） 位置： ‎⁨自媒体工作台 0.5.3-arm64⁩ 磁盘映像： /Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg 创建时间： 2026年10月28日 星期三 16:51 修改时间： 2026年10月28日 星期三 16:51 版本： 0.5.3 版权： © 2026 杭州新岛橙灵智能科技有限责任公司
++		325 复选框 (disabled) 已锁定, Value: 0
++		326 显示三角形 Value: 1, ID: MetaData
++		327 text 更多信息： --
++		328 显示三角形 Value: 1, ID: Name
++		329 文本 名称与扩展名：
++		330 文本栏 (disabled) Value: 自媒体工作台.app, ID: Name
++		331 复选框 (disabled) 隐藏扩展名, Value: 1
++		332 显示三角形 Value: 1, ID: Comments
++		333 文本 注释：
++		334 显示三角形 Value: 1, ID: Preview
++		335 文本 预览：
++		336 图像 Description: 预览, ID: QLAXImageAndText_Image
++		337 显示三角形 Value: 0, ID: Privileges
++		338 文本 共享与权限：
++	339 关闭按钮
++	340 缩放按钮
++	341 最小化按钮
++	342 图像 Macintosh HD
++	343 文本 “自媒体工作台”简介
+The focused UI element is 317 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise

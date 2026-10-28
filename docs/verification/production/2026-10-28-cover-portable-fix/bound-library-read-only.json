@@ -1,0 +1,41 @@
+{
+  "scope": "Read-only current binding; no author source repair or writes",
+  "result": [
+    {
+      "label": "topic",
+      "contentId": "e167da52-bf6a-4b87-af21-e1006e59a1fd",
+      "before": {
+        "kind": "unavailable",
+        "issues": [
+          "CURRENT_MANUSCRIPT_UNAVAILABLE"
+        ]
+      },
+      "after": {
+        "kind": "legacy",
+        "issues": [],
+        "contextKind": "topic",
+        "scriptPresent": false,
+        "contextLength": 583
+      }
+    },
+    {
+      "label": "legacy-creation-page",
+      "contentId": "da19e661-8076-4d0a-a5c6-d77f770e014e",
+      "before": {
+        "kind": "jc-doc",
+        "issues": [
+          "MISSING_PACKAGING_SLOT:标题",
+          "MISSING_PACKAGING_SLOT:封面文字",
+          "MISSING_PACKAGING_SLOT:简介"
+        ]
+      },
+      "after": {
+        "kind": "legacy",
+        "issues": [],
+        "contextKind": "manuscript",
+        "scriptPresent": true,
+        "contextLength": 1385
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "input": "# 素材图文\n\n![原图](./images/source.png)\n\n![[封面.png]]\n\n[[关联选题]]\n\n[原视频](https://example.com/video)",
+  "html": "<div class=\"document-markdown\"><h1>素材图文</h1><p><span>原图（图片：./images/source.png）</span></p><p>![[封面.png]]</p><p>[[关联选题]]</p><p><span class=\"document-markdown-link\">原视频（https://example.com/video）</span></p></div>",
+  "imageElements": 0,
+  "anchorElements": 0
+}

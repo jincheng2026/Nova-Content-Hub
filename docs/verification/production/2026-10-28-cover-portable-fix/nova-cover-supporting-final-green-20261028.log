@@ -1,0 +1,41 @@
+✔ source-aware request preserves exact original packaging and manuscript through claim/commit and historical reads (4154.378542ms)
+✔ source edits invalidate inspect/create/claim/new-attempt while stable committed request replay stays immutable (3987.033666ms)
+✔ source edits after asynchronous image decoding reject final commit, and caller text cannot bypass the original source (4475.379125ms)
+✔ inspect fingerprint recovers a lost create response through findCoverRequest with exact original source (3348.2895ms)
+✔ an explicitly current Markdown stays the exact frozen manuscript while packaging comes from a separately selected HTML (4547.305334ms)
+✔ worker handoff uses original packaging freshness and historical context stays readable after source edits (4194.590042ms)
+✔ checksum-matched schema 3 packages reject unknown fields and independently mismatched input hashes (2135.437ms)
+✔ cover-only permits a saved topic context while publication packaging still requires a manuscript (4505.407208ms)
+✔ old creation pages without any publishing slots freeze their exact manuscript for covers (2942.246334ms)
+✔ one existing publishing slot never downgrades to topic or legacy title packaging (2989.92875ms)
+✔ damaged same-work originals and failed explicit selections cannot use the topic cover branch (2578.761041ms)
+✔ topic and old-page cover contexts survive explicit migration and reopening on a different root (11830.306875ms)
+✔ conflicting real manuscript sources block cover compatibility before request creation (1829.787ms)
+✔ an explicitly selected ordinary HTML cannot bypass the invalid packaging selection guard (850.721125ms)
+✔ a saved title can generate a cover with an exact empty manuscript reference without inventing a script (1684.368334ms)
+✔ resolved topics with supporting text and ordinary HTML can make covers without a manuscript (1146.998917ms)
+✔ reads authoritative HTML packaging and ordered current mine without executing HTML or projecting the library (1113.013209ms)
+✔ selecting an older packaging HTML never replaces an explicitly current Markdown manuscript (1196.327ms)
+✔ an explicit Markdown current source requires packaging selection even with multiple dated HTML versions (1342.381375ms)
+✔ current-source conflicts and missing author selections block before any packaging fallback (1414.225958ms)
+✔ only non-Vault and same-work absence of a jc-doc may use legacy (1260.021625ms)
+✔ malformed selected HTML, cross-work IDs and duplicate page IDs never borrow legacy title fields (1289.227166ms)
+✔ selection tokens bind independent manuscript and packaging identities and revisions (1297.331833ms)
+✔ a same-work rejected HTML location cannot silently make the Vault look legacy (1252.055625ms)
+✔ read snapshot reuses a synchronous Vault read scope and leaves source files unchanged (1325.755083ms)
+✔ missing or empty current manuscripts block before legacy instead of using topic text as a script (1273.401417ms)
+✔ explicit selection of an invalid or differently identified jc-doc never becomes legacy (1371.427541ms)
+✔ all snapshot variants carry their requested content identity and reject extra path or root input (1367.433583ms)
+✔ interrupted creation journals block snapshots without replaying or clearing any pending plan (1265.048959ms)
+✔ unmigrated historical pending receipts block without scanning or migrating history (1597.402375ms)
+✔ a resolved ordinary HTML with no jc-doc remains on the legacy cover branch (1561.491375ms)
+✔ explicit migration preserves packaging tokens with unchanged business sources while leaving the source Vault untouched (3705.073041ms)
+✔ portable packaging tokens do not authorize an unregistered copy or a forged Vault descriptor (1119.228084ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 30532.0685

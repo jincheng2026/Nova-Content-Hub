@@ -1,0 +1,82 @@
+✖ codex: schema 1 without coverText retries and switches host after inspector upgrade (987.908833ms)
+✖ workbuddy: schema 1 without coverText retries and switches host after inspector upgrade (994.785167ms)
+✖ codex: schema 2 without coverText retries and switches host after inspector upgrade (945.745458ms)
+✖ workbuddy: schema 2 without coverText retries and switches host after inspector upgrade (1138.984833ms)
+✔ schema 1 preserves title stale guard after inspector upgrade (1181.767292ms)
+✔ schema 1 preserves body stale guard after inspector upgrade (1174.431958ms)
+✔ schema 2 preserves title stale guard after inspector upgrade (1125.423084ms)
+✔ schema 2 preserves body stale guard after inspector upgrade (1047.515375ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 4
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9054.755459
+
+✖ failing tests:
+
+test at workbench/test/cover-legacy-upgrade-retry.test.mjs:48:67
+✖ codex: schema 1 without coverText retries and switches host after inspector upgrade (987.908833ms)
+  Error [LibraryError]: Saved cover context differs from the fixed request
+      at fail (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:50:11)
+      at fresh (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:257:153)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:407:13
+      at locked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:750:21)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:50
+      at withCoverSourceLock (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:1011:134)
+      at sourceLocked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:32)
+      at Object.findCoverRequest (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:404:16)
+      at executeCover (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/cover-worker.mts:128:143)
+      at execute (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/worker.mts:90:38) {
+    code: 'STALE_INPUT'
+  }
+
+test at workbench/test/cover-legacy-upgrade-retry.test.mjs:48:67
+✖ workbuddy: schema 1 without coverText retries and switches host after inspector upgrade (994.785167ms)
+  Error [LibraryError]: Saved cover context differs from the fixed request
+      at fail (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:50:11)
+      at fresh (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:257:153)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:407:13
+      at locked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:750:21)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:50
+      at withCoverSourceLock (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:1011:134)
+      at sourceLocked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:32)
+      at Object.findCoverRequest (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:404:16)
+      at executeCover (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/cover-worker.mts:128:143)
+      at execute (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/worker.mts:90:38) {
+    code: 'STALE_INPUT'
+  }
+
+test at workbench/test/cover-legacy-upgrade-retry.test.mjs:48:67
+✖ codex: schema 2 without coverText retries and switches host after inspector upgrade (945.745458ms)
+  Error [LibraryError]: Saved cover context differs from the fixed request
+      at fail (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:50:11)
+      at fresh (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:257:153)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:407:13
+      at locked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:750:21)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:50
+      at withCoverSourceLock (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:1011:134)
+      at sourceLocked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:32)
+      at Object.findCoverRequest (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:404:16)
+      at executeCover (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/cover-worker.mts:128:143)
+      at execute (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/worker.mts:90:38) {
+    code: 'STALE_INPUT'
+  }
+
+test at workbench/test/cover-legacy-upgrade-retry.test.mjs:48:67
+✖ workbuddy: schema 2 without coverText retries and switches host after inspector upgrade (1138.984833ms)
+  Error [LibraryError]: Saved cover context differs from the fixed request
+      at fail (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:50:11)
+      at fresh (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:257:153)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:407:13
+      at locked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:750:21)
+      at file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:50
+      at withCoverSourceLock (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:1011:134)
+      at sourceLocked (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:102:32)
+      at Object.findCoverRequest (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/plugin-src/src/lib/file-library/cover-jobs.mjs:404:16)
+      at executeCover (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/cover-worker.mts:128:143)
+      at execute (file:///Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/src/main/worker.mts:90:38) {
+    code: 'STALE_INPUT'
+  }

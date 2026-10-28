@@ -1,0 +1,458 @@
+[
+  {
+    "kind": "topic",
+    "viewport": [
+      1280,
+      860
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n\n可直接按已保存标题制作封面。选题内容仅作参考。\n\n已保存选题参考 · 18 字\n\n这是已保存选题参考，不是已完成正文。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 1059,
+      "y": 795,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "kind": "topic",
+    "viewport": [
+      960,
+      680
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n\n可直接按已保存标题制作封面。选题内容仅作参考。\n\n已保存选题参考 · 18 字\n\n这是已保存选题参考，不是已完成正文。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 739,
+      "y": 615,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "kind": "manuscript",
+    "viewport": [
+      1280,
+      860
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n已保存正文 · 17 字\n\n已完成的正文内容。完整显示并核对。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 1059,
+      "y": 795,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "kind": "manuscript",
+    "viewport": [
+      960,
+      680
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n已保存正文 · 17 字\n\n已完成的正文内容。完整显示并核对。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 739,
+      "y": 615,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "kind": "title-only",
+    "viewport": [
+      1280,
+      860
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n\n本篇尚未写正文，可直接按已保存标题制作封面。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 1059,
+      "y": 795,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  },
+  {
+    "kind": "title-only",
+    "viewport": [
+      960,
+      680
+    ],
+    "text": "制作封面\n\n当前助手：Codex\n\n暂时收起\n已确认封面设计\n已确认封面设计\n沿用原生成设置\n\n本篇暂无已确认封面设计，可沿用原生成设置。\n\n模板组\n刷新\n\n已选模板：合成验收模板\n\n全部\n内置\n我的\n整组 1 张\n✓\n合成验收模板\n内置\n查看整组并选择\n共 1 项 · 1–1 项\n每页条数：5\n内容标题 · 已保存\n只按真实已保存标题制作封面\n\n本篇尚未写正文，可直接按已保存标题制作封面。\n\n未选封面文案，本次使用内容标题。\n刷新已采用包装\n封面比例\n封面比例\n3:4\n生成张数\n\n3:4 · 至少768×1024 · PNG原图；实际尺寸以生成结果为准\n\n本人照片\n选择我的本人照片\n这次不放人物\n从本机添加本人照片\n\n已选：合成验收模板 · v1 · 1 张样张\n\n收藏构图参考（可选） · 已选 0 张\n补充要求与资料（可选） · 默认不带资料\n到 Codex 选模型并发送，完成后回来选图。\n去 Codex 生成封面",
+    "enabled": true,
+    "buttonRect": {
+      "x": 739,
+      "y": 615,
+      "width": 180,
+      "height": 32
+    },
+    "buttonWithinViewport": true,
+    "calls": [
+      {
+        "method": "readCoverDesigns",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readCoverPackaging",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "readProductionCreation",
+        "input": {
+          "contentId": "synthetic-content"
+        }
+      },
+      {
+        "method": "generateCover",
+        "input": {
+          "contentId": "synthetic-content",
+          "editToken": "synthetic-token",
+          "input": {
+            "template": {
+              "id": "synthetic-template",
+              "version": 1
+            },
+            "styleAssetHashes": [
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            ],
+            "photo": null,
+            "materialIds": [],
+            "prompt": "根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。",
+            "pixels": {
+              "width": 768,
+              "height": 1024
+            },
+            "sizePolicy": "ratio-minimum",
+            "ratio": "3:4",
+            "count": 1,
+            "outputFormat": "png",
+            "scope": "cover-only"
+          }
+        }
+      }
+    ]
+  }
+]

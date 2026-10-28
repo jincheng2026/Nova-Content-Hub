@@ -1,0 +1,16 @@
+✔ deferred startup, repeated settings/status reads, ordinary save and key clear never probe native storage (62.633333ms)
+✔ explicit reveal and key replacement probe storage and cache status without subsequent passive probes (9.05675ms)
+✔ denied native storage and encryption/decryption errors preserve old ciphertext with no plaintext fallback (16.475958ms)
+✔ deferred explicit credentials still reject unsafe plaintext backends (7.723833ms)
+✔ legacy nondeferred store preserves eager encryption availability API (6.626708ms)
+✔ local readiness and successful transcription never access credentials even with saved unrelated keys (743.834125ms)
+✔ credential redaction reuses only explicitly obtained values and survives key rotation during a request (3.155666ms)
+✔ automatic observer remains unready while credentials have not been explicitly checked (2.390792ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1281.091583

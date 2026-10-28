@@ -1,0 +1,14 @@
+✔ codex: a colleague's topic cover survives reopen, retry and switching assistant (12681.236917ms)
+✔ workbuddy: a colleague's topic cover survives reopen, retry and switching assistant (11429.791542ms)
+✔ codex: a colleague's manuscript cover survives reopen, retry and switching assistant (8126.46975ms)
+✔ workbuddy: a colleague's manuscript cover survives reopen, retry and switching assistant (5205.61325ms)
+✔ codex: a colleague's title-only cover survives reopen, retry and switching assistant (3197.961666ms)
+✔ workbuddy: a colleague's title-only cover survives reopen, retry and switching assistant (4339.929334ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 45360.759375

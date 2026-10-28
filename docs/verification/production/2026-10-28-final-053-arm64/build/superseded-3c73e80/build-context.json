@@ -1,0 +1,31 @@
+{
+  "frozenSource": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "authMode": "disabled",
+  "productionReady": false,
+  "codec": {
+    "root": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/.local-probes/media-codec-release-v1/darwin-arm64",
+    "manifestSha256": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+    "manifestFiles": 694,
+    "payloadBytes": 73639571,
+    "manifestBytes": 120230,
+    "fullTreeBytes": 73759801,
+    "minimumMacOS": "14.0.0",
+    "validation": "offline-codec-self-test",
+    "command": "node workbench/scripts/prepare-media-codec.mjs --verify",
+    "exitCode": 0
+  },
+  "pending": [
+    "final artifact validation",
+    "Finder and final artifact UI acceptance by Root",
+    "installation and host plugins by Root",
+    "Intel Mac and Windows native validation"
+  ],
+  "notes": [
+    "No model payload or old ASR copied",
+    "Source dependencies and codec cloned via cp -cR; original cache read-only",
+    "No product source/version edits; no installation, CUA, commit, tag or push"
+  ]
+}

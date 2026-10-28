@@ -1,0 +1,12 @@
+{
+  "zip": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+  "frozenSource": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "entries": 2071,
+  "AppleDoubleEntries": [],
+  "CRC": "pass",
+  "duplicateEntries": false,
+  "root": "plugin-marketplace",
+  "symlinks": [
+    "plugin-marketplace/nova-content-hub/node_modules/.bin/semver"
+  ]
+}

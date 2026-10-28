@@ -1,0 +1,38 @@
+(node:23893) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cover preparation flushes author edits before reading original packaging and submits identity instead of caller text (39.560667ms)
+✔ changed or unavailable original sources block without legacy packaging fallback (27.452292ms)
+✔ source input rejects caller cover text and arbitrary paths while legacy inputs remain compatible (0.607375ms)
+✔ a failed author flush prevents the packaging read and cannot prepare a request (0.593833ms)
+✔ original packaging renders full source text as read-only fields and shows explicit candidate selection (7.970083ms)
+✔ unavailable packaging renders an actionable error instead of any editable title or legacy text (0.728209ms)
+✔ cover-only topic context is visible as reference and never labelled as an existing manuscript (0.539542ms)
+✔ legacy creation pages show the exact manuscript and keep long content collapsible (0.469833ms)
+✖ persisted cover fingerprints accept a bounded source identity and reject arbitrary paths (1.302625ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 362.745583
+
+✖ failing tests:
+
+test at workbench/test/cover-original-packaging.test.mjs:51:1
+✖ persisted cover fingerprints accept a bounded source identity and reject arbitrary paths (1.302625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/cover-original-packaging.test.mjs:55:9)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

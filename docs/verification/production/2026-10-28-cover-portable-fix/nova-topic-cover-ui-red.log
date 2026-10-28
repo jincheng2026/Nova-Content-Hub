@@ -1,0 +1,48 @@
+(node:22346) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cover preparation flushes author edits before reading original packaging and submits identity instead of caller text (19.781166ms)
+✔ changed or unavailable original sources block without legacy packaging fallback (2.317541ms)
+✔ source input rejects caller cover text and arbitrary paths while legacy inputs remain compatible (0.522125ms)
+✔ a failed author flush prevents the packaging read and cannot prepare a request (2.832334ms)
+✔ original packaging renders full source text as read-only fields and shows explicit candidate selection (4.9125ms)
+✔ unavailable packaging renders an actionable error instead of any editable title or legacy text (0.213084ms)
+✖ cover-only topic context is visible as reference and never labelled as an existing manuscript (0.485417ms)
+✖ legacy creation pages show the exact manuscript and keep long content collapsible (0.409834ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 6
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 240.86925
+
+✖ failing tests:
+
+test at workbench/test/cover-original-packaging.test.mjs:42:1
+✖ cover-only topic context is visible as reference and never labelled as an existing manuscript (0.485417ms)
+  Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+      at renderElement (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6446:15)
+      at retryNode (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6772:31)
+      at performWork (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19)
+      at startWork (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7)
+      at renderToStringImpl (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8933:7)
+      at process.env.NODE_ENV.exports.renderToStaticMarkup (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10426:14)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/cover-original-packaging.test.mjs:43:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+
+test at workbench/test/cover-original-packaging.test.mjs:46:1
+✖ legacy creation pages show the exact manuscript and keep long content collapsible (0.409834ms)
+  Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+      at renderElement (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6446:15)
+      at retryNode (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:6772:31)
+      at performWork (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:7919:19)
+      at startWork (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8807:7)
+      at renderToStringImpl (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:8933:7)
+      at process.env.NODE_ENV.exports.renderToStaticMarkup (/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/react-dom/cjs/react-dom-server-legacy.node.development.js:10426:14)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/cover-original-packaging.test.mjs:47:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)

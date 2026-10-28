@@ -1,0 +1,25 @@
+{
+  "request": {
+    "kind": "research",
+    "title": "综合调研",
+    "prompt": "比较明确议题",
+    "contentId": null,
+    "accountId": null,
+    "workflow": "jincheng-stage",
+    "businessSkill": "jc-synthesis-research",
+    "stage": "synthesis",
+    "mode": "simple",
+    "comments": false,
+    "synthesisBrief": {
+      "depth": "issue",
+      "question": "明确议题",
+      "purpose": "行动判断",
+      "timeBoundary": "截至2026-10-28",
+      "scopeBoundary": "内容创作"
+    }
+  },
+  "result": {
+    "withSynthesisBrief": false,
+    "withoutSynthesisBrief": true
+  }
+}

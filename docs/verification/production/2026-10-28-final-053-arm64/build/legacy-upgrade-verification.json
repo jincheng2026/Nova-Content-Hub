@@ -1,0 +1,51 @@
+{
+  "source": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "parent": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "changedFiles": [
+    "workbench/src/main/covers.mts",
+    "workbench/test/cover-legacy-upgrade-retry.test.mjs"
+  ],
+  "productionChange": "Remove only coverText-present prerequisite from frozen legacy fingerprint reuse; packagingSource/contextSource/designSource branches and following title/body stale guard unchanged.",
+  "red": {
+    "pass": 4,
+    "fail": 4,
+    "exitCode": 1,
+    "observedCode": "STALE_INPUT",
+    "observedMessage": "Saved cover context differs from the fixed request",
+    "scope": "Real DesktopController, immutable schema1/2 request, real worker/persistence/lookup/attempts; only upgraded inspect boundary mocked with new inputHash/contextSource."
+  },
+  "green": {
+    "pass": 8,
+    "fail": 0,
+    "exitCode": 0,
+    "coverage": [
+      "schema1 and schema2 without coverText",
+      "Codex and WorkBuddy retry and host change",
+      "requestId/requestHash/inputHash and original request bytes unchanged",
+      "title and body edits remain STALE_INPUT"
+    ]
+  },
+  "related": {
+    "frozenCoverText": {
+      "pass": 2,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "schema5VaultTopicManuscriptTitleOnly": {
+      "pass": 6,
+      "fail": 0,
+      "result": "all six completed in background combined regression"
+    },
+    "nativeAndRendererTypecheck": {
+      "exitCode": 0
+    },
+    "combinedCoversAndPortableRegression": {
+      "pass": 48,
+      "fail": 0,
+      "skipped": 0,
+      "exitCode": 0,
+      "durationMs": 151733.459167
+    }
+  },
+  "scopeLimit": "Inspector upgrade is a controlled boundary double; this does not claim a full real-host upgrade journey or a published release."
+}

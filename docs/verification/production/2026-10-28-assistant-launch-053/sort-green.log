@@ -1,0 +1,31 @@
+✔ directory query, pages and layout survive a detail round trip and stay independent per stage (13.975125ms)
+✔ doing resume passes an explicit one-open intent while title opens remain summaries (3.4235ms)
+✔ all-content layout/filter/pages survive leaving the directory without keeping it mounted (4.18125ms)
+✔ switching libraries clears all directory state and all-content search without retaining a hidden list (6.667333ms)
+✔ leaving the all-content recycle bin reloads active contents for every stage directory (12.07475ms)
+✔ opening a different library from its recycle bin clears the range and explicitly reads active rows (9.329958ms)
+✔ empty and single unified directories retain page-size controls for 20→50→100→20 (30.8745ms)
+✔ the unified directory includes every source item once in next, paused, written order (4.249333ms)
+✔ each status enum filters exactly its labelled rows and does not alter source facts (12.806458ms)
+✔ query, type and status combine and reset only pagination while keeping list presentation (52.158625ms)
+✔ restored status and page survive mount and view switching; old snapshots default to all (40.612042ms)
+✔ a source refresh removing the final page clamps the unified result page (6.868708ms)
+✔ recording and publication facts remain visible and keep doing/published mode membership (2.345792ms)
+✔ doing primary action resumes editing while its title retains detail and optional fallback (1.941917ms)
+✔ doing and published empty directories both retain the shared page-size control (1.527625ms)
+✔ long card summaries preserve the complete body behind explicit expansion (1.161167ms)
+✔ all contents opens in cards and changing to list preserves the visible filtered content (23.931959ms)
+✔ card title opens the original content while cover action preserves its generate intent (2.590167ms)
+✔ cards and list share pagination instead of a second content projection (8.679792ms)
+✔ a true collection keeps its existing table presentation (1.170125ms)
+✔ search, name sorting and cover-state filters act on the same content in either presentation (9.50325ms)
+✔ name order is descending with numeric titles before pagination in both cards and lists (12.504542ms)
+✔ collections use the same descending numeric name order (3.948167ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 23
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 349.65225

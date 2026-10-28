@@ -1,0 +1,24 @@
+✔ discovers bounded standard candidates with Unicode paths and does not execute files (47.090417ms)
+✔ freezes model identity, validates a real transcription proof and rejects moved or changed models (34.495542ms)
+✔ rejects wrong architectures, missing modules and empty transcription without advertising readiness (20.59625ms)
+✔ model-only cache is not runnable; manual saved selection precedes other candidates without whole-disk recursion (30.277875ms)
+✔ rejects wrong model identity and cancellation before running a candidate (5.8785ms)
+✔ fixed process runner enforces timeout and cancellation, including interpreter paths with spaces (33.246917ms)
+✔ settings persist explicit Qwen module identity while retaining legacy inputs (1.967625ms)
+✔ freezes nested model implementation bytes even when parent directory and file metadata are unchanged (15.021959ms)
+✔ freezes selected dependency additions and native metadata without hashing unrelated packages (23.193709ms)
+✔ dependency fingerprint limits fail closed and recover after oversized code is removed (15.324583ms)
+✔ freezes qwen implementation in Windows Lib/site-packages and excludes the unselected MLX implementation (12.834459ms)
+✔ cold local module initialization can exceed 30 seconds without announcing readiness early (477.887375ms)
+✔ 120-second initialization timeout stays unavailable and is distinct from missing components (592.104875ms)
+✔ initialization timeout before execution never reserves a service call or enables cloud fallback (593.598708ms)
+✔ distribution never includes development model caches, even when present (1.418084ms)
+✔ model-free artifact inspection rejects weights and sealed model payloads while permitting binaries (10.283125ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1854.893375

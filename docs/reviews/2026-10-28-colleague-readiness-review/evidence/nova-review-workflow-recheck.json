@@ -1,0 +1,51 @@
+{
+  "at": "2026-10-28T07:26:31.378Z",
+  "sourceHashes": {
+    "plugin-src/src/lib/research-runtime/index.mjs": "586d922c70766f162d63842122db9cefaa0669ab1cc1d842da4e7c261a53bf67",
+    "plugin-src/src/lib/research-runtime/common.mjs": "faacb6922c4539a5be5bd023c9520ee46094f1285015792ca51304e88fb4c36a",
+    "plugin-src/src/lib/file-library/production.mjs": "7691c3892bb0d313a667f0f2c91a3b7924550eeea73a244499c74649ca616f10",
+    "plugin-src/src/commands/jincheng-creation.mjs": "b5223d55d97482aedbde58e884527ea906683d4ca0b04c73dc4b18f299c44d2e"
+  },
+  "probes": [
+    {
+      "name": "tutorial receipt without HTML or checkpoints",
+      "artifactsBefore": 0,
+      "submitted": "submitted",
+      "accepted": "accepted",
+      "htmlCount": 0
+    },
+    {
+      "name": "markdown report import",
+      "code": "INVALID_INPUT",
+      "message": "Production report requires UTF-8 HTML of at most 8 MiB"
+    },
+    {
+      "name": "material pack stage save",
+      "code": "STAGE_FORBIDDEN"
+    },
+    {
+      "name": "build receipt stage artifact",
+      "keys": [
+        "revision",
+        "artifactId"
+      ],
+      "stageArtifact": {
+        "revision": "4968b2e6600f9e92066cf0d50d196c01fb17bb3612e86d0967ce94222d642242",
+        "artifactId": "16e2610c-449d-40bb-9e2b-2a0c14887c55"
+      }
+    },
+    {
+      "name": "v2 intake strict validation incomplete",
+      "status": "published",
+      "stage": "intake-finalized",
+      "strictValidation": {
+        "ok": false,
+        "limitations": [
+          "当前适配器尚未验证 file、ffprobe、短解码与封面截图；尚未完成原方法完整入库验收。"
+        ]
+      },
+      "formalFileExists": true,
+      "intermediateArchived": true
+    }
+  ]
+}

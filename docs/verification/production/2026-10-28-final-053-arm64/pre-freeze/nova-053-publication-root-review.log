@@ -1,0 +1,45 @@
+✔ same record call deposits full source packaging and one ledger row without changing official files (2263.576542ms)
+✔ unknown cover copy is partial, explicit empty is complete and author supplementation resolves partial (2667.81825ms)
+✔ deposition refuses edited or deleted owned bytes and never overwrites other ledger text (2666.460625ms)
+✔ fixed source policy failure does not roll back official publication; remapping refuses silent migration (12765.184584ms)
+✔ 7d snapshot updates existing ledger row with real metrics and unknown remains dash (2449.702ms)
+✔ each platform full script is retained and hash corruption refuses deposition (1919.5035ms)
+✔ receipt paths remain within the fixed source even if a receipt is manually redirected (1707.693208ms)
+✔ stable entry path and single row survive platform title changes while handwritten ledger rows remain (1754.236291ms)
+✔ recovery uses frozen payload then reports stale source and refreshes the same entry (3663.687042ms)
+✔ duplicate ledger markers, hard links, and source-root replacements are rejected without overwrites (6987.221958ms)
+✔ sink failure before first write can be retried by the same publication call without duplicating the official platform (2359.334125ms)
+✔ pending sink recovery refuses a replaced destination root before writing frozen payload (2051.024792ms)
+✔ cover lettering cannot inject the formal document generated markers (1046.109834ms)
+✔ already successful observer retry repairs a previously unavailable sink without another platform call (1372.764958ms)
+✔ an oversized resulting ledger never creates an unrecoverable pending sink or hides the committed official archive (1154.354583ms)
+✔ a real unwritable destination keeps committed publication readable and later recovers the frozen sink (979.141625ms)
+✔ unrelated review metadata does not create a new sink mutation or rewrite copied bytes (1019.053875ms)
+✔ different Vaults with equal work numbers keep independent source identities and safe cross-platform filenames (1703.127958ms)
+✔ concurrent processes retry one fixed publication into one entry and one ledger row (996.380583ms)
+✔ moving the official pointer within the current archive source refreshes copied source links on the stable entry (958.237875ms)
+✔ actual publication has separate identities, source facts, recoverable journal and immutable script (2299.639334ms)
+✔ retry is idempotent and journal recovery completes exact planned writes (2794.229166ms)
+✔ 7d missing blocks review; delayed evidence records real age and hashes, author confirms exact candidate (4375.3135ms)
+✔ generated content block protects author edits; known missing metrics stay null (3120.55875ms)
+✔ knowledge candidates require evidence and explicit author decisions; market cannot promote personal (3679.392541ms)
+✔ explicit 1REQ observation authorizes one read-only dispatch; unknown never retries automatically (2976.422458ms)
+✔ automatic success preserves provider receipt and actual delayed timestamp (3257.222458ms)
+✔ already published without archive stays published; external schema2 preserves complete original state read-only (1277.0045ms)
+✔ foreign Vault and legacy same-number T archives never become facts without exact author mapping (2557.385417ms)
+✔ publication reader surfaces pending journal conflict and preserves edited file (1503.320208ms)
+✔ restart reuses the already persisted successful response after a content write conflict without another provider request (4130.078708ms)
+✔ deposition retry and cover supplement accept only fixed content operations (0.831ms)
+✔ actual publication accepts explicit unknown, no lettering, or real cover lettering while preserving old callers (0.157459ms)
+✔ desktop author cover supplementation changes partial to complete and keeps original knowledge candidate meaning (5827.334958ms)
+✔ desktop explicit retry repairs a failed sink after source becomes writable without duplicating publication (4919.749166ms)
+✔ desktop rejects forged author input, arbitrary destinations, stale versions and readonly writes before saving (6630.34275ms)
+✔ desktop explicit sink retry reports its stale revision failure even when older deposition remains complete (4794.23225ms)
+ℹ tests 37
+ℹ suites 0
+ℹ pass 37
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 52594.882333

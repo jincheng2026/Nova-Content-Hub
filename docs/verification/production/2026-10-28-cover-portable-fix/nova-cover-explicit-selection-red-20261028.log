@@ -1,0 +1,30 @@
+✖ an explicitly selected ordinary HTML cannot bypass the invalid packaging selection guard (1128.293917ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1347.930791
+
+✖ failing tests:
+
+test at plugin-src/src/lib/file-library/test/topic-cover.test.mjs:82:1
+✖ an explicitly selected ordinary HTML cannot bypass the invalid packaging selection guard (1128.293917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'legacy'
+  - 'unavailable'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/test/topic-cover.test.mjs:86:9)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'legacy',
+    expected: 'unavailable',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

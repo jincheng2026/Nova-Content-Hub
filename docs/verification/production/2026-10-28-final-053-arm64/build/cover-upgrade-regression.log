@@ -1,0 +1,59 @@
+✔ codex: a colleague's topic cover survives reopen, retry and switching assistant (5604.65125ms)
+✔ workbuddy: a colleague's topic cover survives reopen, retry and switching assistant (6345.809667ms)
+✔ codex: a colleague's manuscript cover survives reopen, retry and switching assistant (6770.1435ms)
+✔ workbuddy: a colleague's manuscript cover survives reopen, retry and switching assistant (8120.144166ms)
+✔ codex: a colleague's title-only cover survives reopen, retry and switching assistant (7577.741833ms)
+✔ workbuddy: a colleague's title-only cover survives reopen, retry and switching assistant (7816.788042ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (7002.301917ms)
+✔ mixed annotations persist through reopening a temporary library and reach the exact fixed request context (5312.902833ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (4275.000791ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (5083.088292ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (6746.220875ms)
+  ✔ failed (6034.286625ms)
+  ✔ superseded (6620.014458ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (19402.175625ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (3324.185209ms)
+  ✔ after (2165.315958ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (5491.786042ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1270.298666ms)
+  ✔ true (2650.848208ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (3921.859041ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (6160.81725ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (666.382959ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (713.856083ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (4732.05375ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (5573.74475ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (3966.812834ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (1590.9165ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3080.611625ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (805.241541ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (621.24475ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (4028.39825ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (4353.007875ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (6104.994458ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (7095.669458ms)
+✔ summary fallback preserves strict input integrity checks for execution (1285.737042ms)
+✔ unexpected errors during summary loading still propagate (1143.408708ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (432.787708ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (5760.264709ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (4260.39375ms)
+✔ folder-open failure keeps exported originals recoverable (2792.50425ms)
+✔ bound codex cover continuation keeps original session and waiting-user after global host changes (4508.068417ms)
+✔ bound codex cover continuation keeps original session and waiting-permission after global host changes (4822.418666ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-user after global host changes (3016.997834ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-permission after global host changes (2988.404625ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (7025.488916ms)
+✔ codex freezes selected cover text through recovery, retry and host switch without changing title or body (7118.592083ms)
+✔ workbuddy freezes selected cover text through recovery, retry and host switch without changing title or body (5681.269166ms)
+✔ cover IPC accepts bounded optional frozen text while rejecting invalid values and keeping legacy input valid (569.016916ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 151733.459167

@@ -1,0 +1,72 @@
+✔ confirmed design picker displays trusted full requirements with explicit ratio adoption and own-photo requirement (35.972125ms)
+✔ missing or changed selected design remains visible and actionable while original flow remains available (1.846166ms)
+✔ IPC validation accepts only content identity and artifact reference, never a root or trusted prompt injection (1.015334ms)
+(node:27209) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ cover preparation flushes author edits before reading original packaging and submits identity instead of caller text (90.598416ms)
+✔ changed or unavailable original sources block without legacy packaging fallback (49.134541ms)
+✔ source input rejects caller cover text and arbitrary paths while legacy inputs remain compatible (1.241084ms)
+✔ a failed author flush prevents the packaging read and cannot prepare a request (1.223167ms)
+✔ original packaging renders full source text as read-only fields and shows explicit candidate selection (146.253333ms)
+✔ unavailable packaging renders an actionable error instead of any editable title or legacy text (0.514541ms)
+✔ cover-only topic context is visible as reference and never labelled as an existing manuscript (1.971542ms)
+✔ legacy creation pages show the exact manuscript and keep long content collapsible (0.45ms)
+✔ persisted cover fingerprints accept a bounded source identity and reject arbitrary paths (1.752042ms)
+(node:27210) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (18.400542ms)
+✔ automatic cover failures still report the error and refresh status (25.286083ms)
+✔ foreground operations and external-change refresh still scan the full workspace (59.408667ms)
+✔ candidate refinement attaches the original bytes and positional instructions to a new immutable assistant request (9734.416916ms)
+✔ mixed annotations persist through reopening a temporary library and reach the exact fixed request context (12468.747625ms)
+✔ refinement request recovery preserves the explicit candidate reference without duplicate attachment or assistant launch (13041.378459ms)
+✔ explicit same-input generate after committed result creates a new attempt on the current host (4995.341625ms)
+▶ explicit same-input generate retries terminal histories and preserves active attempt reuse
+  ✔ cancelled (2854.667209ms)
+  ✔ failed (2858.518ms)
+  ✔ superseded (3349.738334ms)
+✔ explicit same-input generate retries terminal histories and preserves active attempt reuse (9065.119708ms)
+▶ explicit completed-job retry survives restart before or after attempt creation without duplication
+  ✔ before (2847.042209ms)
+  ✔ after (8416.138334ms)
+✔ explicit completed-job retry survives restart before or after attempt creation without duplication (11269.450292ms)
+▶ old initial intent ending before recovery remains read-only with or without its attempt receipt
+  ✔ false (1769.895417ms)
+  ✔ true (2279.586083ms)
+✔ old initial intent ending before recovery remains read-only with or without its attempt receipt (4050.441125ms)
+✔ explicit repeat rejects stale input and recovered retry preserves stale intent without a new attempt (2722.054542ms)
+✔ exact cover IPC refuses paths/host/URLs and corrupt or simultaneous durable intents (412.569292ms)
+✔ cover size policy is optional for old IPC and strictly checked across renderer and worker boundaries (430.272458ms)
+✔ missing or disabled assistant setup cannot create cover tasks or launch existing attempts (3000.238542ms)
+✔ request and attempt lost acknowledgements resume same durable mutations after restart (5877.036417ms)
+✔ ratio-minimum policy survives durable recovery, retry, host changes and summary projection (8081.721625ms)
+✔ reused A after B has no new request receipt; recovery resolves A and metadata edits, never last request (2928.245292ms)
+✔ body/title changes are stale, preserve cover intent, and cannot launch; explicit retry/host change has continuous source (3850.266458ms)
+✔ photos require full decode, preserve false declaration, resume from stored asset without source and never fake unavailable (954.805084ms)
+✔ missing photo source retains same pending, resource grants revoke on switch and refuse tampering or non-raster (626.804834ms)
+✔ synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation (2608.85475ms)
+✔ cover file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (2094.935792ms)
+✔ material file export protects library bytes through real and symlink parents, allows outside overwrite and cancellation (2164.976916ms)
+✔ unavailable historical snapshots do not hide healthy jobs, candidates or completed actions (3542.4095ms)
+✔ summary fallback preserves strict input integrity checks for execution (2020.22575ms)
+✔ unexpected errors during summary loading still propagate (2339.719917ms)
+✔ required main and worker gates seed, photos, cover, selection, cancellation and launch (547.029083ms)
+✔ select/cancel durable action loss resumes same mutation, reads later selection and never rolls it back (3291.117709ms)
+✔ cover folder export copies byte-exact owned candidates to unique external folders and opens their first image (5124.395875ms)
+✔ folder-open failure keeps exported originals recoverable (2988.878583ms)
+✔ bound codex cover continuation keeps original session and waiting-user after global host changes (4623.477833ms)
+✔ bound codex cover continuation keeps original session and waiting-permission after global host changes (6319.29625ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-user after global host changes (5360.968791ms)
+✔ bound workbuddy cover continuation keeps original session and waiting-permission after global host changes (3353.237708ms)
+✔ one detail read verifies a shared template once while rechecking every fixed input and later byte changes (7939.342375ms)
+✔ codex freezes selected cover text through recovery, retry and host switch without changing title or body (5515.607459ms)
+✔ workbuddy freezes selected cover text through recovery, retry and host switch without changing title or body (5305.419834ms)
+✔ cover IPC accepts bounded optional frozen text while rejecting invalid values and keeping legacy input valid (651.268667ms)
+ℹ tests 57
+ℹ suites 0
+ℹ pass 57
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 160265.697584

@@ -1,0 +1,16 @@
+✔ codex: schema 1 without coverText retries and switches host after inspector upgrade (2232.1085ms)
+✔ workbuddy: schema 1 without coverText retries and switches host after inspector upgrade (1914.104083ms)
+✔ codex: schema 2 without coverText retries and switches host after inspector upgrade (1572.021958ms)
+✔ workbuddy: schema 2 without coverText retries and switches host after inspector upgrade (2187.734792ms)
+✔ schema 1 preserves title stale guard after inspector upgrade (2209.030791ms)
+✔ schema 1 preserves body stale guard after inspector upgrade (2327.678917ms)
+✔ schema 2 preserves title stale guard after inspector upgrade (2727.680875ms)
+✔ schema 2 preserves body stale guard after inspector upgrade (2139.654833ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17588.374417

@@ -1,0 +1,225 @@
+{
+  "appAttributes": {
+    "logicalRegularFileBytes": 639078240,
+    "regularFiles": 3299,
+    "modified": "2026-10-28T08:42:49.560Z",
+    "executable": {
+      "path": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+      "bytes": 52816,
+      "sha256": "cdf2745a045c98cd933b679e0161e020289c03f615bde24646ca2c9d0af00346",
+      "modified": "2026-10-28T08:43:11.767Z"
+    }
+  },
+  "frozenSource": "3c73e80eb6c4cd53d7e9ccc19f503a1627ba32f2",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app",
+  "resources": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "exported": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "AUTH_MODE": "disabled",
+  "version": "0.5.3",
+  "pairId": "nova-content-hub@0.5.3:p1:disabled",
+  "productionReady": false,
+  "plist": {
+    "CFBundleName": "自媒体工作台",
+    "DTXcode": "1640",
+    "DTSDKName": "macosx15.5",
+    "NSHumanReadableCopyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "DTSDKBuild": "24F74",
+    "CFBundleVersion": "0.5.3",
+    "ElectronAsarIntegrity": {
+      "Resources/default_app.asar": {
+        "hash": "f80143a17fad2075fe6cf176e07033a41a878dba7f31e7ab4f6f14fcc34162dc",
+        "algorithm": "SHA256"
+      }
+    },
+    "NSCameraUsageDescription": "This app needs access to the camera",
+    "NSMainNibFile": "MainMenu",
+    "CFBundlePackageType": "APPL",
+    "CFBundleIconFile": "icon.icns",
+    "CFBundleShortVersionString": "0.5.3",
+    "NSBluetoothPeripheralUsageDescription": "This app needs access to Bluetooth",
+    "NSHighResolutionCapable": true,
+    "NSMicrophoneUsageDescription": "This app needs access to the microphone",
+    "NSAppTransportSecurity": {
+      "NSExceptionDomains": {
+        "127.0.0.1": {
+          "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+          "NSTemporaryExceptionRequiresForwardSecrecy": false,
+          "NSIncludesSubdomains": false,
+          "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+          "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+        },
+        "localhost": {
+          "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+          "NSTemporaryExceptionRequiresForwardSecrecy": false,
+          "NSIncludesSubdomains": false,
+          "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+          "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+        }
+      },
+      "NSAllowsArbitraryLoads": true,
+      "NSAllowsLocalNetworking": true
+    },
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleExecutable": "自媒体工作台",
+    "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+    "NSPrefersDisplaySafeAreaCompatibilityMode": false,
+    "NSPrincipalClass": "AtomApplication",
+    "CFBundleIdentifier": "com.novaisland.nova-content-hub",
+    "LSApplicationCategoryType": "public.app-category.productivity",
+    "DTXcodeBuild": "16F6",
+    "LSMinimumSystemVersion": "13.0",
+    "CFBundleDisplayName": "自媒体工作台",
+    "LSEnvironment": {
+      "MallocNanoZone": "0"
+    },
+    "NSQuitAlwaysKeepsWindows": false,
+    "NSAudioCaptureUsageDescription": "This app needs access to audio capture",
+    "NSRequiresAquaSystemAppearance": false,
+    "NSBluetoothAlwaysUsageDescription": "This app needs access to Bluetooth",
+    "NSSupportsAutomaticGraphicsSwitching": true
+  },
+  "desktop": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.3",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.3:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "appPackage": {
+    "name": "nova-content-hub-workbench",
+    "private": true,
+    "version": "0.5.3",
+    "main": "workbench/dist/main/index.mjs",
+    "engines": {
+      "node": ">=22.18.0"
+    },
+    "dependencies": {
+      "sharp": "0.35.5",
+      "smol-toml": "1.9.1"
+    },
+    "description": "自媒体工作台 · 第二大脑与内容创作",
+    "author": {
+      "name": "杭州新岛橙灵智能科技有限责任公司"
+    }
+  },
+  "codec": {
+    "root": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-AMJfDQ/mac-arm64/自媒体工作台.app/Contents/Resources/media-codec/darwin-arm64",
+    "identity": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+    "minimumMacOS": "14.0.0",
+    "validation": "offline-codec-self-test",
+    "manifestEntries": 694,
+    "payloadBytes": 73639571,
+    "fullTreeBytes": 73759801
+  },
+  "plugin": {
+    "zip": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+    "manifest": {
+      "bytes": 404616,
+      "sha256": "08449fade6f02ec57da093b9998b4ee499abb8605d55e4361fb9015756291017"
+    },
+    "entries": 2070,
+    "runtimeEntries": 2062,
+    "stageAppAndZipSnapshotsExactMatch": true,
+    "AppleDoubleEntries": []
+  },
+  "modelFree": {
+    "resources": true,
+    "zip": true,
+    "zipExtracted": true
+  },
+  "artifactSafety": {
+    "resources": true,
+    "zipExtracted": true
+  },
+  "reportAssets": [
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-template.html",
+      "bytes": 4287,
+      "sha256": "10912c5a2e761d8379c39f30c5b481482729ff30a700d0a8013a17a9eeb35cc5"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/shared/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/vendor/echarts.min.js",
+      "bytes": 1030855,
+      "sha256": "e84270bd0cd5bdf60fefc26d00c2a391cb2e81f4d26a7a9ee16185a54773a3cf"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-charts.mjs",
+      "bytes": 6274,
+      "sha256": "0dcfd22c52f0e12693215f9e4fd53f04b51ad33b52c63965b5b80aba0d88a965"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/account_report.py",
+      "bytes": 28670,
+      "sha256": "17d57f6c397a1496e55ba19be216c2385747203ed01b58fb306a87c010fdc8e1"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/page-template.html",
+      "bytes": 9640,
+      "sha256": "0f034f632df08a6fdd35348667babad64f6e00419dd77124c88b44323eb9e113"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/render_report.py",
+      "bytes": 76374,
+      "sha256": "3dfdf57846b22207f00f540ef12cc3c3dfc68faff466bf2a74967ff110ec4aa7"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report-template.html",
+      "bytes": 7293,
+      "sha256": "1f19d647d09a852d5c81986606635694ef08e0a4f76e91394c348c2d656e5070"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report.js",
+      "bytes": 9666,
+      "sha256": "5732baf68bb15b28a7ba2f8a0297558feb009fa820aa5aa0b28e74257b40a669"
+    }
+  ],
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+      "bytes": 330740733,
+      "sha256": "d97874093ed230be732c9ae114ffb9b6923f4124fa3a9083ad1261e4db2d968d"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 341680,
+      "sha256": "8210b4a928035c2099f66a8451a01d22cb53844af01390245c06069ec1c2d4c4"
+    },
+    {
+      "name": "Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035090,
+      "sha256": "516d1342bb4dc48e9afdb6e056ce023a6de2f5f1d20160bce064365acaedb506"
+    }
+  ],
+  "codesign": {
+    "verifyDeepStrict": true,
+    "signatureType": "ad-hoc",
+    "notarized": false
+  },
+  "pending": [
+    "Root final DMG artifact and Finder UI acceptance",
+    "Root installation and same-version host-plugin validation",
+    "Intel Mac and Windows native builds/install/run acceptance",
+    "Remaining same-chat content journey described in 0.5.3 closeout"
+  ]
+}

@@ -1,0 +1,9 @@
+✔ an explicitly selected ordinary HTML cannot bypass the invalid packaging selection guard (1064.267958ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1296.153209

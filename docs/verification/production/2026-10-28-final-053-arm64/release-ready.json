@@ -1,0 +1,67 @@
+{
+  "ready": true,
+  "state": "artifacts-verified-ready-for-installation",
+  "version": "0.5.3",
+  "productCommit": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "frozenSource": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "AUTH_MODE": "disabled",
+  "productionReady": false,
+  "desktop": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-cEgLKV/mac-arm64/自媒体工作台.app",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+      "bytes": 330741464,
+      "sha256": "dd483940f7340690ef256c166b55f6c128e9e4dd33a48d282992bc2bef2daf99",
+      "modified": "2026-10-28T08:52:46.011Z",
+      "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 341579,
+      "sha256": "02f9723bbfcefe44046caffe60d0aa8f39c47dff1773cce30ec74a845cf399b4",
+      "modified": "2026-10-28T08:53:02.385Z",
+      "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg.blockmap"
+    },
+    {
+      "name": "Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035090,
+      "sha256": "fa4bb906f68a3fbd72f9be2b4f9e712431fb47d675984eabb8b92f4ba78f4d1f",
+      "modified": "2026-10-28T08:53:45.793Z",
+      "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Plugin-0.5.3-darwin-arm64-preview-disabled.zip"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 350,
+      "sha256": "1e7f87a569896d2ab4f626c6b6cceb95532f8c73e0b5df3c240f527437c68ead",
+      "modified": "2026-10-28T08:54:34.797Z",
+      "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/SHA256SUMS"
+    }
+  ],
+  "dmg": {
+    "name": "Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg",
+    "bytes": 330741464,
+    "sha256": "dd483940f7340690ef256c166b55f6c128e9e4dd33a48d282992bc2bef2daf99",
+    "modified": "2026-10-28T08:52:46.011Z",
+    "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Nova-Content-Hub-0.5.3-darwin-arm64-preview.dmg"
+  },
+  "plugin": {
+    "name": "Plugin-0.5.3-darwin-arm64-preview-disabled.zip",
+    "bytes": 95035090,
+    "sha256": "fa4bb906f68a3fbd72f9be2b4f9e712431fb47d675984eabb8b92f4ba78f4d1f",
+    "modified": "2026-10-28T08:53:45.793Z",
+    "path": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览/Plugin-0.5.3-darwin-arm64-preview-disabled.zip"
+  },
+  "evidence": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-28-final-053-arm64/build",
+  "installOwner": "01a18182-edad-7610-8daf-4b72681716de / 修复所有助手跳转并打包",
+  "systemUIOwner": "same installation owner",
+  "coverUIOwner": "01a18193-f818-72b1-a026-94da17e61d04 after installation owner reports completion",
+  "rootWillInstallConcurrently": false,
+  "installedAcceptance": "pending",
+  "sameVersionHostPlugins": "pending",
+  "instructions": "Install only these00ca6f9 frozen0.5.3 files; primary source is0.5.4 and must not be rebuilt for this installation. Preserve actual author files/settings and normal quit guards; no forced quit. Installation owner records Finder/installed system UI, reboot/reopen, local external Qwen+packaged codec, actual library behavior and both host plugin versions. Keep managed build worktree until all acceptance evidence is saved.",
+  "remainingWork": "Primary content journey0.5.4 in progress; preview is not full workflow completion."
+}

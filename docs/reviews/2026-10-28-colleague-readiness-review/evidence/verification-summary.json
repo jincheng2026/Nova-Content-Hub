@@ -1,0 +1,54 @@
+{
+  "cutoffLocal": "2026-10-28 15:34:16 Asia/Shanghai",
+  "frozenSource": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-review-frozen-81r0blvv",
+  "productFilesModifiedByReview": false,
+  "originalLibrariesModifiedByReview": false,
+  "checks": {
+    "desktopInitial": {
+      "tests": 873,
+      "pass": 866,
+      "fail": 5,
+      "skip": 2,
+      "exitCode": 1
+    },
+    "domainInitial": {
+      "tests": 258,
+      "pass": 256,
+      "fail": 2,
+      "skip": 0,
+      "exitCode": 1
+    },
+    "storage": {
+      "tests": 634,
+      "pass": 634,
+      "fail": 0,
+      "exitCode": 0
+    },
+    "packagingFrozenRecheck": {
+      "tests": 5,
+      "pass": 5,
+      "exitCode": 0
+    },
+    "intakeV2Recheck": {
+      "tests": 2,
+      "pass": 2,
+      "exitCode": 0
+    },
+    "newMethodsFrozen": {
+      "tests": 14,
+      "pass": 14,
+      "exitCode": 0
+    },
+    "frozenTypecheck": {
+      "exitCode": 0
+    },
+    "workflowDefectProbes": {
+      "completed": 5,
+      "exitCode": 0
+    },
+    "crudDefectProbes": {
+      "completed": 3,
+      "exitCode": 0
+    }
+  }
+}

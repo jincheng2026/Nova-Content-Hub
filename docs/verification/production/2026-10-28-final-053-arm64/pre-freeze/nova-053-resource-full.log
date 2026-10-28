@@ -1,0 +1,38 @@
+✔ classifies actual account profiles and reports, excluding attachments, research copies, indexes and transcripts (1139.903625ms)
+✔ resource management blocks preserve original user text and unknown JSON fields (0.537708ms)
+✔ Markdown report projection is readable HTML and cannot execute source markup (0.920042ms)
+✔ original production and prompt APIs expose stable source-backed resources and update from source hashes (2560.794125ms)
+✔ legacy account/prompt/report edits and creations persist to Vault and retain handwritten sources (4643.245833ms)
+✔ resource source commit survives runtime capture crash, exact replay and later external conflict (1963.365375ms)
+✔ JSON account edits preserve valid JSON and unknown fields; prompts retain exact body across reopen (1663.481459ms)
+✔ explicit research-report frontmatter imports ordinary filenames without treating ordinary material as a report (729.997917ms)
+✔ HTML report preserves original and uses a readable companion for metadata and explicit replacement body (1336.861375ms)
+✔ missing source preserves history with a read-only status and reappearing source retains the same ID (1278.812958ms)
+✔ new manual Markdown report and explicit body edit keep Markdown as the current source (953.906708ms)
+✔ real profile nickname aliases and explicit duplicate markers do not create phantom accounts or transcript reports (486.720792ms)
+✔ large original HTML preserves charts and full data in the isolated reader without changing its source (909.629542ms)
+✔ manual Markdown external edits become current report pages and editor Markdown while provenance input cannot move authority (1159.493084ms)
+✔ prompt enabled, favorite and builtin provenance remain source-backed across external source refresh (1325.289416ms)
+✔ account source missing is rejected before journal publication and the library stays readable (1095.554125ms)
+✔ prompt source missing is rejected before journal publication and the library stays readable (3891.857625ms)
+✔ report source missing is rejected before journal publication and the library stays readable (5688.13925ms)
+✔ resource external-edit at journal boundary rejects without a pending recovery transaction (3490.3115ms)
+✔ resource disappeared at journal boundary rejects without a pending recovery transaction (3708.186875ms)
+✔ foreign HTML keeps its original DOM and scripts for the opaque isolated report reader (3098.08725ms)
+✔ missing metadata HTML companion retains current source authority instead of reverting original report (4988.918416ms)
+✔ missing managed-pages HTML companion retains current source authority instead of reverting original report (6023.255292ms)
+✔ missing managed-markdown HTML companion retains current source authority instead of reverting original report (5312.752167ms)
+✔ unreadable account management block preserves history and keeps the rest of the library open (6591.549584ms)
+✔ unreadable companion management block preserves history and keeps the rest of the library open (5813.271ms)
+✔ new reports and prompts use declared root-contained output roles (3127.632791ms)
+✔ Markdown reports render nested lists and quotes while escaping untrusted text in every block (0.726833ms)
+✔ Markdown list and quote projection preserves source files and original HTML report bytes (2769.301958ms)
+✔ source resource projection preserves private attempt claims while public snapshots stay redacted (5057.10425ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80930.469708

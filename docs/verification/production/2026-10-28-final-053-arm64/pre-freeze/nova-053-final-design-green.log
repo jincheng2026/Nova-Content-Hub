@@ -1,0 +1,48 @@
+✔ preview and author-save preserve precise four assets without publication, recording or current-source changes (693.617959ms)
+✔ same mutation returns its immutable version after a later adoption without moving current back (836.825458ms)
+✔ stale preview/current CAS and unacknowledged source warnings refuse before staging (798.95625ms)
+✔ trusted cover boundary refuses no-helper (444.94ms)
+✔ trusted cover boundary refuses wrong-content (438.728042ms)
+✔ trusted cover boundary refuses hash (466.869708ms)
+✔ trusted cover boundary refuses empty (486.182542ms)
+✔ trusted cover boundary refuses async (531.436625ms)
+✔ recorded is read only after explicit author choice and never created from current script (551.6695ms)
+✔ saved files read/export without original manuscript or runtime images and never become automatic current (681.322834ms)
+✔ frozen final-assets receipt recovers interruption after pending without reading live source/cover (652.161584ms)
+✔ frozen final-assets receipt recovers interruption after script without reading live source/cover (681.839667ms)
+✔ frozen final-assets receipt recovers interruption after cover without reading live source/cover (622.193083ms)
+✔ frozen final-assets receipt recovers interruption after manifest without reading live source/cover (625.629875ms)
+✔ frozen final-assets receipt recovers interruption after current without reading live source/cover (707.816625ms)
+✔ frozen final-assets receipt recovers interruption after commit without reading live source/cover (737.897167ms)
+✔ external partial target conflicts keep prior current and recoverable intent without overwriting (804.417958ms)
+✔ a direct all-managed source resolution returns missing instead of dereferencing an absent draft (622.697375ms)
+✔ history summaries never read unselected cover bytes or claim those bytes were fully verified (813.836042ms)
+✔ an external 9 MiB cover installed between preflight and atomic is a recoverable conflict (586.822792ms)
+✔ an earlier asset externally changed during later writes prevents publishing current (1350.608125ms)
+✔ bounded final asset reader rejects traversal (1777.447458ms)
+✔ bounded final asset reader rejects symlink (1376.529417ms)
+✔ bounded final asset reader rejects hardlink (1416.686208ms)
+✔ bounded final asset reader rejects fd-change (1427.255625ms)
+✔ pending final asset index can rebuild from journals and committed duplicates cannot roll current back (1905.177583ms)
+✔ a frozen receipt cannot replay in another Vault or after root inode replacement (2063.642833ms)
+✔ a legitimate raster over 8 MiB is saved and read independently of runtime cache (4736.02075ms)
+✔ 64 MiB encoded cover is accepted exactly and 64 MiB plus one refuses before staging (5910.546833ms)
+✔ raw bound refuses an oversized package before pending stage (6293.672125ms)
+✔ receipt bound refuses an oversized package before pending stage (6420.5985ms)
+✔ recorded manuscript different from cover request body requires explicit version-difference acceptance (776.26375ms)
+✔ recorded and current exact text equality preserves cover-current provenance without a false warning (531.179625ms)
+✔ a first content with no saved bundle still returns its real bound work identity (468.090666ms)
+✔ managed immutable texts cannot be modified or trashed through ordinary Vault APIs (691.9255ms)
+✔ new final reader opens with a nonblocking regular-fd guard (518.579667ms)
+✔ new selected reader opens with a nonblocking regular-fd guard (571.829ms)
+✔ new final reader rejects a FIFO swapped immediately before open without blocking (659.674875ms)
+✔ new selected reader rejects a FIFO swapped immediately before open without blocking (548.918375ms)
+✔ final asset manifest preserves confirmed cover-design source separately from actual packaging (650.97ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 53019.244125
