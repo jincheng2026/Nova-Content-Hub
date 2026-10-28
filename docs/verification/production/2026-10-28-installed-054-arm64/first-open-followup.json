@@ -1,0 +1,25 @@
+{
+  "at": "2026-10-28T10:36:52.400488+00:00",
+  "version": "0.5.4",
+  "initialReselectObservedBusy": true,
+  "initialReselectLaterLoadedWithoutRestart": true,
+  "causeProven": false,
+  "normalReopenVerified": false,
+  "requiresNewPackage": "No indefinite wait reproduced in native clone; actual Electron original-task prefill and normal reopen remain gates",
+  "observations": [
+    "Explicitly selected original second-brain directory through native dialog. machine-binding retained the same library ID and changed needsReselect=false.",
+    "Busy UI remained visible during initial observations (worker elapsed 33 seconds when inspected); no error/timeout outcome was captured.",
+    "Later original overview, 48 contents, all-collections card view and first T051 became visible. No force quit, restart or internal lock deletion occurred.",
+    "UI then showed an unsaved new-content draft; GUI acceptance paused to preserve it. Finder and original-task host prefill have not passed."
+  ],
+  "limits": "A later visible page is recovery evidence, not proof of the cause or of successful normal reopening.",
+  "independentNativeFollowup": {
+    "coldOpenMs": 48077,
+    "warmReselectMs": 13698,
+    "controllerBusyReleased": true,
+    "copiedContents": 49,
+    "reinitializeMs": 5,
+    "reopenedListMs": 717,
+    "realElectronNormalReopenVerified": false
+  }
+}

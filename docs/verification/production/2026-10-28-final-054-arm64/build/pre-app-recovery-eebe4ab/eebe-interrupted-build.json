@@ -1,0 +1,17 @@
+{
+  "source": "eebe4abdf303ef3c2b248042fca9aa4816235094",
+  "status": "interrupted at Root request before final packaging; no completed installer from this source",
+  "ownedProcessGroup": 23590,
+  "exitCode": 143,
+  "sourceClean": true,
+  "partialStage": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.interrupted-stages.noindex/eebe4ab-auth-disabled",
+  "userAppOrHostProcessTouched": false,
+  "reason": "Wait for Root app.refreshWorkspace transient contention recovery thin fix before final 0.5.4 build",
+  "retainedResults": {
+    "sortingNavigation": 27,
+    "U1": 6,
+    "busyTimeoutNativeLaunch": 22,
+    "coreLock": 1,
+    "typecheck": "native and renderer passed"
+  }
+}

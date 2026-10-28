@@ -1,0 +1,14 @@
+✔ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (5140.372042ms)
+✔ another external edit after recovery still rejects the acknowledged old version without overwriting it (7817.667875ms)
+✔ P3: live recovery delivery binds the retained create form to the committed document (1.239ms)
+✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.681ms)
+✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (1.948917ms)
+✔ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.536ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 16048.30975

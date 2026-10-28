@@ -1,0 +1,23 @@
+Executable=/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-XMrRLa/mac-arm64/自媒体工作台.app/Contents/MacOS/自媒体工作台
+Identifier=com.novaisland.nova-content-hub
+Format=app bundle with Mach-O thin (arm64)
+CodeDirectory v=20400 size=440 flags=0x2(adhoc) hashes=3+7 location=embedded
+VersionPlatform=1
+VersionMin=851968
+VersionSDK=1705216
+Hash type=sha256 size=32
+CandidateCDHash sha256=4ea9236a341fed186b29a093cb7136cdd1c96f6c
+CandidateCDHashFull sha256=4ea9236a341fed186b29a093cb7136cdd1c96f6cf2a3cde7ecba40b127df819c
+Hash choices=sha256
+CMSDigest=4ea9236a341fed186b29a093cb7136cdd1c96f6cf2a3cde7ecba40b127df819c
+CMSDigestType=2
+Executable Segment base=0
+Executable Segment limit=16384
+Executable Segment flags=0x1
+Page size=16384
+CDHash=4ea9236a341fed186b29a093cb7136cdd1c96f6c
+Signature=adhoc
+Info.plist entries=32
+TeamIdentifier=not set
+Sealed Resources version=2 rules=13 files=3044
+Internal requirements count=0 size=12

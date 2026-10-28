@@ -1,0 +1,37 @@
+{
+  "standard": "docs/design/内容工作台设计标准.md",
+  "checks": [
+    {
+      "id": "Controls-01",
+      "result": "Source review: U1 action keeps existing Semi Button and busy/explicit acknowledgment behavior; no GUI performed."
+    },
+    {
+      "id": "Controls-02",
+      "result": "Source/behavior tests: existing PopupSelect/Input search and sorting controls reused; new work identity searchable without title mutation."
+    },
+    {
+      "id": "Reading-02",
+      "result": "U1 tests retain full external original and full author draft for comparison and merge."
+    },
+    {
+      "id": "Surface-03",
+      "result": "U1 recovery preserves draft and explicit comparison requirement; missing/replaced source remains unavailable."
+    },
+    {
+      "id": "Interaction-03",
+      "result": "Only approved U1 and number/order changes; no new dependency/brand/resource changes."
+    },
+    {
+      "id": "Acceptance-01",
+      "result": "27/27 directory/order/navigation/native/Vault number tests; 6/6 U1; native+renderer typecheck exit0."
+    },
+    {
+      "id": "Acceptance-02",
+      "result": "Not performed: task explicitly excludes GUI/host interruption. No screenshots or keyboard/native visual acceptance claimed."
+    },
+    {
+      "id": "Acceptance-03",
+      "result": "Only darwin-arm64 preview building; final artifact/install/system UI statuses recorded separately in handoff."
+    }
+  ]
+}

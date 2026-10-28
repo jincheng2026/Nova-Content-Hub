@@ -1,0 +1,350 @@
+{
+  "fixedRuntimeFiles": [
+    {
+      "relative": "main/vault-controller.mjs",
+      "compiled": {
+        "bytes": 9609,
+        "sha256": "79eabbd22360f22af6f71578db996f6535df1cc0a5b699d95c9f2371855ff9fe",
+        "modified": "2026-10-28T10:06:33.832Z"
+      },
+      "packaged": {
+        "bytes": 9609,
+        "sha256": "79eabbd22360f22af6f71578db996f6535df1cc0a5b699d95c9f2371855ff9fe",
+        "modified": "2026-10-28T10:08:44.081Z"
+      }
+    },
+    {
+      "relative": "main/workspace-worker.mjs",
+      "compiled": {
+        "bytes": 31599,
+        "sha256": "aedbcdf0bfecb842ed8567842ad76981894f772de9110ad844b041d8ff40c07a",
+        "modified": "2026-10-28T10:06:33.833Z"
+      },
+      "packaged": {
+        "bytes": 31599,
+        "sha256": "aedbcdf0bfecb842ed8567842ad76981894f772de9110ad844b041d8ff40c07a",
+        "modified": "2026-10-28T10:08:44.083Z"
+      }
+    },
+    {
+      "relative": "shared/vault-editor-recovery.js",
+      "compiled": {
+        "bytes": 3167,
+        "sha256": "6a16c09c2621053babbcc3dff8715d4a16e527879db1e5aed7145f9b10d3db4c",
+        "modified": "2026-10-28T10:06:33.856Z"
+      },
+      "packaged": {
+        "bytes": 3167,
+        "sha256": "6a16c09c2621053babbcc3dff8715d4a16e527879db1e5aed7145f9b10d3db4c",
+        "modified": "2026-10-28T10:08:44.020Z"
+      }
+    },
+    {
+      "relative": "main/worker-client.mjs",
+      "compiled": {
+        "bytes": 6370,
+        "sha256": "cba5d9ea942be8eb7788deff1211fff8c0b5a6241328bfbe331b00fcf21628a0",
+        "modified": "2026-10-28T10:06:33.818Z"
+      },
+      "packaged": {
+        "bytes": 6370,
+        "sha256": "cba5d9ea942be8eb7788deff1211fff8c0b5a6241328bfbe331b00fcf21628a0",
+        "modified": "2026-10-28T10:08:44.081Z"
+      }
+    },
+    {
+      "relative": "shared/workspace-read-recovery.js",
+      "compiled": {
+        "bytes": 2104,
+        "sha256": "0471234eb0b91f95149393a79efa6668c468ba582355b30f896bf79814d1d83e",
+        "modified": "2026-10-28T10:06:33.813Z"
+      },
+      "packaged": {
+        "bytes": 2104,
+        "sha256": "0471234eb0b91f95149393a79efa6668c468ba582355b30f896bf79814d1d83e",
+        "modified": "2026-10-28T10:08:44.020Z"
+      }
+    }
+  ],
+  "frozenCore": {
+    "source": {
+      "bytes": 67515,
+      "sha256": "2bf4c55e1a833a26719d63c4ca5adbb6356fa3caf483ce6e312c0a28640a524a",
+      "modified": "2026-10-28T09:51:11.039Z"
+    },
+    "app": {
+      "bytes": 67515,
+      "sha256": "2bf4c55e1a833a26719d63c4ca5adbb6356fa3caf483ce6e312c0a28640a524a",
+      "modified": "2026-10-28T10:08:44.103Z"
+    },
+    "plugin": {
+      "bytes": 67515,
+      "sha256": "2bf4c55e1a833a26719d63c4ca5adbb6356fa3caf483ce6e312c0a28640a524a",
+      "modified": "2026-10-28T10:08:45.270Z"
+    }
+  },
+  "rendererRuntime": {
+    "stageAndAppExactSnapshotMatch": true,
+    "entries": 5
+  },
+  "workspaceRecovery": {
+    "appHooksAndSchedulerVerified": true,
+    "realInstalledTransientHintVerified": false
+  },
+  "knownOpenDefects": [],
+  "vaultContention": {
+    "mechanism": "Explicit VAULT_BUSY, bounded frozen-request readonly retry and friendly failure; mutations and unrelated NOT_READY never replayed",
+    "controlledNativeProcessLaunchVerified": true,
+    "actualHostOriginalTaskPrefillVerified": false
+  },
+  "coverRuntime": {
+    "source": {
+      "bytes": 22652,
+      "sha256": "c11553a0304d27d51320578dc46ae75007415b63895bd29d91dd338b7b7201f7",
+      "modified": "2026-10-28T08:47:38.719Z"
+    },
+    "compiled": {
+      "bytes": 23835,
+      "sha256": "c63395b619efa87c24d56bbcc623260efd7cc6c3e76c4b9c1188bd16a82c3b16",
+      "modified": "2026-10-28T10:06:33.868Z"
+    },
+    "packaged": {
+      "bytes": 23835,
+      "sha256": "c63395b619efa87c24d56bbcc623260efd7cc6c3e76c4b9c1188bd16a82c3b16",
+      "modified": "2026-10-28T10:08:44.037Z"
+    },
+    "matchesFrozenCompilation": true
+  },
+  "appTree": {
+    "snapshot": "app-tree-snapshot.json",
+    "entries": 4196,
+    "snapshotSha256": "e9756e9df62df120068b276f09af47a5912798b8f47721965d446ac97a296183"
+  },
+  "appAttributes": {
+    "logicalRegularFileBytes": 639085623,
+    "regularFiles": 3300,
+    "modified": "2026-10-28T10:08:44.308Z",
+    "executable": {
+      "path": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+      "bytes": 52816,
+      "sha256": "7c5614d97997329400cfc13241440a55b5f76bbd5470e7db0d83cb62703ec74f",
+      "modified": "2026-10-28T10:09:53.784Z"
+    }
+  },
+  "frozenSource": "34c0a05b7bd9f005cf2dd6057e8130eb57dedad3",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app",
+  "resources": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "exported": "/Users/mac/Desktop/自媒体工作台-0.5.4-轻量预览",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "AUTH_MODE": "disabled",
+  "version": "0.5.4",
+  "pairId": "nova-content-hub@0.5.4:p1:disabled",
+  "productionReady": false,
+  "plist": {
+    "CFBundleName": "自媒体工作台",
+    "DTXcode": "1640",
+    "DTSDKName": "macosx15.5",
+    "NSHumanReadableCopyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+    "DTSDKBuild": "24F74",
+    "CFBundleVersion": "0.5.4",
+    "ElectronAsarIntegrity": {
+      "Resources/default_app.asar": {
+        "hash": "f80143a17fad2075fe6cf176e07033a41a878dba7f31e7ab4f6f14fcc34162dc",
+        "algorithm": "SHA256"
+      }
+    },
+    "NSCameraUsageDescription": "This app needs access to the camera",
+    "NSMainNibFile": "MainMenu",
+    "CFBundlePackageType": "APPL",
+    "CFBundleIconFile": "icon.icns",
+    "CFBundleShortVersionString": "0.5.4",
+    "NSBluetoothPeripheralUsageDescription": "This app needs access to Bluetooth",
+    "NSHighResolutionCapable": true,
+    "NSMicrophoneUsageDescription": "This app needs access to the microphone",
+    "NSAppTransportSecurity": {
+      "NSExceptionDomains": {
+        "127.0.0.1": {
+          "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+          "NSTemporaryExceptionRequiresForwardSecrecy": false,
+          "NSIncludesSubdomains": false,
+          "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+          "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+        },
+        "localhost": {
+          "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+          "NSTemporaryExceptionRequiresForwardSecrecy": false,
+          "NSIncludesSubdomains": false,
+          "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+          "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+        }
+      },
+      "NSAllowsArbitraryLoads": true,
+      "NSAllowsLocalNetworking": true
+    },
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleExecutable": "自媒体工作台",
+    "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+    "NSPrefersDisplaySafeAreaCompatibilityMode": false,
+    "NSPrincipalClass": "AtomApplication",
+    "CFBundleIdentifier": "com.novaisland.nova-content-hub",
+    "LSApplicationCategoryType": "public.app-category.productivity",
+    "DTXcodeBuild": "16F6",
+    "LSMinimumSystemVersion": "13.0",
+    "CFBundleDisplayName": "自媒体工作台",
+    "LSEnvironment": {
+      "MallocNanoZone": "0"
+    },
+    "NSQuitAlwaysKeepsWindows": false,
+    "NSAudioCaptureUsageDescription": "This app needs access to audio capture",
+    "NSRequiresAquaSystemAppearance": false,
+    "NSBluetoothAlwaysUsageDescription": "This app needs access to Bluetooth",
+    "NSSupportsAutomaticGraphicsSwitching": true
+  },
+  "desktop": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.4",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.4:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "appPackage": {
+    "name": "nova-content-hub-workbench",
+    "private": true,
+    "version": "0.5.4",
+    "main": "workbench/dist/main/index.mjs",
+    "engines": {
+      "node": ">=22.18.0"
+    },
+    "dependencies": {
+      "sharp": "0.35.5",
+      "smol-toml": "1.9.1"
+    },
+    "description": "自媒体工作台 · 第二大脑与内容创作",
+    "author": {
+      "name": "杭州新岛橙灵智能科技有限责任公司"
+    }
+  },
+  "codec": {
+    "root": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/Resources/media-codec/darwin-arm64",
+    "identity": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+    "minimumMacOS": "14.0.0",
+    "validation": "offline-codec-self-test",
+    "manifestEntries": 694,
+    "payloadBytes": 73639571,
+    "fullTreeBytes": 73759801
+  },
+  "plugin": {
+    "zip": "/Users/mac/Desktop/自媒体工作台-0.5.4-轻量预览/Plugin-0.5.4-darwin-arm64-preview-disabled.zip",
+    "manifest": {
+      "bytes": 404616,
+      "sha256": "41edabfb2e1c8b23a2198e3e281b52530067d10c061424e2db0d6de4df24d945",
+      "modified": "2026-10-28T10:08:44.315Z"
+    },
+    "entries": 2070,
+    "runtimeEntries": 2062,
+    "stageAppAndZipSnapshotsExactMatch": true,
+    "AppleDoubleEntries": []
+  },
+  "modelFree": {
+    "resources": true,
+    "zip": true,
+    "zipExtracted": true
+  },
+  "artifactSafety": {
+    "resources": true,
+    "zipExtracted": true
+  },
+  "reportAssets": [
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-template.html",
+      "bytes": 4287,
+      "sha256": "10912c5a2e761d8379c39f30c5b481482729ff30a700d0a8013a17a9eeb35cc5"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/shared/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/vendor/echarts.min.js",
+      "bytes": 1030855,
+      "sha256": "e84270bd0cd5bdf60fefc26d00c2a391cb2e81f4d26a7a9ee16185a54773a3cf"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/account-charts.mjs",
+      "bytes": 6274,
+      "sha256": "0dcfd22c52f0e12693215f9e4fd53f04b51ad33b52c63965b5b80aba0d88a965"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/account_report.py",
+      "bytes": 28670,
+      "sha256": "17d57f6c397a1496e55ba19be216c2385747203ed01b58fb306a87c010fdc8e1"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/assets/page-template.html",
+      "bytes": 9640,
+      "sha256": "0f034f632df08a6fdd35348667babad64f6e00419dd77124c88b44323eb9e113"
+    },
+    {
+      "path": "plugin-src/skills/jc-media-research/upstream/current/scripts/render_report.py",
+      "bytes": 76374,
+      "sha256": "3dfdf57846b22207f00f540ef12cc3c3dfc68faff466bf2a74967ff110ec4aa7"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report-template.html",
+      "bytes": 7293,
+      "sha256": "1f19d647d09a852d5c81986606635694ef08e0a4f76e91394c348c2d656e5070"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/reading.css",
+      "bytes": 24374,
+      "sha256": "65f88904319418b03e202b2f93f1e8f6f82a41805f93e3b4c57cac0ec8ed8f64"
+    },
+    {
+      "path": "plugin-src/skills/jc-comment-visualize/upstream/current/assets/report.js",
+      "bytes": 9666,
+      "sha256": "5732baf68bb15b28a7ba2f8a0297558feb009fa820aa5aa0b28e74257b40a669"
+    }
+  ],
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg",
+      "bytes": 330744838,
+      "sha256": "5f57719c1a1f26e78e75a201e6ad936b531738790ec821da4f5e94e29ee72c09",
+      "modified": "2026-10-28T10:10:39.009Z"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 340990,
+      "sha256": "bd0d32e8be562ece4ef7805754a2e7063f22c814acdf38cd0c6575cf1781aab0",
+      "modified": "2026-10-28T10:10:49.769Z"
+    },
+    {
+      "name": "Plugin-0.5.4-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035099,
+      "sha256": "df56e2e3e9873dce5087412a0acd6d7407efbf1e2b8f73162a9c237f36a56907",
+      "modified": "2026-10-28T10:11:34.932Z"
+    }
+  ],
+  "codesign": {
+    "verifyDeepStrict": true,
+    "signatureType": "ad-hoc",
+    "notarized": false
+  },
+  "pending": [
+    "Final artifact Finder/UI and installation acceptance not performed in this build task",
+    "Same-version real host plugin acceptance not performed; active T051 WorkBuddy session untouched",
+    "Intel Mac and Windows native builds/install/run acceptance",
+    "Real TikHub, business LLM and complete same-chat workflow not verified"
+  ]
+}

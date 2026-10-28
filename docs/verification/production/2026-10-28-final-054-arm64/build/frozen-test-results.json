@@ -1,0 +1,40 @@
+{
+  "frozenSource": "34c0a05b7bd9f005cf2dd6057e8130eb57dedad3",
+  "results": {
+    "app-recovery-50": {
+      "passed": 50,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "sorting-navigation-27": {
+      "passed": 27,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "U1-conflict-6": {
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "vault-busy-timeout-launch-22": {
+      "passed": 22,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "vault-core-lock-1": {
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "exitCode": 0
+    },
+    "typecheck": {
+      "native": "exit0",
+      "renderer": "exit0"
+    }
+  },
+  "note": "Groups overlap (navigation is included in both App and sorting sets); no unique-test aggregate asserted."
+}

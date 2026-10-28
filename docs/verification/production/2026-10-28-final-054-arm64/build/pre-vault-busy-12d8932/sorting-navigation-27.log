@@ -1,0 +1,35 @@
+✔ directory query, pages and layout survive a detail round trip and stay independent per stage (399.198292ms)
+✔ doing resume passes an explicit one-open intent while title opens remain summaries (57.807667ms)
+✔ all-content layout/filter/pages survive leaving the directory without keeping it mounted (24.400458ms)
+✔ switching libraries clears all directory state and all-content search without retaining a hidden list (38.842ms)
+✔ leaving the all-content recycle bin reloads active contents for every stage directory (207.224542ms)
+✔ opening a different library from its recycle bin clears the range and explicitly reads active rows (26.742875ms)
+✔ empty and single unified directories retain page-size controls for 20→50→100→20 (453.315458ms)
+✔ the unified directory includes every source item once in next, paused, written order (166.1105ms)
+✔ each status enum filters exactly its labelled rows and does not alter source facts (27.950041ms)
+✔ query, type and status combine and reset only pagination while keeping list presentation (127.261333ms)
+✔ restored status and page survive mount and view switching; old snapshots default to all (645.395292ms)
+✔ a source refresh removing the final page clamps the unified result page (70.396833ms)
+✔ recording and publication facts remain visible and keep doing/published mode membership (67.120208ms)
+✔ doing primary action resumes editing while its title retains detail and optional fallback (62.823291ms)
+✔ doing and published empty directories both retain the shared page-size control (10.647083ms)
+✔ doing defaults to latest numbered work while original shooting order remains selectable (7.149458ms)
+✔ long card summaries preserve the complete body behind explicit expansion (4.365084ms)
+✔ all contents opens in cards and changing to list preserves the visible filtered content (453.976334ms)
+✔ card title opens the original content while cover action preserves its generate intent (2.764916ms)
+✔ cards and list share pagination instead of a second content projection (99.770625ms)
+✔ a true collection keeps its existing table presentation (8.036583ms)
+✔ search, name sorting and cover-state filters act on the same content in either presentation (56.465333ms)
+✔ name order is descending with numeric titles before pagination in both cards and lists (39.254792ms)
+✔ collections use the same descending numeric name order (17.519417ms)
+✔ a new untitled work remains visible by native T number, searchable and first under number order (6.49025ms)
+✔ ordinary workspace exposes persisted work identity separately from an untitled display name (3024.546708ms)
+✔ vault workspace exposes persisted work identity separately from an untitled display name (10487.571917ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 15658.182292

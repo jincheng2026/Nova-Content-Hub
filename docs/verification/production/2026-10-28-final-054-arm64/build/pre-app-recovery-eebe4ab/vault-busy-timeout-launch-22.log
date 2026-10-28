@@ -1,0 +1,30 @@
+✔ an external live Vault lock releases before the same readonly task request opens its assistant once (21263.590958ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (19.761125ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (12.236458ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (0.6075ms)
+✔ readonly non-BUSY failures are returned once (0.206875ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.247167ms)
+✔ Vault contention retries only the exact finite read, with a bounded friendly failure (1.28775ms)
+✔ Vault contention never replays a mutation (0.640666ms)
+✔ unrelated NOT_READY failures never retry (1.938ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (16.517584ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (3.023333ms)
+✔ finalRead uses the finite read deadline and can retry after exit (1.293ms)
+✔ finalPreview uses the finite read deadline and can retry after exit (0.2195ms)
+✔ finalExport uses the finite read deadline and can retry after exit (0.212875ms)
+✔ finalAssetRaster uses the finite read deadline and can retry after exit (0.214875ms)
+✔ readCoverPackaging uses the finite read deadline and can retry after exit (0.159041ms)
+✔ vaultWorkDirectory uses the finite read deadline and can retry after exit (0.146666ms)
+✔ vaultTopicMenus uses the finite read deadline and can retry after exit (0.13675ms)
+✔ vaultWorkContext uses the finite read deadline and can retry after exit (153.094167ms)
+✔ vaultContentSource uses the finite read deadline and can retry after exit (12.318625ms)
+✔ vaultContentDirectory uses the finite read deadline and can retry after exit (0.556625ms)
+✔ vaultSources uses the finite read deadline and can retry after exit (3.4175ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23201.773208

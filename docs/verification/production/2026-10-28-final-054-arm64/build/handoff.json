@@ -1,0 +1,184 @@
+{
+  "frozenSource": "34c0a05b7bd9f005cf2dd6057e8130eb57dedad3",
+  "sourceBase": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "sourceCherryPicks": [
+    "d6c103b",
+    "3894df2",
+    "fcaf91b",
+    "0adb0e1c85425363ad616f275eeec9d843853c63"
+  ],
+  "sourceClean": true,
+  "noUnsupportedU3Operations": true,
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "app": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app",
+  "resources": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/Resources",
+  "desktop": "/Users/mac/Desktop/自媒体工作台-0.5.4-轻量预览",
+  "version": "0.5.4",
+  "target": "darwin-arm64",
+  "channel": "preview",
+  "AUTH_MODE": "disabled",
+  "pairId": "nova-content-hub@0.5.4:p1:disabled",
+  "experimental": true,
+  "productionReady": false,
+  "status": "Final 0.5.4 build candidate; static gates passed; real installed original-task host prefill and new hint UI remain acceptance gates",
+  "completedAt": "2026-10-28T10:12:42.854Z",
+  "acceptance": {
+    "built": true,
+    "staticArtifactChecks": true,
+    "controlledVaultLockLaunch": true,
+    "appHooksRecovery": true,
+    "installed": false,
+    "appRun": false,
+    "FinderSystemUI": false,
+    "actualHostOriginalTaskPrefill": false,
+    "newHintRealUI": false,
+    "hostPluginsUpdated": false,
+    "realTikHub": false,
+    "businessLLM": false,
+    "completeSameChatWorkflow": false
+  },
+  "validation": {
+    "tests": {
+      "app-recovery-50": {
+        "passed": 50,
+        "failed": 0,
+        "skipped": 0,
+        "exitCode": 0
+      },
+      "sorting-navigation-27": {
+        "passed": 27,
+        "failed": 0,
+        "skipped": 0,
+        "exitCode": 0
+      },
+      "U1-conflict-6": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "exitCode": 0
+      },
+      "vault-busy-timeout-launch-22": {
+        "passed": 22,
+        "failed": 0,
+        "skipped": 0,
+        "exitCode": 0
+      },
+      "vault-core-lock-1": {
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0,
+        "exitCode": 0
+      },
+      "typecheck": {
+        "native": "exit0",
+        "renderer": "exit0"
+      }
+    },
+    "overlappingGroups": "Groups overlap (navigation is included in both App and sorting sets); no unique-test aggregate asserted.",
+    "distExitCode": 0,
+    "codesignDeepStrict": true,
+    "signature": "ad-hoc",
+    "notarized": false,
+    "ResourcesAndPluginModelFree": true,
+    "ResourcesAndPluginSafety": true,
+    "stageAppZipSnapshotMatch": true,
+    "rendererStageAppSnapshotMatch": true,
+    "coreSourceAppPluginHashesMatch": true,
+    "compiledRuntimeFilesMatch": true,
+    "zipCRC": true,
+    "AppleDoubleEntries": 0,
+    "dmgVerify": true
+  },
+  "mechanismClosure": {
+    "vaultLock": "Explicit VAULT_BUSY + bounded same-request readonly retries verified; writes/unrelated NOT_READY never replayed",
+    "workspaceRead": "50-case hooks/scheduler group verifies accurate busy/timeout/access/corruption feedback, finite epoch-bound read recovery, prior workspace/draft preservation and foreground finally release",
+    "limits": "Controlled callback and App hooks do not prove installed real-host task prefill or real UI appearance"
+  },
+  "minimumMacOS": {
+    "appDeclared": "13.0",
+    "codecRequired": "14.0.0",
+    "note": "Media codec requires macOS 14; no macOS 13 codec acceptance claimed."
+  },
+  "codec": {
+    "root": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/Resources/media-codec/darwin-arm64",
+    "identity": "7a72b2fc9a9df50dbd31e394bc24834d62ad6a7f923c539ae0342d609e269d10",
+    "minimumMacOS": "14.0.0",
+    "validation": "offline-codec-self-test",
+    "manifestEntries": 694,
+    "payloadBytes": 73639571,
+    "fullTreeBytes": 73759801
+  },
+  "appAttributes": {
+    "logicalRegularFileBytes": 639085623,
+    "regularFiles": 3300,
+    "modified": "2026-10-28T10:08:44.308Z",
+    "executable": {
+      "path": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-tnfQJf/mac-arm64/自媒体工作台.app/Contents/MacOS/自媒体工作台",
+      "bytes": 52816,
+      "sha256": "7c5614d97997329400cfc13241440a55b5f76bbd5470e7db0d83cb62703ec74f",
+      "modified": "2026-10-28T10:09:53.784Z"
+    }
+  },
+  "appTree": {
+    "snapshot": "app-tree-snapshot.json",
+    "entries": 4196,
+    "snapshotSha256": "e9756e9df62df120068b276f09af47a5912798b8f47721965d446ac97a296183"
+  },
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg",
+      "bytes": 330744838,
+      "sha256": "5f57719c1a1f26e78e75a201e6ad936b531738790ec821da4f5e94e29ee72c09",
+      "modified": "2026-10-28T10:10:39.009Z"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 340990,
+      "sha256": "bd0d32e8be562ece4ef7805754a2e7063f22c814acdf38cd0c6575cf1781aab0",
+      "modified": "2026-10-28T10:10:49.769Z"
+    },
+    {
+      "name": "Plugin-0.5.4-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035099,
+      "sha256": "df56e2e3e9873dce5087412a0acd6d7407efbf1e2b8f73162a9c237f36a56907",
+      "modified": "2026-10-28T10:11:34.932Z"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 350,
+      "sha256": "230788f0a1d67b7730d0e2d273751b25b2589a7f97c18814e9ad19cf11464128",
+      "modified": "2026-10-28T10:12:00.172Z"
+    },
+    {
+      "name": "使用说明.txt",
+      "bytes": 1856,
+      "sha256": "bf90de8ba824b3b239b928554001f85b166a5ca9af25827047973abc0392bc73",
+      "modified": "2026-10-28T10:07:01.335Z"
+    }
+  ],
+  "retainedCandidates": {
+    "previous053": "/Users/mac/Desktop/自媒体工作台-0.5.3-轻量预览",
+    "preVaultBusy12d": "/Users/mac/Desktop/自媒体工作台-0.5.4-轻量预览-锁提示修复前-12d8932",
+    "interruptedEebeStage": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.interrupted-stages.noindex/eebe4ab-auth-disabled"
+  },
+  "retainedWorktree": true,
+  "pendingOwner": "Root",
+  "pending": [
+    "Final artifact Finder/UI and installation acceptance not performed in this build task",
+    "Same-version real host plugin acceptance not performed; active T051 WorkBuddy session untouched",
+    "Intel Mac and Windows native builds/install/run acceptance",
+    "Real TikHub, business LLM and complete same-chat workflow not verified",
+    "Installed original-task real Codex/WorkBuddy prefill and new occupancy/timeout status require manual acceptance"
+  ],
+  "sources": {
+    "freeze": "source-freeze.json",
+    "tests": "frozen-test-results.json",
+    "build": "dist-frozen.log",
+    "artifactVerification": "final-artifact-verification.json",
+    "zip": "zip-structure.json",
+    "appTree": "app-tree-snapshot.json",
+    "codecManifest": "media-codec-manifest.json",
+    "pluginManifest": "plugin-package-files.json",
+    "designRules": "design-rule-verification.json"
+  }
+}

@@ -1,0 +1,30 @@
+✔ an external live Vault lock releases before the same readonly task request opens its assistant once (4865.877459ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (21.933ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (6.738791ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (1.248791ms)
+✔ readonly non-BUSY failures are returned once (0.261917ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (2.904416ms)
+✔ Vault contention retries only the exact finite read, with a bounded friendly failure (1.571375ms)
+✔ Vault contention never replays a mutation (2.031958ms)
+✔ unrelated NOT_READY failures never retry (0.268667ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (80.14275ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.361417ms)
+✔ finalRead uses the finite read deadline and can retry after exit (1.2155ms)
+✔ finalPreview uses the finite read deadline and can retry after exit (0.294334ms)
+✔ finalExport uses the finite read deadline and can retry after exit (2.0195ms)
+✔ finalAssetRaster uses the finite read deadline and can retry after exit (2.905208ms)
+✔ readCoverPackaging uses the finite read deadline and can retry after exit (1.816541ms)
+✔ vaultWorkDirectory uses the finite read deadline and can retry after exit (0.278ms)
+✔ vaultTopicMenus uses the finite read deadline and can retry after exit (0.153083ms)
+✔ vaultWorkContext uses the finite read deadline and can retry after exit (0.191833ms)
+✔ vaultContentSource uses the finite read deadline and can retry after exit (0.15025ms)
+✔ vaultContentDirectory uses the finite read deadline and can retry after exit (0.409417ms)
+✔ vaultSources uses the finite read deadline and can retry after exit (0.313042ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8197.214458

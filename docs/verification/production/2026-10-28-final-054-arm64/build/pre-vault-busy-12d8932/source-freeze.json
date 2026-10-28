@@ -1,0 +1,40 @@
+{
+  "frozenSource": "12d89328d149cdbd9f81078b3912da109de07e48",
+  "base": "00ca6f9be5738e08ac1cf838606a4f9d2516881b",
+  "worktree": "/Users/mac/.codex/worktrees/second-brain-053-build/Nova-Content-Hub",
+  "orderedSourceCherryPicks": [
+    "d6c103b",
+    "3894df2"
+  ],
+  "isolatedCommitHistory": [
+    "12d89328d149cdbd9f81078b3912da109de07e48 chore: freeze 0.5.4 colleague preview fixes",
+    "c7db0d1af38092a60cbc9b7005fb3417917ea334 fix: keep new work visible by stable number and recent order",
+    "e887c51c0cf8155ec4ce085c368b699b1cbca7c6 fix: reconcile retained document edits with current source"
+  ],
+  "excludedKernelCommit258c12e": true,
+  "versions": {
+    "package.json": {
+      "version": "0.5.4"
+    },
+    "package-lock.json": {
+      "version": "0.5.4",
+      "lockRootVersion": "0.5.4"
+    },
+    "release.config.json": {
+      "version": "0.5.4"
+    },
+    "workbench/package.json": {
+      "version": "0.5.4"
+    },
+    "workbench/package-lock.json": {
+      "version": "0.5.4",
+      "lockRootVersion": "0.5.4"
+    }
+  },
+  "notes": [
+    "Reused isolated worktree and native dependencies, no writes to primary product source",
+    "No installation, host-cache upgrade, GUI action or process termination",
+    "0.5.3 artifacts and archived app copies retained",
+    "No unfinished main-branch content journey work included"
+  ]
+}

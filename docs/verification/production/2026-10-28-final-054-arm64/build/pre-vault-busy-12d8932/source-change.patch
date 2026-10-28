@@ -1,0 +1,462 @@
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md b/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md
+new file mode 100644
+index 0000000..cf575e2
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md
+@@ -0,0 +1,11 @@
++# 资料外改冲突收敛 · 0.5.4 源码
++
++本修复在0.5.3独立源码冻结后进行，不属于该预览包。
++
++原问题：资料外部修改后保存发生 CONFLICT，核验未提交并放弃旧 pending 时返回 current=null，保留的编辑器继续用旧 hash 保存，反复报同一冲突。
++
++修复：discard 核验完成后按原 documentId 重读最新原件。编辑器保留本人 text/title/category，以最新原文和 hash 更新源；外部有变化时仍保持 conflict，展示最新原文。用户可明确选择“已对照，保留填写继续编辑”后自行合并，再按最新版本保存。该动作不写库；文件再次变化仍被CAS拒绝。不可读/被替换原件继续禁止保存，不把 current=null 当安全覆盖授权。
++
++验证：先红3项（真实Controller回读为null、恢复状态旧hash），再绿6/6，包含真实临时Vault外改→CONFLICT→discard→保留双版本→明确合并保存，以及再次外改仍拒绝覆盖。旧已提交/新建/后续手改恢复测试保留。未操作真实库。
++
++规则：Surface-03 保留草稿与显式恢复；Controls-01 既有Semi按钮和busy状态；Reading-02 显示完整外部原文；Acceptance-01 定向6/6。新按钮的最终安装版/键盘/截图验收待0.5.4集中验证。全仓typecheck当时仅受并行journey新模块声明未落盘阻断，未宣称全仓已通过。
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log b/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log
+new file mode 100644
+index 0000000..4192601
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log
+@@ -0,0 +1,14 @@
++✔ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (946.556ms)
++✔ another external edit after recovery still rejects the acknowledged old version without overwriting it (1031.342208ms)
++✔ P3: live recovery delivery binds the retained create form to the committed document (1.015917ms)
++✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.132791ms)
++✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.086875ms)
++✔ discarded saves preserve the author draft beside the latest external version and keep comparison required (0.092166ms)
++ℹ tests 6
++ℹ suites 0
++ℹ pass 6
++ℹ fail 0
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 2272.4385
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log b/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log
+new file mode 100644
+index 0000000..a9332ea
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log
+@@ -0,0 +1,53 @@
++✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
++✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
++✔ P3: live recovery delivery binds the retained create form to the committed document (1.146667ms)
++✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.160709ms)
++✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.339625ms)
++✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
++ℹ tests 6
++ℹ suites 0
++ℹ pass 3
++ℹ fail 3
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 3957.682083
++
++✖ failing tests:
++
++test at workbench/test/vault-conflict-closeout.test.mjs:6:1
++✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
++  TypeError: Cannot read properties of null (reading 'text')
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:9:139)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
++
++test at workbench/test/vault-conflict-closeout.test.mjs:13:1
++✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
++  TypeError: Cannot read properties of null (reading 'document')
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:16:134)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
++
++test at workbench/test/vault-editor-recovery.test.mjs:11:1
++✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
++  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++  + actual - expected
++  
++  + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
++  - 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
++  
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-editor-recovery.test.mjs:15:40)
++      at Test.runInAsyncScope (node:async_hooks:227:14)
++      at Test.run (node:internal/test_runner/test:1397:25)
++      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
++      at Test.postRun (node:internal/test_runner/test:1537:19)
++      at Test.run (node:internal/test_runner/test:1462:12)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
++    generatedMessage: true,
++    code: 'ERR_ASSERTION',
++    actual: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
++    expected: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
++    operator: 'strictEqual',
++    diff: 'simple'
++  }
+diff --git a/package-lock.json b/package-lock.json
+index 36d0289..90a052f 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "nova-content-hub-prototype",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "nova-content-hub-prototype",
+-      "version": "0.5.3",
++      "version": "0.5.4",
+       "dependencies": {
+         "sharp": "0.35.5"
+       },
+diff --git a/package.json b/package.json
+index c2be11e..25ce47e 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "nova-content-hub-prototype",
+   "private": true,
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "scripts": {
+     "test": "node --test workbench/prototype/test/*.test.cjs",
+     "test:file-library": "node --test plugin-src/src/lib/file-library/test/*.test.mjs",
+diff --git a/release.config.json b/release.config.json
+index 4f7a7d2..f0365c3 100644
+--- a/release.config.json
++++ b/release.config.json
+@@ -2,7 +2,7 @@
+   "AUTH_MODE": "disabled",
+   "prototype": true,
+   "appScope": "nova-content-hub",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "protocolVersion": 1,
+   "productId": "nova-content-hub"
+ }
+diff --git a/workbench/package-lock.json b/workbench/package-lock.json
+index 862b5e6..65d9246 100644
+--- a/workbench/package-lock.json
++++ b/workbench/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "nova-content-hub-workbench",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "nova-content-hub-workbench",
+-      "version": "0.5.3",
++      "version": "0.5.4",
+       "dependencies": {
+         "sharp": "0.35.5",
+         "smol-toml": "1.9.1"
+diff --git a/workbench/package.json b/workbench/package.json
+index f0d1a78..06c501b 100644
+--- a/workbench/package.json
++++ b/workbench/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "nova-content-hub-workbench",
+   "private": true,
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "type": "module",
+   "main": "dist/main/index.mjs",
+   "engines": {
+diff --git a/workbench/src/main/vault-controller.mts b/workbench/src/main/vault-controller.mts
+index fd1563f..01803aa 100644
+--- a/workbench/src/main/vault-controller.mts
++++ b/workbench/src/main/vault-controller.mts
+@@ -66,8 +66,10 @@ export class VaultController {
+    if(resolved.state==='uncertain')fail('PENDING_MUTATION','上次资料修改结果仍不确定。请恢复原知识库后再次核验，本次填写继续保留。');
+    if(resolved.state==='committed')return this.recovery(pending,resolved.result);
+    if(input.action==='discard'){
++    let current:VaultText|null=null;
++    if('id' in pending.input){try{current=await this.owner.worker.call('vaultDocument',{binding:this.owner.current(),id:pending.input.id});}catch{/* Keep the retained author input read-only until its original source can be restored. */}}
+     await this.owner.persist({...this.owner.binding,vaultPending:null});
+-    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current:null};
++    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current};
+    }
+    // A missing receipt permits retrying precisely the durable intent, never a fresh mutation.
+    const result=await this.owner.worker.call('vaultMutate',{binding:this.owner.current(),pending});
+diff --git a/workbench/src/main/workspace-worker.mts b/workbench/src/main/workspace-worker.mts
+index 7c8c9db..468c400 100644
+--- a/workbench/src/main/workspace-worker.mts
++++ b/workbench/src/main/workspace-worker.mts
+@@ -152,8 +152,8 @@ function document(library: WorkspaceCoreLibrary, input: WorkspaceCoreDocument, k
+         coverVariants: (input.coverVariants ?? []).map(({id, name, ratio, preferredTemplateId, selectedCandidateId}) => ({id, name, ratio, preferredTemplateId, selectedCandidateId}))
+     };
+ }
+-export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument): WorkspaceContentDetails {
+-    return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
++export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument, tNumber: string | null = library.readProduction?.().creations.find(item => item.contentId === content.id)?.tNumber ?? null): WorkspaceContentDetails {
++    return {...document(library, content, 'content'), ...(/^T\d{3,}$/.test(tNumber ?? '') ? {tNumber: tNumber!} : {}), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
+ }
+ function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLibraryPrompt {
+     const prompt = library.readPrompt(id);
+@@ -161,6 +161,7 @@ function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLi
+ }
+ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrarySnapshot {
+     const settings = library.readLibrarySettings();
++    const workNumbers = new Map(library.readProduction?.().creations.map(item => [item.contentId, item.tNumber]) ?? []);
+     return {
+         prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(prompt => {
+             return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true, favorite: prompt.favorite ?? false};
+@@ -183,7 +184,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
+             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
+         }),
+         contentDetails: library.listAllContents().map(content => {
+-            return workspaceContent(library, content);
++            return workspaceContent(library, content, workNumbers.get(content.id) ?? null);
+         }),
+         settings: {
+             editToken: settings.editToken,
+diff --git a/workbench/src/renderer/content-list.tsx b/workbench/src/renderer/content-list.tsx
+index 7bb1e73..b8412b4 100644
+--- a/workbench/src/renderer/content-list.tsx
++++ b/workbench/src/renderer/content-list.tsx
+@@ -23,7 +23,7 @@ export interface ContentListUIState {
+     layout: 'cards' | 'list'; filter: Filter; page: number; pageSize: number;
+     collectionPage: number; collectionPageSize: number; sort: string;
+ }
+-export const createContentListUIState = (): ContentListUIState => ({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'updated'});
++export const createContentListUIState = (): ContentListUIState => ({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'number'});
+ interface Props {
+     contents: Content[] | null; workspace: DesktopResults['readWorkspace'] | null; library: WorkspaceLibrarySnapshot | null;
+     query: string; setQuery(value: string): void; view: View; busy: boolean; blocked: boolean; ready: boolean;
+@@ -77,8 +77,9 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+     })), [contents, summaries, details, library, publications, channelIndex]);
+     const items = useMemo(() => (contents ?? []).filter(item => {
+         const state = facts.get(item.id)!;
+-        return `${item.title} ${item.body}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) && (view === 'trash' || filter === 'all' || filter === 'needs-cover' && state.count === 0 && !state.selected || filter === 'candidates' && state.count !== null && state.count > 0 || filter === 'selected' && !!state.selected || filter === 'published' && state.published);
+-    }).sort((a, b) => (sort === 'name' ? titleOrder.compare(b.title, a.title) : (details.get(b.id)?.updatedAt ?? '').localeCompare(details.get(a.id)?.updatedAt ?? '')) || a.id.localeCompare(b.id)), [contents, facts, query, view, filter, sort, details]);
++        return `${details.get(item.id)?.tNumber ?? ''} ${item.title} ${item.body}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) && (view === 'trash' || filter === 'all' || filter === 'needs-cover' && state.count === 0 && !state.selected || filter === 'candidates' && state.count !== null && state.count > 0 || filter === 'selected' && !!state.selected || filter === 'published' && state.published);
++    }).sort((a, b) => (sort === 'number' ? (Number(details.get(b.id)?.tNumber?.slice(1)) || 0) - (Number(details.get(a.id)?.tNumber?.slice(1)) || 0) : sort === 'name' ? titleOrder.compare(b.title, a.title) : (details.get(b.id)?.[sort === 'created' ? 'createdAt' : 'updatedAt'] ?? '').localeCompare(details.get(a.id)?.[sort === 'created' ? 'createdAt' : 'updatedAt'] ?? '')) || a.id.localeCompare(b.id)), [contents, facts, query, view, filter, sort, details]);
++    const contentLabel = (item: Content) => {const number = details.get(item.id)?.tNumber; const title = item.title || '未命名内容'; return number && !new RegExp('^' + number + '(?:\\s|$)').test(title) ? number + ' ' + title : title;};
+     const currentPage = Math.min(page, Math.max(1, Math.ceil(items.length / pageSize))), currentCollectionPage = Math.min(collectionPage, Math.max(1, Math.ceil(collections.length / collectionPageSize)));
+     // Semi may briefly render its previous rows while applying a new data source.
+     const visibleItems = items.slice((currentPage - 1) * pageSize, currentPage * pageSize).map(item => ({...item, listFacts: facts.get(item.id)!})), visibleCollections = collections.slice((currentCollectionPage - 1) * collectionPageSize, currentCollectionPage * collectionPageSize);
+@@ -90,7 +91,7 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+     return <section className="content-library-page creator-content-library" aria-labelledby="content-heading">
+         <div className="content-list-heading"><div><p className="eyebrow">CONTENT · 内容管理</p><h2 id="content-heading">{collection ? collection.title || '未命名合集' : '内容项目'}</h2><p>{collection ? '集中整理同一主题的内容，点击内容进入单篇详情。' : '整理内容与合集，查看封面和发布进度。'}</p><div className="creator-page-stats"><span>{contents?.length ?? 0} 篇内容</span>{!collection && <span>{collections.length} 个合集</span>}</div></div><div className="management-actions">{collectionActions}{createCollection && <Button disabled={busy || blocked || !ready} onClick={createCollection}>＋ 新建合集</Button>}{create && <Button id="new-content" theme="solid" disabled={busy || blocked || !ready} onClick={create}>＋ 新建内容</Button>}</div></div>
+         {stageTabs}
+-        <ListToolbar search={{label: collection ? '搜索合集内的内容' : '搜索内容', placeholder: '搜索标题、正文或合集名称', value: query, change: setQuery}}><PopupSelect aria-label="内容范围" value={view} disabled={busy || !ready || !!collection} onChange={value => {setMenuId(null); changeView(value === 'trash' ? 'trash' : 'active');}}><option value="active">正常内容</option><option value="trash">回收站</option></PopupSelect><PopupSelect aria-label="内容状态" value={filter} disabled={view === 'trash'} onChange={value => setFilter(value as Filter)}><option value="all">全部状态</option><option value="needs-cover">待做封面</option><option value="candidates">有候选</option><option value="selected">已选封面</option><option value="published">已发布</option></PopupSelect><PopupSelect value={sort} onChange={setSort} aria-label="内容列表排序"><option value="updated">最近更新</option><option value="name">名称（降序）</option></PopupSelect>{!collection && <Radio.Group className="content-directory-switch" aria-label="内容呈现方式" type="button" value={layout} disabled={busy} onChange={event => {updateUI({layout:event.target.value === 'list' ? 'list' : 'cards'});setMenuId(null);}} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/>}</ListToolbar>
++        <ListToolbar search={{label: collection ? '搜索合集内的内容' : '搜索内容', placeholder: '搜索 T 编号、标题、正文或合集名称', value: query, change: setQuery}}><PopupSelect aria-label="内容范围" value={view} disabled={busy || !ready || !!collection} onChange={value => {setMenuId(null); changeView(value === 'trash' ? 'trash' : 'active');}}><option value="active">正常内容</option><option value="trash">回收站</option></PopupSelect><PopupSelect aria-label="内容状态" value={filter} disabled={view === 'trash'} onChange={value => setFilter(value as Filter)}><option value="all">全部状态</option><option value="needs-cover">待做封面</option><option value="candidates">有候选</option><option value="selected">已选封面</option><option value="published">已发布</option></PopupSelect><PopupSelect value={sort} onChange={setSort} aria-label="内容列表排序"><option value="number">编号（降序）</option><option value="created">最近创建</option><option value="updated">最近更新</option><option value="name">名称（降序）</option></PopupSelect>{!collection && <Radio.Group className="content-directory-switch" aria-label="内容呈现方式" type="button" value={layout} disabled={busy} onChange={event => {updateUI({layout:event.target.value === 'list' ? 'list' : 'cards'});setMenuId(null);}} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/>}</ListToolbar>
+         {!collection && view === 'active' && collections.length > 0 && <ImageList className="content-collections" >{visibleCollections.map(group => {const members = group.memberIds.map(id => summaries.get(id)).filter(item => item !== undefined).filter(item => !item.deletedAt); return <List.Item key={group.id}><Button theme="borderless" className="content-collection-card" key={group.id} data-collection-id={group.id} disabled={busy || !openCollection} onClick={() => openCollection?.(group.id)}><CollectionPreview memberIds={group.memberIds} workspace={workspace} library={library}/><span className="content-collection-copy"><strong>{group.title || '未命名合集'} <em>合集</em></strong><small>{members.length} 篇内容</small></span><span aria-hidden="true">›</span></Button></List.Item>;})}</ImageList>}
+         {!collection && view === 'trash' && collections.length > 0 && <ImageList className="content-collections">{visibleCollections.map(group => <List.Item key={group.id}><div className="content-collection-card" key={group.id} data-collection-id={group.id}><span className="content-collection-art" aria-hidden="true">▤</span><span className="content-collection-copy"><strong>{group.title || '未命名合集'} <em>合集</em></strong><small>{group.memberIds.length} 篇内容 · 已移入回收站</small><span>恢复合集不会改变成员内容；成员已回收时请先恢复成员。</span></span><Button disabled={busy || blocked || !restoreCollection} onClick={() => restoreCollection?.(group)}>恢复合集</Button></div></List.Item>)}</ImageList>}
+         {!collection && collections.length > 0 && <PaginationBar total={collections.length} page={currentCollectionPage} pageSize={collectionPageSize} onPageSizeChange={setCollectionPageSize} disabled={busy || blocked} onPageChange={value => {setCollectionPage(value); setMenuId(null);}} label="合集列表分页"/>}
+@@ -98,14 +99,14 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+             const state = item.listFacts;
+             return <article className="content-all-card" data-content-id={item.id} key={item.id}>
+                 {state.url && <Button className="content-all-card-cover" theme="borderless" disabled={busy} aria-label={`打开内容：${item.title || '未命名内容'}`} onClick={() => open(item)}><img loading="lazy" src={state.url} alt="已选封面"/></Button>}
+-                <div className="content-all-card-heading"><Button theme="borderless" className="content-all-card-title" disabled={busy} onClick={() => open(item)}>{item.title || '未命名内容'}</Button><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{view === 'trash' ? '已移入回收站' : state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></div>
++                <div className="content-all-card-heading"><Button theme="borderless" className="content-all-card-title" disabled={busy} onClick={() => open(item)}>{contentLabel(item)}</Button><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{view === 'trash' ? '已移入回收站' : state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></div>
+                 {item.body && <p className="content-all-card-summary">{item.body}</p>}
+                 <div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div>
+                 <div className="content-all-card-facts"><span>{state.planned || '日期待安排'}{state.nextPlan ? ` · ${scheduleClock(state.nextPlan.schedule)}` : ''}</span><span>{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排发布'}</span></div>
+                 {state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}
+                 <div className="content-all-card-actions"><Button theme="borderless" disabled={busy} onClick={() => open(item)}>查看详情</Button>{rowActions(item)}</div>
+             </article>;
+-        })}</div>{!visibleItems.length && empty}<PaginationBar total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value);setMenuId(null);}} label="内容列表分页"/></div> : <DataTable className="content-table-wrap" id="contents" rows={visibleItems} total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value); setMenuId(null);}} label={collection ? '组内内容分页' : '内容列表分页'} rowKey="id" onRow={item => ({'data-content-id': item?.id})} columns={[{title: '内容', key: '内容', render: (_, item) => {const state = item.listFacts; return <><Button theme="borderless" className="content-title-link" disabled={busy} onClick={() => open(item)}><span className="content-thumbnail">{state.url ? <img loading="lazy" src={state.url} alt="已选封面"/> : <span aria-hidden="true">{state.selected ? '已选' : '封面'}</span>}</span><span className="content-title-cell"><strong>{item.title || '未命名内容'}</strong><span>{view === 'trash' ? '已移入回收站' : state.published ? '已有发布记录' : '创作中'}</span></span></Button></>;}},{title: '渠道', key: '渠道', render: (_, item) => {const state = item.listFacts; return <><div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div></>;}},{title: '计划时间', key: '计划时间', render: (_, item) => {const state = item.listFacts; return <><span className="content-plan-date">{state.planned || '日期待安排'}</span>{state.nextPlan && <time className="cell-note" title={publicationTime(state.nextPlan.schedule)}>{scheduleClock(state.nextPlan.schedule)}</time>}{!state.nextPlan && state.planned && <span className="cell-note">时间待定 · 尚未建立计划</span>}</>;}},{title: '封面状态', key: '封面状态', render: (_, item) => {const state = item.listFacts; return <><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></>;}},{title: '发布进度', key: '发布进度', render: (_, item) => {const state = item.listFacts; return <><span className="content-publication-count">{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排'}</span>{state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}</>;}},{title: '操作', key: '操作', render: (_, item) => rowActions(item)}]} empty={empty}/>)}
++        })}</div>{!visibleItems.length && empty}<PaginationBar total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value);setMenuId(null);}} label="内容列表分页"/></div> : <DataTable className="content-table-wrap" id="contents" rows={visibleItems} total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value); setMenuId(null);}} label={collection ? '组内内容分页' : '内容列表分页'} rowKey="id" onRow={item => ({'data-content-id': item?.id})} columns={[{title: '内容', key: '内容', render: (_, item) => {const state = item.listFacts; return <><Button theme="borderless" className="content-title-link" disabled={busy} onClick={() => open(item)}><span className="content-thumbnail">{state.url ? <img loading="lazy" src={state.url} alt="已选封面"/> : <span aria-hidden="true">{state.selected ? '已选' : '封面'}</span>}</span><span className="content-title-cell"><strong>{contentLabel(item)}</strong><span>{view === 'trash' ? '已移入回收站' : state.published ? '已有发布记录' : '创作中'}</span></span></Button></>;}},{title: '渠道', key: '渠道', render: (_, item) => {const state = item.listFacts; return <><div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div></>;}},{title: '计划时间', key: '计划时间', render: (_, item) => {const state = item.listFacts; return <><span className="content-plan-date">{state.planned || '日期待安排'}</span>{state.nextPlan && <time className="cell-note" title={publicationTime(state.nextPlan.schedule)}>{scheduleClock(state.nextPlan.schedule)}</time>}{!state.nextPlan && state.planned && <span className="cell-note">时间待定 · 尚未建立计划</span>}</>;}},{title: '封面状态', key: '封面状态', render: (_, item) => {const state = item.listFacts; return <><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></>;}},{title: '发布进度', key: '发布进度', render: (_, item) => {const state = item.listFacts; return <><span className="content-publication-count">{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排'}</span>{state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}</>;}},{title: '操作', key: '操作', render: (_, item) => rowActions(item)}]} empty={empty}/>)}
+         <p className="content-list-count">{ready ? collection ? `共匹配 ${items.length} 篇内容` : `共匹配 ${items.length + collections.length} 项（${collections.length} 个合集 · ${items.length} 篇内容）` : '内容保存在你的本机'}</p>
+     </section>;
+ }
+diff --git a/workbench/src/renderer/jincheng-content-directory.tsx b/workbench/src/renderer/jincheng-content-directory.tsx
+index c4fcdd2..fd09389 100644
+--- a/workbench/src/renderer/jincheng-content-directory.tsx
++++ b/workbench/src/renderer/jincheng-content-directory.tsx
+@@ -15,12 +15,12 @@ import {JinchengStageActions} from './jincheng-stage-actions.tsx';
+ import {PaginationBar} from './pagination-bar.tsx';
+ import './jincheng-workbench.css';
+ import './jincheng-content-cards.css';
+-export type DirectoryUIState={query:string;type:string;status:'all'|'todo'|'paused'|'written';view:'cards'|'list';page:number;pageSize:number;deferredPage:number;pastPage:number};
++export type DirectoryUIState={query:string;type:string;status:'all'|'todo'|'paused'|'written';view:'cards'|'list';page:number;pageSize:number;doingSort?:'recent'|'plan';deferredPage:number;pastPage:number};
+ export function createDirectoryUIState():DirectoryUIState{return {query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1};}
+ export function JinchengContentDirectory({mode,contents,busy=false,embedded=false,library,openContent,resumeContent,createContent,uiState,onUIStateChange}:{mode:'topics'|'doing'|'published';contents:Content[];busy?:boolean;embedded?:boolean;library?:WorkspaceLibrarySnapshot|null;openContent(id:string):void;resumeContent?(id:string):void;createContent?():void;uiState?:DirectoryUIState;onUIStateChange?:(patch:Partial<DirectoryUIState>)=>void}){
+  const [vault,setVault]=useState<VaultSnapshot|null>(null),[workRows,setWorkRows]=useState<VaultWorkDirectoryRow[]>([]),[production,setProduction]=useState<ProductionSnapshot|null>(null),[overviewText,setOverviewText]=useState(''),[loaded,setLoaded]=useState(false),[notice,setNotice]=useState(''),[version,setVersion]=useState(0);
+  const [localUIState,setLocalUIState]=useState<DirectoryUIState>(uiState??{query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1});
+- const {query,type,status='all',view,page,pageSize}=uiState??localUIState;
++ const {query,type,status='all',view,page,pageSize,doingSort='recent'}=uiState??localUIState;
+  const updateUI=(patch:Partial<DirectoryUIState>)=>{setLocalUIState(current=>({...current,...patch}));onUIStateChange?.(patch);};
+  const resetPages={page:1};
+  const setQuery=(query:string)=>updateUI({query,...resetPages}),setType=(type:string)=>updateUI({type,...resetPages}),setStatus=(value:string)=>updateUI({status:value==='todo'||value==='paused'||value==='written'?value:'all',...resetPages}),setPageSize=(pageSize:number)=>updateUI({pageSize,...resetPages});
+@@ -63,7 +63,7 @@ export function JinchengContentDirectory({mode,contents,busy=false,embedded=fals
+   return {content,fact,tNumber,number,entry,category,deferred,plan,order,topicStatus,type:inferredType,published,recorded,publications,creation,hasDraft,docs};
+  });
+  const types=[...new Set(rows.map(row=>row.type))],shown=rows.filter(row=>(type==='all'||row.type===type)&&workMatches(query,{tNumber:row.tNumber,title:row.content.title,summary:row.entry?.summary??''}));
+- const next=shown.filter(row=>row.category==='topics'&&!row.deferred).sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),deferred=shown.filter(row=>row.category==='topics'&&row.deferred).sort((a,b)=>a.number-b.number),past=shown.filter(row=>row.category!=='topics').sort((a,b)=>b.number-a.number),doing=shown.filter(row=>row.category==='doing').sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),published=shown.filter(row=>row.published).sort((a,b)=>b.number-a.number);
++ const next=shown.filter(row=>row.category==='topics'&&!row.deferred).sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),deferred=shown.filter(row=>row.category==='topics'&&row.deferred).sort((a,b)=>a.number-b.number),past=shown.filter(row=>row.category!=='topics').sort((a,b)=>b.number-a.number),doing=shown.filter(row=>row.category==='doing').sort((a,b)=>doingSort==='plan'?(a.order??999)-(b.order??999)||a.number-b.number:(library?.contentDetails.find(item=>item.id===b.content.id)?.createdAt??'').localeCompare(library?.contentDetails.find(item=>item.id===a.content.id)?.createdAt??'')||b.number-a.number),published=shown.filter(row=>row.published).sort((a,b)=>b.number-a.number);
+  const visible=mode==='topics'?[...next,...deferred,...past].filter(row=>status==='all'||row.topicStatus===status):mode==='doing'?doing:published,currentPage=Math.min(page,Math.max(1,Math.ceil(visible.length/pageSize))),pageItems=visible.slice((currentPage-1)*pageSize,currentPage*pageSize);
+  const renderRow=(row:typeof rows[number])=>{
+   const sourceSummary=row.entry?.summary?.trim(),summary=sourceSummary&&sourceSummary!==row.content.title.trim()?sourceSummary:(row.content.body.trim()||row.creation?.narrative.trim()||'');
+@@ -82,7 +82,7 @@ export function JinchengContentDirectory({mode,contents,busy=false,embedded=fals
+  const renderItems=(items:typeof rows)=><div className={view==='cards'?'jincheng-content-grid':'jincheng-content-list'}>{items.map(renderRow)}</div>;
+  return <section className="production-workspace jincheng-content-directory" aria-label={mode==='topics'?'选题':mode==='doing'?'在做':'已发布'}>
+   {!embedded&&<header className="production-page-head"><div><h2>{mode==='topics'?`选题 · ${visible.length}`:mode==='doing'?'在做':'已发布'}</h2></div>{createContent&&<Button disabled={busy} onClick={createContent}>新建选题</Button>}</header>}
+-  <div className="production-toolbar jincheng-content-toolbar"><Input aria-label="搜索内容编号或选题" placeholder="搜索 T 编号、选题或说明" value={query} onChange={setQuery}/><PopupSelect className="jincheng-type-filter" aria-label="内容类型" searchable value={type} onChange={setType}><option value="all">全部类型</option>{types.map(name=><option value={name} key={name}>{name}</option>)}</PopupSelect>{mode==='topics'&&<PopupSelect className="jincheng-status-filter" aria-label="选题状态" value={status} onChange={setStatus}><option value="all">全部状态</option><option value="todo">待做</option><option value="paused">暂缓</option><option value="written">已写</option></PopupSelect>}<Radio.Group className="jincheng-content-view-switch" aria-label="内容呈现方式" type="button" value={view} onChange={event=>updateUI({view:event.target.value==='list'?'list':'cards'})} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/><Button disabled={busy||!loaded} onClick={()=>setVersion(n=>n+1)}>刷新</Button></div>
++  <div className="production-toolbar jincheng-content-toolbar"><Input aria-label="搜索内容编号或选题" placeholder="搜索 T 编号、选题或说明" value={query} onChange={setQuery}/><PopupSelect className="jincheng-type-filter" aria-label="内容类型" searchable value={type} onChange={setType}><option value="all">全部类型</option>{types.map(name=><option value={name} key={name}>{name}</option>)}</PopupSelect>{mode==='topics'&&<PopupSelect className="jincheng-status-filter" aria-label="选题状态" value={status} onChange={setStatus}><option value="all">全部状态</option><option value="todo">待做</option><option value="paused">暂缓</option><option value="written">已写</option></PopupSelect>}{mode==='doing'&&<PopupSelect aria-label="在做排序" value={doingSort} onChange={value=>updateUI({doingSort:value==='plan'?'plan':'recent',page:1})}><option value="recent">最新内容</option><option value="plan">拍摄顺序</option></PopupSelect>}<Radio.Group className="jincheng-content-view-switch" aria-label="内容呈现方式" type="button" value={view} onChange={event=>updateUI({view:event.target.value==='list'?'list':'cards'})} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/><Button disabled={busy||!loaded} onClick={()=>setVersion(n=>n+1)}>刷新</Button></div>
+   {notice&&<Banner type="warning" closeIcon={null} description={notice}/>}
+   <JinchengStageActions title={mode==='topics'?'准备一条新内容':'需要助手继续时'} busy={busy} actions={mode==='topics'?['topics','intake']:mode==='published'?['closeout','review']:['writing','tutorial']}/>
+   {mode==='topics'&&<JinchengTopicMenus busy={busy} openContent={openContent}/>}
+diff --git a/workbench/src/renderer/vault-workspace.tsx b/workbench/src/renderer/vault-workspace.tsx
+index 6a6ab44..72295fe 100644
+--- a/workbench/src/renderer/vault-workspace.tsx
++++ b/workbench/src/renderer/vault-workspace.tsx
+@@ -65,7 +65,7 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
+    {!originalCreation&&(!markdownDocument||editing)&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
+    <p role="status">{message}</p>
+    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
+-   {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
++   {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{!sourceUnavailable&&<Button disabled={busy||working} onClick={()=>{setConflict(false);setConfirmReload(false);setEditing(true);setMessage('已保留本次填写，可对照当前版本继续编辑并保存。');}}>已对照，保留填写继续编辑</Button>}{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
+    <div className="actions">{current?.workingDraftAvailable&&!originalCreation&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict} onClick={()=>void establishWorkingDraft()}>建立可编辑工作稿</Button>}{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
+    {current&&!readonly&&<details className="vault-document-more"><summary>更多操作</summary>{dirty?<p>请先保存或放弃本次修改，再回收资料。</p>:confirmTrash?<div role="alert"><p>将原资料移入知识库回收区，保留恢复原件的机会。</p><Button type="danger" disabled={working} onClick={()=>void trash()}>确认移入回收区</Button><Button onClick={()=>setConfirmTrash(false)}>取消</Button></div>:<Button type="danger" theme="borderless" onClick={()=>setConfirmTrash(true)}>移入回收区</Button>}</details>}
+   </div>
+diff --git a/workbench/src/shared/vault-editor-recovery.ts b/workbench/src/shared/vault-editor-recovery.ts
+index 209e6c3..690cec2 100644
+--- a/workbench/src/shared/vault-editor-recovery.ts
++++ b/workbench/src/shared/vault-editor-recovery.ts
+@@ -10,7 +10,13 @@ function sameInput(a:VaultEditorSubmission,b:VaultEditorSubmission){return a.met
+ export function reconcileVaultEditor(state:VaultEditorState,recovery:VaultRecovery):VaultEditorRecovered|null{
+  if(!state.submission||!sameInput(state.submission,recovery))return null;
+  const base={...state,submission:null,conflict:false,sourceUnavailable:false};
+- if(recovery.outcome==='discarded')return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
++ if(recovery.outcome==='discarded'){
++  if(!state.current)return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
++  const latest=recovery.current;
++  if(!latest||latest.document.id!==state.current.document.id)return {...base,sourceUnavailable:true,conflict:true,message:'本次填写仍保留，原文件暂不可读取。请恢复原件后继续。'};
++  const conflict=latest.document.hash!==state.current.document.hash&&state.text!==latest.text;
++  return {...base,current:latest,conflict,message:conflict?'本次填写已保留。请对照外部最新原文后继续编辑。':'已确认上次修改未提交，本次填写仍保留。'};
++ }
+  if(!recovery.result||!('document' in recovery.result))return {...base,sourceUnavailable:true,message:'已确认资料移入回收区。本次填写仍保留，可关闭后查看知识库。'};
+  const committed=recovery.result,latest=recovery.current;
+  if(!latest)return {...base,current:committed,sourceUnavailable:true,message:'上次修改已提交，原文件目前不可读取。文档身份与本次填写已保留，请定位原件后继续。'};
+diff --git a/workbench/src/shared/workspace-contracts.ts b/workbench/src/shared/workspace-contracts.ts
+index eebaf1c..e61394e 100644
+--- a/workbench/src/shared/workspace-contracts.ts
++++ b/workbench/src/shared/workspace-contracts.ts
+@@ -75,7 +75,7 @@ export interface WorkspaceDocument extends WorkspaceEntity {
+     publicationEvents: WorkspacePublicationEvent[]; candidates: WorkspaceCandidate[];
+     coverVariants: {id: string; name: string; ratio: string; preferredTemplateId: string | null; selectedCandidateId: string | null}[];
+ }
+-export interface WorkspaceContentDetails extends WorkspaceDocument { recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
++export interface WorkspaceContentDetails extends WorkspaceDocument { tNumber?: string; recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
+ export interface WorkspaceLibraryCollection extends WorkspaceDocument { dateRange: {start: string | null; end: string | null}; memberIds: string[] }
+ export interface WorkspaceLibrarySettings {
+     editToken: string; profile: WorkspaceProfile; defaults: WorkspaceDefaults;
+diff --git a/workbench/src/shared/workspace-core.d.ts b/workbench/src/shared/workspace-core.d.ts
+index 61b1075..87050dc 100644
+--- a/workbench/src/shared/workspace-core.d.ts
++++ b/workbench/src/shared/workspace-core.d.ts
+@@ -43,6 +43,7 @@ interface TemplatePackage {
+     resources: Record<string, {assetHash: string; bytes: number; detectedType: string; role: 'style'}>;
+ }
+ export interface WorkspaceCoreLibrary {
++    readProduction?(): {creations: {contentId: string; tNumber: string}[]};
+     importAsset(source: string, input: {purpose: 'template-reference' | 'material'}): {assetHash: string};
+     readAsset(assetHash: string): {assetHash: string; bytes: number; detectedType: string; data: Uint8Array};
+     listContents(): WorkspaceCoreDocument[];
+diff --git a/workbench/test/content-directory-pagination.test.mjs b/workbench/test/content-directory-pagination.test.mjs
+index 54e6c4a..0229194 100644
+--- a/workbench/test/content-directory-pagination.test.mjs
++++ b/workbench/test/content-directory-pagination.test.mjs
+@@ -140,6 +140,12 @@ test('doing and published empty directories both retain the shared page-size con
+   const f=fixture({mode,counts:[0,0,0]}),tree=await f.ready();assert.equal(pager(tree,'选题列表分页').props.total,0);
+  }
+ });
++test('doing defaults to latest numbered work while original shooting order remains selectable',async()=>{
++ const f=fixture({mode:'doing',counts:[0,0,3],overviewText:'## 近三天内容安排\n|日期|安排|对应选题|\n|---|---|---|\n|2026-10-28|拍摄顺序|T2001 T2002|'});let tree=await f.ready();
++ assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
++ tree=change(f,'在做排序','plan');assert.deepEqual(ids(tree),['T2001','T2002','T2003']);
++ tree=change(f,'在做排序','recent');assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
++});
+ 
+ test('long card summaries preserve the complete body behind explicit expansion',async()=>{
+  const f=fixture({counts:[1,0,0]}),tree=await f.ready();
+diff --git a/workbench/test/content-list-cards.test.mjs b/workbench/test/content-list-cards.test.mjs
+index d47a5b4..417394b 100644
+--- a/workbench/test/content-list-cards.test.mjs
++++ b/workbench/test/content-list-cards.test.mjs
+@@ -64,3 +64,13 @@ test('collections use the same descending numeric name order',()=>{
+  const f=fixture({library:{collections,contentDetails:[],settings:{channels:[]}}});let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();
+  assert.deepEqual(view.buttons.filter(button=>button['data-collection-id']).map(button=>button['data-collection-id']),['group-10','group-2','group-1']);
+ });
++test('a new untitled work remains visible by native T number, searchable and first under number order',()=>{
++ const contents=[{id:'old',title:'T050 旧内容',body:''},{id:'new',title:'未定标题',body:''}];
++ const library={collections:[],settings:{channels:[]},contentDetails:[{id:'old',tNumber:'T050',createdAt:'2026-10-27',updatedAt:'2026-10-27',candidates:[],plans:[],channelIds:[]},{id:'new',tNumber:'T051',createdAt:'2026-10-28',updatedAt:'2026-10-28',candidates:[],plans:[],channelIds:[]}]};
++ const f=fixture({contents,library});let view=f.render();
++ view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('number');view=f.render();
++ assert.ok(view.html.indexOf('data-content-id="new"')<view.html.indexOf('data-content-id="old"'));assert.match(view.html,/T051 未定标题/);
++ f.props.query='T051';view=f.render();assert.match(view.html,/data-content-id="new"/);assert.doesNotMatch(view.html,/data-content-id="old"/);
++ view.buttons.find(button=>button.children==='列表').onClick();view=f.render();assert.deepEqual(view.tables[0].rows.map(item=>item.id),['new']);
++ assert.equal(view.tables[0].total,1);
++});
+diff --git a/workbench/test/vault-conflict-closeout.test.mjs b/workbench/test/vault-conflict-closeout.test.mjs
+new file mode 100644
+index 0000000..62dfc9b
+--- /dev/null
++++ b/workbench/test/vault-conflict-closeout.test.mjs
+@@ -0,0 +1,17 @@
++import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
++import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
++import {DesktopController} from '../src/main/controller.mts';import {BindingStore,emptyBinding} from '../src/main/bindings.mts';import {execute} from '../src/main/worker.mts';
++import {reconcileVaultEditor} from '../src/shared/vault-editor-recovery.ts';
++async function fixture(t){const root=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'vault-conflict-closeout-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));const vault=path.join(root,'第二大脑');await fs.mkdir(vault);const binding=createVault(vault),store=new BindingStore(path.join(root,'machine.json'));await store.save({...emptyBinding(),current:binding});const c=new DesktopController({store,worker:{call:(op,args)=>execute(op,args,'disabled')},documents:root,authMode:'disabled',dialogs:{library:async()=>null,destination:async()=>null}});await c.initialize();return{c,vault};}
++test('discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving',async t=>{
++ const {c,vault}=await fixture(t),original=await c.createVaultDocument({section:'materials',title:'原文冲突',text:'旧原文'}),input={id:original.document.id,expectedHash:original.document.hash,text:'本人草稿'},file=path.join(vault,original.document.relativePath);
++ await fs.writeFile(file,'外部修改');await assert.rejects(c.saveVaultDocument(input),{code:'CONFLICT'});
++ const recovery=await c.recoverVaultMutation({action:'discard'});assert.equal(recovery.outcome,'discarded');assert.equal(recovery.current.text,'外部修改');assert.notEqual(recovery.current.document.hash,original.document.hash);
++ const editor=reconcileVaultEditor({current:original,text:'本人草稿',title:'原文冲突',category:'materials',submission:{method:'saveVaultDocument',input}},recovery);assert.equal(editor.text,'本人草稿');assert.equal(editor.conflict,true);
++ const saved=await c.saveVaultDocument({id:editor.current.document.id,expectedHash:editor.current.document.hash,text:editor.current.text+'\n'+editor.text});assert.equal(saved.text,'外部修改\n本人草稿');assert.equal(await fs.readFile(file,'utf8'),saved.text);
++});
++test('another external edit after recovery still rejects the acknowledged old version without overwriting it',async t=>{
++ const {c,vault}=await fixture(t),original=await c.createVaultDocument({section:'materials',title:'再次变化',text:'旧原文'}),file=path.join(vault,original.document.relativePath);
++ await fs.writeFile(file,'外部修改');await assert.rejects(c.saveVaultDocument({id:original.document.id,expectedHash:original.document.hash,text:'本人草稿'}),{code:'CONFLICT'});const recovered=await c.recoverVaultMutation({action:'discard'});
++ await fs.writeFile(file,'第二次外部修改');await assert.rejects(c.saveVaultDocument({id:original.document.id,expectedHash:recovered.current.document.hash,text:'本人草稿'}),{code:'CONFLICT'});assert.equal(await fs.readFile(file,'utf8'),'第二次外部修改');
++});
+diff --git a/workbench/test/vault-editor-recovery.test.mjs b/workbench/test/vault-editor-recovery.test.mjs
+index dab6771..0b4a11a 100644
+--- a/workbench/test/vault-editor-recovery.test.mjs
++++ b/workbench/test/vault-editor-recovery.test.mjs
+@@ -8,3 +8,10 @@ const initial={current:null,title:'新资料',text:'原提交',category:'materia
+ test('P3: live recovery delivery binds the retained create form to the committed document',()=>{const bus=new EventTarget();let state=initial;const stop=listenVaultRecovery(bus,result=>{const next=reconcileVaultEditor(state,result);if(next)state=next;});announceVaultRecovery(bus,recovery);assert.equal(state.current.document.id,document.id);assert.equal(state.text,state.current.text);assert.equal(state.submission,null);assert.equal(state.sourceUnavailable,false);announceVaultRecovery(bus,{...recovery,current:{...committed,text:'later unrelated event'}});assert.equal(state.text,'原提交');stop();});
+ test('P3: later local edits survive, use the fresh hash and flag divergent external content',()=>{const local={...initial,text:'提交后继续填写'};const normal=reconcileVaultEditor(local,recovery);assert.equal(normal.text,local.text);assert.equal(normal.conflict,false);assert.equal(normal.current.document.id,document.id);const latest={document:{...document,hash:'b'.repeat(64)},text:'外部后续版本'},changed=reconcileVaultEditor(local,{...recovery,current:latest});assert.equal(changed.text,local.text);assert.equal(changed.current.text,latest.text);assert.equal(changed.current.document.hash,latest.document.hash);assert.equal(changed.conflict,true);const unchanged=reconcileVaultEditor(initial,{...recovery,current:latest});assert.equal(unchanged.text,latest.text);assert.equal(unchanged.conflict,false);});
+ test('P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates',()=>{const moved=reconcileVaultEditor(initial,{...recovery,current:null});assert.equal(moved.current.document.id,document.id);assert.equal(moved.sourceUnavailable,true);assert.equal(reconcileVaultEditor(initial,{...recovery,input:{...input,title:'另一份资料'}}),null);const discarded=reconcileVaultEditor({...initial,text:'新填写'},{...recovery,outcome:'discarded',result:null,current:null});assert.equal(discarded.text,'新填写');assert.equal(discarded.current,null);assert.equal(discarded.submission,null);});
++test('discarded saves preserve the author draft beside the latest external version and keep comparison required',()=>{
++ const input={id:document.id,expectedHash:document.hash,text:'本人草稿'},latest={document:{...document,hash:'b'.repeat(64)},text:'外部修改'};
++ const state={...initial,current:committed,text:'本人草稿',submission:{method:'saveVaultDocument',input}};
++ const next=reconcileVaultEditor(state,{mutationId:recovery.mutationId,method:'saveVaultDocument',input,outcome:'discarded',result:null,current:latest});
++ assert.equal(next.text,'本人草稿');assert.equal(next.current.document.hash,latest.document.hash);assert.equal(next.current.text,'外部修改');assert.equal(next.conflict,true);assert.equal(next.sourceUnavailable,false);
++ const missing=reconcileVaultEditor(state,{mutationId:recovery.mutationId,method:'saveVaultDocument',input,outcome:'discarded',result:null,current:null});assert.equal(missing.text,'本人草稿');assert.equal(missing.sourceUnavailable,true);
++});
+diff --git a/workbench/test/workspace-content-number.test.mjs b/workbench/test/workspace-content-number.test.mjs
+new file mode 100644
+index 0000000..824dcb2
+--- /dev/null
++++ b/workbench/test/workspace-content-number.test.mjs
+@@ -0,0 +1,17 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import os from 'node:os';
++import path from 'node:path';
++import {createLibrary,openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
++import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
++import {workspaceLibrary} from '../src/main/workspace-worker.mts';
++for(const kind of ['ordinary','vault'])test(`${kind} workspace exposes persisted work identity separately from an untitled display name`,t=>{
++ const root=fs.mkdtempSync(path.join(os.tmpdir(),'nova-work-number-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
++ if(kind==='vault')fs.mkdirSync(path.join(root,'vault'));
++ const lib=kind==='vault'?openLibrary(createVault(path.join(root,'vault')).root):createLibrary(path.join(root,'library')),content=lib.createContent({title:'未定标题',body:''});
++ lib.mutateProduction('ensureCreation',{contentId:content.id,expectedToken:lib.readProduction().editToken});
++ const expected=lib.readProductionCreation(content.id).creation.tNumber;
++ assert.match(expected,/^T\d{3,}$/);assert.equal(workspaceLibrary(lib).contentDetails.find(item=>item.id===content.id).tNumber,expected);
++ assert.equal(lib.readContent(content.id).title,'未定标题');
++});

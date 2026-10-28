@@ -1,0 +1,1231 @@
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/README.md b/docs/verification/production/2026-10-28-vault-busy-launch/README.md
+new file mode 100644
+index 0000000..6a1f13a
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/README.md
+@@ -0,0 +1,7 @@
++# Vault锁竞争与助手打开
++
++安装版原任务点击时曾显示通用NOT_READY。安装验收者用安装版独立临时库复现：外部进程持有活Vault锁→productionRead原NOT_READY→WorkerClient通用文案，posts1/launches0；无竞争读取与锁释放后恢复通过。该证据证明锁竞争可导致症状，不证明真实现场每次都由此引起。安装证据见相邻2026-10-28-assistant-launch-053/not-ready-diagnosis。
++
++修复只将core活Vault锁竞争细分VAULT_BUSY，并在WorkerClient既有白名单有限读上按100/250/500/1000/1500/2000ms等待同一已冻结请求；仍受15s总读取截止。最多6次额外尝试，耗尽显示明确占用提示。普通NOT_READY、所有写入/提交/恢复均不自动重放；不删除活锁。
++
++Root新增真实子进程持锁→ProductionController.launch+实际executeProduction→同请求重试→锁自然释放→launch回调一次，经历RED→GREEN；worker busy/timeout/真实launch合计22/22、core锁隔离1/1通过。主目录当次类型检查未通过：A2并行实现的resolveSampleEvidence声明及ResearchSearchEvidence→ProductionJSON仍处中间态，原始失败日志保留；不能据此声称完整类型检查通过。独立0.5.4冻结产物须重新执行并记录类型检查。该回调不等于真实宿主已跳转，最终0.5.4包安装后的原任务预填仍须现场复验。原库无本轮测试写入，无付费/网络。
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/core.log b/docs/verification/production/2026-10-28-vault-busy-launch/core.log
+new file mode 100644
+index 0000000..954a876
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/core.log
+@@ -0,0 +1,9 @@
++✔ a finite read cannot observe a transaction owned by another process (865.545667ms)
++ℹ tests 1
++ℹ suites 0
++ℹ pass 1
++ℹ fail 0
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 1600.001584
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/green.log b/docs/verification/production/2026-10-28-vault-busy-launch/green.log
+new file mode 100644
+index 0000000..51d5065
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/green.log
+@@ -0,0 +1,30 @@
++✔ an external live Vault lock releases before the same readonly task request opens its assistant once (8814.828292ms)
++✔ a readonly BUSY retries the pinned request, occupying the single pending slot (12.506583ms)
++✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (8.9445ms)
++✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (1.355167ms)
++✔ readonly non-BUSY failures are returned once (0.268ms)
++✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.262125ms)
++✔ Vault contention retries only the exact finite read, with a bounded friendly failure (0.648833ms)
++✔ Vault contention never replays a mutation (0.182458ms)
++✔ unrelated NOT_READY failures never retry (0.182375ms)
++✔ a hung refresh stops its reader and releases the operation queue only after worker exit (16.265917ms)
++✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.374625ms)
++✔ finalRead uses the finite read deadline and can retry after exit (3.527708ms)
++✔ finalPreview uses the finite read deadline and can retry after exit (0.606166ms)
++✔ finalExport uses the finite read deadline and can retry after exit (0.351625ms)
++✔ finalAssetRaster uses the finite read deadline and can retry after exit (12.759833ms)
++✔ readCoverPackaging uses the finite read deadline and can retry after exit (0.320208ms)
++✔ vaultWorkDirectory uses the finite read deadline and can retry after exit (0.365875ms)
++✔ vaultTopicMenus uses the finite read deadline and can retry after exit (9.953667ms)
++✔ vaultWorkContext uses the finite read deadline and can retry after exit (0.628041ms)
++✔ vaultContentSource uses the finite read deadline and can retry after exit (0.480542ms)
++✔ vaultContentDirectory uses the finite read deadline and can retry after exit (1.281375ms)
++✔ vaultSources uses the finite read deadline and can retry after exit (0.227ms)
++ℹ tests 22
++ℹ suites 0
++ℹ pass 22
++ℹ fail 0
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 9412.33475
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/real-launch-red.log b/docs/verification/production/2026-10-28-vault-busy-launch/real-launch-red.log
+new file mode 100644
+index 0000000..1a82c64
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/real-launch-red.log
+@@ -0,0 +1,21 @@
++✖ an external live Vault lock releases before the same readonly task request opens its assistant once (2748.047709ms)
++ℹ tests 1
++ℹ suites 0
++ℹ pass 0
++ℹ fail 1
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 3846.032667
++
++✖ failing tests:
++
++test at workbench/test/vault-busy-launch.test.mjs:13:1
++✖ an external live Vault lock releases before the same readonly task request opens its assistant once (2748.047709ms)
++  Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
++      at EventEmitter.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:48:50)
++      at EventEmitter.emit (node:events:514:28)
++      at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-busy-launch.test.mjs:20:343
++      at process.processTicksAndRejections (node:internal/process/task_queues:104:5) {
++    code: 'NOT_READY'
++  }
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/typecheck.log b/docs/verification/production/2026-10-28-vault-busy-launch/typecheck.log
+new file mode 100644
+index 0000000..32f1229
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/typecheck.log
+@@ -0,0 +1,12 @@
++
++> nova-content-hub-workbench@0.5.4 typecheck
++> npm run typecheck:native && npm run typecheck:renderer
++
++
++> nova-content-hub-workbench@0.5.4 typecheck:native
++> tsc -p tsconfig.native.json --noEmit
++
++src/main/jincheng-research-services.mts(31,73): error TS2353: Object literal may only specify known properties, and 'resolveSampleEvidence' does not exist in type 'ResearchRuntimeOptions'.
++src/main/jincheng-research-services.mts(31,101): error TS7006: Parameter 'sourceRequestId' implicitly has an 'any' type.
++src/main/production-services.mts(167,198): error TS2322: Type '{ sourceReceiptId?: string | undefined; videoId?: string | undefined; canonicalUrl?: string | undefined; responseHash?: string | undefined; researchVideoIds?: string[]; researchSampleEvidence?: ResearchSearchEvidence; ... 4 more ...; radarAuthorIds?: string[] | undefined; }' is not assignable to type 'ProductionJSON | undefined'.
++  Type '{ sourceReceiptId?: string | undefined; videoId?: string | undefined; canonicalUrl?: string | undefined; responseHash?: string | undefined; researchVideoIds?: string[]; researchSampleEvidence?: ResearchSearchEvidence; ... 4 more ...; radarAuthorIds?: string[] | undefined; }' is not assignable to type 'undefined'.
+diff --git a/docs/verification/production/2026-10-28-vault-busy-launch/worker-red.log b/docs/verification/production/2026-10-28-vault-busy-launch/worker-red.log
+new file mode 100644
+index 0000000..cdb0209
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-busy-launch/worker-red.log
+@@ -0,0 +1,45 @@
++✔ a readonly BUSY retries the pinned request, occupying the single pending slot (7.905041ms)
++✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (3.659666ms)
++✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (4.779125ms)
++✔ readonly non-BUSY failures are returned once (1.721875ms)
++✔ stop cancels a scheduled retry, rejects its caller and never respawns (5.287917ms)
++✖ Vault contention retries only the exact finite read, with a bounded friendly failure (3.675583ms)
++✔ Vault contention never replays a mutation (1.050125ms)
++✔ unrelated NOT_READY failures never retry (0.234042ms)
++ℹ tests 8
++ℹ suites 0
++ℹ pass 7
++ℹ fail 1
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 311.020375
++
++✖ failing tests:
++
++test at workbench/test/worker-client-busy.test.mjs:82:1
++✖ Vault contention retries only the exact finite read, with a bounded friendly failure (3.675583ms)
++  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
++  
++  Caught error:
++  
++  Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
++      at async TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:85:2)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
++    generatedMessage: true,
++    code: 'ERR_ASSERTION',
++    actual: Error: 文件操作未完成，请查询状态后继续；原文件和任务现场会保留。
++        at EventEmitter.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:48:50)
++        at EventEmitter.emit (node:events:514:28)
++        at child.postMessage (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:13:15)
++        at send (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:66:35)
++        at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:95:13
++        at new Promise (<anonymous>)
++        at WorkerClient.call (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker-client.mts:62:16)
++        at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/worker-client-busy.test.mjs:83:68)
++        at Test.runInAsyncScope (node:async_hooks:227:14)
++        at Test.run (node:internal/test_runner/test:1397:25),
++    operator: 'rejects',
++    diff: 'simple'
++  }
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md b/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md
+new file mode 100644
+index 0000000..cf575e2
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/README.md
+@@ -0,0 +1,11 @@
++# 资料外改冲突收敛 · 0.5.4 源码
++
++本修复在0.5.3独立源码冻结后进行，不属于该预览包。
++
++原问题：资料外部修改后保存发生 CONFLICT，核验未提交并放弃旧 pending 时返回 current=null，保留的编辑器继续用旧 hash 保存，反复报同一冲突。
++
++修复：discard 核验完成后按原 documentId 重读最新原件。编辑器保留本人 text/title/category，以最新原文和 hash 更新源；外部有变化时仍保持 conflict，展示最新原文。用户可明确选择“已对照，保留填写继续编辑”后自行合并，再按最新版本保存。该动作不写库；文件再次变化仍被CAS拒绝。不可读/被替换原件继续禁止保存，不把 current=null 当安全覆盖授权。
++
++验证：先红3项（真实Controller回读为null、恢复状态旧hash），再绿6/6，包含真实临时Vault外改→CONFLICT→discard→保留双版本→明确合并保存，以及再次外改仍拒绝覆盖。旧已提交/新建/后续手改恢复测试保留。未操作真实库。
++
++规则：Surface-03 保留草稿与显式恢复；Controls-01 既有Semi按钮和busy状态；Reading-02 显示完整外部原文；Acceptance-01 定向6/6。新按钮的最终安装版/键盘/截图验收待0.5.4集中验证。全仓typecheck当时仅受并行journey新模块声明未落盘阻断，未宣称全仓已通过。
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log b/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log
+new file mode 100644
+index 0000000..4192601
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/green.log
+@@ -0,0 +1,14 @@
++✔ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (946.556ms)
++✔ another external edit after recovery still rejects the acknowledged old version without overwriting it (1031.342208ms)
++✔ P3: live recovery delivery binds the retained create form to the committed document (1.015917ms)
++✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.132791ms)
++✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.086875ms)
++✔ discarded saves preserve the author draft beside the latest external version and keep comparison required (0.092166ms)
++ℹ tests 6
++ℹ suites 0
++ℹ pass 6
++ℹ fail 0
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 2272.4385
+diff --git a/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log b/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log
+new file mode 100644
+index 0000000..a9332ea
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-vault-conflict-closeout/red.log
+@@ -0,0 +1,53 @@
++✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
++✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
++✔ P3: live recovery delivery binds the retained create form to the committed document (1.146667ms)
++✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.160709ms)
++✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.339625ms)
++✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
++ℹ tests 6
++ℹ suites 0
++ℹ pass 3
++ℹ fail 3
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 3957.682083
++
++✖ failing tests:
++
++test at workbench/test/vault-conflict-closeout.test.mjs:6:1
++✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
++  TypeError: Cannot read properties of null (reading 'text')
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:9:139)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
++
++test at workbench/test/vault-conflict-closeout.test.mjs:13:1
++✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
++  TypeError: Cannot read properties of null (reading 'document')
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:16:134)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
++
++test at workbench/test/vault-editor-recovery.test.mjs:11:1
++✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
++  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++  + actual - expected
++  
++  + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
++  - 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
++  
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-editor-recovery.test.mjs:15:40)
++      at Test.runInAsyncScope (node:async_hooks:227:14)
++      at Test.run (node:internal/test_runner/test:1397:25)
++      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
++      at Test.postRun (node:internal/test_runner/test:1537:19)
++      at Test.run (node:internal/test_runner/test:1462:12)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
++    generatedMessage: true,
++    code: 'ERR_ASSERTION',
++    actual: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
++    expected: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
++    operator: 'strictEqual',
++    diff: 'simple'
++  }
+diff --git a/docs/verification/production/2026-10-28-workspace-read-recovery/README.md b/docs/verification/production/2026-10-28-workspace-read-recovery/README.md
+new file mode 100644
+index 0000000..bbbfea9
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-workspace-read-recovery/README.md
+@@ -0,0 +1,9 @@
++# 工作区读取失败反馈与有限恢复
++
++用户黄色横条场景的根因是refreshWorkspace catch把所有错误统一设置workspaceUnavailable，并要求内容库维护。现在BUSY/VAULT_BUSY保留旧workspace/草稿，显示简短占用状态，在后台最多两轮800/1800ms恢复；已耗尽可显式重试。READ_TIMEOUT提供重试，访问权限与源缺失指向目录恢复，CORRUPT/UNSAFE_PATH/锁不确定等保留维护提示。完整读取成功清除状态，未完整读取时不清除原有错误。
++
++恢复信号绑定library epoch，切库/卸载/成功取消旧timer；晚到结果和晚到错误均不覆盖新库。正常nativeAction finally继续释放前台busy，恢复只重新读取，不重放已确认写入。
++
++RED→GREEN，真实App hooks/action执行+既有managed/cover/detail/navigation/scheduler50/50，完整native/renderer typecheck exit0。覆盖占用→释放自动恢复、最多两轮、foreground busy释放、write一次、timeout后retry、切库晚失败、新旧草稿保全。所有夹具隔离，无真实库写入、GUI/网络或LLM。
++
++Controls-01/02、Foundation-04、Reading-02行为已核；生产包截图场景仍待安装后CUA实际验收，不以hooks测试冒充实机UI。
+diff --git a/docs/verification/production/2026-10-28-workspace-read-recovery/app-red.log b/docs/verification/production/2026-10-28-workspace-read-recovery/app-red.log
+new file mode 100644
+index 0000000..e71c117
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-workspace-read-recovery/app-red.log
+@@ -0,0 +1,32 @@
++(node:26580) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
++(Use `node --trace-warnings ...` to show where the warning was created)
++✖ transient workspace contention stays light and automatically recovers without losing the author draft (10.921709ms)
++✖ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (2.442333ms)
++ℹ tests 2
++ℹ suites 0
++ℹ pass 0
++ℹ fail 2
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 199.49475
++
++✖ failing tests:
++
++test at workbench/test/background-refresh.test.mjs:334:1
++✖ transient workspace contention stays light and automatically recovers without losing the author draft (10.921709ms)
++  Error: VAULT_BUSY
++      at invoke (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:42:62)
++      at Object.refreshWorkspace (evalmachine.<anonymous>:172:68)
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:336:56)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
++    code: 'VAULT_BUSY'
++  }
++
++test at workbench/test/background-refresh.test.mjs:339:1
++✖ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (2.442333ms)
++  TypeError: Cannot read properties of null (reading 'kind')
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:340:177)
++      at async Test.run (node:internal/test_runner/test:1404:7)
++      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+diff --git a/docs/verification/production/2026-10-28-workspace-read-recovery/green.log b/docs/verification/production/2026-10-28-workspace-read-recovery/green.log
+new file mode 100644
+index 0000000..df710ba
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-workspace-read-recovery/green.log
+@@ -0,0 +1,66 @@
++(node:28895) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
++(Use `node --trace-warnings ...` to show where the warning was created)
++✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (26.975542ms)
++✔ background success retains foreground BUSY, conflicts and unrelated errors (670.134084ms)
++✔ background status/workspace failure cannot clear BUSY or erase prior status and data (19.187083ms)
++✔ a later non-BUSY failure replaces background BUSY and survives success (14.918042ms)
++✔ success in another library epoch cannot clear an earlier library BUSY (4.650458ms)
++✔ focus refresh keeps controls usable and queues one foreground open until reads finish (6.330167ms)
++✔ navigation and new draft survive a paused focus refresh (414.222ms)
++✔ queued foreground write and coalesced change refresh stay mutually exclusive (11.764ms)
++✔ paused editor read preserves a draft typed while its result was in flight (6.475917ms)
++✔ paused list read from an old library epoch cannot repopulate a cleared editor (5.729625ms)
++✔ cover automatic reads share the background promise and finish before the foreground write (9.816875ms)
++✔ automatic cover reads cannot cross the selected content or library epoch (3.30825ms)
++✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (7.935667ms)
++✔ local writes and cover background reads share one dispatch order without global busy (22.333333ms)
++✔ confirmed entity snapshots advance the current content CAS without losing unsaved text (17.713459ms)
++✔ without a detail close guard navigation starts in the click stack (6.69375ms)
++✔ a detail close guard waits for acknowledged source saving before opening content (7.518375ms)
++✔ a failed detail close guard retains the selected content and refuses navigation (24.275209ms)
++✔ transient workspace contention stays light and automatically recovers without losing the author draft (67.344333ms)
++✔ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (8.918416ms)
++✔ read recovery is finite, releases foreground busy and never replays the acknowledged write (16.002084ms)
++✔ directory query, pages and layout survive a detail round trip and stay independent per stage (71.917708ms)
++✔ doing resume passes an explicit one-open intent while title opens remain summaries (8.6055ms)
++✔ all-content layout/filter/pages survive leaving the directory without keeping it mounted (8.296042ms)
++✔ switching libraries clears all directory state and all-content search without retaining a hidden list (19.141959ms)
++✔ leaving the all-content recycle bin reloads active contents for every stage directory (30.844667ms)
++✔ opening a different library from its recycle bin clears the range and explicitly reads active rows (15.502209ms)
++(node:28897) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
++(Use `node --trace-warnings ...` to show where the warning was created)
++✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (277.4975ms)
++✔ automatic cover failures still report the error and refresh status (81.384333ms)
++✔ foreground operations and external-change refresh still scan the full workspace (299.123709ms)
++(node:28898) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
++(Use `node --trace-warnings ...` to show where the warning was created)
++✔ detail reads reuse the successful workspace assets without a duplicate asset scan (52.544ms)
++✔ explicit workspace refresh and library switch replace the shared assets (36.16175ms)
++✔ a failed workspace asset refresh cannot publish a retained stale snapshot (20.69875ms)
++✔ late cover results are discarded after changing content or switching library (482.171958ms)
++(node:28899) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
++(Use `node --trace-warnings ...` to show where the warning was created)
++✔ successful managed save applies the acknowledged collection snapshot without global reads or a global busy lock (24.151541ms)
++✔ managed save callback supplies the exact acknowledged object ID and snapshot (1.165792ms)
++✔ CONFLICT retains the editor, prior snapshot and exact pending input while refreshing status (11.699459ms)
++✔ COMMIT_UNCERTAIN retains the editor, prior snapshot and exact pending input while refreshing status (6.113875ms)
++✔ a later background read failure retains the acknowledged save and permits an explicit read retry (7.837375ms)
++✔ explicit editor reconciliation failure retains the acknowledged snapshot and retries only that editor read (5.875334ms)
++✔ explicit management reload reuses its freshly read snapshot without other library scans (2.518375ms)
++✔ default foreground actions retain full refresh and automatic-cover opt-out remains separate (414.590833ms)
++✔ queued managed save starts after background BUSY and retains its own acknowledgement (104.413958ms)
++✔ queued managed save starts after background CONFLICT and retains its own acknowledgement (78.408541ms)
++✔ only the affected management row is pending while its mutation awaits acknowledgement (174.865708ms)
++✔ an acknowledged asset change refreshes only cover assets, once (69.406458ms)
++✔ prompt favorite acknowledgement replaces only that prompt without unrelated scans (4.120875ms)
++✔ explicit panel refresh callbacks share the nonblocking background path (26.11ms)
++✔ only transient read contention schedules two epoch-bound recoveries and success cancels stale timers (12.337875ms)
++✔ workspace read failures distinguish contention, timeout, access and corruption without broad repair advice (3.351708ms)
++ℹ tests 50
++ℹ suites 0
++ℹ pass 50
++ℹ fail 0
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 4877.395625
+diff --git a/docs/verification/production/2026-10-28-workspace-read-recovery/scheduler-red.log b/docs/verification/production/2026-10-28-workspace-read-recovery/scheduler-red.log
+new file mode 100644
+index 0000000..e089f8a
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-workspace-read-recovery/scheduler-red.log
+@@ -0,0 +1,56 @@
++✖ only transient read contention schedules two epoch-bound recoveries and success cancels stale timers (1.4695ms)
++✖ workspace read failures distinguish contention, timeout, access and corruption without broad repair advice (0.195291ms)
++ℹ tests 2
++ℹ suites 0
++ℹ pass 0
++ℹ fail 2
++ℹ cancelled 0
++ℹ skipped 0
++ℹ todo 0
++ℹ duration_ms 74.601458
++
++✖ failing tests:
++
++test at workbench/test/workspace-read-recovery.test.mjs:4:1
++✖ only transient read contention schedules two epoch-bound recoveries and success cancels stale timers (1.4695ms)
++  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++  + actual - expected
++  
++  + 'undefined'
++  - 'function'
++  
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/workspace-read-recovery.test.mjs:5:9)
++      at Test.runInAsyncScope (node:async_hooks:227:14)
++      at Test.run (node:internal/test_runner/test:1397:25)
++      at Test.start (node:internal/test_runner/test:1257:17)
++      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
++    generatedMessage: true,
++    code: 'ERR_ASSERTION',
++    actual: 'undefined',
++    expected: 'function',
++    operator: 'strictEqual',
++    diff: 'simple'
++  }
++
++test at workbench/test/workspace-read-recovery.test.mjs:13:1
++✖ workspace read failures distinguish contention, timeout, access and corruption without broad repair advice (0.195291ms)
++  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
++  + actual - expected
++  
++  + 'undefined'
++  - 'function'
++  
++      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/workspace-read-recovery.test.mjs:14:9)
++      at Test.runInAsyncScope (node:async_hooks:227:14)
++      at Test.run (node:internal/test_runner/test:1397:25)
++      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
++      at Test.postRun (node:internal/test_runner/test:1537:19)
++      at Test.run (node:internal/test_runner/test:1462:12)
++      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
++    generatedMessage: true,
++    code: 'ERR_ASSERTION',
++    actual: 'undefined',
++    expected: 'function',
++    operator: 'strictEqual',
++    diff: 'simple'
++  }
+diff --git a/docs/verification/production/2026-10-28-workspace-read-recovery/typecheck.log b/docs/verification/production/2026-10-28-workspace-read-recovery/typecheck.log
+new file mode 100644
+index 0000000..e7549ab
+--- /dev/null
++++ b/docs/verification/production/2026-10-28-workspace-read-recovery/typecheck.log
+@@ -0,0 +1,12 @@
++
++> nova-content-hub-workbench@0.5.4 typecheck
++> npm run typecheck:native && npm run typecheck:renderer
++
++
++> nova-content-hub-workbench@0.5.4 typecheck:native
++> tsc -p tsconfig.native.json --noEmit
++
++
++> nova-content-hub-workbench@0.5.4 typecheck:renderer
++> tsc -p tsconfig.renderer.json
++
+diff --git a/package-lock.json b/package-lock.json
+index 36d0289..90a052f 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "nova-content-hub-prototype",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "nova-content-hub-prototype",
+-      "version": "0.5.3",
++      "version": "0.5.4",
+       "dependencies": {
+         "sharp": "0.35.5"
+       },
+diff --git a/package.json b/package.json
+index c2be11e..25ce47e 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "nova-content-hub-prototype",
+   "private": true,
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "scripts": {
+     "test": "node --test workbench/prototype/test/*.test.cjs",
+     "test:file-library": "node --test plugin-src/src/lib/file-library/test/*.test.mjs",
+diff --git a/plugin-src/src/lib/vault/core.mjs b/plugin-src/src/lib/vault/core.mjs
+index 2a26beb..bd27dfb 100644
+--- a/plugin-src/src/lib/vault/core.mjs
++++ b/plugin-src/src/lib/vault/core.mjs
+@@ -757,7 +757,7 @@ export function withVaultLock(root, fn) {
+                 fs.rmdirSync(lock);
+                 return withVaultLock(root, fn);
+             }
+-            fail('NOT_READY', '知识库正由另一项写入操作使用，请稍后重试');
++            fail('VAULT_BUSY', '知识库正由另一项写入操作使用，请稍后重试');
+         }
+         throw e;
+     }
+diff --git a/plugin-src/src/lib/vault/test/pending-index.test.mjs b/plugin-src/src/lib/vault/test/pending-index.test.mjs
+index ded60e0..66eb4a7 100644
+--- a/plugin-src/src/lib/vault/test/pending-index.test.mjs
++++ b/plugin-src/src/lib/vault/test/pending-index.test.mjs
+@@ -30,7 +30,7 @@ test('migration interruption never publishes a marker that loses unindexed legac
+ });
+ for(const oldStatus of ['pending','committed'])test(`index refuses a different frozen plan against ${oldStatus} log even with the same request hash`,t=>{const f=fixture(t),mid=randomUUID();create(f,mid);const r=json(f.root,'.workbench/mutations/'+mid+'.json');r.status='pending';r.path='11_提示词/different.md';putPending(f,r);const old=json(f.root,'.workbench/mutations/'+mid+'.json');old.status=oldStatus;fs.writeFileSync(path.join(f.root,'.workbench/mutations/'+mid+'.json'),JSON.stringify(old));assert.throws(()=>recoverVault(f.root),{code:'CORRUPT'});assert.ok(fs.existsSync(path.join(f.root,'.workbench/pending-mutations/'+mid+'.json')));});
+ test('orphan pending intent is queryable and resolve cannot incorrectly prove missing',async t=>{const f=fixture(t),mid=randomUUID(),out=create(f,mid),receipt=json(f.root,'.workbench/mutations/'+mid+'.json');receipt.status='pending';putPending(f,receipt);fs.unlinkSync(path.join(f.root,'.workbench/mutations/'+mid+'.json'));fs.unlinkSync(path.join(f.root,out.document.relativePath));assert.equal(queryVaultMutation(f.runtime,mid).status,'pending');const {resolveVaultMutation}=await import('../core.mjs');assert.equal(resolveVaultMutation(f.runtime,mid).state,'committed');});
+-test('a finite read cannot observe a transaction owned by another process',t=>{const f=fixture(t),lock=path.join(f.root,'.workbench/mutation-lock');fs.mkdirSync(lock);fs.writeFileSync(path.join(lock,'owner.json'),JSON.stringify({pid:process.pid,host:'other-process-fixture'}));assert.throws(()=>readVaultSnapshot(f.runtime),{code:'NOT_READY'});});
++test('a finite read cannot observe a transaction owned by another process',t=>{const f=fixture(t),lock=path.join(f.root,'.workbench/mutation-lock');fs.mkdirSync(lock);fs.writeFileSync(path.join(lock,'owner.json'),JSON.stringify({pid:process.pid,host:'other-process-fixture'}));assert.throws(()=>readVaultSnapshot(f.runtime),{code:'VAULT_BUSY'});});
+ test('non-T documents preserve exact IDs, hash and limits without scanning unrelated library files',t=>{const f=fixture(t),original=fs.readdirSync;t.mock.method(fs,'readdirSync',function(location,...args){assert.ok(String(location).includes('/.workbench/'),'a prompt creation must not enumerate user documents to allocate an unused T number');return original(location,...args);});const mid=randomUUID(),out=create(f,mid);assert.equal(out.document.hash,digest('original'));assert.equal(out.document.tNumber,null);assert.match(out.document.id,/^doc-[a-f0-9]{32}$/);assert.equal(out.document.bytes,8);assert.deepEqual(create(f,mid),out);assert.throws(()=>createVaultDocument(f.runtime,{section:'prompts',title:'too large',text:'x'.repeat(8*1024*1024+1)},{mutationId:randomUUID()}),{code:'INVALID_INPUT'});});
+ test('process death before pending publish leaves only unpublished scratch and exact retry stays safe',async t=>{
+  const f=fixture(t),mid=randomUUID(),{spawnSync}=await import('node:child_process');const moduleURL=new URL('../core.mjs',import.meta.url).href;
+diff --git a/release.config.json b/release.config.json
+index 4f7a7d2..f0365c3 100644
+--- a/release.config.json
++++ b/release.config.json
+@@ -2,7 +2,7 @@
+   "AUTH_MODE": "disabled",
+   "prototype": true,
+   "appScope": "nova-content-hub",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "protocolVersion": 1,
+   "productId": "nova-content-hub"
+ }
+diff --git a/workbench/package-lock.json b/workbench/package-lock.json
+index 862b5e6..65d9246 100644
+--- a/workbench/package-lock.json
++++ b/workbench/package-lock.json
+@@ -1,12 +1,12 @@
+ {
+   "name": "nova-content-hub-workbench",
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "lockfileVersion": 3,
+   "requires": true,
+   "packages": {
+     "": {
+       "name": "nova-content-hub-workbench",
+-      "version": "0.5.3",
++      "version": "0.5.4",
+       "dependencies": {
+         "sharp": "0.35.5",
+         "smol-toml": "1.9.1"
+diff --git a/workbench/package.json b/workbench/package.json
+index f0d1a78..06c501b 100644
+--- a/workbench/package.json
++++ b/workbench/package.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "nova-content-hub-workbench",
+   "private": true,
+-  "version": "0.5.3",
++  "version": "0.5.4",
+   "type": "module",
+   "main": "dist/main/index.mjs",
+   "engines": {
+diff --git a/workbench/src/main/vault-controller.mts b/workbench/src/main/vault-controller.mts
+index fd1563f..01803aa 100644
+--- a/workbench/src/main/vault-controller.mts
++++ b/workbench/src/main/vault-controller.mts
+@@ -66,8 +66,10 @@ export class VaultController {
+    if(resolved.state==='uncertain')fail('PENDING_MUTATION','上次资料修改结果仍不确定。请恢复原知识库后再次核验，本次填写继续保留。');
+    if(resolved.state==='committed')return this.recovery(pending,resolved.result);
+    if(input.action==='discard'){
++    let current:VaultText|null=null;
++    if('id' in pending.input){try{current=await this.owner.worker.call('vaultDocument',{binding:this.owner.current(),id:pending.input.id});}catch{/* Keep the retained author input read-only until its original source can be restored. */}}
+     await this.owner.persist({...this.owner.binding,vaultPending:null});
+-    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current:null};
++    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current};
+    }
+    // A missing receipt permits retrying precisely the durable intent, never a fresh mutation.
+    const result=await this.owner.worker.call('vaultMutate',{binding:this.owner.current(),pending});
+diff --git a/workbench/src/main/worker-client.mts b/workbench/src/main/worker-client.mts
+index 616db57..129de5d 100644
+--- a/workbench/src/main/worker-client.mts
++++ b/workbench/src/main/worker-client.mts
+@@ -3,6 +3,7 @@ import type {Worker, WorkerOperation, WorkerOperations} from '../shared/contract
+ const explanations: Record<string, string> = { PHOTO_SOURCE_MISSING: '照片尚未进入内容库，原文件已不在原位置。请恢复原文件后继续；待处理记录仍保留。', STALE_INPUT: '标题或正文已改变，请用当前内容重新准备封面；原待处理意图仍保留。', INVALID_IMAGE: '图片未通过完整解码校验，请选择完整的PNG、JPEG、WebP或GIF原图。' };
+ Object.assign(explanations, {
+     BUSY: '内容库暂时被其他操作占用，请稍后刷新；原文件和草稿会保留。',
++    VAULT_BUSY: '知识库暂时被另一项操作占用，请稍后重试；当前填写和任务保持不变。',
+     LOCK_UNCERTAIN: '内容库的保护记录不完整，已停止读写以保护资料。请保留原文件夹并联系维护者恢复副本；已有恢复副本时可选择“打开其他内容库”。请勿自行删除内部文件。',
+     UPGRADE_ALREADY_CURRENT: '这个内容库已是当前版本，可使用“打开本机内容库”。',
+     UPGRADE_FUTURE_FORMAT: '这个内容库来自更新版本，请使用创建它的新版工作台；原文件保留。',
+@@ -10,6 +11,7 @@ Object.assign(explanations, {
+ });
+ const retryableReads = new Set<WorkerOperation>(['finalRead','finalPreview','finalExport','finalAssetRaster','readCoverPackaging','readCoverDesigns','vaultRead','vaultDocument','vaultLocation','vaultReferenceLocation','vaultWorkDirectory','vaultTopicMenus','vaultWorkContext','vaultContentSource','vaultContentDirectory','vaultSources','productionMedia', 'productionContext', 'productionAsset', 'productionRead', 'productionCreation', 'productionReport', 'productionReportAttachment', 'readCoverProgress', 'templateProgress', 'workspace', 'list', 'readContent', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
+ const busyDelays = [80, 240, 600];
++const vaultBusyDelays = [100, 250, 500, 1000, 1500, 2000];
+ const boundedReads = retryableReads;
+ const readTimeoutMs = 15_000;
+ 
+@@ -75,8 +77,9 @@ export class WorkerClient implements Worker {
+                     resolve(value as WorkerOperations[K]['result']);
+                 },
+                 reject: error => {
+-                    if (!this.stopped && isRecord(error) && error.code === 'BUSY' && retryableReads.has(op) && retries < busyDelays.length) {
+-                        this.pending!.timer = setTimeout(send, busyDelays[retries++]);
++                    const delays = isRecord(error) && error.code === 'VAULT_BUSY' ? vaultBusyDelays : busyDelays;
++                    if (!this.stopped && isRecord(error) && ['BUSY','VAULT_BUSY'].includes(String(error.code)) && retryableReads.has(op) && retries < delays.length) {
++                        this.pending!.timer = setTimeout(send, delays[retries++]);
+                         return;
+                     }
+                     clearTimeout(this.pending?.timer);
+diff --git a/workbench/src/main/workspace-worker.mts b/workbench/src/main/workspace-worker.mts
+index 7c8c9db..468c400 100644
+--- a/workbench/src/main/workspace-worker.mts
++++ b/workbench/src/main/workspace-worker.mts
+@@ -152,8 +152,8 @@ function document(library: WorkspaceCoreLibrary, input: WorkspaceCoreDocument, k
+         coverVariants: (input.coverVariants ?? []).map(({id, name, ratio, preferredTemplateId, selectedCandidateId}) => ({id, name, ratio, preferredTemplateId, selectedCandidateId}))
+     };
+ }
+-export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument): WorkspaceContentDetails {
+-    return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
++export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument, tNumber: string | null = library.readProduction?.().creations.find(item => item.contentId === content.id)?.tNumber ?? null): WorkspaceContentDetails {
++    return {...document(library, content, 'content'), ...(/^T\d{3,}$/.test(tNumber ?? '') ? {tNumber: tNumber!} : {}), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
+ }
+ function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLibraryPrompt {
+     const prompt = library.readPrompt(id);
+@@ -161,6 +161,7 @@ function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLi
+ }
+ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrarySnapshot {
+     const settings = library.readLibrarySettings();
++    const workNumbers = new Map(library.readProduction?.().creations.map(item => [item.contentId, item.tNumber]) ?? []);
+     return {
+         prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(prompt => {
+             return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true, favorite: prompt.favorite ?? false};
+@@ -183,7 +184,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
+             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
+         }),
+         contentDetails: library.listAllContents().map(content => {
+-            return workspaceContent(library, content);
++            return workspaceContent(library, content, workNumbers.get(content.id) ?? null);
+         }),
+         settings: {
+             editToken: settings.editToken,
+diff --git a/workbench/src/renderer/app.tsx b/workbench/src/renderer/app.tsx
+index 07d8316..f05dec0 100644
+--- a/workbench/src/renderer/app.tsx
++++ b/workbench/src/renderer/app.tsx
+@@ -1,3 +1,5 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../shared/workspace-read-recovery.ts';
++import type {WorkspaceReadIssue} from '../shared/workspace-read-recovery.ts';
+ import {JinchengBoundWorkspace} from './jincheng-bound-workspace.tsx';
+ import {JinchengSourceStatus} from './jincheng-source-status.tsx';
+ import {JinchengWorkDetail} from './jincheng-work-detail.tsx';
+@@ -68,6 +70,8 @@ function App() {
+     const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);
+     const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);
+     const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);
++    const [workspaceIssue, setWorkspaceIssue] = useState<WorkspaceReadIssue | null>(null);
++    const workspaceReadHealthy = useRef(false);
+     const [watchUnavailable, setWatchUnavailable] = useState(false);
+     const changesPending = useRef(false);
+     const automaticRefresh = useRef<() => void>(() => {});
+@@ -92,6 +96,9 @@ function App() {
+     const [contentListStates, setContentListStates] = useState<Record<number, ContentListUIState>>({});
+     const directoryKey = `${libraryEpoch}:${contentPhase}`;
+     const epochRef = useRef(0);
++    const workspaceReadRecovery = useRef<ReturnType<typeof createWorkspaceReadRecovery> | null>(null);
++    if (!workspaceReadRecovery.current) workspaceReadRecovery.current = createWorkspaceReadRecovery({currentEpoch: () => epochRef.current, retry: () => {changesPending.current = true; automaticRefresh.current();}});
++    useEffect(() => () => workspaceReadRecovery.current?.reset(), []);
+     const [libraryOpen, setLibraryOpen] = useState(false);
+     const libraryDialog = useRef<HTMLDialogElement>(null);
+     const recoveryDialog = useRef<HTMLDialogElement>(null);
+@@ -143,10 +150,11 @@ function App() {
+     const dirtyRef = useRef(false);
+     dirtyRef.current = dirty;
+     const report = (failure: unknown, preserveError = false, epoch = epochRef.current) => {
+-        const value = errorInfo(failure);
+-        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || value.code === 'BUSY') ? previous : {
++        if (epoch !== epochRef.current) return;
++        const value = errorInfo(failure), readBusy = value.code === 'BUSY' || value.code === 'VAULT_BUSY';
++        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || readBusy) ? previous : {
+             message: `${value.message}（${value.code}）`,
+-            ...(preserveError && value.code === 'BUSY' ? {backgroundBusyEpoch: epoch} : {})
++            ...(preserveError && readBusy ? {backgroundBusyEpoch: epoch} : {})
+         });
+     };
+     const load = (item: Content) => {
+@@ -167,6 +175,7 @@ function App() {
+         } catch (failure) {report(failure); return false;}
+     }
+     const clearEditor = () => {
++        workspaceReadRecovery.current?.reset(); workspaceReadHealthy.current = false; setWorkspaceIssue(null);
+         epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;
+         setDirectoryStates({}); setContentListStates({}); setContentQuery(''); setResumeOnOpen(false); setView('active');
+         setDraft(null);
+@@ -222,12 +231,24 @@ function App() {
+             return;
+         }
+         const epoch = epochRef.current;
+-        workspaceAssets.current = null;
++        workspaceAssets.current = null; workspaceReadHealthy.current = false;
+         let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;
+         try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }
+-        catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }
++        catch (failure) {
++            if (epoch !== epochRef.current) return;
++            const issue = workspaceReadFailure(failure);
++            if (issue.kind === 'busy') {
++                const scheduled = workspaceReadRecovery.current!.schedule(epoch);
++                setWorkspaceIssue(scheduled ? issue : {...issue, message: '知识库仍在使用，可以稍后重试。'});
++                setWorkspaceUnavailable(false);
++                return;
++            }
++            workspaceReadRecovery.current!.reset();
++            setWorkspaceIssue(issue); setWorkspaceUnavailable(true); throw failure;
++        }
+         if (epoch !== epochRef.current) return;
+-        setWorkspace(snapshot);
++        setWorkspace(snapshot); workspaceReadHealthy.current = true;
++        workspaceReadRecovery.current!.reset(); setWorkspaceIssue(null);
+         setWorkspaceUnavailable(false);
+         setAssets(coverAssets);
+         workspaceAssets.current = {epoch, value: coverAssets};
+@@ -342,12 +363,12 @@ function App() {
+         } finally {
+             try {
+                 const next = await refreshStatus();
+-                if (next.currentName && !next.needsReselect && refreshWorkspaceAfter) {
++                if (epoch === epochRef.current && next.currentName && !next.needsReselect && refreshWorkspaceAfter) {
+                     try {
+                         if (!background && succeeded) {
+                             if (refreshWorkspaceOnSuccess) changesPending.current = true;
+                         } else if (!succeeded || refreshWorkspaceOnSuccess) await refreshWorkspace();
+-                        if (succeeded && epoch === epochRef.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
++                        if (succeeded && epoch === epochRef.current && workspaceReadHealthy.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
+                     } catch (failure) { report(failure, preserveError, epoch); }
+                 }
+             } catch (failure) {
+@@ -730,7 +751,7 @@ function App() {
+         </section>}
+         {libraryTab === 'resources' && (status?.currentName ? <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} initialTab={resourceTab} openCollection={id => void openCollection(id)} library={library} assets={assets} busy={busy || !!blocked || dirty} run={localAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section> : <div className="blank-state"><p>先打开内容库，再管理照片、渠道和默认值。</p><Button onClick={() => setLibraryTab('storage')}>打开知识库</Button></div>)}</dialog>}
+         <p id="error" role="alert">{error}</p>
+-        {workspaceUnavailable && workspace && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
++        {workspaceIssue && workspace && <div className="workspace-read-status actions" role="status">{workspaceIssue.kind === 'busy' ? <span>{workspaceIssue.message}</span> : <Banner type="warning" closeIcon={null} description={workspaceIssue.message}/>}<Button size="small" disabled={busy} onClick={() => {workspaceReadRecovery.current?.reset(); changesPending.current = true; automaticRefresh.current();}}>重新读取</Button></div>}
+         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
+         {status?.needsReselect && <section className="creator-panel creator-empty" aria-live="polite" data-workspace-state="selection-required"><h2>请重新选择内容库以确认文件访问</h2><p>{blocked ? '待处理操作已保留，请重新选择原内容库继续。' : '原内容库已保留，请选择要使用的内容库。'}</p><div className="actions"><Button id="confirm-library-access" disabled={busy} onClick={() => void guard(() => act('openLibrary'))}>重新选择内容库</Button></div></section>}
+         {!showPage && !status?.needsReselect && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <div className="actions"><Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button><Button id="open-recovered-library" disabled={busy || !!blocked} onClick={() => void guard(() => act('openLibrary'))}>打开其他内容库</Button></div>}</section>}
+diff --git a/workbench/src/renderer/content-list.tsx b/workbench/src/renderer/content-list.tsx
+index 7bb1e73..b8412b4 100644
+--- a/workbench/src/renderer/content-list.tsx
++++ b/workbench/src/renderer/content-list.tsx
+@@ -23,7 +23,7 @@ export interface ContentListUIState {
+     layout: 'cards' | 'list'; filter: Filter; page: number; pageSize: number;
+     collectionPage: number; collectionPageSize: number; sort: string;
+ }
+-export const createContentListUIState = (): ContentListUIState => ({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'updated'});
++export const createContentListUIState = (): ContentListUIState => ({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'number'});
+ interface Props {
+     contents: Content[] | null; workspace: DesktopResults['readWorkspace'] | null; library: WorkspaceLibrarySnapshot | null;
+     query: string; setQuery(value: string): void; view: View; busy: boolean; blocked: boolean; ready: boolean;
+@@ -77,8 +77,9 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+     })), [contents, summaries, details, library, publications, channelIndex]);
+     const items = useMemo(() => (contents ?? []).filter(item => {
+         const state = facts.get(item.id)!;
+-        return `${item.title} ${item.body}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) && (view === 'trash' || filter === 'all' || filter === 'needs-cover' && state.count === 0 && !state.selected || filter === 'candidates' && state.count !== null && state.count > 0 || filter === 'selected' && !!state.selected || filter === 'published' && state.published);
+-    }).sort((a, b) => (sort === 'name' ? titleOrder.compare(b.title, a.title) : (details.get(b.id)?.updatedAt ?? '').localeCompare(details.get(a.id)?.updatedAt ?? '')) || a.id.localeCompare(b.id)), [contents, facts, query, view, filter, sort, details]);
++        return `${details.get(item.id)?.tNumber ?? ''} ${item.title} ${item.body}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()) && (view === 'trash' || filter === 'all' || filter === 'needs-cover' && state.count === 0 && !state.selected || filter === 'candidates' && state.count !== null && state.count > 0 || filter === 'selected' && !!state.selected || filter === 'published' && state.published);
++    }).sort((a, b) => (sort === 'number' ? (Number(details.get(b.id)?.tNumber?.slice(1)) || 0) - (Number(details.get(a.id)?.tNumber?.slice(1)) || 0) : sort === 'name' ? titleOrder.compare(b.title, a.title) : (details.get(b.id)?.[sort === 'created' ? 'createdAt' : 'updatedAt'] ?? '').localeCompare(details.get(a.id)?.[sort === 'created' ? 'createdAt' : 'updatedAt'] ?? '')) || a.id.localeCompare(b.id)), [contents, facts, query, view, filter, sort, details]);
++    const contentLabel = (item: Content) => {const number = details.get(item.id)?.tNumber; const title = item.title || '未命名内容'; return number && !new RegExp('^' + number + '(?:\\s|$)').test(title) ? number + ' ' + title : title;};
+     const currentPage = Math.min(page, Math.max(1, Math.ceil(items.length / pageSize))), currentCollectionPage = Math.min(collectionPage, Math.max(1, Math.ceil(collections.length / collectionPageSize)));
+     // Semi may briefly render its previous rows while applying a new data source.
+     const visibleItems = items.slice((currentPage - 1) * pageSize, currentPage * pageSize).map(item => ({...item, listFacts: facts.get(item.id)!})), visibleCollections = collections.slice((currentCollectionPage - 1) * collectionPageSize, currentCollectionPage * collectionPageSize);
+@@ -90,7 +91,7 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+     return <section className="content-library-page creator-content-library" aria-labelledby="content-heading">
+         <div className="content-list-heading"><div><p className="eyebrow">CONTENT · 内容管理</p><h2 id="content-heading">{collection ? collection.title || '未命名合集' : '内容项目'}</h2><p>{collection ? '集中整理同一主题的内容，点击内容进入单篇详情。' : '整理内容与合集，查看封面和发布进度。'}</p><div className="creator-page-stats"><span>{contents?.length ?? 0} 篇内容</span>{!collection && <span>{collections.length} 个合集</span>}</div></div><div className="management-actions">{collectionActions}{createCollection && <Button disabled={busy || blocked || !ready} onClick={createCollection}>＋ 新建合集</Button>}{create && <Button id="new-content" theme="solid" disabled={busy || blocked || !ready} onClick={create}>＋ 新建内容</Button>}</div></div>
+         {stageTabs}
+-        <ListToolbar search={{label: collection ? '搜索合集内的内容' : '搜索内容', placeholder: '搜索标题、正文或合集名称', value: query, change: setQuery}}><PopupSelect aria-label="内容范围" value={view} disabled={busy || !ready || !!collection} onChange={value => {setMenuId(null); changeView(value === 'trash' ? 'trash' : 'active');}}><option value="active">正常内容</option><option value="trash">回收站</option></PopupSelect><PopupSelect aria-label="内容状态" value={filter} disabled={view === 'trash'} onChange={value => setFilter(value as Filter)}><option value="all">全部状态</option><option value="needs-cover">待做封面</option><option value="candidates">有候选</option><option value="selected">已选封面</option><option value="published">已发布</option></PopupSelect><PopupSelect value={sort} onChange={setSort} aria-label="内容列表排序"><option value="updated">最近更新</option><option value="name">名称（降序）</option></PopupSelect>{!collection && <Radio.Group className="content-directory-switch" aria-label="内容呈现方式" type="button" value={layout} disabled={busy} onChange={event => {updateUI({layout:event.target.value === 'list' ? 'list' : 'cards'});setMenuId(null);}} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/>}</ListToolbar>
++        <ListToolbar search={{label: collection ? '搜索合集内的内容' : '搜索内容', placeholder: '搜索 T 编号、标题、正文或合集名称', value: query, change: setQuery}}><PopupSelect aria-label="内容范围" value={view} disabled={busy || !ready || !!collection} onChange={value => {setMenuId(null); changeView(value === 'trash' ? 'trash' : 'active');}}><option value="active">正常内容</option><option value="trash">回收站</option></PopupSelect><PopupSelect aria-label="内容状态" value={filter} disabled={view === 'trash'} onChange={value => setFilter(value as Filter)}><option value="all">全部状态</option><option value="needs-cover">待做封面</option><option value="candidates">有候选</option><option value="selected">已选封面</option><option value="published">已发布</option></PopupSelect><PopupSelect value={sort} onChange={setSort} aria-label="内容列表排序"><option value="number">编号（降序）</option><option value="created">最近创建</option><option value="updated">最近更新</option><option value="name">名称（降序）</option></PopupSelect>{!collection && <Radio.Group className="content-directory-switch" aria-label="内容呈现方式" type="button" value={layout} disabled={busy} onChange={event => {updateUI({layout:event.target.value === 'list' ? 'list' : 'cards'});setMenuId(null);}} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/>}</ListToolbar>
+         {!collection && view === 'active' && collections.length > 0 && <ImageList className="content-collections" >{visibleCollections.map(group => {const members = group.memberIds.map(id => summaries.get(id)).filter(item => item !== undefined).filter(item => !item.deletedAt); return <List.Item key={group.id}><Button theme="borderless" className="content-collection-card" key={group.id} data-collection-id={group.id} disabled={busy || !openCollection} onClick={() => openCollection?.(group.id)}><CollectionPreview memberIds={group.memberIds} workspace={workspace} library={library}/><span className="content-collection-copy"><strong>{group.title || '未命名合集'} <em>合集</em></strong><small>{members.length} 篇内容</small></span><span aria-hidden="true">›</span></Button></List.Item>;})}</ImageList>}
+         {!collection && view === 'trash' && collections.length > 0 && <ImageList className="content-collections">{visibleCollections.map(group => <List.Item key={group.id}><div className="content-collection-card" key={group.id} data-collection-id={group.id}><span className="content-collection-art" aria-hidden="true">▤</span><span className="content-collection-copy"><strong>{group.title || '未命名合集'} <em>合集</em></strong><small>{group.memberIds.length} 篇内容 · 已移入回收站</small><span>恢复合集不会改变成员内容；成员已回收时请先恢复成员。</span></span><Button disabled={busy || blocked || !restoreCollection} onClick={() => restoreCollection?.(group)}>恢复合集</Button></div></List.Item>)}</ImageList>}
+         {!collection && collections.length > 0 && <PaginationBar total={collections.length} page={currentCollectionPage} pageSize={collectionPageSize} onPageSizeChange={setCollectionPageSize} disabled={busy || blocked} onPageChange={value => {setCollectionPage(value); setMenuId(null);}} label="合集列表分页"/>}
+@@ -98,14 +99,14 @@ export function ContentList({contents, workspace, library, query, setQuery, view
+             const state = item.listFacts;
+             return <article className="content-all-card" data-content-id={item.id} key={item.id}>
+                 {state.url && <Button className="content-all-card-cover" theme="borderless" disabled={busy} aria-label={`打开内容：${item.title || '未命名内容'}`} onClick={() => open(item)}><img loading="lazy" src={state.url} alt="已选封面"/></Button>}
+-                <div className="content-all-card-heading"><Button theme="borderless" className="content-all-card-title" disabled={busy} onClick={() => open(item)}>{item.title || '未命名内容'}</Button><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{view === 'trash' ? '已移入回收站' : state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></div>
++                <div className="content-all-card-heading"><Button theme="borderless" className="content-all-card-title" disabled={busy} onClick={() => open(item)}>{contentLabel(item)}</Button><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{view === 'trash' ? '已移入回收站' : state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></div>
+                 {item.body && <p className="content-all-card-summary">{item.body}</p>}
+                 <div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div>
+                 <div className="content-all-card-facts"><span>{state.planned || '日期待安排'}{state.nextPlan ? ` · ${scheduleClock(state.nextPlan.schedule)}` : ''}</span><span>{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排发布'}</span></div>
+                 {state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}
+                 <div className="content-all-card-actions"><Button theme="borderless" disabled={busy} onClick={() => open(item)}>查看详情</Button>{rowActions(item)}</div>
+             </article>;
+-        })}</div>{!visibleItems.length && empty}<PaginationBar total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value);setMenuId(null);}} label="内容列表分页"/></div> : <DataTable className="content-table-wrap" id="contents" rows={visibleItems} total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value); setMenuId(null);}} label={collection ? '组内内容分页' : '内容列表分页'} rowKey="id" onRow={item => ({'data-content-id': item?.id})} columns={[{title: '内容', key: '内容', render: (_, item) => {const state = item.listFacts; return <><Button theme="borderless" className="content-title-link" disabled={busy} onClick={() => open(item)}><span className="content-thumbnail">{state.url ? <img loading="lazy" src={state.url} alt="已选封面"/> : <span aria-hidden="true">{state.selected ? '已选' : '封面'}</span>}</span><span className="content-title-cell"><strong>{item.title || '未命名内容'}</strong><span>{view === 'trash' ? '已移入回收站' : state.published ? '已有发布记录' : '创作中'}</span></span></Button></>;}},{title: '渠道', key: '渠道', render: (_, item) => {const state = item.listFacts; return <><div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div></>;}},{title: '计划时间', key: '计划时间', render: (_, item) => {const state = item.listFacts; return <><span className="content-plan-date">{state.planned || '日期待安排'}</span>{state.nextPlan && <time className="cell-note" title={publicationTime(state.nextPlan.schedule)}>{scheduleClock(state.nextPlan.schedule)}</time>}{!state.nextPlan && state.planned && <span className="cell-note">时间待定 · 尚未建立计划</span>}</>;}},{title: '封面状态', key: '封面状态', render: (_, item) => {const state = item.listFacts; return <><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></>;}},{title: '发布进度', key: '发布进度', render: (_, item) => {const state = item.listFacts; return <><span className="content-publication-count">{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排'}</span>{state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}</>;}},{title: '操作', key: '操作', render: (_, item) => rowActions(item)}]} empty={empty}/>)}
++        })}</div>{!visibleItems.length && empty}<PaginationBar total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value);setMenuId(null);}} label="内容列表分页"/></div> : <DataTable className="content-table-wrap" id="contents" rows={visibleItems} total={items.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} disabled={busy || blocked} onPageChange={value => {setPage(value); setMenuId(null);}} label={collection ? '组内内容分页' : '内容列表分页'} rowKey="id" onRow={item => ({'data-content-id': item?.id})} columns={[{title: '内容', key: '内容', render: (_, item) => {const state = item.listFacts; return <><Button theme="borderless" className="content-title-link" disabled={busy} onClick={() => open(item)}><span className="content-thumbnail">{state.url ? <img loading="lazy" src={state.url} alt="已选封面"/> : <span aria-hidden="true">{state.selected ? '已选' : '封面'}</span>}</span><span className="content-title-cell"><strong>{contentLabel(item)}</strong><span>{view === 'trash' ? '已移入回收站' : state.published ? '已有发布记录' : '创作中'}</span></span></Button></>;}},{title: '渠道', key: '渠道', render: (_, item) => {const state = item.listFacts; return <><div className="content-channel-list">{state.channels.map(channel => <Tag key={channel.id} className={`creator-channel ${channelTone(channel.id, channels)}`} style={channelStyle(channel.id, channels)}><span className="channel-name" title={channel.name}>{channel.name}</span></Tag>)}{!state.channels.length && <span className="cell-note">未选择渠道</span>}</div></>;}},{title: '计划时间', key: '计划时间', render: (_, item) => {const state = item.listFacts; return <><span className="content-plan-date">{state.planned || '日期待安排'}</span>{state.nextPlan && <time className="cell-note" title={publicationTime(state.nextPlan.schedule)}>{scheduleClock(state.nextPlan.schedule)}</time>}{!state.nextPlan && state.planned && <span className="cell-note">时间待定 · 尚未建立计划</span>}</>;}},{title: '封面状态', key: '封面状态', render: (_, item) => {const state = item.listFacts; return <><Tag className={`content-status ${state.selected ? 'selected' : state.count ? 'candidates' : ''}`}>{state.selected ? '已选封面' : state.count === null ? '进度待读取' : state.count ? '待选封面' : '待做封面'}</Tag></>;}},{title: '发布进度', key: '发布进度', render: (_, item) => {const state = item.listFacts; return <><span className="content-publication-count">{state.total ? `已发 ${state.done}/${state.total}` : '尚未安排'}</span>{state.total > 0 && <Progress aria-label={`${item.title || '未命名内容'}：${state.total} 条计划，已发布 ${state.done} 条`} percent={state.done / state.total * 100} showInfo={false} size="small"/>}</>;}},{title: '操作', key: '操作', render: (_, item) => rowActions(item)}]} empty={empty}/>)}
+         <p className="content-list-count">{ready ? collection ? `共匹配 ${items.length} 篇内容` : `共匹配 ${items.length + collections.length} 项（${collections.length} 个合集 · ${items.length} 篇内容）` : '内容保存在你的本机'}</p>
+     </section>;
+ }
+diff --git a/workbench/src/renderer/jincheng-content-directory.tsx b/workbench/src/renderer/jincheng-content-directory.tsx
+index c4fcdd2..fd09389 100644
+--- a/workbench/src/renderer/jincheng-content-directory.tsx
++++ b/workbench/src/renderer/jincheng-content-directory.tsx
+@@ -15,12 +15,12 @@ import {JinchengStageActions} from './jincheng-stage-actions.tsx';
+ import {PaginationBar} from './pagination-bar.tsx';
+ import './jincheng-workbench.css';
+ import './jincheng-content-cards.css';
+-export type DirectoryUIState={query:string;type:string;status:'all'|'todo'|'paused'|'written';view:'cards'|'list';page:number;pageSize:number;deferredPage:number;pastPage:number};
++export type DirectoryUIState={query:string;type:string;status:'all'|'todo'|'paused'|'written';view:'cards'|'list';page:number;pageSize:number;doingSort?:'recent'|'plan';deferredPage:number;pastPage:number};
+ export function createDirectoryUIState():DirectoryUIState{return {query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1};}
+ export function JinchengContentDirectory({mode,contents,busy=false,embedded=false,library,openContent,resumeContent,createContent,uiState,onUIStateChange}:{mode:'topics'|'doing'|'published';contents:Content[];busy?:boolean;embedded?:boolean;library?:WorkspaceLibrarySnapshot|null;openContent(id:string):void;resumeContent?(id:string):void;createContent?():void;uiState?:DirectoryUIState;onUIStateChange?:(patch:Partial<DirectoryUIState>)=>void}){
+  const [vault,setVault]=useState<VaultSnapshot|null>(null),[workRows,setWorkRows]=useState<VaultWorkDirectoryRow[]>([]),[production,setProduction]=useState<ProductionSnapshot|null>(null),[overviewText,setOverviewText]=useState(''),[loaded,setLoaded]=useState(false),[notice,setNotice]=useState(''),[version,setVersion]=useState(0);
+  const [localUIState,setLocalUIState]=useState<DirectoryUIState>(uiState??{query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1});
+- const {query,type,status='all',view,page,pageSize}=uiState??localUIState;
++ const {query,type,status='all',view,page,pageSize,doingSort='recent'}=uiState??localUIState;
+  const updateUI=(patch:Partial<DirectoryUIState>)=>{setLocalUIState(current=>({...current,...patch}));onUIStateChange?.(patch);};
+  const resetPages={page:1};
+  const setQuery=(query:string)=>updateUI({query,...resetPages}),setType=(type:string)=>updateUI({type,...resetPages}),setStatus=(value:string)=>updateUI({status:value==='todo'||value==='paused'||value==='written'?value:'all',...resetPages}),setPageSize=(pageSize:number)=>updateUI({pageSize,...resetPages});
+@@ -63,7 +63,7 @@ export function JinchengContentDirectory({mode,contents,busy=false,embedded=fals
+   return {content,fact,tNumber,number,entry,category,deferred,plan,order,topicStatus,type:inferredType,published,recorded,publications,creation,hasDraft,docs};
+  });
+  const types=[...new Set(rows.map(row=>row.type))],shown=rows.filter(row=>(type==='all'||row.type===type)&&workMatches(query,{tNumber:row.tNumber,title:row.content.title,summary:row.entry?.summary??''}));
+- const next=shown.filter(row=>row.category==='topics'&&!row.deferred).sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),deferred=shown.filter(row=>row.category==='topics'&&row.deferred).sort((a,b)=>a.number-b.number),past=shown.filter(row=>row.category!=='topics').sort((a,b)=>b.number-a.number),doing=shown.filter(row=>row.category==='doing').sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),published=shown.filter(row=>row.published).sort((a,b)=>b.number-a.number);
++ const next=shown.filter(row=>row.category==='topics'&&!row.deferred).sort((a,b)=>(a.order??999)-(b.order??999)||a.number-b.number),deferred=shown.filter(row=>row.category==='topics'&&row.deferred).sort((a,b)=>a.number-b.number),past=shown.filter(row=>row.category!=='topics').sort((a,b)=>b.number-a.number),doing=shown.filter(row=>row.category==='doing').sort((a,b)=>doingSort==='plan'?(a.order??999)-(b.order??999)||a.number-b.number:(library?.contentDetails.find(item=>item.id===b.content.id)?.createdAt??'').localeCompare(library?.contentDetails.find(item=>item.id===a.content.id)?.createdAt??'')||b.number-a.number),published=shown.filter(row=>row.published).sort((a,b)=>b.number-a.number);
+  const visible=mode==='topics'?[...next,...deferred,...past].filter(row=>status==='all'||row.topicStatus===status):mode==='doing'?doing:published,currentPage=Math.min(page,Math.max(1,Math.ceil(visible.length/pageSize))),pageItems=visible.slice((currentPage-1)*pageSize,currentPage*pageSize);
+  const renderRow=(row:typeof rows[number])=>{
+   const sourceSummary=row.entry?.summary?.trim(),summary=sourceSummary&&sourceSummary!==row.content.title.trim()?sourceSummary:(row.content.body.trim()||row.creation?.narrative.trim()||'');
+@@ -82,7 +82,7 @@ export function JinchengContentDirectory({mode,contents,busy=false,embedded=fals
+  const renderItems=(items:typeof rows)=><div className={view==='cards'?'jincheng-content-grid':'jincheng-content-list'}>{items.map(renderRow)}</div>;
+  return <section className="production-workspace jincheng-content-directory" aria-label={mode==='topics'?'选题':mode==='doing'?'在做':'已发布'}>
+   {!embedded&&<header className="production-page-head"><div><h2>{mode==='topics'?`选题 · ${visible.length}`:mode==='doing'?'在做':'已发布'}</h2></div>{createContent&&<Button disabled={busy} onClick={createContent}>新建选题</Button>}</header>}
+-  <div className="production-toolbar jincheng-content-toolbar"><Input aria-label="搜索内容编号或选题" placeholder="搜索 T 编号、选题或说明" value={query} onChange={setQuery}/><PopupSelect className="jincheng-type-filter" aria-label="内容类型" searchable value={type} onChange={setType}><option value="all">全部类型</option>{types.map(name=><option value={name} key={name}>{name}</option>)}</PopupSelect>{mode==='topics'&&<PopupSelect className="jincheng-status-filter" aria-label="选题状态" value={status} onChange={setStatus}><option value="all">全部状态</option><option value="todo">待做</option><option value="paused">暂缓</option><option value="written">已写</option></PopupSelect>}<Radio.Group className="jincheng-content-view-switch" aria-label="内容呈现方式" type="button" value={view} onChange={event=>updateUI({view:event.target.value==='list'?'list':'cards'})} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/><Button disabled={busy||!loaded} onClick={()=>setVersion(n=>n+1)}>刷新</Button></div>
++  <div className="production-toolbar jincheng-content-toolbar"><Input aria-label="搜索内容编号或选题" placeholder="搜索 T 编号、选题或说明" value={query} onChange={setQuery}/><PopupSelect className="jincheng-type-filter" aria-label="内容类型" searchable value={type} onChange={setType}><option value="all">全部类型</option>{types.map(name=><option value={name} key={name}>{name}</option>)}</PopupSelect>{mode==='topics'&&<PopupSelect className="jincheng-status-filter" aria-label="选题状态" value={status} onChange={setStatus}><option value="all">全部状态</option><option value="todo">待做</option><option value="paused">暂缓</option><option value="written">已写</option></PopupSelect>}{mode==='doing'&&<PopupSelect aria-label="在做排序" value={doingSort} onChange={value=>updateUI({doingSort:value==='plan'?'plan':'recent',page:1})}><option value="recent">最新内容</option><option value="plan">拍摄顺序</option></PopupSelect>}<Radio.Group className="jincheng-content-view-switch" aria-label="内容呈现方式" type="button" value={view} onChange={event=>updateUI({view:event.target.value==='list'?'list':'cards'})} options={[{label:'卡片',value:'cards'},{label:'列表',value:'list'}]}/><Button disabled={busy||!loaded} onClick={()=>setVersion(n=>n+1)}>刷新</Button></div>
+   {notice&&<Banner type="warning" closeIcon={null} description={notice}/>}
+   <JinchengStageActions title={mode==='topics'?'准备一条新内容':'需要助手继续时'} busy={busy} actions={mode==='topics'?['topics','intake']:mode==='published'?['closeout','review']:['writing','tutorial']}/>
+   {mode==='topics'&&<JinchengTopicMenus busy={busy} openContent={openContent}/>}
+diff --git a/workbench/src/renderer/vault-workspace.tsx b/workbench/src/renderer/vault-workspace.tsx
+index 6a6ab44..72295fe 100644
+--- a/workbench/src/renderer/vault-workspace.tsx
++++ b/workbench/src/renderer/vault-workspace.tsx
+@@ -65,7 +65,7 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
+    {!originalCreation&&(!markdownDocument||editing)&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
+    <p role="status">{message}</p>
+    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
+-   {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
++   {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{!sourceUnavailable&&<Button disabled={busy||working} onClick={()=>{setConflict(false);setConfirmReload(false);setEditing(true);setMessage('已保留本次填写，可对照当前版本继续编辑并保存。');}}>已对照，保留填写继续编辑</Button>}{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}
+    <div className="actions">{current?.workingDraftAvailable&&!originalCreation&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict} onClick={()=>void establishWorkingDraft()}>建立可编辑工作稿</Button>}{!readonly&&<Button theme="solid" loading={working} disabled={busy||working||sourceUnavailable||conflict||!!current&&!dirty} onClick={()=>void save()}>保存资料</Button>}<Button disabled={busy||working} onClick={()=>void topics()}>{dirty||!current?'保存并推荐选题':'推荐选题'}</Button>{current&&<Button disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:current.document.id}).catch(error=>setMessage(errorInfo(error).message))}>定位原文件</Button>}{current?.document.contentId&&<Button disabled={working||dirty} onClick={()=>{close();openContent(current.document.contentId!);}}>进入内容工作区</Button>}</div>
+    {current&&!readonly&&<details className="vault-document-more"><summary>更多操作</summary>{dirty?<p>请先保存或放弃本次修改，再回收资料。</p>:confirmTrash?<div role="alert"><p>将原资料移入知识库回收区，保留恢复原件的机会。</p><Button type="danger" disabled={working} onClick={()=>void trash()}>确认移入回收区</Button><Button onClick={()=>setConfirmTrash(false)}>取消</Button></div>:<Button type="danger" theme="borderless" onClick={()=>setConfirmTrash(true)}>移入回收区</Button>}</details>}
+   </div>
+diff --git a/workbench/src/shared/vault-editor-recovery.ts b/workbench/src/shared/vault-editor-recovery.ts
+index 209e6c3..690cec2 100644
+--- a/workbench/src/shared/vault-editor-recovery.ts
++++ b/workbench/src/shared/vault-editor-recovery.ts
+@@ -10,7 +10,13 @@ function sameInput(a:VaultEditorSubmission,b:VaultEditorSubmission){return a.met
+ export function reconcileVaultEditor(state:VaultEditorState,recovery:VaultRecovery):VaultEditorRecovered|null{
+  if(!state.submission||!sameInput(state.submission,recovery))return null;
+  const base={...state,submission:null,conflict:false,sourceUnavailable:false};
+- if(recovery.outcome==='discarded')return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
++ if(recovery.outcome==='discarded'){
++  if(!state.current)return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
++  const latest=recovery.current;
++  if(!latest||latest.document.id!==state.current.document.id)return {...base,sourceUnavailable:true,conflict:true,message:'本次填写仍保留，原文件暂不可读取。请恢复原件后继续。'};
++  const conflict=latest.document.hash!==state.current.document.hash&&state.text!==latest.text;
++  return {...base,current:latest,conflict,message:conflict?'本次填写已保留。请对照外部最新原文后继续编辑。':'已确认上次修改未提交，本次填写仍保留。'};
++ }
+  if(!recovery.result||!('document' in recovery.result))return {...base,sourceUnavailable:true,message:'已确认资料移入回收区。本次填写仍保留，可关闭后查看知识库。'};
+  const committed=recovery.result,latest=recovery.current;
+  if(!latest)return {...base,current:committed,sourceUnavailable:true,message:'上次修改已提交，原文件目前不可读取。文档身份与本次填写已保留，请定位原件后继续。'};
+diff --git a/workbench/src/shared/workspace-contracts.ts b/workbench/src/shared/workspace-contracts.ts
+index eebaf1c..e61394e 100644
+--- a/workbench/src/shared/workspace-contracts.ts
++++ b/workbench/src/shared/workspace-contracts.ts
+@@ -75,7 +75,7 @@ export interface WorkspaceDocument extends WorkspaceEntity {
+     publicationEvents: WorkspacePublicationEvent[]; candidates: WorkspaceCandidate[];
+     coverVariants: {id: string; name: string; ratio: string; preferredTemplateId: string | null; selectedCandidateId: string | null}[];
+ }
+-export interface WorkspaceContentDetails extends WorkspaceDocument { recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
++export interface WorkspaceContentDetails extends WorkspaceDocument { tNumber?: string; recordedDate: string | null; plannedDate: string | null; preferredTemplateId: string | null; isExample: boolean }
+ export interface WorkspaceLibraryCollection extends WorkspaceDocument { dateRange: {start: string | null; end: string | null}; memberIds: string[] }
+ export interface WorkspaceLibrarySettings {
+     editToken: string; profile: WorkspaceProfile; defaults: WorkspaceDefaults;
+diff --git a/workbench/src/shared/workspace-core.d.ts b/workbench/src/shared/workspace-core.d.ts
+index 61b1075..87050dc 100644
+--- a/workbench/src/shared/workspace-core.d.ts
++++ b/workbench/src/shared/workspace-core.d.ts
+@@ -43,6 +43,7 @@ interface TemplatePackage {
+     resources: Record<string, {assetHash: string; bytes: number; detectedType: string; role: 'style'}>;
+ }
+ export interface WorkspaceCoreLibrary {
++    readProduction?(): {creations: {contentId: string; tNumber: string}[]};
+     importAsset(source: string, input: {purpose: 'template-reference' | 'material'}): {assetHash: string};
+     readAsset(assetHash: string): {assetHash: string; bytes: number; detectedType: string; data: Uint8Array};
+     listContents(): WorkspaceCoreDocument[];
+diff --git a/workbench/src/shared/workspace-read-recovery.ts b/workbench/src/shared/workspace-read-recovery.ts
+new file mode 100644
+index 0000000..219238e
+--- /dev/null
++++ b/workbench/src/shared/workspace-read-recovery.ts
+@@ -0,0 +1,25 @@
++export type WorkspaceReadIssue = {kind: 'busy' | 'timeout' | 'unavailable'; message: string};
++export function workspaceReadFailure(failure: unknown): WorkspaceReadIssue {
++    const code = failure && typeof failure === 'object' && 'code' in failure ? failure.code : '';
++    if (code === 'BUSY' || code === 'VAULT_BUSY') return {kind: 'busy', message: '知识库正在使用，稍后自动重试。'};
++    if (code === 'READ_TIMEOUT') return {kind: 'timeout', message: '读取超时；原资料和草稿保留，可以重试。'};
++    if (['EACCES','EPERM','SOURCE_NOT_AVAILABLE','LIBRARY_NOT_READY'].includes(String(code))) return {kind: 'unavailable', message: '暂时无法访问资料，请恢复原目录访问后重试。'};
++    if (['CORRUPT','UNSAFE_PATH','LOCK_UNCERTAIN','RECOVERY_CONFLICT'].includes(String(code))) return {kind: 'unavailable', message: '资料校验未通过，请查看内容库维护中的具体问题。'};
++    return {kind: 'unavailable', message: '读取未完成；原资料和草稿保留，请重试。'};
++}
++/** A finite, library-bound retry signal. It never stores or replays a write. */
++export function createWorkspaceReadRecovery(options: {currentEpoch(): number; retry(): void; schedule?(callback: () => void, delay: number): unknown; cancel?(handle: unknown): void}) {
++    const schedule = options.schedule ?? ((callback, delay) => setTimeout(callback, delay));
++    const cancel = options.cancel ?? (handle => clearTimeout(handle as ReturnType<typeof setTimeout>));
++    let epoch = options.currentEpoch(), attempts = 0, timer: unknown, pending = false, version = 0;
++    function reset() {version++; if (pending) cancel(timer); pending = false; attempts = 0; epoch = options.currentEpoch();}
++    return {reset, schedule(expectedEpoch: number): boolean {
++        if (expectedEpoch !== options.currentEpoch()) return false;
++        if (epoch !== expectedEpoch) reset();
++        if (pending) return true;
++        if (attempts >= 2) return false;
++        const generation = version; pending = true;
++        timer = schedule(() => {pending = false; if (generation === version && expectedEpoch === options.currentEpoch()) options.retry();}, [800, 1800][attempts++]);
++        return true;
++    }};
++}
+diff --git a/workbench/test/background-refresh.test.mjs b/workbench/test/background-refresh.test.mjs
+index de3d0e7..65a6871 100644
+--- a/workbench/test/background-refresh.test.mjs
++++ b/workbench/test/background-refresh.test.mjs
+@@ -1,3 +1,4 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+@@ -12,16 +13,17 @@ const actions = source.slice(source.indexOf('function App() {'), source.indexOf(
+         refresh: () => {changesPending.current = true; automaticRefresh.current();},
+         select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,
+         registerDetailCloseGuard: guard => {detailCloseGuard.current = guard;},
+-        error, status, workspace, contents, draft, disk, base, pendingRefresh: changesPending.current};
++        error, status, workspace, workspaceUnavailable, workspaceIssue:typeof workspaceIssue==='undefined'?null:workspaceIssue, contents, draft, disk, base, pendingRefresh: changesPending.current};
+ }`;
+ const compiled = stripTypeScriptTypes(actions);
+ 
+ function fixture() {
+     const slots = [];
+     let cursor = 0, fail = null, version = 0, pause = null;
+-    const calls = [];
++    const calls = [], retryTimers = new Set();
+     const item = {id: 'content', title: 'saved', body: 'saved body', editToken: 'original'};
+     const context = vm.createContext({
++        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:fn=>{retryTimers.add(fn);return fn;},cancel:fn=>retryTimers.delete(fn)}),
+         useMemo: calculate => calculate(),
+         useState(initial) {
+             const index = cursor++;
+@@ -48,7 +50,7 @@ function fixture() {
+     });
+     vm.runInContext(compiled, context);
+     const render = () => {cursor = 0; return context.App();};
+-    return {render, calls, item, pause(method) {let release; const wait = new Promise(resolve => {release = resolve;}); pause = {method, wait}; return release;}, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
++    return {render, calls, item, async retryRead(){const fn=[...retryTimers][0];if(fn){retryTimers.delete(fn);fn();await new Promise(resolve=>setImmediate(resolve));}}, retries:()=>retryTimers.size, pause(method) {let release; const wait = new Promise(resolve => {release = resolve;}); pause = {method, wait}; return release;}, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
+ }
+ 
+ async function ready(f) {
+@@ -329,3 +331,21 @@ test('a failed detail close guard retains the selected content and refuses navig
+  const before=f.render().page;await f.render().navigate('templates');assert.equal(f.render().page,before);assert.match(f.render().error,/CONFLICT/);assert.equal(f.render().draft.body,f.item.body);
+  f.render().registerDetailCloseGuard(null);await f.render().navigate('templates');assert.equal(f.render().page,'templates');
+ });
++test('transient workspace contention stays light and automatically recovers without losing the author draft',async()=>{
++ const f=fixture();await ready(f);f.render().load(f.item);f.render().setDraft({title:'本人标题',body:'尚未保存的完整正文'});f.render();
++ f.fail('readWorkspace','VAULT_BUSY');await f.render().refreshWorkspace();let app=f.render();assert.equal(app.workspaceUnavailable,false);assert.equal(app.workspaceIssue.kind,'busy');assert.equal(app.workspace.version,0);assert.equal(app.acting,false);assert.equal(f.retries(),1);
++ f.fail(null);f.version(2);await f.retryRead();app=f.render();assert.equal(app.workspace.version,2);assert.equal(app.workspaceIssue,null);assert.equal(app.draft.body,'尚未保存的完整正文');assert.equal(app.acting,false);assert.equal(f.retries(),0);
++});
++test('timeout keeps prior data and permits explicit retry; switching a library ignores a late failure',async()=>{
++ const f=fixture();await ready(f);f.fail('readWorkspace','READ_TIMEOUT');await assert.rejects(f.render().refreshWorkspace());let app=f.render();assert.equal(app.workspaceIssue.kind,'timeout');assert.equal(app.workspace.version,0);assert.equal(app.acting,false);assert.equal(f.retries(),0);
++ f.fail(null);await f.render().refreshWorkspace();assert.equal(f.render().workspaceIssue,null);
++ const release=f.pause('readWorkspace'),late=f.render().refreshWorkspace();f.render().clearEditor();f.render().load({...f.item,id:'new-library-content'});f.render().setDraft({title:'新库本人填写',body:'新库草稿'});f.render();f.fail('readWorkspace','CORRUPT');release();await late;
++ app=f.render();assert.equal(app.workspace,null);assert.equal(app.workspaceIssue,null);assert.equal(app.error,'');assert.equal(app.draft.body,'新库草稿');
++});
++test('read recovery is finite, releases foreground busy and never replays the acknowledged write',async()=>{
++ const f=fixture();await ready(f);const before=f.calls.filter(method=>method==='readWorkspace').length;f.fail('readWorkspace','BUSY');let writes=0;
++ await f.render().nativeAction(async()=>{writes++;});await new Promise(resolve=>setImmediate(resolve));
++ assert.equal(f.render().acting,false);assert.equal(f.render().active,false);
++ await f.retryRead();await f.retryRead();await f.retryRead();
++ assert.equal(writes,1);assert.equal(f.retries(),0);assert.equal(f.calls.filter(method=>method==='readWorkspace').length-before,3);assert.equal(f.render().workspaceUnavailable,false);assert.match(f.render().workspaceIssue.message,/稍后重试/);
++});
+diff --git a/workbench/test/content-directory-navigation-state.test.mjs b/workbench/test/content-directory-navigation-state.test.mjs
+index 3944444..997f0b9 100644
+--- a/workbench/test/content-directory-navigation-state.test.mjs
++++ b/workbench/test/content-directory-navigation-state.test.mjs
+@@ -1,3 +1,4 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+@@ -15,7 +16,7 @@ const result=await bundle.generate({format:'cjs'});await bundle.close();
+ function fixture({activeContents=[],trashContents=[]}={}){
+  let slots=[],cursor=0,components=new Map(),initialSlots={};const calls=[];
+  const marker=name=>{if(!components.has(name)){const f=()=>null;f.label=name;components.set(name,f);}return components.get(name);};
+- const api=new Proxy({hasManagedDrafts:()=>false,errorInfo:error=>({message:error.message}),createDirectoryUIState:()=>({query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1}),createContentListUIState:()=>({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'updated'}),pageNames:{},invoke:async(method,args)=>{calls.push([method,args]);if(method==='readContent')return{id:args.id,title:'真实原内容',body:'保存正文',editToken:'one'};if(method==='status')return initial.status;if(method==='listContents')return args.view==='trash'?trashContents:activeContents;if(method==='openLibrary')return;throw Error(method);}}, {get:(object,key)=>key in object?object[key]:marker(key)});
++ const api=new Proxy({workspaceReadFailure,createWorkspaceReadRecovery:options=>createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),hasManagedDrafts:()=>false,errorInfo:error=>({message:error.message}),createDirectoryUIState:()=>({query:'',type:'all',status:'all',view:'cards',page:1,pageSize:20,deferredPage:1,pastPage:1}),createContentListUIState:()=>({layout:'cards',filter:'all',page:1,pageSize:20,collectionPage:1,collectionPageSize:20,sort:'updated'}),pageNames:{},invoke:async(method,args)=>{calls.push([method,args]);if(method==='readContent')return{id:args.id,title:'真实原内容',body:'保存正文',editToken:'one'};if(method==='status')return initial.status;if(method==='listContents')return args.view==='trash'?trashContents:activeContents;if(method==='openLibrary')return;throw Error(method);}}, {get:(object,key)=>key in object?object[key]:marker(key)});
+  const hooks={useState(initial){const i=cursor++;if(!(i in slots))slots[i]=typeof initial==='function'?initial():initial;return[slots[i],next=>slots[i]=typeof next==='function'?next(slots[i]):next];},useRef(initial){const i=cursor++;if(!(i in slots))slots[i]={current:initial};return slots[i];},useEffect(){},useLayoutEffect(){},useMemo:fn=>fn()};
+  const module={exports:{}};
+  vm.runInNewContext(result.output.find(item=>item.type==='chunk').code,{module,exports:module.exports,namedInitial:name=>{initialSlots[name]=cursor;return initial[name];},require:id=>id==='react'?hooks:id==='react/jsx-runtime'?require(id):id.includes('@douyinfe/')?marker(id):api,document:{hidden:true,getElementById:()=>null},window:{dispatchEvent(){}},Event:class{},requestAnimationFrame(){},setTimeout,clearTimeout,console});
+diff --git a/workbench/test/content-directory-pagination.test.mjs b/workbench/test/content-directory-pagination.test.mjs
+index 54e6c4a..0229194 100644
+--- a/workbench/test/content-directory-pagination.test.mjs
++++ b/workbench/test/content-directory-pagination.test.mjs
+@@ -140,6 +140,12 @@ test('doing and published empty directories both retain the shared page-size con
+   const f=fixture({mode,counts:[0,0,0]}),tree=await f.ready();assert.equal(pager(tree,'选题列表分页').props.total,0);
+  }
+ });
++test('doing defaults to latest numbered work while original shooting order remains selectable',async()=>{
++ const f=fixture({mode:'doing',counts:[0,0,3],overviewText:'## 近三天内容安排\n|日期|安排|对应选题|\n|---|---|---|\n|2026-10-28|拍摄顺序|T2001 T2002|'});let tree=await f.ready();
++ assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
++ tree=change(f,'在做排序','plan');assert.deepEqual(ids(tree),['T2001','T2002','T2003']);
++ tree=change(f,'在做排序','recent');assert.deepEqual(ids(tree),['T2003','T2002','T2001']);
++});
+ 
+ test('long card summaries preserve the complete body behind explicit expansion',async()=>{
+  const f=fixture({counts:[1,0,0]}),tree=await f.ready();
+diff --git a/workbench/test/content-list-cards.test.mjs b/workbench/test/content-list-cards.test.mjs
+index d47a5b4..417394b 100644
+--- a/workbench/test/content-list-cards.test.mjs
++++ b/workbench/test/content-list-cards.test.mjs
+@@ -64,3 +64,13 @@ test('collections use the same descending numeric name order',()=>{
+  const f=fixture({library:{collections,contentDetails:[],settings:{channels:[]}}});let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();
+  assert.deepEqual(view.buttons.filter(button=>button['data-collection-id']).map(button=>button['data-collection-id']),['group-10','group-2','group-1']);
+ });
++test('a new untitled work remains visible by native T number, searchable and first under number order',()=>{
++ const contents=[{id:'old',title:'T050 旧内容',body:''},{id:'new',title:'未定标题',body:''}];
++ const library={collections:[],settings:{channels:[]},contentDetails:[{id:'old',tNumber:'T050',createdAt:'2026-10-27',updatedAt:'2026-10-27',candidates:[],plans:[],channelIds:[]},{id:'new',tNumber:'T051',createdAt:'2026-10-28',updatedAt:'2026-10-28',candidates:[],plans:[],channelIds:[]}]};
++ const f=fixture({contents,library});let view=f.render();
++ view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('number');view=f.render();
++ assert.ok(view.html.indexOf('data-content-id="new"')<view.html.indexOf('data-content-id="old"'));assert.match(view.html,/T051 未定标题/);
++ f.props.query='T051';view=f.render();assert.match(view.html,/data-content-id="new"/);assert.doesNotMatch(view.html,/data-content-id="old"/);
++ view.buttons.find(button=>button.children==='列表').onClick();view=f.render();assert.deepEqual(view.tables[0].rows.map(item=>item.id),['new']);
++ assert.equal(view.tables[0].total,1);
++});
+diff --git a/workbench/test/cover-read-refresh.test.mjs b/workbench/test/cover-read-refresh.test.mjs
+index 0bf8eb2..9adc678 100644
+--- a/workbench/test/cover-read-refresh.test.mjs
++++ b/workbench/test/cover-read-refresh.test.mjs
+@@ -1,3 +1,4 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+@@ -16,6 +17,7 @@ function fixture() {
+     let cursor = 0, failed = false;
+     const item = {id: 'content', title: 'saved', body: 'saved', editToken: 'original'};
+     const context = vm.createContext({
++        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),
+         useMemo: calculate => calculate(),
+         useState(initial) {const index = cursor++; if (!(index in slots)) slots[index] = initial; return [slots[index], value => {slots[index] = typeof value === 'function' ? value(slots[index]) : value;}];},
+         useRef(initial) {const index = cursor++; return slots[index] ??= {current: initial};},
+diff --git a/workbench/test/detail-read-assets.test.mjs b/workbench/test/detail-read-assets.test.mjs
+index 20513cd..e3cdc4f 100644
+--- a/workbench/test/detail-read-assets.test.mjs
++++ b/workbench/test/detail-read-assets.test.mjs
+@@ -1,3 +1,4 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+@@ -14,6 +15,7 @@ function fixture() {
+     let cursor = 0, version = 1, failAssets = false, releaseCover;
+     const item = {id: 'content', title: 'saved', body: 'saved', editToken: 'original'};
+     const context = vm.createContext({
++        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),
+         useMemo: calculate => calculate(),
+         useState(initial) {const index = cursor++; if (!(index in slots)) slots[index] = initial; return [slots[index], value => {slots[index] = typeof value === 'function' ? value(slots[index]) : value;}];},
+         useRef(initial) {const index = cursor++; return slots[index] ??= {current: initial};},
+diff --git a/workbench/test/managed-refresh.test.mjs b/workbench/test/managed-refresh.test.mjs
+index e17a36b..79ea84d 100644
+--- a/workbench/test/managed-refresh.test.mjs
++++ b/workbench/test/managed-refresh.test.mjs
+@@ -1,3 +1,4 @@
++import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+ import fs from 'node:fs/promises';
+@@ -26,6 +27,7 @@ function fixture() {
+     const library = {...initial, collections: [{...collection, editToken: 'confirmed', memberIds: ['content']}]};
+     let slots = appSlots, cursor = 0, failure, pause, acknowledged = library, disk = initial, pending = null;
+     const context = vm.createContext({
++        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),
+         useMemo: calculate => calculate(),
+         useState(initial) {const i = cursor++; if (!(i in slots)) slots[i] = initial; const target = slots; return [target[i], value => {target[i] = typeof value === 'function' ? value(target[i]) : value;}];},
+         useRef(initial) {const i = cursor++; return slots[i] ??= {current: initial};},
+diff --git a/workbench/test/vault-busy-launch.test.mjs b/workbench/test/vault-busy-launch.test.mjs
+new file mode 100644
+index 0000000..68639b2
+--- /dev/null
++++ b/workbench/test/vault-busy-launch.test.mjs
+@@ -0,0 +1,25 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import os from 'node:os';
++import path from 'node:path';
++import {spawn} from 'node:child_process';
++import {EventEmitter} from 'node:events';
++import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
++import {openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
++import {executeProduction} from '../src/main/production-worker.mts';
++import {WorkerClient} from '../src/main/worker-client.mts';
++import {ProductionController} from '../src/main/production-controller.mts';
++test('an external live Vault lock releases before the same readonly task request opens its assistant once',async t=>{
++ const root=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'nova-vault-launch-busy-'))),binding=createVault(root),library=openLibrary(binding.root);
++ const task=library.mutateProduction('createTask',{kind:'writing',title:'定位测试',prompt:'只验证本地跳转控制。',host:'codex',parameters:{workflow:'positioning-interview'},tools:[],budget:{amount:0,currency:'REQ'},expectedToken:library.readProduction().editToken}).tasks[0];
++ const core=new URL('../../plugin-src/src/lib/vault/core.mjs',import.meta.url).href;
++ const child=spawn(process.execPath,['--input-type=module','-e',`import {withVaultLock} from ${JSON.stringify(core)};withVaultLock(process.argv[1],()=>{console.log('LOCKED');Atomics.wait(new Int32Array(new SharedArrayBuffer(4)),0,0,700);});`,root],{stdio:['ignore','pipe','pipe']});
++ const ended=new Promise(resolve=>child.once('exit',resolve));t.after(async()=>{if(child.exitCode===null)child.kill();await ended;fs.rmSync(root,{recursive:true,force:true});});
++ await new Promise((resolve,reject)=>{child.stdout.once('data',resolve);child.once('error',reject);child.once('exit',code=>{if(code)reject(Error('Lock holder failed'));});});
++ const requests=[],launched=[];const worker=new WorkerClient(()=>{const adapter=new EventEmitter();adapter.kill=()=>adapter.emit('exit');adapter.postMessage=request=>{requests.push(structuredClone(request));executeProduction(request.op,request.args,'disabled').then(value=>adapter.emit('message',{id:request.id,ok:true,value}),error=>adapter.emit('message',{id:request.id,ok:false,error:{code:error.code,message:error.message}}));};return adapter;});t.after(()=>worker.stop());
++ const controller=new ProductionController({current:()=>binding,worker,covers:{grant:()=>''}},{launch:async(b,locator)=>launched.push({b,locator}),serviceSettings:async()=>({})});
++ assert.deepEqual(await controller.launch(task.id),{opened:true});assert.equal(launched.length,1);assert.equal(launched[0].locator.taskId,task.id);
++ assert.ok(requests.length>1&&requests.length<=7);for(const request of requests)assert.deepEqual(request,requests[0]);
++ assert.equal(library.readProduction().tasks.length,1);await ended;
++});
+diff --git a/workbench/test/vault-conflict-closeout.test.mjs b/workbench/test/vault-conflict-closeout.test.mjs
+new file mode 100644
+index 0000000..62dfc9b
+--- /dev/null
++++ b/workbench/test/vault-conflict-closeout.test.mjs
+@@ -0,0 +1,17 @@
++import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs/promises';import os from 'node:os';import path from 'node:path';
++import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
++import {DesktopController} from '../src/main/controller.mts';import {BindingStore,emptyBinding} from '../src/main/bindings.mts';import {execute} from '../src/main/worker.mts';
++import {reconcileVaultEditor} from '../src/shared/vault-editor-recovery.ts';
++async function fixture(t){const root=await fs.mkdtemp(path.join(await fs.realpath(os.tmpdir()),'vault-conflict-closeout-'));t.after(()=>fs.rm(root,{recursive:true,force:true}));const vault=path.join(root,'第二大脑');await fs.mkdir(vault);const binding=createVault(vault),store=new BindingStore(path.join(root,'machine.json'));await store.save({...emptyBinding(),current:binding});const c=new DesktopController({store,worker:{call:(op,args)=>execute(op,args,'disabled')},documents:root,authMode:'disabled',dialogs:{library:async()=>null,destination:async()=>null}});await c.initialize();return{c,vault};}
++test('discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving',async t=>{
++ const {c,vault}=await fixture(t),original=await c.createVaultDocument({section:'materials',title:'原文冲突',text:'旧原文'}),input={id:original.document.id,expectedHash:original.document.hash,text:'本人草稿'},file=path.join(vault,original.document.relativePath);
++ await fs.writeFile(file,'外部修改');await assert.rejects(c.saveVaultDocument(input),{code:'CONFLICT'});
++ const recovery=await c.recoverVaultMutation({action:'discard'});assert.equal(recovery.outcome,'discarded');assert.equal(recovery.current.text,'外部修改');assert.notEqual(recovery.current.document.hash,original.document.hash);
++ const editor=reconcileVaultEditor({current:original,text:'本人草稿',title:'原文冲突',category:'materials',submission:{method:'saveVaultDocument',input}},recovery);assert.equal(editor.text,'本人草稿');assert.equal(editor.conflict,true);
++ const saved=await c.saveVaultDocument({id:editor.current.document.id,expectedHash:editor.current.document.hash,text:editor.current.text+'\n'+editor.text});assert.equal(saved.text,'外部修改\n本人草稿');assert.equal(await fs.readFile(file,'utf8'),saved.text);
++});
++test('another external edit after recovery still rejects the acknowledged old version without overwriting it',async t=>{
++ const {c,vault}=await fixture(t),original=await c.createVaultDocument({section:'materials',title:'再次变化',text:'旧原文'}),file=path.join(vault,original.document.relativePath);
++ await fs.writeFile(file,'外部修改');await assert.rejects(c.saveVaultDocument({id:original.document.id,expectedHash:original.document.hash,text:'本人草稿'}),{code:'CONFLICT'});const recovered=await c.recoverVaultMutation({action:'discard'});
++ await fs.writeFile(file,'第二次外部修改');await assert.rejects(c.saveVaultDocument({id:original.document.id,expectedHash:recovered.current.document.hash,text:'本人草稿'}),{code:'CONFLICT'});assert.equal(await fs.readFile(file,'utf8'),'第二次外部修改');
++});
+diff --git a/workbench/test/vault-editor-recovery.test.mjs b/workbench/test/vault-editor-recovery.test.mjs
+index dab6771..0b4a11a 100644
+--- a/workbench/test/vault-editor-recovery.test.mjs
++++ b/workbench/test/vault-editor-recovery.test.mjs
+@@ -8,3 +8,10 @@ const initial={current:null,title:'新资料',text:'原提交',category:'materia
+ test('P3: live recovery delivery binds the retained create form to the committed document',()=>{const bus=new EventTarget();let state=initial;const stop=listenVaultRecovery(bus,result=>{const next=reconcileVaultEditor(state,result);if(next)state=next;});announceVaultRecovery(bus,recovery);assert.equal(state.current.document.id,document.id);assert.equal(state.text,state.current.text);assert.equal(state.submission,null);assert.equal(state.sourceUnavailable,false);announceVaultRecovery(bus,{...recovery,current:{...committed,text:'later unrelated event'}});assert.equal(state.text,'原提交');stop();});
+ test('P3: later local edits survive, use the fresh hash and flag divergent external content',()=>{const local={...initial,text:'提交后继续填写'};const normal=reconcileVaultEditor(local,recovery);assert.equal(normal.text,local.text);assert.equal(normal.conflict,false);assert.equal(normal.current.document.id,document.id);const latest={document:{...document,hash:'b'.repeat(64)},text:'外部后续版本'},changed=reconcileVaultEditor(local,{...recovery,current:latest});assert.equal(changed.text,local.text);assert.equal(changed.current.text,latest.text);assert.equal(changed.current.document.hash,latest.document.hash);assert.equal(changed.conflict,true);const unchanged=reconcileVaultEditor(initial,{...recovery,current:latest});assert.equal(unchanged.text,latest.text);assert.equal(unchanged.conflict,false);});
+ test('P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates',()=>{const moved=reconcileVaultEditor(initial,{...recovery,current:null});assert.equal(moved.current.document.id,document.id);assert.equal(moved.sourceUnavailable,true);assert.equal(reconcileVaultEditor(initial,{...recovery,input:{...input,title:'另一份资料'}}),null);const discarded=reconcileVaultEditor({...initial,text:'新填写'},{...recovery,outcome:'discarded',result:null,current:null});assert.equal(discarded.text,'新填写');assert.equal(discarded.current,null);assert.equal(discarded.submission,null);});
++test('discarded saves preserve the author draft beside the latest external version and keep comparison required',()=>{
++ const input={id:document.id,expectedHash:document.hash,text:'本人草稿'},latest={document:{...document,hash:'b'.repeat(64)},text:'外部修改'};
++ const state={...initial,current:committed,text:'本人草稿',submission:{method:'saveVaultDocument',input}};
++ const next=reconcileVaultEditor(state,{mutationId:recovery.mutationId,method:'saveVaultDocument',input,outcome:'discarded',result:null,current:latest});
++ assert.equal(next.text,'本人草稿');assert.equal(next.current.document.hash,latest.document.hash);assert.equal(next.current.text,'外部修改');assert.equal(next.conflict,true);assert.equal(next.sourceUnavailable,false);
++ const missing=reconcileVaultEditor(state,{mutationId:recovery.mutationId,method:'saveVaultDocument',input,outcome:'discarded',result:null,current:null});assert.equal(missing.text,'本人草稿');assert.equal(missing.sourceUnavailable,true);
++});
+diff --git a/workbench/test/worker-client-busy.test.mjs b/workbench/test/worker-client-busy.test.mjs
+index 34d2b2a..fbf992f 100644
+--- a/workbench/test/worker-client-busy.test.mjs
++++ b/workbench/test/worker-client-busy.test.mjs
+@@ -19,6 +19,7 @@ function fixture(t, replies) {
+ }
+ 
+ const busy = {ok: false, error: {code: 'BUSY'}};
++const vaultBusy = {ok: false, error: {code: 'VAULT_BUSY'}};
+ const args = {binding: {root: '/original', libraryId: 'original', rootIdentity: {dev: '1', ino: '2'}}, view: 'active'};
+ 
+ test('a readonly BUSY retries the pinned request, occupying the single pending slot', async t => {
+@@ -78,3 +79,15 @@ test('stop cancels a scheduled retry, rejects its caller and never respawns', as
+     assert.equal(f.requests.length, 1);
+     assert.equal(f.spawned(), 1);
+ });
++test('Vault contention retries only the exact finite read, with a bounded friendly failure',async t=>{
++ const f=fixture(t,()=>vaultBusy),rejected=assert.rejects(f.client.call('productionRead',args),error=>error.code==='VAULT_BUSY'&&/知识库.*占用/.test(error.message));
++ for(const delay of [100,250,500,1000,1500,2000])t.mock.timers.tick(delay);
++ await rejected;assert.equal(f.requests.length,7);for(const request of f.requests)assert.deepEqual(request,f.requests[0]);
++ t.mock.timers.tick(60_000);assert.equal(f.requests.length,7);
++});
++test('Vault contention never replays a mutation',async t=>{
++ const f=fixture(t,()=>vaultBusy);await assert.rejects(f.client.call('productionMutate',args),{code:'VAULT_BUSY'});t.mock.timers.tick(60_000);assert.equal(f.requests.length,1);
++});
++test('unrelated NOT_READY failures never retry',async t=>{
++ const g=fixture(t,()=>({ok:false,error:{code:'NOT_READY'}}));await assert.rejects(g.client.call('productionRead',args),{code:'NOT_READY'});t.mock.timers.tick(60_000);assert.equal(g.requests.length,1);
++});
+diff --git a/workbench/test/workspace-content-number.test.mjs b/workbench/test/workspace-content-number.test.mjs
+new file mode 100644
+index 0000000..824dcb2
+--- /dev/null
++++ b/workbench/test/workspace-content-number.test.mjs
+@@ -0,0 +1,17 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import fs from 'node:fs';
++import os from 'node:os';
++import path from 'node:path';
++import {createLibrary,openLibrary} from '../../plugin-src/src/lib/file-library/index.mjs';
++import {createVault} from '../../plugin-src/src/lib/vault/index.mjs';
++import {workspaceLibrary} from '../src/main/workspace-worker.mts';
++for(const kind of ['ordinary','vault'])test(`${kind} workspace exposes persisted work identity separately from an untitled display name`,t=>{
++ const root=fs.mkdtempSync(path.join(os.tmpdir(),'nova-work-number-'));t.after(()=>fs.rmSync(root,{recursive:true,force:true}));
++ if(kind==='vault')fs.mkdirSync(path.join(root,'vault'));
++ const lib=kind==='vault'?openLibrary(createVault(path.join(root,'vault')).root):createLibrary(path.join(root,'library')),content=lib.createContent({title:'未定标题',body:''});
++ lib.mutateProduction('ensureCreation',{contentId:content.id,expectedToken:lib.readProduction().editToken});
++ const expected=lib.readProductionCreation(content.id).creation.tNumber;
++ assert.match(expected,/^T\d{3,}$/);assert.equal(workspaceLibrary(lib).contentDetails.find(item=>item.id===content.id).tNumber,expected);
++ assert.equal(lib.readContent(content.id).title,'未定标题');
++});
+diff --git a/workbench/test/workspace-read-recovery.test.mjs b/workbench/test/workspace-read-recovery.test.mjs
+new file mode 100644
+index 0000000..f4e7cf2
+--- /dev/null
++++ b/workbench/test/workspace-read-recovery.test.mjs
+@@ -0,0 +1,17 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++const api=await import('../src/shared/workspace-read-recovery.ts').catch(()=>({}));
++test('only transient read contention schedules two epoch-bound recoveries and success cancels stale timers',()=>{
++ assert.equal(typeof api.createWorkspaceReadRecovery,'function');let epoch=1,count=0;const timers=new Map();let id=0;
++ const r=api.createWorkspaceReadRecovery({currentEpoch:()=>epoch,retry:()=>count++,schedule:(fn,delay)=>{timers.set(++id,{fn,delay});return id;},cancel:key=>timers.delete(key)});
++ const tick=()=>{const [key,value]=timers.entries().next().value;timers.delete(key);value.fn();};
++ assert.equal(r.schedule(1),true);assert.equal(r.schedule(1),true);assert.equal(timers.size,1);tick();assert.equal(count,1);
++ assert.equal(r.schedule(1),true);tick();assert.equal(count,2);assert.equal(r.schedule(1),false);assert.equal(timers.size,0);
++ r.reset();assert.equal(r.schedule(1),true);r.reset();assert.equal(timers.size,0);
++ assert.equal(r.schedule(1),true);epoch=2;tick();assert.equal(count,2);assert.equal(r.schedule(1),false);
++});
++test('workspace read failures distinguish contention, timeout, access and corruption without broad repair advice',()=>{
++ assert.equal(typeof api.workspaceReadFailure,'function');for(const code of ['BUSY','VAULT_BUSY']){const issue=api.workspaceReadFailure({code});assert.equal(issue.kind,'busy');assert.doesNotMatch(issue.message,/维护|损坏/);}
++ assert.equal(api.workspaceReadFailure({code:'READ_TIMEOUT'}).kind,'timeout');assert.match(api.workspaceReadFailure({code:'READ_TIMEOUT'}).message,/重试/);
++ assert.doesNotMatch(api.workspaceReadFailure({code:'EACCES'}).message,/损坏|维护/);assert.match(api.workspaceReadFailure({code:'CORRUPT'}).message,/维护/);
++});

@@ -1,0 +1,36 @@
+{
+  "frozenSource": "34c0a05b7bd9f005cf2dd6057e8130eb57dedad3",
+  "desktop": "/Users/mac/Desktop/自媒体工作台-0.5.4-轻量预览",
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg",
+      "bytes": 330744838,
+      "sha256": "5f57719c1a1f26e78e75a201e6ad936b531738790ec821da4f5e94e29ee72c09",
+      "modified": "2026-10-28T10:10:39.009Z"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.4-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 340990,
+      "sha256": "bd0d32e8be562ece4ef7805754a2e7063f22c814acdf38cd0c6575cf1781aab0",
+      "modified": "2026-10-28T10:10:49.769Z"
+    },
+    {
+      "name": "Plugin-0.5.4-darwin-arm64-preview-disabled.zip",
+      "bytes": 95035099,
+      "sha256": "df56e2e3e9873dce5087412a0acd6d7407efbf1e2b8f73162a9c237f36a56907",
+      "modified": "2026-10-28T10:11:34.932Z"
+    },
+    {
+      "name": "SHA256SUMS",
+      "bytes": 350,
+      "sha256": "230788f0a1d67b7730d0e2d273751b25b2589a7f97c18814e9ad19cf11464128",
+      "modified": "2026-10-28T10:12:00.172Z"
+    },
+    {
+      "name": "使用说明.txt",
+      "bytes": 1856,
+      "sha256": "bf90de8ba824b3b239b928554001f85b166a5ca9af25827047973abc0392bc73",
+      "modified": "2026-10-28T10:07:01.335Z"
+    }
+  ]
+}

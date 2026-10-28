@@ -1,0 +1,47 @@
+{
+  "at": "2026-10-28T10:41:45.825Z",
+  "scope": "Installed 0.5.4 native controller/WorkerClient in a separate Node IPC child, APFS clone of author files with fresh test-only managed runtime; no Electron GUI, no author-library writes, no network/providers",
+  "events": [
+    {
+      "op": "vaultLocation",
+      "ms": 345,
+      "ok": true
+    },
+    {
+      "op": "bind",
+      "ms": 8405,
+      "ok": true
+    },
+    {
+      "op": "vaultLocation",
+      "ms": 5,
+      "ok": true
+    },
+    {
+      "op": "seed",
+      "ms": 5221,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 879,
+      "ok": true
+    },
+    {
+      "op": "vaultLocation",
+      "ms": 5,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 717,
+      "ok": true
+    }
+  ],
+  "openMs": 13698,
+  "busyAfterOpen": false,
+  "contents": 49,
+  "reinitializeMs": 5,
+  "reopenContents": 49,
+  "ok": true
+}
