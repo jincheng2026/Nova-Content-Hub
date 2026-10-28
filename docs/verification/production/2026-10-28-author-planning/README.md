@@ -27,7 +27,7 @@
 
 实际临时库验证包括批量/单读相等、一次快照和回执索引、单条坏记录隔离、孤立受管文件不产生幽灵 T、CAS 与 source pins、失响应后重开核验恢复、来源变化后恢复、普通路径绕过拒绝、准确同名路径兼容，以及原 U1/U2/选题事实回归。
 
-运行日志：`/tmp/nova-author-planning-integration/tests.log`、`/tmp/nova-author-planning-integration/typecheck.log`。
+运行日志已归档为本目录 `integration-tests.log` 与 `typecheck.log`，原临时路径保留。
 
 ```sh
 node --test plugin-src/src/lib/vault/test/author-planning.test.mjs plugin-src/src/lib/vault/test/source-map.test.mjs plugin-src/src/lib/vault/test/document-trash.test.mjs plugin-src/src/lib/vault/test/topic-status.test.mjs workbench/test/author-planning-desktop.test.mjs workbench/test/author-planning-status.test.mjs workbench/test/content-directory-pagination.test.mjs workbench/test/content-directory-loading.test.mjs workbench/test/content-directory-navigation-state.test.mjs workbench/test/vault-topic-status.test.mjs workbench/test/vault-conflict-closeout.test.mjs workbench/test/boundaries.test.mjs
