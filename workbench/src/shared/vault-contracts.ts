@@ -1,3 +1,4 @@
+import type {AuthorPlanningView,AuthorPlanningStatuses,SetAuthorPlanningStatusInput} from '../../../plugin-src/src/lib/vault/author-planning.mjs';
 import type {VaultDocumentTrashEntry,VaultDocumentRestoreInput} from '../../../plugin-src/src/lib/vault/document-trash.mjs';
 import type {DocumentViewInput,DocumentReferenceInput,DocumentView,DocumentReferenceResult} from './document-reading-contracts.ts';
 import type {FinalAssetsInputs} from './final-assets-contracts.ts';
@@ -5,12 +6,14 @@ import type {FinalAssetsView} from '../../../plugin-src/src/lib/final-assets/ind
 import type {LibraryBinding} from './contracts.ts';
 export type VaultWorkContext=import('../../../plugin-src/src/lib/vault/index.mjs').VaultTaskContext & {workflow:import('../../../plugin-src/src/lib/vault/workflow.mjs').WorkFlow|null};
 export type TopicMenu={sessionId:string;relativePath:string;hash:string;candidates:(import('../../../plugin-src/src/lib/vault/topics.mjs').TopicCandidate&{id:string})[];sourceRefs?:unknown[];adoptions:{candidateId:string;work:{workId:string;vaultId:string};at:string}[];taskId?:string;attemptId?:string;artifactId?:string};
-export type VaultWorkDirectoryRow={contentId:string;tNumber:string;title:string;recorded:boolean;published:boolean;hasDraft:boolean;topicStatus:import('../../../plugin-src/src/lib/vault/core.mjs').TopicCardStatus;statusEvidence:{origin:string;documentId:string;relativePath:string;hash:string;text:string;section?:string;line?:number;status?:string;paused?:boolean;reason?:string|null}[];sourceResolution:'resolved'|'conflict'|'missing';sourceConflict:string|null;relativePath:string};
+export type VaultWorkDirectoryRow={authorPlanning:AuthorPlanningView|null;authorPlanningIssue:string|null;authorPlanningScope:string;contentId:string;tNumber:string;title:string;recorded:boolean;published:boolean;hasDraft:boolean;topicStatus:import('../../../plugin-src/src/lib/vault/core.mjs').TopicCardStatus;statusEvidence:{origin:string;documentId:string;relativePath:string;hash:string;text:string;section?:string;line?:number;status?:string;paused?:boolean;reason?:string|null}[];sourceResolution:'resolved'|'conflict'|'missing';sourceConflict:string|null;relativePath:string};
 export type VaultSection = 'profile'|'accounts'|'materials'|'patterns'|'topics'|'drafts'|'reviews'|'prompts';
 export interface VaultDocument {id:string;section:VaultSection;title:string;relativePath:string;hash:string;format:'markdown'|'html'|'text'|'json'|'other';writable:boolean;contentId:string|null;tNumber:string|null;bytes:number;sourceConflict?:string}
 export interface VaultSnapshot {readingScope?:string;root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
 export interface VaultText {readingScope?:string;document:VaultDocument;text:string;workingDraftAvailable?:boolean}
 export interface VaultInputs {
+ readAuthorPlanningStatuses:undefined;
+ setAuthorPlanningStatus:SetAuthorPlanningStatusInput & {scope:string};
  listVaultDocumentTrash:undefined;
  restoreVaultDocument:VaultDocumentRestoreInput;
  readDocumentView:DocumentViewInput & {scope:string};
@@ -39,6 +42,8 @@ export interface VaultInputs {
  recoverVaultMutation:{action:'retry'|'discard'};
 }
 export interface VaultResults {
+ readAuthorPlanningStatuses:AuthorPlanningStatuses & {scope:string};
+ setAuthorPlanningStatus:AuthorPlanningView;
  listVaultDocumentTrash:VaultDocumentTrashEntry[];
  restoreVaultDocument:VaultText & {trashId:string};
  readDocumentView:DocumentView;
@@ -65,12 +70,13 @@ export interface VaultResults {
  revealVaultDocument:{revealed:true};
  recoverVaultMutation:VaultRecovery|null;
 }
-export type VaultMutationMethod = 'restoreVaultDocument'|'saveFinalAssets'|'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
+export type VaultMutationMethod = 'setAuthorPlanningStatus'|'restoreVaultDocument'|'saveFinalAssets'|'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
 export type VaultPending = {mutationId:string;binding:Pick<LibraryBinding,'libraryId'|'rootIdentity'>} & {[K in VaultMutationMethod]:{method:K;input:VaultInputs[K]}}[VaultMutationMethod];
-export type VaultMutationResult=VaultText|{trashed:true}|FinalAssetsView;
+export type VaultMutationResult=AuthorPlanningView|VaultText|{trashed:true}|FinalAssetsView;
 export type VaultResolution = {state:'committed';result:VaultMutationResult}|{state:'missing'}|{state:'uncertain'};
 export type VaultRecovery = Pick<VaultPending,'mutationId'|'method'|'input'> & {outcome:'committed'|'discarded';result:VaultMutationResult|null;current:VaultText|null};
 export interface VaultWorkerOperations {
+ vaultAuthorPlanning:{args:{binding:LibraryBinding};result:VaultResults['readAuthorPlanningStatuses']};
  vaultDocumentTrash:{args:{binding:LibraryBinding};result:VaultDocumentTrashEntry[]};
  documentView:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentView']};result:DocumentView};
  documentReference:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentReference']};result:DocumentReferenceResult};

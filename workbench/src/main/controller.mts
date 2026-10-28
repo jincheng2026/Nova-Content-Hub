@@ -152,6 +152,8 @@ export class DesktopController {
     readDocumentView(input:VaultInputs['readDocumentView']){return this.vault.readDocumentView(input);}
     readDocumentReference(input:VaultInputs['readDocumentReference']){return this.vault.readDocumentReference(input);}
     openDocumentExternalReference(input:VaultInputs['openDocumentExternalReference']){return this.vault.openDocumentExternalReference(input);}
+    readAuthorPlanningStatuses(input?:undefined){return this.vault.readAuthorPlanningStatuses(input);}
+    setAuthorPlanningStatus(input:VaultInputs['setAuthorPlanningStatus']){return this.vault.setAuthorPlanningStatus(input);}
     readVault(input?:undefined){return this.vault.readVault(input);}
     listVaultDocumentTrash(input?:undefined){return this.vault.listVaultDocumentTrash(input);}
     restoreVaultDocument(input:VaultInputs['restoreVaultDocument']){return this.vault.restoreVaultDocument(input);}

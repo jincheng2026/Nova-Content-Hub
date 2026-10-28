@@ -1,3 +1,4 @@
+import {validateAuthorPlanningReceipt} from './author-planning.mjs';
 import {applyFinalAssetsReceipt,managedFinalAssetMetadata,isManagedFinalAssetPath} from '../final-assets/transaction.mjs';
 import {applyPublicationReceipt} from '../publication-runtime/transaction.mjs';
 import fs from 'node:fs';
@@ -25,6 +26,7 @@ export const SECTIONS = Object.freeze({
 });
 const LIMIT = 8 * 1024 * 1024,
     MAX_FILES = 20000;
+export function isManagedAuthorPlanningPath(relative){return typeof relative==='string'&&/^05_内容草稿\/(?:已做\/)?T\d{3,}_[^/\\\0]+\/作者安排\.json$/.test(relative.replaceAll('\\','/'));}
 export const digest = (value) =>
     createHash('sha256').update(value).digest('hex');
 export const uuidFor = (value) => {
@@ -261,6 +263,7 @@ export function scan(root, vaultId) {
             )
                 continue;
             const rel = relative ? `${relative}/${entry.name}` : entry.name;
+            if(isManagedAuthorPlanningPath(rel))continue;
             if (entry.isSymbolicLink()) {
                 issues.push({
                     code: 'SYMLINK_REJECTED',
@@ -536,6 +539,11 @@ function mutationID(options) {
     return options.mutationId;
 }
 function applyReceiptUnlocked(root, r) {
+    const touchesAuthorPlanning=isManagedAuthorPlanningPath(r.path)||Array.isArray(r.writes)&&r.writes.some(write=>isManagedAuthorPlanningPath(write?.relativePath));
+    if(touchesAuthorPlanning||r.request?.action==='author-planning'){
+        if(!isManagedAuthorPlanningPath(r.path)||!['create','save'].includes(r.action))fail('CONFLICT','作者安排受管记录只能通过本人决定专属事务改写');
+        validateAuthorPlanningReceipt(root,r);
+    }
     if (r.action === 'final-assets') return applyFinalAssetsReceipt(root, r);
     if (r.action === 'publication-runtime') return applyPublicationReceipt(root, r);
     if (r.action === 'topic-adoption') return applyTopicReceipt(root, r);
@@ -803,6 +811,7 @@ export function saveVaultDocument(runtimeRoot, input, options) {
         fail('INVALID_INPUT', '知识文件保存参数无效或内容超限');
     const r = runMutation(runtimeRoot, {action: 'save', input}, options, () => {
         const {document} = readVaultDocument(runtimeRoot, input.id);
+        if (isManagedAuthorPlanningPath(document.relativePath)) fail('INVALID_INPUT','作者安排不能通过普通资料编辑修改');
         if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不可原位编辑，请保留快照并另建工作稿');
         if (document.sourceConflict) fail('CONFLICT', document.sourceConflict);
         if (!document.writable)
@@ -960,6 +969,7 @@ export function trashVaultDocument(runtimeRoot, input, options) {
             if (b.vaultId !== documentTrash.vaultId || b.rootIdentity.dev !== documentTrash.rootIdentity.dev || b.rootIdentity.ino !== documentTrash.rootIdentity.ino)
                 fail('CONFLICT', '知识库在回收前已变化');
             const {document} = readVaultDocument(runtimeRoot, input.id);
+            if (isManagedAuthorPlanningPath(document.relativePath)) fail('INVALID_INPUT','作者安排不能通过普通资料回收删除');
             if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件回收操作删除');
             if (document.hash !== input.expectedHash)
                 fail('CONFLICT', '知识文件已被外部修改，不能回收');
@@ -1023,6 +1033,7 @@ export function materializeVaultBody(
     return r.result;
 }
 export function validateVaultRestoreSource(runtimeRoot, source) {
+    if(isManagedAuthorPlanningPath(source?.relativePath))fail('INVALID_INPUT','作者安排不能通过普通文件恢复改写');
     if (isManagedFinalAssetPath(source?.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件恢复操作改写');
     const binding = vaultState(runtimeRoot);
     if (!source.trashMutationId)
@@ -1038,6 +1049,7 @@ export function validateVaultRestoreSource(runtimeRoot, source) {
 }
 
 export function restoreVaultSource(runtimeRoot, source, options) {
+    if(isManagedAuthorPlanningPath(source?.relativePath))fail('INVALID_INPUT','作者安排不能通过普通文件恢复改写');
     if (isManagedFinalAssetPath(source?.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件恢复操作改写');
     runMutation(
         runtimeRoot,

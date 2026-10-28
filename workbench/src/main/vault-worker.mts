@@ -1,3 +1,4 @@
+import {readAuthorPlanningStatuses,setAuthorPlanningStatus} from '../../../plugin-src/src/lib/vault/author-planning.mjs';
 import {listVaultDocumentTrash,restoreVaultDocument} from '../../../plugin-src/src/lib/vault/document-trash.mjs';
 import {createDocumentReadingService,documentReadingScope,registeredLinkedDocuments,registeredLinkedDocumentLocation} from './document-reading.mts';
 import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
@@ -7,7 +8,7 @@ import {verifiedBoundReader,verifyBoundRoot} from './bound-reader.mts';
 import {createVaultWorkingDraft} from '../../../plugin-src/src/lib/vault/working-draft.mjs';
 import {selectCurrentWork} from '../../../plugin-src/src/lib/vault/topics.mjs';
 import {readWorkFlow} from '../../../plugin-src/src/lib/vault/workflow.mjs';
-import {safe,contentSources,digest} from '../../../plugin-src/src/lib/vault/core.mjs';
+import {safe,contentSources,digest,withVaultReadLock} from '../../../plugin-src/src/lib/vault/core.mjs';
 import {readSourceInventory,linkSource} from '../../../plugin-src/src/lib/vault/source-map.mjs';
 import {readTopicMenus,adoptVaultTopic} from './topic-worker.mts';
 import path from 'node:path';
@@ -22,13 +23,19 @@ const documentReading = createDocumentReadingService();
 let documentBinding = '';
 function readingFor(binding:LibraryBinding){const next=JSON.stringify(binding);if(next!==documentBinding){documentReading.clear();documentBinding=next;}return documentReading;}
 function workContext(binding:LibraryBinding,contentId:string){const context=readVaultTaskContext(binding.root,contentId),root=vaultRootForRuntime(binding.root);return context?{...context,workflow:root&&context.content?readWorkFlow(root,{vaultId:context.vaultId,workId:context.content.tNumber}):null}:null;}
-export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultDocumentTrash','documentView','documentReference','documentExternalReference','vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
+export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultAuthorPlanning','vaultDocumentTrash','documentView','documentReference','documentExternalReference','vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
 export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'required'|'disabled') {
  const documentOperation=['documentView','documentReference','documentExternalReference'].includes(op);
- const fields=documentOperation?['binding','input']:op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultDocumentTrash','vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
+ const fields=documentOperation?['binding','input']:op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultAuthorPlanning','vaultDocumentTrash','vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
+ if(op==='vaultAuthorPlanning'){verifyBoundRoot(binding);return {...readAuthorPlanningStatuses(binding.root),scope:documentReadingScope(binding)};}
+ if(op==='vaultMutate'&&isRecord(args.pending)&&args.pending.method==='setAuthorPlanningStatus'){
+  requireWrite(mode);if(!vaultPending(args.pending))fail('INVALID_INPUT','作者安排变更意图无效。');const pending=args.pending as Extract<VaultPending,{method:'setAuthorPlanningStatus'}>;
+  if(pending.binding.libraryId!==binding.libraryId||pending.binding.rootIdentity.dev!==binding.rootIdentity.dev||pending.binding.rootIdentity.ino!==binding.rootIdentity.ino||pending.input.scope!==documentReadingScope(binding))fail('CONFLICT','作者安排变更绑定的知识库已变化。');
+  const {scope,...input}=pending.input;return setAuthorPlanningStatus(binding.root,input,{mutationId:pending.mutationId});
+ }
  if(documentOperation){
   const method=op==='documentView'?'readDocumentView':op==='documentReference'?'readDocumentReference':'openDocumentExternalReference';
   if(!vaultDesktopInput(method,args.input))fail('INVALID_INPUT','原文阅读请求字段无效。');
@@ -71,7 +78,16 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   requireWrite(mode);if(typeof args.selectedRoot!=='string'||!path.isAbsolute(args.selectedRoot)||!vaultDesktopInput('chooseVaultSource',{role:args.role}))fail('INVALID_INPUT','关联来源无效。');const root=vaultRootForRuntime(binding.root);if(!root)fail('NOT_READY','请打开知识库后关联来源。');
   return linkSource(root,{role:args.role as import('../../../plugin-src/src/lib/vault/source-map.mjs').SourceRole,selectedRoot:args.selectedRoot,authority:args.role==='archive-analysis'?'analysis-copy':args.role==='official-archives'?'official':'candidate',writable:false});
  }
- if(op==='vaultWorkDirectory'){const snapshot=readVaultSnapshot(binding.root);return snapshot?contentSources(snapshot).map((entry:any)=>({contentId:entry.contentId,tNumber:entry.tNumber,title:entry.title,recorded:entry.recorded,published:entry.published,topicStatus:entry.topicStatus,statusEvidence:entry.evidence.filter((e:any)=>['topic-card-status','draft-overview'].includes(e.origin)),hasDraft:entry.sourceCandidates.some((source:any)=>['creation-page','working-draft','final-script','legacy-compare'].includes(source.role))||entry.documents.some((doc:any)=>doc.section==='drafts'&&/(?:参考拆解|叙事|视频框架)[^/]*\.md$/.test(doc.relativePath)),sourceResolution:entry.sourceResolution,sourceConflict:entry.document.sourceConflict??null,relativePath:entry.document.relativePath})):[];}
+ if(op==='vaultWorkDirectory'){
+  const root=vaultRootForRuntime(binding.root);if(!root)return [];
+  return withVaultReadLock(root,()=>{
+   const snapshot=readVaultSnapshot(binding.root);if(!snapshot)return [];
+   let authorEntries:ReturnType<typeof readAuthorPlanningStatuses>['entries']=[],authorIssue:string|null=null;
+   try{authorEntries=readAuthorPlanningStatuses(binding.root).entries;}catch(error){authorIssue=error instanceof Error?error.message:'作者安排暂不可读，请核验来源。';}
+   const authors=new Map(authorEntries.map(entry=>[entry.contentId,entry])),scope=documentReadingScope(binding);
+   return contentSources(snapshot).map((entry:any)=>{const author=authors.get(entry.contentId);return {contentId:entry.contentId,tNumber:entry.tNumber,title:entry.title,recorded:entry.recorded,published:entry.published,topicStatus:entry.topicStatus,statusEvidence:entry.evidence.filter((e:any)=>['topic-card-status','draft-overview'].includes(e.origin)),hasDraft:entry.sourceCandidates.some((source:any)=>['creation-page','working-draft','final-script','legacy-compare'].includes(source.role))||entry.documents.some((doc:any)=>doc.section==='drafts'&&/(?:参考拆解|叙事|视频框架)[^/]*\.md$/.test(doc.relativePath)),sourceResolution:entry.sourceResolution,sourceConflict:entry.document.sourceConflict??null,relativePath:entry.document.relativePath,authorPlanning:author?.value??null,authorPlanningIssue:author?.value?author.issue:author?.issue??authorIssue??'作者安排来源暂未读到，请核验。',authorPlanningScope:scope};});
+  });
+ }
  if(op==='vaultWorkContext'){if(!uuid(args.contentId))fail('INVALID_INPUT','内容标识无效。');return workContext(binding,args.contentId);}
  if(op==='vaultSelectCurrent'){
   requireWrite(mode);if(!uuid(args.contentId)||!vaultDocumentId(args.documentId)||typeof args.expectedHash!=='string'||typeof args.expectedRevision!=='string'||typeof args.decisionText!=='string'||!args.decisionText.trim()||args.decisionText.length>2000)fail('INVALID_INPUT','当前稿选择无效。');
@@ -107,7 +123,8 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   if(pending.method==='saveVaultDocument')return saveVaultDocument(binding.root,pending.input,options);
   if(pending.method==='createVaultWorkingDraft')return createVaultWorkingDraft(binding.root,pending.input,options);
   if(pending.method==='createVaultDocument')return createVaultDocument(binding.root,pending.input,options);
-  return trashVaultDocument(binding.root,pending.input,options);
+  if(pending.method==='trashVaultDocument')return trashVaultDocument(binding.root,pending.input,options);
+  fail('INVALID_INPUT','资料事务方法无效。');
  }
  if(op==='vaultLocation'){
   const root=vaultRootForRuntime(binding.root)??binding.root;

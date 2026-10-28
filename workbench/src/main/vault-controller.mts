@@ -1,3 +1,4 @@
+import {documentReadingScope} from './document-reading.mts';
 import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
 import {randomUUID} from 'node:crypto';
 import {validateInput,requireWrite,fail} from '../shared/validation.ts';
@@ -13,6 +14,8 @@ export class VaultController {
  }
  openBoundSource?:(binding:import('../shared/contracts.ts').LibraryBinding,sourceId:string,relativePath:string)=>Promise<void>;
  constructor(owner:DesktopController){this.owner=owner;}
+ readAuthorPlanningStatuses(input?:undefined){validateInput('readAuthorPlanningStatuses',input);const requested=structuredClone(this.owner.binding.current);return this.documentRead(()=>{const binding=this.owner.current();if(JSON.stringify(requested)!==JSON.stringify(binding))fail('CONFLICT','内容库已变化，请重新读取作者安排。');return this.owner.worker.call('vaultAuthorPlanning',{binding});});}
+ setAuthorPlanningStatus(input:VaultInputs['setAuthorPlanningStatus']){return this.mutate('setAuthorPlanningStatus',input) as Promise<import('../../../plugin-src/src/lib/vault/author-planning.mjs').AuthorPlanningView>;}
  listVaultDocumentTrash(input?:undefined){validateInput('listVaultDocumentTrash',input);const requested=structuredClone(this.owner.binding.current);return this.documentRead(()=>{const binding=this.owner.current();if(JSON.stringify(binding)!==JSON.stringify(requested))fail('CONFLICT','知识库已变化，请刷新回收区。');return this.owner.worker.call('vaultDocumentTrash',{binding});});}
  restoreVaultDocument(input:VaultInputs['restoreVaultDocument']){return this.mutate('restoreVaultDocument',input) as Promise<VaultText & {trashId:string}>;}
  readDocumentView(input:VaultInputs['readDocumentView']){validateInput('readDocumentView',input);return this.documentRead(()=>{this.owner.noPending();return this.owner.worker.call('documentView',{binding:this.owner.current(),input});});}
@@ -63,6 +66,7 @@ export class VaultController {
   validateInput(method,input);requireWrite(this.owner.authMode);
   return this.owner.exclusive(async()=>{
    this.owner.noPending();const binding=this.owner.current();
+   if(method==='setAuthorPlanningStatus'&&(input as VaultInputs['setAuthorPlanningStatus']).scope!==documentReadingScope(binding))fail('CONFLICT','作者安排绑定的内容库已变化，请重新打开。');
    const pending={method,input:structuredClone(input),mutationId:randomUUID(),binding:{libraryId:binding.libraryId,rootIdentity:{...binding.rootIdentity}}} as VaultPending;
    await this.owner.persist({...this.owner.binding,vaultPending:pending});
    return this.dispatch();

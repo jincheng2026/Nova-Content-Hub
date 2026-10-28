@@ -21,13 +21,13 @@ const statusTexts=tree=>all(tree,node=>node.props?.className?.split(' ').include
 const nextTurn=()=>new Promise(resolve=>setImmediate(resolve));
 
 function fixture({counts=[31,31,31],mode='topics',uiState,controlled=false,resume=true,overviewText=''}={}){
- const states=[],effects=[],refs=[],listeners=new Map(),calls=[],patches=[],contents=[],facts=[],documents=[];
+ const states=[],effects=[],refs=[],listeners=new Map(),calls=[],ipcCalls=[],patches=[],contents=[],facts=[],documents=[];
  let cursor=0,pending=[];
  for(const [group,count] of counts.entries())for(let n=1;n<=count;n++){
   const number=group*1000+n,id=`T${String(number).padStart(3,'0')}`;
   contents.push({id,title:`${group===1?'暂缓':group===2?'历史':'接下来'} ${n}`,body:n===1?'长文\n'.repeat(100):'简短摘要',editToken:'v1',deletedAt:null});
   documents.push({id:'doc-'+id,section:'topics',title:id,relativePath:`选题/${n%2?'科普':'教程'}/${id}.md`,hash:'hash',format:'markdown',writable:true,contentId:id,tNumber:id,bytes:100});
-  facts.push({contentId:id,tNumber:id,title:id,recorded:false,published:false,hasDraft:group===2,topicStatus:{paused:group===1,reason:group===1?'以后再做':null},statusEvidence:[],sourceResolution:'resolved',sourceConflict:null,relativePath:`选题/${id}.md`});
+  facts.push({authorPlanningScope:'fixture-scope',authorPlanningIssue:null,authorPlanning:{contentId:id,status:null,stale:false,derivedStatus:group===2?'written':group===1?'paused':'todo',effectiveStatus:group===2?'written':group===1?'paused':'todo'},contentId:id,tNumber:id,title:id,recorded:false,published:false,hasDraft:group===2,topicStatus:{paused:group===1,reason:group===1?'以后再做':null},statusEvidence:[],sourceResolution:'resolved',sourceConflict:null,relativePath:`选题/${id}.md`});
  }
  if(overviewText)documents.push({id:'overview',section:'topics',title:'选题总览',relativePath:'选题/00_选题总览.md',hash:'overview-hash',format:'markdown',writable:true,contentId:null,tNumber:null,bytes:overviewText.length});
  const module={exports:{}};
@@ -37,12 +37,14 @@ function fixture({counts=[31,31,31],mode='topics',uiState,controlled=false,resum
   useMemo(compute){cursor++;return compute();},
   useEffect(setup,deps){const i=cursor++,previous=effects[i];if(!previous||deps.some((value,at)=>!Object.is(value,previous.deps[at])))pending.push(()=>{previous?.cleanup?.();effects[i]={deps,cleanup:setup()};});},
  };
- vm.runInNewContext(code,{module,exports:module.exports,window:{addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name)},require:id=>{
+ vm.runInNewContext(code,{module,exports:module.exports,Event:class Event{constructor(type){this.type=type;}},window:{dispatchEvent:event=>listeners.get(event.type)?.(),addEventListener:(name,fn)=>listeners.set(name,fn),removeEventListener:name=>listeners.delete(name)},require:id=>{
   if(id==='react')return{...React,...hooks};
   if(id==='react/jsx-runtime')return require(id);
-  if(id.endsWith('client.ts'))return{invoke:async method=>method==='readVault'?{documents}:method==='readProduction'?{creations:[]}:method==='readVaultDocument'?{text:overviewText}:facts};
+  if(id.endsWith('client.ts'))return{invoke:async(method,input)=>{if(method==='setAuthorPlanningStatus'){ipcCalls.push({method,input});const fact=facts.find(row=>row.contentId===input.contentId),value={...fact.authorPlanning,status:input.status,reason:input.reason,revision:'saved-revision',sourcePins:input.sourcePins,effectiveStatus:input.status??fact.authorPlanning.derivedStatus};fact.authorPlanning=value;return value;}return method==='readVault'?{documents}:method==='readProduction'?{creations:[]}:method==='readVaultDocument'?{text:overviewText}:facts;}};
   // UI libraries remain element boundaries: tests call the directory-owned
   // handlers and inspect the page slices supplied to the real PaginationBar.
+  if(id.endsWith('author-planning-status.tsx'))return{AuthorPlanningStatusEditor:function AuthorPlanningStatusEditor(){}};
+  if(id.endsWith('library-panels.tsx'))return{ManagementDialog:function ManagementDialog(){}};
   if(id.endsWith('/radio'))return{Group:function RadioGroup(){}};
   if(id.endsWith('semi-controls.tsx'))return{PopupSelect:function PopupSelect(){}};
   if(id.endsWith('jincheng-topic-menus.tsx'))return{JinchengTopicMenus:function JinchengTopicMenus(){}};
@@ -50,7 +52,7 @@ function fixture({counts=[31,31,31],mode='topics',uiState,controlled=false,resum
   return function UIControl(){};
  }});
  const render=()=>{cursor=0;pending=[];const tree=module.exports.JinchengContentDirectory({mode,contents,uiState,openContent:id=>calls.push(['open',id]),resumeContent:resume?id=>calls.push(['resume',id]):undefined,onUIStateChange:patch=>{patches.push(patch);if(controlled)uiState={...uiState,...patch};}});pending.forEach(setup=>setup());return tree;};
- return{render,calls,patches,facts,event:name=>listeners.get(name)?.(),exports:module.exports,async ready(){render();await nextTurn();return render();},setMode(value){mode=value;},setContents(items){contents.splice(0,contents.length,...items);},contents};
+ return{render,calls,ipcCalls,patches,facts,event:name=>listeners.get(name)?.(),exports:module.exports,async ready(){render();await nextTurn();return render();},setMode(value){mode=value;},setContents(items){contents.splice(0,contents.length,...items);},contents};
 }
 
 test('empty and single unified directories retain page-size controls for 20→50→100→20',async()=>{
@@ -77,7 +79,7 @@ test('the unified directory includes every source item once in next, paused, wri
 test('each status enum filters exactly its labelled rows and does not alter source facts',async()=>{
  const f=fixture({counts:[3,2,4]});await f.ready();const original=JSON.stringify(f.facts);
  for(const [value,total,label] of [['todo',3,'待做'],['paused',2,'暂缓'],['written',4,'已写'],['all',9,null]]){
-  const tree=change(f,'选题状态',value);assert.equal(pager(tree,'选题列表分页').props.total,total);
+  const tree=change(f,'筛选作者安排',value);assert.equal(pager(tree,'选题列表分页').props.total,total);
   assert.equal(ids(tree).length,total);if(label)assert.equal(statusTexts(tree).every(text=>text===label),true);
  }
  assert.equal(JSON.stringify(f.facts),original);
@@ -86,14 +88,14 @@ test('each status enum filters exactly its labelled rows and does not alter sour
 test('query, type and status combine and reset only pagination while keeping list presentation',async()=>{
  const f=fixture({counts:[61,61,61]});let tree=await f.ready();
  tree=change(f,'内容呈现方式',{target:{value:'list'}});pager(tree,'选题列表分页').props.onPageChange(3);tree=f.render();
- tree=change(f,'选题状态','paused');assert.equal(pager(tree,'选题列表分页').props.page,1);
+ tree=change(f,'筛选作者安排','paused');assert.equal(pager(tree,'选题列表分页').props.page,1);
  tree=change(f,'内容类型','科普');assert.equal(pager(tree,'选题列表分页').props.total,31);
  pager(tree,'选题列表分页').props.onPageChange(2);tree=f.render();
  tree=change(f,'搜索内容编号或选题','暂缓 1');assert.deepEqual(ids(tree),['T1001','T1011','T1013','T1015','T1017','T1019']);
- assert.equal(pager(tree,'选题列表分页').props.page,1);assert.equal(control(tree,'选题状态').props.value,'paused');
+ assert.equal(pager(tree,'选题列表分页').props.page,1);assert.equal(control(tree,'筛选作者安排').props.value,'paused');
  assert.equal(control(tree,'内容类型').props.value,'科普');assert.equal(control(tree,'内容呈现方式').props.value,'list');
  pager(tree,'选题列表分页').props.onPageSizeChange(50);tree=f.render();
- assert.equal(control(tree,'搜索内容编号或选题').props.value,'暂缓 1');assert.equal(control(tree,'选题状态').props.value,'paused');
+ assert.equal(control(tree,'搜索内容编号或选题').props.value,'暂缓 1');assert.equal(control(tree,'筛选作者安排').props.value,'paused');
  tree=change(f,'内容类型','不存在');assert.equal(ids(tree).length,0);assert.equal(pager(tree,'选题列表分页').props.total,0);
 });
 
@@ -102,10 +104,10 @@ test('restored status and page survive mount and view switching; old snapshots d
   const restored={query:'',type:'all',view:'cards',page:2,pageSize:20,deferredPage:5,pastPage:7,...(status?{status}:{})};
   const f=fixture({uiState:restored,controlled:true});let tree=await f.ready();
   assert.equal(pager(tree,'选题列表分页').props.page,2);assert.equal(ids(tree)[0],status?'T1021':'T021');
-  assert.equal(control(tree,'选题状态').props.value,status??'all');assert.equal(f.patches.length,0);
+  assert.equal(control(tree,'筛选作者安排').props.value,status??'all');assert.equal(f.patches.length,0);
   tree=change(f,'内容呈现方式',{target:{value:'list'}});assert.equal(pager(tree,'选题列表分页').props.page,2);
-  assert.equal(control(tree,'选题状态').props.value,status??'all');
-  tree=change(f,'选题状态','written');assert.equal(pager(tree,'选题列表分页').props.page,1);assert.equal(f.patches.at(-1).status,'written');
+  assert.equal(control(tree,'筛选作者安排').props.value,status??'all');
+  tree=change(f,'筛选作者安排','written');assert.equal(pager(tree,'选题列表分页').props.page,1);assert.equal(f.patches.at(-1).status,'written');
  }
 });
 
@@ -118,9 +120,9 @@ test('a source refresh removing the final page clamps the unified result page',a
 
 test('recording and publication facts remain visible and keep doing/published mode membership',async()=>{
  const f=fixture({counts:[0,0,2]});f.facts[0].recorded=true;f.facts[1].published=true;await f.ready();
- let tree=change(f,'选题状态','written');assert.deepEqual(ids(tree),['T2002','T2001']);assert.deepEqual(statusTexts(tree),['已写','已写']);
- assert.equal(all(tree,node=>node.type==='span'&&node.props.children==='拍完还没发').length,1);
- assert.equal(all(tree,node=>node.type==='span'&&String(node.props.children).includes('原选题人工发布记录')).length,1);
+ let tree=change(f,'筛选作者安排','written');assert.deepEqual(ids(tree),['T2002','T2001']);assert.deepEqual(statusTexts(tree),['已发布','已写']);
+ assert.equal(f.facts[0].recorded,true);
+ assert.equal(f.facts[1].published,true);
  f.setMode('doing');tree=f.render();assert.deepEqual(ids(tree),['T2001']);assert.deepEqual(statusTexts(tree),['已录制']);
  f.setMode('published');tree=f.render();assert.deepEqual(ids(tree),['T2002']);assert.deepEqual(statusTexts(tree),['已发布']);
 });
@@ -130,7 +132,7 @@ test('doing primary action resumes editing while its title retains detail and op
   const f=fixture({mode:'doing',counts:[0,0,1],resume}),tree=await f.ready();
   const card=all(tree,node=>node.props?.['data-content-id'])[0];
   all(card,node=>node.props?.className==='jincheng-content-title')[0].props.onClick();
-  const actions=all(card,node=>node.props?.className==='jincheng-content-card-actions')[0];children(actions)[0].props.onClick();
+  const actions=all(card,node=>node.props?.className==='jincheng-content-card-actions')[0];children(actions).find(node=>node.props?.children==='接着写').props.onClick();
   assert.deepEqual(f.calls,[['open','T2001'],[resume?'resume':'open','T2001']]);
  }
 });
@@ -151,4 +153,14 @@ test('long card summaries preserve the complete body behind explicit expansion',
  const f=fixture({counts:[1,0,0]}),tree=await f.ready();
  const summary=all(tree,node=>node.type==='details'&&node.props.className==='jincheng-content-summary')[0];
  assert.ok(summary);assert.equal(all(summary,node=>node.type==='p')[0].props.children,('长文\n'.repeat(100)).trim());
+});
+
+test('directory mounts real author-edit transport with scoped save and keeps editor outside filtering rows',async()=>{
+ const f=fixture({counts:[2,0,0]}),tree=await f.ready(),card=all(tree,node=>node.props?.['data-content-id']==='T001')[0];
+ all(card,node=>node.props?.children==='修改安排'&&node.props?.onClick)[0].props.onClick();let edited=f.render(),editor=all(edited,node=>node.type?.name==='AuthorPlanningStatusEditor')[0];assert.ok(editor);assert.equal(editor.props.initialEditing,true);assert.equal(editor.props.identityKey,'fixture-scope');
+ editor.props.onDirtyChange(true);edited=change(f,'筛选作者安排','paused');assert.equal(ids(edited).length,0);assert.equal(all(edited,node=>node.type?.name==='ManagementDialog')[0].props.dirty,true,'filter changes do not discard the retained modal draft');editor=all(edited,node=>node.type?.name==='AuthorPlanningStatusEditor')[0];
+ const input={contentId:'T001',status:'paused',reason:'保留本人安排说明',expectedRevision:null,sourcePins:[{documentId:'doc-example',relativePath:'原卡.md',hash:'hash'}]};await editor.props.onSave(input);assert.deepEqual(JSON.parse(JSON.stringify(f.ipcCalls[0])),{method:'setAuthorPlanningStatus',input:{...input,scope:'fixture-scope'}});assert.equal(f.facts[0].hasDraft,false);assert.equal(f.facts[0].recorded,false);assert.equal(f.facts[0].published,false);
+});
+test('stale or failed author reads remain review-needed and never enter todo by fallback',async()=>{
+ const f=fixture({counts:[3,0,0]});f.facts[0].authorPlanning={...f.facts[0].authorPlanning,status:'written',effectiveStatus:'written'};f.facts[1].authorPlanning={...f.facts[1].authorPlanning,stale:true};f.facts[2].authorPlanning=null;f.facts[2].authorPlanningIssue='受管记录损坏';let tree=await f.ready();assert.deepEqual(statusTexts(tree),['已写','待核对','待核对']);tree=change(f,'筛选作者安排','todo');assert.deepEqual(ids(tree),[]);f.setMode('doing');assert.deepEqual(ids(f.render()),[],'marking written does not create an actual manuscript');
 });

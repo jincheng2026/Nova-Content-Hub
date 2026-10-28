@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
-import {rootPath, identity, safe, mkdir, json, writeJSON, fail, readBytes, digest, withVaultLock} from './core.mjs';
+import {rootPath, identity, safe, isManagedAuthorPlanningPath, mkdir, json, writeJSON, fail, readBytes, digest, withVaultLock} from './core.mjs';
 const FILE='.workbench/source-map.json';
 const DEFAULTS=[
     ['accounts','benchmark-accounts','01_对标账号','official'],
@@ -84,6 +84,10 @@ export function readSourceInventory(root){
 }
 
 const SOURCE_EXTENSIONS = new Set(['.md','.markdown','.txt','.html','.htm','.json','.jsonl','.csv','.css','.js','.png','.jpg','.jpeg','.webp','.gif','.svg','.woff','.woff2']);
+function managedAuthorSource(root,source,relative){
+ const prefix=path.relative(rootPath(root),source.root).split(path.sep).join('/');
+ return !path.isAbsolute(prefix)&&prefix!=='..'&&!prefix.startsWith('../')&&isManagedAuthorPlanningPath(prefix?path.posix.join(prefix,relative):relative);
+}
 /** Only a previously selected source root is traversed. No HOME or parent-directory inference. */
 export function readBoundSourceCatalog(root,{sourceId,maxFiles=20000}={}) {
     if(!Number.isInteger(maxFiles)||maxFiles<1||maxFiles>20000)fail('INVALID_INPUT','来源文件数量上限无效');
@@ -97,6 +101,7 @@ export function readBoundSourceCatalog(root,{sourceId,maxFiles=20000}={}) {
             if(++seen>maxFiles)fail('INVALID_INPUT','来源文件数量超过上限');
             if(entry.name.startsWith('.')||['node_modules','skills','必要备份','备份','backups'].includes(entry.name))continue;
             const relativePath=relative?`${relative}/${entry.name}`:entry.name;
+            if(managedAuthorSource(root,source,relativePath))continue;
             if(entry.isSymbolicLink()){issues.push({sourceId,relativePath,code:'SYMLINK_REJECTED',message:'来源符号链接不予读取'});continue;}
             if(entry.isDirectory()){walk(relativePath,depth+1);continue;}
             if(!entry.isFile()||!SOURCE_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))continue;
@@ -112,6 +117,7 @@ export function readBoundSourceCatalog(root,{sourceId,maxFiles=20000}={}) {
 export function readBoundSourceFile(root,{sourceId,relativePath,expectedHash}={}) {
     const source=resolveSource(root,sourceId);
     if(!source.available)fail('SOURCE_NOT_AVAILABLE','已绑定来源暂不可用');
+    if(managedAuthorSource(root,source,relativePath))fail('INVALID_INPUT','作者安排受管记录不属于普通来源文件读取');
     if(!SOURCE_EXTENSIONS.has(path.extname(relativePath??'').toLowerCase()))fail('INVALID_INPUT','来源文件扩展名不允许读取');
     if(expectedHash!==undefined&&!/^[a-f0-9]{64}$/.test(expectedHash))fail('INVALID_INPUT','来源hash无效');
     const before=identity(source.root),data=readBytes(source.root,relativePath),hash=digest(data);

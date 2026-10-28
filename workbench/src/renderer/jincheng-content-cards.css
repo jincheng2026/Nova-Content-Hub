@@ -258,3 +258,13 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Controls-01/02/03, Reading-02, Foundation-04: explicit author choices stay separate from facts. */
+.jincheng-content-card-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.jincheng-content-card-actions>[role=status]{flex-basis:100%;font-size:13px;color:var(--semi-color-text-2,#6e6e73);overflow-wrap:anywhere}
+.author-planning-status{min-width:0;max-width:100%;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
+.author-planning-form{display:grid;gap:12px;margin-top:12px}
+.author-planning-form label{display:grid;gap:6px;min-width:0}
+.author-planning-form .semi-select{width:100%;min-width:0}
+
+.jincheng-content-status.is-review{background:#fff4e2;color:#7a4b00}

@@ -1,6 +1,7 @@
 import type {Buffer} from 'node:buffer';
 import type {RootIdentity,VaultDocument,VaultSnapshot,SourceCandidate,VaultTaskContext} from './index.mjs';
 export const SECTIONS:Readonly<Record<string,string>>;
+export function isManagedAuthorPlanningPath(relative:unknown):boolean;
 export function digest(value:string|Uint8Array):string;
 export function uuidFor(value:string):string;
 export function fail(code:string,message:string):never;
