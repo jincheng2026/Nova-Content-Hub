@@ -1,0 +1,14 @@
+✔ legacy manual account/report soft lifecycle preserves identities, body, links and shared assets (1035.765916ms)
+✔ Vault manual account/report soft lifecycle preserves identities, body, links and shared assets (3199.702459ms)
+✔ HTML edits retain unmodified page id/hash/order/current page and unknown metadata (432.783833ms)
+✔ native policy blocks internal original and linked source projections even through direct mutations (1185.4795ms)
+✔ ordinary saves cannot mint task/radar/source provenance and CAS failures preserve originals (432.034542ms)
+✔ explicitly linked account/report originals reject all lifecycle mutations and remain untouched (1076.341959ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7483.66475

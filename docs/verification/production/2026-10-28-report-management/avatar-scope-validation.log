@@ -1,0 +1,9 @@
+✔ desktop accepts an optional image avatar reference, rejects non-hash input and grants avatar URLs independently of screenshots (429.924416ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 1
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 805.910083

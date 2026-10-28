@@ -25,7 +25,7 @@ const sections=['accounts','reports','tasks'];
 const pad=n=>String(n).padStart(3,'0');
 
 function fixture(section,count=121){
- const stores=new Map(),listeners=new Map(),calls=[];
+ const stores=new Map(),listeners=new Map(),calls=[];let searchOverride=null;
  const makeStore=()=>({states:[],effects:[],refs:[],cursor:0});
  let scope=makeStore(),pending=[],changed=false,hookCount;const root=scope;let usedScopes=new Set();
  const at='2026-10-01T00:00:00.000Z';
@@ -36,6 +36,7 @@ function fixture(section,count=121){
   snapshot.reports.push({id:'r'+id,title:'报告 '+id,type:n%2?'调研':'复盘',accountIds:[],sourceUrl:null,collectedAt:n%2?'2026-10-20T00:00:00.000Z':null,pages:[{id:'page'+id,title:'正文 '+id,assetHash:'hash'+id}],pageId:'page'+id,meta:{},createdAt:at,updatedAt:at,deletedAt:null});
   snapshot.tasks.push({id:'t'+id,title:'任务 '+id,kind:'research',contentId:null,accountId:null,request:{prompt:'固定请求 '+id,parameters:{},tools:[],budget:{amount:1,currency:'REQ'},bodyHash:null},requestHash:'request'+id,activeAttemptId:'attempt'+id,attempts:[{id:'attempt'+id,host:'codex',status:'claimed',claimToken:'claim'+id,workerId:'worker',progress:25,message:'真实进度 '+id,failure:null,result:null,receipt:null,createdAt:at,updatedAt:at}],createdAt:at,updatedAt:at});
  }
+ snapshot.recordPermissions={accounts:Object.fromEntries(snapshot.accounts.map(a=>[a.id,{editable:true,reason:null}])),reports:Object.fromEntries(snapshot.reports.map(r=>[r.id,{editable:true,reason:null}]))};snapshot.libraryScope='fixture-library';
  const creation={contentId:'content',tNumber:'T001',stage:'references',kind:'tutorial',references:Array.from({length:41},(_,i)=>({id:'ref'+pad(i+1),url:null,title:'参考 '+pad(i+1),platform:'手工',originalText:'原文 '+pad(i+1),correctedText:'',segments:[],corrections:[],analysis:'',mediaAssetHash:null,subtitleAssetHash:null})),analysis:'完整拆解',narrative:'完整叙事',suggestions:[],annotations:[],packaging:{titles:Array.from({length:41},(_,i)=>({id:'title'+pad(i+1),text:'标题候选 '+pad(i+1)})),coverTexts:[],intros:[],selectedTitleId:null,selectedCoverTextId:null,selectedIntroId:null},confirmedBodyHash:null,createdAt:at,updatedAt:at};
  const contentState={content:{id:'content',title:'作者标题',body:'完整作者正文。',bodyHash:'body-hash',editToken:'cv1',deletedAt:null},creation,productionToken:'v1',history:{truncated:true,limit:200,scanLimit:500,entryLimit:100000,responseBytesLimit:1000000,versions:Array.from({length:41},(_,i)=>({transactionId:'version'+pad(i+1),revision:i+1,at,operation:'save',source:'unique '+pad(i+1),author:'作者',reason:null,beforeBody:'前版',afterBody:'正文 '+pad(i+1),bodyTruncated:false,summary:{removed:'旧',added:'新',beforeCharacters:2,afterCharacters:6}}))}};
  const hooks={
@@ -50,6 +51,9 @@ function fixture(section,count=121){
   if(id==='react')return{...React,...hooks};
   if(id==='react/jsx-runtime')return require(id);
   if(id.endsWith('client.ts'))return{invoke:async(method,input)=>{calls.push([method,structuredClone(input)]);if(method==='readProduction')return snapshot;if(method==='readProductionCreation')return contentState;if(method==='saveProductionDraft')return contentState;if(method==='readPlatformCatalog')throw Error('memory fixture');if(method==='openProductionLink'||method==='openProductionTask')return{opened:true};if(method==='actProductionTask'||method==='mutateProduction')return snapshot;throw Error('Unexpected IPC: '+method);}};
+  if(id.endsWith('production-contracts.ts'))return{scopedProductionRecordOps:new Set(['saveAccount','trashAccount','restoreAccount','saveReport','trashReport','restoreReport'])};
+  if(id.endsWith('use-report-search.ts'))return{useReportSearch:(_enabled,_scope,input)=>searchOverride??({result:{hits:snapshot.reports.filter(r=>(input.scope==='trash'?!!r.deletedAt:!r.deletedAt)&&(input.type===null||r.type===input.type)&&(!input.from||(r.collectedAt??r.createdAt).slice(0,10)>=input.from)&&r.title.toLowerCase().includes(input.query.trim().toLowerCase())).map(r=>({reportId:r.id,fields:['title'],snippets:[]})),status:'complete',snapshotKey:snapshot.editToken},working:false,error:'',continueSearch(){},restart(){}})};
+  if(id.endsWith('production-record-management.tsx'))return{ProductionRecordManagement:function ProductionRecordManagement(){}};
   if(id.endsWith('library-panels.tsx'))return{useManagedDraftGuard(){},hasManagedDrafts:()=>false};
   if(id.endsWith('document-markdown.tsx'))return{DocumentMarkdown:function DocumentMarkdown(){},markdownSummary:text=>text};
   if(id.endsWith('semi-controls.tsx'))return{PopupSelect:function PopupSelect(){},PopupCreatableSelect:function PopupCreatableSelect(){},CalendarDateInput:function CalendarDateInput(){}};
@@ -70,7 +74,7 @@ function fixture(section,count=121){
   return value===undefined?node:{...node,props:{...node.props,children:Array.isArray(value)?value.map(expand):expand(value)}};
  };
  const render=()=>{let tree;for(let pass=0;pass<10;pass++){scope=root;root.cursor=0;pending=[];changed=false;tree=section==='creation'?module.exports.ContentProduction({content:contentState.content}):module.exports.ProductionWorkspace({section});if(hookCount!==undefined)assert.equal(root.cursor,hookCount,'hooks stay unconditional across loading, filters, dialogs and pages');hookCount=root.cursor;usedScopes=new Set();tree=expand(tree);for(const key of stores.keys())if(!usedScopes.has(key))stores.delete(key);pending.forEach(setup=>setup());if(!changed)return tree;}throw Error('Render did not settle');};
- return{render,calls,snapshot,creation,contentState,async ready(){render();await nextTurn();return render();},refresh:async()=>{listeners.get('nova-workspace-refresh')?.();render();await nextTurn();return render();}};
+ return{render,calls,snapshot,creation,contentState,setSearch(value){searchOverride=value;},async ready(){render();await nextTurn();return render();},refresh:async()=>{listeners.get('nova-workspace-refresh')?.();render();await nextTurn();return render();}};
 }
 
 for(const section of sections){
@@ -181,4 +185,14 @@ test('creation returned tasks and accepted artifacts each keep the final candida
 
 test('processed review history pages independently while active annotations stay beside the complete author body',async()=>{
  const f=fixture('creation',0);f.creation.suggestions=Array.from({length:41},(_,i)=>({id:'suggestion'+i,bodyHash:'body-hash',quote:'旧句 '+i,replacement:'建议 '+i,reason:'原因',status:'rejected'}));f.creation.annotations=Array.from({length:41},(_,i)=>({id:'annotation'+i,bodyHash:'body-hash',quote:'批注原句 '+i,text:'批注 '+i,status:'resolved'}));f.creation.annotations.push({id:'active',bodyHash:'body-hash',quote:'完整作者正文。',text:'仍待作者确认',status:'open'});let tree=await f.ready();const review=all(tree,node=>node.props?.title==='贴着原文审稿')[0];assert.equal(all(review,node=>node.type==='details').length,40,'processed suggestions and annotations must each have bounded pages');assert.equal(all(review,node=>node.props?.className?.split(' ').includes('production-review-note')).length,1);labelledPager(tree,'已处理建议分页').props.onPageChange(3);labelledPager(tree,'已处理批注分页').props.onPageChange(3);tree=f.render();const current=all(tree,node=>node.props?.title==='贴着原文审稿')[0];assert.equal(all(current,node=>node.type==='details').length,2);assert.equal(all(current,node=>node.props?.className?.split(' ').includes('production-review-note')).length,1);assert.equal(f.contentState.content.body,'完整作者正文。');
+});
+
+test('actual workspace connects existing-record management to original ids, snapshot tokens and lifecycle IPC',async()=>{
+ const f=fixture('reports',2);let tree=await f.ready();button(tree,'管理与回收').props.onClick();tree=f.render();const manager=all(tree,n=>n.type?.name==='ProductionRecordManagement')[0];assert.ok(manager);assert.equal(manager.props.records.length,2);assert.equal(manager.props.records[0].canManage,true);assert.equal(manager.props.identityKey,'fixture-library');
+ await manager.props.onRestore('r001','original-token');await manager.props.onTrash('r002','original-token');await manager.props.onSave({id:'r001',title:'本人改题',type:'调研',accountIds:['a001','a002'],sourceUrl:null,collectedAt:null,meta:{unknown:'保留'},pages:f.snapshot.reports[0].pages,pageId:'page001'},'original-token');
+ const writes=f.calls.filter(c=>c[0]==='mutateProduction').map(c=>c[1]);assert.deepEqual(writes.map(w=>w.op),['restoreReport','trashReport','saveReport']);assert.equal(writes[0].input.id,'r001');assert.equal(writes[2].input.expectedToken,'original-token');assert.deepEqual(writes[2].input.accountIds,['a001','a002']);assert.deepEqual(writes[2].input.meta,{unknown:'保留'});assert.equal(all(tree,n=>n.type==='h1').length,0,'redundant workspace heading removed');
+});
+
+test('actual report view shows body hit snippets and partial retry while withholding false no-match text',async()=>{
+ const f=fixture('reports',1);let tree=await f.ready();let resumed=0;f.setSearch({result:{hits:[{reportId:'r001',fields:['body'],snippets:[{field:'body',text:'第二页正文独有词',pageId:'page001'}]}],status:'partial',pendingPages:0,unreadablePages:1,cursor:'opaque',issues:[{reportId:'r001',pageId:'page001',message:'原件暂不可读'}],snapshotKey:'partial'},working:false,error:'',continueSearch(){resumed++;},restart(){}});tree=change(f,'搜索标题、账号或正文','正文独有词');const rendered=all(tree,()=>true).flatMap(n=>children(n).filter(c=>typeof c==='string')).join(' ');assert.ok(rendered.includes('当前结果仅为已核验部分'));assert.ok(rendered.includes('第二页正文独有词'));assert.ok(rendered.includes('原件暂不可读'));assert.ok(!rendered.includes('没有匹配报告'));button(tree,'重试不可读页面').props.onClick();assert.equal(resumed,1);assert.equal(cards(tree).length,1);
 });

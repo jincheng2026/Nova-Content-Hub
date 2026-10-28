@@ -4,6 +4,7 @@ import {vaultDocumentId} from './vault-validation.ts';
 import {validRadarQuery} from '../../../plugin-src/src/lib/file-library/radar.mjs';
 import {isRecord} from './contracts.ts';
 import {exact, uuid, token, identity} from './validation.ts';
+import {scopedProductionRecordOps} from './production-contracts.ts';
 import type {ProductionPending} from './production-contracts.ts';
 const text=(v:unknown,n=1000000)=>typeof v==='string' && v.length<=n && !v.includes('\0');
 const optionalKeys=(v:unknown,required:string[],optional:string[]=[])=>isRecord(v)&&required.every(k=>Object.hasOwn(v,k))&&Object.keys(v).every(k=>[...required,...optional].includes(k));
@@ -45,7 +46,7 @@ export function productionDesktopInput(method:string,input:unknown):boolean|unde
  case 'decideRadarCandidate':return exact(input,['reportId','candidateId','decision','expectedToken'])&&uuid(input.reportId)&&uuid(input.candidateId)&&['add-topic','reject'].includes(input.decision as string)&&token(input.expectedToken);
  case 'openRadarSource':return exact(input,['reportId','candidateId'])&&uuid(input.reportId)&&uuid(input.candidateId);
  case 'readPlatformCatalog':case 'readProduction':case 'readProductionPending':return input===undefined;
- case 'mutateProduction':return exact(input,['op','input','mutationId'])&&uuid(input.mutationId)&&productionMutationInput(input.op,input.input);
+ case 'mutateProduction':return optionalKeys(input,['op','input','mutationId'],['scope'])&&isRecord(input)&&uuid(input.mutationId)&&productionMutationInput(input.op,input.input)&&(scopedProductionRecordOps.has(String(input.op))?token(input.scope):input.scope===undefined||token(input.scope));
  case 'startProductionTask':{
   if(!optionalKeys(input,['kind','title','prompt','mode','comments'],['contentId','accountId','workflow','businessSkill','stage','researchBrief','synthesisBrief','coverDesignRatio','source','transcript'])||!isRecord(input))return false;
   if(input.stage!==undefined&&(!jinchengStages.includes(input.stage as string)||input.workflow!=='jincheng-stage'))return false;
@@ -81,6 +82,6 @@ export function productionPending(v:unknown):v is ProductionPending {
  if(v.kind==='mutate'&&v.op==='rejectTask')return exact(v,['kind','binding','mutationId','op','input'])&&exact(v.input,['taskId','attemptId','receiptHash','expectedToken','reason'])&&productionDesktopInput('actProductionTask',{...v.input,action:'reject'})===true;
  if(v.kind!=='mutate'||!exact(v,['kind','binding','mutationId','op','input'])||!boundedJSON(v.input))return false;
  if(productionMutationInput(v.op,v.input))return true;
- const internal:Record<string,string[]>={refreshJourneySource:['journeyId','expectedJourneyRevision','expectedStepId','sourceMutationId','expectedToken'],prepareJourneyContinuation:['journeyId','expectedJourneyRevision','expectedStepId','rootAttemptId','childAttemptId','host','challengeHash','expectedToken'],startJourney:['contentId','host','method','researchPlan','limits','serviceConfig','expectedToken'],adoptRadarResult:['taskId','attemptId','receiptHash','expectedToken'],decideRadarCandidate:['reportId','candidateId','decision','expectedToken'],createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
+ const internal:Record<string,string[]>={cancelJourney:['journeyId','expectedJourneyRevision','expectedToken'],refreshJourneySource:['journeyId','expectedJourneyRevision','expectedStepId','sourceMutationId','expectedToken'],prepareJourneyContinuation:['journeyId','expectedJourneyRevision','expectedStepId','rootAttemptId','childAttemptId','host','challengeHash','expectedToken'],startJourney:['contentId','host','method','researchPlan','limits','serviceConfig','expectedToken'],adoptRadarResult:['taskId','attemptId','receiptHash','expectedToken'],decideRadarCandidate:['reportId','candidateId','decision','expectedToken'],createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
  return typeof v.op==='string'&&Object.hasOwn(internal,v.op)&&exact(v.input,internal[v.op])&&token(v.input.expectedToken);
 }

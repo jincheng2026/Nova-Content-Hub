@@ -93,7 +93,7 @@ test('XHS and Douyin profiles stay bound to their own sampled search authors and
 });
 
 test('XHS account analysis freezes the correct capability and never enables Douyin comments',async t=>{
- const f=await fixture(t);f.values.commentsEnabled=true;let snapshot=await f.controller.readProduction();snapshot=await f.controller.mutateProduction({op:'saveAccount',input:{name:'XHS fixture',platform:'小红书',url:'https://www.xiaohongshu.com/user/profile/'+'1'.repeat(24),note:'fixture only',tags:[],images:[],reportIds:[],expectedToken:snapshot.editToken},mutationId:randomUUID()});
+ const f=await fixture(t);f.values.commentsEnabled=true;let snapshot=await f.controller.readProduction();snapshot=await f.controller.mutateProduction({op:'saveAccount',scope:snapshot.libraryScope,input:{name:'XHS fixture',platform:'小红书',url:'https://www.xiaohongshu.com/user/profile/'+'1'.repeat(24),note:'fixture only',tags:[],images:[],reportIds:[],expectedToken:snapshot.editToken},mutationId:randomUUID()});
  const account=snapshot.accounts.at(-1),created=await f.controller.startProductionTask({kind:'analysis',title:'XHS capability',prompt:'fixture only',mode:'simple',comments:true,accountId:account.id}),task=created.snapshot.tasks.at(-1);
  assert.equal(task.request.parameters.platformCollection,'xiaohongshu');assert.equal(task.request.parameters.comments,false);assert(task.request.tools.includes('tikhub'));
  const identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'xhs-account-test'};f.library.mutateProduction('claimTask',identity);

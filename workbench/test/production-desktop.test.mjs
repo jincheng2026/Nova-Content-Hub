@@ -129,7 +129,7 @@ test('platform catalog exposes no caller-controlled endpoint and account platfor
  const {controller:c}=await fixture(t,{serviceSettings:async()=>settings});
  for(const [platform,expected]of [['小红书','xiaohongshu'],['Douyin','douyin'],['旧自定义平台','manual']]){
   const snapshot=await c.readProduction();
-  const saved=await c.mutateProduction({op:'saveAccount',input:{name:`${platform}账号`,platform,url:'',note:'手工资料',tags:[],images:[],reportIds:[],expectedToken:snapshot.editToken},mutationId:randomUUID()});
+  const saved=await c.mutateProduction({op:'saveAccount',scope:snapshot.libraryScope,input:{name:`${platform}账号`,platform,url:'',note:'手工资料',tags:[],images:[],reportIds:[],expectedToken:snapshot.editToken},mutationId:randomUUID()});
   const account=saved.accounts.at(-1),result=await c.startProductionTask({...start,kind:'analysis',accountId:account.id,comments:true}),request=result.snapshot.tasks.at(-1).request;
   assert.equal(request.parameters.platform,platform);assert.equal(request.parameters.platformCollection,expected);
   assert.equal(request.tools.includes('tikhub'),expected!=='manual');assert.equal(request.parameters.comments,expected==='douyin');
