@@ -20,3 +20,7 @@
 .content-directory-switch .semi-radio-addon-buttonRadio { padding:5px 12px; border-radius:8px; font-size:13px; line-height:20px; }
 .content-directory-switch .semi-radio-addon-buttonRadio-checked { background:#fff; color:#1D1D1F; box-shadow:0 1px 2px rgba(0,0,0,.05); }
 .content-directory-switch .semi-radio:has(input:focus-visible) { outline:2px solid #0071E3; outline-offset:2px; }
+
+/* 锦成定制 2026-10-28：内容卡片不显示正文摘要和只有备注的渠道行 */
+.content-all-card .content-all-card-summary{display:none!important}
+.content-all-card .content-channel-list:has(>.cell-note:only-child){display:none!important}
