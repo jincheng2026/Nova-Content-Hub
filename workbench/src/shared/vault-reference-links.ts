@@ -66,4 +66,3 @@ export function vaultReferenceLinks(card: VaultText, documents: VaultDocument[])
   }
   return links.sort((a, b) => a.start - b.start);
 }
-
