@@ -14,3 +14,5 @@ docs/verification/**/*.log whitespace=-blank-at-eol,-blank-at-eof
 *.jpg -text
 *.icns -text
 *.ico -text
+# Original third-party notices are pinned by SHA256 and retain upstream bytes and spacing.
+workbench/scripts/media-codec-licenses/** -text whitespace=-blank-at-eol,-blank-at-eof,-space-before-tab
