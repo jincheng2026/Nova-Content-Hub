@@ -1,3 +1,4 @@
+import {PagedItems} from './paged-items.tsx';
 import {VaultTrashPanel} from './vault-trash-panel.tsx';
 import type {VaultTrashEntry} from './vault-trash-panel.tsx';
 import {DocumentSourceReader} from './document-source-reader.tsx';
@@ -103,7 +104,7 @@ export function VaultWorkspace({busy,openContent,showTasks,openResources,openAcc
  async function positioning(){if(active.current||busy)return;active.current=true;setWorking(true);setMessage('');try{const result=await invoke('startProductionTask',{kind:'writing',workflow:'positioning-interview',businessSkill:'xindao-interview',title:positioningLabel,prompt:'使用新岛定位访谈方法，读取当前知识库已有个人定位与访谈资料。按已有阶段继续，逐步与我确认身份、受众、内容方向和表达方式；保存阶段检查点与定位候选，未经确认不覆盖现有正式定位。',contentId:null,accountId:null,mode:'simple',comments:false});setTasks(result.snapshot.tasks);setMessage(result.message??(result.opened?'已打开所选助手，访谈与结果可在助手任务中继续。':'定位任务已保存，可在助手任务中继续。'));}catch(error){setMessage(errorInfo(error).message);}finally{active.current=false;setWorking(false);await statusChanged();}}
  async function read(item:VaultDocument){if(active.current)return;active.current=true;setWorking(true);setMessage('');try{let source:VaultText;if((item.format==='markdown'||item.format==='text')&&snapshot?.readingScope){const view=await invoke('readDocumentView',{documentId:item.id,expectedHash:item.hash,scope:snapshot.readingScope});source={document:item,text:view.text,readingScope:view.scope??snapshot.readingScope};}else source=await invoke('readVaultDocument',{id:item.id});setEditor({source,section:item.section});}catch(error){setMessage(errorInfo(error).message+' 可通过该行的定位入口查看原文件。');}finally{active.current=false;setWorking(false);await statusChanged();}}
  return <section className="vault-workspace" aria-label="知识库资料">
-  <div className="vault-page-heading"><div><p className="eyebrow">知识库</p><h2>资料与定位</h2></div>{snapshot&&trashMode==='active'&&<Button theme="solid" disabled={busy||working} onClick={()=>setEditor({source:null,section:section==='all'||section==='other'?'materials':section as VaultSection})}>新建资料</Button>}</div>
+  <div className="vault-page-heading"><div><h2>资料与定位</h2></div>{snapshot&&trashMode==='active'&&<Button theme="solid" disabled={busy||working} onClick={()=>setEditor({source:null,section:section==='all'||section==='other'?'materials':section as VaultSection})}>新建资料</Button>}</div>
   {message&&<Banner type="warning" closeIcon={null} description={message}/>}
   {snapshot?<>
    <div className="actions"><PopupSelect aria-label="资料范围" value={trashMode} disabled={working} onChange={setTrashMode}><option value="active">正常资料</option><option value="trash">回收区</option></PopupSelect></div>
@@ -118,7 +119,7 @@ export function VaultWorkspace({busy,openContent,showTasks,openResources,openAcc
     {title:'格式',key:'format',width:110,render:(_,item)=>`${item.format}${item.writable?'':' · 只读'}`},
     {title:'操作',key:'actions',width:170,render:(_,item)=><div className="actions">{item.contentId?<Button theme="borderless" disabled={busy||working} onClick={()=>openContent(item.contentId!)}>内容工作区</Button>:null}<Button theme="borderless" disabled={working} onClick={()=>void invoke('revealVaultDocument',{id:item.id}).catch(error=>setMessage(errorInfo(error).message))}>定位</Button></div>}
    ]} empty={query?'没有匹配资料，请调整搜索。':'这里还没有资料，可以新建记录。'}/>
-   {snapshot.issues.length>0&&<details className="vault-issues"><summary>有 {snapshot.issues.length} 项资料需要留意</summary>{snapshot.issues.map((issue,index)=><p key={index}>{issue.message}{issue.relativePath?` · ${issue.relativePath}`:''}</p>)}</details>}
+   {snapshot.issues.length>0&&<details className="vault-issues"><summary>有 {snapshot.issues.length} 项资料需要留意</summary><PagedItems compact items={snapshot.issues} resetKey={snapshot.vaultId} label="资料检查结果分页">{issues=>issues.map((issue,index)=><p key={index}>{issue.message}{issue.relativePath?` · ${issue.relativePath}`:''}</p>)}</PagedItems></details>}
   </>}
   </>:loaded?<div className="vault-legacy-empty"><p>当前是原有内容库。继续管理已有资料，或新建知识库开始整理。</p><div className="actions"><Button onClick={openResources}>个人资料与素材</Button><Button onClick={openAccounts}>对标账号</Button><Button onClick={openReports}>调研报告</Button></div></div>:<p role="status">正在读取知识库资料…</p>}
   {editor&&<DocumentEditor readingScope={snapshot?.readingScope} readingEpoch={readingEpoch} source={editor.source} section={editor.section} busy={busy} close={()=>setEditor(null)} saved={refresh} openContent={openContent} statusChanged={statusChanged}/>}

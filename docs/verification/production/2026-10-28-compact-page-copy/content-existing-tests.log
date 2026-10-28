@@ -1,0 +1,16 @@
+✔ all contents opens in cards and changing to list preserves the visible filtered content (16.2745ms)
+✔ card title opens the original content while cover action preserves its generate intent (1.682291ms)
+✔ cards and list share pagination instead of a second content projection (9.509708ms)
+✔ a true collection keeps its existing table presentation (1.178875ms)
+✔ search, name sorting and cover-state filters act on the same content in either presentation (4.020167ms)
+✔ name order is descending with numeric titles before pagination in both cards and lists (10.746584ms)
+✔ collections use the same descending numeric name order (4.909208ms)
+✔ a new untitled work remains visible by native T number, searchable and first under number order (3.285958ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 284.276416
