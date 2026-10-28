@@ -1,9 +1,10 @@
+import {authorMaterialsFixture} from './journey-fixtures.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {randomUUID} from 'node:crypto';
+import {randomUUID,createHash} from 'node:crypto';
 import {spawn} from 'node:child_process';
 import {createVault,createVaultDocument,readVaultTaskContext} from '../../vault/index.mjs';
 import {openLibrary,__testing} from '../index.mjs';
@@ -75,8 +76,8 @@ test('starting a journey binds the persisted work and freezes a root with one bo
 });
 
 function materialCheckpoint(f,child,worker){
- const envelope={binding:f.binding,task:{taskId:child.id,attemptId:child.activeAttemptId,requestHash:child.requestHash}},payload={claimToken:worker.claimToken,workerId:worker.workerId,input:{kind:'author-materials',text:'作者提供的观点：准确资料应先读回；材料来自当前原稿。'}};
- const artifact=runWorkflowHandoff({envelope,library:f.library,payload,operation:'artifact'});
+ const envelope={binding:f.binding,task:{taskId:child.id,attemptId:child.activeAttemptId,requestHash:child.requestHash}},payload={claimToken:worker.claimToken,workerId:worker.workerId,input:{data:authorMaterialsFixture(f.library.readProduction().tasks.find(t=>t.journeyState),child)}};
+ const artifact=runWorkflowHandoff({envelope,library:f.library,payload,operation:'materials'});
  return {artifact,work:{vaultId:readVaultTaskContext(f.binding.root,f.document.contentId).vaultId,workId:f.document.tNumber}};
 }
 test('advance waits for a real exact author checkpoint and retires the old child atomically',t=>{
@@ -256,4 +257,69 @@ test('a confirmed original page advances through exact same-step suggestion rece
  const reviewer={taskId:review.id,attemptId:review.activeAttemptId,claimToken:randomUUID(),workerId:owner.workerId,rootClaimToken:owner.claimToken};f.library.mutateProduction('claimTask',reviewer);assert.equal(f.library.assertProductionAuthority(reviewer),true);
  const actual=readVaultTaskContext(f.binding.root,f.document.contentId).content;fs.appendFileSync(path.join(f.root,actual.relativePath),'<!-- 外部修改 -->');
  assert.throws(()=>f.library.assertProductionAuthority(reviewer),{code:'STALE_INPUT'});
+});
+
+test('an exact author save refresh retires the old step and a manuscript edit invalidates later checkpoints',async t=>{
+ const f=fixture(t),{parent,child,owner,worker}=claimed(f,start(f));f.library.mutateProduction('claimTask',worker);
+ const material=materialCheckpoint(f,child,worker);confirmCheckpoint(f.root,{work:material.work,kind:'author-materials',artifactId:material.artifact.artifactId,artifactHash:material.artifact.hash,expectedRevision:material.artifact.revision,decision:'confirm',evidence:{actor:'author',text:'作者确认',at:new Date().toISOString()}});
+ let snap=f.library.mutateProduction('advanceJourney',{rootClaim:owner,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId}),root=snap.tasks.find(t=>t.journeyState),writing=snap.tasks.find(t=>t.id===root.journeyState.activeTaskId),writer={taskId:writing.id,attemptId:writing.activeAttemptId,claimToken:randomUUID(),workerId:owner.workerId,rootClaimToken:owner.claimToken};f.library.mutateProduction('claimTask',writer);
+ const args={envelope:{binding:f.binding,task:{taskId:writing.id,attemptId:writing.activeAttemptId,requestHash:writing.requestHash}},library:f.library};const built=await runCreationHandoff({...args,operation:'build',payload:{claimToken:writer.claimToken,workerId:writer.workerId,input:{mutationId:randomUUID(),data:{content_id:f.document.tNumber,type:'口播',stage:'写稿',title:'作者页',narrative:{story:'判断',audience:'读者',problem:'问题'},segments:[{id:'seg-one',title:'开头',mine:'作者原句。'}]}}}});
+ confirmCheckpoint(f.root,{work:material.work,kind:'complete-draft',artifactId:built.stageArtifact.artifactId,artifactHash:built.stageArtifact.hash,expectedRevision:built.stageArtifact.revision,decision:'confirm',evidence:{actor:'author',text:'确认准确正文',at:new Date().toISOString()}});
+ snap=f.library.mutateProduction('advanceJourney',{rootClaim:owner,expectedJourneyRevision:2,expectedStepId:root.journeyState.activeStepId});root=snap.tasks.find(t=>t.journeyState);
+ const page=await (await import('../../creation-document/index.mjs')).readCreationDocument(f.root,{sourceId:'drafts',documentId:readVaultTaskContext(f.binding.root,f.document.contentId).content.sourceDocumentId,relativePath:built.stageArtifact.path,vaultId:material.work.vaultId,writable:true});
+ const {commitCreationEdit,itemFingerprint}=await import('../../creation-document/index.mjs'),mutationId=randomUUID(),segment=page.items.find(i=>i.id==='seg-one');
+ await commitCreationEdit(f.root,{source:page.source,baseRevision:built.revision,pageId:page.pageId,mutationId,actor:{kind:'author'},edits:[{itemId:'seg-one',field:'mine',before:'作者原句。',after:'作者亲自改后的唯一当前稿。',itemFingerprint:itemFingerprint(segment)}]});
+ const afterMine=await (await import('../../creation-document/index.mjs')).readCreationDocument(f.root,page.source),afterSegment=afterMine.items.find(i=>i.id==='seg-one'),latestAuthorMutationId=randomUUID();await commitCreationEdit(f.root,{source:page.source,pageId:page.pageId,baseRevision:afterMine.revision,mutationId:latestAuthorMutationId,actor:{kind:'author'},edits:[{itemId:'seg-one',field:'note',before:'',after:'作者保存第二条批注。',itemFingerprint:itemFingerprint(afterSegment)}]});
+ const before=f.library.readProduction();assert.equal(before.tasks.find(t=>t.id===root.id).journeyState.checkpoints.some(pin=>pin.kind==='complete-draft'),true);
+ assert.throws(()=>f.library.mutateProduction('refreshJourneySource',{journeyId:root.id,expectedJourneyRevision:1,expectedStepId:root.journeyState.activeStepId,sourceMutationId:latestAuthorMutationId,expectedToken:before.editToken}),{code:'CONFLICT'});assert.deepEqual(f.library.readProduction().tasks,before.tasks);
+ snap=f.library.mutateProduction('refreshJourneySource',{journeyId:root.id,expectedJourneyRevision:3,expectedStepId:root.journeyState.activeStepId,sourceMutationId:latestAuthorMutationId,expectedToken:before.editToken});root=snap.tasks.find(t=>t.journeyState);const next=snap.tasks.find(t=>t.id===root.journeyState.activeTaskId);
+ assert.equal(next.request.parameters.stage,'writing');assert.equal(root.journeyState.revision,4);assert.equal(root.journeyState.checkpoints.some(pin=>pin.kind==='complete-draft'),false);assert.equal(next.request.parameters.source.hash,readVaultTaskContext(f.binding.root,f.document.contentId).content.hash);
+ assert.throws(()=>f.library.assertProductionAuthority(writer),{code:'ATTEMPT_INACTIVE'});assert.match(fs.readFileSync(path.join(f.root,page.source.relativePath),'utf8'),/作者亲自改后的唯一当前稿/);
+});
+
+test('controlled continuation consumes one secret without persisting it and generic claims cannot bypass it',t=>{
+ const f=fixture(t),{parent,child,owner,worker}=claimed(f,start(f));f.library.mutateProduction('claimTask',worker);
+ const secret='a'.repeat(43),challengeHash=createHashForTest(secret),input={journeyId:parent.id,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId,rootAttemptId:parent.activeAttemptId,childAttemptId:child.activeAttemptId,host:'workbuddy',challengeHash,expectedToken:f.library.readProduction().editToken};
+ const prepared=f.library.mutateProduction('prepareJourneyContinuation',input),root=prepared.tasks.find(t=>t.id===parent.id),next=prepared.tasks.find(t=>t.id===root.journeyState.activeTaskId);
+ assert.equal(root.requestHash,parent.requestHash);assert.equal(root.journeyState.ownerEpoch,2);assert.equal(next.attempts[0].host,'workbuddy');assert.equal(next.journeyMember.ownerEpoch,2);
+ assert.throws(()=>f.library.assertProductionAuthority(worker),{code:'ATTEMPT_INACTIVE'});
+ const claim={taskId:root.id,attemptId:root.activeAttemptId,host:'workbuddy',claimToken:randomUUID(),workerId:'new-chat',expectedJourneyRevision:2,challenge:secret};
+ assert.throws(()=>f.library.mutateProduction('claimTask',{taskId:root.id,attemptId:root.activeAttemptId,claimToken:claim.claimToken,workerId:claim.workerId}),{code:'CONTINUATION_REQUIRED'});
+ assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',{...claim,challenge:'b'.repeat(43)}),{code:'CONTINUATION_DENIED'});
+ assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',{...claim,host:'codex'}),{code:'CONTINUATION_DENIED'});
+ const claimedSnapshot=f.library.mutateProduction('claimJourneyContinuation',claim);assert.equal(claimedSnapshot.tasks.find(t=>t.id===root.id).attempts.at(-1).status,'claimed');assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',claim),{code:'CONTINUATION_DENIED'});
+ assert.equal(JSON.stringify(claimedSnapshot).includes(secret),false);assert.equal(JSON.stringify(claimedSnapshot).includes(challengeHash),false);
+ const all=[];function walk(dir){for(const name of fs.readdirSync(dir)){const p=path.join(dir,name);if(fs.lstatSync(p).isDirectory())walk(p);else all.push(fs.readFileSync(p).toString());}}walk(f.root);assert.equal(all.some(text=>text.includes(secret)),false);
+ assert.throws(()=>f.library.mutateProduction('progressTask',{...owner,status:'claimed',progress:2,message:'旧聊天'}),{code:'ATTEMPT_INACTIVE'});
+});
+function createHashForTest(value){return createHash('sha256').update(value).digest('hex');}
+
+test('continuation blocks unsettled costs, reissue invalidates the old challenge and cancel never revives old ownership',t=>{
+ const f=fixture(t),{parent,child,owner,worker}=claimed(f,start(f,{researchPlan:[research('continuation-cost')]}));f.library.mutateProduction('claimTask',worker);
+ const requestId=randomUUID();f.library.reserveProductionTool({...worker,requestId,service:'tikhub'});
+ const prepare=(root,active,secret)=>({journeyId:root.id,expectedJourneyRevision:root.journeyState.revision,expectedStepId:root.journeyState.activeStepId,rootAttemptId:root.activeAttemptId,childAttemptId:active.activeAttemptId,host:'workbuddy',challengeHash:createHashForTest(secret),expectedToken:f.library.readProduction().editToken});
+ let before=f.library.readProduction();assert.throws(()=>f.library.mutateProduction('prepareJourneyContinuation',prepare(parent,child,'x'.repeat(43))),{code:'COST_UNKNOWN'});assert.deepEqual(f.library.readProduction().tasks,before.tasks);
+ f.library.mutateProduction('recordCost',{...worker,requestId,status:'measured',amount:1,usage:{ok:true}});
+ let snap=f.library.mutateProduction('prepareJourneyContinuation',prepare(parent,child,'x'.repeat(43))),first=snap.tasks.find(t=>t.id===parent.id),firstChild=snap.tasks.find(t=>t.id===first.journeyState.activeTaskId);
+ snap=f.library.mutateProduction('prepareJourneyContinuation',prepare(first,firstChild,'y'.repeat(43)));const second=snap.tasks.find(t=>t.id===parent.id);
+ assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',{taskId:first.id,attemptId:first.activeAttemptId,host:'workbuddy',claimToken:randomUUID(),workerId:'stale',expectedJourneyRevision:first.journeyState.revision,challenge:'x'.repeat(43)}),{code:'CONTINUATION_DENIED'});
+ f.library.mutateProduction('cancelJourney',{journeyId:second.id,expectedJourneyRevision:second.journeyState.revision,expectedToken:f.library.readProduction().editToken});
+ assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',{taskId:second.id,attemptId:second.activeAttemptId,host:'workbuddy',claimToken:randomUUID(),workerId:'late',expectedJourneyRevision:second.journeyState.revision,challenge:'y'.repeat(43)}),{code:'CONTINUATION_DENIED'});assert.throws(()=>f.library.mutateProduction('claimTask',owner),{code:'ATTEMPT_INACTIVE'});
+});
+
+test('journey author materials require typed same-work sources, three author answers and choices',t=>{
+ const f=fixture(t),{parent,child,worker}=claimed(f,start(f));f.library.mutateProduction('claimTask',worker);const envelope={binding:f.binding,task:{taskId:child.id,attemptId:child.activeAttemptId,requestHash:child.requestHash}},base={envelope,library:f.library,payload:{claimToken:worker.claimToken,workerId:worker.workerId,input:{kind:'author-materials',text:'AI总结冒充作者材料'}}};
+ assert.throws(()=>runWorkflowHandoff({...base,operation:'artifact'}),{code:'MATERIALS_REQUIRED'});
+ for(const change of [data=>{data.interview[0].authorAnswer='';},data=>{data.materials[0].source.hash='f'.repeat(64);},data=>{data.choices=[];},data=>{data.work.workId='T999';}]){const data=authorMaterialsFixture(parent,child);change(data);assert.throws(()=>runWorkflowHandoff({...base,operation:'materials',payload:{claimToken:worker.claimToken,workerId:worker.workerId,input:{data}}}),{code:'MATERIALS_REQUIRED'});}
+ assert.equal(readWorkFlow(f.root,{vaultId:parent.request.parameters.work.vaultId,workId:parent.request.parameters.work.workId}).artifacts.length,0);
+});
+
+test('an expired one-time continuation cannot be claimed and never revives its original owner',t=>{
+ const f=fixture(t),{parent,child,owner}=claimed(f,start(f)),secret='e'.repeat(43);const prepared=f.library.mutateProduction('prepareJourneyContinuation',{journeyId:parent.id,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId,rootAttemptId:parent.activeAttemptId,childAttemptId:child.activeAttemptId,host:'codex',challengeHash:createHashForTest(secret),expectedToken:f.library.readProduction().editToken}),root=prepared.tasks.find(t=>t.id===parent.id);t.mock.timers.enable({apis:['Date'],now:Date.now()+16*60*1000});
+ assert.throws(()=>f.library.mutateProduction('claimJourneyContinuation',{taskId:root.id,attemptId:root.activeAttemptId,host:'codex',claimToken:randomUUID(),workerId:'expired-chat',expectedJourneyRevision:root.journeyState.revision,challenge:secret}),{code:'CONTINUATION_DENIED'});assert.throws(()=>f.library.mutateProduction('progressTask',{...owner,status:'claimed',progress:4,message:'旧owner不可复活'}),{code:'ATTEMPT_INACTIVE'});
+});
+
+test('two independent continuation claimants consume exactly one challenge',async t=>{
+ const f=fixture(t),{parent,child}=claimed(f,start(f)),secret='c'.repeat(43),prepared=f.library.mutateProduction('prepareJourneyContinuation',{journeyId:parent.id,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId,rootAttemptId:parent.activeAttemptId,childAttemptId:child.activeAttemptId,host:'codex',challengeHash:createHashForTest(secret),expectedToken:f.library.readProduction().editToken}),root=prepared.tasks.find(t=>t.id===parent.id),base={taskId:root.id,attemptId:root.activeAttemptId,host:'codex',expectedJourneyRevision:root.journeyState.revision,challenge:secret};
+ const results=await competingMutations(f.binding.root,'claimJourneyContinuation',[{...base,claimToken:randomUUID(),workerId:'first'},{...base,claimToken:randomUUID(),workerId:'second'}]);assert.equal(results.filter(r=>r.ok).length,1,JSON.stringify(results));assert.ok(results.filter(r=>!r.ok).every(r=>['CONTINUATION_DENIED','BUSY','VAULT_BUSY','LOCK_UNCERTAIN','NOT_READY'].includes(r.code)),JSON.stringify(results));assert.equal(f.library.readProduction().tasks.find(t=>t.id===root.id).attempts.at(-1).status,'claimed');
 });

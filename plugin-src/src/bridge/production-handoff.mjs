@@ -38,12 +38,13 @@ export function productionHandoffContext(envelope,launching=false){
 }
 export async function prepareProductionHandoff(target,binding,task,release,options={}){
  releaseFor(release);bindingFor(binding);taskFor(task);
- const {context}=productionHandoffContext({binding,task},true),stable=options.currentChat===true||!!context.task.journeyState||!!context.task.journeyMember,id=stable?uuidFor('production-handoff:'+release.pairId+':'+binding.libraryId+':'+task.taskId+':'+task.attemptId):randomUUID();
+ const {context}=productionHandoffContext({binding,task},!options.currentChat);if(options.currentChat)check(context.task.activeAttemptId===task.attemptId&&['created','claimed','waiting-user','waiting-permission'].includes(context.attempt.status),'Current handoff attempt is inactive');const stable=options.currentChat===true||!!context.task.journeyState||!!context.task.journeyMember,id=stable?uuidFor('production-handoff:'+release.pairId+':'+binding.libraryId+':'+task.taskId+':'+task.attemptId):randomUUID();
  const expectedSkill=`nova-content-${productionExecutionCapability(context.task)}-execution`,skill=options.installedSkill||expectedSkill;
  check(skill===expectedSkill,'Installed skill does not match the fixed task capability');
  const business=context.task.request.parameters?.businessSkill;
  const businessSkill=typeof business==='string'&&/^[a-z][a-z0-9-]{0,100}$/.test(business)?business:null;
- const prompt=[`请使用 ${skill} 执行工作台任务。`,`任务编号：${id}`,...(task.host==='codex'?[`$${skill}`]:[]),...(businessSkill?[`本任务业务方法：${businessSkill}。读取固定 context 后按该方法执行，接单和提交继续使用 ${skill}。`]:[]),`先按 Skill 运行 production context --handoff ${id}，完整读取冻结 REQUEST/context、定位与公开边界、正文和相关资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。`].join('\n');
+ const journeyInstruction=context.task.journeyState?'本任务是内容主线根：先按内容主线执行契约领取root，再用 content-journey context/advance 在当前聊天取得每个受限child；root不执行业务或通用submit。':context.task.journeyMember?'本任务是内容主线当前受限child：读取父主线context，使用同一workerId和rootClaimToken领取本步骤；保存准确产物后等待作者决定，再由root advance。':null;
+ const prompt=[`请使用 ${skill} 执行工作台任务。`,`任务编号：${id}`,...(journeyInstruction?[journeyInstruction]:[]),...(task.host==='codex'?[`$${skill}`]:[]),...(businessSkill?[`本任务业务方法：${businessSkill}。读取固定 context 后按该方法执行，接单和提交继续使用 ${skill}。`]:[]),`先按 Skill 运行 production context --handoff ${id}，完整读取冻结 REQUEST/context、定位与公开边界、正文和相关资料，再接单执行。完整需求以固定请求为准，在当前聊天执行与交付，提交后回读回执。`].join('\n');
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
  url.searchParams.set(task.host==='codex'?'path':'cwd',vaultRootForRuntime(binding.root)||binding.root);url.searchParams.set('prompt',prompt);
@@ -53,7 +54,7 @@ export async function prepareProductionHandoff(target,binding,task,release,optio
  const bytes=Buffer.from(JSON.stringify(envelope)+'\n');check(bytes.length<=65536,'Handoff too large');
  let fd;try{fd=fs.openSync(path.join(target,`${id}.production.json`),fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);}catch(error){if(error.code!=='EEXIST'||!stable)throw error;const prior=readProductionHandoff(target,id,release);check(JSON.stringify(prior)===JSON.stringify(envelope),'The fixed handoff locator is bound to a different envelope');}
  if(fd!==undefined)try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
- check(same(before,directory(target)),'Handoff directory changed');productionHandoffContext(envelope,true);
+ check(same(before,directory(target)),'Handoff directory changed');productionHandoffContext(envelope,!options.currentChat);
  return {id,url:options.currentChat?null:url.href,prompt,requiresPaste:false};
 }
 export function readProductionHandoff(target,id,release){

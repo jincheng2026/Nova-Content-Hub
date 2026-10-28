@@ -1,3 +1,4 @@
+import type {ContentJourneyInputs} from '../shared/content-journey-contracts.ts';
 import {ReportSearchController} from './report-search-controller.mts';
 import {FinalAssetsController} from './final-assets-controller.mts';
 import type {FinalAssetsInputs} from '../shared/final-assets-contracts.ts';
@@ -195,6 +196,12 @@ export class DesktopController {
     searchProductionReports(input:ProductionInputs['searchProductionReports']){return this.reportSearch.search(input);}
     readProduction(input?: undefined) { return this.production.readProduction(input); }
     mutateProduction(input: ProductionInputs['mutateProduction']) { return this.production.mutateProduction(input); }
+    readContentJourney(input:ContentJourneyInputs['readContentJourney']){return this.production.readContentJourney(input);}
+    startContentJourney(input:ContentJourneyInputs['startContentJourney']){return this.production.startContentJourney(input);}
+    refreshContentJourneySource(input:ContentJourneyInputs['refreshContentJourneySource']){return this.production.refreshContentJourneySource(input);}
+    prepareContentJourneyContinuation(input:ContentJourneyInputs['prepareContentJourneyContinuation']){return this.production.prepareContentJourneyContinuation(input);}
+    copyContentJourneyText(input:ContentJourneyInputs['copyContentJourneyText']){return this.production.copyContentJourneyText(input);}
+    cancelContentJourney(input:ContentJourneyInputs['cancelContentJourney']){return this.production.cancelContentJourney(input);}
     startProductionTask(input: ProductionInputs['startProductionTask']) { return this.production.startProductionTask(input); }
     openProductionTask(input: ProductionInputs['openProductionTask']) { return this.production.openProductionTask(input); }
     actProductionTask(input: ProductionInputs['actProductionTask']) { return this.production.actProductionTask(input); }

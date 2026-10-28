@@ -7,7 +7,7 @@ import {verifiedBoundReader} from './bound-reader.mts';
 import {createHash} from 'node:crypto';
 import fs from 'node:fs/promises';
 import {productionReferenceHash,validateTranscriptReference} from '../../../plugin-src/src/lib/file-library/production-reference.mjs';
-import {researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
+import {withResearchEvidence,researchEvidenceGrants,researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {validateImportedRaster} from '../../../plugin-src/src/lib/image-validation/index.mjs';
 import {exact,libraryBinding,uuid,token,requireWrite,fail} from '../shared/validation.ts';
@@ -92,7 +92,7 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
  if(op==='productionObserverMutation'){
   const i=args.input,operation=args.op;
   if(typeof operation!=='string'||!['claimTask','submitTask','failTask'].includes(operation)||!uuid(args.mutationId)||!exact(i,['taskId','attemptId','claimToken','workerId',...(operation==='submitTask'?['result']:operation==='failTask'?['failure']:[])])||!uuid(i.taskId)||!uuid(i.attemptId)||!uuid(i.claimToken)||i.workerId!=='native-publication-observer')fail('INVALID_INPUT','原生观察任务身份无效。');
-  const context=l.readProductionContext(i.taskId),task=context.task,p=task?.request.parameters as Record<string,unknown>|undefined,scope=p?.publicationScope as Record<string,unknown>|undefined;
+  const context=l.readProductionContext(i.taskId);context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,p=task?.request.parameters as Record<string,unknown>|undefined,scope=p?.publicationScope as Record<string,unknown>|undefined;
   if(!task||task.activeAttemptId!==i.attemptId||task.kind!=='research'||task.contentId!==null||task.accountId!==null||p?.workflow!=='publication-observe'||p.executor!=='native-observer'||p.comments!==false||p.budgetEnabled!==true||p.maxRequestsPerTask!==1||task.request.budget.amount!==1||task.request.budget.currency!=='REQ'||task.request.tools.length!==1||task.request.tools[0]!=='tikhub'||!scope||typeof scope.postId!=='string'||!/^\d{1,32}$/.test(scope.postId)||!['12h','7d'].includes(String(scope.checkpoint))||!uuid(scope.consentId)||!uuid(scope.reservationId)||!uuid(scope.requestId))fail('PUBLICATION_OPERATION_FORBIDDEN','仅可领取或提交冻结的原生发布观察任务。');
   return l.mutateProduction(operation as 'claimTask'|'submitTask'|'failTask',i,{mutationId:args.mutationId});
  }
@@ -100,7 +100,7 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
  if(op==='productionMediaGrant') {
   const i=args.input;
   if(!uuid(args.mutationId)||!exact(i,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash'])||!uuid(i.taskId)||!uuid(i.attemptId)||!uuid(i.claimToken)||!uuid(i.requestId)||!uuid(i.sourceReceiptId)||!uuid(i.sourceRequestId)||!token(i.requestHash)||!token(i.responseHash)||typeof i.workerId!=='string'||i.workerId.length>200||typeof i.videoId!=='string'||!/^\d{1,32}$/.test(i.videoId)||i.canonicalUrl!==`https://www.douyin.com/video/${i.videoId}`||typeof args.source!=='string'||!path.isAbsolute(args.source))fail('INVALID_INPUT','媒体授权参数无效。');
-  const context=l.readProductionContext(i.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===i.attemptId);
+  const context=l.readProductionContext(i.taskId);context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,attempt=task?.attempts.find(a=>a.id===i.attemptId);
   const research=researchMediaAuthorized(task);
   if(task?.contentId&&l.readProductionCreation(task.contentId).content.deletedAt)fail('CLAIM_MISMATCH','当前内容已在回收站，原任务不能继续读取或登记原片。');
   if(!task||task.activeAttemptId!==i.attemptId||attempt?.claimToken!==i.claimToken||attempt.workerId!==i.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!research&&(!task.contentId||!context.creation||l.readProductionCreation(task.contentId).content.deletedAt)||!task.request.tools.includes('media'))fail('CLAIM_MISMATCH','下载已结束，但原任务或内容已失效。');
@@ -115,7 +115,7 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
  }
  if(op==='productionAsset') {
   if(!uuid(args.taskId)||!uuid(args.attemptId)||!uuid(args.claimToken)||typeof args.workerId!=='string'||!token(args.audioPath))fail('INVALID_INPUT','音频只接受已登记的资产编号。');
-  const context=l.readProductionContext(args.taskId),task=context.task,attempt=task?.attempts.find(a=>a.id===args.attemptId);
+  const context=l.readProductionContext(args.taskId);context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,attempt=task?.attempts.find(a=>a.id===args.attemptId);
   if(!task||!attempt||task.activeAttemptId!==attempt.id||attempt.claimToken!==args.claimToken||attempt.workerId!==args.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))fail('CLAIM_MISMATCH','工具调用不属于当前运行中的任务。');
   const research=researchMediaAuthorized(task);
   if(task?.contentId&&l.readProductionCreation(task.contentId).content.deletedAt)fail('CLAIM_MISMATCH','当前内容已在回收站，原任务不能继续读取或登记原片。');
@@ -128,8 +128,8 @@ async function executeTool(op:keyof ProductionWorkerOperations,args:unknown):Pro
    if(!reference||reference.mediaAssetHash!==args.audioPath||await productionReferenceHash(reference)!==binding.baselineHash)fail('STALE_INPUT','固定参考或基线已变化。');
    validateTranscriptReference(reference,binding.intent as 'extract'|'reextract');
   }
-  if(!context.creation?.references.some(r=>r.mediaAssetHash===args.audioPath)&&!attempt.mediaGrants?.some(g=>g.assetHash===args.audioPath&&g.requestHash===task.requestHash))fail('INVALID_INPUT','该媒体没有登记到当前内容的参考资料。');
-  if(research&&!researchGrantAuthorized(task,context.snapshot.costs,attempt.id,attempt.mediaGrants?.find(grant=>grant.assetHash===args.audioPath)))fail('MEDIA_NOT_AUTHORIZED','ASR media does not belong to the registered sample source');
+  if(!context.creation?.references.some(r=>r.mediaAssetHash===args.audioPath)&&![...(attempt.mediaGrants??[]),...researchEvidenceGrants(task)].some(g=>g.assetHash===args.audioPath&&(g.requestHash===task.requestHash||researchEvidenceGrants(task).some(bound=>bound.id===g.id))))fail('INVALID_INPUT','该媒体没有登记到当前内容的参考资料。');
+  if(research&&!researchGrantAuthorized(task,context.snapshot.costs,attempt.id,[...(attempt.mediaGrants??[]),...researchEvidenceGrants(task)].find(grant=>grant.assetHash===args.audioPath)))fail('MEDIA_NOT_AUTHORIZED','ASR media does not belong to the registered sample source');
   const asset=l.readProductionAsset(workerIdentity(args),args.audioPath);
   const extensions:Record<string,string>={'audio/mpeg':'.mp3','audio/wav':'.wav','audio/x-wav':'.wav','video/mp4':'.mp4','audio/mp4':'.m4a','video/webm':'.webm','audio/ogg':'.ogg','audio/flac':'.flac'};
   const extension=extensions[asset.detectedType];if(!extension||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体格式或大小不受支持。');

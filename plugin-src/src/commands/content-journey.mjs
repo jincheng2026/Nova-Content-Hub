@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import {prepareProductionHandoff,readProductionHandoff} from '../bridge/production-handoff.mjs';
+import {lookupContentJourney} from '../lib/file-library/content-journey-lookup.mjs';
 import {nativeHandoffDirectory} from '../bridge/native-handoff.mjs';
 import {uuidFor} from '../lib/vault/core.mjs';
 import {runFixedCLI,fail} from './jincheng-workflow.mjs';
@@ -12,6 +13,9 @@ export async function runJourneyHandoff({envelope,library,operation,payload={},d
  if(operation==='advance'){
   if(!exact(payload,['claimToken','workerId','input'])||!exact(payload.input,['expectedJourneyRevision','expectedStepId','mutationId']))fail('INVALID_INPUT');
   library.mutateProduction('advanceJourney',{rootClaim:{taskId:root.id,attemptId:attempt.id,claimToken:payload.claimToken,workerId:payload.workerId},expectedJourneyRevision:payload.input.expectedJourneyRevision,expectedStepId:payload.input.expectedStepId},{mutationId:payload.input.mutationId});
+ }else if(operation==='claim-continuation'){
+  if(!exact(payload,['claimToken','workerId','input'])||!exact(payload.input,['challenge','expectedJourneyRevision','mutationId']))fail('INVALID_INPUT');
+  library.mutateProduction('claimJourneyContinuation',{taskId:root.id,attemptId:attempt.id,host:envelope.task.host,claimToken:payload.claimToken,workerId:payload.workerId,challenge:payload.input.challenge,expectedJourneyRevision:payload.input.expectedJourneyRevision},{mutationId:payload.input.mutationId});
  }else if(operation!=='context'||!exact(payload,[]))fail('INVALID_INPUT');
  const snapshot=library.readProduction(),current=snapshot.tasks.find(task=>task.id===root.id),child=snapshot.tasks.find(task=>task.id===current.journeyState.activeTaskId),childAttempt=child.attempts.find(a=>a.id===child.activeAttemptId);
  let handoff=null;
@@ -22,4 +26,7 @@ export async function runJourneyHandoff({envelope,library,operation,payload={},d
  }
  return {root:publicTask(current),child:publicTask(child),handoff};
 }
-export const main=argv=>runFixedCLI(argv,['context','advance'],runJourneyHandoff);
+export async function main(argv){
+ if(argv[0]!=='lookup')return runFixedCLI(argv,['context','advance','claim-continuation'],runJourneyHandoff);
+ try{const values={};for(let i=1;i<argv.length;i++){const key=argv[i];if(!['--library','--work'].includes(key)||Object.hasOwn(values,key)||typeof argv[i+1]!=='string')fail('INVALID_ARGUMENTS','lookup --library ABSOLUTE_VAULT --work T123');values[key]=argv[++i];}const result=lookupContentJourney({library:values['--library'],work:values['--work']});process.stdout.write(JSON.stringify({ok:true,result})+'\n');return 0;}catch(error){process.stdout.write(JSON.stringify({ok:false,code:/^[A-Z_]{1,80}$/.test(error?.code)?error.code:'LOOKUP_FAILED',message:'无法只读定位，请核对明确库路径与 T，或在工作台处理恢复事项。'})+'\n');return 1;}
+}

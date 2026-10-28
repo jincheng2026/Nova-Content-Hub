@@ -13,7 +13,7 @@ import type {ServiceSettingsValues,ServiceToolRequest} from '../shared/service-c
 import type {LocalAsrExecution} from './service-tools.mts';
 import {ServiceTools,ServiceToolError} from './service-tools.mts';
 import {ServiceToolBroker} from './service-broker.mts';
-import {researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized,matchesResearchSearch,createResearchSearchEvidence,readResearchSearchEvidence,researchGrantAuthorized,researchSearchReservation} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
+import {withResearchEvidence,researchMediaAuthorized,validateResearchConfig,deriveResearchVideoIds,researchVideoAuthorized,matchesResearchSearch,createResearchSearchEvidence,readResearchSearchEvidence,researchGrantAuthorized,researchSearchReservation} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 import type {ResearchSearchEvidence} from '../../../plugin-src/src/lib/research-runtime/common.mjs';
 export interface ProductionServiceOwner {worker:Worker;current():LibraryBinding}
 export type ProductionRunQueue = <T>(action:()=>Promise<T>)=>Promise<T>;
@@ -117,7 +117,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   // Bind once. Later settlement remains attached to this library even when the user switches libraries.
   const initial=await runQueue(async()=>{
    const binding=owner.current(),context=await owner.worker.call('productionContext',{binding,taskId:request.taskId});
-   const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
+   context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
    if(!task||task.activeAttemptId!==request.attemptId||!attempt||attempt.claimToken!==request.claimToken||attempt.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
    if(task.journeyMember)await owner.worker.call('productionAuthority',{binding,input:{taskId:task.id,attemptId:attempt.id,claimToken:request.claimToken,workerId:request.workerId}});
    const isPublicationObservation=checkPublicationObservation(context,request);
@@ -137,7 +137,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
     let receipt:ReturnType<typeof receipts.get>;
     const existing=await runQueue(async()=>{
      const current=owner.current();if(current.libraryId!==initial.binding.libraryId||current.root!==initial.binding.root)throw new ServiceToolError('LIBRARY_CHANGED');
-     const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId}),task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
+     const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId});context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))throw new ServiceToolError('CLAIM_MISMATCH');checkMedia(context);
      if(task.journeyMember)await owner.worker.call('productionAuthority',{binding:initial.binding,input:{taskId:task.id,attemptId:attempt.id,claimToken:request.claimToken,workerId:request.workerId}});
      const existing=attempt.mediaGrants?.find(g=>g.sourceReceiptId===request.sourceReceiptId&&g.requestHash===task.requestHash);if(existing){if(!researchGrantAuthorized(task,context.snapshot.costs,attempt.id,existing))throw new ServiceToolError('MEDIA_NOT_AUTHORIZED');return existing;}
@@ -173,7 +173,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
    const result=await tools.execute(input,{
     beforeExecute:async prepared=>runQueue(async()=>{
      const currentBinding=owner.current();if(currentBinding.libraryId!==initial.binding.libraryId||currentBinding.root!==initial.binding.root)throw new ServiceToolError('LIBRARY_CHANGED');
-     const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId});const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
+     const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId});context.task=withResearchEvidence(context.task,context.journeyEvidence);const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==identity.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
      if(context.snapshot.costs.some(c=>c.taskId===task.id&&['reserved','unknown'].includes(c.status)))throw new ServiceToolError('COST_UNKNOWN');
      checkPublicationObservation(context,request);checkRadar(context,request);checkResearch(context,request,prepared);checkServiceConfig(context,request,prepared);checkAccountPlatform(context,request);

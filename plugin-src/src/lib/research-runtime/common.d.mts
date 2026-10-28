@@ -14,3 +14,6 @@ export function hash(value:unknown):string;
 
 export function deriveResearchVideoIds(response:unknown,limit:number):string[];
 export function researchVideoAuthorized(task:unknown,costs:unknown[],attemptId:string,videoId:string):boolean;
+
+export function withResearchEvidence<T>(task:T,evidence:import('../file-library/journey-evidence.mjs').JourneyEvidence|null|undefined):T;
+export function researchEvidenceGrants(task:unknown):import('../file-library/production.d.ts').ProductionMediaGrant[];

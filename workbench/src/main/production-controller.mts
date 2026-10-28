@@ -1,6 +1,7 @@
 import {productionLibraryScope} from './production-record-scope.mts';
 import {scopedProductionRecordOps} from '../shared/production-contracts.ts';
-import {validContentJourneyStart,type ContentJourneyStart} from '../shared/content-journey-contracts.ts';
+import {latestJourneyAuthorSave} from '../../../plugin-src/src/lib/file-library/content-journey.mjs';
+import {contentJourneyDesktopInput,type ContentJourneyInputs,validContentJourneyStart,type ContentJourneyStart} from '../shared/content-journey-contracts.ts';
 import {externalAsrIdentity} from './external-asr.mts';
 import {vaultRootForRuntime} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {researchBriefFromText} from '../shared/jincheng-research-brief.ts';
@@ -16,7 +17,7 @@ import {publicEndpoint} from './service-tools.mts';
 import type {RadarQuery,RadarAdopt,RadarDecision,RadarReport} from '../shared/radar-contracts.ts';
 import {platformCollectionCapability} from '../shared/platform-catalog.ts';
 import fs from 'node:fs/promises';
-import {createHash,randomUUID} from 'node:crypto';
+import {createHash,randomUUID,randomBytes} from 'node:crypto';
 import {fail,requireWrite} from '../shared/validation.ts';
 import {productionDesktopInput} from '../shared/production-validation.ts';
 import type {Binding,LibraryBinding,Worker,Dialogs} from '../shared/contracts.ts';
@@ -24,6 +25,7 @@ import type {ProductionMutation,ProductionStart,ProductionAction,ProductionDraft
 import type {ServiceSettingsView,ServiceBrokerDescriptor} from '../shared/service-contracts.ts';
 export interface ProductionCallbacks {
  launch(binding:LibraryBinding,reference:{taskId:string;attemptId:string;requestHash:string;host:'codex'|'workbuddy'}):Promise<void>;
+ prepare?(binding:LibraryBinding,reference:{taskId:string;attemptId:string;requestHash:string;host:'codex'|'workbuddy'}):Promise<{id:string;prompt:string}>;
  focus?(host:'codex'|'workbuddy'):Promise<void>;
  open(binding:LibraryBinding,target:ProductionInputs['openProductionLink']):Promise<string>;
  serviceSettings():Promise<ServiceSettingsView>;
@@ -76,10 +78,37 @@ export class ProductionController {
   try{await this.callbacks.launch(b,{taskId:task.id,attemptId:attempt.id,requestHash:task.requestHash,host:attempt.host});return {opened:true};}
   catch(error){return {opened:false,message:productionLaunchFailure(error)};}
  }
+ readContentJourney(input:ContentJourneyInputs['readContentJourney']){
+  requireWrite(this.owner.authMode);if(contentJourneyDesktopInput('readContentJourney',input)!==true)fail('INVALID_INPUT','请选择准确内容。');
+  return this.owner.exclusive(async()=>{const binding=this.owner.current(),snapshot=await this.read(),work=await this.owner.worker.call('vaultWorkContext',{binding,contentId:input.contentId});return {snapshot,work,authorSaveMutationId:latestJourneyAuthorSave(binding.root,work?.content??null)};});
+ }
+ copyContentJourneyText(input:ContentJourneyInputs['copyContentJourneyText']){
+  requireWrite(this.owner.authMode);if(contentJourneyDesktopInput('copyContentJourneyText',input)!==true)fail('INVALID_INPUT','请选择准确主线。');
+  return this.owner.exclusive(async()=>{if(input.scope!==productionLibraryScope(this.owner.current()))fail('CONFLICT','内容库已变化，请重新读取本篇主线。');if(!this.callbacks.prepare)fail('NOT_READY','当前宿主尚未提供固定接续文本。');const snapshot=await this.read(),root=snapshot.tasks.find(t=>t.id===input.journeyId&&t.journeyState?.status==='active'),attempt=root?.attempts.find(a=>a.id===root.activeAttemptId);if(!root||!attempt)fail('NOT_FOUND','当前有效主线不存在。');const handoff=await this.callbacks.prepare(this.owner.current(),{taskId:root.id,attemptId:attempt.id,requestHash:root.requestHash,host:attempt.host});const work=(root.request.parameters as {work:{workId:string}}).work;return {text:'明确内容库：'+(vaultRootForRuntime(this.owner.current().root)??this.owner.current().root)+'\n内容：'+work.workId+'\n主线：'+root.id+'\n'+handoff.prompt+'\n在原聊天读取最新content-journey context后继续；现有claim保留在原聊天。若更换聊天，请先在工作台明确准备一次性接续。'};});
+ }
+ cancelContentJourney(input:ContentJourneyInputs['cancelContentJourney']){
+  requireWrite(this.owner.authMode);if(contentJourneyDesktopInput('cancelContentJourney',input)!==true)fail('INVALID_INPUT','请选择准确主线版本。');
+  return this.owner.exclusive(async()=>{if(input.scope!==productionLibraryScope(this.owner.current()))fail('CONFLICT','内容库已变化，请重新读取本篇主线。');this.owner.noPending();const snapshot=await this.read(),{mutationId,scope,...request}=input;await this.write({...this.pendingBase(mutationId),kind:'mutate',op:'cancelJourney',input:{...request,expectedToken:snapshot.editToken}});return this.read();});
+ }
+ prepareContentJourneyContinuation(input:ContentJourneyInputs['prepareContentJourneyContinuation']){
+  requireWrite(this.owner.authMode);if(contentJourneyDesktopInput('prepareContentJourneyContinuation',input)!==true)fail('INVALID_INPUT','请明确选择主线、当前步骤和目标助手。');
+  return this.owner.exclusive(async()=>{
+   if(input.scope!==productionLibraryScope(this.owner.current()))fail('CONFLICT','内容库已变化，请重新读取本篇主线。');if(!this.callbacks.prepare)fail('NOT_READY','当前宿主尚未提供受控接续交接。');this.owner.noPending();const binding=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding}),challenge=randomBytes(32).toString('base64url'),challengeHash=createHash('sha256').update(challenge).digest('hex');
+   const {mutationId,scope,...request}=input;const written=await this.write({...this.pendingBase(mutationId),kind:'mutate',op:'prepareJourneyContinuation',input:{...request,challengeHash,expectedToken:snapshot.editToken}}) as ProductionSnapshot,root=written.tasks.find(t=>t.id===input.journeyId),attempt=root?.attempts.find(a=>a.id===root.activeAttemptId);if(!root||!attempt)fail('NOT_FOUND','接续结果无法定位。');
+   const handoff=await this.callbacks.prepare(binding,{taskId:root.id,attemptId:attempt.id,requestHash:root.requestHash,host:attempt.host});
+   return {snapshot:await this.read(),handoff:{...handoff,challenge,host:attempt.host,expiresAt:root.journeyState!.continuation!.expiresAt,prompt:handoff.prompt+'\n这是作者明确准备的一次性新聊天接续。请读取 content-journey context 后，通过 claim-continuation 提交 challenge：'+challenge+'；expectedJourneyRevision='+root.journeyState!.revision+'。挑战仅用于本次领取，不写入报告或进度。'}};
+  });
+ }
+ refreshContentJourneySource(input:ContentJourneyInputs['refreshContentJourneySource']){
+  requireWrite(this.owner.authMode);if(contentJourneyDesktopInput('refreshContentJourneySource',input)!==true)fail('INVALID_INPUT','请选择准确作者保存回执与当前主线。');
+  return this.owner.exclusive(async()=>{if(input.scope!==productionLibraryScope(this.owner.current()))fail('CONFLICT','内容库已变化，请重新读取本篇主线。');this.owner.noPending();const snapshot=await this.owner.worker.call('productionRead',{binding:this.owner.current()}),{mutationId,scope,...request}=input;await this.write({...this.pendingBase(mutationId),kind:'mutate',op:'refreshJourneySource',input:{...request,expectedToken:snapshot.editToken}});return this.read();});
+ }
  startContentJourney(input:ContentJourneyStart){
   requireWrite(this.owner.authMode);if(!validContentJourneyStart(input))fail('INVALID_INPUT','内容主线需要准确内容、固定范围和操作编号。');
   return this.owner.exclusive(async()=>{
-   this.owner.noPending();const binding=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding}),settings=await this.callbacks.serviceSettings(),values=settings.values;
+   this.owner.noPending();const binding=this.owner.current();if(input.scope!==productionLibraryScope(binding))fail('CONFLICT','内容库已变化，请重新读取本篇主线。');const snapshot=await this.owner.worker.call('productionRead',{binding});
+   const existing=snapshot.tasks.find(task=>task.contentId===input.contentId&&task.journeyState?.status==='active');if(existing)return {snapshot:await this.read(),...await this.launch(existing.id)};
+   const settings=await this.callbacks.serviceSettings(),values=settings.values;
    const researchPlan=input.researchPlan.map(config=>validateResearchConfig(config));
    if(input.limits.commentsAllowed&&!values.commentsEnabled||researchPlan.some(config=>config.comments&&!input.limits.commentsAllowed))fail('COMMENTS_DISABLED','评论研究需要本次许可和服务设置许可。');
    if(researchPlan.some(config=>config.maxRequests>0)&&(!values.budget.enabled||!settings.credentials.tikhub.hasKey||researchPlan.some(config=>config.maxRequests>values.budget.maxRequestsPerTask)))fail('BUDGET_DISABLED','研究范围超过当前已授权请求额度，或尚未配置采集凭证。');

@@ -5,6 +5,8 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 
 ## 进入本任务
 
+固定context为 `workflow=content-journey`，或子任务有可信 `journeyMember` 时，先完整读 [内容主线执行契约](../../plugin-src/resources/content-journey-contract.md)，按根领取、当前child领取、作者停点和 `content-journey context/advance` 衔接执行。该分支的完成条件是已核验最终资产；下文通用submit只沿用原single-stage与历史整篇任务。
+
 1. 按 [共同任务契约](../../plugin-src/resources/production-contract.md) 执行 doctor、context、claim；等待、恢复、取消、服务调用与提交均以它为准。Codex 与 WorkBuddy 使用同一流程。
 2. 完整读冻结请求、当前正文、参考、叙事、批注、建议决定及已采纳知识；只追溯与当前问题相关的历史任务和反馈。用户已确认的观点、口气和制作条件直接沿用。
 3. 根据本轮请求选择下面的方法；已显式选择的完整业务方法优先保留其人的确认与阶段步骤，不以通用“直接给稿/整套提交”覆盖叙事或重点段确认。本人本轮明确改变工序时记录覆盖范围。教程方法仅在本人显式选择 jc-jiaocheng-video 时启用，不由一般写稿或 content-creation 自动套用。

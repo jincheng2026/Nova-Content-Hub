@@ -1,3 +1,4 @@
+import type {ContentJourneyInputs,ContentJourneyResults} from './content-journey-contracts.ts';
 import type {FinalAssetsInputs,FinalAssetsResults,FinalAssetsWorkerOperations} from './final-assets-contracts.ts';
 import type {PublicationRuntimeInputs,PublicationRuntimeResults,PublicationRuntimeWorkerOperations} from './publication-runtime-contracts.ts';
 import type {StageInputs,StageResults,StageWorkerOperations} from './stage-contracts.ts';
@@ -133,7 +134,7 @@ export interface Status {
     maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends FinalAssetsInputs, PublicationRuntimeInputs, StageInputs, CreationInputs, VaultInputs, ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
+export interface DesktopInputs extends ContentJourneyInputs, FinalAssetsInputs, PublicationRuntimeInputs, StageInputs, CreationInputs, VaultInputs, ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     readServiceSettings: undefined;
     revealServiceCredential: ServiceCredentialRequest;
     saveServiceSettings: ServiceSettingsPatch;
@@ -155,7 +156,7 @@ export interface DesktopInputs extends FinalAssetsInputs, PublicationRuntimeInpu
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends FinalAssetsResults, PublicationRuntimeResults, StageResults, CreationResults, VaultResults, ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
+export interface DesktopResults extends ContentJourneyResults, FinalAssetsResults, PublicationRuntimeResults, StageResults, CreationResults, VaultResults, ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     readServiceSettings: ServiceSettingsView;
     revealServiceCredential: ServiceCredentialDisclosure;
     saveServiceSettings: ServiceSettingsView;

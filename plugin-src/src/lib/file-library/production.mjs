@@ -1,3 +1,4 @@
+import {buildJourneyEvidence,readJourneyEvidence} from './journey-evidence.mjs';
 import {assertProductionRecordMutation} from './production-record-policy.mjs';
 import {prepareResearchAdoption} from './production-research.mjs';
 import {validProductionComposition,validProductionAdoptions,migrateProductionComposition} from './production-composition.mjs';
@@ -7,8 +8,8 @@ import {freezeCreatorContext,businessSkillForTask} from './production-creator-co
 import {readVaultTaskContext} from '../vault/index.mjs';
 import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {renderMarkdownReport} from '../vault/resources.mjs';
-import {researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized,validateResearchConfig,hash as researchConfigHash} from '../research-runtime/common.mjs';
-import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt,journeyRevisionCurrent} from './content-journey.mjs';
+import {withResearchEvidence,researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized,validateResearchConfig,hash as researchConfigHash} from '../research-runtime/common.mjs';
+import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt,journeyRevisionCurrent,journeyAuthorRefresh} from './content-journey.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -88,7 +89,7 @@ export function productionMethods(h) {
     const current = () => result(snapshot(root,'default','workspace'),'default',undefined,'workspace');
     const content = cid => {invalid(UUID.test(cid),'Expected content UUID'); const c = result(snapshot(root,cid,'content'),cid,undefined,'content'); return {...c,bodyHash:bodyDigest(c.body)};};
     const overlay = p => ({...p,creations:p.creations.map(c => {const next = content(c.contentId); return next.productionState || c;})});
-    const project = w => {const p=structuredClone(overlay(w.production || emptyProduction()));p.reports=p.reports.map(r=>r.type==='viral-radar'&&!trustedRadar(p,r)?{...r,type:'调研'}:r);for(const t of p.tasks)for(const a of t.attempts)a.claimToken=null;return {...p,editToken:w.editToken,...(w.mutationId ? {mutationId:w.mutationId} : {})};};
+    const project = w => {const p=structuredClone(overlay(w.production || emptyProduction()));p.reports=p.reports.map(r=>r.type==='viral-radar'&&!trustedRadar(p,r)?{...r,type:'调研'}:r);for(const t of p.tasks){for(const a of t.attempts)a.claimToken=null;if(t.journeyState?.continuation)delete t.journeyState.continuation.challengeHash;}return {...p,editToken:w.editToken,...(w.mutationId ? {mutationId:w.mutationId} : {})};};
     function checkAsset(hash,missing = false) {
         invalid(HASH.test(hash),'Expected asset SHA256');
         if (missing && !safePath(assetPath(root,hash),true)) return false;
@@ -113,7 +114,7 @@ export function productionMethods(h) {
     function rebuildProductionArchive(taskId){invalid(UUID.test(taskId),'Expected task UUID');return locked(()=>{const p=current().production||emptyProduction(),task=p.tasks.find(t=>t.id===taskId);return productionArchive({...h,task,reports:p.reports,readAsset:hash=>readAssetInternal(root,hash),assetPath:hash=>assetPath(root,hash)});});}
     function readProduction() {return locked(() => {const p = project(current()), missing = []; for (const hash of new Set([...p.accounts.flatMap(a=>[...a.images,...(a.avatarAssetHash?[a.avatarAssetHash]:[])]),...p.creations.flatMap(c=>referenceAssetHashes(c.references)),...p.tasks.flatMap(t=>t.attempts.flatMap(a=>(a.result?.artifacts??[]).filter(a=>REFERENCE_ARTIFACTS.includes(a.kind)).flatMap(a=>referenceAssetHashes(a.data?.references))))])) if (!checkAsset(hash,true)) missing.push(hash); return {...p,missingAssetHashes:[...new Set(missing)]};});}
     function readProductionCreation(cid) {return locked(() => {const w = current(), c = content(cid); return {content:c,creation:c.productionState || w.production?.creations.find(x => x.contentId === cid) || null,productionToken:w.editToken,history:historyForContent(cid)};});}
-    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t)for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null; if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),creatorContext:t?.request.parameters?.creatorContext??null,businessMethod:t?.request.parameters?.businessMethodVersion??null,history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
+    function readProductionContext(taskId,attemptId) {return locked(() => {const w=current(), p = project(w), t = taskId ? structuredClone(w.production?.tasks.find(x => x.id === taskId)) : null; if(t){for(const a of t.attempts)if(a.id !== (attemptId || t.activeAttemptId))a.claimToken=null;if(t.journeyState?.continuation)delete t.journeyState.continuation.challengeHash;} if (taskId && !t) fail('NOT_FOUND','Unknown production task'); if(attemptId && !t?.attempts.some(a=>a.id===attemptId))fail('NOT_FOUND','Unknown production attempt'); const c = t?.contentId ? content(t.contentId) : null; return {journeyEvidence:t?readJourneyEvidence(root,w.production,t):null,snapshot:p,task:t || null,attempt:t ? t.attempts.find(a=>a.id===(attemptId || t.activeAttemptId)) || null : null,account:t?.accountId ? p.accounts.find(a=>a.id===t.accountId) || null : null,content:c,creation:c ? p.creations.find(x => x.contentId === c.id) || null : null,knowledge:p.knowledge.filter(x => x.status === 'accepted'),creatorContext:t?.request.parameters?.creatorContext??null,businessMethod:t?.request.parameters?.businessMethodVersion??null,history:c ? (() => {const history=historyForContent(c.id);return {...history,versions:history.versions.map(({beforeBody,afterBody,...entry})=>entry)};})() : null};});}
     function trustedRadar(p,r) {
         if(r.type!=='viral-radar'||!plain(r.meta?.radar))return null;
         try {
@@ -134,6 +135,7 @@ export function productionMethods(h) {
         return {t,a};
     }
     function assertJourneyInputs(p,task,input={}){
+        readJourneyEvidence(root,p,task);
         const parent=find(p.tasks,task.journeyMember.journeyId,'journey'),flow=assertJourneyPins(root,parent,p),c=content(task.contentId),context=readVaultTaskContext(root,task.contentId),work=parent.request.parameters.work;
         if(c.deletedAt!==null||context?.vaultId!==work.vaultId||context?.content?.tNumber!==work.workId||context.content.sourceResolution!=='resolved')fail('SOURCE_CHANGED','The bound journey work or current source is unavailable');
         const frozen=task.request.parameters.source,actual=context.content;
@@ -221,6 +223,7 @@ export function productionMethods(h) {
     }
     function mutateProduction(op,raw,options = {}) {
         invalid(plain(raw),'Expected operation input');
+        if(op==='claimJourneyContinuation'){invalid(fields(raw,['taskId','attemptId','host','claimToken','workerId','expectedJourneyRevision','challenge'])&&typeof raw.challenge==='string'&&/^[A-Za-z0-9_-]{43,128}$/.test(raw.challenge),'Invalid continuation claim');const {challenge,...safe}=raw;raw={...safe,challengeHash:createHash('sha256').update(challenge).digest('hex')};}
         if(op==='adoptResearchReferences') {
             invalid(fields(raw,['contentId','taskId','attemptId','receiptHash','artifactId','expectedToken','expectedContentToken'])&&['contentId','taskId','attemptId','artifactId'].every(key=>UUID.test(raw[key]))&&['receiptHash','expectedToken','expectedContentToken'].every(key=>HASH.test(raw[key])),'Research adoption requires identities and both version tokens');
             mutate('update',raw.contentId,{productionOp:op,productionInput:raw},raw.expectedContentToken,options,'content',(meta)=>{
@@ -277,7 +280,7 @@ export function productionMethods(h) {
             invalid(c.deletedAt===null,'Previously added radar topic is trashed; restore the original topic');
             radarTopic={contentId,candidate};
         }
-        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost','registerMediaGrant','advanceJourney'];
+        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost','registerMediaGrant','advanceJourney','claimJourneyContinuation','rebindJourneyEvidence'];
         const token = raw.expectedToken;
         if (!workerOps.includes(op)) invalid(HASH.test(token),'A current production editToken is required');
         const out = mutate('update','default',{productionOp:op,productionInput:raw},token,options,'workspace',(meta) => {
@@ -350,11 +353,51 @@ export function productionMethods(h) {
                 if(op === 'recordFeedback') p.feedback.push(r); else p.knowledge.push({...r,status:'candidate',updatedAt:now}); break;
             }
             case 'decideKnowledge': {const k = find(p.knowledge,raw.id,'knowledge'); invalid(k.status === 'candidate' && ['accepted','rejected'].includes(raw.status),'Invalid knowledge decision'); k.status = raw.status; k.updatedAt = now; break;}
+            case 'rebindJourneyEvidence': {
+                invalid(fields(raw,['taskId','attemptId','claimToken','workerId','sourceTaskId','sourceAttemptId']),'Invalid evidence rebind');
+                const {t,a}=taskAttempt(p,raw,true);invalid(t.journeyMember,'Only the current journey step may rebind its original evidence');const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),binding=buildJourneyEvidence(root,p,parent,t,raw.sourceTaskId,raw.sourceAttemptId),existing=parent.journeyState.evidenceBindings?.find(b=>b.targetTaskId===t.id&&b.targetAttemptId===a.id);
+                if(existing){invalid(JSON.stringify(existing)===JSON.stringify(binding),'A continuation already pins different evidence');break;}(parent.journeyState.evidenceBindings??=[]).push(binding);parent.updatedAt=now;break;
+            }
+            case 'prepareJourneyContinuation': {
+                invalid(fields(raw,['journeyId','expectedJourneyRevision','expectedStepId','rootAttemptId','childAttemptId','host','challengeHash','expectedToken'])&&HASH.test(raw.challengeHash)&&['codex','workbuddy'].includes(raw.host),'Invalid explicit continuation preparation');
+                const parent=find(p.tasks,raw.journeyId,'journey'),state=parent.journeyState;
+                if(!state||state.status!=='active'||state.revision!==raw.expectedJourneyRevision||state.activeStepId!==raw.expectedStepId||parent.activeAttemptId!==raw.rootAttemptId)fail('CONFLICT','Journey changed before continuation preparation');
+                const child=find(p.tasks,state.activeTaskId,'child'),attempt=find(child.attempts,child.activeAttemptId,'attempt'),owner=find(parent.attempts,parent.activeAttemptId,'owner');
+                if(attempt.id!==raw.childAttemptId)fail('CONFLICT','Current child attempt changed');
+                if([attempt,owner].some(a=>['submitted','accepted','rejected'].includes(a.status)))fail('RESULT_PENDING','Handle the exact pending result before changing ownership');
+                if(p.costs.some(cost=>state.members.some(member=>member.taskId===cost.taskId)&&['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Settle all service costs before continuation');
+                assertJourneyInputs(p,child,{attemptId:attempt.id});
+                const context=readVaultTaskContext(root,parent.contentId),source={documentId:context.content.sourceDocumentId,relativePath:context.content.relativePath,hash:context.content.hash},index=state.members.find(m=>m.taskId===child.id).planIndex;
+                attempt.status='cancelled';attempt.updatedAt=child.updatedAt=now;owner.status='cancelled';owner.updatedAt=now;
+                const nextOwner=newAttempt(raw.host,now);parent.attempts.push(nextOwner);parent.activeAttemptId=nextOwner.id;state.ownerEpoch++;
+                const stepId=randomUUID(),member={journeyId:parent.id,stepId,ownerEpoch:state.ownerEpoch},next=createFixedTask(journeyChildInput(parent,source,content(parent.contentId).bodyHash,raw.host,index,member),meta,p,now);
+                next.journeyMember=member;state.members.push({taskId:next.id,stepId,ownerEpoch:state.ownerEpoch,planIndex:index});state.activeTaskId=next.id;state.activeStepId=stepId;state.revision++;
+                state.continuation={challengeHash:raw.challengeHash,expiresAt:new Date(Date.parse(now)+15*60*1000).toISOString(),host:raw.host,attemptId:nextOwner.id,ownerEpoch:state.ownerEpoch,consumedAt:null};parent.updatedAt=now;break;
+            }
+            case 'claimJourneyContinuation': {
+                const parent=find(p.tasks,raw.taskId,'journey'),state=parent.journeyState,owner=parent.attempts.find(a=>a.id===parent.activeAttemptId),challenge=state?.continuation;
+                if(!state||state.status!=='active'||!challenge||challenge.consumedAt!==null||challenge.challengeHash!==raw.challengeHash||Date.parse(challenge.expiresAt)<=Date.parse(now)||state.revision!==raw.expectedJourneyRevision||owner.id!==raw.attemptId||owner.status!=='created'||owner.host!==raw.host||challenge.host!==raw.host||challenge.ownerEpoch!==state.ownerEpoch||challenge.attemptId!==owner.id)fail('CONTINUATION_DENIED','Continuation is invalid, expired, or already consumed');
+                invalid(UUID.test(raw.claimToken)&&text(raw.workerId,200,false),'A new worker and claim are required');
+                challenge.consumedAt=now;owner.claimToken=raw.claimToken;owner.workerId=raw.workerId;owner.status='claimed';owner.updatedAt=parent.updatedAt=now;state.revision++;break;
+            }
+            case 'refreshJourneySource': {
+                invalid(fields(raw,['journeyId','expectedJourneyRevision','expectedStepId','sourceMutationId','expectedToken']),'Invalid author source refresh');
+                const parent=find(p.tasks,raw.journeyId,'journey'),state=parent.journeyState;
+                if(!state||state.status!=='active'||state.revision!==raw.expectedJourneyRevision||state.activeStepId!==raw.expectedStepId)fail('CONFLICT','Journey changed before author source refresh');
+                const child=find(p.tasks,state.activeTaskId,'child'),attempt=find(child.attempts,child.activeAttemptId,'attempt'),owner=find(parent.attempts,parent.activeAttemptId,'owner');
+                if(p.costs.some(cost=>state.members.some(member=>member.taskId===cost.taskId)&&['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Settle service costs before refreshing the source');
+                const context=readVaultTaskContext(root,parent.contentId);if(context?.content?.sourceResolution!=='resolved')fail('SOURCE_CHANGED','Select the exact current original page');
+                const refresh=journeyAuthorRefresh(root,parent,child,p,raw.sourceMutationId,context.content),source={documentId:context.content.sourceDocumentId,relativePath:context.content.relativePath,hash:context.content.hash};
+                attempt.status='cancelled';attempt.updatedAt=child.updatedAt=now;
+                const index=refresh.index,stepId=randomUUID(),member={journeyId:parent.id,stepId,ownerEpoch:state.ownerEpoch},next=createFixedTask(journeyChildInput(parent,source,content(parent.contentId).bodyHash,owner.host,index,member),meta,p,now);
+                next.journeyMember=member;state.checkpoints=state.checkpoints.filter(pin=>state.members.find(m=>m.taskId===pin.taskId)?.planIndex<index);
+                (state.sourceRebases??=[]).push(...refresh.rebases);state.members.push({taskId:next.id,stepId,ownerEpoch:state.ownerEpoch,planIndex:index});state.activeTaskId=next.id;state.activeStepId=stepId;state.revision++;parent.updatedAt=now;break;
+            }
             case 'cancelJourney': {
                 invalid(fields(raw,['journeyId','expectedJourneyRevision','expectedToken']),'Invalid journey cancellation');
                 const parent=find(p.tasks,raw.journeyId,'journey'),state=parent.journeyState;invalid(state,'Expected a journey root');
                 if(state.revision!==raw.expectedJourneyRevision||state.status!=='active')fail('CONFLICT','Journey changed');
-                state.status='cancelled';state.revision++;state.ownerEpoch++;
+                state.status='cancelled';state.revision++;state.ownerEpoch++;delete state.continuation;
                 const memberIds=new Set([parent.id,...state.members.map(member=>member.taskId)]);
                 for(const task of p.tasks.filter(task=>memberIds.has(task.id))){const attempt=task.attempts.find(attempt=>attempt.id===task.activeAttemptId);if(LIVE.includes(attempt.status)){attempt.status='cancelled';attempt.updatedAt=task.updatedAt=now;}}
                 for(const cost of p.costs.filter(cost=>memberIds.has(cost.taskId)&&cost.status==='reserved')){cost.status='unknown';cost.amount=null;cost.updatedAt=now;}break;
@@ -368,13 +411,14 @@ export function productionMethods(h) {
                 assertJourneyAuthority(p,child,attempt);
                 assertJourneyInputs(p,child,{attemptId:attempt.id});
                 if(p.costs.some(cost=>state.members.some(member=>member.taskId===cost.taskId)&&['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Settle all journey service costs before advancing');
-                const checkpoint=journeyCheckpoint(root,parent,child,p),c=content(parent.contentId),context=readVaultTaskContext(root,parent.contentId);
+                const c=content(parent.contentId),checkpoint=journeyCheckpoint(root,parent,child,p,c),context=readVaultTaskContext(root,parent.contentId);
                 invalid(c.deletedAt===null&&context?.content?.sourceResolution==='resolved','Journey source is unavailable');
                 const result={summary:'已核验当前步骤准确产物与作者决定',artifacts:[{id:randomUUID(),kind:'analysis',title:checkpoint.kind,text:'准确版本与作者决定已登记；正文仍由原位文档维护。',assetHash:null,data:checkpoint}]};
                 const receipt={taskId:child.id,attemptId:attempt.id,requestHash:child.requestHash,resultHash:digest(result)};attempt.result=result;attempt.receipt={...receipt,sha256:digest(receipt)};attempt.status='accepted';attempt.progress=100;attempt.updatedAt=child.updatedAt=now;
                 state.checkpoints.push(checkpoint);
                 const current=state.members.find(member=>member.taskId===child.id),index=current.planIndex+1;
-                invalid(index<journeyPlan(parent.request.parameters).length,'Final completion requires verified final assets');
+                if(index===journeyPlan(parent.request.parameters).length){const rootResult={summary:'作者已保存且当前字节核验通过的最终资产',artifacts:result.artifacts},rootReceipt={taskId:parent.id,attemptId:owner.id,requestHash:parent.requestHash,resultHash:digest(rootResult)};owner.result=rootResult;owner.receipt={...rootReceipt,sha256:digest(rootReceipt)};owner.status='accepted';owner.progress=100;owner.updatedAt=parent.updatedAt=now;state.status='complete';state.revision++;break;}
+                invalid(index<journeyPlan(parent.request.parameters).length,'Invalid journey step');
                 const source={documentId:context.content.sourceDocumentId,relativePath:context.content.relativePath,hash:context.content.hash};
                 const stepId=randomUUID(),member={journeyId:parent.id,stepId,ownerEpoch:state.ownerEpoch},next=createFixedTask(journeyChildInput(parent,source,c.bodyHash,owner.host,index,member),meta,p,now);
                 next.journeyMember=member;state.members.push({taskId:next.id,stepId,ownerEpoch:state.ownerEpoch,planIndex:index});state.activeTaskId=next.id;state.activeStepId=stepId;state.revision++;parent.updatedAt=now;break;
@@ -395,7 +439,7 @@ export function productionMethods(h) {
             case 'retryTask': {const {t,a} = taskAttempt(p,raw); invalid(!['submitted','accepted','rejected'].includes(a.status),'Submitted results require a user decision; rejected tasks require a new request'); if(p.costs.some(c => c.taskId === t.id && ['unknown','reserved'].includes(c.status))) fail('COST_UNKNOWN','Reconcile outstanding service costs before retry'); if(LIVE.includes(a.status)) {a.status='cancelled';a.updatedAt=now;} const next=newAttempt(raw.host || a.host,now);t.attempts.push(next);t.activeAttemptId=next.id;t.updatedAt=now;break;}
             case 'registerMediaGrant': {
                 invalid(fields(raw,['taskId','attemptId','claimToken','workerId','requestId','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash','assetHash']),'Invalid media grant fields');
-                const {t,a}=taskAttempt(p,raw,true),config=t.request.parameters?.media;
+                const active=taskAttempt(p,raw,true),t=withResearchEvidence(active.t,readJourneyEvidence(root,p,active.t)),a=active.a,config=t.request.parameters?.media;
                 const research=researchMediaAuthorized(t);
                 if(research&&t.contentId)invalid(!content(t.contentId).deletedAt,'Content is trashed');
                 invalid(['claimed','waiting-user','waiting-permission'].includes(a.status) && (research || t.contentId && !content(t.contentId).deletedAt) && t.request.tools.includes('media') && t.request.tools.includes('tikhub') && fields(config,['version','maxDownloads','maxBytes']) && config.version===1 && config.maxDownloads===3 && config.maxBytes===67108864,'Media was not authorized in fixed request');
@@ -439,7 +483,7 @@ export function productionMethods(h) {
                 p.feedback.push({id:randomUUID(),contentId:t.contentId,text:reason,source:`用户拒绝 task:${t.id} attempt:${a.id} receipt:${a.receipt.sha256}`,createdAt:now});break;
             }
             case 'reserveCost': {
-                const {t,a}=taskAttempt(p,raw,true);if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running');
+                const active=taskAttempt(p,raw,true),t=withResearchEvidence(active.t,readJourneyEvidence(root,p,active.t)),a=active.a;if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running');
                 invalid(text(raw.requestId,200,false) && text(raw.service,100,false),'Cost requires request and service');
                 if(p.costs.some(c=>c.taskId===t.id && c.requestId===raw.requestId)) fail('REQUEST_ALREADY_RESERVED','Request already reserved; inspect the existing result before replay');
                 if(p.costs.some(c=>c.taskId===t.id && c.status==='unknown')) fail('COST_UNKNOWN','An unknown cost blocks further calls');
@@ -452,7 +496,7 @@ export function productionMethods(h) {
                     }else if(!['video','comments'].includes(usage?.operation)||!config.operations.includes(usage.operation)||usage.operation==='comments'&&!config.comments||!researchVideoAuthorized(t,p.costs,a.id,usage?.id))fail('RESEARCH_OPERATION_FORBIDDEN','The request is not in the registered search sample');
                 }
 
-                if(t.journeyMember){const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),members=new Set(parent.journeyState.members.map(member=>member.taskId)),costs=p.costs.filter(cost=>members.has(cost.taskId));if(costs.some(cost=>['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Outstanding journey costs block further service requests');const total=costs.filter(cost=>cost.status!=='cancelled').reduce((sum,cost)=>sum+(cost.amount??1),0);if(total+(raw.usage?.requests??1)>parent.request.parameters.limits.maxRequestsTotal)fail('BUDGET_EXCEEDED','The total journey budget is exhausted');}
+                if(t.journeyMember){const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),members=new Set(parent.journeyState.members.map(member=>member.taskId)),costs=p.costs.filter(cost=>members.has(cost.taskId));if(costs.some(cost=>['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Outstanding journey costs block further service requests');const total=costs.filter(cost=>cost.status!=='cancelled').reduce((sum,cost)=>sum+(cost.amount??1),0);if(total+(raw.usage?.requests??1)>parent.request.parameters.limits.maxRequestsTotal)fail('BUDGET_EXCEEDED','The total journey budget is exhausted');const index=parent.journeyState.members.find(m=>m.taskId===t.id).planIndex,slotIds=new Set(parent.journeyState.members.filter(m=>m.planIndex===index).map(m=>m.taskId)),slotCosts=costs.filter(c=>slotIds.has(c.taskId));if(slotCosts.filter(c=>c.status!=='cancelled').reduce((n,c)=>n+(c.amount??1),0)+(raw.usage?.requests??1)>t.request.budget.amount)fail('BUDGET_EXCEEDED','The fixed research step budget survives continuation');if(raw.usage?.operation==='douyin-search'&&slotCosts.some(c=>c.usage?.operation==='douyin-search'))fail('RESEARCH_REQUEST_LIMIT','The fixed search page already has an original reservation');}
                 const units=raw.usage?.requests ?? 1; invalid([0,1].includes(units),'Requests must be 0 or 1');
                 if(p.costs.filter(c=>c.taskId===t.id && c.status!=='cancelled').reduce((n,c)=>n+(c.amount ?? 1),0)+units>t.request.budget.amount) fail('BUDGET_EXCEEDED','Fixed request budget is exhausted');
                 p.costs.push({id:randomUUID(),taskId:t.id,attemptId:a.id,requestId:raw.requestId,service:raw.service,status:'reserved',amount:units,currency:'REQ',usage:raw.usage ?? null,createdAt:now,updatedAt:now});break;

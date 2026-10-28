@@ -209,6 +209,15 @@ export async function startDesktop(options:StartOptions = {}) {
                 catch { throw assistantNotReady('protocol-missing'); }
                 if (!path.isAbsolute(target.path) || await shell.openPath(target.path)) fail('OPEN_FAILED', '系统未能打开所选助手，请手动返回原对话。');
             },
+            prepare: async (binding, reference) => {
+                requireWrite(release.AUTH_MODE);
+                if (!productionBroker) fail('NOT_READY', '本机工具服务尚未准备好。');
+                await productionBroker.start();
+                const context = await worker!.call('productionContext', {binding, taskId: reference.taskId});
+                if (!context.task) fail('NOT_FOUND', '任务不存在。');
+                const installedSkill = installedAssistantSkill(reference.host, release, {capability: productionExecutionCapability(context.task)});
+                return prepareProductionHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {currentChat:true, installedSkill, serviceDescriptorPath});
+            },
             launch: async (binding, reference) => {
                 requireWrite(release.AUTH_MODE);
                 serviceSettings.read();
