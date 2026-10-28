@@ -25,11 +25,14 @@
     "probe:cover": "node scripts/cover-probe.mjs"
   },
   "dependencies": {
+    "@xmldom/xmldom": "0.8.15",
+    "inline-style-parser": "0.2.7",
+    "postcss": "8.5.30",
     "sharp": "0.35.5",
     "smol-toml": "1.9.1"
   },
   "devDependencies": {
-    "electron": "44.9.0",
+    "electron": "44.9.1",
     "electron-builder": "26.15.3",
     "react": "19.3.1",
     "react-dom": "19.3.1",

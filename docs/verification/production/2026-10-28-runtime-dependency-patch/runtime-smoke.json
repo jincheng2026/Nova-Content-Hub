@@ -1,0 +1,16 @@
+{
+  "at": "2026-10-28T10:44:46.479Z",
+  "mode": "npm ci --omit=dev --ignore-scripts",
+  "imports": [
+    "@xmldom/xmldom",
+    "postcss",
+    "inline-style-parser"
+  ],
+  "versions": {
+    "@xmldom/xmldom": "0.8.15",
+    "postcss": "8.5.30",
+    "inline-style-parser": "0.2.7"
+  },
+  "electronDevPackageAbsent": true,
+  "sharpLoaded": true
+}
