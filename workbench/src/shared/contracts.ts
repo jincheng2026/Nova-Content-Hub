@@ -1,3 +1,4 @@
+import type {FinalAssetsInputs,FinalAssetsResults,FinalAssetsWorkerOperations} from './final-assets-contracts.ts';
 import type {PublicationRuntimeInputs,PublicationRuntimeResults,PublicationRuntimeWorkerOperations} from './publication-runtime-contracts.ts';
 import type {StageInputs,StageResults,StageWorkerOperations} from './stage-contracts.ts';
 import type {VaultInputs,VaultResults,VaultWorkerOperations,VaultPending} from './vault-contracts.ts';
@@ -114,6 +115,7 @@ export interface PendingView {
 
 export interface Status {
     vaultPending?: boolean;
+    vaultPendingOperation?:{method:import('./vault-contracts.ts').VaultMutationMethod;contentId?:string};
     busy: boolean;
     currentName: string | null;
     needsReselect: boolean;
@@ -131,7 +133,7 @@ export interface Status {
     maintenance: MaintenanceStatus
 }
 
-export interface DesktopInputs extends PublicationRuntimeInputs, StageInputs, CreationInputs, VaultInputs, ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
+export interface DesktopInputs extends FinalAssetsInputs, PublicationRuntimeInputs, StageInputs, CreationInputs, VaultInputs, ProductionInputs, CoverInputs, WorkspaceInputs, MaintenanceInputs, PreferencesInputs, SetupInputs, BootstrapInputs, TemplateInputs {
     readServiceSettings: undefined;
     revealServiceCredential: ServiceCredentialRequest;
     saveServiceSettings: ServiceSettingsPatch;
@@ -153,7 +155,7 @@ export interface DesktopInputs extends PublicationRuntimeInputs, StageInputs, Cr
     resolvePendingMutation: { action: 'keep' | 'saveAs' | 'discard' }
 }
 
-export interface DesktopResults extends PublicationRuntimeResults, StageResults, CreationResults, VaultResults, ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
+export interface DesktopResults extends FinalAssetsResults, PublicationRuntimeResults, StageResults, CreationResults, VaultResults, ProductionResults, CoverResults, WorkspaceResults, MaintenanceResults, PreferencesResults, SetupResults, BootstrapResults, TemplateResults {
     readServiceSettings: ServiceSettingsView;
     revealServiceCredential: ServiceCredentialDisclosure;
     saveServiceSettings: ServiceSettingsView;
@@ -207,7 +209,7 @@ export interface Binding {
     needsReselect?: boolean
 }
 
-export interface WorkerOperations extends PublicationRuntimeWorkerOperations, StageWorkerOperations, JinchengSourceWorkerOperations, CreationWorkerOperations, VaultWorkerOperations, ProductionWorkerOperations, CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
+export interface WorkerOperations extends FinalAssetsWorkerOperations, PublicationRuntimeWorkerOperations, StageWorkerOperations, JinchengSourceWorkerOperations, CreationWorkerOperations, VaultWorkerOperations, ProductionWorkerOperations, CoverWorkerOperations, WorkspaceWorkerOperations, MaintenanceWorkerOperations, TemplateWorkerOperations {
     bind: { args: { destination: string }; result: LibraryBinding };
     createLibrary: { args: { root: string; rootIdentity: RootIdentity; mutationId: string }; result: LibraryBinding };
     queryCreation: {

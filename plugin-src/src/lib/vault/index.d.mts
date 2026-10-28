@@ -26,6 +26,7 @@ export type VaultDocument = {
     contentId: string | null;
     tNumber: string | null;
     bytes: number;
+    managedFinalAsset?: 'asset'|'unverified';
 };
 export type VaultIssue = {code: string; message: string; relativePath?: string};
 export type VaultSnapshot = {
@@ -110,3 +111,5 @@ export {saveTopicCandidates,adoptTopic,resolveCurrentWork,selectCurrentWork} fro
 export type {WorkRef,CheckpointKind,AuthorEvidence,DecisionInput,WorkFlow} from './workflow.mjs';
 export type {SourceBinding,SourceRole,SourceMap} from './source-map.mjs';
 export type {TopicCandidate} from './topics.mjs';
+
+export {readFinalAssets,previewFinalAssets,saveFinalAssets,readFinalAssetExport} from '../final-assets/index.mjs';

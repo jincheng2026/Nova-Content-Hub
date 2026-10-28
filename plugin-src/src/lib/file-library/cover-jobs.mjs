@@ -1,3 +1,4 @@
+import {selectedCoverMethods,selectedCoverBytes} from './selected-cover.mjs';
 import {attemptProgress} from './attempt-progress.mjs';
 import {selectableTemplate} from './template-retirement.mjs';
 import fs from 'node:fs';
@@ -95,6 +96,37 @@ export function coverJobMethods(h) {
         fail,
         LibraryError
     } = h;
+    const sourceScope = h.withCoverSourceLock ?? (fn => fn());
+    const sourceLocked = fn => sourceScope(() => locked(fn));
+    const sourceChange = (...args) => sourceScope(() => changeCurrent(...args));
+    const sourceMutate = (...args) => sourceScope(() => mutate(...args));
+    const sourceReference = source => ({documentId:source.documentId,pageId:source.pageId,revision:source.revision,selectionToken:source.selectionToken});
+    function readCoverPackaging(input) {return h.readCoverPackaging?.(input) ?? {kind:'legacy',contentId:input.contentId,source:null,fields:null,script:null,selectionToken:null,issues:[]};}
+    function resolveRequestSource(meta,bodyBytes,reference) {
+        const snapshot = readCoverPackaging({contentId:meta.id,...(reference?{documentId:reference.documentId}:{})});
+        if (snapshot.kind === 'legacy' && !reference) return {fields:{title:meta.title,bodyHash:hash(bodyBytes)},bodyBytes};
+        if (!reference || snapshot.kind !== 'jc-doc') fail('STALE_INPUT','Original packaging source must be explicitly selected and available');
+        inputFields(reference,['documentId','pageId','revision','selectionToken'],['documentId','pageId','revision','selectionToken']);
+        if (!/^doc-[a-f0-9]{32}$/.test(reference.documentId) || !/^[A-Za-z0-9_-]{1,64}$/.test(reference.pageId) || !HASH.test(reference.revision) || !HASH.test(reference.selectionToken)) fail('INVALID_INPUT','Invalid original packaging identity');
+        if (reference.documentId !== snapshot.source.documentId || reference.pageId !== snapshot.source.pageId || reference.revision !== snapshot.source.revision || reference.selectionToken !== snapshot.selectionToken) fail('STALE_INPUT','Original packaging or current manuscript changed');
+        const {title,coverText,description}=snapshot.fields;
+        if (!title?.value.trim() || !coverText?.value.trim() || title.value.length>10000 || coverText.value.length>10000) fail('STALE_INPUT','Select valid original title and cover text before generation');
+        const packagingSource={...snapshot.source,selectionToken:snapshot.selectionToken,slots:Object.fromEntries(Object.entries(snapshot.fields).map(([key,field])=>[key,field?{itemId:field.itemId,hash:field.hash}:null])),manuscriptSource:snapshot.script.manuscriptSource};
+        return {fields:{title:title.value,coverText:coverText.value,description:description?.value??'',bodyHash:snapshot.script.hash,packagingSource},bodyBytes:Buffer.from(snapshot.script.text,'utf8')};
+    }
+    function validateFrozenSource(request) {
+        const source=inputFields(request.packagingSource,['vaultId','workId','documentId','pageId','revision','selectionToken','slots','manuscriptSource'],['vaultId','workId','documentId','pageId','revision','selectionToken','slots','manuscriptSource']);
+        if (!UUID.test(source.vaultId)||!/^T\d{3,}$/.test(source.workId)||!/^doc-[a-f0-9]{32}$/.test(source.documentId)||!/^[A-Za-z0-9_-]{1,64}$/.test(source.pageId)||!HASH.test(source.revision)||!HASH.test(source.selectionToken)) fail('CORRUPT','Invalid frozen packaging identity');
+        inputFields(source.slots,['title','coverText','description'],['title','coverText','description']);
+        for (const key of ['title','coverText','description']) {
+            const slot=source.slots[key];
+            if (key==='description'&&slot===null) {if(request.description!=='')fail('CORRUPT','Missing description differs from frozen value');continue;}
+            inputFields(slot,['itemId','hash'],['itemId','hash']);
+            if (!/^[A-Za-z0-9_-]{1,64}$/.test(slot.itemId)||!HASH.test(slot.hash)||typeof request[key]!=='string'||hash(Buffer.from(request[key],'utf8'))!==slot.hash) fail('CORRUPT','Frozen packaging field checksum mismatch');
+        }
+        const manuscript=inputFields(source.manuscriptSource,['vaultId','workId','documentId','pageId','revision','relativePath','format'],['vaultId','workId','documentId','pageId','revision','relativePath','format']);
+        if (manuscript.vaultId!==source.vaultId||manuscript.workId!==source.workId||!/^doc-[a-f0-9]{32}$/.test(manuscript.documentId)||!HASH.test(manuscript.revision)||!['html','markdown','text'].includes(manuscript.format)||!(manuscript.pageId===null||typeof manuscript.pageId==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(manuscript.pageId))||typeof manuscript.relativePath!=='string'||path.posix.isAbsolute(manuscript.relativePath)||/^[a-z]:/i.test(manuscript.relativePath)||manuscript.relativePath.split(/[\\/]/).some(part=>!part||part==='.'||part==='..')) fail('CORRUPT','Invalid frozen manuscript source');
+    }
     const requestDir = (contentId, requestId) => path.join(root, '内容', id(contentId), '封面任务', id(requestId));
     const attemptDir = (contentId, requestId, attemptId) => path.join(requestDir(contentId, requestId), '尝试', id(attemptId));
     const content = contentId => result(snapshot(root, id(contentId)), contentId);
@@ -122,7 +154,7 @@ export function coverJobMethods(h) {
         });
     }
     function reportCoverProgress(oid, rid, aid, input) {
-        return locked(() => {
+        return sourceLocked(() => {
             const meta = content(id(oid)), {job, attempt} = find(meta, rid, aid);
             active(meta, job, attempt);
             const {request} = requestPackage(oid, job);
@@ -160,8 +192,15 @@ export function coverJobMethods(h) {
         } catch {
             fail('CORRUPT', 'Invalid cover request package');
         }
-        const supportedSize = request.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || request.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum';
+        const supportedSize = request.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || request.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum' || request.schemaVersion === 3 && ['exact','ratio-minimum'].includes(request.sizePolicy) && !!request.packagingSource;
         if (request.format !== 'nova-cover-request' || !supportedSize || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity or size policy mismatch');
+        if (request.schemaVersion===3) {
+            const fields=['format','schemaVersion','requestId','createdAt','inputHash','protocol','libraryId','contentId','title','coverText','description','bodyHash','packagingSource','template','styleAssetHashes','templateDefinition','photo','materials','prompt','pixels','sizePolicy','ratio','count','outputFormat','inputs'];
+            if (Object.keys(request).length!==fields.length || Object.keys(request).some(key=>!fields.includes(key)) || fields.some(key=>!Object.hasOwn(request,key))) fail('CORRUPT','Invalid source-aware cover request shape');
+            try {validateFrozenSource(request);} catch {fail('CORRUPT','Invalid frozen packaging source');}
+            const normalized=Object.fromEntries(Object.entries(request).filter(([key])=>!['format','schemaVersion','requestId','createdAt','inputHash'].includes(key)));
+            if (hash(jsonBytes(normalized))!==request.inputHash) fail('CORRUPT','Source-aware request input checksum mismatch');
+        }
         requestDimensions(request.pixels, request.ratio, 'CORRUPT');
         const bodyBytes = read(path.join(dir, '正文.md'));
         if (hash(bodyBytes) !== request.bodyHash) fail('CORRUPT', 'Cover body snapshot checksum mismatch');
@@ -195,7 +234,10 @@ export function coverJobMethods(h) {
     }
 
     function fresh(meta, bodyBytes, request) {
-        if (meta.title !== request.title || hash(bodyBytes) !== request.bodyHash) fail('STALE_INPUT', 'Content title or body differs from the fixed request');
+        if (request.packagingSource) {
+            const live=resolveRequestSource(meta,bodyBytes,sourceReference(request.packagingSource)).fields;
+            if (live.title!==request.title||Object.hasOwn(request,'coverText')&&live.coverText!==request.coverText||Object.hasOwn(request,'description')&&live.description!==request.description||live.bodyHash!==request.bodyHash||JSON.stringify(live.packagingSource)!==JSON.stringify(request.packagingSource)) fail('STALE_INPUT','Original packaging or manuscript differs from fixed request');
+        } else if (meta.title !== request.title || hash(bodyBytes) !== request.bodyHash) fail('STALE_INPUT', 'Content title or body differs from the fixed request');
     }
 
     function supersede(job, now) {
@@ -212,7 +254,7 @@ export function coverJobMethods(h) {
     }
 
     function normalizeRequest(meta, bodyBytes, raw) {
-        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
+        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
         if (input.scope !== 'cover-only') fail('INVALID_INPUT', 'Only cover-only scope is supported');
         if (Object.hasOwn(input, 'sizePolicy') && !['exact', 'ratio-minimum'].includes(input.sizePolicy)) fail('INVALID_INPUT', 'Unknown cover size policy');
         text(input.prompt, 'prompt');
@@ -256,18 +298,19 @@ export function coverJobMethods(h) {
             include(item.assetHash, 'material', {materialId});
             return {id: item.id, assetHash: item.assetHash, originalName: item.originalName, role: item.role};
         });
+        if (input.packagingSource!==undefined && input.coverText!==undefined) fail('INVALID_INPUT','Original packaging source and caller cover text are mutually exclusive');
+        const resolved=resolveRequestSource(meta,bodyBytes,input.packagingSource);
         if (input.coverText !== undefined) {
             if(typeof input.coverText !== 'string' || !input.coverText.trim() || input.coverText.length > 10000) fail('INVALID_INPUT','Cover text must be bounded text');
             const p=meta.productionState?.packaging;
             if(!p || !p.coverTexts.some(c=>c.id===p.selectedCoverTextId && c.text===input.coverText)) fail('STALE_INPUT','Cover text must match the saved human selection');
         }
-        return {
+        const normalized = {
             protocol: PROTOCOL,
             libraryId,
             contentId: meta.id,
             ...(input.coverText !== undefined ? {coverText:input.coverText} : {}),
-            title: meta.title,
-            bodyHash: hash(bodyBytes),
+            ...resolved.fields,
             template: {id: input.template.id, version: input.template.version, packageHash: version.packageHash},
             styleAssetHashes: input.styleAssetHashes,
             templateDefinition: pkg.definition,
@@ -275,12 +318,13 @@ export function coverJobMethods(h) {
             materials,
             prompt: input.prompt,
             pixels: input.pixels,
-            ...(input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {}),
+            ...(input.packagingSource ? {sizePolicy:input.sizePolicy??'exact'} : input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {}),
             ratio: input.ratio,
             count: input.count,
             outputFormat: input.outputFormat,
             inputs
         };
+        return {normalized,bodyBytes:resolved.bodyBytes};
     }
 
     function preparedRequest(current, fingerprint) {
@@ -296,14 +340,15 @@ export function coverJobMethods(h) {
     function inspectCoverInput(contentId, raw, token) {
         id(contentId);
         checkedHash(token);
-        return locked(() => {
+        return sourceLocked(() => {
             const before = snapshot(root, contentId), current = result(before, contentId);
             if (current.editToken !== token) fail('CONFLICT', 'Content changed before inspecting cover input');
             if (current.deletedAt) fail('INVALID_STATE', 'Content is trashed');
-            const normalized = normalizeRequest(current, before[1], raw);
+            const {normalized} = normalizeRequest(current, before[1], raw);
             const fingerprint = {
                 contentId,
-                title: current.title,
+                title: normalized.title,
+                ...(normalized.packagingSource?{packagingSource:normalized.packagingSource}:{}),
                 bodyHash: normalized.bodyHash,
                 editToken: current.editToken,
                 inputHash: hash(jsonBytes(normalized))
@@ -321,12 +366,12 @@ export function coverJobMethods(h) {
 
     function findCoverRequest(contentId, raw) {
         id(contentId);
-        const fingerprint = inputFields(raw, ['inputHash', 'title', 'bodyHash'], ['inputHash', 'title', 'bodyHash']);
+        const fingerprint = inputFields(raw, ['inputHash', 'title', 'bodyHash', 'packagingSource'], ['inputHash', 'title', 'bodyHash']);
         checkedHash(fingerprint.inputHash);
         checkedHash(fingerprint.bodyHash);
         text(fingerprint.title, 'title');
-        if (fingerprint.title.length > 500) fail('INVALID_INPUT', 'Title must contain 1–500 characters');
-        return locked(() => {
+        if (fingerprint.title.length > (fingerprint.packagingSource?10000:500)) fail('INVALID_INPUT', 'Title must contain 1–500 characters');
+        return sourceLocked(() => {
             const before = snapshot(root, contentId), current = result(before, contentId);
             if (current.deletedAt) fail('INVALID_STATE', 'Content is trashed');
             fresh(current, before[1], fingerprint);
@@ -339,7 +384,7 @@ export function coverJobMethods(h) {
         checkedHash(token);
         const requestInput = {
             action: 'createCoverRequest',
-            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
+            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
         };
         if (requestInput.request.sizePolicy === 'exact') delete requestInput.request.sizePolicy;
         const replayed = replayCoverRequest(contentId, requestInput, token, options);
@@ -347,25 +392,25 @@ export function coverJobMethods(h) {
             const job = replayed.coverJobs.at(-1);
             return response(replayed, job.id);
         }
-        const initial = locked(() => {
+        const initial = sourceLocked(() => {
             const before = snapshot(root, id(contentId));
             const current = result(before, contentId);
             if (current.editToken !== token) fail('CONFLICT', 'Content changed before creating cover request');
             if (current.deletedAt) fail('INVALID_STATE', 'Content is trashed');
-            const normalized = normalizeRequest(current, before[1], raw);
+            const {normalized} = normalizeRequest(current, before[1], raw);
             const inputHash = hash(jsonBytes(normalized));
             const existing = (current.coverJobs || []).find(job => job.inputHash === inputHash);
             return {normalized, inputHash, existing, current};
         });
         if (initial.existing) return {content: initial.current, ...requestPackage(contentId, initial.existing)};
         const requestId = randomUUID();
-        const updated = mutate('update', contentId, requestInput, token, options, 'content', (old, before) => {
+        const updated = sourceMutate('update', contentId, requestInput, token, options, 'content', (old, before) => {
             const meta = extend(old), now = new Date().toISOString();
-            const normalized = normalizeRequest(meta, before[1], raw);
+            const {normalized,bodyBytes} = normalizeRequest(meta, before[1], raw);
             if (hash(jsonBytes(normalized)) !== initial.inputHash) fail('CONFLICT', 'Selected inputs changed before creating request');
             const request = {
                 format: 'nova-cover-request',
-                schemaVersion: normalized.sizePolicy === 'ratio-minimum' ? 2 : 1,
+                schemaVersion: normalized.packagingSource ? 3 : normalized.sizePolicy === 'ratio-minimum' ? 2 : 1,
                 requestId,
                 createdAt: now,
                 inputHash: initial.inputHash, ...normalized
@@ -375,7 +420,7 @@ export function coverJobMethods(h) {
             ensureDirectory(dir);
             ensureDirectory(path.join(dir, '输入'));
             ensureDirectory(path.join(dir, '尝试'));
-            immutableFile(path.join(dir, '正文.md'), before[1]);
+            immutableFile(path.join(dir, '正文.md'), bodyBytes);
             for (const entry of request.inputs) immutableFile(path.join(dir, '输入', entry.assetHash), readAssetInternal(root, entry.assetHash).data);
             const bytes = jsonBytes(request);
             immutableFile(path.join(dir, '请求.json'), bytes);
@@ -398,7 +443,7 @@ export function coverJobMethods(h) {
         host(input.host);
         if (input.reason !== undefined) text(input.reason, 'attempt reason');
         const attemptId = randomUUID();
-        const updated = changeCurrent(id(contentId), {
+        const updated = sourceChange(id(contentId), {
             action: 'createCoverAttempt',
             requestId: id(requestId), ...input
         }, (old, before) => {
@@ -518,7 +563,7 @@ export function coverJobMethods(h) {
         const input = inputFields(raw, ['host', 'readAssetHashes'], ['host', 'readAssetHashes']);
         host(input.host);
         if (!Array.isArray(input.readAssetHashes) || input.readAssetHashes.some(value => !HASH.test(value)) || new Set(input.readAssetHashes).size !== input.readAssetHashes.length) fail('INVALID_INPUT', 'Require unique hashes of the supplied input files');
-        const updated = changeCurrent(id(contentId), {
+        const updated = sourceChange(id(contentId), {
             action: 'claimCoverAttempt',
             requestId: id(requestId),
             attemptId: id(attemptId), ...input
@@ -624,7 +669,7 @@ export function coverJobMethods(h) {
         id(requestId);
         id(attemptId);
         const {receipt, bytes: receiptBytes, receiptHash} = receiptInput(raw, contentId, requestId, attemptId);
-        const prepared = locked(() => {
+        const prepared = sourceLocked(() => {
             const current = content(contentId), {job, attempt} = find(current, requestId, attemptId);
             if (receipt.requestHash !== job.requestHash) fail('INVALID_INPUT', 'Receipt requestHash does not match immutable request');
             const {request} = requestPackage(contentId, job);
@@ -633,6 +678,7 @@ export function coverJobMethods(h) {
                 verifyCommittedEvidence(contentId, current, job, attempt, receiptHash);
                 return {done: {content: current, attempt, candidateIds: attempt.candidateIds}};
             }
+            fresh(current,Buffer.from(current.body),request);
             const location = path.join(attemptDir(contentId, requestId, attemptId), '收件', receiptHash);
             ensureDirectory(location);
             immutableFile(path.join(location, '回执.json'), receiptBytes);
@@ -689,7 +735,7 @@ export function coverJobMethods(h) {
             };
             const reportBytes = jsonBytes(report);
             const reportHash = hash(reportBytes);
-            const updated = changeCurrent(contentId, {
+            const updated = sourceChange(contentId, {
                 action: 'commitCoverAttempt',
                 requestId,
                 attemptId,
@@ -795,7 +841,24 @@ export function coverJobMethods(h) {
         }
         return {};
     }
+    function readGeneratedSelectedEvidence(meta,candidate,asset) {
+        const job=(meta.coverJobs||[]).find(job=>job.id===candidate.requestId);if(!job)return null;
+        const attempt=job.attempts.find(attempt=>attempt.attemptId===candidate.attemptId),index=attempt?.candidateIds.indexOf(candidate.id);
+        if(!attempt||attempt.status!=='committed'||index<0||!HASH.test(attempt.receiptHash)||!HASH.test(attempt.reportHash))fail('CORRUPT','Selected generated candidate lacks its committed attempt');
+        const {request}=requestPackage(meta.id,job),location=path.join(attemptDir(meta.id,job.id,attempt.attemptId),'收件',attempt.receiptHash);
+        const receiptBytes=selectedCoverBytes(path.join(location,'回执.json'),safePath,fail,64*1024),reportBytes=selectedCoverBytes(path.join(location,'校验报告.json'),safePath,fail,64*1024);
+        if(hash(receiptBytes)!==attempt.receiptHash||hash(reportBytes)!==attempt.reportHash)fail('CORRUPT','Selected generated receipt/report checksum mismatch');
+        const {receipt}=receiptInput(receiptBytes,meta.id,job.id,attempt.attemptId);let report;try{report=JSON.parse(reportBytes);}catch{fail('CORRUPT','Selected generated validation report is malformed');}
+        if(receipt.requestHash!==job.requestHash||report.format!=='nova-cover-validation'||report.schemaVersion!==1||report.receiptHash!==attempt.receiptHash||report.requestHash!==job.requestHash||report.status!=='passed'||report.decoded!==true||!Array.isArray(report.files)||report.files.length!==receipt.files.length||receipt.files.length!==request.count||attempt.candidateIds.length!==receipt.files.length)fail('CORRUPT','Selected generated validation ownership mismatch');
+        const file=receipt.files[index],proof=report.files[index];if(!file||!proof||file.sha256!==candidate.assetHash||file.name!==candidate.originalName||proof.assetHash!==candidate.assetHash||proof.originalName!==file.name||proof.bytes!==asset.bytes||proof.decoded!==true||'image/'+(proof.format==='jpeg'?'jpeg':proof.format)!==asset.detectedType)fail('CORRUPT','Selected generated image differs from its decoded receipt');
+        const captured=selectedCoverBytes(path.join(location,'图片-'+index),safePath,fail);if(hash(captured)!==candidate.assetHash)fail('CORRUPT','Selected captured raster checksum mismatch');
+        return {proof,provenance:{kind:'generated',requestId:job.id,requestHash:job.requestHash,attemptId:attempt.attemptId,receiptHash:attempt.receiptHash,template:structuredClone(request.template),packagingSource:request.packagingSource?structuredClone(request.packagingSource):null,bodyHash:request.bodyHash}};
+    }
+    function assertCoverRequestFresh(contentId,requestId) {return sourceLocked(()=>{const current=content(id(contentId)),{job}=find(current,requestId);const {request}=requestPackage(contentId,job);fresh(current,Buffer.from(current.body),request);return true;});}
     return {
+        ...selectedCoverMethods({...h,current:content,readGeneratedSelectedEvidence}),
+        readCoverPackaging,
+        assertCoverRequestFresh,
         inspectCoverInput,
         findCoverRequest,
         createCoverRequest,

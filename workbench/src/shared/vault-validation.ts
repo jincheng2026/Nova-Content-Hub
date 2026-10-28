@@ -1,3 +1,4 @@
+import {finalAssetsDesktopInput} from './final-assets-validation.ts';
 import {exact,token,uuid,identity} from './validation.ts';
 import type {VaultPending} from './vault-contracts.ts';
 export const vaultSections = ['profile','accounts','materials','patterns','topics','drafts','reviews','prompts'] as const;
@@ -21,5 +22,5 @@ export function vaultDesktopInput(method:string,input:unknown):boolean|undefined
  }
 }
 export function vaultPending(value:unknown):value is VaultPending {
- return exact(value,['method','input','mutationId','binding']) && ['saveVaultDocument','createVaultDocument','createVaultWorkingDraft','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&vaultDesktopInput(value.method as string,value.input)===true;
+ return exact(value,['method','input','mutationId','binding']) && ['saveFinalAssets','saveVaultDocument','createVaultDocument','createVaultWorkingDraft','trashVaultDocument'].includes(value.method as string) && uuid(value.mutationId) && exact(value.binding,['libraryId','rootIdentity']) && uuid(value.binding.libraryId)&&identity(value.binding.rootIdentity)&&(value.method==='saveFinalAssets'?finalAssetsDesktopInput(value.method,value.input):vaultDesktopInput(value.method as string,value.input))===true;
 }

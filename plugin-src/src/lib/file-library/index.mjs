@@ -1,3 +1,5 @@
+import {bindingForRuntime,withVaultReadLock} from '../vault/core.mjs';
+import {readVaultPackaging} from '../vault/packaging.mjs';
 import fs from 'node:fs';
 import {makeVaultBridge,applyVaultSourceTransaction} from '../vault/bridge.mjs';
 import {productionMethods, validateProductionMetadata, productionAssetHashes} from './production.mjs';
@@ -1005,6 +1007,8 @@ function library(root, initialInfo, rootIdentity) {
             }
         }),
         ...coverJobMethods({
+            readCoverPackaging: input => readVaultPackaging(root,input),
+            withCoverSourceLock: fn => {const binding=bindingForRuntime(root);return binding?withVaultReadLock(binding.vaultRoot,fn):fn();},
             changeCurrent: (contentId, input, edit, options) => mutate('update', contentId, input, undefined, options, 'content', edit, undefined, true),
             replayCoverRequest: (contentId, input, expectedToken, options = {}) => {
                 if (!object(options) || Object.keys(options).some(key => key !== 'mutationId')) fail('INVALID_INPUT', 'Only mutationId is accepted as an option');
@@ -1348,6 +1352,16 @@ export function openLibrary(root, options) {
         throw ioError(error);
     }
 }
+
+/** Trusted selected-image reader. It does not open/project the Vault or replay live sources. */
+function selectedCoverReader(root) {
+    root=canonicalRoot(root);const info=descriptor(root),original=fs.lstatSync(root,{bigint:true});
+    const assertIdentity=()=>{const current=fs.lstatSync(root,{bigint:true});if(current.dev!==original.dev||current.ino!==original.ino||descriptor(root).libraryId!==info.libraryId)fail('CONFLICT','Selected cover runtime identity changed');};
+    const locked=fn=>{assertIdentity();const release=acquire(root,read,fs.readdirSync,assertIdentity);try{assertIdentity();const pending=path.join(root,SYSTEM,'事务','待恢复');if(fs.readdirSync(pending).some(name=>UUID.test(name)))fail('NOT_READY','Resolve pending runtime writes before reading the selected cover');return fn();}finally{release();}};
+    return coverJobMethods({root,libraryId:info.libraryId,locked,assertRootIdentity:assertIdentity,snapshot,result,hash,jsonBytes,read,safePath,directory,readAssetInternal,assetPath,inputFields,text,id,objectId,checkedHash,templatePackage,fail,LibraryError});
+}
+export function readSelectedCoverSnapshot(runtimeRoot,input) {const value=inputFields(input,['contentId'],['contentId']);return selectedCoverReader(runtimeRoot).readSelectedCoverSnapshot(id(value.contentId));}
+export async function ensureSelectedCoverDecoded(runtimeRoot,input) {const value=inputFields(input,['contentId'],['contentId']);await selectedCoverReader(runtimeRoot).ensureSelectedCoverDecoded(id(value.contentId));}
 
 // Diagnosis shares validators, but never opens a recovering business handle.
 export function inspectLibraryHealth(root, options) {

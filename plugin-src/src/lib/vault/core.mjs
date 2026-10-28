@@ -1,3 +1,4 @@
+import {applyFinalAssetsReceipt,managedFinalAssetMetadata,isManagedFinalAssetPath} from '../final-assets/transaction.mjs';
 import {applyPublicationReceipt} from '../publication-runtime/transaction.mjs';
 import fs from 'node:fs';
 import {applyTopicReceipt} from './topics.mjs';
@@ -245,6 +246,7 @@ export function scan(root, vaultId) {
         ]),
     );
     let count = 0;
+    const finalAssetCache = {entries:new Map(),bytes:0};
     function walk(relative = '', depth = 0) {
         if (depth > 24) fail('INVALID_INPUT', '知识库目录层级过深');
         const dir = relative ? safe(root, relative) : root;
@@ -281,6 +283,22 @@ export function scan(root, vaultId) {
                         '.htm': 'html',
                         '.json': 'json',
                     }[ext] ?? 'other';
+            const finalAsset = managedFinalAssetMetadata(root, rel, vaultId, finalAssetCache);
+            // Final rasters are not text documents. Their manifest metadata keeps
+            // them discoverable; final-assets reads verify their full bounded bytes.
+            if (finalAsset) {
+                try {
+                    const stat = fs.lstatSync(safe(root, rel));
+                    if (!stat.isFile() || stat.nlink !== 1 || stat.size > (format === 'other' ? 64 : 8) * 1024 * 1024) fail('INVALID_INPUT', '最终资产图片类型或大小无效');
+                    const tNumber = rel.match(/(?:^|\/)T\d{3,}(?=[_ /.-]|$)/)?.[0]?.split('/').at(-1)?.match(/^T\d+/)?.[0] ?? null;
+                    const file = finalAsset.finalAssetFile;
+                    documents.push({id:docID(rel),section:'drafts',title:entry.name,relativePath:rel,
+                        hash:file?.sha256 ?? digest('unverified-final-asset:'+rel+':'+stat.size),format,writable:false,
+                        contentId:tNumber?(contentIDs.get(tNumber)??uuidFor(`${vaultId}:${tNumber}`)):null,tNumber,bytes:stat.size,
+                        managedFinalAsset:file?.bytes===stat.size?finalAsset.managedFinalAsset:'unverified'});
+                } catch(error) {issues.push({code:error.code??'FINAL_ASSET_UNVERIFIED',message:error.message,relativePath:rel});}
+                continue;
+            }
             let bytes;
             try {
                 const target = path.join(root, ...rel.split('/')),
@@ -302,6 +320,7 @@ export function scan(root, vaultId) {
                     const d = cached.document;
                     documents.push({
                         ...d,
+                        ...(finalAsset ? {managedFinalAsset:finalAsset.managedFinalAsset} : {}),
                         contentId: d.tNumber
                             ? (contentIDs.get(d.tNumber) ??
                               uuidFor(`${vaultId}:${d.tNumber}`))
@@ -380,6 +399,7 @@ export function scan(root, vaultId) {
                 format,
                 writable,
                 ...(editAdapter ? {editAdapter} : {}),
+                ...(finalAsset ? {managedFinalAsset:finalAsset.managedFinalAsset} : {}),
                 contentId: tNumber
                     ? (contentIDs.get(tNumber) ??
                       uuidFor(`${vaultId}:${tNumber}`))
@@ -516,6 +536,7 @@ function mutationID(options) {
     return options.mutationId;
 }
 function applyReceiptUnlocked(root, r) {
+    if (r.action === 'final-assets') return applyFinalAssetsReceipt(root, r);
     if (r.action === 'publication-runtime') return applyPublicationReceipt(root, r);
     if (r.action === 'topic-adoption') return applyTopicReceipt(root, r);
     if (r.action === 'working-draft') return applyWorkingDraftReceipt(root, r);
@@ -543,6 +564,7 @@ function applyReceiptUnlocked(root, r) {
     const bytes = r.after === null ? null : Buffer.from(r.after, 'base64');
     if (bytes && (bytes.toString('base64') !== r.after || bytes.length > LIMIT))
         fail('CORRUPT', '知识事务正文编码无效');
+    if (isManagedFinalAssetPath(r.path)) fail('CONFLICT', '普通文件事务不能改写托管最终资产版本');
     const target = safe(root, r.path, true);
     const before = exists(root, r.path) ? readBytes(root, r.path) : null;
     const current = before === null ? null : digest(before),
@@ -668,7 +690,7 @@ function recoverVaultUnlocked(root) {
                 applyReceipt(root, receipt);
                 clearPending(root, receipt.mutationId);
             } catch (error) {
-                if (!['working-draft', 'publication-runtime'].includes(receipt.action) || error.code !== 'CONFLICT') throw error;
+                if ((!['working-draft', 'publication-runtime', 'final-assets'].includes(receipt.action) && !isManagedFinalAssetPath(receipt.path)) || error.code !== 'CONFLICT') throw error;
                 issues.push({code: 'PENDING_MUTATION_CONFLICT', message: error.message,
                     mutationId: receipt.mutationId, action: receipt.action,
                     relativePath: receipt.originalPath ?? receipt.writes?.[0]?.relativePath});
@@ -770,6 +792,7 @@ export function saveVaultDocument(runtimeRoot, input, options) {
         fail('INVALID_INPUT', '知识文件保存参数无效或内容超限');
     const r = runMutation(runtimeRoot, {action: 'save', input}, options, () => {
         const {document} = readVaultDocument(runtimeRoot, input.id);
+        if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不可原位编辑，请保留快照并另建工作稿');
         if (document.sourceConflict) fail('CONFLICT', document.sourceConflict);
         if (!document.writable)
             fail('INVALID_INPUT', '该格式仅支持只读，原文件已保留');
@@ -913,6 +936,7 @@ export function trashVaultDocument(runtimeRoot, input, options) {
         fail('INVALID_INPUT', '回收知识文件参数无效');
     runMutation(runtimeRoot, {action: 'trash', input}, options, () => {
         const {document} = readVaultDocument(runtimeRoot, input.id);
+        if (isManagedFinalAssetPath(document.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件回收操作删除');
         if (document.hash !== input.expectedHash)
             fail('CONFLICT', '知识文件已被外部修改，不能回收');
         return {
@@ -973,6 +997,7 @@ export function materializeVaultBody(
     return r.result;
 }
 export function validateVaultRestoreSource(runtimeRoot, source) {
+    if (isManagedFinalAssetPath(source?.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件恢复操作改写');
     const binding = vaultState(runtimeRoot);
     if (!source.trashMutationId)
         fail('INVALID_INPUT', '此内容没有原位回收记录');
@@ -987,6 +1012,7 @@ export function validateVaultRestoreSource(runtimeRoot, source) {
 }
 
 export function restoreVaultSource(runtimeRoot, source, options) {
+    if (isManagedFinalAssetPath(source?.relativePath)) fail('INVALID_INPUT', '最终资产版本不能通过普通文件恢复操作改写');
     runMutation(
         runtimeRoot,
         {
@@ -1056,7 +1082,7 @@ export function topicCardStatus(snapshot, docs) {
 }
 function publicationStatus(snapshot, docs, tNumber) {
     // Formal author-confirmed publication remains independent of recorded/已做 markers.
-    for (const d of docs.filter(d => d.section === 'drafts')) {
+    for (const d of docs.filter(d => !d.managedFinalAsset && d.section === 'drafts')) {
         const directory=d.relativePath.match(/^(05_内容草稿\/(?:已做\/)?T\d{3,}_[^/]+)\//)?.[1];
         if (!directory) continue;
         try {
@@ -1158,10 +1184,10 @@ export function resolveCurrentSource(snapshot,docs,pinned=null) {
     const overviewIndex=overviewLines.findIndex(l=>new RegExp('^\\|\\s*'+tNumber+'\\s*\\|').test(l));
     const line=overviewIndex>=0?overviewLines[overviewIndex]:'';
     const overviewSection=overviewIndex<0?'':overviewLines.slice(0,overviewIndex).reverse().find(l=>/^#{1,6}\s/.test(l))?.replace(/^#{1,6}\s+/,'')??'';
-    const state=sourceEvidence(snapshot,docs,line);
+    const state=sourceEvidence(snapshot,docs.filter(document=>!document.managedFinalAsset),line);
     // Filename hints apply only to manuscript documents, never production artifacts
     // or reference/prompt subtrees. Explicit author receipts remain authoritative.
-    const bodyDocs=docs.filter(d=>d.section==='drafts'&&['markdown','text','html'].includes(d.format)&&!/(?:^|\/)(?:参考(?:素材)?|素材|提示词|助手任务|任务归档|发布存档|历史|版本)(?:\/|_)/.test(d.relativePath)&&(
+    const bodyDocs=docs.filter(d=>!d.managedFinalAsset&&d.section==='drafts'&&['markdown','text','html'].includes(d.format)&&!/(?:^|\/)(?:参考(?:素材)?|素材|提示词|助手任务|任务归档|发布存档|历史|版本)(?:\/|_)/.test(d.relativePath)&&(
         /(?:^|[\/_])(?:定稿|最终稿|录制定稿|逐字稿|工作稿|正文|提词|创作页)/.test(d.relativePath)||d.format==='html'&&!!d.editAdapter));
     for(const d of bodyDocs)state.add(d,{origin:'document',label:d.title});
     if(pinned)state.add(pinned,{origin:'working-draft-receipt',label:'已确认工作稿'});
@@ -1182,8 +1208,9 @@ export function resolveCurrentSource(snapshot,docs,pinned=null) {
     const fallbackBodies=primaryBodies.length?primaryBodies:bodyDocs.filter(d=>candidateRole(d)!=='final-script');
     const editableBodies=fallbackBodies.length?fallbackBodies:bodyDocs;
     const effectivePinned=selected.length||missingSelection?null:pinned;
-    let chosen=effectivePinned??declared[0]??editableBodies[0]??docs.find(d=>d.section==='topics')??docs[0];
+    let chosen=effectivePinned??declared[0]??editableBodies[0]??docs.find(d=>!d.managedFinalAsset&&d.section==='topics')??docs.find(d=>!d.managedFinalAsset);
     const conflict=(missingSelection?tNumber+' 的已选当前原件缺失，请恢复或明确重新选择：'+missingSelection.relativePath:null)??effectivePinned?.sourceConflict??(!effectivePinned&&declared.length>1? tNumber+' 的明确当前入口指向多个原件，请选择继续的来源':!effectivePinned&&!declared.length&&editableBodies.length>1?tNumber+' 有多个稿件而没有唯一当前入口，请选择继续的来源':null);
+    if(!chosen)return {document:null,sourceCandidates:[],sourceResolution:'missing',sourceMissing:true,evidence:[]};
     if(!state.candidates.has(chosen.id))state.add(chosen,{origin:'topic-or-supporting-document',label:chosen.title});
     if(conflict){chosen={...chosen,writable:false,sourceConflict:conflict};if(!snapshot.issues.some(i=>i.code==='CURRENT_SOURCE_CONFLICT'&&i.relativePath===chosen.relativePath))snapshot.issues.push({code:'CURRENT_SOURCE_CONFLICT',message:conflict,relativePath:chosen.relativePath});}
     return {document:chosen,sourceCandidates:[...state.candidates.values()],sourceResolution:missingSelection?'missing':conflict?'conflict':'resolved',sourceMissing:!!missingSelection,evidence:line?[{origin:'draft-overview',documentId:overview.id,relativePath:overview.relativePath,hash:overview.hash,section:overviewSection,text:line}]:[]};
@@ -1194,6 +1221,7 @@ export function contentSources(snapshot, ignoredWorkingDraftId = null) {
         const group=groups.get(d.contentId)??[];group.push(d);groups.set(d.contentId,group);
     }
     return [...groups].map(([contentId,docs])=>{
+        if (!docs.some(document=>!document.managedFinalAsset)) return null;
         let pinned=contentId===ignoredWorkingDraftId?null:currentWorkingDraft(snapshot,contentId);
         if(pinned===undefined)return null;
         if(pinned?.pendingWorkingDraftPath){docs=docs.filter(d=>d.relativePath!==pinned.pendingWorkingDraftPath);pinned=null;}
@@ -1201,7 +1229,7 @@ export function contentSources(snapshot, ignoredWorkingDraftId = null) {
         const text=readBytes(snapshot.root,chosen.relativePath).toString('utf8');
         const body=chosen.format==='html'?(htmlBody(text)??'此 HTML 无可识别人工正文摘要，请打开完整原件：'+chosen.relativePath):text;
         const publicationState=publicationStatus(snapshot,docs,tNumber),topicStatus=topicCardStatus(snapshot,docs);
-        const creationDocs=docs.filter(d=>d.format==='html').map(d=>({documentId:d.id,relativePath:d.relativePath,hash:d.hash,data:creationData(readBytes(snapshot.root,d.relativePath).toString('utf8'))})).filter(d=>d.data);
+        const creationDocs=docs.filter(d=>!d.managedFinalAsset&&d.format==='html').map(d=>({documentId:d.id,relativePath:d.relativePath,hash:d.hash,data:creationData(readBytes(snapshot.root,d.relativePath).toString('utf8'))})).filter(d=>d.data);
         const recorded=creationDocs.some(d=>d.data.items.some(i=>i.kind==='info'&&!!i.fields?.recorded?.trim()))||resolved.evidence.some(e=>/(?:录完|已录|录制完成)/.test(e.text)&&!/(?:未录|没录|未完成录制)/.test(e.text));
         return {contentId,tNumber,...resolved,topicStatus,evidence:[...resolved.evidence,...topicStatus.evidence],body,summaryOnly:chosen.format==='html',documents:docs,creationDocuments:creationDocs.map(({data,...d})=>d),recorded,
             title:docs.find(d=>d.section==='topics')?.title??(path.basename(chosen.relativePath)==='正文.md'?path.basename(path.dirname(chosen.relativePath)).replace('_',' '):chosen.title),

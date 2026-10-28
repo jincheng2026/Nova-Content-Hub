@@ -18,10 +18,10 @@ import {PaginationBar} from './pagination-bar.tsx';
 import {CoverImageViewer, ImagePreviewButton} from './cover-image-viewer.tsx';
 import {CoverAnnotationEditor} from './cover-annotation.tsx';
 import './cover-workspace.css';
-import type { Attempt, CoverJob, CoverView, CoverHandoff, CoverResults, CoverReference } from '../shared/cover-contracts.ts';
+import type { Attempt, CoverJob, CoverView, CoverHandoff, CoverResults, CoverReference, VaultPackaging } from '../shared/cover-contracts.ts';
 import type { Content, Status } from '../shared/contracts.ts';
 import type { WorkspaceLibrarySnapshot, WorkspaceContentDetails, WorkspaceCandidate, WorkspaceKind } from '../shared/workspace-contracts.ts';
-interface Props { runLocal?<T>(action: () => Promise<T>): Promise<T | undefined>; acknowledge?(next: CoverView, document?: WorkspaceContentDetails): void; titleEditor?: {value: string; change(value: string): void; save(): void; saveDisabled: boolean; issue?: string}; arrangePublication?(): void; startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; readAutomatically(contentId: string): Promise<{assets: CoverResults['listCoverAssets']; cover: CoverView} | undefined>; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
+interface Props { flush?(): Promise<void>; runLocal?<T>(action: () => Promise<T>): Promise<T | undefined>; acknowledge?(next: CoverView, document?: WorkspaceContentDetails): void; titleEditor?: {value: string; change(value: string): void; save(): void; saveDisabled: boolean; issue?: string}; arrangePublication?(): void; startOpenKey?: number; library?: WorkspaceLibrarySnapshot | null; refresh?(): Promise<void>; selectedTemplate?: {id: string; key: number} | null; status: Status | null; content: Content | null; dirty: boolean; busy: boolean; blocked: boolean; refreshToken: number; readAutomatically(contentId: string): Promise<{assets: CoverResults['listCoverAssets']; cover: CoverView} | undefined>; run<T>(action: () => Promise<T>): Promise<T | undefined>; onContent(content: Content): void }
 const attemptLabels: Record<Attempt['status'], string> = { created: '待助手接单', claimed: '已接单', committed: '已入库', failed: '失败', cancelled: '已取消', superseded: '已替换' };
 const defaultCoverPrompt = '根据当前标题与正文创作封面，参考所选风格；不要照抄样张文案或加入未经核实的事实。';
 const launchNotice = assistantLaunchNotice();
@@ -51,7 +51,15 @@ function CoverAttempts({job}: {job: CoverJob}) {
   const [page, setPage] = useState(1), [pageSize, setPageSize] = useState(20), [open, setOpen] = useState(false), currentPage = Math.min(page, Math.max(1, Math.ceil(job.attempts.length / pageSize)));
   return <details onToggle={event => setOpen(event.currentTarget.open)}><summary>查看尝试记录（{job.attempts.length}）</summary>{open && <DataTable rows={[...job.attempts].reverse().slice((currentPage - 1) * pageSize, currentPage * pageSize)} rowKey="attemptId" total={job.attempts.length} page={currentPage} pageSize={pageSize} onPageSizeChange={setPageSize} onPageChange={setPage} label="生成尝试记录分页" columns={[{title:'尝试',key:'attempt',render:(_,attempt)=>attempt.attemptId === job.activeAttemptId ? '当前尝试' : '历史尝试'},{title:'助手',key:'host',render:(_,attempt)=>attempt.host === 'workbuddy' ? 'WorkBuddy' : 'Codex'},{title:'结果',key:'status',render:(_,attempt)=><span>{attemptLabels[attempt.status]}{attempt.failure ? ` · ${attempt.failure.message}` : ''}</span>}]}/>}</details>;
 }
-export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, library, refresh: refreshWorkspace, selectedTemplate, status, content, dirty, busy, blocked, refreshToken, readAutomatically, run, runLocal = run, acknowledge, onContent }: Props) {
+export function OriginalCoverPackaging({value,issue,disabled,choose}:{value:VaultPackaging|null;issue:string;disabled:boolean;choose(id:string):void}) {
+  if(issue)return <p role="alert">{issue}</p>;
+  if(!value)return <p role="status">正在读取原页已采用包装…</p>;
+  if(value.kind==='unavailable')return <p role="alert">原页或当前稿暂不可用，请回原文件核对后刷新。{value.issues.join(' · ')}</p>;
+  if(value.kind==='choose-source')return <label>选择本次包装来源<PopupSelect searchable aria-label="选择包装创作页" value="" disabled={disabled} onChange={choose}><option value="">请选择同篇创作页</option>{value.candidates.map(candidate=><option key={candidate.documentId} value={candidate.documentId}>{candidate.relativePath}</option>)}</PopupSelect><span>当前正文保持原入口；这里只选择包装来源。</span></label>;
+  if(value.kind==='legacy')return null;
+  return <><label className="cover-field-label">原页已采用标题</label><h3 style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{value.fields.title?.value||'尚未选定标题'}</h3><details className="cover-body-details"><summary>原页已采用封面文字 · 展开全文</summary><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{value.fields.coverText?.value||'尚未选定封面文字'}</p></details><details className="cover-body-details"><summary>来源、简介与当前稿</summary><p>创作页：{value.source.pageId} · 版本：{value.source.revision}</p><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>简介：{value.fields.description?.value??'尚未选定简介'}</p><p>正文来源：{value.script.manuscriptSource.relativePath}</p><p style={{whiteSpace:'pre-wrap',overflowWrap:'anywhere'}}>{value.script.text}</p>{value.issues.length>0&&<p role="status">{value.issues.join(' · ')}</p>}</details><p>在原页修改并保存；这里仅使用已采用的版本。</p></>;
+}
+export function CoverPanel({ flush, titleEditor, arrangePublication, startOpenKey, library, refresh: refreshWorkspace, selectedTemplate, status, content, dirty, busy, blocked, refreshToken, readAutomatically, run, runLocal = run, acknowledge, onContent }: Props) {
   const [assets, setAssets] = useState<CoverResults['listCoverAssets'] | null>(null);
   const [cover, setCover] = useState<CoverView | null>(null);
   const [templateId, setTemplateId] = useState('');
@@ -96,19 +104,29 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
   const [candidateDraft, setCandidateDraft] = useState<(WorkspaceCandidate & {editToken: string; baseline: string}) | null>(null);
   const hasCandidateDraft = !!candidateDraft || !!annotationDraft;
   const [composerOpen, setComposerOpen] = useState(false);
+  const [originalPackaging,setOriginalPackaging] = useState<VaultPackaging|null>(null), [packagingIssue,setPackagingIssue] = useState('');
+  const [packagingDocumentId,setPackagingDocumentId] = useState<string|undefined>();
+  const packagingContentRef=useRef(content?.id);packagingContentRef.current=content?.id;
+  useEffect(()=>{setOriginalPackaging(null);setPackagingIssue('');setPackagingDocumentId(undefined);},[content?.id]);
   const [savedCoverText, setSavedCoverText] = useState<{contentId: string; editToken: string; text: string | null; issue?: string} | null>(null);
   useEffect(() => {
-    setSavedCoverText(null);
+    setSavedCoverText(null);setOriginalPackaging(null);setPackagingIssue('');
     if (!composerOpen || !content) return;
     let cancelled = false;
     const {id, editToken} = content;
-    void invoke('readProductionCreation', {contentId: id}).then(saved => {
-      if (cancelled) return;
-      const packaging = saved.creation?.packaging;
-      setSavedCoverText({contentId: id, editToken, text: packaging?.coverTexts.find(item => item.id === packaging.selectedCoverTextId)?.text ?? null, ...(saved.content.editToken !== editToken ? {issue: '内容已改变，请刷新后再制作封面。'} : {})});
-    }).catch(() => {if (!cancelled) setSavedCoverText({contentId: id, editToken, text: null, issue: '暂未读取到已保存的封面文案，生成时将重新核对。'});});
+    void (async()=>{
+      await flush?.();
+      const snapshot=await invoke('readCoverPackaging',{contentId:id,...(packagingDocumentId?{documentId:packagingDocumentId}:{})});
+      if(cancelled||snapshot.contentId!==id)return;
+      setOriginalPackaging(snapshot);
+      if(snapshot.kind!=='legacy')return;
+      const saved=await invoke('readProductionCreation',{contentId:id});
+      if(cancelled)return;
+      const packaging=saved.creation?.packaging;
+      setSavedCoverText({contentId:id,editToken,text:packaging?.coverTexts.find(item=>item.id===packaging.selectedCoverTextId)?.text??null,...(saved.content.editToken!==editToken?{issue:'内容已改变，请刷新后再制作封面。'}:{})});
+    })().catch(()=>{if(!cancelled)setPackagingIssue('暂未取得已保存包装，请确认原页保存完成后刷新。');});
     return () => {cancelled = true;};
-  }, [composerOpen, content?.id, content?.editToken, refreshToken]);
+  }, [composerOpen, content?.id, content?.editToken, refreshToken, packagingDocumentId]);
   const currentSavedCoverText = savedCoverText?.contentId === content?.id && savedCoverText?.editToken === content?.editToken ? savedCoverText : null;
   const composerDialog = useRef<HTMLDialogElement>(null);
   useEffect(() => { if (startOpenKey) setComposerOpen(true); }, [startOpenKey]);
@@ -283,6 +301,16 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
   const refinementDisabled = !!liveJob || !!content?.deletedAt || !template || invalidTemplate || invalidPhoto || invalidMaterialIds.length > 0 || invalidCompositionKeys.size > 0 || !samples.length || !refinementPixels;
   const refinementPrompt = (note: string) => `以所附候选原图（${annotationDraft?.id}）为基础，按以下批注修改；位置批注优先，保持未要求修改的内容与布局。位置从原图左上角起按宽、高百分比定位；rect 的 x、y 为框左上角，width、height 为框宽高；path 为按顺序连接的划线采样点，均为原图百分比。框和线仅表示修改范围，不画进成品。\n${note}${prompt.trim() && prompt !== defaultCoverPrompt ? `\n【本次补充要求】\n${prompt}` : ''}${compositionPrompt}`;
   async function selectedCoverText(editToken: string) {
+    await flush?.();
+    const snapshot=await invoke('readCoverPackaging',{contentId:content!.id,...(packagingDocumentId?{documentId:packagingDocumentId}:{})});
+    if(snapshot.contentId!==content!.id||packagingContentRef.current!==content!.id)throw new Error('内容已切换，请重新打开本篇封面。');
+    setOriginalPackaging(snapshot);
+    if(snapshot.kind==='jc-doc'){
+      if(!snapshot.fields.title?.value.trim()||!snapshot.fields.coverText?.value.trim())throw new Error('请先在原页选定标题与封面文字。');
+      if(originalPackaging?.kind==='jc-doc'&&originalPackaging.selectionToken!==snapshot.selectionToken){setPackagingIssue('原页包装或当前稿已变化，请刷新并核对新版本后再生成。');throw new Error('原页包装或当前稿已变化，本次设置已保留。');}
+      return {packagingSource:{documentId:snapshot.source.documentId,pageId:snapshot.source.pageId,revision:snapshot.source.revision,selectionToken:snapshot.selectionToken}};
+    }
+    if(snapshot.kind!=='legacy')throw new Error('请先核对原页或明确选择本次包装来源。');
     const saved = await invoke('readProductionCreation', {contentId: content!.id});
     if (saved.content.editToken !== editToken) throw Object.assign(new Error('内容已改变，请刷新后再制作封面。'), {code: 'CONFLICT'});
     const packaging = saved.creation?.packaging;
@@ -315,7 +343,8 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
     await refreshWorkspace?.();
   }
   const generationPrompt = (prompt.trim() ? prompt : defaultCoverPrompt) + compositionPrompt;
-  const generationDisabled = !enabled || candidateBusy || dirty || hasCandidateDraft || !currentCover || !content || !!content.deletedAt || !!liveJob || !template || invalidTemplate || !pixels || customRatio || invalidPhoto || invalidMaterialIds.length > 0 || invalidCompositionKeys.size > 0 || !samples.length || !Number.isInteger(count) || count < 1 || count > 20 || generationPrompt.length > 10000;
+  const originalPackagingBlocked = !!packagingIssue || !originalPackaging || originalPackaging.kind==='unavailable' || originalPackaging.kind==='choose-source' || originalPackaging.kind==='jc-doc'&&(!originalPackaging.fields.title?.value.trim()||!originalPackaging.fields.coverText?.value.trim());
+  const generationDisabled = originalPackagingBlocked || !enabled || candidateBusy || dirty || hasCandidateDraft || !currentCover || !content || !!content.deletedAt || !!liveJob || !template || invalidTemplate || !pixels || customRatio || invalidPhoto || invalidMaterialIds.length > 0 || invalidCompositionKeys.size > 0 || !samples.length || !Number.isInteger(count) || count < 1 || count > 20 || generationPrompt.length > 10000;
   async function generate() {
     if (!content || generationDisabled || !template) return;
     if (invalidPhoto) throw Object.assign(new Error('所选照片已失效，请明确重选或选择这次不放人物。'), { code: 'PHOTO_SELECTION_INVALID' });
@@ -388,7 +417,7 @@ export function CoverPanel({ titleEditor, arrangePublication, startOpenKey, libr
         {template?.catalogStatus === 'legacy' && <p className="cover-template-legacy">原模板“{template.name}”已停用，本次记录仍保留。请重新选择可用模板。<Button size="small" theme="borderless" onClick={() => setPreview({label: template.name, images: template.samples})}>查看原模板样张</Button></p>}
         {invalidTemplate && <p role="alert">原先选择的模板、版本或样张已变化，请明确选择一个可用模板组。</p>}{!matching.length && <p>没有匹配的模板，换个关键词试试。</p>}<PaginationBar total={matching.length} page={currentTemplatePage} pageSize={templatePageSize} onPageSizeChange={setTemplatePageSize} onPageChange={setPage} disabled={busy || pendingCandidates.has(candidateDraft?.id ?? '') || blocked} label="封面模板分页" pageSizeOpts={[5, 10, 20]}/></section>
       </div><div className="cover-create-settings">
-        <div className="cover-content-summary"><label htmlFor="cover-title" className="cover-field-label">内容标题 · {dirty ? '有未保存修改' : '已保存'}</label>{titleEditor ? <><TextArea id="cover-title" aria-label="内容标题" className="semi-control-text" maxLength={500} value={titleEditor.value} disabled={!enabled} onChange={titleEditor.change}/><div className="cover-title-actions"><Button id="cover-save-content" size="small" disabled={titleEditor.saveDisabled} onClick={titleEditor.save}>保存内容</Button></div>{titleEditor.issue && <p role="alert">{titleEditor.issue}</p>}{dirty && <details><summary>当前已保存标题</summary><p>{content.title || '未命名内容'}</p></details>}</> : <h3>{content.title || '未命名内容'}</h3>}<details className="cover-body-details"><summary>已保存正文 · {content.body.length} 字</summary><p>{content.body || '正文为空'}</p></details>{!currentSavedCoverText ? <span role="status">正在读取已保存的封面文案…</span> : currentSavedCoverText.issue ? <span role="alert">{currentSavedCoverText.issue}</span> : currentSavedCoverText.text !== null ? <details className="cover-body-details"><summary>已选封面文案优先 · {currentSavedCoverText.text.length} 字 · 展开全文</summary><p>{currentSavedCoverText.text}</p><span>修改内容标题不会变更这段已保存文案；请在内容包装中调整所选文案。</span></details> : <span>未选封面文案，本次使用内容标题。</span>}</div>
+        <div className="cover-content-summary">{originalPackaging?.kind==='legacy'&&!packagingIssue?<><label htmlFor="cover-title" className="cover-field-label">内容标题 · {dirty ? '有未保存修改' : '已保存'}</label>{titleEditor ? <><TextArea id="cover-title" aria-label="内容标题" className="semi-control-text" maxLength={500} value={titleEditor.value} disabled={!enabled} onChange={titleEditor.change}/><div className="cover-title-actions"><Button id="cover-save-content" size="small" disabled={titleEditor.saveDisabled} onClick={titleEditor.save}>保存内容</Button></div>{titleEditor.issue && <p role="alert">{titleEditor.issue}</p>}{dirty && <details><summary>当前已保存标题</summary><p>{content.title || '未命名内容'}</p></details>}</> : <h3>{content.title || '未命名内容'}</h3>}<details className="cover-body-details"><summary>已保存正文 · {content.body.length} 字</summary><p>{content.body || '正文为空'}</p></details>{!currentSavedCoverText ? <span role="status">正在读取已保存的封面文案…</span> : currentSavedCoverText.issue ? <span role="alert">{currentSavedCoverText.issue}</span> : currentSavedCoverText.text !== null ? <details className="cover-body-details"><summary>已选封面文案优先 · {currentSavedCoverText.text.length} 字 · 展开全文</summary><p>{currentSavedCoverText.text}</p><span>修改内容标题不会变更这段已保存文案；请在内容包装中调整所选文案。</span></details> : <span>未选封面文案，本次使用内容标题。</span>}</>:<OriginalCoverPackaging value={originalPackaging} issue={packagingIssue} disabled={!enabled} choose={id=>{setPackagingIssue('');setPackagingDocumentId(id);}}/>}<Button size="small" theme="borderless" disabled={!enabled} onClick={()=>{void run(async()=>{try{await flush?.();const value=await invoke('readCoverPackaging',{contentId:content.id,...(packagingDocumentId?{documentId:packagingDocumentId}:{})});if(packagingContentRef.current===content.id){setOriginalPackaging(value);setPackagingIssue('');}}catch(error){if(packagingContentRef.current===content.id)setPackagingIssue(error instanceof Error?error.message:String(error));throw error;}});}}>刷新已采用包装</Button></div>
         <div className="cover-size-settings"><div className="cover-ratio-field"><label htmlFor={customRatio ? 'cover-custom-ratio' : 'cover-ratio'}>封面比例</label>{customRatio ? <div className="cover-ratio-editor"><Input id="cover-custom-ratio" autoFocus className="semi-control-text" aria-label="自定义封面比例" value={ratioDraft} disabled={!enabled} placeholder="如 2:3 或 21:9" maxLength={25} onChange={value => setRatioDraft(value.trim().replace(/：/g, ":"))} onKeyDown={event => {if (event.nativeEvent.isComposing) return; if (event.key === 'Enter') {event.preventDefault(); if (validRatioDraft) finishRatio(true);} if (event.key === 'Escape') {event.preventDefault(); event.stopPropagation(); finishRatio(false);}}}/><Button size="small" aria-label="应用自定义比例" disabled={!enabled || !validRatioDraft} onClick={() => finishRatio(true)}>应用</Button><Button size="small" theme="borderless" aria-label="取消自定义比例" disabled={!enabled} onClick={() => finishRatio(false)}>取消修改</Button></div> : <PopupSelect searchable id="cover-ratio" value={ratio} disabled={!enabled} onChange={value => {if (value === 'custom') {setRatioDraft(ratio); setCustomRatio(true);} else setRatio(value); }}>{[...new Set([...ratios, ratio])].map(value => <option key={value} value={value}>{value}</option>)}<option value="custom">自定义</option></PopupSelect>}</div><label htmlFor="cover-count">生成张数<CoverCountInput id="cover-count" value={count} disabled={!enabled} onChange={value => { touched.current.count = true; setCount(value); }} /></label></div>{customRatio && !validRatioDraft ? <p role="alert">请输入宽:高的正整数比例，如 2:3 或 21:9。</p> : pixels ? <p className="cover-size-hint">{ratio} · 至少{pixels.width}×{pixels.height} · PNG原图；实际尺寸以生成结果为准</p> : <p role="alert">此比例无法生成合法尺寸，请重新选择。</p>}
         <div className="cover-setting-section"><div className="cover-person-heading"><h3>本人照片</h3></div><PopupSelect searchable aria-label="选择我的本人照片" id="cover-photo" value={photoId} disabled={!enabled} onChange={value => { touched.current.photo = true; setPhotoId(value); }}><option value="">这次不放人物</option>{invalidPhoto && <option value={photoId} disabled>原照片已失效，请明确重选</option>}{assets.photos.map(photo => <option key={photo.id} value={photo.id} disabled={!photo.isOwnPhoto || photo.availability !== 'available'}>{photo.title}{!photo.isOwnPhoto ? ' · 未声明为本人' : photo.availability === 'unavailable' ? ' · 原图缺失' : ''}</option>)}</PopupSelect>{invalidPhoto && <p role="alert">原照片已失效或不再声明为本人，请重选，或选择“这次不放人物”。</p>}{selectedPhoto?.url && <div className="cover-person-summary"><span className="cover-person-image cover-artwork"><CoverArtwork url={selectedPhoto.url} alt="本次人物参考"/></span><span>{selectedPhoto.title} · 本次人物参考</span><Button size="small" theme="borderless" onClick={() => setPreview({label: selectedPhoto.title || '本次人物参考', images: [{url: selectedPhoto.url ?? ''}]})}>打开原图</Button></div>}<details className="cover-photo-import"><summary>从本机添加本人照片</summary><div className="checkbox"><Checkbox id="own-photo" checked={own} disabled={!enabled} onChange={event => setOwn(!!event.target.checked)} >我确认新导入的照片是本人照片</Checkbox></div><FileDropzone kind="photo" buttonId="choose-photo" disabled={!enabled} run={run} photo={{title: "我的照片", isOwnPhoto: own}} buttonLabel="选择照片文件" onImported={async photo => {if (alive.current) {await refreshAssets(); if (photo.isOwnPhoto) {touched.current.photo = true; setPhotoId(photo.id);} else setNotice("照片已导入，尚未声明为本人。请明确选择可用本人照，或选择这次不放人物。"); setOwn(false);}}}/></details></div>
         <p className="cover-template-selection cover-settings-selection" role="status">{template && !invalidTemplate ? `已选：${template.name} · v${template.version} · ${samples.length} 张样张` : '请选择可用模板组'}</p>

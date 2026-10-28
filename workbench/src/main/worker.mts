@@ -1,3 +1,4 @@
+import {isFinalAssetsOperation,executeFinalAssets} from './final-assets-worker.mts';
 import {isPublicationOperation,executePublication} from './publication-worker.mts';
 import {isStageOperation,executeStage} from './stage-worker.mts';
 import {isVaultOperation,executeVault} from './vault-worker.mts';
@@ -66,7 +67,7 @@ function workspace(library: ReturnType<typeof openLibrary>): WorkspaceSnapshot {
     return {contents, prompts, channels};
 }
 
-type DelegatedOperation = keyof import('../shared/publication-runtime-contracts.ts').PublicationRuntimeWorkerOperations | keyof import('../shared/stage-contracts.ts').StageWorkerOperations | keyof import('../shared/jincheng-source-contracts.ts').JinchengSourceWorkerOperations | keyof import('../shared/creation-contracts.ts').CreationWorkerOperations | keyof import('../shared/vault-contracts.ts').VaultWorkerOperations | keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
+type DelegatedOperation = keyof import('../shared/final-assets-contracts.ts').FinalAssetsWorkerOperations | keyof import('../shared/publication-runtime-contracts.ts').PublicationRuntimeWorkerOperations | keyof import('../shared/stage-contracts.ts').StageWorkerOperations | keyof import('../shared/jincheng-source-contracts.ts').JinchengSourceWorkerOperations | keyof import('../shared/creation-contracts.ts').CreationWorkerOperations | keyof import('../shared/vault-contracts.ts').VaultWorkerOperations | keyof import('../shared/production-contracts.ts').ProductionWorkerOperations | keyof import('../shared/cover-contracts.ts').CoverWorkerOperations | keyof import('../shared/workspace-contracts.ts').WorkspaceWorkerOperations | keyof import('../shared/maintenance-contracts.ts').MaintenanceWorkerOperations | keyof import('../shared/template-contracts.ts').TemplateWorkerOperations;
 const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = {
     bind: ['destination'],
     createLibrary: ['root', 'rootIdentity', 'mutationId'],
@@ -79,6 +80,7 @@ const schemas: Record<Exclude<WorkerOperation, DelegatedOperation>, string[]> = 
 };
 
 export async function execute(op: unknown, args: unknown, mode: 'required' | 'disabled' = 'required'): Promise<WorkerOperations[WorkerOperation]['result']> {
+    if(isFinalAssetsOperation(op))return executeFinalAssets(op,args);
     if(isPublicationOperation(op))return executePublication(op,args,mode);
     if(isStageOperation(op))return executeStage(op,args,mode);
     if(op==='creationPage')return executeCreation(args,mode);

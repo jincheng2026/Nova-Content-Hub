@@ -1,3 +1,5 @@
+import {FinalAssetsController} from './final-assets-controller.mts';
+import type {FinalAssetsInputs} from '../shared/final-assets-contracts.ts';
 import {PublicationController} from './publication-controller.mts';
 import type {PublicationMutation} from '../shared/publication-runtime-contracts.ts';
 import {StageController} from './stage-controller.mts';
@@ -80,6 +82,7 @@ export class DesktopController {
     covers: Covers;
     workspace: WorkspaceController;
     vault: VaultController;
+    finalAssets:FinalAssetsController;
     creation: CreationController;
     displayRoot: {bindingRoot:string;root:string}|null = null;
     templates: TemplateController;
@@ -128,6 +131,7 @@ export class DesktopController {
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
         this.vault = new VaultController(this);
+        this.finalAssets = new FinalAssetsController(this,resourceWorker);
         this.publicationRuntime = new PublicationController(this);
         this.stages = new StageController(this);
         this.creation = new CreationController(this);
@@ -139,6 +143,11 @@ export class DesktopController {
     mutateJinchengPublication(input:PublicationMutation){return this.publicationRuntime.mutate(input);}
     confirmJinchengCheckpoint(input:StageInputs['confirmJinchengCheckpoint']){return this.stages.run('confirmJinchengCheckpoint',input);}
     saveJinchengAuthorAnalysis(input:StageInputs['saveJinchengAuthorAnalysis']){return this.stages.run('saveJinchengAuthorAnalysis',input);}
+    readFinalAssets(input:FinalAssetsInputs['readFinalAssets']){return this.finalAssets.readFinalAssets(input);}
+    previewFinalAssets(input:FinalAssetsInputs['previewFinalAssets']){return this.finalAssets.previewFinalAssets(input);}
+    saveFinalAssets(input:FinalAssetsInputs['saveFinalAssets']){return this.finalAssets.saveFinalAssets(input);}
+    exportFinalAssets(input:FinalAssetsInputs['exportFinalAssets']){return this.finalAssets.exportFinalAssets(input);}
+    readCoverPackaging(input:import('../shared/cover-contracts.ts').CoverInputs['readCoverPackaging']){return this.covers.readCoverPackaging(input);}
     readVault(input?:undefined){return this.vault.readVault(input);}
     openCreationPage(input:CreationInputs['openCreationPage']){return this.creation.openCreationPage(input);}
     creationPageRequest(input:CreationInputs['creationPageRequest']){return this.creation.creationPageRequest(input);}
@@ -365,6 +374,7 @@ export class DesktopController {
     async status(): Promise<Status> {
         return {
             vaultPending: !!this.binding.vaultPending,
+            ...(this.binding.vaultPending?{vaultPendingOperation:{method:this.binding.vaultPending.method,...('contentId'in this.binding.vaultPending.input?{contentId:this.binding.vaultPending.input.contentId}:{})}}:{}),
             productionPending: !!this.binding.productionPending,
             assistant: this.binding.assistant ?? 'codex', photoPending: !!this.binding.photoPending, coverActionPending: !!this.binding.coverActionPending, coverPending: !!this.binding.coverPending, seedPending: !!this.binding.seedPending,
             workspacePending: this.workspace.view(),
@@ -391,7 +401,7 @@ export class DesktopController {
 
     async persist(next: Binding) {
         await this.store.save(next);
-        if (JSON.stringify(next.current) !== JSON.stringify(this.binding.current)) this.covers.revoke(); this.binding = next;
+        if (JSON.stringify(next.current) !== JSON.stringify(this.binding.current)) {this.covers.revoke();this.finalAssets.revoke();} this.binding = next;
     }
 
     noPending(allowSeedRetry = false) {

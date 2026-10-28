@@ -137,7 +137,7 @@ export async function startDesktop(options:StartOptions = {}) {
     }
     session.defaultSession.setPermissionRequestHandler((_contents, _permission, callback) => callback(false));
     session.defaultSession.setPermissionCheckHandler(() => false);
-    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url) || controller.creation.resource(details.url)!==null)}));
+    session.defaultSession.webRequest.onBeforeRequest((details, callback) => callback({cancel: details.method !== 'GET' || !(staticResource(details.url, resources) || controller.covers.allows(details.url) || controller.finalAssets.allows(details.url) || controller.creation.resource(details.url)!==null)}));
     protocol.handle('nova-content', async request => {
         const creation=request.method==='GET'?controller.creation.resource(request.url):null;
         if(creation!==null)return new Response(creation,{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors nova-content://app"}});
@@ -145,6 +145,7 @@ export async function startDesktop(options:StartOptions = {}) {
             try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
         }
+        if(request.method==='GET'&&controller.finalAssets.allows(request.url)){try{const image=await controller.finalAssets.resource(request.url);if(image)return new Response(image.data,{headers:{'content-type':image.mime,'cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':CSP}});}catch{}return new Response('Not found',{status:404});}
         const resource = staticResource(request.url, resources);
         if (request.method !== 'GET' || !resource) return new Response('Not found', {status: 404});
         return new Response(await fs.readFile(path.join(here, '../renderer', resource[0])), {

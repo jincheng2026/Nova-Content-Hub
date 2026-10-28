@@ -1,3 +1,5 @@
+import type {FinalAssetsInputs} from './final-assets-contracts.ts';
+import type {FinalAssetsView} from '../../../plugin-src/src/lib/final-assets/index.mjs';
 import type {LibraryBinding} from './contracts.ts';
 export type VaultWorkContext=import('../../../plugin-src/src/lib/vault/index.mjs').VaultTaskContext & {workflow:import('../../../plugin-src/src/lib/vault/workflow.mjs').WorkFlow|null};
 export type TopicMenu={sessionId:string;relativePath:string;hash:string;candidates:(import('../../../plugin-src/src/lib/vault/topics.mjs').TopicCandidate&{id:string})[];sourceRefs?:unknown[];adoptions:{candidateId:string;work:{workId:string;vaultId:string};at:string}[];taskId?:string;attemptId?:string;artifactId?:string};
@@ -7,6 +9,7 @@ export interface VaultDocument {id:string;section:VaultSection;title:string;rela
 export interface VaultSnapshot {root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
 export interface VaultText {document:VaultDocument;text:string;workingDraftAvailable?:boolean}
 export interface VaultInputs {
+ saveFinalAssets:FinalAssetsInputs['saveFinalAssets'];
  readVault:undefined;
  readVaultDocument:{id:string};
  readVaultContentSource:{contentId:string};
@@ -46,10 +49,11 @@ export interface VaultResults {
  revealVaultDocument:{revealed:true};
  recoverVaultMutation:VaultRecovery|null;
 }
-export type VaultMutationMethod = 'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
+export type VaultMutationMethod = 'saveFinalAssets'|'saveVaultDocument'|'createVaultDocument'|'createVaultWorkingDraft'|'trashVaultDocument';
 export type VaultPending = {mutationId:string;binding:Pick<LibraryBinding,'libraryId'|'rootIdentity'>} & {[K in VaultMutationMethod]:{method:K;input:VaultInputs[K]}}[VaultMutationMethod];
-export type VaultResolution = {state:'committed';result:VaultText|{trashed:true}}|{state:'missing'}|{state:'uncertain'};
-export type VaultRecovery = Pick<VaultPending,'mutationId'|'method'|'input'> & {outcome:'committed'|'discarded';result:VaultText|{trashed:true}|null;current:VaultText|null};
+export type VaultMutationResult=VaultText|{trashed:true}|FinalAssetsView;
+export type VaultResolution = {state:'committed';result:VaultMutationResult}|{state:'missing'}|{state:'uncertain'};
+export type VaultRecovery = Pick<VaultPending,'mutationId'|'method'|'input'> & {outcome:'committed'|'discarded';result:VaultMutationResult|null;current:VaultText|null};
 export interface VaultWorkerOperations {
  vaultResolve:{args:{binding:LibraryBinding;mutationId:string};result:VaultResolution};
  vaultRead:{args:{binding:LibraryBinding};result:VaultSnapshot|null};
@@ -63,6 +67,6 @@ export interface VaultWorkerOperations {
  vaultSources:{args:{binding:LibraryBinding};result:VaultResults['readVaultSources']};
  vaultLinkSource:{args:{binding:LibraryBinding;selectedRoot:string;role:VaultInputs['chooseVaultSource']['role']};result:VaultResults['chooseVaultSource']};
  vaultDocument:{args:{binding:LibraryBinding;id:string};result:VaultText};
- vaultMutate:{args:{binding:LibraryBinding;pending:VaultPending};result:VaultText|{trashed:true}};
+ vaultMutate:{args:{binding:LibraryBinding;pending:VaultPending};result:VaultMutationResult};
  vaultLocation:{args:{binding:LibraryBinding;id?:string};result:string};
 }

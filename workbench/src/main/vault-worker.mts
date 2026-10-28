@@ -1,3 +1,4 @@
+import {saveFinalAssets} from '../../../plugin-src/src/lib/final-assets/index.mjs';
 import fs from 'node:fs';
 import {verifiedBoundReader,verifyBoundRoot} from './bound-reader.mts';
 import {createVaultWorkingDraft} from '../../../plugin-src/src/lib/vault/working-draft.mjs';
@@ -7,7 +8,7 @@ import {safe,contentSources} from '../../../plugin-src/src/lib/vault/core.mjs';
 import {readSourceInventory,linkSource} from '../../../plugin-src/src/lib/vault/source-map.mjs';
 import {readTopicMenus,adoptVaultTopic} from './topic-worker.mts';
 import path from 'node:path';
-import {openLibrary} from '../../../plugin-src/src/lib/file-library/index.mjs';
+import * as fileLibrary from '../../../plugin-src/src/lib/file-library/index.mjs';
 import {readVaultSnapshot,readVaultDocument,readVaultTaskContext,saveVaultDocument,createVaultDocument,trashVaultDocument,vaultRootForRuntime,resolveVaultMutation} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {exact,libraryBinding,requireWrite,fail,uuid} from '../shared/validation.ts';
 import {vaultDocumentId,vaultPending,vaultDesktopInput} from '../shared/vault-validation.ts';
@@ -65,6 +66,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   const pending=args.pending as VaultPending;
   if(pending.binding.libraryId!==binding.libraryId||pending.binding.rootIdentity.dev!==binding.rootIdentity.dev||pending.binding.rootIdentity.ino!==binding.rootIdentity.ino)fail('CONFLICT','资料变更绑定的知识库已改变。');
   const options={mutationId:pending.mutationId};
+  if(pending.method==='saveFinalAssets'){const input=pending.input;if(typeof fileLibrary.ensureSelectedCoverDecoded!=='function')fail('NOT_READY','已选封面验证能力尚未就绪。');return fileLibrary.ensureSelectedCoverDecoded(binding.root,{contentId:input.contentId}).then(()=>{verifyBoundRoot(binding);return saveFinalAssets(binding.root,input,options);});}
   if(pending.method==='saveVaultDocument')return saveVaultDocument(binding.root,pending.input,options);
   if(pending.method==='createVaultWorkingDraft')return createVaultWorkingDraft(binding.root,pending.input,options);
   if(pending.method==='createVaultDocument')return createVaultDocument(binding.root,pending.input,options);

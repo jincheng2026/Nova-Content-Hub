@@ -3,6 +3,11 @@ import type {IpcRendererEvent} from 'electron';
 
 const {contextBridge, ipcRenderer, webUtils} = require('electron') as typeof import('electron');
 contextBridge.exposeInMainWorld('contentHub', Object.freeze({
+    readFinalAssets: input => ipcRenderer.invoke('nova:readFinalAssets', input),
+    previewFinalAssets: input => ipcRenderer.invoke('nova:previewFinalAssets', input),
+    saveFinalAssets: input => ipcRenderer.invoke('nova:saveFinalAssets', input),
+    exportFinalAssets: input => ipcRenderer.invoke('nova:exportFinalAssets', input),
+    readCoverPackaging: input => ipcRenderer.invoke('nova:readCoverPackaging', input),
     readJinchengPublication: input => ipcRenderer.invoke('nova:readJinchengPublication', input),
     mutateJinchengPublication: input => ipcRenderer.invoke('nova:mutateJinchengPublication', input),
     confirmJinchengCheckpoint: input => ipcRenderer.invoke('nova:confirmJinchengCheckpoint', input),

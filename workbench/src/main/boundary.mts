@@ -5,6 +5,7 @@ import type {IpcMainInvokeEvent, WebContents} from 'electron';
 
 export const PAGE = 'nova-content://app/index.html';
 export const CHANNELS = Object.freeze([
+    'readFinalAssets','previewFinalAssets','saveFinalAssets','exportFinalAssets','readCoverPackaging',
     'readJinchengPublication', 'mutateJinchengPublication',
     'confirmJinchengCheckpoint', 'saveJinchengAuthorAnalysis',
     'openCreationPage', 'creationPageRequest', 'closeCreationPage',

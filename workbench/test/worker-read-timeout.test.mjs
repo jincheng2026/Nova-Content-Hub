@@ -42,7 +42,7 @@ test('writes have no read deadline, are sent once, and keep their exact pending 
     assert.equal(await write, 'committed'); client.stop();
 });
 
-for(const operation of ['vaultWorkDirectory','vaultTopicMenus','vaultWorkContext','vaultContentSource','vaultContentDirectory','vaultSources'])test(`${operation} uses the finite read deadline and can retry after exit`,async t=>{
+for(const operation of ['finalRead','finalPreview','finalExport','finalAssetRaster','readCoverPackaging','vaultWorkDirectory','vaultTopicMenus','vaultWorkContext','vaultContentSource','vaultContentDirectory','vaultSources'])test(`${operation} uses the finite read deadline and can retry after exit`,async t=>{
  t.mock.timers.enable({apis:['setTimeout']});
  const children=[];const client=new WorkerClient(()=>{
   const child=new EventEmitter();children.push(child);

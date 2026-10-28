@@ -1,3 +1,4 @@
+import type {Buffer} from 'node:buffer';
 import type {RootIdentity,VaultDocument,VaultSnapshot,SourceCandidate,VaultTaskContext} from './index.mjs';
 export const SECTIONS:Readonly<Record<string,string>>;
 export function digest(value:string|Uint8Array):string;
@@ -17,7 +18,7 @@ export function scan(root:string,vaultId:string):{documents:VaultDocument[];issu
 export function nextTNumber(snapshot:VaultSnapshot):number;
 export function creationData(text:string):Record<string,any>|null;
 export function htmlBody(text:string):string|null;
-export function resolveCurrentSource(snapshot:VaultSnapshot,documents:VaultDocument[],pinned?:VaultDocument|null):{document:VaultDocument;sourceCandidates:SourceCandidate[];sourceResolution:'resolved'|'conflict'|'missing';evidence:unknown[]};
+export function resolveCurrentSource(snapshot:VaultSnapshot,documents:VaultDocument[],pinned?:VaultDocument|null):{document:VaultDocument|null;sourceCandidates:SourceCandidate[];sourceResolution:'resolved'|'conflict'|'missing';sourceMissing?:boolean;evidence:unknown[]};
 export function contentSources(snapshot:VaultSnapshot,ignoredWorkingDraftId?:string|null):any[];
 export function runMutation(runtimeRoot:string,request:unknown,options:{mutationId:string},prepare:(state:any)=>any):any;
 export function recoverVault(root:string):Array<{code:string;message:string;mutationId:string;action:string;relativePath?:string}>;

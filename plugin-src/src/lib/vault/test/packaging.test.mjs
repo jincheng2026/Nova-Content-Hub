@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {createVault} from '../index.mjs';
+import {createVault,openVault,migrateVault} from '../index.mjs';
 import {scan,json,digest,withVaultReadLock} from '../core.mjs';
 const api=await import('../packaging.mjs').catch(error=>{if(error.code==='ERR_MODULE_NOT_FOUND')return {};throw error;});
 function read(runtime,input){assert.equal(typeof api.readVaultPackaging,'function','controlled packaging snapshot must exist');return api.readVaultPackaging(runtime,input);}
@@ -120,4 +120,25 @@ test('unmigrated historical pending receipts block without scanning or migrating
 test('a resolved ordinary HTML with no jc-doc remains on the legacy cover branch',t=>{
  const f=fixture(t);f.put(dir+'/创作页.html','<html><body><p>旧式普通HTML，没有jc-doc</p></body></html>');const current=f.documents().find(doc=>doc.relativePath===dir+'/创作页.html');
  const value=read(f.runtime,{contentId:current.contentId});assert.equal(value.kind,'legacy');assert.equal(value.script,null);
+});
+
+
+test('explicit migration preserves packaging tokens with unchanged business sources while leaving the source Vault untouched',t=>{
+ const f=fixture(t),packaging=page(f,'原包装.html',html('portable-page','旧HTML稿'));
+ f.put(dir+'/作者当前稿.md','# 当前精确稿\r\n\r\n  保留缩进与空行。\n');const current=f.documents().find(doc=>doc.relativePath===dir+'/作者当前稿.md');pin(f,current);
+ const input={contentId:current.contentId,documentId:packaging.id},before=read(f.runtime,input);assert.equal(before.kind,'jc-doc');
+ const sourceTree=unchangedTree(f.root),parent=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'portable-packaging-'));t.after(()=>fs.rmSync(parent,{recursive:true,force:true}));
+ const target=path.join(parent,'显式迁移');migrateVault(f.root,target);const movedBinding=openVault(target),after=read(movedBinding.root,input);assert.equal(after.kind,'jc-doc');
+ assert.notDeepEqual(json(target,'.workbench/vault.json').rootIdentity,json(f.root,'.workbench/vault.json').rootIdentity);
+ assert.deepEqual(after.source,before.source);assert.deepEqual(after.script,before.script);assert.deepEqual(after.fields,before.fields);assert.equal(after.contentId,before.contentId);
+ assert.equal(after.selectionToken,before.selectionToken,'normal migration must preserve a token derived only from unchanged business identities and exact text');
+ assert.deepEqual(unchangedTree(f.root),sourceTree,'migration and source snapshots must not modify the source Vault');
+});
+
+test('portable packaging tokens do not authorize an unregistered copy or a forged Vault descriptor',t=>{
+ const f=fixture(t),document=page(f),input={contentId:document.contentId},before=read(f.runtime,input);assert.equal(before.kind,'jc-doc');
+ const parent=fs.mkdtempSync(path.join(fs.realpathSync(os.tmpdir()),'rejected-packaging-copy-'));t.after(()=>fs.rmSync(parent,{recursive:true,force:true}));const copy=path.join(parent,'未经迁移');fs.cpSync(f.root,copy,{recursive:true});
+ const unregistered=read(path.join(copy,'.workbench/runtime'),input);assert.equal(unregistered.kind,'unavailable');assert.equal(unregistered.selectionToken,null);assert.ok(unregistered.issues.includes('CONFLICT'));
+ const descriptor=json(f.root,'.workbench/vault.json');f.put('.workbench/vault.json',JSON.stringify({...descriptor,rootIdentity:{...descriptor.rootIdentity,ino:'0'}}));
+ const forged=read(f.runtime,input);assert.equal(forged.kind,'unavailable');assert.equal(forged.selectionToken,null);assert.ok(forged.issues.includes('PACKAGING_VAULT_IDENTITY'));
 });

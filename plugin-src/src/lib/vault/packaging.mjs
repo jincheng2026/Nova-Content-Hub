@@ -112,7 +112,9 @@ function readBoundPackaging(binding,input) {
     if (!script || !script.text.trim()) return unavailable('CURRENT_MANUSCRIPT_UNAVAILABLE');
     if (!selected) {verifyRead();return empty('choose-source',['PACKAGING_SOURCE_SELECTION_REQUIRED'],{script,candidates});}
     const {fields,issues} = extractCreationPackaging(selected.doc), source = sourceIdentity(selected.document,selected.doc.pageId);
-    const selectionToken = digest(JSON.stringify({version:1,contentId:input.contentId,vaultDescriptorHash:digest(descriptorBytes),source,fields:Object.fromEntries(Object.entries(fields).map(([name,field]) => [name,field?{itemId:field.itemId,hash:field.hash}:null])),manuscriptSource:script.manuscriptSource,scriptHash:script.hash}));
+    // Portable business identity excludes physical descriptor/root identity. The
+    // binding checks above and verifyRead below still guard the actual IO root.
+    const selectionToken = digest(JSON.stringify({version:2,contentId:input.contentId,source,fields:Object.fromEntries(Object.entries(fields).map(([name,field]) => [name,field?{itemId:field.itemId,hash:field.hash}:null])),manuscriptSource:script.manuscriptSource,scriptHash:script.hash}));
     verifyRead();
     return {kind:'jc-doc',source,selectionToken,fields,script,issues};
 }

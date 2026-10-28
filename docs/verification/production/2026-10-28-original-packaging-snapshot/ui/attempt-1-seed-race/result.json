@@ -1,0 +1,34 @@
+{
+  "at": "2026-10-28T04:50:53.269Z",
+  "phase": "save",
+  "desktop": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs",
+  "scope": "Isolated Vault; actual React/Semi; fixture image only; not installed-app or real-model acceptance",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "version": "0.5.1",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "beforeFacts": {
+    "recorded": true,
+    "published": true,
+    "sourceResolution": "resolved"
+  },
+  "passed": false,
+  "failure": {
+    "message": "LibraryError: 知识库正由另一项写入操作使用，请稍后重试",
+    "stack": "LibraryError: 知识库正由另一项写入操作使用，请稍后重试\n    at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/core.mjs:35:11)\n    at withVaultLock (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/core.mjs:760:13)\n    at withVaultReadLock (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/core.mjs:497:48)\n    at readVaultSnapshot (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/core.mjs:502:12)\n    at sync (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/bridge.mjs:117:30)\n    at out.<computed> [as listContents] (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/vault/bridge.mjs:508:25)\n    at openLibrary (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/plugin-src/src/lib/file-library/index.mjs:1348:16)\n    at ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/final-assets-ui-probe.mjs:39:17)\n    at async startDesktop (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs:642:5)"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n10月28日星期三\n今天 0/0 已发\n一\n0\n二\n0\n三\n0\n四\n0\n五\n0\n六\n0\n日\n0\n继续创作\n\n封面还没选好，打开内容继续制作。\n\nT043 X收藏不吃灰的插件和工作流\n\n# T043 X收藏不吃灰的插件和工作流\n\n- **选题**：分享锦成自己在用的 X 收藏插件和工作流：收藏那一秒写一句为什么存，收藏全文自动存成文件，和内容创作打通，以后找东西、优化 AI 和工作流、找...查看全部\n\n复制文案\n继续编辑\n制作封面\n安排日程\n今天\n0 条待发布\n\n今天暂无发布安排。\n\n查看今天全部 0 条安排 →\n明天 · 0 条安排\n查看日程 →\n要处理\n2 项\n准备内容封面\nT040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分\n47 ›\n安排发布日程\nT040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分\n47 ›\n内容项目\n47 篇 · 0 个合集\n▤\nT043 X收藏不吃灰的插件和工作流\n待做封面 · 尚未安排发布\n›\n▤\nT042 两周全网涨粉两万的AI教程做法\n待做封面 · 尚未安排发布\n›\n▤\nT041 涨粉两万后两个月只涨六千的复盘\n待做封面 · 尚未安排发布\n›\n▤\nT034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家\n待做封面 · 尚未安排发布\n›\n查看全部内容项目 →"
+}

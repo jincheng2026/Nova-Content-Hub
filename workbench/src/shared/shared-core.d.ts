@@ -3,6 +3,8 @@ declare module '*lib/package-snapshot.mjs' {
     export function snapshotPackage(input: string, expected?: Record<string, PackageEntry>): Promise<Record<string, PackageEntry>>;
 }
 declare module '*file-library/index.mjs' {
+    export function ensureSelectedCoverDecoded(runtimeRoot:string,input:{contentId:string}):Promise<unknown>;
+    export function readSelectedCoverSnapshot(runtimeRoot:string,input:{contentId:string}):import('../../../plugin-src/src/lib/final-assets/index.mjs').SelectedCoverSnapshot;
     export class LibraryError extends Error { code: string; constructor(code: string, message: string, details?: Record<string, unknown>); }
     interface Library {
         listPhotos(): import('./cover-contracts.ts').Photo[];
@@ -15,8 +17,10 @@ declare module '*file-library/index.mjs' {
         rebuildTemplateReports(id: string): {warnings: string[]};
         readTemplate(id: string, version?: number): import('./template-core.d.ts').TemplateCoreDocument & { definition: Record<string, unknown>; resources: Record<string, { assetHash: string; role: string }> };
         readTemplateContext(templateId: string, requestId: string, attemptId: string): import('./template-core.d.ts').TemplateCoreContext;
+        readCoverPackaging(input:{contentId:string;documentId?:string}):import('./cover-contracts.ts').VaultPackaging;
+        assertCoverRequestFresh(id:string,requestId:string):boolean;
         inspectCoverInput(id: string, input: import('./cover-contracts.ts').CoverInput, token: string): import('./cover-contracts.ts').Fingerprint;
-        findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string }): import('./cover-contracts.ts').RequestResult | null;
+        findCoverRequest(id: string, fingerprint: { inputHash: string; title: string; bodyHash: string; packagingSource?:import('./cover-contracts.ts').FrozenCoverPackaging }): import('./cover-contracts.ts').RequestResult | null;
         createCoverRequest(id: string, input: import('./cover-contracts.ts').CoverInput, token: string, options: { mutationId: string }): import('./cover-contracts.ts').RequestResult;
         createCoverAttempt(id: string, requestId: string, input: { host: import('./cover-contracts.ts').Assistant; reason: string }, options: { mutationId: string }): { attempt: import('./cover-contracts.ts').Attempt };
         readCoverState(id: string): {content: ReturnType<Library['readContent']>; progress: import('./cover-contracts.ts').TaskProgressView; requests: Map<string, ReturnType<Library['readCoverContext']>['request'] | null>};

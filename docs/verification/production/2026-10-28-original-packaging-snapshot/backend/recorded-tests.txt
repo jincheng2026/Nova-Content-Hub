@@ -1,0 +1,10 @@
+✔ recorded manuscript different from cover request body requires explicit version-difference acceptance (2573.945292ms)
+✔ recorded and current exact text equality preserves cover-current provenance without a false warning (1417.000375ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 2
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4119.043917

@@ -133,3 +133,5 @@ export {readWorkFlow,appendStageArtifact,confirmCheckpoint,answerMetaQuestion,me
 export {saveTopicCandidates,adoptTopic,resolveCurrentWork,selectCurrentWork} from './topics.mjs';
 export {readBoundSourceCatalog,readBoundSourceFile} from './source-map.mjs';
 export {planJinchengSupplement,importJinchengSupplement} from './import-jincheng.mjs';
+
+export {readFinalAssets,previewFinalAssets,saveFinalAssets,readFinalAssetExport} from '../final-assets/index.mjs';

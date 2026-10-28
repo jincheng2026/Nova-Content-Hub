@@ -85,7 +85,7 @@ function contextFor(binding, task, launching = false, kind = 'cover') {
         const job = (kind === 'template' ? record.templateJobs : record.coverJobs).find(job => job.id === task.requestId);
         if (record.deletedAt || job.activeAttemptId !== task.attemptId || !['created', 'claimed'].includes(context.attempt.status)) refuse('ATTEMPT_INACTIVE', '这次尝试已结束，请在工作台查看或重试。');
         if (kind === 'template' && (record.currentVersion !== context.request.template.version || !record.versions.some(v => v.version === context.request.template.version && v.packageHash === context.request.template.packageHash))) refuse('STALE_INPUT', '模板版本已经变化，请回工作台准备新的学习请求。');
-        if (kind === 'cover' && (context.content.title !== context.request.title || createHash('sha256').update(Buffer.from(context.content.body)).digest('hex') !== context.request.bodyHash)) refuse('STALE_INPUT', '内容已经修改，请回工作台准备新的生成请求。');
+        if (kind === 'cover') library.assertCoverRequestFresh(task.contentId,task.requestId);
     }
     return {library, context};
 }
