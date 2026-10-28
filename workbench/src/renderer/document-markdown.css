@@ -1,0 +1,15 @@
+/* Foundation-01/02/03, Surface-02, Reading-02: opaque readable document surface. */
+div.document-markdown{min-width:0;max-width:100%;color:var(--text,#1d1d1f);font-size:14px;line-height:1.7;overflow-wrap:anywhere;white-space:normal;text-align:left}
+div.document-markdown :is(h1,h2,h3,h4,h5,h6){color:var(--text,#1d1d1f);line-height:1.4;font-weight:650;margin:1.4em 0 .65em;overflow-wrap:anywhere}
+div.document-markdown h1{font-size:24px}div.document-markdown h2{font-size:21px}div.document-markdown h3{font-size:18px}div.document-markdown :is(h4,h5,h6){font-size:15px}
+div.document-markdown> :first-child{margin-top:0}div.document-markdown> :last-child{margin-bottom:0}
+div.document-markdown p{margin:0 0 .8em;font-size:inherit;line-height:inherit;color:inherit;white-space:normal}
+div.document-markdown :is(ul,ol){margin:.6em 0 1em;padding-left:1.8em;list-style-position:outside}div.document-markdown ul{list-style-type:disc}div.document-markdown ol{list-style-type:decimal}div.document-markdown li{margin:.35em 0;display:list-item}div.document-markdown li>p{margin-bottom:.25em}div.document-markdown li :is(ul,ol){margin:.3em 0}div.document-markdown li>input{margin-right:7px}
+div.document-markdown blockquote{margin:1em 0;padding:10px 16px;border-left:3px solid #0071e3;background:#f2f7fd;color:#1d1d1f;border-radius:0 8px 8px 0}div.document-markdown blockquote> :last-child{margin-bottom:0}
+.document-markdown-link{color:#0071e3;overflow-wrap:anywhere;user-select:text}
+div.document-markdown code{padding:2px 5px;background:#fafafc;border:1px solid rgba(0,0,0,.08);border-radius:5px;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:break-spaces}
+div.document-markdown pre{display:block;max-width:100%;margin:1em 0;padding:14px 16px;border:1px solid rgba(0,0,0,.08);border-radius:12px;background:#fafafc;color:#1d1d1f;white-space:pre;overflow:auto;overflow-wrap:normal;font:13px/1.6 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace}div.document-markdown pre code{padding:0;border:0;border-radius:0;background:transparent;white-space:pre;font:inherit}
+div.document-markdown hr{border:0;border-top:1px solid rgba(0,0,0,.08);margin:1.4em 0}
+.document-markdown-table{max-width:100%;overflow-x:auto;margin:1em 0;border:1px solid rgba(0,0,0,.08);border-radius:10px;background:#fff}
+div.document-markdown table{width:100%;border-collapse:collapse;font:inherit;table-layout:auto}div.document-markdown :is(th,td){min-width:100px;max-width:420px;padding:10px 12px;border:0;border-bottom:1px solid rgba(0,0,0,.08);vertical-align:top;font-size:inherit;line-height:1.6;white-space:normal;overflow-wrap:anywhere;color:inherit}div.document-markdown th{background:#fafafc;font-weight:600}div.document-markdown tbody tr:last-child td{border-bottom:0}
+div.document-markdown :is(a,pre,.document-markdown-table):focus-visible{outline:2px solid #0071e3;outline-offset:3px}

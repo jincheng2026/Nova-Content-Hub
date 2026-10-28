@@ -1,0 +1,260 @@
+/* Foundation-01/02/03, Surface-01, Controls-02/03, Reading-02.
+   This presentation uses the existing directory facts and actions. */
+.jincheng-content-directory {
+  min-width: 0;
+  container-type: inline-size;
+}
+
+.jincheng-content-directory .jincheng-content-toolbar {
+  flex-wrap: wrap;
+}
+
+.jincheng-content-toolbar > .semi-input-wrapper {
+  flex: 1 1 220px;
+  min-width: 160px;
+}
+
+.jincheng-content-view-switch {
+  flex: 0 0 auto;
+  font-family: inherit;
+}
+
+.jincheng-content-view-switch.semi-radioGroup-buttonRadio {
+  padding: 3px;
+  background: #efeff1;
+  border-radius: 10px;
+}
+
+.jincheng-content-view-switch .semi-radio {
+  margin: 0;
+  padding: 0;
+  font-family: inherit;
+}
+
+.jincheng-content-view-switch .semi-radio-addon-buttonRadio {
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 20px;
+}
+
+.jincheng-content-view-switch .semi-radio-addon-buttonRadio-checked {
+  background: #fff;
+  color: #1d1d1f;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.jincheng-content-view-switch .semi-radio:has(input:focus-visible) {
+  outline: 2px solid #0071e3;
+  outline-offset: 2px;
+}
+
+.jincheng-content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.jincheng-content-directory .jincheng-content-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 16px;
+  padding: 22px;
+  background: var(--semi-color-bg-1, #fff);
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 18px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .04), 0 8px 24px rgba(0, 0, 0, .05);
+}
+
+.jincheng-content-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.jincheng-content-card-heading .jincheng-topic-meta {
+  align-items: center;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.jincheng-content-number {
+  font-variant-numeric: tabular-nums;
+}
+
+.jincheng-content-card .jincheng-content-type {
+  background: #fafafc;
+  border: 1px solid rgba(0, 0, 0, .05);
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+
+.jincheng-content-status {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 2px 8px;
+  background: #f2f7fd;
+  color: #005bb5;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.jincheng-content-status.is-published {
+  background: #e9f9ee;
+  color: #176b2f;
+}
+
+.jincheng-content-status.is-deferred {
+  background: #fff4e2;
+  color: #7a4b00;
+}
+
+.jincheng-content-directory .jincheng-content-title-heading {
+  margin: 9px 0 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.jincheng-content-directory .jincheng-content-title.semi-button {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 30px;
+  padding: 0;
+  color: var(--semi-color-text-0, #1d1d1f);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.6;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.jincheng-content-directory .jincheng-content-title .semi-button-content {
+  display: block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.jincheng-content-directory .jincheng-content-title.semi-button:hover {
+  background: transparent;
+  color: #005bb5;
+}
+
+.jincheng-content-facts:not(:empty) {
+  margin-top: 8px;
+}
+
+.jincheng-content-card .jincheng-content-summary,
+.jincheng-content-card .jincheng-content-summary-text {
+  margin: 12px 0 0;
+  padding: 0;
+  border: 0;
+  color: var(--semi-color-text-2, #6e6e73);
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.jincheng-content-summary > summary {
+  display: block;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 400;
+}
+
+.jincheng-content-summary > summary::-webkit-details-marker {
+  display: none;
+}
+
+.jincheng-content-summary-expand,
+.jincheng-content-summary-collapse {
+  color: #005bb5;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.jincheng-content-summary-preview,
+.jincheng-content-summary-expand {
+  display: block;
+}
+
+.jincheng-content-summary-collapse,
+.jincheng-content-summary[open] .jincheng-content-summary-preview,
+.jincheng-content-summary[open] .jincheng-content-summary-expand {
+  display: none;
+}
+
+.jincheng-content-summary[open] .jincheng-content-summary-collapse {
+  display: block;
+}
+
+.jincheng-content-summary > p {
+  margin: 8px 0 0;
+}
+
+.jincheng-content-card .jincheng-plan {
+  max-width: none;
+  color: var(--semi-color-text-2, #6e6e73);
+}
+
+.jincheng-content-card .jincheng-plan:empty {
+  display: none;
+}
+
+.jincheng-content-card .jincheng-plan > p {
+  margin: 8px 0 0;
+}
+
+.jincheng-content-card .jincheng-plan > details {
+  margin-top: 10px;
+  padding: 10px 12px;
+  background: #fafafc;
+  border-radius: 12px;
+}
+
+.jincheng-content-card .jincheng-plan summary {
+  cursor: pointer;
+  color: #005bb5;
+}
+
+.jincheng-content-card-actions {
+  flex: 0 0 auto;
+}
+
+.jincheng-content-card .jincheng-content-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, .05);
+}
+
+.jincheng-content-directory :is(.jincheng-content-title, summary):focus-visible {
+  outline: 2px solid #0071e3;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+@container (max-width: 760px) {
+  .jincheng-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jincheng-content-directory .jincheng-content-card {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 780px) {
+  .jincheng-content-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

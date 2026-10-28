@@ -1,3 +1,4 @@
+import {DocumentMarkdown} from './document-markdown.tsx';
 import {JinchengStageActions} from './jincheng-stage-actions.tsx';
 import {JinchengSourceStatus} from './jincheng-source-status.tsx';
 import {CreationFrame} from './creation-frame.tsx';
@@ -25,6 +26,8 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
  const [sourceUnavailable,setSourceUnavailable]=useState(false),[conflict,setConflict]=useState(false),[confirmReload,setConfirmReload]=useState(false);
  useEffect(()=>listenVaultRecovery(window,recovery=>{const next=reconcileVaultEditor({...local.current,submission:submission.current},recovery);if(!next)return;submission.current=null;setCurrent(next.current);setText(next.text);setSourceUnavailable(next.sourceUnavailable);setConflict(next.conflict);setMessage(next.message);void saved().catch(error=>setMessage(errorInfo(error).message));}),[]);
  const readonly=!!current&&!current.document.writable;
+ const [editing,setEditing]=useState(!source||source.document.format!=='markdown');
+ const markdownDocument=current?.document.format==='markdown';
  const originalCreation=!!current?.workingDraftAvailable&&current.document.format==='html';
  const dirty=current?text!==current.text:!!title||!!text;
  async function save(){
@@ -57,7 +60,9 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
    {current?<p className="vault-source-path">来源：{current.document.relativePath}</p>:<><label>分类<PopupSelect value={category} disabled={working} onChange={value=>setCategory(value as VaultSection)}>{vaultSections.map(value=><option key={value} value={value}>{labels[value]}</option>)}</PopupSelect></label><label>名称（可稍后填写）<Input aria-label="资料名称" value={title} maxLength={500} disabled={working} onChange={setTitle}/></label></>}
    {originalCreation&&current&&<CreationFrame documentId={current.document.id} busy={busy||working}/>}
    {!originalCreation&&readonly&&<Banner type="info" closeIcon={null} description={current?.workingDraftAvailable?"这是从原 HTML 读取的人工当前稿。建立可编辑工作稿后，原 HTML 保留，后续改稿在同一内容目录继续。":"此格式保留原文件，仅供阅读。可在文件管理器中定位原件。"}/>}
-   {!originalCreation&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
+   {!originalCreation&&markdownDocument&&<div className="actions"><Button disabled={working} onClick={()=>setEditing(!editing)}>{editing?'阅读排版':readonly?'查看原文':'编辑原文'}</Button>{dirty&&!editing&&<p role="status">正在预览本次未保存的修改。</p>}</div>}
+   {!originalCreation&&markdownDocument&&!editing&&<DocumentMarkdown text={text}/>}
+   {!originalCreation&&(!markdownDocument||editing)&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
    <p role="status">{message}</p>
    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
    {conflict&&current&&<section role="alert"><p>当前原文与本次填写不同。原文：</p><pre className="vault-current-source">{current.text}</pre>{confirmReload?<div className="actions"><Button type="danger" onClick={()=>{setText(current.text);setConflict(false);setConfirmReload(false);}}>放弃本次填写并载入原文</Button><Button onClick={()=>setConfirmReload(false)}>保留填写</Button></div>:<Button onClick={()=>setConfirmReload(true)}>载入当前原文</Button>}</section>}

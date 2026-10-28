@@ -7,6 +7,7 @@ import {bindingForRuntime, readBytes, digest, uuidFor, safe, json, writeJSON, mk
 
 const STATE = '.workbench/resource-projection.json';
 const PROJECTION_POLICY_VERSION = 5;
+const MARKDOWN_REPORT_POLICY_VERSION = 1;
 const RESOURCE_INPUT_POLICY_VERSION = 1;
 const BLOCK = /<!-- nova-content-hub:resource\r?\n([\s\S]*?)\r?\n-->/g;
 const UUID = /^[a-f\d]{8}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{4}-[a-f\d]{12}$/i;
@@ -220,24 +221,68 @@ function classifyPreparedResources(snapshot) {
     return out;
 }
 
-/** Escape all source markup; only a small Markdown layout subset generates tags. */
+/** Escape every author string; only this fixed block-layout subset generates tags. */
+function markdownReportBlocks(lines, depth=0) {
+    if(depth>12)return `<pre><code>${htmlEscape(lines.join('\n'))}</code></pre>`;
+    const parts=[], marker=line=>line.match(/^( *)([-+*]|\d+[.)])\s+(.*)$/);
+    let index=0;
+    while(index<lines.length){
+        const line=lines[index];
+        if(!line.trim()){index++;continue;}
+        const fence=line.match(/^ {0,3}(`{3,}|~{3,})(.*)$/);
+        if(fence){
+            const code=[],close=new RegExp(`^ {0,3}${fence[1][0]}{${fence[1].length},}\\s*$`);index++;
+            while(index<lines.length&&!close.test(lines[index]))code.push(lines[index++]);
+            if(index<lines.length)index++;
+            parts.push(`<pre><code>${htmlEscape(code.join('\n'))}${code.length?'\n':''}</code></pre>`);continue;
+        }
+        if(/^ {0,3}>/.test(line)){
+            const quote=[];
+            while(index<lines.length&&/^ {0,3}>/.test(lines[index]))quote.push(lines[index++].replace(/^ {0,3}> ?/,''));
+            parts.push(`<blockquote>${markdownReportBlocks(quote,depth+1)}</blockquote>`);continue;
+        }
+        const list=marker(line);
+        if(list){
+            const ordered=/^\d/.test(list[2]),indent=list[1].length,items=[];
+            while(index<lines.length){
+                const item=marker(lines[index]);
+                if(!item||item[1].length!==indent||/^\d/.test(item[2])!==ordered)break;
+                const body=[item[3]],contentIndent=item[0].length-item[3].length;index++;
+                while(index<lines.length){
+                    const next=lines[index],nextMarker=marker(next),spaces=next.match(/^ */)[0].length;
+                    if(nextMarker&&nextMarker[1].length<=indent||next.trim()&&spaces<=indent)break;
+                    if(!next.trim()){
+                        if(index+1<lines.length&&/^\s/.test(lines[index+1])){body.push('');index++;continue;}
+                        break;
+                    }
+                    body.push(next.slice(Math.min(contentIndent,spaces)));index++;
+                }
+                items.push(`<li>${markdownReportBlocks(body,depth+1)}</li>`);
+                if(!lines[index]?.trim()){
+                    let next=index;while(next<lines.length&&!lines[next].trim())next++;
+                    const candidate=marker(lines[next]??'');
+                    if(candidate&&candidate[1].length===indent&&/^\d/.test(candidate[2])===ordered)index=next;else break;
+                }
+            }
+            const tag=ordered?'ol':'ul';parts.push(`<${tag}${ordered?` start="${Number.parseInt(list[2],10)}"`:''}>${items.join('')}</${tag}>`);continue;
+        }
+        if(line.trim().startsWith('|')&&line.trim().endsWith('|')){
+            const rows=[];
+            while(index<lines.length&&lines[index].trim().startsWith('|')&&lines[index].trim().endsWith('|')){
+                const cells=lines[index++].trim().slice(1,-1).split('|');
+                if(!cells.every(cell=>/^\s*:?-+:?\s*$/.test(cell)))rows.push('<tr>'+cells.map(cell=>`<td>${htmlEscape(cell.trim())}</td>`).join('')+'</tr>');
+            }
+            parts.push(`<table><tbody>${rows.join('')}</tbody></table>`);continue;
+        }
+        const heading=line.match(/^(#{1,6})\s+(.+)$/);
+        parts.push(heading?`<h${heading[1].length}>${htmlEscape(heading[2])}</h${heading[1].length}>`:`<p>${htmlEscape(line)}</p>`);index++;
+    }
+    return parts.join('');
+}
 export function renderMarkdownReport(markdown, title) {
     if(title&&!/^#\s/m.test(markdown))markdown=`# ${title}\n\n${markdown}`;
-    const lines=withoutBlock(markdown).split(/\r?\n/), parts=[];
-    let code=false, table=false;
-    for(let i=0;i<lines.length;i++){
-        const line=lines[i];
-        if(/^```/.test(line)){if(table){parts.push('</tbody></table>');table=false;}parts.push(code?'</code></pre>':'<pre><code>');code=!code;continue;}
-        if(code){parts.push(htmlEscape(line)+'\n');continue;}
-        const cells=line.trim().startsWith('|')&&line.trim().endsWith('|')?line.trim().slice(1,-1).split('|'):null;
-        if(cells){if(cells.every(s=>/^\s*:?-+:?\s*$/.test(s)))continue;if(!table){parts.push('<table><tbody>');table=true;}parts.push('<tr>'+cells.map(s=>`<td>${htmlEscape(s.trim())}</td>`).join('')+'</tr>');continue;}
-        if(table){parts.push('</tbody></table>');table=false;}
-        const heading=line.match(/^(#{1,6})\s+(.+)$/);
-        if(heading)parts.push(`<h${heading[1].length}>${htmlEscape(heading[2])}</h${heading[1].length}>`);
-        else if(line.trim())parts.push(`<p>${htmlEscape(line)}</p>`);
-    }
-    if(code)parts.push('</code></pre>');if(table)parts.push('</tbody></table>');
-    return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><body><article>${parts.join('\n')}</article></body></html>`;
+    const body=markdownReportBlocks(withoutBlock(markdown).split(/\r\n?|\n/));
+    return `<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'"><style>body{margin:0;padding:24px;background:#fff;color:#1d1d1f;font:14px/1.7 -apple-system,BlinkMacSystemFont,"Microsoft YaHei",sans-serif;overflow-wrap:anywhere}article{max-width:960px;margin:auto}h1{font-size:24px}h2{font-size:21px}h3{font-size:18px}p{margin:.5em 0}blockquote{margin:1em 0;padding:8px 16px;border-left:3px solid #0071e3;background:#f2f7fd}ul,ol{padding-left:1.8em}li{margin:.35em 0}pre{overflow:auto;padding:14px;background:#fafafc;border-radius:10px;white-space:pre}table{display:block;max-width:100%;overflow:auto;border-collapse:collapse}td{min-width:100px;padding:8px 12px;border:1px solid #ddd}</style><body><article>${body}</article></body></html>`;
 }
 
 function loadState(root) {
@@ -280,7 +325,8 @@ function sourceEntry(s) {
         ...(s.kind==='report'?{currentBody:s.block?.pageOverrides?.length?'managed-pages':s.managedMarkdown?'managed-markdown':'original'}:{}),
         ...(s.dependencies?.length?{dependencies:s.dependencies}:{}),
         ...(s.imageFiles?.length?{imageDependencies:s.imageFiles.map(file=>({relativePath:file.relativePath,hash:file.hash}))}:{}),
-        ...(s.companion?{companion:{documentId:s.companion.id,relativePath:s.companion.relativePath,hash:s.companion.hash}}:{})};
+        ...(s.companion?{companion:{documentId:s.companion.id,relativePath:s.companion.relativePath,hash:s.companion.hash}}:{}),
+        ...(s.kind==='report'&&(s.document.format!=='html'||s.managedMarkdown)&&!s.block?.pageOverrides?.length?{markdownPolicyVersion:MARKDOWN_REPORT_POLICY_VERSION}:{})};
 }
 const markerPath=mid=>`.workbench/resource-projection-mutations/${mid}.json`;
 function markProjection(root,mid,kind,objectId,meta,body) {
@@ -347,7 +393,7 @@ function creationExclusions(snapshot, state) {
     return excluded;
 }
 function resourceInputFingerprint(snapshot, libraryId, excluded) {
-    return digest(JSON.stringify([RESOURCE_INPUT_POLICY_VERSION,PROJECTION_POLICY_VERSION, libraryId,
+    return digest(JSON.stringify([RESOURCE_INPUT_POLICY_VERSION,PROJECTION_POLICY_VERSION,MARKDOWN_REPORT_POLICY_VERSION, libraryId,
         snapshot.root, snapshot.vaultId, snapshot.sourceMap ?? null,
         snapshot.boundSources ?? [], snapshot.sourceIssues ?? [],
         snapshot.documents.map(document => excluded.has(document.id)
@@ -371,12 +417,12 @@ export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mut
         inputFingerprint=resourceInputFingerprint(prepared,rawApi.info.libraryId,exclusions);
     if (state.fingerprint && state.inputFingerprint === inputFingerprint && state.libraryId === rawApi.info.libraryId) {
         if (refreshCreationInventory(state, prepared, exclusions)) {
-            state.fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,state.inventory,state.issues]));
+            state.fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,MARKDOWN_REPORT_POLICY_VERSION,rawApi.info.libraryId,state.inventory,state.issues]));
             writeJSON(vaultRoot,STATE,state);
         }
         return;
     }
-    const classified=classifyPreparedResources(prepared),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,rawApi.info.libraryId,classified.inventory,classified.issues]));
+    const classified=classifyPreparedResources(prepared),fingerprint=digest(JSON.stringify([PROJECTION_POLICY_VERSION,MARKDOWN_REPORT_POLICY_VERSION,rawApi.info.libraryId,classified.inventory,classified.issues]));
     if(state.fingerprint===fingerprint) {
         state.inputFingerprint=inputFingerprint;
         writeJSON(vaultRoot,STATE,state);
@@ -561,7 +607,12 @@ export function applyVaultResourceTransaction(runtimeRoot,tx){
         const resultBlock=management(result.text),authority=change.kind==='report'?{currentBody:resultBlock.pageOverrides?.length?'managed-pages':resultBlock.origin&&resultBlock.bodyLayout==='after-block'?'managed-markdown':'original'}:{};
         if(entry?.format==='html')state.resources[change.kind][change.id]={...entry,...authority,companion:{documentId:d.id,relativePath:d.relativePath,hash:d.hash}};
         else state.resources[change.kind][change.id]={...(entry??{}),documentId:d.id,relativePath:d.relativePath,hash:d.hash,format:d.format,...authority};
-        if(change.kind==='report'&&authority.currentBody!=='original')delete state.resources.report[change.id].previewMode;
+        if(change.kind==='report'){
+            const reportEntry=state.resources.report[change.id];
+            if(!resultBlock.pageOverrides?.length&&(entry?.format==='html'?authority.currentBody==='managed-markdown':d.format==='markdown'))reportEntry.markdownPolicyVersion=MARKDOWN_REPORT_POLICY_VERSION;
+            else delete reportEntry.markdownPolicyVersion;
+            if(authority.currentBody!=='original')delete reportEntry.previewMode;
+        }
         delete state.fingerprint;writeJSON(root,STATE,state);
     }
 }

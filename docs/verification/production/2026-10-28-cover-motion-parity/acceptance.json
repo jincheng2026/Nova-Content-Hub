@@ -1,0 +1,45 @@
+{
+  "date": "2026-10-28",
+  "reference": {
+    "path": "/Users/mac/Downloads/内容工作台学员版_代码交接包/封面工作台/内容工作台/工作台/工作台.html",
+    "sha256": "33da7a76b09ebc7512e9a536f034d3a983ab86411bab3e897d81bb415b79193e",
+    "cssLines": "291-308",
+    "javascriptLines": "585-594",
+    "observations": [
+      "viCard keeps at most 8 real samples",
+      "vcPlay first flip 1100 ms; subsequent flips 2400 ms",
+      "deck transition 1 s cubic-bezier(.22,.8,.2,1), transform origin 50% 90%",
+      "front rests flat; next layers +7%/-5% +5deg .95 and -7%/-9% -6deg .9",
+      "hover front y -2%; next layers +16%/-4% +10deg and -16%/-8% -11deg",
+      "whole card lifts -4px and scales 1.015 over .35s cubic-bezier(.2,.8,.2,1)"
+    ]
+  },
+  "adaptation": [
+    "Original images use contain and edge rounding rather than source cover crop",
+    "Only real unique Nova samples enter the deck; no reference media imported",
+    "Previous/next controls and ArrowLeft/ArrowRight/Home/End preserve separate template selection",
+    "System reduced motion stops autoplay and retains static original stack geometry; manual controls remain usable",
+    "Full group count and separate group preview retain all 50 samples; deck bounds do not change business data"
+  ],
+  "rules": {
+    "Template-01": "PASS synthetic 1/2/6/50 groups, 8-image deck; three visible layers, no fabricated backing",
+    "Template-02": "PASS pointer cadence; manual controls; Home/End; thumbnail front selection; reduced-motion controls",
+    "Template-03": "PASS full real count and separate group preview callback",
+    "Image-01": "PASS contain computed for every deck image, mixed ratios retained",
+    "Interaction-01": "PASS source parameters used per current explicit user request; 1s source easing overrides general 320-380ms recommendation",
+    "Interaction-02": "PASS system media emulation: no autoplay, same static layers, manual controls continue",
+    "Controls-01": "PASS separate named Semi buttons; no nested buttons; focused controls available"
+  },
+  "verification": {
+    "typecheckRenderer": "PASS",
+    "templateMotionParityUiProbe": "PASS, isolated React/Semi/Electron with synthetic SVGs and callbacks; latest fixture nova-template-motion-gyWGy9",
+    "templateDensityUiProbe": "PASS, responsive 5/4/3/2 columns, equal layout geometry, keyboard, complete group preview/full description, no business writes",
+    "diffCheck": "PASS",
+    "legacyTemplateCardUiProbe": "BLOCKED before motion tests by obsolete .cover-template-versions expectation: expected 1, actual 0. This work does not change CoverPanel or that legacy probe."
+  },
+  "limits": [
+    "Native physical touch input not verified; button click and keyboard paths tested in isolated Electron",
+    "Windows and Intel Mac physical environments not available; no packaging or installation claims",
+    "Screenshots are synthetic local fixtures, not user library or delivered app screenshots"
+  ]
+}

@@ -40,7 +40,7 @@ import {compareSchedules, publicationEntries, scheduleForView} from '../shared/p
 import {PublicationPanel, PublicationEditor, type PublicationSelection, type PublicationFocus, type CalendarFocus} from './publication-panel.tsx';
 import {publicationTime, publicationTitle, publicationRecordTitle} from './publication-model.ts';
 export type Page = 'vault' | 'overview' | 'templates' | 'content' | 'calendar' | 'prompts' | 'accounts' | 'reports' | 'radar' | 'tasks' | 'bookmarks';
-export const pageNames: Record<Page, string> = { bookmarks:'X 收藏',vault:'资料与定位', overview: '总览', templates: '模板', content: '内容项目', calendar: '日程', prompts: '提示词与知识', accounts: '对标账号', reports: '调研报告', radar: '爆款雷达', tasks: '助手任务' };
+export const pageNames: Record<Page, string> = { bookmarks:'X 收藏',vault:'资料与定位', overview: '总览', templates: '模板', content: '内容项目', calendar: '日程', prompts: '提示词', accounts: '对标账号', reports: '调研报告', radar: '爆款雷达', tasks: '助手任务' };
 type Snapshot = DesktopResults['readWorkspace'];
 type Prompt = Snapshot['prompts'][number];
 interface Props { workspace: Snapshot | null; open(item: Content): void; busy: boolean }

@@ -307,3 +307,19 @@ test('new reports and prompts use declared root-contained output roles',t=>{
  assert.ok(docs.some(d=>d.relativePath.startsWith('10_调研报告/新输出报告_')));
  assert.ok(docs.some(d=>d.relativePath.startsWith('11_提示词/新输出提示词_')));
 });
+
+test('Markdown reports render nested lists and quotes while escaping untrusted text in every block',()=>{
+ const html=renderMarkdownReport('# 研究结论\n\n> 引用 <img src=x onerror=alert(1)>\n>\n> - 引用内的要点\n\n3. 第一项\n   - 嵌套 <script>evil()</script>\n4. 第二项\n\n尾段\n\n```md\n> 代码中的引用\n- 代码中的列表\n```');
+ assert.match(html,/<blockquote>[\s\S]*<p>引用 &lt;img[\s\S]*<ul><li><p>引用内的要点<\/p><\/li><\/ul>[\s\S]*<\/blockquote>/);
+ assert.match(html,/<ol start="3"><li><p>第一项<\/p><ul><li><p>嵌套 &lt;script&gt;evil\(\)&lt;\/script&gt;<\/p><\/li><\/ul><\/li><li><p>第二项<\/p><\/li><\/ol>/);
+ assert.match(html,/<\/ol>[\s\S]*<p>尾段<\/p>/);assert.match(html,/<pre><code>&gt; 代码中的引用\n- 代码中的列表\n<\/code><\/pre>/);
+ assert.doesNotMatch(html,/<script|<img|onerror="/i);assert.match(html,/default-src 'none'; style-src 'unsafe-inline'/);
+});
+
+test('Markdown list and quote projection preserves source files and original HTML report bytes',t=>{
+ const f=fixture(t),markdown='# 列表研究报告\r\n\r\n- 发现一\r\n- 发现二\r\n\r\n> 有来源的观察\r\n',original='<!doctype html><html><body><p>原 HTML 保留</p><script>original()</script></body></html>';
+ f.put('06_发布复盘/列表研究报告.md',markdown);f.put('06_发布复盘/原格式报告.html',original);
+ const api=openLibrary(f.runtime),reports=api.readProduction().reports,report=reports.find(value=>value.title==='列表研究报告'),html=api.readAsset(report.pages[0].assetHash).data.toString();
+ assert.match(html,/<ul><li><p>发现一<\/p><\/li><li><p>发现二<\/p><\/li><\/ul>/);assert.match(html,/<blockquote><p>有来源的观察<\/p><\/blockquote>/);
+ assert.equal(fs.readFileSync(path.join(f.root,'06_发布复盘/列表研究报告.md'),'utf8'),markdown);assert.equal(fs.readFileSync(path.join(f.root,'06_发布复盘/原格式报告.html'),'utf8'),original);
+});

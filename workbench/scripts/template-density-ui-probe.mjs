@@ -82,22 +82,22 @@ async function probeMain(probeRoot){
    if(width>=1280)await fs.writeFile(path.join(probeRoot,'templates-'+width+'.png'),(await win.webContents.capturePage()).toPNG());
   }
   assert.equal(await run(`([...document.querySelectorAll('.creator-template-original')].every(el=>getComputedStyle(el).objectFit==='contain'))`),true,'all original image previews stay uncropped');
-  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-stack-sheet").length'),3,'front and two fanned references');
+  assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-stack-sheet").length'),6,'all six real references participate in the deck');
   assert.equal(await run('document.querySelectorAll(".creator-style-card")[0].querySelectorAll(".creator-template-thumbnails img").length'),3,'bounded thumbnail strip');
   await win.setSize(1280,1000);await paint();
   await run('document.querySelector(".creator-template-thumbnails button:nth-child(2)").click()');
   assert.equal(await run('document.querySelector(".creator-template-original").alt'),'参考模板 0参考样张 2','thumbnail selects the front reference');
   assert.equal(await run(`(()=>{const wrapper=document.querySelector('.creator-templates .list-toolbar-search'),input=wrapper.querySelector('input'),a=wrapper.getBoundingClientRect(),b=input.getBoundingClientRect(),style=getComputedStyle(input);return Math.abs((a.top+a.height/2)-(b.top+b.height/2))<1&&style.textAlign==='left'&&parseFloat(style.paddingTop)===0&&parseFloat(style.paddingBottom)===0;})()`),true,'search text is vertically centered and left aligned');
   const geometryBefore=await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`);
-  const actionPositionBefore=await run(`(()=>{const button=document.querySelector('.creator-template-use').getBoundingClientRect();return {left:button.left,top:button.top,width:button.width,height:button.height};})()`);
+  const actionPositionBefore=await run(`(()=>{const button=document.querySelector('.creator-template-use');return {left:button.offsetLeft,top:button.offsetTop,width:button.offsetWidth,height:button.offsetHeight};})()`);
   const hover=await run(`(()=>{const r=document.querySelector('.creator-template-art').getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`);
   win.webContents.sendInputEvent({type:'mouseMove',...hover});await paint();
   assert.deepEqual(await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`),geometryBefore,'hover preserves flow geometry while the design-standard visual lift remains allowed');
-  assert.deepEqual(await run(`(()=>{const button=document.querySelector('.creator-template-use').getBoundingClientRect();return {left:button.left,top:button.top,width:button.width,height:button.height};})()`),actionPositionBefore,'hover keeps the primary action anchored at the card bottom');
+  assert.deepEqual(await run(`(()=>{const button=document.querySelector('.creator-template-use');return {left:button.offsetLeft,top:button.offsetTop,width:button.offsetWidth,height:button.offsetHeight};})()`),actionPositionBefore,'hover lift preserves primary action layout inside the card');
   await run('document.querySelector(".creator-template-use").focus()');await wait('getComputedStyle(document.querySelector(".creator-template-use")).opacity==="1"');
   assert.equal(await run('getComputedStyle(document.querySelector(".creator-template-use")).opacity'),'1','keyboard focus reveals the use action');
   assert.deepEqual(await run(`(()=>{const el=document.querySelector('.creator-style-card');return {width:el.offsetWidth,height:el.offsetHeight};})()`),geometryBefore,'keyboard focus preserves card geometry');
-  assert.deepEqual(await run(`(()=>{const button=document.querySelector('.creator-template-use').getBoundingClientRect();return {left:button.left,top:button.top,width:button.width,height:button.height};})()`),actionPositionBefore,'keyboard focus keeps the primary action anchored at the card bottom');
+  assert.deepEqual(await run(`(()=>{const button=document.querySelector('.creator-template-use');return {left:button.offsetLeft,top:button.offsetTop,width:button.offsetWidth,height:button.offsetHeight};})()`),actionPositionBefore,'keyboard focus lift preserves primary action layout inside the card');
   assert.equal(await run('document.querySelectorAll(".creator-no-reference").length'),0,'empty templates remain excluded from selection');
   await run('document.querySelector(".creator-template-use").click()');assert.equal(await run('window.usedTemplate'),'template-0','primary use action remains connected');
   await click('照片与默认设置');assert.equal(await run('window.configurationOpened'),1,'uses existing configuration callback');

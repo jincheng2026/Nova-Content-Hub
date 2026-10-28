@@ -214,7 +214,7 @@
 .cover-template-filters .semi-button[aria-pressed=true] { background:white; color:var(--semi-color-text-0); box-shadow:0 1px 3px rgba(0,0,0,.1); }
 .cover-template-selection { margin:0 0 10px; overflow-wrap:anywhere; }
 .cover-settings-selection { font-size:13px; color:var(--semi-color-primary); }
-.cover-template-choice { transition:transform .35s cubic-bezier(.2,.7,.3,1),box-shadow .35s; }
+.cover-template-choice { transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s; }
 .cover-template-choice:hover,.cover-template-choice:focus-within { transform:translateY(-4px) scale(1.015); }
 .cover-create-settings > .cover-advanced { margin-top:16px; }
 .cover-advanced > summary { overflow-wrap:anywhere; line-height:1.7; }
