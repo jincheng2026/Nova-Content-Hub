@@ -3,6 +3,7 @@ import type {Worker, WorkerOperation, WorkerOperations} from '../shared/contract
 const explanations: Record<string, string> = { PHOTO_SOURCE_MISSING: '照片尚未进入内容库，原文件已不在原位置。请恢复原文件后继续；待处理记录仍保留。', STALE_INPUT: '标题或正文已改变，请用当前内容重新准备封面；原待处理意图仍保留。', INVALID_IMAGE: '图片未通过完整解码校验，请选择完整的PNG、JPEG、WebP或GIF原图。' };
 Object.assign(explanations, {
     BUSY: '内容库暂时被其他操作占用，请稍后刷新；原文件和草稿会保留。',
+    VAULT_BUSY: '知识库暂时被另一项操作占用，请稍后重试；当前填写和任务保持不变。',
     LOCK_UNCERTAIN: '内容库的保护记录不完整，已停止读写以保护资料。请保留原文件夹并联系维护者恢复副本；已有恢复副本时可选择“打开其他内容库”。请勿自行删除内部文件。',
     UPGRADE_ALREADY_CURRENT: '这个内容库已是当前版本，可使用“打开本机内容库”。',
     UPGRADE_FUTURE_FORMAT: '这个内容库来自更新版本，请使用创建它的新版工作台；原文件保留。',
@@ -10,6 +11,7 @@ Object.assign(explanations, {
 });
 const retryableReads = new Set<WorkerOperation>(['finalRead','finalPreview','finalExport','finalAssetRaster','readCoverPackaging','readCoverDesigns','vaultRead','vaultDocument','vaultLocation','vaultReferenceLocation','vaultWorkDirectory','vaultTopicMenus','vaultWorkContext','vaultContentSource','vaultContentDirectory','vaultSources','productionMedia', 'productionContext', 'productionAsset', 'productionRead', 'productionCreation', 'productionReport', 'productionReportAttachment', 'readCoverProgress', 'templateProgress', 'workspace', 'list', 'readContent', 'workspaceLibrary', 'workspaceContent', 'workspacePrompt', 'coverAssets', 'readCover', 'raster', 'rasterBatch']);
 const busyDelays = [80, 240, 600];
+const vaultBusyDelays = [100, 250, 500, 1000, 1500, 2000];
 const boundedReads = retryableReads;
 const readTimeoutMs = 15_000;
 
@@ -75,8 +77,9 @@ export class WorkerClient implements Worker {
                     resolve(value as WorkerOperations[K]['result']);
                 },
                 reject: error => {
-                    if (!this.stopped && isRecord(error) && error.code === 'BUSY' && retryableReads.has(op) && retries < busyDelays.length) {
-                        this.pending!.timer = setTimeout(send, busyDelays[retries++]);
+                    const delays = isRecord(error) && error.code === 'VAULT_BUSY' ? vaultBusyDelays : busyDelays;
+                    if (!this.stopped && isRecord(error) && ['BUSY','VAULT_BUSY'].includes(String(error.code)) && retryableReads.has(op) && retries < delays.length) {
+                        this.pending!.timer = setTimeout(send, delays[retries++]);
                         return;
                     }
                     clearTimeout(this.pending?.timer);

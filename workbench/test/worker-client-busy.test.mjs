@@ -19,6 +19,7 @@ function fixture(t, replies) {
 }
 
 const busy = {ok: false, error: {code: 'BUSY'}};
+const vaultBusy = {ok: false, error: {code: 'VAULT_BUSY'}};
 const args = {binding: {root: '/original', libraryId: 'original', rootIdentity: {dev: '1', ino: '2'}}, view: 'active'};
 
 test('a readonly BUSY retries the pinned request, occupying the single pending slot', async t => {
@@ -77,4 +78,16 @@ test('stop cancels a scheduled retry, rejects its caller and never respawns', as
     await assert.rejects(f.client.call('list', args), {code: 'WORKER_STOPPED'});
     assert.equal(f.requests.length, 1);
     assert.equal(f.spawned(), 1);
+});
+test('Vault contention retries only the exact finite read, with a bounded friendly failure',async t=>{
+ const f=fixture(t,()=>vaultBusy),rejected=assert.rejects(f.client.call('productionRead',args),error=>error.code==='VAULT_BUSY'&&/知识库.*占用/.test(error.message));
+ for(const delay of [100,250,500,1000,1500,2000])t.mock.timers.tick(delay);
+ await rejected;assert.equal(f.requests.length,7);for(const request of f.requests)assert.deepEqual(request,f.requests[0]);
+ t.mock.timers.tick(60_000);assert.equal(f.requests.length,7);
+});
+test('Vault contention never replays a mutation',async t=>{
+ const f=fixture(t,()=>vaultBusy);await assert.rejects(f.client.call('productionMutate',args),{code:'VAULT_BUSY'});t.mock.timers.tick(60_000);assert.equal(f.requests.length,1);
+});
+test('unrelated NOT_READY failures never retry',async t=>{
+ const g=fixture(t,()=>({ok:false,error:{code:'NOT_READY'}}));await assert.rejects(g.client.call('productionRead',args),{code:'NOT_READY'});t.mock.timers.tick(60_000);assert.equal(g.requests.length,1);
 });

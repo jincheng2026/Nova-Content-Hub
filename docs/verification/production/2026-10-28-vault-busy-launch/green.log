@@ -1,0 +1,30 @@
+✔ an external live Vault lock releases before the same readonly task request opens its assistant once (8814.828292ms)
+✔ a readonly BUSY retries the pinned request, occupying the single pending slot (12.506583ms)
+✔ every allowed readonly operation stops after three extra attempts and explains temporary contention (8.9445ms)
+✔ writes, imports, submissions and recovery/query operations are never replayed on BUSY (1.355167ms)
+✔ readonly non-BUSY failures are returned once (0.268ms)
+✔ stop cancels a scheduled retry, rejects its caller and never respawns (0.262125ms)
+✔ Vault contention retries only the exact finite read, with a bounded friendly failure (0.648833ms)
+✔ Vault contention never replays a mutation (0.182458ms)
+✔ unrelated NOT_READY failures never retry (0.182375ms)
+✔ a hung refresh stops its reader and releases the operation queue only after worker exit (16.265917ms)
+✔ writes have no read deadline, are sent once, and keep their exact pending slot (0.374625ms)
+✔ finalRead uses the finite read deadline and can retry after exit (3.527708ms)
+✔ finalPreview uses the finite read deadline and can retry after exit (0.606166ms)
+✔ finalExport uses the finite read deadline and can retry after exit (0.351625ms)
+✔ finalAssetRaster uses the finite read deadline and can retry after exit (12.759833ms)
+✔ readCoverPackaging uses the finite read deadline and can retry after exit (0.320208ms)
+✔ vaultWorkDirectory uses the finite read deadline and can retry after exit (0.365875ms)
+✔ vaultTopicMenus uses the finite read deadline and can retry after exit (9.953667ms)
+✔ vaultWorkContext uses the finite read deadline and can retry after exit (0.628041ms)
+✔ vaultContentSource uses the finite read deadline and can retry after exit (0.480542ms)
+✔ vaultContentDirectory uses the finite read deadline and can retry after exit (1.281375ms)
+✔ vaultSources uses the finite read deadline and can retry after exit (0.227ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9412.33475

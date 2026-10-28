@@ -1,0 +1,12 @@
+
+> nova-content-hub-workbench@0.5.4 typecheck
+> npm run typecheck:native && npm run typecheck:renderer
+
+
+> nova-content-hub-workbench@0.5.4 typecheck:native
+> tsc -p tsconfig.native.json --noEmit
+
+src/main/jincheng-research-services.mts(31,73): error TS2353: Object literal may only specify known properties, and 'resolveSampleEvidence' does not exist in type 'ResearchRuntimeOptions'.
+src/main/jincheng-research-services.mts(31,101): error TS7006: Parameter 'sourceRequestId' implicitly has an 'any' type.
+src/main/production-services.mts(167,198): error TS2322: Type '{ sourceReceiptId?: string | undefined; videoId?: string | undefined; canonicalUrl?: string | undefined; responseHash?: string | undefined; researchVideoIds?: string[]; researchSampleEvidence?: ResearchSearchEvidence; ... 4 more ...; radarAuthorIds?: string[] | undefined; }' is not assignable to type 'ProductionJSON | undefined'.
+  Type '{ sourceReceiptId?: string | undefined; videoId?: string | undefined; canonicalUrl?: string | undefined; responseHash?: string | undefined; researchVideoIds?: string[]; researchSampleEvidence?: ResearchSearchEvidence; ... 4 more ...; radarAuthorIds?: string[] | undefined; }' is not assignable to type 'undefined'.
