@@ -33,3 +33,8 @@
 | Acceptance-02 | 本执行代理未做 GUI、viewport、键盘焦点、窄窗口或截图验收，交 Root。静态/注入测试不等于视觉通过。 |
 
 源码阶段：native 查询与权限 `6be0c8d`；生产 core、restoreReport、scope controller/worker 薄片由唯一负责人 J 提交 `6676cc6`。本目录及 UI/contracts/tests 为后续精确提交；未声明任何平台安装或交付包验收。
+
+## 审查后窄修
+
+- 检索失败页重试：21 页首次全部失败后，只恢复第 21 页，原算法重复前 20 页导致饥饿。`9ca004d` 将失败项移至队尾，保持每批最多 20 页，续查能访问恢复页并保留其他失败原因；search/worker/hook 19/19。
+- 正文模式：任意 `meta.manualMarkdown` 曾可诱使 HTML 编辑器在只改标题时提交 Markdown，导致两页报告缩成一页。现在 native 权限结果只在可编辑、单注册页、原存标题渲染的 Markdown hash 等于当前注册 assetHash 时给出 `verifiedMarkdown`；UI 只信此独立结果。陈旧 metadata 仍原样保留，未核验报告继续提交完整 HTML pages/pageId。新测试覆盖一页 hash 不符与两页陈旧 metadata，以及真实手写 Markdown。core/manager/search 31/31、Desktop/workspace/worker 33/33，两端 tsc 0。

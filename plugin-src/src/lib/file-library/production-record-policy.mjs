@@ -1,3 +1,4 @@
+import {renderMarkdownReport} from '../vault/resources.mjs';
 import fs from 'node:fs';
 import {bindingForRuntime,digest,fail,identity,json,readBytes,safe,uuidFor} from '../vault/core.mjs';
 const provenance=value=>{const copy={...(object(value)??{})};delete copy.status;delete copy.writable;return JSON.stringify(copy);};
@@ -37,7 +38,17 @@ function policy(kind,record,source){
  if(digest(readBytes(source.binding.vaultRoot,entry.relativePath))!==entry.hash)return{editable:false,reason:'原资料已变化，请刷新后核对。'};
  return{editable:true,reason:null};
 }
-export function productionRecordPermissions(runtimeRoot,snapshot){const source=context(runtimeRoot),result={accounts:{},reports:{}};for(const [kind,collection]of [['account','accounts'],['report','reports']])for(const record of snapshot[collection])result[collection][record.id]=policy(kind,record,source);return result;}
+export function productionRecordPermissions(runtimeRoot,snapshot){
+ const source=context(runtimeRoot),result={accounts:{},reports:{}};
+ for(const [kind,collection]of [['account','accounts'],['report','reports']])for(const record of snapshot[collection]){
+  const permission=policy(kind,record,source),markdown=kind==='report'&&object(record.meta)?.manualMarkdown;
+  // Metadata alone never chooses the editable body. Match the currently saved
+  // title and exact single registered asset before exposing Markdown to the UI.
+  if(permission.editable&&typeof markdown==='string'&&Buffer.byteLength(markdown)<=100000&&record.pages.length===1&&digest(renderMarkdownReport(markdown,record.title))===record.pages[0].assetHash)permission.verifiedMarkdown=markdown;
+  result[collection][record.id]=permission;
+ }
+ return result;
+}
 /** Core invokes this while holding its existing workspace lock, before publishing an intent. */
 export function assertProductionRecordMutation(runtimeRoot,snapshot,op,input){
  const kind=/Account$/.test(op)?'account':/Report$/.test(op)?'report':null;if(!kind)return;const old=input.id?snapshot[kind==='account'?'accounts':'reports'].find(record=>record.id===input.id):null;

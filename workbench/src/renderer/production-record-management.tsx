@@ -9,7 +9,7 @@ import {useManagedDraftGuard} from './library-panels.tsx';
 import type {ProductionAccount,ProductionReport} from '../shared/production-contracts.ts';
 import type {ProductionJSON} from '../../../plugin-src/src/lib/file-library/production.d.ts';
 
-export type ManagedProductionRecord={kind:'account';record:ProductionAccount;canManage:boolean;readOnlyReason?:string}|{kind:'report';record:ProductionReport;canManage:boolean;readOnlyReason?:string};
+export type ManagedProductionRecord={kind:'account';record:ProductionAccount;canManage:boolean;readOnlyReason?:string;verifiedMarkdown?:string}|{kind:'report';record:ProductionReport;canManage:boolean;readOnlyReason?:string;verifiedMarkdown?:string};
 export type AccountManagementInput=Pick<ProductionAccount,'id'|'name'|'platform'|'url'|'note'|'tags'|'images'|'avatarAssetHash'|'reportIds'>;
 export type ReportManagementInput=Pick<ProductionReport,'id'|'title'|'type'|'accountIds'|'sourceUrl'|'collectedAt'|'meta'>&{pages?:ProductionReport['pages'];pageId?:string;markdown?:string};
 export interface ProductionManagementActions {
@@ -28,7 +28,7 @@ function permission(entry:ManagedProductionRecord):string|null {
  return null;
 }
 type Draft={entry:ManagedProductionRecord;baseline:string;token:string;markdown:string|undefined;baselineMarkdown:string|undefined};
-const makeDraft=(entry:ManagedProductionRecord,token:string):Draft=>{const markdown=entry.kind==='report'&&typeof object(entry.record.meta)?.manualMarkdown==='string'?object(entry.record.meta)!.manualMarkdown as string:undefined;return {entry:structuredClone(entry),baseline:JSON.stringify(entry.record),token,markdown,baselineMarkdown:markdown};};
+const makeDraft=(entry:ManagedProductionRecord,token:string):Draft=>{const markdown=entry.kind==='report'?entry.verifiedMarkdown:undefined;return {entry:structuredClone(entry),baseline:JSON.stringify(entry.record),token,markdown,baselineMarkdown:markdown};};
 export function ProductionRecordEditor({identityKey,record,snapshotToken,open,busy,accounts,close,onSave,onChanged,chooseReportPage,onDirtyChange}:EditorProps){
  const [draft,setDraft]=useState(()=>makeDraft(record,snapshotToken)),[working,setWorking]=useState(false),[message,setMessage]=useState(''),[replaceId,setReplaceId]=useState(record.kind==='report'?record.record.pageId:''),[newTag,setNewTag]=useState(''),[confirmReload,setConfirmReload]=useState(false);
  const key=identityKey+':'+record.kind+':'+record.record.id,scope=useRef(key),generation=useRef(0),active=useRef(false),mounted=useRef(true);scope.current=key;
