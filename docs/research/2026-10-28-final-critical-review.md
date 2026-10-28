@@ -182,3 +182,32 @@
 独立运行新增正例 **2/2 通过，5.368 秒**：真实 Vault/worker/HTTP 测试覆盖 BOM+CRLF、恶意 HTML 文本转义、原字节下载、附件变化后预览/下载 cap 双拒绝，以及独立 HTML 对默认 accounts 来源的回溯和重叠拒绝。随后新负例 **1/1 通过，1.936 秒**，覆盖假 href、非法 UTF-8/NUL、缺失/symlink/逃根/查询串、managed/deleted/无效显式 source/原件及 prepared hash 失效。检查了最终新增框架源根专项与 sourceDirectory 的实际调用位置，没有因此重复全仓测试。
 
 本节仍是定点源码与隔离链路验收。6 个真实附件的完整映射和最终安装包的原页点击/下载应由集成证据另行确认；不把受控测试结果替代最终安装验收。
+
+
+## 报告附件返回后 iframe 空白：history 恢复补丁源码复核
+
+集成负责人在实际已安装 baf 候选上确认：报告打开 Markdown 附件并完成原字节下载后，Chrome Back 返回已重新请求的新 wrapper/new nonce，但 opaque iframe 长时间停在 about:blank；直接重开正常。因此不能仅按 BFCache persisted=true 处理，也不能把此前导航/下载 HTTP 测试当作浏览器历史正常的证明。
+
+本轮只读检查 `production-pages.mts` 的固定 frameSrc 与 pageshow handler，以及新增 history 专项；未更改产品、模板、CSP、sandbox、原页写入或插件版本。最终源码暂无新增确定 P1/P2：frameSrc 由服务端 capability/page UUID/bridge nonce/已验证 fragment 生成，同值经属性转义和 JSON 序列化传入；恢复不读取 DOM src 或 location 参数来决定 URL。pageshow 在 persisted 或 performance navigation.type=back_forward 时清除旧 timer，并用 setTimeout(0) 推迟到当前 history 恢复任务之后；只重设仍 connected 的该 iframe，重置 BFCache 可能保留的 navigating=true。没有父页 reload、pushState、replaceState 或额外业务写入；GET frame 仍走原 capability 与版本验证，失效 nonce 不会自动续授权。
+
+独立执行 `node --test workbench/test/production-report-history.test.mjs`：**2/2 通过，2.997 秒**。覆盖 persisted=true 和 persisted=false/back_forward、新 wrapper nonce 对应的固定 iframe URL、初次 navigate 不重载、detached frame 不操作、重复 pageshow 仅一个 timer、恢复后的再次附件导航，以及真实 worker/HTTP 下 iframe 和附件预览/下载。执行方另报告 15 项 targeted 和 native typecheck 通过。
+
+这些条件/计时器断言以 VM 执行，HTTP 可用性也不等于实际 joint-session-history 正常。必须由主线程唯一 Chrome 操作者完成：Back 后正文、再点同附件、Forward 栈、带 fragment 页返回。子 frame 重导航是否影响 forward 栈是本轮必须实测的浏览器行为；在真实结果前仅给源码范围通过，不宣布已修复真实 Chrome 空白。最终安装包仍需随新冻结产物验收。
+
+
+### History 实测纠正与 replace-only 候选
+
+后续主线程排除了 CUA 跨导航旧 Tab handle 的干扰：旧已安装 baf 返回后，重新取得同 tab 两次仍显示 about:blank，原生 Chrome 前台 AX 也只有 wrapper，真实 P2 保持成立。同时真实 Chrome 证明前述 iframe.src 赋值候选虽然恢复正文，却清除了 Forward 历史（Cannot navigate forward: no next page）。因此前一节的静态/VM通过不能作为该候选合入依据，src 方案作废。
+
+唯一修正点现为：服务端生成绝对 http://127.0.0.1 固定 cap/page/nonce/已核 fragment URL，pageshow 的下一任务仅调用 `frame.contentWindow.location.replace(config.frameSrc)`，不读 child location 或 DOM 地址；无 src fallback，无 parent history/reload，无 CSP/sandbox 变化。若跨 opaque Location.replace 被浏览器拒绝，只显示固定恢复失败提示并保留从目录重开路径。VM 将 src setter 设为抛错并断言零调用，确保不会回退到已知破坏 Forward 的方式。
+
+本审查复读实际 replace-only 差异并独立运行新 2 项 history 测试，**2/2 通过，5.175 秒**。执行负责人报告相应 15 项 targeted 通过、native typecheck 通过，并补充 SecurityError 提示用例。静态范围暂无新增确定 P1/P2；跨 opaque replace 是否允许、Back→Forward→Back→再次点击与 fragment 的实际结果仍以主线程唯一 Chrome 操作者验收为准，未获得该证据前不宣布可合入。
+
+
+### Replace-only 候选的真实 Chrome 验收收口
+
+主线程唯一浏览器操作者已在 `127.0.0.1:65450` 的 replace-only 实际 ProductionPages fixture 完成连续操作：报告 → Markdown 附件 → Back 返回报告正文 → Forward 返回同 Markdown → Back 返回正文 → 再次点击该附件 → Back 返回正文 → 本页 `#detail` 锚点及 details 展开。主线程确认上述链路全部成功，Forward 未被清除，恢复后的 navigating 状态未阻止再次点击，正文与折叠交互均可用。此结果补齐上一节留下的真实浏览器行为门槛；不再以 VM 推断 joint-session-history 的正确性。
+
+本审查读回了 `docs/verification/production/2026-10-28-final-050-arm64-v4/history-fix-reclick.md.txt`：实际 Chrome tab 展示研究结论.md 的纯文本预览与固定下载链接；另读回 `history-fix-anchor-and-expand.txt`，确认报告页 details 已 expanded 且正文“折叠交互仍可用”可见，对应截图为同目录 `history-fix-anchor-and-expand.png`。连续 Back/Forward 成功及 #detail URL 的详细操作证据保留在主线程实际工具输出；这两份静态 AX 文件并不单独证明完整历史序列。
+
+窄审查结论：**replace-only 候选可以合入并进入最终重建/安装验收，本轮无遗留确定 P1/P2**。固定绝对服务端 URL、原 capability/版本 guard、CSP/sandbox 和无 src fallback 的边界不变。此前 `iframe.src` 赋值候选真实清空 Forward 的红色结果继续保留，该候选已废弃，不能用它的测试通过记录替代最终方案。此次通过的是真实 Chrome 对当前源码 fixture 的历史链路，尚不把它表述为重新构建后的安装包已验收；最终产物仍应按冻结版本与哈希记录。
