@@ -1,0 +1,41 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import {randomUUID,createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
+import {createLibrary} from '../../file-library/index.mjs';
+import {createResearchRuntime} from '../index.mjs';
+import {prepareProductionHandoff} from '../../../bridge/production-handoff.mjs';
+import {nativeHandoffDirectory} from '../../../bridge/native-handoff.mjs';
+import {referenceCardPayload} from './fixtures/reference-card.mjs';
+const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
+test('runtime reference card renders HTML, imports through fixed CLI claim and submits the exact asset',async t=>{
+ const dir=fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(),'nova-reference-card-submit-')));t.after(()=>fs.rmSync(dir,{recursive:true,force:true}));
+ const vault=path.join(dir,'vault');fs.mkdirSync(vault);
+ const runtime=createResearchRuntime({vaultRoot:vault,executeService:async()=>{throw Error('No provider call authorized');}});
+ const config={version:1,researchId:'reference-card',outputDirectory:'调研报告库/卡片',route:'comments',platform:'manual',targetIds:['existing-comments'],operations:[],maxRequests:0,comments:true,commentMode:'reference-card'};
+ await runtime.prepare(config);await runtime.saveDataset(config.researchId,referenceCardPayload());const findings=await runtime.freeze(config.researchId),report=await runtime.render(config.researchId);
+ assert.match(report.relativePath,/\.html$/);assert.equal(report.findingsHash,findings.sha256);
+ assert.match(report.sourceMarkdown.relativePath,/\.md$/);
+ const html=fs.readFileSync(path.join(vault,report.relativePath)),markdown=fs.readFileSync(path.join(vault,report.sourceMarkdown.relativePath));
+ assert.equal(sha(html),report.sha256);assert.equal(sha(markdown),report.sourceMarkdown.sha256);assert.match(markdown.toString(),/cid c1/);
+ for(const [relative,original] of [[report.relativePath,html],[report.sourceMarkdown.relativePath,markdown]]){
+  fs.writeFileSync(path.join(vault,relative),'外部手改');await assert.rejects(runtime.render(config.researchId),{code:'CONFLICT'});
+  assert.equal(fs.readFileSync(path.join(vault,relative),'utf8'),'外部手改');fs.writeFileSync(path.join(vault,relative),original);
+ }
+ const lib=createLibrary(path.join(dir,'library'));
+ const snapshot=lib.mutateProduction('createTask',{kind:'research',host:'codex',title:'参考洞察卡',prompt:'交回已有评论证据。',parameters:{comments:true},tools:[],budget:{amount:0,currency:'REQ'},expectedToken:lib.readProduction().editToken});
+ const task=snapshot.tasks[0],release={format:'nova-content-plugin-release',schemaVersion:1,productId:'nova-content-hub',appScope:'nova-content-hub',protocolVersion:1,prototype:true,version:'0.5.4',AUTH_MODE:'disabled',pairId:'nova-content-hub@0.5.4:p1:disabled',experimental:true,productionReady:false,platform:process.platform,arch:process.arch};
+ const src=path.join(dir,'src');fs.cpSync(new URL('../../../',import.meta.url),src,{recursive:true});fs.writeFileSync(path.join(src,'release.json'),JSON.stringify(release));
+ const h=await prepareProductionHandoff(nativeHandoffDirectory(),{root:lib.info.root,libraryId:lib.info.libraryId,rootIdentity:lib.info.rootIdentity},{taskId:task.id,attemptId:task.activeAttemptId,requestHash:task.requestHash,host:'codex'},release);t.after(()=>fs.rmSync(path.join(nativeHandoffDirectory(),h.id+'.production.json'),{force:true}));
+ const run=(op,payload)=>{const child=spawnSync(process.execPath,[path.join(src,'cli.mjs'),'production',op,'--handoff',h.id,'--stdin'],{input:JSON.stringify(payload),encoding:'utf8',timeout:15000});assert.equal(child.error,undefined);return JSON.parse(child.stdout);};
+ const identity={claimToken:randomUUID(),workerId:'reference-card-test'};assert.equal(run('claim',{...identity,mutationId:randomUUID()}).ok,true);
+ assert.equal(run('import',{...identity,claimToken:randomUUID(),purpose:'production-report',path:path.join(vault,report.relativePath)}).ok,false);
+ assert.equal(run('import',{...identity,purpose:'production-report',path:path.join(vault,report.sourceMarkdown.relativePath)}).ok,false,'Markdown must not bypass HTML import gate');
+ const imported=run('import',{...identity,purpose:'production-report',path:path.join(vault,report.relativePath)});assert.equal(imported.ok,true,JSON.stringify(imported));assert.equal(imported.result.assetHash,report.sha256);
+ const submitted=run('submit',{...identity,mutationId:randomUUID(),result:{summary:'参考洞察卡，仍待本人判断。',artifacts:[{id:randomUUID(),kind:'report',title:'参考洞察卡',text:'已有评论证据。',assetHash:imported.result.assetHash,data:{findingsHash:report.findingsHash,sourceMarkdown:report.sourceMarkdown}}]}});assert.equal(submitted.ok,true,JSON.stringify(submitted));
+ assert.equal(submitted.result.attempt.status,'submitted');assert.equal(lib.readProduction().reports[0].pages[0].assetHash,report.sha256);
+ assert.equal(run('import',{...identity,purpose:'production-report',path:path.join(vault,report.relativePath)}).ok,false,'submitted claim cannot import late assets');
+});

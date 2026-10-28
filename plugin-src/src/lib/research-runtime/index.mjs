@@ -12,11 +12,13 @@ import {freezeFindings,computeAccount,renderAccountReport,validateCitations} fro
 import {validateIntakeProof,readIntakeFile,verifyIntakeReceipt} from './intake-proof.mjs';
 import {validateIntakeInput,intakeSource,intakeMetadata,findIntakeDuplicates,intakeNote,intakeReport,intakeContentHash} from './intake.mjs';
 import {validateCommentReport,freezeCommentFindings,renderCommentReport,renderReferenceCard} from './comment-report.mjs';
+import {renderReferenceCardDelivery} from './reference-card-delivery.mjs';
 export {validateResearchConfig,researchMediaAuthorized} from './common.mjs';
 export {validateTranscript,normalizeAsrResult,subtitles} from './transcript.mjs';
 export {buildCorrectedSubtitles,validateSubtitleCues,transcriptBody,spokenText} from './subtitles.mjs';
 export {freezeFindings,computeAccount,renderAccountReport,validateCitations,accountChartSpecs} from './report.mjs';
 export {validateCommentReport,freezeCommentFindings,renderCommentReport,renderReferenceCard} from './comment-report.mjs';
+export {renderReferenceCardDelivery} from './reference-card-delivery.mjs';
 export {prepareContentRecords,parseCount,extractServiceRows} from './normalize.mjs';
 export {validateTopicDataset,freezeTopicFindings,renderTopicReport} from './topic-report.mjs';
 const now=()=>new Date().toISOString();
@@ -152,7 +154,15 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
    await approved(s,'personal-advice',{findingsHash,advice,ownSources});const body={findingsHash,advice,ownSources},relative=`${s.config.outputDirectory}/findings/personal-advice-${hash(body)}.json`;
    if(!fs.existsSync(safe(root,relative,true)))write(relative,body);s.advice={path:relative,sha256:hash(body)};persist(l);return structuredClone(s.advice);
   });},
-  async render(id){return locked(id,async()=>{const l=load(id),s=l.state;if(!s.findings)fail('FROZEN_FINDINGS_REQUIRED');const frozen=read(s.findings.path);if(hash(frozen.object_findings)!==s.findings.sha256)fail('CONFLICT');const advice=s.advice?read(s.advice.path):null;if(advice&&(advice.findingsHash!==s.findings.sha256||hash(advice)!==s.advice.sha256))fail('CONFLICT');const comments=s.config.route==='comments',base={...frozen.object_findings,sources:[...(frozen.object_findings.sources??[]),...(advice?.ownSources??[])]},payload=comments?{...base,recommendations:[...frozen.object_findings.recommendations,...(advice?.advice??[])],frozen_findings_sha256:frozen.findings_sha256}:{...base,personal_advice:advice?.advice??[]};await approved(s,'render-report',payload);const card=comments&&s.config.commentMode==='reference-card',html=comments?(card?renderReferenceCard(payload):await renderCommentReport(payload,{level:commentLevel(s)})):s.config.route==='topic'?await renderTopicReport(payload):await renderAccountReport(payload,{assetRoot}),relative=`${s.config.outputDirectory}/${card?'洞察卡':'报告'}-${hash(html).slice(0,12)}${card?'.md':'-报告.html'}`;await approved(s,'publish-report',payload);if(!fs.existsSync(safe(root,relative,true)))write(relative,html);s.report={relativePath:relative,sha256:hash(html),findingsHash:s.findings.sha256,mechanicalValidation:'passed',visualValidation:'pending'};s.stage='report-generated';persist(l);return structuredClone(s.report);});},
+  async render(id){return locked(id,async()=>{const l=load(id),s=l.state;if(!s.findings)fail('FROZEN_FINDINGS_REQUIRED');const frozen=read(s.findings.path);if(hash(frozen.object_findings)!==s.findings.sha256)fail('CONFLICT');const advice=s.advice?read(s.advice.path):null;if(advice&&(advice.findingsHash!==s.findings.sha256||hash(advice)!==s.advice.sha256))fail('CONFLICT');const comments=s.config.route==='comments',base={...frozen.object_findings,sources:[...(frozen.object_findings.sources??[]),...(advice?.ownSources??[])]},payload=comments?{...base,recommendations:[...frozen.object_findings.recommendations,...(advice?.advice??[])],frozen_findings_sha256:frozen.findings_sha256}:{...base,personal_advice:advice?.advice??[]};await approved(s,'render-report',payload);const card=comments&&s.config.commentMode==='reference-card',delivery=card?renderReferenceCardDelivery(payload):null;
+   const html=delivery?.html??(comments?await renderCommentReport(payload,{level:commentLevel(s)}):s.config.route==='topic'?await renderTopicReport(payload):await renderAccountReport(payload,{assetRoot}));
+   const relative=`${s.config.outputDirectory}/${card?'洞察卡':'报告'}-${hash(html).slice(0,12)}-报告.html`;
+   await approved(s,'publish-report',payload);
+   const publish=(relativePath,content)=>{if(fs.existsSync(safe(root,relativePath,true))){if(hash(readBytes(root,relativePath))!==hash(content))fail('CONFLICT','已生成报告原件发生变化，未覆盖。');}else write(relativePath,content);};
+   let sourceMarkdown;
+   if(delivery){const mdPath=`${s.config.outputDirectory}/洞察卡-${hash(delivery.markdown).slice(0,12)}.md`;publish(mdPath,delivery.markdown);sourceMarkdown={relativePath:mdPath,sha256:hash(delivery.markdown)};}
+   publish(relative,html);
+   s.report={relativePath:relative,sha256:hash(html),findingsHash:s.findings.sha256,mechanicalValidation:'passed',visualValidation:'pending',...(sourceMarkdown?{sourceMarkdown}:{})};s.stage='report-generated';persist(l);return structuredClone(s.report);});},
  };
  return api;
 }

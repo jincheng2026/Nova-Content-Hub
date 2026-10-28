@@ -1,0 +1,21 @@
+✔ original comment schema, levels, missing likes and L4 application contract stay executable in Node (736.1785ms)
+✔ frozen findings cannot change and personal advice requires real own material (30.387125ms)
+✔ L4 cannot be claimed by L3 findings without verifiable advice; unreviewed comments do not substantiate findings (0.347125ms)
+✔ reference card preserves cid, hook criteria, evidence grades and user decision without passing L4 (2.574542ms)
+✔ reference-card delivery keeps validated Markdown and readable static HTML without raising evidence level (6.636958ms)
+✔ reference-card delivery rejects wrong citations and escapes authored HTML (1.710625ms)
+✔ runtime reference card renders HTML, imports through fixed CLI claim and submits the exact asset (28710.649542ms)
+✔ reviewed transcript preserves original timing limits and uncertainty ranges (23.288666ms)
+✔ one dataset drives account figures; missing values, comment levels and citations are truthful (810.933042ms)
+✔ findings freeze binds full corpus and separates personal advice (0.875208ms)
+✔ explicit vault directory persists raw→review→frozen report without overwriting historical files (724.309958ms)
+✔ registered original media, unaligned Qwen text, reviewed correction and personal advice stay separate (2851.349875ms)
+✔ timed material finalization leaves exact formal originals and moves intermediate evidence to trash (8644.213666ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 29980.526666

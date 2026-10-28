@@ -1,0 +1,4 @@
+export function referenceCardPayload(){
+ const evidence={claim:'一条回复询问字幕下载。',evidence_level:'comment_evidence',citations:[{source_id:'comment:c1',quote:'怎么下载字幕？'}]};
+ return {schema_version:2,title:'下载需求',summary:'仅对应这条回复。',collected_at:'2026-10-28',coverage:{note:'一条已有评论。',reported_total:null,reported_total_scope:'总数未知。',raw_rows:1,collection_note:'零扩展采集。'},comments:[{cid:'c1',content_id:'v1',video_title:'教程一',text:'怎么下载字幕？',likes:null,level:'reply',reviewed:true,topic_ids:[],source_url:'https://www.douyin.com/video/1'}],topics:[],sources:[],findings:[],recommendations:[],reference_card:{audience:'教程观看者。',questions:[structuredClone(evidence)],hook:{...evidence,evidence_level:'inference',classification:'unknown',criteria:{pinned:'unknown',authorReplied:'unknown',endingGuide:'unknown',keywordBurst:'unknown'}},objections:[],concerns:[],testable_actions:[],user_judgment:''}};
+}

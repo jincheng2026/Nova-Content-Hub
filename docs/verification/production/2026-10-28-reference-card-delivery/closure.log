@@ -1,0 +1,15 @@
+✔ original comment schema, levels, missing likes and L4 application contract stay executable in Node (389.953333ms)
+✔ frozen findings cannot change and personal advice requires real own material (8.148709ms)
+✔ L4 cannot be claimed by L3 findings without verifiable advice; unreviewed comments do not substantiate findings (6.226958ms)
+✔ reference card preserves cid, hook criteria, evidence grades and user decision without passing L4 (0.556583ms)
+✔ reference-card delivery keeps validated Markdown and readable static HTML without raising evidence level (19.2625ms)
+✔ reference-card delivery rejects wrong citations and escapes authored HTML (1.125125ms)
+✔ runtime reference card renders HTML, imports through fixed CLI claim and submits the exact asset (8729.358084ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9178.694209

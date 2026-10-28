@@ -67,7 +67,7 @@ JSON 只有 `{claimToken,workerId,input?}`；库绑定、研究配置、预算�
 
 账号报告使用原 `account-template.html`、`shared/reading.css`、`account-charts.mjs`、离线 ECharts 与原账号导航/搜索脚本；Node 移植数据/引用/统计和阅读组件。topic route 使用原 editorial CSS 与原 ECharts 脚本，完整复算原低粉硬门槛、漏斗和排除原因。
 
-评论 route 接受原 `schema_version:2` 评论合同，使用原 `report-template.html`、`reading.css`、`report.js`，可执行 L1–L4 检查。固定配置可选 `commentMode`：`report`（默认，完整页 L4）、`audience-depth`（人群页 L3）、`diagnostic`（先看材料 L2）、`reference-card`（Markdown 快卡，保留对账/cid/证据等级/用户判断，不冒称 L4）。完整页 `save-dataset` / 对象冻结允许先到 L3，可验证建议后追加。
+评论 route 接受原 `schema_version:2` 评论合同，使用原 `report-template.html`、`reading.css`、`report.js`，可执行 L1–L4 检查。固定配置可选 `commentMode`：`report`（默认，完整页 L4）、`audience-depth`（人群页 L3）、`diagnostic`（先看材料 L2）、`reference-card`（L2 快卡，保留对账/cid/证据等级/用户判断）。快卡 render 返回静态 HTML 主 `relativePath/sha256`，供 `production import` 后按回执 assetHash 提交；另有 `sourceMarkdown:{relativePath,sha256}` 保留原 Markdown，findingsHash 继续绑定冻结发现，不提升为 L3/L4。历史 `.md` 输出保持原样，需要 HTML 时显式重新 render。完整页 `save-dataset` / 对象冻结允许先到 L3，可验证建议后追加。
 
 快卡数据保存在 `reference_card`：`audience`，`questions/objections/concerns/testable_actions` 数组，`user_judgment`；每项为 `{claim,evidence_level:'comment_evidence'|'inference',citations:[{source_id,quote}]}`。`hook` 保留同样的判断与证据，并有 `classification:fulfilled_hook|promise_unlocated|unanswered_question|unknown`、`criteria:{pinned,authorReplied,endingGuide,keywordBurst}`（值 true/false/unknown）。所有引文逐字回到输入的真实 source，评论实证必须有可回查 cid。
 

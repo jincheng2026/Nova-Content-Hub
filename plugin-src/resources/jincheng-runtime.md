@@ -55,7 +55,7 @@ RUN jincheng-research OP --handoff UUID (--file ABSOLUTE_JSON | --stdin)
 3. 账号研究允许冻结`sampleLimit` 1—3（桌面当前明确上限3）。先collect已授权账号的user-posts，再`derive-samples`（input为空）取得真实responseHash、requestId、videoIds。broker把相同样本写入本attempt已结清费用receipt；其他账号、其他attempt、第四条或自造ID不获许可。需要更多原片时明确分批新建固定任务。
 4. `download {videoId}`只接受冻结videoIds或上述receipt派生样本，经过现有来源receipt、安全下载、媒体grant、SHA核对。`transcribe {videoId}`只用已登记本attempt原片及本地Qwen，allowCloud=false。未安装模型、无时间轴、字幕未通过时按真实缺口停等。
 5. `correct`、`finalize-intake`、`save-dataset`、`freeze-findings`、`personal-advice`、`render-report`按 [Node研究运行接口](../src/lib/research-runtime/README.md) 的具体schema执行；原方法的引用、L1—L4与素材字幕验收继续生效。
-6. render-report返回relativePath/sha256及真实visualValidation。按production import导入该生成文件并提交报告assetHash，status核对成功后回工作台人工验收。文件生成不会自动等于验收或发布；视觉未检查保留pending。
+6. render-report返回HTML主文件的relativePath/sha256及真实visualValidation。按production import导入该主文件，以导入回执assetHash提交报告；reference-card另外返回sourceMarkdown，保留原Markdown路径/hash和findingsHash作伴随证据。status核对成功后回工作台人工验收。历史.md结果需显式重新render取得HTML，不改旧回执。文件生成不会自动等于验收或发布；视觉未检查保留pending。
 
 账号/视频链接或关键词在桌面明确填写后冻结；短链接先由作者展开。留空时只处理已有资料，需要新增对象时新建固定任务，不能在助手中扩写冻结scope。小红书只授权已接通的profile/search；其原片/评论能力按实际限制说明。
 
