@@ -26,7 +26,10 @@ export const SECTIONS = Object.freeze({
 });
 const LIMIT = 8 * 1024 * 1024,
     MAX_FILES = 20000;
-export function isManagedAuthorPlanningPath(relative){return typeof relative==='string'&&/^05_内容草稿\/(?:已做\/)?T\d{3,}_[^/\\\0]+\/作者安排\.json$/.test(relative.replaceAll('\\','/'));}
+export function isManagedAuthorPlanningPath(relative) {
+    // Reserve ASCII case aliases on every host, including case-insensitive filesystems.
+    return typeof relative === 'string' && /^05_内容草稿\/(?:已做\/)?[Tt]\d{3,}_[^/\\\0]+\/作者安排\.[jJ][sS][oO][nN]$/.test(relative.replaceAll('\\', '/'));
+}
 export const digest = (value) =>
     createHash('sha256').update(value).digest('hex');
 export const uuidFor = (value) => {

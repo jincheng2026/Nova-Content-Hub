@@ -193,3 +193,49 @@ test('registered author recovery replays only frozen author bytes and exposes la
  fs.appendFileSync(path.join(f.root,f.card),'\n恢复前新增的作者原文。');const original=fs.readFileSync(path.join(f.root,f.card));fs.unlinkSync(file);receipt.status='pending';fs.writeFileSync(receiptPath,JSON.stringify(receipt));fs.rmSync(path.join(f.root,'.workbench/pending-mutations-index.json'));
  const recovered=readAuthorPlanningStatus(openVault(f.root).root,f.contentId);assert.equal(recovered.status,'paused');assert.equal(recovered.stale,true);assert.equal(recovered.history.length,1);assert.deepEqual(fs.readFileSync(path.join(f.root,f.card)),original);
 });
+
+
+// A case-only rename must not turn native author bytes into an ordinary writable source.
+function renamedAuthorRecord(t,{lowerT=false}={}){
+ const f=fixture(t),state=set(f,readAuthorPlanningStatus(f.runtime,f.contentId),'paused');
+ let relative=state.relativePath;
+ if(lowerT){const directory=path.posix.dirname(relative),renamed=directory.replace('/T050_','/t050_');fs.renameSync(path.join(f.root,directory),path.join(f.root,renamed));relative=renamed+'/作者安排.json';}
+ const alias=relative.replace(/\.json$/,'.JSON');fs.renameSync(path.join(f.root,relative),path.join(f.root,alias));
+ return {...f,state,alias,before:fs.readFileSync(path.join(f.root,alias))};
+}
+
+test('case-renamed author records remain absent from ordinary snapshots and bound catalogs',t=>{
+ const f=renamedAuthorRecord(t);
+ assert.ok(!readVaultSnapshot(f.runtime).documents.some(document=>document.relativePath===f.alias));
+ assert.ok(!readBoundSourceCatalog(f.root,{sourceId:'drafts'}).files.some(file=>file.relativePath==='T050_作者选题/作者安排.JSON'));
+ assert.throws(()=>readBoundSourceFile(f.root,{sourceId:'drafts',relativePath:'T050_作者选题/作者安排.JSON'}),{code:'INVALID_INPUT'});
+ // Case-sensitive hosts may report the committed canonical record missing; neither host may reset it.
+ if(fs.existsSync(path.join(f.root,f.state.relativePath)))assert.equal(readAuthorPlanningStatus(f.runtime,f.contentId).status,'paused');
+ else assert.throws(()=>readAuthorPlanningStatus(f.runtime,f.contentId),{code:'CONFLICT'});
+ assert.deepEqual(fs.readFileSync(path.join(f.root,f.alias)),f.before);
+});
+
+for(const action of ['save','trash'])test(`case-renamed author records reject ordinary ${action} even with a forged scan ID`,t=>{
+ for(const lowerT of [false,true]){
+  const f=renamedAuthorRecord(t,{lowerT}),id='doc-'+digest(f.alias).slice(0,32),request={id,expectedHash:f.state.revision};
+  assert.throws(()=>action==='save'?saveVaultDocument(f.runtime,{...request,text:'{}'},{mutationId:randomUUID()}):trashVaultDocument(f.runtime,request,{mutationId:randomUUID()}));
+  assert.deepEqual(fs.readFileSync(path.join(f.root,f.alias)),f.before);
+ }
+});
+
+test('generic recovery rejects ASCII case aliases of the managed author namespace',t=>{
+ for(const action of ['save','trash'])for(const lowerT of [false,true]){
+  const f=renamedAuthorRecord(t,{lowerT});
+  assert.throws(()=>runMutation(f.runtime,{action:'forged-generic'},{mutationId:randomUUID()},()=>({action,path:f.alias,beforeHash:f.state.revision,after:action==='trash'?null:Buffer.from('{}').toString('base64')})));
+  assert.deepEqual(fs.readFileSync(path.join(f.root,f.alias)),f.before);
+ }
+});
+
+test('ASCII case protection keeps exact directory boundaries and ordinary JSON aliases editable',t=>{
+ for(const relative of ['05_内容草稿/t050_安排/作者安排.JSON','05_内容草稿/已做/t050_安排/作者安排.JsOn','05_内容草稿\\t050_安排\\作者安排.jSoN'])assert.equal(isManagedAuthorPlanningPath(relative),true,relative);
+ const f=fixture(t);
+ for(const relative of ['02_内容素材/作者安排.JSON','05_内容草稿/T050_安排/子目录/作者安排.JSON','05_内容草稿/非T目录/作者安排.JSON']){
+  assert.equal(isManagedAuthorPlanningPath(relative),false,relative);fs.mkdirSync(path.dirname(path.join(f.root,relative)),{recursive:true});fs.writeFileSync(path.join(f.root,relative),'{}');
+  const document=readVaultSnapshot(f.runtime).documents.find(item=>item.relativePath===relative);assert.ok(document,relative);assert.equal(saveVaultDocument(f.runtime,{id:document.id,expectedHash:document.hash,text:'{"ordinary":true}'},{mutationId:randomUUID()}).text,'{"ordinary":true}');
+ }
+});
