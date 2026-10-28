@@ -323,3 +323,18 @@ test('Markdown list and quote projection preserves source files and original HTM
  assert.match(html,/<ul><li><p>发现一<\/p><\/li><li><p>发现二<\/p><\/li><\/ul>/);assert.match(html,/<blockquote><p>有来源的观察<\/p><\/blockquote>/);
  assert.equal(fs.readFileSync(path.join(f.root,'06_发布复盘/列表研究报告.md'),'utf8'),markdown);assert.equal(fs.readFileSync(path.join(f.root,'06_发布复盘/原格式报告.html'),'utf8'),original);
 });
+
+test('source resource projection preserves private attempt claims while public snapshots stay redacted',t=>{
+ const f=fixture(t),api=openLibrary(f.runtime);
+ const created=api.mutateProduction('createTask',{kind:'writing',title:'来源刷新回归',prompt:'只测试本地固定契约',host:'codex',tools:[],budget:{amount:0,currency:'REQ'},expectedToken:api.readProduction().editToken});
+ const task=created.tasks.at(-1),identity={taskId:task.id,attemptId:task.activeAttemptId,claimToken:randomUUID(),workerId:'projection-worker'};
+ api.mutateProduction('claimTask',identity);
+ f.put('01_对标账号/新增账号.md','---\nname: 新增账号\nplatform: 抖音\n---\n# 新增账号\n真实资料');
+ const projected=api.readProduction();assert.ok(projected.accounts.some(a=>a.name==='新增账号'));assert.equal(projected.tasks.at(-1).attempts[0].claimToken,null);
+ assert.equal(api.readProductionContext(task.id).attempt.claimToken,identity.claimToken,'projection may not persist the public redacted token');
+ api.mutateProduction('progressTask',{...identity,status:'claimed',progress:50,message:'来源更新后继续'});
+ f.put('01_对标账号/调研/新报告.html','<!doctype html><html><head><title>新报告</title></head><body>原报告内容</body></html>');
+ assert.ok(api.readProduction().reports.some(r=>r.title==='新报告'));
+ api.mutateProduction('submitTask',{...identity,result:{summary:'仍由同一claim提交',artifacts:[{id:randomUUID(),kind:'draft',title:'候选',text:'正文不丢失',assetHash:null,data:null}]}});
+ const ended=api.readProduction().tasks.find(t=>t.id===task.id).attempts[0];assert.equal(ended.status,'submitted');assert.equal(ended.claimToken,null);assert.ok(ended.receipt.sha256);
+});

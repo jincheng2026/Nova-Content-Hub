@@ -1,18 +1,23 @@
 import type {VaultPackaging,PackagingSource} from '../../../plugin-src/src/lib/vault/packaging.mjs';
 export type {VaultPackaging} from '../../../plugin-src/src/lib/vault/packaging.mjs';
+export type FrozenCoverContext = {kind:'topic'|'manuscript'|'title-only'} & import('../../../plugin-src/src/lib/vault/packaging.mjs').PackagingScript['manuscriptSource'];
 export interface CoverPackagingSelection {documentId:string;pageId:string;revision:string;selectionToken:string}
 export type FrozenCoverPackaging = PackagingSource & {pageId:string;selectionToken:string;slots:{title:{itemId:string;hash:string};coverText:{itemId:string;hash:string};description:{itemId:string;hash:string}|null};manuscriptSource:import('../../../plugin-src/src/lib/vault/packaging.mjs').PackagingScript['manuscriptSource']};
 import type {TemplateCatalogFields} from './workspace-contracts.ts';
 import type { Content, LibraryBinding, Reply } from './contracts.ts';
 export const ASSISTANTS = ['codex', 'workbuddy'] as const;
 export type Assistant = typeof ASSISTANTS[number];
-export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-content-cover-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured' }
+export type AssistantSetupReason = 'available' | 'unconfigured' | 'validation-failed' | 'plugin-missing' | 'plugin-disabled' | 'plugin-mismatch' | 'skill-missing' | 'skill-not-supported' | 'integrity-failed' | 'runtime-failed' | 'protocol-missing';
+export interface AssistantSetup { host: Assistant; ready: boolean; skill: 'nova-content-cover-execution' | null; reason: AssistantSetupReason; message?: string }
 export interface Raster { assetHash: string; url: string }
 export interface TemplateGroup extends TemplateCatalogFields { studyComplete: boolean; builtin: boolean; id: string; version: number; name: string; description: string; samples: Raster[]; accepted: boolean; aiTested: boolean }
 export interface Photo { id: string; title: string; assetHash: string | null; isOwnPhoto: boolean; availability: 'available' | 'unavailable'; url: string | null }
-export interface CoverInput { template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; coverText?: string; packagingSource?: CoverPackagingSelection; pixels: { width: number; height: number }; sizePolicy?: 'exact' | 'ratio-minimum'; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
+export interface CoverDesignSelection {artifactId:string;artifactHash:string}
+export interface FrozenCoverDesignSource extends CoverDesignSelection {workId:string;vaultId:string;methodId:'jc-cover-design';taskId:string}
+export interface ConfirmedCoverDesign {title:string;prompt:string;ratio:string;identity:'none'|'own-photo-required';designSource:FrozenCoverDesignSource}
+export interface CoverInput { designSource?:CoverDesignSelection; template: { id: string; version: number }; styleAssetHashes: string[]; photo: { id: string; assetHash: string } | null; materialIds: string[]; prompt: string; coverText?: string; packagingSource?: CoverPackagingSelection; pixels: { width: number; height: number }; sizePolicy?: 'exact' | 'ratio-minimum'; ratio: string; count: number; outputFormat: 'png' | 'jpeg' | 'webp'; scope: 'cover-only' }
 export interface CoverStart { contentId: string; editToken: string; input: CoverInput }
-export interface Fingerprint { packagingSource?: FrozenCoverPackaging; contentId: string; title: string; bodyHash: string; editToken: string; inputHash: string; existingRequest: { requestId: string; requestHash: string } | null }
+export interface Fingerprint { contextSource?:FrozenCoverContext; designSource?:FrozenCoverDesignSource; packagingSource?: FrozenCoverPackaging; contentId: string; title: string; bodyHash: string; editToken: string; inputHash: string; existingRequest: { requestId: string; requestHash: string } | null }
 export interface TaskProgress {phase: 'reading' | 'generating' | 'validating' | 'analyzing' | 'restoring'; state: 'running' | 'waiting-user' | 'waiting-permission'; message: string; revision: number; updatedAt: string; sessionId?: string}
 export interface TaskProgressView {editToken: string; jobs: {id: string; activeAttemptId: string | null; attempts: {attemptId: string; status: Attempt['status']; progress: TaskProgress | null; progressUnavailable: boolean}[]}[]}
 export interface Attempt {progress?: TaskProgress | null; progressUnavailable?: boolean; attemptId: string; host: Assistant; status: 'created' | 'claimed' | 'committed' | 'failed' | 'cancelled' | 'superseded'; reason: string; failure: { code: string; message: string } | null }
@@ -25,9 +30,10 @@ export interface PhotoPending { source: string; expectedHash: string; mutationId
 export type CoverActionPending = { mutationId: string } & ({ action: 'select'; contentId: string; candidateId: string; editToken: string } | { action: 'cancel'; reference: CoverReference });
 export interface CoverPending { input: CoverInput; fingerprint: Fingerprint; requestMutationId: string; attemptMutationId: string; host: Assistant; requestId: string | null; requestHash: string | null; reason: 'initial' | 'retry' | 'host-change' }
 export interface CoverReference { contentId: string; requestId: string; attemptId: string }
-export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string; coverText?: string; description?: string; packagingSource?: FrozenCoverPackaging; sizePolicy?: CoverInput['sizePolicy'] }; attempt: Attempt; progress?: TaskProgress | null }
+export interface CoverContext { content: Content & { coverJobs?: CoverJob[] }; request: { contextSource?:FrozenCoverContext; requestId: string; requestHash: string; inputHash: string; title: string; bodyHash: string; coverText?: string; description?: string; packagingSource?: FrozenCoverPackaging; designSource?:FrozenCoverDesignSource; sizePolicy?: CoverInput['sizePolicy'] }; attempt: Attempt; progress?: TaskProgress | null }
 export interface RequestResult { content: Content & { coverJobs?: CoverJob[] }; request: CoverContext['request']; bodyBytes: Uint8Array }
 export interface CoverInputs {
+  readCoverDesigns: {contentId:string};
   readCoverPackaging: {contentId:string;documentId?:string};
   readAssistantSetup: undefined;
   resumeCoverAction: undefined; abandonCoverAction: undefined; listCoverAssets: undefined; retryBuiltins: undefined; choosePhoto: { title: string; isOwnPhoto: boolean }; resumePhoto: undefined; abandonPhoto: undefined;
@@ -38,6 +44,7 @@ export interface CoverInputs {
   setAssistant: { host: Assistant };
 }
 export interface CoverResults {
+  readCoverDesigns: ConfirmedCoverDesign[];
   readCoverPackaging: VaultPackaging;
   readAssistantSetup: AssistantSetup;
   resumeCoverAction: CoverView; abandonCoverAction: void; listCoverAssets: { templates: TemplateGroup[]; photos: Photo[] }; retryBuiltins: void; choosePhoto: Photo | null; resumePhoto: Photo; abandonPhoto: void;
@@ -45,6 +52,7 @@ export interface CoverResults {
   selectCover: CoverView; exportCover: { exported: boolean }; revealCoverFolder: { revealed: boolean }; setAssistant: void;
 }
 export interface CoverWorkerOperations {
+  readCoverDesigns: {args:{binding:LibraryBinding;contentId:string};result:ConfirmedCoverDesign[]};
   readCoverPackaging: {args:{binding:LibraryBinding;input:CoverInputs['readCoverPackaging']};result:VaultPackaging};
   seed: { args: { binding: LibraryBinding }; result: void };
   coverAssets: { args: { binding: LibraryBinding }; result: CoverResults['listCoverAssets'] };

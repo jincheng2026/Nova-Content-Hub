@@ -4,9 +4,9 @@
 
 ## 设计候选与真正制图区分
 
-当前 registry.executor 为 `nova-content-writing-execution`：用于 packaging／cover-copy 的设计简报、构图方案、提示词、案例对照证据及本人确认。它只提交现有 schema 能承载的文字候选；不在 writing 任务里调用生图、不声称提交封面图片。
+当前 registry.executor 为 `nova-content-writing-execution`：用于独立cover-design阶段的设计简报、构图方案、提示词、案例对照证据及本人确认。它只提交现有 schema 能承载的文字候选；不在 writing 任务里调用生图、不声称提交封面图片。
 
-实际图片生成必须有另一份明确冻结的 cover 请求，使用既有[cover 执行入口](../../nova-content-cover-execution/SKILL.md)和[cover 执行与提交契约](../../nova-content-cover-execution/execution-contract.md)。registry 的 generationExecutor / generationHandoff 是后续交接说明，当前代码不因此自动建 cover 任务或路由。缺少固定 cover handoff 时交设计候选并说明尚未制图。
+实际图片生成必须有另一份明确冻结的 cover 请求，使用既有[cover 执行入口](../../nova-content-cover-execution/SKILL.md)和[cover 执行与提交契约](../../nova-content-cover-execution/execution-contract.md)。registry 的 generationExecutor / generationHandoff 是后续交接说明，当前cover-design候选由作者确认准确id/hash后，从同T工作台封面入口建立独立固定cover请求；设计由受控helper传入，缺少固定cover handoff时仍保留未制图事实。
 
 真实 cover handoff 按 context、原始 request/body、模板及全部允许输入读取与 claim、真实等待／恢复、生成／校验进度、候选 submit 和回执完成；writing 回执不能代替 cover 回执，候选未获用户采用不冒称已选封面。
 
@@ -32,3 +32,7 @@
 | CHANGELOG 默认图切换史、package 安装说明默认作者照片 | 仅历史证据；不指导复制作者照片、换原 config、安装旧脚本或回退旧默认。 |
 
 等待发生在确实缺少本轮本人素材时；用户已经提供的内容不重复询问。等待恢复沿原固定任务合同，任何更改后的输入必须由工作台重新冻结，不在解析器中修改。
+
+## 当前受控入口
+
+冻结stage=`cover-design`时，执行前必读[四项方法运行协议](../../../plugin-src/resources/jincheng-method-adapters.md)，按该分支schema保存、停等、恢复与提交。运行协议说明已实装适配边界；runtimeStatus仍为contract-unverified，真人判断与真实宿主质量待验收。

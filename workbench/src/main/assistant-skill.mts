@@ -48,10 +48,25 @@ function json(file: string): Record<string, unknown> {
     return value;
 }
 
+// Only identify a previous native paired package; it never qualifies for execution.
+function previousVersion(parent: string, release: Release): string | undefined {
+    try {
+        const versions = fs.readdirSync(parent, {withFileTypes: true}).filter(entry => entry.isDirectory() && /^\d{1,8}\.\d{1,8}\.\d{1,8}$/.test(entry.name) && entry.name !== release.version).map(entry => entry.name).sort((a, b) => b.localeCompare(a, 'en', {numeric: true}));
+        for (const version of versions) {
+            try {
+                const metadata = json(path.join(parent, version, 'plugin-src/src/release.json'));
+                if (isDeepStrictEqual(metadata, {...release, format: 'nova-content-plugin-release', version, pairId: `${release.appScope}@${version}:p${release.protocolVersion}:${release.AUTH_MODE}`})) return version;
+            } catch { /* Unrelated or unsafe cache entries are not an installed paired version. */ }
+        }
+    } catch { /* No readable previous paired package. */ }
+    return undefined;
+}
+
 export function installedAssistantSkill(host: Assistant, release: Release, options?: SkillOptions & {capability?: 'cover'}): typeof SKILLS.cover;
 export function installedAssistantSkill<C extends keyof typeof SKILLS>(host: Assistant, release: Release, options: SkillOptions & {capability: C}): typeof SKILLS[C];
 export function installedAssistantSkill(host: Assistant, release: Release, {env = process.env, home = os.homedir(), capability = 'cover'}: SkillOptions & {capability?: keyof typeof SKILLS} = {}): typeof SKILLS[keyof typeof SKILLS] {
     let reason: AssistantFailureReason = 'validation-failed';
+    let installedVersion: string | undefined;
     try {
         if (!Object.hasOwn(SKILLS, capability)) throw notReady();
         const SKILL = SKILLS[capability], skillFile = `skills/${SKILL}/SKILL.md`;
@@ -63,7 +78,12 @@ export function installedAssistantSkill(host: Assistant, release: Release, {env 
         if (!path.isAbsolute(config)) throw notReady();
         const root = path.join(config, 'plugins', 'cache', market, 'nova-content-hub', release.version);
         reason = 'plugin-missing';
-        if (!fs.lstatSync(root).isDirectory()) throw notReady(reason);
+        try { if (!fs.lstatSync(root).isDirectory()) throw notReady(reason); }
+        catch {
+            installedVersion = previousVersion(path.dirname(root), release);
+            if (installedVersion) reason = 'plugin-mismatch';
+            throw notReady(reason);
+        }
         reason = 'plugin-disabled';
         if (host === 'codex') {
             const settings = parse(new TextDecoder('utf-8', {fatal: true}).decode(read(path.join(config, 'config.toml'))));
@@ -76,6 +96,8 @@ export function installedAssistantSkill(host: Assistant, release: Release, {env 
             const settings = json(path.join(config, 'settings.json'));
             if (installed.version !== 2 || !isRecord(installed.plugins) || !isRecord(settings.enabledPlugins) || settings.enabledPlugins[key] !== true) throw notReady();
             const copies = installed.plugins[key];
+            reason = 'plugin-mismatch';
+            if (Array.isArray(copies) && copies.length === 1 && isRecord(copies[0]) && typeof copies[0].version === 'string') installedVersion = copies[0].version;
             if (!Array.isArray(copies) || copies.length !== 1 || !isRecord(copies[0]) || copies[0].scope !== 'user' || copies[0].version !== release.version || copies[0].installPath !== root) throw notReady();
         }
         reason = 'plugin-mismatch';
@@ -94,5 +116,5 @@ export function installedAssistantSkill(host: Assistant, release: Release, {env 
         if (integrity.format !== 'nova-content-plugin-integrity' || integrity.schemaVersion !== 1 || integrity.pairId !== release.pairId || integrity.AUTH_MODE !== release.AUTH_MODE || !isRecord(capabilities) || capabilities.namespace !== capability || capabilities.executable !== true || !isRecord(integrity.hashes)) throw notReady();
         if (integrity.hashes[skillFile] !== createHash('sha256').update(bytes).digest('hex') || !new RegExp(`^---\\r?\\nname: ${SKILL}\\r?\\n`).test(new TextDecoder('utf-8', {fatal: true}).decode(bytes))) throw notReady();
         return SKILL;
-    } catch { throw notReady(reason); }
+    } catch { throw notReady(reason, {expectedVersion: release.version, installedVersion}); }
 }

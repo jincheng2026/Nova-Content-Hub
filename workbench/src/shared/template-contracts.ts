@@ -1,7 +1,7 @@
 import type {LibraryBinding} from './contracts.ts';
-import type {Assistant, Attempt, Raster, TaskProgressView} from './cover-contracts.ts';
+import type {Assistant, AssistantSetupReason, Attempt, Raster, TaskProgressView} from './cover-contracts.ts';
 
-export interface TemplateAssistantSetup {host: Assistant; ready: boolean; skill: 'nova-content-template-execution' | null; reason: 'available' | 'protocol-missing' | 'skill-missing' | 'unconfigured'}
+export interface TemplateAssistantSetup {host: Assistant; ready: boolean; skill: 'nova-content-template-execution' | null; reason: AssistantSetupReason; message?: string}
 export interface TemplateReference {templateId: string; requestId: string; attemptId: string; requestHash: string; sourceVersion: number; sourcePackageHash: string}
 export interface TemplateStart {templateId: string; version: number; editToken: string; notes: string}
 export interface TemplateAccept extends TemplateReference {resultHash: string; editToken: string}

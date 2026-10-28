@@ -130,3 +130,22 @@ test('an explicitly remapped hidden or framework source root cannot expose repor
   assert.ok(reportNavigation(f.b,[copy],copy.id,copy.pages[0].id,html).links.every(l=>l.target===null),hiddenRoot);
  }
 });
+test('registered readonly report tabs remain readable without attempting to persist position',async t=>{
+ const f=await reportFixture(t);let writes=0;
+ const service=new ProductionPages({worker:{call:async(op,args)=>{const value=await execute(op,args,'disabled');if(op==='productionReport')value.report.meta.vault.sourceWritable=false;return value;}},creationHtml:'',authorize:()=>{},readCreation:async()=>{throw Error('unused');},saveDraft:async()=>{throw Error('unused');},setReportPosition:async()=>{writes++;throw Object.assign(Error('readonly source'),{code:'READ_ONLY'});}});t.after(()=>service.close());
+ const url=await service.openReport(f.b,f.source.id),wrapper=await(await fetch(url)).text(),hrefs=[...wrapper.matchAll(/<a href="([^"]+\/view\/[^"]+)"/g)].map(m=>m[1]);assert.equal(hrefs.length,2);
+ for(const href of hrefs){const response=await fetch(new URL(href,url));assert.equal(response.status,200);assert.match(await response.text(),/<iframe/);}
+ assert.equal(writes,0);
+});
+test('explicitly linked readonly report groups navigate registered pages and CSV appendices within that bound source',async t=>{
+ const f=await reportFixture(t),external=path.join(path.dirname(f.root),'linked-reports');await fs.mkdir(path.join(external,'group'),{recursive:true});
+ await fs.writeFile(path.join(external,'group/meta.json'),JSON.stringify({title:'外部只读报告',pages:[{file:'index.html',title:'首页'},{file:'target.html',title:'第二页'}]}));
+ await fs.writeFile(path.join(external,'group/index.html'),'<html><body><a href="target.html">下一页</a><a href="data.csv">原始数据</a></body></html>');
+ await fs.writeFile(path.join(external,'group/target.html'),'<html><body>已登记的第二页</body></html>');await fs.writeFile(path.join(external,'group/data.csv'),'name,value\n原始数据,1');
+ const {linkSource}=await import('../../plugin-src/src/lib/vault/source-map.mjs');linkSource(f.root,{role:'reports',selectedRoot:external,authority:'candidate',writable:false});
+ const reports=f.library.readProduction().reports,report=reports.find(r=>r.title==='外部只读报告'),value=await execute('productionReport',{binding:f.b,reportId:report.id},'disabled');
+ assert.ok(value.navigation.pageIdentity);assert.equal(value.navigation.links.find(l=>l.href==='target.html').target.pageId,report.pages[1].id);assert.equal(value.navigation.links.find(l=>l.href==='data.csv').target.kind,'attachment');
+ const {readRegisteredReportAttachment}=await import('../src/main/report-navigation.mts'),index=value.navigation.links.findIndex(l=>l.href==='data.csv');
+ const attachment=readRegisteredReportAttachment(f.b,reports,report.id,report.pages[0].id,value.html,value.navigation.fingerprint,index);assert.equal(attachment.data.toString(),'name,value\n原始数据,1');
+ await fs.writeFile(path.join(external,'group/data.csv'),'external edit');assert.equal(readRegisteredReportAttachment(f.b,reports,report.id,report.pages[0].id,value.html,value.navigation.fingerprint,index),null);
+});

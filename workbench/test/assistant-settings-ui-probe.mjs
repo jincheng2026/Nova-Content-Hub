@@ -7,9 +7,11 @@ import {spawn} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import electron from 'electron';
 import {build} from 'vite';
+import {assistantNotReady} from '../src/main/assistant-failure.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const root = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), 'nova-ai-settings-')));
+const mismatchMessage = assistantNotReady('plugin-mismatch', {expectedVersion: '0.5.3', installedVersion: '0.5.1'}).message;
 await fs.writeFile(path.join(root, 'index.html'), '<html lang="zh-CN"><div id="root"></div><script type="module" src="/fixture.jsx"></script></html>');
 await fs.writeFile(path.join(root, 'fixture.jsx'), `
 import {useState} from 'react';
@@ -20,9 +22,10 @@ import '${workbench}/src/renderer/style.css';
 import {AssistantSettings} from '${workbench}/src/renderer/assistant-settings.tsx';
 import {SetupPanel} from '${workbench}/src/renderer/setup-panel.tsx';
 window.calls=[]; window.host='codex'; window.market='available'; window.coverReady=true; window.templateReady=true;
+window.mismatchMessage=${JSON.stringify(mismatchMessage)};
 window.contentHub=new Proxy({}, {get:(_,method)=>async input=>{
   window.calls.push({method,input,host:window.host});
-  const assistant={host:window.host,ready:window.coverReady,reason:window.coverReady?'available':'skill-missing'};
+  const assistant={host:window.host,ready:window.coverReady,reason:window.coverReady?'available':window.setupReason??'skill-missing',...(window.setupMessage?{message:window.setupMessage}:{})};
   let value;
   if(method==='readAssistantSetup')value=assistant;
   else if(method==='readTemplateAssistantSetup')value={...assistant,ready:window.templateReady};
@@ -68,7 +71,13 @@ async function probeMain(root) {
     await win.loadFile(path.join(root, 'dist/index.html'));
     await wait('document.getElementById("copy-assistant-plugin") && !document.getElementById("copy-assistant-plugin").disabled');
     assert.doesNotMatch(await card(), /封面助手|全局助手/);
-    assert.match(await card(), /自媒体工作台 0.3.45.*随包插件同版，非助手实际已启用版本/);
+    assert.match(await card(), /自媒体工作台 0.3.45.*随包插件同版/);
+    await run('window.coverReady=false;window.templateReady=false;window.setupReason="plugin-mismatch";window.setupMessage=window.mismatchMessage'); await recheck();
+    assert.match(await card(), /封面制作：当前工作台为 0.5.3，检测到配套插件 0.5.1/);
+    assert.match(await card(), /模板学习与还原：当前工作台为 0.5.3，检测到配套插件 0.5.1/);
+    await run('document.querySelector(".creator-settings-assistant").scrollIntoView({behavior:"instant",block:"start"});new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))');
+    await fs.writeFile(path.join(root, 'ai-settings-version-mismatch.png'), (await win.webContents.capturePage()).toPNG());
+    await run('window.coverReady=true;window.templateReady=true;window.setupMessage=null;window.setupReason=null'); await recheck();
     assert.equal(await run('document.querySelectorAll(".creator-settings-columns > .creator-settings-column").length'), 2);
     assert.equal(await run('document.querySelector(".creator-settings-columns").textContent.includes("配套插件与版本")'), false);
     for (const host of ['codex', 'workbuddy']) {

@@ -147,6 +147,7 @@ export class DesktopController {
     previewFinalAssets(input:FinalAssetsInputs['previewFinalAssets']){return this.finalAssets.previewFinalAssets(input);}
     saveFinalAssets(input:FinalAssetsInputs['saveFinalAssets']){return this.finalAssets.saveFinalAssets(input);}
     exportFinalAssets(input:FinalAssetsInputs['exportFinalAssets']){return this.finalAssets.exportFinalAssets(input);}
+    readCoverDesigns(input:{contentId:string}){return this.covers.readCoverDesigns(input);}
     readCoverPackaging(input:import('../shared/cover-contracts.ts').CoverInputs['readCoverPackaging']){return this.covers.readCoverPackaging(input);}
     readVault(input?:undefined){return this.vault.readVault(input);}
     openCreationPage(input:CreationInputs['openCreationPage']){return this.creation.openCreationPage(input);}

@@ -12,3 +12,7 @@
 6. 反馈与规则候选记录后交本人，采纳反馈不自动改 Skill、全局资料或包内规则；封面、包装和发布收口继续各自明确任务及真实事实。
 
 固定工作台任务依 doctor/context/claim，确认点先 waiting-user，额外权限先 waiting-permission，真实回复后恢复原 attempt；提交核对 taskId、attemptId、requestHash、结果 hash 和回执。直接对话只在当前聊天共创。runtimeStatus=contract-unverified，未宣称原页面／服务或两个宿主已可用。
+
+## 当前受控入口
+
+冻结stage=`kepu`时，执行前必读[四项方法运行协议](../../../plugin-src/resources/jincheng-method-adapters.md)，按该分支schema保存、停等、恢复与提交。运行协议说明已实装适配边界；runtimeStatus仍为contract-unverified，真人判断与真实宿主质量待验收。

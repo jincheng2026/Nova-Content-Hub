@@ -1,3 +1,4 @@
+import {runMethodArtifact,assertKepuReady} from '../lib/method-adapters/runtime.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID,createHash} from 'node:crypto';
@@ -6,19 +7,34 @@ import {nativeHandoffDirectory} from '../bridge/native-handoff.mjs';
 import {readProductionHandoff,productionHandoffContext} from '../bridge/production-handoff.mjs';
 import {vaultRootForRuntime,readVaultTaskContext} from '../lib/vault/index.mjs';
 import {readWorkFlow,appendStageArtifact} from '../lib/vault/workflow.mjs';
-import {mkdir,atomic} from '../lib/vault/core.mjs';
+import {mkdir,atomic,readBytes,digest,queryVaultMutation} from '../lib/vault/core.mjs';
 const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
 export const fail=(code,message=code)=>{throw Object.assign(new Error(message),{code});};
 const object=v=>v!==null&&typeof v==='object'&&!Array.isArray(v);
-export function fixedStageContext({envelope,library,payload}){
+function recoveringKepuSource(envelope,task,payload,root,vault,work,operation){
+ if(operation!=='build'||task.request.parameters.stage!=='kepu'||!/^[A-Za-z0-9_-]{8,100}$/.test(payload.input?.mutationId??''))return false;
+ let intent;
+ try{intent=JSON.parse(readBytes(root,'.workbench/kepu-builds/'+payload.input.mutationId+'.json'));}catch(e){if(e.code==='ENOENT')return false;throw e;}
+ const requestHash=digest(JSON.stringify({work,taskId:task.id,requestHash:envelope.task.requestHash,input:payload.input}));
+ if(intent.format!=='nova-kepu-build'||intent.requestHash!==requestHash)fail('CONFLICT','恢复请求与冻结完整稿不一致');
+ const target=vault.contentDirectory+'/创作页.html',receipt=queryVaultMutation(envelope.binding.root,payload.input.mutationId);
+ if(intent.source?.documentId!==task.request.parameters.source?.documentId||intent.buildInput?.source?.relativePath!==target||vault.content.relativePath!==target||receipt?.request?.action!=='creation-document'||receipt.request.operation!=='build'||JSON.stringify(receipt.request.input)!==JSON.stringify(intent.buildInput))return false;
+ if(digest(readBytes(root,intent.source.relativePath))!==intent.source.hash||digest(readBytes(root,target))!==receipt.result.revision)fail('CONFLICT','冻结原稿或已提交创作页已变化');
+ return true;
+}
+export function fixedStageContext({envelope,library,payload,operation}){
  if(!object(payload)||Object.keys(payload).some(k=>!['claimToken','workerId','input'].includes(k))||!UUID.test(payload.claimToken)||typeof payload.workerId!=='string'||!payload.workerId.trim()||payload.workerId.length>200||payload.input!==undefined&&!object(payload.input))fail('INVALID_INPUT');
  const ctx=library.readProductionContext(envelope.task.taskId,envelope.task.attemptId),task=ctx.task,attempt=ctx.attempt;
- if(!task||task.requestHash!==envelope.task.requestHash||task.activeAttemptId!==envelope.task.attemptId||attempt?.claimToken!==payload.claimToken||attempt.workerId!==payload.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||task.request.parameters?.workflow!=='jincheng-stage'||!task.contentId)fail('CLAIM_MISMATCH');
+ if(!task||task.requestHash!==envelope.task.requestHash||task.activeAttemptId!==envelope.task.attemptId||attempt?.claimToken!==payload.claimToken||attempt.workerId!==payload.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||task.request.parameters?.workflow!=='jincheng-stage')fail('CLAIM_MISMATCH');
+ const selected={'kepu':'jc-kepu-video','review-page':'jc-review-page','cover-design':'jc-cover-design','synthesis':'jc-synthesis-research'};if(selected[task.request.parameters.stage]&&selected[task.request.parameters.stage]!==task.request.parameters.businessSkill)fail('STAGE_FORBIDDEN');
+ const synthesis=task.request.parameters.stage==='synthesis'&&task.request.parameters.businessSkill==='jc-synthesis-research';
+ if(!task.contentId&&!synthesis)fail('CLAIM_MISMATCH');
  const vault=readVaultTaskContext(envelope.binding.root,task.contentId),root=vaultRootForRuntime(envelope.binding.root);
+ if(synthesis){if(!root||!vault)fail('SOURCE_CONFLICT');return {ctx,task,attempt,vault,root,work:null,flow:null,input:payload.input??{}};}
  if(!root||!vault?.content||vault.content.sourceResolution!=='resolved')fail('SOURCE_CONFLICT');
  const work={vaultId:vault.vaultId,workId:vault.content.tNumber},flow=readWorkFlow(root,work);
  const frozen=task.request.parameters.source;
- if(frozen&&frozen.documentId!==vault.content.sourceDocumentId&&!flow.artifacts.some(a=>a.taskId===task.id&&a.kind==='complete-draft'&&a.path===vault.content.relativePath&&a.path===vault.contentDirectory+'/创作页.html'))fail('SOURCE_CHANGED','当前入口已切换，须重新冻结任务。');
+ if(frozen&&frozen.documentId!==vault.content.sourceDocumentId&&!flow.artifacts.some(a=>a.taskId===task.id&&a.kind==='complete-draft'&&a.path===vault.content.relativePath&&a.path===vault.contentDirectory+'/创作页.html')&&!recoveringKepuSource(envelope,task,payload,root,vault,work,operation))fail('SOURCE_CHANGED','当前入口已切换，须重新冻结任务。');
  return {ctx,task,attempt,vault,root,work,flow,input:payload.input??{}};
 }
 export function assertStageGate(context,operation){
@@ -28,6 +44,7 @@ export function assertStageGate(context,operation){
  // selected jc-jiaocheng-video method/branch imposes both tutorial checkpoints.
  const tutorial=stage==='tutorial'||task.request.parameters.businessSkill==='jc-jiaocheng-video';
  const hasArtifact=kind=>flow.artifacts.some(artifact=>artifact.kind===kind);
+ if(operation==='complete-draft'&&(stage==='kepu'||task.request.parameters.businessSkill==='jc-kepu-video'||flow.artifacts.some(a=>a.kind==='framework'&&a.methodId==='jc-kepu-video')))assertKepuReady(context);
  if(operation==='complete-draft'){
   if((tutorial||hasArtifact('narrative'))&&!flow.facts.narrativeConfirmed)fail('CHECKPOINT_REQUIRED','请先在工作台确认当前版本的叙事。');
   if((tutorial||hasArtifact('key-segments'))&&!flow.facts.keySegmentsConfirmed)fail('CHECKPOINT_REQUIRED','请先在工作台确认当前版本的重点段。');
@@ -38,14 +55,15 @@ export function assertStageGate(context,operation){
 }
 export function runWorkflowHandoff(args){
  const context=fixedStageContext(args),{root,work,task,input}=context;
- if(args.operation==='read')return context.flow;
+ if(args.operation==='read')return context.flow??{work:null,stage:'synthesis',brief:task.request.parameters.synthesisBrief};
+ if(args.operation==='method')return runMethodArtifact(context);
  if(args.operation!=='artifact'||Object.keys(input).some(k=>!['kind','text','title'].includes(k))||typeof input.text!=='string'||!input.text.trim()||input.text.length>500000)fail('INVALID_INPUT');
- const allowed={ 'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
+ const allowed={ 'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],kepu:['narrative'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
  if(!allowed[task.request.parameters.stage]?.includes(input.kind))fail('STAGE_FORBIDDEN');assertStageGate(context,input.kind);
  const id=randomUUID(),relative=context.vault.contentDirectory+'/阶段产物-'+input.kind+'-'+id+'.md',bytes=Buffer.from(input.text+'\n');mkdir(root,context.vault.contentDirectory);atomic(root,relative,bytes,null);
  return appendStageArtifact(root,{work,kind:input.kind,artifactId:id,hash:createHash('sha256').update(bytes).digest('hex'),path:relative,methodId:task.request.parameters.businessSkill,taskId:task.id});
 }
-export const main=argv=>runFixedCLI(argv,['read','artifact'],runWorkflowHandoff);
+export const main=argv=>runFixedCLI(argv,['read','artifact','method'],runWorkflowHandoff);
 export async function runFixedCLI(argv,operations,execute){try{
  const [operation='help',...rest]=argv,values={};
  if(operation==='help'){if(rest.length)fail('INVALID_ARGUMENTS');process.stdout.write(JSON.stringify({ok:true,operations:operations,usage:'jincheng-workflow / jincheng-creation OP --handoff UUID (--file ABSOLUTE_JSON | --stdin)',input:{claimToken:'current UUID',workerId:'current worker',input:'operation payload; no paths or provider settings'}})+'\n');return 0;}

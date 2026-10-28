@@ -2,7 +2,7 @@ export type ServiceCredential = 'tikhub' | 'model' | 'asr' | 'groq' | 'custom';
 export interface CloudAsrSettings {provider: 'volc'|'groq'|'custom'; groqModel: 'whisper-large-v3-turbo'|'whisper-large-v3'; customBaseUrl: string; customModelId: string}
 export interface AsrSettings {
     // volc is accepted only as the legacy cloud-mode spelling.
-    mode: 'local-first'|'local-only'|'cloud'|'volc'; resourceId: string; localEngine: 'faster-whisper'|'whisper-cpp'|'qwen3-asr'; localExecutable: string; localModelPath: string; cloud?: CloudAsrSettings;
+    mode: 'local-first'|'local-only'|'cloud'|'volc'; resourceId: string; localEngine: 'faster-whisper'|'whisper-cpp'|'qwen3-asr'; localExecutable: string; localModelPath: string; localModule?: 'mlx_audio'|'qwen_asr'; cloud?: CloudAsrSettings;
 }
 export interface NormalizedAsrSettings extends Omit<AsrSettings,'mode'|'cloud'> {mode: 'local-first'|'local-only'|'cloud'; cloud: CloudAsrSettings}
 export interface ServiceCredentialRequest {service:ServiceCredential}
@@ -17,7 +17,9 @@ export interface ServiceSettingsValues {
 export interface ServiceSettingsPatch {values?: ServiceSettingsValues; keys?: Partial<Record<ServiceCredential, string|null>>}
 export type ServiceEncryptionStatus = 'unchecked'|'available'|'unavailable';
 export interface ServiceSettingsView {values: ServiceSettingsValues; credentials: Record<ServiceCredential, {hasKey: boolean}>; encryptionAvailable: boolean; encryptionStatus: ServiceEncryptionStatus}
-export interface ServiceReadiness {localAsr: {available: boolean; reason: string}; encryptionAvailable: boolean; encryptionStatus: ServiceEncryptionStatus}
+export interface ExternalAsrCandidate {id:string;executable:string;modelPath:string;module?:'mlx_audio'|'qwen_asr'}
+export interface ExternalAsrCapabilities {text:boolean;timestamps:boolean;mp4Decode:boolean}
+export interface ServiceReadiness {localAsr: {available: boolean; reason: string;status?:'not-found'|'unavailable'|'choice-required'|'ready';capabilities?:ExternalAsrCapabilities;candidates?:ExternalAsrCandidate[];selected?:ExternalAsrCandidate}; encryptionAvailable: boolean; encryptionStatus: ServiceEncryptionStatus}
 export type TikHubOperation = 'douyin-search'|'user-search'|'profile'|'user-posts'|'video'|'comments'|'xhs-search'|'xhs-profile';
 export interface TikHubSearchFilters {sortType?: 'general'|'likes'|'latest'; timeRange?: 'any'|'day'|'week'|'half-year'; contentType?: 'any'|'video'|'image'}
 // The legacy model shape is validated only to return MODEL_SERVICE_DISABLED without rewriting old tasks.

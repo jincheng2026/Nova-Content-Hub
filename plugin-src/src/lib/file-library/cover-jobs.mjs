@@ -1,3 +1,5 @@
+import {validFrozenCoverDesign} from './cover-design-validation.mjs';
+import {readCoverDesigns as readBoundCoverDesigns,resolveCoverDesign} from './cover-design-source.mjs';
 import {selectedCoverMethods,selectedCoverBytes} from './selected-cover.mjs';
 import {attemptProgress} from './attempt-progress.mjs';
 import {selectableTemplate} from './template-retirement.mjs';
@@ -102,9 +104,18 @@ export function coverJobMethods(h) {
     const sourceMutate = (...args) => sourceScope(() => mutate(...args));
     const sourceReference = source => ({documentId:source.documentId,pageId:source.pageId,revision:source.revision,selectionToken:source.selectionToken});
     function readCoverPackaging(input) {return h.readCoverPackaging?.(input) ?? {kind:'legacy',contentId:input.contentId,source:null,fields:null,script:null,selectionToken:null,issues:[]};}
+    function readCoverDesigns({contentId}) {return sourceLocked(()=>{content(id(contentId));try{return readBoundCoverDesigns(root,contentId);}catch(error){fail(error.code??'STALE_INPUT',error.message);}});}
+    function confirmedDesign(contentId,selection){try{return resolveCoverDesign(root,contentId,selection);}catch(error){fail(error.code??'STALE_INPUT',error.message);}}
     function resolveRequestSource(meta,bodyBytes,reference) {
         const snapshot = readCoverPackaging({contentId:meta.id,...(reference?{documentId:reference.documentId}:{})});
-        if (snapshot.kind === 'legacy' && !reference) return {fields:{title:meta.title,bodyHash:hash(bodyBytes)},bodyBytes};
+        if (snapshot.kind === 'legacy' && !reference) {
+            if (snapshot.context) {
+                if (!meta.title?.trim()) fail('STALE_INPUT','Save a nonempty title before creating a cover');
+                const context=snapshot.context;
+                return {fields:{title:meta.title,bodyHash:context.hash,contextSource:{kind:context.kind,...context.source}},bodyBytes:Buffer.from(context.text,'utf8')};
+            }
+            return {fields:{title:meta.title,bodyHash:hash(bodyBytes)},bodyBytes};
+        }
         if (!reference || snapshot.kind !== 'jc-doc') fail('STALE_INPUT','Original packaging source must be explicitly selected and available');
         inputFields(reference,['documentId','pageId','revision','selectionToken'],['documentId','pageId','revision','selectionToken']);
         if (!/^doc-[a-f0-9]{32}$/.test(reference.documentId) || !/^[A-Za-z0-9_-]{1,64}$/.test(reference.pageId) || !HASH.test(reference.revision) || !HASH.test(reference.selectionToken)) fail('INVALID_INPUT','Invalid original packaging identity');
@@ -126,6 +137,10 @@ export function coverJobMethods(h) {
         }
         const manuscript=inputFields(source.manuscriptSource,['vaultId','workId','documentId','pageId','revision','relativePath','format'],['vaultId','workId','documentId','pageId','revision','relativePath','format']);
         if (manuscript.vaultId!==source.vaultId||manuscript.workId!==source.workId||!/^doc-[a-f0-9]{32}$/.test(manuscript.documentId)||!HASH.test(manuscript.revision)||!['html','markdown','text'].includes(manuscript.format)||!(manuscript.pageId===null||typeof manuscript.pageId==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(manuscript.pageId))||typeof manuscript.relativePath!=='string'||path.posix.isAbsolute(manuscript.relativePath)||/^[a-z]:/i.test(manuscript.relativePath)||manuscript.relativePath.split(/[\\/]/).some(part=>!part||part==='.'||part==='..')) fail('CORRUPT','Invalid frozen manuscript source');
+    }
+    function validateFrozenContext(source) {
+        inputFields(source,['kind','vaultId','workId','documentId','pageId','revision','relativePath','format'],['kind','vaultId','workId','documentId','pageId','revision','relativePath','format']);
+        if (!['topic','manuscript','title-only'].includes(source.kind)||!UUID.test(source.vaultId)||!/^T\d{3,}$/.test(source.workId)||!/^doc-[a-f0-9]{32}$/.test(source.documentId)||!HASH.test(source.revision)||!['html','markdown','text'].includes(source.format)||!(source.pageId===null||typeof source.pageId==='string'&&/^[A-Za-z0-9_-]{1,64}$/.test(source.pageId))||typeof source.relativePath!=='string'||path.posix.isAbsolute(source.relativePath)||/^[a-z]:/i.test(source.relativePath)||source.relativePath.split(/[\\/]/).some(part=>!part||part==='.'||part==='..')||source.kind==='topic'&&(source.format!=='markdown'||source.pageId!==null)||source.kind==='title-only'&&(!['markdown','text'].includes(source.format)||source.pageId!==null)) fail('CORRUPT','Invalid frozen cover context');
     }
     const requestDir = (contentId, requestId) => path.join(root, '内容', id(contentId), '封面任务', id(requestId));
     const attemptDir = (contentId, requestId, attemptId) => path.join(requestDir(contentId, requestId), '尝试', id(attemptId));
@@ -192,12 +207,14 @@ export function coverJobMethods(h) {
         } catch {
             fail('CORRUPT', 'Invalid cover request package');
         }
-        const supportedSize = request.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || request.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum' || request.schemaVersion === 3 && ['exact','ratio-minimum'].includes(request.sizePolicy) && !!request.packagingSource;
-        if (request.format !== 'nova-cover-request' || !supportedSize || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity or size policy mismatch');
-        if (request.schemaVersion===3) {
+        const supportedSize = request.schemaVersion === 5 && ['exact','ratio-minimum'].includes(request.sizePolicy) && !!request.contextSource || request.schemaVersion === 4 && ['exact','ratio-minimum'].includes(request.sizePolicy) && !!request.designSource || request.schemaVersion === 1 && !Object.hasOwn(request, 'sizePolicy') || request.schemaVersion === 2 && request.sizePolicy === 'ratio-minimum' || request.schemaVersion === 3 && ['exact','ratio-minimum'].includes(request.sizePolicy) && !!request.packagingSource;
+        if (request.format !== 'nova-cover-request' || Object.hasOwn(request,'designSource') && ![4,5].includes(request.schemaVersion) || Object.hasOwn(request,'contextSource') && request.schemaVersion!==5 || !supportedSize || request.requestId !== job.id || request.contentId !== contentId || request.libraryId !== libraryId || request.inputHash !== job.inputHash || JSON.stringify(request.protocol) !== JSON.stringify(PROTOCOL)) fail('CORRUPT', 'Cover request package identity or size policy mismatch');
+        if ([3,4,5].includes(request.schemaVersion)) {
             const fields=['format','schemaVersion','requestId','createdAt','inputHash','protocol','libraryId','contentId','title','coverText','description','bodyHash','packagingSource','template','styleAssetHashes','templateDefinition','photo','materials','prompt','pixels','sizePolicy','ratio','count','outputFormat','inputs'];
+            if(request.schemaVersion===4){fields.push('designSource');if(!request.packagingSource)for(const key of ['packagingSource','description',...(request.coverText===undefined?['coverText']:[])])fields.splice(fields.indexOf(key),1);if(!validFrozenCoverDesign(request.designSource))fail('CORRUPT','Invalid frozen design source');}
+            if(request.schemaVersion===5){fields.push('contextSource');for(const key of ['packagingSource','description',...(request.coverText===undefined?['coverText']:[])])fields.splice(fields.indexOf(key),1);validateFrozenContext(request.contextSource);if(request.designSource){fields.push('designSource');if(!validFrozenCoverDesign(request.designSource))fail('CORRUPT','Invalid frozen design source');}}
             if (Object.keys(request).length!==fields.length || Object.keys(request).some(key=>!fields.includes(key)) || fields.some(key=>!Object.hasOwn(request,key))) fail('CORRUPT','Invalid source-aware cover request shape');
-            try {validateFrozenSource(request);} catch {fail('CORRUPT','Invalid frozen packaging source');}
+            try {if(request.packagingSource)validateFrozenSource(request);} catch {fail('CORRUPT','Invalid frozen packaging source');}
             const normalized=Object.fromEntries(Object.entries(request).filter(([key])=>!['format','schemaVersion','requestId','createdAt','inputHash'].includes(key)));
             if (hash(jsonBytes(normalized))!==request.inputHash) fail('CORRUPT','Source-aware request input checksum mismatch');
         }
@@ -234,7 +251,12 @@ export function coverJobMethods(h) {
     }
 
     function fresh(meta, bodyBytes, request) {
-        if (request.packagingSource) {
+        if(request.designSource){const live=confirmedDesign(meta.id,{artifactId:request.designSource.artifactId,artifactHash:request.designSource.artifactHash});if(JSON.stringify(live.designSource)!==JSON.stringify(request.designSource)||request.prompt!==undefined&&live.prompt!==request.prompt||request.ratio!==undefined&&live.ratio!==request.ratio)fail('STALE_INPUT','Confirmed cover design differs from fixed request');}
+        if (request.contextSource) {
+            const live=resolveRequestSource(meta,bodyBytes).fields;
+            if(live.title!==request.title||live.bodyHash!==request.bodyHash||JSON.stringify(live.contextSource)!==JSON.stringify(request.contextSource))fail('STALE_INPUT','Saved cover context differs from the fixed request');
+            if(Object.hasOwn(request,'coverText')){const p=meta.productionState?.packaging;if(!p?.coverTexts.some(item=>item.id===p.selectedCoverTextId&&item.text===request.coverText))fail('STALE_INPUT','Saved cover text differs from the fixed request');}
+        } else if (request.packagingSource) {
             const live=resolveRequestSource(meta,bodyBytes,sourceReference(request.packagingSource)).fields;
             if (live.title!==request.title||Object.hasOwn(request,'coverText')&&live.coverText!==request.coverText||Object.hasOwn(request,'description')&&live.description!==request.description||live.bodyHash!==request.bodyHash||JSON.stringify(live.packagingSource)!==JSON.stringify(request.packagingSource)) fail('STALE_INPUT','Original packaging or manuscript differs from fixed request');
         } else if (meta.title !== request.title || hash(bodyBytes) !== request.bodyHash) fail('STALE_INPUT', 'Content title or body differs from the fixed request');
@@ -254,7 +276,7 @@ export function coverJobMethods(h) {
     }
 
     function normalizeRequest(meta, bodyBytes, raw) {
-        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
+        const input = inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource', 'designSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope']);
         if (input.scope !== 'cover-only') fail('INVALID_INPUT', 'Only cover-only scope is supported');
         if (Object.hasOwn(input, 'sizePolicy') && !['exact', 'ratio-minimum'].includes(input.sizePolicy)) fail('INVALID_INPUT', 'Unknown cover size policy');
         text(input.prompt, 'prompt');
@@ -305,6 +327,9 @@ export function coverJobMethods(h) {
             const p=meta.productionState?.packaging;
             if(!p || !p.coverTexts.some(c=>c.id===p.selectedCoverTextId && c.text===input.coverText)) fail('STALE_INPUT','Cover text must match the saved human selection');
         }
+        const design=input.designSource?confirmedDesign(meta.id,input.designSource):null;
+        if(design && design.ratio!==input.ratio)fail('STALE_INPUT','请明确采用已确认设计的比例后再制作。');
+        if(design?.identity==='own-photo-required'&&!photo)fail('INVALID_INPUT','已确认设计需要本人照片，请选择已声明且可用的本人照片。');
         const normalized = {
             protocol: PROTOCOL,
             libraryId,
@@ -316,9 +341,10 @@ export function coverJobMethods(h) {
             templateDefinition: pkg.definition,
             photo,
             materials,
-            prompt: input.prompt,
+            prompt: design?.prompt ?? input.prompt,
+            ...(design?{designSource:design.designSource}:{}),
             pixels: input.pixels,
-            ...(input.packagingSource ? {sizePolicy:input.sizePolicy??'exact'} : input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {}),
+            ...(input.packagingSource || resolved.fields.contextSource || design ? {sizePolicy:input.sizePolicy??'exact'} : input.sizePolicy === 'ratio-minimum' ? {sizePolicy: input.sizePolicy} : {}),
             ratio: input.ratio,
             count: input.count,
             outputFormat: input.outputFormat,
@@ -349,6 +375,8 @@ export function coverJobMethods(h) {
                 contentId,
                 title: normalized.title,
                 ...(normalized.packagingSource?{packagingSource:normalized.packagingSource}:{}),
+                ...(normalized.contextSource?{contextSource:normalized.contextSource}:{}),
+                ...(normalized.designSource?{designSource:normalized.designSource}:{}),
                 bodyHash: normalized.bodyHash,
                 editToken: current.editToken,
                 inputHash: hash(jsonBytes(normalized))
@@ -366,7 +394,9 @@ export function coverJobMethods(h) {
 
     function findCoverRequest(contentId, raw) {
         id(contentId);
-        const fingerprint = inputFields(raw, ['inputHash', 'title', 'bodyHash', 'packagingSource'], ['inputHash', 'title', 'bodyHash']);
+        const fingerprint = inputFields(raw, ['inputHash', 'title', 'bodyHash', 'packagingSource', 'contextSource', 'designSource'], ['inputHash', 'title', 'bodyHash']);
+        if(fingerprint.contextSource)validateFrozenContext(fingerprint.contextSource);
+        if(fingerprint.designSource&&!validFrozenCoverDesign(fingerprint.designSource))fail('INVALID_INPUT','Invalid frozen design fingerprint');
         checkedHash(fingerprint.inputHash);
         checkedHash(fingerprint.bodyHash);
         text(fingerprint.title, 'title');
@@ -384,7 +414,7 @@ export function coverJobMethods(h) {
         checkedHash(token);
         const requestInput = {
             action: 'createCoverRequest',
-            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
+            request: inputFields(raw, ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope', 'sizePolicy', 'coverText', 'packagingSource', 'designSource'], ['template', 'styleAssetHashes', 'photo', 'materialIds', 'prompt', 'pixels', 'ratio', 'count', 'outputFormat', 'scope'])
         };
         if (requestInput.request.sizePolicy === 'exact') delete requestInput.request.sizePolicy;
         const replayed = replayCoverRequest(contentId, requestInput, token, options);
@@ -410,7 +440,7 @@ export function coverJobMethods(h) {
             if (hash(jsonBytes(normalized)) !== initial.inputHash) fail('CONFLICT', 'Selected inputs changed before creating request');
             const request = {
                 format: 'nova-cover-request',
-                schemaVersion: normalized.packagingSource ? 3 : normalized.sizePolicy === 'ratio-minimum' ? 2 : 1,
+                schemaVersion: normalized.contextSource ? 5 : normalized.designSource ? 4 : normalized.packagingSource ? 3 : normalized.sizePolicy === 'ratio-minimum' ? 2 : 1,
                 requestId,
                 createdAt: now,
                 inputHash: initial.inputHash, ...normalized
@@ -852,12 +882,13 @@ export function coverJobMethods(h) {
         if(receipt.requestHash!==job.requestHash||report.format!=='nova-cover-validation'||report.schemaVersion!==1||report.receiptHash!==attempt.receiptHash||report.requestHash!==job.requestHash||report.status!=='passed'||report.decoded!==true||!Array.isArray(report.files)||report.files.length!==receipt.files.length||receipt.files.length!==request.count||attempt.candidateIds.length!==receipt.files.length)fail('CORRUPT','Selected generated validation ownership mismatch');
         const file=receipt.files[index],proof=report.files[index];if(!file||!proof||file.sha256!==candidate.assetHash||file.name!==candidate.originalName||proof.assetHash!==candidate.assetHash||proof.originalName!==file.name||proof.bytes!==asset.bytes||proof.decoded!==true||'image/'+(proof.format==='jpeg'?'jpeg':proof.format)!==asset.detectedType)fail('CORRUPT','Selected generated image differs from its decoded receipt');
         const captured=selectedCoverBytes(path.join(location,'图片-'+index),safePath,fail);if(hash(captured)!==candidate.assetHash)fail('CORRUPT','Selected captured raster checksum mismatch');
-        return {proof,provenance:{kind:'generated',requestId:job.id,requestHash:job.requestHash,attemptId:attempt.attemptId,receiptHash:attempt.receiptHash,template:structuredClone(request.template),packagingSource:request.packagingSource?structuredClone(request.packagingSource):null,bodyHash:request.bodyHash}};
+        return {proof,provenance:{kind:'generated',requestId:job.id,requestHash:job.requestHash,attemptId:attempt.attemptId,receiptHash:attempt.receiptHash,template:structuredClone(request.template),packagingSource:request.packagingSource?structuredClone(request.packagingSource):null,...(request.designSource?{designSource:structuredClone(request.designSource)}:{}),bodyHash:request.bodyHash}};
     }
     function assertCoverRequestFresh(contentId,requestId) {return sourceLocked(()=>{const current=content(id(contentId)),{job}=find(current,requestId);const {request}=requestPackage(contentId,job);fresh(current,Buffer.from(current.body),request);return true;});}
     return {
         ...selectedCoverMethods({...h,current:content,readGeneratedSelectedEvidence}),
         readCoverPackaging,
+        readCoverDesigns,
         assertCoverRequestFresh,
         inspectCoverInput,
         findCoverRequest,

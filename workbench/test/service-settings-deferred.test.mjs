@@ -43,7 +43,11 @@ test('legacy nondeferred store preserves eager encryption availability API',asyn
  const f=await fixture(t);const store=new ServiceSettingsStore({filePath:f.filePath,encryption:f.encryption});assert.equal((await store.initialize()).encryptionAvailable,true);assert.equal(f.calls.probe,1);assert.equal(store.encryptionAvailable(),true);assert.equal(f.calls.probe,2);
 });
 test('local readiness and successful transcription never access credentials even with saved unrelated keys',async t=>{
- const f=await fixture(t);await f.store.initialize();const tools=new ServiceTools({settings:f.store});tools.localModule=async()=> 'faster_whisper';tools.localTranscribe=async()=>({text:'本地识别',durationMs:1200});let secretCalls=0;f.store.secret=()=>{secretCalls++;throw Error('Local ASR must never obtain a credential');};
+ const f=await fixture(t);await f.store.initialize();
+ const model=path.join(f.dir,'controlled-qwen-model'),executable=path.join(f.dir,'controlled-python');await fs.mkdir(model);await fs.writeFile(path.join(model,'config.json'),JSON.stringify({model_type:'qwen3_asr'}));await fs.writeFile(path.join(model,'model.safetensors'),'controlled test weight identity only');
+ const proof=JSON.stringify({platform:process.platform,arch:process.arch,python:'3.12.0',module:'qwen_asr',text:'你好，语音测试。',mp4Decode:false,dependencies:{}});await fs.writeFile(executable,'#!/bin/sh\nprintf \'%s\\n\' \''+proof+'\'\n',{mode:0o755});
+ const values=f.store.read().values;await f.store.update({values:{...values,asr:{...values.asr,localEngine:'qwen3-asr',localExecutable:executable,localModelPath:model}}});
+ const tools=new ServiceTools({settings:f.store});tools.localTranscribe=async()=>({text:'本地识别',durationMs:1200});let secretCalls=0;f.store.secret=()=>{secretCalls++;throw Error('Local ASR must never obtain a credential');};
  const readiness=await tools.checkReadiness();assert.equal(readiness.localAsr.available,true);assert.equal(readiness.encryptionAvailable,false);assert.equal(readiness.encryptionStatus,'unchecked');
  const audioPath=path.join(f.dir,'sample.wav');await fs.writeFile(audioPath,'fixture audio');const result=await tools.execute({tool:'asr',audioPath,taskId:randomUUID(),attemptId:randomUUID(),claimToken:randomUUID(),workerId:'deferred-local-asr',requestId:randomUUID()});assert.equal(result.data.text,'本地识别');assert.equal(result.requestsUsed,0);assert.equal(secretCalls,0);assert.deepEqual(f.calls,{probe:0,backend:0,encrypt:0,decrypt:0});
 });

@@ -35,7 +35,7 @@ type Catalogs=Map<string,Catalog>;
 type RegisteredPage={identity:string;relativePath:string;sourceId:string;sourceRoot:string;vaultRoot:string};
 function catalogFor(page:RegisteredPage,catalogs:Catalogs):Catalog {
  let catalog=catalogs.get(page.sourceId);if(!catalog){catalog=readBoundSourceCatalog(page.vaultRoot,{sourceId:page.sourceId});catalogs.set(page.sourceId,catalog);}
- if(catalog.source.mode!=='internal'||!catalog.source.available||catalog.source.root!==page.sourceRoot)throw Error('来源映射已变化');
+ if(!['internal','linked'].includes(catalog.source.mode)||!catalog.source.available||catalog.source.root!==page.sourceRoot)throw Error('来源映射已变化');
  return catalog;
 }
 /** Original bytes and prepared assets must still describe the registered original page. */
@@ -56,8 +56,8 @@ export function registeredReportPage(binding:LibraryBinding,report:ProductionRep
    if(candidates.length!==1)return null;sourceId=candidates[0].id;
   }
   if(typeof sourceId!=='string')return null;
-  const linked=resolveSource(bound.vaultRoot,sourceId);if(linked.mode!=='internal'||!linked.available)return null;
-  const prefix=path.relative(bound.vaultRoot,linked.root).split(path.sep).join('/');if(!sourceDirectory(prefix)||!original.relativePath.startsWith(prefix+'/'))return null;
+  const linked=resolveSource(bound.vaultRoot,sourceId);if(!['internal','linked'].includes(linked.mode)||!linked.available)return null;
+  const prefix=linked.mode==='internal'?path.relative(bound.vaultRoot,linked.root).split(path.sep).join('/'):sourceId;if(!sourceDirectory(prefix)||!original.relativePath.startsWith(prefix+'/'))return null;
   const sourceRelative=original.relativePath.slice(prefix.length+1);if(!relative(sourceRelative))return null;
   const identity=digest(JSON.stringify([binding.libraryId,binding.rootIdentity,report.id,pageId,sourceId,linked.root,linked.role,sourceRelative,original.hash,page.assetHash])),registered={sourceId,relativePath:sourceRelative,sourceRoot:linked.root,vaultRoot:bound.vaultRoot,identity};
   if(!Array.isArray(source.originalPages)&&catalogFor(registered,catalogs).files.filter(f=>f.relativePath===sourceRelative).length!==1)return null;

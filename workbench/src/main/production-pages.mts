@@ -137,7 +137,7 @@ export class ProductionPages {
    if(page?.[2]&&(!frameContext||frameContext.token!==match[1]||frameContext.pageId!==pageId||frameContext.navigation.fingerprint!==result.navigation.fingerprint))return this.send(res,409,'报告已变化，请重新打开。','text/plain');
    if(route.startsWith('/page/'))return this.send(res,200,page?.[2]?reportNavigationFrame(result.html,result.navigation,pageId!,page[2]):result.html,'text/html; charset=utf-8',"sandbox allow-scripts; default-src 'none'; connect-src 'none'; frame-src 'none'; object-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'");
    const selected=pageId??result.report.pageId;
-   if(route.startsWith('/view/')&&pageId)await this.options.setReportPosition?.(cap.binding,cap.id,pageId);
+   if(route.startsWith('/view/')&&pageId&&(result.report.meta as {vault?:{sourceWritable?:boolean}}|null)?.vault?.sourceWritable!==false)await this.options.setReportPosition?.(cap.binding,cap.id,pageId);
    const nav=result.report.pages.map(p=>`<a href="${basePath}/view/${p.id}"${p.id===selected?' aria-current="page"':''}>${escape(p.title)}</a>`).join('');
    const sources=reportSources(result.html,result.report.sourceUrl),nonce=randomBytes(20).toString('base64');
    const sourceList=sources.map((url,index)=>`<li><button type="button" data-source="${index}">打开来源 ${index+1}</button><span>${escape(url)}</span></li>`).join('');

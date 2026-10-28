@@ -7,7 +7,7 @@ description: 用户要求把原稿和逐条有依据的修改建议交给本人�
 
 本入口 role 为 business-method、executable:false。先读[业务执行边界](../../plugin-src/resources/business-skills-contract.md)、[方法适配契约](../../plugin-src/resources/method-adaptation-contract.md)，再完整读取[原方法正文](upstream/current/METHOD.md)与[本地映射](references/method.md)。按原分支读取同目录 references、模板、schema 或必要资源，完整方法不以摘要替代。
 
-原稿原样、最小修改片段与依据分类、逐条判断和本人手改读回均按完整原方法保留。已有 jc-doc 时使用当前原页建议／读回；没有原页时先交可读审稿候选和明确缺口，不启动旧 localStorage 网页、不另立真源。
+原稿原样、最小修改片段与依据分类、逐条判断和本人手改读回均按完整原方法保留。已有 jc-doc 时使用当前原页建议／读回；没有原页时按专用运行协议建立受控可编辑审稿入口，保留原Markdown与当前源决定，不启动旧 localStorage 网页、不另立真源。
 
 直接对话按方法在当前聊天给候选；固定工作台任务才由 `nova-content-writing-execution` 读取显式 handoff、冻结请求、context 和 attempt，完成 doctor/context/claim，按真实回复保留 waiting-user / waiting-permission 及恢复，再由受控 checkpoint / submit 写入并核对 taskId、attemptId、requestHash、结果 hash 和回执。已有版本与作者手改沿用 CAS，冲突先回读。
 

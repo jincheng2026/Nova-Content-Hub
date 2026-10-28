@@ -1,0 +1,98 @@
+[
+  {
+    "path": "ffmpeg/LICENSE.md",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/LICENSE.md",
+    "bytes": 4346,
+    "sha256": "2e1d16c72fd74e12063776371da757322f8b77589386532f4fd8634bde7de1af"
+  },
+  {
+    "path": "ffmpeg/COPYING.LGPLv2.1",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/COPYING.LGPLv2.1",
+    "bytes": 26517,
+    "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+  },
+  {
+    "path": "ffmpeg/COPYING.LGPLv3",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/COPYING.LGPLv3",
+    "bytes": 7651,
+    "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+  },
+  {
+    "path": "ffmpeg/COPYING.GPLv2",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/COPYING.GPLv2",
+    "bytes": 18092,
+    "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643"
+  },
+  {
+    "path": "ffmpeg/COPYING.GPLv3",
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/COPYING.GPLv3",
+    "bytes": 35147,
+    "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+  },
+  {
+    "path": "x264/COPYING",
+    "url": "https://code.videolan.org/videolan/x264/-/raw/master/COPYING",
+    "bytes": 17992,
+    "sha256": "32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670"
+  },
+  {
+    "path": "x265/COPYING",
+    "url": "https://raw.githubusercontent.com/videolan/x265/master/COPYING",
+    "bytes": 18120,
+    "sha256": "d8afb1bcc7a2cfc603683b168d6987ef0a48e59e0da3693bf55c5d33b67e2b49"
+  },
+  {
+    "path": "libvpx/LICENSE",
+    "url": "https://raw.githubusercontent.com/webmproject/libvpx/v1.16.0/LICENSE",
+    "bytes": 1537,
+    "sha256": "8267348d5af1262c11d1a08de2f5afc77457755f1ac658627dd9acf71011d615"
+  },
+  {
+    "path": "libwebp/COPYING",
+    "url": "https://raw.githubusercontent.com/webmproject/libwebp/v1.6.0/COPYING",
+    "bytes": 1496,
+    "sha256": "5aec868f669e384a22372a4e8a1a6cd7d44c64cd451f960ca69cc170d1e13acf"
+  },
+  {
+    "path": "libwebp/PATENTS",
+    "url": "https://raw.githubusercontent.com/webmproject/libwebp/v1.6.0/PATENTS",
+    "bytes": 1436,
+    "sha256": "cc3273e0694ea5896145e0677699b53471b03ea43021ddc50e7923fbb9f5023c"
+  },
+  {
+    "path": "opus/COPYING",
+    "url": "https://raw.githubusercontent.com/xiph/opus/v1.6.1/COPYING",
+    "bytes": 1945,
+    "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551"
+  },
+  {
+    "path": "dav1d/COPYING",
+    "url": "https://code.videolan.org/videolan/dav1d/-/raw/1.5.3/COPYING",
+    "bytes": 1317,
+    "sha256": "dd92c3c2247c5651606fc23a5e2d6a1ebc5ace9a3e49cbde0e12f05ad1cb1ee5"
+  },
+  {
+    "path": "SVT-AV1/LICENSE.md",
+    "url": "https://gitlab.com/AOMediaCodec/SVT-AV1/-/raw/v4.1.0/LICENSE.md",
+    "bytes": 1709,
+    "sha256": "0acc2fcb27472bdc9aaf8b71f37055bbdac4f54671b7d922f241bd7fcd0dd3e6"
+  },
+  {
+    "path": "SVT-AV1/PATENTS.md",
+    "url": "https://gitlab.com/AOMediaCodec/SVT-AV1/-/raw/v4.1.0/PATENTS.md",
+    "bytes": 5767,
+    "sha256": "20678ab10402659106dc4c147c97b2a6e94b5c0695415e15a8f195ebc3547922"
+  },
+  {
+    "path": "lame/COPYING",
+    "url": "https://raw.githubusercontent.com/rbrito/lame/master/COPYING",
+    "bytes": 25284,
+    "sha256": "bfe4a52dc4645385f356a8e83cc54216a293e3b6f1cb4f79f5fc0277abf937fd"
+  },
+  {
+    "path": "opencore-amr/LICENSE",
+    "url": "https://raw.githubusercontent.com/BelledonneCommunications/opencore-amr/master/LICENSE",
+    "bytes": 10271,
+    "sha256": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb"
+  }
+]

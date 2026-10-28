@@ -6,13 +6,14 @@ import * as data from '../src/renderer/jincheng-work-detail-data.ts';
 const require = createRequire(new URL('../package.json', import.meta.url));
 const React = require('react'), {renderToStaticMarkup} = require('react-dom/server');
 const {rolldown} = await import(require.resolve('rolldown'));
-const bundle = await rolldown({input:new URL('../src/renderer/jincheng-work-detail.tsx',import.meta.url).pathname, external:id => !id.endsWith('/jincheng-work-detail.tsx')});
+const bundle = await rolldown({input:new URL('../src/renderer/jincheng-work-detail.tsx',import.meta.url).pathname, external:id => !id.endsWith('/jincheng-work-detail.tsx') && !id.endsWith('/use-paged-items.ts') && !id.endsWith('/paged-items.tsx')});
 const generated = await bundle.generate({format:'cjs'}); await bundle.close();
 const module = {exports:{}}, buttons=[];
 vm.runInNewContext(generated.output.find(item => item.type === 'chunk').code, {module,exports:module.exports,require:id => {
  if (id === 'react' || id === 'react/jsx-runtime') return require(id);
  if (id.endsWith('/button')) return ({children,...props}) => {buttons.push({children,...props}); return React.createElement('button',{disabled:props.disabled},children);};
  if (id.endsWith('jincheng-work-detail-data.ts')) return data;
+ if (id.endsWith('/pagination-bar.tsx')) return {PaginationBar: () => null};
  return {};
 }});
 const transcript={id:'transcript',relativePath:'02_内容素材/视频/逐字稿.md',format:'markdown'};

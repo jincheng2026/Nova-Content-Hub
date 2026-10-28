@@ -1,5 +1,5 @@
 import {bindingForRuntime,withVaultReadLock} from '../vault/core.mjs';
-import {readVaultPackaging} from '../vault/packaging.mjs';
+import {readVaultCoverPackaging} from '../vault/packaging.mjs';
 import fs from 'node:fs';
 import {makeVaultBridge,applyVaultSourceTransaction} from '../vault/bridge.mjs';
 import {productionMethods, validateProductionMetadata, productionAssetHashes} from './production.mjs';
@@ -1007,7 +1007,7 @@ function library(root, initialInfo, rootIdentity) {
             }
         }),
         ...coverJobMethods({
-            readCoverPackaging: input => readVaultPackaging(root,input),
+            readCoverPackaging: input => readVaultCoverPackaging(root,input),
             withCoverSourceLock: fn => {const binding=bindingForRuntime(root);return binding?withVaultReadLock(binding.vaultRoot,fn):fn();},
             changeCurrent: (contentId, input, edit, options) => mutate('update', contentId, input, undefined, options, 'content', edit, undefined, true),
             replayCoverRequest: (contentId, input, expectedToken, options = {}) => {

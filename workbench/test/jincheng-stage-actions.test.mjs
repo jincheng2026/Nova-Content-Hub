@@ -36,3 +36,9 @@ test('existing stage menus stay closed until the author chooses a method', () =>
  assert.doesNotMatch(render({}),/role="dialog"/);
  assert.equal(taskInvocations,0);
 });
+
+test('four original methods have distinct explicit entries; synthesis shows its own depth and question boundaries without starting tools',()=>{
+ const expected={kepu:'jc-kepu-video','review-page':'jc-review-page','cover-design':'jc-cover-design',synthesis:'jc-synthesis-research'};
+ for(const [id,skill] of Object.entries(expected)){assert.equal(module.exports.jinchengActions.find(a=>a.id===id).skill,skill);assert.match(render({actions:[id],initialAction:id}),/交给助手继续/);}
+ const html=render({actions:['synthesis'],initialAction:'synthesis'});assert.match(html,/真正要回答的问题/);assert.match(html,/时间边界/);assert.match(html,/定位式/);assert.match(html,/生成式/);assert.equal(taskInvocations,0);
+});

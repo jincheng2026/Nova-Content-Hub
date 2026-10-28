@@ -66,3 +66,25 @@ test('topic suggestions use saved idea context and never mutate its title or bod
  assert.equal((await c.readContent({id:content.id})).title,content.title);assert.equal((await c.readContent({id:content.id})).body,content.body);
  assert.throws(()=>validateInput('startProductionTask',{...input,comments:true}),{code:'INVALID_INPUT'});assert.throws(()=>validateInput('startProductionTask',{...input,businessSkill:'xindao-interview'}),{code:'INVALID_INPUT'});
 });
+
+test('synthesis freezes its three-depth brief without a T number or social-media collection contract',async t=>{
+ const {controller:c}=await fixture(t);c.production.callbacks.serviceSettings=async()=>{const v=settings();v.values.budget={enabled:true,maxRequestsPerTask:10};v.values.commentsEnabled=true;return v;};
+ const brief={depth:'issue',question:'围绕已给一手材料比较争议',purpose:'核对判断依据',timeBoundary:'仅2026年材料',scopeBoundary:'仅明确提供的材料'};
+ const input={kind:'research',title:'综合调研',prompt:'不调用外部服务，只校验固定请求',contentId:null,accountId:null,workflow:'jincheng-stage',stage:'synthesis',businessSkill:'jc-synthesis-research',synthesisBrief:brief,mode:'simple',comments:false};
+ assert.doesNotThrow(()=>validateInput('startProductionTask',input));
+ for(const bad of [{...input,synthesisBrief:undefined},{...input,synthesisBrief:{...brief,depth:'detailed'}},{...input,researchBrief:{route:'topic',platform:'manual',targetIds:['other']}},{...input,businessSkill:'jc-media-research'},{...input,comments:true},{...input,stage:'research'}])assert.throws(()=>validateInput('startProductionTask',bad),{code:'INVALID_INPUT'});
+ const result=await c.startProductionTask(input),task=result.snapshot.tasks.at(-1);
+ assert.deepEqual(task.request.parameters.synthesisBrief,brief);assert.equal(task.request.parameters.workflow,'jincheng-stage');assert.equal(task.request.parameters.stage,'synthesis');assert.equal(task.request.parameters.businessSkill,'jc-synthesis-research');assert.equal('researchRuntime' in task.request.parameters,false);assert.deepEqual(task.request.tools,[]);assert.equal(task.request.budget.amount,0);assert.equal(task.contentId,null);
+});
+
+test('cover design freezes a valid explicit ratio and rejects stray or missing ratios',async t=>{
+ const {controller:c}=await fixture(t);const input={kind:'packaging',title:'封面设计',prompt:'仅设计候选',contentId:null,accountId:null,workflow:'jincheng-stage',stage:'cover-design',businessSkill:'jc-cover-design',coverDesignRatio:'16:9',mode:'simple',comments:false};
+ assert.doesNotThrow(()=>validateInput('startProductionTask',input));
+ for(const bad of [{...input,coverDesignRatio:undefined},{...input,coverDesignRatio:'0:4'},{...input,coverDesignRatio:'1.5:1'},{...input,stage:'cover-copy'}])assert.throws(()=>validateInput('startProductionTask',bad),{code:'INVALID_INPUT'});
+ const result=await c.startProductionTask(input);assert.equal(result.snapshot.tasks.at(-1).request.parameters.coverDesignRatio,'16:9');
+});
+test('unavailable external ASR never blocks a synthesis task with no ASR tools',async t=>{
+ const {controller:c}=await fixture(t);c.production.callbacks.serviceSettings=async()=>{const v=settings();v.values.asr={...v.values.asr,mode:'local-only',localEngine:'qwen3-asr',localModule:'mlx_audio',localExecutable:'/unavailable-qwen-python',localModelPath:'/unavailable-qwen-model'};return v;};
+ const result=await c.startProductionTask({kind:'research',title:'综合调研',prompt:'仅综合给定材料',contentId:null,accountId:null,workflow:'jincheng-stage',stage:'synthesis',businessSkill:'jc-synthesis-research',synthesisBrief:{depth:'issue',question:'明确问题',purpose:'形成判断',timeBoundary:'截至今天',scopeBoundary:'给定材料'},mode:'simple',comments:false});
+ const task=result.snapshot.tasks.at(-1);assert.deepEqual(task.request.tools,[]);assert.equal(task.request.parameters.serviceConfig.externalAsrIdentity,undefined);
+});

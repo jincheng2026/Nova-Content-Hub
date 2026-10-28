@@ -44,7 +44,7 @@ export function businessSkillForTask(kind, parameters = {}, accountId = null) {
         : parameters.workflow === 'content-creation' ? 'jc-content-writer'
         : kind === 'research'||kind==='analysis'&&accountId ? 'jc-media-research'
         : kind === 'packaging' ? 'jc-cover-copy'
-        : kind === 'transcription' ? 'jc-benchmark-intake'
+        : kind === 'transcription' ? 'jc-zhuanxie'
         : kind === 'analysis' ? 'jc-video-analysis'
         : kind === 'writing' ? 'nova-workbench-writing-method' : null;
     const selected = methods.find(method => method.id === preferred);

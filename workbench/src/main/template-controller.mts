@@ -39,7 +39,7 @@ export class TemplateController {
     async readTemplateAssistantSetup(input?: undefined) {this.validate('readTemplateAssistantSetup', input); return this.callbacks.readTemplateAssistantSetup(this.owner.binding?.assistant ?? 'codex');}
     async requireAssistant(host: Assistant) {
         const setup = await this.callbacks.readTemplateAssistantSetup(host);
-        if (!setup.ready || setup.host !== host || setup.skill !== 'nova-content-template-execution') fail('NOT_READY', '模板执行能力尚未准备好。请在设置中检查全局助手与配套模板插件。');
+        if (!setup.ready || setup.host !== host || setup.skill !== 'nova-content-template-execution') throw Object.assign(new Error(setup.host === host && setup.message || '模板执行能力尚未准备好。请在设置中检查全局助手与配套模板插件。'), {code: 'NOT_READY', reason: setup.reason});
     }
     async writable() {
         requireWrite(this.owner.authMode);

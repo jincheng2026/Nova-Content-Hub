@@ -1,3 +1,4 @@
+import {registeredIntakeSource} from './intake-media-source.mts';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
 import {createResearchRuntime} from '../../../plugin-src/src/lib/research-runtime/index.mjs';
@@ -28,13 +29,13 @@ export class JinChengResearchServices {
   const runtime=createResearchRuntime({vaultRoot,executeService:request,readiness:()=>this.tools.checkReadiness(),authorize:async({config:actual})=>{const ctx=await context();if(!isDeepStrictEqual(validateResearchConfig(parameters(ctx.task!.request.parameters).researchRuntime),actual))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');},readMedia:async(grant)=>{
    const ctx=await context();if(!ctx.attempt?.mediaGrants?.some(g=>g.assetHash===grant.assetHash&&g.videoId===grant.videoId&&g.requestHash===ctx.task!.requestHash))throw new ServiceToolError('INVALID_MEDIA_GRANT');
    const library=openLibrary(binding.root,{expectedLibraryId:binding.libraryId,expectedRootIdentity:binding.rootIdentity}),asset=library.readAsset(grant.assetHash),extensions:Record<string,string>={'video/mp4':'.mp4','video/webm':'.webm','audio/mp4':'.m4a','audio/mpeg':'.mp3','audio/wav':'.wav','audio/x-wav':'.wav','audio/ogg':'.ogg','audio/flac':'.flac'};
-   if(asset.bytes>67108864||!extensions[asset.detectedType])throw new ServiceToolError('INVALID_MEDIA_GRANT');return{data:asset.data,extension:extensions[asset.detectedType]!};
+   if(asset.bytes>67108864||!extensions[asset.detectedType])throw new ServiceToolError('INVALID_MEDIA_GRANT');const extension=extensions[asset.detectedType]!;const verified=config.route==='intake'&&config.intakeContractVersion===2?await this.tools.verifyIntakeMedia(asset.data,extension,grant.assetHash):undefined;return{data:asset.data,extension,...verified};
   },fetchMedia:async({videoId,url})=>{
    const ctx=await context(),existing=ctx.attempt?.mediaGrants?.find(g=>g.videoId===videoId&&g.canonicalUrl===url&&g.requestHash===ctx.task!.requestHash);
-   if(existing)return request({tool:'media',operation:'fetch',sourceReceiptId:existing.sourceReceiptId});
-   const source=await request({tool:'tikhub',operation:'video',id:videoId}),data=source.data as {sourceReceipt?:{id?:string;videoId?:string;canonicalUrl?:string}};
+   if(existing){const cached=await this.tools.cachedVideoResponse?.(videoId,existing.responseHash),source=cached?registeredIntakeSource(cached,videoId):null;const media=await request({tool:'media',operation:'fetch',sourceReceiptId:existing.sourceReceiptId});return {...media,...(source?{source}:{})};}
+   const source=await request({tool:'tikhub',operation:'video',id:videoId}),data=source.data as {videoId?:string;title?:string;description?:string;sourceReceipt?:{id?:string;videoId?:string;canonicalUrl?:string}};
    if(!data?.sourceReceipt?.id||data.sourceReceipt.videoId!==videoId||data.sourceReceipt.canonicalUrl!==url)throw new ServiceToolError('MEDIA_SOURCE_UNAVAILABLE');
-   return request({tool:'media',operation:'fetch',sourceReceiptId:data.sourceReceipt.id});
+   const media=await request({tool:'media',operation:'fetch',sourceReceiptId:data.sourceReceipt.id}),metadata=registeredIntakeSource(data,videoId);return {...media,...(metadata?{source:metadata}:{})};
   }});
   return executeResearchOperation(runtime,config,operation,input);
  }

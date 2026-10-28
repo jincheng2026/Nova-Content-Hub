@@ -1,0 +1,3 @@
+const hash=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
+export function validCoverDesignSelection(value){return !!value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length===2&&typeof value.artifactId==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(value.artifactId)&&hash(value.artifactHash);}
+export function validFrozenCoverDesign(value){return !!value&&typeof value==='object'&&!Array.isArray(value)&&Object.keys(value).length===6&&validCoverDesignSelection({artifactId:value.artifactId,artifactHash:value.artifactHash})&&typeof value.vaultId==='string'&&/^[0-9a-f-]{36}$/.test(value.vaultId)&&/^T\d{3,}$/.test(value.workId)&&value.methodId==='jc-cover-design'&&typeof value.taskId==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(value.taskId);}

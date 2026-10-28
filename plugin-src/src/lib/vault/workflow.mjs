@@ -1,8 +1,9 @@
+import {checkpointKey,currentStageArtifacts} from '../method-adapters/checkpoints.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {json,scan,contentSources,creationData,readBytes,digest,fail,safe,atomic,mkdir,withVaultLock} from './core.mjs';
-const KINDS=['topic','author-analysis','analysis-comparison','narrative','key-segments','complete-draft','final-script','packaging','recorded','publication','archive','review'];
+const KINDS=['topic','author-analysis','analysis-comparison','narrative','framework','kepu-segment','kepu-readthrough','cover-design','key-segments','complete-draft','final-script','packaging','recorded','publication','archive','review'];
 const hash=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
 export function workContext(root,work){
     const descriptor=json(root,'.workbench/vault.json');
@@ -29,11 +30,23 @@ function originalFacts(root,source){
     }).filter(Boolean);
 }
 function artifactCurrent(root,artifact){try{return digest(readBytes(root,artifact.path))===artifact.hash;}catch(e){if(['ENOENT','INVALID_INPUT'].includes(e.code))return false;throw e;}}
+function scopedArtifact(root,a){
+ if(a.kind!=='kepu-segment'||a.kepuScope||!artifactCurrent(root,a))return a;
+ try{const data=JSON.parse(readBytes(root,a.path).toString('utf8')).data;if(Number.isInteger(data.index)&&data.index>=0&&typeof data.framework?.artifactId==='string'&&hash(data.framework.hash))return {...a,kepuScope:{frameworkId:data.framework.artifactId,frameworkHash:data.framework.hash,index:data.index,title:data.title}};}catch{}return a;
+}
+function dependenciesCurrent(root,artifact,state,visited=new Set()){
+ if(!['framework','kepu-segment','kepu-readthrough'].includes(artifact.kind)||artifact.methodId!=='jc-kepu-video')return true;
+ if(visited.has(artifact.artifactId))return false;visited.add(artifact.artifactId);
+ let record;try{record=JSON.parse(readBytes(root,artifact.path).toString('utf8'));}catch{return false;}
+ if(!Array.isArray(record.dependencies))return false;
+ return record.dependencies.every(pin=>{const a=state.artifacts.find(a=>a.artifactId===pin.artifactId&&a.hash===pin.hash),d=state.decisions.findLast(d=>d.artifactId===pin.artifactId);if(!a||!artifactCurrent(root,a)||d?.decision!=='confirm'||d.artifactHash!==pin.hash||d.decisionId!==pin.decisionId)return false;const key=checkpointKey(scopedArtifact(root,a)),latest=state.artifacts.findLast(b=>checkpointKey(scopedArtifact(root,b))===key);return latest?.artifactId===a.artifactId&&dependenciesCurrent(root,a,state,new Set(visited));});
+}
 export function readWorkFlow(root,work){
-    const context=load(root,work),{source,state}=context,original=originalFacts(root,source),facts={};
+    const context=load(root,work),{source,state}=context,original=originalFacts(root,source),facts={},artifacts=state.artifacts.map(a=>scopedArtifact(root,a)),checkpointStates={};
+    for(const artifact of artifacts){const decision=state.decisions.findLast(d=>d.artifactId===artifact.artifactId);checkpointStates[artifact.artifactId]={confirmed:artifactCurrent(root,artifact)&&dependenciesCurrent(root,artifact,state)&&decision?.decision==='confirm'&&decision.artifactHash===artifact.hash,stale:!artifactCurrent(root,artifact)};}
     for(const kind of KINDS){
         const artifact=state.artifacts.findLast(a=>a.kind===kind),decision=state.decisions.findLast(d=>d.kind===kind);
-        const confirmed=!!artifact&&artifactCurrent(root,artifact)&&decision?.decision==='confirm'&&decision.artifactId===artifact.artifactId&&decision.artifactHash===artifact.hash;
+        const confirmed=!!artifact&&checkpointStates[artifact.artifactId].confirmed;
         facts[kind]={artifact:artifact??null,confirmed,stale:!!artifact&&!artifactCurrent(root,artifact)};
         facts[kind.replace(/-([a-z])/g,(_,c)=>c.toUpperCase())+'Confirmed']=confirmed;
     }
@@ -48,8 +61,8 @@ export function readWorkFlow(root,work){
     facts.sourceResolution=source.sourceResolution;
     const nextActions=[{action:'edit-current',source:{sourceId:source.document.section==='topics'?'topics':'drafts',documentId:source.document.id},available:!source.document.sourceConflict}];
     if(source.document.sourceConflict)nextActions.push({action:'choose-current-source',candidates:source.sourceCandidates});
-    for(const kind of KINDS){const f=facts[kind];if(f.artifact&&!f.confirmed&&!f.stale&&!['recorded','publication','archive'].includes(kind))nextActions.push({action:'confirm-checkpoint',kind,artifactId:f.artifact.artifactId,artifactHash:f.artifact.hash});}
-    return {work,revision:context.revision,facts,decisions:structuredClone(state.decisions),artifacts:structuredClone(state.artifacts),metaQuestions:structuredClone(state.metaQuestions??{}),originalFacts:original,nextActions,sourceCandidates:source.sourceCandidates};
+    for(const a of currentStageArtifacts(artifacts)){const f=checkpointStates[a.artifactId];if(!f.confirmed&&!f.stale&&!['recorded','publication','archive'].includes(a.kind))nextActions.push({action:'confirm-checkpoint',kind:a.kind,artifactId:a.artifactId,artifactHash:a.hash});}
+    return {work,revision:context.revision,facts,decisions:structuredClone(state.decisions),artifacts:structuredClone(artifacts),checkpointStates,metaQuestions:structuredClone(state.metaQuestions??{}),originalFacts:original,nextActions,sourceCandidates:source.sourceCandidates};
 }
 export function appendStageArtifact(root,input){
     if(!input||!KINDS.includes(input.kind)||typeof input.artifactId!=='string'||!input.artifactId.trim()||!hash(input.hash)||typeof input.path!=='string'||typeof input.methodId!=='string'||typeof input.taskId!=='string')fail('INVALID_INPUT','阶段产物信息无效');
@@ -57,10 +70,12 @@ export function appendStageArtifact(root,input){
         const context=load(root,input.work);
         if(!input.path.startsWith(context.source.contentDirectory+'/')&&!context.source.documents.some(d=>d.relativePath===input.path))fail('INVALID_INPUT','阶段产物必须属于同一T内容目录');
         safe(root,input.path);if(digest(readBytes(root,input.path))!==input.hash)fail('CONFLICT','阶段产物版本已变化');
-        const entry={kind:input.kind,artifactId:input.artifactId,hash:input.hash,path:input.path,methodId:input.methodId,taskId:input.taskId,at:new Date().toISOString()};
-        const previous=context.state.artifacts.at(-1);
-        if(previous&&['kind','artifactId','hash','path','methodId','taskId'].every(k=>previous[k]===entry[k]))return {revision:context.revision,artifactId:entry.artifactId};
-        context.state.artifacts.push(entry);return {revision:persist(root,context),artifactId:entry.artifactId};
+        let entry={kind:input.kind,artifactId:input.artifactId,hash:input.hash,path:input.path,methodId:input.methodId,taskId:input.taskId,at:new Date().toISOString()};
+        entry=scopedArtifact(root,entry);
+        const previous=context.state.artifacts.find(a=>a.artifactId===entry.artifactId);
+        if(previous&&!['kind','hash','path','methodId','taskId'].every(k=>previous[k]===entry[k]))fail('CONFLICT','阶段产物身份已用于其他版本');
+        if(previous&&['kind','artifactId','hash','path','methodId','taskId'].every(k=>previous[k]===entry[k]))return {revision:context.revision,artifactId:entry.artifactId,path:entry.path,hash:entry.hash};
+        context.state.artifacts.push(entry);return {revision:persist(root,context),artifactId:entry.artifactId,path:entry.path,hash:entry.hash};
     });
 }
 /** Only a trusted author controller or verified host response may supply evidence. Assistant request prose is not evidence. */
@@ -70,7 +85,9 @@ export function confirmCheckpoint(root,input){
     return withVaultLock(root,()=>{
         const context=load(root,input.work);
         if(context.revision!==input.expectedRevision)fail('CONFLICT','阶段记录版本已变化，请重新读取');
-        const artifact=context.state.artifacts.findLast(a=>a.kind===input.kind);
+        const requested=context.state.artifacts.find(a=>a.artifactId===input.artifactId&&a.kind===input.kind),key=requested?checkpointKey(scopedArtifact(root,requested)):null;
+        const artifact=context.state.artifacts.findLast(a=>checkpointKey(scopedArtifact(root,a))===key);
+        if(artifact&&input.decision==='confirm'&&!dependenciesCurrent(root,artifact,context.state))fail('CHECKPOINT_REQUIRED','上游决定已变化，先重新整理该阶段候选。');
         if(!artifact||artifact.artifactId!==input.artifactId||artifact.hash!==input.artifactHash||!artifactCurrent(root,artifact))fail('CONFLICT','待决定的产物版本已变化');
         const legacy=originalFacts(root,context.source).filter(f=>f.applicable);
         if((input.kind==='final-script'&&legacy.length>0)||['recorded','publication'].includes(input.kind))fail('INVALID_INPUT','此状态由原创作页字段或实际发布事实维护，请更新对应真源');

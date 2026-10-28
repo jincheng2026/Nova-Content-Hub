@@ -80,3 +80,7 @@ RUN jincheng-publish OP --handoff UUID (--file ABSOLUTE_JSON | --stdin)
 JSON 不接受 `authorDecision/decision/actor`；助手说「用户同意」不构成决定证据。保存候选后，仍按共同 production submit/status/receipt 交任务回执，业务采纳另记。`jincheng-workflow artifact` 的 review/archive 只可能是普通阶段材料，不是上述正式档案或已确认复盘。
 
 桌面可手工导入真实 snapshot，指标未知填 null，不补零。自动观测须作者在对应正式档案明确启用：仅本次已确认抖音作品 ID，12h/7d 各最多一次 TikHub video 只读请求（1 REQ，实际费用以账单为准）。本地 observer 到时先持久预约，再由 native-observer 固定生产任务的 claim/费用 broker 执行；无 Key/服务配置时明确缺口并保留手工入口。失败或结果未知不会自动重复付费；应用晚开/唤醒补采如实记录延迟。自动观测不是模型任务，不执行平台发布或任何平台写操作。
+
+## 四项独立方法
+
+冻结stage=kepu/review-page/cover-design/synthesis时，必须先读[专用运行协议](jincheng-method-adapters.md)，再选择jincheng-workflow method或jincheng-creation review；本页通用artifact不替代专用逐段门禁、原稿保留、设计交接和综合来源账本。综合调研不调用社媒researchRuntime。

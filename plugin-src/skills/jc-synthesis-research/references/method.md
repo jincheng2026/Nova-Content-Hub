@@ -6,3 +6,7 @@
 - 原件的用户确认、分段推进、独立分析、手改唯一基准、版本与日志依原分支执行；阶段信息经允许的 checkpoint 或产物证据保存，现有 schema 不支持时保留完整文本并记录运行缺口。
 - 原件的直接文件/服务命令只读；真实读写由 registry.executor 和已验收 adapter 负责。缺 adapter 时先交候选与缺口，不假称已完成写入。
 - 对照映射契约逐条核对范围、媒体、费用、发布事实与权限；最后核对 task/attempt/requestHash/receipt，不把回复结束当提交成功。
+
+## 当前受控入口
+
+冻结stage=`synthesis`时，执行前必读[四项方法运行协议](../../../plugin-src/resources/jincheng-method-adapters.md)，按该分支schema保存、停等、恢复与提交。运行协议说明已实装适配边界；runtimeStatus仍为contract-unverified，真人判断与真实宿主质量待验收。

@@ -3,9 +3,11 @@ import type {PublicationFacts} from '../../../plugin-src/src/lib/publication-run
 export type {PublicationFacts};
 interface Base {contentId:string;mutationId:string;expectedRevision:string;decisionText:string;decisionAt:string}
 export type PublicationMutation =
+ | Base&{op:'sync-knowledge'}
+ | Base&{op:'cover-copy';platform:string;coverCopy:string}
  | Base&{op:'associate-archive';sourceId:string;videoId:string;manifestPath:string;expectedSourceHash:string}
  | Base&{op:'enable-observation';enabled:boolean;provider:'tikhub';maxRequestsPerCheckpoint:1;maxUnits:number}
- | Base&{op:'record';publication:{platform:string;title:string;description:string;cover:string;url:string;publishedAt:string;postId?:string|null};finalScript:{text:string;hash:string};contentPackageId:string|null}
+ | Base&{op:'record';publication:{platform:string;title:string;description:string;cover:string;coverCopy?:string|null;url:string;publishedAt:string;postId?:string|null};finalScript:{text:string;hash:string};contentPackageId:string|null}
  | Base&{op:'snapshot';platform:string;checkpoint:'12h'|'7d';collectedAt:string;rawEvidence:string;metrics:Record<string,number|null>;delayReason:string|null}
  | Base&{op:'confirm-review';candidateId:string;candidateHash:string;selectedActionIndex:number|null}
  | Base&{op:'decide-knowledge';candidateId:string;candidateHash:string;decision:'accept'|'reject'};

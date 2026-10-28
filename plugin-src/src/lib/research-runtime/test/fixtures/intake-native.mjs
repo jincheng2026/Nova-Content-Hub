@@ -1,0 +1,5 @@
+import {createHash} from 'node:crypto';
+const sha=x=>createHash('sha256').update(x).digest('hex');
+// Deliberately synthetic trusted-native-hook fixture, never real decoder/model evidence.
+export const cover=Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aD1sAAAAASUVORK5CYII=','base64');
+export function nativeProof(bytes,durationSeconds=4){return {version:1,engine:'pyav',decoder:'bundled-pyav',pyavVersion:'16.0.0',originalSha256:sha(bytes),bytes:bytes.length,extension:'.mp4',container:{format:'mov,mp4',durationSeconds},video:{streamIndex:0,codec:'h264',width:1,height:1,decodedFrames:1},audio:{streamIndex:1,codec:'aac',sampleRate:48000,channels:1,decodedSamples:1024},cover:{sha256:sha(cover),mediaType:'image/png',width:1,height:1,bytes:cover.length,captureTimestampSeconds:0},checks:{header:'passed',sha256:'passed',containerProbe:'passed',videoDecode:'passed',audioDecode:'passed',coverScreenshot:'passed'},toolAdaptation:{file:'native-header-and-sha256',ffprobe:'pyav-container-and-stream-probe',ffmpegDecode:'pyav-short-video-and-audio-decode',screenshot:'pyav-decoded-frame-to-png'}};}

@@ -11,6 +11,7 @@ import {snapshotPackage, validateRuntime} from '../../plugin-src/scripts/marketp
 import {validateBuildConfig, validateRelease} from '../src/main/boundary.mts';
 import {assertSourceUnchanged, exportNativePayload, sourceIdentity} from './native-payload.mjs';
 import {assertArtifactSafe} from '../../plugin-src/scripts/artifact-safety.mjs';
+import {discoverMediaCodecRuntime} from '../src/main/media-codec-runtime.mts';
 
 const workbench = fileURLToPath(new URL('../', import.meta.url));
 const readJSON = file => JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -120,13 +121,27 @@ export function archiveMacOutput(output, arch) {
     return archived;
 }
 
+/** Fail packaging if a model payload or weight file is accidentally reintroduced. */
+export async function assertModelFreeArtifact(root) {
+    const forbidden=/\.(?:safetensors|gguf|ggml|ckpt|pth|pt|onnx)$|^(?:pytorch_model(?:-\d+-of-\d+)?|model|ggml-[^/]+)\.bin$/i;
+    const walk=async directory=>{for(const entry of await fs.promises.readdir(directory,{withFileTypes:true})){
+        const file=path.join(directory,entry.name);
+        if(entry.isSymbolicLink())continue; // Existing artifact safety validates symlink boundaries.
+        if(entry.isDirectory()){if(['local-asr','.local-probes','.cache','huggingface'].includes(entry.name))throw Error('Model payload directory is forbidden in model-free installers');await walk(file);}
+        else if(entry.isFile()&&forbidden.test(entry.name))throw Error('Model weight is forbidden in model-free installers: '+path.relative(root,file));
+    }};
+    const stat=await fs.promises.stat(root);if(stat.isDirectory())await walk(root);else if(forbidden.test(path.basename(root)))throw Error('Model weight is forbidden in model-free installers');
+}
+
 export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
     const marketplace = path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`);
     const coverPlaceholder = 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep';
-    const localAsr=path.join(workbench,'..','.local-probes/local-asr-release-v2',`${options.platform}-${options.arch}`);
-    const localAsrResources=options.platform==='darwin'&&options.arch==='arm64'&&fs.existsSync(path.join(localAsr,'runtime.json'))?[{from:localAsr,to:`local-asr/${options.platform}-${options.arch}`,filter:['**/*']}]:[];
+    // Installed Qwen environments are discovered at runtime. Development caches never enter installers.
+    const localAsrResources=[];
+    const mediaCodec=path.resolve(workbench,'../.local-probes/media-codec-release-v1',`${options.platform}-${options.arch}`);
+    const codecResources=options.platform==='darwin'&&options.arch==='arm64'&&fs.existsSync(path.join(mediaCodec,'media-codec-manifest.json'))?[{from:mediaCodec,to:`media-codec/${options.platform}-${options.arch}`,filter:['**/*']}]:[];
     return {
         appId: options.channel === 'local' ? 'com.novaisland.nova-content-hub.local' : options.channel === 'testing' ? 'com.novaisland.nova-content-hub.testing' : 'com.novaisland.nova-content-hub',
         productName: options.channel === 'local' ? '自媒体工作台开发版' : options.channel === 'testing' ? '自媒体工作台测试版' : '自媒体工作台',
@@ -157,7 +172,7 @@ export function installerConfig(options, version) {
             {from: marketplace, to: 'plugin-marketplace', filter: ['**/*']},
             // Builder's recursive walk skips .gitkeep before filtering; copy this sealed file directly.
             {from: path.join(marketplace, coverPlaceholder), to: `plugin-marketplace/${coverPlaceholder}`},
-            ...localAsrResources
+            ...localAsrResources,...codecResources
         ],
         mac: {
             target: [{target: 'dmg', arch: [options.arch]}],
@@ -167,7 +182,8 @@ export function installerConfig(options, version) {
             // Both sealed resource trees must remain byte-identical through app signing.
             signIgnore: [
                 '[/\\\\]Contents[/\\\\]Resources[/\\\\]plugin-marketplace(?:[/\\\\]|$)',
-                '[/\\\\]Contents[/\\\\]Resources[/\\\\]local-asr(?:[/\\\\]|$)'
+                '[/\\\\]Contents[/\\\\]Resources[/\\\\]local-asr(?:[/\\\\]|$)',
+                '[/\\\\]Contents[/\\\\]Resources[/\\\\]media-codec(?:[/\\\\]|$)'
             ],
             minimumSystemVersion: '13.0'
         },
@@ -212,8 +228,12 @@ export async function distribute(args = process.argv.slice(2)) {
     validateReportPackagingRules(builderConfig);
     const sealedReports=await validateReportRuntimeAssets(builderConfig.directories.app);
     const asrResource=builderConfig.extraResources.find(resource=>resource.to===`local-asr/${options.platform}-${options.arch}`);
-    if(options.channel==='preview'&&options.platform==='darwin'&&options.arch==='arm64'&&!asrResource)throw Error('Apple Silicon preview requires the verified offline Qwen + Whisper resource payload.');
+    await assertModelFreeArtifact(builderConfig.directories.app);
+    for(const resource of builderConfig.extraResources)await assertModelFreeArtifact(resource.from);
     const sealedAsr=asrResource?await validateLocalAsrPayload(asrResource.from,options):null;
+    const codecResource=builderConfig.extraResources.find(resource=>resource.to===`media-codec/${options.platform}-${options.arch}`);
+    const sealedCodec=codecResource?await discoverMediaCodecRuntime([codecResource.from]):undefined;
+    if(options.platform==='darwin'&&options.arch==='arm64'&&(!sealedCodec||sealedCodec.validation!=='offline-codec-self-test'))throw Error('Apple Silicon model-free installer requires a verified independent media-codec payload. Run prepare-media-codec with its explicit sealed source.');
     // Use checksums from the locked Electron package, retaining archive validation without a network-only checksum fetch.
     builderConfig.electronDownload = {force: false, checksums: readJSON(path.join(workbench, 'node_modules/electron/checksums.json'))};
     if (options.platform === 'darwin' && options.channel === 'preview') {
@@ -236,7 +256,9 @@ export async function distribute(args = process.argv.slice(2)) {
     await validateInstallerMarketplace(path.join(resources, 'plugin-marketplace'), pluginRelease, sealedMarketplace);
     if(!isDeepStrictEqual(await validateReportRuntimeAssets(path.join(resources,'app')),sealedReports))throw Error('Packaged report runtime assets changed from sealed stage');
     if(asrResource&&sealedAsr)await validateLocalAsrPayload(path.join(resources,asrResource.to),options,sealedAsr.manifestSha256);
+    if(codecResource&&sealedCodec){const packagedCodec=await discoverMediaCodecRuntime([path.join(resources,codecResource.to)]);if(!packagedCodec||packagedCodec.identity!==sealedCodec.identity||packagedCodec.validation!=='offline-codec-self-test')throw Error('Packaged media codec changed or failed its independent offline verification.');}
     await assertArtifactSafe(resources);
+    await assertModelFreeArtifact(resources);
     if (options.platform === 'darwin') console.log(`Validated macOS build copy archived: ${archiveMacOutput(builderConfig.directories.output, options.arch)}`);
     console.log(`Non-production ${options.channel} installer: ${builderConfig.directories.output}; AUTH_MODE=${options.auth}, experimental=true, productionReady=false. ${options.auth === 'disabled' ? 'No login required.' : 'Restricted testing; authentication unavailable.'}`);
 }

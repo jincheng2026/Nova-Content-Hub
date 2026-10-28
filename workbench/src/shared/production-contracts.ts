@@ -1,4 +1,4 @@
-import type {JinchengStage,ResearchBrief} from './stage-contracts.ts';
+import type {JinchengStage,ResearchBrief,SynthesisBrief} from './stage-contracts.ts';
 import type {RadarQuery,RadarAdopt,RadarDecision} from './radar-contracts.ts';
 import type {PlatformCatalog} from './platform-catalog.ts';
 import type {LibraryBinding} from './contracts.ts';
@@ -13,7 +13,7 @@ export type ProductionManualOp = 'adoptResearchReferences'|'enable'|'saveAccount
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
 export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
 export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}
-export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string|null; accountId?: string|null; businessSkill?:string; stage?:JinchengStage; researchBrief?:ResearchBrief; source?:{documentId:string;expectedHash:string}; mode: 'simple'|'detailed'; comments: boolean; workflow?: 'content-creation'|'positioning-interview'|'topic-suggestion'|'jincheng-stage'; transcript?: ProductionTranscriptStart}
+export interface ProductionStart {kind: Core.ProductionTask['kind']; title: string; prompt: string; contentId?: string|null; accountId?: string|null; businessSkill?:string; stage?:JinchengStage; researchBrief?:ResearchBrief; synthesisBrief?:SynthesisBrief; coverDesignRatio?:string; source?:{documentId:string;expectedHash:string}; mode: 'simple'|'detailed'; comments: boolean; workflow?: 'content-creation'|'positioning-interview'|'topic-suggestion'|'jincheng-stage'; transcript?: ProductionTranscriptStart}
 export type ProductionAction = {taskId: string; action: 'cancel'|'retry'; host?: Core.ProductionHost} | {taskId: string; action: 'accept'; expectedToken: string; attemptId: string; receiptHash: string} | {taskId:string; action:'reject'; expectedToken:string; attemptId:string; receiptHash:string; reason:string};
 export interface ProductionDraft {contentId: string; body: string; editToken: string; bodyHash: string; productionToken: string; creationPatch: Partial<ProductionCreation>}
 export type ProductionFileKind = 'images'|'report'|'media';

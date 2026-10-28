@@ -22,6 +22,7 @@ export interface ServiceSettingsProps {
 export function ServiceSettings({value, busy = false,active=true, onLoad, onSave, onReveal,onCheck, onDirtyChange}: ServiceSettingsProps) {
     const [saved, setSaved] = useState(value), [values, setValues] = useState<ServiceSettingsValues>(value?.values ?? defaultServiceSettings());
     const [keys, setKeys] = useState<NonNullable<ServiceSettingsPatch['keys']>>({}), [loading, setLoading] = useState(!value), [saving, setSaving] = useState(false), [notice, setNotice] = useState('');
+    const [localReadiness,setLocalReadiness]=useState<ServiceReadiness['localAsr']|null>(null);
     const [disclosed,setDisclosed]=useState<ServiceCredentialDisclosure|null>(null),[revealing,setRevealing]=useState<ServiceCredential|null>(null),revealSequence=useRef(0);
     function hideSavedKey(){revealSequence.current++;setDisclosed(null);setRevealing(null);}
     useEffect(()=>()=>{revealSequence.current++;},[]);
@@ -41,7 +42,7 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
     useEffect(() => {if (value && !dirty) {setSaved(value); setValues(value.values); setLoading(false);}}, [value]);
     const blocked = busy || saving || loading || !saved || !active;
     const currentAsr=normalizeAsrSettings(values.asr),cloud=currentAsr.cloud,cloudMode=currentAsr.mode==='cloud';
-    const asr = (patch: Partial<ServiceSettingsValues['asr']>) => setValues(current=>({...current,asr:{...normalizeAsrSettings(current.asr),...patch}}));
+    const asr = (patch: Partial<ServiceSettingsValues['asr']>) => {setLocalReadiness(null);setValues(current=>({...current,asr:{...normalizeAsrSettings(current.asr),...patch}}));};
     function changeAsrMode(mode:ServiceSettingsValues['asr']['mode']) {
         hideSavedKey();
         if(mode==='local-only'){
@@ -81,7 +82,7 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
             }
             if (normalizeAsrSettings(current.values.asr).mode === 'cloud') {setNotice('服务设置已保存。云端识别将在任务授权后调用。'); return;}
             setNotice('服务设置已保存，正在检查本地语音组件。首次初始化可能较慢，最多等待 120 秒；检查完成前不表示已就绪。');
-            try {const result = await onCheck(); setNotice(`服务设置已保存。${result.localAsr.reason}`);}
+            try {const result = await onCheck(); setLocalReadiness(result.localAsr);setNotice(`服务设置已保存。${result.localAsr.reason}`);const selected=result.localAsr.selected;if(selected){const next=await onLoad();setSaved(next);setValues(next.values);}}
             catch {setNotice('服务设置已保存；本地模型检查未完成，可再次点击“保存并检查”重试。');}
         } finally {setSaving(false);}
     }
@@ -109,11 +110,15 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
         <p>默认使用本地识别；转云端需本次授权。</p>
         <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={currentAsr.mode} disabled={blocked} onChange={mode => changeAsrMode(mode as ServiceSettingsValues['asr']['mode'])}><option value="local-first">免费本地优先</option><option value="local-only">仅本地</option><option value="cloud">云端识别（需授权）</option></PopupSelect><p>切换“仅本地”会放弃未保存的云端配置。</p>
         {!cloudMode && <>
-          <p>{localConfigured ? '已填写模型路径，保存时检查。' : '路径留空使用随包组件。'}</p>
+          <p>{localConfigured ? '已填写模型路径，保存时检查。' : '路径留空后点击检测，查找已有 Qwen3-ASR 环境。'}</p>
+          <Button id="service-asr-detect" disabled={blocked||customNeedsKey||customInvalid} loading={saving} onClick={()=>void saveAndCheck()}>检测本地模型</Button>
+          <p>仅检测常用虚拟环境、Models 与 Hugging Face 缓存中的已有 Qwen3-ASR；不下载模型、不自动改用云端。非标准目录可在下方填写现有 Python 和模型绝对路径。</p>
+          {localReadiness?.capabilities&&<p role="status">语音文本：{localReadiness.capabilities.text?'已实测':'未通过'} · 真实时间码：{localReadiness.capabilities.timestamps?'已实测':'未验证'} · MP4 解码：{localReadiness.capabilities.mp4Decode?'已实测':'外部环境未提供（工作台解码另行检查）'}</p>}
+          {!!localReadiness?.candidates?.length&&<><label htmlFor="service-asr-candidate">已检测的本地环境</label><PopupSelect id="service-asr-candidate" value={localReadiness.candidates.find(c=>c.executable===values.asr.localExecutable&&c.modelPath===values.asr.localModelPath)?.id??''} disabled={blocked} onChange={id=>{const selected=localReadiness.candidates?.find(c=>c.id===id);if(selected){asr({localEngine:'qwen3-asr',localExecutable:selected.executable,localModelPath:selected.modelPath,localModule:selected.module});setLocalReadiness(null);setNotice('已选择此环境，请保存并检查。正在运行的任务继续使用原环境。');}}}><option value="">选择环境</option>{localReadiness.candidates.map(c=><option key={c.id} value={c.id}>{c.module??'Python'} · {c.executable} · {c.modelPath}</option>)}</PopupSelect></>}
           <details className="service-settings-details" open={!localConfigured}><summary>本地模型配置</summary><div className="service-settings-detail-body">
-            <label htmlFor="service-asr-engine">本地引擎</label><PopupSelect id="service-asr-engine" value={values.asr.localEngine} disabled={blocked} onChange={localEngine => asr({localEngine: localEngine as ServiceSettingsValues['asr']['localEngine']})}><option value="faster-whisper">faster-whisper / Python</option><option value="qwen3-asr">Qwen3-ASR / Python</option><option value="whisper-cpp">whisper.cpp</option></PopupSelect>
-            <label htmlFor="service-asr-executable">Python / whisper-cli 路径</label><Input id="service-asr-executable" value={values.asr.localExecutable} disabled={blocked} onChange={localExecutable => asr({localExecutable})}/>
-            <label htmlFor="service-asr-model">离线模型路径</label><Input id="service-asr-model" value={values.asr.localModelPath} disabled={blocked} onChange={localModelPath => asr({localModelPath})}/><p>填写绝对路径：Python 使用模型目录，whisper.cpp 使用模型文件。</p>
+            <label htmlFor="service-asr-engine">本地引擎</label><PopupSelect id="service-asr-engine" value={values.asr.localEngine} disabled={blocked} onChange={localEngine => asr({localEngine: localEngine as ServiceSettingsValues['asr']['localEngine'],localModule:undefined})}><option value="faster-whisper">faster-whisper / Python</option><option value="qwen3-asr">Qwen3-ASR / Python 或 MLX</option><option value="whisper-cpp">whisper.cpp</option></PopupSelect>
+            <label htmlFor="service-asr-executable">Python / whisper-cli 路径</label><Input id="service-asr-executable" value={values.asr.localExecutable} disabled={blocked} onChange={localExecutable => {asr({localExecutable,localModule:undefined});setLocalReadiness(null);}}/>
+            <label htmlFor="service-asr-model">离线模型路径</label><Input id="service-asr-model" value={values.asr.localModelPath} disabled={blocked} onChange={localModelPath => {asr({localModelPath});setLocalReadiness(null);}}/><p>填写绝对路径：Python 使用模型目录，whisper.cpp 使用模型文件。</p>
           </div></details>
         </>}
         {cloudMode ? cloudFields : values.asr.mode === 'local-first' && <details className="service-settings-details"><summary>云端备用配置（可选）</summary><div className="service-settings-detail-body">{cloudFields}</div></details>}

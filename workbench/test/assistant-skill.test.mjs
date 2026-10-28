@@ -5,6 +5,9 @@ import os from 'node:os';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
 import {installedAssistantSkill} from '../src/main/assistant-skill.mts';
+import {productionLaunchFailure} from '../src/main/assistant-failure.mts';
+import {Covers} from '../src/main/covers.mts';
+import {TemplateController} from '../src/main/template-controller.mts';
 
 const skill = 'nova-content-cover-execution';
 const release = {
@@ -36,6 +39,31 @@ function fixture(t, host) {
 }
 
 for (const host of ['codex', 'workbuddy']) {
+    test(`${host}: an older paired plugin reports a version mismatch and the matching upgrade`, t => {
+        const f = fixture(t, host), upgraded = {...release, version: '0.5.3', pairId: 'nova-content-hub@0.5.3:p1:disabled'};
+        assert.throws(() => installedAssistantSkill(host, upgraded, {home: f.home, env: {}}), error => {
+            assert.equal(error.reason, 'plugin-mismatch');
+            assert.equal(error.expectedVersion, '0.5.3');
+            assert.equal(error.installedVersion, '0.2.0');
+            const message = productionLaunchFailure(error);
+            assert.match(message, /0\.5\.3/); assert.match(message, /0\.2\.0/);
+            assert.match(message, /设置.*AI 助手/); assert.match(message, /升级/);
+            assert.match(message, /继续打开此任务/);
+            return true;
+        });
+    });
+
+    test(`${host}: no paired plugin reports the required version without accepting an unrelated cache`, t => {
+        const f = fixture(t, host);
+        fs.rmSync(f.root, {recursive: true});
+        write(path.join(path.dirname(f.root), '9.9.9', 'unrelated.txt'), 'unrelated cached files');
+        assert.throws(() => f.verify(), error => {
+            assert.equal(error.reason, 'plugin-missing'); assert.equal(error.expectedVersion, '0.2.0');
+            assert.equal(error.installedVersion, undefined); assert.match(error.message, /0\.2\.0/);
+            return true;
+        });
+    });
+
     test(`${host}: only exact installed enabled native release is accepted`, t => {
         const f = fixture(t, host);
         assert.equal(f.verify(), skill);
@@ -101,6 +129,19 @@ test('WorkBuddy ambiguous records and arbitrary cache paths refuse', t => {
         write(f.registry, {version: 2, plugins: {[key]: records}});
         assert.throws(() => f.verify(), {code: 'NOT_READY'});
     }
+});
+
+test('WorkBuddy current cache with an old active installation reports mismatch, not disabled', t => {
+    const f = fixture(t, 'workbuddy');
+    write(f.registry, {version: 2, plugins: {[key]: [{...f.record, version: '0.1.0', installPath: path.join(path.dirname(f.root), '0.1.0')} ]}});
+    assert.throws(() => f.verify(), {code: 'NOT_READY', reason: 'plugin-mismatch', expectedVersion: '0.2.0', installedVersion: '0.1.0'});
+});
+
+for (const capability of ['cover', 'template']) test(`${capability}: launch preserves the shared actionable setup failure`, async () => {
+    const message = '工作台 0.5.3，需要升级当前 0.5.1 配套插件。';
+    const setup = async host => ({host, ready: false, skill: null, reason: 'plugin-mismatch', message});
+    const controller = capability === 'cover' ? new Covers({worker: {}}, undefined, {}, setup) : new TemplateController({}, {readTemplateAssistantSetup: setup});
+    await assert.rejects(controller.requireAssistant('workbuddy'), {code: 'NOT_READY', reason: 'plugin-mismatch', message});
 });
 
 test('Codex TOML uses parser semantics, rejecting malformed and duplicate tables', t => {

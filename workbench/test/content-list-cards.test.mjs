@@ -46,6 +46,21 @@ test('a true collection keeps its existing table presentation',()=>{
 
 test('search, name sorting and cover-state filters act on the same content in either presentation',()=>{
  const f=fixture({contents:[{id:'z',title:'Z 中文',body:'含目标词'},{id:'a',title:'A 中文',body:'含目标词'},{id:'other',title:'不匹配',body:'其他'}],query:'目标词',workspace:{contents:[{id:'a',plans:[],candidateCount:0},{id:'z',plans:[],candidateCount:2},{id:'other',plans:[],candidateCount:0}],channels:[]}});
- let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();assert.ok(view.html.indexOf('data-content-id="a"')<view.html.indexOf('data-content-id="z"'));assert.doesNotMatch(view.html,/data-content-id="other"/);
+ let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();assert.ok(view.html.indexOf('data-content-id="z"')<view.html.indexOf('data-content-id="a"'));assert.doesNotMatch(view.html,/data-content-id="other"/);
  view.selects.find(select=>select['aria-label']==='内容状态').onChange('needs-cover');view=f.render();assert.match(view.html,/data-content-id="a"/);assert.doesNotMatch(view.html,/data-content-id="z"/);view.buttons.find(button=>button.children==='列表').onClick();view=f.render();assert.deepEqual(view.tables[0].rows.map(item=>item.id),['a']);
+});
+
+
+test('name order is descending with numeric titles before pagination in both cards and lists',()=>{
+ const contents=Array.from({length:23},(_,i)=>({id:`id-${i+1}`,title:`T${i+1} 内容`,body:'正文'}));
+ const f=fixture({contents});let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();
+ assert.deepEqual([...view.html.matchAll(/data-content-id="([^"]+)"/g)].map(match=>match[1]),Array.from({length:20},(_,i)=>`id-${23-i}`));
+ view.paginations.find(p=>p.label==='内容列表分页').onPageChange(2);view=f.render();
+ assert.deepEqual([...view.html.matchAll(/data-content-id="([^"]+)"/g)].map(match=>match[1]),['id-3','id-2','id-1']);
+ view.buttons.find(button=>button.children==='列表').onClick();view=f.render();assert.deepEqual(view.tables[0].rows.map(item=>item.id),['id-3','id-2','id-1']);
+});
+test('collections use the same descending numeric name order',()=>{
+ const collections=[2,10,1].map(n=>({id:`group-${n}`,title:`合集${n}`,memberIds:[],updatedAt:'2026-10-28'}));
+ const f=fixture({library:{collections,contentDetails:[],settings:{channels:[]}}});let view=f.render();view.selects.find(select=>select['aria-label']==='内容列表排序').onChange('name');view=f.render();
+ assert.deepEqual(view.buttons.filter(button=>button['data-collection-id']).map(button=>button['data-collection-id']),['group-10','group-2','group-1']);
 });

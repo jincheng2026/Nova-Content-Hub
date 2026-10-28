@@ -38,3 +38,25 @@ test('original packaging renders full source text as read-only fields and shows 
 test('unavailable packaging renders an actionable error instead of any editable title or legacy text',()=>{
  const html=render({kind:'unavailable',contentId:'content',issues:['CURRENT_SOURCE_CONFLICT']});assert.match(html,/role="alert"/);assert.match(html,/CURRENT_SOURCE_CONFLICT/);assert.doesNotMatch(html,/<(?:input|textarea|select)\b/);
 });
+
+test('cover-only topic context is visible as reference and never labelled as an existing manuscript',()=>{
+ const html=renderToStaticMarkup(React.createElement(componentModule.exports.LegacyCoverBody,{value:{kind:'legacy',script:null,context:{kind:'topic',text:'这是一条选题参考'}},body:'旧投影摘要'}));
+ assert.match(html,/选题参考/);assert.match(html,/这是一条选题参考/);assert.doesNotMatch(html,/已保存正文|旧投影摘要/);
+});
+test('legacy creation pages show the exact manuscript and keep long content collapsible',()=>{
+ const html=renderToStaticMarkup(React.createElement(componentModule.exports.LegacyCoverBody,{value:{kind:'legacy',script:{text:'真实作者稿\n第二段'}},body:'旧投影摘要'}));
+ assert.match(html,/真实作者稿/);assert.match(html,/第二段/);assert.match(html,/<details/);assert.doesNotMatch(html,/旧投影摘要/);
+});
+
+test('persisted cover fingerprints accept a bounded source identity and reject arbitrary paths',async()=>{
+ const {fingerprint}=await import('../src/shared/cover-validation.ts');
+ const contextSource={kind:'topic',vaultId:'00112233-4455-4677-8899-aabbccddeeff',workId:'T087',documentId:'doc-'+'a'.repeat(32),pageId:null,revision:'b'.repeat(64),relativePath:'04_选题库/T087_选题.md',format:'markdown'};
+ const value={contentId:contextSource.vaultId,title:'保存标题',bodyHash:'b'.repeat(64),editToken:'c'.repeat(64),inputHash:'d'.repeat(64),existingRequest:null,contextSource};
+ assert.equal(fingerprint(value),true);
+ for(const patch of [{relativePath:'/tmp/source'},{relativePath:'../source'},{kind:'unknown'},{pageId:'bad/id'},{vaultId:'unknown'},{root:'/tmp'},{format:'html'},{pageId:'unexpected-page'}])assert.equal(fingerprint({...value,contextSource:{...contextSource,...patch}}),false);
+});
+
+test('an empty saved draft is labelled title-only without claiming a manuscript exists',()=>{
+ const html=renderToStaticMarkup(React.createElement(componentModule.exports.LegacyCoverBody,{value:{kind:'legacy',script:null,context:{kind:'title-only',text:''}},body:''}));
+ assert.match(html,/尚未写正文/);assert.match(html,/已保存标题/);assert.doesNotMatch(html,/已保存正文/);
+});

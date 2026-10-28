@@ -1861,7 +1861,8 @@
       "status": "adapted",
       "executor": "nova-content-research-execution",
       "workflows": [
-        "synthesis-research"
+        "synthesis-research",
+        "synthesis"
       ],
       "source": {
         "kind": "complete-original-with-adapter",
@@ -2155,7 +2156,8 @@
       "executor": "nova-content-writing-execution",
       "workflows": [
         "revision",
-        "workbench-writing"
+        "workbench-writing",
+        "review-page"
       ],
       "source": {
         "kind": "complete-original-with-adapter",
@@ -2201,7 +2203,8 @@
       "executor": "nova-content-writing-execution",
       "workflows": [
         "cover-copy",
-        "packaging"
+        "packaging",
+        "cover-design"
       ],
       "source": {
         "kind": "complete-original-with-adapter",
@@ -2256,7 +2259,8 @@
       "executor": "nova-content-writing-execution",
       "workflows": [
         "content-creation",
-        "narrative"
+        "narrative",
+        "kepu"
       ],
       "source": {
         "kind": "complete-original-with-adapter",

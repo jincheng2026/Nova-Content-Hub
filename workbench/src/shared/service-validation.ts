@@ -5,7 +5,7 @@ const exact = (v: unknown, keys: string[]) => record(v) && Object.keys(v).length
 const bounded = (v: unknown, max: number) => typeof v === 'string' && v.length <= max && !v.includes('\0');
 export function defaultCloudAsrSettings():CloudAsrSettings {return {provider:'volc',groqModel:'whisper-large-v3-turbo',customBaseUrl:'',customModelId:''};}
 export function normalizeAsrSettings(a:AsrSettings):NormalizedAsrSettings {
-    return {mode:a.mode==='volc'?'cloud':a.mode,resourceId:a.resourceId,localEngine:a.localEngine,localExecutable:a.localExecutable,localModelPath:a.localModelPath,cloud:{...defaultCloudAsrSettings(),...a.cloud,...(a.mode==='volc'?{provider:'volc' as const}:{})}};
+    return {mode:a.mode==='volc'?'cloud':a.mode,resourceId:a.resourceId,localEngine:a.localEngine,localExecutable:a.localExecutable,localModelPath:a.localModelPath,...(a.localModule?{localModule:a.localModule}:{}),cloud:{...defaultCloudAsrSettings(),...a.cloud,...(a.mode==='volc'?{provider:'volc' as const}:{})}};
 }
 export function normalizeServiceSettings(v:ServiceSettingsValues):ServiceSettingsValues {return {...structuredClone(v),asr:normalizeAsrSettings(v.asr)};}
 export function customAsrBaseUrl(value:string):string {const u=new URL(value);return u.href.replace(/\/+$/,'');}
@@ -15,7 +15,8 @@ export function validCustomAsrBaseUrl(value:unknown):value is string {
 }
 export const validAsrModelId=(value:unknown):value is string=>typeof value==='string'&&/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,255}$/.test(value);
 export function serviceAsrSettings(a:unknown):a is AsrSettings {
-    if(!record(a)||!exact(a,['mode','resourceId','localEngine','localExecutable','localModelPath',...(Object.hasOwn(a,'cloud')?['cloud']:[])])||!['local-first','local-only','cloud','volc'].includes(String(a.mode))||!['faster-whisper','whisper-cpp','qwen3-asr'].includes(String(a.localEngine))||!bounded(a.resourceId,256)||!bounded(a.localExecutable,4096)||!bounded(a.localModelPath,4096))return false;
+    if(!record(a)||!exact(a,['mode','resourceId','localEngine','localExecutable','localModelPath',...(Object.hasOwn(a,'cloud')?['cloud']:[]),...(Object.hasOwn(a,'localModule')?['localModule']:[])])||!['local-first','local-only','cloud','volc'].includes(String(a.mode))||!['faster-whisper','whisper-cpp','qwen3-asr'].includes(String(a.localEngine))||!bounded(a.resourceId,256)||!bounded(a.localExecutable,4096)||!bounded(a.localModelPath,4096))return false;
+    if(a.localModule!==undefined&&!['mlx_audio','qwen_asr'].includes(String(a.localModule)))return false;
     if(a.cloud===undefined)return a.mode!=='cloud';
     const c=a.cloud;if(!record(c)||!exact(c,['provider','groqModel','customBaseUrl','customModelId'])||!['volc','groq','custom'].includes(String(c.provider))||!['whisper-large-v3-turbo','whisper-large-v3'].includes(String(c.groqModel))||!(c.customBaseUrl===''||validCustomAsrBaseUrl(c.customBaseUrl))||!(c.customModelId===''||validAsrModelId(c.customModelId)))return false;
     return !(a.mode==='volc'&&c.provider!=='volc')&&(c.provider!=='custom'||validCustomAsrBaseUrl(c.customBaseUrl)&&validAsrModelId(c.customModelId));

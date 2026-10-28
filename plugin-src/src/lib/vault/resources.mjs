@@ -466,7 +466,12 @@ export function projectVaultResources({runtimeRoot,vaultRoot,snapshot,rawApi,mut
     if(changed){
         const mid=randomUUID();
         mutate('update','default',{vaultResourceProjection:true},production.editToken,{mutationId:mid},'workspace',meta=>{
-            meta.schemaVersion=2;meta.production=next;markProjection(vaultRoot,mid,'workspace','default',meta);return meta;
+            meta.schemaVersion=2;
+            // readProduction is a public projection: it intentionally redacts
+            // worker claim tokens. Only source-backed arrays may be projected
+            // back; task authority and all other private state stay in meta.
+            meta.production=meta.production?{...meta.production,accounts:next.accounts,reports:next.reports}:next;
+            markProjection(vaultRoot,mid,'workspace','default',meta);return meta;
         });
     }
     const prompts=[...rawApi.listPrompts(),...rawApi.listPromptTrash()];

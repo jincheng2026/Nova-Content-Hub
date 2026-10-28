@@ -13,7 +13,7 @@ import { coverInput, coverPackagingRead, coverPending, photoPending, fingerprint
 import type { LibraryBinding, Content } from '../shared/contracts.ts';
 import type { CoverView, Photo, CoverWorkerOperations, CoverPending } from '../shared/cover-contracts.ts';
 const schemas = {
-  readCoverPackaging: ['binding','input'], seed: ['binding'], coverAssets: ['binding'], preflightPhoto: ['source'], importPhoto: ['binding', 'pending'], raster: ['binding', 'assetHash'], rasterBatch: ['binding', 'assetHashes'],
+  readCoverDesigns: ['binding','contentId'], readCoverPackaging: ['binding','input'], seed: ['binding'], coverAssets: ['binding'], preflightPhoto: ['source'], importPhoto: ['binding', 'pending'], raster: ['binding', 'assetHash'], rasterBatch: ['binding', 'assetHashes'],
   inspectCoverInput: ['binding', 'contentId', 'input', 'editToken'], findCoverRequest: ['binding', 'fingerprint'], createCoverRequest: ['binding', 'pending'], createCoverAttempt: ['binding', 'pending'], findCoverAttempt: ['binding', 'pending'], handoffContext: ['binding', 'reference'], coverContext: ['binding', 'reference'], readCover: ['binding', 'contentId'], readCoverProgress: ['binding', 'contentId'],
   selectCover: ['binding', 'contentId', 'candidateId', 'editToken', 'mutationId'], cancelCover: ['binding', 'reference', 'mutationId'], candidateRaster: ['binding', 'contentId', 'candidateId'],
 } satisfies Record<keyof CoverWorkerOperations, string[]>;
@@ -98,7 +98,8 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
       }));
     } catch (error) { forgetBoundReader(); throw error; }
   }
-  const library = ['seed', 'coverAssets', 'readCover', 'readCoverProgress','readCoverPackaging'].includes(op) ? verifiedBoundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  const library = ['seed', 'coverAssets', 'readCover', 'readCoverProgress','readCoverPackaging','readCoverDesigns'].includes(op) ? verifiedBoundReader(binding) : openLibrary(binding.root, { expectedLibraryId: binding.libraryId, expectedRootIdentity: binding.rootIdentity });
+  if (op === 'readCoverDesigns') return library.readCoverDesigns({contentId:raw.contentId as string});
   if (op === 'readCoverPackaging') return library.readCoverPackaging(raw.input as import('../shared/cover-contracts.ts').CoverInputs['readCoverPackaging']);
   if (op === 'readCoverProgress') return library.readCoverProgress(raw.contentId as string);
   if (op === 'seed') { installBuiltins(library); return; }
@@ -124,7 +125,7 @@ export async function executeCover(op: keyof CoverWorkerOperations, raw: unknown
     photos: library.listPhotos().map(photoProjection),
   };
   if (op === 'inspectCoverInput') return library.inspectCoverInput(raw.contentId as string, raw.input as unknown as import('../shared/cover-contracts.ts').CoverInput, raw.editToken as string);
-  if (op === 'findCoverRequest') { const f = raw.fingerprint as unknown as import('../shared/cover-contracts.ts').Fingerprint; return library.findCoverRequest(f.contentId, { inputHash: f.inputHash, title: f.title, bodyHash: f.bodyHash, ...(f.packagingSource?{packagingSource:f.packagingSource}:{}) }); }
+  if (op === 'findCoverRequest') { const f = raw.fingerprint as unknown as import('../shared/cover-contracts.ts').Fingerprint; return library.findCoverRequest(f.contentId, { inputHash: f.inputHash, title: f.title, bodyHash: f.bodyHash, ...(f.contextSource?{contextSource:f.contextSource}:{}), ...(f.packagingSource?{packagingSource:f.packagingSource}:{}), ...(f.designSource?{designSource:f.designSource}:{}) }); }
   if (op === 'createCoverRequest') { const p = raw.pending as unknown as CoverPending; return library.createCoverRequest(p.fingerprint.contentId, p.input, p.fingerprint.editToken, { mutationId: p.requestMutationId }); }
   if (op === 'findCoverAttempt') return findAttempt(library, raw.pending as unknown as CoverPending);
   if (op === 'createCoverAttempt') {

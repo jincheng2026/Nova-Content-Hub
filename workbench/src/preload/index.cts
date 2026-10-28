@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     previewFinalAssets: input => ipcRenderer.invoke('nova:previewFinalAssets', input),
     saveFinalAssets: input => ipcRenderer.invoke('nova:saveFinalAssets', input),
     exportFinalAssets: input => ipcRenderer.invoke('nova:exportFinalAssets', input),
+    readCoverDesigns: input => ipcRenderer.invoke('nova:readCoverDesigns', input),
     readCoverPackaging: input => ipcRenderer.invoke('nova:readCoverPackaging', input),
     readJinchengPublication: input => ipcRenderer.invoke('nova:readJinchengPublication', input),
     mutateJinchengPublication: input => ipcRenderer.invoke('nova:mutateJinchengPublication', input),

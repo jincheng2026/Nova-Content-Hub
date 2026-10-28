@@ -6,6 +6,7 @@ import type {ProductionCreationState, ProductionSnapshot} from '../shared/produc
 import {collectTitleRecommendations} from '../shared/content-title-recommendations.ts';
 import type {ContentTitleRecommendation} from '../shared/content-title-recommendations.ts';
 import {invoke} from './client.ts';
+import {PagedItems} from './paged-items.tsx';
 import './content-title-recommendations.css';
 
 interface Props {
@@ -53,8 +54,8 @@ export function ContentTitleRecommendations({content, dirty, busy, conflict, run
         {conflict && <p role="status">内容存在版本冲突，请先在正文处理冲突。</p>}
         {data && content && data.state.content.editToken !== content.editToken && <p role="status">候选对应的内容版本与编辑器不同，请先读取最新内容。</p>}
         {notice && <p className="content-title-notice" role="status">{notice}</p>}
-        {!!tasks.length && <details><summary>标题与包装任务（{tasks.length}）</summary>{tasks.map(task => {const attempt = task.attempts.find(value => value.id === task.activeAttemptId); return <p key={task.id}>{task.title} · {statuses[attempt?.status ?? ''] ?? '状态未知'}{attempt?.message ? ` · ${attempt.message}` : ''}</p>;})}</details>}
-        {!!candidates.length && <div className="content-title-candidates">{candidates.map(candidate => <article key={candidate.key} className="content-title-candidate"><p className="content-title-candidate-text">{candidate.text}</p><p className="content-title-candidate-source">{candidate.source}{candidate.stale ? ' · 基于旧版正文，请先核对' : ''}</p><Button size="small" disabled={!canApply} onClick={() => {if (adopt(candidate)) setNotice('已采用到标题草稿，正文保持原样；请点击“保存内容”完成保存。');}}>{candidate.stale ? '采用旧稿候选到标题草稿' : '采用到标题草稿'}</Button></article>)}</div>}
+        {!!tasks.length && <details><summary>标题与包装任务（{tasks.length}）</summary><PagedItems items={tasks} resetKey={content?.id??''} label="标题包装任务分页" disabled={blocked} compact>{pageTasks=>pageTasks.map(task => {const attempt = task.attempts.find(value => value.id === task.activeAttemptId); return <p key={task.id}>{task.title} · {statuses[attempt?.status ?? ''] ?? '状态未知'}{attempt?.message ? ` · ${attempt.message}` : ''}</p>;})}</PagedItems></details>}
+        {!!candidates.length && <div className="content-title-candidates"><PagedItems items={candidates} resetKey={content?.id??''} label="标题候选分页" disabled={blocked}>{pageCandidates=>pageCandidates.map(candidate => <article key={candidate.key} className="content-title-candidate"><p className="content-title-candidate-text">{candidate.text}</p><p className="content-title-candidate-source">{candidate.source}{candidate.stale ? ' · 基于旧版正文，请先核对' : ''}</p><Button size="small" disabled={!canApply} onClick={() => {if (adopt(candidate)) setNotice('已采用到标题草稿，正文保持原样；请点击“保存内容”完成保存。');}}>{candidate.stale ? '采用旧稿候选到标题草稿' : '采用到标题草稿'}</Button></article>)}</PagedItems></div>}
         {data && !candidates.length && <p>暂无可用候选。</p>}
       </div>}
     </section>;

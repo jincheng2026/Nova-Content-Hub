@@ -28,7 +28,7 @@ import {Reminders} from './reminders.mts';
 import {Setup} from './setup.mts';
 import {installedAssistantSkill} from './assistant-skill.mts';
 import {launchWithAssistantRuntime} from './assistant-runtime.mts';
-import {assistantNotReady} from './assistant-failure.mts';
+import {assistantNotReady, assistantSetupFailure} from './assistant-failure.mts';
 import {confirmInstalledApplication, offerApplicationInstall} from './installation.mts';
 import {isMacInstallationBackupExecutable} from './mac-installation.mts';
 import {ServiceSettingsStore} from './service-settings.mts';
@@ -47,6 +47,7 @@ interface StartOptions {
     userData?: string;
     marketRoot?: string;
     localRuntimeRoots?: readonly string[];
+    mediaRuntimeRoots?: readonly string[];
     publicationObserver?: boolean;
     dialogs?: Dialogs;
     onConsoleMessage?: (message: string) => void;
@@ -165,13 +166,13 @@ export async function startDesktop(options:StartOptions = {}) {
         try { await app.getApplicationInfoForProtocol(`${host}://`); }
         catch { return {host, ready: false, skill: null, reason: 'protocol-missing'}; }
         try { return {host, ready: true, skill: installedAssistantSkill(host, release), reason: 'available'}; }
-        catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
+        catch (error) { return {host, ready: false, skill: null, ...assistantSetupFailure(error)}; }
     };
     const readTemplateAssistantSetup = async (host: Assistant): Promise<TemplateAssistantSetup> => {
         try { await app.getApplicationInfoForProtocol(`${host}://`); }
         catch { return {host, ready: false, skill: null, reason: 'protocol-missing'}; }
         try { return {host, ready: true, skill: installedAssistantSkill(host, release, {capability: 'template'}), reason: 'available'}; }
-        catch { return {host, ready: false, skill: null, reason: 'skill-missing'}; }
+        catch (error) { return {host, ready: false, skill: null, ...assistantSetupFailure(error)}; }
     };
     const openPreparedHandoff = (handoff: {url: string; prompt: string; requiresPaste: boolean}) => openNativeHandoff(handoff, {
         openExternal: (url: string) => shell.openExternal(url)
@@ -179,7 +180,7 @@ export async function startDesktop(options:StartOptions = {}) {
     const assistantMarketRoot = marketRoot ?? (app.isPackaged ? path.join(process.resourcesPath, 'plugin-marketplace') : path.resolve(here, '../../plugin-marketplace'));
     const serviceSettings = new ServiceSettingsStore({filePath: path.join(app.getPath('userData'), 'service-settings.json'), encryption: safeStorage, deferEncryptionCheck: true});
     try { await serviceSettings.initialize(); } catch { serviceErrors.push('SETTINGS_UNAVAILABLE'); }
-    const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json'),localRuntimeRoots:options.localRuntimeRoots??[path.join(process.resourcesPath,'local-asr',`${process.platform}-${process.arch}`)]});
+    const serviceTools = new ServiceTools({settings: serviceSettings, cachePath: path.join(app.getPath('userData'), 'service-cache', 'tikhub.json'),localRuntimeRoots:options.localRuntimeRoots??[path.join(process.resourcesPath,'local-asr',`${process.platform}-${process.arch}`)],mediaRuntimeRoots:options.mediaRuntimeRoots??[path.join(process.resourcesPath,'media-codec',`${process.platform}-${process.arch}`)]});
     const serviceDescriptorPath = path.join(app.getPath('userData'), 'production-services.json');
     const controller: DesktopController = new DesktopController({
         copyText: text => clipboard.writeText(text),
@@ -250,7 +251,7 @@ export async function startDesktop(options:StartOptions = {}) {
         },
         launchTemplate: async (binding, reference) => {
             const setup = await readTemplateAssistantSetup(reference.host);
-            if (!setup.ready || !setup.skill) throw Object.assign(new Error('请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY'});
+            if (!setup.ready || !setup.skill) throw Object.assign(new Error(setup.message || '请在设置中安装并启用与此工作台匹配的模板执行插件。'), {code: 'NOT_READY', reason: setup.reason});
             const {templateId, requestId, attemptId, requestHash, host, sessionId} = reference;
             if (sessionId) {await shell.openExternal(assistantSessionURL(host, sessionId)); return;}
             const installedSkill = setup.skill;
@@ -262,7 +263,7 @@ export async function startDesktop(options:StartOptions = {}) {
         launch: async (binding, reference) => {
             if (reference.sessionId) {await shell.openExternal(assistantSessionURL(reference.host, reference.sessionId)); return;}
             const setup = await readAssistantSetup(reference.host);
-            if (!setup.ready || !setup.skill) throw Object.assign(new Error('助手或配套插件尚未准备好，请在工作台左下角设置中检查后重试。'), {code: 'NOT_READY'});
+            if (!setup.ready || !setup.skill) throw Object.assign(new Error(setup.message || '助手或配套插件尚未准备好，请在工作台左下角设置中检查后重试。'), {code: 'NOT_READY', reason: setup.reason});
             const installedSkill = setup.skill;
             await launchWithAssistantRuntime(reference.host, release, assistantMarketRoot, async () => {
                 const handoff = await prepareNativeHandoff(nativeHandoffDirectory(app.getPath('appData')), binding, reference, release, {installedSkill});

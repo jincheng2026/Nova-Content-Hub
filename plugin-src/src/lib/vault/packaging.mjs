@@ -33,16 +33,19 @@ function journalIdentity(root,vaultId) {
 }
 
 /** Synchronous read scope only: no openLibrary, source projection, HTML evaluation or source selection mutation. */
-export function readVaultPackaging(runtimeRoot,input) {
+export function readVaultPackaging(runtimeRoot,input) {return readPackaging(runtimeRoot,input,false);}
+/** Cover-only compatibility does not relax the publication manuscript contract. */
+export function readVaultCoverPackaging(runtimeRoot,input) {return readPackaging(runtimeRoot,input,true);}
+function readPackaging(runtimeRoot,input,coverOnly) {
     const contentId = typeof input?.contentId === 'string' && /^[A-Za-z0-9_-]{1,100}$/.test(input.contentId) ? input.contentId : null;
     if (!input || typeof input !== 'object' || Array.isArray(input) || !contentId || Object.keys(input).some(key => !['contentId','documentId'].includes(key)) || input.documentId !== undefined && (typeof input.documentId !== 'string' || !/^doc-[a-f0-9]{32}$/.test(input.documentId))) return {...unavailable('INVALID_PACKAGING_INPUT'),contentId};
     try {
         const binding = bindingForRuntime(runtimeRoot);
         if (!binding) return {...empty('legacy'),contentId};
-        return {...withVaultReadLock(binding.vaultRoot,() => readBoundPackaging(binding,input)),contentId};
+        return {...withVaultReadLock(binding.vaultRoot,() => readBoundPackaging(binding,input,coverOnly)),contentId};
     } catch (error) {return {...unavailable(code(error)),contentId};}
 }
-function readBoundPackaging(binding,input) {
+function readBoundPackaging(binding,input,coverOnly) {
     const root = binding.vaultRoot, descriptorBytes = readBytes(root,'.workbench/vault.json');
     const descriptor = JSON.parse(descriptorBytes.toString('utf8')), actualRoot = identity(root);
     if (descriptor.format !== 'nova-knowledge-vault' || descriptor.schemaVersion !== 1 || descriptor.vaultId !== binding.vaultId || descriptor.rootIdentity?.dev !== actualRoot.dev || descriptor.rootIdentity?.ino !== actualRoot.ino) return unavailable('PACKAGING_VAULT_IDENTITY');
@@ -53,7 +56,8 @@ function readBoundPackaging(binding,input) {
     if (!work) return unavailable('CURRENT_SOURCE_UNAVAILABLE');
     if (work.sourceResolution !== 'resolved' || work.document.sourceConflict) return unavailable('CURRENT_SOURCE_'+work.sourceResolution.toUpperCase());
     const current = work.document;
-    if (current.section !== 'drafts' || !['html','markdown','text'].includes(current.format)) return unavailable('CURRENT_MANUSCRIPT_UNAVAILABLE');
+    const topicOnly = coverOnly && current.section === 'topics' && current.format === 'markdown';
+    if (!topicOnly && (current.section !== 'drafts' || !['html','markdown','text'].includes(current.format))) return unavailable('CURRENT_MANUSCRIPT_UNAVAILABLE');
     const workId = work.tNumber, parsed = new Map();
     const ref = document => ({sourceId:'drafts',documentId:document.id,relativePath:document.relativePath,vaultId:binding.vaultId});
     function parse(document) {
@@ -85,7 +89,7 @@ function readBoundPackaging(binding,input) {
             const text = segments.map(item => item.fields.mine).join('\n\n');
             script = {text,hash:digest(text),manuscriptSource:{...sourceIdentity(current,entry.doc.pageId),relativePath:current.relativePath,format:current.format}};
         }
-    } else {
+    } else if (!topicOnly) {
         let text;
         try {text = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(checkedBytes(root,current));} catch (error) {return unavailable(error.code??'CURRENT_MANUSCRIPT_UTF8');}
         script = {text,hash:digest(text),manuscriptSource:{...sourceIdentity(current),relativePath:current.relativePath,format:current.format}};
@@ -100,6 +104,24 @@ function readBoundPackaging(binding,input) {
     }
     const selected = input.documentId ? pages.find(entry => entry.document.id === input.documentId) : current.format === 'html' ? parse(current) : null;
     if (input.documentId && !selected) return unavailable('PACKAGING_SOURCE_NOT_IN_WORK');
+    if (topicOnly) {
+        // Source resolution already distinguishes manuscripts from supporting
+        // material. Existing creation originals still require their own guards.
+        if (input.documentId || rejected.length || pages.some(entry => !entry.ordinary)) return unavailable('CURRENT_MANUSCRIPT_UNAVAILABLE');
+        let text;
+        try {text = new TextDecoder('utf-8',{fatal:true,ignoreBOM:true}).decode(checkedBytes(root,current));} catch (error) {return unavailable(error.code??'CURRENT_TOPIC_UTF8');}
+        if (!text.trim() || !work.title?.trim()) return unavailable('CURRENT_TOPIC_UNAVAILABLE');
+        verifyRead();
+        return empty('legacy',[],{context:{kind:'topic',text,hash:digest(text),source:{...sourceIdentity(current),relativePath:current.relativePath,format:current.format}}});
+    }
+    if (coverOnly && !input.documentId && script && !script.text.trim() && work.title?.trim() && ['markdown','text'].includes(current.format) && !candidates.length && !rejected.length && pages.every(entry => entry.ordinary)) {
+        verifyRead();
+        return empty('legacy',[],{context:{kind:'title-only',text:script.text,hash:script.hash,source:script.manuscriptSource}});
+    }
+    if (coverOnly && (!input.documentId || selected?.doc) && script?.text.trim() && !rejected.length && pages.every(entry => entry.ordinary || entry.doc && !entry.doc.items.some(item => item.kind === 'pubslot'))) {
+        verifyRead();
+        return empty('legacy',[],{script,context:{kind:'manuscript',text:script.text,hash:script.hash,source:script.manuscriptSource}});
+    }
     if (!candidates.length) {
         const damaged = pages.filter(entry => !entry.ordinary);
         if (damaged.length || rejected.length) return unavailable('PACKAGING_SOURCE_UNREADABLE',...damaged.flatMap(entry => entry.issues));

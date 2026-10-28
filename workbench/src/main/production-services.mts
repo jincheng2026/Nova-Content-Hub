@@ -32,7 +32,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   if(!url||url.length>8192)throw new ServiceToolError('MEDIA_SOURCE_UNAVAILABLE');
   return{url,title:typeof detail.desc==='string'?detail.desc.slice(0,10000):'',description:typeof detail.desc==='string'?detail.desc.slice(0,10000):''};
  }
- function checkServiceConfig(context:ProductionContext,request:ServiceToolRequest,prepared?:{config?:ServiceSettingsValues}){
+ function checkServiceConfig(context:ProductionContext,request:ServiceToolRequest,prepared?:{config?:ServiceSettingsValues;asrExecution?:LocalAsrExecution}){
   if(request.tool!=='model'&&request.tool!=='asr')return;
   const frozen=parameters(context.task?.request.parameters);
   // Legacy tasks did not save a serviceConfig. Do not invent a frozen provider for them.
@@ -42,6 +42,8 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
   const actual=[current,...(prepared?[prepared.config?.[request.tool]??{}]:[])];
   const equivalent=(config:unknown)=>request.tool==='asr'?serviceAsrSettings(expected)&&serviceAsrSettings(config)&&isDeepStrictEqual(normalizeAsrSettings(expected),normalizeAsrSettings(config)):isDeepStrictEqual(expected,config);
   if(actual.some(config=>!equivalent(config)))throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
+  const expectedIdentity=parameters(frozen.serviceConfig).externalAsrIdentity;
+  if(request.tool==='asr'&&prepared&&typeof expectedIdentity==='string'&&prepared.asrExecution?.identity!==expectedIdentity)throw new ServiceToolError('SERVICE_CONFIG_CHANGED');
  }
  function checkAccountPlatform(context:ProductionContext,request:ServiceToolRequest){
   if(request.tool!=='tikhub')return;const collection=parameters(context.task?.request.parameters).platformCollection;

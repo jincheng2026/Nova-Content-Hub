@@ -9,7 +9,7 @@ export type FinalManuscript =
  | (PackagingSource & {kind:'jc-doc-segments';pageId:string;relativePath:string;hash:string;segments:{itemId:string;hash:string}[]})
  | (PackagingSource & {kind:'recorded';pageId:string;relativePath:string;infoItemId:string;hash:string});
 export type FinalCoverProvenance =
- | {kind:'generated';requestId:string;requestHash:string;attemptId:string;receiptHash:string;template:unknown;packagingSource:unknown|null;bodyHash:string|null}
+ | {kind:'generated';requestId:string;requestHash:string;attemptId:string;receiptHash:string;template:unknown;designSource?:unknown;packagingSource:unknown|null;bodyHash:string|null}
  | {kind:'imported';importId:string;originalName:string;assetHash:string}
  | {kind:'legacy';unknown:true};
 export type FinalCover = {candidateId:string;assetHash:string;selectedAt:string;mime:'image/png'|'image/jpeg'|'image/webp'|'image/gif';width:number;height:number;bytes:number;provenance:FinalCoverProvenance;sourceMatch:'current'|'different'|'unknown'};
