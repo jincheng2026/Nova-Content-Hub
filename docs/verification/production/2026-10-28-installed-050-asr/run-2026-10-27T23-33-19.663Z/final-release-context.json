@@ -1,0 +1,90 @@
+{
+  "status": "passed-v4-installed-mp4-asr-only",
+  "sourceCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "installerSha256": "7379e3980d7d1f895871da2dd8714fa27f17b6b45a0a93ed64149d7d965b5f3b",
+  "installerBytes": 3200826235,
+  "installationEvidence": "docs/verification/production/2026-10-28-final-050-arm64-v4/installation.json",
+  "installationEvidenceSha256AtAcceptance": "de377a346f2d569a01f56cb4a52f537cc5b8e74a2c531271236122b6fff96e6c",
+  "releaseIdentityBasis": "Parent confirmed final DMG installation and strict codesign; installation.json identifies frozen product source. Runtime is read directly from actual /Applications tree; not inferred from workspace HEAD.",
+  "workspaceHeadAtAcceptance": "04a6c38d61e4f79efe75e922828713a41ef22a89",
+  "actualCodeRoot": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "actualPayloadRoot": "/Applications/自媒体工作台.app/Contents/Resources/local-asr/darwin-arm64",
+  "nativePython": "/Applications/自媒体工作台.app/Contents/Resources/local-asr/darwin-arm64/python/bin/python3",
+  "usesRepositoryModulesOrOldCandidate": false,
+  "platform": "darwin",
+  "arch": "arm64",
+  "macOS": "26.4.1",
+  "readinessElapsedMs": 1509,
+  "brokerAsrElapsedMs": 17778,
+  "freshPythonEvidence": {
+    "invocation": [
+      "-B",
+      "-I"
+    ],
+    "persistedBytecodeFilesBefore": 0,
+    "scope": "New isolated Python processes on newly installed app resources, one MP4 probe; no OS reboot/page-cache/dyld cache purge claim."
+  },
+  "fixture": {
+    "sha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+    "bytes": 18877,
+    "expectedText": "你好，语音测试。",
+    "source": "Local synthetic Chinese speech + generated blue video, AAC/H264 MP4; fixture creation ffmpeg only, production PATH=/usr/bin:/bin"
+  },
+  "primaryText": "你好，语音测试。",
+  "timingTranscript": "你好,语音测试。",
+  "timingSource": "faster-whisper-word-timestamps",
+  "wordCount": 5,
+  "mediaDecode": {
+    "decoder": "bundled-pyav",
+    "pyavVersion": "18.1.0",
+    "codec": "aac",
+    "originalSha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+    "decodedSha256": "a6785efa47fc7930fea2d2a63e683cb775ab7d72ecc9e5585980b59489568daf",
+    "sampleRate": 16000,
+    "channels": 1,
+    "samples": 28672,
+    "containerOriginMs": 0,
+    "firstAudioSampleMs": 0,
+    "insertedSilenceSamples": 0,
+    "timeline": "container-relative-presentation-timestamps"
+  },
+  "payloadManifestSha256": "2783e2cc5284cada58a0006180781efb6f0b4f86b790664943f1deeababdd234",
+  "installedApplicationCodeUnchanged": true,
+  "installedPayloadUnchanged": true,
+  "realUserSettingsAndBindingUnchanged": true,
+  "protectedFilesBefore": [
+    {
+      "file": "/Users/mac/Library/Application Support/Nova 内容库技术验证/service-settings.json",
+      "bytes": 744,
+      "sha256": "25cb14d323c0976073d91254e297b667f8919347f70ecdb7098baa22a0dc5651"
+    },
+    {
+      "file": "/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json",
+      "bytes": 508,
+      "sha256": "830ce708b0a1e2b20205e012cf37941c18346515c5437ec4e3d6c29106ac5add"
+    },
+    {
+      "file": "/Users/mac/Library/Application Support/自媒体工作台/service-settings.json",
+      "absent": true
+    },
+    {
+      "file": "/Users/mac/Library/Application Support/自媒体工作台/machine-binding.json",
+      "absent": true
+    }
+  ],
+  "temporaryPcmCleanup": [
+    {
+      "directory": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-asr-pcm-W790IH",
+      "removed": true
+    }
+  ],
+  "requestsUsed": 0,
+  "businessExternalHttpsAttempts": 0,
+  "outsideNetworkNegativeControl": "Installed native Python socket to 1.1.1.1:443 denied with PermissionError by OS sandbox; no successful outside connection.",
+  "acceptedFixtureReceipt": "fe48242675ea977fbb4e805c87643d5d59a4de8a697638dcad5b170f42ddfa35",
+  "archiveReady": true,
+  "humanAlignmentReviewed": false,
+  "realTikHubDownloadPerformed": false,
+  "fullApplicationAcceptanceClaimed": false,
+  "historical2aAcceptanceOverwritten": false
+}

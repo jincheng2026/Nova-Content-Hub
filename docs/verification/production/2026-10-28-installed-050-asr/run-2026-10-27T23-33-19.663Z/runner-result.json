@@ -1,0 +1,46 @@
+{
+  "startedAt": "2026-10-27T23:33:19.665Z",
+  "version": "0.5.0",
+  "macOS": "26.4.1",
+  "platform": "darwin",
+  "arch": "arm64",
+  "temporary": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-qwen-6rkGGW",
+  "evidence": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-28-installed-050-asr/run-2026-10-27T23-33-19.663Z",
+  "fixture": "known-chinese.mp4",
+  "productionPathHasNoFfmpeg": "/usr/bin:/bin",
+  "scope": "Installed compiled ServiceTools/production broker/worker/library modules + installed Qwen/Whisper native runtime. No GUI launch, no repository runtime imports or model copies.",
+  "outcome": "passed",
+  "before": {
+    "appFiles": 625,
+    "payloadFiles": 10945,
+    "settings": [
+      {
+        "file": "/Users/mac/Library/Application Support/Nova 内容库技术验证/service-settings.json",
+        "bytes": 744,
+        "sha256": "25cb14d323c0976073d91254e297b667f8919347f70ecdb7098baa22a0dc5651"
+      },
+      {
+        "file": "/Users/mac/Library/Application Support/Nova 内容库技术验证/machine-binding.json",
+        "bytes": 508,
+        "sha256": "830ce708b0a1e2b20205e012cf37941c18346515c5437ec4e3d6c29106ac5add"
+      },
+      {
+        "file": "/Users/mac/Library/Application Support/自媒体工作台/service-settings.json",
+        "absent": true
+      },
+      {
+        "file": "/Users/mac/Library/Application Support/自媒体工作台/machine-binding.json",
+        "absent": true
+      }
+    ]
+  },
+  "processExitCode": 0,
+  "timedOut": false,
+  "installedApplicationCodeUnchanged": true,
+  "installedPayloadUnchanged": true,
+  "realUserSettingsUnchanged": true,
+  "payloadManifestSha256": "2783e2cc5284cada58a0006180781efb6f0b4f86b790664943f1deeababdd234",
+  "serviceSummary": "service-summary.json",
+  "acceptedArchive": "accepted-archive.json",
+  "finishedAt": "2026-10-27T23:34:08.126Z"
+}

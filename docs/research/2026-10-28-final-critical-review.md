@@ -211,3 +211,14 @@
 本审查读回了 `docs/verification/production/2026-10-28-final-050-arm64-v4/history-fix-reclick.md.txt`：实际 Chrome tab 展示研究结论.md 的纯文本预览与固定下载链接；另读回 `history-fix-anchor-and-expand.txt`，确认报告页 details 已 expanded 且正文“折叠交互仍可用”可见，对应截图为同目录 `history-fix-anchor-and-expand.png`。连续 Back/Forward 成功及 #detail URL 的详细操作证据保留在主线程实际工具输出；这两份静态 AX 文件并不单独证明完整历史序列。
 
 窄审查结论：**replace-only 候选可以合入并进入最终重建/安装验收，本轮无遗留确定 P1/P2**。固定绝对服务端 URL、原 capability/版本 guard、CSP/sandbox 和无 src fallback 的边界不变。此前 `iframe.src` 赋值候选真实清空 Forward 的红色结果继续保留，该候选已废弃，不能用它的测试通过记录替代最终方案。此次通过的是真实 Chrome 对当前源码 fixture 的历史链路，尚不把它表述为重新构建后的安装包已验收；最终产物仍应按冻结版本与哈希记录。
+
+
+### v5 最终安装后的真实大报告：原生导航通过，自动化返回异常保留
+
+本次只读复核冻结提交 `c1e3c3c7a07425186848bd1d2823248d3b355d6c` 的实际差异及 v5 安装证据。`docs/verification/production/2026-10-28-final-050-arm64-v5/installed-runtime-delta.json` 记录与实际 baf 安装基线比较 627 个文件、无缺失，唯一差异为 `app/workbench/dist/main/production-pages.mjs`。复读源码确认仍为固定服务端绝对 URL 的 replace-only 恢复，没有改为 src 赋值，没有放宽 sandbox/CSP 或 capability/源版本检查。本轮未改产品、未重跑全套测试，也未操作浏览器。
+
+主线程在该实际安装包的约 2.36 MB AI 科普报告上，以纯 Chrome 原生工具栏执行报告 → Markdown → Back 完整报告 → Forward 同 Markdown → Back → 再次点击 Markdown → Back → 本页 #data，报告连续成功。本审查核读同目录四份原生 AX 记录：`native-root-back-settled.txt` 同时含 outer root capability 与 AI 科普完整正文、iframe bridge `327122…`，Forward 按钮可用；`native-root-forward-settled.txt` 与 `native-root-reclick.txt` 展示同一个研究结论.md capability、原文件下载链接；`native-root-anchor.txt` 的真实 iframe URL 已为 `…/bridge/9f9d85…#data`，并含报告正文和互动对照标题。对应截图 `native-root-anchor.png` 已留存；本次独立核读的是 AX 文本。连续操作的先后关系与使用原生按钮的证据来自主线程操作记录，不能仅由静态 AX 文件推导。
+
+必须保留另一条未闭合的结果：早先在同一 v5 安装包使用 CUA `Tab.back()` / CDP 路径后，iframe 长时间 about:blank；重新获取 tab 三次及原生 Chrome 前台检查仍见空白，且无恢复失败状态。该结果证明真实渲染异常，不能归为已排除的旧 handle 假象；原生前台检查只是观察，并不证明此次返回由原生工具栏触发。随后原生按钮链路通过，也不能反推 CDP 异常已修复或确定为浏览器工具缺陷。触发差异及因果仍未查明，保留为自动化返回路径的未解决异常，不宣称所有历史恢复路径通过。约 2.36 MB 原件复制出的诊断 fixture `57696` 尚未实际打开，不计为补充通过证据。
+
+限定结论：**当前安装包已覆盖这份真实大报告的原生 Chrome Back/Forward、重复附件跳转与 #data 锚点用户路径；无需基于尚未查明的 CDP 触发差异追加猜测性源码修改。** 本次没有发现新的可定位源码 P1/P2，但不撤销上述已观察到的自动化路径空白。报告弹窗在本轮因原生 UI 索引失效未完成操作，不记为最终安装通过；报告脚本未变及此前 baf 弹窗通过仅是复用背景，不能替代本轮实际弹窗结果。前述小 fixture 成功、已废弃 src 候选清空 Forward 的失败和最终原生导航结果分别保留，不相互覆盖。

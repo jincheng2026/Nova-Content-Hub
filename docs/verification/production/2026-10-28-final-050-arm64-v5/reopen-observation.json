@@ -1,0 +1,8 @@
+{
+  "sameInstallation": true,
+  "selectedLibrary": "第二大脑",
+  "contentCount": 47,
+  "selectionPromptShown": false,
+  "requestToObservationUpperBoundMs": 33758,
+  "timingNote": "Upper bound includes intervening tools and two app-binding calls; not measured launch latency"
+}

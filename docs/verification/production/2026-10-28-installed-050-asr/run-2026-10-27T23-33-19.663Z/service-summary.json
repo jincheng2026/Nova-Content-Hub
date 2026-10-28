@@ -1,0 +1,203 @@
+{
+  "startedAt": "2026-10-27T23:33:35.711Z",
+  "version": "0.5.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "installedResources": "/Applications/自媒体工作台.app/Contents/Resources",
+  "imports": "Direct installed compiled modules; no source copies or recompilation",
+  "settingsIsolation": "Fresh temporary ServiceSettingsStore with encryption intentionally unavailable; no user keys/settings loaded",
+  "networkPolicy": "macOS sandbox denies network except loopback broker; Python -B -I; HTTPS attempts also blocked/recorded",
+  "outcome": "passed",
+  "humanAlignmentReviewed": false,
+  "guiVerified": false,
+  "originalSettings": {
+    "values": {
+      "model": {
+        "provider": "volc",
+        "baseUrl": "https://ark.cn-beijing.volces.com/api/v3",
+        "modelId": ""
+      },
+      "asr": {
+        "mode": "local-first",
+        "resourceId": "volc.bigasr.auc_turbo",
+        "localEngine": "faster-whisper",
+        "localExecutable": "",
+        "localModelPath": "",
+        "cloud": {
+          "provider": "volc",
+          "groqModel": "whisper-large-v3-turbo",
+          "customBaseUrl": "",
+          "customModelId": ""
+        }
+      },
+      "budget": {
+        "enabled": false,
+        "maxRequestsPerTask": 10
+      },
+      "commentsEnabled": false
+    },
+    "credentials": {
+      "tikhub": {
+        "hasKey": false
+      },
+      "model": {
+        "hasKey": false
+      },
+      "asr": {
+        "hasKey": false
+      },
+      "groq": {
+        "hasKey": false
+      },
+      "custom": {
+        "hasKey": false
+      }
+    },
+    "encryptionAvailable": false,
+    "encryptionStatus": "unavailable"
+  },
+  "stage": "transcribing-through-installed-broker",
+  "readinessStartedAt": "2026-10-27T23:33:35.713Z",
+  "readiness": {
+    "localAsr": {
+      "available": true,
+      "reason": "内置 Qwen3-ASR 组件的模型文件与 mlx_audio 实际导入检查通过；真实识别在任务中执行。"
+    },
+    "encryptionAvailable": false,
+    "encryptionStatus": "unavailable"
+  },
+  "readinessElapsedMs": 1509,
+  "audio": {
+    "sha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+    "bytes": 18877,
+    "expectedText": "你好，语音测试。",
+    "source": "Local synthetic Chinese speech + generated blue video, AAC/H264 MP4; fixture creation ffmpeg only, production PATH=/usr/bin:/bin"
+  },
+  "nativeRuntime": {
+    "python": "/Applications/自媒体工作台.app/Contents/Resources/local-asr/darwin-arm64/python/bin/python3",
+    "prefix": "/Applications/自媒体工作台.app/Contents/Resources/local-asr/darwin-arm64/python",
+    "machine": "arm64",
+    "outsideNetworkBlocked": true
+  },
+  "originalAsset": {
+    "hash": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+    "detectedType": "video/mp4"
+  },
+  "frozenAsr": {
+    "mode": "local-first",
+    "resourceId": "volc.bigasr.auc_turbo",
+    "localEngine": "faster-whisper",
+    "localExecutable": "",
+    "localModelPath": "",
+    "cloud": {
+      "provider": "volc",
+      "groqModel": "whisper-large-v3-turbo",
+      "customBaseUrl": "",
+      "customModelId": ""
+    }
+  },
+  "taskBudget": {
+    "amount": 0,
+    "currency": "REQ"
+  },
+  "elapsedMs": 17778,
+  "response": {
+    "data": {
+      "text": "你好，语音测试。",
+      "segments": [
+        {
+          "startMs": 0,
+          "endMs": 400,
+          "text": "你好,",
+          "probability": 0.7719936966896057
+        },
+        {
+          "startMs": 780,
+          "endMs": 960,
+          "text": "语",
+          "probability": 0.7688717246055603
+        },
+        {
+          "startMs": 960,
+          "endMs": 1180,
+          "text": "音",
+          "probability": 0.9881751537322998
+        },
+        {
+          "startMs": 1180,
+          "endMs": 1440,
+          "text": "测",
+          "probability": 0.9986205697059631
+        },
+        {
+          "startMs": 1440,
+          "endMs": 1640,
+          "text": "试。",
+          "probability": 0.9965556561946869
+        }
+      ],
+      "timingSource": "faster-whisper-word-timestamps",
+      "timingTranscript": "你好,语音测试。",
+      "durationMs": 1792,
+      "timingModel": {
+        "repoId": "Systran/faster-whisper-small",
+        "revision": "536b0662742c02347bc0e980a01041f333bce120",
+        "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+      },
+      "mediaDecode": {
+        "decoder": "bundled-pyav",
+        "pyavVersion": "18.1.0",
+        "codec": "aac",
+        "originalSha256": "3dcfba08d71699b85c645552c68dd4a47e9dad40abbd8ee00956b1ff1ed6e988",
+        "decodedSha256": "a6785efa47fc7930fea2d2a63e683cb775ab7d72ecc9e5585980b59489568daf",
+        "sampleRate": 16000,
+        "channels": 1,
+        "samples": 28672,
+        "containerOriginMs": 0,
+        "firstAudioSampleMs": 0,
+        "insertedSilenceSamples": 0,
+        "timeline": "container-relative-presentation-timestamps"
+      }
+    },
+    "service": "asr",
+    "requestsUsed": 0,
+    "collectedAt": "2026-10-27T23:33:55.923Z",
+    "cacheHit": false
+  },
+  "originalAssetUnchanged": true,
+  "submission": {
+    "accepted": true,
+    "scope": "Automated acceptance of synthetic isolated fixture only",
+    "archiveReady": true,
+    "receiptHash": "fe48242675ea977fbb4e805c87643d5d59a4de8a697638dcad5b170f42ddfa35"
+  },
+  "costs": [
+    {
+      "service": "asr",
+      "status": "measured",
+      "amount": 0,
+      "usage": {
+        "costStatus": "no-external-call",
+        "durationMs": 1792,
+        "requests": 0,
+        "ok": true
+      }
+    }
+  ],
+  "settingsPreserved": true,
+  "temporarySettingsFileCreated": false,
+  "temporaryPcmCleanup": [
+    {
+      "directory": "/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-asr-pcm-W790IH",
+      "removed": true
+    }
+  ],
+  "externalHttpsAttempts": 0,
+  "operations": [
+    "productionContext",
+    "productionAsset",
+    "productionContext",
+    "productionReserve",
+    "productionTaskMutation"
+  ]
+}

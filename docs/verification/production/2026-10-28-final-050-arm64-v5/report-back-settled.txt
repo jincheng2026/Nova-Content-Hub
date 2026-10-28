@@ -1,0 +1,13 @@
+Browser tab: 1980823824, Title: "research_report", URL: "http://127.0.0.1:55894/p/b3c1d31fd041a6441f1de413bbdba95b05c1c8bc6b73efb6eba2dcf85a35fff6/".
+1 AXWebArea research_report, URL: 127.0.0.1:55894/p/b3c1d31fd041a6441f1de413bbdba95b05c1c8bc6b73efb6eba2dcf85a35fff6/
+	2 container
+		3 heading research_report, Value: 1
+			4 text research_report
+		5 container 报告页
+			6 link Description: research_report, Value: 127.0.0.1:55894/p/b3c1d31fd041a6441f1de413bbdba95b05c1c8bc6b73efb6eba2dcf85a35fff6/view/d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0
+		7 button (collapsed) 核查本页原始来源（10）, Secondary Actions: Expand
+			8 text 核查本页原始来源（10）
+	9 container Description: 报告完整内容, ID: report-frame
+		10 AXWebArea about:blank
+
+The focused UI element is 1 AXWebArea research_report, URL: 127.0.0.1:55894/p/b3c1d31fd041a6441f1de413bbdba95b05c1c8bc6b73efb6eba2dcf85a35fff6/

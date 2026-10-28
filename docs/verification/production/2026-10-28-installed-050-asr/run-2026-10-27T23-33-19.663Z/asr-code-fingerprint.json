@@ -1,0 +1,38 @@
+[
+  {
+    "path": "workbench/dist/main/local-asr-runtime.mjs",
+    "bytes": 5363,
+    "mode": 420,
+    "sha256": "1cc85f2025d5a67b909ab27ad4a3b260c68529395f9d3293b89867a4d77c8ed4"
+  },
+  {
+    "path": "workbench/dist/main/production-services.mjs",
+    "bytes": 28071,
+    "mode": 420,
+    "sha256": "83bff9e0c1b098d904d2bde75f3fd0eec9bbec7bd080bda2ceed09bcb52f0bc4"
+  },
+  {
+    "path": "workbench/dist/main/service-settings.mjs",
+    "bytes": 7218,
+    "mode": 420,
+    "sha256": "dbd53f400ac73c8f785c200cf9238d0edab2f9c636b98523232b851b589d1d95"
+  },
+  {
+    "path": "workbench/dist/main/service-tools.mjs",
+    "bytes": 37970,
+    "mode": 420,
+    "sha256": "b6c0f5a56a50705de5f376cb0cc182a64c99d2753ba93799edc5638e9802077e"
+  },
+  {
+    "path": "workbench/dist/main/worker.mjs",
+    "bytes": 9781,
+    "mode": 420,
+    "sha256": "4ba6100ccb43a96f92d3a3cea833cb41a4a441dd94697cd6b5b1abaa3eaa51d9"
+  },
+  {
+    "path": "workbench/dist/release.json",
+    "bytes": 377,
+    "mode": 420,
+    "sha256": "98e32c00650b1050ee71a2a9d4299a907973a6dde40a9ae5c6cedb34d931cadf"
+  }
+]

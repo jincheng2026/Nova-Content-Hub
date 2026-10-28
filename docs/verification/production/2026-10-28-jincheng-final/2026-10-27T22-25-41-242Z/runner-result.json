@@ -1,0 +1,18 @@
+{
+  "passed": true,
+  "fixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-jincheng-final-OTOC5Z",
+  "bundleSource": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "reusedFrozenFixtureBundle": false,
+  "evidence": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-28-jincheng-final/2026-10-27T22-25-41-242Z",
+  "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-jincheng-final-static-lgav83xw/第二大脑",
+  "sourceUnchanged": true,
+  "platform": "darwin",
+  "arch": "arm64",
+  "limitations": [
+    "Native Electron main/preload/utility workers/renderer exercised on this Mac only.",
+    "Complete disposable library copy, real built-in initialization, two processes.",
+    "Browser launches intercepted after actual bound-reader URL creation; no messages, paid calls or external-provider execution.",
+    "Local ASR readiness uses explicitly selected real native payload; actual speech recognition has separate evidence.",
+    "Final installer/system metadata/manual visual and other platforms are separate acceptance."
+  ]
+}

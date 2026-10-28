@@ -1,0 +1,22 @@
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--prepared:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/Applications/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+/Applications/自媒体工作台.app: valid on disk
+/Applications/自媒体工作台.app: satisfies its Designated Requirement

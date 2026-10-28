@@ -1,0 +1,35 @@
+The following is a diff from the previous accessibility tree for Window: "“Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg”简介" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 40-167
+~37 标准窗口 “Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg”简介, ID: Info, Secondary Actions: Raise
+~	38 滚动区
+~		39 图像 Icon
++		40 text Help: Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg, Value: Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg 3.2 GB 修改时间： 今天 08:39
++		41 滚动区
++			42 文本栏 Description: 标签编辑器, Placeholder: 添加标签…
++		43 显示三角形 Value: 1, ID: General
++		44 text 通用： 种类： 磁盘映像 大小： 3,200,837,792 字节（磁盘上的3.2 GB） 位置： ‎⁨Macintosh HD⁩ ▸ ⁨用户⁩ ▸ ⁨mac⁩ ▸ ⁨桌面⁩ ▸ ⁨自媒体工作台-0.5.0-交付⁩ 创建时间： 2026年10月28日 星期三 08:37 修改时间： 2026年10月28日 星期三 08:39
++		45 复选框 样版, Value: 0
++		46 复选框 已锁定, Value: 0
++		47 显示三角形 Value: 1, ID: MetaData
++		48 text 更多信息： --
++		49 显示三角形 Value: 1, ID: Name
++		50 文本 名称与扩展名：
++		51 文本栏 (settable) Value: Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg, ID: Name
++		52 复选框 隐藏扩展名, Value: 0
++		53 显示三角形 Value: 1, ID: Comments
++		54 文本 注释：
++		55 滚动区
++			56 文本输入区 (settable) Comments
++		57 显示三角形 Value: 0, ID: OpenWith
++		58 文本 打开方式：
++		59 显示三角形 Value: 1, ID: Preview
++		60 文本 预览：
++		61 图像 Description: 预览, ID: QLAXImageAndText_Image
++		62 显示三角形 Value: 0, ID: Privileges
++		63 文本 共享与权限：
++	64 关闭按钮
++	65 缩放按钮
++	66 最小化按钮
++	67 图像 Macintosh HD
++	68 文本 “Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg”简介
+The focused UI element is 37 标准窗口 “Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg”简介, ID: Info, Secondary Actions: Raise

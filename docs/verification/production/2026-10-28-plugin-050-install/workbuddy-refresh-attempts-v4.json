@@ -1,0 +1,174 @@
+{
+  "recordedAt": "2026-10-27T23:39:19.046Z",
+  "status": "BLOCKED_CODEBUDDY_SAME_VERSION_IMMUTABLE_CACHE",
+  "installedApp": "/Applications/自媒体工作台.app",
+  "installedSourceCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "market": {
+    "root": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+    "packageFilesSha256": "b106be7b4da43ca24f2e5c835ef5c0f6428629971d0ab7f573754080a5b1d9ab",
+    "previousPackageFilesSha256": "a3e21088e99137e99b9c79157b10316f4c91833034cae6c6383e20d9646d1b3c",
+    "entryCount": 1376
+  },
+  "preRefreshEvidence": "workbuddy-cache-before-reinstall.json",
+  "preRefreshState": {
+    "cliRecord": {
+      "id": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+      "version": "0.5.0",
+      "enabled": true,
+      "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "scope": "user"
+    },
+    "installedPluginCopies": [
+      {
+        "scope": "user",
+        "version": "0.5.0",
+        "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+      }
+    ],
+    "settingsEnabled": true
+  },
+  "officialCli": {
+    "version": "2.177.1",
+    "configDir": "/Users/mac/.workbuddy",
+    "bothConfigEnvSet": true,
+    "commands": [
+      {
+        "argv": [
+          "plugin",
+          "update",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully updated plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "marketplace",
+          "update",
+          "nova-content-hub-auth-disabled-darwin-arm64"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully updated marketplace"
+      },
+      {
+        "argv": [
+          "plugin",
+          "update",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully updated plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "install",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully installed plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "uninstall",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user",
+          "--keep-data"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully uninstalled plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "install",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully installed plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "uninstall",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully uninstalled plugin; requests /reload-plugins or new session"
+      },
+      {
+        "argv": [
+          "plugin",
+          "install",
+          "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+          "--scope",
+          "user"
+        ],
+        "exitCode": 0,
+        "stdout": "Successfully installed plugin; requests /reload-plugins or new session"
+      }
+    ]
+  },
+  "postRefreshState": {
+    "cliRecord": [
+      {
+        "id": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "enabled": true,
+        "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+        "scope": "user"
+      }
+    ],
+    "installedPluginCopies": [
+      {
+        "scope": "user",
+        "version": "0.5.0",
+        "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+      }
+    ],
+    "settingsEnabled": true,
+    "old040CacheRemains": true
+  },
+  "cache": {
+    "root": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+    "version": "0.5.0",
+    "entryCount": 1376,
+    "snapshotSha256": "f13b2946adeb54b12547de0bf37d16ded984026b4795eb2e83c38c7d586cf2c0",
+    "matchesMarket": false,
+    "mismatchCount": 2,
+    "mismatches": [
+      {
+        "path": "integrity.json",
+        "marketSha256": "cc43af6cd7e8e545cbde952832302602c1155a7c98a5e31913e197dcfc86b916",
+        "cacheSha256": "69155c7b6fa8838c447247c4f8d02d3750c75d72641bff266f9fbb80d0d5ae64"
+      },
+      {
+        "path": "plugin-src/src/lib/vault/resources.mjs",
+        "marketSha256": "d397330d92a7cefcfc1b0a0ad1e93d69b3fd28561c4f1c6b5dd2b8861cd8ecc6",
+        "cacheSha256": "3b06c1248c65f9f44513a69d4c33297ea800bc6b56617bf0fa64f7238bbdde3b"
+      }
+    ]
+  },
+  "runtime": {
+    "eightChecksRun": false,
+    "reason": "WorkBuddy launchWithAssistantRuntime rejects the cache because package snapshot does not match the final market; doctor/callback were not reached."
+  },
+  "scope": {
+    "noManualCacheOrRegistryEdits": true,
+    "noOtherPluginsTouched": true,
+    "noCurrentChatReload": true
+  }
+}

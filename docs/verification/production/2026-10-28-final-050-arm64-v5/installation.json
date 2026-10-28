@@ -1,0 +1,40 @@
+{
+  "version": "0.5.0",
+  "sourceCommit": "c1e3c3c7a07425186848bd1d2823248d3b355d6c",
+  "platform": "darwin",
+  "arch": "arm64",
+  "at": "2026-10-28T00:39:38.172Z",
+  "installer": "Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg",
+  "installerSha256": "1640c4cbe93b0d8697fcfb2e7b919f93dac84311fb0fdc2c1b87679f693cf1e5",
+  "installerBytes": 3200837792,
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-f09b6850-14c8-41dd-91e9-7bcbde0d7a82",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.0:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "templateVersion": "jincheng-source-v2",
+  "installed": true,
+  "finalDelivery": true,
+  "nativeStartup": "passed: explicit selection, cancel recovery, 47-content library, same-install reopen, post-Trash-restore reopen",
+  "installedAt": "2026-10-28T00:45:25.313Z",
+  "deliveryScope": "Apple Silicon / macOS 26 local preview, with explicit limitations; not a production-ready or all-platform declaration",
+  "nativeReportHistory": "passed pure Chrome native toolbar Back/Forward/reclick/#data; separate Tab.back/CDP blank remains unexplained",
+  "finderAppAndDmgMetadata": "passed; actual system UI screenshots",
+  "recoverableRemoval": "passed; 12396 library/settings files unchanged while application absent; app restored and strict codesign passed",
+  "dockSeparateUi": "not independently verified",
+  "finalizedAt": "2026-10-28T01:19:38.891071+00:00"
+}

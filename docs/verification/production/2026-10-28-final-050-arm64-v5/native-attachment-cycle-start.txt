@@ -1,0 +1,2 @@
+There has been no change in the accessibility tree for Window: "research_report".
+The focused UI element is 629 link 文字版结论, Value: 127.0.0.1:55894/p/b3c1d31fd041a6441f1de413bbdba95b05c1c8bc6b73efb6eba2dcf85a35fff6/page/d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0/%E7%A0%94%E7%A9%B6%E7%BB%93%E8%AE%BA.md

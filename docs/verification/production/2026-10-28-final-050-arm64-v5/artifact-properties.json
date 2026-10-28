@@ -1,0 +1,62 @@
+{
+  "version": "0.5.0",
+  "channel": "preview",
+  "platform": "darwin",
+  "arch": "arm64",
+  "frozenSourceCommit": "c1e3c3c7a07425186848bd1d2823248d3b355d6c",
+  "status": "Apple Silicon macOS 26 local preview installed and natively checked; disclosed limitations remain",
+  "artifacts": [
+    {
+      "name": "Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg",
+      "bytes": 3200837792,
+      "modifiedAt": "2026-10-28T00:39:46.621735+00:00",
+      "sha256": "1640c4cbe93b0d8697fcfb2e7b919f93dac84311fb0fdc2c1b87679f693cf1e5"
+    },
+    {
+      "name": "第二大脑-0.5.0-初始内容库.zip",
+      "bytes": 130524937,
+      "modifiedAt": "2026-10-27T22:34:12.246710+00:00",
+      "sha256": "c47d78e13d08360265b47fb4078cbd02c006fd3910ea47abf333a189f28a4db3"
+    }
+  ],
+  "installedApplication": {
+    "path": "/Applications/自媒体工作台.app",
+    "regularFiles": 12859,
+    "logicalBytes": 4201506123,
+    "modifiedAt": "2026-10-28T00:32:33+00:00",
+    "metadata": {
+      "CFBundleDisplayName": "自媒体工作台",
+      "CFBundleIdentifier": "com.novaisland.nova-content-hub",
+      "CFBundleName": "自媒体工作台",
+      "CFBundleShortVersionString": "0.5.0",
+      "CFBundleVersion": "0.5.0",
+      "LSMinimumSystemVersion": "13.0",
+      "NSHumanReadableCopyright": "© 2026 杭州新岛橙灵智能科技有限责任公司"
+    }
+  },
+  "verification": {
+    "strictCodesign": "passed; ad-hoc, not Developer ID or notarized",
+    "nativeOS": "26.4.1",
+    "runtimeDelta": "627 files/manifests compared with previous installed acceptance; only production-pages.mjs changed",
+    "nativeAcceptance": "explicit library selection/cancel, 47-content load, native Chrome report Back/Forward/reclick/anchor, same-install reopen, recoverable removal/restore preserving 12396 files, final original T029 UI visible",
+    "intelMac": "not built/installed/native tested in this release",
+    "windowsX64": "not built/installed/native tested in this release",
+    "windowsArm": "not in scope",
+    "finderAppInfo": "Apple Silicon; 0.5.0; ©2026 杭州新岛橙灵智能科技有限责任公司; Finder 4201506416 bytes, 2026-10-28 08:32",
+    "finderDmgInfo": "3200837792 bytes, 2026-10-28 08:39; see evidence screenshots",
+    "dockSeparateUi": "not independently verified",
+    "restoredSignature": "passed deep strict codesign after actual Finder Trash and Undo restore"
+  },
+  "limitations": [
+    "Bundled local ASR currently matches macOS major 26 / arm64",
+    "Four complete original skill packages unavailable: jc-zhuanxie, jc-review-page, jc-cover-design, jc-kepu-video",
+    "Paid live TikHub collection, actual host-model generation and platform publish not executed",
+    "Actual Chrome native history path passed; automated Tab.back/CDP can still leave a blank report frame, cause not established"
+  ],
+  "deliveryReadme": {
+    "name": "先读我.md",
+    "sha256": "ac59d78cd312b665c2ed9b053a1f83b93a659542adfe6960bdededb1b4b5c86d",
+    "bytes": 2523
+  },
+  "finalDigestRecheckAt": "2026-10-28T01:24:42.884390+00:00"
+}

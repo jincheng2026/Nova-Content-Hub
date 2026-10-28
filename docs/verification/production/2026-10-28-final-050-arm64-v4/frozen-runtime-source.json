@@ -1,0 +1,8 @@
+{
+  "productCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "sourceTreeComparedFiles": 808,
+  "allRuntimeFilesEqualFrozenCommit": true,
+  "scope": "Tracked runtime source, resources, skills, schemas and references; excludes tests. Final installer and installed native verification recorded separately.",
+  "resourceSourceAndBothStageCopiesSha256": "d397330d92a7cefcfc1b0a0ad1e93d69b3fd28561c4f1c6b5dd2b8861cd8ecc6",
+  "sourceManifestSha256": "3768089f3649cacb0a476e98a2e06b87a094c2772587a442318c37f66145bba9"
+}

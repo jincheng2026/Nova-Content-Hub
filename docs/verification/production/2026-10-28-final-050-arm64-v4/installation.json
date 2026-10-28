@@ -1,0 +1,34 @@
+{
+  "version": "0.5.0",
+  "sourceCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "platform": "darwin",
+  "arch": "arm64",
+  "at": "2026-10-27T23:23:10.893Z",
+  "installer": "Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg",
+  "installerSha256": "7379e3980d7d1f895871da2dd8714fa27f17b6b45a0a93ed64149d7d965b5f3b",
+  "installerBytes": 3200826235,
+  "installation": {
+    "transaction": "/Applications/.nova-content-hub-install-37eb53d3-15b9-4b71-9b06-8d3d9bd81d0a",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  },
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.0:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "templateVersion": "jincheng-source-v2",
+  "installed": true,
+  "finalDelivery": false,
+  "nativeStartup": "pending",
+  "installedAt": "2026-10-27T23:29:11.860Z"
+}

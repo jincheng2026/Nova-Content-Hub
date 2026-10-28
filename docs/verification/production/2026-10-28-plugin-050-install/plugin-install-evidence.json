@@ -1,0 +1,267 @@
+{
+  "recordedAt": "2026-10-27T22:16:25.894Z",
+  "app": "/Applications/自媒体工作台.app",
+  "marketRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "configRoots": {
+    "codex": "<HOME>/.codex",
+    "workbuddy": "/Users/mac/.workbuddy"
+  },
+  "hostEnvironment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "node": "v24.20.0",
+    "codexHomeEnvSet": false
+  },
+  "commands": [
+    {
+      "host": "codex",
+      "argv": [
+        "/Users/mac/.local/bin/codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": {
+        "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+        "alreadyAdded": true
+      }
+    },
+    {
+      "host": "codex",
+      "argv": [
+        "/Users/mac/.local/bin/codex",
+        "plugin",
+        "add",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": {
+        "pluginId": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "authPolicy": "ON_INSTALL",
+        "installedPath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "marketplace",
+        "add",
+        "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+        "--name",
+        "nova-content-hub-auth-disabled-darwin-arm64"
+      ],
+      "exitCode": 0,
+      "result": {
+        "name": "nova-content-hub-auth-disabled-darwin-arm64",
+        "type": "directory"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "install",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "installed": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    }
+  ],
+  "registrations": {
+    "codex": {
+      "cli": "/Users/mac/.local/bin/codex",
+      "selectedPlugin": {
+        "name": "nova-content-hub",
+        "pluginId": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "enabled": true,
+        "installed": true,
+        "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+        "authPolicy": "ON_INSTALL"
+      },
+      "expectedCachePath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "cacheReleaseMatches": true,
+      "old040CachePreinstallStatus": "not checked",
+      "old040CachePostInstall": false
+    },
+    "workbuddy": {
+      "cli": "/Users/mac/.local/bin/codebuddy",
+      "selectedPlugin": {
+        "id": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "enabled": true,
+        "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+        "scope": "user"
+      },
+      "expectedCachePath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "cacheReleaseMatches": true,
+      "old040CachePreinstallStatus": "not checked",
+      "old040CachePostInstall": true
+    }
+  },
+  "runtimeChecks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "expectedSkill": "nova-content-cover-execution",
+      "skill": "nova-content-cover-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 827
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "expectedSkill": "nova-content-template-execution",
+      "skill": "nova-content-template-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 540
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "expectedSkill": "nova-content-research-execution",
+      "skill": "nova-content-research-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 555
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "expectedSkill": "nova-content-writing-execution",
+      "skill": "nova-content-writing-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 553
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "expectedSkill": "nova-content-cover-execution",
+      "skill": "nova-content-cover-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 902
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "expectedSkill": "nova-content-template-execution",
+      "skill": "nova-content-template-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 493
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "expectedSkill": "nova-content-research-execution",
+      "skill": "nova-content-research-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 753
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "expectedSkill": "nova-content-writing-execution",
+      "skill": "nova-content-writing-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 588
+    }
+  ],
+  "completion": "PASS",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.0:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "cliVersions": {
+    "codex": "codex-cli 0.152.1",
+    "codebuddy": "2.177.1"
+  },
+  "marketplace": {
+    "packageFilesSha256": "a3e21088e99137e99b9c79157b10316f4c91833034cae6c6383e20d9646d1b3c",
+    "packageFilesFormat": "nova-content-marketplace-package-files",
+    "packageFilesSchemaVersion": 1,
+    "packageFilesEntryCount": 1376,
+    "actualPackageEntryCount": 1376,
+    "fullSnapshotMatches": true,
+    "topLevelSkillCount": 28,
+    "allTopLevelSkillsHaveSkillMd": true,
+    "integrityFileCount": 636,
+    "integrityMismatches": [],
+    "upstreamIntegrityFileCount": 418,
+    "methodSourceVersionCount": 53,
+    "xindaoSourceRecord": {
+      "versionId": "xindao-xuanti:X:a3778c4f28b16179",
+      "fiveFilesMatchManifestAndPayload": true
+    },
+    "xindaoOriginalFiles": {
+      "SKILL.md": {
+        "path": "skills/xindao-xuanti/upstream/current/METHOD.md",
+        "sha256": "84189cd06fd9fdb4d5972380e2aecfa07d5e919ca97ec44c5748281486e6601d",
+        "matchesRecordedHash": true
+      },
+      "manifest.json": {
+        "path": "skills/xindao-xuanti/upstream/current/manifest.json",
+        "sha256": "752a933eb20a75e5047f596363e2f6b05d089c2d53bfebcf2334c58f7b0f18b0",
+        "matchesRecordedHash": true
+      },
+      "references/candidate-menu.md": {
+        "path": "skills/xindao-xuanti/upstream/current/references/candidate-menu.md",
+        "sha256": "fd8c56d6326843e37edc8ec423a2c547e16353886efaa7942edb1c593d675ce3",
+        "matchesRecordedHash": true
+      },
+      "references/material-intake.md": {
+        "path": "skills/xindao-xuanti/upstream/current/references/material-intake.md",
+        "sha256": "d360a94c47b474a39d728652b938a4965f4a5eb094fb25ce912ac14860ae2995",
+        "matchesRecordedHash": true
+      },
+      "references/topic-expansion.md": {
+        "path": "skills/xindao-xuanti/upstream/current/references/topic-expansion.md",
+        "sha256": "5af70b8cb10527f0ccfbe9978789a16ed1a3adbb83b37cfe93fd1b133ab2f027",
+        "matchesRecordedHash": true
+      }
+    }
+  },
+  "limits": [
+    "No model invocation, image generation, paid provider, external business service, real content library, or real task submission.",
+    "The current assistant conversation was not hot-reloaded; WorkBuddy CLI recommends /reload-plugins or a new session.",
+    "Verified only on this Apple Silicon macOS installation."
+  ]
+}

@@ -1,0 +1,282 @@
+Window: "应用程序", App: 访达.
+0 标准窗口 应用程序, ID: FinderWindow, Secondary Actions: Raise
+	1 分离组
+		2 滚动区 Secondary Actions: Scroll Up, Scroll Down
+			3 外框 边栏
+				4 row (selectable) Description: 时钟, Value: 最近使用
+				5 row (selectable) Description: 共享文件夹, Value: 共享
+				6 row (selectable, expanded) Value: 个人收藏, Secondary Actions: Collapse
+				7 row (selected) 应用程序
+				8 row (selectable) 桌面
+				9 row (selectable) 文稿
+				10 row (selectable) Description: 箭头向下圆圈, Value: 下载
+				11 row (selectable) Description: 移动, Value: 扣子云盘
+				12 row (selectable, expanded) Value: 位置, Secondary Actions: Collapse
+				13 row (selectable) Description: iCloud, Value: iCloud云盘
+				14 row (selectable) Description: 主页, Value: mac
+				15 row (selectable) Macintosh HD
+				16 row (selectable) 隔空投送
+				17 row (selectable) Description: 删除, Value: 废纸篓
+				18 row (selectable, expanded) Value: 标签, Secondary Actions: Collapse
+				19 row (selectable) 红色
+				20 row (selectable) 橙色
+				21 row (selectable) 黄色
+				22 row (selectable) 绿色
+				23 row (selectable) 蓝色
+				24 row (selectable) 紫色
+				25 row (selectable) 灰色
+				26 row (selectable) 所有标签…
+			27 滚动条 (settable, float) 0
+				28 值指示器 (settable, float) 0
+				29 增箭头按钮
+				30 减箭头按钮
+				31 增页面按钮
+				32 减页面按钮
+		33 分离器 (disabled, settable, float) 168
+		34 滚动区 Secondary Actions: Scroll Up, Scroll Down
+			35 外框 Description: 列表视图, ID: ListView (showing 97-119 of 161 items)
+				36 row (selectable)
+					37 单元格
+						38 图像
+					40 单元格
+						41 文本 2026年4月6日 16:10
+					42 单元格
+						43 文本 22 MB
+					44 单元格
+						45 文本 应用程序
+				46 row (selectable)
+					47 单元格
+						48 图像
+					50 单元格
+						51 文本 2026年4月6日 16:10
+					52 单元格
+						53 文本 37.5 MB
+					54 单元格
+						55 文本 应用程序
+				56 row (selectable)
+					57 单元格
+						58 图像
+					60 单元格
+						61 文本 2026年4月6日 16:10
+					62 单元格
+						63 文本 13.6 MB
+					64 单元格
+						65 文本 应用程序
+				66 row (selectable)
+					67 单元格
+						68 图像
+					70 单元格
+						71 文本 2026年4月6日 16:10
+					72 单元格
+						73 文本 8.4 MB
+					74 单元格
+						75 文本 应用程序
+				76 row (selectable)
+					77 单元格
+						78 图像
+					80 单元格
+						81 文本 2026年4月6日 16:10
+					82 单元格
+						83 文本 117.5 MB
+					84 单元格
+						85 文本 应用程序
+				86 row (selectable)
+					87 单元格
+						88 图像
+					90 单元格
+						91 文本 2026年4月6日 16:10
+					92 单元格
+						93 文本 5.8 MB
+					94 单元格
+						95 文本 应用程序
+				96 row (selectable)
+					97 单元格
+						98 图像
+						99 文本栏 (settable) URL: file:///Applications/WeChat.app/, Value: 微信, Secondary Actions: 打开“访达”项目
+					100 单元格
+						101 文本 2026年9月11日 12:43
+					102 单元格
+						103 文本 1.45 GB
+					104 单元格
+						105 文本 应用程序
+				106 row (selectable)
+					107 单元格
+						108 图像
+						109 文本栏 (settable) URL: file:///Applications/wechatwebdevtools.app/, Value: 微信开发者工具, Secondary Actions: 打开“访达”项目
+					110 单元格
+						111 文本 2026年9月7日 17:41
+					112 单元格
+						113 文本 762.4 MB
+					114 单元格
+						115 文本 应用程序
+				116 row (selectable)
+					117 单元格
+						118 图像
+					120 单元格
+						121 文本 2026年4月6日 16:10
+					122 单元格
+						123 文本 1.9 MB
+					124 单元格
+						125 文本 应用程序
+				126 row (selectable)
+					127 单元格
+						128 图像
+					130 单元格
+						131 文本 2026年4月6日 16:10
+					132 单元格
+						133 文本 126.8 MB
+					134 单元格
+						135 文本 应用程序
+				136 row (selectable)
+					137 单元格
+						138 图像
+					140 单元格
+						141 文本 2026年4月6日 16:10
+					142 单元格
+						143 文本 9.1 MB
+					144 单元格
+						145 文本 应用程序
+				146 row (selectable)
+					147 单元格
+						148 图像
+					150 单元格
+						151 文本 2026年4月6日 16:10
+					152 单元格
+						153 文本 7.6 MB
+					154 单元格
+						155 文本 应用程序
+				156 row (selectable)
+					157 单元格
+						158 图像
+					160 单元格
+						161 文本 2026年4月6日 16:10
+					162 单元格
+						163 文本 118.9 MB
+					164 单元格
+						165 文本 应用程序
+				166 row (selectable)
+					167 单元格
+						168 图像
+						169 文本栏 (settable) URL: file:///Applications/%E4%BC%98%E9%85%B7.app/, Value: 优酷, Secondary Actions: 打开“访达”项目
+					170 单元格
+						171 文本 2026年5月27日 13:12
+					172 单元格
+						173 文本 590.6 MB
+					174 单元格
+						175 文本 应用程序
+				176 row (selectable)
+					177 单元格
+						178 图像
+					180 单元格
+						181 文本 2026年4月6日 16:10
+					182 单元格
+						183 文本 29.9 MB
+					184 单元格
+						185 文本 应用程序
+				186 row (selectable)
+					187 单元格
+						188 图像
+					190 单元格
+						191 文本 2026年4月6日 16:10
+					192 单元格
+						193 文本 10.8 MB
+					194 单元格
+						195 文本 应用程序
+				196 row (selectable)
+					197 单元格
+						198 图像
+					200 单元格
+						201 文本 2026年4月6日 16:10
+					202 单元格
+						203 文本 9.3 MB
+					204 单元格
+						205 文本 应用程序
+				206 row (selectable)
+					207 单元格
+						208 图像
+					210 单元格
+						211 文本 2026年4月6日 16:10
+					212 单元格
+						213 文本 12.8 MB
+					214 单元格
+						215 文本 应用程序
+				216 row (selectable)
+					217 单元格
+						218 图像
+					220 单元格
+						221 文本 2026年4月6日 16:10
+					222 单元格
+						223 文本 43.1 MB
+					224 单元格
+						225 文本 应用程序
+				226 row (selectable)
+					227 单元格
+						228 图像
+					230 单元格
+						231 文本 2026年4月6日 16:10
+					232 单元格
+						233 文本 10 MB
+					234 单元格
+						235 文本 应用程序
+				236 row (selectable)
+					237 单元格
+						238 图像
+					240 单元格
+						241 文本 2026年4月6日 16:10
+					242 单元格
+						243 文本 4.8 MB
+					244 单元格
+						245 文本 应用程序
+				246 row (selected)
+					247 单元格 (selected)
+						248 图像
+						249 文本栏 (selected, settable) URL: file:///Applications/Antigravity.app/, Value: Antigravity, Secondary Actions: 打开“访达”项目
+					250 单元格 (selected)
+						251 文本 2026年10月14日 00:07
+					252 单元格 (selected)
+						253 文本 484.9 MB
+					254 单元格 (selected)
+						255 文本 应用程序
+			256 滚动条 (settable, float) 0.7026932493878979
+				257 值指示器 (settable, float) 0.7026932493878979
+				258 增箭头按钮
+				259 减箭头按钮
+				260 增页面按钮
+				261 减页面按钮
+			262 文本 名称
+			263 图像 向上移动
+			264 文本 修改日期
+			265 文本 大小
+			266 文本 种类
+		267 未知 Details: 状态栏, ID: statusBar
+			268 文本 Value: 选择了1项（共160项），12.17 GB可用, ID: statusBarText
+	269 工具栏
+		270 container 返回/前进
+			271 按钮 返回
+			272 按钮 (disabled) 前进
+		273 单选按钮 Description: 图标视图, Value: 0
+		274 单选按钮 Description: 列表视图, Value: 1
+		275 单选按钮 Description: 分栏视图, Value: 0
+		276 单选按钮 Description: 画廊视图, Value: 0
+		277 菜单按钮 Description: 群组, Help: 更改项目的分组方式（按住Option键来更改排列顺序）, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		278 按钮 Description: 共享, Help: 共享所选项目, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		279 按钮 Description: 添加标签, Help: 编辑标签, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		280 菜单按钮 Description: 操作, Help: 用所选项执行任务, Secondary Actions: 移到上一项, 移到下一项, 从工具栏移除
+		281 按钮 搜索
+	282 关闭按钮
+	283 全屏幕按钮 Help: 此按钮也可以执行缩放窗口的操作, Secondary Actions: 缩放窗口
+	284 最小化按钮
+	285 文本 应用程序
+286 menu bar
+	287 访达
+	288 文件
+	289 编辑
+	290 显示
+	291 前往
+	292 窗口
+	293 帮助
+
+Selected:
+	246 row (selected)
+
+Note: Pay special attention to the content selected by the user. If the user asks a question or refers to the content they are looking at on-screen, they might be referring to the selected content (but they might be referring to something else that's visible, too).

@@ -1,0 +1,119 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
++								116 HTML 内容 T029 WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames, URL: nova-content://creation/6a70afbb-ec8e-4cbe-a9c1-9b8981b8a0fa/index.html
++									117 container
++										118 container
++											119 文本 T029
++											120 标题 WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames, Value: 1
++												121 文本 WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames
++											122 按钮 Description: 保存状态：已连接保存服务，页面和文件一致 09:18, Help: 已连接保存服务，页面和文件一致 09:18（点击查看完整状态）
++											123 按钮 0 待确认, Help: 从第一条待确认的建议开始逐条看：采纳或不采纳以后自动跳到下一条
++												124 文本 0
++												125 文本 待确认
++											126 按钮 1 待 AI 处理, Help: 跳到第一条待 AI 处理的「写给 AI 的话」
++												127 文本 1
++												128 文本 待 AI 处理
++											129 按钮 复制提词稿, Help: 只复制锦成版正文，按段落顺序排列，不含空行
++											130 弹出式按钮 更多
++											131 container 视图
++												132 切换按钮 对照, Value: 1
++												133 切换按钮 通读, Value: 0
++												134 切换按钮 录制, Help: 整篇排成录屏清单：口播、画面、录屏步骤, Value: 0
++												135 切换按钮 标题封面简介, Help: 标题、封面文字、简介：逐字稿内容确认后 AI 出候选，你挑、改、定, Value: 0
++											136 container 段落
++												137 按钮 1, Help: 开头
++												138 按钮 2, Help: Skill 是什么
++												139 按钮 3, Help: 三步安装
++												140 按钮 4, Help: 第一个：Computer Use（有待确认的建议或待 AI 处理的话）
++													141 文本 4
++												142 按钮 5, Help: 第二个：Skill Creator
++												143 按钮 6, Help: 第三个：HyperFrames
++												144 按钮 7, Help: 结尾
++											145 按钮 收起, Help: 收起顶栏：只留标题、保存状态、段落条和复制提词稿，给稿子腾地方
++										146 按钮 叙事 照千雪AI、狗爷聊AI 两条的讲法中译中：WorkBuddy 装了觉得不过如此，… 展开
++											147 文本 叙事
++											148 文本 照千雪AI、狗爷聊AI 两条的讲法中译中：WorkBuddy 装了觉得不过如此，…
++											149 文本 展开
++										150 开合三角标记 几家参考的关系 狗爷晚 8 天发，口播几乎逐句照千雪改写，是同一份稿子 展开骨架对照（7 步）
++											151 文本 几家参考的关系
++											152 文本 狗爷晚 8 天发，口播几乎逐句照千雪改写，是同一份稿子
++											153 文本 展开骨架对照（7 步）
++										154 container
++											155 标题 1 开头, Value: 2
++												156 text 1 开头
++											157 文本 开头：先说大多数人没用明白，再用马化腾那句抬身价，最后承诺三个 Skill
++											158 文本 剪辑做
++											159 按钮 本段改动记录
++											160 文本 这一段参考怎么讲
++											161 文本 2 家参考，AI 看过原片后整理
++											162 文本 狗爷这段是照千雪改写的：多了开头一句「90% 的人用不明白」，马化腾那句改成「亲自盖章」。两家都是先抬身价、再点破「觉得不过如此」、最后承诺三个 Skill。你这段照这个顺序写，两家的开头都用上了。
++											163 内容列表
++												164 container
++													165 text 引入 先说很多人没用明白，再抬出马化腾那句当背书 2 家都这么讲 「被马化腾定位为继 QQ 微信之后第三个战略级产品的 WorkBuddy」
++													166 link Description: 千雪AI 0:00, Help: 用本地原片从 0:00 开始播放, Value: nova-content://creation/02_%E5%86%85%E5%AE%B9%E7%B4%A0%E6%9D%90/%E6%9C%AA%E5%8F%82%E8%80%83/%E6%8A%96%E9%9F%B3/%E6%8A%96%E9%9F%B3_workbuddy%E5%BF%85%E8%A3%85%E7%9A%84%E4%B8%89%E5%A4%A7%E7%A5%9E%E7%BA%A7skill%EF%BC%8C%E9%99%84%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%EF%BC%81_7683460207493516578/%E8%A7%86%E9%A2%91.mp4
++												167 container
++													168 text 顺序 点破「觉得不过如此」，再承诺三个满分 Skill 2 家都这么讲 「今天我就把自己最常用」
++													169 link Description: 千雪AI 0:14, Help: 用本地原片从 0:14 开始播放, Value: nova-content://creation/02_%E5%86%85%E5%AE%B9%E7%B4%A0%E6%9D%90/%E6%9C%AA%E5%8F%82%E8%80%83/%E6%8A%96%E9%9F%B3/%E6%8A%96%E9%9F%B3_workbuddy%E5%BF%85%E8%A3%85%E7%9A%84%E4%B8%89%E5%A4%A7%E7%A5%9E%E7%BA%A7skill%EF%BC%8C%E9%99%84%E4%BF%9D%E5%A7%86%E7%BA%A7%E6%95%99%E7%A8%8B%EF%BC%81_7683460207493516578/%E8%A7%86%E9%A2%91.mp4#t=14
++											170 文本 可以借的
++											171 container
++												172 text 照用 开头顺序照两家：没用明白、马化腾背书、不过如此、三个 Skill
++											173 文本 原文（点一家展开，可以同时展开几家；关键句按上面讲法点的颜色标出）
++											174 按钮 全部展开
++											175 按钮 千雪AI 对标 本段 1 条原文 · 0:00 到 0:18 展开原文
++												176 文本 千雪AI
++												177 文本 对标
++												178 文本 本段 1 条原文 · 0:00 到 0:18
++												179 文本 展开原文
++											180 按钮 狗爷聊AI 补充参考 本段 1 条原文 · 0:00 到 0:20 ≈千雪AI，本段 49% 逐字相同，展开后灰色字和千雪AI一样，只看黑色的改动 展开原文
++												181 文本 狗爷聊AI
++												182 文本 补充参考
++												183 文本 本段 1 条原文 · 0:00 到 0:20
++												184 文本 ≈千雪AI，本段 49% 逐字相同，展开后灰色字和千雪AI一样，只看黑色的改动
++												185 文本 展开原文
++											186 text 锦成版 可直接修改，停止输入 1 秒后自动保存 120 字 · 约 17 秒
++											187 文本输入区 (settable) Description: 第 1 段锦成版, Value: 被马化腾定位成继 QQ微信之后，第三个战略级产品 WorkBuddy，90%的人都用不明白。但其实啊，是因为你没有发现它的精髓所在。
+WorkBuddy真正的杀手锏是能装上各种神级 Skill。
+今天呢，我就把自己最常用、用完效率直接起飞的三个压箱底 Skill，分享给你。
++											188 按钮 下一段「Skill 是什么」开头「Skill 是什么呢？」, Help: 点一下跳到下一段
++												189 文本 下一段「Skill 是什么」开头
++												190 文本 「Skill 是什么呢？」
++											191 标题 修改建议, Help: 只有点「采纳」，锦成版才会改动, Value: 3
++												192 文本 修改建议
++											193 文本 只有点「采纳」，锦成版才会改动
++											194 切换按钮 表达 12, Value: 1
++											195 切换按钮 衔接 1, Value: 1
++											196 切换按钮 拗口 1, Value: 1
++											197 切换按钮 口径 2, Value: 1
++											198 container
++												199 container 点一下展开这条建议
++													200 text 1 已采纳 换成「第三个战略级产品 WorkBuddy，90%的人都用…」 展开
++												201 按钮 撤销决定, Help: 撤销这个决定，改回待确认
++											202 container
++												203 container 点一下展开这条建议
++													204 text 2 已采纳 换成「今天呢，我就把自己最常用」 展开
++												205 按钮 撤销决定, Help: 撤销这个决定，改回待确认
++											206 文本 分工
++											207 container 第 1 段画面类型
++												208 切换按钮 真人口播, Help: 点一下取消「真人口播」, Value: 1
++												209 切换按钮 录屏, Help: 点一下选上「录屏」, Value: 0
++												210 切换按钮 截图, Help: 点一下选上「截图」, Value: 0
++												211 切换按钮 图片, Help: 点一下取消「图片」, Value: 1
++												212 切换按钮 AI 画面, Help: 点一下选上「AI 画面」, Value: 0
++												213 切换按钮 实拍, Help: 点一下选上「实拍」, Value: 0
++												214 切换按钮 字卡, Help: 点一下取消「字卡」, Value: 1
++												215 切换按钮 交给剪辑, Help: 点一下选上「交给剪辑」, Value: 0
++											216 文本 你录
++											217 文本输入区 (settable) Description: 第 1 段你录, Placeholder: 空着表示这段不用你动手；录了更好、不录也行的，开头写「可选」
++											218 文本 剪辑做
++											219 文本输入区 (settable) Description: 第 1 段剪辑做, Value: 找图做字卡：「被马化腾定位成……」配马化腾照片，QQ、微信、WorkBuddy 三个图标依次出现；「杀手锏是能装上各种神级 Skill」出 WorkBuddy 图标加「神级 Skill」大字, Placeholder: 剪辑在这段要找的图、做的字卡和动画
++											220 开合三角标记 和 AI 交稿版相比：删去 61 字，新增 49 字（改动较多，点击展开）, Help: AI 交稿版：AI 上次交稿时的锦成版
++												221 文本 和 AI 交稿版相比：删去 61 字，新增 49 字（改动较多，点击展开）
++											222 文本 写给 AI 的话（不进稿子）
++											223 文本输入区 (settable) Description: 第 1 段写给 AI 的话, Placeholder: 写下哪句不认可、为什么、想怎么改；也可以选中参考或锦成版里的文字，点「写给 AI」
++											224 按钮 (disabled) 上一段 K
++											225 文本 第 1 / 7 段
++											226 按钮 下一段 J
++										227 container
++											228 文本 整体意见（写给 AI，不进稿子）
++											229 文本输入区 (settable) Description: 整体意见, Placeholder: 对整篇稿子的意见写在这里，比如节奏、结尾、要不要加一段
++										230 文本 快捷键（光标不在输入框里时）：J 下一段，K 上一段，A 采纳，R 不采纳，⌘Z 撤销，⇧⌘Z 重做。所有改动自动保存到文件，AI 直接读得到。
+The focused UI element is 3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html

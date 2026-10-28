@@ -1,0 +1,31 @@
+{
+  "installedSourceCommit": "2a5d906697347a6518883d02f2930c7429f83b43",
+  "root": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "scope": "Original HTML template, creation document and creation controller/worker bytes only; shared report router, worker and renderer acceptance remain separate",
+  "hashes": {
+    "plugin-src/resources/jincheng-creation/kit/kit.js": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+    "plugin-src/resources/jincheng-creation/provenance.json": "f0eb24402dae3e244976ade1610b616a5792e99a3a485c05208e8e5621f78c8b",
+    "plugin-src/resources/jincheng-creation/template/app.js": "3380119d77e7202a8c9211d1fdf0c9b977ffcc73adb2755a10c4011696d8e647",
+    "plugin-src/resources/jincheng-creation/template/shell.html": "85bf8dbafdf651ed550868f8ec23becf079e0d7da72e421fe9ac37a5b4173dd1",
+    "plugin-src/resources/jincheng-creation/template/style.css": "9c9448bcb8e0cd2dd8991fa5c982cd12630381e9b0cb3a642eff5b7c0b5b18f4",
+    "plugin-src/src/lib/creation-document/build.mjs": "72cf87439edb23f172f8183fa063c392da163c5dd60cf85e229345f375f9194e",
+    "plugin-src/src/lib/creation-document/decisions.mjs": "afed5cba088c877a69831597d9f4b6a0a2527069d034e1427860c7775e5633f8",
+    "plugin-src/src/lib/creation-document/feedback.mjs": "5e866b34a32b5cbd8cd2a19c96bfee9067a3a1c9fd2552abd29f7bef951af64b",
+    "plugin-src/src/lib/creation-document/fingerprint.mjs": "a85e22a058bc7fc737cc151665ff457afd77e60358ef161fc593f20c280d0c4a",
+    "plugin-src/src/lib/creation-document/index.d.mts": "ec0441f78669ce771fb0993319efde1c0f782cf1db4e854cb7882e1d93e8ccbd",
+    "plugin-src/src/lib/creation-document/index.mjs": "2938402b9412a7c035502d0437d89b7a31e2b586c1a084f4a7e22e586ad80856",
+    "plugin-src/src/lib/creation-document/mutations.mjs": "6398247e92d2328fcb0eeaebced487b7e49819b0a0b1d5b1b04b054c67cfdc03",
+    "plugin-src/src/lib/creation-document/parse.mjs": "d904a4fd3d5200939590fbd682cd4376437b44df3390e7a79e026f4eff54832a",
+    "plugin-src/src/lib/creation-document/store.mjs": "00050ecdd771c863ac9ae83d3e73d725a55e845dd30c44074f229d1830d082aa",
+    "plugin-src/src/lib/creation-document/structure.mjs": "c605798dd94529e5edf68b55bfd7ca17072020e8ad6a17c3c63eb99fbc709d26",
+    "workbench/dist/main/creation-controller.mjs": "ac05610ca27e18a2b599dd12a139d8cde611e2cf5cb26e405068e8e5e4f321d6",
+    "workbench/dist/main/creation-frame-html.mjs": "df6ff53c9ee4914058a0b5fced7fef1d65328a694320a6043b0023c8f8e13f34",
+    "workbench/dist/main/creation-worker.mjs": "52efede75cd1f47305cf71d329d9060f3e496da7370717918a815714076d3a80",
+    "workbench/dist/production-creation.html": "8ba082f053df5e1e3405e126dfbf1697a6392645040d89ceab61d80e1d61747f"
+  },
+  "installedTargetCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "comparedFiles": 19,
+  "different": [],
+  "unchanged": true,
+  "limitations": "Only these creation runtime/template/document bytes match 2a focused evidence; report router/worker/renderer were separately changed and manually verified in v4. Does not turn the old entire-run evidence into a v4 run."
+}

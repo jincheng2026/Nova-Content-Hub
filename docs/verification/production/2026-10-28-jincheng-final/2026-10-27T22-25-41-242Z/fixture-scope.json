@@ -1,0 +1,19 @@
+{
+  "source": "/Users/mac/Desktop/自媒体工作台-0.5.0-交付/第二大脑",
+  "sourceFiles": 11455,
+  "sourceManifestSha256": "893de3c2314268737eecf124dee42b5675c78a7fa0463ed289982bf46f44e3f5",
+  "copiedComplete": true,
+  "removedDerivedEntries": [],
+  "descriptorRebound": null,
+  "firstOpenUninitialized": true,
+  "provenancePreserved": [
+    "source-map.json",
+    "jincheng-supplement-imports.json"
+  ],
+  "noSeedBypass": true,
+  "noMockData": true,
+  "emptyDefaultSourceDirectories": [
+    "12_视觉资产",
+    "13_X收藏"
+  ]
+}

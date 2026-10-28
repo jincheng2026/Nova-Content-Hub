@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-27T23:55:04.990Z",
+  "operation": "officially uninstalled WorkBuddy target selector with --keep-data, verified selector absent and no open cache references, then renamed the entire exact 0.5.0 cache directory",
+  "targetSelector": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "selectorAbsentBeforeMove": true,
+  "selectorAbsentEvidence": "docs/verification/production/2026-10-28-plugin-050-install/workbuddy-cache-uninstall-guard-v4.json",
+  "inactiveRegistryMetadataLeftover": [
+    {
+      "scope": "user",
+      "version": "0.5.0",
+      "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+    }
+  ],
+  "openReferencesBeforeMove": 0,
+  "source": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+  "sourceCanonicalPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+  "sourceWasSymlink": false,
+  "destination": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-nova-content-hub-cache-refresh-v4-baf01944/0.5.0",
+  "destinationCanonicalPath": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-nova-content-hub-cache-refresh-v4-baf01944/0.5.0",
+  "destinationIsSymlink": false,
+  "movedAsWholeDirectory": true,
+  "payloadEntryCount": 1376,
+  "payloadSnapshotSha256": "f13b2946adeb54b12547de0bf37d16ded984026b4795eb2e83c38c7d586cf2c0",
+  "identicalToLockedPreMoveSnapshot": true,
+  "onlyTargetPluginCacheMoved": true,
+  "old040CacheRemains": true,
+  "preMoveEvidence": "docs/verification/production/2026-10-28-plugin-050-install/workbuddy-cache-before-isolation-v4.json"
+}

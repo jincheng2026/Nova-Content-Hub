@@ -1,0 +1,2 @@
+1640c4cbe93b0d8697fcfb2e7b919f93dac84311fb0fdc2c1b87679f693cf1e5  /Users/mac/Desktop/自媒体工作台-0.5.0-交付/Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg
+c47d78e13d08360265b47fb4078cbd02c006fd3910ea47abf333a189f28a4db3  /Users/mac/Desktop/自媒体工作台-0.5.0-交付/第二大脑-0.5.0-初始内容库.zip

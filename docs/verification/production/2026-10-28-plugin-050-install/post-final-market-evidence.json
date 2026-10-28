@@ -1,0 +1,447 @@
+{
+  "recordedAt": "2026-10-27T23:57:25.471Z",
+  "app": "/Applications/自媒体工作台.app",
+  "marketRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "installation": {
+    "sourceCommit": "baf01944e3b662151db83ca547d8b80ee4378722",
+    "dmgSha256": "7379e3980d7d1f895871da2dd8714fa27f17b6b45a0a93ed64149d7d965b5f3b",
+    "dmgBytes": 3200826235,
+    "receipt": "docs/verification/production/2026-10-28-final-050-arm64-v4/installation.json"
+  },
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.0:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "comparison": {
+    "priorPackageFilesSha256": "a3e21088e99137e99b9c79157b10316f4c91833034cae6c6383e20d9646d1b3c",
+    "expectedFinalPackageFilesSha256": "b106be7b4da43ca24f2e5c835ef5c0f6428629971d0ab7f573754080a5b1d9ab",
+    "finalPackageFilesSha256": "b106be7b4da43ca24f2e5c835ef5c0f6428629971d0ab7f573754080a5b1d9ab",
+    "changedFromPrevious": true,
+    "matchesExpectedFinalMarket": true,
+    "packageEntryCount": 1376,
+    "fullSnapshotMatches": true
+  },
+  "marketplaceIntegrity": {
+    "topLevelSkillCount": 28,
+    "allSkillsHaveTopLevelSkillMd": true,
+    "integrityFileCount": 636,
+    "integrityMismatches": [],
+    "upstreamIntegrityFileCount": 418,
+    "methodSourceVersionCount": 53,
+    "xindaoOriginalFiles": {
+      "SKILL.md": {
+        "packedPath": "skills/xindao-xuanti/upstream/current/METHOD.md",
+        "sha256": "84189cd06fd9fdb4d5972380e2aecfa07d5e919ca97ec44c5748281486e6601d",
+        "sourceManifestMatches": true
+      },
+      "manifest.json": {
+        "packedPath": "skills/xindao-xuanti/upstream/current/manifest.json",
+        "sha256": "752a933eb20a75e5047f596363e2f6b05d089c2d53bfebcf2334c58f7b0f18b0",
+        "sourceManifestMatches": true
+      },
+      "references/candidate-menu.md": {
+        "packedPath": "skills/xindao-xuanti/upstream/current/references/candidate-menu.md",
+        "sha256": "fd8c56d6326843e37edc8ec423a2c547e16353886efaa7942edb1c593d675ce3",
+        "sourceManifestMatches": true
+      },
+      "references/material-intake.md": {
+        "packedPath": "skills/xindao-xuanti/upstream/current/references/material-intake.md",
+        "sha256": "d360a94c47b474a39d728652b938a4965f4a5eb094fb25ce912ac14860ae2995",
+        "sourceManifestMatches": true
+      },
+      "references/topic-expansion.md": {
+        "packedPath": "skills/xindao-xuanti/upstream/current/references/topic-expansion.md",
+        "sha256": "5af70b8cb10527f0ccfbe9978789a16ed1a3adbb83b37cfe93fd1b133ab2f027",
+        "sourceManifestMatches": true
+      }
+    }
+  },
+  "officialRefreshCommands": [
+    {
+      "host": "codex",
+      "argv": [
+        "/Users/mac/.local/bin/codex",
+        "plugin",
+        "add",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--json"
+      ],
+      "exitCode": 0,
+      "result": {
+        "version": "0.5.0",
+        "authPolicy": "ON_INSTALL",
+        "installedPath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "update",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "updated": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "marketplace",
+        "update",
+        "nova-content-hub-auth-disabled-darwin-arm64"
+      ],
+      "exitCode": 0,
+      "result": {
+        "updated": true
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "update",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "updated": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "install",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "installed": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "uninstall",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user",
+        "--keep-data"
+      ],
+      "exitCode": 0,
+      "result": {
+        "uninstalled": true
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "install",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "installed": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "uninstall",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "uninstalled": true
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "install",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "installed": true,
+        "note": "CLI requests /reload-plugins or a new session to apply"
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "uninstall",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user",
+        "--keep-data"
+      ],
+      "exitCode": 0,
+      "result": {
+        "uninstalled": true,
+        "selectorAbsent": true,
+        "targetCacheOpenReferences": 0
+      }
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "install",
+        "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "--scope",
+        "user"
+      ],
+      "exitCode": 0,
+      "result": {
+        "installed": true,
+        "note": "fresh versioned cache created from final installed app marketplace"
+      }
+    }
+  ],
+  "readOnlyCommandsRun": [
+    {
+      "host": "codex",
+      "argv": [
+        "/Users/mac/.local/bin/codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "readOnly": true
+    },
+    {
+      "host": "workbuddy",
+      "env": {
+        "WORKBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy",
+        "CODEBUDDY_CONFIG_DIR": "/Users/mac/.workbuddy"
+      },
+      "argv": [
+        "/Users/mac/.local/bin/codebuddy",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "readOnly": true
+    }
+  ],
+  "selectorChecks": {
+    "codex": {
+      "selectedPlugin": {
+        "name": "nova-content-hub",
+        "pluginId": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "enabled": true,
+        "installed": true,
+        "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+        "authPolicy": "ON_INSTALL"
+      },
+      "expectedCachePath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "cacheReleaseMatches": true
+    },
+    "workbuddy": {
+      "selectedPlugin": {
+        "id": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+        "version": "0.5.0",
+        "enabled": true,
+        "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+        "scope": "user"
+      },
+      "expectedCachePath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "cacheReleaseMatches": true
+    }
+  },
+  "cacheComparisons": {
+    "codex": {
+      "cacheRoot": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "actualPayloadEntryCount": 1375,
+      "expectedMarketPayloadEntryCount": 1376,
+      "exactFinalMarketMatch": true,
+      "optionalCodexSemverLinkOmitted": true,
+      "workbuddyInUseMetadataEntries": 0
+    },
+    "workbuddy": {
+      "cacheRoot": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+      "actualPayloadEntryCount": 1376,
+      "expectedMarketPayloadEntryCount": 1376,
+      "exactFinalMarketMatch": true,
+      "optionalCodexSemverLinkOmitted": false,
+      "workbuddyInUseMetadataEntries": 0
+    }
+  },
+  "cacheIsolation": {
+    "archiveEvidence": "workbuddy-cache-isolation-v4.json",
+    "uninstallGuardEvidence": "workbuddy-cache-uninstall-guard-v4.json",
+    "archivePath": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/workbuddy-nova-content-hub-cache-refresh-v4-baf01944/0.5.0",
+    "priorCacheSnapshotEvidence": "workbuddy-cache-before-isolation-v4.json",
+    "selectorUninstalledWithKeepData": true,
+    "selectorAbsentAndOpenReferencesZeroBeforeMove": true,
+    "oldCacheSnapshotRetained": true
+  },
+  "runtimeChecks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "expectedSkill": "nova-content-cover-execution",
+      "skill": "nova-content-cover-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 643
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "expectedSkill": "nova-content-template-execution",
+      "skill": "nova-content-template-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 570
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "expectedSkill": "nova-content-research-execution",
+      "skill": "nova-content-research-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 522
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "expectedSkill": "nova-content-writing-execution",
+      "skill": "nova-content-writing-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 540
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "expectedSkill": "nova-content-cover-execution",
+      "skill": "nova-content-cover-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 546
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "expectedSkill": "nova-content-template-execution",
+      "skill": "nova-content-template-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 545
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "expectedSkill": "nova-content-research-execution",
+      "skill": "nova-content-research-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 772
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "expectedSkill": "nova-content-writing-execution",
+      "skill": "nova-content-writing-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 888
+    }
+  ],
+  "probePerformsPluginMutation": false,
+  "completion": "PASS",
+  "limits": [
+    "This evidence probe ran no install/update command; prior official CLI operations are listed separately above and the final cache was checked read-only.",
+    "No model invocation, image generation, paid provider, external service, real content library or real task submission.",
+    "The current assistant conversation was not reloaded; verified only on this Apple Silicon Mac."
+  ]
+}

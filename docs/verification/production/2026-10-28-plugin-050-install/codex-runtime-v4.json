@@ -1,0 +1,65 @@
+{
+  "recordedAt": "2026-10-27T23:39:53.934Z",
+  "app": "/Applications/自媒体工作台.app",
+  "marketRoot": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.0",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.0:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "packageFilesSha256": "b106be7b4da43ca24f2e5c835ef5c0f6428629971d0ab7f573754080a5b1d9ab",
+  "marketEntryCount": 1376,
+  "host": "codex",
+  "checks": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "expectedSkill": "nova-content-cover-execution",
+      "skill": "nova-content-cover-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 931
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "expectedSkill": "nova-content-template-execution",
+      "skill": "nova-content-template-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 624
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "expectedSkill": "nova-content-research-execution",
+      "skill": "nova-content-research-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 545
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "expectedSkill": "nova-content-writing-execution",
+      "skill": "nova-content-writing-execution",
+      "emptyCallbackReached": true,
+      "status": "PASS",
+      "elapsedMs": 505
+    }
+  ],
+  "eightHostChecksComplete": false,
+  "workbuddyChecksStatus": "NOT_RUN because its versioned same-version cache has two byte mismatches against the final package manifest",
+  "noModelOrBusinessTask": true,
+  "currentConversationReloaded": false
+}

@@ -1,0 +1,8 @@
+Browser tab: 1980823821, Title: "research_report", URL: "http://127.0.0.1:65450/p/98a87da12ea3b69bc05a61d0bf4235b20f6f3be42a96b6e35cf682de2d94735c/".
+The following is a diff from the previous accessibility tree with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 13-14
++			17 container
++				18 button (expanded) 展开原报告详情, Secondary Actions: Collapse
++					19 text 展开原报告详情
++				20 text 折叠交互仍可用。
+The focused UI element is 18 button (expanded) 展开原报告详情, Secondary Actions: Collapse

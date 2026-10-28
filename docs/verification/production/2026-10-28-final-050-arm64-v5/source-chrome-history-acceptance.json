@@ -1,0 +1,43 @@
+{
+  "at": "2026-10-28T00:33:43.706332+00:00",
+  "candidateCommit": "c1e3c3c7a07425186848bd1d2823248d3b355d6c",
+  "sourceSha256": "288b64e49b3cf7e40d547aad0a65abce031b77897d6ef813babf17eced77fa74",
+  "environment": "Actual Chrome extension browser ID 1, UI actions through cua_repl; current source fixture on 127.0.0.1:65450; not installed final app",
+  "observedSequence": [
+    {
+      "step": "Report → Markdown attachment",
+      "result": "Original markdown heading and contents visible"
+    },
+    {
+      "step": "Browser Back, fresh document handle",
+      "result": "Original report body visible"
+    },
+    {
+      "step": "Browser Forward, fresh document handle",
+      "result": "Original Markdown attachment visible; next history preserved"
+    },
+    {
+      "step": "Browser Back again",
+      "result": "Original report body visible"
+    },
+    {
+      "step": "Click same attachment again",
+      "result": "Original Markdown visible again"
+    },
+    {
+      "step": "Back → pure #detail link",
+      "result": "iframe URL has #detail"
+    },
+    {
+      "step": "Expand original details",
+      "result": "Expanded button and original detail text visible"
+    }
+  ],
+  "failureRecord": "Installed baf0194 report Back blank independently confirmed in native foreground. Earlier src-reset candidate restored body but removed Forward; that candidate rejected. Final candidate uses only fixed absolute URL via contentWindow.location.replace.",
+  "evidence": [
+    "../2026-10-28-final-050-arm64-v4/history-fix-reclick.md.txt",
+    "../2026-10-28-final-050-arm64-v4/history-fix-anchor-and-expand.txt",
+    "../2026-10-28-final-050-arm64-v4/history-fix-anchor-and-expand.png"
+  ],
+  "limitation": "Static AX files show endpoints; full ordered interaction is recorded in primary task tool history. Final installed artifact acceptance will be separate."
+}

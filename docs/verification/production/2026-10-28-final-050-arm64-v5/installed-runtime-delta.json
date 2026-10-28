@@ -1,0 +1,16 @@
+{
+  "previousInstalledProduct": "baf01944e3b662151db83ca547d8b80ee4378722",
+  "currentFrozenProduct": "c1e3c3c7a07425186848bd1d2823248d3b355d6c",
+  "comparedFiles": 627,
+  "root": "/Applications/自媒体工作台.app/Contents/Resources",
+  "missing": [],
+  "different": [
+    {
+      "path": "app/workbench/dist/main/production-pages.mjs",
+      "before": "1891b232b7e58ca763692e9fca586024a3d4d264995d07bfc4e0cd1e415d3b2c",
+      "after": "f490ca6e2f6de050f9f60b4622b5061084c13e49884d93125c16cc18fa35fbae"
+    }
+  ],
+  "scope": "Final actual installed app compared with actual baf installed baseline; ASR payload full validation is in successful build plus final strict codesign and sealed manifest",
+  "asrAndPluginReuseValidForUnchangedRuntime": true
+}

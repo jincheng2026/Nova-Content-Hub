@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-28",
+  "artifact": {
+    "path": "/Users/mac/Desktop/自媒体工作台-0.5.0-交付/第二大脑-0.5.0-初始内容库.zip",
+    "rootDirectory": "第二大脑/",
+    "bytes": 130523623,
+    "sha256": "cfb1c98884702def950813113080ad28234dbaf1c94e2c695df7a314ca1ec55c",
+    "zipIntegrity": "pass",
+    "fileCount": 11448,
+    "entryCountIncludingDirectories": 14241,
+    "uncompressedBytes": 393467861,
+    "archiveManifest": {
+      "sha256": "54f8d6a33523b2df97ad7838807785bc8d16c4c226babb3f2b54a0c302eb966c",
+      "algorithm": "SHA-256 over sorted file entries encoded as relativePath<TAB>byteLength<TAB>fileSHA256<LF>; directory entries excluded"
+    }
+  },
+  "sources": {
+    "A": "/Users/mac/Downloads/第二大脑交接包_2026-10-16/第二大脑",
+    "B": "/Users/mac/Downloads/锦成工作台-同事版/数据和程序/AIJinCheng/个人IP与内容/第二大脑",
+    "preparedUnpackedDelivery": "/Users/mac/Desktop/自媒体工作台-0.5.0-交付/第二大脑",
+    "comparisonScope": [
+      "00_个人背景",
+      "01_对标账号",
+      "02_内容素材",
+      "03_内容规律",
+      "04_选题库",
+      "05_内容草稿",
+      "06_发布复盘",
+      "AGENTS.md",
+      "SOURCE_OF_TRUTH.md",
+      "README.md",
+      "CLAUDE.md"
+    ],
+    "comparisonManifestSha256": "3004166257979945418de5a440b9eef65886c6cd753579d5e3e981eb1a2d3af0"
+  },
+  "contentComparison": {
+    "sourceAFiles": 6413,
+    "sourceBFiles": 8792,
+    "samePathSameHash": 6406,
+    "onlyA": 0,
+    "onlyB": 2379,
+    "onlyBBytes": 121613486,
+    "differentSamePath": 7,
+    "sourceBCoreFilesInArchiveMatchingHashAndBytes": 8792,
+    "onlyBInArchiveMatchingHashAndBytes": 2379,
+    "ARevisionsRetainedInHistoryMatchingHashAndBytes": 7,
+    "onlyBByFirstLevel": {
+      "01_对标账号": { "files": 239, "bytes": 60430277 },
+      "02_内容素材": { "files": 1528, "bytes": 43654543 },
+      "04_选题库": { "files": 1, "bytes": 3585 },
+      "05_内容草稿": { "files": 609, "bytes": 17518097 },
+      "06_发布复盘": { "files": 2, "bytes": 6984 }
+    },
+    "newT050Files": [
+      {
+        "path": "04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md",
+        "bytes": 3585,
+        "sha256": "fbcaacc403eaa5b60ca725bbdf51b284d185f53b1db5850b59d07c43fa91e053"
+      },
+      {
+        "path": "05_内容草稿/T050_旅游营销工作台宣传片获客口播/口播稿.md",
+        "bytes": 2236,
+        "sha256": "debc76fcc970120ecf397fa82d4e4b31feb451d48fe569758370403f08900c11"
+      }
+    ],
+    "different": [
+      {
+        "path": "04_选题库/00_选题总览.md",
+        "aBytes": 27593,
+        "aSha256": "0c736cac229123c4d43068498c9ac54b29cd8749ad4247127d7b3b24dcb5075f",
+        "bBytes": 27893,
+        "bSha256": "1f2d60aecadaf7026154de6979e3d8e46c6c637fed720df5683807938e690732"
+      },
+      {
+        "path": "04_选题库/AI教程/已做/T030_✅WorkBuddy搭个人知识库教程.md",
+        "aBytes": 3287,
+        "aSha256": "51b7e8038749cfa7222c1ef7c6e81d6e6bc29914fa14a7eab9d3dc36608e8a9c",
+        "bBytes": 3923,
+        "bSha256": "fb756ad5385639b5472743bdf1375d9d484e10e11804cc8f42cafac6869313ac"
+      },
+      {
+        "path": "05_内容草稿/00_草稿总览.md",
+        "aBytes": 10302,
+        "aSha256": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+        "bBytes": 10646,
+        "bSha256": "4aff20b5d2e2cab60395710685c76bf8ccbc0ab8d7488589320ead44ceef96b8"
+      },
+      {
+        "path": "05_内容草稿/已做/T047_字幕长图Skill/发布文字.md",
+        "aBytes": 3451,
+        "aSha256": "c2b81887fe2e6642abeddb746517cbbe3303457e3a5260ae736c2eee33419500",
+        "bBytes": 3499,
+        "bSha256": "c05305fdbeff983862cc5c1ca691c98414e5151a0f3b0b4c8c3bf3f8017a6684"
+      },
+      {
+        "path": "05_内容草稿/已做/T047_字幕长图Skill/评论区卡片/card.html",
+        "aBytes": 2621,
+        "aSha256": "eec3dc248072c35bc29e68c913ab5678c0b9a4b9cb3f4455572365eaea644b87",
+        "bBytes": 2669,
+        "bSha256": "6e3d6a7ee647b5b9c11dea0ecb706e1914cb97fcc5a34fa635e4db88e48fecaa"
+      },
+      {
+        "path": "README.md",
+        "aBytes": 13144,
+        "aSha256": "918dbb7433333decdd6e5f50c55fc3f1b29c732991b2ab06e95763dcc2fdc5c9",
+        "bBytes": 13392,
+        "bSha256": "c02ae6e9d1b2211b773a49c32d4dff38ccb17c07b5b2ef858d8513d060f5e278"
+      },
+      {
+        "path": "SOURCE_OF_TRUTH.md",
+        "aBytes": 50994,
+        "aSha256": "9b22d863450e041cb3fa8170428e0521485fdc8e0cdcd8c9662cb487911bbad1",
+        "bBytes": 52270,
+        "bSha256": "235f0d09058d10d7d1ec4b9c80c58a9a3e5d7e6672a1f2b38f658fb8c5c9f818"
+      }
+    ],
+    "mtimeInterpretation": "filesystem mtimes are auxiliary clues, not authoritative content chronology"
+  },
+  "additionalContent": {
+    "BDirectoriesCompared": [
+      { "source": ".jc-versions", "destination": ".jc-versions", "files": 212, "matching": 212 },
+      { "source": ".jc-changes", "destination": ".jc-changes", "files": 13, "matching": 13 },
+      { "source": "07_如何做自媒体", "destination": "07_如何做自媒体", "files": 144, "matching": 144 },
+      { "source": "08_数字人与声音", "destination": "08_数字人与声音", "files": 2, "matching": 2 },
+      { "source": "skills", "destination": "skills", "files": 50, "matching": 50 },
+      { "source": "交付物", "destination": "交付物", "files": 642, "matching": 642 },
+      { "source": "其他", "destination": "其他", "files": 3, "matching": 3 }
+    ],
+    "backupHistory": {
+      "sourceFiles": 220,
+      "retainedAndHashMatched": 218,
+      "excludedMachineStateFiles": [
+        "2026-10-07_07目录改名为如何做自媒体_151729/个人IP与内容/第二大脑/.obsidian/workspace.json",
+        "2026-10-08_草稿分已做待做/.claude/skills/jc-kepu-video/references/compare-page.md"
+      ]
+    }
+  },
+  "portability": {
+    "sourceMap": {
+      "entries": 22,
+      "allInternal": true,
+      "allRelative": true,
+      "missingDefaultOutputRoots": [
+        "06_发布复盘/正式发布档案",
+        "09_创作知识/判断库",
+        "09_创作知识/方法论",
+        "09_创作知识/本人材料",
+        "09_创作知识/案例",
+        "13_X收藏",
+        "10_调研报告",
+        "12_视觉资产"
+      ],
+      "missingRootInterpretation": "these output roots were not created yet; this does not indicate loss of existing source data"
+    },
+    "supplementImport": {
+      "importId": "jincheng-original",
+      "sourceCount": 7,
+      "entryCount": 1336,
+      "bytes": 54778684,
+      "matchingEntries": 1336,
+      "destination": "08_原锦成来源/jincheng-original",
+      "activeSourceBinding": "source-map.json uses internal relative paths",
+      "staticProvenance": {
+        "sourceRoot": "/Users/mac/Downloads/锦成工作台-同事版/数据和程序",
+        "sourceIdentity": { "dev": "16777231", "ino": "78556667" },
+        "interpretation": "retained as historical provenance only; not used as active binding"
+      }
+    },
+    "excludedBindingsAndRuntime": ["vault.json", ".workbench/runtime", ".jc-locks", ".codex", ".claude", ".workbuddy", ".obsidian"],
+    "historicalJcMetadataRetained": [".jc-versions", ".jc-changes"]
+  },
+  "freshColdRead": {
+    "method": ["openVault(root)", "openLibrary(binding.root).readProduction()", "readVaultSnapshot(binding.root)"],
+    "temporaryExtractionRemovedAfterVerification": true,
+    "freshVaultId": "4b3b5ac8-ce49-41da-9713-abf3ee5ca6f2",
+    "freshLibraryId": "b1845cde-6dae-411b-919e-7a7def76842e",
+    "rootDevice": "16777231",
+    "rootInode": "83823364",
+    "rootIdentityMatchedFreshBinding": true,
+    "runtimeBindingPathMatchedExtraction": true,
+    "inodeDifferentFromPreparedUnpackedLibrary": true,
+    "coldReadElapsedMs": 51089,
+    "topics": {
+      "uniqueTIdentifiers": 47,
+      "sourceDocumentsRead": 47,
+      "sourceBytesRead": 283710,
+      "containsT050": true,
+      "t050SourceBytes": 3585
+    },
+    "production": {
+      "accounts": 56,
+      "reports": 32,
+      "reportPages": 48,
+      "uniqueReportPageAssetsRead": 48,
+      "assetBytesRead": 18707901,
+      "missingAssetHashes": 0,
+      "invalidAccounts": 0,
+      "invalidReports": 0
+    },
+    "vaultScan": {
+      "documents": 10916,
+      "issues": 157,
+      "issueCodes": ["CURRENT_SOURCE_CONFLICT", "HTML_READ_ONLY", "INVALID_INPUT", "PUBLICATION_STATUS_CONFLICT"]
+    }
+  },
+  "sourceMissingBoundary": [
+    "The eight unmapped directory targets are empty output destinations in this delivery, not claimed missing or lost data.",
+    "Two nested .backups machine-state files listed above were excluded by the host-state exclusion rule.",
+    "The supplement import manifest keeps its absolute old source root and device/inode strictly as static provenance."
+  ]
+}

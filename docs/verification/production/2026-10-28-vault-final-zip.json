@@ -1,0 +1,23 @@
+{
+  "version": "0.5.0",
+  "sha256": "c47d78e13d08360265b47fb4078cbd02c006fd3910ea47abf333a189f28a4db3",
+  "bytes": 130524937,
+  "files": 11448,
+  "entries": 14250,
+  "onlyAddedEmptyDirectories": [
+    "第二大脑/06_发布复盘/正式发布档案/",
+    "第二大脑/09_创作知识/",
+    "第二大脑/09_创作知识/判断库/",
+    "第二大脑/09_创作知识/方法论/",
+    "第二大脑/09_创作知识/本人材料/",
+    "第二大脑/09_创作知识/案例/",
+    "第二大脑/13_X收藏/",
+    "第二大脑/10_调研报告/",
+    "第二大脑/12_视觉资产/"
+  ],
+  "existingFileNamesSizesCrcUnchanged": true,
+  "noRuntimeBindingAdded": true,
+  "baselineZipSha256": "cfb1c98884702def950813113080ad28234dbaf1c94e2c695df7a314ca1ec55c",
+  "allExistingFilesSha256Matched": 11448,
+  "existingFileManifestSha256IncludingVaultPrefix": "54f8d6a33523b2df97ad7838807785bc8d16c4c226babb3f2b54a0c302eb966c"
+}

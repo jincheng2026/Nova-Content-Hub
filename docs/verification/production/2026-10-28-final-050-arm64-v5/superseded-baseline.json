@@ -1,0 +1,16 @@
+[
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/050-superseded-delivery/baf0194-before-history-fix/source-Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg",
+    "sha256": "7379e3980d7d1f895871da2dd8714fa27f17b6b45a0a93ed64149d7d965b5f3b",
+    "bytes": 3200826235
+  },
+  {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/.local-probes/050-superseded-delivery/baf0194-before-history-fix/delivery-Nova-Content-Hub-0.5.0-darwin-arm64-preview.dmg",
+    "sha256": "7379e3980d7d1f895871da2dd8714fa27f17b6b45a0a93ed64149d7d965b5f3b",
+    "bytes": 3200826235
+  },
+  {
+    "retiredRegenerableBuild": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-yBoxNc",
+    "appInfoSha256": "ecc5c55b3b4aeaa84dcc85196dd99a97125d4283556bff3bf1e988b8a0492009"
+  }
+]

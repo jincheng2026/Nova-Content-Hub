@@ -1,0 +1,126 @@
+{
+  "format": "nova-production-archive",
+  "schemaVersion": 1,
+  "libraryId": "918f811d-ae89-4df2-b1b7-ad97aca1aa27",
+  "category": "内容项目",
+  "taskId": "8bc672c8-e4fa-4474-b8fb-6b799eda9d64",
+  "attemptId": "fcebc3d4-e383-4952-a72f-10411c5f0629",
+  "status": "accepted",
+  "requestHash": "16a83778d02da0a8f0d7bc3df9dc6f156992a2a0a3888ca767bbb4ea3e3d993b",
+  "receiptHash": "fe48242675ea977fbb4e805c87643d5d59a4de8a697638dcad5b170f42ddfa35",
+  "receipt": {
+    "taskId": "8bc672c8-e4fa-4474-b8fb-6b799eda9d64",
+    "attemptId": "fcebc3d4-e383-4952-a72f-10411c5f0629",
+    "requestHash": "16a83778d02da0a8f0d7bc3df9dc6f156992a2a0a3888ca767bbb4ea3e3d993b",
+    "resultHash": "73e975eab5edc7f6992dd1b2db5c21415fdab39767c56c3c52cc73d094feeb56",
+    "sha256": "fe48242675ea977fbb4e805c87643d5d59a4de8a697638dcad5b170f42ddfa35"
+  },
+  "task": {
+    "title": "已安装默认路径Qwen+Whisper",
+    "kind": "transcription",
+    "contentId": "bd18231a-efaa-43d5-b8d4-d8927a377690",
+    "accountId": null
+  },
+  "host": "codex",
+  "request": {
+    "prompt": "仅转写登记的本地中文合成音频；不允许云端或付费请求。",
+    "parameters": {
+      "budgetEnabled": false,
+      "comments": false,
+      "serviceConfig": {
+        "asr": {
+          "mode": "local-first",
+          "resourceId": "volc.bigasr.auc_turbo",
+          "localEngine": "faster-whisper",
+          "localExecutable": "",
+          "localModelPath": "",
+          "cloud": {
+            "provider": "volc",
+            "groqModel": "whisper-large-v3-turbo",
+            "customBaseUrl": "",
+            "customModelId": ""
+          }
+        }
+      },
+      "creatorContext": {
+        "schemaVersion": 1,
+        "profile": {
+          "name": "",
+          "intro": "",
+          "marks": []
+        },
+        "vault": null,
+        "sha256": "23eef57c2064f70e3f0fadfbfd0d0b51d9ba1751e93508678e27f8a3f0480673"
+      },
+      "businessSkill": "jc-benchmark-intake",
+      "businessMethodVersion": {
+        "id": "jc-benchmark-intake",
+        "version": 1,
+        "registryVersion": 1
+      }
+    },
+    "tools": [
+      "asr"
+    ],
+    "budget": {
+      "amount": 0,
+      "currency": "REQ"
+    },
+    "bodyHash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "result": {
+    "summary": "隔离测试回执；不是用户内容或人工字幕复核。",
+    "artifacts": [
+      {
+        "id": "70728250-7029-4268-b83c-afd25db7fe5b",
+        "kind": "transcript",
+        "title": "已安装本地ASR中文样本",
+        "text": "你好，语音测试。",
+        "assetHash": null,
+        "data": {
+          "timingSource": "faster-whisper-word-timestamps",
+          "timingTranscript": "你好,语音测试。",
+          "timingModel": {
+            "repoId": "Systran/faster-whisper-small",
+            "revision": "536b0662742c02347bc0e980a01041f333bce120",
+            "sha256": "3e305921506d8872816023e4c273e75d2419fb89b24da97b4fe7bce14170d671"
+          },
+          "segments": [
+            {
+              "startMs": 0,
+              "endMs": 400,
+              "text": "你好,",
+              "probability": 0.7719936966896057
+            },
+            {
+              "startMs": 780,
+              "endMs": 960,
+              "text": "语",
+              "probability": 0.7688717246055603
+            },
+            {
+              "startMs": 960,
+              "endMs": 1180,
+              "text": "音",
+              "probability": 0.9881751537322998
+            },
+            {
+              "startMs": 1180,
+              "endMs": 1440,
+              "text": "测",
+              "probability": 0.9986205697059631
+            },
+            {
+              "startMs": 1440,
+              "endMs": 1640,
+              "text": "试。",
+              "probability": 0.9965556561946869
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "reports": [],
+  "submittedOrAcceptedAt": "2026-10-27T23:33:56.404Z"
+}

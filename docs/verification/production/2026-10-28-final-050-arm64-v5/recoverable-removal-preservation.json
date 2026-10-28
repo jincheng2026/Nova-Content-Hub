@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-28T01:15:43.605488+00:00",
+  "applicationAbsentFromApplications": true,
+  "filesChecked": 12396,
+  "missing": [],
+  "changed": [],
+  "passed": true,
+  "method": "Actual Finder Move to Trash, recoverable; Trash not emptied; user knowledge and settings outside app untouched"
+}

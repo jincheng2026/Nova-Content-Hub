@@ -1,0 +1,5 @@
+Window: "research_report", App: Google Chrome.
+					9 文本栏 (settable) 地址和搜索栏, Placeholder: 问问 Google 或输入网址, Value: 127.0.0.1:56561/p/830356d89d2c1371f35b177302441441297985ed412842cf2a8c293fb6fff26a/view/d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0
+					20 HTML 内容 research_report, URL: 127.0.0.1:56561/p/830356d89d2c1371f35b177302441441297985ed412842cf2a8c293fb6fff26a/view/d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0
+						28 container 报告完整内容
+The focused UI element is 20 HTML 内容 research_report, URL: 127.0.0.1:56561/p/830356d89d2c1371f35b177302441441297985ed412842cf2a8c293fb6fff26a/view/d35d0e7e-d216-496a-a0d5-f1bb4cc5dbe0

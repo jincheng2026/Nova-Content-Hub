@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-27T23:54:44.400Z",
+  "host": "workbuddy",
+  "targetSelector": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "configDir": "/Users/mac/.workbuddy",
+  "cacheRoot": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+  "cacheCanonicalPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0",
+  "cacheIsSymlink": false,
+  "cachePayloadEntryCount": 1376,
+  "cacheSnapshotSha256": "f13b2946adeb54b12547de0bf37d16ded984026b4795eb2e83c38c7d586cf2c0",
+  "cliTargetRecords": [],
+  "settingsEnabled": false,
+  "officialUninstallExitCode": 0,
+  "officialUninstallArgs": [
+    "plugin",
+    "uninstall",
+    "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+    "--scope",
+    "user",
+    "--keep-data"
+  ],
+  "installedPluginsRegistryLeftoverRow": [
+    {
+      "scope": "user",
+      "version": "0.5.0",
+      "installPath": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.0"
+    }
+  ],
+  "openReferencesUnderTargetCache": 0,
+  "openReferenceCheckExitCode": 1,
+  "workbuddyCodebuddyProcessNameMatches": 44,
+  "processesTerminated": 0,
+  "guardPassed": true
+}

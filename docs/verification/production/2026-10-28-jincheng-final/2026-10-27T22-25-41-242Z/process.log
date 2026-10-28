@@ -1,0 +1,8 @@
+FINAL UI: T029 focused recover stored note and drain original view stash
+FINAL UI: T044 focused restore selected finals and preserve all authorship
+FINAL UI: Topic focused T050 explicit pause remains excluded from doing
+FINAL UI RESULT {"phase":"continue","passed":true,"counts":{"documents":10916,"contents":47,"accounts":56,"reports":32,"sourceRows":22},"failures":[],"consoleErrors":0}
+FINAL UI: T029 focused recover stored note and drain original view stash
+FINAL UI: T044 focused restore selected finals and preserve all authorship
+FINAL UI: Topic focused T050 explicit pause remains excluded from doing
+FINAL UI RESULT {"phase":"reopen","passed":true,"counts":{"documents":10916,"contents":47,"accounts":56,"reports":32,"sourceRows":22},"failures":[],"consoleErrors":0}
