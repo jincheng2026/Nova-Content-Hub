@@ -105,7 +105,7 @@ function ReferenceSlot({view, reference, reader, navigate, budget, depth, ancest
     }
     const external = reference.kind === 'link' && /^https?:\/\//i.test(reference.destination), ready = reference.state === 'ready', limited = result?.kind === 'limited' ? result.message : '';
     return <span data-document-reference={reference.refId} className={`document-reference${automatic ? ' document-reference-media' : ''}`}>
-        {url && !imageFailed && <span className="document-reference-image" onErrorCapture={() => setImageFailed(true)}><ImagePreviewButton url={url} label={reference.label} loading="lazy"/></span>}
+        {url && !imageFailed && <span className="document-reference-image" onErrorCapture={() => setImageFailed(true)}><ImagePreviewButton url={url} label={reference.label} loading="eager"/></span>}
         {result?.kind === 'document' && <span className="document-reference-embedded"><ViewBody view={result.view} reader={reader} navigate={navigate} budget={budget} depth={depth + 1} ancestry={[...ancestry, view.contentIdentity]}/></span>}
         <span className="document-reference-source">{reference.raw}</span>
         {!ready && <span className="document-reference-unavailable" role="status">（{reference.issue}）{reference.candidates?.join('；')}</span>}
