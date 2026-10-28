@@ -1,0 +1,26 @@
+✔ extracts only unique exact pubslot fields.final, retaining whitespace and empty author selections (4.037167ms)
+✔ duplicate slots and damaged final fields remain unresolved instead of selecting a candidate (0.5025ms)
+✔ missing slots and translated or inferred slot identities never borrow other values (0.261083ms)
+✔ duplicate item IDs cannot identify distinct author fields even across different slots (0.427459ms)
+✔ reads authoritative HTML packaging and ordered current mine without executing HTML or projecting the library (2228.389417ms)
+✔ selecting an older packaging HTML never replaces an explicitly current Markdown manuscript (1956.038458ms)
+✔ an explicit Markdown current source requires packaging selection even with multiple dated HTML versions (1652.207208ms)
+✔ current-source conflicts and missing author selections block before any packaging fallback (1551.644833ms)
+✔ only non-Vault and same-work absence of a jc-doc may use legacy (1951.537ms)
+✔ malformed selected HTML, cross-work IDs and duplicate page IDs never borrow legacy title fields (1611.458917ms)
+✔ selection tokens bind independent manuscript and packaging identities and revisions (1644.97375ms)
+✔ a same-work rejected HTML location cannot silently make the Vault look legacy (1455.363542ms)
+✔ read snapshot reuses a synchronous Vault read scope and leaves source files unchanged (1797.411917ms)
+✔ missing or empty current manuscripts block before legacy instead of using topic text as a script (1801.95275ms)
+✔ explicit selection of an invalid or differently identified jc-doc never becomes legacy (2478.341875ms)
+✔ all snapshot variants carry their requested content identity and reject extra path or root input (1801.385416ms)
+✔ interrupted creation journals block snapshots without replaying or clearing any pending plan (2257.835791ms)
+✔ unmigrated historical pending receipts block without scanning or migrating history (2067.696541ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 26421.503083

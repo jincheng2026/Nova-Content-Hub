@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-28",
+  "scope": "existing isolated continuation fixture only; one readVaultPackaging call; no source changes or HTML execution",
+  "fixtureName": "nova-detail-continuation-iR6oLu",
+  "kind": "jc-doc",
+  "contentId": "33288b82-559b-41a6-adce-698be18ff2bd",
+  "elapsedMs": 831.061,
+  "issues": [],
+  "source": {"vaultId":"3ba247d7-93e9-4d4e-ab30-89784c8751db","workId":"T044","documentId":"doc-49a9a3d3be3cfb3ccd818afc7fbeb0e3","pageId":"pp5q4j9p45","revision":"0c01d97a021f03ed3bfd3e1092443ed21a347fe4d1d086271b409a26b5f308ba"},
+  "fields": {
+    "title": {"itemId":"pubslot-ed6itstb","characters":12,"hash":"be83261378bfca7a767c55ce21f6df258bdb141efa46df931a3848f77a15b48a","exactFinalMatch":true},
+    "coverText": {"itemId":"pubslot-wcgsic8g","characters":22,"hash":"8ad0acbfc554cf4827e5ce56a2c4a75c86e01edf478d22146c334e33d5eb3557","exactFinalMatch":true},
+    "description": {"itemId":"pubslot-syx6mxwh","characters":76,"hash":"4f8340b6c96c141ac2481d065b7f6e13c75315339409db2baeb197f5be0d817e","exactFinalMatch":true}
+  },
+  "scriptHash": "349eb08f1dad64f3678505e7e1e997a244bbd7cb3d4dc2442e8c65228ac01f29",
+  "manuscriptDocumentId": "doc-49a9a3d3be3cfb3ccd818afc7fbeb0e3",
+  "sourceAndVaultProjectionMetadataUnchanged": true,
+  "htmlNotExecuted": true,
+  "notVerified": ["cover generation", "cover adoption", "final asset saving", "installed application", "cross-platform behavior"]
+}
