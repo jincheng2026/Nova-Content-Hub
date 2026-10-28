@@ -66,8 +66,10 @@ export class VaultController {
    if(resolved.state==='uncertain')fail('PENDING_MUTATION','上次资料修改结果仍不确定。请恢复原知识库后再次核验，本次填写继续保留。');
    if(resolved.state==='committed')return this.recovery(pending,resolved.result);
    if(input.action==='discard'){
+    let current:VaultText|null=null;
+    if('id' in pending.input){try{current=await this.owner.worker.call('vaultDocument',{binding:this.owner.current(),id:pending.input.id});}catch{/* Keep the retained author input read-only until its original source can be restored. */}}
     await this.owner.persist({...this.owner.binding,vaultPending:null});
-    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current:null};
+    return {mutationId:pending.mutationId,method:pending.method,input:pending.input,outcome:'discarded' as const,result:null,current};
    }
    // A missing receipt permits retrying precisely the durable intent, never a fresh mutation.
    const result=await this.owner.worker.call('vaultMutate',{binding:this.owner.current(),pending});

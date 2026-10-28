@@ -10,7 +10,13 @@ function sameInput(a:VaultEditorSubmission,b:VaultEditorSubmission){return a.met
 export function reconcileVaultEditor(state:VaultEditorState,recovery:VaultRecovery):VaultEditorRecovered|null{
  if(!state.submission||!sameInput(state.submission,recovery))return null;
  const base={...state,submission:null,conflict:false,sourceUnavailable:false};
- if(recovery.outcome==='discarded')return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
+ if(recovery.outcome==='discarded'){
+  if(!state.current)return {...base,message:'已确认上次修改未提交，本次填写仍保留。'};
+  const latest=recovery.current;
+  if(!latest||latest.document.id!==state.current.document.id)return {...base,sourceUnavailable:true,conflict:true,message:'本次填写仍保留，原文件暂不可读取。请恢复原件后继续。'};
+  const conflict=latest.document.hash!==state.current.document.hash&&state.text!==latest.text;
+  return {...base,current:latest,conflict,message:conflict?'本次填写已保留。请对照外部最新原文后继续编辑。':'已确认上次修改未提交，本次填写仍保留。'};
+ }
  if(!recovery.result||!('document' in recovery.result))return {...base,sourceUnavailable:true,message:'已确认资料移入回收区。本次填写仍保留，可关闭后查看知识库。'};
  const committed=recovery.result,latest=recovery.current;
  if(!latest)return {...base,current:committed,sourceUnavailable:true,message:'上次修改已提交，原文件目前不可读取。文档身份与本次填写已保留，请定位原件后继续。'};

@@ -1,0 +1,53 @@
+✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
+✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
+✔ P3: live recovery delivery binds the retained create form to the committed document (1.146667ms)
+✔ P3: later local edits survive, use the fresh hash and flag divergent external content (0.160709ms)
+✔ P3: moved committed files keep their identity; unrelated inputs and discarded intentions never become fresh duplicates (0.339625ms)
+✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 3
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3957.682083
+
+✖ failing tests:
+
+test at workbench/test/vault-conflict-closeout.test.mjs:6:1
+✖ discard after a real external edit returns a new hash, retains the draft and allows explicit merged saving (1213.83025ms)
+  TypeError: Cannot read properties of null (reading 'text')
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:9:139)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at workbench/test/vault-conflict-closeout.test.mjs:13:1
+✖ another external edit after recovery still rejects the acknowledged old version without overwriting it (2427.156708ms)
+  TypeError: Cannot read properties of null (reading 'document')
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-conflict-closeout.test.mjs:16:134)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)
+
+test at workbench/test/vault-editor-recovery.test.mjs:11:1
+✖ discarded saves preserve the author draft beside the latest external version and keep comparison required (1.9795ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+  - 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/vault-editor-recovery.test.mjs:15:40)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+    expected: 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
