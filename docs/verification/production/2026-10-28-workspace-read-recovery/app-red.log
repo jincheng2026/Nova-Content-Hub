@@ -1,0 +1,32 @@
+(node:26580) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✖ transient workspace contention stays light and automatically recovers without losing the author draft (10.921709ms)
+✖ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (2.442333ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 199.49475
+
+✖ failing tests:
+
+test at workbench/test/background-refresh.test.mjs:334:1
+✖ transient workspace contention stays light and automatically recovers without losing the author draft (10.921709ms)
+  Error: VAULT_BUSY
+      at invoke (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:42:62)
+      at Object.refreshWorkspace (evalmachine.<anonymous>:172:68)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:336:56)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    code: 'VAULT_BUSY'
+  }
+
+test at workbench/test/background-refresh.test.mjs:339:1
+✖ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (2.442333ms)
+  TypeError: Cannot read properties of null (reading 'kind')
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/background-refresh.test.mjs:340:177)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7)

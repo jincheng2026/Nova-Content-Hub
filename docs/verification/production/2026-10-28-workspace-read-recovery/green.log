@@ -1,0 +1,66 @@
+(node:28895) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (26.975542ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (670.134084ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (19.187083ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (14.918042ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (4.650458ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (6.330167ms)
+✔ navigation and new draft survive a paused focus refresh (414.222ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (11.764ms)
+✔ paused editor read preserves a draft typed while its result was in flight (6.475917ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (5.729625ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (9.816875ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (3.30825ms)
+✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (7.935667ms)
+✔ local writes and cover background reads share one dispatch order without global busy (22.333333ms)
+✔ confirmed entity snapshots advance the current content CAS without losing unsaved text (17.713459ms)
+✔ without a detail close guard navigation starts in the click stack (6.69375ms)
+✔ a detail close guard waits for acknowledged source saving before opening content (7.518375ms)
+✔ a failed detail close guard retains the selected content and refuses navigation (24.275209ms)
+✔ transient workspace contention stays light and automatically recovers without losing the author draft (67.344333ms)
+✔ timeout keeps prior data and permits explicit retry; switching a library ignores a late failure (8.918416ms)
+✔ read recovery is finite, releases foreground busy and never replays the acknowledged write (16.002084ms)
+✔ directory query, pages and layout survive a detail round trip and stay independent per stage (71.917708ms)
+✔ doing resume passes an explicit one-open intent while title opens remain summaries (8.6055ms)
+✔ all-content layout/filter/pages survive leaving the directory without keeping it mounted (8.296042ms)
+✔ switching libraries clears all directory state and all-content search without retaining a hidden list (19.141959ms)
+✔ leaving the all-content recycle bin reloads active contents for every stage directory (30.844667ms)
+✔ opening a different library from its recycle bin clears the range and explicitly reads active rows (15.502209ms)
+(node:28897) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic cover reads keep status and cover fresh without repeating every workspace scan (277.4975ms)
+✔ automatic cover failures still report the error and refresh status (81.384333ms)
+✔ foreground operations and external-change refresh still scan the full workspace (299.123709ms)
+(node:28898) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ detail reads reuse the successful workspace assets without a duplicate asset scan (52.544ms)
+✔ explicit workspace refresh and library switch replace the shared assets (36.16175ms)
+✔ a failed workspace asset refresh cannot publish a retained stale snapshot (20.69875ms)
+✔ late cover results are discarded after changing content or switching library (482.171958ms)
+(node:28899) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ successful managed save applies the acknowledged collection snapshot without global reads or a global busy lock (24.151541ms)
+✔ managed save callback supplies the exact acknowledged object ID and snapshot (1.165792ms)
+✔ CONFLICT retains the editor, prior snapshot and exact pending input while refreshing status (11.699459ms)
+✔ COMMIT_UNCERTAIN retains the editor, prior snapshot and exact pending input while refreshing status (6.113875ms)
+✔ a later background read failure retains the acknowledged save and permits an explicit read retry (7.837375ms)
+✔ explicit editor reconciliation failure retains the acknowledged snapshot and retries only that editor read (5.875334ms)
+✔ explicit management reload reuses its freshly read snapshot without other library scans (2.518375ms)
+✔ default foreground actions retain full refresh and automatic-cover opt-out remains separate (414.590833ms)
+✔ queued managed save starts after background BUSY and retains its own acknowledgement (104.413958ms)
+✔ queued managed save starts after background CONFLICT and retains its own acknowledgement (78.408541ms)
+✔ only the affected management row is pending while its mutation awaits acknowledgement (174.865708ms)
+✔ an acknowledged asset change refreshes only cover assets, once (69.406458ms)
+✔ prompt favorite acknowledgement replaces only that prompt without unrelated scans (4.120875ms)
+✔ explicit panel refresh callbacks share the nonblocking background path (26.11ms)
+✔ only transient read contention schedules two epoch-bound recoveries and success cancels stale timers (12.337875ms)
+✔ workspace read failures distinguish contention, timeout, access and corruption without broad repair advice (3.351708ms)
+ℹ tests 50
+ℹ suites 0
+ℹ pass 50
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4877.395625
