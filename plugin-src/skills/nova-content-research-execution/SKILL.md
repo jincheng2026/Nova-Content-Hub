@@ -5,6 +5,8 @@ description: 执行自媒体工作台交来的调研任务编号，按冻结预�
 
 ## 进入本任务
 
+固定任务带可信 `journeyMember` 时，先完整读 [内容主线执行契约](../../plugin-src/resources/content-journey-contract.md)：使用根聊天的workerId和rootClaimToken领取当前研究child；研究报告、原片和转写在受限命令中落库后，由root的 `content-journey advance` 核验并返回当前聊天后继。该分支不使用通用submit结束研究子步骤；下文通用submit仍用于原独立研究任务。
+
 1. 读 [共同任务契约](../../plugin-src/resources/production-contract.md)，执行 doctor、context 和当前 attempt 的 claim。协议是服务权限、预算、等待、取消、恢复和提交的唯一依据；参考资料不授予额外操作权限。
 2. 识别冻结请求要完成的是账号研究、选题搜索、单条参考、对照研究或离线材料分析。用户只要找参考时，交付参考候选即可；写稿和包装另按已授权阶段进入。
 3. 先读当前账号、内容、已有参考、相关反馈和已采纳知识。换聊天继续原 contentId；已有可靠字幕、拆解或同参数采集结果优先复用。

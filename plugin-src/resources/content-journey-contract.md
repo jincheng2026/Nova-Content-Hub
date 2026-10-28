@@ -35,7 +35,7 @@
 
 ## 原页、包装与最终资产
 
-写稿首次通过原jincheng-creation build生成同T完整原创作页。已有页先完整read，以同条目建议、回复和精确revision再生成处理；mine、note、decision、approved、final等作者字段由原页保护。主线review-page的审定说明可用workflow artifact保存kind=review，再等作者确认。
+写稿首次通过原jincheng-creation build生成同T完整原创作页。已有页先完整read，以同条目建议、回复和精确revision再生成处理；mine、note、decision、approved、final等作者字段由原页保护。主线review-page先通过原 `jincheng-creation review` 将逐句建议写回同一原页，由作者逐条决定。作者保存后在工作台明确继续最新稿，再运行 `jincheng-workflow review-checkpoint --handoff CHILD_UUID --stdin`，input固定为 `{"expectedRevision":"CURRENT_HTML_HASH","mode":"suggestions","summary":"逐句审定说明"}`。服务端核对真实原页、受控review回执、每条作者决定，并把完整原文与准确版本保存进审定产物；再等作者确认。确实无需修改时mode为`no-changes`，服务端同样读取完整当前原页并保存逐句全文，作者需对这个准确“本版无需修改”产物明确确认；有未决建议、旧revision、摘要Markdown均不能推进。
 
 作者保存改变了原页时，先回工作台明确“继续我的最新稿”。该动作必须引用准确作者保存回执；正文改变退回写稿，包装选择改变使依赖它的下游失效。旧attempt不能替代新步骤领取。未明确选择教程/科普时沿用普通写稿；明确选择时保留其全部框架与逐段门禁。
 

@@ -1,3 +1,4 @@
+import {validateJourneyReview} from './journey-review.mjs';
 import {readJourneyEvidence} from './journey-evidence.mjs';
 import {validateJourneyMaterials} from './journey-materials.mjs';
 import {journeyFinalCheckpoint} from './journey-final-assets.mjs';
@@ -139,6 +140,7 @@ export function assertJourneyPins(runtimeRoot,root,production){
   if(!pin.decisionId){const researchTask=production.tasks.find(t=>t.id===pin.taskId);if(researchTask)readJourneyEvidence(runtimeRoot,production,researchTask);if(digest(readBytes(vaultRoot,pin.path))!==pin.hash)fail('STALE_INPUT','An upstream research report changed');continue;}
   const artifact=flow.artifacts.find(value=>value.artifactId===pin.artifactId&&value.hash===pin.hash),decision=flow.decisions.findLast(value=>value.artifactId===pin.artifactId);
   if(pin.kind==='author-materials'){const materialTask=production.tasks.find(t=>t.id===pin.taskId);if(!materialTask)fail('STALE_INPUT','The material task is unavailable');validateJourneyMaterials(runtimeRoot,root,materialTask,production,JSON.parse(readBytes(vaultRoot,pin.path)),{sourceCurrent:source=>journeyRevisionCurrent(runtimeRoot,root,production,source,{sourceDocumentId:source.documentId,relativePath:source.relativePath,hash:digest(readBytes(vaultRoot,source.relativePath))})});}
+  if(pin.kind==='review'){const reviewTask=production.tasks.find(t=>t.id===pin.taskId);if(!reviewTask)fail('STALE_INPUT','The review task is unavailable');validateJourneyReview(runtimeRoot,root,reviewTask,production,JSON.parse(readBytes(vaultRoot,pin.path)),{sourceCurrent:(source,hash)=>journeyRevisionCurrent(runtimeRoot,root,production,source,{sourceDocumentId:source.documentId,relativePath:source.relativePath,hash})});}
   let current=!!artifact&&digest(readBytes(vaultRoot,artifact.path))===pin.hash;
   if(!current&&artifact&&pin.kind==='complete-draft'){
    const document=flow.originalFacts.find(f=>f.source.relativePath===pin.path)?.source;
@@ -166,6 +168,7 @@ export function journeyCheckpoint(runtimeRoot,root,child,production,currentConte
  const artifact=flow.artifacts.findLast(value=>value.kind===kind);
  const decision=artifact&&flow.decisions.findLast(value=>value.artifactId===artifact.artifactId);
  if(kind==='author-materials'&&artifact?.taskId===child.id)validateJourneyMaterials(runtimeRoot,root,child,production,JSON.parse(readBytes(vaultRootForRuntime(runtimeRoot),artifact.path)));
+ if(stage==='review-page'&&artifact?.taskId===child.id)validateJourneyReview(runtimeRoot,root,child,production,JSON.parse(readBytes(vaultRootForRuntime(runtimeRoot),artifact.path)));
  const original=artifact&&flow.originalFacts.find(f=>f.source.relativePath===artifact.path)?.source;
  if(kind==='complete-draft'&&!original)fail('CHECKPOINT_REQUIRED','Complete draft requires the same-work original creation page');
  const current=artifact&&(flow.checkpointStates[artifact.artifactId]?.confirmed||kind==='complete-draft'&&original&&journeyRevisionCurrent(runtimeRoot,root,production,{documentId:original.documentId,relativePath:artifact.path,hash:artifact.hash},{sourceDocumentId:original.documentId,relativePath:artifact.path,hash:original.hash}));

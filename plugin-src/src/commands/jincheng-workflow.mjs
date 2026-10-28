@@ -1,3 +1,4 @@
+import {journeyReviewRecord} from '../lib/file-library/journey-review.mjs';
 import {validateJourneyMaterials} from '../lib/file-library/journey-materials.mjs';
 import {isJourneyOutputReceipt} from '../lib/file-library/content-journey.mjs';
 import {runMethodArtifact,assertKepuReady} from '../lib/method-adapters/runtime.mjs';
@@ -65,15 +66,19 @@ export function runWorkflowHandoff(args){
   if(!task.journeyMember||task.request.parameters.stage!=='author-materials'||!object(input)||Object.keys(input).length!==1||!Object.hasOwn(input,'data'))fail('STAGE_FORBIDDEN');
   const production=context.ctx.snapshot,parent=production.tasks.find(t=>t.id===task.journeyMember.journeyId),data=validateJourneyMaterials(args.envelope.binding.root,parent,task,production,input.data),id=randomUUID(),relative=context.vault.contentDirectory+'/作者材料包-'+id+'.json',bytes=Buffer.from(JSON.stringify(data,null,2)+'\n');mkdir(root,context.vault.contentDirectory);atomic(root,relative,bytes,null);return appendStageArtifact(root,{work,kind:'author-materials',artifactId:id,hash:digest(bytes),path:relative,methodId:task.request.parameters.businessSkill,taskId:task.id});
  }
+ if(args.operation==='review-checkpoint'){
+  if(!task.journeyMember||task.request.parameters.stage!=='review-page')fail('STAGE_FORBIDDEN');const production=context.ctx.snapshot,parent=production.tasks.find(t=>t.id===task.journeyMember.journeyId),source={documentId:context.vault.content.sourceDocumentId,relativePath:context.vault.content.relativePath,hash:context.vault.content.hash},data=journeyReviewRecord(args.envelope.binding.root,parent,task,production,source,input),id=randomUUID(),relative=context.vault.contentDirectory+'/逐句审定-'+id+'.json',bytes=Buffer.from(JSON.stringify(data,null,2)+'\n');mkdir(root,context.vault.contentDirectory);atomic(root,relative,bytes,null);return appendStageArtifact(root,{work,kind:'review',artifactId:id,hash:digest(bytes),path:relative,methodId:task.request.parameters.businessSkill,taskId:task.id});
+ }
+ if(task.journeyMember&&task.request.parameters.stage==='review-page')fail('REVIEW_REQUIRED','主线审稿须保存当前原页逐句审定或明确本版无需修改，再等待作者决定。');
  if(task.journeyMember&&task.request.parameters.stage==='author-materials')fail('MATERIALS_REQUIRED','主线材料阶段须用typed材料包和本人采访，再等待作者确认。');
  if(args.operation!=='artifact'||Object.keys(input).some(k=>!['kind','text','title'].includes(k))||typeof input.text!=='string'||!input.text.trim()||input.text.length>500000)fail('INVALID_INPUT');
- const allowed={ 'review-page':task.journeyMember?['review']:[], 'author-materials':['author-materials'],'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],kepu:['narrative'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
+ const allowed={ 'review-page':[], 'author-materials':['author-materials'],'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],kepu:['narrative'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
  if(!allowed[task.request.parameters.stage]?.includes(input.kind))fail('STAGE_FORBIDDEN');assertStageGate(context,input.kind);
  const id=randomUUID(),relative=context.vault.contentDirectory+'/阶段产物-'+input.kind+'-'+id+'.md',bytes=Buffer.from(input.text+'\n');mkdir(root,context.vault.contentDirectory);atomic(root,relative,bytes,null);
  return appendStageArtifact(root,{work,kind:input.kind,artifactId:id,hash:createHash('sha256').update(bytes).digest('hex'),path:relative,methodId:task.request.parameters.businessSkill,taskId:task.id});
  });
 }
-export const main=argv=>runFixedCLI(argv,['read','artifact','method','materials'],runWorkflowHandoff);
+export const main=argv=>runFixedCLI(argv,['read','artifact','method','materials','review-checkpoint'],runWorkflowHandoff);
 export async function runFixedCLI(argv,operations,execute){try{
  const [operation='help',...rest]=argv,values={};
  if(operation==='help'){if(rest.length)fail('INVALID_ARGUMENTS');process.stdout.write(JSON.stringify({ok:true,operations:operations,usage:'jincheng-workflow / jincheng-creation OP --handoff UUID (--file ABSOLUTE_JSON | --stdin)',input:{claimToken:'current UUID',workerId:'current worker',input:'operation payload; no paths or provider settings'}})+'\n');return 0;}
