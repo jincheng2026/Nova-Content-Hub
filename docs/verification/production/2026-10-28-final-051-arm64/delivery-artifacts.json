@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-28T06:18:09.662Z",
+  "sourceCommit": "87af6342220cb92cd1eac7c5e9106d993017e1eb",
+  "delivery": "/Users/mac/Desktop/自媒体工作台-0.5.1-交付",
+  "files": [
+    {
+      "name": "Nova-Content-Hub-0.5.1-darwin-arm64-preview.dmg",
+      "bytes": 3212291347,
+      "mtime": "2026-10-28T05:45:02.914Z",
+      "sha256": "4ee796616fcb1880b35e322ec6b5b1d316fe0ff5dca8ae440c1d95dfd98d2954"
+    },
+    {
+      "name": "Nova-Content-Hub-0.5.1-darwin-arm64-preview.dmg.blockmap",
+      "bytes": 3353274,
+      "mtime": "2026-10-28T05:45:02.992Z",
+      "sha256": "490e960cd5d4a661e91cc3d77fdfa8df0ff020bedf6c81b2ef5beb067baffec4"
+    },
+    {
+      "name": "Nova-Content-Hub-Plugin-0.5.1-darwin-arm64-preview-disabled.zip",
+      "bytes": 95848001,
+      "mtime": "2026-10-28T05:36:03.194Z",
+      "sha256": "00aee26129d0447799f6a6376de42cb4e42223b2bee59967d3e4e98fee144f88"
+    }
+  ],
+  "sourceDmgAndZipMatch": true
+}

@@ -1,0 +1,56 @@
+✔ native channels preserve only the sealed marketplace during macOS signing (1.209167ms)
+✖ native markets retain the fixed full tree and auth-specific runtime after packaging (2501.103459ms)
+✖ post-packaging validation rejects Node, dependency, inventory and catalog mutations (1867.309209ms)
+✖ source inventory and runtime are validated before their tree can be sealed (2623.324417ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 7326.977125
+
+✖ failing tests:
+
+test at workbench/test/distribution-integrity.test.mjs:60:1
+✖ native markets retain the fixed full tree and auth-specific runtime after packaging (2501.103459ms)
+  Error: Runtime method distribution: manifest differs from the fixed source subset and policy
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:17:45)
+      at validateRuntimeDistribution (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:82:51)
+      at validateRuntime (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:30:11)
+      at buildMarketplace (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:63:26)
+      at fixture (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:40:22)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:62:19)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'METHOD_RUNTIME_DISTRIBUTION'
+  }
+
+test at workbench/test/distribution-integrity.test.mjs:71:1
+✖ post-packaging validation rejects Node, dependency, inventory and catalog mutations (1867.309209ms)
+  Error: Runtime method distribution: manifest differs from the fixed source subset and policy
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:17:45)
+      at validateRuntimeDistribution (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:82:51)
+      at validateRuntime (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:30:11)
+      at buildMarketplace (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:63:26)
+      at fixture (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:40:22)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:72:15)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'METHOD_RUNTIME_DISTRIBUTION'
+  }
+
+test at workbench/test/distribution-integrity.test.mjs:86:1
+✖ source inventory and runtime are validated before their tree can be sealed (2623.324417ms)
+  Error: Runtime method distribution: manifest differs from the fixed source subset and policy
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:17:45)
+      at validateRuntimeDistribution (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/method-runtime-distribution.mjs:82:51)
+      at validateRuntime (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:30:11)
+      at buildMarketplace (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/scripts/marketplace-builder.mjs:63:26)
+      at fixture (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:40:22)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-integrity.test.mjs:87:15)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    code: 'METHOD_RUNTIME_DISTRIBUTION'
+  }

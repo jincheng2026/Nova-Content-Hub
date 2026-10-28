@@ -1,0 +1,12 @@
+{
+  "at": "2026-10-28T05:35:24.687Z",
+  "stageEntries": 2054,
+  "packagedEntries": 2054,
+  "exactMatch": true,
+  "placeholder": {
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "bytes": 0,
+    "executable": false
+  },
+  "scope": "After native signing, before DMG completion; final dist result recorded separately"
+}

@@ -1,0 +1,8 @@
+{
+  "at": "2026-10-28T05:52:13.565Z",
+  "artifact": "Final successfully sealed 0.5.1 native app on APFS",
+  "source": "87af6342220cb92cd1eac7c5e9106d993017e1eb",
+  "notInstalledBinaryUI": true,
+  "earlierDmgTimeout": "../packaged-ui-attempt-1/result.json",
+  "realModels": false
+}

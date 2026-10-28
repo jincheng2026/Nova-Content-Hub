@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-28T05:20:16.897Z",
+  "scope": "Business machine configuration after normal old-app quit; no file contents",
+  "files": {
+    "installation-library-selection.json": {
+      "bytes": 293,
+      "sha256": "ea2e73c758a8af32778c5e1e1583faac2a7bb3bc6178aebef44f61bff1a308c6"
+    },
+    "local-preferences.json": {
+      "bytes": 115,
+      "sha256": "dfbe2fb09ef60909c0fde6fd59d7664e7fc6fef13c3c1ea9512ee1e18ea73ecb"
+    },
+    "machine-binding.json": {
+      "bytes": 508,
+      "sha256": "830ce708b0a1e2b20205e012cf37941c18346515c5437ec4e3d6c29106ac5add"
+    },
+    "service-settings.json": {
+      "bytes": 744,
+      "sha256": "25cb14d323c0976073d91254e297b667f8919347f70ecdb7098baa22a0dc5651"
+    }
+  }
+}

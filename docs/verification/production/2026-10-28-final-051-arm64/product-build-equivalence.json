@@ -1,0 +1,10 @@
+{
+  "at": "2026-10-28T05:37:04.527Z",
+  "before": ".local-probes/051-packaging-attempt-1/mac-arm64/自媒体工作台.app/Contents/Resources/app/workbench/dist",
+  "after": "workbench/dist-desktop/auth-disabled/workbench/dist",
+  "scope": "Compiled desktop product tree, renderer/preload/main/release; excludes the separately fixed installer copy mapping",
+  "beforeCount": 134,
+  "afterCount": 134,
+  "equal": true,
+  "diffs": []
+}

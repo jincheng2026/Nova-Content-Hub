@@ -1,0 +1,442 @@
+✖ darwin-arm64 local builder copy preserves the sealed cover placeholder and normal payload (21.630042ms)
+✖ darwin-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (10.995459ms)
+✖ darwin-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (19.78175ms)
+✖ darwin-x64 local builder copy preserves the sealed cover placeholder and normal payload (19.511125ms)
+✖ darwin-x64 preview builder copy preserves the sealed cover placeholder and normal payload (18.446667ms)
+✖ darwin-x64 testing builder copy preserves the sealed cover placeholder and normal payload (17.961709ms)
+✖ win32-arm64 local builder copy preserves the sealed cover placeholder and normal payload (21.360833ms)
+✖ win32-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (27.116667ms)
+✖ win32-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (29.270709ms)
+✖ win32-x64 local builder copy preserves the sealed cover placeholder and normal payload (36.515834ms)
+✖ win32-x64 preview builder copy preserves the sealed cover placeholder and normal payload (48.347875ms)
+✖ win32-x64 testing builder copy preserves the sealed cover placeholder and normal payload (23.445916ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 0
+ℹ fail 12
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 612.533667
+
+✖ failing tests:
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-arm64 local builder copy preserves the sealed cover placeholder and normal payload (21.630042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (10.995459ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (19.78175ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-x64 local builder copy preserves the sealed cover placeholder and normal payload (19.511125ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-x64 preview builder copy preserves the sealed cover placeholder and normal payload (18.446667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ darwin-x64 testing builder copy preserves the sealed cover placeholder and normal payload (17.961709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-arm64 local builder copy preserves the sealed cover placeholder and normal payload (21.360833ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (27.116667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (29.270709ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-x64 local builder copy preserves the sealed cover placeholder and normal payload (36.515834ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-x64 preview builder copy preserves the sealed cover placeholder and normal payload (48.347875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/distribution-preserved-files.test.mjs:14:9
+✖ win32-x64 testing builder copy preserves the sealed cover placeholder and normal payload (23.445916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      'nova-content-hub': {
+        directory: true
+      },
+      'nova-content-hub/skills': {
+  ...
+      },
+  -   'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': {
+  -     bytes: 0,
+  -     executable: false,
+  -     sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
+  -   },
+      'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': {
+        bytes: 5,
+        executable: false,
+        sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809'
+      }
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/distribution-preserved-files.test.mjs:38:20)
+      at Test.run (node:internal/test_runner/test:1404:7)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    expected: { 'nova-content-hub': { directory: true }, 'nova-content-hub/skills': { directory: true }, 'nova-content-hub/skills/jc-cover-design': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets': { directory: true }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep': { sha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', bytes: 0, executable: false }, 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/payload.bin': { sha256: '0150a92bb1212cd00516b65fde0704614760000963874fcbb11eaa734ee87809', bytes: 5, executable: false } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

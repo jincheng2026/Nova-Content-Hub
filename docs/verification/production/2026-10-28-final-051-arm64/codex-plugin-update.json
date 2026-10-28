@@ -1,0 +1,8 @@
+{
+  "pluginId": "nova-content-hub@nova-content-hub-auth-disabled-darwin-arm64",
+  "name": "nova-content-hub",
+  "marketplaceName": "nova-content-hub-auth-disabled-darwin-arm64",
+  "version": "0.5.1",
+  "installedPath": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.1",
+  "authPolicy": "ON_INSTALL"
+}

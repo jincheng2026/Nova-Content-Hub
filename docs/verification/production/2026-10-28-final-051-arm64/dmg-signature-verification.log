@@ -1,0 +1,22 @@
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/app_shim_loader
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/Helpers/chrome_crashpad_handler
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Electron Framework.framework/Versions/Current/.
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Mantle.framework/Versions/Current/.
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/ReactiveObjC.framework/Versions/Current/.
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/Squirrel.framework/Versions/Current/.
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (GPU).app
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Plugin).app
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper (Renderer).app
+--prepared:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+--validated:/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Frameworks/自媒体工作台 Helper.app
+/private/tmp/nova-051-dmg-mount/自媒体工作台.app: valid on disk
+/private/tmp/nova-051-dmg-mount/自媒体工作台.app: satisfies its Designated Requirement

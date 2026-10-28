@@ -1,0 +1,102 @@
+{
+  "at": "2026-10-28T06:01:32.337Z",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.1",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.1:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "marketplaceSha256": "a88658527a35185eb8ca9ea37f67081c4447611efae5941f3c7973cb41485316",
+  "payloadEntries": 2046,
+  "integrityFiles": 1268,
+  "sourceVersions": 58,
+  "sourceFiles": 1034,
+  "distribution": {
+    "versions": 58,
+    "files": 1034,
+    "omitted": 5
+  },
+  "hosts": [
+    {
+      "host": "codex",
+      "cache": "/Users/mac/.codex/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.1",
+      "version": "0.5.1",
+      "enabled": true,
+      "entries": 2045,
+      "exactPayloadMatch": true
+    },
+    {
+      "host": "workbuddy",
+      "cache": "/Users/mac/.workbuddy/plugins/cache/nova-content-hub-auth-disabled-darwin-arm64/nova-content-hub/0.5.1",
+      "version": "0.5.1",
+      "enabled": true,
+      "entries": 2046,
+      "exactPayloadMatch": true
+    }
+  ],
+  "runtime": [
+    {
+      "host": "codex",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "codex",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "codex",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "codex",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "cover",
+      "skill": "nova-content-cover-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "template",
+      "skill": "nova-content-template-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "research",
+      "skill": "nova-content-research-execution",
+      "doctorAndEmptyCallback": true
+    },
+    {
+      "host": "workbuddy",
+      "capability": "writing",
+      "skill": "nova-content-writing-execution",
+      "doctorAndEmptyCallback": true
+    }
+  ],
+  "limits": [
+    "No model, image generation, paid service or business task submission",
+    "Current assistant chat not hot-reloaded",
+    "Apple Silicon macOS only"
+  ],
+  "passed": true
+}

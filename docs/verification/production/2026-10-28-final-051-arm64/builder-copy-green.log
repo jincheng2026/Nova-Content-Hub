@@ -1,0 +1,20 @@
+✔ darwin-arm64 local builder copy preserves the sealed cover placeholder and normal payload (16.262417ms)
+✔ darwin-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (17.313041ms)
+✔ darwin-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (7.830917ms)
+✔ darwin-x64 local builder copy preserves the sealed cover placeholder and normal payload (7.210542ms)
+✔ darwin-x64 preview builder copy preserves the sealed cover placeholder and normal payload (9.011667ms)
+✔ darwin-x64 testing builder copy preserves the sealed cover placeholder and normal payload (8.371667ms)
+✔ win32-arm64 local builder copy preserves the sealed cover placeholder and normal payload (8.310417ms)
+✔ win32-arm64 preview builder copy preserves the sealed cover placeholder and normal payload (8.334875ms)
+✔ win32-arm64 testing builder copy preserves the sealed cover placeholder and normal payload (11.842584ms)
+✔ win32-x64 local builder copy preserves the sealed cover placeholder and normal payload (9.630917ms)
+✔ win32-x64 preview builder copy preserves the sealed cover placeholder and normal payload (8.396292ms)
+✔ win32-x64 testing builder copy preserves the sealed cover placeholder and normal payload (13.506875ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 12
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 884.224708

@@ -1,0 +1,17 @@
+{
+  "at": "2026-10-28T05:23:49.214Z",
+  "base": "workbench/dist-desktop/auth-disabled/workbench/plugin-marketplace",
+  "pkg": "workbench/release/darwin-arm64/preview/mac-arm64/自媒体工作台.app/Contents/Resources/plugin-marketplace",
+  "beforeCount": 2054,
+  "afterCount": 2053,
+  "diff": [
+    {
+      "key": "nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep",
+      "before": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "executable": false
+      }
+    }
+  ]
+}

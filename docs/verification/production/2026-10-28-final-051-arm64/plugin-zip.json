@@ -1,0 +1,24 @@
+{
+  "at": "2026-10-28T05:36:38.311Z",
+  "file": "/Users/mac/Desktop/自媒体工作台-0.5.1-交付/Nova-Content-Hub-Plugin-0.5.1-darwin-arm64-preview-disabled.zip",
+  "bytes": 95848001,
+  "mtime": "2026-10-28T05:36:03.194Z",
+  "sha256": "00aee26129d0447799f6a6376de42cb4e42223b2bee59967d3e4e98fee144f88",
+  "entries": 2054,
+  "extractedExactStageMatch": true,
+  "release": {
+    "productId": "nova-content-hub",
+    "version": "0.5.1",
+    "appScope": "nova-content-hub",
+    "protocolVersion": 1,
+    "prototype": true,
+    "AUTH_MODE": "disabled",
+    "pairId": "nova-content-hub@0.5.1:p1:disabled",
+    "productionReady": false,
+    "format": "nova-content-plugin-release",
+    "schemaVersion": 1,
+    "experimental": true,
+    "platform": "darwin",
+    "arch": "arm64"
+  }
+}

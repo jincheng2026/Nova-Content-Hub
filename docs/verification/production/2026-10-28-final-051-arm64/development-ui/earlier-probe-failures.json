@@ -1,0 +1,11 @@
+{
+  "note": "Previously retained temporary probe artifacts; these precede the four current passing result.json files. Current screenshots are the named success/layout/composer captures.",
+  "files": [
+    {
+      "from": "T044/save/failure.png",
+      "to": "earlier-probe-failures/T044-save-failure.png",
+      "observedMtime": "2026-10-28T05:30:23.254Z",
+      "currentResultPassed": true
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "started": "2026-10-28T05:44:56.211Z",
+  "finished": "2026-10-28T05:53:19.105Z",
+  "source": "/private/tmp/nova-051-dmg-mount/自媒体工作台.app",
+  "target": "/Applications/自媒体工作台.app",
+  "bundle": {
+    "identifier": "com.novaisland.nova-content-hub",
+    "executable": "自媒体工作台"
+  },
+  "beforeRunning": false,
+  "result": {
+    "transaction": "/Applications/.nova-content-hub-install-13dbf3c1-76c9-48db-b3f7-0a6a091d5f3d",
+    "execPath": "/Applications/自媒体工作台.app/Contents/MacOS/自媒体工作台"
+  }
+}

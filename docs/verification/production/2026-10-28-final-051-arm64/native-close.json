@@ -1,0 +1,13 @@
+{
+  "at": "2026-10-28T06:07:58.243Z",
+  "inputSentAt": 1793167565061,
+  "closeSentAt": 1793167567677,
+  "apiCallGapMs": 2616,
+  "fullHostClosed": true,
+  "exactInputOnDisk": true,
+  "scope": "Real macOS native paste followed by close; API gap is recorded, not same-event-loop or hardware IME acceptance",
+  "reopenedInputVisible": true,
+  "restoredCanonicalMine": true,
+  "restoreHostClosed": true,
+  "restoredAt": "2026-10-28T06:11:42.503Z"
+}

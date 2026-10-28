@@ -1,0 +1,56 @@
+{
+  "at": "2026-10-28T05:49:59.370Z",
+  "phase": "reopen",
+  "number": "T099",
+  "desktop": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/.packaged-apps.noindex/build-fsSDAM/mac-arm64/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "scope": "Isolated Vault; actual React/Semi; fixture image only; not installed-app or real-model acceptance",
+  "steps": [
+    "Independent process reopens identical bundle, cover and library identities",
+    "Exact original packaging and current manuscript survive save/export; source bytes and publication facts unchanged",
+    "Saved cover renders through verified local resource",
+    "Every exported byte matches immutable manifest",
+    "Actual 1440, 1280 and 960px layouts captured"
+  ],
+  "views": {
+    "saved": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "window-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280
+    },
+    "window-960": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960
+    }
+  },
+  "version": "0.5.1",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "beforeFacts": {
+    "recorded": false,
+    "published": false,
+    "sourceResolution": "resolved"
+  },
+  "originalSourceHash": "478df602c5711f078f001c7fb4771f62d99c42aa773afd30000d7cdde98eee78",
+  "bundle": {
+    "bundleId": "968c8eaf-2ad2-4392-af37-16f7e3179a4c",
+    "manifestHash": "58995b517b05a8e6d8f760ae43c725a19e7e30f886659689f32a9f77b3e72a37",
+    "coverHash": "17c0eb449254230b529b3e541c6419cf39a8886b22f18100c009632f30a10363"
+  },
+  "export": {
+    "name": "最终资产-968c8eaf-2ad2-4392-af37-16f7e3179a4c-c9341eb7-fb08-43ac-9650-dae807b7529e",
+    "allManifestHashesMatch": true
+  },
+  "passed": true
+}

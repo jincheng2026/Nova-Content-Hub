@@ -1,0 +1,42 @@
+{
+  "at": "2026-10-28T06:18:09.970Z",
+  "app": "/Applications/自媒体工作台.app",
+  "profile": "/tmp/nova-installed-051-isolated-user-data",
+  "firstPid": 11941,
+  "reopenedPid": 25514,
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "bindingPreserved": true,
+  "noPending": true,
+  "sourceFieldsRestored": true,
+  "nativeUiReopen": true,
+  "nativeAppExited": true,
+  "settings": {
+    "installation-library-selection.json": {
+      "sha256": "ea2e73c758a8af32778c5e1e1583faac2a7bb3bc6178aebef44f61bff1a308c6",
+      "bytes": 293
+    },
+    "local-preferences.json": {
+      "sha256": "dfbe2fb09ef60909c0fde6fd59d7664e7fc6fef13c3c1ea9512ee1e18ea73ecb",
+      "bytes": 115
+    },
+    "machine-binding.json": {
+      "sha256": "830ce708b0a1e2b20205e012cf37941c18346515c5437ec4e3d6c29106ac5add",
+      "bytes": 508
+    },
+    "service-settings.json": {
+      "sha256": "25cb14d323c0976073d91254e297b667f8919347f70ecdb7098baa22a0dc5651",
+      "bytes": 744
+    }
+  },
+  "originalBusinessSettingsAllUnchanged": true,
+  "dockGui": "CUA access timed out (-10005); not accepted",
+  "scope": "darwin-arm64 native installed binary; synthetic T099; fixture image only; no hardware IME claim",
+  "sourceComparison": "id/kind/locked/fields restored; normal save/history metadata excluded"
+}

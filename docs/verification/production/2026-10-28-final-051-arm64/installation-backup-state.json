@@ -1,0 +1,26 @@
+{
+  "at": "2026-10-28T06:26:43.071Z",
+  "directory": "/Applications/.nova-content-hub-install-13dbf3c1-76c9-48db-b3f7-0a6a091d5f3d",
+  "phase": "complete",
+  "previous": {
+    "dev": 16777231,
+    "ino": 84417641,
+    "digest": "d12af7f7d007539bec8135b9071b3c6cbb5459da26e304c44fab2a1f4e8abcc2"
+  },
+  "archive": {
+    "path": "/Applications/.nova-content-hub-install-13dbf3c1-76c9-48db-b3f7-0a6a091d5f3d/previous-backup/previous.app.zip",
+    "bytes": 3179537993,
+    "mtime": "2026-10-28T06:01:35.744Z",
+    "sha256FromVerifiedReceipt": "b7cfaa74b5c99f79179a6545ea06214907a141c7680eb8a9f2be69d9a3cbc1f0"
+  },
+  "removalAuthorizationMatchesReceipt": true,
+  "retirementCleanupPending": true,
+  "entries": [
+    ".archive-previous-nJ3Www",
+    "claim.json",
+    "previous-backup",
+    "previous-removal.json",
+    "record.json"
+  ],
+  "scope": "Existing application archive/removal receipts; no new old-version restore/run test, no manual removal of residual staging"
+}

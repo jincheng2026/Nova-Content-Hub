@@ -1,0 +1,55 @@
+The following is a diff from the previous accessibility tree for Window: "自媒体工作台" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 97-98, 122-124
+~							59 按钮 (disabled) 接着写
+~							61 按钮 (disabled) 打开稿件文件夹
+~							74 按钮 (disabled) 正在打开
+~							76 按钮 (disabled) 定位原件
+~							82 按钮 (disabled) 关闭创作页
+~								85 文本 正在保全本次输入…
+~								86 按钮 (disabled) 重新读取原页
+~												95 按钮 Description: 保存状态：正在编辑，停止输入 1 秒后自动保存, Help: 正在编辑，停止输入 1 秒后自动保存（点击查看完整状态）
++													264 文本 0
++													265 文本 待 AI 处理
+~												118 text 可直接修改，停止输入 1 秒后自动保存 47 字 · 约 7 秒
+~												119 文本输入区 (settable) Description: 第 1 段锦成版, Value: 这是一条流程验收示例，不代表任何人的真实经历。
+第二行保留原始换行。
+安装版即时关闭验收-20261028
+~													121 开合三角标记 和 AI 交稿版相比：删去 4 字，新增 47 字, Help: AI 交稿版：AI 上次交稿时的锦成版
++														266 文本 和 AI 交稿版相比：删去 4 字，新增 47 字
++													267 文本 示例正文
++													268 文本 这是一条流程验收示例，不代表任何人的真实经历。
+第二行保留原始换行。
+安装版即时关闭验收-20261028
+~							140 按钮 (disabled) 阅读
+~							142 按钮 (disabled) 定位原件
+~							147 按钮 (disabled) 阅读
+~							149 按钮 (disabled) 定位原件
+~							154 按钮 (disabled) 阅读
+~							156 按钮 (disabled) 定位原件
+~							161 按钮 (disabled) 阅读
+~							163 按钮 (disabled) 定位原件
+~							168 按钮 (disabled) 阅读
+~							170 按钮 (disabled) 定位原件
+~							175 按钮 (disabled) 阅读
+~							177 按钮 (disabled) 定位原件
+~							182 按钮 (disabled) 阅读
+~							184 按钮 (disabled) 定位原件
+~							189 按钮 (disabled) 阅读
+~							191 按钮 (disabled) 定位原件
+~							196 按钮 (disabled) 制作封面
+~							198 按钮 (disabled) 最终资产
+~							200 按钮 (disabled) 发布与档案
+~								206 按钮 (disabled) 标题与正文
+~								208 按钮 (disabled) 资料与设置
+~								210 按钮 (disabled) 发布计划
+~								212 按钮 (disabled) 和助手继续创作
+~								214 按钮 (disabled) 阶段确认与验收
+~								216 按钮 (disabled) 助手任务与原任务继续
+~								222 按钮 (disabled) 重新读取已保存版本
+~									227 组合框 (disabled) Description: selected, Value: 当前确认稿
+~								230 按钮 (disabled) 预览最终资产
+~									244 组合框 (disabled) Description: selected, Value: 2026-10-28T05:28:27.900Z · 当前采用
+~								247 按钮 (disabled) 导出这一版
+~								249 按钮 (disabled) 定位内容目录
+~								253 按钮 (disabled) 查看与选择封面
+The focused UI element is 3 HTML 内容 自媒体工作台, URL: nova-content://app/index.html

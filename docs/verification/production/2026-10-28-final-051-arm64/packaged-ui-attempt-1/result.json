@@ -1,0 +1,22 @@
+{
+  "at": "2026-10-28T05:45:20.241Z",
+  "phase": "reopen",
+  "number": "T099",
+  "desktop": "/private/tmp/nova-051-dmg-mount/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "scope": "Isolated Vault; actual React/Semi; fixture image only; not installed-app or real-model acceptance",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "passed": false,
+  "failure": {
+    "message": "Error: Timeout library initialized",
+    "stack": "Error: Timeout library initialized\n    at wait (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/final-assets-ui-probe.mjs:61:141)\n    at async ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/final-assets-ui-probe.mjs:70:3)\n    at async startDesktop (file:///private/tmp/nova-051-dmg-mount/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/desktop.mjs:642:5)"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\nruntime\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n\n本机资料读取超时，已停止本次读取；已保存资料与待核验操作保留，请点击刷新重试。（READ_TIMEOUT）\n\n暂时无法读取内容库\n\n读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。\n\n重新读取\n打开其他内容库",
+  "images": []
+}

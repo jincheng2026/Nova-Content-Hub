@@ -1,0 +1,9 @@
+{
+  "at": "2026-10-28T05:30:23.467Z",
+  "productSource": "cf1ef0502e4d61e9455cab50b86e727b41327d2f",
+  "packagingFix": "87af6342220cb92cd1eac7c5e9106d993017e1eb",
+  "scope": "Same frozen product build before the distribution-only copy fix; not native installed-app acceptance",
+  "fixtureImagesOnly": true,
+  "noRealModelGeneration": true,
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu"
+}

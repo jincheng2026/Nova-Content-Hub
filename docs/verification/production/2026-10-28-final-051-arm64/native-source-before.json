@@ -1,0 +1,75 @@
+{
+  "at": "2026-10-28T05:31:17.775Z",
+  "scope": "Synthetic T099 only, native input before/after reference",
+  "file": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/05_内容草稿/T099_最终资产流程验收/创作页.html",
+  "sha256": "478df602c5711f078f001c7fb4771f62d99c42aa773afd30000d7cdde98eee78",
+  "items": [
+    {
+      "id": "info-b0da8f475983",
+      "kind": "info",
+      "locked": {
+        "type": "口播",
+        "stage": "写稿",
+        "title": "最终资产流程验收示例",
+        "narrative": {
+          "story": "核对保存后的结果",
+          "audience": "验收人员",
+          "problem": "确认未发布也能保存四项资产"
+        },
+        "speech_rate": 7,
+        "ai_state": {}
+      },
+      "fields": {
+        "overall_note": "",
+        "approved": "",
+        "recorded": ""
+      }
+    },
+    {
+      "id": "fixture-segment",
+      "kind": "segment",
+      "locked": {
+        "order": 1,
+        "title": "示例正文",
+        "role": "正文",
+        "refs": [],
+        "baseline": "示例正文",
+        "ai_state": {}
+      },
+      "fields": {
+        "mine": "这是一条流程验收示例，不代表任何人的真实经历。\n第二行保留原始换行。",
+        "note": ""
+      }
+    },
+    {
+      "id": "fixture-title",
+      "kind": "pubslot",
+      "locked": {
+        "slot": "标题"
+      },
+      "fields": {
+        "final": "未发布也能保留最终资产"
+      }
+    },
+    {
+      "id": "fixture-cover",
+      "kind": "pubslot",
+      "locked": {
+        "slot": "封面文字"
+      },
+      "fields": {
+        "final": "四项资产\n同篇保存"
+      }
+    },
+    {
+      "id": "fixture-description",
+      "kind": "pubslot",
+      "locked": {
+        "slot": "简介"
+      },
+      "fields": {
+        "final": "独立测试内容，仅用于验证逐字稿、标题、简介与封面的保存和读回。\n没有录完或发布事实。"
+      }
+    }
+  ]
+}
