@@ -1,0 +1,462 @@
+{
+  "format": "nova-workflow-reaudit",
+  "schemaVersion": 1,
+  "auditDate": "2026-10-28",
+  "frozenRepoHead": "79bc2ce7f808ab79799780ccc46c0ea67e7fb7bd",
+  "assessmentType": "static-code-manifest-installed-package audit; no end-to-end execution",
+  "roots": {
+    "oldWorkbenchSource": "/Users/mac/Downloads/锦成工作台-同事版/数据和程序/AIJinCheng/工具项目/内容工作台",
+    "oldWorkbenchDefaultRoots": {
+      "secondBrain": "~/AIJinCheng/个人IP与内容/第二大脑",
+      "prompts": "~/AIJinCheng/通用资源/工具与效率/提示词库/常用",
+      "reports": "~/AIJinCheng/个人IP与内容/调研报告库",
+      "coverVi": "~/Documents/ChatGPT/锦成VI/视觉评审网站"
+    },
+    "readOldSecondBrainCopy": "/Users/mac/Downloads/锦成工作台-同事版/数据和程序/AIJinCheng/个人IP与内容/第二大脑",
+    "separateHandoffBrain": "/Users/mac/Downloads/第二大脑交接包_2026-10-16/第二大脑",
+    "installedPlugin": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace/nova-content-hub",
+    "currentVaultRoot": "user explicitly selected root; no inferred Home path"
+  },
+  "sharedStorage": {
+    "localLibrary": "<selected content library root>",
+    "vaultRuntime": "<selected vault root>/.workbench/runtime",
+    "sourceMap": "<selected vault root>/.workbench/source-map.json",
+    "vaultDirectories": {
+      "profile": "00_个人背景",
+      "benchmarkAccounts": "01_对标账号",
+      "materials": "02_内容素材",
+      "marketPatternCandidates": "03_内容规律",
+      "topicCards": "04_选题库",
+      "drafts": "05_内容草稿",
+      "officialPublicationArchives": "06_发布复盘/正式发布档案",
+      "analysisCopies": "06_发布复盘/已发布视频档案",
+      "creatorKnowledge": "09_创作知识",
+      "reports": "10_调研报告",
+      "prompts": "11_提示词",
+      "visualAssets": "12_视觉资产",
+      "xBookmarks": "13_X收藏"
+    }
+  },
+  "workflows": [
+    {
+      "id": "today",
+      "oldSource": [
+        "README.md",
+        "lib/tasks.mjs",
+        "lib/overview.mjs",
+        "lib/paths.mjs"
+      ],
+      "visibleEntrances": [
+        "今天 → 总览",
+        "今天 → 日程",
+        "今天 → 助手任务"
+      ],
+      "currentStorage": [
+        "selected library content/plans",
+        "<vaultRoot>/.workbench/runtime",
+        "05_内容草稿",
+        "06_发布复盘"
+      ],
+      "skills": [
+        "nova-content-writing-execution",
+        "nova-content-research-execution",
+        "production-contract"
+      ],
+      "status": "partial",
+      "findings": [
+        "Current overview/calendar project publication work; task page is assistant production tasks.",
+        "Old Feishu 07｜个人推进看板 task source and write-back are not connected in current code."
+      ]
+    },
+    {
+      "id": "topic-suggestion",
+      "oldSource": [
+        "SecondBrain README.md",
+        "04_选题库/00_选题总览.md",
+        "04_选题库/*"
+      ],
+      "visibleEntrances": [
+        "内容项目 → 选题",
+        "资料与定位 → selected document editor → 保存并推荐选题"
+      ],
+      "currentStorage": [
+        "<vaultRoot>/04_选题库/候选/<sessionId>.json",
+        "<vaultRoot>/04_选题库/口播观点/待做/Txxx_题名.md",
+        "<vaultRoot>/05_内容草稿/Txxx_题名/创作过程.json",
+        "<vaultRoot>/.workbench/runtime"
+      ],
+      "routing": {
+        "workflow": "topic-suggestion",
+        "businessSkill": "xindao-xuanti",
+        "executor": "nova-content-research-execution",
+        "taskTools": [],
+        "budgetRequests": 0,
+        "candidateRange": [
+          1,
+          4
+        ],
+        "adoption": "explicit author selection required before stable T creation"
+      },
+      "status": "partial",
+      "findings": [
+        "Selected-document editor route freezes documentId and expectedHash and includes bounded source text in the fixed request.",
+        "Candidate title and titleExample are not final publication title; blank generic content title is allowed.",
+        "Topic directory launch does not pass a source document or source body and has no material picker."
+      ]
+    },
+    {
+      "id": "doing-and-creation",
+      "oldSource": [
+        "SecondBrain README.md",
+        "05_内容草稿/Txxx",
+        "original HTML and jc-doc fields"
+      ],
+      "visibleEntrances": [
+        "内容项目 → 在做",
+        "content detail → Jincheng work context",
+        "open full original creation page"
+      ],
+      "currentStorage": [
+        "<vaultRoot>/05_内容草稿/Txxx_题名/创作过程.json",
+        "<vaultRoot>/05_内容草稿/Txxx_题名/助手产物/<task>/<attempt>/<generation>",
+        "<vaultRoot>/.workbench/runtime",
+        "original HTML file in place"
+      ],
+      "skills": [
+        {
+          "id": "jc-benchmark-intake",
+          "status": "complete-source-bundled",
+          "purpose": "selected references intake"
+        },
+        {
+          "id": "jc-video-analysis",
+          "status": "complete-source-bundled",
+          "purpose": "reference video analysis"
+        },
+        {
+          "id": "jc-content-writer",
+          "status": "complete-source-bundled",
+          "purpose": "general drafting"
+        },
+        {
+          "id": "jc-jiaocheng-video",
+          "status": "complete-source-bundled",
+          "purpose": "explicit tutorial/point-of-view workflow"
+        },
+        {
+          "id": "nova-workbench-writing-method",
+          "status": "complete-source-bundled",
+          "purpose": "in-page revision and comments"
+        },
+        {
+          "id": "jc-gongzuotai-write",
+          "status": "complete-source-bundled",
+          "purpose": "original creation page method"
+        }
+      ],
+      "currentBehaviors": [
+        "full jc-doc read",
+        "controlled original HTML fields",
+        "mine/note/refnote preserved",
+        "stage artifact hash and author checkpoint",
+        "recorded status read from original source",
+        "publication separately recorded"
+      ],
+      "status": "source-wired-static"
+    },
+    {
+      "id": "publish-closeout-review",
+      "oldSource": [
+        "SecondBrain README.md",
+        "06_发布复盘",
+        "formal publication archive"
+      ],
+      "visibleEntrances": [
+        "content detail → publication panel",
+        "content detail → publish-after-closeout / review methods",
+        "内容项目 → 已发布"
+      ],
+      "currentStorage": [
+        "<vaultRoot>/06_发布复盘/正式发布档案",
+        "<vaultRoot>/06_发布复盘/已发布视频档案",
+        "per-content assistant artifact archive"
+      ],
+      "skills": [
+        "jc-publish-closeout",
+        "jc-media-review"
+      ],
+      "status": "source-wired-static",
+      "distinctions": [
+        "recorded",
+        "published",
+        "official archive",
+        "observation",
+        "review confirmation"
+      ]
+    },
+    {
+      "id": "cover-vi",
+      "oldSource": [
+        "README.md",
+        "lib/cover-vi.mjs",
+        "PATHS.coverVi"
+      ],
+      "visibleEntrances": [
+        "内容 → 封面 → 原封面 VI 与历史图片"
+      ],
+      "currentStorage": [
+        "explicitly linked visual-assets root",
+        "<vaultRoot>/.workbench/source-map.json",
+        "new Nova covers in selected local content library"
+      ],
+      "skills": [
+        "nova-content-cover",
+        "jc-cover-copy"
+      ],
+      "status": "source-wired-static",
+      "findings": [
+        "Original pages are opened in place.",
+        "jc-cover-design is unavailable; Nova cover generation is a separate ability."
+      ]
+    },
+    {
+      "id": "research-and-comment-insight",
+      "oldSource": [
+        "lib/research-reports.mjs",
+        "PATHS.ip/调研报告库",
+        "original report HTML/meta.json"
+      ],
+      "visibleEntrances": [
+        "市场调研 → 对标账号",
+        "市场调研 → 调研报告",
+        "市场调研 → 爆款雷达",
+        "reports → 独立调研与评论洞察"
+      ],
+      "currentStorage": [
+        "<vaultRoot>/调研报告库/<researchId>",
+        "<vaultRoot>/02_内容素材/<researchId>",
+        "<vaultRoot>/02_内容素材/<researchId>/视频及校正版逐字稿/SRT",
+        "reports in selected library",
+        "<vaultRoot>/10_调研报告",
+        "<vaultRoot>/.workbench/runtime"
+      ],
+      "skills": [
+        "jc-media-research",
+        "jc-comment-visualize",
+        "jc-benchmark-intake"
+      ],
+      "staticDependencies": [
+        "TikHub budget/config and comments authorization",
+        "local Qwen3 ASR adapter with allowCloud=false",
+        "report HTML import/open path"
+      ],
+      "status": "source-wired-static",
+      "findings": [
+        "comments route is visible and maps to jc-comment-visualize.",
+        "Paid TikHub and ASR were not exercised."
+      ]
+    },
+    {
+      "id": "synthesis-research",
+      "oldSource": [
+        "registry public snapshot",
+        "method-sources.json"
+      ],
+      "visibleEntrances": [
+        "No dedicated visible business-method picker found; general report creation routes to jc-media-research."
+      ],
+      "storage": [
+        "standard research/report storage"
+      ],
+      "skill": {
+        "id": "jc-synthesis-research",
+        "registryRole": "business-method",
+        "sourceStatus": "public-snapshot",
+        "originalFiles": 1,
+        "bundleStatus": "complete-source-bundled",
+        "runtimeStatus": "contract-unverified"
+      },
+      "status": "needs-owner-confirmation",
+      "findings": [
+        "Not in unavailable list.",
+        "No dedicated user-visible synthesis route found.",
+        "Ask whether the one-file public snapshot is the final complete upstream method."
+      ]
+    },
+    {
+      "id": "x-bookmarks",
+      "oldSource": [
+        "old README X 收藏 entrance",
+        "current old-code lib did not expose a verifiable database/sync adapter"
+      ],
+      "visibleEntrances": [
+        "市场调研 → X 收藏 → link source/open X书签工作台.html"
+      ],
+      "currentStorage": [
+        "explicitly linked bookmarks root",
+        "<vaultRoot>/.workbench/source-map.json",
+        "02_内容素材 after separately selecting/intaking material"
+      ],
+      "skills": [
+        "jc-benchmark-intake",
+        "xindao-xuanti"
+      ],
+      "status": "partial",
+      "findings": [
+        "No database import, AI classification, background sync, or selected-item-to-intake payload route.",
+        "Current UI copy says original database is unavailable and sync does not auto-start."
+      ]
+    },
+    {
+      "id": "prompts-knowledge-positioning",
+      "oldSource": [
+        "lib/paths.mjs promptsDir/promptsEvents",
+        "SecondBrain profile and knowledge roots"
+      ],
+      "visibleEntrances": [
+        "提示词与知识 → 提示词",
+        "提示词与知识 → 创作知识",
+        "资料与定位 → 梳理定位"
+      ],
+      "currentStorage": [
+        "<vaultRoot>/11_提示词",
+        "<vaultRoot>/00_个人背景",
+        "<vaultRoot>/09_创作知识",
+        "<vaultRoot>/.workbench/runtime"
+      ],
+      "skills": [
+        {
+          "id": "xindao-interview",
+          "sourceStatus": "current",
+          "manifestFiles": 3,
+          "installedFilesHashMatch": true
+        },
+        {
+          "id": "xindao-xuanti",
+          "sourceStatus": "draft",
+          "manifestFiles": 5,
+          "installedFilesHashMatch": true
+        }
+      ],
+      "status": "source-wired-static"
+    }
+  ],
+  "unavailableOriginalSkills": [
+    {
+      "id": "jc-zhuanxie",
+      "repoSkillDirectory": false,
+      "installedSkillDirectory": false,
+      "currentReferences": [
+        "jc-video-analysis",
+        "jc-media-research",
+        "jc-publish-closeout"
+      ],
+      "status": "missing-full-original-package"
+    },
+    {
+      "id": "jc-review-page",
+      "repoSkillDirectory": false,
+      "installedSkillDirectory": false,
+      "currentReferences": [
+        "nova-workbench-writing-method"
+      ],
+      "status": "missing-full-original-package"
+    },
+    {
+      "id": "jc-cover-design",
+      "repoSkillDirectory": false,
+      "installedSkillDirectory": false,
+      "currentReferences": [
+        "jc-cover-copy"
+      ],
+      "status": "missing-full-original-package"
+    },
+    {
+      "id": "jc-kepu-video",
+      "repoSkillDirectory": false,
+      "installedSkillDirectory": false,
+      "currentReferences": [
+        "jc-video-analysis",
+        "nova-workbench-writing-method"
+      ],
+      "status": "missing-full-original-package"
+    }
+  ],
+  "packageVerification": {
+    "registryUnavailableIds": [
+      "jc-zhuanxie",
+      "jc-review-page",
+      "jc-cover-design",
+      "jc-kepu-video"
+    ],
+    "noNewFullMachineScan": true,
+    "installedHashComparisons": {
+      "xindao-interview": {
+        "files": 3,
+        "matches": 3
+      },
+      "xindao-xuanti": {
+        "files": 5,
+        "matches": 5
+      },
+      "jc-jiaocheng-video": {
+        "files": 5,
+        "matches": 5
+      },
+      "jc-comment-visualize": {
+        "files": 15,
+        "matches": 15
+      }
+    },
+    "activeMethodRuntimeStatus": "contract-unverified"
+  },
+  "gaps": [
+    {
+      "id": "legacy-today-tasks",
+      "severity": "high",
+      "evidence": "Old lib/tasks.mjs reads/writes Feishu 07｜个人推进看板; current pageNames calls the section 助手任务 and renders ProductionWorkspace section=tasks."
+    },
+    {
+      "id": "topic-directory-source-picker",
+      "severity": "medium",
+      "evidence": "topic-suggestion from topic directory sends no source; document editor route does send source.documentId and expectedHash."
+    },
+    {
+      "id": "x-bookmark-ingestion",
+      "severity": "high",
+      "evidence": "Bookmarks UI opens HTML and offers actions, but no selected bookmark ID/body/hash is passed; UI states old DB is not obtained and sync is not started."
+    },
+    {
+      "id": "synthesis-research-route",
+      "severity": "medium",
+      "evidence": "No dedicated synthesis method option in current reports actions; generic report route uses jc-media-research."
+    }
+  ],
+  "requestsForCoworker": [
+    {
+      "kind": "confirmed-missing",
+      "skillIds": [
+        "jc-zhuanxie",
+        "jc-review-page",
+        "jc-cover-design",
+        "jc-kepu-video"
+      ],
+      "request": "Please provide each complete original skill directory or full ZIP with original directory name, complete relative structure, SKILL.md, scripts, references, assets, templates, schema, evals/tests/sample data, config/data/service dependencies, and exact installation/startup instructions, versions, permissions/cost requirements, platform limitations, full file list and SHA256. Do not send only SKILL.md."
+    },
+    {
+      "kind": "confirmation-only",
+      "skillIds": [
+        "jc-synthesis-research"
+      ],
+      "request": "Please confirm whether the current public snapshot (one upstream SKILL.md) is the final complete method; if a fuller original package exists, provide its complete directory and dependencies under the same requirements."
+    }
+  ],
+  "untested": [
+    "Codex/WorkBuddy task success, waiting states, resumption, cancellation, retry, submit/receipt, original task continuation and assistant switching",
+    "opening and saving original resources in a live UI",
+    "paid TikHub service calls",
+    "local Qwen ASR and model availability",
+    "actual report rendering and visual validation",
+    "deployment, packaging, install and platform validation"
+  ]
+}

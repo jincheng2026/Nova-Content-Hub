@@ -1,0 +1,24 @@
+{
+  "T029": {
+    "allAuthorFieldsRestored": true,
+    "fieldDifferences": [],
+    "outsideHTMLPreserved": true
+  },
+  "T044": {
+    "allAuthorFieldsRestored": false,
+    "fieldDifferences": [
+      {
+        "id": "pubslot-ed6itstb",
+        "old": {
+          "final": "20岁怎么找到版本答案？",
+          "note": ""
+        },
+        "current": {
+          "final": "孙宇晨：如果重回20岁，我第一件事先做这个",
+          "note": ""
+        }
+      }
+    ],
+    "outsideHTMLPreserved": true
+  }
+}

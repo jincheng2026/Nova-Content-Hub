@@ -1,0 +1,3422 @@
+{
+  "startedAt": "2026-10-28T01:30:26.174Z",
+  "installed": "/Applications/自媒体工作台.app/Contents/Resources/app",
+  "node": {
+    "execPath": "/Applications/自媒体工作台.app/Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node",
+    "version": "v24.20.0",
+    "arch": "arm64",
+    "platform": "darwin"
+  },
+  "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑",
+  "scope": "Fresh execution of installed worker/helper read contracts on isolated original ZIP copy. No CUA, no network/model calls, no product edits, no source-library writes.",
+  "calls": [
+    {
+      "op": "bind",
+      "ok": true,
+      "ms": 23546
+    },
+    {
+      "op": "vaultRead",
+      "ok": true,
+      "ms": 503
+    },
+    {
+      "op": "productionRead",
+      "ok": true,
+      "ms": 1003
+    },
+    {
+      "op": "list",
+      "ok": true,
+      "ms": 472
+    },
+    {
+      "op": "vaultSources",
+      "ok": true,
+      "ms": 37
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ok": true,
+      "ms": 499
+    },
+    {
+      "op": "readContent",
+      "id": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+      "ok": true,
+      "ms": 427
+    },
+    {
+      "op": "vaultContentSource",
+      "contentId": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+      "ok": true,
+      "ms": 623
+    },
+    {
+      "op": "vaultWorkContext",
+      "contentId": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+      "ok": true,
+      "ms": 533
+    },
+    {
+      "op": "readContent",
+      "id": "0c0880f3-5812-4c07-af74-f81435f6668a",
+      "ok": true,
+      "ms": 398
+    },
+    {
+      "op": "vaultContentSource",
+      "contentId": "0c0880f3-5812-4c07-af74-f81435f6668a",
+      "ok": true,
+      "ms": 624
+    },
+    {
+      "op": "vaultWorkContext",
+      "contentId": "0c0880f3-5812-4c07-af74-f81435f6668a",
+      "ok": true,
+      "ms": 495
+    },
+    {
+      "op": "readContent",
+      "id": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+      "ok": true,
+      "ms": 395
+    },
+    {
+      "op": "vaultContentSource",
+      "contentId": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+      "ok": true,
+      "ms": 555
+    },
+    {
+      "op": "vaultWorkContext",
+      "contentId": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+      "ok": true,
+      "ms": 530
+    }
+  ],
+  "contents": [],
+  "creationDocuments": [],
+  "accounts": [],
+  "reports": [],
+  "issues": [],
+  "originalInputFiles": 6468,
+  "binding": {
+    "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/.workbench/runtime",
+    "libraryId": "d33c5a37-353c-4f08-a175-967a5ec1a718",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84598806"
+    }
+  },
+  "counts": {
+    "contents": 46,
+    "accounts": 50,
+    "reports": 15,
+    "pages": 15,
+    "vaultDocuments": 6410
+  },
+  "vaultIssues": [
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "01_对标账号/Jerkk7777_关联账号与对标.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "01_对标账号/对标收入与商业模式比较.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "01_对标账号/调研/2026-09-09_AI科普系列比较/reports/research_report.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "02_内容素材/未参考/抖音/2026-09-10_核心AI对标逐字稿/index.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "03_内容规律/做一条内容前的原问题.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/画面素材/文字卡源文件/card.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_结构与口述页.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T043_X收藏不吃灰的插件和工作流/标题封面开头参考.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T043_X收藏不吃灰的插件和工作流/流程图/流程图.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T043_X收藏不吃灰的插件和工作流/流程图/版本/流程图_v1.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/T043_X收藏不吃灰的插件和工作流/流程图/版本/流程图_v2圆环.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/替换前教程.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T012_图片去噪教程/T012_重拍逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T012_图片去噪教程/图片去噪教程.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T016_WorkBuddy自媒体实操重拍/T016_逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T017_网站教程/T017_逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T018_七个AI词一条线/T018_逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T018_七个AI词一条线/对照页.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T019_邪恶银渐层发布会/教程/T019_教程逐字稿对照.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T026_书籍蒸馏成Skill/封面/2026-09-28_20种构图/index.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/T028_参考核对工作台.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/录屏提示词.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/运营稿调整说明.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/选题skill-v2试跑_秋芝2046/选题报告.v1备份.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/选题skill-v2试跑_秋芝2046/选题看板.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/小co对标分析_2026-10-13/T044_小co对标分析报告.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/小co对标分析_2026-10-13/配图/01_整体分析概览.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/小co对标分析_2026-10-13/配图/02_具体博主分析.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/小co对标分析_2026-10-13/配图/03_结合账号的借鉴建议.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/reports/dali.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/reports/jiang.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/reports/sensen.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/抖音AI博主对标分析.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/配图/01_整体分析概览.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/配图/02_具体博主分析.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/抖音AI博主对标报告/配图/03_结合账号的借鉴建议.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "05_内容草稿/已做/T047_字幕长图Skill/评论区卡片/card.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "06_发布复盘/2026-08至09视频复盘.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "06_发布复盘/2026-10-12_大号视频复盘_0804至今/看片页/index.html"
+    },
+    {
+      "code": "HTML_READ_ONLY",
+      "message": "此 HTML 尚未识别创作协议，保留原件并提供静态读取",
+      "relativePath": "06_发布复盘/其他/9条教程视频锦成裁决页.html"
+    },
+    {
+      "code": "PUBLICATION_STATUS_CONFLICT",
+      "message": "T006 的选题卡与总览发布状态不一致，未推断为已发布",
+      "relativePath": "04_选题库/AI教程/待做/T006_零基础搭第一个个人知识库.md"
+    },
+    {
+      "code": "PUBLICATION_STATUS_CONFLICT",
+      "message": "T020 的选题卡与总览发布状态不一致，未推断为已发布",
+      "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md"
+    },
+    {
+      "code": "CURRENT_SOURCE_CONFLICT",
+      "message": "T019 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/01_夏冬一Ai_逐字稿.md"
+    },
+    {
+      "code": "CURRENT_SOURCE_CONFLICT",
+      "message": "T025 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/工具/出图_定稿.py"
+    },
+    {
+      "code": "PUBLICATION_STATUS_CONFLICT",
+      "message": "T006 的选题卡与总览发布状态不一致，未推断为已发布",
+      "relativePath": "04_选题库/AI教程/待做/T006_零基础搭第一个个人知识库.md"
+    },
+    {
+      "code": "CURRENT_SOURCE_CONFLICT",
+      "message": "T021 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/FredTalk_新模型JEV速度快1000倍成本还巨低.md"
+    },
+    {
+      "code": "CURRENT_SOURCE_CONFLICT",
+      "message": "T048 的明确当前入口指向多个原件，请选择继续的来源",
+      "relativePath": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md"
+    },
+    {
+      "code": "CURRENT_SOURCE_CONFLICT",
+      "message": "T020 的明确当前入口指向多个原件，请选择继续的来源",
+      "relativePath": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md"
+    },
+    {
+      "code": "PUBLICATION_STATUS_CONFLICT",
+      "message": "T020 的选题卡与总览发布状态不一致，未推断为已发布",
+      "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md"
+    }
+  ],
+  "missingAssetHashes": [],
+  "sourceInventory": {
+    "sources": [
+      {
+        "id": "accounts",
+        "role": "benchmark-accounts",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/01_对标账号",
+        "format": "files",
+        "authority": "official",
+        "writable": true,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "topics",
+        "role": "topics",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/04_选题库",
+        "format": "files",
+        "authority": "official",
+        "writable": true,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "drafts",
+        "role": "drafts",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/05_内容草稿",
+        "format": "files",
+        "authority": "official",
+        "writable": true,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "materials",
+        "role": "materials",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/02_内容素材",
+        "format": "files",
+        "authority": "official",
+        "writable": true,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "market-patterns",
+        "role": "market-patterns",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/03_内容规律",
+        "format": "files",
+        "authority": "candidate",
+        "writable": true,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "official-archives",
+        "role": "official-archives",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/正式发布档案",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "archive-analysis",
+        "role": "archive-analysis",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/已发布视频档案",
+        "format": "files",
+        "authority": "analysis-copy",
+        "writable": false,
+        "available": true,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "judgments",
+        "role": "judgments",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/判断库",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "methods",
+        "role": "methods",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/方法论",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "author-evidence",
+        "role": "author-evidence",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/本人材料",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "cases",
+        "role": "cases",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/案例",
+        "format": "files",
+        "authority": "candidate",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "bookmarks",
+        "role": "bookmarks",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/13_X收藏",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "entryPath": "X书签工作台.html",
+        "entryReady": false,
+        "entries": [
+          {
+            "relativePath": "X书签工作台.html",
+            "available": false
+          }
+        ],
+        "projection": "vault-scan"
+      },
+      {
+        "id": "reports",
+        "role": "reports",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/10_调研报告",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "prompts",
+        "role": "prompts",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/11_提示词",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "projection": "vault-scan"
+      },
+      {
+        "id": "visual-assets",
+        "role": "visual-assets",
+        "mode": "internal",
+        "root": "/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/12_视觉资产",
+        "format": "files",
+        "authority": "official",
+        "writable": false,
+        "available": false,
+        "entryPath": "public/hub.html",
+        "entryReady": false,
+        "entries": [
+          {
+            "relativePath": "public/hub.html",
+            "available": false
+          },
+          {
+            "relativePath": "public/index.html",
+            "available": false
+          },
+          {
+            "relativePath": "public/cover-collection.html",
+            "available": false
+          },
+          {
+            "relativePath": "public/face-expression-study/index.html",
+            "available": false
+          }
+        ],
+        "projection": "vault-scan"
+      }
+    ],
+    "issues": [
+      {
+        "sourceId": "official-archives",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "official-archives 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/正式发布档案"
+      },
+      {
+        "sourceId": "judgments",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "judgments 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/判断库"
+      },
+      {
+        "sourceId": "methods",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "methods 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/方法论"
+      },
+      {
+        "sourceId": "author-evidence",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "author-evidence 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/本人材料"
+      },
+      {
+        "sourceId": "cases",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "cases 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/案例"
+      },
+      {
+        "sourceId": "bookmarks",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "bookmarks 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/13_X收藏"
+      },
+      {
+        "sourceId": "reports",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "reports 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/10_调研报告"
+      },
+      {
+        "sourceId": "prompts",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "prompts 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/11_提示词"
+      },
+      {
+        "sourceId": "visual-assets",
+        "code": "SOURCE_NOT_AVAILABLE",
+        "message": "visual-assets 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/12_视觉资产"
+      }
+    ]
+  },
+  "workDirectory": [
+    {
+      "contentId": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+      "tNumber": "T012",
+      "title": "T012 ✅ Image2 脏点怎么解决",
+      "recorded": true,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+            "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+            "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+            "line": 4,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T012 | 09-07 | 1分钟彻底解决AI生图脏兮兮 | [已录制定稿](已做/T012_图片去噪教程/T012_重拍已录制定稿_原文版.txt) · [图文教程](已做/T012_图片去噪教程/图片去噪教程.html) | [档案](../../内容数据统计/视频项目/2026-09-07-1分钟彻底解决AI生图脏兮兮/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+          "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+          "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+          "line": 4,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md"
+    },
+    {
+      "contentId": "50231d18-b055-4987-a628-5f24dc58ed34",
+      "tNumber": "T016",
+      "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-bc6277257ebea2a67cca4d4e5b2f8144",
+            "relativePath": "04_选题库/AI教程/已做/T016_✅WorkBuddy自媒体实操重拍.md",
+            "hash": "cf775266455f462d1d6726d9f951e84ef61f715b062c1b43dd17cafd2cfe65b0",
+            "line": 5,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T016 | 09-10 | WorkBuddy做自媒体=降维打击 | [逐字稿对照页](已做/T016_WorkBuddy自媒体实操重拍/T016_逐字稿对照.html) | [档案](../../内容数据统计/视频项目/2026-09-10-WorkBuddy做自媒体=降维打击/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-bc6277257ebea2a67cca4d4e5b2f8144",
+          "relativePath": "04_选题库/AI教程/已做/T016_✅WorkBuddy自媒体实操重拍.md",
+          "hash": "cf775266455f462d1d6726d9f951e84ef61f715b062c1b43dd17cafd2cfe65b0",
+          "line": 5,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T016_WorkBuddy自媒体实操重拍/T016_逐字稿对照.html"
+    },
+    {
+      "contentId": "e6aa1860-ca12-422d-a876-fc746368c69c",
+      "tNumber": "T019",
+      "title": "T019 ✅ 邪恶银渐层发布会",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-92468b6035f3f9523757244cb1f2825c",
+            "relativePath": "04_选题库/AI教程/已做/T019_✅邪恶银渐层发布会.md",
+            "hash": "48e2c6719151c278d2a67b987c0c287a01403b90f7385a2f0fe37d6ae749f08b",
+            "line": 5,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T019 | 09-18 | 邪恶银渐层，震撼发布 | [交接文档](已做/T019_邪恶银渐层发布会/交接文档.md) · [第二条教程的逐字稿定稿](已做/T019_邪恶银渐层发布会/教程/逐字稿_定稿.md) | [档案](../../内容数据统计/视频项目/2026-09-18-邪恶银渐层，震撼发布/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-92468b6035f3f9523757244cb1f2825c",
+          "relativePath": "04_选题库/AI教程/已做/T019_✅邪恶银渐层发布会.md",
+          "hash": "48e2c6719151c278d2a67b987c0c287a01403b90f7385a2f0fe37d6ae749f08b",
+          "line": 5,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "conflict",
+      "sourceConflict": "T019 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/01_夏冬一Ai_逐字稿.md"
+    },
+    {
+      "contentId": "4ada4c75-9420-41a0-ac81-219eb9ce2c74",
+      "tNumber": "T022",
+      "title": "T022 ✅ 小猫教程",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-09-27 按平台数据回写）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-32ec833f8925e02ebd59c92d56792d92",
+            "relativePath": "04_选题库/AI教程/已做/T022_✅小猫教程.md",
+            "hash": "eeb8abb403284657171a1e3d8b2e6bb59a5bb3b2e8ced8779dcb74f343333668",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-09-27 按平台数据回写）",
+            "status": "已发布（2026-09-27 按平台数据回写）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-32ec833f8925e02ebd59c92d56792d92",
+          "relativePath": "04_选题库/AI教程/已做/T022_✅小猫教程.md",
+          "hash": "eeb8abb403284657171a1e3d8b2e6bb59a5bb3b2e8ced8779dcb74f343333668",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-09-27 按平台数据回写）",
+          "status": "已发布（2026-09-27 按平台数据回写）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/已做/T022_✅小猫教程.md"
+    },
+    {
+      "contentId": "69c46261-1b3e-4e51-a4ab-fccb385e8e5a",
+      "tNumber": "T025",
+      "title": "T025 ✅ AI 电子衣橱",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-10-07 晚三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T025_AI电子衣橱/标题封面简介.md)）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-e46606da1a7b8d5b5c897cfae9aa4b5d",
+            "relativePath": "04_选题库/AI教程/已做/T025_✅AI电子衣橱.md",
+            "hash": "fedeb2dc6e205ad0f5c44946fd5fe3cc8a595582d538a4f33fe5dba5d1ac01a1",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-10-07 晚三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T025_AI电子衣橱/标题封面简介.md)）",
+            "status": "已发布（2026-10-07 晚三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T025_AI电子衣橱/标题封面简介.md)）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T025 | 10-07 | 衣柜明明有衣服还是不知道穿什么？AI电子衣橱保姆级教程 | 文件夹里没有逐字稿，只有 [标题封面简介](已做/T025_AI电子衣橱/标题封面简介.md)、封面和开头重做的素材 | [档案](../../内容数据统计/视频项目/2026-10-07-衣柜明明有衣服还是不知道穿什么？AI电子衣橱保姆/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-e46606da1a7b8d5b5c897cfae9aa4b5d",
+          "relativePath": "04_选题库/AI教程/已做/T025_✅AI电子衣橱.md",
+          "hash": "fedeb2dc6e205ad0f5c44946fd5fe3cc8a595582d538a4f33fe5dba5d1ac01a1",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-10-07 晚三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T025_AI电子衣橱/标题封面简介.md)）",
+          "status": "已发布（2026-10-07 晚三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T025_AI电子衣橱/标题封面简介.md)）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "conflict",
+      "sourceConflict": "T025 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/工具/出图_定稿.py"
+    },
+    {
+      "contentId": "e4faf542-898a-4f1d-a6c5-c84af521542f",
+      "tNumber": "T026",
+      "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+      "recorded": true,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-10-01 锦成说已发布，封面是「连书带作者一起蒸馏？／AI专属私教」那张；标题、简介以平台原文为准，收口建档后补）。之前：草稿（2026-09-30 锦成确认已做；2026-09-28 逐字稿定稿，见 05_内容草稿/已做/T026_书籍蒸馏成Skill/定稿.md；录屏后核对第三步纳瓦尔回答那句）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-0b0ea3afb4c682f94683d97cc3c5f73b",
+            "relativePath": "04_选题库/AI教程/已做/T026_✅把书蒸馏成Skill教程.md",
+            "hash": "5288e5250f7e88236eebf1df8ef6ff74737c1c49512730123481d20c11ef9188",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-10-01 锦成说已发布，封面是「连书带作者一起蒸馏？／AI专属私教」那张；标题、简介以平台原文为准，收口建档后补）。之前：草稿（2026-09-30 锦成确认已做；2026-09-28 逐字稿定稿，见 05_内容草稿/已做/T026_书籍蒸馏成Skill/定稿.md；录屏后核对第三步纳瓦尔回答那句）",
+            "status": "已发布（2026-10-01 锦成说已发布，封面是「连书带作者一起蒸馏？／AI专属私教」那张；标题、简介以平台原文为准，收口建档后补）。之前：草稿（2026-09-30 锦成确认已做；2026-09-28 逐字稿定稿，见 05_内容草稿/已做/T026_书籍蒸馏成Skill/定稿.md；录屏后核对第三步纳瓦尔回答那句）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T026 | 10-01 | 书读完就忘？把书和作者蒸馏成 Skill，成为你的专属私教 | [定稿](已做/T026_书籍蒸馏成Skill/定稿.md) · [创作页](http://127.0.0.1:8977/p/p8r5nq7jhj) | [档案](../../内容数据统计/视频项目/2026-10-01-书读完就忘？把书和作者蒸馏成Skill，成为你的/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-0b0ea3afb4c682f94683d97cc3c5f73b",
+          "relativePath": "04_选题库/AI教程/已做/T026_✅把书蒸馏成Skill教程.md",
+          "hash": "5288e5250f7e88236eebf1df8ef6ff74737c1c49512730123481d20c11ef9188",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-10-01 锦成说已发布，封面是「连书带作者一起蒸馏？／AI专属私教」那张；标题、简介以平台原文为准，收口建档后补）。之前：草稿（2026-09-30 锦成确认已做；2026-09-28 逐字稿定稿，见 05_内容草稿/已做/T026_书籍蒸馏成Skill/定稿.md；录屏后核对第三步纳瓦尔回答那句）",
+          "status": "已发布（2026-10-01 锦成说已发布，封面是「连书带作者一起蒸馏？／AI专属私教」那张；标题、简介以平台原文为准，收口建档后补）。之前：草稿（2026-09-30 锦成确认已做；2026-09-28 逐字稿定稿，见 05_内容草稿/已做/T026_书籍蒸馏成Skill/定稿.md；录屏后核对第三步纳瓦尔回答那句）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T026_书籍蒸馏成Skill/T026_创作页.html"
+    },
+    {
+      "contentId": "dbba2461-8e0c-47a7-a971-fbd3cacb4a6a",
+      "tNumber": "T028",
+      "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-10-05 下午三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T028_Skill教程/标题封面简介.md)；逐字稿定稿见 [逐字稿定稿](../../../05_内容草稿/已做/T028_Skill教程/逐字稿_定稿.md)）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-9629723aa02d4602419c1973f5168429",
+            "relativePath": "04_选题库/AI教程/已做/T028_✅Skill教程.md",
+            "hash": "073e5a5b2a6b6ab610fbd0c6a438253e6d2cabafb3589a5ea913be7f59cbf3ca",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-10-05 下午三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T028_Skill教程/标题封面简介.md)；逐字稿定稿见 [逐字稿定稿](../../../05_内容草稿/已做/T028_Skill教程/逐字稿_定稿.md)）",
+            "status": "已发布（2026-10-05 下午三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T028_Skill教程/标题封面简介.md)；逐字稿定稿见 [逐字稿定稿](../../../05_内容草稿/已做/T028_Skill教程/逐字稿_定稿.md)）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T028 | 10-05 | WorkBuddy小白教程：3分钟做出你的第一个Skill | [逐字稿定稿](已做/T028_Skill教程/逐字稿_定稿.md) | [档案](../../内容数据统计/视频项目/2026-10-05-WorkBuddy小白教程：3分钟做出你的第一个/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-9629723aa02d4602419c1973f5168429",
+          "relativePath": "04_选题库/AI教程/已做/T028_✅Skill教程.md",
+          "hash": "073e5a5b2a6b6ab610fbd0c6a438253e6d2cabafb3589a5ea913be7f59cbf3ca",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-10-05 下午三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T028_Skill教程/标题封面简介.md)；逐字稿定稿见 [逐字稿定稿](../../../05_内容草稿/已做/T028_Skill教程/逐字稿_定稿.md)）",
+          "status": "已发布（2026-10-05 下午三个平台都发了；标题、封面文字、简介和三个平台的填法见 [标题封面简介](../../../05_内容草稿/已做/T028_Skill教程/标题封面简介.md)；逐字稿定稿见 [逐字稿定稿](../../../05_内容草稿/已做/T028_Skill教程/逐字稿_定稿.md)）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T028_Skill教程/逐字稿_工作稿.md"
+    },
+    {
+      "contentId": "9944d397-de93-406a-a10e-63bfd643e196",
+      "tNumber": "T029",
+      "title": "T029 ✅ WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames",
+      "recorded": true,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（已录未发：2026-10-08 用 TikHub 查主号公开作品，没有这一条，视频项目里也没有它的档案；2026-09-30 锦成确认已做；2026-09-29 按锦成定的「照千雪AI、狗爷聊AI 中译中」写出第一版，见 [创作页](http://127.0.0.1:8977/p/grkaf4uqn3)，页面文件 [T029_创作页.html](../../../05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html)；稿子以创作页为准）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-248e332a7efbaa3e013769590bfbaec6",
+            "relativePath": "04_选题库/AI教程/已做/T029_✅WorkBuddy必装三个Skill.md",
+            "hash": "1c3c8e58f59fb90516bd17af470e584a572a9c22c9c7b32a6b4a98e9e4288db1",
+            "line": 5,
+            "text": "- **状态**：草稿（已录未发：2026-10-08 用 TikHub 查主号公开作品，没有这一条，视频项目里也没有它的档案；2026-09-30 锦成确认已做；2026-09-29 按锦成定的「照千雪AI、狗爷聊AI 中译中」写出第一版，见 [创作页](http://127.0.0.1:8977/p/grkaf4uqn3)，页面文件 [T029_创作页.html](../../../05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html)；稿子以创作页为准）",
+            "status": "草稿（已录未发：2026-10-08 用 TikHub 查主号公开作品，没有这一条，视频项目里也没有它的档案；2026-09-30 锦成确认已做；2026-09-29 按锦成定的「照千雪AI、狗爷聊AI 中译中」写出第一版，见 [创作页](http://127.0.0.1:8977/p/grkaf4uqn3)，页面文件 [T029_创作页.html](../../../05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html)；稿子以创作页为准）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T029 | WorkBuddy 必装的三个 Skill（教程） | 9-29 录完，还没发（10-08 查过抖音主号，没有这条） | [定稿](T029_WorkBuddy必装三个Skill/定稿.md) · [创作页](http://127.0.0.1:8977/p/grkaf4uqn3) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-248e332a7efbaa3e013769590bfbaec6",
+          "relativePath": "04_选题库/AI教程/已做/T029_✅WorkBuddy必装三个Skill.md",
+          "hash": "1c3c8e58f59fb90516bd17af470e584a572a9c22c9c7b32a6b4a98e9e4288db1",
+          "line": 5,
+          "text": "- **状态**：草稿（已录未发：2026-10-08 用 TikHub 查主号公开作品，没有这一条，视频项目里也没有它的档案；2026-09-30 锦成确认已做；2026-09-29 按锦成定的「照千雪AI、狗爷聊AI 中译中」写出第一版，见 [创作页](http://127.0.0.1:8977/p/grkaf4uqn3)，页面文件 [T029_创作页.html](../../../05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html)；稿子以创作页为准）",
+          "status": "草稿（已录未发：2026-10-08 用 TikHub 查主号公开作品，没有这一条，视频项目里也没有它的档案；2026-09-30 锦成确认已做；2026-09-29 按锦成定的「照千雪AI、狗爷聊AI 中译中」写出第一版，见 [创作页](http://127.0.0.1:8977/p/grkaf4uqn3)，页面文件 [T029_创作页.html](../../../05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html)；稿子以创作页为准）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html"
+    },
+    {
+      "contentId": "22f02a11-fa5d-4211-ae50-e31275a04d42",
+      "tNumber": "T030",
+      "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（抖音标题《WorkBuddy小白教程：2分钟搭好你的个人知识库》，[抖音作品](https://www.douyin.com/video/7694289546426584374)；2026-10-08 用 TikHub 查主号公开作品核实）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-d3a8e630a49b81f746a0fa781db8ce05",
+            "relativePath": "04_选题库/AI教程/已做/T030_✅WorkBuddy搭个人知识库教程.md",
+            "hash": "51b7e8038749cfa7222c1ef7c6e81d6e6bc29914fa14a7eab9d3dc36608e8a9c",
+            "line": 5,
+            "text": "- **状态**：已发布（抖音标题《WorkBuddy小白教程：2分钟搭好你的个人知识库》，[抖音作品](https://www.douyin.com/video/7694289546426584374)；2026-10-08 用 TikHub 查主号公开作品核实）",
+            "status": "已发布（抖音标题《WorkBuddy小白教程：2分钟搭好你的个人知识库》，[抖音作品](https://www.douyin.com/video/7694289546426584374)；2026-10-08 用 TikHub 查主号公开作品核实）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T030 | 10-08 | WorkBuddy小白教程：2分钟搭好你的个人知识库 | [创作页](http://127.0.0.1:8977/p/yy9u3hkaut) · [图文教程](已做/T030_WorkBuddy搭个人知识库教程/教程/用WorkBuddy搭个人知识库教程.md) | 还没做发布收口 |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-d3a8e630a49b81f746a0fa781db8ce05",
+          "relativePath": "04_选题库/AI教程/已做/T030_✅WorkBuddy搭个人知识库教程.md",
+          "hash": "51b7e8038749cfa7222c1ef7c6e81d6e6bc29914fa14a7eab9d3dc36608e8a9c",
+          "line": 5,
+          "text": "- **状态**：已发布（抖音标题《WorkBuddy小白教程：2分钟搭好你的个人知识库》，[抖音作品](https://www.douyin.com/video/7694289546426584374)；2026-10-08 用 TikHub 查主号公开作品核实）",
+          "status": "已发布（抖音标题《WorkBuddy小白教程：2分钟搭好你的个人知识库》，[抖音作品](https://www.douyin.com/video/7694289546426584374)；2026-10-08 用 TikHub 查主号公开作品核实）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T030_WorkBuddy搭个人知识库教程/T030_创作页.html"
+    },
+    {
+      "contentId": "f2c19540-7cc6-404b-a870-fffbafb9404d",
+      "tNumber": "T031",
+      "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-09-29 晚抖音发布，见 07_如何做自媒体/2026-09-30_与博文沟通 会议纪要「昨天发的人生指南（T031）」；视频档案 内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/ 还没对上编号）。之前：草稿（2026-09-28 晚已录制；逐字稿以创作页为准，[05_内容草稿/已做/T031_AI时代的齐民要术/](../../../05_内容草稿/已做/T031_AI时代的齐民要术/)；录屏用 Claude，口播说「发给你常用的 AI，豆包、WorkBuddy 都行」）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-e53ec5a21f932e6ac7b9e5ba55964990",
+            "relativePath": "04_选题库/AI教程/已做/T031_✅AI时代的齐民要术_高性价比人生指南.md",
+            "hash": "bac730cd3b8c62e5603bd45e4a4264487d62b80387a53acd8da8ec631744cef7",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-09-29 晚抖音发布，见 07_如何做自媒体/2026-09-30_与博文沟通 会议纪要「昨天发的人生指南（T031）」；视频档案 内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/ 还没对上编号）。之前：草稿（2026-09-28 晚已录制；逐字稿以创作页为准，[05_内容草稿/已做/T031_AI时代的齐民要术/](../../../05_内容草稿/已做/T031_AI时代的齐民要术/)；录屏用 Claude，口播说「发给你常用的 AI，豆包、WorkBuddy 都行」）",
+            "status": "已发布（2026-09-29 晚抖音发布，见 07_如何做自媒体/2026-09-30_与博文沟通 会议纪要「昨天发的人生指南（T031）」；视频档案 内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/ 还没对上编号）。之前：草稿（2026-09-28 晚已录制；逐字稿以创作页为准，[05_内容草稿/已做/T031_AI时代的齐民要术/](../../../05_内容草稿/已做/T031_AI时代的齐民要术/)；录屏用 Claude，口播说「发给你常用的 AI，豆包、WorkBuddy 都行」）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T031 | 09-29 | AI时代的《齐民要术》来了！当代人的人生说明书 | [创作页](http://127.0.0.1:8977/p/vmpwbg676a) · [图文教程](已做/T031_AI时代的齐民要术/教程/人生指南装进AI_教程.md) | [档案](../../内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-e53ec5a21f932e6ac7b9e5ba55964990",
+          "relativePath": "04_选题库/AI教程/已做/T031_✅AI时代的齐民要术_高性价比人生指南.md",
+          "hash": "bac730cd3b8c62e5603bd45e4a4264487d62b80387a53acd8da8ec631744cef7",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-09-29 晚抖音发布，见 07_如何做自媒体/2026-09-30_与博文沟通 会议纪要「昨天发的人生指南（T031）」；视频档案 内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/ 还没对上编号）。之前：草稿（2026-09-28 晚已录制；逐字稿以创作页为准，[05_内容草稿/已做/T031_AI时代的齐民要术/](../../../05_内容草稿/已做/T031_AI时代的齐民要术/)；录屏用 Claude，口播说「发给你常用的 AI，豆包、WorkBuddy 都行」）",
+          "status": "已发布（2026-09-29 晚抖音发布，见 07_如何做自媒体/2026-09-30_与博文沟通 会议纪要「昨天发的人生指南（T031）」；视频档案 内容数据统计/视频项目/2026-09-29-AI时代的《齐民要术》来了！当代人的人生说明书/ 还没对上编号）。之前：草稿（2026-09-28 晚已录制；逐字稿以创作页为准，[05_内容草稿/已做/T031_AI时代的齐民要术/](../../../05_内容草稿/已做/T031_AI时代的齐民要术/)；录屏用 Claude，口播说「发给你常用的 AI，豆包、WorkBuddy 都行」）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T031_AI时代的齐民要术/T031_创作页.html"
+    },
+    {
+      "contentId": "daa96500-7fc2-45b4-a23d-1843b48d83be",
+      "tNumber": "T047",
+      "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（抖音标题《起号焚决 2周轻松涨粉5000？》，封面「AI起号 轻松涨粉5000」）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-7ce7cc6e2f53589325765fbc9416e4b0",
+            "relativePath": "04_选题库/AI教程/已做/T047_✅字幕长图Skill起号.md",
+            "hash": "1e2a6367aa023104987b3dd78bfbabc085238a8c00aebd5463ad41fa5aa0c6fb",
+            "line": 5,
+            "text": "- **状态**：已发布（抖音标题《起号焚决 2周轻松涨粉5000？》，封面「AI起号 轻松涨粉5000」）",
+            "status": "已发布（抖音标题《起号焚决 2周轻松涨粉5000？》，封面「AI起号 轻松涨粉5000」）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T047 | 10-13 | 起号焚决 2周轻松涨粉5000？ | 脚本在飞书 [长文skill分享](https://oiwu7t09wwq.feishu.cn/docx/RLaGdPnHMotZQgx2IvVcQOBZnLc) · [置顶评论提示词和简介](已做/T047_字幕长图Skill/发布文字.md) · [飞书教程](https://oiwu7t09wwq.feishu.cn/wiki/F7iowyvgHifAqRkBvDAcxSAjngh) | 还没建档案 |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-7ce7cc6e2f53589325765fbc9416e4b0",
+          "relativePath": "04_选题库/AI教程/已做/T047_✅字幕长图Skill起号.md",
+          "hash": "1e2a6367aa023104987b3dd78bfbabc085238a8c00aebd5463ad41fa5aa0c6fb",
+          "line": 5,
+          "text": "- **状态**：已发布（抖音标题《起号焚决 2周轻松涨粉5000？》，封面「AI起号 轻松涨粉5000」）",
+          "status": "已发布（抖音标题《起号焚决 2周轻松涨粉5000？》，封面「AI起号 轻松涨粉5000」）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/已做/T047_✅字幕长图Skill起号.md"
+    },
+    {
+      "contentId": "c09b7b43-95cf-461c-a8a0-ed11df859b19",
+      "tNumber": "T006",
+      "title": "T006 零基础搭出你的第一个个人知识库：有手就行的完整流程",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-25b9440597c7fa048670a454e6badfc4",
+            "relativePath": "04_选题库/AI教程/待做/T006_零基础搭第一个个人知识库.md",
+            "hash": "1fc8a233f843bca1690cd9d835198744da0ee40d97416488bc66a036f1e6d63b",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-25b9440597c7fa048670a454e6badfc4",
+          "relativePath": "04_选题库/AI教程/待做/T006_零基础搭第一个个人知识库.md",
+          "hash": "1fc8a233f843bca1690cd9d835198744da0ee40d97416488bc66a036f1e6d63b",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T006_零基础搭第一个个人知识库.md"
+    },
+    {
+      "contentId": "68b4441a-2b7b-493f-a064-d3b31fd0947b",
+      "tNumber": "T013",
+      "title": "T013 重新做拼贴风 AI 教程",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": true,
+        "status": "待写（原计划 2026-09-04，现已顺延，日期待定）",
+        "reason": "顺延，日期待定",
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-6290fe5fbd8e571d0ddef7296b1a1ee5",
+            "relativePath": "04_选题库/AI教程/待做/T013_重新做拼贴风AI教程.md",
+            "hash": "8d9e131580b8cbfc03f67f0a8640346c2946a9b5e50f87ccbf030f16fc4a7452",
+            "line": 4,
+            "text": "- **状态**：待写（原计划 2026-09-04，现已顺延，日期待定）",
+            "status": "待写（原计划 2026-09-04，现已顺延，日期待定）",
+            "paused": true,
+            "reason": "顺延，日期待定"
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-6290fe5fbd8e571d0ddef7296b1a1ee5",
+          "relativePath": "04_选题库/AI教程/待做/T013_重新做拼贴风AI教程.md",
+          "hash": "8d9e131580b8cbfc03f67f0a8640346c2946a9b5e50f87ccbf030f16fc4a7452",
+          "line": 4,
+          "text": "- **状态**：待写（原计划 2026-09-04，现已顺延，日期待定）",
+          "status": "待写（原计划 2026-09-04，现已顺延，日期待定）",
+          "paused": true,
+          "reason": "顺延，日期待定"
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T013_重新做拼贴风AI教程.md"
+    },
+    {
+      "contentId": "c468b7fb-e67c-4bcd-a4b7-244ecf640232",
+      "tNumber": "T014",
+      "title": "T014 VidMuse 商单",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写（2026-09-04 计划制作）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-e2591f7d401710029a7c32d678450f23",
+            "relativePath": "04_选题库/AI教程/待做/T014_VidMuse商单.md",
+            "hash": "c2a55ee2449b723e76f119bfed4521176c409ca6bfdea4b82b11eb206f178928",
+            "line": 4,
+            "text": "- **状态**：待写（2026-09-04 计划制作）",
+            "status": "待写（2026-09-04 计划制作）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-e2591f7d401710029a7c32d678450f23",
+          "relativePath": "04_选题库/AI教程/待做/T014_VidMuse商单.md",
+          "hash": "c2a55ee2449b723e76f119bfed4521176c409ca6bfdea4b82b11eb206f178928",
+          "line": 4,
+          "text": "- **状态**：待写（2026-09-04 计划制作）",
+          "status": "待写（2026-09-04 计划制作）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T014_VidMuse商单.md"
+    },
+    {
+      "contentId": "a6ffce1f-d8a1-4c16-a5ab-25408c4e10c8",
+      "tNumber": "T024",
+      "title": "T024 用 AI 做网站",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-60561f4729ac0d39dbe3d66f65d34ccd",
+            "relativePath": "04_选题库/AI教程/待做/T024_用AI做网站.md",
+            "hash": "12cb4faa5ea6416995824007ce53ccb5d3235a5dcd1ff3dece99d3c87f58e844",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-60561f4729ac0d39dbe3d66f65d34ccd",
+          "relativePath": "04_选题库/AI教程/待做/T024_用AI做网站.md",
+          "hash": "12cb4faa5ea6416995824007ce53ccb5d3235a5dcd1ff3dece99d3c87f58e844",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T024_用AI做网站.md"
+    },
+    {
+      "contentId": "6b42578b-72d8-4bd6-a8b7-b02cdf76b017",
+      "tNumber": "T033",
+      "title": "T033 新手用 Agent 必踩的坑：AI 糊弄你的那些毛病，怎么一条条治",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-bd20c66b10d85552d66220a17a7bab68",
+            "relativePath": "04_选题库/AI教程/待做/T033_新手用Agent必踩的坑.md",
+            "hash": "dff5b938f147216e0b3cab7827604a62d0c4714424ec42b489efe8fb39bede91",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-bd20c66b10d85552d66220a17a7bab68",
+          "relativePath": "04_选题库/AI教程/待做/T033_新手用Agent必踩的坑.md",
+          "hash": "dff5b938f147216e0b3cab7827604a62d0c4714424ec42b489efe8fb39bede91",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T033_新手用Agent必踩的坑.md"
+    },
+    {
+      "contentId": "69bd20eb-df33-4b89-a2bc-f925238f1645",
+      "tNumber": "T045",
+      "title": "T045 用 WorkBuddy 十步学透一个陌生领域",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-3c5edbc6b33d779288d6280db632d225",
+            "relativePath": "04_选题库/AI教程/待做/T045_用WorkBuddy十步学透一个陌生领域.md",
+            "hash": "a9b8360d57a584d9a592c92f7cb9a76c45b9791a8bf1bfd9737066ff5c49bd61",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T045 | 用 WorkBuddy 十步学透一个陌生领域（教程，讲怎么用 AI 学习） | 10-14 做完调研报告（X、Reddit、GitHub、中文、论文），正在用 dbs-learning 快速吸收，还没定叙事 | [调研报告](T045_用WorkBuddy十步学透一个陌生领域/调研报告_用AI学习.md) · [学习课题](T045_用WorkBuddy十步学透一个陌生领域/学习课题_用AI学习/) · [选题卡](../04_选题库/AI教程/待做/T045_用WorkBuddy十步学透一个陌生领域.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-3c5edbc6b33d779288d6280db632d225",
+          "relativePath": "04_选题库/AI教程/待做/T045_用WorkBuddy十步学透一个陌生领域.md",
+          "hash": "a9b8360d57a584d9a592c92f7cb9a76c45b9791a8bf1bfd9737066ff5c49bd61",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI教程/待做/T045_用WorkBuddy十步学透一个陌生领域.md"
+    },
+    {
+      "contentId": "b09978a0-4383-44ab-afad-50dbab72fda5",
+      "tNumber": "T018",
+      "title": "T018 ✅ AI10大热词科普",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-d5ed0d1efecf9b31204cff6031cf8113",
+            "relativePath": "04_选题库/AI科普/已做/T018_✅AI10大热词科普.md",
+            "hash": "7960c187ea4a1ed46ad229e34d0b9c1e140e36aa5d33598af5fdbbbccba034db",
+            "line": 5,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T018 | 09-19 | AI科普！4分钟搞懂10大AI黑话 | [最终稿](已做/T018_七个AI词一条线/最终稿.md) · [录制版逐字稿](已做/T018_七个AI词一条线/录制版逐字稿.md) | [档案](../../内容数据统计/视频项目/2026-09-19-AI科普！4分钟搞懂10大AI黑话/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-d5ed0d1efecf9b31204cff6031cf8113",
+          "relativePath": "04_选题库/AI科普/已做/T018_✅AI10大热词科普.md",
+          "hash": "7960c187ea4a1ed46ad229e34d0b9c1e140e36aa5d33598af5fdbbbccba034db",
+          "line": 5,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T018_七个AI词一条线/录制版逐字稿.md"
+    },
+    {
+      "contentId": "cb233722-939f-4bcb-a8d4-adfa9c6fd4d6",
+      "tNumber": "T021",
+      "title": "T021 ✅ Jev 模型热点",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（2026-09-27 按平台数据回写；原记录「草稿，2026-09-22 已按确认框架完成改写，待锦成审稿」）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-54bb52102a9d2748e26e393c558a6dd8",
+            "relativePath": "04_选题库/AI科普/已做/T021_✅Jev模型热点.md",
+            "hash": "59f68847ac92d108cf645504b1ba83f5a879eee4a4a6108b94a4537612cad538",
+            "line": 5,
+            "text": "- **状态**：已发布（2026-09-27 按平台数据回写；原记录「草稿，2026-09-22 已按确认框架完成改写，待锦成审稿」）",
+            "status": "已发布（2026-09-27 按平台数据回写；原记录「草稿，2026-09-22 已按确认框架完成改写，待锦成审稿」）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T021 | 09-23 | Jev又终结大模型了吗？它有什么用？ | 文件夹里只有参考素材和「一句话成片复刻」试验，没有逐字稿 | [档案](../../内容数据统计/视频项目/2026-09-23-Jev又终结大模型了吗？它有什么用？/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-54bb52102a9d2748e26e393c558a6dd8",
+          "relativePath": "04_选题库/AI科普/已做/T021_✅Jev模型热点.md",
+          "hash": "59f68847ac92d108cf645504b1ba83f5a879eee4a4a6108b94a4537612cad538",
+          "line": 5,
+          "text": "- **状态**：已发布（2026-09-27 按平台数据回写；原记录「草稿，2026-09-22 已按确认框架完成改写，待锦成审稿」）",
+          "status": "已发布（2026-09-27 按平台数据回写；原记录「草稿，2026-09-22 已按确认框架完成改写，待锦成审稿」）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "conflict",
+      "sourceConflict": "T021 有多个稿件而没有唯一当前入口，请选择继续的来源",
+      "relativePath": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/FredTalk_新模型JEV速度快1000倍成本还巨低.md"
+    },
+    {
+      "contentId": "8484c9e2-6aaa-46de-ac10-ef6cf4302f10",
+      "tNumber": "T001",
+      "title": "T001 什么是大模型：豆包、ChatGPT 背后到底是个什么东西",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-f06d76d855a01f5595e1fd8d79b8779a",
+            "relativePath": "04_选题库/AI科普/待做/T001_什么是大模型.md",
+            "hash": "c4554d3e049f55a8445641f3bf9759bf076d0fb342097a553acfcaffdc10b900",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-f06d76d855a01f5595e1fd8d79b8779a",
+          "relativePath": "04_选题库/AI科普/待做/T001_什么是大模型.md",
+          "hash": "c4554d3e049f55a8445641f3bf9759bf076d0fb342097a553acfcaffdc10b900",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T001_什么是大模型.md"
+    },
+    {
+      "contentId": "eb91195c-7e97-49e2-a36d-bd8409dfe16a",
+      "tNumber": "T002",
+      "title": "T002 什么是 AI Agent：AI 从只能聊天到替你干活，中间发生了什么",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-8500a3a5e26ebf00d8085a65ae19d0c5",
+            "relativePath": "04_选题库/AI科普/待做/T002_什么是AI_Agent.md",
+            "hash": "19e6516e3a4fb1c1e79762ebfaa043070c6a3ea7c3651c296be2d312e6445050",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-8500a3a5e26ebf00d8085a65ae19d0c5",
+          "relativePath": "04_选题库/AI科普/待做/T002_什么是AI_Agent.md",
+          "hash": "19e6516e3a4fb1c1e79762ebfaa043070c6a3ea7c3651c296be2d312e6445050",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T002_什么是AI_Agent.md"
+    },
+    {
+      "contentId": "1d4f32a3-a9a4-443a-a9a8-fa196050fd31",
+      "tNumber": "T004",
+      "title": "T004 一句顶五百字的提示词习惯：让 AI 先问你，再干活",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-beb9df7f5ec499b2ce0e2188f97b5b80",
+            "relativePath": "04_选题库/AI科普/待做/T004_让AI先问你再干活的提示词习惯.md",
+            "hash": "550b8f50fc46eeb6ae1ca1f6f7e67c541b7bc5b2d73f6157e4baf3ab8c9ebe59",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-beb9df7f5ec499b2ce0e2188f97b5b80",
+          "relativePath": "04_选题库/AI科普/待做/T004_让AI先问你再干活的提示词习惯.md",
+          "hash": "550b8f50fc46eeb6ae1ca1f6f7e67c541b7bc5b2d73f6157e4baf3ab8c9ebe59",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T004_让AI先问你再干活的提示词习惯.md"
+    },
+    {
+      "contentId": "1eca0e40-4a24-477f-a265-ad0388a1cd56",
+      "tNumber": "T005",
+      "title": "T005 个人知识库放本地还是放云端：我的判断和理由",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-27c7eb86e923fac489fb709e3ef72b44",
+            "relativePath": "04_选题库/AI科普/待做/T005_个人知识库放本地还是云端.md",
+            "hash": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-27c7eb86e923fac489fb709e3ef72b44",
+          "relativePath": "04_选题库/AI科普/待做/T005_个人知识库放本地还是云端.md",
+          "hash": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T005_个人知识库放本地还是云端.md"
+    },
+    {
+      "contentId": "623b4f05-e50b-4663-ac5a-cd845cce84cf",
+      "tNumber": "T007",
+      "title": "T007 普通人学 AI 的三步路径：找对信息源、有问题问 AI、干中学",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-3bba2f229694a52103d81cc40c464b69",
+            "relativePath": "04_选题库/AI科普/待做/T007_普通人学AI的三步路径.md",
+            "hash": "15dc5b891c4cda067c006c3323be0df341ae4caa015f57a31c990ad95d64a295",
+            "line": 4,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-3bba2f229694a52103d81cc40c464b69",
+          "relativePath": "04_选题库/AI科普/待做/T007_普通人学AI的三步路径.md",
+          "hash": "15dc5b891c4cda067c006c3323be0df341ae4caa015f57a31c990ad95d64a295",
+          "line": 4,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T007_普通人学AI的三步路径.md"
+    },
+    {
+      "contentId": "df0b90ec-10ed-44e4-a4be-6354e45e429a",
+      "tNumber": "T010",
+      "title": "T010 WorkBuddy 和豆包的免费、付费额度怎么选",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-a7c5e78c396ae6d61a92cd66c505c29b",
+            "relativePath": "04_选题库/AI科普/待做/T010_WorkBuddy和豆包免费付费额度怎么选.md",
+            "hash": "b876f6d5fdf55dd9b6ee219295dda189ad5e35cc7efe09f97b528e066b735a82",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T010 | WorkBuddy 和豆包的免费、付费额度怎么选（为了涨粉、帮大家） | 10-14 调研做完（官方价格、抖音小红书参考、自家评论区），等锦成实测几个数字后定叙事 | [调研汇总](T010_WorkBuddy和豆包免费付费额度怎么选/调研汇总_2026-10-14.md) · [选题卡](../04_选题库/AI科普/待做/T010_WorkBuddy和豆包免费付费额度怎么选.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-a7c5e78c396ae6d61a92cd66c505c29b",
+          "relativePath": "04_选题库/AI科普/待做/T010_WorkBuddy和豆包免费付费额度怎么选.md",
+          "hash": "b876f6d5fdf55dd9b6ee219295dda189ad5e35cc7efe09f97b528e066b735a82",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T010_WorkBuddy和豆包免费付费额度怎么选.md"
+    },
+    {
+      "contentId": "5572b6d9-1e76-4160-a6de-fd64e408880b",
+      "tNumber": "T032",
+      "title": "T032 苹果降噪耳机科普：用 AI 做的模型，直观看懂 AirPods 为什么能降噪",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-b3809c32b0cbce6891b6e5737881ec34",
+            "relativePath": "04_选题库/AI科普/待做/T032_苹果降噪耳机科普.md",
+            "hash": "fbeb2628df3189cd5db24ed87373ba6a5c85bc6b81142267e9a37a2e34bf9879",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-b3809c32b0cbce6891b6e5737881ec34",
+          "relativePath": "04_选题库/AI科普/待做/T032_苹果降噪耳机科普.md",
+          "hash": "fbeb2628df3189cd5db24ed87373ba6a5c85bc6b81142267e9a37a2e34bf9879",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/AI科普/待做/T032_苹果降噪耳机科普.md"
+    },
+    {
+      "contentId": "7dc7bb59-dd7a-4685-a80d-e89fdc95de19",
+      "tNumber": "T035",
+      "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-29b206636500b01d10eb626c6ed5c3c5",
+            "relativePath": "04_选题库/vibe知识大赏/已做/T035_✅状态杠杆.md",
+            "hash": "62c8bc6e5e7e425528a57bc7a9a34ed8757256e3986c1f0593af7b0a7abf6b7d",
+            "line": 7,
+            "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-29b206636500b01d10eb626c6ed5c3c5",
+          "relativePath": "04_选题库/vibe知识大赏/已做/T035_✅状态杠杆.md",
+          "hash": "62c8bc6e5e7e425528a57bc7a9a34ed8757256e3986c1f0593af7b0a7abf6b7d",
+          "line": 7,
+          "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/已做/T035_✅状态杠杆.md"
+    },
+    {
+      "contentId": "f75322cc-4e41-4847-a504-c1fbd643493d",
+      "tNumber": "T036",
+      "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-d8a58da32ac7ba16037a14c1622ba2b7",
+            "relativePath": "04_选题库/vibe知识大赏/已做/T036_✅聚光灯效应.md",
+            "hash": "a837e14f5ab2faf8e44f0d67d781fe1506da34413d149746969cf2830c3f637c",
+            "line": 7,
+            "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-d8a58da32ac7ba16037a14c1622ba2b7",
+          "relativePath": "04_选题库/vibe知识大赏/已做/T036_✅聚光灯效应.md",
+          "hash": "a837e14f5ab2faf8e44f0d67d781fe1506da34413d149746969cf2830c3f637c",
+          "line": 7,
+          "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/已做/T036_✅聚光灯效应.md"
+    },
+    {
+      "contentId": "cae072e7-8abf-49d1-af99-15680ff00275",
+      "tNumber": "T037",
+      "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-6d20189c96dda4d46796cbae4658ed16",
+            "relativePath": "04_选题库/vibe知识大赏/已做/T037_✅破窗效应.md",
+            "hash": "0c59c3bdd75fc8cc31f01f5b112c98997dc20302bf79081d877dca296c3e9888",
+            "line": 7,
+            "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-6d20189c96dda4d46796cbae4658ed16",
+          "relativePath": "04_选题库/vibe知识大赏/已做/T037_✅破窗效应.md",
+          "hash": "0c59c3bdd75fc8cc31f01f5b112c98997dc20302bf79081d877dca296c3e9888",
+          "line": 7,
+          "text": "- **状态**：已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "status": "已发布（锦成 2026-10-06 说已发在抖音小号）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/已做/T037_✅破窗效应.md"
+    },
+    {
+      "contentId": "565161fb-041c-43f1-a2d0-dc6c78dd0601",
+      "tNumber": "T039",
+      "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（锦成发布时把标题改成了「《幸福者退让》：让一步并不是怂」；封面小字用的是「让一步不是怂，是你输不起」那版）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-78de1ad59bed530e367cc80bf82308a8",
+            "relativePath": "04_选题库/vibe知识大赏/已做/T039_✅幸福者退让.md",
+            "hash": "d66eaf4f302bb47da22e7e2946abffc3e4fded6f71fffca6a3d9e8e01655e21a",
+            "line": 7,
+            "text": "- **状态**：已发布（锦成发布时把标题改成了「《幸福者退让》：让一步并不是怂」；封面小字用的是「让一步不是怂，是你输不起」那版）",
+            "status": "已发布（锦成发布时把标题改成了「《幸福者退让》：让一步并不是怂」；封面小字用的是「让一步不是怂，是你输不起」那版）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-78de1ad59bed530e367cc80bf82308a8",
+          "relativePath": "04_选题库/vibe知识大赏/已做/T039_✅幸福者退让.md",
+          "hash": "d66eaf4f302bb47da22e7e2946abffc3e4fded6f71fffca6a3d9e8e01655e21a",
+          "line": 7,
+          "text": "- **状态**：已发布（锦成发布时把标题改成了「《幸福者退让》：让一步并不是怂」；封面小字用的是「让一步不是怂，是你输不起」那版）",
+          "status": "已发布（锦成发布时把标题改成了「《幸福者退让》：让一步并不是怂」；封面小字用的是「让一步不是怂，是你输不起」那版）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/已做/T039_✅幸福者退让.md"
+    },
+    {
+      "contentId": "d09492c9-31ef-46a4-a591-8838267164b0",
+      "tNumber": "T040",
+      "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（锦成 2026-10-07 说已发在抖音小号）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-b8cda0f680b7db055d4c0d37969839e7",
+            "relativePath": "04_选题库/vibe知识大赏/已做/T040_✅门当户对.md",
+            "hash": "33b1729c459ce07cf72afd483e6b8d7299e7017939097747f9501a573bd5042c",
+            "line": 7,
+            "text": "- **状态**：已发布（锦成 2026-10-07 说已发在抖音小号）",
+            "status": "已发布（锦成 2026-10-07 说已发在抖音小号）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-b8cda0f680b7db055d4c0d37969839e7",
+          "relativePath": "04_选题库/vibe知识大赏/已做/T040_✅门当户对.md",
+          "hash": "33b1729c459ce07cf72afd483e6b8d7299e7017939097747f9501a573bd5042c",
+          "line": 7,
+          "text": "- **状态**：已发布（锦成 2026-10-07 说已发在抖音小号）",
+          "status": "已发布（锦成 2026-10-07 说已发在抖音小号）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/已做/T040_✅门当户对.md"
+    },
+    {
+      "contentId": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+      "tNumber": "T038",
+      "title": "T038 破罐破摔效应：为什么人总是容易半途而废",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+            "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+            "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+            "line": 7,
+            "text": "- **状态**：草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+            "status": "草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+          "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+          "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+          "line": 7,
+          "text": "- **状态**：草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+          "status": "草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md"
+    },
+    {
+      "contentId": "0c0880f3-5812-4c07-af74-f81435f6668a",
+      "tNumber": "T034",
+      "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-5fac3cff80d3c303095e8dd03810bb33",
+            "relativePath": "04_选题库/X/待做/T034_用AI搞定网络IP.md",
+            "hash": "5543fe1e626c9bcd24e6b946b7388b285400fecfbc30a2c79316f308da444cdc",
+            "line": 6,
+            "text": "- **状态**：草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+            "status": "草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T034 | 用 AI 搞定网络 IP（X 长文） | 10-06 出第一版，等你在创作页上改 | [创作页](http://127.0.0.1:8977/p/xneywy26dj) · [工作稿 v1](T034_用AI搞定网络IP/工作稿_v1.md) · [结构](T034_用AI搞定网络IP/结构.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-5fac3cff80d3c303095e8dd03810bb33",
+          "relativePath": "04_选题库/X/待做/T034_用AI搞定网络IP.md",
+          "hash": "5543fe1e626c9bcd24e6b946b7388b285400fecfbc30a2c79316f308da444cdc",
+          "line": 6,
+          "text": "- **状态**：草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+          "status": "草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html"
+    },
+    {
+      "contentId": "fdca2fe1-9bb0-4ea9-af11-03fbab5c8176",
+      "tNumber": "T041",
+      "title": "T041 涨粉两万后两个月只涨六千的复盘",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-10-07 下午按「秀肌肉加反思」写完第二版工作稿，等锦成看；创作页还是第一版旧稿，第二版定了再重新生成，固定网址 http://127.0.0.1:8977/p/6iqyx64746 不变）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-9a179a8eee3c95ac404576972391384b",
+            "relativePath": "04_选题库/X/待做/T041_涨粉两万后两个月只涨六千的复盘.md",
+            "hash": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c",
+            "line": 7,
+            "text": "- **状态**：草稿（2026-10-07 下午按「秀肌肉加反思」写完第二版工作稿，等锦成看；创作页还是第一版旧稿，第二版定了再重新生成，固定网址 http://127.0.0.1:8977/p/6iqyx64746 不变）",
+            "status": "草稿（2026-10-07 下午按「秀肌肉加反思」写完第二版工作稿，等锦成看；创作页还是第一版旧稿，第二版定了再重新生成，固定网址 http://127.0.0.1:8977/p/6iqyx64746 不变）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T041 | 涨粉两万后两个月只涨六千的复盘（X 长文） | 10-07 第一版，等你在创作页上改 | [创作页](http://127.0.0.1:8977/p/6iqyx64746) · [工作稿](T041_涨粉两万后两个月只涨六千的复盘/工作稿.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-9a179a8eee3c95ac404576972391384b",
+          "relativePath": "04_选题库/X/待做/T041_涨粉两万后两个月只涨六千的复盘.md",
+          "hash": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c",
+          "line": 7,
+          "text": "- **状态**：草稿（2026-10-07 下午按「秀肌肉加反思」写完第二版工作稿，等锦成看；创作页还是第一版旧稿，第二版定了再重新生成，固定网址 http://127.0.0.1:8977/p/6iqyx64746 不变）",
+          "status": "草稿（2026-10-07 下午按「秀肌肉加反思」写完第二版工作稿，等锦成看；创作页还是第一版旧稿，第二版定了再重新生成，固定网址 http://127.0.0.1:8977/p/6iqyx64746 不变）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html"
+    },
+    {
+      "contentId": "536e99a3-a0c4-4a63-aaf4-9ad994085911",
+      "tNumber": "T042",
+      "title": "T042 两周全网涨粉两万的AI教程做法",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-10-07 第一版已放进[创作页](../../../05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html)（固定网址 http://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填 https://github.com/jincheng2026/jcskill）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-b83a57a3817075e00f2b144c7e075080",
+            "relativePath": "04_选题库/X/待做/T042_两周全网涨粉两万的AI教程做法.md",
+            "hash": "01647021856cf9275f724dae0b11033ef08bc8cfca3f8ec97fc66a4ad45fdd35",
+            "line": 6,
+            "text": "- **状态**：草稿（2026-10-07 第一版已放进[创作页](../../../05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html)（固定网址 http://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填 https://github.com/jincheng2026/jcskill）",
+            "status": "草稿（2026-10-07 第一版已放进[创作页](../../../05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html)（固定网址 http://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填 https://github.com/jincheng2026/jcskill）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T042 | 两周全网涨粉两万的 AI 教程做法（X 长文） | 10-07 第一版，等你在创作页上改；定了先于 T041 发 | [创作页](http://127.0.0.1:8977/p/gu8q6xrzpw) · [工作稿](T042_两周全网涨粉两万的AI教程做法/工作稿.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-b83a57a3817075e00f2b144c7e075080",
+          "relativePath": "04_选题库/X/待做/T042_两周全网涨粉两万的AI教程做法.md",
+          "hash": "01647021856cf9275f724dae0b11033ef08bc8cfca3f8ec97fc66a4ad45fdd35",
+          "line": 6,
+          "text": "- **状态**：草稿（2026-10-07 第一版已放进[创作页](../../../05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html)（固定网址 http://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填 https://github.com/jincheng2026/jcskill）",
+          "status": "草稿（2026-10-07 第一版已放进[创作页](../../../05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html)（固定网址 http://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填 https://github.com/jincheng2026/jcskill）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html"
+    },
+    {
+      "contentId": "a2bbb0a1-1503-4d73-a29e-7c0a79329889",
+      "tNumber": "T043",
+      "title": "T043 X收藏不吃灰的插件和工作流",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（10-08 14:55 发了推文串版：https://x.com/WindFrostx/status/2108088822710059482 ；锦成准备删掉，按逸尘的做法重发一条带录屏和流程图的新帖。删前存档在 [发布存档_2026-10-08推文串](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md)，新帖文字和录屏脚本在 [视频帖.md](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/视频帖.md)）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-20d014dc6bd33ba9c18233d5240ea85a",
+            "relativePath": "04_选题库/X/待做/T043_X收藏不吃灰的插件和工作流.md",
+            "hash": "ac1d4604420d253af49f50a8e88a5019fe0a630f9a612081eb69343161648c49",
+            "line": 6,
+            "text": "- **状态**：已发布（10-08 14:55 发了推文串版：https://x.com/WindFrostx/status/2108088822710059482 ；锦成准备删掉，按逸尘的做法重发一条带录屏和流程图的新帖。删前存档在 [发布存档_2026-10-08推文串](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md)，新帖文字和录屏脚本在 [视频帖.md](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/视频帖.md)）",
+            "status": "已发布（10-08 14:55 发了推文串版：https://x.com/WindFrostx/status/2108088822710059482 ；锦成准备删掉，按逸尘的做法重发一条带录屏和流程图的新帖。删前存档在 [发布存档_2026-10-08推文串](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md)，新帖文字和录屏脚本在 [视频帖.md](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/视频帖.md)）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T043 | X 收藏不吃灰的插件和工作流（X 帖子） | 10-08 推文串版已发，准备删掉，重发带录屏和流程图的新帖 | [重发版文字和录屏脚本](T043_X收藏不吃灰的插件和工作流/视频帖.md) · [已发版存档](T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-20d014dc6bd33ba9c18233d5240ea85a",
+          "relativePath": "04_选题库/X/待做/T043_X收藏不吃灰的插件和工作流.md",
+          "hash": "ac1d4604420d253af49f50a8e88a5019fe0a630f9a612081eb69343161648c49",
+          "line": 6,
+          "text": "- **状态**：已发布（10-08 14:55 发了推文串版：https://x.com/WindFrostx/status/2108088822710059482 ；锦成准备删掉，按逸尘的做法重发一条带录屏和流程图的新帖。删前存档在 [发布存档_2026-10-08推文串](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md)，新帖文字和录屏脚本在 [视频帖.md](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/视频帖.md)）",
+          "status": "已发布（10-08 14:55 发了推文串版：https://x.com/WindFrostx/status/2108088822710059482 ；锦成准备删掉，按逸尘的做法重发一条带录屏和流程图的新帖。删前存档在 [发布存档_2026-10-08推文串](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/发布存档_2026-10-08推文串/存档.md)，新帖文字和录屏脚本在 [视频帖.md](../../../05_内容草稿/T043_X收藏不吃灰的插件和工作流/视频帖.md)）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/X/待做/T043_X收藏不吃灰的插件和工作流.md"
+    },
+    {
+      "contentId": "fc4bd8da-e1a1-4628-a78e-38df9ab3956b",
+      "tNumber": "T009",
+      "title": "T009 ✅ 正在学 AI 的人，为什么值得顺手做 AI 自媒体",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-90e5d288e751800e066be0e50e49f60f",
+            "relativePath": "04_选题库/口播观点/已做/T009_✅正在学AI的人值得顺手做AI自媒体.md",
+            "hash": "868ca03bc687764d2468ef66b989adcc63eedeb59359e988e3b2078d1449988a",
+            "line": 4,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T009 | 08-24 | 所有学AI的人， 都应该去做AI自媒体！ | [最终发布稿](已做/T009_AI自媒体/最终发布稿.md) | [档案](../../内容数据统计/视频项目/2026-08-24-学AI的人都应该去做AI自媒体/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-90e5d288e751800e066be0e50e49f60f",
+          "relativePath": "04_选题库/口播观点/已做/T009_✅正在学AI的人值得顺手做AI自媒体.md",
+          "hash": "868ca03bc687764d2468ef66b989adcc63eedeb59359e988e3b2078d1449988a",
+          "line": 4,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T009_AI自媒体/最终发布稿.md"
+    },
+    {
+      "contentId": "e1a996f0-6a10-4416-a3f0-bc75dbec2712",
+      "tNumber": "T011",
+      "title": "T011 ✅ 工信部文件热点里的 FDE",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-2e519b1bf2768d7d076d80c45c40a903",
+            "relativePath": "04_选题库/口播观点/已做/T011_✅工信部文件热点里的FDE.md",
+            "hash": "5e1a9fa228527eef78f7b930bb0f0c19952a0bdb6ee7817ec9fa3c1d30e89420",
+            "line": 4,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T011 | 09-06 | FDE春天来啦！ | [定稿逐字稿](已做/T011_工信部文件热点里的FDE/定稿逐字稿.md) | [档案](../../内容数据统计/视频项目/2026-09-06-FDE春天来啦！/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-2e519b1bf2768d7d076d80c45c40a903",
+          "relativePath": "04_选题库/口播观点/已做/T011_✅工信部文件热点里的FDE.md",
+          "hash": "5e1a9fa228527eef78f7b930bb0f0c19952a0bdb6ee7817ec9fa3c1d30e89420",
+          "line": 4,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T011_工信部文件热点里的FDE/工作稿.md"
+    },
+    {
+      "contentId": "4b90e6d4-b5e5-45c2-a5c6-75677e5413c2",
+      "tNumber": "T015",
+      "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-bce37474eb42b662b86dda6c75592c6e",
+            "relativePath": "04_选题库/口播观点/已做/T015_✅GPT-6热点.md",
+            "hash": "69e35d863811178924c57d716fd1a45baf0682b76be0a2f0bf3ad3e2b88062d2",
+            "line": 4,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T015 | 09-04 | GPT-6发布，AGI已来 | [锦成自己合并的定稿](已做/T015_GPT-6热点/版本/T015_v09_2026-09-04_锦成自己合并定稿.md) | [档案](../../内容数据统计/视频项目/2026-09-04-GPT-6发布，AGI已来/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-bce37474eb42b662b86dda6c75592c6e",
+          "relativePath": "04_选题库/口播观点/已做/T015_✅GPT-6热点.md",
+          "hash": "69e35d863811178924c57d716fd1a45baf0682b76be0a2f0bf3ad3e2b88062d2",
+          "line": 4,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T015_GPT-6热点/工作稿.md"
+    },
+    {
+      "contentId": "60e93cf4-beec-4b41-a73a-8a5bf796fef6",
+      "tNumber": "T017",
+      "title": "T017 ✅ AI电子情书",
+      "recorded": false,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-cc3a1551d5b53c6d56fb04f1ca17cd6f",
+            "relativePath": "04_选题库/口播观点/已做/T017_✅AI电子情书.md",
+            "hash": "40e796b801f1539587e247d739f0f78c352c27ef8e15832d4964c1234ee90285",
+            "line": 5,
+            "text": "- **状态**：已发布",
+            "status": "已发布",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T017 | 09-21 | 电子情书 都能卖几万块？ | [逐字稿](已做/T017_网站教程/T017_逐字稿_2026-09-18.md) · [提词器版](已做/T017_网站教程/提词器版.txt) | [档案](../../内容数据统计/视频项目/2026-09-21-电子情书都能卖几万块？/) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-cc3a1551d5b53c6d56fb04f1ca17cd6f",
+          "relativePath": "04_选题库/口播观点/已做/T017_✅AI电子情书.md",
+          "hash": "40e796b801f1539587e247d739f0f78c352c27ef8e15832d4964c1234ee90285",
+          "line": 5,
+          "text": "- **状态**：已发布",
+          "status": "已发布",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T017_网站教程/T017_逐字稿_2026-09-18.md"
+    },
+    {
+      "contentId": "f18945b8-6eb1-42b0-a39d-b56d1edd3f4a",
+      "tNumber": "T044",
+      "title": "T044 AI 变现与执行力",
+      "recorded": true,
+      "published": true,
+      "topicStatus": {
+        "paused": false,
+        "status": "已发布（10-15 抖音、小红书、视频号都已发；抖音标题「20岁怎么找到版本答案？」）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-053d0713253a4608465629447655ffca",
+            "relativePath": "04_选题库/口播观点/已做/T044_✅孙宇晨x邵alan采访 AI时代抓机会风口.md",
+            "hash": "77bc1e12567cfd9503ba5ff811837fe1261d3a09b7fc9efde30307ea70485def",
+            "line": 5,
+            "text": "- **状态**：已发布（10-15 抖音、小红书、视频号都已发；抖音标题「20岁怎么找到版本答案？」）",
+            "status": "已发布（10-15 抖音、小红书、视频号都已发；抖音标题「20岁怎么找到版本答案？」）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "已做（16 条，都已发布）",
+          "text": "| T044 | 10-15 | 20岁怎么找到版本答案？ | [录制定稿](已做/T044_AI变现与执行力/录制定稿_2026-10-12.md) · [创作页](http://127.0.0.1:8977/p/pp5q4j9p45) · [评论区提示词](已做/T044_AI变现与执行力/评论区提示词_2026-10-12.md) · [选题卡](../04_选题库/口播观点/已做/T044_✅孙宇晨x邵alan采访%20AI时代抓机会风口.md) | 还没做发布收口 |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-053d0713253a4608465629447655ffca",
+          "relativePath": "04_选题库/口播观点/已做/T044_✅孙宇晨x邵alan采访 AI时代抓机会风口.md",
+          "hash": "77bc1e12567cfd9503ba5ff811837fe1261d3a09b7fc9efde30307ea70485def",
+          "line": 5,
+          "text": "- **状态**：已发布（10-15 抖音、小红书、视频号都已发；抖音标题「20岁怎么找到版本答案？」）",
+          "status": "已发布（10-15 抖音、小红书、视频号都已发；抖音标题「20岁怎么找到版本答案？」）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/已做/T044_AI变现与执行力/T044_创作页.html"
+    },
+    {
+      "contentId": "9e3299dd-3421-4492-a132-4a76beb6a556",
+      "tNumber": "T046",
+      "title": "T046 ✅ 用 AI 做 Dan Koe 的 Human 3.0 人生模型",
+      "recorded": true,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-10-13 已录制，还没发布）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-221f941eeda82eb40882c68acf10fdd6",
+            "relativePath": "04_选题库/口播观点/已做/T046_✅用AI做DanKoe的Human3.0人生模型.md",
+            "hash": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1",
+            "line": 5,
+            "text": "- **状态**：草稿（2026-10-13 已录制，还没发布）",
+            "status": "草稿（2026-10-13 已录制，还没发布）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T046 | 用 AI 做 Dan Koe 的 Human 3.0 人生模型（口播为主，教程为辅） | 10-13 已录完，还没发布；下一步出标题、封面文字、简介，定提示词放哪 | [创作页](http://127.0.0.1:8977/p/8yppay5fd9) · [参考拆解](T046_用AI做DanKoe的Human3.0人生模型/参考拆解.md) · [参考拆解页（人工雨林）](http://127.0.0.1:8977/p/z2qv89z7zn) · [参考拆解页（gina）](http://127.0.0.1:8977/p/ry76sgiizm) · [选题卡](../04_选题库/口播观点/已做/T046_✅用AI做DanKoe的Human3.0人生模型.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-221f941eeda82eb40882c68acf10fdd6",
+          "relativePath": "04_选题库/口播观点/已做/T046_✅用AI做DanKoe的Human3.0人生模型.md",
+          "hash": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1",
+          "line": 5,
+          "text": "- **状态**：草稿（2026-10-13 已录制，还没发布）",
+          "status": "草稿（2026-10-13 已录制，还没发布）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/T046_创作页.html"
+    },
+    {
+      "contentId": "b316e2a5-e9b3-44e2-af5c-29413a7ebb44",
+      "tNumber": "T048",
+      "title": "T048 ✅ vibe知识大赏这类号的三个弊端",
+      "recorded": true,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（10-14 已录完，待发布）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-bcbd26a843a65f7cb8c9fefdee93b299",
+            "relativePath": "04_选题库/口播观点/已做/T048_✅vibe知识大赏这类号的三个弊端.md",
+            "hash": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec",
+            "line": 5,
+            "text": "- **状态**：草稿（10-14 已录完，待发布）",
+            "status": "草稿（10-14 已录完，待发布）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T048 | vibe知识大赏这类号的三个弊端（口播） | 10-14 按提词器版录完，待出标题封面简介、待发布 | [提词器版](T048_vibe知识大赏这类号的三个弊端/提词器版.txt) · [逐字稿第四版](T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md) · [逐字稿第三版（改稿标记和干净版）](T048_vibe知识大赏这类号的三个弊端/逐字稿_第三版_改稿标记_2026-10-14.md) · [逐字稿第二版](T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第二版_2026-10-14.md) · [给博文看的版本](T048_vibe知识大赏这类号的三个弊端/逐字稿_给博文看_2026-10-14.md) · [逐字稿工作稿](T048_vibe知识大赏这类号的三个弊端/逐字稿工作稿.md) · [视频框架](T048_vibe知识大赏这类号的三个弊端/视频框架_2026-10-14.md) · [与博文聊天](T048_vibe知识大赏这类号的三个弊端/与博文聊天_2026-10-14.md) · [选题卡](../04_选题库/口播观点/已做/T048_✅vibe知识大赏这类号的三个弊端.md) |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-bcbd26a843a65f7cb8c9fefdee93b299",
+          "relativePath": "04_选题库/口播观点/已做/T048_✅vibe知识大赏这类号的三个弊端.md",
+          "hash": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec",
+          "line": 5,
+          "text": "- **状态**：草稿（10-14 已录完，待发布）",
+          "status": "草稿（10-14 已录完，待发布）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "conflict",
+      "sourceConflict": "T048 的明确当前入口指向多个原件，请选择继续的来源",
+      "relativePath": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md"
+    },
+    {
+      "contentId": "73cbf844-f7cc-4d66-abdd-d2ea29fcb622",
+      "tNumber": "T020",
+      "title": "T020 AI 是我们 00 后最值得抓住的杠杆",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "草稿（2026-09-23 初稿已放入对照页）",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-6ce9c8be8f7c0478302b8075c451f48f",
+            "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md",
+            "hash": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069",
+            "line": 5,
+            "text": "- **状态**：草稿（2026-09-23 初稿已放入对照页）",
+            "status": "草稿（2026-09-23 初稿已放入对照页）",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "draft-overview",
+          "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+          "relativePath": "05_内容草稿/00_草稿总览.md",
+          "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+          "section": "正在做（10 条）",
+          "text": "| T020 | AI 是 00 后最值得抓住的杠杆（口播） | 10-08 重新口述，出了框架和逐字稿工作稿 | [逐字稿工作稿](T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md) · [视频框架](T020_AI是00后最值得抓住的杠杆/视频框架_2026-10-08.md) · [创作页](http://127.0.0.1:8977/p/6rnxgsryds)（9-28 那版） |"
+        },
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-6ce9c8be8f7c0478302b8075c451f48f",
+          "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md",
+          "hash": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069",
+          "line": 5,
+          "text": "- **状态**：草稿（2026-09-23 初稿已放入对照页）",
+          "status": "草稿（2026-09-23 初稿已放入对照页）",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": true,
+      "sourceResolution": "conflict",
+      "sourceConflict": "T020 的明确当前入口指向多个原件，请选择继续的来源",
+      "relativePath": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md"
+    },
+    {
+      "contentId": "b3d2b552-095d-409d-a697-714d80f3c142",
+      "tNumber": "T023",
+      "title": "T023 我每天是怎么用 AI 工作的",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-9410b79d1bdeb27d1bf0d348eca95a73",
+            "relativePath": "04_选题库/口播观点/待做/T023_我每天是怎么用AI工作的.md",
+            "hash": "eede3020f30044990751459bb8afec089ffbb4a4c3ef96711ec6614445d335a0",
+            "line": 5,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-9410b79d1bdeb27d1bf0d348eca95a73",
+          "relativePath": "04_选题库/口播观点/待做/T023_我每天是怎么用AI工作的.md",
+          "hash": "eede3020f30044990751459bb8afec089ffbb4a4c3ef96711ec6614445d335a0",
+          "line": 5,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/口播观点/待做/T023_我每天是怎么用AI工作的.md"
+    },
+    {
+      "contentId": "14705b90-b812-49c0-a77f-ff44c8987ff4",
+      "tNumber": "T049",
+      "title": "T049 普通人怎么用 AI 赚钱",
+      "recorded": false,
+      "published": false,
+      "topicStatus": {
+        "paused": false,
+        "status": "待写",
+        "reason": null,
+        "evidence": [
+          {
+            "origin": "topic-card-status",
+            "documentId": "doc-ccf3cdd791c2b221a62319dd4b7a6a6a",
+            "relativePath": "04_选题库/口播观点/待做/T049_普通人怎么用AI赚钱.md",
+            "hash": "8127447405ffb7bfb6ba17fdd9b158de5800c35e6577a74fa1722dbf2dc0f042",
+            "line": 6,
+            "text": "- **状态**：待写",
+            "status": "待写",
+            "paused": false,
+            "reason": null
+          }
+        ]
+      },
+      "statusEvidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-ccf3cdd791c2b221a62319dd4b7a6a6a",
+          "relativePath": "04_选题库/口播观点/待做/T049_普通人怎么用AI赚钱.md",
+          "hash": "8127447405ffb7bfb6ba17fdd9b158de5800c35e6577a74fa1722dbf2dc0f042",
+          "line": 6,
+          "text": "- **状态**：待写",
+          "status": "待写",
+          "paused": false,
+          "reason": null
+        }
+      ],
+      "hasDraft": false,
+      "sourceResolution": "resolved",
+      "sourceConflict": null,
+      "relativePath": "04_选题库/口播观点/待做/T049_普通人怎么用AI赚钱.md"
+    }
+  ],
+  "representativeContents": [
+    {
+      "id": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+      "title": "T038 破罐破摔效应：为什么人总是容易半途而废",
+      "read": {
+        "ok": true,
+        "bodyBytes": 3942,
+        "bodyHash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e"
+      },
+      "source": {
+        "ok": true,
+        "document": {
+          "id": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+          "section": "topics",
+          "title": "T038 破罐破摔效应：为什么人总是容易半途而废",
+          "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+          "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+          "format": "markdown",
+          "writable": true,
+          "contentId": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+          "tNumber": "T038",
+          "bytes": 3942
+        },
+        "textBytes": 3942,
+        "textHash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+        "summaryOnly": false,
+        "workingDraftAvailable": null
+      },
+      "context": {
+        "ok": true,
+        "content": {
+          "contentId": "09b3a630-45a7-49b1-aff8-9fa5406125bc",
+          "tNumber": "T038",
+          "sourceDocumentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+          "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+          "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+          "writable": true,
+          "sourceConflict": null,
+          "sourceResolution": "resolved",
+          "source": {
+            "sourceId": "topics",
+            "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+            "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+            "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e"
+          },
+          "sourceCandidates": [
+            {
+              "sourceId": "topics",
+              "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+              "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+              "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+              "format": "markdown",
+              "role": "topic-card",
+              "evidence": [
+                {
+                  "origin": "topic-or-supporting-document",
+                  "label": "T038 破罐破摔效应：为什么人总是容易半途而废"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "origin": "topic-card-status",
+              "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+              "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+              "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e",
+              "line": 7,
+              "text": "- **状态**：草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+              "status": "草稿（2026-10-07 用 xilo-opus-video 做好 60 秒像素游戏版成片，还没发布）",
+              "paused": false,
+              "reason": null
+            }
+          ],
+          "creationDocuments": [],
+          "summaryOnly": false,
+          "recorded": false,
+          "published": false,
+          "readOnlyReason": null,
+          "sourceMissing": false,
+          "relatedDocuments": [
+            {
+              "documentId": "doc-7241dc9adb5fad4ebeded5b8dc5de6ee",
+              "relativePath": "04_选题库/vibe知识大赏/待做/T038_破罐破摔效应.md",
+              "hash": "4460f2ec8bb8f7602c10f607d17f5e90aa3163a345b87b94a5ad50dbe160362e"
+            }
+          ]
+        },
+        "sourceIssues": [
+          {
+            "sourceId": "official-archives",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "official-archives 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/正式发布档案"
+          },
+          {
+            "sourceId": "judgments",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "judgments 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/判断库"
+          },
+          {
+            "sourceId": "methods",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "methods 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/方法论"
+          },
+          {
+            "sourceId": "author-evidence",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "author-evidence 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/本人材料"
+          },
+          {
+            "sourceId": "cases",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "cases 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/案例"
+          },
+          {
+            "sourceId": "bookmarks",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "bookmarks 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/13_X收藏"
+          },
+          {
+            "sourceId": "reports",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "reports 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/10_调研报告"
+          },
+          {
+            "sourceId": "prompts",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "prompts 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/11_提示词"
+          },
+          {
+            "sourceId": "visual-assets",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "visual-assets 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/12_视觉资产"
+          }
+        ]
+      }
+    },
+    {
+      "id": "0c0880f3-5812-4c07-af74-f81435f6668a",
+      "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+      "read": {
+        "ok": true,
+        "bodyBytes": 16833,
+        "bodyHash": "ba5f9e22e99a8e2d70ad4c85f380010325f4c437090a38a4a14f872974475ce1"
+      },
+      "source": {
+        "ok": true,
+        "document": {
+          "id": "doc-0d490d81d1655e7faea641d18fefd290",
+          "section": "drafts",
+          "title": "T034_创作页",
+          "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+          "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6",
+          "format": "html",
+          "writable": false,
+          "editAdapter": "creation-document",
+          "contentId": "0c0880f3-5812-4c07-af74-f81435f6668a",
+          "tNumber": "T034",
+          "bytes": 325286
+        },
+        "textBytes": 16833,
+        "textHash": "ba5f9e22e99a8e2d70ad4c85f380010325f4c437090a38a4a14f872974475ce1",
+        "summaryOnly": true,
+        "workingDraftAvailable": true
+      },
+      "context": {
+        "ok": true,
+        "content": {
+          "contentId": "0c0880f3-5812-4c07-af74-f81435f6668a",
+          "tNumber": "T034",
+          "sourceDocumentId": "doc-0d490d81d1655e7faea641d18fefd290",
+          "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+          "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6",
+          "writable": false,
+          "sourceConflict": null,
+          "sourceResolution": "resolved",
+          "source": {
+            "sourceId": "drafts",
+            "documentId": "doc-0d490d81d1655e7faea641d18fefd290",
+            "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+            "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6"
+          },
+          "sourceCandidates": [
+            {
+              "sourceId": "drafts",
+              "documentId": "doc-0d490d81d1655e7faea641d18fefd290",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+              "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6",
+              "format": "html",
+              "role": "creation-page",
+              "evidence": [
+                {
+                  "origin": "draft-overview",
+                  "label": "创作页",
+                  "reference": "http://127.0.0.1:8977/p/xneywy26dj",
+                  "historical": false,
+                  "role": "creation-page"
+                },
+                {
+                  "origin": "document",
+                  "label": "T034_创作页"
+                }
+              ]
+            },
+            {
+              "sourceId": "drafts",
+              "documentId": "doc-ab7c21e8920aaf89247c978df3aadf4b",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md",
+              "hash": "f6fcd766b3dde61c1b10161558128916ea73cc0f0fad0a9bc14be3eded79d011",
+              "format": "markdown",
+              "role": "working-draft",
+              "evidence": [
+                {
+                  "origin": "draft-overview",
+                  "label": "工作稿 v1",
+                  "reference": "T034_用AI搞定网络IP/工作稿_v1.md",
+                  "historical": false,
+                  "role": "working-draft"
+                },
+                {
+                  "origin": "document",
+                  "label": "T034 工作稿 v1（2026-10-06）"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "origin": "draft-overview",
+              "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+              "relativePath": "05_内容草稿/00_草稿总览.md",
+              "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+              "section": "正在做（10 条）",
+              "text": "| T034 | 用 AI 搞定网络 IP（X 长文） | 10-06 出第一版，等你在创作页上改 | [创作页](http://127.0.0.1:8977/p/xneywy26dj) · [工作稿 v1](T034_用AI搞定网络IP/工作稿_v1.md) · [结构](T034_用AI搞定网络IP/结构.md) |"
+            },
+            {
+              "origin": "topic-card-status",
+              "documentId": "doc-5fac3cff80d3c303095e8dd03810bb33",
+              "relativePath": "04_选题库/X/待做/T034_用AI搞定网络IP.md",
+              "hash": "5543fe1e626c9bcd24e6b946b7388b285400fecfbc30a2c79316f308da444cdc",
+              "line": 6,
+              "text": "- **状态**：草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+              "status": "草稿（2026-10-06 初稿 v1 已出：[工作稿_v1](../../../05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md)，[创作页](../../../05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html)（固定网址 http://127.0.0.1:8977/p/xneywy26dj）等锦成批注）",
+              "paused": false,
+              "reason": null
+            }
+          ],
+          "creationDocuments": [
+            {
+              "documentId": "doc-0d490d81d1655e7faea641d18fefd290",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+              "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6"
+            }
+          ],
+          "summaryOnly": true,
+          "recorded": false,
+          "published": false,
+          "readOnlyReason": "完整创作页通过受控字段编辑，正文仅为摘要",
+          "sourceMissing": false,
+          "relatedDocuments": [
+            {
+              "documentId": "doc-5fac3cff80d3c303095e8dd03810bb33",
+              "relativePath": "04_选题库/X/待做/T034_用AI搞定网络IP.md",
+              "hash": "5543fe1e626c9bcd24e6b946b7388b285400fecfbc30a2c79316f308da444cdc"
+            },
+            {
+              "documentId": "doc-0d490d81d1655e7faea641d18fefd290",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+              "hash": "3a122c8c46d0358c91e9a692e0ab5fac03cc4c164ddac924f97932e23a6dd9f6"
+            },
+            {
+              "documentId": "doc-39f7aa31ea07fdbe98e78251d7fb7d41",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/T034_结构与口述页.html",
+              "hash": "90dad14887aed88800e75e57df6b94431830ded79e723e303c7725549d894e7f"
+            },
+            {
+              "documentId": "doc-0de05f85c572682128dba42538b09f63",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/X搜索原始结果_2026-10-05/Claude防封号与住宅IP.md",
+              "hash": "1981b3f42d7212f8f3aa91525bdd478ded040885baea9cac87d761d4091d28ff"
+            },
+            {
+              "documentId": "doc-2570fcd4132089968920ca79328fb139",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/X搜索原始结果_2026-10-05/用AI搭服务器.md",
+              "hash": "ee60d6a771a90856018d9384ad58da199f9743532b03057722037300b011184f"
+            },
+            {
+              "documentId": "doc-575c36e9cf4cd83498afcec3089b77ff",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/X搜索原始结果_2026-10-05/给公司团队搭专线.md",
+              "hash": "62242ac64ec325a45c09c743ad78ac964147a1c0bd824f18e362f906fd68a8e2"
+            },
+            {
+              "documentId": "doc-bf5c35ee851aa2a29028163a29b04f13",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/X搜索原始结果_2026-10-05/自己搭中转加住宅IP.md",
+              "hash": "e2e26e0641b969abc868bcc4d9d7c0ad632979d9ff4ca9552501a66fef2eef75"
+            },
+            {
+              "documentId": "doc-5c648c1660cd639395d19273b215c364",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/参考拆解.md",
+              "hash": "aadac671082adb488be5ef99e2ddd7e240cb92417083fc12ab61ce7a336f138e"
+            },
+            {
+              "documentId": "doc-179cfe9ce4055261a02f49504512603f",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/叙事.md",
+              "hash": "dcf7788a32dbc1a288e040f99040fd02c8bca63103e40c3e667b1621a4bd5208"
+            },
+            {
+              "documentId": "doc-ab7c21e8920aaf89247c978df3aadf4b",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/工作稿_v1.md",
+              "hash": "f6fcd766b3dde61c1b10161558128916ea73cc0f0fad0a9bc14be3eded79d011"
+            },
+            {
+              "documentId": "doc-ca95c831d5b87c6d53e808a5b77828db",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/方案对比_grok原始结果.md",
+              "hash": "0eb3ae4b1d3d3acbb3db755c76ca90c2cf6c44b5d0bc1ddca38a8a236558d00e"
+            },
+            {
+              "documentId": "doc-fdfb9d63ace57fc65ef56d571b6dcc4a",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/方案对比.md",
+              "hash": "b712fd650bb5ce6766e7529ff43a2b96a081c87ea51dbdfefb39ef8db5d388d7"
+            },
+            {
+              "documentId": "doc-ec1a76bc5351ad998c1e453b14c17959",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/结构.md",
+              "hash": "b0bdaa3ec3c912b649c48d96056fcf913ea213ac100a0acb3704b8ade8e9b5c5"
+            },
+            {
+              "documentId": "doc-764cce108c40655d8ccc7afe05361090",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/锦成口述_搭建思路_2026-10-06.md",
+              "hash": "6141ec3a34bd166eaaaf87fc1b8f42581b6988e01f1d9c5086096417befbf72e"
+            },
+            {
+              "documentId": "doc-34ad4af7d35c8bb8f8a690e331a4c498",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/鱼总X长文爆款规律.md",
+              "hash": "fe7ffa1a46965cde451246897a0d68a7078a920eed351422f9f451d1c5de68ea"
+            },
+            {
+              "documentId": "doc-53f74e6b49fa1766490ec1bc9647be12",
+              "relativePath": "05_内容草稿/T034_用AI搞定网络IP/鱼总精华帖规律.md",
+              "hash": "d89fb0b9711b039ed2b5e7450971c79144977216fe52756f92d44d4cff135ae2"
+            }
+          ]
+        },
+        "sourceIssues": [
+          {
+            "sourceId": "official-archives",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "official-archives 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/正式发布档案"
+          },
+          {
+            "sourceId": "judgments",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "judgments 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/判断库"
+          },
+          {
+            "sourceId": "methods",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "methods 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/方法论"
+          },
+          {
+            "sourceId": "author-evidence",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "author-evidence 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/本人材料"
+          },
+          {
+            "sourceId": "cases",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "cases 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/案例"
+          },
+          {
+            "sourceId": "bookmarks",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "bookmarks 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/13_X收藏"
+          },
+          {
+            "sourceId": "reports",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "reports 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/10_调研报告"
+          },
+          {
+            "sourceId": "prompts",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "prompts 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/11_提示词"
+          },
+          {
+            "sourceId": "visual-assets",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "visual-assets 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/12_视觉资产"
+          }
+        ]
+      }
+    },
+    {
+      "id": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+      "title": "T012 ✅ Image2 脏点怎么解决",
+      "read": {
+        "ok": true,
+        "bodyBytes": 2866,
+        "bodyHash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e"
+      },
+      "source": {
+        "ok": true,
+        "document": {
+          "id": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+          "section": "topics",
+          "title": "T012 ✅ Image2 脏点怎么解决",
+          "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+          "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+          "format": "markdown",
+          "writable": true,
+          "contentId": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+          "tNumber": "T012",
+          "bytes": 2866
+        },
+        "textBytes": 2866,
+        "textHash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+        "summaryOnly": false,
+        "workingDraftAvailable": null
+      },
+      "context": {
+        "ok": true,
+        "content": {
+          "contentId": "1e042d0a-204d-4b35-a3ae-d0dcd4142be8",
+          "tNumber": "T012",
+          "sourceDocumentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+          "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+          "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+          "writable": true,
+          "sourceConflict": null,
+          "sourceResolution": "resolved",
+          "source": {
+            "sourceId": "topics",
+            "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+            "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+            "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e"
+          },
+          "sourceCandidates": [
+            {
+              "sourceId": "drafts",
+              "documentId": "doc-3e5506a2916eadb92ef0bd3cbc6f227f",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/T012_重拍已录制定稿_原文版.txt",
+              "hash": "7dc9f23aaf52266739a890b1b95e725ad2d938a1913ed179f2b6d1a3bf61393c",
+              "format": "text",
+              "role": "final-script",
+              "evidence": [
+                {
+                  "origin": "draft-overview",
+                  "label": "已录制定稿",
+                  "reference": "已做/T012_图片去噪教程/T012_重拍已录制定稿_原文版.txt",
+                  "historical": false,
+                  "role": "final-script"
+                }
+              ]
+            },
+            {
+              "sourceId": "topics",
+              "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+              "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+              "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+              "format": "markdown",
+              "role": "topic-card",
+              "evidence": [
+                {
+                  "origin": "topic-or-supporting-document",
+                  "label": "T012 ✅ Image2 脏点怎么解决"
+                }
+              ]
+            }
+          ],
+          "evidence": [
+            {
+              "origin": "draft-overview",
+              "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+              "relativePath": "05_内容草稿/00_草稿总览.md",
+              "hash": "a1280865149a7b8ac07a0e61a2a49cb0cd952e1c2e002bb8c6658d05217f3276",
+              "section": "已做（16 条，都已发布）",
+              "text": "| T012 | 09-07 | 1分钟彻底解决AI生图脏兮兮 | [已录制定稿](已做/T012_图片去噪教程/T012_重拍已录制定稿_原文版.txt) · [图文教程](已做/T012_图片去噪教程/图片去噪教程.html) | [档案](../../内容数据统计/视频项目/2026-09-07-1分钟彻底解决AI生图脏兮兮/) |"
+            },
+            {
+              "origin": "topic-card-status",
+              "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+              "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+              "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e",
+              "line": 4,
+              "text": "- **状态**：已发布",
+              "status": "已发布",
+              "paused": false,
+              "reason": null
+            }
+          ],
+          "creationDocuments": [],
+          "summaryOnly": false,
+          "recorded": true,
+          "published": true,
+          "readOnlyReason": null,
+          "sourceMissing": false,
+          "relatedDocuments": [
+            {
+              "documentId": "doc-ad8ad8f1ab74c3dfbba4901f1bd4ecf4",
+              "relativePath": "04_选题库/AI教程/已做/T012_✅Image2脏点怎么解决.md",
+              "hash": "b12073cac54f814163f0b747bc1ce8868e6e3a9c1875713a08d685e18448661e"
+            },
+            {
+              "documentId": "doc-d8b907ce92bcda9d721744e412fa3921",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/两图替换后飞书.json",
+              "hash": "2c2771270f4f0dde9ad50d623217a227f09d068e3c88052fee60548918cc0d8f"
+            },
+            {
+              "documentId": "doc-bc95cb14b0bde13cbf9952e7e1009afc",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/交付核验.json",
+              "hash": "a893ccfdc64fd2d8cd6e04215b624cfd91be30abb0d1d5ea27490dd847bfd4f0"
+            },
+            {
+              "documentId": "doc-b030d92530d16f46b499e5ddde78d6dc",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/最终飞书读回.json",
+              "hash": "0e72f208b1e5ebe8eed14045c50098778be32c28b302309ae7b9077c50704118"
+            },
+            {
+              "documentId": "doc-f9550f888ba20b8f7f3764a08490f1b6",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/执行交接.md",
+              "hash": "7a72902c403bf5ccc437983e7a2b1556df3ac76ede68f9a4a926d331093eca60"
+            },
+            {
+              "documentId": "doc-1ae878174b20b7e81d25e684b16ca940",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/接手替换前飞书.json",
+              "hash": "11a63df549f62ca1b9634dd29706eda599f467abb3c3dfb6a3b503042d0e8a03"
+            },
+            {
+              "documentId": "doc-ae0d5ece2d1499fd74c49727f4e6e6ad",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/替换前教程.html",
+              "hash": "cf8afbf2a226d0de95d16d57110a284bc6fb8c47afce2da2bb3f0d43d77c850a"
+            },
+            {
+              "documentId": "doc-42519ff4fa17083bbbf1bace3cc65f2c",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/替换前飞书.json",
+              "hash": "39fb8130e2e939f48b9bd3c4c7fc086cd930b70febde99ed39a08027af9ed2a0"
+            },
+            {
+              "documentId": "doc-0cdac2f2906bd5bfbbd454f9bb27b03f",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/本次替换前飞书.json",
+              "hash": "11a63df549f62ca1b9634dd29706eda599f467abb3c3dfb6a3b503042d0e8a03"
+            },
+            {
+              "documentId": "doc-044a7612f330e603a89d4dcc7ae6a336",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/CleanShot配图/配图说明.md",
+              "hash": "f82de33ce75572b68579b110ebda63d83679226547477294e39b6c6ffc3caabf"
+            },
+            {
+              "documentId": "doc-6c59bf687ea5ec50d67b607f7571a435",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/T012_对照页服务.py",
+              "hash": "b72185629c8f334a8f76886ebf0bc9e1d669c3cf825708146aa22f2258621bbc"
+            },
+            {
+              "documentId": "doc-3e5506a2916eadb92ef0bd3cbc6f227f",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/T012_重拍已录制定稿_原文版.txt",
+              "hash": "7dc9f23aaf52266739a890b1b95e725ad2d938a1913ed179f2b6d1a3bf61393c"
+            },
+            {
+              "documentId": "doc-eb826152f00df6da2c6ddbe2df767cf5",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/T012_重拍逐字稿对照.html",
+              "hash": "8b57c7ea86ce9101ef809daa7cdb0d68da0e55f5c80165ee0824255da49f5ebb"
+            },
+            {
+              "documentId": "doc-9666983a31e52e34292d0dd4181c1377",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/图片去噪教程.html",
+              "hash": "d7d2d9830801d9400968e6850509374980ce872aef54d1a5b4cef3cdc853d185"
+            },
+            {
+              "documentId": "doc-528eac24e7b8e867a6eff32a311f196e",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/录屏脚本.md",
+              "hash": "690a8f26ca3918a729df15311aae50982e32c71f738a6ef11779b4f6f437e1c8"
+            },
+            {
+              "documentId": "doc-cdd0d86e4238d5e892a6b38abf3d6715",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/expected.json",
+              "hash": "984396c272e67687a88396acc5327c20f1391b1bc9a4b98740ecbc9d51338ab1"
+            },
+            {
+              "documentId": "doc-91c1204f68f0de9c4b29c5e14b29f63a",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/回读.json",
+              "hash": "96816226668e117ab2e38b9f54b847b3d3b9333e460f970ca0340491e174b4c8"
+            },
+            {
+              "documentId": "doc-2505c0906888af2da651b5b4795b3c03",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/聚焦尺寸.json",
+              "hash": "707c3a5ffed87088230619571ea27aec6831f34304c3d53a15a07b352357ee12"
+            },
+            {
+              "documentId": "doc-c1f0e22bdd730df0f70c22d3f8e86b62",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/调整前备份.json",
+              "hash": "96816226668e117ab2e38b9f54b847b3d3b9333e460f970ca0340491e174b4c8"
+            },
+            {
+              "documentId": "doc-afbcf6947230337e5e726af3c579961d",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/调整后回读.json",
+              "hash": "b33b962d2c6eb89e1ed4e826e3a89c9a230f2a2e4f657187084e210a7feae4cc"
+            },
+            {
+              "documentId": "doc-3e8ee273b177cfc17a6ba0e16e8fb86d",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/飞书文档链接.txt",
+              "hash": "588df16dd824832681b8edfcfeea622b6c8eff9e8c7107c29e2fb2b4fad83d18"
+            },
+            {
+              "documentId": "doc-d13270bbaff0538a5b9f217c20ec57bb",
+              "relativePath": "05_内容草稿/已做/T012_图片去噪教程/飞书导入/高亮调整前备份.json",
+              "hash": "9cd4af72ee8d4123c6e517b01dab1207f74b42dd401dec814c2c7f1efb76c262"
+            }
+          ]
+        },
+        "sourceIssues": [
+          {
+            "sourceId": "official-archives",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "official-archives 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/06_发布复盘/正式发布档案"
+          },
+          {
+            "sourceId": "judgments",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "judgments 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/判断库"
+          },
+          {
+            "sourceId": "methods",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "methods 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/方法论"
+          },
+          {
+            "sourceId": "author-evidence",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "author-evidence 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/本人材料"
+          },
+          {
+            "sourceId": "cases",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "cases 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/09_创作知识/案例"
+          },
+          {
+            "sourceId": "bookmarks",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "bookmarks 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/13_X收藏"
+          },
+          {
+            "sourceId": "reports",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "reports 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/10_调研报告"
+          },
+          {
+            "sourceId": "prompts",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "prompts 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/11_提示词"
+          },
+          {
+            "sourceId": "visual-assets",
+            "code": "SOURCE_NOT_AVAILABLE",
+            "message": "visual-assets 来源尚未提供：/private/tmp/nova-installed-library-reaudit-A-20261028/第二大脑/12_视觉资产"
+          }
+        ]
+      }
+    }
+  ],
+  "originalIntegrity": {
+    "checked": 6468,
+    "changed": [],
+    "missing": []
+  },
+  "completedAt": "2026-10-28T01:31:02.933Z"
+}

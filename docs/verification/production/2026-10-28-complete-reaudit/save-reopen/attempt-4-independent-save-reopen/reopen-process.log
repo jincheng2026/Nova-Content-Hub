@@ -1,0 +1,7 @@
+FINAL UI: T044 real candidate edit select final save and independent reopen
+FINAL STEP FAILED: T044 real candidate edit select final save and independent reopen Error: T044 restore original candidate decision final exceeded 25000ms
+    at Timeout.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:60:160)
+    at listOnTimeout (node:internal/timers:685:17)
+    at process.processTimers (node:internal/timers:618:7)
+FINAL UI: T029 hand edit note and compare reading recording
+REAUDIT {"phase":"reopen","passed":false,"steps":[{"name":"T044 real candidate edit select final save and independent reopen","ok":false,"ms":36236},{"name":"T029 hand edit note and compare reading recording","ok":true,"ms":41775}],"drains":[{"label":"T044 restore original candidate decision final","ms":25002,"ok":false,"message":"T044 restore original candidate decision final exceeded 25000ms"},{"label":"T029 对照","ms":8607,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 通读","ms":3154,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 录制","ms":3150,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 restore author fields","ms":13912,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}}]}

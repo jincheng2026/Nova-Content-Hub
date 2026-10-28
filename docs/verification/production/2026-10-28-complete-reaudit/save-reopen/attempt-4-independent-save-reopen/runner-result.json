@@ -1,0 +1,22 @@
+{
+  "passed": false,
+  "phases": [
+    {
+      "phase": "resume",
+      "code": 0,
+      "timedOut": false
+    },
+    {
+      "phase": "reopen",
+      "code": 1,
+      "timedOut": false
+    }
+  ],
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4",
+  "sourceUnchanged": true,
+  "zipUnchanged": true,
+  "zipSha256After": "c47d78e13d08360265b47fb4078cbd02c006fd3910ea47abf333a189f28a4db3",
+  "sourceManifestSha256After": "efb54fbedc4d86fa3877206f12790e9f2a02044c012f49a26f68c06848ca3dea",
+  "platform": "darwin",
+  "arch": "arm64"
+}

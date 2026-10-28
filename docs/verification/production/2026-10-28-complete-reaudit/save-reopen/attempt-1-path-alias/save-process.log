@@ -1,0 +1,4 @@
+Error: Timed out after 60000ms: renderer boot
+    at wait (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:44:158)
+    at async ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:65:27)
+    at async startDesktop (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/desktop.mjs:633:5)

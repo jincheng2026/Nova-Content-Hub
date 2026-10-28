@@ -1,0 +1,898 @@
+{
+  "phase": "reopen",
+  "at": "2026-10-28T02:02:35.772Z",
+  "desktopModule": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "desktopSha256": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+  "version": "0.5.0",
+  "packaged": false,
+  "electronExecutable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electronVersion": "44.9.0",
+  "steps": [
+    {
+      "name": "T044 real candidate edit select final save and independent reopen",
+      "ok": false,
+      "ms": 36236
+    },
+    {
+      "name": "T029 hand edit note and compare reading recording",
+      "ok": true,
+      "ms": 41775
+    }
+  ],
+  "views": {
+    "initialized-overview": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T044-selected-saved": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "failure-1": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T029-对照": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T029-通读": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T029-录制": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    }
+  },
+  "failures": [
+    {
+      "name": "T044 real candidate edit select final save and independent reopen",
+      "message": "Error: T044 restore original candidate decision final exceeded 25000ms",
+      "stack": "Error: T044 restore original candidate decision final exceeded 25000ms\n    at Timeout.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:60:160)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)",
+      "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\nX 收藏\n调研报告\n爆款雷达\n资料与定位\n提示词与知识\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n待做封面\n已保存\nT044 AI 变现与执行力\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n\n原创作页 · 05_内容草稿/已做/T044_AI变现与执行力/T044_创作页.html\n\nT044 · 原选题、安排与全部文件\n发布、观测与复盘\n\n人工在平台发布后，记录实际采用的版本；录完、发布、正式档案和复盘分别保存。\n\n补记发布事实并正式收口\n已录制\n已有真实发布记录\n正式档案缺失\n复盘：尚未生成\n\n原选题卡／总览或显式关联正式档案；实际包装未补记。缺少本库正式档案不改变已有发布事实。\n\n待逐条核对的正式档案候选 · 0 份\n知识建议待作者决定 · 0 条\n\n阶段确认与作者先拆 · 0 份产物\n和助手一起做\n创作\n封面\n正文\n资料\n发布计划\n正在保全本次输入…\n重新读取原页"
+    }
+  ],
+  "workerTimings": [
+    {
+      "op": "list",
+      "at": "2026-10-28T02:02:35.835Z",
+      "ms": 507,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:02:36.342Z",
+      "ms": 470,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:02:36.812Z",
+      "ms": 1107,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:02:37.919Z",
+      "ms": 237,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:02:38.156Z",
+      "ms": 2069,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:02:40.226Z",
+      "ms": 388,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:02:40.614Z",
+      "ms": 721,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:02:41.336Z",
+      "ms": 441,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:02:41.777Z",
+      "ms": 447,
+      "ok": true
+    },
+    {
+      "op": "vaultSources",
+      "at": "2026-10-28T02:02:42.224Z",
+      "ms": 29,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:02:42.253Z",
+      "ms": 1116,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:02:43.369Z",
+      "ms": 143,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:02:43.513Z",
+      "ms": 2286,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "at": "2026-10-28T02:02:46.008Z",
+      "ms": 812,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:02:46.820Z",
+      "ms": 448,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:02:47.268Z",
+      "ms": 709,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:02:47.977Z",
+      "ms": 602,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:02:48.583Z",
+      "ms": 888,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:02:49.566Z",
+      "ms": 552,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:02:50.123Z",
+      "ms": 864,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:02:50.987Z",
+      "ms": 724,
+      "ok": true
+    },
+    {
+      "op": "productionCreation",
+      "at": "2026-10-28T02:02:51.711Z",
+      "ms": 691,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:02:52.402Z",
+      "ms": 688,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:02:53.094Z",
+      "ms": 470,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "read",
+      "at": "2026-10-28T02:02:53.565Z",
+      "ms": 860,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:02:54.435Z",
+      "ms": 767,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:02:55.202Z",
+      "ms": 371,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:02:55.573Z",
+      "ms": 517,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:02:56.091Z",
+      "ms": 817,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:02:56.908Z",
+      "ms": 392,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:02:57.300Z",
+      "ms": 843,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:02:58.144Z",
+      "ms": 733,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "meta",
+      "at": "2026-10-28T02:02:58.877Z",
+      "ms": 742,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:02:59.620Z",
+      "ms": 733,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:03:00.353Z",
+      "ms": 387,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:03:00.740Z",
+      "ms": 380,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:03:01.120Z",
+      "ms": 1185,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:03:02.305Z",
+      "ms": 276,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:03:02.581Z",
+      "ms": 2041,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:04.622Z",
+      "ms": 772,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:03:05.395Z",
+      "ms": 405,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "at": "2026-10-28T02:03:05.801Z",
+      "ms": 1062,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:03:06.869Z",
+      "ms": 125,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:06.994Z",
+      "ms": 816,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:03:07.813Z",
+      "ms": 39,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:07.852Z",
+      "ms": 881,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:03:08.742Z",
+      "ms": 571,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:09.315Z",
+      "ms": 776,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:10.091Z",
+      "ms": 837,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:10.928Z",
+      "ms": 841,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:11.769Z",
+      "ms": 2547,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:03:14.317Z",
+      "ms": 724,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "save",
+      "at": "2026-10-28T02:03:15.047Z",
+      "ms": 1399,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:16.447Z",
+      "ms": 774,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:03:17.222Z",
+      "ms": 1415,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:03:18.637Z",
+      "ms": 313,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:03:18.951Z",
+      "ms": 2031,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:20.982Z",
+      "ms": 768,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:03:21.750Z",
+      "ms": 35,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:21.785Z",
+      "ms": 779,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:22.568Z",
+      "ms": 904,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:23.480Z",
+      "ms": 818,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:24.298Z",
+      "ms": 727,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "at": "2026-10-28T02:03:25.026Z",
+      "ms": 820,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:03:25.846Z",
+      "ms": 448,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:03:26.294Z",
+      "ms": 761,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:03:27.056Z",
+      "ms": 481,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:03:27.541Z",
+      "ms": 369,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:03:27.992Z",
+      "ms": 512,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:03:28.507Z",
+      "ms": 832,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:03:29.339Z",
+      "ms": 710,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "read",
+      "at": "2026-10-28T02:03:30.049Z",
+      "ms": 744,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:03:30.797Z",
+      "ms": 444,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "read",
+      "at": "2026-10-28T02:03:31.241Z",
+      "ms": 746,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:03:31.999Z",
+      "ms": 413,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:03:32.412Z",
+      "ms": 436,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:03:32.848Z",
+      "ms": 491,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:03:33.339Z",
+      "ms": 378,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:33.717Z",
+      "ms": 789,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "at": "2026-10-28T02:03:34.506Z",
+      "ms": 996,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "meta",
+      "at": "2026-10-28T02:03:35.502Z",
+      "ms": 769,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:36.272Z",
+      "ms": 797,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:03:37.069Z",
+      "ms": 1180,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:03:38.251Z",
+      "ms": 320,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:03:38.572Z",
+      "ms": 1999,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:40.571Z",
+      "ms": 820,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:03:41.391Z",
+      "ms": 39,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:41.430Z",
+      "ms": 860,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:03:42.292Z",
+      "ms": 216,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:42.508Z",
+      "ms": 755,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:43.508Z",
+      "ms": 840,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:44.353Z",
+      "ms": 825,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:45.181Z",
+      "ms": 733,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:45.915Z",
+      "ms": 732,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:46.848Z",
+      "ms": 743,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:47.592Z",
+      "ms": 838,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:48.436Z",
+      "ms": 765,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:49.204Z",
+      "ms": 780,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:50.179Z",
+      "ms": 827,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:51.008Z",
+      "ms": 766,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:51.775Z",
+      "ms": 851,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:52.635Z",
+      "ms": 772,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:53.410Z",
+      "ms": 789,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:54.199Z",
+      "ms": 778,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:54.977Z",
+      "ms": 808,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "save",
+      "at": "2026-10-28T02:03:55.785Z",
+      "ms": 1250,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:57.043Z",
+      "ms": 858,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:03:57.902Z",
+      "ms": 773,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:58.683Z",
+      "ms": 761,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:03:59.464Z",
+      "ms": 862,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:04:00.326Z",
+      "ms": 1372,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:04:01.698Z",
+      "ms": 916,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:04:02.614Z",
+      "ms": 736,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:04:03.350Z",
+      "ms": 751,
+      "ok": true
+    }
+  ],
+  "startupWorkerTimings": [
+    {
+      "op": "vaultLocation",
+      "at": "2026-10-28T02:02:30.416Z",
+      "ms": 4908,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [],
+  "external": [],
+  "network": [],
+  "drainTimings": [
+    {
+      "label": "T044 restore original candidate decision final",
+      "ms": 25002,
+      "ok": false,
+      "message": "T044 restore original candidate decision final exceeded 25000ms"
+    },
+    {
+      "label": "T029 对照",
+      "ms": 8607,
+      "ok": true,
+      "state": {
+        "error": "",
+        "kitPending": 0,
+        "kitStoreError": "",
+        "pending": 0
+      }
+    },
+    {
+      "label": "T029 通读",
+      "ms": 3154,
+      "ok": true,
+      "state": {
+        "error": "",
+        "kitPending": 0,
+        "kitStoreError": "",
+        "pending": 0
+      }
+    },
+    {
+      "label": "T029 录制",
+      "ms": 3150,
+      "ok": true,
+      "state": {
+        "error": "",
+        "kitPending": 0,
+        "kitStoreError": "",
+        "pending": 0
+      }
+    },
+    {
+      "label": "T029 restore author fields",
+      "ms": 13912,
+      "ok": true,
+      "state": {
+        "error": "",
+        "kitPending": 0,
+        "kitStoreError": "",
+        "pending": 0
+      }
+    }
+  ],
+  "counts": {
+    "documents": 10916,
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "sourceRows": 22
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑/.workbench/runtime",
+    "libraryId": "d3531858-a292-4200-9f1a-919ed477d5f6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84630535"
+    }
+  },
+  "boundIdentityVerified": true,
+  "bootLibrarySummary": "第二大脑",
+  "t044Pane": {
+    "candidates": 29,
+    "finalFields": 3,
+    "slots": 3
+  },
+  "t044IndependentReopen": true,
+  "lastOriginalDrain": {
+    "error": "",
+    "kitPending": 0,
+    "kitStoreError": "",
+    "pending": 0
+  },
+  "t029IndependentReopen": true,
+  "t029AuthorFieldsRestored": true,
+  "cryptoCalls": 0,
+  "totalMs": 88385,
+  "passed": false
+}

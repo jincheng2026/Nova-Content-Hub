@@ -1,0 +1,203 @@
+{
+  "counts": {
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "pages": 49,
+    "vaultDocuments": 10916
+  },
+  "summary": {
+    "contentReadErrors": 5,
+    "creationHTMLs": 46,
+    "parsedCreationDocuments": 12,
+    "jcParseErrors": 0,
+    "accountReadErrors": 0,
+    "reportReadErrors": 0,
+    "unavailableReportLinks": 0,
+    "missingCreationLocalReferences": 14
+  },
+  "workerCalls": 435,
+  "workerErrors": 19,
+  "contentBodyReads": 47,
+  "productionCreationReads": 47,
+  "sourceReads": 42,
+  "creationActions": [
+    {
+      "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_创作页.html",
+      "writable": true,
+      "itemCount": 82,
+      "kinds": {
+        "info": 1,
+        "segment": 8,
+        "suggestion": 66,
+        "pubslot": 2,
+        "pubcand": 5
+      },
+      "nonemptyNotes": 2,
+      "historyChanges": 536,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T029_WorkBuddy必装三个Skill/T029_创作页.html",
+      "writable": true,
+      "itemCount": 36,
+      "kinds": {
+        "info": 1,
+        "segment": 7,
+        "suggestion": 16,
+        "refnote": 7,
+        "skeleton": 1,
+        "step": 4
+      },
+      "nonemptyNotes": 1,
+      "historyChanges": 221,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T034_用AI搞定网络IP/T034_创作页.html",
+      "writable": true,
+      "itemCount": 28,
+      "kinds": {
+        "info": 1,
+        "segment": 19,
+        "suggestion": 8
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 0,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html",
+      "writable": true,
+      "itemCount": 22,
+      "kinds": {
+        "info": 1,
+        "segment": 10,
+        "suggestion": 11
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 0,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html",
+      "writable": true,
+      "itemCount": 31,
+      "kinds": {
+        "info": 1,
+        "segment": 14,
+        "suggestion": 16
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 0,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/T046_创作页.html",
+      "writable": true,
+      "itemCount": 31,
+      "kinds": {
+        "info": 1,
+        "segment": 9,
+        "suggestion": 21
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 221,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/T046_参考拆解页_gina.html",
+      "writable": true,
+      "itemCount": 16,
+      "kinds": {
+        "info": 1,
+        "segment": 15
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 31,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/T046_参考拆解页.html",
+      "writable": true,
+      "itemCount": 14,
+      "kinds": {
+        "info": 1,
+        "segment": 13
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 51,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/已做/T026_书籍蒸馏成Skill/T026_创作页.html",
+      "writable": true,
+      "itemCount": 19,
+      "kinds": {
+        "info": 1,
+        "segment": 6,
+        "step": 7,
+        "suggestion": 5
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 302,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/已做/T030_WorkBuddy搭个人知识库教程/T030_创作页.html",
+      "writable": true,
+      "itemCount": 23,
+      "kinds": {
+        "info": 1,
+        "segment": 8,
+        "suggestion": 7,
+        "step": 3,
+        "refnote": 4
+      },
+      "nonemptyNotes": 0,
+      "historyChanges": 128,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/已做/T031_AI时代的齐民要术/T031_创作页.html",
+      "writable": true,
+      "itemCount": 23,
+      "kinds": {
+        "info": 1,
+        "segment": 6,
+        "suggestion": 13,
+        "step": 2,
+        "refnote": 1
+      },
+      "nonemptyNotes": 1,
+      "historyChanges": 138,
+      "allReadActionsPass": true
+    },
+    {
+      "path": "05_内容草稿/已做/T044_AI变现与执行力/T044_创作页.html",
+      "writable": true,
+      "itemCount": 69,
+      "kinds": {
+        "info": 1,
+        "segment": 6,
+        "suggestion": 30,
+        "pubslot": 3,
+        "pubcand": 29
+      },
+      "nonemptyNotes": 1,
+      "historyChanges": 310,
+      "allReadActionsPass": true
+    }
+  ],
+  "accountReads": 56,
+  "reportPages": 49,
+  "reportPageReads": 49,
+  "attachmentReads": 6,
+  "providedButUnavailableLinks": 0,
+  "missingLinkReferences": 14,
+  "originalIntegrity": {
+    "checked": 11446,
+    "changed": [],
+    "missing": []
+  }
+}

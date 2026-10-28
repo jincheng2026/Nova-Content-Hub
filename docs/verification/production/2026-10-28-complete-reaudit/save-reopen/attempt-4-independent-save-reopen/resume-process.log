@@ -1,0 +1,3 @@
+FINAL UI: T044 real candidate edit select final save and independent reopen
+FINAL UI: Topic T050 remains deferred and excluded from doing
+REAUDIT {"phase":"resume","passed":true,"steps":[{"name":"T044 real candidate edit select final save and independent reopen","ok":true,"ms":29136},{"name":"Topic T050 remains deferred and excluded from doing","ok":true,"ms":9254}],"drains":[{"label":"T044 real edit select save","ms":18384,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}}]}

@@ -1,0 +1,6 @@
+FINAL UI: T044 real candidate edit select final save and independent reopen
+(electron) 'console-message' arguments are deprecated and will be removed. Please use Event<WebContentsConsoleMessageEventParams> object instead.
+FINAL STEP FAILED: T044 real candidate edit select final save and independent reopen Error: Decision action unavailable 选用
+    at <anonymous>:1:233
+    at <anonymous>:1:288
+REAUDIT {"phase":"resume","passed":false,"steps":[{"name":"T044 real candidate edit select final save and independent reopen","ok":false,"ms":18298}],"drains":[]}

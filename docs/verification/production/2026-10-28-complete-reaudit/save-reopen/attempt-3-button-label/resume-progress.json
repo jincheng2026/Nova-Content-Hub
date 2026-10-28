@@ -1,0 +1,269 @@
+{
+  "phase": "resume",
+  "at": "2026-10-28T01:59:27.130Z",
+  "desktopModule": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "desktopSha256": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+  "version": "0.5.0",
+  "packaged": false,
+  "electronExecutable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electronVersion": "44.9.0",
+  "steps": [
+    {
+      "name": "T044 real candidate edit select final save and independent reopen",
+      "ok": false,
+      "ms": 18298
+    }
+  ],
+  "views": {
+    "initialized-overview": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "failure-1": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    }
+  },
+  "failures": [
+    {
+      "name": "T044 real candidate edit select final save and independent reopen",
+      "message": "Error: Decision action unavailable 选用\n    at <anonymous>:1:233\n    at <anonymous>:1:288"
+    }
+  ],
+  "workerTimings": [
+    {
+      "op": "list",
+      "ms": 579,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 662,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1392,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 413,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2434,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 539,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 735,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 625,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 614,
+      "ok": true
+    },
+    {
+      "op": "vaultSources",
+      "ms": 49,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1213,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 156,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2713,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "ms": 681,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 491,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 696,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 508,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 378,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "ms": 589,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "ms": 876,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "ms": 750,
+      "ok": true
+    },
+    {
+      "op": "productionCreation",
+      "ms": 736,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 906,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "ms": 532,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 893,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 447,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 457,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 563,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 391,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 790,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "ms": 1074,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 877,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1237,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 299,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2760,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 803,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "ms": 43,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "ms": 47,
+      "ok": true
+    }
+  ],
+  "startupWorkerTimings": [
+    {
+      "op": "vaultLocation",
+      "ms": 5309,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [
+    {
+      "level": 3,
+      "message": "Uncaught Error: Decision action unavailable 选用",
+      "line": 1,
+      "sourceId": "nova-content://creation/57611018-36f7-459b-9a19-a030c93c13ab/index.html"
+    }
+  ],
+  "external": [],
+  "network": [],
+  "drainTimings": [],
+  "counts": {
+    "documents": 10916,
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "sourceRows": 22
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑/.workbench/runtime",
+    "libraryId": "d3531858-a292-4200-9f1a-919ed477d5f6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84630535"
+    }
+  },
+  "boundIdentityVerified": true,
+  "bootLibrarySummary": "第二大脑",
+  "t044Pane": {
+    "candidates": 29,
+    "finalFields": 3,
+    "slots": 3
+  }
+}

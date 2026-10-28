@@ -1,0 +1,369 @@
+{
+  "phase": "restore-final",
+  "at": "2026-10-28T02:08:42.442Z",
+  "desktopModule": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "desktopSha256": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+  "version": "0.5.0",
+  "packaged": false,
+  "electronExecutable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electronVersion": "44.9.0",
+  "steps": [
+    {
+      "name": "Restore final original T044 text by native autosave without flush invocation",
+      "ok": true,
+      "ms": 24009
+    }
+  ],
+  "views": {
+    "initialized-overview": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T044-original-final-restored": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    }
+  },
+  "failures": [],
+  "workerTimings": [
+    {
+      "op": "list",
+      "at": "2026-10-28T02:08:42.565Z",
+      "ms": 607,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:08:43.172Z",
+      "ms": 515,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:08:43.688Z",
+      "ms": 1126,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:08:44.814Z",
+      "ms": 227,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:08:45.041Z",
+      "ms": 2100,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:08:47.142Z",
+      "ms": 414,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:08:47.556Z",
+      "ms": 993,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:08:48.552Z",
+      "ms": 603,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:08:49.155Z",
+      "ms": 474,
+      "ok": true
+    },
+    {
+      "op": "vaultSources",
+      "at": "2026-10-28T02:08:49.630Z",
+      "ms": 31,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:08:49.661Z",
+      "ms": 1201,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:08:50.862Z",
+      "ms": 142,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:08:51.004Z",
+      "ms": 2660,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "at": "2026-10-28T02:08:53.928Z",
+      "ms": 778,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:08:54.706Z",
+      "ms": 412,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:08:55.118Z",
+      "ms": 676,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:08:55.795Z",
+      "ms": 475,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:08:56.273Z",
+      "ms": 368,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:08:56.752Z",
+      "ms": 455,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:08:57.211Z",
+      "ms": 868,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:08:58.079Z",
+      "ms": 669,
+      "ok": true
+    },
+    {
+      "op": "productionCreation",
+      "at": "2026-10-28T02:08:58.748Z",
+      "ms": 727,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:08:59.475Z",
+      "ms": 694,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:09:00.171Z",
+      "ms": 492,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "read",
+      "at": "2026-10-28T02:09:00.665Z",
+      "ms": 1012,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:09:01.682Z",
+      "ms": 753,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:09:02.435Z",
+      "ms": 355,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:09:02.790Z",
+      "ms": 456,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:03.246Z",
+      "ms": 806,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:09:04.052Z",
+      "ms": 458,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "at": "2026-10-28T02:09:04.510Z",
+      "ms": 1328,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "meta",
+      "at": "2026-10-28T02:09:05.839Z",
+      "ms": 1057,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:06.896Z",
+      "ms": 796,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:09:07.692Z",
+      "ms": 1278,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:09:08.970Z",
+      "ms": 631,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:09:09.601Z",
+      "ms": 2204,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:09:11.805Z",
+      "ms": 739,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:09:12.545Z",
+      "ms": 48,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:12.593Z",
+      "ms": 769,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:13.362Z",
+      "ms": 762,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "save",
+      "at": "2026-10-28T02:09:14.124Z",
+      "ms": 1220,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:09:15.344Z",
+      "ms": 62,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:15.406Z",
+      "ms": 834,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:09:16.249Z",
+      "ms": 736,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:09:16.988Z",
+      "ms": 719,
+      "ok": true
+    }
+  ],
+  "startupWorkerTimings": [
+    {
+      "op": "vaultLocation",
+      "at": "2026-10-28T02:08:38.023Z",
+      "ms": 3915,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [],
+  "external": [],
+  "network": [],
+  "drainTimings": [],
+  "counts": {
+    "documents": 10916,
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "sourceRows": 22
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑/.workbench/runtime",
+    "libraryId": "d3531858-a292-4200-9f1a-919ed477d5f6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84630535"
+    }
+  },
+  "boundIdentityVerified": true,
+  "bootLibrarySummary": "第二大脑",
+  "t044Pane": {
+    "candidates": 29,
+    "finalFields": 3,
+    "slots": 3
+  },
+  "finalAutosaveMs": 11010,
+  "finalKitState": {
+    "composing": false,
+    "conflicts": 0,
+    "known": "0c01d97a021f03ed3bfd3e1092443ed21a347fe4d1d086271b409a26b5f308ba",
+    "metaProblem": "",
+    "offerServed": false,
+    "online": true,
+    "pending": 0,
+    "ready": true,
+    "saveRefused": "",
+    "selfOk": null,
+    "stash": [],
+    "storeError": "",
+    "storeKind": "idb",
+    "storeNote": "",
+    "unregistered": 0
+  },
+  "finalParentStatus": "已连接知识库保存通道\n重新读取原页",
+  "allAuthorFieldsAndOutsideHTMLRestored": true
+}

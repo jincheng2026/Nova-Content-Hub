@@ -1,0 +1,11 @@
+FINAL UI: T029 hand edit note and compare reading recording
+FINAL UI: T044 real candidate edit select final save and independent reopen
+FINAL STEP FAILED: T044 real candidate edit select final save and independent reopen Error: Timed out after 90000ms: topic directory
+    at wait (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:44:158)
+    at async openWork (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:58:92)
+    at async packaging (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:62:29)
+    at async file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:76:2
+    at async step (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:52:495)
+    at async ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:75:31)
+    at async startDesktop (file:///Applications/%E8%87%AA%E5%AA%92%E4%BD%93%E5%B7%A5%E4%BD%9C%E5%8F%B0.app/Contents/Resources/app/workbench/dist/main/desktop.mjs:633:5)
+REAUDIT {"phase":"save","passed":false,"steps":[{"name":"T029 hand edit note and compare reading recording","ok":true,"ms":41894},{"name":"T044 real candidate edit select final save and independent reopen","ok":false,"ms":152937}],"drains":[{"label":"T029 real mine and note save","ms":12818,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 对照","ms":1850,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 通读","ms":3228,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}},{"label":"T029 录制","ms":5118,"ok":true,"state":{"error":"","kitPending":0,"kitStoreError":"","pending":0}}]}

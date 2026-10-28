@@ -1,0 +1,473 @@
+{
+  "phase": "resume",
+  "at": "2026-10-28T02:01:37.101Z",
+  "desktopModule": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "desktopSha256": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+  "version": "0.5.0",
+  "packaged": false,
+  "electronExecutable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electronVersion": "44.9.0",
+  "steps": [
+    {
+      "name": "T044 real candidate edit select final save and independent reopen",
+      "ok": true,
+      "ms": 29136
+    },
+    {
+      "name": "Topic T050 remains deferred and excluded from doing",
+      "ok": true,
+      "ms": 9254
+    }
+  ],
+  "views": {
+    "initialized-overview": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T044-selected-saved": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "T050-deferred": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    }
+  },
+  "failures": [],
+  "workerTimings": [
+    {
+      "op": "list",
+      "ms": 603,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 529,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1158,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 430,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2108,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 393,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 682,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 436,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 433,
+      "ok": true
+    },
+    {
+      "op": "vaultSources",
+      "ms": 30,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1170,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 226,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2242,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "ms": 732,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 401,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 760,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 451,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 367,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "ms": 583,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "ms": 792,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "ms": 676,
+      "ok": true
+    },
+    {
+      "op": "productionCreation",
+      "ms": 755,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 705,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "ms": 458,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 819,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 411,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 408,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "ms": 479,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 407,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 750,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "ms": 1097,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 788,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 798,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "ms": 1420,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "ms": 219,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "ms": 2226,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 817,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "ms": 34,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 845,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "ms": 40,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 901,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 744,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 729,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 752,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 1323,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 803,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 818,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 773,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 965,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 794,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 748,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "ms": 826,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "ms": 1285,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 522,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 918,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 653,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 746,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 866,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 498,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 452,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "ms": 856,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "ms": 406,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "ms": 664,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "ms": 481,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "ms": 396,
+      "ok": true
+    }
+  ],
+  "startupWorkerTimings": [
+    {
+      "op": "vaultLocation",
+      "ms": 7775,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [],
+  "external": [],
+  "network": [],
+  "drainTimings": [
+    {
+      "label": "T044 real edit select save",
+      "ms": 18384,
+      "ok": true,
+      "state": {
+        "error": "",
+        "kitPending": 0,
+        "kitStoreError": "",
+        "pending": 0
+      }
+    }
+  ],
+  "counts": {
+    "documents": 10916,
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "sourceRows": 22
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑/.workbench/runtime",
+    "libraryId": "d3531858-a292-4200-9f1a-919ed477d5f6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84630535"
+    }
+  },
+  "boundIdentityVerified": true,
+  "bootLibrarySummary": "第二大脑",
+  "t044Pane": {
+    "candidates": 29,
+    "finalFields": 3,
+    "slots": 3
+  },
+  "lastOriginalDrain": {
+    "error": "",
+    "pending": 0
+  },
+  "t050ExcludedFromDoing": true,
+  "t050": {
+    "contentId": "956eef9f-4110-4bd2-a71b-4f7d13c7146f",
+    "tNumber": "T050",
+    "title": "T050 旅游营销工作台宣传片获客口播",
+    "recorded": false,
+    "published": false,
+    "topicStatus": {
+      "paused": true,
+      "status": "待写（口播稿已定，暂不做：工作台目前不能对外）",
+      "reason": "暂不做：工作台目前不能对外",
+      "evidence": [
+        {
+          "origin": "topic-card-status",
+          "documentId": "doc-90f455ab97cc0ccbbd3f9aca778f56d1",
+          "relativePath": "04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md",
+          "hash": "fbcaacc403eaa5b60ca725bbdf51b284d185f53b1db5850b59d07c43fa91e053",
+          "line": 5,
+          "text": "- **状态**：待写（口播稿已定，暂不做：工作台目前不能对外）",
+          "status": "待写（口播稿已定，暂不做：工作台目前不能对外）",
+          "paused": true,
+          "reason": "暂不做：工作台目前不能对外"
+        }
+      ]
+    },
+    "statusEvidence": [
+      {
+        "origin": "draft-overview",
+        "documentId": "doc-83276ebfef0aec96a3a88a8685636631",
+        "relativePath": "05_内容草稿/00_草稿总览.md",
+        "hash": "4aff20b5d2e2cab60395710685c76bf8ccbc0ab8d7488589320ead44ceef96b8",
+        "section": "正在做（11 条）",
+        "text": "| T050 | 旅游营销工作台宣传片获客口播（出镜开头 + 宣传片 + 结尾钩子） | 10-20 口播稿已定；工作台目前不能对外，暂不做 | [口播稿](T050_旅游营销工作台宣传片获客口播/口播稿.md) · [选题卡](../04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md) |"
+      },
+      {
+        "origin": "topic-card-status",
+        "documentId": "doc-90f455ab97cc0ccbbd3f9aca778f56d1",
+        "relativePath": "04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md",
+        "hash": "fbcaacc403eaa5b60ca725bbdf51b284d185f53b1db5850b59d07c43fa91e053",
+        "line": 5,
+        "text": "- **状态**：待写（口播稿已定，暂不做：工作台目前不能对外）",
+        "status": "待写（口播稿已定，暂不做：工作台目前不能对外）",
+        "paused": true,
+        "reason": "暂不做：工作台目前不能对外"
+      }
+    ],
+    "hasDraft": false,
+    "sourceResolution": "resolved",
+    "sourceConflict": null,
+    "relativePath": "05_内容草稿/T050_旅游营销工作台宣传片获客口播/口播稿.md"
+  },
+  "cryptoCalls": 0,
+  "totalMs": 49219,
+  "passed": true
+}

@@ -1,0 +1,474 @@
+{
+  "phase": "restore",
+  "at": "2026-10-28T02:05:33.869Z",
+  "desktopModule": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "desktopSha256": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+  "version": "0.5.0",
+  "packaged": false,
+  "electronExecutable": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+  "electronVersion": "44.9.0",
+  "steps": [
+    {
+      "name": "Restore only original T044 decisions and final after audited edit",
+      "ok": false,
+      "ms": 35637
+    }
+  ],
+  "views": {
+    "initialized-overview": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    },
+    "failure-1": {
+      "width": 1280,
+      "height": 828,
+      "dpr": 2,
+      "scrollWidth": 1280
+    }
+  },
+  "failures": [
+    {
+      "name": "Restore only original T044 decisions and final after audited edit",
+      "message": "Error: T044 restore prior decision pubcand-y9rp5emq exceeded 25000ms",
+      "stack": "Error: T044 restore prior decision pubcand-y9rp5emq exceeded 25000ms\n    at Timeout.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/installed-reaudit-entry.mjs:60:160)\n    at listOnTimeout (node:internal/timers:685:17)\n    at process.processTimers (node:internal/timers:618:7)",
+      "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\nX 收藏\n调研报告\n爆款雷达\n资料与定位\n提示词与知识\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\n待做封面\n已保存\nT044 AI 变现与执行力\n\n正文、封面和发布安排，都在这一篇内容里。\n\n制作封面\n\n原创作页 · 05_内容草稿/已做/T044_AI变现与执行力/T044_创作页.html\n\nT044 · 原选题、安排与全部文件\n发布、观测与复盘\n\n人工在平台发布后，记录实际采用的版本；录完、发布、正式档案和复盘分别保存。\n\n补记发布事实并正式收口\n已录制\n已有真实发布记录\n正式档案缺失\n复盘：尚未生成\n\n原选题卡／总览或显式关联正式档案；实际包装未补记。缺少本库正式档案不改变已有发布事实。\n\n待逐条核对的正式档案候选 · 0 份\n知识建议待作者决定 · 0 条\n\n阶段确认与作者先拆 · 0 份产物\n和助手一起做\n创作\n封面\n正文\n资料\n发布计划\n已连接知识库保存通道\n重新读取原页"
+    }
+  ],
+  "workerTimings": [
+    {
+      "op": "list",
+      "at": "2026-10-28T02:05:33.951Z",
+      "ms": 502,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:05:34.453Z",
+      "ms": 477,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:05:34.930Z",
+      "ms": 1105,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:05:36.035Z",
+      "ms": 203,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:05:36.238Z",
+      "ms": 1990,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:05:38.229Z",
+      "ms": 396,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:05:38.626Z",
+      "ms": 714,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:05:39.342Z",
+      "ms": 581,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:05:39.923Z",
+      "ms": 526,
+      "ok": true
+    },
+    {
+      "op": "vaultSources",
+      "at": "2026-10-28T02:05:40.449Z",
+      "ms": 33,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:05:40.482Z",
+      "ms": 1147,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:05:41.631Z",
+      "ms": 164,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:05:41.795Z",
+      "ms": 2044,
+      "ok": true
+    },
+    {
+      "op": "vaultTopicMenus",
+      "at": "2026-10-28T02:05:44.074Z",
+      "ms": 953,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:05:45.027Z",
+      "ms": 423,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:05:45.450Z",
+      "ms": 750,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkDirectory",
+      "at": "2026-10-28T02:05:46.201Z",
+      "ms": 515,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:05:46.722Z",
+      "ms": 407,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:05:47.305Z",
+      "ms": 513,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:05:47.824Z",
+      "ms": 879,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:05:48.705Z",
+      "ms": 684,
+      "ok": true
+    },
+    {
+      "op": "productionCreation",
+      "at": "2026-10-28T02:05:49.390Z",
+      "ms": 683,
+      "ok": true
+    },
+    {
+      "op": "productionRead",
+      "at": "2026-10-28T02:05:50.073Z",
+      "ms": 649,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:05:50.727Z",
+      "ms": 460,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "read",
+      "at": "2026-10-28T02:05:51.187Z",
+      "ms": 849,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:05:52.039Z",
+      "ms": 440,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:05:52.479Z",
+      "ms": 440,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:05:52.919Z",
+      "ms": 466,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:05:53.385Z",
+      "ms": 360,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:05:53.745Z",
+      "ms": 730,
+      "ok": true
+    },
+    {
+      "op": "publicationRead",
+      "at": "2026-10-28T02:05:54.476Z",
+      "ms": 972,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "meta",
+      "at": "2026-10-28T02:05:55.448Z",
+      "ms": 716,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:05:56.164Z",
+      "ms": 741,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:05:56.905Z",
+      "ms": 1719,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:05:58.624Z",
+      "ms": 635,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:05:59.263Z",
+      "ms": 1993,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:06:01.257Z",
+      "ms": 852,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:06:02.110Z",
+      "ms": 124,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:02.234Z",
+      "ms": 756,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:02.990Z",
+      "ms": 733,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "save",
+      "at": "2026-10-28T02:06:03.723Z",
+      "ms": 1312,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:06:05.035Z",
+      "ms": 36,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:05.071Z",
+      "ms": 722,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:06:05.802Z",
+      "ms": 742,
+      "ok": true
+    },
+    {
+      "op": "readContent",
+      "at": "2026-10-28T02:06:06.544Z",
+      "ms": 613,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:06:07.157Z",
+      "ms": 800,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:06:07.957Z",
+      "ms": 680,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:08.637Z",
+      "ms": 747,
+      "ok": true
+    },
+    {
+      "op": "list",
+      "at": "2026-10-28T02:06:09.384Z",
+      "ms": 459,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:06:09.844Z",
+      "ms": 429,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:06:10.274Z",
+      "ms": 366,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-write",
+      "at": "2026-10-28T02:06:10.640Z",
+      "ms": 748,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:06:11.388Z",
+      "ms": 418,
+      "ok": true
+    },
+    {
+      "op": "workspace",
+      "at": "2026-10-28T02:06:11.807Z",
+      "ms": 1365,
+      "ok": true
+    },
+    {
+      "op": "coverAssets",
+      "at": "2026-10-28T02:06:13.173Z",
+      "ms": 249,
+      "ok": true
+    },
+    {
+      "op": "workspaceLibrary",
+      "at": "2026-10-28T02:06:13.422Z",
+      "ms": 2144,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:15.566Z",
+      "ms": 723,
+      "ok": true
+    },
+    {
+      "op": "readCover",
+      "at": "2026-10-28T02:06:16.289Z",
+      "ms": 39,
+      "ok": true
+    },
+    {
+      "op": "vaultContentSource",
+      "at": "2026-10-28T02:06:16.328Z",
+      "ms": 767,
+      "ok": true
+    },
+    {
+      "op": "vaultWorkContext",
+      "at": "2026-10-28T02:06:17.095Z",
+      "ms": 699,
+      "ok": true
+    },
+    {
+      "op": "creationPage",
+      "action": "stash-read",
+      "at": "2026-10-28T02:06:17.795Z",
+      "ms": 775,
+      "ok": true
+    },
+    {
+      "op": "vaultRead",
+      "at": "2026-10-28T02:06:18.570Z",
+      "ms": 401,
+      "ok": true
+    },
+    {
+      "op": "vaultDocument",
+      "at": "2026-10-28T02:06:18.971Z",
+      "ms": 365,
+      "ok": true
+    }
+  ],
+  "startupWorkerTimings": [
+    {
+      "op": "vaultLocation",
+      "at": "2026-10-28T02:05:28.847Z",
+      "ms": 4504,
+      "ok": true
+    }
+  ],
+  "consoleErrors": [],
+  "external": [],
+  "network": [],
+  "drainTimings": [
+    {
+      "label": "T044 restore prior decision pubcand-y9rp5emq",
+      "ms": 25000,
+      "ok": false,
+      "message": "T044 restore prior decision pubcand-y9rp5emq exceeded 25000ms"
+    }
+  ],
+  "counts": {
+    "documents": 10916,
+    "contents": 47,
+    "accounts": 56,
+    "reports": 32,
+    "sourceRows": 22
+  },
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑/.workbench/runtime",
+    "libraryId": "d3531858-a292-4200-9f1a-919ed477d5f6",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84630535"
+    }
+  },
+  "boundIdentityVerified": true,
+  "bootLibrarySummary": "第二大脑",
+  "t044Pane": {
+    "candidates": 29,
+    "finalFields": 3,
+    "slots": 3
+  }
+}

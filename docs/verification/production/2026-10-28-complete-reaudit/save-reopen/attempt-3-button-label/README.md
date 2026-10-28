@@ -1,0 +1,1 @@
+Fresh process reached real T044 packaging 3/29/3. Harness incorrectly searched decision label 选用; actual author button is 用这个. No selection action ran. Owned helper corrected to actual label and waits enabled state, preserving pending author input and identity. This is harness preparation failure, not product selection failure. See resume-result.json.

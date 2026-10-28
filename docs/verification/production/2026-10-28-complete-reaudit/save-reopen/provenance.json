@@ -1,0 +1,23 @@
+{
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4",
+  "source": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/source/第二大脑",
+  "fixture": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-installed-reaudit-127Pv4/第二大脑",
+  "zip": "/Users/mac/Desktop/自媒体工作台-0.5.0-交付/第二大脑-0.5.0-初始内容库.zip",
+  "zipSha256": "c47d78e13d08360265b47fb4078cbd02c006fd3910ea47abf333a189f28a4db3",
+  "sourceFiles": 11448,
+  "sourceManifestSha256": "efb54fbedc4d86fa3877206f12790e9f2a02044c012f49a26f68c06848ca3dea",
+  "installedDesktop": "/Applications/自媒体工作台.app/Contents/Resources/app/workbench/dist/main/desktop.mjs",
+  "moduleHashes": {
+    "desktop.mjs": "52cf873aaf1807934bcf95f31791f2225c5d174a08c95929831beb1c59333b24",
+    "worker.mjs": "4ba6100ccb43a96f92d3a3cea833cb41a4a441dd94697cd6b5b1abaa3eaa51d9",
+    "worker-client.mjs": "b0f88693263869b3abe4469a141a9b149479ac11d377e2a3a6739db002ca4782",
+    "vault-worker.mjs": "8f1c920780425758de58d4bc6aa087ac9e91cf485e8dd76b711314e23e343c18",
+    "creation-worker.mjs": "52efede75cd1f47305cf71d329d9060f3e496da7370717918a815714076d3a80",
+    "creation-frame-html.mjs": "df6ff53c9ee4914058a0b5fced7fef1d65328a694320a6043b0023c8f8e13f34",
+    "service-settings.mjs": "dbd53f400ac73c8f785c200cf9238d0edab2f9c636b98523232b851b589d1d95"
+  },
+  "appHarnessPackaged": false,
+  "noProductPatches": true,
+  "noAuthorDataDeletion": true,
+  "noIdentityBypass": true
+}

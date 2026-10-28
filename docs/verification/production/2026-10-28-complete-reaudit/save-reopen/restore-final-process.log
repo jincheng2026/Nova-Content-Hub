@@ -1,0 +1,2 @@
+FINAL UI: Restore final original T044 text by native autosave without flush invocation
+FINAL RESTORE {"passed":true,"autosaveMs":11010,"failures":[]}
