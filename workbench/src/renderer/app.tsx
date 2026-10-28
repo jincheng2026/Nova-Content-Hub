@@ -1,3 +1,5 @@
+import {createWorkspaceReadRecovery,workspaceReadFailure} from '../shared/workspace-read-recovery.ts';
+import type {WorkspaceReadIssue} from '../shared/workspace-read-recovery.ts';
 import {JinchengBoundWorkspace} from './jincheng-bound-workspace.tsx';
 import {JinchengSourceStatus} from './jincheng-source-status.tsx';
 import {JinchengWorkDetail} from './jincheng-work-detail.tsx';
@@ -68,6 +70,8 @@ function App() {
     const [workspace, setWorkspace] = useState<DesktopResults['readWorkspace'] | null>(null);
     const [library, setLibrary] = useState<WorkspaceLibrarySnapshot | null>(null);
     const [workspaceUnavailable, setWorkspaceUnavailable] = useState(false);
+    const [workspaceIssue, setWorkspaceIssue] = useState<WorkspaceReadIssue | null>(null);
+    const workspaceReadHealthy = useRef(false);
     const [watchUnavailable, setWatchUnavailable] = useState(false);
     const changesPending = useRef(false);
     const automaticRefresh = useRef<() => void>(() => {});
@@ -92,6 +96,9 @@ function App() {
     const [contentListStates, setContentListStates] = useState<Record<number, ContentListUIState>>({});
     const directoryKey = `${libraryEpoch}:${contentPhase}`;
     const epochRef = useRef(0);
+    const workspaceReadRecovery = useRef<ReturnType<typeof createWorkspaceReadRecovery> | null>(null);
+    if (!workspaceReadRecovery.current) workspaceReadRecovery.current = createWorkspaceReadRecovery({currentEpoch: () => epochRef.current, retry: () => {changesPending.current = true; automaticRefresh.current();}});
+    useEffect(() => () => workspaceReadRecovery.current?.reset(), []);
     const [libraryOpen, setLibraryOpen] = useState(false);
     const libraryDialog = useRef<HTMLDialogElement>(null);
     const recoveryDialog = useRef<HTMLDialogElement>(null);
@@ -143,10 +150,11 @@ function App() {
     const dirtyRef = useRef(false);
     dirtyRef.current = dirty;
     const report = (failure: unknown, preserveError = false, epoch = epochRef.current) => {
-        const value = errorInfo(failure);
-        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || value.code === 'BUSY') ? previous : {
+        if (epoch !== epochRef.current) return;
+        const value = errorInfo(failure), readBusy = value.code === 'BUSY' || value.code === 'VAULT_BUSY';
+        setFailure(previous => preserveError && previous.message && (previous.backgroundBusyEpoch === undefined || readBusy) ? previous : {
             message: `${value.message}（${value.code}）`,
-            ...(preserveError && value.code === 'BUSY' ? {backgroundBusyEpoch: epoch} : {})
+            ...(preserveError && readBusy ? {backgroundBusyEpoch: epoch} : {})
         });
     };
     const load = (item: Content) => {
@@ -167,6 +175,7 @@ function App() {
         } catch (failure) {report(failure); return false;}
     }
     const clearEditor = () => {
+        workspaceReadRecovery.current?.reset(); workspaceReadHealthy.current = false; setWorkspaceIssue(null);
         epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;
         setDirectoryStates({}); setContentListStates({}); setContentQuery(''); setResumeOnOpen(false); setView('active');
         setDraft(null);
@@ -222,12 +231,24 @@ function App() {
             return;
         }
         const epoch = epochRef.current;
-        workspaceAssets.current = null;
+        workspaceAssets.current = null; workspaceReadHealthy.current = false;
         let snapshot: DesktopResults['readWorkspace'], coverAssets: CoverResults['listCoverAssets'], detail: WorkspaceLibrarySnapshot;
         try { [snapshot, coverAssets, detail] = await Promise.all([invoke('readWorkspace'), invoke('listCoverAssets'), invoke('readWorkspaceLibrary')]); }
-        catch (failure) { if (epoch === epochRef.current) {setWorkspaceUnavailable(true);} throw failure; }
+        catch (failure) {
+            if (epoch !== epochRef.current) return;
+            const issue = workspaceReadFailure(failure);
+            if (issue.kind === 'busy') {
+                const scheduled = workspaceReadRecovery.current!.schedule(epoch);
+                setWorkspaceIssue(scheduled ? issue : {...issue, message: '知识库仍在使用，可以稍后重试。'});
+                setWorkspaceUnavailable(false);
+                return;
+            }
+            workspaceReadRecovery.current!.reset();
+            setWorkspaceIssue(issue); setWorkspaceUnavailable(true); throw failure;
+        }
         if (epoch !== epochRef.current) return;
-        setWorkspace(snapshot);
+        setWorkspace(snapshot); workspaceReadHealthy.current = true;
+        workspaceReadRecovery.current!.reset(); setWorkspaceIssue(null);
         setWorkspaceUnavailable(false);
         setAssets(coverAssets);
         workspaceAssets.current = {epoch, value: coverAssets};
@@ -342,12 +363,12 @@ function App() {
         } finally {
             try {
                 const next = await refreshStatus();
-                if (next.currentName && !next.needsReselect && refreshWorkspaceAfter) {
+                if (epoch === epochRef.current && next.currentName && !next.needsReselect && refreshWorkspaceAfter) {
                     try {
                         if (!background && succeeded) {
                             if (refreshWorkspaceOnSuccess) changesPending.current = true;
                         } else if (!succeeded || refreshWorkspaceOnSuccess) await refreshWorkspace();
-                        if (succeeded && epoch === epochRef.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
+                        if (succeeded && epoch === epochRef.current && workspaceReadHealthy.current) setFailure(previous => previous.backgroundBusyEpoch === epoch ? {message: ''} : previous);
                     } catch (failure) { report(failure, preserveError, epoch); }
                 }
             } catch (failure) {
@@ -730,7 +751,7 @@ function App() {
         </section>}
         {libraryTab === 'resources' && (status?.currentName ? <section id="library-panels" aria-label="内容库资料管理"><LibraryPanels key={`${libraryEpoch}:${photoManagerEpoch}`} initialTab={resourceTab} openCollection={id => void openCollection(id)} library={library} assets={assets} busy={busy || !!blocked || dirty} run={localAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }} choosePhoto={async () => { await nativeAction(async () => { await invoke('choosePhoto', {title: '我的照片', isOwnPhoto: false}); }); }}/></section> : <div className="blank-state"><p>先打开内容库，再管理照片、渠道和默认值。</p><Button onClick={() => setLibraryTab('storage')}>打开知识库</Button></div>)}</dialog>}
         <p id="error" role="alert">{error}</p>
-        {workspaceUnavailable && workspace && <Banner type="warning" closeIcon={null} description="当前内容库尚未完整读取。下方保留的是上次显示的数据和未保存草稿；请先在内容库维护中检查问题，再刷新。"/>}
+        {workspaceIssue && workspace && <div className="workspace-read-status actions" role="status">{workspaceIssue.kind === 'busy' ? <span>{workspaceIssue.message}</span> : <Banner type="warning" closeIcon={null} description={workspaceIssue.message}/>}<Button size="small" disabled={busy} onClick={() => {workspaceReadRecovery.current?.reset(); changesPending.current = true; automaticRefresh.current();}}>重新读取</Button></div>}
         {watchUnavailable && !workspaceUnavailable && <Banner type="warning" closeIcon={null} description="内容库目录或自动刷新监听暂时不可用。原文件和草稿保留；可在内容库入口检查目录，或手动刷新。工作台只会重新连接原目录身份。"/>}
         {status?.needsReselect && <section className="creator-panel creator-empty" aria-live="polite" data-workspace-state="selection-required"><h2>请重新选择内容库以确认文件访问</h2><p>{blocked ? '待处理操作已保留，请重新选择原内容库继续。' : '原内容库已保留，请选择要使用的内容库。'}</p><div className="actions"><Button id="confirm-library-access" disabled={busy} onClick={() => void guard(() => act('openLibrary'))}>重新选择内容库</Button></div></section>}
         {!showPage && !status?.needsReselect && (!status || status.currentName) && <section className="creator-panel creator-empty" aria-busy={!initialReadFailed} aria-live="polite" data-workspace-state={initialReadFailed ? 'failed' : 'loading'}><h2>{initialReadFailed ? '暂时无法读取内容库' : '正在打开你的内容库…'}</h2><p>{initialReadFailed ? '读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。' : '正在读取本机内容、模板与发布安排，请稍候。'}</p>{initialReadFailed && <div className="actions"><Button id="retry-workspace" disabled={acting} onClick={() => void nativeAction(async () => {const next = await refreshStatus(); if (next.currentName) setContents(await invoke('listContents', {view}));})}>重新读取</Button><Button id="open-recovered-library" disabled={busy || !!blocked} onClick={() => void guard(() => act('openLibrary'))}>打开其他内容库</Button></div>}</section>}

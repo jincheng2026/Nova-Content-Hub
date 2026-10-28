@@ -1,3 +1,4 @@
+import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -26,6 +27,7 @@ function fixture() {
     const library = {...initial, collections: [{...collection, editToken: 'confirmed', memberIds: ['content']}]};
     let slots = appSlots, cursor = 0, failure, pause, acknowledged = library, disk = initial, pending = null;
     const context = vm.createContext({
+        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),
         useMemo: calculate => calculate(),
         useState(initial) {const i = cursor++; if (!(i in slots)) slots[i] = initial; const target = slots; return [target[i], value => {target[i] = typeof value === 'function' ? value(target[i]) : value;}];},
         useRef(initial) {const i = cursor++; return slots[i] ??= {current: initial};},

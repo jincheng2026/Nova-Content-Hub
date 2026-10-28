@@ -1,3 +1,4 @@
+import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -12,16 +13,17 @@ const actions = source.slice(source.indexOf('function App() {'), source.indexOf(
         refresh: () => {changesPending.current = true; automaticRefresh.current();},
         select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,
         registerDetailCloseGuard: guard => {detailCloseGuard.current = guard;},
-        error, status, workspace, contents, draft, disk, base, pendingRefresh: changesPending.current};
+        error, status, workspace, workspaceUnavailable, workspaceIssue:typeof workspaceIssue==='undefined'?null:workspaceIssue, contents, draft, disk, base, pendingRefresh: changesPending.current};
 }`;
 const compiled = stripTypeScriptTypes(actions);
 
 function fixture() {
     const slots = [];
     let cursor = 0, fail = null, version = 0, pause = null;
-    const calls = [];
+    const calls = [], retryTimers = new Set();
     const item = {id: 'content', title: 'saved', body: 'saved body', editToken: 'original'};
     const context = vm.createContext({
+        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:fn=>{retryTimers.add(fn);return fn;},cancel:fn=>retryTimers.delete(fn)}),
         useMemo: calculate => calculate(),
         useState(initial) {
             const index = cursor++;
@@ -48,7 +50,7 @@ function fixture() {
     });
     vm.runInContext(compiled, context);
     const render = () => {cursor = 0; return context.App();};
-    return {render, calls, item, pause(method) {let release; const wait = new Promise(resolve => {release = resolve;}); pause = {method, wait}; return release;}, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
+    return {render, calls, item, async retryRead(){const fn=[...retryTimers][0];if(fn){retryTimers.delete(fn);fn();await new Promise(resolve=>setImmediate(resolve));}}, retries:()=>retryTimers.size, pause(method) {let release; const wait = new Promise(resolve => {release = resolve;}); pause = {method, wait}; return release;}, fail(method, code = 'BUSY') {fail = method ? {method, code} : null;}, version(value) {version = value;}};
 }
 
 async function ready(f) {
@@ -328,4 +330,22 @@ test('a failed detail close guard retains the selected content and refuses navig
  const f=fixture();await ready(f);f.render().load(f.item);f.render().registerDetailCloseGuard(async()=>{throw failure('CONFLICT');});
  const before=f.render().page;await f.render().navigate('templates');assert.equal(f.render().page,before);assert.match(f.render().error,/CONFLICT/);assert.equal(f.render().draft.body,f.item.body);
  f.render().registerDetailCloseGuard(null);await f.render().navigate('templates');assert.equal(f.render().page,'templates');
+});
+test('transient workspace contention stays light and automatically recovers without losing the author draft',async()=>{
+ const f=fixture();await ready(f);f.render().load(f.item);f.render().setDraft({title:'本人标题',body:'尚未保存的完整正文'});f.render();
+ f.fail('readWorkspace','VAULT_BUSY');await f.render().refreshWorkspace();let app=f.render();assert.equal(app.workspaceUnavailable,false);assert.equal(app.workspaceIssue.kind,'busy');assert.equal(app.workspace.version,0);assert.equal(app.acting,false);assert.equal(f.retries(),1);
+ f.fail(null);f.version(2);await f.retryRead();app=f.render();assert.equal(app.workspace.version,2);assert.equal(app.workspaceIssue,null);assert.equal(app.draft.body,'尚未保存的完整正文');assert.equal(app.acting,false);assert.equal(f.retries(),0);
+});
+test('timeout keeps prior data and permits explicit retry; switching a library ignores a late failure',async()=>{
+ const f=fixture();await ready(f);f.fail('readWorkspace','READ_TIMEOUT');await assert.rejects(f.render().refreshWorkspace());let app=f.render();assert.equal(app.workspaceIssue.kind,'timeout');assert.equal(app.workspace.version,0);assert.equal(app.acting,false);assert.equal(f.retries(),0);
+ f.fail(null);await f.render().refreshWorkspace();assert.equal(f.render().workspaceIssue,null);
+ const release=f.pause('readWorkspace'),late=f.render().refreshWorkspace();f.render().clearEditor();f.render().load({...f.item,id:'new-library-content'});f.render().setDraft({title:'新库本人填写',body:'新库草稿'});f.render();f.fail('readWorkspace','CORRUPT');release();await late;
+ app=f.render();assert.equal(app.workspace,null);assert.equal(app.workspaceIssue,null);assert.equal(app.error,'');assert.equal(app.draft.body,'新库草稿');
+});
+test('read recovery is finite, releases foreground busy and never replays the acknowledged write',async()=>{
+ const f=fixture();await ready(f);const before=f.calls.filter(method=>method==='readWorkspace').length;f.fail('readWorkspace','BUSY');let writes=0;
+ await f.render().nativeAction(async()=>{writes++;});await new Promise(resolve=>setImmediate(resolve));
+ assert.equal(f.render().acting,false);assert.equal(f.render().active,false);
+ await f.retryRead();await f.retryRead();await f.retryRead();
+ assert.equal(writes,1);assert.equal(f.retries(),0);assert.equal(f.calls.filter(method=>method==='readWorkspace').length-before,3);assert.equal(f.render().workspaceUnavailable,false);assert.match(f.render().workspaceIssue.message,/稍后重试/);
 });

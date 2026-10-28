@@ -1,3 +1,4 @@
+import {createWorkspaceReadRecovery,workspaceReadFailure} from '../src/shared/workspace-read-recovery.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
@@ -16,6 +17,7 @@ function fixture() {
     let cursor = 0, failed = false;
     const item = {id: 'content', title: 'saved', body: 'saved', editToken: 'original'};
     const context = vm.createContext({
+        workspaceReadFailure, createWorkspaceReadRecovery: options => createWorkspaceReadRecovery({...options,schedule:()=>0,cancel:()=>{}}),
         useMemo: calculate => calculate(),
         useState(initial) {const index = cursor++; if (!(index in slots)) slots[index] = initial; return [slots[index], value => {slots[index] = typeof value === 'function' ? value(slots[index]) : value;}];},
         useRef(initial) {const index = cursor++; return slots[index] ??= {current: initial};},
