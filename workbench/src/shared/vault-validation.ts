@@ -7,6 +7,8 @@ export const vaultDocumentId = (value:unknown):value is string => typeof value==
 const text = (value:unknown,max:number) => typeof value==='string' && value.length<=max && !value.includes('\0') && new TextEncoder().encode(value).byteLength<=max;
 export function vaultDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method){
+ case 'readDocumentView':return exact(input,['documentId','expectedHash','scope'])&&typeof input.documentId==='string'&&/^(?:doc-|source-|reading-)[a-f0-9]{32,64}$/.test(input.documentId)&&token(input.expectedHash)&&token(input.scope);
+ case 'readDocumentReference':case 'openDocumentExternalReference':return (exact(input,['documentId','expectedHash','refId','targetIdentity','scope'])||exact(input,['documentId','expectedHash','refId','targetIdentity','scope','intent']))&&typeof input.documentId==='string'&&/^(?:doc-|source-|reading-)[a-f0-9]{32,64}$/.test(input.documentId)&&token(input.expectedHash)&&token(input.refId)&&token(input.targetIdentity)&&token(input.scope)&&(input.intent===undefined||['embed','navigate'].includes(input.intent as string));
  case 'revealVaultReference':return exact(input,['id','target'])&&vaultDocumentId(input.id)&&text(input.target,2000)&&!!input.target;
  case 'openVaultReference':return exact(input,['id','url'])&&vaultDocumentId(input.id)&&text(input.url,4096)&&!/[\u0000-\u0020\u007f]/.test(input.url as string);
  case 'readVault':return input===undefined;

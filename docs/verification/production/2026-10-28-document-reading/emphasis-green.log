@@ -1,0 +1,33 @@
+✔ Markdown reading gives account notes headings, quotes, lists and table semantics (8.209375ms)
+✔ Markdown treats markup as text and refuses executable, local and relative destinations (0.683917ms)
+✔ Markdown preserves code, plain line breaks and empty content (1.572625ms)
+✔ Markdown keeps literal heading hashes and handles pipes inside multibacktick code (0.468792ms)
+✔ Markdown suppresses only a matching first heading already shown in its dialog (0.309792ms)
+✔ Markdown keeps blocked link and image destinations as selectable escaped evidence (0.387125ms)
+✔ Markdown tables retain every authored cell and stop before subsequent blocks containing pipes (2.809541ms)
+✔ account card summary removes layout syntax while retaining authored text and source targets (0.618667ms)
+✔ account card summary remains plain React text with markup and code preserved safely (0.333708ms)
+✔ trusted renderer can replace only saved reference tokens while code and plain callers stay inert (1.40125ms)
+✔ trusted images retain angle-delimited authored paths containing spaces (0.203791ms)
+✔ trusted reference replacement preserves emphasis and accepts empty image descriptions (0.500875ms)
+✔ real bounded reader preserves source bytes and resolves encoded Chinese images and wiki notes (1683.2515ms)
+✔ reader keeps missing/ambiguous/unsupported references explicit and excludes code syntax (1496.12025ms)
+✔ reader rejects escaped paths, credentials, framework files, symlinks and cross-source fallback (1216.873333ms)
+✔ reference identity expires for changed source, target, binding and replaced source root (1236.321625ms)
+✔ linked source is confined to explicit root and refuses root replacement (2497.662583ms)
+✔ reader refuses invalid raster bytes and pending state without recovering or projecting (4431.03125ms)
+✔ wiki bare names stay ambiguous even when one candidate shares the current folder (1014.306792ms)
+✔ fragment selection is exact, duplicate headings are explicit, cycles and depth are bounded with manual navigation (1035.180959ms)
+✔ reader leaves over-limit references as authored text and refuses huge text/hard links and runtime pending (1092.345625ms)
+✔ legacy pending receipts are refused without creating a migration index (1167.839666ms)
+✔ actual raster decoder accepts supported content types without relying on filename extension (1749.081833ms)
+✔ bounded reference queue rejects excess work and never grants unknown or path-bearing requests (2690.607875ms)
+✔ selected heading preserves fenced-code headings as literal body content (1064.341333ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 22951.959458

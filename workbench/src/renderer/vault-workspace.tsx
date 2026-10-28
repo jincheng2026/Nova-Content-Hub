@@ -1,3 +1,5 @@
+import {DocumentSourceReader} from './document-source-reader.tsx';
+import type {DocumentReader} from '../shared/document-reading-contracts.ts';
 import {DocumentMarkdown} from './document-markdown.tsx';
 import {JinchengStageActions} from './jincheng-stage-actions.tsx';
 import {JinchengSourceStatus} from './jincheng-source-status.tsx';
@@ -19,7 +21,17 @@ import type {VaultDocument,VaultSection,VaultSnapshot,VaultText} from '../shared
 import type {ProductionTask} from '../shared/production-contracts.ts';
 import './vault-workspace.css';
 const labels:Record<VaultSection,string>={profile:'个人定位',accounts:'账号',materials:'素材',patterns:'规律',topics:'选题',drafts:'稿件',reviews:'复盘',prompts:'提示词'};
-function DocumentEditor({source,section,busy,close,saved,openContent,statusChanged}:{source:VaultText|null;section:VaultSection;busy:boolean;close():void;saved():Promise<void>;openContent(id:string):void;statusChanged():Promise<void>}){
+/** Fixed transport: no local path or arbitrary opener reaches the renderer. */
+export const vaultDocumentReader:DocumentReader={
+ readView:input=>invoke('readDocumentView',{...input,scope:input.scope??''}),
+ readReference:input=>invoke('readDocumentReference',{...input,scope:input.scope??''}),
+ openExternal:async input=>{await invoke('openDocumentExternalReference',{...input,scope:input.scope??''});},
+};
+export function VaultDocumentReader({source,text,scopeKey,readingScope}:{source:VaultText;text:string;scopeKey:string;readingScope?:string}){
+ const scope=source.readingScope??readingScope;
+ return scope?<DocumentSourceReader scopeKey={scopeKey} document={{documentId:source.document.id,expectedHash:source.document.hash,scope}} reader={vaultDocumentReader} title={source.document.title} draftText={text} fallbackText={source.text}/>:<><p role="status">当前原文尚无阅读绑定，请重新打开资料。原文与本次填写仍保留。</p><DocumentMarkdown text={text}/></>;
+}
+function DocumentEditor({source,section,busy,close,saved,openContent,statusChanged,readingScope,readingEpoch}:{readingScope?:string;readingEpoch:number;source:VaultText|null;section:VaultSection;busy:boolean;close():void;saved():Promise<void>;openContent(id:string):void;statusChanged():Promise<void>}){
  const [title,setTitle]=useState(''),[text,setText]=useState(source?.text??''),[category,setCategory]=useState<VaultSection>(section),[working,setWorking]=useState(false),[message,setMessage]=useState(''),[confirmTrash,setConfirmTrash]=useState(false);
  const active=useRef(false),[current,setCurrent]=useState(source);
  const submission=useRef<VaultEditorSubmission|null>(null),local=useRef({current,text,title,category});local.current={current,text,title,category};
@@ -61,7 +73,7 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
    {originalCreation&&current&&<CreationFrame documentId={current.document.id} busy={busy||working}/>}
    {!originalCreation&&readonly&&<Banner type="info" closeIcon={null} description={current?.workingDraftAvailable?"当前稿只读；建立工作稿后可编辑，原 HTML 保留。":"此格式仅供阅读，原文件保留。"}/>}
    {!originalCreation&&markdownDocument&&<div className="actions"><Button disabled={working} onClick={()=>setEditing(!editing)}>{editing?'阅读排版':readonly?'查看原文':'编辑原文'}</Button>{dirty&&!editing&&<p role="status">正在预览本次未保存的修改。</p>}</div>}
-   {!originalCreation&&markdownDocument&&!editing&&<DocumentMarkdown text={text}/>}
+   {!originalCreation&&markdownDocument&&!editing&&<VaultDocumentReader source={current!} text={text} scopeKey={`${readingScope??'unbound'}:${readingEpoch}`} readingScope={readingScope}/>}
    {!originalCreation&&(!markdownDocument||editing)&&<label>{readonly?'资料原文':'正文'}<TextArea aria-label="资料正文" className="semi-control-text vault-document-text" value={text} readonly={readonly} disabled={working} maxLength={1_000_000} autosize={{minRows:12,maxRows:28}} onChange={setText}/></label>}
    <p role="status">{message}</p>
    {sourceUnavailable&&<Banner type="warning" closeIcon={null} description="已保留原文档身份。请恢复或定位原件后重新打开，本次输入可以复制保留。"/>}
@@ -73,7 +85,8 @@ function DocumentEditor({source,section,busy,close,saved,openContent,statusChang
 }
 export function VaultWorkspace({busy,openContent,showTasks,openResources,openAccounts,openReports,statusChanged}:{busy:boolean;openContent(id:string):void;showTasks():void;openResources():void;openAccounts():void;openReports():void;statusChanged():Promise<void>}){
  const [snapshot,setSnapshot]=useState<VaultSnapshot|null>(null),[loaded,setLoaded]=useState(false),[message,setMessage]=useState(''),[working,setWorking]=useState(false),[query,setQuery]=useState(''),[section,setSection]=useState('all'),[page,setPage]=useState(1),[pageSize,setPageSize]=useState(20),[editor,setEditor]=useState<{source:VaultText|null;section:VaultSection}|null>(null),[tasks,setTasks]=useState<ProductionTask[]>([]);
- const active=useRef(false);
+ const active=useRef(false),[readingEpoch,setReadingEpoch]=useState(0);
+ useEffect(()=>{const invalidate=()=>setReadingEpoch(value=>value+1);window.addEventListener('nova-workspace-refresh',invalidate);window.addEventListener('nova-vault-source-changed',invalidate);const unsubscribe=window.contentHub.onWorkspaceChanged(change=>{if(change!=='progress')invalidate();});return()=>{window.removeEventListener('nova-workspace-refresh',invalidate);window.removeEventListener('nova-vault-source-changed',invalidate);unsubscribe();};},[]);
  async function refresh(includeTasks=true){const next=await invoke('readVault');setSnapshot(next);setLoaded(true);if(!includeTasks)return;try{setTasks((await invoke('readProduction')).tasks);}catch{/* Knowledge files remain readable if the task projection is unavailable. */}}
  useEffect(()=>{void refresh().catch(error=>{setLoaded(true);setMessage(errorInfo(error).message);});const reload=()=>{void refresh().catch(error=>setMessage(errorInfo(error).message));};const sourceReload=()=>{void refresh(false).catch(error=>setMessage(errorInfo(error).message));};window.addEventListener('nova-workspace-refresh',reload);window.addEventListener('nova-vault-source-changed',sourceReload);return()=>{window.removeEventListener('nova-workspace-refresh',reload);window.removeEventListener('nova-vault-source-changed',sourceReload);};},[]);
  const rows=useMemo(()=>{const q=query.trim().toLocaleLowerCase();return(snapshot?.documents??[]).filter(item=>(section==='all'||section==='other'?section==='all'||item.format==='other':item.section===section)&&(!q||`${item.title} ${item.relativePath} ${item.tNumber??''}`.toLocaleLowerCase().includes(q)));},[snapshot,section,query]);
@@ -81,7 +94,7 @@ export function VaultWorkspace({busy,openContent,showTasks,openResources,openAcc
  const positioningTask=[...tasks].reverse().find(task=>task.request.parameters&&typeof task.request.parameters==='object'&&!Array.isArray(task.request.parameters)&&task.request.parameters.workflow==='positioning-interview'&&task.attempts.some(attempt=>attempt.id===task.activeAttemptId&&['created','claimed','waiting-user','waiting-permission','submitted'].includes(attempt.status)));
  const positioningLabel=positioningTask?'继续定位':snapshot?.positioning.status==='available'?'调整定位':'梳理定位';
  async function positioning(){if(active.current||busy)return;active.current=true;setWorking(true);setMessage('');try{const result=await invoke('startProductionTask',{kind:'writing',workflow:'positioning-interview',businessSkill:'xindao-interview',title:positioningLabel,prompt:'使用新岛定位访谈方法，读取当前知识库已有个人定位与访谈资料。按已有阶段继续，逐步与我确认身份、受众、内容方向和表达方式；保存阶段检查点与定位候选，未经确认不覆盖现有正式定位。',contentId:null,accountId:null,mode:'simple',comments:false});setTasks(result.snapshot.tasks);setMessage(result.message??(result.opened?'已打开所选助手，访谈与结果可在助手任务中继续。':'定位任务已保存，可在助手任务中继续。'));}catch(error){setMessage(errorInfo(error).message);}finally{active.current=false;setWorking(false);await statusChanged();}}
- async function read(item:VaultDocument){if(active.current)return;active.current=true;setWorking(true);setMessage('');try{const source=await invoke('readVaultDocument',{id:item.id});setEditor({source,section:item.section});}catch(error){setMessage(errorInfo(error).message+' 可通过该行的定位入口查看原文件。');}finally{active.current=false;setWorking(false);await statusChanged();}}
+ async function read(item:VaultDocument){if(active.current)return;active.current=true;setWorking(true);setMessage('');try{let source:VaultText;if((item.format==='markdown'||item.format==='text')&&snapshot?.readingScope){const view=await invoke('readDocumentView',{documentId:item.id,expectedHash:item.hash,scope:snapshot.readingScope});source={document:item,text:view.text,readingScope:view.scope??snapshot.readingScope};}else source=await invoke('readVaultDocument',{id:item.id});setEditor({source,section:item.section});}catch(error){setMessage(errorInfo(error).message+' 可通过该行的定位入口查看原文件。');}finally{active.current=false;setWorking(false);await statusChanged();}}
  return <section className="vault-workspace" aria-label="知识库资料">
   <div className="vault-page-heading"><div><p className="eyebrow">知识库</p><h2>资料与定位</h2></div>{snapshot&&<Button theme="solid" disabled={busy||working} onClick={()=>setEditor({source:null,section:section==='all'||section==='other'?'materials':section as VaultSection})}>新建资料</Button>}</div>
   {message&&<Banner type="warning" closeIcon={null} description={message}/>}
@@ -98,6 +111,6 @@ export function VaultWorkspace({busy,openContent,showTasks,openResources,openAcc
    ]} empty={query?'没有匹配资料，请调整搜索。':'这里还没有资料，可以新建记录。'}/>
    {snapshot.issues.length>0&&<details className="vault-issues"><summary>有 {snapshot.issues.length} 项资料需要留意</summary>{snapshot.issues.map((issue,index)=><p key={index}>{issue.message}{issue.relativePath?` · ${issue.relativePath}`:''}</p>)}</details>}
   </>:loaded?<div className="vault-legacy-empty"><p>当前是原有内容库。继续管理已有资料，或新建知识库开始整理。</p><div className="actions"><Button onClick={openResources}>个人资料与素材</Button><Button onClick={openAccounts}>对标账号</Button><Button onClick={openReports}>调研报告</Button></div></div>:<p role="status">正在读取知识库资料…</p>}
-  {editor&&<DocumentEditor source={editor.source} section={editor.section} busy={busy} close={()=>setEditor(null)} saved={refresh} openContent={openContent} statusChanged={statusChanged}/>}
+  {editor&&<DocumentEditor readingScope={snapshot?.readingScope} readingEpoch={readingEpoch} source={editor.source} section={editor.section} busy={busy} close={()=>setEditor(null)} saved={refresh} openContent={openContent} statusChanged={statusChanged}/>}
  </section>;
 }

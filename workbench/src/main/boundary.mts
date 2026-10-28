@@ -9,6 +9,7 @@ export const CHANNELS = Object.freeze([
     'readJinchengPublication', 'mutateJinchengPublication',
     'confirmJinchengCheckpoint', 'saveJinchengAuthorAnalysis',
     'openCreationPage', 'creationPageRequest', 'closeCreationPage',
+    'readDocumentView','readDocumentReference','openDocumentExternalReference',
     'readVaultWorkDirectory','readVaultTopicMenus','adoptVaultTopic','readVaultSources',
     'openVaultSourcePage','openVaultReference','revealVaultReference','chooseVaultSource',
     'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness',
@@ -28,7 +29,7 @@ export const CHANNELS = Object.freeze([
     'readPreferences', 'savePreferences', 'readReminderStatus', 'testReminder',
     'readSetup', 'openSetupTarget', 'copyPluginMarketLocation', 'exportDiagnostics'
 ] satisfies DesktopMethod[]);
-export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' nova-content://assets; connect-src 'none'; frame-src nova-content://creation; object-src 'none'; base-uri 'none'; form-action 'none'";
+export const CSP = "default-src 'none'; script-src 'self'; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' nova-content://assets blob:; connect-src 'none'; frame-src nova-content://creation; object-src 'none'; base-uri 'none'; form-action 'none'";
 const MIME: Record<string, string> = {
     html: 'text/html; charset=utf-8',
     js: 'text/javascript; charset=utf-8',

@@ -5,8 +5,23 @@ import type {DesktopController} from './controller.mts';
 import type {VaultInputs,VaultMutationMethod,VaultPending,VaultText,VaultRecovery,VaultMutationResult} from '../shared/vault-contracts.ts';
 export class VaultController {
  owner:DesktopController;
+ private readingQueue:Promise<unknown>=Promise.resolve();
+ private readingQueued=0;
+ private documentRead<T>(action:()=>Promise<T>):Promise<T>{
+  if(this.readingQueued>=100)return Promise.reject(Object.assign(new Error('原文读取队列已满，请稍后重试。'),{code:'BUSY'}));
+  this.readingQueued++;const result=this.readingQueue.then(async()=>{const deadline=Date.now()+10_000;while(this.owner.busy){if(Date.now()>deadline)fail('BUSY','当前操作尚未完成，请稍后重新读取原文。');await new Promise(resolve=>setTimeout(resolve,40));}return this.owner.exclusive(action);}).finally(()=>{this.readingQueued--;});this.readingQueue=result.catch(()=>{});return result;
+ }
  openBoundSource?:(binding:import('../shared/contracts.ts').LibraryBinding,sourceId:string,relativePath:string)=>Promise<void>;
  constructor(owner:DesktopController){this.owner=owner;}
+ readDocumentView(input:VaultInputs['readDocumentView']){validateInput('readDocumentView',input);return this.documentRead(()=>{this.owner.noPending();return this.owner.worker.call('documentView',{binding:this.owner.current(),input});});}
+ readDocumentReference(input:VaultInputs['readDocumentReference']){validateInput('readDocumentReference',input);return this.documentRead(()=>{this.owner.noPending();return this.owner.worker.call('documentReference',{binding:this.owner.current(),input});});}
+ openDocumentExternalReference(input:VaultInputs['openDocumentExternalReference']){validateInput('openDocumentExternalReference',input);requireWrite(this.owner.authMode);return this.documentRead(async()=>{
+  this.owner.noPending();if(!this.owner.openPublicationURL)fail('NOT_READY','此安装没有系统浏览器入口。');
+  const binding=this.owner.current(),url=await this.owner.worker.call('documentExternalReference',{binding,input});
+  if(JSON.stringify(this.owner.current())!==JSON.stringify(binding))fail('CONFLICT','内容库已变化，请重新打开原文。');
+  try{await this.owner.openPublicationURL(url);}catch{fail('REFERENCE_OPEN_FAILED','系统未能打开链接，可复制原URL后重试。');}return {opened:true as const};
+ });}
+
  readVault(input?:undefined){validateInput('readVault',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultRead',{binding:this.owner.current()}));}
  readVaultContentSource(input:VaultInputs['readVaultContentSource']){validateInput('readVaultContentSource',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultContentSource',{binding:this.owner.current(),contentId:input.contentId}));}
  readVaultWorkContext(input:VaultInputs['readVaultWorkContext']){validateInput('readVaultWorkContext',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultWorkContext',{binding:this.owner.current(),contentId:input.contentId}));}

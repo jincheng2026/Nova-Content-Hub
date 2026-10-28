@@ -1,0 +1,51 @@
+✔ Markdown reading gives account notes headings, quotes, lists and table semantics (8.803292ms)
+✔ Markdown treats markup as text and refuses executable, local and relative destinations (3.540416ms)
+✔ Markdown preserves code, plain line breaks and empty content (1.213041ms)
+✔ Markdown keeps literal heading hashes and handles pipes inside multibacktick code (1.696333ms)
+✔ Markdown suppresses only a matching first heading already shown in its dialog (0.405708ms)
+✔ Markdown keeps blocked link and image destinations as selectable escaped evidence (2.324292ms)
+✔ Markdown tables retain every authored cell and stop before subsequent blocks containing pipes (2.018917ms)
+✔ account card summary removes layout syntax while retaining authored text and source targets (2.354ms)
+✔ account card summary remains plain React text with markup and code preserved safely (0.834708ms)
+✔ trusted renderer can replace only saved reference tokens while code and plain callers stay inert (4.898209ms)
+✔ trusted images retain angle-delimited authored paths containing spaces (0.648875ms)
+✖ trusted reference replacement preserves emphasis and accepts empty image descriptions (2.274916ms)
+ℹ tests 12
+ℹ suites 0
+ℹ pass 11
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 463.891625
+
+✖ failing tests:
+
+test at workbench/test/document-markdown.test.mjs:73:1
+✖ trusted reference replacement preserves emphasis and accepts empty image descriptions (2.274916ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   '**重点**',
+  +   '*说明*',
+  +   '~~旧值~~',
+  +   '**[[目标]]**'
+  -   '[[目标]]',
+  -   '![](./image.png)'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/document-markdown.test.mjs:75:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ '**重点**', '*说明*', '~~旧值~~', '**[[目标]]**' ],
+    expected: [ '[[目标]]', '![](./image.png)' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

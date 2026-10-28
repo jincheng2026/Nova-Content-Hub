@@ -1,3 +1,4 @@
+import {createDocumentReadingService,documentReadingScope,registeredLinkedDocuments,registeredLinkedDocumentLocation} from './document-reading.mts';
 import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
 import {saveFinalAssets} from '../../../plugin-src/src/lib/final-assets/index.mjs';
 import fs from 'node:fs';
@@ -5,7 +6,7 @@ import {verifiedBoundReader,verifyBoundRoot} from './bound-reader.mts';
 import {createVaultWorkingDraft} from '../../../plugin-src/src/lib/vault/working-draft.mjs';
 import {selectCurrentWork} from '../../../plugin-src/src/lib/vault/topics.mjs';
 import {readWorkFlow} from '../../../plugin-src/src/lib/vault/workflow.mjs';
-import {safe,contentSources} from '../../../plugin-src/src/lib/vault/core.mjs';
+import {safe,contentSources,digest} from '../../../plugin-src/src/lib/vault/core.mjs';
 import {readSourceInventory,linkSource} from '../../../plugin-src/src/lib/vault/source-map.mjs';
 import {readTopicMenus,adoptVaultTopic} from './topic-worker.mts';
 import path from 'node:path';
@@ -16,13 +17,30 @@ import {vaultDocumentId,vaultPending,vaultDesktopInput} from '../shared/vault-va
 import type {VaultWorkerOperations,VaultPending,VaultResolution} from '../shared/vault-contracts.ts';
 import {isRecord} from '../shared/contracts.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
+const documentReading = createDocumentReadingService();
+let documentBinding = '';
+function readingFor(binding:LibraryBinding){const next=JSON.stringify(binding);if(next!==documentBinding){documentReading.clear();documentBinding=next;}return documentReading;}
 function workContext(binding:LibraryBinding,contentId:string){const context=readVaultTaskContext(binding.root,contentId),root=vaultRootForRuntime(binding.root);return context?{...context,workflow:root&&context.content?readWorkFlow(root,{vaultId:context.vaultId,workId:context.content.tNumber}):null}:null;}
-export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
+export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['documentView','documentReference','documentExternalReference','vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
 export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'required'|'disabled') {
- const fields=op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
+ const documentOperation=['documentView','documentReference','documentExternalReference'].includes(op);
+ const fields=documentOperation?['binding','input']:op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
+ if(documentOperation){
+  const method=op==='documentView'?'readDocumentView':op==='documentReference'?'readDocumentReference':'openDocumentExternalReference';
+  if(!vaultDesktopInput(method,args.input))fail('INVALID_INPUT','原文阅读请求字段无效。');
+  const reader=readingFor(binding);
+  if(op==='documentView')return reader.readDocumentView(binding,args.input as VaultWorkerOperations['documentView']['args']['input']);
+  if(op==='documentReference')return reader.readDocumentReference(binding,args.input as VaultWorkerOperations['documentReference']['args']['input']);
+  requireWrite(mode);return reader.resolveExternalReference(binding,args.input as VaultWorkerOperations['documentExternalReference']['args']['input']);
+ }
+ if(op==='vaultDocument'&&typeof args.id==='string'&&/^source-[a-f0-9]{32}$/.test(args.id)){
+  const document=registeredLinkedDocuments(binding).documents.find(item=>item.id===args.id);if(!document)fail('NOT_FOUND','已登记关联原文暂不可读，请恢复来源后重试。');
+  const scope=documentReadingScope(binding),view=readingFor(binding).readDocumentView(binding,{documentId:document.id,expectedHash:document.hash,scope});return {document,text:view.text,readingScope:scope};
+ }
+ if(op==='vaultLocation'&&typeof args.id==='string'&&/^source-[a-f0-9]{32}$/.test(args.id))return registeredLinkedDocumentLocation(binding,args.id);
  // A root label is metadata, not a request to project every business source.
  if(op==='vaultLocation'&&args.id===undefined){verifyBoundRoot(binding);return vaultRootForRuntime(binding.root)??binding.root;}
  if(op==='vaultReferenceLocation')requireWrite(mode);
@@ -43,7 +61,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   if(!fs.statSync(location).isDirectory())fail('NOT_FOUND','此引用不是素材文件夹；可阅读或定位已索引文件。');
   return location;
  }
- if(op==='vaultRead')return readVaultSnapshot(binding.root);
+ if(op==='vaultRead'){const snapshot=readVaultSnapshot(binding.root);if(!snapshot)return null;const linked=registeredLinkedDocuments(binding,{maxEntries:Math.max(0,20_000-snapshot.documents.length)});return {...snapshot,revision:digest(JSON.stringify([snapshot.revision,linked.documents.map(document=>[document.id,document.hash])])),documents:[...snapshot.documents,...linked.documents],issues:[...snapshot.issues,...linked.issues],readingScope:documentReadingScope(binding)};}
  if(op==='vaultTopicMenus')return readTopicMenus(binding);
  if(op==='vaultAdoptTopic'){if(!vaultDesktopInput('adoptVaultTopic',args.input))fail('INVALID_INPUT','选题选择请求无效。');return adoptVaultTopic(binding,args.input as import('../shared/vault-contracts.ts').VaultInputs['adoptVaultTopic'],mode);}
  if(op==='vaultSources'){const root=vaultRootForRuntime(binding.root);return root?readSourceInventory(root):{sources:[],issues:[]};}
@@ -105,5 +123,5 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   return location;
  }
  if(!vaultDocumentId(args.id))fail('INVALID_INPUT','资料标识无效。');
- return readVaultDocument(binding.root,args.id);
+ return {...readVaultDocument(binding.root,args.id),readingScope:documentReadingScope(binding)};
 }

@@ -1,0 +1,27 @@
+✖ a replaced unrelated linked root does not block the exact healthy source while its own reads stay closed (5381.701584ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6366.687625
+
+✖ failing tests:
+
+test at workbench/test/document-reading-integration.test.mjs:9:1
+✖ a replaced unrelated linked root does not block the exact healthy source while its own reads stay closed (5381.701584ms)
+  Error [LibraryError]: 已关联来源根身份变化，请重新选择
+      at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:35:11)
+      at resolveSource (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/source-map.mjs:46:88)
+      at Object.resolveRegisteredDocument [as resolveDocument] (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:133:28)
+      at contextFor (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:227:48)
+      at Object.readDocumentView (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/document-reading.mts:276:31)
+      at executeVault (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/vault-worker.mts:35:40)
+      at execute (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/worker.mts:88:38)
+      at Object.call (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/document-reading-integration.test.mjs:6:459)
+      at file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/vault-controller.mts:16:176
+      at DesktopController.exclusive (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/src/main/controller.mts:402:26) {
+    code: 'CONFLICT'
+  }

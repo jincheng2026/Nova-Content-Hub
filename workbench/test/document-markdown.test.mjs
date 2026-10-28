@@ -60,3 +60,20 @@ test('account card summary remains plain React text with markup and code preserv
  assert.equal(summary,'原始说明 <script>alert(1)</script> # 原代码 | >');
  const html=renderToStaticMarkup(React.createElement('p',null,summary));assert.doesNotMatch(html,/<script/);assert.match(html,/&lt;script&gt;/);
 });
+
+test('trusted renderer can replace only saved reference tokens while code and plain callers stay inert',()=>{
+ const source='![图](./中%20文.png)\n\n[[目标|别名]]\n\n`[[目标|别名]]`\n\n```md\n![图](./中%20文.png)\n```';
+ const seen=[];const html=render(source,{renderReference:raw=>{seen.push(raw);return React.createElement('button',{type:'button'},raw);}});
+ assert.equal((html.match(/<button/g)??[]).length,2);assert.deepEqual(seen,['![图](./中%20文.png)','[[目标|别名]]']);
+ assert.doesNotMatch(render(source),/<button|<img|href=/);assert.match(render(source),/\[\[目标\|别名\]\]/);
+});
+test('trusted images retain angle-delimited authored paths containing spaces',()=>{
+ const raw='![原图](<../图片/中 文.png>)';const seen=[];const html=render(raw,{renderReference:value=>{seen.push(value);return React.createElement('button',{type:'button'},'受控原图');}});assert.deepEqual(seen,[raw]);assert.match(html,/受控原图/);
+});
+test('trusted reference replacement preserves emphasis and accepts empty image descriptions',()=>{
+ const seen=[];const html=render('**重点** *说明* ~~旧值~~ **[[目标]]** ![](./image.png)',{renderReference:raw=>{seen.push(raw);return React.createElement('button',null,raw);}});
+ assert.deepEqual(seen,['[[目标]]','![](./image.png)']);
+ assert.match(html,/<strong>重点<\/strong>/);assert.match(html,/<em>说明<\/em>/);assert.match(html,/<del>旧值<\/del>/);
+ assert.match(html,/<strong><button>\[\[目标\]\]<\/button><\/strong>/);
+ assert.match(render('![](./image.png)'),/图片：\.\/image.png/);
+});

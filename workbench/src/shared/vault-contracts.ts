@@ -1,3 +1,4 @@
+import type {DocumentViewInput,DocumentReferenceInput,DocumentView,DocumentReferenceResult} from './document-reading-contracts.ts';
 import type {FinalAssetsInputs} from './final-assets-contracts.ts';
 import type {FinalAssetsView} from '../../../plugin-src/src/lib/final-assets/index.mjs';
 import type {LibraryBinding} from './contracts.ts';
@@ -6,9 +7,12 @@ export type TopicMenu={sessionId:string;relativePath:string;hash:string;candidat
 export type VaultWorkDirectoryRow={contentId:string;tNumber:string;title:string;recorded:boolean;published:boolean;hasDraft:boolean;topicStatus:import('../../../plugin-src/src/lib/vault/core.mjs').TopicCardStatus;statusEvidence:{origin:string;documentId:string;relativePath:string;hash:string;text:string;section?:string;line?:number;status?:string;paused?:boolean;reason?:string|null}[];sourceResolution:'resolved'|'conflict'|'missing';sourceConflict:string|null;relativePath:string};
 export type VaultSection = 'profile'|'accounts'|'materials'|'patterns'|'topics'|'drafts'|'reviews'|'prompts';
 export interface VaultDocument {id:string;section:VaultSection;title:string;relativePath:string;hash:string;format:'markdown'|'html'|'text'|'json'|'other';writable:boolean;contentId:string|null;tNumber:string|null;bytes:number;sourceConflict?:string}
-export interface VaultSnapshot {root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
-export interface VaultText {document:VaultDocument;text:string;workingDraftAvailable?:boolean}
+export interface VaultSnapshot {readingScope?:string;root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
+export interface VaultText {readingScope?:string;document:VaultDocument;text:string;workingDraftAvailable?:boolean}
 export interface VaultInputs {
+ readDocumentView:DocumentViewInput & {scope:string};
+ readDocumentReference:DocumentReferenceInput & {scope:string};
+ openDocumentExternalReference:DocumentReferenceInput & {scope:string};
  saveFinalAssets:FinalAssetsInputs['saveFinalAssets'];
  readVault:undefined;
  readVaultDocument:{id:string};
@@ -32,6 +36,9 @@ export interface VaultInputs {
  recoverVaultMutation:{action:'retry'|'discard'};
 }
 export interface VaultResults {
+ readDocumentView:DocumentView;
+ readDocumentReference:DocumentReferenceResult;
+ openDocumentExternalReference:{opened:true};
  readVault:VaultSnapshot|null;
  readVaultDocument:VaultText;
  openVaultReference:{opened:true};
@@ -59,6 +66,9 @@ export type VaultMutationResult=VaultText|{trashed:true}|FinalAssetsView;
 export type VaultResolution = {state:'committed';result:VaultMutationResult}|{state:'missing'}|{state:'uncertain'};
 export type VaultRecovery = Pick<VaultPending,'mutationId'|'method'|'input'> & {outcome:'committed'|'discarded';result:VaultMutationResult|null;current:VaultText|null};
 export interface VaultWorkerOperations {
+ documentView:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentView']};result:DocumentView};
+ documentReference:{args:{binding:LibraryBinding;input:VaultInputs['readDocumentReference']};result:DocumentReferenceResult};
+ documentExternalReference:{args:{binding:LibraryBinding;input:VaultInputs['openDocumentExternalReference']};result:string};
  vaultResolve:{args:{binding:LibraryBinding;mutationId:string};result:VaultResolution};
  vaultRead:{args:{binding:LibraryBinding};result:VaultSnapshot|null};
  vaultContentSource:{args:{binding:LibraryBinding;contentId:string};result:VaultText|null};

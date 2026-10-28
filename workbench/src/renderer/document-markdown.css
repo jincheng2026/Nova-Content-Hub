@@ -13,3 +13,18 @@ div.document-markdown hr{border:0;border-top:1px solid rgba(0,0,0,.08);margin:1.
 .document-markdown-table{max-width:100%;overflow-x:auto;margin:1em 0;border:1px solid rgba(0,0,0,.08);border-radius:10px;background:#fff}
 div.document-markdown table{width:100%;border-collapse:collapse;font:inherit;table-layout:auto}div.document-markdown :is(th,td){min-width:100px;max-width:420px;padding:10px 12px;border:0;border-bottom:1px solid rgba(0,0,0,.08);vertical-align:top;font-size:inherit;line-height:1.6;white-space:normal;overflow-wrap:anywhere;color:inherit}div.document-markdown th{background:#fafafc;font-weight:600}div.document-markdown tbody tr:last-child td{border-bottom:0}
 div.document-markdown :is(a,pre,.document-markdown-table):focus-visible{outline:2px solid #0071e3;outline-offset:3px}
+/* Image-01/02, Reading-02, Foundation-02/03: complete images, selectable source and bounded flow. */
+.document-source-reader,.document-source-reader-body{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.document-source-reader-body{max-height:70vh;overflow:auto;padding:2px 4px}
+.document-reader-back{margin-bottom:10px}
+div.document-markdown .document-markdown-paragraph{margin:0 0 .8em;font-size:inherit;line-height:inherit}
+.document-reference{max-width:100%;overflow-wrap:anywhere}
+.document-reference-media{display:block;margin:12px 0}
+.document-reference-image,.document-reference-embedded{display:block;max-width:100%;min-width:0}
+.document-reference-image .image-preview-trigger{display:block;width:auto;max-width:100%;padding:0;border:0;border-radius:10px;background:transparent}
+.document-reference-image .image-preview-trigger img{display:block;width:auto;height:auto;max-width:100%;max-height:none;border-radius:10px;object-fit:contain}
+.document-reference-embedded{padding:12px 16px;border-left:3px solid var(--accent,#0071e3);background:#fafafc;border-radius:0 8px 8px 0}
+.document-reference-source{white-space:pre-wrap;user-select:text;font-size:13px;color:var(--muted,#5b5b65)}
+.document-reference-unavailable,.document-reader-notice{color:var(--muted,#5b5b65);font-size:13px;overflow-wrap:anywhere}
+.document-reference :is(button):focus-visible,.document-source-reader-body:focus-visible{outline:2px solid #0071e3;outline-offset:3px}
+@media(max-width:600px){.document-reference-embedded{padding:10px 8px}.document-source-reader-body{padding:2px;max-height:65vh}}
