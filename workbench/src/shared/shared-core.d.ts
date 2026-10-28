@@ -7,6 +7,9 @@ declare module '*file-library/index.mjs' {
     export function readSelectedCoverSnapshot(runtimeRoot:string,input:{contentId:string}):import('../../../plugin-src/src/lib/final-assets/index.mjs').SelectedCoverSnapshot;
     export class LibraryError extends Error { code: string; constructor(code: string, message: string, details?: Record<string, unknown>); }
     interface Library {
+        withProductionAuthority<T>(input:import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionWorkerIdentity,commit:()=>T):T;
+        assertProductionAuthority(input:import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionWorkerIdentity):true;
+        readProductionContext(taskId:string,attemptId?:string):import('../../../plugin-src/src/lib/file-library/production.d.ts').ProductionContext;
         listPhotos(): import('./cover-contracts.ts').Photo[];
         readPhoto(id: string): import('./cover-contracts.ts').Photo & { editToken: string };
         updatePhoto(id: string, input: { isOwnPhoto: boolean }, token: string): unknown;

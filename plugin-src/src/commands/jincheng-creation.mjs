@@ -1,4 +1,6 @@
-import {readBytes,digest,queryVaultMutation,resumeVaultMutation,atomic,mkdir} from '../lib/vault/core.mjs';
+import {isJourneyOutputReceipt} from '../lib/file-library/content-journey.mjs';
+import {withProductionWriteScope,atProductionCommit} from '../lib/production-authority.mjs';
+import {readBytes,digest,queryVaultMutation,resumeVaultMutation,atomic,mkdir,uuidFor} from '../lib/vault/core.mjs';
 import {compileReviewPage} from '../lib/method-adapters/index.mjs';
 import {assertKepuReady,confirmedMethodArtifact,writeKepuCompanions} from '../lib/method-adapters/runtime.mjs';
 import {randomUUID} from 'node:crypto';
@@ -65,7 +67,7 @@ async function recoverableKepuBuild(context,args,source){
   if(vault.content.creationDocuments.length)fail('ALREADY_EXISTS','已有原创作页，请使用read与建议或精确版本的regenerate。');
   if(task.request.parameters.source?.hash&&task.request.parameters.source.hash!==currentSource.hash)fail('CONFLICT','任务冻结的原稿已变化');
   prior={format:'nova-kepu-build',requestHash,source:currentSource,checkpoints,buildInput,stageArtifactId:randomUUID()};
-  priorBytes=Buffer.from(JSON.stringify(prior,null,2)+'\n');mkdir(root,'.workbench/kepu-builds');atomic(root,relative,priorBytes,null);
+  priorBytes=Buffer.from(JSON.stringify(prior,null,2)+'\n');atProductionCommit(()=>{mkdir(root,'.workbench/kepu-builds');atomic(root,relative,priorBytes,null);});
  }else if(JSON.stringify(prior.buildInput)!==JSON.stringify(buildInput))fail('CONFLICT','冻结完整稿输入已变化');
  // A vault receipt replays its original result; verify the live HTML before accepting it.
  const receipt=queryVaultMutation(args.envelope.binding.root,input.mutationId);
@@ -74,21 +76,21 @@ async function recoverableKepuBuild(context,args,source){
  }
  const result=await buildCreationPage(root,prior.buildInput);
  if(digest(readBytes(root,target.relativePath))!==result.revision)fail('CONFLICT','原创作页已有作者修改');
- const stageArtifact=appendStageArtifact(root,{work,kind:'complete-draft',artifactId:prior.stageArtifactId,hash:result.revision,path:target.relativePath,methodId:task.request.parameters.businessSkill,taskId:task.id});
- const companions=writeKepuCompanions(context);
+ const stageArtifact=atProductionCommit(()=>appendStageArtifact(root,{work,kind:'complete-draft',artifactId:prior.stageArtifactId,hash:result.revision,path:target.relativePath,methodId:task.request.parameters.businessSkill,taskId:task.id}),{sourceMutationId:input.mutationId});
+ const companions=atProductionCommit(()=>writeKepuCompanions(context),{sourceMutationId:input.mutationId});
  if(prior.result)return prior.result;
  const completed={...result,stageArtifact,companions};
- atomic(root,relative,Buffer.from(JSON.stringify({...prior,result:completed},null,2)+'\n'),digest(priorBytes));
+ atProductionCommit(()=>atomic(root,relative,Buffer.from(JSON.stringify({...prior,result:completed},null,2)+'\n'),digest(priorBytes)),{sourceMutationId:input.mutationId});
  return completed;
 }
-export async function runCreationHandoff(args){
+async function executeCreationHandoff(args){
  const context=fixedStageContext(args),{root,task,work,vault,input}=context,stage=task.request.parameters.stage;
  if(!work||!vault.content)fail('STAGE_FORBIDDEN');
  let source={sourceId:vault.content.source.sourceId,documentId:vault.content.sourceDocumentId,relativePath:vault.content.relativePath,vaultId:work.vaultId,writable:vault.content.writable};
  if(stage==='review-page'&&args.operation==='review'){
   if(!input.spec||!input.mutationId||Object.keys(input).some(k=>!['spec','mutationId','expectedRevision'].includes(k)))fail('INVALID_INPUT');
   const reviewRequestHash=digest(JSON.stringify({taskId:task.id,requestHash:args.envelope.task.requestHash,input})),receipt=queryVaultMutation(args.envelope.binding.root,input.mutationId);
-  if(receipt){if(receipt.request?.input?.reviewRequestHash!==reviewRequestHash||receipt.request.input.work?.vaultId!==work.vaultId||receipt.request.input.work?.workId!==work.workId)fail('INVALID_INPUT','mutationId已用于另一项请求');return (receipt.status==='pending'?resumeVaultMutation(args.envelope.binding.root,input.mutationId):receipt).result;}
+  if(receipt){if(receipt.request?.input?.reviewRequestHash!==reviewRequestHash||receipt.request.input.work?.vaultId!==work.vaultId||receipt.request.input.work?.workId!==work.workId)fail('INVALID_INPUT','mutationId已用于另一项请求');return (receipt.status==='pending'?atProductionCommit(()=>resumeVaultMutation(args.envelope.binding.root,input.mutationId)):receipt).result;}
   const originalPage=selectedCreationPage(context);
   const confirmed=(pin,change)=>reviewConfirmed(context,pin,change);
   const data=compileReviewPage(work.workId,input.spec,{confirmed});
@@ -113,11 +115,17 @@ export async function runCreationHandoff(args){
   if(stage==='kepu')return recoverableKepuBuild(context,args,source);
   assertStageGate(context,'complete-draft');validateAssistantBuild(input.data);const buildData=withConfirmedKepuReferences(context,input.data,{firstBuild:true});
   if(input.data.content_id!==work.workId)fail('WORK_BINDING_CONFLICT');
-  if(vault.content.creationDocuments.length)fail('ALREADY_EXISTS','已有原创作页，请使用read与建议或精确版本的regenerate。');
-  const target={...source,sourceId:'drafts',documentId:'creation-'+work.workId,relativePath:vault.contentDirectory+'/创作页.html'};
-  const result=await buildCreationPage(root,{work,source:target,data:buildData,mutationId:input.mutationId,templateVersion:loadTrustedCreationTemplate().version});
-  const stageArtifact=appendStageArtifact(root,{work,kind:'complete-draft',artifactId:randomUUID(),hash:result.revision,path:target.relativePath,methodId:task.request.parameters.businessSkill,taskId:task.id});
-  return {...result,stageArtifact,...(stage==='kepu'?{companions:writeKepuCompanions(context)}:{})};
+  const receipt=task.journeyMember?queryVaultMutation(args.envelope.binding.root,input.mutationId):null;
+  const replay=receipt&&isJourneyOutputReceipt(args.envelope.binding.root,task,context.attempt.id,vault.content,input.mutationId);
+  if(receipt&&!replay)fail('CONFLICT','原位提交回执或当前字节不属于本次准确执行');
+  if(replay&&JSON.stringify(receipt.request.input?.data)!==JSON.stringify(buildData))fail('CONFLICT','已提交完整稿的输入已变化');
+  if(vault.content.creationDocuments.length&&!replay)fail('ALREADY_EXISTS','已有原创作页，请使用read与建议或精确版本的regenerate。');
+  const target=replay?receipt.request.source:{...source,sourceId:'drafts',documentId:'creation-'+work.workId,relativePath:vault.contentDirectory+'/创作页.html'};
+  const buildInput=replay?receipt.request.input:{work,source:target,data:buildData,mutationId:input.mutationId,templateVersion:loadTrustedCreationTemplate().version};
+  const result=await buildCreationPage(root,buildInput);
+  const artifactId=task.journeyMember?uuidFor('journey-build:'+task.id+':'+context.attempt.id+':'+input.mutationId):randomUUID();
+  const stageArtifact=atProductionCommit(()=>appendStageArtifact(root,{work,kind:'complete-draft',artifactId,hash:result.revision,path:target.relativePath,methodId:task.request.parameters.businessSkill,taskId:task.id}),{sourceMutationId:input.mutationId});
+  return {...result,stageArtifact,...(stage==='kepu'?{companions:atProductionCommit(()=>writeKepuCompanions(context),{sourceMutationId:input.mutationId})}:{})};
  }
  const doc=await readCreationDocument(root,source);
  if(args.operation==='read'){if(Object.keys(input).length)fail('INVALID_INPUT');return {document:doc,buildData:exportCreationData(doc),workflow:context.flow};}
@@ -137,4 +145,5 @@ export async function runCreationHandoff(args){
  }
  fail('INVALID_INPUT');
 }
+export function runCreationHandoff(args){const identity={taskId:args.envelope.task.taskId,attemptId:args.envelope.task.attemptId,claimToken:args.payload?.claimToken,workerId:args.payload?.workerId};return withProductionWriteScope(args.library,identity,()=>executeCreationHandoff(args));}
 export const main=argv=>runFixedCLI(argv,['read','build','regenerate','suggest','reply','append-item','review'],runCreationHandoff);

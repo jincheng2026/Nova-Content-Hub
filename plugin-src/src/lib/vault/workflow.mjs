@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
 import {json,scan,contentSources,creationData,readBytes,digest,fail,safe,atomic,mkdir,withVaultLock} from './core.mjs';
-const KINDS=['topic','author-analysis','analysis-comparison','narrative','framework','kepu-segment','kepu-readthrough','cover-design','key-segments','complete-draft','final-script','packaging','recorded','publication','archive','review'];
+const KINDS=['author-materials','topic','author-analysis','analysis-comparison','narrative','framework','kepu-segment','kepu-readthrough','cover-design','key-segments','complete-draft','final-script','packaging','recorded','publication','archive','review'];
 const hash=value=>typeof value==='string'&&/^[a-f0-9]{64}$/.test(value);
 export function workContext(root,work){
     const descriptor=json(root,'.workbench/vault.json');

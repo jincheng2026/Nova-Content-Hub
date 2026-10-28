@@ -1,5 +1,5 @@
 export type WorkRef = {vaultId:string;workId:string};
-export type CheckpointKind = 'topic'|'author-analysis'|'analysis-comparison'|'narrative'|'framework'|'kepu-segment'|'kepu-readthrough'|'cover-design'|'key-segments'|'complete-draft'|'final-script'|'packaging'|'recorded'|'publication'|'archive'|'review';
+export type CheckpointKind = 'author-materials'|'topic'|'author-analysis'|'analysis-comparison'|'narrative'|'framework'|'kepu-segment'|'kepu-readthrough'|'cover-design'|'key-segments'|'complete-draft'|'final-script'|'packaging'|'recorded'|'publication'|'archive'|'review';
 export type AuthorEvidence = {actor:'author';text:string;at:string};
 export type StageArtifact = {kind:CheckpointKind;artifactId:string;hash:string;path:string;methodId:string;taskId:string;at:string;kepuScope?:{frameworkId:string;frameworkHash:string;index:number;title:string}};
 export type DecisionInput = {work:WorkRef;kind:CheckpointKind;artifactId:string;artifactHash:string;expectedRevision:string;decision:'confirm'|'reopen'|'reject';evidence:AuthorEvidence};

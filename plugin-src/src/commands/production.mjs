@@ -50,7 +50,7 @@ export async function main(argv){
    }else if(command==='import'){
     if(Object.keys(payload).some(k=>!['path','purpose','claimToken','workerId'].includes(k))||payload.purpose!=='production-report'||typeof payload.path!=='string'||!path.isAbsolute(payload.path))fail('INVALID_INPUT','Invalid task import');
     if(context.task.activeAttemptId!==locator.attemptId||context.attempt.status!=='claimed'||context.attempt.claimToken!==payload.claimToken||!payload.workerId||context.attempt.workerId!==payload.workerId)fail('ATTEMPT_INACTIVE','Claim the active task before importing');
-    result=library.importAsset(payload.path,{purpose:payload.purpose});
+    result=library.importProductionAsset({...locator,claimToken:payload.claimToken,workerId:payload.workerId},payload.path,payload.purpose);
    }else{
     if(Object.keys(payload).some(k=>['taskId','attemptId','expectedToken'].includes(k)))fail('INVALID_INPUT','Cannot override task binding');
     const op={claim:'claimTask',progress:'progressTask',submit:'submitTask',fail:'failTask'}[command];

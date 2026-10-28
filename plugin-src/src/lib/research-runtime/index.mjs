@@ -1,3 +1,4 @@
+import {atProductionCommit} from '../production-authority.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -29,12 +30,12 @@ export function createResearchRuntime({vaultRoot,executeService,fetchMedia,readM
  const locator=id=>`.workbench/research-runtime/${filename(id)}.json`;
  const read=relative=>JSON.parse(readBytes(root,relative).toString('utf8'));
  const load=id=>{check();const loc=read(locator(id)),state=read(loc.path);if(state.config?.researchId!==id||state.config.outputDirectory!==path.posix.dirname(loc.path)&&!(state.stage==='intake-finalized'&&loc.path===`.trash/jincheng-research/${id}/research-runtime.json`))fail('CORRUPT');validateResearchConfig(state.config);return{state,relative:loc.path,expectedHash:digest(readBytes(root,loc.path))};};
- const write=(relative,data,expectedHash=null)=>{check();mkdir(root,path.posix.dirname(relative));atomic(root,relative,Buffer.isBuffer(data)?data:Buffer.from(typeof data==='string'?data:JSON.stringify(data,null,2)+'\n'),expectedHash);return relative;};
+ const write=(relative,data,expectedHash=null)=>atProductionCommit(()=>{check();mkdir(root,path.posix.dirname(relative));atomic(root,relative,Buffer.isBuffer(data)?data:Buffer.from(typeof data==='string'?data:JSON.stringify(data,null,2)+'\n'),expectedHash);return relative;});
  const persist=loaded=>{loaded.state.updatedAt=now();write(loaded.relative,loaded.state,loaded.expectedHash);loaded.expectedHash=digest(readBytes(root,loaded.relative));};
- const moveIntake=(from,to)=>{check();if(!fs.existsSync(safe(root,from,true)))return;mkdir(root,path.posix.dirname(to));if(fs.existsSync(safe(root,to,true)))fail('CONFLICT','中间证据归档已存在，保留原文件等待核对。');fs.renameSync(safe(root,from),safe(root,to,true));};
+ const moveIntake=(from,to)=>atProductionCommit(()=>{check();if(!fs.existsSync(safe(root,from,true)))return;mkdir(root,path.posix.dirname(to));if(fs.existsSync(safe(root,to,true)))fail('CONFLICT','中间证据归档已存在，保留原文件等待核对。');fs.renameSync(safe(root,from),safe(root,to,true));});
  const finishIntakeArchive=loaded=>{const s=loaded.state;if(s.stage!=='intake-finalized')return;const id=s.config.researchId,archive=`.trash/jincheng-research/${id}`,archivedState=`${archive}/research-runtime.json`;if(loaded.relative===archivedState)return;
   moveIntake(`${s.config.outputDirectory}/.staging`,`${archive}/remaining`);const bytes=Buffer.from(JSON.stringify(s,null,2)+'\n');if(fs.existsSync(safe(root,archivedState,true))){if(hash(readBytes(root,archivedState))!==hash(bytes))fail('CONFLICT','归档运行状态与本任务不一致。');}else write(archivedState,bytes);
-  const loc=locator(id),oldLoc=digest(readBytes(root,loc));write(loc,{version:1,path:archivedState},oldLoc);if(digest(readBytes(root,loaded.relative))!==loaded.expectedHash)fail('CONFLICT');fs.unlinkSync(safe(root,loaded.relative));
+  const loc=locator(id),oldLoc=digest(readBytes(root,loc));write(loc,{version:1,path:archivedState},oldLoc);if(digest(readBytes(root,loaded.relative))!==loaded.expectedHash)fail('CONFLICT');atProductionCommit(()=>fs.unlinkSync(safe(root,loaded.relative)));
  };
  const locked=async(id,fn,publication=false)=>{
   check();mkdir(root,'.workbench/research-runtime');const lock=safe(root,publication?'.workbench/research-runtime/.intake-publication.lock':`.workbench/research-runtime/${filename(id)}.lock`,true);let fd;

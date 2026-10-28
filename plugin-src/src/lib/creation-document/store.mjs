@@ -1,3 +1,4 @@
+import {atProductionCommit,productionExecution} from '../production-authority.mjs';
 import fs from 'node:fs';
 import {rootPath,safe,readBytes,vaultState,runMutation,digest,json,scan} from '../vault/core.mjs';
 import {parseCreationHtml,replaceCreationData,protocolError,kindOf} from './parse.mjs';
@@ -30,10 +31,11 @@ export function resultFor(mutationId,bytes,changedFields,extra={}) {
 }
 export async function transactCreation(root,request,mutationId,prepare) {
  const {runtime}=boundRuntime(root,request.source);
- const receipt=runMutation(runtime,{action:'creation-document',...request},{mutationId},b=>{
+ const execution=productionExecution();
+ const receipt=atProductionCommit(()=>runMutation(runtime,{action:'creation-document',...request,...(execution?{execution}:{})},{mutationId},b=>{
   try{const current=parseCreationHtml(readBytes(b.root,sourcePath(request.source)),request.source);assertUniqueCreationPage(b.root,request.source,current.pageId);}catch(error){if(error.code!=='ENOENT')throw error;}
   return prepare(b.root);
- });
+ }),{sourceMutationId:mutationId});
  return receipt.result;
 }
 function historyFor(changes,origin){return changes.map(c=>({time:new Date().toISOString(),change_id:c.change_id,item:c.item_id,field:c.field,before:c.before,after:c.after,origin,...(c.group?{group:c.group}:{})}));}

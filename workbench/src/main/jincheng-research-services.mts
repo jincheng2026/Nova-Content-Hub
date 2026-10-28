@@ -1,3 +1,4 @@
+import {withProductionWriteScope} from '../../../plugin-src/src/lib/production-authority.mjs';
 import {registeredIntakeSource} from './intake-media-source.mts';
 import {randomUUID} from 'node:crypto';
 import {isDeepStrictEqual} from 'node:util';
@@ -37,6 +38,7 @@ export class JinChengResearchServices {
    if(!data?.sourceReceipt?.id||data.sourceReceipt.videoId!==videoId||data.sourceReceipt.canonicalUrl!==url)throw new ServiceToolError('MEDIA_SOURCE_UNAVAILABLE');
    const media=await request({tool:'media',operation:'fetch',sourceReceiptId:data.sourceReceipt.id}),metadata=registeredIntakeSource(data,videoId);return {...media,...(metadata?{source:metadata}:{})};
   }});
-  return executeResearchOperation(runtime,config,operation,input);
+  const library=openLibrary(binding.root,{expectedLibraryId:binding.libraryId,expectedRootIdentity:binding.rootIdentity});
+  return withProductionWriteScope(library,identity,()=>executeResearchOperation(runtime,config,operation,input));
  }
 }

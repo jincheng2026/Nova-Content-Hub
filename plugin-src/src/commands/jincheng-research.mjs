@@ -1,3 +1,4 @@
+import {withProductionWriteScope} from '../lib/production-authority.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -11,7 +12,7 @@ import {createResearchRuntime} from '../lib/research-runtime/index.mjs';
 import {validateResearchConfig,object,fail} from '../lib/research-runtime/common.mjs';
 import {executeResearchOperation,RESEARCH_OPERATIONS} from '../lib/research-runtime/operations.mjs';
 const UUID=/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/;
-export async function runResearchHandoff({envelope,library,operation,payload},call=callServiceTool){
+async function executeResearchHandoff({envelope,library,operation,payload},call=callServiceTool){
  if(!object(payload)||Object.keys(payload).some(k=>!['claimToken','workerId','input'].includes(k))||!UUID.test(payload.claimToken)||typeof payload.workerId!=='string'||!payload.workerId.trim()||payload.workerId.length>200||payload.input!==undefined&&!object(payload.input))fail('INVALID_INPUT','研究命令只接受当前领取身份与操作输入；库、路径、服务配置均来自固定任务。');
  const identity={taskId:envelope.task.taskId,attemptId:envelope.task.attemptId,claimToken:payload.claimToken,workerId:payload.workerId};
  const context=()=>{const ctx=library.readProductionContext(identity.taskId,identity.attemptId),t=ctx.task,a=ctx.attempt;if(!t||t.requestHash!==envelope.task.requestHash||t.activeAttemptId!==identity.attemptId||a?.claimToken!==identity.claimToken||a.workerId!==identity.workerId||!['claimed','waiting-user','waiting-permission'].includes(a.status)||t.request.parameters?.workflow!=='jincheng-research'||!['research','analysis','transcription'].includes(t.kind))fail('CLAIM_MISMATCH');return ctx;};
@@ -25,6 +26,7 @@ export async function runResearchHandoff({envelope,library,operation,payload},ca
  }});
  return executeResearchOperation(runtime,config,operation,payload.input??{});
 }
+export function runResearchHandoff(args,call=callServiceTool){const identity={taskId:args.envelope.task.taskId,attemptId:args.envelope.task.attemptId,claimToken:args.payload?.claimToken,workerId:args.payload?.workerId};return withProductionWriteScope(args.library,identity,()=>executeResearchHandoff(args,call));}
 export async function main(argv){try{
  const [operation='help',...rest]=argv,values={};
  if(operation==='help'){if(rest.length)fail('INVALID_ARGUMENTS');process.stdout.write(JSON.stringify({ok:true,operations:RESEARCH_OPERATIONS,usage:'jincheng-research OP --handoff UUID (--file ABSOLUTE_JSON | --stdin)',input:{claimToken:'current UUID',workerId:'current worker',input:'operation payload; no paths or provider settings'}})+'\n');return 0;}

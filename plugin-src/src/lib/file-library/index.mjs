@@ -986,7 +986,7 @@ function library(root, initialInfo, rootIdentity) {
 
     const api = Object.freeze({
         ...businessMethods(root, locked, mutate, list),
-        ...productionMethods({root, libraryId: initialInfo.libraryId, locked, mutate, snapshot, result, metadata, fail, assertRootIdentity, ensureDirectory, syncDirectory, hook, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent, storeProductionHtml: bytes => {const sha=hash(bytes);ensureDirectory(path.dirname(assetPath(root,sha)));immutableFile(assetPath(root,sha),bytes,assertRootIdentity);return sha;}}),
+        ...productionMethods({importAssetForProduction:(source,options)=>importAssetInternal(root,source,options),root, libraryId: initialInfo.libraryId, locked, mutate, snapshot, result, metadata, fail, assertRootIdentity, ensureDirectory, syncDirectory, hook, readAssetInternal, safePath, assetPath, finderMetadataFile, historyForContent, storeProductionHtml: bytes => {const sha=hash(bytes);ensureDirectory(path.dirname(assetPath(root,sha)));immutableFile(assetPath(root,sha),bytes,assertRootIdentity);return sha;}}),
         ...templateJobMethods({
             root, libraryId: initialInfo.libraryId, locked, mutate, assertRootIdentity,
             snapshot, result, metadata, hash, jsonBytes, read, safePath, directory,

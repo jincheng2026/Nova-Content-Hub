@@ -32,6 +32,7 @@ export interface ReportNavigation {fingerprint:string;pageIdentity:string|null;l
 export interface ProductionReceipt {found:boolean; objectId?:string}
 export interface ProductionToolIdentity {taskId:string; attemptId:string; claimToken:string; workerId:string; requestId:string}
 export interface ProductionWorkerOperations {
+ productionAuthority:{args:{binding:LibraryBinding;input:Core.ProductionWorkerIdentity};result:true};
  productionObserverMutation:{args:{binding:LibraryBinding;op:'claimTask'|'submitTask'|'failTask';input:{taskId:string;attemptId:string;claimToken:string;workerId:'native-publication-observer';result?:Core.ProductionResult;failure?:{code:string;message:string}};mutationId:string};result:ProductionSnapshot};
  productionArchive:{args:{binding:LibraryBinding;taskId:string};result:Core.ProductionArchive};
  productionContext:{args:{binding:LibraryBinding;taskId:string};result:Core.ProductionContext};

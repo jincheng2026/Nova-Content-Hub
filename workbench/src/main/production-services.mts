@@ -113,6 +113,7 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
    const binding=owner.current(),context=await owner.worker.call('productionContext',{binding,taskId:request.taskId});
    const task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
    if(!task||task.activeAttemptId!==request.attemptId||!attempt||attempt.claimToken!==request.claimToken||attempt.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||!task.request.tools.includes(request.tool))throw new ServiceToolError('CLAIM_MISMATCH');
+   if(task.journeyMember)await owner.worker.call('productionAuthority',{binding,input:{taskId:task.id,attemptId:attempt.id,claimToken:request.claimToken,workerId:request.workerId}});
    const isPublicationObservation=checkPublicationObservation(context,request);
    checkRadar(context,request);checkResearch(context,request);checkServiceConfig(context,request);checkAccountPlatform(context,request);
    if(request.tool==='media')checkMedia(context);
@@ -129,9 +130,11 @@ export function productionToolBroker(owner:ProductionServiceOwner,tools:ServiceT
      const current=owner.current();if(current.libraryId!==initial.binding.libraryId||current.root!==initial.binding.root)throw new ServiceToolError('LIBRARY_CHANGED');
      const context=await owner.worker.call('productionContext',{binding:initial.binding,taskId:request.taskId}),task=context.task,attempt=task?.attempts.find(a=>a.id===request.attemptId);
      if(!task||task.activeAttemptId!==request.attemptId||attempt?.claimToken!==request.claimToken||attempt?.workerId!==request.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status))throw new ServiceToolError('CLAIM_MISMATCH');checkMedia(context);
+     if(task.journeyMember)await owner.worker.call('productionAuthority',{binding:initial.binding,input:{taskId:task.id,attemptId:attempt.id,claimToken:request.claimToken,workerId:request.workerId}});
      const existing=attempt.mediaGrants?.find(g=>g.sourceReceiptId===request.sourceReceiptId&&g.requestHash===task.requestHash);if(existing)return existing;
      receipt=receipts.get(request.sourceReceiptId);
      if(!receipt||receipt.expires<Date.now()||receipt.libraryId!==initial.binding.libraryId||receipt.root!==initial.binding.root||receipt.taskId!==task.id||receipt.attemptId!==attempt.id||receipt.workerId!==request.workerId||receipt.claimToken!==request.claimToken||receipt.requestHash!==task.requestHash)throw new ServiceToolError('MEDIA_RECEIPT_EXPIRED');
+     if(task.journeyMember){const parent=context.snapshot.tasks.find(parent=>parent.id===task.journeyMember!.journeyId),members=new Set(parent?.journeyState?.members.map(member=>member.taskId)),videos=new Set(context.snapshot.tasks.filter(task=>members.has(task.id)).flatMap(task=>task.attempts.flatMap(attempt=>(attempt.mediaGrants??[]).map(grant=>grant.videoId)))),limit=parameters(parameters(parent?.request.parameters).limits).mediaCount,pending=[...receipts.values()].filter(receipt=>members.has(receipt.taskId)&&receipt.busy).length;if(typeof limit!=='number'||!videos.has(receipt.videoId)&&videos.size+pending>=limit)throw new ServiceToolError('MEDIA_DOWNLOAD_LIMIT');}
      if(receipt.busy)throw new ServiceToolError('REQUEST_IN_PROGRESS');
      const pending=[...receipts.values()].filter(r=>r.taskId===task.id&&r.attemptId===attempt.id&&r.busy).length;
      if((attempt.mediaGrants?.length??0)+pending>=3)throw new ServiceToolError('MEDIA_DOWNLOAD_LIMIT');receipt.busy=true;

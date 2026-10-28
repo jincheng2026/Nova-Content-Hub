@@ -7,6 +7,7 @@ import {readVaultTaskContext} from '../vault/index.mjs';
 import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {renderMarkdownReport} from '../vault/resources.mjs';
 import {researchMediaAuthorized,researchVideoAuthorized} from '../research-runtime/common.mjs';
+import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt} from './content-journey.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -61,7 +62,8 @@ export function validateProductionMetadata(meta,kind,fail) {
     for (const a of p.accounts) check(fields(a,['id','name','platform','url','note','tags','images','avatarAssetHash','reportIds','createdAt','updatedAt','deletedAt']) && text(a.name,500,false) && text(a.platform,100,false) && (a.url === '' || url(a.url)) && text(a.note) && unique(a.tags) && a.tags.every(x => text(x,200,false)) && unique(a.images) && a.images.every(x => HASH.test(x)) && (a.avatarAssetHash === undefined || a.avatarAssetHash === null || HASH.test(a.avatarAssetHash)) && unique(a.reportIds) && a.reportIds.every(x => UUID.test(x)) && iso(a.createdAt) && iso(a.updatedAt) && (a.deletedAt === null || iso(a.deletedAt)),'account');
     for (const r of p.reports) check(fields(r,['id','title','type','accountIds','sourceUrl','collectedAt','pages','pageId','meta','createdAt','updatedAt','deletedAt']) && text(r.title,500,false) && text(r.type,100,false) && unique(r.accountIds) && r.accountIds.every(x => UUID.test(x)) && (r.sourceUrl === null || url(r.sourceUrl)) && (r.collectedAt === null || iso(r.collectedAt)) && objects(r.pages) && r.pages.length > 0 && r.pages.every(x => fields(x,['id','title','assetHash']) && text(x.title,500,false) && HASH.test(x.assetHash)) && r.pages.some(x => x.id === r.pageId) && jsonOK(r.meta) && iso(r.createdAt) && iso(r.updatedAt) && (r.deletedAt === null || iso(r.deletedAt)),'report');
     for (const t of p.tasks) {
-        check(fields(t,['id','kind','title','contentId','accountId','request','requestHash','attempts','activeAttemptId','createdAt','updatedAt']) && KINDS.includes(t.kind) && text(t.title,500,false) && (t.contentId === null || UUID.test(t.contentId)) && (t.accountId === null || UUID.test(t.accountId)) && validRequest(t.request) && digest(t.request) === t.requestHash && objects(t.attempts) && t.attempts.length > 0 && t.attempts.some(a => a.id === t.activeAttemptId) && iso(t.createdAt) && iso(t.updatedAt),'task');
+        check(fields(t,['id','kind','title','contentId','accountId','request','requestHash','attempts','activeAttemptId','createdAt','updatedAt','journeyState','journeyMember']) && KINDS.includes(t.kind) && text(t.title,500,false) && (t.contentId === null || UUID.test(t.contentId)) && (t.accountId === null || UUID.test(t.accountId)) && validRequest(t.request) && digest(t.request) === t.requestHash && objects(t.attempts) && t.attempts.length > 0 && t.attempts.some(a => a.id === t.activeAttemptId) && iso(t.createdAt) && iso(t.updatedAt),'task');
+        check(validJourneyTask(t,p.tasks),'journey membership');
         for (const a of t.attempts) {
             check(fields(a,['id','host','status','claimToken','workerId','progress','message','failure','result','receipt','rejection','mediaGrants','createdAt','updatedAt']) && ['codex','workbuddy'].includes(a.host) && STATES.includes(a.status) && (a.claimToken === null || UUID.test(a.claimToken)) && (a.workerId === null || text(a.workerId,200,false)) && Number.isFinite(a.progress) && a.progress >= 0 && a.progress <= 100 && text(a.message,10000) && (a.failure === null || fields(a.failure,['code','message']) && text(a.failure.code,100,false) && text(a.failure.message,2000,false)) && iso(a.createdAt) && iso(a.updatedAt),'attempt');
             check(a.mediaGrants===undefined || objects(a.mediaGrants) && a.mediaGrants.length<=3 && unique(a.mediaGrants.map(g=>g.sourceReceiptId)) && unique(a.mediaGrants.map(g=>g.referenceId)) && a.mediaGrants.every(g=>fields(g,['id','referenceId','assetHash','sourceReceiptId','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash','createdAt']) && UUID.test(g.referenceId) && HASH.test(g.assetHash) && UUID.test(g.sourceReceiptId) && UUID.test(g.sourceRequestId) && g.requestHash===t.requestHash && /^\d{1,32}$/.test(g.videoId) && g.canonicalUrl===`https://www.douyin.com/video/${g.videoId}` && HASH.test(g.responseHash) && iso(g.createdAt)),'media grants');
@@ -125,8 +127,30 @@ export function productionMethods(h) {
     function taskAttempt(p,i,worker = false) {
         const t = find(p.tasks,i.taskId,'task'), a = find(t.attempts,i.attemptId || t.activeAttemptId,'attempt');
         if (t.activeAttemptId !== a.id) fail('ATTEMPT_INACTIVE','Attempt was retired');
+        if(!(a.status==='created'&&!worker))assertJourneyAuthority(p,t,a,i);
         if (worker && (!a.claimToken || a.claimToken !== i.claimToken || a.workerId !== i.workerId)) fail('CLAIM_MISMATCH','Worker does not own this attempt');
+        if(worker&&t.journeyMember)assertJourneyInputs(p,t,i);
         return {t,a};
+    }
+    function assertJourneyInputs(p,task,input={}){
+        const parent=find(p.tasks,task.journeyMember.journeyId,'journey'),flow=assertJourneyPins(root,parent),c=content(task.contentId),context=readVaultTaskContext(root,task.contentId),work=parent.request.parameters.work;
+        if(c.deletedAt!==null||context?.vaultId!==work.vaultId||context?.content?.tNumber!==work.workId||context.content.sourceResolution!=='resolved')fail('SOURCE_CHANGED','The bound journey work or current source is unavailable');
+        const frozen=task.request.parameters.source,actual=context.content;
+        const ownPage=flow.artifacts.some(artifact=>artifact.taskId===task.id&&artifact.kind==='complete-draft'&&artifact.path===actual.relativePath)||isJourneyOutputReceipt(root,task,input.attemptId,actual,input.sourceMutationId);
+        const frozenSourceCurrent=frozen?.documentId===actual.sourceDocumentId&&frozen?.hash===actual.hash;
+        if(!frozen||!frozenSourceCurrent&&!ownPage)fail('SOURCE_CHANGED','The fixed journey source changed; prepare a new step version');
+    }
+    function withProductionAuthority(input,commit) {
+        invalid(plain(input)&&typeof commit==='function','A fixed worker identity and synchronous commit are required');
+        let commitError;
+        const result=locked(()=>{
+            const p=current().production||emptyProduction(),{t,a}=taskAttempt(p,input,true);
+            if(!['claimed','waiting-user','waiting-permission'].includes(a.status))fail('ATTEMPT_INACTIVE','Attempt is not running');
+            if(t.journeyState)fail('JOURNEY_COORDINATED','The root cannot write business artifacts');
+            let value;try{value=commit();}catch(error){commitError=error;return;}
+            invalid(!value||typeof value.then!=='function','Production authority cannot span asynchronous work');return value;
+        });
+        if(commitError)throw commitError;return result;
     }
     function checkpointPositioning(input){
         invalid(plain(input)&&UUID.test(input.taskId)&&UUID.test(input.attemptId),'Positioning checkpoint requires the fixed task locator');
@@ -174,6 +198,25 @@ export function productionMethods(h) {
             const value=next.filming[key];
             if (value!==null && value!==previous.filming?.[key]) invalid(value===bodyDigest(body),'Filming confirmation must identify the current body');
         }
+    }
+    function createFixedTask(raw,meta,p,now) {
+                invalid(KINDS.includes(raw.kind) && text(raw.title,500,false),'Invalid task kind or title');
+                const c = raw.contentId ? content(raw.contentId) : null; if(c) invalid(c.deletedAt === null,'Content is trashed');
+                if(raw.accountId) invalid(find(p.accounts,raw.accountId,'account').deletedAt===null,'Account is trashed');
+                const request = structuredClone(raw.request || {prompt:raw.prompt,parameters:raw.parameters ?? {},tools:raw.tools || [],budget:raw.budget || {amount:0,currency:'REQ'},bodyHash:Object.hasOwn(raw,'bodyHash') ? raw.bodyHash : c?.bodyHash || null});
+                invalid(plain(request.parameters),'Task parameters must be an object');
+                // Freeze the actual sources before hashing. Caller-supplied snapshots never
+                // replace the bound creator information or turn it into tool authorization.
+                const creatorContext=freezeCreatorContext(meta.profile,readVaultTaskContext(root,c?.id??null));
+                const method=businessSkillForTask(raw.kind,request.parameters,raw.accountId??null);
+                request.parameters={...request.parameters,creatorContext,...(method?{businessSkill:method.id,businessMethodVersion:method}:{})};
+                if(['positioning-interview','topic-suggestion'].includes(request.parameters.workflow)){
+                    request.tools=[];request.budget={amount:0,currency:'REQ'};
+                    request.parameters={...request.parameters,comments:false,budgetEnabled:false,maxRequestsPerTask:0};
+                }
+                invalid(validRequest(request),'Invalid fixed request; parameters must be bounded JSON without secrets');
+                if(c) invalid(request.bodyHash === c.bodyHash,'Fixed body hash is stale');
+                const a = newAttempt(raw.host || 'codex',now), task={id:raw.id || randomUUID(),kind:raw.kind,title:raw.title,contentId:c?.id || null,accountId:raw.accountId || null,request:structuredClone(request),requestHash:digest(request),attempts:[a],activeAttemptId:a.id,createdAt:now,updatedAt:now};p.tasks.push(task);return task;
     }
     function mutateProduction(op,raw,options = {}) {
         invalid(plain(raw),'Expected operation input');
@@ -233,13 +276,16 @@ export function productionMethods(h) {
             invalid(c.deletedAt===null,'Previously added radar topic is trashed; restore the original topic');
             radarTopic={contentId,candidate};
         }
-        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost','registerMediaGrant'];
+        const workerOps = ['claimTask','progressTask','failTask','submitTask','reserveCost','recordCost','registerMediaGrant','advanceJourney'];
         const token = raw.expectedToken;
         if (!workerOps.includes(op)) invalid(HASH.test(token),'A current production editToken is required');
         const out = mutate('update','default',{productionOp:op,productionInput:raw},token,options,'workspace',(meta) => {
             const now = new Date().toISOString(), p = structuredClone(meta.production || emptyProduction());
             meta.schemaVersion = 2; meta.production = p;
             const editable = a => {if (a.deletedAt !== null) fail('INVALID_STATE','Record is trashed');};
+            if(['cancelTask','retryTask','acceptTask','rejectTask'].includes(op)){const task=p.tasks.find(task=>task.id===raw.taskId);if(task?.journeyState||task?.journeyMember)fail('JOURNEY_COORDINATED','Use the content journey coordinator for member lifecycle changes');}
+            if(['submitTask','failTask','reserveCost','registerMediaGrant'].includes(op)&&p.tasks.find(task=>task.id===raw.taskId)?.journeyState)fail('JOURNEY_COORDINATED','The root cannot execute or submit business work');
+            if(op==='submitTask'&&p.tasks.find(task=>task.id===raw.taskId)?.journeyMember){taskAttempt(p,raw,true);fail('JOURNEY_COORDINATED','Journey steps complete only through their verified business checkpoint');}
             switch(op) {
             case 'enable': break;
             case 'saveAccount': {
@@ -301,26 +347,45 @@ export function productionMethods(h) {
                 if(op === 'recordFeedback') p.feedback.push(r); else p.knowledge.push({...r,status:'candidate',updatedAt:now}); break;
             }
             case 'decideKnowledge': {const k = find(p.knowledge,raw.id,'knowledge'); invalid(k.status === 'candidate' && ['accepted','rejected'].includes(raw.status),'Invalid knowledge decision'); k.status = raw.status; k.updatedAt = now; break;}
-            case 'createTask': {
-                invalid(KINDS.includes(raw.kind) && text(raw.title,500,false),'Invalid task kind or title');
-                const c = raw.contentId ? content(raw.contentId) : null; if(c) invalid(c.deletedAt === null,'Content is trashed');
-                if(raw.accountId) editable(find(p.accounts,raw.accountId,'account'));
-                const request = structuredClone(raw.request || {prompt:raw.prompt,parameters:raw.parameters ?? {},tools:raw.tools || [],budget:raw.budget || {amount:0,currency:'REQ'},bodyHash:Object.hasOwn(raw,'bodyHash') ? raw.bodyHash : c?.bodyHash || null});
-                invalid(plain(request.parameters),'Task parameters must be an object');
-                // Freeze the actual sources before hashing. Caller-supplied snapshots never
-                // replace the bound creator information or turn it into tool authorization.
-                const creatorContext=freezeCreatorContext(meta.profile,readVaultTaskContext(root,c?.id??null));
-                const method=businessSkillForTask(raw.kind,request.parameters,raw.accountId??null);
-                request.parameters={...request.parameters,creatorContext,...(method?{businessSkill:method.id,businessMethodVersion:method}:{})};
-                if(['positioning-interview','topic-suggestion'].includes(request.parameters.workflow)){
-                    request.tools=[];request.budget={amount:0,currency:'REQ'};
-                    request.parameters={...request.parameters,comments:false,budgetEnabled:false,maxRequestsPerTask:0};
-                }
-                invalid(validRequest(request),'Invalid fixed request; parameters must be bounded JSON without secrets');
-                if(c) invalid(request.bodyHash === c.bodyHash,'Fixed body hash is stale');
-                const a = newAttempt(raw.host || 'codex',now); p.tasks.push({id:raw.id || randomUUID(),kind:raw.kind,title:raw.title,contentId:c?.id || null,accountId:raw.accountId || null,request:structuredClone(request),requestHash:digest(request),attempts:[a],activeAttemptId:a.id,createdAt:now,updatedAt:now}); break;
+            case 'cancelJourney': {
+                invalid(fields(raw,['journeyId','expectedJourneyRevision','expectedToken']),'Invalid journey cancellation');
+                const parent=find(p.tasks,raw.journeyId,'journey'),state=parent.journeyState;invalid(state,'Expected a journey root');
+                if(state.revision!==raw.expectedJourneyRevision||state.status!=='active')fail('CONFLICT','Journey changed');
+                state.status='cancelled';state.revision++;state.ownerEpoch++;
+                const memberIds=new Set([parent.id,...state.members.map(member=>member.taskId)]);
+                for(const task of p.tasks.filter(task=>memberIds.has(task.id))){const attempt=task.attempts.find(attempt=>attempt.id===task.activeAttemptId);if(LIVE.includes(attempt.status)){attempt.status='cancelled';attempt.updatedAt=task.updatedAt=now;}}
+                for(const cost of p.costs.filter(cost=>memberIds.has(cost.taskId)&&cost.status==='reserved')){cost.status='unknown';cost.amount=null;cost.updatedAt=now;}break;
             }
-            case 'claimTask': {const {t,a} = taskAttempt(p,raw); invalid(a.status === 'created','Attempt must be awaiting claim'); invalid(UUID.test(raw.claimToken) && text(raw.workerId,200,false),'Claim requires UUID token and worker ID'); a.claimToken = raw.claimToken; a.workerId = raw.workerId; a.status = 'claimed'; a.updatedAt = t.updatedAt = now; break;}
+            case 'advanceJourney': {
+                invalid(fields(raw,['rootClaim','expectedJourneyRevision','expectedStepId'])&&plain(raw.rootClaim),'Invalid journey advance input');
+                const {t:parent,a:owner}=taskAttempt(p,raw.rootClaim,true),state=parent.journeyState;
+                invalid(state&&['claimed','waiting-user','waiting-permission'].includes(owner.status),'Claim the journey before advancing');
+                if(state.revision!==raw.expectedJourneyRevision||state.activeStepId!==raw.expectedStepId)fail('CONFLICT','Journey changed; read its latest context');
+                const child=find(p.tasks,state.activeTaskId,'journey child'),attempt=find(child.attempts,child.activeAttemptId,'child attempt');
+                assertJourneyAuthority(p,child,attempt);
+                assertJourneyInputs(p,child,{attemptId:attempt.id});
+                if(p.costs.some(cost=>state.members.some(member=>member.taskId===cost.taskId)&&['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Settle all journey service costs before advancing');
+                const checkpoint=journeyCheckpoint(root,parent,child,p),c=content(parent.contentId),context=readVaultTaskContext(root,parent.contentId);
+                invalid(c.deletedAt===null&&context?.content?.sourceResolution==='resolved','Journey source is unavailable');
+                const result={summary:'已核验当前步骤准确产物与作者决定',artifacts:[{id:randomUUID(),kind:'analysis',title:checkpoint.kind,text:'准确版本与作者决定已登记；正文仍由原位文档维护。',assetHash:null,data:checkpoint}]};
+                const receipt={taskId:child.id,attemptId:attempt.id,requestHash:child.requestHash,resultHash:digest(result)};attempt.result=result;attempt.receipt={...receipt,sha256:digest(receipt)};attempt.status='accepted';attempt.progress=100;attempt.updatedAt=child.updatedAt=now;
+                state.checkpoints.push(checkpoint);
+                const current=state.members.find(member=>member.taskId===child.id),index=current.planIndex+1;
+                invalid(index<journeyPlan(parent.request.parameters).length,'Final completion requires verified final assets');
+                const source={documentId:context.content.sourceDocumentId,relativePath:context.content.relativePath,hash:context.content.hash};
+                const stepId=randomUUID(),member={journeyId:parent.id,stepId,ownerEpoch:state.ownerEpoch},next=createFixedTask(journeyChildInput(parent,source,c.bodyHash,owner.host,index,member),meta,p,now);
+                next.journeyMember=member;state.members.push({taskId:next.id,stepId,ownerEpoch:state.ownerEpoch,planIndex:index});state.activeTaskId=next.id;state.activeStepId=stepId;state.revision++;parent.updatedAt=now;break;
+            }
+            case 'startJourney': {
+                const c=content(raw.contentId);invalid(c.deletedAt===null,'Content is trashed');
+                const context=readVaultTaskContext(root,c.id),parameters=prepareJourney({input:raw,context,libraryId:h.libraryId,contentId:c.id});
+                if(p.tasks.some(task=>task.journeyState?.status==='active'&&task.contentId===c.id))fail('JOURNEY_ACTIVE','This work already has an active journey');
+                const parent=createFixedTask({kind:'writing',title:c.title,prompt:'在同一聊天按固定内容主线逐步执行。根任务不执行服务；每次读取准确上下文、领取当前受限步骤，并保留作者停点。',contentId:c.id,host:raw.host,parameters,tools:[],budget:{amount:0,currency:'REQ'},bodyHash:c.bodyHash},meta,p,now);
+                const stepId=randomUUID(),member={journeyId:parent.id,stepId,ownerEpoch:1},child=createFixedTask(journeyChildInput(parent,parameters.initialSource,c.bodyHash,raw.host,0,member),meta,p,now);
+                parent.journeyState=initialJourneyState(child.id,stepId);child.journeyMember=member;break;
+            }
+            case 'createTask': {rejectJourneyForgery(raw);createFixedTask(raw,meta,p,now);break;}
+            case 'claimTask': {const {t,a} = taskAttempt(p,raw); assertJourneyAuthority(p,t,a,raw,true);if(t.journeyMember)assertJourneyInputs(p,t); invalid(a.status === 'created','Attempt must be awaiting claim'); invalid(UUID.test(raw.claimToken) && text(raw.workerId,200,false),'Claim requires UUID token and worker ID'); a.claimToken = raw.claimToken; a.workerId = raw.workerId; a.status = 'claimed'; a.updatedAt = t.updatedAt = now; break;}
             case 'progressTask': {const {t,a} = taskAttempt(p,raw,true); if(!['claimed','waiting-user','waiting-permission'].includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt is not running'); invalid(['claimed','waiting-user','waiting-permission'].includes(raw.status) && Number.isFinite(raw.progress) && raw.progress >= a.progress && raw.progress <= 100 && text(raw.message,10000),'Invalid progress'); a.status = raw.status; a.progress = raw.progress; a.message = raw.message; a.updatedAt = t.updatedAt = now; break;}
             case 'failTask': {const {t,a} = taskAttempt(p,raw,true); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); invalid(fields(raw.failure,['code','message']) && text(raw.failure.code,100,false) && text(raw.failure.message,2000,false),'Failure reason required'); a.status = 'failed'; a.failure = raw.failure; a.updatedAt = t.updatedAt = now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
             case 'cancelTask': {const {t,a} = taskAttempt(p,raw); if(!LIVE.includes(a.status)) fail('ATTEMPT_INACTIVE','Attempt has ended'); a.status='cancelled';a.updatedAt=t.updatedAt=now; for(const c of p.costs.filter(x => x.attemptId === a.id && x.status === 'reserved')) {c.status='unknown';c.amount=null;c.updatedAt=now;} break;}
@@ -337,6 +402,7 @@ export function productionMethods(h) {
                 invalid(source?.service==='tikhub' && source.status==='measured' && proof?.ok===true && proof.operation==='video' && proof.id===raw.videoId && ['sourceReceiptId','videoId','canonicalUrl','responseHash'].every(key=>proof[key]===raw[key]),'Media source receipt was not settled by broker');
                 const existing=a.mediaGrants?.find(g=>g.sourceReceiptId===raw.sourceReceiptId);
                 if(existing){invalid(['assetHash','sourceRequestId','requestHash','videoId','canonicalUrl','responseHash'].every(key=>existing[key]===raw[key]),'Media receipt cannot be rebound');break;}
+                if(t.journeyMember){const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),members=new Set(parent.journeyState.members.map(member=>member.taskId)),videos=new Set(p.tasks.filter(task=>members.has(task.id)).flatMap(task=>task.attempts.flatMap(attempt=>(attempt.mediaGrants??[]).map(grant=>grant.videoId))));if(!videos.has(raw.videoId)&&videos.size>=parent.request.parameters.limits.mediaCount)fail('MEDIA_DOWNLOAD_LIMIT','The journey media allowance is exhausted');}
                 invalid((a.mediaGrants?.length??0)<config.maxDownloads,'Media download limit reached');
                 const asset=readAssetInternal(root,raw.assetHash);invalid(asset.bytes>0 && asset.bytes<=config.maxBytes && ['video/mp4','video/webm','audio/mp4','audio/mpeg','audio/wav','audio/x-wav','audio/ogg','audio/flac'].includes(asset.detectedType),'Invalid media asset');
                 const grant={id:randomUUID(),referenceId:randomUUID(),assetHash:raw.assetHash,sourceReceiptId:raw.sourceReceiptId,sourceRequestId:raw.sourceRequestId,requestHash:t.requestHash,videoId:raw.videoId,canonicalUrl:raw.canonicalUrl,responseHash:raw.responseHash,createdAt:now};
@@ -374,13 +440,19 @@ export function productionMethods(h) {
                 if(p.costs.some(c=>c.taskId===t.id && c.requestId===raw.requestId)) fail('REQUEST_ALREADY_RESERVED','Request already reserved; inspect the existing result before replay');
                 if(p.costs.some(c=>c.taskId===t.id && c.status==='unknown')) fail('COST_UNKNOWN','An unknown cost blocks further calls');
                 invalid(t.request.tools.includes(raw.service),'Service was not authorized in fixed request');
+                if(t.journeyMember){const parent=find(p.tasks,t.journeyMember.journeyId,'journey'),members=new Set(parent.journeyState.members.map(member=>member.taskId)),costs=p.costs.filter(cost=>members.has(cost.taskId));if(costs.some(cost=>['reserved','unknown'].includes(cost.status)))fail('COST_UNKNOWN','Outstanding journey costs block further service requests');const total=costs.filter(cost=>cost.status!=='cancelled').reduce((sum,cost)=>sum+(cost.amount??1),0);if(total+(raw.usage?.requests??1)>parent.request.parameters.limits.maxRequestsTotal)fail('BUDGET_EXCEEDED','The total journey budget is exhausted');}
                 const units=raw.usage?.requests ?? 1; invalid([0,1].includes(units),'Requests must be 0 or 1');
                 if(p.costs.filter(c=>c.taskId===t.id && c.status!=='cancelled').reduce((n,c)=>n+(c.amount ?? 1),0)+units>t.request.budget.amount) fail('BUDGET_EXCEEDED','Fixed request budget is exhausted');
                 p.costs.push({id:randomUUID(),taskId:t.id,attemptId:a.id,requestId:raw.requestId,service:raw.service,status:'reserved',amount:units,currency:'REQ',usage:raw.usage ?? null,createdAt:now,updatedAt:now});break;
             }
             case 'recordCost': case 'reconcileCost': {
-                const {t,a}=taskAttempt(p,raw,op==='recordCost'),c=raw.id ? find(p.costs,raw.id,'cost') : p.costs.find(x=>x.taskId===t.id && x.requestId===raw.requestId);
-                invalid(c && c.taskId===t.id && c.attemptId===a.id,'Cost does not belong to attempt');
+                const task=find(p.tasks,raw.taskId,'task');
+                // A settled provider charge never restores execution authority. Only the exact
+                // original reservation may be settled after a journey owner/step retires.
+                const identity=task.journeyMember?{t:task,a:find(task.attempts,raw.attemptId,'attempt')}:taskAttempt(p,raw,op==='recordCost'),{t,a}=identity;
+                if(task.journeyMember&&op==='recordCost'&&(!a.claimToken||a.claimToken!==raw.claimToken||a.workerId!==raw.workerId))fail('CLAIM_MISMATCH','Cost settlement requires its original worker identity');
+                const c=raw.id ? find(p.costs,raw.id,'cost') : p.costs.find(x=>x.taskId===t.id && x.requestId===raw.requestId);
+                invalid(c && c.taskId===t.id && c.attemptId===a.id&&(!task.journeyMember||op!=='recordCost'||c.requestId===raw.requestId),'Cost does not belong to the exact original reservation');
                 invalid(['unknown','reserved'].includes(c.status),'Cost already settled');
                 invalid(['actual','billed','measured','estimated','unknown','cancelled'].includes(raw.status),'Invalid cost settlement');
                 invalid(raw.status==='unknown' ? raw.amount===null : [0,1].includes(raw.amount),'REQ settlement must be 0 or 1, unknown must be null');
@@ -430,7 +502,7 @@ export function productionMethods(h) {
             meta.schemaVersion=5;meta.productionState=next;return meta;
         });
     }
-    return {rebuildProductionArchive,readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,checkpointPositioning,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
+    return {importProductionAsset:(identity,source,purpose)=>withProductionAuthority(identity,()=>h.importAssetForProduction(source,{purpose})),readProductionAsset:(identity,hash)=>withProductionAuthority(identity,()=>readAssetInternal(root,hash)),withProductionAuthority,assertProductionAuthority:input=>withProductionAuthority(input,()=>true),rebuildProductionArchive,readProduction,readProductionContext,readProductionCreation,mutateProduction,saveProductionDraft,checkpointPositioning,reserveProductionTool:(input,options)=>mutateProduction('reserveCost',input,options)};
 }
 
 export function productionAssetHashes(meta) {

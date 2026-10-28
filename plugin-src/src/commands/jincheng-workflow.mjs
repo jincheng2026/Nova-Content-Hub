@@ -1,3 +1,4 @@
+import {isJourneyOutputReceipt} from '../lib/file-library/content-journey.mjs';
 import {runMethodArtifact,assertKepuReady} from '../lib/method-adapters/runtime.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -26,6 +27,7 @@ export function fixedStageContext({envelope,library,payload,operation}){
  if(!object(payload)||Object.keys(payload).some(k=>!['claimToken','workerId','input'].includes(k))||!UUID.test(payload.claimToken)||typeof payload.workerId!=='string'||!payload.workerId.trim()||payload.workerId.length>200||payload.input!==undefined&&!object(payload.input))fail('INVALID_INPUT');
  const ctx=library.readProductionContext(envelope.task.taskId,envelope.task.attemptId),task=ctx.task,attempt=ctx.attempt;
  if(!task||task.requestHash!==envelope.task.requestHash||task.activeAttemptId!==envelope.task.attemptId||attempt?.claimToken!==payload.claimToken||attempt.workerId!==payload.workerId||!['claimed','waiting-user','waiting-permission'].includes(attempt.status)||task.request.parameters?.workflow!=='jincheng-stage')fail('CLAIM_MISMATCH');
+ library.assertProductionAuthority({taskId:task.id,attemptId:attempt.id,claimToken:payload.claimToken,workerId:payload.workerId,...(operation==='build'&&payload.input?.mutationId?{sourceMutationId:payload.input.mutationId}:{})});
  const selected={'kepu':'jc-kepu-video','review-page':'jc-review-page','cover-design':'jc-cover-design','synthesis':'jc-synthesis-research'};if(selected[task.request.parameters.stage]&&selected[task.request.parameters.stage]!==task.request.parameters.businessSkill)fail('STAGE_FORBIDDEN');
  const synthesis=task.request.parameters.stage==='synthesis'&&task.request.parameters.businessSkill==='jc-synthesis-research';
  if(!task.contentId&&!synthesis)fail('CLAIM_MISMATCH');
@@ -34,7 +36,7 @@ export function fixedStageContext({envelope,library,payload,operation}){
  if(!root||!vault?.content||vault.content.sourceResolution!=='resolved')fail('SOURCE_CONFLICT');
  const work={vaultId:vault.vaultId,workId:vault.content.tNumber},flow=readWorkFlow(root,work);
  const frozen=task.request.parameters.source;
- if(frozen&&frozen.documentId!==vault.content.sourceDocumentId&&!flow.artifacts.some(a=>a.taskId===task.id&&a.kind==='complete-draft'&&a.path===vault.content.relativePath&&a.path===vault.contentDirectory+'/创作页.html')&&!recoveringKepuSource(envelope,task,payload,root,vault,work,operation))fail('SOURCE_CHANGED','当前入口已切换，须重新冻结任务。');
+ if(frozen&&frozen.documentId!==vault.content.sourceDocumentId&&!flow.artifacts.some(a=>a.taskId===task.id&&a.kind==='complete-draft'&&a.path===vault.content.relativePath&&a.path===vault.contentDirectory+'/创作页.html')&&!isJourneyOutputReceipt(envelope.binding.root,task,attempt.id,vault.content,operation==='build'?payload.input?.mutationId:null)&&!recoveringKepuSource(envelope,task,payload,root,vault,work,operation))fail('SOURCE_CHANGED','当前入口已切换，须重新冻结任务。');
  return {ctx,task,attempt,vault,root,work,flow,input:payload.input??{}};
 }
 export function assertStageGate(context,operation){
@@ -56,12 +58,14 @@ export function assertStageGate(context,operation){
 export function runWorkflowHandoff(args){
  const context=fixedStageContext(args),{root,work,task,input}=context;
  if(args.operation==='read')return context.flow??{work:null,stage:'synthesis',brief:task.request.parameters.synthesisBrief};
+ return args.library.withProductionAuthority({taskId:task.id,attemptId:context.attempt.id,claimToken:args.payload.claimToken,workerId:args.payload.workerId},()=>{
  if(args.operation==='method')return runMethodArtifact(context);
  if(args.operation!=='artifact'||Object.keys(input).some(k=>!['kind','text','title'].includes(k))||typeof input.text!=='string'||!input.text.trim()||input.text.length>500000)fail('INVALID_INPUT');
- const allowed={ 'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],kepu:['narrative'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
+ const allowed={ 'author-materials':['author-materials'],'analysis-author':['analysis-comparison'],'analysis-ai':['analysis-comparison'],narrative:['narrative'],'key-segment':['key-segments'],writing:['complete-draft'],kepu:['narrative'],tutorial:['narrative','key-segments','complete-draft'],revision:['complete-draft'],'cover-copy':['packaging'],review:['review'],closeout:['archive'],patterns:['review'],intake:['analysis-comparison']};
  if(!allowed[task.request.parameters.stage]?.includes(input.kind))fail('STAGE_FORBIDDEN');assertStageGate(context,input.kind);
  const id=randomUUID(),relative=context.vault.contentDirectory+'/阶段产物-'+input.kind+'-'+id+'.md',bytes=Buffer.from(input.text+'\n');mkdir(root,context.vault.contentDirectory);atomic(root,relative,bytes,null);
  return appendStageArtifact(root,{work,kind:input.kind,artifactId:id,hash:createHash('sha256').update(bytes).digest('hex'),path:relative,methodId:task.request.parameters.businessSkill,taskId:task.id});
+ });
 }
 export const main=argv=>runFixedCLI(argv,['read','artifact','method'],runWorkflowHandoff);
 export async function runFixedCLI(argv,operations,execute){try{
