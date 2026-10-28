@@ -152,8 +152,8 @@ function document(library: WorkspaceCoreLibrary, input: WorkspaceCoreDocument, k
         coverVariants: (input.coverVariants ?? []).map(({id, name, ratio, preferredTemplateId, selectedCandidateId}) => ({id, name, ratio, preferredTemplateId, selectedCandidateId}))
     };
 }
-export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument): WorkspaceContentDetails {
-    return {...document(library, content, 'content'), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
+export function workspaceContent(library: WorkspaceCoreLibrary, content: WorkspaceCoreDocument, tNumber: string | null = library.readProduction?.().creations.find(item => item.contentId === content.id)?.tNumber ?? null): WorkspaceContentDetails {
+    return {...document(library, content, 'content'), ...(/^T\d{3,}$/.test(tNumber ?? '') ? {tNumber: tNumber!} : {}), recordedDate: content.recordedDate ?? null, plannedDate: content.plannedDate ?? null, preferredTemplateId: content.preferredTemplateId ?? null, isExample: content.isExample ?? false};
 }
 function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLibraryPrompt {
     const prompt = library.readPrompt(id);
@@ -161,6 +161,7 @@ function workspacePrompt(library: WorkspaceCoreLibrary, id: string): WorkspaceLi
 }
 export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrarySnapshot {
     const settings = library.readLibrarySettings();
+    const workNumbers = new Map(library.readProduction?.().creations.map(item => [item.contentId, item.tNumber]) ?? []);
     return {
         prompts: [...library.listPrompts(), ...library.listPromptTrash()].map(prompt => {
             return {...entity(prompt), body: prompt.body, category: prompt.category, summary: prompt.summary, when: prompt.when, tags: [...prompt.tags], enabled: prompt.enabled ?? true, favorite: prompt.favorite ?? false};
@@ -183,7 +184,7 @@ export function workspaceLibrary(library: WorkspaceCoreLibrary): WorkspaceLibrar
             return {...document(library, collection, 'collection'), dateRange: {start: collection.dateRange?.start ?? null, end: collection.dateRange?.end ?? null}, memberIds: [...collection.memberIds ?? []]};
         }),
         contentDetails: library.listAllContents().map(content => {
-            return workspaceContent(library, content);
+            return workspaceContent(library, content, workNumbers.get(content.id) ?? null);
         }),
         settings: {
             editToken: settings.editToken,
