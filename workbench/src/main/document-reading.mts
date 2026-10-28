@@ -1,3 +1,4 @@
+import {createScanBudget,enterScanDirectory,scanDirectoryEntries,consumeScanDocument,VAULT_SCAN_LIMITS,type ScanBudget} from '../../../plugin-src/src/lib/vault/scan-budget.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {createHash} from 'node:crypto';
@@ -84,18 +85,19 @@ type ReadingCatalog = {files: {relativePath: string}[]; issues: {relativePath?: 
 /** Native fallback for original files outside a declared source (for example profile).
  * The selected Vault is the boundary; hidden/framework/backup trees never enter it.
  * Match core doc IDs without loading its projection or recovery machinery. */
-function vaultReadingCatalog(root: string, budget = {remaining: 20_000}): ReadingCatalog {
+function vaultReadingCatalog(root:string,budget:ScanBudget=createScanBudget()): ReadingCatalog {
     ancestors(root); const before = JSON.stringify(identity(root)), files: ReadingCatalog['files'] = [], issues: ReadingCatalog['issues'] = [];
     function walk(relative = '', depth = 0) {
-        if (depth > 24) fail('UNAVAILABLE', '原文目录层级超过阅读上限。');
+        enterScanDirectory(budget,depth);
         const directory = relative ? safe(root, relative) : root;
-        for (const entry of fs.readdirSync(directory, {withFileTypes: true}).sort((a, b) => a.name.localeCompare(b.name))) {
-            if (--budget.remaining < 0) fail('UNAVAILABLE', '原文目录项目累计超过 20000 项阅读上限，部分来源尚未载入。');
+        for(const entry of scanDirectoryEntries(directory,budget)){
             const filename = relative ? `${relative}/${entry.name}` : entry.name;
             if (!visible(filename)) continue;
             if (entry.isSymbolicLink()) {issues.push({relativePath: filename, code: 'SYMLINK_REJECTED', message: '符号链接不能进入原文阅读。'}); continue;}
             if (entry.isDirectory()) {walk(filename, depth + 1); continue;}
             if (!entry.isFile()) continue;
+            if(/\.(?:md|markdown|txt|html?|json)$/i.test(entry.name))consumeScanDocument(budget);
+            if(!/\.(?:md|markdown|txt|html?|json)$/i.test(entry.name)){files.push({relativePath:filename});continue;}
             const stat = fs.lstatSync(safe(root, filename));
             if (stat.nlink !== 1 || stat.size > 8 * 1024 * 1024) {issues.push({relativePath: filename, code: 'UNAVAILABLE', message: '文件含硬链接或超过 8 MiB。'}); continue;}
             files.push({relativePath: filename});
@@ -127,16 +129,16 @@ export function resolveRegisteredDocument(binding: LibraryBinding, documentId: s
         return {vaultRoot: vault.vaultRoot, sourceId: source.id, relativePath: relativePath.slice(prefix.length + 1)};
     }
     if (/^source-[a-f0-9]{32}$/.test(documentId)) {
-        const matches: RegisteredDocumentSource[] = []; let unavailable = false; const budget = {remaining: 20_000};
+        const matches: RegisteredDocumentSource[] = []; let unavailable = false; const budget=createScanBudget();
         for (const entry of readSourceMap(vault.vaultRoot).sources) {
-            if (--budget.remaining < 0) fail('UNAVAILABLE', '来源目录累计超过 20000 项阅读上限。');
+
             try {
             const source = resolveSource(vault.vaultRoot, entry.id);
             if (!source.available) {unavailable = true; continue;}
             const catalog = vaultReadingCatalog(source.root, budget);
             if (catalog.issues.some(issue => !issue.relativePath)) {unavailable = true; continue;}
             for (const file of catalog.files) if (visible(file.relativePath) && 'source-' + hash(entry.id + ':' + file.relativePath).slice(0, 32) === documentId) matches.push({vaultRoot: vault.vaultRoot, sourceId: entry.id, relativePath: file.relativePath});
-            } catch {unavailable = true;}
+            }catch(error){if((error as {code?:string}).code==='INDEX_BUDGET_EXCEEDED')throw error;unavailable=true;}
         }
         if (matches.length === 1) return matches[0];
         if (unavailable) fail('SOURCE_NOT_AVAILABLE', '已绑定来源暂不可完整读取，请恢复后重试。');
@@ -154,14 +156,14 @@ export function registeredLinkedDocumentLocation(binding: LibraryBinding, docume
 }
 /** Append only already-linked UTF-8 originals to the ordinary directory. Their
  * source IDs exactly match the resource projection identity, without projecting. */
-export function registeredLinkedDocuments(binding: LibraryBinding, {maxEntries = 20_000}: {maxEntries?: number} = {}): {documents: VaultDocument[]; issues: {code: string; message: string; relativePath?: string}[]} {
+export function registeredLinkedDocuments(binding: LibraryBinding, {maxEntries=VAULT_SCAN_LIMITS.entries,maxDocuments=VAULT_SCAN_LIMITS.documents}:{maxEntries?:number;maxDocuments?:number} = {}): {documents: VaultDocument[]; issues: {code: string; message: string; relativePath?: string}[]} {
     documentReadingScope(binding); const vault = bindingForRuntime(binding.root)!, documents: VaultDocument[] = [], issues: {code: string; message: string; relativePath?: string}[] = [];
-    if (!Number.isInteger(maxEntries) || maxEntries < 0 || maxEntries > 20_000) fail('INVALID_INPUT', '关联来源阅读数量上限无效。');
-    const budget = {remaining: maxEntries};
+    if (!Number.isInteger(maxEntries) || maxEntries < 0 || maxEntries > VAULT_SCAN_LIMITS.entries) fail('INVALID_INPUT', '关联来源阅读数量上限无效。');
+    const budget=createScanBudget({entries:maxEntries,documents:maxDocuments});
     for (const entry of readSourceMap(vault.vaultRoot).sources.filter(source => source.mode === 'linked')) {
         const documentStart = documents.length;
         try {
-            if (--budget.remaining < 0) {issues.push({code: 'SOURCE_LIMIT', message: '关联来源目录累计超过 20000 项上限，其余来源尚未载入。'}); break;}
+
             const source = resolveSource(vault.vaultRoot, entry.id);
             if (!source.available) {issues.push({code: 'SOURCE_NOT_AVAILABLE', message: '已绑定来源暂不可用，不代表资料为空。', relativePath: entry.id}); continue;}
             const catalog = vaultReadingCatalog(source.root, budget);
@@ -175,7 +177,7 @@ export function registeredLinkedDocuments(binding: LibraryBinding, {maxEntries =
             }
             const after = resolveSource(vault.vaultRoot, entry.id);
             if (!after.available || after.root !== source.root || JSON.stringify(identity(source.root)) !== JSON.stringify(source.rootIdentity)) fail('CONFLICT', '关联来源目录身份在读取时变化。');
-        } catch (error) {documents.splice(documentStart);issues.push({code: 'SOURCE_NOT_AVAILABLE', message: error instanceof Error ? error.message : '关联来源暂不可读。', relativePath: entry.id}); if (budget.remaining < 0) break;}
+        }catch(error){if((error as {code?:string}).code==='INDEX_BUDGET_EXCEEDED')throw error;documents.splice(documentStart);issues.push({code: 'SOURCE_NOT_AVAILABLE', message: error instanceof Error ? error.message : '关联来源暂不可读。', relativePath: entry.id}); }
     }
     documentReadingScope(binding);
     return {documents, issues};
@@ -231,7 +233,8 @@ export function createDocumentReadingService(options: {resolveDocument(binding: 
         check(binding, context); return context;
     }
     function build(binding: LibraryBinding, context: Context, documentId: string, expectedHash: string, onlyReference?: string) {
-        const source = check(binding, context)!, catalog: ReadingCatalog = context.sourceId === NATIVE_VAULT_SOURCE ? vaultReadingCatalog(context.vaultRoot) : readBoundSourceCatalog(context.vaultRoot, {sourceId: context.sourceId}), original = bytes(source.root, context.relativePath), sourceHash = hash(original);
+        const source=check(binding,context)!,original=bytes(source.root,context.relativePath),sourceHash=hash(original);
+        let catalog:ReadingCatalog|null=null;const directory=()=>catalog??=(context.sourceId===NATIVE_VAULT_SOURCE?vaultReadingCatalog(context.vaultRoot):readBoundSourceCatalog(context.vaultRoot,{sourceId:context.sourceId}));
         if (sourceHash !== expectedHash) fail('CONFLICT', '原文版本已变化，请重新读取。');
         if (!textTypes.has(path.posix.extname(context.relativePath).toLowerCase())) fail('UNSUPPORTED', '此来源不是受支持的 Markdown 或文本。');
         const text = selectFragment(utf8(original), context.fragment), tokens = documentReferenceTokens(text), targets = new Map<string, LocalTarget | string>(), contentIdentity = hash(JSON.stringify([fingerprint(binding), context.sourceId, source.root, identity(source.root), context.relativePath])), references: DocumentReference[] = [];
@@ -243,16 +246,16 @@ export function createDocumentReadingService(options: {resolveDocument(binding: 
             else if (!/^https?:/i.test(token.destination)) {
                 const parsed = local(context.relativePath, token.destination);
                 if (parsed) {
-                    let paths = catalog.files.filter(file => visible(file.relativePath)).map(file => file.relativePath), candidates: string[] = [];
+                    let candidates:string[]=[];
                     const alternatives = path.posix.extname(parsed.relativePath) ? [parsed.relativePath] : [parsed.relativePath, parsed.relativePath + '.md', parsed.relativePath + '.markdown'];
                     const wikiName = parsed.basename && ['wiki', 'embed'].includes(token.kind);
-                    candidates = wikiName ? [] : paths.filter(filename => alternatives.includes(filename));
-                    if (wikiName && !catalog.issues.some(issue => !issue.relativePath)) {
+                    if(!wikiName)candidates=alternatives.filter(filename=>{try{const stat=fs.lstatSync(safe(source.root,filename));return stat.isFile()&&stat.nlink===1&&stat.size<=8*1024*1024;}catch{return false;}});
+                    if(wikiName&&!directory().issues.some(issue=>!issue.relativePath)){
                         const names = path.posix.extname(parsed.basename!) ? [parsed.basename!] : [parsed.basename + '.md', parsed.basename + '.markdown'];
-                        candidates = paths.filter(filename => names.includes(path.posix.basename(filename)));
+                        candidates=directory().files.filter(file=>visible(file.relativePath)).map(file=>file.relativePath).filter(filename=>names.includes(path.posix.basename(filename)));
                     }
                     if (candidates.length > 1) {ref.state = 'ambiguous'; ref.issue = '存在多个同名目标，请核对完整路径。'; ref.candidates = candidates;}
-                    else if (!candidates.length) {ref.state = 'missing'; ref.issue = catalog.issues.some(issue => !issue.relativePath) ? '来源目录读取不完整，请恢复来源后重试。' : '当前绑定来源中没有可读目标。';}
+                    else if (!candidates.length) {ref.state = 'missing'; ref.issue = wikiName&&directory().issues.some(issue=>!issue.relativePath)? '来源目录读取不完整，请恢复来源后重试。' : '当前绑定来源中没有可读目标。';}
                     else {
                         const filename = candidates[0], extension = path.posix.extname(filename).toLowerCase();
                         if (imageTypes.has(extension) && ['image', 'embed'].includes(token.kind) || textTypes.has(extension) && token.kind !== 'image') {

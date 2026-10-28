@@ -1,0 +1,11 @@
+✔ 25k ordinary attachments do not consume the text-document budget or load image/video bytes during indexing (151707.318792ms)
+✔ bounded enumeration stops before sorting an unbounded directory; all budget axes fail closed (5065.5855ms)
+✔ over-budget text index never publishes a partial projection or invents source missing decisions (108311.736792ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 3
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 266142.586333

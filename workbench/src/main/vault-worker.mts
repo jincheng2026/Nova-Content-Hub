@@ -70,7 +70,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   return location;
  }
  if(op==='vaultDocumentTrash')return listVaultDocumentTrash(binding.root);
- if(op==='vaultRead'){const snapshot=readVaultSnapshot(binding.root);if(!snapshot)return null;const linked=registeredLinkedDocuments(binding,{maxEntries:Math.max(0,20_000-snapshot.documents.length)});return {...snapshot,revision:digest(JSON.stringify([snapshot.revision,linked.documents.map(document=>[document.id,document.hash])])),documents:[...snapshot.documents,...linked.documents],issues:[...snapshot.issues,...linked.issues],readingScope:documentReadingScope(binding)};}
+ if(op==='vaultRead'){const snapshot=readVaultSnapshot(binding.root);if(!snapshot)return null;const linked=registeredLinkedDocuments(binding,{maxDocuments:Math.max(0,20_000-snapshot.documents.length)});return {...snapshot,revision:digest(JSON.stringify([snapshot.revision,linked.documents.map(document=>[document.id,document.hash])])),documents:[...snapshot.documents,...linked.documents],issues:[...snapshot.issues,...linked.issues],readingScope:documentReadingScope(binding)};}
  if(op==='vaultTopicMenus')return readTopicMenus(binding);
  if(op==='vaultAdoptTopic'){if(!vaultDesktopInput('adoptVaultTopic',args.input))fail('INVALID_INPUT','选题选择请求无效。');return adoptVaultTopic(binding,args.input as import('../shared/vault-contracts.ts').VaultInputs['adoptVaultTopic'],mode);}
  if(op==='vaultSources'){const root=vaultRootForRuntime(binding.root);return root?readSourceInventory(root):{sources:[],issues:[]};}
@@ -130,7 +130,7 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
   const root=vaultRootForRuntime(binding.root)??binding.root;
   if(args.id===undefined)return root;
   if(!vaultDocumentId(args.id))fail('INVALID_INPUT','资料标识无效。');
-  const document=readVaultSnapshot(binding.root)?.documents.find(item=>item.id===args.id);
+  const snapshot=readVaultSnapshot(binding.root),document=[...(snapshot?.documents??[]),...(snapshot?.attachments??[])].find(item=>item.id===args.id);
   if(!document)fail('NOT_FOUND','资料不存在，请刷新知识库。');
   const location=path.resolve(root,document.relativePath),relative=path.relative(root,location);
   if(!relative||relative.startsWith(`..${path.sep}`)||relative==='..'||path.isAbsolute(relative))fail('UNSAFE_PATH','资料位置超出知识库。');

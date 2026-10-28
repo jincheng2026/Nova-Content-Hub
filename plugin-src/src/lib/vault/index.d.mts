@@ -30,12 +30,14 @@ export type VaultDocument = {
     bytes: number;
     managedFinalAsset?: 'asset'|'unverified';
 };
+export type VaultAttachment=Omit<VaultDocument,'hash'|'format'|'writable'>&{format:'other';writable:false};
 export type VaultIssue = {code: string; message: string; relativePath?: string};
 export type VaultSnapshot = {
     root: string;
     name: string;
     vaultId: string;
     documents: VaultDocument[];
+    attachments?:VaultAttachment[];
     issues: VaultIssue[];
     positioning: {
         status: 'missing' | 'partial' | 'available';

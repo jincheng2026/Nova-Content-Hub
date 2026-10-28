@@ -85,7 +85,7 @@ function resourceSnapshot(snapshot){
     const byPath=new Map(documents.map(document=>[document.relativePath,document]));
     for(const entry of sourceMap.sources.filter(s=>RESOURCE_ROLES.has(s.role))){
         let catalog;
-        try{catalog=readBoundSourceCatalog(snapshot.root,{sourceId:entry.id});}catch(error){issues.push({sourceId:entry.id,relativePath:entry.root,code:error.code??'IO_ERROR',message:error.message});continue;}
+        try{catalog=readBoundSourceCatalog(snapshot.root,{sourceId:entry.id});}catch(error){if(error.code==='INDEX_BUDGET_EXCEEDED')throw error;issues.push({sourceId:entry.id,relativePath:entry.root,code:error.code??'IO_ERROR',message:error.message});continue;}
         boundSources.push(catalog.source);issues.push(...catalog.issues.map(i=>({...i,relativePath:i.relativePath??entry.root})));
         for(const file of catalog.files){
             const reportSidecar=entry.role==='reports'&&(file.relativePath.split('/').length!==2||!/(?:\.html?$|(?:^|\/)meta\.json$)/i.test(file.relativePath));

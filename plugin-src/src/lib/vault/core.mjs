@@ -1,3 +1,4 @@
+import {createScanBudget,enterScanDirectory,scanDirectoryEntries,consumeScanDocument} from './scan-budget.mjs';
 import {validateAuthorPlanningReceipt} from './author-planning.mjs';
 import {applyFinalAssetsReceipt,managedFinalAssetMetadata,isManagedFinalAssetPath} from '../final-assets/transaction.mjs';
 import {applyPublicationReceipt} from '../publication-runtime/transaction.mjs';
@@ -24,8 +25,7 @@ export const SECTIONS = Object.freeze({
     reviews: '06_发布复盘',
     prompts: '07_提示词',
 });
-const LIMIT = 8 * 1024 * 1024,
-    MAX_FILES = 20000;
+const LIMIT = 8 * 1024 * 1024;
 export function isManagedAuthorPlanningPath(relative) {
     // Reserve ASCII case aliases on every host, including case-insensitive filesystems.
     return typeof relative === 'string' && /^05_内容草稿\/(?:已做\/)?[Tt]\d{3,}_[^/\\\0]+\/作者安排\.[jJ][sS][oO][nN]$/.test(relative.replaceAll('\\', '/'));
@@ -238,8 +238,9 @@ export function vaultState(runtimeRoot) {
 }
 const docID = (relative) => `doc-${digest(relative).slice(0, 32)}`;
 const fileCache = new Map();
-export function scan(root, vaultId) {
-    const documents = [],
+let attachmentRoot='',attachmentIndex=new Map();
+export function scan(root,vaultId,limits={}) {
+    const documents = [],attachments=[],
         issues = [];
     const projection = exists(root, '.workbench/projection.json')
         ? json(root, '.workbench/projection.json')
@@ -250,16 +251,12 @@ export function scan(root, vaultId) {
             id,
         ]),
     );
-    let count = 0;
+    const budget=createScanBudget(limits);
     const finalAssetCache = {entries:new Map(),bytes:0};
     function walk(relative = '', depth = 0) {
-        if (depth > 24) fail('INVALID_INPUT', '知识库目录层级过深');
+        enterScanDirectory(budget,depth);
         const dir = relative ? safe(root, relative) : root;
-        for (const entry of fs
-            .readdirSync(dir, {withFileTypes: true})
-            .sort((a, b) => a.name.localeCompare(b.name))) {
-            if (++count > MAX_FILES)
-                fail('INVALID_INPUT', '知识库文件数量超过上限');
+        for(const entry of scanDirectoryEntries(dir,budget)){
             if (
                 entry.name.startsWith('.') ||
                 ['skills', 'node_modules', '.git'].includes(entry.name)
@@ -298,13 +295,20 @@ export function scan(root, vaultId) {
                     if (!stat.isFile() || stat.nlink !== 1 || stat.size > (format === 'other' ? 64 : 8) * 1024 * 1024) fail('INVALID_INPUT', '最终资产图片类型或大小无效');
                     const tNumber = rel.match(/(?:^|\/)T\d{3,}(?=[_ /.-]|$)/)?.[0]?.split('/').at(-1)?.match(/^T\d+/)?.[0] ?? null;
                     const file = finalAsset.finalAssetFile;
+                    consumeScanDocument(budget);
                     documents.push({id:docID(rel),section:'drafts',title:entry.name,relativePath:rel,
                         hash:file?.sha256 ?? digest('unverified-final-asset:'+rel+':'+stat.size),format,writable:false,
                         contentId:tNumber?(contentIDs.get(tNumber)??uuidFor(`${vaultId}:${tNumber}`)):null,tNumber,bytes:stat.size,
                         managedFinalAsset:file?.bytes===stat.size?finalAsset.managedFinalAsset:'unverified'});
-                } catch(error) {issues.push({code:error.code??'FINAL_ASSET_UNVERIFIED',message:error.message,relativePath:rel});}
+                } catch(error) {if(error.code==='INDEX_BUDGET_EXCEEDED')throw error;issues.push({code:error.code??'FINAL_ASSET_UNVERIFIED',message:error.message,relativePath:rel});}
                 continue;
             }
+            if(format==='other'){
+                try{const st=fs.lstatSync(safe(root,rel));if(!st.isFile()||st.nlink!==1)fail('INVALID_INPUT','附件必须为无硬链接的普通文件');const section=Object.entries(SECTIONS).find(([,name])=>rel.startsWith(name+'/'))?.[0]??'materials',tNumber=rel.match(/(?:^|\/)T\d{3,}(?=[_ /.-]|$)/)?.[0]?.split('/').at(-1)??null;attachments.push({id:docID(rel),relativePath:rel,title:path.basename(rel,ext),bytes:st.size,format:'other',writable:false,section,tNumber,contentId:tNumber?(contentIDs.get(tNumber)??uuidFor(`${vaultId}:${tNumber}`)):null});}
+                catch(error){issues.push({code:error.code??'IO_ERROR',message:error.message,relativePath:rel});}
+                continue;
+            }
+            consumeScanDocument(budget);
             let bytes;
             try {
                 const target = path.join(root, ...rel.split('/')),
@@ -421,13 +425,14 @@ export function scan(root, vaultId) {
         }
     }
     walk();
-    return {documents, issues};
+    attachmentRoot=root;attachmentIndex=new Map(attachments.map(item=>[item.id,item]));
+    return {documents,attachments,issues};
 }
 function readVaultSnapshotUnlocked(runtimeRoot) {
     const binding = bindingForRuntime(runtimeRoot);
     if (!binding) return null;
     const recoveryIssues = (recoveringRoots.has(binding.vaultRoot) || applyingRoots.has(binding.vaultRoot)) ? [] : recoverVault(binding.vaultRoot);
-    const {documents, issues} = scan(binding.vaultRoot, binding.vaultId);
+    const {documents,attachments,issues}=scan(binding.vaultRoot,binding.vaultId);
     issues.push(...recoveryIssues);
     const projection = exists(binding.vaultRoot, '.workbench/projection.json')
         ? json(binding.vaultRoot, '.workbench/projection.json')
@@ -482,7 +487,7 @@ function readVaultSnapshotUnlocked(runtimeRoot) {
         root: binding.vaultRoot,
         name: path.basename(binding.vaultRoot),
         vaultId: binding.vaultId,
-        documents,
+        documents,attachments,
         issues,
         positioning: {
             status: position.some((d) =>
@@ -512,7 +517,8 @@ function readVaultDocumentUnlocked(runtimeRoot, id) {
         fail('INVALID_INPUT', '知识文档标识无效');
     const s = readVaultSnapshot(runtimeRoot);
     if (!s) fail('NOT_READY', '当前库没有知识文件');
-    const document = s.documents.find((d) => d.id === id);
+    let document=s.documents.find(d=>d.id===id);
+    if(!document&&attachmentRoot===s.root){const attachment=attachmentIndex.get(id);if(attachment){const current=readBytes(s.root,attachment.relativePath);document={...attachment,hash:digest(current),bytes:current.length};}}
     if (!document) fail('INVALID_INPUT', '知识文件不存在或已移动');
     const bytes = readBytes(s.root, document.relativePath);
     if (digest(bytes) !== document.hash)

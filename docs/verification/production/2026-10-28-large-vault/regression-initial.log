@@ -1,0 +1,111 @@
+✔ content list/read does not classify unrelated resources after initial hydration, while the next resource read sees external edits (18955.223583ms)
+✔ unchanged resource inputs and a creation-note-only edit avoid re-reading unrelated source bodies (13549.046792ms)
+✔ resource input cache detects new/deleted files, same-size same-mtime external bytes, source-map changes and linked root replacement (18233.408833ms)
+✔ cached classification still hashes current linked source bytes with unchanged size and mtime (9084.133667ms)
+✔ resource cache cannot bypass current runtime asset checksum warnings (8427.985167ms)
+✖ content-only list still completes a pending resource source transaction before exposing runtime state (9265.322541ms)
+✔ jc-doc pages with an explicit resource declaration retain their complete resource hash semantics (18508.29975ms)
+✔ linked report CSS changes invalidate the exact report dependency and offline preview (7508.624083ms)
+✔ account image source dependencies refresh only when their current bytes change (6672.409375ms)
+✔ an excluded jc-doc page can become a frontmatter-declared report without stale classification (12661.648041ms)
+✔ new vault does not provision excluded X sources or directories (7690.983125ms)
+✔ default source configuration leaves existing unconfigured X history untouched (1242.813125ms)
+✔ opening an old vault without a source map does not add an X source (5476.962416ms)
+✔ existing X source maps and explicitly linked X imports remain readable (11844.052041ms)
+✔ new vault has durable explicit root-contained sources and original skeleton (4091.07625ms)
+✔ opening old vault never guesses sibling archive and preserves author instructions (3105.317ms)
+✔ external sources require explicit selected directory and never follow symlink (6373.420292ms)
+✔ reserved empty directory creates complete skeleton and exact runtime binding (8198.937083ms)
+✔ blank-title content uses stable T folder, durable exact replay and never reuses trash number (11155.763583ms)
+✔ save keeps original authority and exact receipt across subsequent external edits (8129.991209ms)
+✔ path, root identity, symlink, hardlink, oversized and extra fields are rejected (5608.295166ms)
+✔ legacy body and production draft APIs update the same T source; external edits invalidate tokens (19384.319ms)
+✔ source missing is explicit and does not silently trash or replace runtime body (6795.172666ms)
+✔ trash and restore bridge retains source bytes and receipts (12484.351708ms)
+✔ durable runtime journal recovers source write after source commit and before runtime capture (14928.712708ms)
+✔ published facts come from explicit card status; archive folder alone does not publish (11383.086708ms)
+✔ first body save from old topic card creates draft under its T directory and retains card (6840.00575ms)
+✔ ordinary legacy library create/read remains available and has no Vault binding (1782.5735ms)
+✔ declared next T number is a candidate while retired numbers remain reserved (2994.159042ms)
+✔ canonical positioning names and large source receipts replay without size truncation (3999.231125ms)
+✔ known HTML JSON is read as data and remains read-only; unknown HTML keeps a clear reason (8085.950875ms)
+✔ durable source pending receipt recovers after restart and refuses a third-state external file (8877.122625ms)
+✔ resolve proves missing only under a valid root and write lock; pending conflict is uncertain (5185.917917ms)
+✔ trash with a surviving topic card preserves the original draft mapping and restores exactly that source (11883.183625ms)
+✔ existing creation follows explicit external publish and revoke facts without changing body or ID (7607.745375ms)
+✔ pending restore repairs an older trash mapping rebound to a surviving card before recovery (3589.63875ms)
+✔ restore path conflict is rejected before publishing a runtime journal and cannot brick reopening (2996.745666ms)
+✔ a surviving assistant archive cannot replace a trashed current source (3162.370042ms)
+✔ conflicting source publication facts revoke published display and clear once facts agree (2604.62625ms)
+✔ explicit working draft keeps HTML and T identity, pins current MD across reopen and normal writes (27914.424791ms)
+✔ conversion refuses stale hash, occupied target, noncurrent source, unknown HTML and extra path (30142.288542ms)
+✔ partial working draft replay resumes after body creation and keeps source authority stable (5640.493083ms)
+✔ interrupted conflict does not poison reopen or report a pending conversion as committed (10579.381292ms)
+✔ partial conversion detects a new chosen source instead of overriding it on recovery (8500.769959ms)
+✔ missing or trashed registered work draft keeps library readable and never restores old HTML as current (18459.798167ms)
+✔ a pending source or target replaced by symlink stays rejected without bricking reopen (12372.612541ms)
+✔ without overview a staged target never becomes current before the transaction commits (9958.151625ms)
+✔ building a work draft retains existing published facts and production stage (10571.484042ms)
+✔ navigation uses the same original bytes for managed output and CAS, preserving concurrent manual append (4189.588291ms)
+✔ committed current MD remains pinned but a later explicit overview switch is visible and blocks source writes (10598.360708ms)
+✔ a replaced unrelated linked root does not block the exact healthy source while its own reads stay closed (8281.237166ms)
+✔ native document IPC resolves real internal/profile references without recovery, projection, or any disk write (13363.341ms)
+✔ IPC rejects arbitrary paths, old hash, missing scope, switched library and malicious reference fields (10937.387916ms)
+✔ linked IDs match actual registered source identity and fail closed on loss/replacement without cross-source lookup (11074.309375ms)
+✔ native reads refuse both machine pending and filesystem pending while preserving bytes and pending records (8884.298667ms)
+✔ all three narrow IPC channels retain top-frame and exact-field validation; only image CSP gains blob (7.083583ms)
+✔ actual sandbox preload exposes only fixed channels and forwards identity requests unchanged (413.407208ms)
+✔ explicit linked catalogs share one native global budget and fail closed instead of exposing incomplete sources (4503.016667ms)
+✔ concurrent page reference reads serialize through the real exclusive worker boundary (7065.725ms)
+✔ reading after a source event waits for an already-running exclusive action before revalidating current scope (8646.187708ms)
+✔ real bounded reader preserves source bytes and resolves encoded Chinese images and wiki notes (8135.668417ms)
+✔ reader keeps missing/ambiguous/unsupported references explicit and excludes code syntax (8194.536541ms)
+✔ reader rejects escaped paths, credentials, framework files, symlinks and cross-source fallback (7699.281667ms)
+✔ reference identity expires for changed source, target, binding and replaced source root (4347.164875ms)
+✔ linked source is confined to explicit root and refuses root replacement (6001.933541ms)
+✔ reader refuses invalid raster bytes and pending state without recovering or projecting (4281.639ms)
+✔ wiki bare names stay ambiguous even when one candidate shares the current folder (8322.479584ms)
+✔ fragment selection is exact, duplicate headings are explicit, cycles and depth are bounded with manual navigation (6881.668333ms)
+✔ reader leaves over-limit references as authored text and refuses huge text/hard links and runtime pending (3925.655958ms)
+✔ legacy pending receipts are refused without creating a migration index (5215.808084ms)
+✔ actual raster decoder accepts supported content types without relying on filename extension (4583.808ms)
+✔ bounded reference queue rejects excess work and never grants unknown or path-bearing requests (15090.172541ms)
+✔ selected heading preserves fenced-code headings as literal body content (7894.644208ms)
+✔ actual React source reader keeps controlled images, explicit links, errors, history and stale results bounded (23932.663084ms)
+ℹ tests 74
+ℹ suites 0
+ℹ pass 73
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 169150.79925
+
+✖ failing tests:
+
+test at plugin-src/src/lib/vault/test/resource-read-performance.test.mjs:10:1
+✖ content-only list still completes a pending resource source transaction before exposing runtime state (9265.322541ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /interrupt after source commit/. Input:
+  
+  'LibraryError: 原来源投影只读，请在原来源核对。'
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/resource-read-performance.test.mjs:10:583)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: LibraryError: 原来源投影只读，请在原来源核对。
+        at fail (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/core.mjs:40:11)
+        at assertProductionRecordMutation (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production-record-policy.mjs:55:135)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:289:120
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:860:28
+        at locked (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:750:21)
+        at mutate (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/index.mjs:817:16)
+        at mutateProduction (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/file-library/production.mjs:286:21)
+        at out.<computed> [as mutateProduction] (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/bridge.mjs:516:36)
+        at file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/src/lib/vault/test/resource-read-performance.test.mjs:10:598
+        at getActual (node:assert:611:5),
+    expected: /interrupt after source commit/,
+    operator: 'throws',
+    diff: 'simple'
+  }

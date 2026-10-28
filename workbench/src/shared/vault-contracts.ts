@@ -9,7 +9,8 @@ export type TopicMenu={sessionId:string;relativePath:string;hash:string;candidat
 export type VaultWorkDirectoryRow={authorPlanning:AuthorPlanningView|null;authorPlanningIssue:string|null;authorPlanningScope:string;contentId:string;tNumber:string;title:string;recorded:boolean;published:boolean;hasDraft:boolean;topicStatus:import('../../../plugin-src/src/lib/vault/core.mjs').TopicCardStatus;statusEvidence:{origin:string;documentId:string;relativePath:string;hash:string;text:string;section?:string;line?:number;status?:string;paused?:boolean;reason?:string|null}[];sourceResolution:'resolved'|'conflict'|'missing';sourceConflict:string|null;relativePath:string};
 export type VaultSection = 'profile'|'accounts'|'materials'|'patterns'|'topics'|'drafts'|'reviews'|'prompts';
 export interface VaultDocument {id:string;section:VaultSection;title:string;relativePath:string;hash:string;format:'markdown'|'html'|'text'|'json'|'other';writable:boolean;contentId:string|null;tNumber:string|null;bytes:number;sourceConflict?:string}
-export interface VaultSnapshot {readingScope?:string;root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
+export type VaultAttachment=Omit<VaultDocument,'hash'|'format'|'writable'>&{format:'other';writable:false};
+export interface VaultSnapshot {attachments?:VaultAttachment[];readingScope?:string;root:string;name:string;vaultId:string;documents:VaultDocument[];issues:{code:string;message:string;relativePath?:string}[];positioning:{status:'missing'|'partial'|'available';documentIds:string[]};revision:string}
 export interface VaultText {readingScope?:string;document:VaultDocument;text:string;workingDraftAvailable?:boolean}
 export interface VaultInputs {
  readAuthorPlanningStatuses:undefined;

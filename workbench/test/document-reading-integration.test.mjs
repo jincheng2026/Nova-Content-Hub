@@ -47,9 +47,9 @@ test('actual sandbox preload exposes only fixed channels and forwards identity r
  const request={documentId:'doc-'+'a'.repeat(32),expectedHash:'b'.repeat(64),scope:'c'.repeat(64)};for(const method of ['readDocumentView','readDocumentReference','openDocumentExternalReference']){assert.equal(typeof api[method],'function');await api[method](request);assert.equal(calls.at(-1)[0],'nova:'+method);assert.equal(calls.at(-1)[1],request);}
 });
 
-test('explicit linked catalogs share one native global budget and report incomplete sources visibly',async t=>{
+test('explicit linked catalogs share one native global budget and fail closed instead of exposing incomplete sources',async t=>{
  const f=await fixture(t);for(let n=0;n<2;n++){const external=path.join(f.parent,'linked-'+n);fs.mkdirSync(external);linkSource(f.root,{role:'materials',selectedRoot:external,authority:'official',writable:false});for(let j=0;j<3;j++)fs.writeFileSync(path.join(external,'note-'+j+'.md'),'只读'+n+j);}
- const result=registeredLinkedDocuments(f.binding,{maxEntries:5});assert.equal(result.documents.length,3);assert.ok(result.documents.every(document=>document.writable===false));assert.ok(result.issues.some(issue=>/上限/.test(issue.message)));
+ assert.throws(()=>registeredLinkedDocuments(f.binding,{maxEntries:5}),{code:'INDEX_BUDGET_EXCEEDED'});const complete=registeredLinkedDocuments(f.binding);assert.equal(complete.documents.length,6);assert.ok(complete.documents.every(document=>document.writable===false));
 });
 test('concurrent page reference reads serialize through the real exclusive worker boundary',async t=>{
  const f=await fixture(t),relative='02_内容素材/多图.md',text='![[./one.png]]\n![[./two.png]]';const png=await require('sharp')({create:{width:2,height:2,channels:3,background:'#0071e3'}}).png().toBuffer();f.write(relative,text);f.write('02_内容素材/one.png',png);f.write('02_内容素材/two.png',png);const request=await scoped(f,relative,text),view=await f.c.readDocumentView(request),results=await Promise.all(view.references.map(ref=>f.c.readDocumentReference({...request,refId:ref.refId,targetIdentity:ref.targetIdentity})));assert.ok(results.every(result=>result.kind==='image'));

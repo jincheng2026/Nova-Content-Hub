@@ -1,3 +1,4 @@
+import {createScanBudget,enterScanDirectory,scanDirectoryEntries,consumeScanDocument} from './scan-budget.mjs';
 import fs from 'node:fs';
 import path from 'node:path';
 import {randomUUID} from 'node:crypto';
@@ -93,24 +94,24 @@ export function readBoundSourceCatalog(root,{sourceId,maxFiles=20000}={}) {
     if(!Number.isInteger(maxFiles)||maxFiles<1||maxFiles>20000)fail('INVALID_INPUT','来源文件数量上限无效');
     const source=resolveSource(root,sourceId),files=[],issues=[];
     if(!source.available)return {source,files,issues:[{sourceId,code:'SOURCE_NOT_AVAILABLE',message:'已绑定来源暂不可用，不代表空数据'}]};
-    const beforeIdentity=identity(source.root);let seen=0;
+    const beforeIdentity=identity(source.root),budget=createScanBudget({documents:maxFiles});
     function walk(relative='',depth=0){
-        if(depth>24)fail('INVALID_INPUT','来源目录层级超过上限');
+        enterScanDirectory(budget,depth);
         const dir=relative?safe(source.root,relative):source.root;
-        for(const entry of fs.readdirSync(dir,{withFileTypes:true}).sort((a,b)=>a.name.localeCompare(b.name))){
-            if(++seen>maxFiles)fail('INVALID_INPUT','来源文件数量超过上限');
+        for(const entry of scanDirectoryEntries(dir,budget)){
             if(entry.name.startsWith('.')||['node_modules','skills','必要备份','备份','backups'].includes(entry.name))continue;
             const relativePath=relative?`${relative}/${entry.name}`:entry.name;
             if(managedAuthorSource(root,source,relativePath))continue;
             if(entry.isSymbolicLink()){issues.push({sourceId,relativePath,code:'SYMLINK_REJECTED',message:'来源符号链接不予读取'});continue;}
             if(entry.isDirectory()){walk(relativePath,depth+1);continue;}
             if(!entry.isFile()||!SOURCE_EXTENSIONS.has(path.extname(entry.name).toLowerCase()))continue;
+            if(/\.(?:md|markdown|txt|html?|json)$/i.test(entry.name))consumeScanDocument(budget);
             const stat=fs.lstatSync(safe(source.root,relativePath));
             if(stat.nlink!==1||stat.size>8*1024*1024){issues.push({sourceId,relativePath,code:'SOURCE_FILE_UNAVAILABLE',message:'文件超过8MiB或存在硬链接，仅保留来源引用'});continue;}
             files.push({sourceId,relativePath,bytes:stat.size,modifiedAt:stat.mtime.toISOString()});
         }
     }
-    try{walk();}catch(e){issues.push({sourceId,code:e.code??'IO_ERROR',message:e.message});}
+    try{walk();}catch(e){if(e.code==='INDEX_BUDGET_EXCEEDED')throw e;issues.push({sourceId,code:e.code??'IO_ERROR',message:e.message});}
     if(JSON.stringify(identity(source.root))!==JSON.stringify(beforeIdentity))fail('CONFLICT','来源根在读取时变化');
     return {source,files,issues};
 }

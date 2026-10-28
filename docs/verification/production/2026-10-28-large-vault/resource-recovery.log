@@ -1,0 +1,18 @@
+✔ content list/read does not classify unrelated resources after initial hydration, while the next resource read sees external edits (1548.967875ms)
+✔ unchanged resource inputs and a creation-note-only edit avoid re-reading unrelated source bodies (4256.0395ms)
+✔ resource input cache detects new/deleted files, same-size same-mtime external bytes, source-map changes and linked root replacement (2595.360792ms)
+✔ cached classification still hashes current linked source bytes with unchanged size and mtime (1561.123042ms)
+✔ resource cache cannot bypass current runtime asset checksum warnings (2040.183333ms)
+✔ content-only list still completes a pending resource source transaction before exposing runtime state (2111.978541ms)
+✔ jc-doc pages with an explicit resource declaration retain their complete resource hash semantics (2925.465833ms)
+✔ linked report CSS changes invalidate the exact report dependency and offline preview (2019.979375ms)
+✔ account image source dependencies refresh only when their current bytes change (1882.246084ms)
+✔ an excluded jc-doc page can become a frontmatter-declared report without stale classification (3012.088083ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 24084.753417

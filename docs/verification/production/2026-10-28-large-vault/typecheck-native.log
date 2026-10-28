@@ -1,0 +1,7 @@
+workbench/src/main/vault-relocation-controller.mts(10,14): error TS1294: This syntax is not allowed when 'erasableSyntaxOnly' is enabled.
+workbench/src/main/vault-relocation-controller.mts(14,34): error TS2345: Argument of type '"inspectVaultRelocation"' is not assignable to parameter of type 'keyof WorkerOperations'.
+workbench/src/main/vault-relocation-controller.mts(15,18): error TS2322: Type 'unknown' is not assignable to type 'VaultRelocationPlan'.
+workbench/src/main/vault-relocation-controller.mts(24,36): error TS2345: Argument of type '"confirmVaultRelocation"' is not assignable to parameter of type 'keyof WorkerOperations'.
+workbench/src/main/vault-relocation-controller.mts(25,76): error TS18046: 'result' is of type 'unknown'.
+workbench/src/main/vault-relocation-controller.mts(26,30): error TS18046: 'result' is of type 'unknown'.
+workbench/src/main/vault-relocation-controller.mts(26,46): error TS2322: Type 'unknown' is not assignable to type 'VaultRelocationResult | undefined'.

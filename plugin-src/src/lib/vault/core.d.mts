@@ -1,5 +1,5 @@
 import type {Buffer} from 'node:buffer';
-import type {RootIdentity,VaultDocument,VaultSnapshot,SourceCandidate,VaultTaskContext} from './index.mjs';
+import type {RootIdentity,VaultDocument,VaultAttachment,VaultSnapshot,SourceCandidate,VaultTaskContext} from './index.mjs';
 export const SECTIONS:Readonly<Record<string,string>>;
 export function isManagedAuthorPlanningPath(relative:unknown):boolean;
 export function digest(value:string|Uint8Array):string;
@@ -15,7 +15,7 @@ export function atomic(root:string,relative:string,bytes:Uint8Array,expectedHash
 export function writeJSON(root:string,relative:string,value:unknown):void;
 export function withVaultLock<T>(root:string,fn:()=>T):T;
 export function withVaultReadLock<T>(root:string,fn:()=>T):T;
-export function scan(root:string,vaultId:string):{documents:VaultDocument[];issues:VaultSnapshot['issues']};
+export function scan(root:string,vaultId:string,limits?:Partial<import('./scan-budget.mjs').ScanBudget['limits']>):{documents:VaultDocument[];attachments:VaultAttachment[];issues:VaultSnapshot['issues']};
 export function nextTNumber(snapshot:VaultSnapshot):number;
 export function creationData(text:string):Record<string,any>|null;
 export function htmlBody(text:string):string|null;
