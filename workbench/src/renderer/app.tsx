@@ -27,7 +27,8 @@ import './style.css';
 import './motion.css';
 import {DataTable, ListToolbar} from './list-primitives.tsx';
 import {CoverPanel } from './covers.tsx';
-import {ContentList} from './content-list.tsx';
+import {ContentList, createContentListUIState, type ContentListUIState} from './content-list.tsx';
+import {createDirectoryUIState, type DirectoryUIState} from './jincheng-content-directory.tsx';
 import {CollectionContents} from './collection-contents.tsx';
 import {AssistantSettings} from './assistant-settings.tsx';
 import {LibraryPanels, CollectionEditor, type LibraryPanelTab, ContentMetadataPanel, ContentMaterialPanel, hasManagedDrafts} from './library-panels.tsx';
@@ -87,6 +88,9 @@ function App() {
     const templateDialog = useRef<HTMLDialogElement>(null);
     useEffect(() => { if (templatePicker) templateDialog.current?.showModal(); }, [templatePicker]);
     const [libraryEpoch, setLibraryEpoch] = useState(0);
+    const [directoryStates, setDirectoryStates] = useState<Record<string, DirectoryUIState>>({});
+    const [contentListStates, setContentListStates] = useState<Record<number, ContentListUIState>>({});
+    const directoryKey = `${libraryEpoch}:${contentPhase}`;
     const epochRef = useRef(0);
     const [libraryOpen, setLibraryOpen] = useState(false);
     const libraryDialog = useRef<HTMLDialogElement>(null);
@@ -100,6 +104,7 @@ function App() {
     const [collectionQuery, setCollectionQuery] = useState('');
     const [creatingCollection, setCreatingCollection] = useState(false);
     const [detailOpen, setDetailOpen] = useState(false);
+    const [resumeOnOpen, setResumeOnOpen] = useState(false);
     const detailCloseGuard = useRef<(() => Promise<void>) | null>(null);
     const [contentTab, setContentTab] = useState<'covers' | 'body' | 'materials' | 'publication' | 'production'>('covers');
     const [coverStartOpenKey, setCoverStartOpenKey] = useState(0);
@@ -145,6 +150,7 @@ function App() {
         });
     };
     const load = (item: Content) => {
+        setResumeOnOpen(false);
         baseRef.current = item; draftRef.current = {title: item.title, body: item.body}; dirtyRef.current = false;
         setBase(item);
         setDraft(draftRef.current);
@@ -162,6 +168,7 @@ function App() {
     }
     const clearEditor = () => {
         epochRef.current += 1; setLibraryEpoch(epochRef.current); setBase(null); baseRef.current = null;
+        setDirectoryStates({}); setContentListStates({}); setContentQuery(''); setResumeOnOpen(false); setView('active');
         setDraft(null);
         draftRef.current = null;
         setDisk(null);
@@ -510,7 +517,7 @@ function App() {
             await invoke(method);
             const next = await refreshStatus();
             if (next.needsReselect || !next.currentName) return;
-            setContents(await invoke('listContents', {view}));
+            setContents(await invoke('listContents', {view:'active'}));
             setLibraryOpen(false);
         });
     }
@@ -666,15 +673,28 @@ function App() {
         {status?.coverActionPending && <Card title="核验封面操作"><p>上次选用或取消的原操作已保留。</p><div className="actions"><Button id="global-resume-cover-action" disabled={busy} onClick={() => void recoverCoverOperation('resumeCoverAction')}>核验并继续原操作</Button><Button id="global-abandon-cover-action" disabled={busy} onClick={() => void recoverCoverOperation('abandonCoverAction')}>放弃这次操作意图</Button></div></Card>}
         {status?.seedPending && <Card title="继续准备内置模板"><p>上次内置模板准备尚未完成。</p><Button id="global-retry-builtins" disabled={busy} onClick={() => void recoverCoverOperation('retryBuiltins')}>继续准备内置模板</Button></Card>}
     </>;
-    const openProductionContent=(id:string)=>{void guard(async()=>{await nativeAction(async()=>{const current=await invoke('readContent',{id});load(current);setPage('content');setDetailOpen(true);setContentTab('production');setActiveCollectionId(null);});});};
+    const openProductionContent=(id:string,resume=false)=>{void guard(async()=>{await nativeAction(async()=>{const current=await invoke('readContent',{id});load(current);setResumeOnOpen(resume);setPage('content');setDetailOpen(true);setContentTab('production');setActiveCollectionId(null);});});};
     const navButton=(key:Page,label?:string)=><Button theme="borderless" key={key} id={`nav-${key}`} aria-current={page===key?'page':undefined} className={page===key?'nav-item active':'nav-item'} disabled={busy} onClick={()=>void navigate(key)}><NavigationIcon name={key}/>{label??pageNames[key]}</Button>;
     function toggleNavigationGroup(group: keyof typeof navGroups) {
         const region = document.getElementById(`nav-${group}-pages`);
         if (navGroups[group] && region?.contains(document.activeElement)) document.getElementById(`nav-group-${group}`)?.focus();
         setNavGroups(current => ({...current, [group]: !current[group]}));
     }
-    const contentProjectTabs=<div className="workspace-view-tabs" role="group" aria-label="内容创作阶段">{([['topics','选题'],['doing','在做'],['published','已发布'],['all','全部与合集']] as const).map(([value,label])=><Button key={value} id={`content-phase-${value}`} theme={contentPhase===value?'solid':'borderless'} aria-pressed={contentPhase===value} disabled={busy} onClick={()=>void guard(async()=>{setContentPhase(value);})}>{label}</Button>)}</div>;
-    const contentProjectListing=contentPhase==='all'? <ContentList stageTabs={contentProjectTabs} contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} createCollection={() => void guard(async () => {setCreatingCollection(true);})} openCollection={id => void openCollection(id)} restoreCollection={item => void restoreCollection(item)} open={(item,generate)=>generate?void select(item,undefined,true):openProductionContent(item.id)} recycle={item => void recycle(item)}/> : <section className="content-library-page creator-content-library" aria-label="内容项目"><div className="content-list-heading"><div><p className="eyebrow">CONTENT · 内容管理</p><h2>内容项目</h2><p>在同一处管理选题、创作进度与已发布内容。</p></div><Button theme="solid" disabled={busy||!!blocked} onClick={()=>void newContent()}>＋ 新建内容</Button></div>{contentProjectTabs}<ProductionContentDirectory key={`${libraryEpoch}:${contentPhase}`} embedded mode={contentPhase} contents={contents??[]} library={library} busy={busy||!!blocked} openContent={openProductionContent}/></section>;
+    async function changeContentPhase(next: typeof contentPhase) {
+        await guard(async () => {
+            if (next === 'all' || view === 'active') {setContentPhase(next); return;}
+            // Stage directories always describe active contents. Read before
+            // switching so a failed read keeps the recycle-bin scope intact.
+            await nativeAction(async () => {
+                const epoch = epochRef.current;
+                const current = await invoke('listContents', {view:'active'});
+                if (epoch !== epochRef.current) return;
+                setView('active'); setContents(current); setContentPhase(next);
+            });
+        });
+    }
+    const contentProjectTabs=<div className="workspace-view-tabs" role="group" aria-label="内容创作阶段">{([['topics','选题'],['doing','在做'],['published','已发布'],['all','全部与合集']] as const).map(([value,label])=><Button key={value} id={`content-phase-${value}`} theme={contentPhase===value?'solid':'borderless'} aria-pressed={contentPhase===value} disabled={busy} onClick={()=>void changeContentPhase(value)}>{label}</Button>)}</div>;
+    const contentProjectListing=contentPhase==='all'? <ContentList key={`${libraryEpoch}:all`} uiState={contentListStates[libraryEpoch] ?? createContentListUIState()} onUIStateChange={patch => setContentListStates(previous => ({...previous,[libraryEpoch]:{...(previous[libraryEpoch] ?? createContentListUIState()),...patch}}))} stageTabs={contentProjectTabs} contents={contents} workspace={workspace} library={library} query={contentQuery} setQuery={setContentQuery} view={view} busy={busy} blocked={!!blocked} ready={!!status?.currentName} changeView={next => void guard(async () => { await nativeAction(async () => {setView(next); setContents(await invoke('listContents', {view: next}));}); })} create={() => void newContent()} createCollection={() => void guard(async () => {setCreatingCollection(true);})} openCollection={id => void openCollection(id)} restoreCollection={item => void restoreCollection(item)} open={(item,generate)=>generate?void select(item,undefined,true):openProductionContent(item.id)} recycle={item => void recycle(item)}/> : <section className="content-library-page creator-content-library" aria-label="内容项目"><div className="content-list-heading"><div><p className="eyebrow">CONTENT · 内容管理</p><h2>内容项目</h2></div><Button theme="solid" disabled={busy||!!blocked} onClick={()=>void newContent()}>＋ 新建内容</Button></div>{contentProjectTabs}<ProductionContentDirectory key={directoryKey} uiState={directoryStates[directoryKey] ?? createDirectoryUIState()} onUIStateChange={patch => setDirectoryStates(previous => ({...previous,[directoryKey]:{...(previous[directoryKey] ?? createDirectoryUIState()),...patch}}))} resumeContent={id => openProductionContent(id,true)} embedded mode={contentPhase} contents={contents??[]} library={library} busy={busy||!!blocked} openContent={openProductionContent}/></section>;
     return <main data-app="ready" data-loaded={status ? 'true' : 'false'} data-busy={acting ? 'true' : 'false'}>
         <aside className="app-navigation" aria-label="主导航"><div className="brand"><span className="brand-mark" role="img" aria-label="自媒体工作台图标"/><div><strong>自媒体工作台</strong><span>内容创作工作空间</span></div></div><div className="nav-label">工作空间</div><nav aria-label="工作功能">{([['today','今天','overview',['overview','calendar','tasks']],['content','内容','content',['content','templates']],['research','市场调研','research',['accounts','reports','radar']]] as const).map(([group,label,icon,pages])=><section className="nav-group" key={group}><Button theme="borderless" className="nav-item nav-group-toggle" id={`nav-group-${group}`} aria-expanded={navGroups[group]} aria-controls={`nav-${group}-pages`} onClick={()=>toggleNavigationGroup(group)}><NavigationIcon name={icon}/><span className="nav-group-label">{label}</span><span className="nav-group-chevron" aria-hidden="true"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M6 4l4 4-4 4"/></svg></span></Button><div id={`nav-${group}-pages`} className="motion-collapse nav-children-region" data-expanded={String(navGroups[group])} aria-hidden={!navGroups[group]} inert={!navGroups[group]}><div className="motion-collapse-clip"><div className="nav-children">{pages.map(key=>navButton(key,key==='templates'?'封面':undefined))}</div></div></div></section>)}{navButton('vault')}{navButton('prompts')}</nav><div className="nav-bottom"><Button theme="borderless" id="library-menu" className="nav-item" onClick={() => void guard(async () => {setLibraryTab('resources'); setLibraryOpen(true);})}><NavigationIcon name="library"/>内容库</Button><Button theme="borderless" id="open-settings" className="nav-item" disabled={acting || !!status?.busy} onClick={() => { if (hasManagedDrafts()) setError('请先保存或明确关闭当前编辑，再打开设置。'); else setSettings(true); }}><NavigationIcon name="settings"/>设置</Button><div className="nav-library"><span className="library-dot"/><span id="library-summary">{status?.currentName || (status ? '尚未打开内容库' : error ? '内容库读取失败' : '正在读取内容库…')}</span></div><p className="nav-footnote">资料保存在你的本机</p></div></aside>
         <div className="app-stage"><header className="app-header"><div><p className="breadcrumb">工作空间 / {pageNames[page]}</p><Typography.Title heading={1} className="visually-hidden">{page === 'content' && detailOpen ? '内容详情' : pageNames[page]}</Typography.Title></div><div className="header-actions"><span className="save-indicator" role="status">{acting ? '正在处理本机资料，请稍候…' : dirty ? '有未保存草稿' : '本机保存'}</span><Button id="refresh-workspace" disabled={busy || !status?.currentName} onClick={() => void nativeAction(async () => { await refreshEditor(); setCoverRefresh(n => n + 1); if (status?.currentName) setContents(await invoke('listContents', {view})); window.dispatchEvent(new Event('nova-workspace-refresh')); })}>刷新</Button></div></header>
@@ -722,7 +742,7 @@ function App() {
         {page==='templates'&&<section><div className="workspace-view-tabs" role="group" aria-label="封面与模板分类"><Button theme={coverView==='nova'?'solid':'borderless'} aria-pressed={coverView==='nova'} onClick={()=>void guard(async()=>setCoverView('nova'))}>Nova 模板与生成</Button><Button theme={coverView==='original'?'solid':'borderless'} aria-pressed={coverView==='original'} onClick={()=>void guard(async()=>setCoverView('original'))}>原封面 VI 与历史图片</Button></div>{coverView==='nova'?<TemplatesPage key={libraryEpoch} library={library} run={localAction} refresh={refreshWorkspace} assets={assets} busy={busy || !!blocked || dirty} useTemplate={template => void useTemplate(template)} managePhotos={() => void openLibraryResources('photos')}/>:<JinchengBoundWorkspace key={`${libraryEpoch}:vi`} kind="visual-assets" busy={busy||!!blocked}/>}</section>}
         {page === 'calendar' && <CalendarPage key={libraryEpoch} initialFocus={calendarFocus} library={library} run={localAction} refresh={async (snapshot?: WorkspaceLibrarySnapshot) => { await refreshWorkspace(snapshot); if (!snapshot) await refreshEditor(); }} workspace={workspace} busy={busy || !!blocked || dirty} open={item => void select(item)}/>}
         {page === 'prompts' && <section className="prompt-resources" aria-label="提示词"><JinchengSourceStatus roles={['prompts']} busy={busy}/><PromptsPage key={libraryEpoch} initialContentId={promptContentId} currentContentId={base && !base.deletedAt ? base.id : null} workspace={workspace} library={library} busy={busy || !!blocked || dirty} run={localAction} refresh={refreshWorkspace} openContentBody={openPromptContentBody} importPrompt={async () => await nativeAction(() => invoke('choosePromptDocument')) ?? null}/></section>}
-        {page === 'content' && (!detailOpen || !draft ? activeCollection ? <CollectionContents key={`${libraryEpoch}:${activeCollection.id}`} collection={activeCollection} unavailable={collectionUnavailable} workspace={workspace} props={{library, busy: busy || !!blocked, run: localAction, refresh: refreshWorkspace}} query={collectionQuery} setQuery={setCollectionQuery} back={() => void guard(async () => {setActiveCollectionId(null);})} open={item => void select(item, undefined, false, activeCollection.id)}/> : contentProjectListing : <section className="content-detail-page" aria-label="内容详情"><Button theme="borderless" className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>{activeCollection ? '← 返回合集' : '← 返回内容列表'}</Button><JinchengWorkDetail key={base?.id ?? 'new'} contentId={base && !base.deletedAt ? base.id : null} title={draft.title} stage={contentStage} busy={busy || !!blocked} dirty={dirty} activeTool={contentTab} chooseTool={next => void changeContentTab(next)} makeCover={() => void startCover()} showTasks={() => void navigate('tasks')} registerCloseGuard={value => {detailCloseGuard.current = value;}} sourceNotice={base&&!base.deletedAt&&<ContentSourceNotice key={sourceKey} contentId={base.id} busy={busy||!!blocked} dirty={dirty} run={nativeAction} access={editable=>setSourceAccess(previous=>({...previous,key:sourceKey,editable}))} original={originalId=>setSourceAccess(previous=>({...previous,key:sourceKey,editable:previous?.key===sourceKey?previous.editable:false,originalId}))} converted={async()=>{await nativeAction(async()=>{const next=await invoke('readContent',{id:base.id});if(baseRef.current?.id===next.id&&!dirtyRef.current)load(next);await refreshWorkspace();});}}/>}>
+        {page === 'content' && (!detailOpen || !draft ? activeCollection ? <CollectionContents key={`${libraryEpoch}:${activeCollection.id}`} collection={activeCollection} unavailable={collectionUnavailable} workspace={workspace} props={{library, busy: busy || !!blocked, run: localAction, refresh: refreshWorkspace}} query={collectionQuery} setQuery={setCollectionQuery} back={() => void guard(async () => {setActiveCollectionId(null);})} open={item => void select(item, undefined, false, activeCollection.id)}/> : contentProjectListing : <section className="content-detail-page" aria-label="内容详情"><Button theme="borderless" className="back-to-contents" disabled={busy} onClick={() => void backToContents()}>{activeCollection ? '← 返回合集' : '← 返回内容列表'}</Button><JinchengWorkDetail resumeOnOpen={resumeOnOpen} key={base?.id ?? 'new'} contentId={base && !base.deletedAt ? base.id : null} title={draft.title} stage={contentStage} busy={busy || !!blocked} dirty={dirty} activeTool={contentTab} chooseTool={next => void changeContentTab(next)} makeCover={() => void startCover()} showTasks={() => void navigate('tasks')} registerCloseGuard={value => {detailCloseGuard.current = value;}} sourceNotice={base&&!base.deletedAt&&<ContentSourceNotice key={sourceKey} contentId={base.id} busy={busy||!!blocked} dirty={dirty} run={nativeAction} access={editable=>setSourceAccess(previous=>({...previous,key:sourceKey,editable}))} original={originalId=>setSourceAccess(previous=>({...previous,key:sourceKey,editable:previous?.key===sourceKey?previous.editable:false,originalId}))} converted={async()=>{await nativeAction(async()=>{const next=await invoke('readContent',{id:base.id});if(baseRef.current?.id===next.id&&!dirtyRef.current)load(next);await refreshWorkspace();});}}/>}>
         <div className="content-detail-panel">
         {contentTab === 'production' && base && sourceAccess?.key!==sourceKey && <p role="status">正在确认本篇原稿入口…</p>}
         {contentTab === 'production' && base && sourceAccess?.key===sourceKey && !sourceAccess.originalId && <ContentProduction key={`${libraryEpoch}:${base.id}`} content={base} assistant={status?.assistant} busy={busy||!!blocked||dirty||sourceBlocked} onContent={next=>{if(next.id===baseRef.current?.id&&!dirtyRef.current){load(next);void refreshWorkspace();}}} makeCover={()=>void startCover()}/>}

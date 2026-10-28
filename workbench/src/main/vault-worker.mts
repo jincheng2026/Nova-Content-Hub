@@ -1,3 +1,4 @@
+import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
 import {saveFinalAssets} from '../../../plugin-src/src/lib/final-assets/index.mjs';
 import fs from 'node:fs';
 import {verifiedBoundReader,verifyBoundRoot} from './bound-reader.mts';
@@ -16,17 +17,32 @@ import type {VaultWorkerOperations,VaultPending,VaultResolution} from '../shared
 import {isRecord} from '../shared/contracts.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
 function workContext(binding:LibraryBinding,contentId:string){const context=readVaultTaskContext(binding.root,contentId),root=vaultRootForRuntime(binding.root);return context?{...context,workflow:root&&context.content?readWorkFlow(root,{vaultId:context.vaultId,workId:context.content.tNumber}):null}:null;}
-export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
+export const isVaultOperation = (op:unknown):op is keyof VaultWorkerOperations => typeof op==='string'&&['vaultReferenceLocation','vaultResolve','vaultRead','vaultDocument','vaultContentSource','vaultWorkContext','vaultSelectCurrent','vaultContentDirectory','vaultWorkDirectory','vaultTopicMenus','vaultAdoptTopic','vaultSources','vaultLinkSource','vaultMutate','vaultLocation'].includes(op);
 export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'required'|'disabled') {
- const fields=op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
+ const fields=op==='vaultReferenceLocation'?['binding','id','target']:op==='vaultLinkSource'?['binding','selectedRoot','role']:op==='vaultAdoptTopic'?['binding','input']:op==='vaultSelectCurrent'?['binding','contentId','documentId','expectedHash','expectedRevision','decisionText']:op==='vaultResolve'?['binding','mutationId']:['vaultRead','vaultWorkDirectory','vaultTopicMenus','vaultSources'].includes(op)?['binding']:op==='vaultMutate'?['binding','pending']:op==='vaultDocument'?['binding','id']:['vaultContentSource','vaultWorkContext','vaultContentDirectory'].includes(op)?['binding','contentId']:null;
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
  // A root label is metadata, not a request to project every business source.
  if(op==='vaultLocation'&&args.id===undefined){verifyBoundRoot(binding);return vaultRootForRuntime(binding.root)??binding.root;}
+ if(op==='vaultReferenceLocation')requireWrite(mode);
  // Business reads retain their existing recovery and lock checks.
  verifiedBoundReader(binding);
  if(op==='vaultResolve'){requireWrite(mode);if(!uuid(args.mutationId))fail('INVALID_INPUT','资料恢复标识无效。');return resolveVaultMutation(binding.root,args.mutationId) as VaultResolution;}
+ if(op==='vaultReferenceLocation'){
+  if(!vaultDesktopInput('revealVaultReference',{id:args.id,target:args.target}))fail('INVALID_INPUT','引用位置请求无效。');
+  const root=vaultRootForRuntime(binding.root);
+  if(!root)fail('NOT_READY','请先打开知识库。');
+  const card=readVaultDocument(binding.root,args.id as string),target=args.target as string;
+  if(card.document.section!=='topics'||card.document.format!=='markdown')fail('INVALID_REFERENCE_LINK','请从原选题卡定位素材文件夹。');
+  const linked=vaultReferenceLinks(card,[]).some(link=>!link.url&&(link.target.replace(/\/$/,'')===target||target.startsWith('02_内容素材/')&&target.split('/').length>=3&&link.target.startsWith(target+'/')));
+  if(!linked)fail('NOT_FOUND','原选题卡没有这个素材位置，请刷新后核对。');
+  // safe rejects absolute/escaping locations and symlinks at every path component.
+  let location:string;
+  try{location=safe(root,target);}catch(error){if((error as NodeJS.ErrnoException).code==='ENOENT')fail('NOT_FOUND','原素材文件夹不存在，请按原选题卡的位置恢复资料后重试。');throw error;}
+  if(!fs.statSync(location).isDirectory())fail('NOT_FOUND','此引用不是素材文件夹；可阅读或定位已索引文件。');
+  return location;
+ }
  if(op==='vaultRead')return readVaultSnapshot(binding.root);
  if(op==='vaultTopicMenus')return readTopicMenus(binding);
  if(op==='vaultAdoptTopic'){if(!vaultDesktopInput('adoptVaultTopic',args.input))fail('INVALID_INPUT','选题选择请求无效。');return adoptVaultTopic(binding,args.input as import('../shared/vault-contracts.ts').VaultInputs['adoptVaultTopic'],mode);}

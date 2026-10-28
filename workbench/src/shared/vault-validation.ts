@@ -7,6 +7,8 @@ export const vaultDocumentId = (value:unknown):value is string => typeof value==
 const text = (value:unknown,max:number) => typeof value==='string' && value.length<=max && !value.includes('\0') && new TextEncoder().encode(value).byteLength<=max;
 export function vaultDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method){
+ case 'revealVaultReference':return exact(input,['id','target'])&&vaultDocumentId(input.id)&&text(input.target,2000)&&!!input.target;
+ case 'openVaultReference':return exact(input,['id','url'])&&vaultDocumentId(input.id)&&text(input.url,4096)&&!/[\u0000-\u0020\u007f]/.test(input.url as string);
  case 'readVault':return input===undefined;
  case 'readVaultWorkDirectory':case 'readVaultTopicMenus':case 'readVaultSources':return input===undefined;
  case 'openVaultSourcePage':return exact(input,['sourceId','relativePath'])&&vaultDocumentId(input.sourceId)&&typeof input.relativePath==='string'&&input.relativePath.length<2000&&!/^[\\/]|^[A-Za-z]:/.test(input.relativePath)&&!input.relativePath.split(/[\\/]/).some(part=>!part||part==='..'||part==='.')&&!input.relativePath.includes('\0');

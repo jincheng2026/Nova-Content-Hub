@@ -12,6 +12,8 @@ export interface VaultInputs {
  saveFinalAssets:FinalAssetsInputs['saveFinalAssets'];
  readVault:undefined;
  readVaultDocument:{id:string};
+ openVaultReference:{id:string;url:string};
+ revealVaultReference:{id:string;target:string};
  readVaultContentSource:{contentId:string};
  readVaultWorkContext:{contentId:string};
  selectVaultCurrentWork:{contentId:string;documentId:string;expectedHash:string;expectedRevision:string;decisionText:string};
@@ -32,6 +34,8 @@ export interface VaultInputs {
 export interface VaultResults {
  readVault:VaultSnapshot|null;
  readVaultDocument:VaultText;
+ openVaultReference:{opened:true};
+ revealVaultReference:{revealed:true};
  readVaultContentSource:VaultText|null;
  readVaultWorkContext:VaultWorkContext|null;
  selectVaultCurrentWork:VaultWorkContext|null;
@@ -68,5 +72,6 @@ export interface VaultWorkerOperations {
  vaultLinkSource:{args:{binding:LibraryBinding;selectedRoot:string;role:VaultInputs['chooseVaultSource']['role']};result:VaultResults['chooseVaultSource']};
  vaultDocument:{args:{binding:LibraryBinding;id:string};result:VaultText};
  vaultMutate:{args:{binding:LibraryBinding;pending:VaultPending};result:VaultMutationResult};
+ vaultReferenceLocation:{args:{binding:LibraryBinding;id:string;target:string};result:string};
  vaultLocation:{args:{binding:LibraryBinding;id?:string};result:string};
 }

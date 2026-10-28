@@ -27,7 +27,8 @@ test('the explicit new creation entry opens the existing writing dialog without 
  const html = render({initialAction:'writing'});
  assert.match(html,/role="dialog"/);
  assert.match(html,/aria-label="共创口播稿"/);
- assert.match(html,/jc-content-writer/);
+ assert.equal(module.exports.jinchengActions.find(action=>action.id==='writing').skill,'jc-content-writer');
+ assert.doesNotMatch(html,/使用方法：/);
  assert.match(html,/交给助手继续/);
  assert.equal(taskInvocations,0);
 });

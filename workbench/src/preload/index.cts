@@ -93,6 +93,8 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     adoptVaultTopic: input => ipcRenderer.invoke('nova:adoptVaultTopic',input),
     selectVaultCurrentWork: input => ipcRenderer.invoke('nova:selectVaultCurrentWork', input),
     revealVaultContentDirectory: input => ipcRenderer.invoke('nova:revealVaultContentDirectory', input),
+    openVaultReference: input => ipcRenderer.invoke('nova:openVaultReference',input),
+    revealVaultReference: input => ipcRenderer.invoke('nova:revealVaultReference',input),
     readVaultDocument: input => ipcRenderer.invoke('nova:readVaultDocument', input),
     saveVaultDocument: input => ipcRenderer.invoke('nova:saveVaultDocument', input),
     createVaultWorkingDraft: input => ipcRenderer.invoke('nova:createVaultWorkingDraft', input),

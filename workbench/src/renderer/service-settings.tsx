@@ -90,40 +90,40 @@ export function ServiceSettings({value, busy = false,active=true, onLoad, onSave
       <label htmlFor="service-asr-provider">云端服务</label><PopupSelect id="service-asr-provider" value={cloudPreset} disabled={blocked} onChange={preset=>{
         hideSavedKey();setCloud(preset==='volc'||preset==='custom'?{provider:preset}:{provider:'groq',groqModel:preset as typeof cloud.groqModel});
       }}><option value="whisper-large-v3-turbo">Groq · Whisper Large V3 Turbo</option><option value="whisper-large-v3">Groq · Whisper Large V3</option><option value="volc">火山语音 · 极速版</option><option value="custom">自定义兼容 ASR</option></PopupSelect>
-      {cloud.provider==='groq'&&<>{keyInput('groq','Groq 语音 Key')}<p>提供免费计划，额度以账户为准；已升级账户或超出免费额度时可能计费。单文件最大 25 MB，本次任务仍需授权并受请求次数上限约束。</p></>}
-      {cloud.provider==='volc'&&<>{keyInput('asr','火山语音专用 Key')}<label htmlFor="service-asr-resource">极速版语音资源 ID</label><Input id="service-asr-resource" value={values.asr.resourceId} disabled={blocked} onChange={resourceId=>asr({resourceId})}/><p>当前接入极速版 volc.bigasr.auc_turbo，需单独开通。标准版 2.0 暂未接入；控制台的“20 小时”试用包不能证明极速版可用，适用资源与额度以账户为准。</p></>}
+      {cloud.provider==='groq'&&<>{keyInput('groq','Groq 语音 Key')}<p>单文件最大 25 MB；免费额度以账户为准，超额可能计费。</p></>}
+      {cloud.provider==='volc'&&<>{keyInput('asr','火山语音专用 Key')}<label htmlFor="service-asr-resource">极速版语音资源 ID</label><Input id="service-asr-resource" value={values.asr.resourceId} disabled={blocked} onChange={resourceId=>asr({resourceId})}/><p>需单独开通极速版 volc.bigasr.auc_turbo，标准版试用包不适用。</p></>}
       {cloud.provider==='custom'&&<>
         <label htmlFor="service-asr-custom-url">API 基础地址（HTTPS）</label><Input id="service-asr-custom-url" value={cloud.customBaseUrl} disabled={blocked} placeholder="https://asr.example.com/v1" onChange={customBaseUrl=>setCloud({customBaseUrl})}/>
         <label htmlFor="service-asr-custom-model">语音模型 ID</label><Input id="service-asr-custom-model" value={cloud.customModelId} disabled={blocked} placeholder="服务商提供的语音模型 ID" onChange={customModelId=>setCloud({customModelId})}/>
         {keyInput('custom','自定义 ASR Key')}
         {customRebind&&<p role="alert">接口地址已修改。请重新填写此地址的 Key，或明确清除旧 Key 后保存；已保存的旧 Key 不会发送到新地址。</p>}
         {customInvalid&&<p role="status">请填写有效的 HTTPS 基础地址与语音模型 ID。</p>}
-        <p>用于兼容的语音转文字接口，单文件最大 25 MB；实际格式、额度与收费以服务商为准。修改接口地址后需要重新填写 Key。</p>
+        <p>单文件最大 25 MB；格式、额度与收费以服务商为准。</p>
       </>}
-      <p>各提供方的 Key 独立加密保存；仅在本次任务明确授权后上传音频，不自动切换提供方。</p>
+      <p>上传音频需本次授权，不自动切换服务商。</p>
     </>;
     return <form className="service-settings" aria-label="研究与创作服务" onSubmit={event => {event.preventDefault(); void saveAndCheck();}}>
-      <Card title="研究与创作服务"><p>调研、账号分析及所有文字分析与创作均由你选择的 Codex / WorkBuddy 助手完成。这里配置 TikHub 采集与语音识别；工作台直连云端模型仅用于语音转文字。</p><p>Key 加密保存在本机，不随内容库备份；已配置的 Key 默认隐藏，点击“查看”可显示。新 Key 留空保留原值。</p>{saved?.encryptionStatus === 'unchecked' && <p role="status">系统安全存储尚未检查。保存新 Key、查看已保存 Key 或授权服务调用时，系统可能请求许可；本地语音识别无需 Key。</p>}{saved?.encryptionStatus === 'unavailable' && <p role="alert">上次访问系统安全存储未成功。可在解锁钥匙串或配置系统凭据存储后重试 Key 操作；本地语音识别仍可使用。</p>}{loading && <p role="status">正在读取服务设置…</p>}</Card>
+      <Card title="研究与创作服务"><p>配置采集与语音服务，文字创作使用所选 AI 助手。</p><p>Key 加密保存在本机，不随内容库备份；留空保留原值。</p>{saved?.encryptionStatus === 'unchecked' && <p role="status">系统安全存储尚未检查。保存新 Key、查看已保存 Key 或授权服务调用时，系统可能请求许可；本地语音识别无需 Key。</p>}{saved?.encryptionStatus === 'unavailable' && <p role="alert">上次访问系统安全存储未成功。可在解锁钥匙串或配置系统凭据存储后重试 Key 操作；本地语音识别仍可使用。</p>}{loading && <p role="status">正在读取服务设置…</p>}</Card>
       <Card title="TikHub 采集">{keyInput('tikhub', 'TikHub Key')}<p>用于抖音搜索、账号、作品与评论，调用可能计费。</p></Card>
       <Card title="语音识别">
-        <p>默认优先使用适用本机的免费随包语音组件。云端识别仅在本次任务明确授权后使用；本地失败不会自动取得云端授权。</p>
-        <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={currentAsr.mode} disabled={blocked} onChange={mode => changeAsrMode(mode as ServiceSettingsValues['asr']['mode'])}><option value="local-first">免费本地优先</option><option value="local-only">仅本地</option><option value="cloud">云端识别（需授权）</option></PopupSelect><p>选择“仅本地”会放弃未保存的云端配置与 Key 修改，已保存配置保留。</p>
+        <p>默认使用本地识别；转云端需本次授权。</p>
+        <label htmlFor="service-asr-mode">识别方式</label><PopupSelect id="service-asr-mode" value={currentAsr.mode} disabled={blocked} onChange={mode => changeAsrMode(mode as ServiceSettingsValues['asr']['mode'])}><option value="local-first">免费本地优先</option><option value="local-only">仅本地</option><option value="cloud">云端识别（需授权）</option></PopupSelect><p>切换“仅本地”会放弃未保存的云端配置。</p>
         {!cloudMode && <>
-          <p>{localConfigured ? '已填写本地模型路径，保存时检查可用性。' : '路径留空会检查适用本机的随包组件；也可展开指定已有模型。'}本地识别失败时不会自动转付费云端。</p>
+          <p>{localConfigured ? '已填写模型路径，保存时检查。' : '路径留空使用随包组件。'}</p>
           <details className="service-settings-details" open={!localConfigured}><summary>本地模型配置</summary><div className="service-settings-detail-body">
             <label htmlFor="service-asr-engine">本地引擎</label><PopupSelect id="service-asr-engine" value={values.asr.localEngine} disabled={blocked} onChange={localEngine => asr({localEngine: localEngine as ServiceSettingsValues['asr']['localEngine']})}><option value="faster-whisper">faster-whisper / Python</option><option value="qwen3-asr">Qwen3-ASR / Python</option><option value="whisper-cpp">whisper.cpp</option></PopupSelect>
             <label htmlFor="service-asr-executable">Python / whisper-cli 路径</label><Input id="service-asr-executable" value={values.asr.localExecutable} disabled={blocked} onChange={localExecutable => asr({localExecutable})}/>
-            <label htmlFor="service-asr-model">离线模型路径</label><Input id="service-asr-model" value={values.asr.localModelPath} disabled={blocked} onChange={localModelPath => asr({localModelPath})}/><p>使用绝对路径。Python 引擎填写模型目录；whisper.cpp 填写模型文件。此处不会安装软件或下载模型。</p>
+            <label htmlFor="service-asr-model">离线模型路径</label><Input id="service-asr-model" value={values.asr.localModelPath} disabled={blocked} onChange={localModelPath => asr({localModelPath})}/><p>填写绝对路径：Python 使用模型目录，whisper.cpp 使用模型文件。</p>
           </div></details>
         </>}
         {cloudMode ? cloudFields : values.asr.mode === 'local-first' && <details className="service-settings-details"><summary>云端备用配置（可选）</summary><div className="service-settings-detail-body">{cloudFields}</div></details>}
       </Card>
       <Card title="调用预算与评论">
-        <p>免费计划与试用资格由提供方账户决定；开启此项允许任务申请外部服务，不代表一定扣费。所有云端识别仍需本次任务明确授权。</p>
+        <p>外部调用可能计费，云端识别需本次授权。</p>
         <Checkbox checked={values.budget.enabled} disabled={blocked} onChange={event => setValues({...values, budget: {...values.budget, enabled: !!event.target.checked}})}>允许任务申请外部服务调用（可能计费，默认关闭）</Checkbox>
         {values.budget.enabled && <><label htmlFor="service-request-budget">每任务请求次数上限（1–100）</label><Input id="service-request-budget" type="number" min={1} max={100} value={String(values.budget.maxRequestsPerTask)} disabled={blocked} onChange={text => setValues({...values, budget: {...values.budget, maxRequestsPerTask: Number(text)}})}/></>}
         <Checkbox checked={values.commentsEnabled} disabled={blocked} onChange={event => setValues({...values, commentsEnabled: !!event.target.checked})}>开放评论采集能力（默认关闭）</Checkbox>
-        <p>TikHub 评论采集收费较高，分页可能多次计费。这里仅开放能力；每次调研仍需手动勾选，并受任务预算限制。实际费用以提供方账单为准。</p>
+        <p>评论采集需每次勾选，受任务预算限制；分页可能多次计费。</p>
       </Card>
       {(customNeedsKey||customInvalid)&&(!cloudMode||cloud.provider!=='custom')&&<p role="alert">自定义接口配置尚未完成。请在“云端识别”的“自定义兼容 ASR”中补全地址、模型和需要重新填写的 Key，或放弃本次修改。</p>}
       <div className="service-settings-actions"><Button htmlType="submit" theme="solid" loading={saving} disabled={blocked||customNeedsKey||customInvalid}>{cloudMode ? '保存设置' : '保存并检查'}</Button>{dirty && <Button disabled={blocked} onClick={() => {hideSavedKey();if (saved) setValues(saved.values); setKeys({}); setNotice('已放弃本次修改。');}}>放弃修改</Button>}</div>{notice && <p className="service-settings-notice" role="status">{notice}</p>}

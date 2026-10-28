@@ -4,7 +4,7 @@ import './production-dialog.css';
 
 // The workspace owns the single managed-draft guard; the native dialog owns focus
 // containment and Semi controls reuse their existing dialog popup host/Escape guard.
-export function ProductionDialog({title, busy, close, initialFocus, notice, children, description = '取消或按 Esc 会保留本次填写，重新打开可继续。', className = ''}: {description?: string; className?: string; title: string; busy: boolean; close(): void; initialFocus: string; notice: string; children: ReactNode}) {
+export function ProductionDialog({title, busy, close, initialFocus, notice, children, description = '', className = ''}: {description?: string; className?: string; title: string; busy: boolean; close(): void; initialFocus: string; notice: string; children: ReactNode}) {
     const dialog = useRef<HTMLDialogElement>(null), escapeFromNested = useRef(false), currentBusy = useRef(busy);
     currentBusy.current = busy;
     useEffect(() => {
@@ -32,5 +32,5 @@ export function ProductionDialog({title, busy, close, initialFocus, notice, chil
         dialog.current?.querySelector<HTMLElement>(initialFocus)?.focus({preventScroll: true});
         return () => {document.removeEventListener('keydown', keydown, true); document.removeEventListener('keyup', keyup, true); dialog.current?.close(); if (opener?.isConnected) opener.focus({preventScroll: true});};
     }, []);
-    return createPortal(<dialog ref={dialog} className={`production-dialog ${className}`} aria-label={title} aria-busy={busy} onCancel={event => {event.preventDefault(); event.stopPropagation(); if (event.target === event.currentTarget && !escapeFromNested.current && !busy) close();}}><header className="production-dialog-heading"><h2>{title}</h2><p>{description}</p>{notice && <p className="production-notice" role="status">{notice}</p>}</header>{children}</dialog>, document.body);
+    return createPortal(<dialog ref={dialog} className={`production-dialog ${className}`} aria-label={title} aria-busy={busy} onCancel={event => {event.preventDefault(); event.stopPropagation(); if (event.target === event.currentTarget && !escapeFromNested.current && !busy) close();}}><header className="production-dialog-heading"><h2>{title}</h2>{description && <p>{description}</p>}{notice && <p className="production-notice" role="status">{notice}</p>}</header>{children}</dialog>, document.body);
 }

@@ -39,7 +39,7 @@ export function ContentTitleRecommendations({content, dirty, busy, conflict, run
     return <section className="content-title-recommendations" aria-label="AI 标题推荐">
       <Button id="toggle-title-recommendations" theme="borderless" disabled={blocked} aria-expanded={open} aria-controls="content-title-recommendations-panel" onClick={() => {setOpen(!open); if (!open && content) void action(read);}}>AI 推荐标题</Button>
       {open && <div id="content-title-recommendations-panel" className="content-title-recommendations-panel">
-        <p>让设置中的 AI 助手根据已保存的内容推荐标题。任务提交后先到“助手任务”人工验收，再回来读取候选；采用后请保存内容。</p>
+        <p>先验收助手结果，再采用并保存标题。</p>
         <div className="actions"><Button id="generate-title-recommendations" disabled={blocked || dirty || conflict || !content || !!content.deletedAt} loading={pending} onClick={() => void action(async () => {
             if (!content || dirty || conflict) return;
             const current = await invoke('readProductionCreation', {contentId: content.id});
@@ -55,7 +55,7 @@ export function ContentTitleRecommendations({content, dirty, busy, conflict, run
         {notice && <p className="content-title-notice" role="status">{notice}</p>}
         {!!tasks.length && <details><summary>标题与包装任务（{tasks.length}）</summary>{tasks.map(task => {const attempt = task.attempts.find(value => value.id === task.activeAttemptId); return <p key={task.id}>{task.title} · {statuses[attempt?.status ?? ''] ?? '状态未知'}{attempt?.message ? ` · ${attempt.message}` : ''}</p>;})}</details>}
         {!!candidates.length && <div className="content-title-candidates">{candidates.map(candidate => <article key={candidate.key} className="content-title-candidate"><p className="content-title-candidate-text">{candidate.text}</p><p className="content-title-candidate-source">{candidate.source}{candidate.stale ? ' · 基于旧版正文，请先核对' : ''}</p><Button size="small" disabled={!canApply} onClick={() => {if (adopt(candidate)) setNotice('已采用到标题草稿，正文保持原样；请点击“保存内容”完成保存。');}}>{candidate.stale ? '采用旧稿候选到标题草稿' : '采用到标题草稿'}</Button></article>)}</div>}
-        {data && !candidates.length && <p>还没有可采用的标题候选。可新建推荐任务，或在“助手任务”验收已有包装结果。</p>}
+        {data && !candidates.length && <p>暂无可用候选。</p>}
       </div>}
     </section>;
 }

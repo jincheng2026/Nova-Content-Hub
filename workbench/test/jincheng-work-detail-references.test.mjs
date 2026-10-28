@@ -29,7 +29,7 @@ test('renders true work groups separately from other source links with accurate 
  assert.match(html,/一条真正的参考视频/);
  assert.equal(buttons.filter(button=>button.children==='复制原视频链接').length,1);
  assert.equal(buttons.filter(button=>button.children==='复制链接').length,1);
- assert.match(html,/尚未索引/);
+ assert.match(html,/02_内容素材\/视频\//);
  assert.doesNotMatch(html,/链接失效|找不到文件/);
 });
 test('read and locate use indexed IDs while copy retains the exact URL or unindexed location', () => {
@@ -49,4 +49,15 @@ test('reference actions respect busy state without starting work during render',
  render({busy:true,onRead:()=>calls++,onLocate:()=>calls++,onCopy:()=>calls++});
  assert.equal(calls,0);
  assert.equal(buttons.every(button=>button.disabled),true);
+});
+
+
+test('direct actions keep browser URLs and material-folder locations separate from copying', () => {
+ const calls=[];
+ render({references:{...references,videos:[{...references.videos[0],key:'02_内容素材/视频'}]},onOpen:url=>calls.push(['open',url]),onReveal:target=>calls.push(['reveal',target])});
+ buttons.find(button=>button.children==='打开原视频').onClick();
+ buttons.find(button=>button.children==='打开链接').onClick();
+ buttons.find(button=>button.children==='定位素材文件夹').onClick();
+ assert.deepEqual(calls,[['open','https://www.douyin.com/video/123'],['open','https://example.feishu.cn/docx/abc'],['reveal','02_内容素材/视频']]);
+ assert.equal(buttons.filter(button=>button.children==='复制原视频链接').length,1);
 });

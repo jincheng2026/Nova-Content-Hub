@@ -158,6 +158,8 @@ export class DesktopController {
     readVaultTopicMenus(input?:undefined){return this.vault.readVaultTopicMenus(input);}
     readVaultSources(input?:undefined){return this.vault.readVaultSources(input);}
     chooseVaultSource(input:VaultInputs['chooseVaultSource']){return this.vault.chooseVaultSource(input);}
+    revealVaultReference(input:VaultInputs['revealVaultReference']){return this.vault.revealVaultReference(input);}
+    openVaultReference(input:VaultInputs['openVaultReference']){return this.vault.openVaultReference(input);}
     openVaultSourcePage(input:VaultInputs['openVaultSourcePage']){return this.vault.openVaultSourcePage(input);}
     adoptVaultTopic(input:VaultInputs['adoptVaultTopic']){return this.vault.adoptVaultTopic(input);}
     selectVaultCurrentWork(input:VaultInputs['selectVaultCurrentWork']){return this.vault.selectVaultCurrentWork(input);}

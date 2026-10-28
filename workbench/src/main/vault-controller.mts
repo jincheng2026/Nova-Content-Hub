@@ -1,3 +1,4 @@
+import {vaultReferenceLinks} from '../shared/vault-reference-links.ts';
 import {randomUUID} from 'node:crypto';
 import {validateInput,requireWrite,fail} from '../shared/validation.ts';
 import type {DesktopController} from './controller.mts';
@@ -13,6 +14,28 @@ export class VaultController {
  readVaultTopicMenus(input?:undefined){validateInput('readVaultTopicMenus',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultTopicMenus',{binding:this.owner.current()}));}
  readVaultSources(input?:undefined){validateInput('readVaultSources',input);return this.owner.exclusive(()=>this.owner.worker.call('vaultSources',{binding:this.owner.current()}));}
  async chooseVaultSource(input:VaultInputs['chooseVaultSource']){validateInput('chooseVaultSource',input);requireWrite(this.owner.authMode);return this.owner.exclusive(async()=>{this.owner.noPending();const selectedRoot=await this.owner.dialogs.sourceRoot?.(input.role);return selectedRoot?this.owner.worker.call('vaultLinkSource',{binding:this.owner.current(),selectedRoot,role:input.role}):null;});}
+ async revealVaultReference(input:VaultInputs['revealVaultReference']){
+  validateInput('revealVaultReference',input);requireWrite(this.owner.authMode);
+  return this.owner.exclusive(async()=>{
+   if(!this.owner.revealFolder)fail('NOT_READY','此安装没有文件管理器入口。');
+   const location=await this.owner.worker.call('vaultReferenceLocation',{binding:this.owner.current(),...input});
+   this.owner.revealFolder(location);return {revealed:true as const};
+  });
+ }
+ async openVaultReference(input:VaultInputs['openVaultReference']){
+  validateInput('openVaultReference',input);requireWrite(this.owner.authMode);
+  return this.owner.exclusive(async()=>{
+   if(!this.owner.openPublicationURL)fail('NOT_READY','此安装没有浏览器打开入口。');
+   const card=await this.owner.worker.call('vaultDocument',{binding:this.owner.current(),id:input.id});
+   if(card.document.section!=='topics'||card.document.format!=='markdown')fail('INVALID_REFERENCE_LINK','请从原选题卡打开参考链接。');
+   if(!vaultReferenceLinks(card,[]).some(link=>link.url===input.url))fail('INVALID_REFERENCE_LINK','原文中的链接已变化，请刷新后再打开。');
+   let url:URL;
+   try{url=new URL(input.url);}catch{fail('INVALID_REFERENCE_LINK','原文不是完整的网页链接。');}
+   if(!['http:','https:'].includes(url.protocol)||!url.hostname||url.username||url.password)fail('INVALID_REFERENCE_LINK','只支持不含账号密码的 HTTP 或 HTTPS 链接。');
+   try{await this.owner.openPublicationURL(url.href);}catch{fail('REFERENCE_OPEN_FAILED','系统未能打开链接，可复制后重试。');}
+   return {opened:true as const};
+  });
+ }
  async openVaultSourcePage(input:VaultInputs['openVaultSourcePage']){validateInput('openVaultSourcePage',input);return this.owner.exclusive(async()=>{if(!this.openBoundSource)fail('NOT_READY','此环境没有原资料页面服务。');const binding=this.owner.current();await this.owner.worker.call('jinchengSourcePage',{binding,...input});await this.openBoundSource(binding,input.sourceId,input.relativePath);return {opened:true as const};});}
  adoptVaultTopic(input:VaultInputs['adoptVaultTopic']){validateInput('adoptVaultTopic',input);requireWrite(this.owner.authMode);return this.owner.exclusive(()=>{this.owner.noPending();return this.owner.worker.call('vaultAdoptTopic',{binding:this.owner.current(),input});});}
  selectVaultCurrentWork(input:VaultInputs['selectVaultCurrentWork']){validateInput('selectVaultCurrentWork',input);requireWrite(this.owner.authMode);return this.owner.exclusive(()=>{this.owner.noPending();return this.owner.worker.call('vaultSelectCurrent',{binding:this.owner.current(),...input});});}

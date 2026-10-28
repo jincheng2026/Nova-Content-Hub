@@ -10,7 +10,7 @@ export const CHANNELS = Object.freeze([
     'confirmJinchengCheckpoint', 'saveJinchengAuthorAnalysis',
     'openCreationPage', 'creationPageRequest', 'closeCreationPage',
     'readVaultWorkDirectory','readVaultTopicMenus','adoptVaultTopic','readVaultSources',
-    'openVaultSourcePage','chooseVaultSource',
+    'openVaultSourcePage','openVaultReference','revealVaultReference','chooseVaultSource',
     'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness',
     'createRadarTask', 'adoptRadarResult', 'decideRadarCandidate', 'openRadarSource', 'readPlatformCatalog', 'readProduction', 'mutateProduction', 'startProductionTask', 'openProductionTask', 'actProductionTask', 'openProductionLink', 'chooseProductionFiles', 'readProductionCreation', 'saveProductionDraft', 'readProductionPending', 'recoverProductionPending',
     'readTemplateProgress', 'continueBoundTemplate', 'readCoverProgress', 'continueBoundCover', 'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',

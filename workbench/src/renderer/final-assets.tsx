@@ -32,7 +32,7 @@ export function FinalAssetsPanel({contentId,documents,busy,flush,makeCover}:{con
  const shownPreview=display==='preview'?preview:null;
  const texts=shownPreview?.texts??selected?.texts,url=shownPreview?.cover.url??selected?.cover.url;
  return <section className="final-assets-panel" aria-label="最终资产">
-  <div className="final-assets-heading"><div><h3>最终资产</h3><p>确认逐字稿、标题、简介和封面，保存为同一篇的独立版本。</p></div><Button disabled={disabled} onClick={()=>void run(async()=>{await read();setDisplay('saved');})}>重新读取已保存版本</Button></div>
+  <div className="final-assets-heading"><div><h3>最终资产</h3></div><Button disabled={disabled} onClick={()=>void run(async()=>{await read();setDisplay('saved');})}>重新读取已保存版本</Button></div>
   {notice&&(noticeKind==='warning'?<Banner type="warning" closeIcon={null} description={notice}/>:<p className="final-assets-source" role="status">{notice}</p>)}
   {(view?.issues??[]).map((issue,index)=><p className="final-assets-warning" role="alert" key={index}>{issue.message}</p>)}
   {view&&view.work===null&&<p>尚无已保存的最终版本。完成下方来源选择后，可预览并保存第一版。</p>}
@@ -47,7 +47,7 @@ export function FinalAssetsPanel({contentId,documents,busy,flush,makeCover}:{con
   {view&&view.bundles.length>0&&<div className="final-assets-controls"><label>已保存的最终版本<Select aria-label="已保存的最终版本" filter disabled={disabled} value={selected?.bundleId} optionList={view.bundles.map(bundle=>({value:bundle.bundleId,label:bundle.adoptedAt+(view.current?.bundleId===bundle.bundleId?' · 当前采用':'')+(bundle.complete?'':bundle.issues.length===1&&bundle.issues[0]==='FINAL_ASSET_BYTES_NOT_VERIFIED'?' · 待核验':' · 校验未通过')}))} onChange={value=>void run(async()=>{await read(String(value));setDisplay('saved');})}/></label>{selected&&display==='saved'&&<><Button disabled={disabled} onClick={()=>void run(async()=>{const output=await invoke('exportFinalAssets',{contentId,bundleId:selected.bundleId,manifestHash:selected.manifestHash});setNotice(output.cancelled?'已取消导出。':'已核验并导出到 '+output.directory);})}>导出这一版</Button><Button theme="borderless" disabled={disabled} onClick={()=>void run(async()=>{await invoke('revealVaultContentDirectory',{contentId});})}>定位内容目录</Button></>}</div>}
   {view&&<div className="final-assets-version-issues">{view.bundles.filter(bundle=>!bundle.complete&&!(bundle.issues.length===1&&bundle.issues[0]==='FINAL_ASSET_BYTES_NOT_VERIFIED')).map(bundle=><p role="alert" key={bundle.bundleId}>版本 {bundle.adoptedAt} 校验未通过：{bundle.issues.join('、')}</p>)}</div>}
   {selected&&<p className="final-assets-source">已保存：{selected.relativeDirectory} · {view?.sourceState==='changed'?'当前原稿或包装后来已有变化，所存版本保持原样。':view?.sourceState==='unavailable'?'活源暂时不可读取，此版本仍可读回与导出。':'版本文件已核验。'}</p>}
-  {!texts&&<p>先完成包装并选用一张封面，再预览四项资产。已有录完／发布记录保持其原有事实。</p>}
+  {!texts&&<p>先完成包装并选用封面。</p>}
   {!preview&&<Button theme="borderless" disabled={disabled} onClick={makeCover}>查看与选择封面</Button>}
  </section>;
 }

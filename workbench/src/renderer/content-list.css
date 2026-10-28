@@ -1,0 +1,22 @@
+.content-all-cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr)); gap:16px; }
+.content-all-card { display:flex; flex-direction:column; min-width:0; gap:12px; padding:22px; border-radius:18px; border:1px solid var(--surface-line); background:var(--surface-card,#fff); box-shadow:var(--surface-shadow); }
+.content-all-card-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.content-all-card-title.semi-button { min-width:0; height:auto; padding:0; text-align:left; white-space:normal; font-size:15px; font-weight:600; line-height:1.6; color:var(--semi-color-text-0); }
+.content-all-card-title .semi-button-content { white-space:normal; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.content-all-card-heading .content-status { flex-shrink:0; font-size:12px; }
+.content-all-card-summary { margin:0; color:var(--semi-color-text-2); font-size:13px; line-height:1.6; white-space:pre-wrap; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.content-all-card-cover.semi-button { display:flex; height:150px; padding:0; background:var(--surface-inset); border-radius:10px; }
+.content-all-card-cover .semi-button-content { height:100%; width:100%; display:flex; justify-content:center; align-items:center; }
+.content-all-card-cover img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; border-radius:min(10px,4%); }
+.content-all-card-facts { display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 12px; color:var(--semi-color-text-2); font-size:12px; }
+.content-all-card .content-row-actions { margin-top:auto; padding-top:4px; }
+.content-all-card .cell-note { margin:0; font-size:13px; }
+
+.content-all-card-actions { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:auto; flex-wrap:wrap; }
+.content-all-card-actions .semi-button { font-size:13px; }
+.content-directory-switch { flex:0 0 auto; font-family:inherit; }
+.content-directory-switch.semi-radioGroup-buttonRadio { padding:3px; background:#EFEFF1; border-radius:10px; }
+.content-directory-switch .semi-radio { margin:0; padding:0; font-family:inherit; }
+.content-directory-switch .semi-radio-addon-buttonRadio { padding:5px 12px; border-radius:8px; font-size:13px; line-height:20px; }
+.content-directory-switch .semi-radio-addon-buttonRadio-checked { background:#fff; color:#1D1D1F; box-shadow:0 1px 2px rgba(0,0,0,.05); }
+.content-directory-switch .semi-radio:has(input:focus-visible) { outline:2px solid #0071E3; outline-offset:2px; }

@@ -25,19 +25,16 @@
 .production-directory-card details[open]{display:grid;gap:12px}
 .production-directory-full-title{font-size:15px;font-weight:600;margin:0;overflow-wrap:anywhere}
 
-/* Controls-01/02, Reading-03: one choice, both tradeoffs visible, no extra explanation popup. */
+/* Controls-01/02, Reading-03: concise depth choices retain native radio controls. */
 .production-optional{font-weight:400;color:#6E6E73;margin-left:6px}
 .production-research-depth{border:0;padding:0;margin:2px 0 0;min-width:0}
 .production-research-depth legend{font-size:13px;font-weight:600;margin-bottom:8px;padding:0}
 .production-depth-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.production-dialog .production-depth-option{display:flex;flex-direction:column;gap:8px;padding:14px;border:1px solid #8B8B90;border-radius:12px;background:#FAFAFC;font-size:13px;font-weight:400;cursor:pointer;min-width:0}
+.production-dialog .production-depth-option{display:flex;padding:10px 12px;border:1px solid #8B8B90;border-radius:12px;background:#FAFAFC;font-size:13px;font-weight:400;cursor:pointer;min-width:0}
 .production-depth-option:has(input:checked){border-color:#0071E3;background:#F2F7FD}
 .production-depth-option:focus-within{outline:3px solid #0071E3;outline-offset:2px}
 .production-depth-heading{display:flex;align-items:flex-start;gap:8px;color:#1D1D1F}
 .production-depth-heading input[type=radio]{accent-color:#0071E3;margin:4px 0 0;flex:0 0 16px;width:16px;height:16px;min-height:0;padding:0;border:0;border-radius:50%;background:transparent}.production-depth-heading strong{min-width:0;flex:1}
-.production-depth-option ul{padding-left:18px;margin:0;color:#1D1D1F}
-.production-depth-option>span:not(.production-depth-heading){color:#6E6E73}
-.production-depth-effort{margin-top:auto}
 .production-research-depth:disabled .production-depth-option{cursor:default;opacity:.6}
 @media(max-width:600px){.production-depth-options{grid-template-columns:minmax(0,1fr)}}
 
