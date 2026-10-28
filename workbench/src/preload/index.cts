@@ -39,6 +39,7 @@ contextBridge.exposeInMainWorld('contentHub', Object.freeze({
     decideRadarCandidate: input => ipcRenderer.invoke('nova:decideRadarCandidate', input),
     openRadarSource: input => ipcRenderer.invoke('nova:openRadarSource', input),
     readPlatformCatalog: () => ipcRenderer.invoke('nova:readPlatformCatalog'),
+    searchProductionReports: input => ipcRenderer.invoke('nova:searchProductionReports',input),
     readProduction: input => ipcRenderer.invoke('nova:readProduction', input),
     mutateProduction: input => ipcRenderer.invoke('nova:mutateProduction', input),
     startProductionTask: input => ipcRenderer.invoke('nova:startProductionTask', input),

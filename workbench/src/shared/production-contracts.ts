@@ -1,3 +1,5 @@
+import type {ReportSearchInput,ReportSearchResult} from './report-search-contracts.ts';
+import type {ProductionRecordPermission} from '../../../plugin-src/src/lib/file-library/production-record-policy.mjs';
 import type {JinchengStage,ResearchBrief,SynthesisBrief} from './stage-contracts.ts';
 import type {RadarQuery,RadarAdopt,RadarDecision} from './radar-contracts.ts';
 import type {PlatformCatalog} from './platform-catalog.ts';
@@ -7,9 +9,9 @@ export type {ProductionAccount, ProductionReference, ProductionTask, ProductionR
 export interface ProductionSuggestion {id: string; bodyHash: string; quote: string; replacement: string; reason: string; status: 'pending'|'accepted'|'rejected'}
 export interface ProductionAnnotation {id: string; bodyHash: string; quote: string; text: string; status: 'open'|'resolved'}
 export interface ProductionCreation extends Omit<Core.ProductionCreation, 'suggestions'|'annotations'> {suggestions: ProductionSuggestion[]; annotations: ProductionAnnotation[]}
-export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creations'> {creations: ProductionCreation[]; assetUrls?: Record<string,string>}
+export interface ProductionSnapshot extends Omit<Core.ProductionSnapshot, 'creations'> {creations: ProductionCreation[]; libraryScope?:string; recordPermissions?:{accounts:Record<string,ProductionRecordPermission>;reports:Record<string,ProductionRecordPermission>}; assetUrls?: Record<string,string>}
 export interface ProductionCreationState {content: {id: string; title: string; body: string; editToken: string; bodyHash: string; deletedAt: string|null}; creation: ProductionCreation|null; productionToken: string; history: Core.ProductionHistory}
-export type ProductionManualOp = 'adoptResearchReferences'|'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
+export type ProductionManualOp = 'adoptResearchReferences'|'enable'|'saveAccount'|'trashAccount'|'restoreAccount'|'saveReport'|'trashReport'|'restoreReport'|'setReportPosition'|'ensureCreation'|'saveCreation'|'recordFeedback'|'recordKnowledge'|'decideKnowledge'|'reconcileCost';
 export interface ProductionMutation {op: ProductionManualOp; input: Record<string,unknown>; mutationId: string}
 export type ProductionTranscriptIntent = 'extract'|'correct'|'reextract';
 export interface ProductionTranscriptStart {intent: ProductionTranscriptIntent; referenceId: string; expectedReferenceHash: string}
@@ -20,10 +22,12 @@ export type ProductionFileKind = 'images'|'report'|'media';
 export interface ProductionFile {assetHash: string; originalName: string; detectedType: string; bytes: number; url?: string}
 export type ProductionPending = {binding: Pick<LibraryBinding,'libraryId'|'rootIdentity'>; mutationId: string} & ({kind: 'mutate'; op: Core.ProductionMutation; input: Record<string,unknown>}|{kind:'draft'; input: ProductionDraft}|{kind:'files'; fileKind: ProductionFileKind; sources: string[]; hashes: string[]});
 export interface ProductionInputs {
+ searchProductionReports:ReportSearchInput;
  createRadarTask:RadarQuery; adoptRadarResult:RadarAdopt; decideRadarCandidate:RadarDecision; openRadarSource:{reportId:string;candidateId:string};
  readPlatformCatalog: undefined; readProduction: undefined; mutateProduction: ProductionMutation; startProductionTask: ProductionStart; openProductionTask: {taskId:string; host?:Core.ProductionHost}; actProductionTask: ProductionAction; openProductionLink: {kind:'account'|'report'|'creation'|'task-archive'; id:string; pageId?:string}; chooseProductionFiles:{kind:ProductionFileKind}; readProductionCreation:{contentId:string}; saveProductionDraft:ProductionDraft; readProductionPending:undefined; recoverProductionPending:{action:'retry'|'discard'};
 }
 export interface ProductionResults {
+ searchProductionReports:ReportSearchResult;
  createRadarTask:{snapshot:ProductionSnapshot;opened:boolean;message?:string}; adoptRadarResult:ProductionSnapshot; decideRadarCandidate:ProductionSnapshot; openRadarSource:{opened:true};
  readPlatformCatalog:PlatformCatalog; readProduction:ProductionSnapshot; mutateProduction:ProductionSnapshot; startProductionTask:{snapshot:ProductionSnapshot; opened:boolean; message?:string}; openProductionTask:{opened:boolean; message?:string}; actProductionTask:ProductionSnapshot; openProductionLink:{opened:true;message?:string}; chooseProductionFiles:ProductionFile[]|null; readProductionCreation:ProductionCreationState; saveProductionDraft:ProductionCreationState; readProductionPending:{pending:boolean; message:string}; recoverProductionPending:ProductionSnapshot;
 }
@@ -32,6 +36,7 @@ export interface ReportNavigation {fingerprint:string;pageIdentity:string|null;l
 export interface ProductionReceipt {found:boolean; objectId?:string}
 export interface ProductionToolIdentity {taskId:string; attemptId:string; claimToken:string; workerId:string; requestId:string}
 export interface ProductionWorkerOperations {
+ productionReportSearch:{args:{binding:LibraryBinding;input:ReportSearchInput};result:ReportSearchResult};
  productionAuthority:{args:{binding:LibraryBinding;input:Core.ProductionWorkerIdentity};result:true};
  productionObserverMutation:{args:{binding:LibraryBinding;op:'claimTask'|'submitTask'|'failTask';input:{taskId:string;attemptId:string;claimToken:string;workerId:'native-publication-observer';result?:Core.ProductionResult;failure?:{code:string;message:string}};mutationId:string};result:ProductionSnapshot};
  productionArchive:{args:{binding:LibraryBinding;taskId:string};result:Core.ProductionArchive};

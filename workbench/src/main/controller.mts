@@ -1,3 +1,4 @@
+import {ReportSearchController} from './report-search-controller.mts';
 import {FinalAssetsController} from './final-assets-controller.mts';
 import type {FinalAssetsInputs} from '../shared/final-assets-contracts.ts';
 import {PublicationController} from './publication-controller.mts';
@@ -77,6 +78,7 @@ export class DesktopController {
         return this.covers.choosePhoto(selection.photo!, selection.sources[0]);
     }
     production: ProductionController;
+    reportSearch:ReportSearchController;
     publicationRuntime: PublicationController;
     stages: StageController;
     covers: Covers;
@@ -127,6 +129,7 @@ export class DesktopController {
         this.openPublicationURL = openPublicationURL;
         this.revealFolder = revealFolder;
         this.services = services;
+        this.reportSearch=new ReportSearchController(this);
         this.production = new ProductionController(this, productionCallbacks ?? {launch: async () => fail('NOT_READY', '助手尚未配置。'), open: async () => fail('NOT_READY', '本地创作页尚未配置。'), serviceSettings: async () => fail('NOT_READY', '服务尚未配置。')});
         this.covers = new Covers(this, launch, resourceWorker, readAssistantSetup);
         this.workspace = new WorkspaceController(this);
@@ -189,6 +192,7 @@ export class DesktopController {
     adoptRadarResult(input: ProductionInputs['adoptRadarResult']) { return this.production.adoptRadarResult(input); }
     decideRadarCandidate(input: ProductionInputs['decideRadarCandidate']) { return this.production.decideRadarCandidate(input); }
     openRadarSource(input: ProductionInputs['openRadarSource']) { return this.production.openRadarSource(input); }
+    searchProductionReports(input:ProductionInputs['searchProductionReports']){return this.reportSearch.search(input);}
     readProduction(input?: undefined) { return this.production.readProduction(input); }
     mutateProduction(input: ProductionInputs['mutateProduction']) { return this.production.mutateProduction(input); }
     startProductionTask(input: ProductionInputs['startProductionTask']) { return this.production.startProductionTask(input); }

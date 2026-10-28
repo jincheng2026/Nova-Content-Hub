@@ -1,3 +1,5 @@
+import {executeReportSearch} from './report-search-worker.mts';
+import {productionRecordPermissions} from '../../../plugin-src/src/lib/file-library/production-record-policy.mjs';
 import path from 'node:path';
 import {reportNavigation,readRegisteredReportAttachment} from './report-navigation.mts';
 import {verifiedBoundReader} from './bound-reader.mts';
@@ -12,7 +14,7 @@ import {productionPending} from '../shared/production-validation.ts';
 import type {ProductionWorkerOperations,ProductionPending,ProductionFile,ProductionCreationState} from '../shared/production-contracts.ts';
 import type {ProductionCoreLibrary} from '../shared/production-core.d.ts';
 import type {LibraryBinding} from '../shared/contracts.ts';
-const ops=new Set(['productionAuthority','productionObserverMutation','productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport','productionReportAttachment']);
+const ops=new Set(['productionReportSearch','productionAuthority','productionObserverMutation','productionArchive','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant','productionMedia','productionRead','productionCreation','productionMutate','productionRecover','productionReport','productionReportAttachment']);
 export const isProductionOperation=(op:unknown):op is keyof ProductionWorkerOperations=>typeof op==='string'&&ops.has(op);
 const same=(p:ProductionPending,b:LibraryBinding)=>p.binding.libraryId===b.libraryId&&p.binding.rootIdentity.dev===b.rootIdentity.dev&&p.binding.rootIdentity.ino===b.rootIdentity.ino;
 const creation=(l:ProductionCoreLibrary,id:string):ProductionCreationState=>{const v=l.readProductionCreation(id);return {content:{id:v.content.id,title:v.content.title,body:v.content.body,editToken:v.content.editToken,bodyHash:v.content.bodyHash,deletedAt:v.content.deletedAt},creation:v.creation,productionToken:v.productionToken,history:v.history};};
@@ -36,6 +38,7 @@ async function files(l:ProductionCoreLibrary,p:Extract<ProductionPending,{kind:'
 }
 export async function executeProduction(op:keyof ProductionWorkerOperations,args:unknown,mode:'required'|'disabled'='required'):Promise<ProductionWorkerOperations[keyof ProductionWorkerOperations]['result']> {
  requireWrite(mode);
+ if(op==='productionReportSearch')return executeReportSearch(args);
  if(['productionAuthority','productionObserverMutation','productionContext','productionReserve','productionTaskMutation','productionAsset','productionMediaGrant'].includes(op))return executeTool(op,args);
 
  const fields=op==='productionArchive'?['binding','taskId']:op==='productionMedia'?['binding','contentId','assetHash']:op==='productionRead'?['binding']:op==='productionCreation'?['binding','contentId']:op==='productionReportAttachment'?['binding','reportId','pageId','fingerprint','index']:op==='productionReport'?null:['binding','pending'];
@@ -47,7 +50,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
  const l=(['productionRead','productionCreation','productionReport','productionReportAttachment','productionMedia'].includes(op)?verifiedBoundReader(a.binding):openLibrary(a.binding.root,{expectedLibraryId:a.binding.libraryId,expectedRootIdentity:a.binding.rootIdentity})) as unknown as ProductionCoreLibrary;
  if(op==='productionMedia'){if(!uuid(a.contentId)||!token(a.assetHash))fail('INVALID_INPUT','媒体引用无效。');const state=l.readProductionCreation(a.contentId!);if(!state.creation?.references.some(r=>r.mediaAssetHash===a.assetHash))fail('FORBIDDEN','仅可读取本文已登记原片。');const asset=l.readAsset(a.assetHash!);if(!['audio/wav','audio/mpeg','audio/mp4','audio/ogg','audio/flac','video/mp4','video/webm'].includes(asset.detectedType)||asset.bytes>64*1024*1024)fail('INVALID_INPUT','媒体不可播放。');return {data:asset.data,detectedType:asset.detectedType};}
  if(op==='productionArchive'){if(!uuid(a.taskId))fail('INVALID_INPUT','任务编号无效。');return l.rebuildProductionArchive(a.taskId!);}
- if(op==='productionRead')return l.readProduction();
+ if(op==='productionRead'){const snapshot=l.readProduction();return {...snapshot,libraryScope:createHash('sha256').update(JSON.stringify(a.binding)).digest('hex'),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
  if(op==='productionCreation')return creation(l,a.contentId!);
  if(op==='productionReport'||op==='productionReportAttachment') {
   const reports=l.readProduction().reports,report=reports.find(r=>r.id===a.reportId&&!r.deletedAt),page=report?.pages.find(p=>p.id===(a.pageId??report.pageId));
@@ -73,7 +76,7 @@ export async function executeProduction(op:keyof ProductionWorkerOperations,args
   return {found:true,objectId:receipt.objectId};
  }
  if(pending.kind==='files')return files(l,pending);
- if(pending.kind==='mutate')return l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});
+ if(pending.kind==='mutate'){const snapshot=l.mutateProduction(pending.op,pending.input,{mutationId:pending.mutationId});return {...snapshot,libraryScope:createHash('sha256').update(JSON.stringify(a.binding)).digest('hex'),recordPermissions:productionRecordPermissions(a.binding.root,snapshot)};}
  const i=pending.input;l.saveProductionDraft(i.contentId,{body:i.body,expectedBodyHash:i.bodyHash,expectedProductionToken:i.productionToken,creationPatch:i.creationPatch},i.editToken,{mutationId:pending.mutationId});
  return creation(l,i.contentId);
 }

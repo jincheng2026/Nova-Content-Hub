@@ -1,3 +1,4 @@
+import {validReportSearchInput} from './report-search-contracts.ts';
 import {jinchengStages,validResearchBrief,validSynthesisBrief} from './stage-validation.ts';
 import {vaultDocumentId} from './vault-validation.ts';
 import {validRadarQuery} from '../../../plugin-src/src/lib/file-library/radar.mjs';
@@ -11,7 +12,7 @@ const boundedJSON=(v:unknown)=>json(v)&&JSON.stringify(v).length<=4_000_000;
 const strings=(v:unknown,check:(x:unknown)=>boolean,n=500)=>Array.isArray(v)&&v.length<=n&&v.every(check);
 const host=(v:unknown)=>v==='codex'||v==='workbuddy';
 const kinds=['research','transcription','analysis','writing','packaging','review'];
-const manualFields:Record<string,[string[],string[]?]>={adoptResearchReferences:[['contentId','taskId','attemptId','receiptHash','artifactId','expectedContentToken']],enable:[[]],saveAccount:[['name','platform','url','note','tags','images','reportIds'],['id','avatarAssetHash']],trashAccount:[['id']],restoreAccount:[['id']],saveReport:[['title','type','accountIds','sourceUrl','collectedAt','meta'],['id','pages','markdown']],trashReport:[['id']],setReportPosition:[['id','pageId']],ensureCreation:[['contentId']],saveCreation:[['contentId','patch','expectedContentToken']],recordFeedback:[['text','source'],['contentId']],recordKnowledge:[['text','source'],['contentId']],decideKnowledge:[['id','status']],reconcileCost:[['taskId','attemptId','id','status','amount','usage']]};
+const manualFields:Record<string,[string[],string[]?]>={adoptResearchReferences:[['contentId','taskId','attemptId','receiptHash','artifactId','expectedContentToken']],enable:[[]],saveAccount:[['name','platform','url','note','tags','images','reportIds'],['id','avatarAssetHash']],trashAccount:[['id']],restoreAccount:[['id']],saveReport:[['title','type','accountIds','sourceUrl','collectedAt','meta'],['id','pages','pageId','markdown']],trashReport:[['id']],restoreReport:[['id']],setReportPosition:[['id','pageId']],ensureCreation:[['contentId']],saveCreation:[['contentId','patch','expectedContentToken']],recordFeedback:[['text','source'],['contentId']],recordKnowledge:[['text','source'],['contentId']],decideKnowledge:[['id','status']],reconcileCost:[['taskId','attemptId','id','status','amount','usage']]};
 export function productionMutationInput(op:unknown,input:unknown):boolean {
  if(typeof op!=='string'||!Object.hasOwn(manualFields,op))return false;
  const [required,optional=[]]=manualFields[op];
@@ -38,6 +39,7 @@ export function productionMutationInput(op:unknown,input:unknown):boolean {
 export function productionDraft(v:unknown):boolean {return exact(v,['contentId','body','editToken','bodyHash','productionToken','creationPatch'])&&uuid(v.contentId)&&text(v.body)&&token(v.editToken)&&token(v.bodyHash)&&token(v.productionToken)&&isRecord(v.creationPatch)&&Object.keys(v.creationPatch).every(k=>['stage','kind','references','analysis','narrative','suggestions','annotations','packaging','confirmedBodyHash','filming','composition','adoptions'].includes(k))&&boundedJSON(v.creationPatch);}
 export function productionDesktopInput(method:string,input:unknown):boolean|undefined {
  switch(method) {
+ case 'searchProductionReports':return validReportSearchInput(input);
  case 'createRadarTask':return validRadarQuery(input);
  case 'adoptRadarResult':return exact(input,['taskId','attemptId','receiptHash','expectedToken'])&&uuid(input.taskId)&&uuid(input.attemptId)&&token(input.receiptHash)&&token(input.expectedToken);
  case 'decideRadarCandidate':return exact(input,['reportId','candidateId','decision','expectedToken'])&&uuid(input.reportId)&&uuid(input.candidateId)&&['add-topic','reject'].includes(input.decision as string)&&token(input.expectedToken);
@@ -79,6 +81,6 @@ export function productionPending(v:unknown):v is ProductionPending {
  if(v.kind==='mutate'&&v.op==='rejectTask')return exact(v,['kind','binding','mutationId','op','input'])&&exact(v.input,['taskId','attemptId','receiptHash','expectedToken','reason'])&&productionDesktopInput('actProductionTask',{...v.input,action:'reject'})===true;
  if(v.kind!=='mutate'||!exact(v,['kind','binding','mutationId','op','input'])||!boundedJSON(v.input))return false;
  if(productionMutationInput(v.op,v.input))return true;
- const internal:Record<string,string[]>={startJourney:['contentId','host','method','researchPlan','limits','serviceConfig','expectedToken'],adoptRadarResult:['taskId','attemptId','receiptHash','expectedToken'],decideRadarCandidate:['reportId','candidateId','decision','expectedToken'],createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
+ const internal:Record<string,string[]>={refreshJourneySource:['journeyId','expectedJourneyRevision','expectedStepId','sourceMutationId','expectedToken'],prepareJourneyContinuation:['journeyId','expectedJourneyRevision','expectedStepId','rootAttemptId','childAttemptId','host','challengeHash','expectedToken'],startJourney:['contentId','host','method','researchPlan','limits','serviceConfig','expectedToken'],adoptRadarResult:['taskId','attemptId','receiptHash','expectedToken'],decideRadarCandidate:['reportId','candidateId','decision','expectedToken'],createTask:['kind','title','prompt','contentId','accountId','host','parameters','tools','budget','bodyHash','expectedToken'],cancelTask:['taskId','expectedToken'],retryTask:['taskId','host','expectedToken'],acceptTask:['taskId','attemptId','receiptHash','expectedToken']};
  return typeof v.op==='string'&&Object.hasOwn(internal,v.op)&&exact(v.input,internal[v.op])&&token(v.input.expectedToken);
 }

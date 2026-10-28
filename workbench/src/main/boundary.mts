@@ -15,7 +15,7 @@ export const CHANNELS = Object.freeze([
     'readVaultWorkDirectory','readVaultTopicMenus','adoptVaultTopic','readVaultSources',
     'openVaultSourcePage','openVaultReference','revealVaultReference','chooseVaultSource',
     'readServiceSettings', 'saveServiceSettings', 'revealServiceCredential', 'checkServiceReadiness',
-    'createRadarTask', 'adoptRadarResult', 'decideRadarCandidate', 'openRadarSource', 'readPlatformCatalog', 'readProduction', 'mutateProduction', 'startProductionTask', 'openProductionTask', 'actProductionTask', 'openProductionLink', 'chooseProductionFiles', 'readProductionCreation', 'saveProductionDraft', 'readProductionPending', 'recoverProductionPending',
+    'createRadarTask', 'adoptRadarResult', 'decideRadarCandidate', 'openRadarSource', 'searchProductionReports', 'readPlatformCatalog', 'readProduction', 'mutateProduction', 'startProductionTask', 'openProductionTask', 'actProductionTask', 'openProductionLink', 'chooseProductionFiles', 'readProductionCreation', 'saveProductionDraft', 'readProductionPending', 'recoverProductionPending',
     'readTemplateProgress', 'continueBoundTemplate', 'readCoverProgress', 'continueBoundCover', 'readTemplateAssistantSetup', 'readTemplateWorkflow', 'startTemplateStudy', 'continueTemplateStudy', 'retryTemplateStudy', 'cancelTemplateStudy', 'acceptTemplateStudy', 'recoverTemplateMutation', 'retryTemplateMutation', 'abandonTemplateMutation',
     'readBootstrapRecovery', 'resetMachineBinding',
     'choosePromptDocument', 'chooseTemplateImages', 'chooseContentMaterial', 'readContentMaterial', 'exportContentMaterial',
