@@ -1,0 +1,6 @@
+The following is a diff from the previous accessibility tree for Window: "“自媒体工作台”简介" with ~ and + representing changed and added elements, respectively. Removed elements are summarized by ID range.
+Removed element IDs: 336
+~		320 text Help: 自媒体工作台, Value: 自媒体工作台 4.22 GB 修改时间： 今天 15:00
+~		324 text 通用： 种类： 应用程序(Apple芯片) 大小： 4,215,604,205 字节（磁盘上的4.25 GB） 位置： ‎⁨自媒体工作台 0.5.2-arm64⁩ 磁盘映像： /Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.5.2-darwin-arm64-preview.dmg 创建时间： 2026年10月28日 星期三 15:00 修改时间： 2026年10月28日 星期三 15:00 版本： 0.5.2 版权： © 2026 杭州新岛橙灵智能科技有限责任公司
++		344 图像 Description: 预览, ID: QLAXImageAndText_Image
+The focused UI element is 317 标准窗口 “自媒体工作台”简介, ID: Info, Secondary Actions: Raise

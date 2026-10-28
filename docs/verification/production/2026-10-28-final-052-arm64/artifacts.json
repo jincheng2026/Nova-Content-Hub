@@ -1,0 +1,108 @@
+{
+  "at": "2026-10-28T07:10:18.844Z",
+  "frozenSource": "46851c337ae72431827edb0356cf76ff44b774a2",
+  "channel": "preview",
+  "platform": "darwin",
+  "arch": "arm64",
+  "release": {
+    "AUTH_MODE": "disabled",
+    "prototype": true,
+    "appScope": "nova-content-hub",
+    "version": "0.5.2",
+    "protocolVersion": 1,
+    "productId": "nova-content-hub",
+    "format": "nova-content-desktop-release",
+    "schemaVersion": 1,
+    "pairId": "nova-content-hub@0.5.2:p1:disabled",
+    "experimental": true,
+    "productionReady": false,
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "os": "ProductName:\t\tmacOS\nProductVersion:\t\t26.4.1\nBuildVersion:\t\t25E253\n",
+  "app": {
+    "path": "/private/tmp/nova-052-dmg-mount/自媒体工作台.app",
+    "logicalRegularFileBytes": 4215603912,
+    "files": 13514,
+    "symlinks": 15,
+    "mtime": "2026-10-28T07:00:29.000Z",
+    "info": {
+      "CFBundleName": "自媒体工作台",
+      "DTXcode": "1640",
+      "DTSDKName": "macosx15.5",
+      "NSHumanReadableCopyright": "© 2026 杭州新岛橙灵智能科技有限责任公司",
+      "DTSDKBuild": "24F74",
+      "CFBundleVersion": "0.5.2",
+      "ElectronAsarIntegrity": {
+        "Resources/default_app.asar": {
+          "hash": "f80143a17fad2075fe6cf176e07033a41a878dba7f31e7ab4f6f14fcc34162dc",
+          "algorithm": "SHA256"
+        }
+      },
+      "NSCameraUsageDescription": "This app needs access to the camera",
+      "NSMainNibFile": "MainMenu",
+      "CFBundlePackageType": "APPL",
+      "CFBundleIconFile": "icon.icns",
+      "CFBundleShortVersionString": "0.5.2",
+      "NSBluetoothPeripheralUsageDescription": "This app needs access to Bluetooth",
+      "NSHighResolutionCapable": true,
+      "NSMicrophoneUsageDescription": "This app needs access to the microphone",
+      "NSAppTransportSecurity": {
+        "NSExceptionDomains": {
+          "127.0.0.1": {
+            "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+            "NSTemporaryExceptionRequiresForwardSecrecy": false,
+            "NSIncludesSubdomains": false,
+            "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+            "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+          },
+          "localhost": {
+            "NSTemporaryExceptionAllowsInsecureHTTPLoads": true,
+            "NSTemporaryExceptionRequiresForwardSecrecy": false,
+            "NSIncludesSubdomains": false,
+            "NSTemporaryExceptionMinimumTLSVersion": "1.0",
+            "NSTemporaryExceptionAllowsInsecureHTTPSLoads": false
+          }
+        },
+        "NSAllowsArbitraryLoads": true,
+        "NSAllowsLocalNetworking": true
+      },
+      "CFBundleInfoDictionaryVersion": "6.0",
+      "CFBundleExecutable": "自媒体工作台",
+      "DTCompiler": "com.apple.compilers.llvm.clang.1_0",
+      "NSPrefersDisplaySafeAreaCompatibilityMode": false,
+      "NSPrincipalClass": "AtomApplication",
+      "CFBundleIdentifier": "com.novaisland.nova-content-hub",
+      "LSApplicationCategoryType": "public.app-category.productivity",
+      "DTXcodeBuild": "16F6",
+      "LSMinimumSystemVersion": "13.0",
+      "CFBundleDisplayName": "自媒体工作台",
+      "LSEnvironment": {
+        "MallocNanoZone": "0"
+      },
+      "NSQuitAlwaysKeepsWindows": false,
+      "NSAudioCaptureUsageDescription": "This app needs access to audio capture",
+      "NSRequiresAquaSystemAppearance": false,
+      "NSBluetoothAlwaysUsageDescription": "This app needs access to Bluetooth",
+      "NSSupportsAutomaticGraphicsSwitching": true
+    },
+    "architecture": "/private/tmp/nova-052-dmg-mount/自媒体工作台.app/Contents/MacOS/自媒体工作台: Mach-O 64-bit executable arm64\n",
+    "bundledNodeArchitecture": "/private/tmp/nova-052-dmg-mount/自媒体工作台.app/Contents/Resources/plugin-marketplace/nova-content-hub/runtime/node: Mach-O 64-bit executable arm64\n"
+  },
+  "dmg": {
+    "file": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/release/darwin-arm64/preview/Nova-Content-Hub-0.5.2-darwin-arm64-preview.dmg",
+    "bytes": 3212313177,
+    "mtime": "2026-10-28T07:04:12.007Z",
+    "sha256": "5c6b6e36b8ab73224c1720c038e13ab29ccb6af40f011caa93ee6517e4b74f84"
+  },
+  "signing": {
+    "kind": "ad-hoc",
+    "notarized": false,
+    "productionReady": false
+  },
+  "limits": [
+    "System GUI evidence separately required",
+    "No Intel Mac or Windows native acceptance",
+    "No real model-task or entitlement-service acceptance"
+  ]
+}

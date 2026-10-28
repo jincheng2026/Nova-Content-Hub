@@ -1,0 +1,2393 @@
+{
+  "at": "2026-10-28T06:34:31.654Z",
+  "desktop": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs",
+  "scope": "Hidden native Electron actual React/Semi; explicit isolated fixture; no original/user library writes; not installed-app/platform acceptance",
+  "rules": [
+    "Foundation-01",
+    "Foundation-03",
+    "Layout-01",
+    "Surface-01",
+    "Controls-01",
+    "Controls-02",
+    "Controls-03",
+    "Reading-02",
+    "Interaction-03",
+    "Acceptance-01",
+    "Acceptance-02",
+    "Acceptance-03"
+  ],
+  "steps": [
+    "T041 actual original HTML opens with one frame and jcKit connected",
+    "T005 method chooser creates no task",
+    "T020 source conflict remains explicit and blocks implicit selection",
+    "T019 publication resumes into visible focused Markdown body",
+    "Task count and complete directory facts unchanged"
+  ],
+  "views": {
+    "topics-cards-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "topics-list-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "topics-cards-960": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960,
+      "bodyScrollWidth": 960,
+      "overflow": []
+    },
+    "doing-cards-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "doing-list-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "doing-cards-960": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960,
+      "bodyScrollWidth": 960,
+      "overflow": []
+    },
+    "published-cards-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "published-list-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "published-cards-960": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960,
+      "bodyScrollWidth": 960,
+      "overflow": []
+    },
+    "published-page2": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "published-page-size-50": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "all-and-collections-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "T041-original-kit-connected": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "T005-original-method-chooser": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "T020-conflict-preserved": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "T019-publication-to-focused-body": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    }
+  },
+  "groups": {
+    "topics": {
+      "initial": {
+        "cards": 48,
+        "lists": 0,
+        "radios": [
+          {
+            "value": "on",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "checked": false
+          }
+        ],
+        "groups": [
+          {
+            "heading": "接下来要做 · 10",
+            "ids": [
+              "f91f2049-c127-461d-abca-73d401d86a12",
+              "fc5b9ae9-dbee-4005-a62b-866314063ad1",
+              "197efb69-568a-4e09-a424-69c115937fb4",
+              "0adc5ad3-de95-4601-a479-f3c5be7ec2bc",
+              "3955a398-f8d3-435a-a528-8ad40eae3b51",
+              "4508a7db-c6cf-4253-a63f-549271b86734",
+              "101c8284-288d-48e2-a0a9-295ac51152d2",
+              "5bd49340-bcec-465f-a771-a6c1a795db49",
+              "02891679-dd8e-44c5-a159-e3feacc8c022",
+              "705c0150-5274-4953-a9de-c891e4d4860f"
+            ],
+            "facts": [
+              {
+                "id": "f91f2049-c127-461d-abca-73d401d86a12",
+                "number": "T033",
+                "title": "T033 新手用 Agent 必踩的坑：AI 糊弄你的那些毛病，怎么一条条治",
+                "status": "待写",
+                "facts": "",
+                "plan": "接下来第 1 条拍2026-09-29 · 立「新手用 Agent 必踩的坑」选题，参考涛哥的Agent日记一条抖音（09-27 已入库，1,555 粉、4,419 赞、2,955 藏）；制作日期待定，插在已定顺序哪里要和博文定"
+              },
+              {
+                "id": "fc5b9ae9-dbee-4005-a62b-866314063ad1",
+                "number": "T005",
+                "title": "T005 个人知识库放本地还是放云端：我的判断和理由",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              },
+              {
+                "id": "197efb69-568a-4e09-a424-69c115937fb4",
+                "number": "T006",
+                "title": "T006 零基础搭出你的第一个个人知识库：有手就行的完整流程",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-24 · 知识库搭建教程另立 T030，与 T006（科普）分开；大铁锤、碳硅卢卡斯、范te析AI 三条参考从 T006 移到 T030，另加 Summer在折腾那条；制作日期待定"
+              },
+              {
+                "id": "0adc5ad3-de95-4601-a479-f3c5be7ec2bc",
+                "number": "T010",
+                "title": "T010 WorkBuddy 和豆包的免费、付费额度怎么选",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              },
+              {
+                "id": "3955a398-f8d3-435a-a528-8ad40eae3b51",
+                "number": "T023",
+                "title": "T023 我每天是怎么用 AI 工作的",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-22 · 交个人分享演讲稿给运营博文审"
+              },
+              {
+                "id": "4508a7db-c6cf-4253-a63f-549271b86734",
+                "number": "T024",
+                "title": "T024 用 AI 做网站",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-24 · 直播第一场；拍用 AI 做网站"
+              },
+              {
+                "id": "101c8284-288d-48e2-a0a9-295ac51152d2",
+                "number": "T032",
+                "title": "T032 苹果降噪耳机科普：用 AI 做的模型，直观看懂 AirPods 为什么能降噪",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "5bd49340-bcec-465f-a771-a6c1a795db49",
+                "number": "T038",
+                "title": "T038 破罐破摔效应：为什么人总是容易半途而废",
+                "status": "待写",
+                "facts": "",
+                "plan": "原总览：草稿"
+              },
+              {
+                "id": "02891679-dd8e-44c5-a159-e3feacc8c022",
+                "number": "T045",
+                "title": "T045 用 WorkBuddy 十步学透一个陌生领域",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-10-09 · 立「用 WorkBuddy 十步学透一个陌生领域」选题，AI打工我享受一条抖音参考入库（3,678 粉、23,830 赞、21,263 藏）；制作日期待定"
+              },
+              {
+                "id": "705c0150-5274-4953-a9de-c891e4d4860f",
+                "number": "T049",
+                "title": "T049 普通人怎么用 AI 赚钱",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              }
+            ],
+            "pagination": []
+          },
+          {
+            "heading": "暂缓 · 7 条",
+            "open": false,
+            "ids": [
+              "7172dc70-9714-4a15-a80a-83fa60873a18",
+              "4d8d7510-7f0b-4b1e-abbc-c1511eb4fd61",
+              "7eae899f-b626-4860-ade1-a411bb3729ee",
+              "9bd04a4f-a03f-49fc-a738-505a5ef02232",
+              "4177e862-c91c-4678-a6af-820c901677ba",
+              "0b388430-0255-44ba-aeef-dff13c6f5052",
+              "c9ac6844-7fea-4d79-a113-94f9c55ce4f5"
+            ],
+            "facts": [
+              {
+                "id": "7172dc70-9714-4a15-a80a-83fa60873a18",
+                "number": "T001",
+                "title": "T001 什么是大模型：豆包、ChatGPT 背后到底是个什么东西",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "4d8d7510-7f0b-4b1e-abbc-c1511eb4fd61",
+                "number": "T002",
+                "title": "T002 什么是 AI Agent：AI 从只能聊天到替你干活，中间发生了什么",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "7eae899f-b626-4860-ade1-a411bb3729ee",
+                "number": "T004",
+                "title": "T004 一句顶五百字的提示词习惯：让 AI 先问你，再干活",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "9bd04a4f-a03f-49fc-a738-505a5ef02232",
+                "number": "T007",
+                "title": "T007 普通人学 AI 的三步路径：找对信息源、有问题问 AI、干中学",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "4177e862-c91c-4678-a6af-820c901677ba",
+                "number": "T013",
+                "title": "T013 重新做拼贴风 AI 教程",
+                "status": "暂缓",
+                "facts": "原卡明确暂缓",
+                "plan": "原选题卡：顺延，日期待定 · 待定原卡与总览的状态依据选题总览原状态：待写选题总览原顺延：待定 · 重新做拼贴风 AI 教程04_选题库/AI教程/待做/T013_重新做拼贴风AI教程.md:4- **状态**：待写（原计划 2026-09-04，现已顺延，日期待定）"
+              },
+              {
+                "id": "0b388430-0255-44ba-aeef-dff13c6f5052",
+                "number": "T014",
+                "title": "T014 VidMuse 商单",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "制作 VidMuse 商单视频 · 待定（让位给 09-04 GPT-6 热点）"
+              },
+              {
+                "id": "c9ac6844-7fea-4d79-a113-94f9c55ce4f5",
+                "number": "T050",
+                "title": "T050 旅游营销工作台宣传片获客口播",
+                "status": "暂缓",
+                "facts": "原卡明确暂缓",
+                "plan": "原选题卡：暂不做：工作台目前不能对外原卡与总览的状态依据选题总览原状态：待写05_内容草稿/00_草稿总览.md原栏目：正在做（11 条）| T050 | 旅游营销工作台宣传片获客口播（出镜开头 + 宣传片 + 结尾钩子） | 10-20 口播稿已定；工作台目前不能对外，暂不做 | [口播稿](T050_旅游营销工作台宣传片获客口播/口播稿.md) · [选题卡](../04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md) |04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md:5- **状态**：待写（口播稿已定，暂不做：工作台目前不能对外）"
+              }
+            ],
+            "pagination": []
+          },
+          {
+            "heading": "已经写过的 · 31",
+            "ids": [
+              "591134e0-7705-42e4-aa62-630314be4b7c",
+              "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+              "b3c332ed-cb8c-479e-a027-360637a5f98c",
+              "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+              "33288b82-559b-41a6-adce-698be18ff2bd",
+              "5055d55b-3a90-49fa-abb6-e379eafced1f",
+              "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+              "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+              "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+              "337982e1-e7a2-4b81-ac4c-8254e015f365",
+              "0b105ede-1190-4908-ae43-e69f7d360c00",
+              "6fef79d7-b91c-4d43-a011-802feca526e3",
+              "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+              "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+              "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+              "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+              "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+              "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+              "9e670ebf-68a3-4592-a514-b1d805713b99",
+              "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+              "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+              "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+              "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+              "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+              "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+              "1202de87-1eec-4e95-a7d2-5af0968d2538",
+              "cba285fe-50e5-49b8-a13d-6f87c9529724",
+              "ee38a050-0b67-40b1-af68-3f650cf4557e",
+              "5d3d4899-8a09-4d86-a5c2-b05577376954",
+              "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+              "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1"
+            ],
+            "facts": [
+              {
+                "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+                "number": "T099",
+                "title": "创作页",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+                "number": "T048",
+                "title": "T048 ✅ vibe知识大赏这类号的三个弊端",
+                "status": "已录制",
+                "facts": "当前稿待选择拍完还没发",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+                "number": "T047",
+                "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-13 · 待建档／未核平台有创作页",
+                "plan": "2026-10-13 · 立「字幕长图 Skill 起号」选题并当天拍完发布（参考 Julie Yu 抖音）；配套教程放进飞书知识库"
+              },
+              {
+                "id": "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+                "number": "T046",
+                "title": "T046 ✅ 用 AI 做 Dan Koe 的 Human 3.0 人生模型",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+                "number": "T044",
+                "title": "T044 AI 变现与执行力",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-15 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+                "number": "T043",
+                "title": "T043 X收藏不吃灰的插件和工作流",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+                "number": "T042",
+                "title": "T042 两周全网涨粉两万的AI教程做法",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+                "number": "T041",
+                "title": "T041 涨粉两万后两个月只涨六千的复盘",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+                "number": "T040",
+                "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+                "number": "T039",
+                "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+                "number": "T037",
+                "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+                "number": "T036",
+                "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+                "number": "T035",
+                "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+                "number": "T034",
+                "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+                "number": "T031",
+                "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-29 · 待建档／未核平台有创作页",
+                "plan": "2026-09-28 · 立「AI 时代的齐民要术」选题（GitHub 开源《高性价比人生指南》），10倍生产力一条抖音参考（4.3 万赞）和时与诗一篇抖音长文章（2.5 万赞）入库；锦成定当晚制作"
+              },
+              {
+                "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+                "number": "T030",
+                "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+                "number": "T029",
+                "title": "T029 ✅ WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+                "number": "T028",
+                "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 删除 T008（已并入 T026）和 T003（Skill 科普已由 T018、T028 覆盖），两个编号作废；大李书房《蒸馏的保姆级教程》（6.3 万赞）入库挂到 T026"
+              },
+              {
+                "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+                "number": "T026",
+                "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-01（抖音 21:35，10-08 用 TikHub 核实） · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+                "number": "T025",
+                "title": "T025 ✅ AI 电子衣橱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-23 或 2026-09-24（暂定） · 制作 AI 电子衣橱内容；侯宇制作成品待交付，具体日期未定"
+              },
+              {
+                "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+                "number": "T022",
+                "title": "T022 ✅ 小猫教程",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-22 · 待建档／未核平台",
+                "plan": "2026-09-21 · 与运营博文沟通定本周计划；做完并发布小猫教程"
+              },
+              {
+                "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+                "number": "T021",
+                "title": "T021 ✅ Jev 模型热点",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-23 · 待建档／未核平台",
+                "plan": "2026-09-21 · 立 Jev 模型热点选题，记下四条抖音对标并完成事实核实（对标里三条讲错了数字）；待定叙事角度"
+              },
+              {
+                "id": "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+                "number": "T020",
+                "title": "T020 AI 是我们 00 后最值得抓住的杠杆",
+                "status": "正在写",
+                "facts": "当前稿待选择有创作页",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+                "number": "T019",
+                "title": "T019 ✅ 邪恶银渐层发布会",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-18 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+                "number": "T018",
+                "title": "T018 ✅ AI10大热词科普",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-19 · 待建档／未核平台有创作页",
+                "plan": "2026-09-14 · 科普 Skill 第一轮试跑，出七个 AI 词的五列框架"
+              },
+              {
+                "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+                "number": "T017",
+                "title": "T017 ✅ AI电子情书",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-21 · 待建档／未核平台有创作页",
+                "plan": "2026-09-10 · 制作用 AI 做私人定制生日网站的视频（用户确定今天做）"
+              },
+              {
+                "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+                "number": "T016",
+                "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-10 · 待建档／未核平台有创作页",
+                "plan": "2026-09-08 · 计划同题重拍 WorkBuddy 自媒体实操视频"
+              },
+              {
+                "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+                "number": "T015",
+                "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-04 · 待建档／未核平台",
+                "plan": "2026-09-04 · 录制 GPT-6 热点观点口播（VidMuse 商单顺延）"
+              },
+              {
+                "id": "5d3d4899-8a09-4d86-a5c2-b05577376954",
+                "number": "T012",
+                "title": "T012 ✅ Image2 脏点怎么解决",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-03 · 制作 Image2 脏点解决教程"
+              },
+              {
+                "id": "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+                "number": "T011",
+                "title": "T011 ✅ 工信部文件热点里的 FDE",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-06 · 待建档／未核平台",
+                "plan": "2026-09-02 · 录制工信部文件热点里的 FDE 视频"
+              },
+              {
+                "id": "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1",
+                "number": "T009",
+                "title": "T009 ✅ 正在学 AI 的人，为什么值得顺手做 AI 自媒体",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-08-24 · 待建档／未核平台",
+                "plan": ""
+              }
+            ],
+            "pagination": []
+          }
+        ],
+        "dimensions": [
+          {
+            "id": "f91f2049-c127-461d-abca-73d401d86a12",
+            "width": 326.6640625,
+            "height": 423.140625
+          },
+          {
+            "id": "fc5b9ae9-dbee-4005-a62b-866314063ad1",
+            "width": 326.6640625,
+            "height": 423.140625
+          },
+          {
+            "id": "197efb69-568a-4e09-a424-69c115937fb4",
+            "width": 326.6640625,
+            "height": 423.140625
+          },
+          {
+            "id": "0adc5ad3-de95-4601-a479-f3c5be7ec2bc",
+            "width": 326.6640625,
+            "height": 271.4765625
+          },
+          {
+            "id": "3955a398-f8d3-435a-a528-8ad40eae3b51",
+            "width": 326.6640625,
+            "height": 271.4765625
+          },
+          {
+            "id": "4508a7db-c6cf-4253-a63f-549271b86734",
+            "width": 326.6640625,
+            "height": 271.4765625
+          },
+          {
+            "id": "101c8284-288d-48e2-a0a9-295ac51152d2",
+            "width": 326.6640625,
+            "height": 444.1328125
+          },
+          {
+            "id": "5bd49340-bcec-465f-a771-a6c1a795db49",
+            "width": 326.6640625,
+            "height": 444.1328125
+          },
+          {
+            "id": "02891679-dd8e-44c5-a159-e3feacc8c022",
+            "width": 326.6640625,
+            "height": 444.1328125
+          },
+          {
+            "id": "705c0150-5274-4953-a9de-c891e4d4860f",
+            "width": 326.6640625,
+            "height": 225.3828125
+          },
+          {
+            "id": "7172dc70-9714-4a15-a80a-83fa60873a18",
+            "width": 326.6640625,
+            "height": 311.5703125
+          },
+          {
+            "id": "4d8d7510-7f0b-4b1e-abbc-c1511eb4fd61",
+            "width": 326.6640625,
+            "height": 311.5703125
+          },
+          {
+            "id": "7eae899f-b626-4860-ade1-a411bb3729ee",
+            "width": 326.6640625,
+            "height": 311.5703125
+          },
+          {
+            "id": "9bd04a4f-a03f-49fc-a738-505a5ef02232",
+            "width": 326.6640625,
+            "height": 342.578125
+          },
+          {
+            "id": "4177e862-c91c-4678-a6af-820c901677ba",
+            "width": 326.6640625,
+            "height": 342.578125
+          },
+          {
+            "id": "0b388430-0255-44ba-aeef-dff13c6f5052",
+            "width": 326.6640625,
+            "height": 342.578125
+          },
+          {
+            "id": "c9ac6844-7fea-4d79-a113-94f9c55ce4f5",
+            "width": 326.6640625,
+            "height": 408.859375
+          },
+          {
+            "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+            "width": 326.6640625,
+            "height": 451.4375
+          }
+        ]
+      },
+      "list": {
+        "cards": 0,
+        "lists": 48,
+        "radios": [
+          {
+            "value": "on",
+            "checked": false
+          },
+          {
+            "value": "on",
+            "checked": true
+          }
+        ],
+        "groups": [
+          {
+            "heading": "接下来要做 · 10",
+            "ids": [
+              "f91f2049-c127-461d-abca-73d401d86a12",
+              "fc5b9ae9-dbee-4005-a62b-866314063ad1",
+              "197efb69-568a-4e09-a424-69c115937fb4",
+              "0adc5ad3-de95-4601-a479-f3c5be7ec2bc",
+              "3955a398-f8d3-435a-a528-8ad40eae3b51",
+              "4508a7db-c6cf-4253-a63f-549271b86734",
+              "101c8284-288d-48e2-a0a9-295ac51152d2",
+              "5bd49340-bcec-465f-a771-a6c1a795db49",
+              "02891679-dd8e-44c5-a159-e3feacc8c022",
+              "705c0150-5274-4953-a9de-c891e4d4860f"
+            ],
+            "facts": [
+              {
+                "id": "f91f2049-c127-461d-abca-73d401d86a12",
+                "number": "T033",
+                "title": "T033 新手用 Agent 必踩的坑：AI 糊弄你的那些毛病，怎么一条条治",
+                "status": "待写",
+                "facts": "",
+                "plan": "接下来第 1 条拍2026-09-29 · 立「新手用 Agent 必踩的坑」选题，参考涛哥的Agent日记一条抖音（09-27 已入库，1,555 粉、4,419 赞、2,955 藏）；制作日期待定，插在已定顺序哪里要和博文定"
+              },
+              {
+                "id": "fc5b9ae9-dbee-4005-a62b-866314063ad1",
+                "number": "T005",
+                "title": "T005 个人知识库放本地还是放云端：我的判断和理由",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              },
+              {
+                "id": "197efb69-568a-4e09-a424-69c115937fb4",
+                "number": "T006",
+                "title": "T006 零基础搭出你的第一个个人知识库：有手就行的完整流程",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-24 · 知识库搭建教程另立 T030，与 T006（科普）分开；大铁锤、碳硅卢卡斯、范te析AI 三条参考从 T006 移到 T030，另加 Summer在折腾那条；制作日期待定"
+              },
+              {
+                "id": "0adc5ad3-de95-4601-a479-f3c5be7ec2bc",
+                "number": "T010",
+                "title": "T010 WorkBuddy 和豆包的免费、付费额度怎么选",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              },
+              {
+                "id": "3955a398-f8d3-435a-a528-8ad40eae3b51",
+                "number": "T023",
+                "title": "T023 我每天是怎么用 AI 工作的",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-22 · 交个人分享演讲稿给运营博文审"
+              },
+              {
+                "id": "4508a7db-c6cf-4253-a63f-549271b86734",
+                "number": "T024",
+                "title": "T024 用 AI 做网站",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-24 · 直播第一场；拍用 AI 做网站"
+              },
+              {
+                "id": "101c8284-288d-48e2-a0a9-295ac51152d2",
+                "number": "T032",
+                "title": "T032 苹果降噪耳机科普：用 AI 做的模型，直观看懂 AirPods 为什么能降噪",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "5bd49340-bcec-465f-a771-a6c1a795db49",
+                "number": "T038",
+                "title": "T038 破罐破摔效应：为什么人总是容易半途而废",
+                "status": "待写",
+                "facts": "",
+                "plan": "原总览：草稿"
+              },
+              {
+                "id": "02891679-dd8e-44c5-a159-e3feacc8c022",
+                "number": "T045",
+                "title": "T045 用 WorkBuddy 十步学透一个陌生领域",
+                "status": "待写",
+                "facts": "",
+                "plan": "2026-10-09 · 立「用 WorkBuddy 十步学透一个陌生领域」选题，AI打工我享受一条抖音参考入库（3,678 粉、23,830 赞、21,263 藏）；制作日期待定"
+              },
+              {
+                "id": "705c0150-5274-4953-a9de-c891e4d4860f",
+                "number": "T049",
+                "title": "T049 普通人怎么用 AI 赚钱",
+                "status": "待写",
+                "facts": "",
+                "plan": ""
+              }
+            ],
+            "pagination": []
+          },
+          {
+            "heading": "暂缓 · 7 条",
+            "open": false,
+            "ids": [
+              "7172dc70-9714-4a15-a80a-83fa60873a18",
+              "4d8d7510-7f0b-4b1e-abbc-c1511eb4fd61",
+              "7eae899f-b626-4860-ade1-a411bb3729ee",
+              "9bd04a4f-a03f-49fc-a738-505a5ef02232",
+              "4177e862-c91c-4678-a6af-820c901677ba",
+              "0b388430-0255-44ba-aeef-dff13c6f5052",
+              "c9ac6844-7fea-4d79-a113-94f9c55ce4f5"
+            ],
+            "facts": [
+              {
+                "id": "7172dc70-9714-4a15-a80a-83fa60873a18",
+                "number": "T001",
+                "title": "T001 什么是大模型：豆包、ChatGPT 背后到底是个什么东西",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "4d8d7510-7f0b-4b1e-abbc-c1511eb4fd61",
+                "number": "T002",
+                "title": "T002 什么是 AI Agent：AI 从只能聊天到替你干活，中间发生了什么",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "7eae899f-b626-4860-ade1-a411bb3729ee",
+                "number": "T004",
+                "title": "T004 一句顶五百字的提示词习惯：让 AI 先问你，再干活",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "9bd04a4f-a03f-49fc-a738-505a5ef02232",
+                "number": "T007",
+                "title": "T007 普通人学 AI 的三步路径：找对信息源、有问题问 AI、干中学",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "AI 科普类选题整体暂缓 · 待定（等出现好的对标选题再启动）"
+              },
+              {
+                "id": "4177e862-c91c-4678-a6af-820c901677ba",
+                "number": "T013",
+                "title": "T013 重新做拼贴风 AI 教程",
+                "status": "暂缓",
+                "facts": "原卡明确暂缓",
+                "plan": "原选题卡：顺延，日期待定 · 待定原卡与总览的状态依据选题总览原状态：待写选题总览原顺延：待定 · 重新做拼贴风 AI 教程04_选题库/AI教程/待做/T013_重新做拼贴风AI教程.md:4- **状态**：待写（原计划 2026-09-04，现已顺延，日期待定）"
+              },
+              {
+                "id": "0b388430-0255-44ba-aeef-dff13c6f5052",
+                "number": "T014",
+                "title": "T014 VidMuse 商单",
+                "status": "暂缓",
+                "facts": "",
+                "plan": "制作 VidMuse 商单视频 · 待定（让位给 09-04 GPT-6 热点）"
+              },
+              {
+                "id": "c9ac6844-7fea-4d79-a113-94f9c55ce4f5",
+                "number": "T050",
+                "title": "T050 旅游营销工作台宣传片获客口播",
+                "status": "暂缓",
+                "facts": "原卡明确暂缓",
+                "plan": "原选题卡：暂不做：工作台目前不能对外原卡与总览的状态依据选题总览原状态：待写05_内容草稿/00_草稿总览.md原栏目：正在做（11 条）| T050 | 旅游营销工作台宣传片获客口播（出镜开头 + 宣传片 + 结尾钩子） | 10-20 口播稿已定；工作台目前不能对外，暂不做 | [口播稿](T050_旅游营销工作台宣传片获客口播/口播稿.md) · [选题卡](../04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md) |04_选题库/口播观点/待做/T050_旅游营销工作台宣传片获客口播.md:5- **状态**：待写（口播稿已定，暂不做：工作台目前不能对外）"
+              }
+            ],
+            "pagination": []
+          },
+          {
+            "heading": "已经写过的 · 31",
+            "ids": [
+              "591134e0-7705-42e4-aa62-630314be4b7c",
+              "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+              "b3c332ed-cb8c-479e-a027-360637a5f98c",
+              "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+              "33288b82-559b-41a6-adce-698be18ff2bd",
+              "5055d55b-3a90-49fa-abb6-e379eafced1f",
+              "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+              "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+              "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+              "337982e1-e7a2-4b81-ac4c-8254e015f365",
+              "0b105ede-1190-4908-ae43-e69f7d360c00",
+              "6fef79d7-b91c-4d43-a011-802feca526e3",
+              "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+              "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+              "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+              "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+              "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+              "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+              "9e670ebf-68a3-4592-a514-b1d805713b99",
+              "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+              "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+              "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+              "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+              "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+              "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+              "1202de87-1eec-4e95-a7d2-5af0968d2538",
+              "cba285fe-50e5-49b8-a13d-6f87c9529724",
+              "ee38a050-0b67-40b1-af68-3f650cf4557e",
+              "5d3d4899-8a09-4d86-a5c2-b05577376954",
+              "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+              "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1"
+            ],
+            "facts": [
+              {
+                "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+                "number": "T099",
+                "title": "创作页",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+                "number": "T048",
+                "title": "T048 ✅ vibe知识大赏这类号的三个弊端",
+                "status": "已录制",
+                "facts": "当前稿待选择拍完还没发",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+                "number": "T047",
+                "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-13 · 待建档／未核平台有创作页",
+                "plan": "2026-10-13 · 立「字幕长图 Skill 起号」选题并当天拍完发布（参考 Julie Yu 抖音）；配套教程放进飞书知识库"
+              },
+              {
+                "id": "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+                "number": "T046",
+                "title": "T046 ✅ 用 AI 做 Dan Koe 的 Human 3.0 人生模型",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+                "number": "T044",
+                "title": "T044 AI 变现与执行力",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-15 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+                "number": "T043",
+                "title": "T043 X收藏不吃灰的插件和工作流",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+                "number": "T042",
+                "title": "T042 两周全网涨粉两万的AI教程做法",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+                "number": "T041",
+                "title": "T041 涨粉两万后两个月只涨六千的复盘",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+                "number": "T040",
+                "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+                "number": "T039",
+                "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+                "number": "T037",
+                "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+                "number": "T036",
+                "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+                "number": "T035",
+                "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+                "number": "T034",
+                "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+                "number": "T031",
+                "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-29 · 待建档／未核平台有创作页",
+                "plan": "2026-09-28 · 立「AI 时代的齐民要术」选题（GitHub 开源《高性价比人生指南》），10倍生产力一条抖音参考（4.3 万赞）和时与诗一篇抖音长文章（2.5 万赞）入库；锦成定当晚制作"
+              },
+              {
+                "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+                "number": "T030",
+                "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+                "number": "T029",
+                "title": "T029 ✅ WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+                "number": "T028",
+                "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 删除 T008（已并入 T026）和 T003（Skill 科普已由 T018、T028 覆盖），两个编号作废；大李书房《蒸馏的保姆级教程》（6.3 万赞）入库挂到 T026"
+              },
+              {
+                "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+                "number": "T026",
+                "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-01（抖音 21:35，10-08 用 TikHub 核实） · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+                "number": "T025",
+                "title": "T025 ✅ AI 电子衣橱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-23 或 2026-09-24（暂定） · 制作 AI 电子衣橱内容；侯宇制作成品待交付，具体日期未定"
+              },
+              {
+                "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+                "number": "T022",
+                "title": "T022 ✅ 小猫教程",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-22 · 待建档／未核平台",
+                "plan": "2026-09-21 · 与运营博文沟通定本周计划；做完并发布小猫教程"
+              },
+              {
+                "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+                "number": "T021",
+                "title": "T021 ✅ Jev 模型热点",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-23 · 待建档／未核平台",
+                "plan": "2026-09-21 · 立 Jev 模型热点选题，记下四条抖音对标并完成事实核实（对标里三条讲错了数字）；待定叙事角度"
+              },
+              {
+                "id": "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+                "number": "T020",
+                "title": "T020 AI 是我们 00 后最值得抓住的杠杆",
+                "status": "正在写",
+                "facts": "当前稿待选择有创作页",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+                "number": "T019",
+                "title": "T019 ✅ 邪恶银渐层发布会",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-18 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+                "number": "T018",
+                "title": "T018 ✅ AI10大热词科普",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-19 · 待建档／未核平台有创作页",
+                "plan": "2026-09-14 · 科普 Skill 第一轮试跑，出七个 AI 词的五列框架"
+              },
+              {
+                "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+                "number": "T017",
+                "title": "T017 ✅ AI电子情书",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-21 · 待建档／未核平台有创作页",
+                "plan": "2026-09-10 · 制作用 AI 做私人定制生日网站的视频（用户确定今天做）"
+              },
+              {
+                "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+                "number": "T016",
+                "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-10 · 待建档／未核平台有创作页",
+                "plan": "2026-09-08 · 计划同题重拍 WorkBuddy 自媒体实操视频"
+              },
+              {
+                "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+                "number": "T015",
+                "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-04 · 待建档／未核平台",
+                "plan": "2026-09-04 · 录制 GPT-6 热点观点口播（VidMuse 商单顺延）"
+              },
+              {
+                "id": "5d3d4899-8a09-4d86-a5c2-b05577376954",
+                "number": "T012",
+                "title": "T012 ✅ Image2 脏点怎么解决",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-03 · 制作 Image2 脏点解决教程"
+              },
+              {
+                "id": "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+                "number": "T011",
+                "title": "T011 ✅ 工信部文件热点里的 FDE",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-06 · 待建档／未核平台",
+                "plan": "2026-09-02 · 录制工信部文件热点里的 FDE 视频"
+              },
+              {
+                "id": "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1",
+                "number": "T009",
+                "title": "T009 ✅ 正在学 AI 的人，为什么值得顺手做 AI 自媒体",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-08-24 · 待建档／未核平台",
+                "plan": ""
+              }
+            ],
+            "pagination": []
+          }
+        ],
+        "dimensions": []
+      },
+      "searchFilterPreserved": true,
+      "paginationNavCount": 0
+    },
+    "doing": {
+      "initial": {
+        "cards": 8,
+        "lists": 0,
+        "radios": [
+          {
+            "value": "on",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "checked": false
+          }
+        ],
+        "groups": [
+          {
+            "heading": "正在写与拍完还没发 · 8",
+            "ids": [
+              "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+              "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+              "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+              "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+              "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+              "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+              "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+              "591134e0-7705-42e4-aa62-630314be4b7c"
+            ],
+            "facts": [
+              {
+                "id": "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+                "number": "T020",
+                "title": "T020 AI 是我们 00 后最值得抓住的杠杆",
+                "status": "正在写",
+                "facts": "当前稿待选择有创作页",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+                "number": "T029",
+                "title": "T029 ✅ WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+                "number": "T034",
+                "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+                "number": "T041",
+                "title": "T041 涨粉两万后两个月只涨六千的复盘",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+                "number": "T042",
+                "title": "T042 两周全网涨粉两万的AI教程做法",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+                "number": "T046",
+                "title": "T046 ✅ 用 AI 做 Dan Koe 的 Human 3.0 人生模型",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+                "number": "T048",
+                "title": "T048 ✅ vibe知识大赏这类号的三个弊端",
+                "status": "已录制",
+                "facts": "当前稿待选择拍完还没发",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+                "number": "T099",
+                "title": "创作页",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              }
+            ],
+            "pagination": []
+          }
+        ],
+        "dimensions": [
+          {
+            "id": "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+            "width": 326.6640625,
+            "height": 517.421875
+          },
+          {
+            "id": "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+            "width": 326.6640625,
+            "height": 517.421875
+          },
+          {
+            "id": "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+            "width": 326.6640625,
+            "height": 517.421875
+          },
+          {
+            "id": "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+            "width": 326.6640625,
+            "height": 431.234375
+          },
+          {
+            "id": "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+            "width": 326.6640625,
+            "height": 431.234375
+          },
+          {
+            "id": "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+            "width": 326.6640625,
+            "height": 431.234375
+          },
+          {
+            "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+            "width": 326.6640625,
+            "height": 342.859375
+          },
+          {
+            "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+            "width": 326.6640625,
+            "height": 342.859375
+          }
+        ]
+      },
+      "list": {
+        "cards": 0,
+        "lists": 8,
+        "radios": [
+          {
+            "value": "on",
+            "checked": false
+          },
+          {
+            "value": "on",
+            "checked": true
+          }
+        ],
+        "groups": [
+          {
+            "heading": "正在写与拍完还没发 · 8",
+            "ids": [
+              "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+              "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+              "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+              "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+              "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+              "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+              "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+              "591134e0-7705-42e4-aa62-630314be4b7c"
+            ],
+            "facts": [
+              {
+                "id": "b82aac40-b5e7-459e-aaa2-f82bbeff022c",
+                "number": "T020",
+                "title": "T020 AI 是我们 00 后最值得抓住的杠杆",
+                "status": "正在写",
+                "facts": "当前稿待选择有创作页",
+                "plan": "2026-09-28 · 与博文沟通：立苹果降噪耳机科普选题（只做科普不教，排在已定四条之后）；锦成要先测让 Opus 5.5 照口播稿生成科普视频；博文认为雪踏乌云「月入2k到一年200万」对 T020 没有借鉴意义，锦成定部分借鉴、自己表达为主（沟通记录）"
+              },
+              {
+                "id": "2fcead81-b7ba-4eff-aafb-5e8b26878802",
+                "number": "T029",
+                "title": "T029 ✅ WorkBuddy 必装的三个 Skill：Computer Use、Skill Creator、HyperFrames",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "5d9e93e9-3617-49d7-a360-f631e42aac6a",
+                "number": "T034",
+                "title": "T034 用 AI 帮你搞定网络 IP：把锦成自己在用的这一套教给大家",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "6f54f5be-1e46-4879-a737-fb41f57bb6fc",
+                "number": "T041",
+                "title": "T041 涨粉两万后两个月只涨六千的复盘",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "d53b22ab-dd68-4b53-a610-d97c7f880aac",
+                "number": "T042",
+                "title": "T042 两周全网涨粉两万的AI教程做法",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              },
+              {
+                "id": "cd0b47f4-41e1-4dfa-ac80-2f45240205b0",
+                "number": "T046",
+                "title": "T046 ✅ 用 AI 做 Dan Koe 的 Human 3.0 人生模型",
+                "status": "已录制",
+                "facts": "拍完还没发有创作页",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "6d1c79a4-5ac2-4e74-a437-84210d1d43d9",
+                "number": "T048",
+                "title": "T048 ✅ vibe知识大赏这类号的三个弊端",
+                "status": "已录制",
+                "facts": "当前稿待选择拍完还没发",
+                "plan": "已录完，发布事实待确认"
+              },
+              {
+                "id": "591134e0-7705-42e4-aa62-630314be4b7c",
+                "number": "T099",
+                "title": "创作页",
+                "status": "正在写",
+                "facts": "有创作页",
+                "plan": "正在写"
+              }
+            ],
+            "pagination": []
+          }
+        ],
+        "dimensions": []
+      },
+      "searchFilterPreserved": true,
+      "paginationNavCount": 0
+    },
+    "published": {
+      "initial": {
+        "cards": 20,
+        "lists": 0,
+        "radios": [
+          {
+            "value": "on",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "checked": false
+          }
+        ],
+        "groups": [
+          {
+            "heading": "已发布 · 23",
+            "ids": [
+              "b3c332ed-cb8c-479e-a027-360637a5f98c",
+              "33288b82-559b-41a6-adce-698be18ff2bd",
+              "5055d55b-3a90-49fa-abb6-e379eafced1f",
+              "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+              "337982e1-e7a2-4b81-ac4c-8254e015f365",
+              "0b105ede-1190-4908-ae43-e69f7d360c00",
+              "6fef79d7-b91c-4d43-a011-802feca526e3",
+              "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+              "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+              "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+              "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+              "9e670ebf-68a3-4592-a514-b1d805713b99",
+              "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+              "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+              "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+              "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+              "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+              "1202de87-1eec-4e95-a7d2-5af0968d2538",
+              "cba285fe-50e5-49b8-a13d-6f87c9529724",
+              "ee38a050-0b67-40b1-af68-3f650cf4557e"
+            ],
+            "facts": [
+              {
+                "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+                "number": "T047",
+                "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-13 · 待建档／未核平台有创作页",
+                "plan": "2026-10-13 · 立「字幕长图 Skill 起号」选题并当天拍完发布（参考 Julie Yu 抖音）；配套教程放进飞书知识库"
+              },
+              {
+                "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+                "number": "T044",
+                "title": "T044 AI 变现与执行力",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-15 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+                "number": "T043",
+                "title": "T043 X收藏不吃灰的插件和工作流",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+                "number": "T040",
+                "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+                "number": "T039",
+                "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+                "number": "T037",
+                "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+                "number": "T036",
+                "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+                "number": "T035",
+                "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+                "number": "T031",
+                "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-29 · 待建档／未核平台有创作页",
+                "plan": "2026-09-28 · 立「AI 时代的齐民要术」选题（GitHub 开源《高性价比人生指南》），10倍生产力一条抖音参考（4.3 万赞）和时与诗一篇抖音长文章（2.5 万赞）入库；锦成定当晚制作"
+              },
+              {
+                "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+                "number": "T030",
+                "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+                "number": "T028",
+                "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 删除 T008（已并入 T026）和 T003（Skill 科普已由 T018、T028 覆盖），两个编号作废；大李书房《蒸馏的保姆级教程》（6.3 万赞）入库挂到 T026"
+              },
+              {
+                "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+                "number": "T026",
+                "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-01（抖音 21:35，10-08 用 TikHub 核实） · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+                "number": "T025",
+                "title": "T025 ✅ AI 电子衣橱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-23 或 2026-09-24（暂定） · 制作 AI 电子衣橱内容；侯宇制作成品待交付，具体日期未定"
+              },
+              {
+                "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+                "number": "T022",
+                "title": "T022 ✅ 小猫教程",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-22 · 待建档／未核平台",
+                "plan": "2026-09-21 · 与运营博文沟通定本周计划；做完并发布小猫教程"
+              },
+              {
+                "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+                "number": "T021",
+                "title": "T021 ✅ Jev 模型热点",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-23 · 待建档／未核平台",
+                "plan": "2026-09-21 · 立 Jev 模型热点选题，记下四条抖音对标并完成事实核实（对标里三条讲错了数字）；待定叙事角度"
+              },
+              {
+                "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+                "number": "T019",
+                "title": "T019 ✅ 邪恶银渐层发布会",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-18 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+                "number": "T018",
+                "title": "T018 ✅ AI10大热词科普",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-19 · 待建档／未核平台有创作页",
+                "plan": "2026-09-14 · 科普 Skill 第一轮试跑，出七个 AI 词的五列框架"
+              },
+              {
+                "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+                "number": "T017",
+                "title": "T017 ✅ AI电子情书",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-21 · 待建档／未核平台有创作页",
+                "plan": "2026-09-10 · 制作用 AI 做私人定制生日网站的视频（用户确定今天做）"
+              },
+              {
+                "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+                "number": "T016",
+                "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-10 · 待建档／未核平台有创作页",
+                "plan": "2026-09-08 · 计划同题重拍 WorkBuddy 自媒体实操视频"
+              },
+              {
+                "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+                "number": "T015",
+                "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-04 · 待建档／未核平台",
+                "plan": "2026-09-04 · 录制 GPT-6 热点观点口播（VidMuse 商单顺延）"
+              }
+            ],
+            "pagination": [
+              {
+                "label": "选题列表分页",
+                "text": "共 23 项 · 1–20 项\n上一页\n1\n2\n下一页\n每页条数：20\n跳至\n页",
+                "html": "<nav class=\"pagination-bar\" aria-label=\"选题列表分页\"><span role=\"status\">共 23 项 · 1–20 项</span><ul class=\"semi-page\"><li role=\"button\" aria-disabled=\"true\" aria-label=\"Previous\" class=\"semi-page-item semi-page-prev semi-page-item-disabled\" x-semi-prop=\"prevText\" tabindex=\"-1\"><span aria-label=\"选题列表分页：上一页\">上一页</span></li><li class=\"semi-page-item semi-page-item-active\" aria-label=\"Page 1\" aria-current=\"page\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">1</li><li class=\"semi-page-item\" aria-label=\"Page 2\" aria-current=\"false\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">2</li><li role=\"button\" aria-disabled=\"false\" aria-label=\"Next\" class=\"semi-page-item semi-page-next\" x-semi-prop=\"nextText\" tabindex=\"0\"><span aria-label=\"选题列表分页：下一页\">下一页</span></li><div class=\"semi-page-switch\"><div role=\"combobox\" aria-disabled=\"false\" aria-expanded=\"false\" aria-controls=\"semi-select-n5l607n\" aria-haspopup=\"listbox\" aria-label=\"选题列表分页：每页数量\" class=\"semi-select semi-select-single\" id=\"zb6t746\" tabindex=\"0\" aria-activedescendant=\"zb6t746-option-0\" data-popupid=\"temid06\"><div class=\"semi-select-selection\"><div class=\"semi-select-content-wrapper\"><span class=\"semi-select-selection-text\" x-semi-prop=\"placeholder\"><span>每页条数：20</span></span></div></div><div class=\"semi-select-arrow\" x-semi-prop=\"arrowIcon\"><span role=\"img\" aria-label=\"\" class=\"semi-icon semi-icon-default semi-icon-chevron_down\"><svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" focusable=\"false\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.08 7.6a1.5 1.5 0 0 1 2.12 0l5.66 5.65 5.66-5.65a1.5 1.5 0 1 1 2.12 2.12l-6.72 6.72a1.5 1.5 0 0 1-2.12 0L4.08 9.72a1.5 1.5 0 0 1 0-2.12Z\" fill=\"currentColor\"></path></svg></span></div></div></div><div class=\"semi-page-quickjump\"><span>跳至</span><div class=\"semi-page-quickjump-input-number semi-input-number semi-input-number-size-default\"><div class=\"semi-input-wrapper semi-input-wrapper-default\"><input role=\"spinbutton\" aria-disabled=\"false\" step=\"1\" class=\"semi-input semi-input-default\" placeholder=\"\" type=\"text\" value=\"\" aria-label=\"选题列表分页：跳至页码\"></div></div><span>页</span></div></ul></nav>"
+              }
+            ]
+          }
+        ],
+        "dimensions": [
+          {
+            "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+            "width": 326.6640625,
+            "height": 389.25
+          },
+          {
+            "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+            "width": 326.6640625,
+            "height": 389.25
+          }
+        ]
+      },
+      "list": {
+        "cards": 0,
+        "lists": 20,
+        "radios": [
+          {
+            "value": "on",
+            "checked": false
+          },
+          {
+            "value": "on",
+            "checked": true
+          }
+        ],
+        "groups": [
+          {
+            "heading": "已发布 · 23",
+            "ids": [
+              "b3c332ed-cb8c-479e-a027-360637a5f98c",
+              "33288b82-559b-41a6-adce-698be18ff2bd",
+              "5055d55b-3a90-49fa-abb6-e379eafced1f",
+              "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+              "337982e1-e7a2-4b81-ac4c-8254e015f365",
+              "0b105ede-1190-4908-ae43-e69f7d360c00",
+              "6fef79d7-b91c-4d43-a011-802feca526e3",
+              "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+              "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+              "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+              "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+              "9e670ebf-68a3-4592-a514-b1d805713b99",
+              "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+              "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+              "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+              "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+              "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+              "1202de87-1eec-4e95-a7d2-5af0968d2538",
+              "cba285fe-50e5-49b8-a13d-6f87c9529724",
+              "ee38a050-0b67-40b1-af68-3f650cf4557e"
+            ],
+            "facts": [
+              {
+                "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+                "number": "T047",
+                "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-13 · 待建档／未核平台有创作页",
+                "plan": "2026-10-13 · 立「字幕长图 Skill 起号」选题并当天拍完发布（参考 Julie Yu 抖音）；配套教程放进飞书知识库"
+              },
+              {
+                "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+                "number": "T044",
+                "title": "T044 AI 变现与执行力",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-15 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+                "number": "T043",
+                "title": "T043 X收藏不吃灰的插件和工作流",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+                "number": "T040",
+                "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+                "number": "T039",
+                "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+                "number": "T037",
+                "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+                "number": "T036",
+                "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+                "number": "T035",
+                "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+                "number": "T031",
+                "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-29 · 待建档／未核平台有创作页",
+                "plan": "2026-09-28 · 立「AI 时代的齐民要术」选题（GitHub 开源《高性价比人生指南》），10倍生产力一条抖音参考（4.3 万赞）和时与诗一篇抖音长文章（2.5 万赞）入库；锦成定当晚制作"
+              },
+              {
+                "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+                "number": "T030",
+                "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+                "number": "T028",
+                "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 删除 T008（已并入 T026）和 T003（Skill 科普已由 T018、T028 覆盖），两个编号作废；大李书房《蒸馏的保姆级教程》（6.3 万赞）入库挂到 T026"
+              },
+              {
+                "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+                "number": "T026",
+                "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-01（抖音 21:35，10-08 用 TikHub 核实） · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+                "number": "T025",
+                "title": "T025 ✅ AI 电子衣橱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-23 或 2026-09-24（暂定） · 制作 AI 电子衣橱内容；侯宇制作成品待交付，具体日期未定"
+              },
+              {
+                "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+                "number": "T022",
+                "title": "T022 ✅ 小猫教程",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-22 · 待建档／未核平台",
+                "plan": "2026-09-21 · 与运营博文沟通定本周计划；做完并发布小猫教程"
+              },
+              {
+                "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+                "number": "T021",
+                "title": "T021 ✅ Jev 模型热点",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-23 · 待建档／未核平台",
+                "plan": "2026-09-21 · 立 Jev 模型热点选题，记下四条抖音对标并完成事实核实（对标里三条讲错了数字）；待定叙事角度"
+              },
+              {
+                "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+                "number": "T019",
+                "title": "T019 ✅ 邪恶银渐层发布会",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-18 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+                "number": "T018",
+                "title": "T018 ✅ AI10大热词科普",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-19 · 待建档／未核平台有创作页",
+                "plan": "2026-09-14 · 科普 Skill 第一轮试跑，出七个 AI 词的五列框架"
+              },
+              {
+                "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+                "number": "T017",
+                "title": "T017 ✅ AI电子情书",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-21 · 待建档／未核平台有创作页",
+                "plan": "2026-09-10 · 制作用 AI 做私人定制生日网站的视频（用户确定今天做）"
+              },
+              {
+                "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+                "number": "T016",
+                "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-10 · 待建档／未核平台有创作页",
+                "plan": "2026-09-08 · 计划同题重拍 WorkBuddy 自媒体实操视频"
+              },
+              {
+                "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+                "number": "T015",
+                "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-04 · 待建档／未核平台",
+                "plan": "2026-09-04 · 录制 GPT-6 热点观点口播（VidMuse 商单顺延）"
+              }
+            ],
+            "pagination": [
+              {
+                "label": "选题列表分页",
+                "text": "共 23 项 · 1–20 项\n上一页\n1\n2\n下一页\n每页条数：20\n跳至\n页",
+                "html": "<nav class=\"pagination-bar\" aria-label=\"选题列表分页\"><span role=\"status\">共 23 项 · 1–20 项</span><ul class=\"semi-page\"><li role=\"button\" aria-disabled=\"true\" aria-label=\"Previous\" class=\"semi-page-item semi-page-prev semi-page-item-disabled\" x-semi-prop=\"prevText\" tabindex=\"-1\"><span aria-label=\"选题列表分页：上一页\">上一页</span></li><li class=\"semi-page-item semi-page-item-active\" aria-label=\"Page 1\" aria-current=\"page\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">1</li><li class=\"semi-page-item\" aria-label=\"Page 2\" aria-current=\"false\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">2</li><li role=\"button\" aria-disabled=\"false\" aria-label=\"Next\" class=\"semi-page-item semi-page-next\" x-semi-prop=\"nextText\" tabindex=\"0\"><span aria-label=\"选题列表分页：下一页\">下一页</span></li><div class=\"semi-page-switch\"><div role=\"combobox\" aria-disabled=\"false\" aria-expanded=\"false\" aria-controls=\"semi-select-n5l607n\" aria-haspopup=\"listbox\" aria-label=\"选题列表分页：每页数量\" class=\"semi-select semi-select-single\" id=\"zb6t746\" tabindex=\"0\" aria-activedescendant=\"zb6t746-option-0\" data-popupid=\"temid06\"><div class=\"semi-select-selection\"><div class=\"semi-select-content-wrapper\"><span class=\"semi-select-selection-text\" x-semi-prop=\"placeholder\"><span>每页条数：20</span></span></div></div><div class=\"semi-select-arrow\" x-semi-prop=\"arrowIcon\"><span role=\"img\" aria-label=\"\" class=\"semi-icon semi-icon-default semi-icon-chevron_down\"><svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" focusable=\"false\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.08 7.6a1.5 1.5 0 0 1 2.12 0l5.66 5.65 5.66-5.65a1.5 1.5 0 1 1 2.12 2.12l-6.72 6.72a1.5 1.5 0 0 1-2.12 0L4.08 9.72a1.5 1.5 0 0 1 0-2.12Z\" fill=\"currentColor\"></path></svg></span></div></div></div><div class=\"semi-page-quickjump\"><span>跳至</span><div class=\"semi-page-quickjump-input-number semi-input-number semi-input-number-size-default\"><div class=\"semi-input-wrapper semi-input-wrapper-default\"><input role=\"spinbutton\" aria-disabled=\"false\" step=\"1\" class=\"semi-input semi-input-default\" placeholder=\"\" type=\"text\" value=\"\" aria-label=\"选题列表分页：跳至页码\"></div></div><span>页</span></div></ul></nav>"
+              }
+            ]
+          }
+        ],
+        "dimensions": []
+      },
+      "searchFilterPreserved": true,
+      "paginationNavCount": 1,
+      "nextPage": {
+        "cards": 3,
+        "lists": 0,
+        "radios": [
+          {
+            "value": "on",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "checked": false
+          }
+        ],
+        "groups": [
+          {
+            "heading": "已发布 · 23",
+            "ids": [
+              "5d3d4899-8a09-4d86-a5c2-b05577376954",
+              "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+              "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1"
+            ],
+            "facts": [
+              {
+                "id": "5d3d4899-8a09-4d86-a5c2-b05577376954",
+                "number": "T012",
+                "title": "T012 ✅ Image2 脏点怎么解决",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-03 · 制作 Image2 脏点解决教程"
+              },
+              {
+                "id": "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+                "number": "T011",
+                "title": "T011 ✅ 工信部文件热点里的 FDE",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-06 · 待建档／未核平台",
+                "plan": "2026-09-02 · 录制工信部文件热点里的 FDE 视频"
+              },
+              {
+                "id": "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1",
+                "number": "T009",
+                "title": "T009 ✅ 正在学 AI 的人，为什么值得顺手做 AI 自媒体",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-08-24 · 待建档／未核平台",
+                "plan": ""
+              }
+            ],
+            "pagination": [
+              {
+                "label": "选题列表分页",
+                "text": "共 23 项 · 21–23 项\n上一页\n1\n2\n下一页\n每页条数：20\n跳至\n页",
+                "html": "<nav class=\"pagination-bar\" aria-label=\"选题列表分页\"><span role=\"status\">共 23 项 · 21–23 项</span><ul class=\"semi-page\"><li role=\"button\" aria-disabled=\"false\" aria-label=\"Previous\" class=\"semi-page-item semi-page-prev\" x-semi-prop=\"prevText\" tabindex=\"0\"><span aria-label=\"选题列表分页：上一页\">上一页</span></li><li class=\"semi-page-item\" aria-label=\"Page 1\" aria-current=\"false\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">1</li><li class=\"semi-page-item semi-page-item-active\" aria-label=\"Page 2\" aria-current=\"page\" role=\"button\" aria-disabled=\"false\" tabindex=\"0\">2</li><li role=\"button\" aria-disabled=\"true\" aria-label=\"Next\" class=\"semi-page-item semi-page-item-disabled semi-page-next\" x-semi-prop=\"nextText\" tabindex=\"-1\"><span aria-label=\"选题列表分页：下一页\">下一页</span></li><div class=\"semi-page-switch\"><div role=\"combobox\" aria-disabled=\"false\" aria-expanded=\"false\" aria-controls=\"semi-select-08ho0rx\" aria-haspopup=\"listbox\" aria-label=\"选题列表分页：每页数量\" class=\"semi-select semi-select-single\" id=\"y3c899v\" tabindex=\"0\" aria-activedescendant=\"y3c899v-option-0\" data-popupid=\"lap82jm\"><div class=\"semi-select-selection\"><div class=\"semi-select-content-wrapper\"><span class=\"semi-select-selection-text\" x-semi-prop=\"placeholder\"><span>每页条数：20</span></span></div></div><div class=\"semi-select-arrow\" x-semi-prop=\"arrowIcon\"><span role=\"img\" aria-label=\"\" class=\"semi-icon semi-icon-default semi-icon-chevron_down\"><svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" focusable=\"false\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.08 7.6a1.5 1.5 0 0 1 2.12 0l5.66 5.65 5.66-5.65a1.5 1.5 0 1 1 2.12 2.12l-6.72 6.72a1.5 1.5 0 0 1-2.12 0L4.08 9.72a1.5 1.5 0 0 1 0-2.12Z\" fill=\"currentColor\"></path></svg></span></div></div></div><div class=\"semi-page-quickjump\"><span>跳至</span><div class=\"semi-page-quickjump-input-number semi-input-number semi-input-number-size-default\"><div class=\"semi-input-wrapper semi-input-wrapper-default\"><input role=\"spinbutton\" aria-disabled=\"false\" step=\"1\" class=\"semi-input semi-input-default\" placeholder=\"\" type=\"text\" value=\"\" aria-label=\"选题列表分页：跳至页码\"></div></div><span>页</span></div></ul></nav>"
+              }
+            ]
+          }
+        ],
+        "dimensions": [
+          {
+            "id": "5d3d4899-8a09-4d86-a5c2-b05577376954",
+            "width": 326.6640625,
+            "height": 345.0625
+          },
+          {
+            "id": "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+            "width": 326.6640625,
+            "height": 345.0625
+          },
+          {
+            "id": "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1",
+            "width": 326.6640625,
+            "height": 345.0625
+          }
+        ]
+      },
+      "pageSizeSelector": "<div role=\"combobox\" aria-disabled=\"false\" aria-expanded=\"false\" aria-controls=\"semi-select-08ho0rx\" aria-haspopup=\"listbox\" aria-label=\"选题列表分页：每页数量\" class=\"semi-select semi-select-single\" id=\"y3c899v\" tabindex=\"0\" aria-activedescendant=\"y3c899v-option-0\" data-popupid=\"lap82jm\"><div class=\"semi-select-selection\"><div class=\"semi-select-content-wrapper\"><span class=\"semi-select-selection-text\" x-semi-prop=\"placeholder\"><span>每页条数：20</span></span></div></div><div class=\"semi-select-arrow\" x-semi-prop=\"arrowIcon\"><span role=\"img\" aria-label=\"\" class=\"semi-icon semi-icon-default semi-icon-chevron_down\"><svg viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" width=\"1em\" height=\"1em\" focusable=\"false\" aria-hidden=\"true\"><path fill-rule=\"evenodd\" clip-rule=\"evenodd\" d=\"M4.08 7.6a1.5 1.5 0 0 1 2.12 0l5.66 5.65 5.66-5.65a1.5 1.5 0 1 1 2.12 2.12l-6.72 6.72a1.5 1.5 0 0 1-2.12 0L4.08 9.72a1.5 1.5 0 0 1 0-2.12Z\" fill=\"currentColor\"></path></svg></span></div></div>",
+      "pageSizeOptions": [
+        "每页条数：20",
+        "每页条数：50",
+        "每页条数：100"
+      ],
+      "pageSize50": {
+        "cards": 23,
+        "lists": 0,
+        "radios": [
+          {
+            "value": "on",
+            "checked": true
+          },
+          {
+            "value": "on",
+            "checked": false
+          }
+        ],
+        "groups": [
+          {
+            "heading": "已发布 · 23",
+            "ids": [
+              "b3c332ed-cb8c-479e-a027-360637a5f98c",
+              "33288b82-559b-41a6-adce-698be18ff2bd",
+              "5055d55b-3a90-49fa-abb6-e379eafced1f",
+              "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+              "337982e1-e7a2-4b81-ac4c-8254e015f365",
+              "0b105ede-1190-4908-ae43-e69f7d360c00",
+              "6fef79d7-b91c-4d43-a011-802feca526e3",
+              "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+              "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+              "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+              "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+              "9e670ebf-68a3-4592-a514-b1d805713b99",
+              "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+              "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+              "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+              "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+              "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+              "1202de87-1eec-4e95-a7d2-5af0968d2538",
+              "cba285fe-50e5-49b8-a13d-6f87c9529724",
+              "ee38a050-0b67-40b1-af68-3f650cf4557e",
+              "5d3d4899-8a09-4d86-a5c2-b05577376954",
+              "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+              "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1"
+            ],
+            "facts": [
+              {
+                "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+                "number": "T047",
+                "title": "T047 ✅ 字幕长图 Skill 起号：一段提示词把访谈视频做成观点图",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-13 · 待建档／未核平台有创作页",
+                "plan": "2026-10-13 · 立「字幕长图 Skill 起号」选题并当天拍完发布（参考 Julie Yu 抖音）；配套教程放进飞书知识库"
+              },
+              {
+                "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+                "number": "T044",
+                "title": "T044 AI 变现与执行力",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-15 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+                "number": "T043",
+                "title": "T043 X收藏不吃灰的插件和工作流",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+                "number": "T040",
+                "title": "T040 ✅ 门当户对：没人嫌贫爱富，依旧人以群分",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+                "number": "T039",
+                "title": "T039 ✅ 幸福者退让：让一步，到底算不算怂",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+                "number": "T037",
+                "title": "T037 ✅ 破窗效应：第一处乱没人管，就会招来更多的乱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-06 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+                "number": "T036",
+                "title": "T036 ✅ 聚光灯效应：别人没你想的那么在意你",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+                "number": "T035",
+                "title": "T035 ✅ 状态杠杆：先做那件能让后面都变容易的事",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台",
+                "plan": ""
+              },
+              {
+                "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+                "number": "T031",
+                "title": "T031 ✅ AI 时代的齐民要术：GitHub 开源的《高性价比人生指南》，装进 AI 当人生决策助手",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-29 · 待建档／未核平台有创作页",
+                "plan": "2026-09-28 · 立「AI 时代的齐民要术」选题（GitHub 开源《高性价比人生指南》），10倍生产力一条抖音参考（4.3 万赞）和时与诗一篇抖音长文章（2.5 万赞）入库；锦成定当晚制作"
+              },
+              {
+                "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+                "number": "T030",
+                "title": "T030 ✅ 用 WorkBuddy 搭个人知识库（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-08 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+                "number": "T028",
+                "title": "T028 ✅ Skill 教程：从零做出你自己的第一个 Skill，做完怎么安装",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-05 · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 删除 T008（已并入 T026）和 T003（Skill 科普已由 T018、T028 覆盖），两个编号作废；大李书房《蒸馏的保姆级教程》（6.3 万赞）入库挂到 T026"
+              },
+              {
+                "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+                "number": "T026",
+                "title": "T026 ✅ 把书蒸馏成 Skill：两步把一本书变成 AI 可反复调用的能力（教程）",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-01（抖音 21:35，10-08 用 TikHub 核实） · 待建档／未核平台有创作页",
+                "plan": "2026-09-24 · 与博文沟通定下接下来四条的拍摄顺序，博文要求不改：T026 图书 Skill → T020 口播 → T029 → T030；四条拍完约够发到国庆假期复工，拍完看数据先定方向再选题（沟通记录）"
+              },
+              {
+                "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+                "number": "T025",
+                "title": "T025 ✅ AI 电子衣橱",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-10-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-23 或 2026-09-24（暂定） · 制作 AI 电子衣橱内容；侯宇制作成品待交付，具体日期未定"
+              },
+              {
+                "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+                "number": "T022",
+                "title": "T022 ✅ 小猫教程",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-22 · 待建档／未核平台",
+                "plan": "2026-09-21 · 与运营博文沟通定本周计划；做完并发布小猫教程"
+              },
+              {
+                "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+                "number": "T021",
+                "title": "T021 ✅ Jev 模型热点",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-23 · 待建档／未核平台",
+                "plan": "2026-09-21 · 立 Jev 模型热点选题，记下四条抖音对标并完成事实核实（对标里三条讲错了数字）；待定叙事角度"
+              },
+              {
+                "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+                "number": "T019",
+                "title": "T019 ✅ 邪恶银渐层发布会",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-18 · 待建档／未核平台有创作页",
+                "plan": ""
+              },
+              {
+                "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+                "number": "T018",
+                "title": "T018 ✅ AI10大热词科普",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-19 · 待建档／未核平台有创作页",
+                "plan": "2026-09-14 · 科普 Skill 第一轮试跑，出七个 AI 词的五列框架"
+              },
+              {
+                "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+                "number": "T017",
+                "title": "T017 ✅ AI电子情书",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-21 · 待建档／未核平台有创作页",
+                "plan": "2026-09-10 · 制作用 AI 做私人定制生日网站的视频（用户确定今天做）"
+              },
+              {
+                "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+                "number": "T016",
+                "title": "T016 ✅ WorkBuddy 自媒体实操重拍",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-10 · 待建档／未核平台有创作页",
+                "plan": "2026-09-08 · 计划同题重拍 WorkBuddy 自媒体实操视频"
+              },
+              {
+                "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+                "number": "T015",
+                "title": "T015 ✅ GPT-6 热点：模型升级救不了你卡住的地方",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-04 · 待建档／未核平台",
+                "plan": "2026-09-04 · 录制 GPT-6 热点观点口播（VidMuse 商单顺延）"
+              },
+              {
+                "id": "5d3d4899-8a09-4d86-a5c2-b05577376954",
+                "number": "T012",
+                "title": "T012 ✅ Image2 脏点怎么解决",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-07 · 待建档／未核平台有创作页",
+                "plan": "2026-09-03 · 制作 Image2 脏点解决教程"
+              },
+              {
+                "id": "1c2eeb4f-9097-486a-a07a-fb42f8a8957c",
+                "number": "T011",
+                "title": "T011 ✅ 工信部文件热点里的 FDE",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-09-06 · 待建档／未核平台",
+                "plan": "2026-09-02 · 录制工信部文件热点里的 FDE 视频"
+              },
+              {
+                "id": "ddaa97ed-0766-4dd5-aa64-d4fabbbfbcf1",
+                "number": "T009",
+                "title": "T009 ✅ 正在学 AI 的人，为什么值得顺手做 AI 自媒体",
+                "status": "已发布",
+                "facts": "原选题人工发布记录 · 2026-08-24 · 待建档／未核平台",
+                "plan": ""
+              }
+            ],
+            "pagination": []
+          }
+        ],
+        "dimensions": [
+          {
+            "id": "b3c332ed-cb8c-479e-a027-360637a5f98c",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "33288b82-559b-41a6-adce-698be18ff2bd",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "5055d55b-3a90-49fa-abb6-e379eafced1f",
+            "width": 326.6640625,
+            "height": 451.4375
+          },
+          {
+            "id": "00e6be62-8e27-4dbc-a0a1-5bf1c1b11418",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "337982e1-e7a2-4b81-ac4c-8254e015f365",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "0b105ede-1190-4908-ae43-e69f7d360c00",
+            "width": 326.6640625,
+            "height": 333.9609375
+          },
+          {
+            "id": "6fef79d7-b91c-4d43-a011-802feca526e3",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "14e6c0c5-f3a0-48b8-a962-28561948d1d8",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "b985735f-8ca4-448b-a7d0-7b78f664a71a",
+            "width": 326.6640625,
+            "height": 475.4375
+          },
+          {
+            "id": "adcc5a79-b74f-4d14-a3c0-1e365c0d9c78",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "bdcb8db2-6b26-4e1f-a175-3cb53ff61f12",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "9e670ebf-68a3-4592-a514-b1d805713b99",
+            "width": 326.6640625,
+            "height": 517.71875
+          },
+          {
+            "id": "099ce394-cb2f-47ca-a49b-002ae87c2f3b",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "4e250eb6-9f1b-45ac-afc2-a149a484b967",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "873e1151-9ad4-4538-a798-66fbcb8d2cf5",
+            "width": 326.6640625,
+            "height": 433.4375
+          },
+          {
+            "id": "2745a353-30c7-407d-ac7a-a0083a90f1d2",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "ecc593ce-ab3f-4093-afff-c04059f9cf33",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "1202de87-1eec-4e95-a7d2-5af0968d2538",
+            "width": 326.6640625,
+            "height": 411.34375
+          },
+          {
+            "id": "cba285fe-50e5-49b8-a13d-6f87c9529724",
+            "width": 326.6640625,
+            "height": 389.25
+          },
+          {
+            "id": "ee38a050-0b67-40b1-af68-3f650cf4557e",
+            "width": 326.6640625,
+            "height": 389.25
+          }
+        ]
+      }
+    }
+  },
+  "version": "0.5.1",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "directoryCount": 48,
+  "allAndCollections": {
+    "rows": 20,
+    "table": true,
+    "pagination": [
+      "共 48 项 · 1–20 项\n上一页\n1\n2\n3\n下一页\n每页条数：20\n跳至\n页"
+    ],
+    "viewSwitch": false
+  },
+  "passed": true
+}

@@ -1,0 +1,567 @@
+{
+  "at": "2026-10-28T07:00:15.101Z",
+  "desktop": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs",
+  "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/machine-parity-2026-10-28T07-00-15-096Z",
+  "scope": "Hidden native Electron actual React/Semi; explicit isolated fixture; no original/user library writes; not installed-app/platform acceptance",
+  "rules": [
+    "Foundation-01",
+    "Foundation-03",
+    "Layout-01",
+    "Surface-01",
+    "Controls-01",
+    "Controls-02",
+    "Controls-03",
+    "Reading-02",
+    "Interaction-03",
+    "Acceptance-01",
+    "Acceptance-02",
+    "Acceptance-03"
+  ],
+  "steps": [
+    "Research form compact headings, removed explanatory copy, intact ARIA, default comments false, cancellation retention and marker cleanup verified without creating a task"
+  ],
+  "views": {
+    "research-compact-1280": {
+      "width": 1280,
+      "height": 828,
+      "scrollWidth": 1280,
+      "bodyScrollWidth": 1280,
+      "overflow": []
+    },
+    "research-compact-960": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960,
+      "bodyScrollWidth": 960,
+      "overflow": []
+    },
+    "research-compact-960-bottom": {
+      "width": 960,
+      "height": 648,
+      "scrollWidth": 960,
+      "bodyScrollWidth": 960,
+      "overflow": []
+    }
+  },
+  "groups": {},
+  "externalURLs": [],
+  "revealedFolders": [],
+  "referenceRequests": [],
+  "console": [
+    "ResizeObserver loop completed with undelivered notifications.",
+    "ResizeObserver loop completed with undelivered notifications.",
+    "ResizeObserver loop completed with undelivered notifications."
+  ],
+  "host": {
+    "pid": 53368,
+    "userData": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/machine-parity-2026-10-28T07-00-15-096Z",
+    "visible": false,
+    "focused": false,
+    "windowId": 1,
+    "webContentsId": 1,
+    "url": "nova-content://app/index.html",
+    "windows": [
+      {
+        "id": 1,
+        "webContentsId": 1,
+        "url": "nova-content://app/index.html",
+        "visible": false
+      }
+    ]
+  },
+  "version": "0.5.2",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "directoryCount": 48,
+  "beforeTasks": 0,
+  "topicBaseline": {
+    "path": "/Users/mac/code/dashboard/Nova-Content-Hub/docs/verification/production/2026-10-28-parity-review/card-ui/2026-10-28T06-34-31-653Z/result.json",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "counts": {
+      "all": 48,
+      "todo": 10,
+      "paused": 7,
+      "written": 31
+    }
+  },
+  "startupNavigation": {
+    "url": "nova-content://app/index.html",
+    "active": "nav-overview",
+    "dialogs": [],
+    "events": [
+      {
+        "kind": "click",
+        "trusted": false,
+        "at": "2026-10-28T07:00:16.704Z",
+        "id": "welcome-open-library",
+        "text": "打开知识库",
+        "class": "semi-button semi-button-primary semi-button-light"
+      }
+    ]
+  },
+  "researchForm": {
+    "removedCopy": [
+      "取消或按 Esc 会保留本次填写，重新打开可继续。",
+      "明确对象后按服务预算采集；账号只从该账号真实作品响应选最多3条原片。留空只读已有材料，不会自动搜索。",
+      "两种深度都遵守本次采集预算；资料不足会说明缺口，评论另行选择。",
+      "评论按采集请求计费，可能多次收费；需服务已开启并受本任务预算限制。未开通预算时可使用手工提供的资料。"
+    ],
+    "views": {
+      "960": {
+        "viewport": {
+          "width": 960,
+          "height": 648
+        },
+        "text": "新建调研想研究什么0/100000资料平台资料平台抖音账号或视频链接／关键词调研深度简单调研 · 先判断方向精细调研 · 为具体创作做准备自定义标题（选填）调研标题 选填采集评论取消创建并打开助手",
+        "dialog": {
+          "top": 24,
+          "bottom": 624,
+          "left": 120,
+          "right": 840,
+          "width": 720,
+          "height": 600,
+          "scrollHeight": 598,
+          "clientHeight": 598
+        },
+        "body": {
+          "top": 94,
+          "bottom": 558,
+          "left": 121,
+          "right": 839,
+          "width": 718,
+          "height": 464,
+          "scrollHeight": 487,
+          "clientHeight": 464
+        },
+        "heading": {
+          "top": 25,
+          "bottom": 94,
+          "left": 121,
+          "right": 839,
+          "width": 718,
+          "height": 69,
+          "scrollHeight": 68,
+          "clientHeight": 68
+        },
+        "footer": {
+          "top": 558,
+          "bottom": 623,
+          "left": 121,
+          "right": 839,
+          "width": 718,
+          "height": 65,
+          "scrollHeight": 64,
+          "clientHeight": 64
+        },
+        "options": [
+          {
+            "text": "简单调研 · 先判断方向",
+            "strong": "简单调研 · 先判断方向",
+            "radioCount": 1,
+            "otherText": "",
+            "unexpected": 0,
+            "rect": {
+              "top": 441.1875,
+              "bottom": 483.984375,
+              "left": 147,
+              "right": 475,
+              "width": 328,
+              "height": 42.796875,
+              "scrollHeight": 41,
+              "clientHeight": 41
+            },
+            "strongWeight": "700",
+            "html": "<span class=\"production-depth-heading\"><input type=\"radio\" value=\"simple\" checked=\"\" name=\"research-depth\"><strong>简单调研 · 先判断方向</strong></span>"
+          },
+          {
+            "text": "精细调研 · 为具体创作做准备",
+            "strong": "精细调研 · 为具体创作做准备",
+            "radioCount": 1,
+            "otherText": "",
+            "unexpected": 0,
+            "rect": {
+              "top": 441.1875,
+              "bottom": 483.984375,
+              "left": 485,
+              "right": 813,
+              "width": 328,
+              "height": 42.796875,
+              "scrollHeight": 41,
+              "clientHeight": 41
+            },
+            "strongWeight": "700",
+            "html": "<span class=\"production-depth-heading\"><input type=\"radio\" value=\"detailed\" name=\"research-depth\"><strong>精细调研 · 为具体创作做准备</strong></span>"
+          }
+        ],
+        "danglingDescriptions": [],
+        "comments": [
+          false
+        ],
+        "prompt": "",
+        "target": "",
+        "mode": "simple"
+      },
+      "1280": {
+        "viewport": {
+          "width": 1280,
+          "height": 828
+        },
+        "text": "新建调研想研究什么0/100000资料平台资料平台抖音账号或视频链接／关键词调研深度简单调研 · 先判断方向精细调研 · 为具体创作做准备自定义标题（选填）调研标题 选填采集评论取消创建并打开助手",
+        "dialog": {
+          "top": 102.5648193359375,
+          "bottom": 725.51025390625,
+          "left": 280.02252197265625,
+          "right": 999.9774780273438,
+          "width": 719.9549560546875,
+          "height": 622.9454345703125,
+          "scrollHeight": 621,
+          "clientHeight": 621
+        },
+        "body": {
+          "top": 172.56044006347656,
+          "bottom": 659.5143585205078,
+          "left": 281.0224609375,
+          "right": 998.9775390625,
+          "width": 717.955078125,
+          "height": 486.95391845703125,
+          "scrollHeight": 487,
+          "clientHeight": 487
+        },
+        "heading": {
+          "top": 103.56475830078125,
+          "bottom": 172.56044006347656,
+          "left": 281.0224609375,
+          "right": 998.9775390625,
+          "width": 717.955078125,
+          "height": 68.99568176269531,
+          "scrollHeight": 68,
+          "clientHeight": 68
+        },
+        "footer": {
+          "top": 659.5143432617188,
+          "bottom": 724.5103149414062,
+          "left": 281.0224609375,
+          "right": 998.9775390625,
+          "width": 717.955078125,
+          "height": 64.9959716796875,
+          "scrollHeight": 64,
+          "clientHeight": 64
+        },
+        "options": [
+          {
+            "text": "简单调研 · 先判断方向",
+            "strong": "简单调研 · 先判断方向",
+            "radioCount": 1,
+            "otherText": "",
+            "unexpected": 0,
+            "rect": {
+              "top": 519.7261962890625,
+              "bottom": 562.5204467773438,
+              "left": 307.0208435058594,
+              "right": 635.0003662109375,
+              "width": 327.9795227050781,
+              "height": 42.79425048828125,
+              "scrollHeight": 41,
+              "clientHeight": 41
+            },
+            "strongWeight": "700",
+            "html": "<span class=\"production-depth-heading\"><input type=\"radio\" value=\"simple\" checked=\"\" name=\"research-depth\"><strong>简单调研 · 先判断方向</strong></span>"
+          },
+          {
+            "text": "精细调研 · 为具体创作做准备",
+            "strong": "精细调研 · 为具体创作做准备",
+            "radioCount": 1,
+            "otherText": "",
+            "unexpected": 0,
+            "rect": {
+              "top": 519.7261962890625,
+              "bottom": 562.5204467773438,
+              "left": 644.9996948242188,
+              "right": 972.9791870117188,
+              "width": 327.9794921875,
+              "height": 42.79425048828125,
+              "scrollHeight": 41,
+              "clientHeight": 41
+            },
+            "strongWeight": "700",
+            "html": "<span class=\"production-depth-heading\"><input type=\"radio\" value=\"detailed\" name=\"research-depth\"><strong>精细调研 · 为具体创作做准备</strong></span>"
+          }
+        ],
+        "danglingDescriptions": [],
+        "comments": [
+          false
+        ],
+        "prompt": "",
+        "target": "",
+        "mode": "simple"
+      }
+    },
+    "cancelReopenRetained": {
+      "prompt": "UI parity fixture",
+      "target": "UI parity fixture",
+      "mode": "detailed",
+      "comments": [
+        false
+      ]
+    },
+    "markerCleared": true
+  },
+  "navTrace": {
+    "before": {
+      "url": "nova-content://app/index.html",
+      "active": "nav-accounts",
+      "navContent": "<button id=\"nav-content\" class=\"semi-button semi-button-primary semi-button-borderless nav-item\" type=\"button\" aria-disabled=\"false\"><span class=\"semi-button-content\" x-semi-prop=\"children\"><svg class=\"nav-symbol\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M5 3h10l4 4v14H5z M14 3v5h5 M9 12h6 M9 16h6\"></path></svg>内容项目</span></button>",
+      "dialogs": [],
+      "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 对标账号\n\n对标账号\n本机保存\n刷新\n研究与创作\n对标账号\n\n保存账号、截图与拆解。\n\n新建调研\n添加账号\n\n调研填写已保留。\n\n筛选平台\n全部平台\n原资料来源 · 1 个登记来源\n西\n西门美月XD\n\n暂无账号截图\n\n西门美月XD（抖音） 搜集日期：2026-09-01 数据快照日期：2026-09-01（粉丝、获赞等数据会变，看数据时以此日期为准） 信息来源：用户提供账号资料并确认是核心对标项目所指账号 记录规则：只保存搜集到的原始信息，不做分析、不推测，未提供的字段写「未提供」 基础信息 字段 内容 平台 抖音 达人昵称 西门美月XD 达人 UID 2549092299309587 达人加密 UID MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP 抖音号 49786435553 粉丝数 92107 获赞 641348 关注 66 作品总数 94 达人年龄 26 达人性别 女 IP 属地 浙江 主页链接 主页链接： https://www.douyin.com/user/MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP 简介原文 泥嚎！我是一个超级无敌厉害的大沙雕！ 🤡精神正常的小号@西门聪明蛋XD 补充说明 2026-09-01，用户确认核心对标项目所指账号就是本页记录的账号；准确昵称为「西门美月XD」，达人 UID、加密 UID 和主页链接已经对应。",
+      "events": [
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:16.704Z",
+          "id": "welcome-open-library",
+          "text": "打开知识库",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:35.855Z",
+          "id": "nav-accounts",
+          "text": "对标账号",
+          "class": "semi-button semi-button-primary semi-button-borderless nav-item"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:37.672Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.574Z",
+          "id": "",
+          "text": "",
+          "class": ""
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.583Z",
+          "id": "production-research-platform",
+          "text": "抖音",
+          "class": "semi-select semi-select-single semi-select-filterable"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.590Z",
+          "id": "production-research-platform-option-2",
+          "text": "手工资料",
+          "class": "semi-select-option"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:39.905Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:39.921Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.154Z",
+          "id": "",
+          "text": "",
+          "class": ""
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.162Z",
+          "id": "production-research-platform",
+          "text": "手工资料",
+          "class": "semi-select semi-select-single semi-select-filterable"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.165Z",
+          "id": "production-research-platform-option-0",
+          "text": "抖音",
+          "class": "semi-select-option semi-select-option-focused"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.174Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.185Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.201Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        }
+      ]
+    },
+    "after": {
+      "url": "nova-content://app/index.html",
+      "active": "nav-content",
+      "navContent": "<button id=\"nav-content\" class=\"semi-button semi-button-primary semi-button-borderless nav-item active\" type=\"button\" aria-disabled=\"false\" aria-current=\"page\"><span class=\"semi-button-content\" x-semi-prop=\"children\"><svg class=\"nav-symbol\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\" focusable=\"false\"><path d=\"M5 3h10l4 4v14H5z M14 3v5h5 M9 12h6 M9 16h6\"></path></svg>内容项目</span></button>",
+      "dialogs": [],
+      "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容项目\n本机保存\n刷新\n\nCONTENT · 内容管理\n\n内容项目\n＋ 新建内容\n选题\n在做\n已发布\n全部与合集\n内容类型\n全部类型\n选题状态\n全部状态\n卡片\n列表\n刷新\n准备一条新内容\n\n正在读取待选的选题菜单…\n\n正在读取原选题、安排与创作文件…",
+      "events": [
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:16.704Z",
+          "id": "welcome-open-library",
+          "text": "打开知识库",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:35.855Z",
+          "id": "nav-accounts",
+          "text": "对标账号",
+          "class": "semi-button semi-button-primary semi-button-borderless nav-item"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:37.672Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.574Z",
+          "id": "",
+          "text": "",
+          "class": ""
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.583Z",
+          "id": "production-research-platform",
+          "text": "抖音",
+          "class": "semi-select semi-select-single semi-select-filterable"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:38.590Z",
+          "id": "production-research-platform-option-2",
+          "text": "手工资料",
+          "class": "semi-select-option"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:39.905Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:39.921Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.154Z",
+          "id": "",
+          "text": "",
+          "class": ""
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.162Z",
+          "id": "production-research-platform",
+          "text": "手工资料",
+          "class": "semi-select semi-select-single semi-select-filterable"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.165Z",
+          "id": "production-research-platform-option-0",
+          "text": "抖音",
+          "class": "semi-select-option semi-select-option-focused"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.174Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.185Z",
+          "id": "",
+          "text": "新建调研",
+          "class": "semi-button semi-button-primary semi-button-borderless"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.201Z",
+          "id": "",
+          "text": "取消",
+          "class": "semi-button semi-button-primary semi-button-light"
+        },
+        {
+          "kind": "click",
+          "trusted": false,
+          "at": "2026-10-28T07:00:40.925Z",
+          "id": "nav-content",
+          "text": "内容项目",
+          "class": "semi-button semi-button-primary semi-button-borderless nav-item"
+        }
+      ]
+    }
+  }
+}
