@@ -123,6 +123,8 @@ export function archiveMacOutput(output, arch) {
 export function installerConfig(options, version) {
     const output = path.join(workbench, 'release', `${options.platform}-${options.arch}`, options.channel);
     const icons = path.join(workbench, 'resources/brand/desktop');
+    const marketplace = path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`);
+    const coverPlaceholder = 'nova-content-hub/skills/jc-cover-design/upstream/current/assets/.gitkeep';
     const localAsr=path.join(workbench,'..','.local-probes/local-asr-release-v2',`${options.platform}-${options.arch}`);
     const localAsrResources=options.platform==='darwin'&&options.arch==='arm64'&&fs.existsSync(path.join(localAsr,'runtime.json'))?[{from:localAsr,to:`local-asr/${options.platform}-${options.arch}`,filter:['**/*']}]:[];
     return {
@@ -151,7 +153,12 @@ export function installerConfig(options, version) {
             '!**/*.log', '!**/内容库.json', '!**/.npmrc', '!**/.netrc'
         ],
         // Separate resources preserve the plugin's launch scripts and bundled Node from app-source exclusions.
-        extraResources: [{from: path.join(workbench, `dist-desktop/auth-${options.auth}/workbench/plugin-marketplace`), to: 'plugin-marketplace', filter: ['**/*']},...localAsrResources],
+        extraResources: [
+            {from: marketplace, to: 'plugin-marketplace', filter: ['**/*']},
+            // Builder's recursive walk skips .gitkeep before filtering; copy this sealed file directly.
+            {from: path.join(marketplace, coverPlaceholder), to: `plugin-marketplace/${coverPlaceholder}`},
+            ...localAsrResources
+        ],
         mac: {
             target: [{target: 'dmg', arch: [options.arch]}],
             icon: path.join(icons, 'icon.icns'),
