@@ -73,3 +73,5 @@ export interface CoverWorkerOperations {
   cancelCover: { args: { binding: LibraryBinding; reference: CoverReference; mutationId: string }; result: CoverView };
   candidateRaster: { args: { binding: LibraryBinding; contentId: string; candidateId: string }; result: { data: Uint8Array; mime: string } };
 }
+// Images per rasterBatch request; the worker still overlaps at most four full decodes.
+export const RASTER_BATCH_MAX = 12;

@@ -15,5 +15,5 @@ export function CollectionPreview({memberIds, workspace, library}: {memberIds: s
         if (url && !failed.includes(url) && !urls.includes(url)) urls.push(url);
         if (urls.length === 2) break;
     }
-    return <span className="collection-preview" data-images={urls.length} aria-hidden="true">{urls.length ? urls.map(url => <span className="collection-preview-sheet" key={url}><img src={url} alt="" loading="lazy" onError={() => setFailed(previous => [...previous, url])}/></span>) : <span className="collection-preview-empty">▤</span>}</span>;
+    return <span className="collection-preview" data-images={urls.length} aria-hidden="true">{urls.length ? urls.map(url => <span className="collection-preview-sheet" key={url}><img src={url} alt="" loading="eager" onError={() => setFailed(previous => [...previous, url])}/></span>) : <span className="collection-preview-empty">▤</span>}</span>;
 }

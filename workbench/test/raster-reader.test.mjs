@@ -101,7 +101,8 @@ test('two-image batches isolate bad images and reject an unbounded batch', async
     const replies = await execute('rasterBatch', {binding: f.binding, assetHashes: [bad.assetHash, f.asset.assetHash]}, 'disabled');
     assert.equal(replies[0].ok, false); assert.equal(replies[1].ok, true);
     assert.deepEqual(Buffer.from(replies[1].value.data), f.bytes, 'the good image has fully settled when the batch returns');
-    await assert.rejects(execute('rasterBatch', {binding: f.binding, assetHashes: [bad.assetHash, f.asset.assetHash, '0'.repeat(64)]}), {code: 'INVALID_INPUT'});
+    await assert.rejects(execute('rasterBatch', {binding: f.binding, assetHashes: Array.from({length: 13}, (_, i) => i.toString(16).padStart(64, '0'))}), {code: 'INVALID_INPUT'});
+    await assert.rejects(execute('rasterBatch', {binding: f.binding, assetHashes: [f.asset.assetHash, f.asset.assetHash]}), {code: 'INVALID_INPUT'});
 });
 
 test('image requests merge in flight, cap batches at two, drain before writers, and discard revoked work', async t => {
@@ -116,7 +117,7 @@ test('image requests merge in flight, cap batches at two, drain before writers, 
     const first = covers.resource(urls[0]); assert.equal(covers.resource(urls[0]), first);
     const second = covers.resource(urls[1]), third = covers.resource(urls[2]);
     await new Promise(resolve => setImmediate(resolve));
-    assert.equal(calls.length, 1); assert.equal(calls[0].op, 'rasterBatch'); assert.equal(calls[0].args.assetHashes.length, 2);
+    assert.equal(calls.length, 1); assert.equal(calls[0].op, 'rasterBatch'); assert.equal(calls[0].args.assetHashes.length, 3);
     const writer = run(() => {writerStarted = true;}); await new Promise(resolve => setImmediate(resolve));
     assert.equal(writerStarted, false);
     covers.revoke(); release();

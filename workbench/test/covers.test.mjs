@@ -342,8 +342,10 @@ test('missing photo source retains same pending, resource grants revoke on switc
   assert.equal((await reopened.covers.resource(url)).mime, 'image/png');
   const structure = path.join(f.root, 'structure.svg'); await fs.writeFile(structure, '<svg xmlns="http://www.w3.org/2000/svg" width="8" height="6"><rect width="8" height="6"/></svg>');
   const svg = f.library.importAsset(structure, { purpose: 'template-structure' }); await assert.rejects(call('raster', { binding: f.binding, assetHash: svg.assetHash }), { code: 'INVALID_IMAGE' });
+  const fresh = f.make(); await fresh.initialize(); const freshUrl = (await fresh.listCoverAssets()).templates[0].samples[0].url;
   const assetFile = path.join(f.libraryRoot, '资产', 'sha256', f.asset.assetHash.slice(0, 2), f.asset.assetHash); await fs.writeFile(assetFile, Buffer.from('corrupted'));
-  await assert.rejects(reopened.covers.resource(url), { code: 'CORRUPT' }); await fs.writeFile(assetFile, f.bytes);
+  assert.equal((await reopened.covers.resource(url)).mime, 'image/png', 'bytes verified earlier in this session are served from memory');
+  await assert.rejects(fresh.covers.resource(freshUrl), { code: 'CORRUPT' }); await fs.writeFile(assetFile, f.bytes);
   await reopened.persist({ ...reopened.binding, current: null }); assert.equal(reopened.covers.allows(url), false); assert.equal(await reopened.covers.resource(url), null);
 });
 test('synthetic committed candidates show real bytes, manual selection/export, cancel rejects late continuation', async t => {

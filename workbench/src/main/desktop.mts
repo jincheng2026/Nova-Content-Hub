@@ -40,6 +40,8 @@ import {ProductionPages} from './production-pages.mts';
 import type {TemplateAssistantSetup} from '../shared/template-contracts.ts';
 import type {Assistant, AssistantSetup} from '../shared/cover-contracts.ts';
 
+// Image URLs are content addressed per library epoch, so their bytes never change.
+const IMMUTABLE_IMAGE = 'private, max-age=31536000, immutable';
 const here = path.dirname(fileURLToPath(import.meta.url));
 
 interface StartOptions {
@@ -143,10 +145,10 @@ export async function startDesktop(options:StartOptions = {}) {
         const creation=request.method==='GET'?controller.creation.resource(request.url):null;
         if(creation!==null)return new Response(creation,{headers:{'content-type':'text/html; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors nova-content://app"}});
         if (request.method === 'GET' && controller.covers.allows(request.url)) {
-            try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': 'no-store', 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
+            try { const image = await controller.covers.resource(request.url); if (image) return new Response(image.data, { headers: { 'content-type': image.mime, 'cache-control': IMMUTABLE_IMAGE, 'x-content-type-options': 'nosniff', 'content-security-policy': CSP } }); } catch {}
             return new Response('Not found', { status: 404 });
         }
-        if(request.method==='GET'&&controller.finalAssets.allows(request.url)){try{const image=await controller.finalAssets.resource(request.url);if(image)return new Response(image.data,{headers:{'content-type':image.mime,'cache-control':'no-store','x-content-type-options':'nosniff','content-security-policy':CSP}});}catch{}return new Response('Not found',{status:404});}
+        if(request.method==='GET'&&controller.finalAssets.allows(request.url)){try{const image=await controller.finalAssets.resource(request.url);if(image)return new Response(image.data,{headers:{'content-type':image.mime,'cache-control':IMMUTABLE_IMAGE,'x-content-type-options':'nosniff','content-security-policy':CSP}});}catch{}return new Response('Not found',{status:404});}
         const resource = staticResource(request.url, resources);
         if (request.method !== 'GET' || !resource) return new Response('Not found', {status: 404});
         return new Response(await fs.readFile(path.join(here, '../renderer', resource[0])), {

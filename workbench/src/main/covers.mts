@@ -2,6 +2,7 @@ import {externalExportParent, validateLocalFiles} from './local-files.mts';
 import path from 'node:path';
 import fs from 'node:fs/promises';
 import { randomUUID, createHash } from 'node:crypto';
+import { RASTER_BATCH_MAX } from '../shared/cover-contracts.ts';
 import type { DesktopController } from './controller.mts';
 import type { CoverStart, CoverReference, CoverView, Photo, CoverPending, CoverInput, Assistant, AssistantSetup, CoverContext, CoverActionPending } from '../shared/cover-contracts.ts';
 import type { LibraryBinding, Worker } from '../shared/contracts.ts';
@@ -13,6 +14,10 @@ export class Covers {
   private images = new Map<string, Promise<ImageResource>>();
   private imageQueue: ImageRequest[] = [];
   private readingImages = false;
+  // Verified rasters keyed by content hash, so revisiting a page never waits on the worker again.
+  private verified = new Map<string, {data: Buffer<ArrayBuffer>; mime: string}>();
+  private verifiedBytes = 0;
+  private static readonly VERIFIED_LIMIT = 256 * 1024 * 1024;
   get reading(): Promise<void> { return Promise.allSettled([...this.images.values()]).then(() => {}); }
   owner: DesktopController; epoch = randomUUID(); grants = new Map<string, string>();
   launch?: (binding: LibraryBinding, reference: CoverReference & { requestHash: string; host: Assistant; sessionId?: string }) => Promise<void>;
@@ -30,11 +35,12 @@ export class Covers {
     await this.requireAssistant(context.attempt.host);
     await this.launch!(c.current(), { ...reference, requestHash: context.request.requestHash, host: context.attempt.host, ...(bound && context.progress?.sessionId ? {sessionId: context.progress.sessionId} : {}) });
   }
-  revoke() { this.epoch = randomUUID(); this.grants.clear(); }
+  revoke() { this.epoch = randomUUID(); this.grants.clear(); this.verified.clear(); this.verifiedBytes = 0; }
   grant(hash: string) { const url = `nova-content://assets/${this.epoch}/${hash}`; this.grants.set(url, hash); return url; }
   allows(url: string) { return this.grants.has(url); }
   resource(url: string): Promise<ImageResource> {
     if (!this.allows(url)) return Promise.resolve(null);
+    const cached = this.verified.get(this.grants.get(url)!); if (cached) return Promise.resolve(cached);
     const pending = this.images.get(url); if (pending) return pending;
     const next = new Promise<ImageResource>((resolve, reject) => this.imageQueue.push({url, resolve, reject}));
     this.images.set(url, next);
@@ -46,7 +52,7 @@ export class Covers {
   private async readImages() {
     try {
       while (this.imageQueue.length) {
-        const batch = this.imageQueue.splice(0, 2).filter(request => {
+        const batch = this.imageQueue.splice(0, RASTER_BATCH_MAX).filter(request => {
           if (this.allows(request.url)) return true;
           request.resolve(null); return false;
         });
@@ -65,12 +71,20 @@ export class Covers {
               if (!item.ok) throw Object.assign(new Error(item.error.message), {code: item.error.code});
               const bytes = Buffer.from(item.value.data);
               if (createHash('sha256').update(bytes).digest('hex') !== hashes[i] || !['image/png', 'image/jpeg', 'image/webp', 'image/gif'].includes(item.value.mime)) fail('CORRUPT', '图片内容校验失败。');
-              request.resolve({data: bytes, mime: item.value.mime});
+              const image = {data: bytes, mime: item.value.mime};
+              this.remember(hashes[i]!, image);
+              request.resolve(image);
             } catch (error) {if (epoch !== this.epoch) request.resolve(null); else request.reject(error);}
           }
         } catch (error) {batch.forEach(request => epoch !== this.epoch ? request.resolve(null) : request.reject(error));}
       }
     } finally {this.readingImages = false;}
+  }
+  private remember(hash: string, image: {data: Buffer<ArrayBuffer>; mime: string}) {
+    if (image.data.length > Covers.VERIFIED_LIMIT / 4) return;
+    const previous = this.verified.get(hash); if (previous) {this.verified.delete(hash); this.verifiedBytes -= previous.data.length;}
+    this.verified.set(hash, image); this.verifiedBytes += image.data.length;
+    for (const [oldest, value] of this.verified) {if (this.verifiedBytes <= Covers.VERIFIED_LIMIT) break; this.verified.delete(oldest); this.verifiedBytes -= value.data.length;}
   }
   photo(photo: Photo): Photo { return { ...photo, url: photo.availability === 'available' && photo.assetHash ? this.grant(photo.assetHash) : null }; }
   decorate(view: CoverView) { return { ...view, candidates: view.candidates.map(c => ({ ...c, url: this.grant(c.assetHash) })) }; }
