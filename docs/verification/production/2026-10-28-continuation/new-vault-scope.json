@@ -1,0 +1,8 @@
+{
+  "change": "Do not provision bookmarks sources or 13_X收藏 for fresh default maps",
+  "red": {"command": "node --test plugin-src/src/lib/vault/test/source-map.test.mjs", "pass": 4, "fail": 3, "exitCode": 1},
+  "green": {"command": "node --test plugin-src/src/lib/vault/test/source-map.test.mjs plugin-src/src/lib/vault/test/jincheng-sources.test.mjs plugin-src/src/lib/vault/test/vault.test.mjs", "pass": 32, "fail": 0, "exitCode": 0, "durationSeconds": 44.85},
+  "execution": "Sol/medium implementation agent; main thread reviewed exact two-file diff",
+  "preserved": ["Existing source-map bytes on createDefaultSourceMap/openVault", "Legacy role validation", "Existing X files and directories", "Explicit legacy linked-source reads and hash-checked import registration"],
+  "scope": "Temporary test Vaults only; no user library writes; no UI, build, package or installed acceptance"
+}

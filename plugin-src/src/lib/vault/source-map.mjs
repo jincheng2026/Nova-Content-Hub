@@ -28,8 +28,10 @@ function validate(value){
 export function createDefaultSourceMap(root,{createDirectories=false}={}){
     root=directory(root);mkdir(root,'.workbench');
     if(fs.existsSync(safe(root,FILE,true)))return readSourceMap(root);
-    if(createDirectories)for(const [,,relative]of DEFAULTS)mkdir(root,relative);
-    const value={format:'nova-vault-source-map',schemaVersion:1,sources:DEFAULTS.map(([id,role,relative,authority])=>({id,role,mode:'internal',root:relative,format:'files',authority,writable:authority!=='analysis-copy'})),imports:[]};
+    // Keep legacy roles valid without provisioning excluded business in new maps.
+    const defaults=DEFAULTS.filter(([,role])=>role!=='bookmarks');
+    if(createDirectories)for(const [,,relative]of defaults)mkdir(root,relative);
+    const value={format:'nova-vault-source-map',schemaVersion:1,sources:defaults.map(([id,role,relative,authority])=>({id,role,mode:'internal',root:relative,format:'files',authority,writable:authority!=='analysis-copy'})),imports:[]};
     writeJSON(root,FILE,value);return value;
 }
 export function readSourceMap(root){return validate(json(directory(root),FILE));}
