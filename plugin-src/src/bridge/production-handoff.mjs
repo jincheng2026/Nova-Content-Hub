@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import {uuidFor} from '../lib/vault/core.mjs';
 import {randomUUID} from 'node:crypto';
 import {openLibrary} from '../lib/file-library/index.mjs';
 import {vaultRootForRuntime,readVaultTaskContext} from '../lib/vault/index.mjs';
@@ -37,7 +38,7 @@ export function productionHandoffContext(envelope,launching=false){
 }
 export async function prepareProductionHandoff(target,binding,task,release,options={}){
  releaseFor(release);bindingFor(binding);taskFor(task);
- const {context}=productionHandoffContext({binding,task},true),id=randomUUID();
+ const {context}=productionHandoffContext({binding,task},true),stable=options.currentChat===true||!!context.task.journeyState||!!context.task.journeyMember,id=stable?uuidFor('production-handoff:'+release.pairId+':'+binding.libraryId+':'+task.taskId+':'+task.attemptId):randomUUID();
  const expectedSkill=`nova-content-${productionExecutionCapability(context.task)}-execution`,skill=options.installedSkill||expectedSkill;
  check(skill===expectedSkill,'Installed skill does not match the fixed task capability');
  const business=context.task.request.parameters?.businessSkill;
@@ -46,14 +47,14 @@ export async function prepareProductionHandoff(target,binding,task,release,optio
  const url=new URL(task.host==='codex'?'codex://new':'workbuddy://task');
  if(task.host==='workbuddy'){url.searchParams.set('action','start');url.searchParams.set('skills',skill);}
  url.searchParams.set(task.host==='codex'?'path':'cwd',vaultRootForRuntime(binding.root)||binding.root);url.searchParams.set('prompt',prompt);
- if(url.href.length>2048)fail('内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。','HANDOFF_PATH_TOO_LONG');
+ if(!options.currentChat&&url.href.length>2048)fail('内容库路径过长，无法自动预填助手任务，请选择路径较短的内容库。','HANDOFF_PATH_TOO_LONG');
  if(options.serviceDescriptorPath!==undefined)check(typeof options.serviceDescriptorPath==='string'&&path.isAbsolute(options.serviceDescriptorPath)&&!options.serviceDescriptorPath.includes('\0'),'Invalid service descriptor path');
- const before=directory(target,true),envelope={format:'nova-content-production-handoff',schemaVersion:1,handoffId:id,pairId:release.pairId,AUTH_MODE:release.AUTH_MODE,platform:release.platform,arch:release.arch,binding,task,...(options.serviceDescriptorPath ? {serviceDescriptorPath:options.serviceDescriptorPath} : {}),createdAt:new Date().toISOString()};
+ const before=directory(target,true),envelope={format:'nova-content-production-handoff',schemaVersion:1,handoffId:id,pairId:release.pairId,AUTH_MODE:release.AUTH_MODE,platform:release.platform,arch:release.arch,binding,task,...(options.serviceDescriptorPath ? {serviceDescriptorPath:options.serviceDescriptorPath} : {}),createdAt:stable?context.attempt.createdAt:new Date().toISOString()};
  const bytes=Buffer.from(JSON.stringify(envelope)+'\n');check(bytes.length<=65536,'Handoff too large');
- const fd=fs.openSync(path.join(target,`${id}.production.json`),fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);
- try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
+ let fd;try{fd=fs.openSync(path.join(target,`${id}.production.json`),fs.constants.O_WRONLY|fs.constants.O_CREAT|fs.constants.O_EXCL|fs.constants.O_NOFOLLOW,0o600);}catch(error){if(error.code!=='EEXIST'||!stable)throw error;const prior=readProductionHandoff(target,id,release);check(JSON.stringify(prior)===JSON.stringify(envelope),'The fixed handoff locator is bound to a different envelope');}
+ if(fd!==undefined)try{fs.writeFileSync(fd,bytes);fs.fsyncSync(fd);}finally{fs.closeSync(fd);}
  check(same(before,directory(target)),'Handoff directory changed');productionHandoffContext(envelope,true);
- return {id,url:url.href,prompt,requiresPaste:false};
+ return {id,url:options.currentChat?null:url.href,prompt,requiresPaste:false};
 }
 export function readProductionHandoff(target,id,release){
  releaseFor(release);check(uuid(id),'Invalid handoff ID');

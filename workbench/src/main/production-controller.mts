@@ -1,3 +1,4 @@
+import {validContentJourneyStart,type ContentJourneyStart} from '../shared/content-journey-contracts.ts';
 import {externalAsrIdentity} from './external-asr.mts';
 import {vaultRootForRuntime} from '../../../plugin-src/src/lib/vault/index.mjs';
 import {researchBriefFromText} from '../shared/jincheng-research-brief.ts';
@@ -72,6 +73,19 @@ export class ProductionController {
   }
   try{await this.callbacks.launch(b,{taskId:task.id,attemptId:attempt.id,requestHash:task.requestHash,host:attempt.host});return {opened:true};}
   catch(error){return {opened:false,message:productionLaunchFailure(error)};}
+ }
+ startContentJourney(input:ContentJourneyStart){
+  requireWrite(this.owner.authMode);if(!validContentJourneyStart(input))fail('INVALID_INPUT','内容主线需要准确内容、固定范围和操作编号。');
+  return this.owner.exclusive(async()=>{
+   this.owner.noPending();const binding=this.owner.current(),snapshot=await this.owner.worker.call('productionRead',{binding}),settings=await this.callbacks.serviceSettings(),values=settings.values;
+   const researchPlan=input.researchPlan.map(config=>validateResearchConfig(config));
+   if(input.limits.commentsAllowed&&!values.commentsEnabled||researchPlan.some(config=>config.comments&&!input.limits.commentsAllowed))fail('COMMENTS_DISABLED','评论研究需要本次许可和服务设置许可。');
+   if(researchPlan.some(config=>config.maxRequests>0)&&(!values.budget.enabled||!settings.credentials.tikhub.hasKey||researchPlan.some(config=>config.maxRequests>values.budget.maxRequestsPerTask)))fail('BUDGET_DISABLED','研究范围超过当前已授权请求额度，或尚未配置采集凭证。');
+   let externalIdentity:string|undefined;if(['local-first','local-only'].includes(values.asr.mode)&&values.asr.localEngine==='qwen3-asr'&&values.asr.localModule&&values.asr.localExecutable&&values.asr.localModelPath)try{externalIdentity=await externalAsrIdentity({id:'selected',executable:values.asr.localExecutable,modelPath:values.asr.localModelPath,module:values.asr.localModule});}catch{externalIdentity='UNAVAILABLE';}
+   const saved=await this.write({...this.pendingBase(input.mutationId),kind:'mutate',op:'startJourney',input:{contentId:input.contentId,method:input.method,researchPlan,limits:input.limits,host:this.owner.binding.assistant??'codex',serviceConfig:{asr:values.asr,...(externalIdentity?{externalAsrIdentity:externalIdentity}:{})},expectedToken:snapshot.editToken}}) as ProductionSnapshot;
+   const root=saved.tasks.find(task=>task.contentId===input.contentId&&task.journeyState?.status==='active');if(!root)fail('NOT_FOUND','主线提交结果无法定位。');
+   return {snapshot:await this.read(),...await this.launch(root.id)};
+  });
  }
  startProductionTask(input:ProductionStart){this.validate('startProductionTask',input);return this.owner.exclusive(async()=>{
   this.owner.noPending();const b=this.owner.current();let snapshot=await this.owner.worker.call('productionRead',{binding:b});

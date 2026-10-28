@@ -72,3 +72,12 @@ test('built CLI preserves worker identity, both waits, submit receipt and manual
  const submitted=run('submit',{...identity,mutationId:randomUUID(),result:{summary:'已交付可核验结果',artifacts:[{id:randomUUID(),kind:'research',title:'调研结果',text:'只使用本地测试资料',assetHash:null,data:null}]}});assert.equal(submitted.ok,true);assert.equal(submitted.result.attempt.status,'submitted');assert.equal(submitted.result.serviceDescriptorPath,path.join(f.dir,'service.json'));
  const snapshot=f.lib.readProduction();f.lib.mutateProduction('acceptTask',{taskId:f.task.id,attemptId:f.task.activeAttemptId,receiptHash:submitted.result.attempt.receipt.sha256,expectedToken:snapshot.editToken});assert.equal(run('status').result.attempt.status,'accepted');
 });
+
+test('current-chat handoffs are stable per attempt and can be rebuilt after a lost preparation response',async t=>{
+ const f=fixture(t),directory=path.join(f.dir,'handoffs');
+ const first=await prepareProductionHandoff(directory,f.binding,f.locator,release,{currentChat:true});
+ const replay=await prepareProductionHandoff(directory,f.binding,f.locator,release,{currentChat:true});
+ assert.equal(first.id,replay.id);assert.equal(first.url,null);assert.equal(replay.url,null);assert.equal(fs.readdirSync(directory).length,1);
+ assert.equal(readProductionHandoff(directory,first.id,release).task.taskId,f.task.id);
+ assert.match(first.prompt,/当前聊天/);
+});

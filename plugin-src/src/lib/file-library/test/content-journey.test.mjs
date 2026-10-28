@@ -190,14 +190,14 @@ test('independent processes competing to advance one revision leave exactly one 
  const f=fixture(t),{parent,child,owner,worker}=claimed(f,start(f));f.library.mutateProduction('claimTask',worker);
  const {artifact,work}=materialCheckpoint(f,child,worker);confirmCheckpoint(f.root,{work,kind:'author-materials',artifactId:artifact.artifactId,artifactHash:artifact.hash,expectedRevision:artifact.revision,decision:'confirm',evidence:{actor:'author',text:'确认准确材料',at:new Date().toISOString()}});
  const input={rootClaim:owner,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId},results=await competingMutations(f.binding.root,'advanceJourney',[input,input]);
- assert.equal(results.filter(result=>result.ok).length,1,JSON.stringify(results));assert.ok(results.filter(result=>!result.ok).every(result=>['BUSY','NOT_READY','CONFLICT','LOCK_UNCERTAIN'].includes(result.code)),JSON.stringify(results));
+ assert.equal(results.filter(result=>result.ok).length,1,JSON.stringify(results));assert.ok(results.filter(result=>!result.ok).every(result=>['BUSY','VAULT_BUSY','NOT_READY','CONFLICT','LOCK_UNCERTAIN'].includes(result.code)),JSON.stringify(results));
  const current=f.library.readProduction(),root=current.tasks.find(task=>task.journeyState);assert.equal(root.journeyState.revision,2);assert.equal(root.journeyState.members.length,2);assert.equal(current.tasks.filter(task=>task.journeyMember&&task.attempts.find(attempt=>attempt.id===task.activeAttemptId).status==='created').length,1);
 });
 
 test('independent reservation processes cannot spend the same last journey request twice',async t=>{
  const f=fixture(t),{worker}=claimed(f,start(f,{limits:{...limits,maxRequestsTotal:1},researchPlan:[research('reserve-race')]}));f.library.mutateProduction('claimTask',worker);
  const inputs=[{...worker,requestId:randomUUID(),service:'tikhub'},{...worker,requestId:randomUUID(),service:'tikhub'}],results=await competingMutations(f.binding.root,'reserveCost',inputs);
- assert.equal(results.filter(result=>result.ok).length,1,JSON.stringify(results));assert.ok(results.filter(result=>!result.ok).every(result=>['BUSY','NOT_READY','LOCK_UNCERTAIN','COST_UNKNOWN','BUDGET_EXCEEDED'].includes(result.code)),JSON.stringify(results));
+ assert.equal(results.filter(result=>result.ok).length,1,JSON.stringify(results));assert.ok(results.filter(result=>!result.ok).every(result=>['BUSY','VAULT_BUSY','NOT_READY','LOCK_UNCERTAIN','COST_UNKNOWN','BUDGET_EXCEEDED'].includes(result.code)),JSON.stringify(results));
  assert.equal(f.library.readProduction().costs.length,1);assert.equal(f.library.readProduction().costs[0].amount,1);
 });
 
@@ -239,4 +239,21 @@ test('advance rejects the current child changed source without freezing that cha
  assert.throws(()=>f.library.assertProductionAuthority(worker),{code:'SOURCE_CHANGED'});
  const before=f.library.readProduction();assert.throws(()=>f.library.mutateProduction('advanceJourney',{rootClaim:owner,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId},{mutationId:randomUUID()}),{code:'SOURCE_CHANGED'});
  const after=f.library.readProduction();assert.deepEqual(after.tasks,before.tasks);assert.deepEqual(after.costs,before.costs);assert.equal(after.tasks.find(task=>task.id===parent.id).journeyState.revision,1);assert.equal(after.tasks.find(task=>task.id===child.id).attempts[0].status,'claimed');
+});
+
+test('a confirmed original page advances through exact same-step suggestion receipts but rejects external bytes',async t=>{
+ const f=fixture(t),{parent,child,owner,worker}=claimed(f,start(f));f.library.mutateProduction('claimTask',worker);
+ const material=materialCheckpoint(f,child,worker);confirmCheckpoint(f.root,{work:material.work,kind:'author-materials',artifactId:material.artifact.artifactId,artifactHash:material.artifact.hash,expectedRevision:material.artifact.revision,decision:'confirm',evidence:{actor:'author',text:'作者确认',at:new Date().toISOString()}});
+ let snap=f.library.mutateProduction('advanceJourney',{rootClaim:owner,expectedJourneyRevision:1,expectedStepId:parent.journeyState.activeStepId}),root=snap.tasks.find(t=>t.journeyState),writing=snap.tasks.find(t=>t.id===root.journeyState.activeTaskId);
+ const writer={taskId:writing.id,attemptId:writing.activeAttemptId,claimToken:randomUUID(),workerId:owner.workerId,rootClaimToken:owner.claimToken};f.library.mutateProduction('claimTask',writer);
+ const args={envelope:{binding:f.binding,task:{taskId:writing.id,attemptId:writing.activeAttemptId,requestHash:writing.requestHash}},library:f.library};
+ const built=await runCreationHandoff({...args,operation:'build',payload:{...{claimToken:writer.claimToken,workerId:writer.workerId},input:{mutationId:randomUUID(),data:{content_id:f.document.tNumber,type:'口播',stage:'写稿',title:'准确原页',narrative:{story:'作者判断',audience:'作者读者',problem:'资料读回'},segments:[{id:'seg-one',title:'开头',mine:'作者完整原句。'}]}}}});
+ confirmCheckpoint(f.root,{work:material.work,kind:'complete-draft',artifactId:built.stageArtifact.artifactId,artifactHash:built.stageArtifact.hash,expectedRevision:built.stageArtifact.revision,decision:'confirm',evidence:{actor:'author',text:'确认正文',at:new Date().toISOString()}});
+ const suggested=await runCreationHandoff({...args,operation:'suggest',payload:{claimToken:writer.claimToken,workerId:writer.workerId,input:{mutationId:randomUUID(),expectedRevision:built.revision,suggestion:{segment:'seg-one',category:'表达',source:'AI',original:'作者完整原句。',proposed:'作者完整原句的新建议。',reason:'表达调整',basis:{type:'AI 自己的判断',text:'当前原句'},verdict:'待你定'}}}});
+ assert.equal(f.library.assertProductionAuthority(writer),true);
+ snap=f.library.mutateProduction('advanceJourney',{rootClaim:owner,expectedJourneyRevision:2,expectedStepId:root.journeyState.activeStepId});root=snap.tasks.find(t=>t.journeyState);const review=snap.tasks.find(t=>t.id===root.journeyState.activeTaskId);
+ assert.equal(review.request.parameters.stage,'review-page');assert.equal(review.request.parameters.source.hash,suggested.revision);
+ const reviewer={taskId:review.id,attemptId:review.activeAttemptId,claimToken:randomUUID(),workerId:owner.workerId,rootClaimToken:owner.claimToken};f.library.mutateProduction('claimTask',reviewer);assert.equal(f.library.assertProductionAuthority(reviewer),true);
+ const actual=readVaultTaskContext(f.binding.root,f.document.contentId).content;fs.appendFileSync(path.join(f.root,actual.relativePath),'<!-- 外部修改 -->');
+ assert.throws(()=>f.library.assertProductionAuthority(reviewer),{code:'STALE_INPUT'});
 });

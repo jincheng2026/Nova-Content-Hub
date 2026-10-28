@@ -7,7 +7,7 @@ import {readVaultTaskContext} from '../vault/index.mjs';
 import {applyPositioningCheckpoint} from './positioning-checkpoint.mjs';
 import {renderMarkdownReport} from '../vault/resources.mjs';
 import {researchMediaAuthorized,researchVideoAuthorized,researchGrantAuthorized,validateResearchConfig,hash as researchConfigHash} from '../research-runtime/common.mjs';
-import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt} from './content-journey.mjs';
+import {prepareJourney,journeyChildInput,initialJourneyState,validJourneyTask,rejectJourneyForgery,assertJourneyAuthority,assertJourneyPins,journeyCheckpoint,journeyPlan,isJourneyOutputReceipt,journeyRevisionCurrent} from './content-journey.mjs';
 import {createHash, randomUUID} from 'node:crypto';
 import path from 'node:path';
 import {radarArtifactCandidates,radarId,renderRadarReport} from './radar.mjs';
@@ -133,10 +133,10 @@ export function productionMethods(h) {
         return {t,a};
     }
     function assertJourneyInputs(p,task,input={}){
-        const parent=find(p.tasks,task.journeyMember.journeyId,'journey'),flow=assertJourneyPins(root,parent),c=content(task.contentId),context=readVaultTaskContext(root,task.contentId),work=parent.request.parameters.work;
+        const parent=find(p.tasks,task.journeyMember.journeyId,'journey'),flow=assertJourneyPins(root,parent,p),c=content(task.contentId),context=readVaultTaskContext(root,task.contentId),work=parent.request.parameters.work;
         if(c.deletedAt!==null||context?.vaultId!==work.vaultId||context?.content?.tNumber!==work.workId||context.content.sourceResolution!=='resolved')fail('SOURCE_CHANGED','The bound journey work or current source is unavailable');
         const frozen=task.request.parameters.source,actual=context.content;
-        const ownPage=flow.artifacts.some(artifact=>artifact.taskId===task.id&&artifact.kind==='complete-draft'&&artifact.path===actual.relativePath)||isJourneyOutputReceipt(root,task,input.attemptId,actual,input.sourceMutationId);
+        const ownPage=journeyRevisionCurrent(root,parent,p,frozen,actual,{buildTaskId:task.id})||isJourneyOutputReceipt(root,task,input.attemptId,actual,input.sourceMutationId);
         const frozenSourceCurrent=frozen?.documentId===actual.sourceDocumentId&&frozen?.hash===actual.hash;
         if(!frozen||!frozenSourceCurrent&&!ownPage)fail('SOURCE_CHANGED','The fixed journey source changed; prepare a new step version');
     }

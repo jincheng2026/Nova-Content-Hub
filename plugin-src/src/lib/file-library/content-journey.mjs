@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import {researchResponseDigest} from '../research-runtime/samples.mjs';
 import {validateResearchConfig,canonical,hash} from '../research-runtime/common.mjs';
 import {LibraryError} from './index.mjs';
@@ -79,18 +81,48 @@ export function initialJourneyState(childId,stepId){
  return {revision:1,ownerEpoch:1,status:'active',activeStepId:stepId,activeTaskId:childId,members:[{taskId:childId,stepId,ownerEpoch:1,planIndex:0}],checkpoints:[]};
 }
 
-export function assertJourneyPins(runtimeRoot,root){
+/** Only committed Vault writes from reciprocal members can bridge a working HTML
+ * revision. Both the before and after bytes are checked; arbitrary external edits
+ * cannot become an authorized source by sharing a path or T. */
+export function journeyRevisionCurrent(runtimeRoot,root,production,source,actual,{buildTaskId=null}={}){
+ if(source.relativePath===actual.relativePath&&source.hash===actual.hash&&source.documentId===actual.sourceDocumentId)return true;
+ const vaultRoot=vaultRootForRuntime(runtimeRoot),receipts=[];
+ let names;try{names=fs.readdirSync(path.join(vaultRoot,'.workbench/mutations'));}catch(error){if(error.code==='ENOENT')return false;throw error;}
+ for(const name of names){
+  if(!/^[A-Za-z0-9_-]{8,100}\.json$/.test(name))continue;
+  const receipt=JSON.parse(readBytes(vaultRoot,'.workbench/mutations/'+name)),r=receipt.request,e=r?.execution;
+  if(receipt.status!=='committed'||r?.action!=='creation-document'||!e||receipt.requestHash!==digest(JSON.stringify(r))||receipt.path!==actual.relativePath||r.source?.relativePath!==actual.relativePath||typeof receipt.after!=='string')continue;
+  const task=production.tasks.find(t=>t.id===e.taskId),member=root.journeyState.members.find(m=>m.taskId===e.taskId);
+  if(!task||!member||task.journeyMember?.journeyId!==root.id||task.requestHash!==e.requestHash||!task.attempts.some(a=>a.id===e.attemptId&&['accepted','claimed','waiting-user','waiting-permission'].includes(a.status)))continue;
+  const after=digest(Buffer.from(receipt.after,'base64'));
+  if(after!==receipt.result?.revision||receipt.creationBefore!==undefined&&digest(Buffer.from(receipt.creationBefore,'base64'))!==receipt.beforeHash)continue;
+  const sameDocument=r.source.documentId===actual.sourceDocumentId;
+  if(!sameDocument&&!(r.operation==='build'&&task.id===buildTaskId&&receipt.beforeHash===null))continue;
+  receipts.push({before:receipt.beforeHash,after,build:r.operation==='build'&&task.id===buildTaskId&&receipt.beforeHash===null});
+ }
+ const reached=new Set(source.relativePath===actual.relativePath&&source.documentId===actual.sourceDocumentId?[source.hash]:[]);
+ for(const receipt of receipts)if(receipt.build)reached.add(receipt.after);
+ for(let pass=0;pass<=receipts.length;pass++){const before=reached.size;for(const receipt of receipts)if(reached.has(receipt.before))reached.add(receipt.after);if(reached.size===before)break;}
+ return reached.has(actual.hash);
+}
+
+export function assertJourneyPins(runtimeRoot,root,production){
  const source=root.request.parameters.work,vaultRoot=vaultRootForRuntime(runtimeRoot),flow=readWorkFlow(vaultRoot,{vaultId:source.vaultId,workId:source.workId});
  for(const pin of root.journeyState.checkpoints){
   if(!pin.decisionId){if(digest(readBytes(vaultRoot,pin.path))!==pin.hash)fail('STALE_INPUT','An upstream research report changed');continue;}
   const artifact=flow.artifacts.find(value=>value.artifactId===pin.artifactId&&value.hash===pin.hash),decision=flow.decisions.findLast(value=>value.artifactId===pin.artifactId);
-  if(!artifact||!flow.checkpointStates[artifact.artifactId]?.confirmed||decision?.decisionId!==pin.decisionId||digest(readBytes(vaultRoot,artifact.path))!==pin.hash)fail('STALE_INPUT','An upstream artifact or author decision has changed');
+  let current=!!artifact&&digest(readBytes(vaultRoot,artifact.path))===pin.hash;
+  if(!current&&artifact&&pin.kind==='complete-draft'){
+   const document=flow.originalFacts.find(f=>f.source.relativePath===pin.path)?.source;
+   current=!!document&&journeyRevisionCurrent(runtimeRoot,root,production,{documentId:document.documentId,relativePath:pin.path,hash:pin.hash},{sourceDocumentId:document.documentId,relativePath:pin.path,hash:document.hash});
+  }
+  if(!artifact||!current||decision?.decision!=='confirm'||decision.artifactHash!==pin.hash||decision.decisionId!==pin.decisionId)fail('STALE_INPUT','An upstream artifact or author decision has changed');
  }
  return flow;
 }
 
 export function journeyCheckpoint(runtimeRoot,root,child,production){
- const flow=assertJourneyPins(runtimeRoot,root),stage=child.request.parameters.stage;
+ const flow=assertJourneyPins(runtimeRoot,root,production),stage=child.request.parameters.stage;
  if(child.request.parameters.workflow==='jincheng-research'){
   const config=child.request.parameters.researchRuntime,vaultRoot=vaultRootForRuntime(runtimeRoot);
   let state;
@@ -103,7 +135,9 @@ export function journeyCheckpoint(runtimeRoot,root,child,production){
  if(!kind)fail('CHECKPOINT_REQUIRED','This step requires its verified business completion handler');
  const artifact=flow.artifacts.findLast(value=>value.kind===kind);
  const decision=artifact&&flow.decisions.findLast(value=>value.artifactId===artifact.artifactId);
- if(!artifact||artifact.taskId!==child.id||!flow.checkpointStates[artifact.artifactId]?.confirmed||decision?.decision!=='confirm'||decision.artifactHash!==artifact.hash)fail('CHECKPOINT_REQUIRED','The current step needs its exact persisted artifact and author decision');
+ const original=artifact&&flow.originalFacts.find(f=>f.source.relativePath===artifact.path)?.source;
+ const current=artifact&&(flow.checkpointStates[artifact.artifactId]?.confirmed||kind==='complete-draft'&&original&&journeyRevisionCurrent(runtimeRoot,root,production,{documentId:original.documentId,relativePath:artifact.path,hash:artifact.hash},{sourceDocumentId:original.documentId,relativePath:artifact.path,hash:original.hash}));
+ if(!artifact||artifact.taskId!==child.id||!current||decision?.decision!=='confirm'||decision.artifactHash!==artifact.hash)fail('CHECKPOINT_REQUIRED','The current step needs its exact persisted artifact and author decision');
  return {taskId:child.id,stepId:child.journeyMember.stepId,kind,artifactId:artifact.artifactId,hash:artifact.hash,path:artifact.path,decisionId:decision.decisionId};
 }
 
