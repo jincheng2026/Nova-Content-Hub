@@ -62,3 +62,14 @@ test('direct actions keep browser URLs and material-folder locations separate fr
  assert.deepEqual(calls,[['open','https://www.douyin.com/video/123'],['open','https://example.feishu.cn/docx/abc'],['reveal','02_内容素材/视频']]);
  assert.equal(buttons.filter(button=>button.children==='复制原视频链接').length,1);
 });
+
+test('a large indexed media attachment retains its original reveal ID without acquiring text read authority',()=>{
+ const media={id:'doc-original-media',relativePath:'02_内容素材/视频/原片.mp4',title:'原片',format:'other',bytes:80*1024*1024,writable:false};
+ const card={document:{relativePath:'04_选题库/口播/T020.md'},text:'[原视频](../../02_内容素材/视频/原片.mp4)'};
+ assert.equal(typeof data.referenceTargets,'function','detail reference lookup must include native attachment metadata');
+ const grouped=data.topicReferenceGroups([card],data.referenceTargets({documents:[],attachments:[media]}));
+ const calls=[];render({references:grouped,onLocate:id=>calls.push(id)});
+ assert.equal(buttons.filter(b=>b.children==='阅读资料'||b.children==='阅读逐字稿').length,0);
+ buttons.find(b=>b.children==='定位原件').onClick();assert.deepEqual(calls,['doc-original-media']);
+ assert.equal(grouped.videos[0].links[0].document.hash,undefined,'enumeration must not fabricate a content hash');
+});

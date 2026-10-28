@@ -1,6 +1,10 @@
 import type {VaultDocument, VaultText, VaultWorkContext} from '../shared/vault-contracts.ts';
-import {vaultReferenceLinks as cardLinks, type CardLink, type TopicReference} from '../shared/vault-reference-links.ts';
+import {vaultReferenceLinks as cardLinks, type CardLink, type TopicReference, type ReferenceDocument} from '../shared/vault-reference-links.ts';
 export type {TopicReference} from '../shared/vault-reference-links.ts';
+
+export function referenceTargets(snapshot: {documents?: ReferenceDocument[]; attachments?: ReferenceDocument[]} | null): ReferenceDocument[] {
+  return [...(snapshot?.documents ?? []), ...(snapshot?.attachments ?? [])];
+}
 
 type Work = NonNullable<NonNullable<VaultWorkContext>['content']>;
 export interface DetailFile {
@@ -41,7 +45,7 @@ export function resumeDocument(work: Pick<Work, 'sourceResolution' | 'sourceDocu
 }
 
 /** Only actual indexed documents become read/reveal targets. Unindexed links remain visible evidence. */
-export function topicReferences(cards: VaultText[], documents: VaultDocument[]): TopicReference[] {
+export function topicReferences(cards: VaultText[], documents: ReferenceDocument[]): TopicReference[] {
   return [...new Map(cards.flatMap(card => cardLinks(card, documents)).map(({start: _start, ...link}) => [link.target, link])).values()];
 }
 
@@ -73,7 +77,7 @@ function fallbackTitle(key: string) {
 }
 
 /** Group by actual material identity, with row/list-local evidence for a work's URL and transcript. */
-export function topicReferenceGroups(cards: VaultText[], documents: VaultDocument[]): {videos: VideoReference[]; materials: TopicReference[]} {
+export function topicReferenceGroups(cards: VaultText[], documents: ReferenceDocument[]): {videos: VideoReference[]; materials: TopicReference[]} {
   const videos = new Map<string, VideoReference>(), all = new Map<string, TopicReference>(), used = new Set<string>();
   function group(key: string, title: string) {
     let value = videos.get(key);

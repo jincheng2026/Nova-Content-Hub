@@ -1,0 +1,29 @@
+(node:98648) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ resume waits for the body commit, then focuses only its own visible editor and scrolls it into view (28.833708ms)
+✔ resume works again on the same body tab and respects reduced motion (10.965875ms)
+✔ changing content or unmounting cancels a queued focus before the next paint (14.05475ms)
+✔ failed close protection does not switch tools or move focus (30.270292ms)
+✔ lists every HTML once, separates original topic cards, and retains unmatched file identities (31.583ms)
+✔ resume never guesses a latest page when the author has not resolved the current source (0.158375ms)
+✔ reference parsing resolves original relative links, keeps unindexed targets, and deduplicates original URLs (12.536875ms)
+✔ groups one table work with its original URL and transcript while keeping other sources as materials (2.16475ms)
+✔ retains balanced local paths, excludes them from vault lookup, and strips only bare URL prose punctuation (0.247459ms)
+✔ does not merge separate table rows or attach profile URLs and archives to media works (7.294708ms)
+✔ aggregates repeated material mentions and nested list references without inventing file existence (0.414125ms)
+✔ preserves reference order and work titles when table originals and list source labels are mixed (1.983666ms)
+✔ offers every indexed corrected transcript under the exact work root and never another work (2.015875ms)
+✔ removes full-width prose closers from bare URLs while preserving authored Markdown destinations (0.493458ms)
+✔ renders true work groups separately from other source links with accurate copy actions (23.465125ms)
+✔ read and locate use indexed IDs while copy retains the exact URL or unindexed location (5.170375ms)
+✔ reference actions respect busy state without starting work during render (17.625375ms)
+✔ direct actions keep browser URLs and material-folder locations separate from copying (14.979083ms)
+✔ a large indexed media attachment retains its original reveal ID without acquiring text read authority (12.752792ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2444.589167

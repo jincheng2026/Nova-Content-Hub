@@ -13,7 +13,7 @@ import {parseTopicOverview, type TopicOverview} from './jincheng-directory.ts';
 import {JinchengPublication} from './jincheng-publication.tsx';
 import {JinchengCheckpoints} from './jincheng-checkpoints.tsx';
 import {JinchengStageActions} from './jincheng-stage-actions.tsx';
-import {detailFiles, resumeDocument, topicReferenceGroups, topicReferences, type DetailFile, type TopicReference} from './jincheng-work-detail-data.ts';
+import {detailFiles, resumeDocument, topicReferenceGroups, topicReferences, referenceTargets, type DetailFile, type TopicReference} from './jincheng-work-detail-data.ts';
 import {PagedItems} from './paged-items.tsx';
 import './jincheng-work-detail.css';
 
@@ -71,6 +71,7 @@ export function JinchengWorkDetail(props: Props) {
 function WorkDetail({contentId, resumeOnOpen = false, title, stage, busy, dirty, activeTool, chooseTool, makeCover, showTasks, sourceNotice, children, flush}: Props & {flush(): Promise<void>}) {
   const [context, setContext] = useState<VaultWorkContext | null>(null);
   const [documents, setDocuments] = useState<VaultDocument[]>([]);
+  const [referenceDocuments, setReferenceDocuments] = useState<ReturnType<typeof referenceTargets>>([]);
   const [cards, setCards] = useState<VaultText[]>([]);
   const [overview, setOverview] = useState<TopicOverview | null>(null);
   const [loading, setLoading] = useState(!!contentId), [notice, setNotice] = useState(''), [working, setWorking] = useState(false);
@@ -103,6 +104,7 @@ function WorkDetail({contentId, resumeOnOpen = false, title, stage, busy, dirty,
       if (!live) return;
       const docs = snapshot?.documents ?? [];
       setDocuments(docs);
+      setReferenceDocuments(referenceTargets(snapshot));
       const topicIds = detailFiles(next.content, docs).topicCards.map(file => file.documentId);
       const results = await Promise.allSettled(topicIds.map(id => invoke('readVaultDocument', {id})));
       if (!live) return;
@@ -180,7 +182,7 @@ function WorkDetail({contentId, resumeOnOpen = false, title, stage, busy, dirty,
     });
   }
   const files = work ? detailFiles(work, documents) : {pages: [], topicCards: [], others: []};
-  const references = topicReferenceGroups(cards, documents);
+  const references = topicReferenceGroups(cards, referenceDocuments);
   const referenceIds = new Set([...references.videos.flatMap(reference => reference.links), ...references.materials].flatMap(reference => reference.document ? [reference.document.id] : []));
   const others = files.others.filter(file => !referenceIds.has(file.documentId));
   const selectedId = work ? resumeDocument(work) : null;

@@ -1,15 +1,17 @@
 import type {VaultDocument, VaultText} from './vault-contracts.ts';
 
+/** Display and reveal identity only; this metadata grants no body/hash authority. */
+export type ReferenceDocument = Pick<VaultDocument, 'id' | 'title' | 'relativePath' | 'format'>;
 export interface TopicReference {
   title: string;
   target: string;
   url?: string;
-  document?: VaultDocument;
+  document?: ReferenceDocument;
 }
 export interface CardLink extends TopicReference {start: number}
 
 /** Balanced Markdown destinations may contain parentheses; angle destinations may also contain spaces. */
-export function vaultReferenceLinks(card: VaultText, documents: VaultDocument[]): CardLink[] {
+export function vaultReferenceLinks(card: VaultText, documents: ReferenceDocument[]): CardLink[] {
   const links: CardLink[] = [], spans: Array<[number, number]> = [];
   function add(title: string, raw: string, start: number) {
     const target = raw.replace(/\\([\\()[\] ])/g, '$1');
