@@ -1,0 +1,43 @@
+✔ complete upstream methods are byte-addressed and every bundled resource is verified (503.975458ms)
+✔ discovered adapters require their full method and do not claim legacy service installation (23.704ms)
+✔ topic selection keeps direct conversation and fixed task modes (1.531ms)
+✔ explicit tutorial gates and research/comment methods remain in complete original bodies (0.892667ms)
+✔ archive-only sources never become active routes, and sources grant no external execution authority (3.188875ms)
+✔ critical current bodies retain the independently frozen original hashes (1.198666ms)
+✔ Skill reference mapping uses package paths on both POSIX and Windows filesystems (1.722959ms)
+✔ registered methods have real provenance, a bundled executor and complete installed dependencies (572.0565ms)
+✔ business methods cannot acquire executor permission in either authorization mode (0.791208ms)
+✔ all business resources are covered by integrity; active adapters contain no machine defaults (34.4805ms)
+✔ jc-zhuanxie routes only as a non-executable complete original method with immutable ZIP evidence (79.002084ms)
+✔ jc-review-page routes only as a non-executable complete original method with immutable ZIP evidence (18.163333ms)
+✔ jc-cover-design routes only as a non-executable complete original method with immutable ZIP evidence (16.227667ms)
+✔ jc-kepu-video routes only as a non-executable complete original method with immutable ZIP evidence (21.86875ms)
+✔ new method registration preserves ordinary writing/transcription defaults and isolates actual cover generation (3.660875ms)
+✔ four-method source manifests and installed references pass the existing validators (428.231209ms)
+✔ the four bundled method trees pass the existing artifact credential and local-state gate (732.623583ms)
+✔ nested marketplace permits only hash-registered immutable original test evidence (60.747459ms)
+✔ a source evidence manifest cannot waive credential screening (13.067333ms)
+✔ unregistered app fixtures and machine files remain excluded (8.634583ms)
+✔ copy filters exclude local state, fixtures and logs without excluding service implementation (4.624083ms)
+✔ sealed artifacts reject copied local state by path without reading it (16.439042ms)
+✔ only empty environment examples may ship (5.552125ms)
+✔ detects hardcoded credentials but reports only paths and rule identifiers (17.861042ms)
+✔ ordinary token fields, env reads, provider enums, hashes and mock examples are permitted (23.250917ms)
+✔ archives are checked recursively including gzip, tar, zip, unsafe paths and opaque formats (17.427125ms)
+✔ symlink escapes and over-limit archives fail closed (225.305ms)
+✔ credentials hidden under a different extension remain detectable (3.69025ms)
+✔ packaging hook checks final copied resources before generating installers (11.490875ms)
+✔ fresh settings require the user’s own keys while reopening retains local encrypted settings (84.107167ms)
+✔ service-scoped JSON credentials and environment-shaped names are rejected without treating ordinary token data as secrets (10.436125ms)
+✔ generated demo library allowance still rejects real content and local key stores (13.11925ms)
+✔ unquoted YAML, INI and shell credential scalars are rejected without exposing their values (33.434333ms)
+✔ bare credential rules preserve environment references, code variables and explicit placeholders (1.833917ms)
+✔ provider-prefixed placeholders share literal detection rules without exempting ordinary provider keys (13.348875ms)
+ℹ tests 35
+ℹ suites 0
+ℹ pass 35
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1443.746125

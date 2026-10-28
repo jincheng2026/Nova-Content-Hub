@@ -1,0 +1,23 @@
+{
+  "sourceStart": "9eb49c9",
+  "scope": "Prior checkpoint regression surfaces; excludes pending P0 and P1 changes",
+  "command": "node --test workbench/test/document-markdown.test.mjs workbench/test/content-directory-loading.test.mjs workbench/test/vault-location-light-read.test.mjs workbench/test/worker-read-timeout.test.mjs workbench/test/content-directory-category.test.mjs plugin-src/src/lib/vault/test/current-source.test.mjs",
+  "exitCode": 0,
+  "tests": 39,
+  "pass": 39,
+  "fail": 0,
+  "durationMs": 31087.407375,
+  "asrPayload": {
+    "source": "/Applications/自媒体工作台.app/Contents/Resources/local-asr/darwin-arm64",
+    "destination": ".local-probes/local-asr-release-v2/darwin-arm64",
+    "copy": "APFS clone; source unchanged",
+    "validator": "validateLocalAsrPayload",
+    "manifestSha256": "2783e2cc5284cada58a0006180781efb6f0b4f86b790664943f1deeababdd234",
+    "files": 10944,
+    "bytes": 3644489419,
+    "allFileHashesVerified": true
+  },
+  "fixtureSource": "Retained isolated nova-readability-e49dxlu9 copy; old delivery ZIP unavailable at handoff path",
+  "userVaultWritten": false,
+  "installedAppAtThisCheckpoint": "0.5.0"
+}

@@ -4,7 +4,7 @@ type Config={sessionId:string;pageId:string;fingerprint:string;path:string;stash
 const bootstrap=String.raw`
 (function(config){
  'use strict';
- var port=null,next=1,waiting=new Map(),connected=new Promise(function(resolve){window.addEventListener('message',function receive(event){if(event.source!==parent||!event.data||event.data.kind!=='nova-creation-connect'||event.data.sessionId!==config.sessionId||!event.ports[0])return;window.removeEventListener('message',receive);port=event.ports[0];port.onmessage=function(event){var data=event.data;if(!data||data.sessionId!==config.sessionId)return;if(data.kind==='control'){var operation=data.action==='retry'?retry():data.action==='copy-pending'?window.JC_DESKTOP.copyPending():drain();Promise.resolve(operation).then(function(value){port.postMessage({kind:'control-result',sessionId:config.sessionId,id:data.id,ok:true,value:value});},function(error){port.postMessage({kind:'control-result',sessionId:config.sessionId,id:data.id,ok:false,error:error.message});});return;}var item=waiting.get(data.id);if(!item)return;waiting.delete(data.id);clearTimeout(item.timer);data.ok?item.resolve(data.value):item.reject(new Error(data.error||'桌面操作没有完成'));};port.start();resolve();},false);});
+ var port=null,next=1,waiting=new Map(),connected=new Promise(function(resolve){window.addEventListener('message',function receive(event){if(event.source!==parent||!event.data||event.data.kind!=='nova-creation-connect'||event.data.sessionId!==config.sessionId||!event.ports[0])return;window.removeEventListener('message',receive);port=event.ports[0];port.onmessage=function(event){var data=event.data;if(!data||data.sessionId!==config.sessionId)return;if(data.kind==='control'){var operation=data.action==='retry'?retry():data.action==='copy-pending'?window.JC_DESKTOP.copyPending():flushSource();Promise.resolve(operation).then(function(value){port.postMessage({kind:'control-result',sessionId:config.sessionId,id:data.id,ok:true,value:value});},function(error){port.postMessage({kind:'control-result',sessionId:config.sessionId,id:data.id,ok:false,error:error.message});});return;}var item=waiting.get(data.id);if(!item)return;waiting.delete(data.id);clearTimeout(item.timer);data.ok?item.resolve(data.value):item.reject(new Error(data.error||'桌面操作没有完成'));};port.start();resolve();},false);});
  function rpc(action,payload){return connected.then(function(){return new Promise(function(resolve,reject){var id=String(next++),timer=setTimeout(function(){waiting.delete(id);reject(new Error('桌面保存没有响应，改动仍保留，请重试'));},20000);waiting.set(id,{resolve:resolve,reject:reject,timer:timer});port.postMessage({sessionId:config.sessionId,id:id,action:action,payload:payload===undefined?null:payload});});});}
  function copy(value){return value==null?value:JSON.parse(JSON.stringify(value));}
  // The mirror includes unacknowledged edits. Every queued transaction carries
@@ -54,12 +54,26 @@ const bootstrap=String.raw`
  });}
  var store={all:async function(){var state=await drain();if(state.error)throw new Error(state.error);var current=await rpc('stash-read',null);if(operations.length||activeWrites||storageChanges.length)return store.all();snapshot.version=current.version;snapshot.records=copy(current.records);return copy(snapshot.records);},modify:function(key,fn){return modifyBatch(function(records){var value=fn(copy(records.get(key)));if(value===null)records.delete(key);else if(value!==undefined)records.set(key,value);});},modifyBatch:modifyBatch};
  function drain(){return new Promise(function(resolve){function check(){queueMicrotask(function(){chain.then(function(){var pending=operations.length+storageChanges.length+activeWrites;if(!lastError&&pending){schedule();check();}else resolve({pending:pending,error:lastError});});});}check();});}
- async function retry(){lastError='';schedule();var state=await drain();if(state.error||state.pending)throw new Error(state.error||'输入仍在等待保全');if(window.jcKit){await window.jcKit.desktopRefresh();window.jcKit.flush();}return state;}
+ // Native stash durability and source-file acknowledgement are separate barriers.
+ // Keep the frame mounted unless both complete and the kit reports no unsaved work.
+ async function flushSource(){
+  var state=await drain();if(state.error||state.pending)throw new Error(state.error||'输入仍在等待保全');
+  var kit=window.jcKit;if(!kit||!kit.ready)throw new Error('原创作页仍在恢复输入，请稍后重试');
+  if(kit.state().composing)throw new Error('输入法仍在选字，请完成输入后重试');
+  await kit.flush();state=await drain();var source=kit.state();
+  var error=state.error||source.storeError||source.saveRefused||source.metaProblem||kit.failed;
+  if(source.conflicts)error=error||'原文件存在同处冲突，请先复制本窗口输入并处理冲突';
+  if(state.pending||source.pending||snapshot.records.length)error=error||'输入尚未写回原文件，请重试保全';
+  if(source.composing)error=error||'输入法仍在选字，请完成输入后重试';
+  if(error)throw new Error(error);
+  return {pending:0,error:''};
+ }
+ async function retry(){lastError='';schedule();var state=await drain();if(state.error||state.pending)throw new Error(state.error||'输入仍在等待保全');if(window.jcKit)await window.jcKit.desktopRefresh();return flushSource();}
  window.JC_SERVED={fingerprint:config.fingerprint,path:config.path};
  window.JC_DESKTOP={
   openStore:function(){return connected.then(function(){return store;});},
   request:function(method,url,body){return rpc('request',{method:method,url:url,body:body===undefined?null:body});},
-  reload:function(){Promise.resolve(window.jcKit&&window.jcKit.flush()).then(drain).then(function(state){if(state.error||state.pending)throw new Error(state.error||'输入仍在等待保全');return rpc('reload',null);}).catch(function(error){lastError=error.message;notify();});},
+  reload:function(){flushSource().then(function(state){if(state.error||state.pending)throw new Error(state.error||'输入仍在等待保全');return rpc('reload',null);}).catch(function(error){lastError=error.message;notify();});},
   flush:drain,
   retry:retry,
   copyPending:function(){return rpc('copy',{text:JSON.stringify({records:snapshot.records,storage:snapshot.storage},null,2)});}
@@ -80,6 +94,11 @@ export function creationFrameHtml(trustedHtml:string,config:Config):string {
  let html=trustedHtml;
  // Keep the original kit algorithms and app business logic. Replace only its
  // environment seams; never execute scripts read from the user's old HTML.
+ // The original kit coalesces a second flush but returns an already-resolved
+ // Promise. At the desktop seam every caller must await the actual save receipt.
+ html=once(html,'var debounceTimer = null, flushing = false,','var desktopFlushing = null, debounceTimer = null, flushing = false,');
+ html=once(html,'if (flushing) { flushAgain = true; return Promise.resolve(); }','if (flushing) { flushAgain = true; return desktopFlushing || Promise.resolve(); }');
+ html=once(html,'return Promise.resolve(p).catch(function (e) { storeError = errText(e); }).then(function () {','return desktopFlushing = Promise.resolve(p).catch(function (e) { storeError = errText(e); }).then(function () {');
  html=once(html,'function openIdb() {','function openIdb() { if (window.JC_DESKTOP) return window.JC_DESKTOP.openStore();');
  html=once(html,'function withStore(op) {','function withStore(op) { if (window.JC_DESKTOP) return Promise.resolve().then(function(){ return op(inner); });');
  html=once(html,'modify: function (key, fn) { return withStore(function (s) { return s.modify(key, fn); }); }','modify: function (key, fn) { return withStore(function (s) { return s.modify(key, fn); }); }, modifyBatch: function (fn) { return withStore(function (s) { return s.modifyBatch(fn); }); }');

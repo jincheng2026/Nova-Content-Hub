@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-28T03:41:33.283Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [],
+  "machine": "/tmp/nova-readability-p0-04Eig5/machine-1793158893348",
+  "boundaries": [],
+  "passed": false,
+  "failure": {
+    "message": "Error: Timeout !!document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]')",
+    "stack": "Error: Timeout !!document.querySelector('main[data-app=\"ready\"][data-loaded=\"true\"][data-busy=\"false\"]')"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n内容库读取失败\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n本机内容库连接恢复\n\n工作台把“连接哪个内容库”保存在本机。连接记录损坏时，可以先保留旧记录，再重新选择原内容库；不会删除内容库、正文、照片或业务文件，也不会改变登录或使用权限。\n\n本机连接暂时不可用（binding-unsafe）。当前记录不能安全自动处理，请保留现场并导出脱敏诊断。\n\n重新检查本机连接\n重新连接内容库\n导出脱敏诊断\n\n本机内容库连接记录不可用，请使用重新连接入口保留原记录并恢复。（BINDING_INVALID）\n\n暂时无法读取内容库\n\n读取尚未完成，可以重试，或打开已有的恢复副本。原内容库会保留。\n\n重新读取\n打开其他内容库"
+}

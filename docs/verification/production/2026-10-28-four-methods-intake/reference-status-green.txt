@@ -1,0 +1,29 @@
+✔ complete upstream methods are byte-addressed and every bundled resource is verified (538.452667ms)
+✔ discovered adapters require their full method and do not claim legacy service installation (12.195334ms)
+✔ topic selection keeps direct conversation and fixed task modes (1.350041ms)
+✔ explicit tutorial gates and research/comment methods remain in complete original bodies (0.906625ms)
+✔ archive-only sources never become active routes, and sources grant no external execution authority (2.398333ms)
+✔ critical current bodies retain the independently frozen original hashes (1.999375ms)
+✔ Skill reference mapping uses package paths on both POSIX and Windows filesystems (1.14675ms)
+✔ registered methods have real provenance, a bundled executor and complete installed dependencies (616.116167ms)
+✔ business methods cannot acquire executor permission in either authorization mode (0.833792ms)
+✔ all business resources are covered by integrity; active adapters contain no machine defaults (39.555709ms)
+✔ jc-zhuanxie routes only as a non-executable complete original method with immutable ZIP evidence (31.376583ms)
+✔ jc-review-page routes only as a non-executable complete original method with immutable ZIP evidence (19.471625ms)
+✔ jc-cover-design routes only as a non-executable complete original method with immutable ZIP evidence (23.484875ms)
+✔ jc-kepu-video routes only as a non-executable complete original method with immutable ZIP evidence (26.975583ms)
+✔ new method registration preserves ordinary writing/transcription defaults and isolates actual cover generation (1.226209ms)
+✔ four-method source manifests and installed references pass the existing validators (506.156333ms)
+✔ the four bundled method trees pass the existing artifact credential and local-state gate (22431.373791ms)
+✔ cover source references resolve relative to their source file and unwrap Markdown angle destinations (0.671084ms)
+✔ nested marketplace permits only hash-registered immutable original test evidence (274.457084ms)
+✔ a source evidence manifest cannot waive credential screening (124.956291ms)
+✔ unregistered app fixtures and machine files remain excluded (148.073209ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23256.1445

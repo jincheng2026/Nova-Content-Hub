@@ -12,7 +12,8 @@
     "explicitOnly": [
       "jc-jiaocheng-video",
       "jc-cold-shower",
-      "jc-meta-skill"
+      "jc-meta-skill",
+      "jc-kepu-video"
     ],
     "sourceManifest": "plugin-src/resources/method-sources.json"
   },
@@ -2099,26 +2100,200 @@
       "bundleStatus": "complete-source-bundled",
       "runtimeStatus": "contract-unverified",
       "executable": false
-    }
-  ],
-  "unavailable": [
+    },
     {
       "id": "jc-zhuanxie",
-      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "reference-intake",
+        "benchmark-intake"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "jc-skills-4个.zip!/jc-skills-4个/jc-zhuanxie",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "6dc8e468cb7401efd5c484dd3042a1c4833ce5554618aa69ba74d6b9daff4414"
+          }
+        ],
+        "manifest": "plugin-src/resources/method-sources.json",
+        "fileCount": 6,
+        "treeSha256": "c16a974c1159c0e00591c0645dd5ed169369adbfa4843349e99e47c07f289618",
+        "archiveSha256": "b050faa629c7f201e7a7fd4a31c7aaa0bf826fbd3198edae8cac7891cbc9dd52"
+      },
+      "dependencies": [
+        "skills/jc-zhuanxie/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-zhuanxie/references/method.md",
+        "skills/jc-zhuanxie/upstream/current/METHOD.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-zhuanxie:F:c16a974c1159c0e0",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-zhuanxie/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-review-page",
-      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "revision",
+        "workbench-writing"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "jc-skills-4个.zip!/jc-skills-4个/jc-review-page",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "f056186e5f6121e4bae37b2f47c0f5a82b3ca593a2466ef5fb184c2e732b89d9"
+          }
+        ],
+        "manifest": "plugin-src/resources/method-sources.json",
+        "fileCount": 3,
+        "treeSha256": "84726acf3d4cdbbae557de83bf3f03bb3eac499ecbf8d8e9eff2287670ba3286",
+        "archiveSha256": "b050faa629c7f201e7a7fd4a31c7aaa0bf826fbd3198edae8cac7891cbc9dd52"
+      },
+      "dependencies": [
+        "skills/jc-review-page/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-review-page/references/method.md",
+        "skills/jc-review-page/upstream/current/METHOD.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-review-page:F:84726acf3d4cdbba",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-review-page/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     },
     {
       "id": "jc-cover-design",
-      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "cover-copy",
+        "packaging"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "jc-skills-4个.zip!/jc-skills-4个/jc-cover-design",
+        "files": [
+          {
+            "path": "LICENSE",
+            "sha256": "89fe5ae8d5faeda939e392638d21ef1ab5084b3ecb8df96c8bbcb38416291958"
+          },
+          {
+            "path": "SKILL.md",
+            "sha256": "df6ae7f6c94dee14fd2b625144882b8adf161e7d694db15117b360ac85a12545"
+          }
+        ],
+        "manifest": "plugin-src/resources/method-sources.json",
+        "fileCount": 79,
+        "treeSha256": "dc465d8374a6a0ae33d0e20b42fae444e30609e2792cc88f3362b537a59e76e2",
+        "archiveSha256": "b050faa629c7f201e7a7fd4a31c7aaa0bf826fbd3198edae8cac7891cbc9dd52"
+      },
+      "dependencies": [
+        "skills/jc-cover-design/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-cover-design/references/method.md",
+        "skills/jc-cover-design/upstream/current/METHOD.md",
+        "skills/nova-content-cover-execution/SKILL.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-cover-design:F:dc465d8374a6a0ae",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-cover-design/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false,
+      "generationExecutor": "nova-content-cover-execution",
+      "generationHandoff": "separate-fixed-cover-request"
     },
     {
       "id": "jc-kepu-video",
-      "reason": "原方法引用但未取得完整原包；不能声明已安装或支持。"
+      "version": 1,
+      "role": "business-method",
+      "status": "adapted",
+      "executor": "nova-content-writing-execution",
+      "workflows": [
+        "content-creation",
+        "narrative"
+      ],
+      "source": {
+        "kind": "complete-original-with-adapter",
+        "package": "jc-skills-4个.zip!/jc-skills-4个/jc-kepu-video",
+        "files": [
+          {
+            "path": "SKILL.md",
+            "sha256": "1b87ee738c7930ad4eba515057afd765bbfb582df42749fe583d4115ff1f4323"
+          }
+        ],
+        "manifest": "plugin-src/resources/method-sources.json",
+        "fileCount": 532,
+        "treeSha256": "abbf3c91fec1f6347a6ff8d73515c759988ed6aa2473a41a475946f17aa36c49",
+        "archiveSha256": "b050faa629c7f201e7a7fd4a31c7aaa0bf826fbd3198edae8cac7891cbc9dd52"
+      },
+      "dependencies": [
+        "skills/jc-kepu-video/SKILL.md",
+        "plugin-src/resources/business-skills-contract.md",
+        "plugin-src/resources/method-adaptation-contract.md",
+        "plugin-src/resources/method-sources.json",
+        "plugin-src/resources/production-contract.md",
+        "plugin-src/resources/production-artifacts.md",
+        "skills/nova-content-writing-execution/SKILL.md",
+        "skills/jc-kepu-video/references/method.md",
+        "skills/jc-kepu-video/upstream/current/METHOD.md"
+      ],
+      "modes": [
+        "direct-conversation",
+        "workbench-task"
+      ],
+      "sourceVersion": "jc-kepu-video:F:abbf3c91fec1f634",
+      "sourceStatus": "current",
+      "methodBody": "skills/jc-kepu-video/upstream/current/METHOD.md",
+      "bundleStatus": "complete-source-bundled",
+      "runtimeStatus": "contract-unverified",
+      "executable": false
     }
   ],
+  "unavailable": [],
   "disabled": [
     {
       "id": "jc-chendian",

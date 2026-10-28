@@ -1,0 +1,217 @@
+{
+  "at": "2026-10-28T04:02:48.174Z",
+  "phase": "reopen",
+  "desktop": "/Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs",
+  "scope": "Independent Electron integration host; isolated copy; not Finder/Dock acceptance",
+  "steps": [
+    "Independent process reopens the same library identity, display name and directory facts"
+  ],
+  "views": {
+    "reopened-directory": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "external": [],
+  "version": "0.5.1",
+  "binding": {
+    "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/第二大脑/.workbench/runtime",
+    "libraryId": "9fc7fc8c-d004-4d05-8300-c805329d9d48",
+    "rootIdentity": {
+      "dev": "16777231",
+      "ino": "84896528"
+    }
+  },
+  "directory": [
+    {
+      "tNumber": "T020",
+      "sourceResolution": "conflict"
+    },
+    {
+      "tNumber": "T023",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T049",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T050",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T009",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T011",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T015",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T017",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T044",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T046",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T048",
+      "sourceResolution": "conflict"
+    },
+    {
+      "tNumber": "T006",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T013",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T014",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T024",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T033",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T045",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T012",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T016",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T019",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T022",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T025",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T026",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T028",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T029",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T030",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T031",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T047",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T001",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T002",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T004",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T005",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T007",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T010",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T032",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T018",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T021",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T038",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T035",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T036",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T037",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T039",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T040",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T034",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T041",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T042",
+      "sourceResolution": "resolved"
+    },
+    {
+      "tNumber": "T043",
+      "sourceResolution": "resolved"
+    }
+  ],
+  "passed": true
+}

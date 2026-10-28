@@ -1,0 +1,28 @@
+✔ frame reconstructs trusted original modules and never executes original document scripts (4204.372791ms)
+✔ native stash survives reread, rejects stale writes and does not change original source (2875.159042ms)
+✔ kit save returns original result/history contract and preserves source outside jc-doc (3553.168084ms)
+✔ finite creation IPC rejects caller roots, forged actors and unknown actions (0.819833ms)
+✔ failed durable batch remains retryable and unrelated edits cannot clear the failure (2722.024708ms)
+✔ two frames merge unrelated draft keys and reject same-record or same-draft overwrite (1867.030417ms)
+✔ original kit adoption rebinds old groups and new values in one durable transaction (2655.319875ms)
+✔ registered local original references never open scripts, shortcuts or executables (3396.218083ms)
+✔ a lost ack retries the final record and storage values of a multi-edit batch (2820.478666ms)
+✔ store reads used by source flush wait for the same-tick durable stash ack (2941.548583ms)
+✔ trusted original publication UI renders and saves all three slots through the real kit (10078.308458ms)
+✔ close waits for the original source save ack, not only the durable stash (1765.532375ms)
+✔ close refuses pending and preserves the frame for retry (1281.43775ms)
+✔ close refuses conflict and preserves the frame for retry (1527.741875ms)
+✔ close refuses save refusal and preserves the frame for retry (1540.82725ms)
+✔ close refuses store failure and preserves the frame for retry (2188.252667ms)
+✔ close refuses composition and preserves the frame for retry (1909.139708ms)
+✔ concurrent original kit flush calls share the source ack promise (1295.44125ms)
+✔ close refuses a late durable edit before the kit pending mirror refreshes (1275.094125ms)
+✔ close refuses composition started while the source save was in flight (1403.7025ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 51597.317541

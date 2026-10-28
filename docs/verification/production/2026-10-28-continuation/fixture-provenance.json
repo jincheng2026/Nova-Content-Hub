@@ -1,0 +1,21 @@
+{
+  "root": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu",
+  "originalLibraryWritten": false,
+  "source": "Retained isolated merged-library copy; old desktop ZIP no longer exists",
+  "identity": "Fresh createVault; copied business files without old .workbench; original clone retained",
+  "helperAttempts": [
+    {
+      "name": "attempt-1-initialization-runner-deadline",
+      "reason": "Runner used 60s where existing library initialization probe allows 120s; retained seedPending recovered through normal UI"
+    },
+    {
+      "name": "attempt-2-retained-seed-pending",
+      "reason": "Runner did not yet invoke pending initialization recovery; product correctly disabled new writes"
+    },
+    {
+      "name": "attempt-3-recovery-auto-close-runner",
+      "reason": "Recovery action already closed its dialog; runner incorrectly required a second Return button"
+    }
+  ],
+  "retainedAt": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-detail-continuation-iR6oLu/evidence"
+}

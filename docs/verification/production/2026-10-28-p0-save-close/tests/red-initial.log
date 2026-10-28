@@ -1,0 +1,136 @@
+✖ close waits for the original source save ack, not only the durable stash (6848.609292ms)
+✖ close refuses pending and preserves the frame for retry (3483.890708ms)
+✖ close refuses conflict and preserves the frame for retry (3052.255792ms)
+✖ close refuses save refusal and preserves the frame for retry (3112.79275ms)
+✖ close refuses store failure and preserves the frame for retry (2095.402625ms)
+✖ close refuses composition and preserves the frame for retry (1998.305166ms)
+✖ concurrent original kit flush calls share the source ack promise (3964.168625ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 0
+ℹ fail 7
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25006.334125
+
+✖ failing tests:
+
+test at workbench/test/creation-desktop.test.mjs:135:1
+✖ close waits for the original source save ack, not only the durable stash (6848.609292ms)
+  AssertionError [ERR_ASSERTION]: close must invoke the original kit save
+  
+  false !== true
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:140:59)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:145:3
+✖ close refuses pending and preserves the frame for retry (3483.890708ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:148:40)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:145:3
+✖ close refuses conflict and preserves the frame for retry (3052.255792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:148:40)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:145:3
+✖ close refuses save refusal and preserves the frame for retry (3112.79275ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:148:40)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:145:3
+✖ close refuses store failure and preserves the frame for retry (2095.402625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:148:40)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:145:3
+✖ close refuses composition and preserves the frame for retry (1998.305166ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:148:40)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/creation-desktop.test.mjs:151:1
+✖ concurrent original kit flush calls share the source ack promise (3964.168625ms)
+  AssertionError [ERR_ASSERTION]: in-flight flush cannot acknowledge early
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/creation-desktop.test.mjs:157:59)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

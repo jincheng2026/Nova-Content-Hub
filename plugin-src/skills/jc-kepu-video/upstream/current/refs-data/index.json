@@ -1,0 +1,5202 @@
+[
+ {
+  "id": "7606647797324736869",
+  "author": "森森AI日记",
+  "likes": 71574,
+  "title": "10 分钟了解 AI",
+  "path": "texts/7606647797324736869.txt",
+  "src": "调研",
+  "rel": 3.2,
+  "star": true
+ },
+ {
+  "id": "7660820766908651953",
+  "author": "森森AI日记",
+  "likes": 22852,
+  "title": "悦尔爱艺术短片",
+  "path": "texts/7660820766908651953.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7672679494327123185",
+  "author": "森森AI日记",
+  "likes": 27289,
+  "title": "芯位科技与教育大模型",
+  "path": "texts/7672679494327123185.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7624824000573820603",
+  "author": "森森AI日记",
+  "likes": 20726,
+  "title": "可灵《纸手机》",
+  "path": "texts/7624824000573820603.txt",
+  "src": "调研",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7652624332661331385",
+  "author": "森森AI日记",
+  "likes": 19598,
+  "title": "美图影像节",
+  "path": "texts/7652624332661331385.txt",
+  "src": "调研",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7642658265147427705",
+  "author": "森森AI日记",
+  "likes": 8695,
+  "title": "EVE 情感陪伴",
+  "path": "texts/7642658265147427705.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7627032337919285425",
+  "author": "森森AI日记",
+  "likes": 23607,
+  "title": "哈啤与即梦广告",
+  "path": "texts/7627032337919285425.txt",
+  "src": "调研",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7620714015962672625",
+  "author": "森森AI日记",
+  "likes": 21916,
+  "title": "红旗天工微短剧",
+  "path": "texts/7620714015962672625.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7656364899103615973",
+  "author": "森森AI日记",
+  "likes": 51304,
+  "title": "豆包办公复盘",
+  "path": "texts/7656364899103615973.txt",
+  "src": "调研",
+  "rel": 2.3,
+  "star": true
+ },
+ {
+  "id": "7655623614310710001",
+  "author": "森森AI日记",
+  "likes": 27557,
+  "title": "豆包毕业设计",
+  "path": "texts/7655623614310710001.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7676003922847608945",
+  "author": "森森AI日记",
+  "likes": 49872,
+  "title": "TraeWork 服装独立站",
+  "path": "texts/7676003922847608945.txt",
+  "src": "调研",
+  "rel": 2.2,
+  "star": true
+ },
+ {
+  "id": "7616665963341729457",
+  "author": "森森AI日记",
+  "likes": 8170,
+  "title": "美图电商套图",
+  "path": "texts/7616665963341729457.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7617337738502052027",
+  "author": "森森AI日记",
+  "likes": 4345,
+  "title": "豆包教育课件",
+  "path": "texts/7617337738502052027.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7602467854613021626",
+  "author": "森森AI日记",
+  "likes": 5205,
+  "title": "Liblib AI 设计",
+  "path": "texts/7602467854613021626.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7647428197081089393",
+  "author": "森森AI日记",
+  "likes": 5616,
+  "title": "扣子金融团队",
+  "path": "texts/7647428197081089393.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7645225945549567865",
+  "author": "森森AI日记",
+  "likes": 41625,
+  "title": "妙响配乐",
+  "path": "texts/7645225945549567865.txt",
+  "src": "调研",
+  "rel": 1.9,
+  "star": true
+ },
+ {
+  "id": "7681308885337481137",
+  "author": "森森AI日记",
+  "likes": 17993,
+  "title": "千问创作短剧",
+  "path": "texts/7681308885337481137.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7677617077263612657",
+  "author": "森森AI日记",
+  "likes": 40343,
+  "title": "埃安 AIGC 短片",
+  "path": "texts/7677617077263612657.txt",
+  "src": "调研",
+  "rel": 1.8,
+  "star": true
+ },
+ {
+  "id": "7653474522615804857",
+  "author": "大李书房一盏灯",
+  "likes": 7037,
+  "title": "什么是大模型",
+  "path": "texts/7653474522615804857.txt",
+  "src": "调研",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7653730051041685946",
+  "author": "大李书房一盏灯",
+  "likes": 1735,
+  "title": "大模型怎么学习和工作",
+  "path": "texts/7653730051041685946.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7654175990676190201",
+  "author": "大李书房一盏灯",
+  "likes": 4574,
+  "title": "如何写高质量提示词",
+  "path": "texts/7654175990676190201.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7654610643165120177",
+  "author": "大李书房一盏灯",
+  "likes": 55485,
+  "title": "什么是 AI Agent",
+  "path": "texts/7654610643165120177.txt",
+  "src": "调研",
+  "rel": 12.1,
+  "star": true
+ },
+ {
+  "id": "7654900365062968817",
+  "author": "大李书房一盏灯",
+  "likes": 31157,
+  "title": "你需要用 Codex 吗",
+  "path": "texts/7654900365062968817.txt",
+  "src": "调研",
+  "rel": 6.8,
+  "star": true
+ },
+ {
+  "id": "7655340612804019057",
+  "author": "大李书房一盏灯",
+  "likes": 2612,
+  "title": "Token、API、MCP、CLI、Skill",
+  "path": "texts/7655340612804019057.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7655717274661417445",
+  "author": "大李书房一盏灯",
+  "likes": 7746,
+  "title": "Harness 上：都江堰比喻",
+  "path": "texts/7655717274661417445.txt",
+  "src": "调研",
+  "rel": 1.7,
+  "star": false
+ },
+ {
+  "id": "7655878781924954225",
+  "author": "大李书房一盏灯",
+  "likes": 1997,
+  "title": "Harness 下：四个设计原则",
+  "path": "texts/7655878781924954225.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7661231856221989873",
+  "author": "大李书房一盏灯",
+  "likes": 6963,
+  "title": "Loop 1：演进与提示词",
+  "path": "texts/7661231856221989873.txt",
+  "src": "调研",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7661498142807230065",
+  "author": "大李书房一盏灯",
+  "likes": 1157,
+  "title": "Loop 2：上下文与 Harness",
+  "path": "texts/7661498142807230065.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7661525837011786917",
+  "author": "大李书房一盏灯",
+  "likes": 1126,
+  "title": "Loop 3：目标与质检",
+  "path": "texts/7661525837011786917.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7661542756422939067",
+  "author": "大李书房一盏灯",
+  "likes": 846,
+  "title": "Loop 4：回合制与定时制",
+  "path": "texts/7661542756422939067.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7662212387949631217",
+  "author": "大李书房一盏灯",
+  "likes": 1201,
+  "title": "Loop 5：目标制与主动制",
+  "path": "texts/7662212387949631217.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7666832665312982138",
+  "author": "大李书房一盏灯",
+  "likes": 35147,
+  "title": "什么是 Skill",
+  "path": "texts/7666832665312982138.txt",
+  "src": "调研",
+  "rel": 7.7,
+  "star": true
+ },
+ {
+  "id": "7667413252473956465",
+  "author": "大李书房一盏灯",
+  "likes": 62453,
+  "title": "蒸馏成 Skill 的操作教程",
+  "path": "texts/7667413252473956465.txt",
+  "src": "调研",
+  "rel": 13.7,
+  "star": true
+ },
+ {
+  "id": "7669358133123160497",
+  "author": "大李书房一盏灯",
+  "likes": 1647,
+  "title": "Vibe Coding 开发发布流程",
+  "path": "texts/7669358133123160497.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7674200095189200891",
+  "author": "大李书房一盏灯",
+  "likes": 777,
+  "title": "DeepSeek Harness 解读",
+  "path": "texts/7674200095189200891.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7677922900804828901",
+  "author": "大李书房一盏灯",
+  "likes": 460,
+  "title": "LLM 的工作原理就是猜",
+  "path": "texts/7677922900804828901.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7505355725050514748",
+  "author": "清华姜学长",
+  "likes": 8411,
+  "title": "AI 技术路线",
+  "path": "texts/7505355725050514748.txt",
+  "src": "调研",
+  "rel": 6.7,
+  "star": true
+ },
+ {
+  "id": "7512101486186532155",
+  "author": "清华姜学长",
+  "likes": 29665,
+  "title": "AI 对话四象限",
+  "path": "texts/7512101486186532155.txt",
+  "src": "调研",
+  "rel": 23.6,
+  "star": true
+ },
+ {
+  "id": "7506112650645081404",
+  "author": "清华姜学长",
+  "likes": 4282,
+  "title": "Transformer",
+  "path": "texts/7506112650645081404.txt",
+  "src": "调研",
+  "rel": 3.4,
+  "star": true
+ },
+ {
+  "id": "7509081228186012987",
+  "author": "清华姜学长",
+  "likes": 1768,
+  "title": "AI 幻觉",
+  "path": "texts/7509081228186012987.txt",
+  "src": "调研",
+  "rel": 1.4,
+  "star": false
+ },
+ {
+  "id": "7513176345272601913",
+  "author": "清华姜学长",
+  "likes": 8026,
+  "title": "MCP",
+  "path": "texts/7513176345272601913.txt",
+  "src": "调研",
+  "rel": 6.4,
+  "star": true
+ },
+ {
+  "id": "7513918641345776955",
+  "author": "清华姜学长",
+  "likes": 6453,
+  "title": "上下文窗口",
+  "path": "texts/7513918641345776955.txt",
+  "src": "调研",
+  "rel": 5.1,
+  "star": true
+ },
+ {
+  "id": "7515459860718472507",
+  "author": "清华姜学长",
+  "likes": 1906,
+  "title": "RAG",
+  "path": "texts/7515459860718472507.txt",
+  "src": "调研",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7519511900893433148",
+  "author": "清华姜学长",
+  "likes": 5108,
+  "title": "AI Agent",
+  "path": "texts/7519511900893433148.txt",
+  "src": "调研",
+  "rel": 4.1,
+  "star": true
+ },
+ {
+  "id": "7520642380672945468",
+  "author": "清华姜学长",
+  "likes": 1259,
+  "title": "扩散模型",
+  "path": "texts/7520642380672945468.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7522112363668786492",
+  "author": "清华姜学长",
+  "likes": 5693,
+  "title": "大模型微调",
+  "path": "texts/7522112363668786492.txt",
+  "src": "调研",
+  "rel": 4.5,
+  "star": true
+ },
+ {
+  "id": "7524283525749050682",
+  "author": "清华姜学长",
+  "likes": 4741,
+  "title": "大模型学习路线",
+  "path": "texts/7524283525749050682.txt",
+  "src": "调研",
+  "rel": 3.8,
+  "star": true
+ },
+ {
+  "id": "7526536276947340603",
+  "author": "清华姜学长",
+  "likes": 2546,
+  "title": "大模型蒸馏",
+  "path": "texts/7526536276947340603.txt",
+  "src": "调研",
+  "rel": 2.0,
+  "star": false
+ },
+ {
+  "id": "7530222129041132860",
+  "author": "清华姜学长",
+  "likes": 1280,
+  "title": "AI 如何指挥 AI",
+  "path": "texts/7530222129041132860.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7531004573243968825",
+  "author": "清华姜学长",
+  "likes": 620,
+  "title": "温度与 Top-K",
+  "path": "texts/7531004573243968825.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7539910466732576057",
+  "author": "清华姜学长",
+  "likes": 48723,
+  "title": "自学 AI 的信息源",
+  "path": "texts/7539910466732576057.txt",
+  "src": "调研",
+  "rel": 38.7,
+  "star": true
+ },
+ {
+  "id": "7542075535569276217",
+  "author": "清华姜学长",
+  "likes": 553,
+  "title": "四个新模型的行业判断",
+  "path": "texts/7542075535569276217.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7547306560328142140",
+  "author": "清华姜学长",
+  "likes": 2617,
+  "title": "7 个 Prompt 技巧",
+  "path": "texts/7547306560328142140.txt",
+  "src": "调研",
+  "rel": 2.1,
+  "star": false
+ },
+ {
+  "id": "7550640034665041212",
+  "author": "清华姜学长",
+  "likes": 1442,
+  "title": "5 个 AI 核心概念",
+  "path": "texts/7550640034665041212.txt",
+  "src": "调研",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7551014027737500986",
+  "author": "清华姜学长",
+  "likes": 5255,
+  "title": "21 天自学新领域",
+  "path": "texts/7551014027737500986.txt",
+  "src": "调研",
+  "rel": 4.2,
+  "star": true
+ },
+ {
+  "id": "7551361436426603834",
+  "author": "清华姜学长",
+  "likes": 311,
+  "title": "ChatGPT 用户研究解读",
+  "path": "texts/7551361436426603834.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7552147192879484219",
+  "author": "清华姜学长",
+  "likes": 420,
+  "title": "5 篇模型论文",
+  "path": "texts/7552147192879484219.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7554718971648347452",
+  "author": "清华姜学长",
+  "likes": 1596,
+  "title": "AI 简史",
+  "path": "texts/7554718971648347452.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7558056307498241338",
+  "author": "清华姜学长",
+  "likes": 1032,
+  "title": "上下文工程管理",
+  "path": "texts/7558056307498241338.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7565913728529648933",
+  "author": "清华姜学长",
+  "likes": 242,
+  "title": "AI 核心术语",
+  "path": "texts/7565913728529648933.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7565135776690834737",
+  "author": "清华姜学长",
+  "likes": 429,
+  "title": "DeepSeek-OCR 原理",
+  "path": "texts/7565135776690834737.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7561424748242308411",
+  "author": "清华姜学长",
+  "likes": 1210,
+  "title": "AI 所需的数学基础",
+  "path": "texts/7561424748242308411.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7560317122695253305",
+  "author": "清华姜学长",
+  "likes": 1204,
+  "title": "Agent、MCP、RAG 关系",
+  "path": "texts/7560317122695253305.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7559431298448837947",
+  "author": "清华姜学长",
+  "likes": 1411,
+  "title": "30 个 AI 工具",
+  "path": "texts/7559431298448837947.txt",
+  "src": "调研",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7556949941969816892",
+  "author": "清华姜学长",
+  "likes": 7951,
+  "title": "AI 创造价值的路径",
+  "path": "texts/7556949941969816892.txt",
+  "src": "调研",
+  "rel": 6.3,
+  "star": true
+ },
+ {
+  "id": "7516888932710124860",
+  "author": "清华姜学长",
+  "likes": 1069,
+  "title": "AI 数据集",
+  "path": "texts/7516888932710124860.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7568470179340963082",
+  "author": "清华姜学长",
+  "likes": 703,
+  "title": "AI 工程师学习路径",
+  "path": "texts/7568470179340963082.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7569622351264877875",
+  "author": "清华姜学长",
+  "likes": 404,
+  "title": "克隆顶级大脑的流程",
+  "path": "texts/7569622351264877875.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7614881838168081137",
+  "author": "清华姜学长",
+  "likes": 679,
+  "title": "Claude Code 自动记忆",
+  "path": "texts/7614881838168081137.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7616354515763713445",
+  "author": "清华姜学长",
+  "likes": 573,
+  "title": "上下文为何失效",
+  "path": "texts/7616354515763713445.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7617880126232085627",
+  "author": "清华姜学长",
+  "likes": 5603,
+  "title": "Vibe Coding 开发步骤",
+  "path": "texts/7617880126232085627.txt",
+  "src": "调研",
+  "rel": 4.5,
+  "star": true
+ },
+ {
+  "id": "7621562940500170981",
+  "author": "清华姜学长",
+  "likes": 11937,
+  "title": "API 是什么",
+  "path": "texts/7621562940500170981.txt",
+  "src": "调研",
+  "rel": 9.5,
+  "star": true
+ },
+ {
+  "id": "7623036857807165425",
+  "author": "清华姜学长",
+  "likes": 3765,
+  "title": "Harness Engineering",
+  "path": "texts/7623036857807165425.txt",
+  "src": "调研",
+  "rel": 3.0,
+  "star": true
+ },
+ {
+  "id": "7624132200850005477",
+  "author": "清华姜学长",
+  "likes": 382,
+  "title": "让另一个 AI 审查代码",
+  "path": "texts/7624132200850005477.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7626386650927265009",
+  "author": "清华姜学长",
+  "likes": 629,
+  "title": "Claude Code 为什么用 CLI",
+  "path": "texts/7626386650927265009.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7629311824597543409",
+  "author": "清华姜学长",
+  "likes": 849,
+  "title": "LLM 如何预测下一个词",
+  "path": "texts/7629311824597543409.txt",
+  "src": "调研",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7636753241384695225",
+  "author": "清华姜学长",
+  "likes": 971,
+  "title": "Vibe Coding 方法",
+  "path": "texts/7636753241384695225.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7639020701101939962",
+  "author": "清华姜学长",
+  "likes": 974,
+  "title": "AI 概念坐标系",
+  "path": "texts/7639020701101939962.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7641241251401387963",
+  "author": "清华姜学长",
+  "likes": 957,
+  "title": "开源是什么",
+  "path": "texts/7641241251401387963.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7641632468290574449",
+  "author": "清华姜学长",
+  "likes": 5398,
+  "title": "Git 是什么",
+  "path": "texts/7641632468290574449.txt",
+  "src": "调研",
+  "rel": 4.3,
+  "star": true
+ },
+ {
+  "id": "7643790346297014905",
+  "author": "清华姜学长",
+  "likes": 1258,
+  "title": "GitHub 是什么",
+  "path": "texts/7643790346297014905.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7645665048900398585",
+  "author": "清华姜学长",
+  "likes": 940,
+  "title": "部署是什么",
+  "path": "texts/7645665048900398585.txt",
+  "src": "调研",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7647920810308837562",
+  "author": "清华姜学长",
+  "likes": 198,
+  "title": "抖音推荐算法",
+  "path": "texts/7647920810308837562.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7649006399359573937",
+  "author": "清华姜学长",
+  "likes": 8507,
+  "title": "Agent 学习路径",
+  "path": "texts/7649006399359573937.txt",
+  "src": "调研",
+  "rel": 6.8,
+  "star": true
+ },
+ {
+  "id": "7650859273673336443",
+  "author": "清华姜学长",
+  "likes": 454,
+  "title": "Benchmark 是什么",
+  "path": "texts/7650859273673336443.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7652319287331423931",
+  "author": "清华姜学长",
+  "likes": 3397,
+  "title": "Skill 安装与推荐",
+  "path": "texts/7652319287331423931.txt",
+  "src": "调研",
+  "rel": 2.7,
+  "star": false
+ },
+ {
+  "id": "7652703318234883771",
+  "author": "清华姜学长",
+  "likes": 472,
+  "title": "AI 算力",
+  "path": "texts/7652703318234883771.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7653422253523578609",
+  "author": "清华姜学长",
+  "likes": 2017,
+  "title": "AI 蒸馏",
+  "path": "texts/7653422253523578609.txt",
+  "src": "调研",
+  "rel": 1.6,
+  "star": false
+ },
+ {
+  "id": "7657172919642606330",
+  "author": "清华姜学长",
+  "likes": 1586,
+  "title": "Loop Engineering",
+  "path": "texts/7657172919642606330.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7658667624243582843",
+  "author": "清华姜学长",
+  "likes": 328,
+  "title": "Attention Is All You Need",
+  "path": "texts/7658667624243582843.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7659406092858691173",
+  "author": "清华姜学长",
+  "likes": 587,
+  "title": "Agent 的循环结构",
+  "path": "texts/7659406092858691173.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7660914279671250811",
+  "author": "清华姜学长",
+  "likes": 2443,
+  "title": "Claude Code、Codex、Cursor 选择",
+  "path": "texts/7660914279671250811.txt",
+  "src": "调研",
+  "rel": 1.9,
+  "star": false
+ },
+ {
+  "id": "7662359352263218362",
+  "author": "清华姜学长",
+  "likes": 1122,
+  "title": "6 个 Agent 术语",
+  "path": "texts/7662359352263218362.txt",
+  "src": "调研",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7663142738770699771",
+  "author": "清华姜学长",
+  "likes": 317,
+  "title": "AI 学习圈介绍",
+  "path": "texts/7663142738770699771.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7667191494185300977",
+  "author": "清华姜学长",
+  "likes": 578,
+  "title": "新版 Prompt 四象限",
+  "path": "texts/7667191494185300977.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7671629222636540593",
+  "author": "清华姜学长",
+  "likes": 1048,
+  "title": "Agent 与 Skill 的关系",
+  "path": "texts/7671629222636540593.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7674959942164039353",
+  "author": "清华姜学长",
+  "likes": 1692,
+  "title": "Agent 自进化",
+  "path": "texts/7674959942164039353.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7678672407896894393",
+  "author": "清华姜学长",
+  "likes": 244,
+  "title": "Model 与 Harness 区别",
+  "path": "texts/7678672407896894393.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7679423948974821105",
+  "author": "清华姜学长",
+  "likes": 1119,
+  "title": "Graph 与 Loop 的关系",
+  "path": "texts/7679423948974821105.txt",
+  "src": "调研",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7684627558054268212",
+  "author": "不喝九",
+  "likes": 497,
+  "title": "GitHub 怎么玩，小白速通",
+  "path": "texts/7684627558054268212.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7682031595963911434",
+  "author": "不喝九",
+  "likes": 14004,
+  "title": "AI 名词大科普，串讲 LLM、Prompt、多模态、RAG",
+  "path": "texts/7682031595963911434.txt",
+  "src": "调研",
+  "rel": 6.5,
+  "star": true
+ },
+ {
+  "id": "7679120897105497344",
+  "author": "不喝九",
+  "likes": 1815,
+  "title": "AI 宇宙大扫盲第一期，市面 AI 软件怎么选",
+  "path": "texts/7679120897105497344.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7676790263285665787",
+  "author": "不喝九",
+  "likes": 23868,
+  "title": "与 AI 无直接关系",
+  "path": "texts/7676790263285665787.txt",
+  "src": "调研",
+  "rel": 11.0,
+  "star": true
+ },
+ {
+  "id": "7675655078178508058",
+  "author": "不喝九",
+  "likes": 562,
+  "title": "小白福音ﾟAI工作台🧚‍♂️手把手带你做 从0到1搭建工作台",
+  "path": "texts/7675655078178508058.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7671581646390349108",
+  "author": "不喝九",
+  "likes": 222,
+  "title": "做工作台要不要花钱，哪些环节产生费用",
+  "path": "texts/7671581646390349108.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7669307157128531251",
+  "author": "不喝九",
+  "likes": 3129,
+  "title": "个人工作台常见问题大汇总来啦！ 为什么工作台会失效，手机端电",
+  "path": "texts/7669307157128531251.txt",
+  "src": "调研",
+  "rel": 1.4,
+  "star": false
+ },
+ {
+  "id": "7667623898078350644",
+  "author": "不喝九",
+  "likes": 44869,
+  "title": "我把胡楚靓工作台的提示词整理好了！！ 帮大家整理好了一套完整",
+  "path": "texts/7667623898078350644.txt",
+  "src": "调研",
+  "rel": 20.7,
+  "star": true
+ },
+ {
+  "id": "7666408143886615225",
+  "author": "不喝九",
+  "likes": 618,
+  "title": "AI 焦虑怎么办",
+  "path": "texts/7666408143886615225.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7663775333356160890",
+  "author": "不喝九",
+  "likes": 2526,
+  "title": "与 AI 无直接关系",
+  "path": "texts/7663775333356160890.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7680865481511443558",
+  "author": "屯点AI知识",
+  "likes": 7626,
+  "title": "不用懂编程，Codex 给普通人的三个红利",
+  "path": "texts/7680865481511443558.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7676371370243511470",
+  "author": "屯点AI知识",
+  "likes": 21279,
+  "title": "别再写复杂提示词了！一句话就能生成完整短剧 #ai #ai短",
+  "path": "texts/7676371370243511470.txt",
+  "src": "调研",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7674959052145219251",
+  "author": "屯点AI知识",
+  "likes": 12011,
+  "title": "AI实测：Seedance2.5到底强在哪？ #ai #ai",
+  "path": "texts/7674959052145219251.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7674921369330535722",
+  "author": "屯点AI知识",
+  "likes": 12336,
+  "title": "每周 500 万人用的 GPT 数字员工，普通人红利",
+  "path": "texts/7674921369330535722.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7671947004013431667",
+  "author": "屯点AI知识",
+  "likes": 17257,
+  "title": "用好这几个Agent 小白也能用AI直接设计出可落地的产品项",
+  "path": "texts/7671947004013431667.txt",
+  "src": "调研",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7671945651371256987",
+  "author": "屯点AI知识",
+  "likes": 15856,
+  "title": "豆包的隐藏用法 学会让你的提示词画面更丰富#ai #豆包",
+  "path": "texts/7671945651371256987.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7671573460322674378",
+  "author": "屯点AI知识",
+  "likes": 12134,
+  "title": "一个视频教你学会超炫酷的AI图钉转场 让你的视频更有创意哦#",
+  "path": "texts/7671573460322674378.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7671520007545197705",
+  "author": "屯点AI知识",
+  "likes": 14482,
+  "title": "AI漫剧剧情画风同质化？这五种风格直接让你脱颖而出#ai #",
+  "path": "texts/7671520007545197705.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7670128143077012402",
+  "author": "屯点AI知识",
+  "likes": 11903,
+  "title": "只需要一张图就能生出超帅的全息投影特效教程来啦#ai教程#a",
+  "path": "texts/7670128143077012402.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7669755961053128026",
+  "author": "屯点AI知识",
+  "likes": 12418,
+  "title": "让 AI 从实习生变资深顾问，标 #ai科普",
+  "path": "texts/7669755961053128026.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7634049462830189866",
+  "author": "FredTalk",
+  "likes": 24950,
+  "title": "零基础上手 Codex：一句话生成一个网页 这期记录我从零上",
+  "path": "texts/7634049462830189866.txt",
+  "src": "调研",
+  "rel": 20.0,
+  "star": true
+ },
+ {
+  "id": "7639156244657278223",
+  "author": "FredTalk",
+  "likes": 44318,
+  "title": "新手小白用 Codex 做 PPT 就够了 这期先不做长教程",
+  "path": "texts/7639156244657278223.txt",
+  "src": "调研",
+  "rel": 35.5,
+  "star": true
+ },
+ {
+  "id": "7636915997076770089",
+  "author": "FredTalk",
+  "likes": 75315,
+  "title": "新手小白安装这六个 SKills 就行够了！ 很多人开始给C",
+  "path": "texts/7636915997076770089.txt",
+  "src": "调研",
+  "rel": 60.3,
+  "star": true
+ },
+ {
+  "id": "7684815773331655977",
+  "author": "FredTalk",
+  "likes": 289,
+  "title": "Codex 新功能解决上下文压缩失忆，含上下文概念",
+  "path": "texts/7684815773331655977.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7684581838894943515",
+  "author": "FredTalk",
+  "likes": 1249,
+  "title": "豆包工作太香了！面试流程一键搞定 #豆包工作 #ai面试  ",
+  "path": "texts/7684581838894943515.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7683760855837658387",
+  "author": "FredTalk",
+  "likes": 718,
+  "title": "Image2.5生图一致性超稳，随手画也能出好图 #抖音精选",
+  "path": "texts/7683760855837658387.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7683437126796496174",
+  "author": "FredTalk",
+  "likes": 2316,
+  "title": "让 GPT6 节约 70% Token",
+  "path": "texts/7683437126796496174.txt",
+  "src": "调研",
+  "rel": 1.9,
+  "star": false
+ },
+ {
+  "id": "7682957726070164736",
+  "author": "FredTalk",
+  "likes": 456,
+  "title": "GPT6 Astra 发布 AGENT.md 要改",
+  "path": "texts/7682957726070164736.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7681474283813571882",
+  "author": "FredTalk",
+  "likes": 240,
+  "title": "Codex+Playwright：三步自动填网申，超简单 #",
+  "path": "texts/7681474283813571882.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7680584955285572879",
+  "author": "FredTalk",
+  "likes": 525,
+  "title": "AI 时代 5 本校准方向的书",
+  "path": "texts/7680584955285572879.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7680508380292582708",
+  "author": "FredTalk",
+  "likes": 2798,
+  "title": "豆包Agent，帮你 AI办公自动化 办公AI自动化，交给豆",
+  "path": "texts/7680508380292582708.txt",
+  "src": "调研",
+  "rel": 2.2,
+  "star": false
+ },
+ {
+  "id": "7680356437347929350",
+  "author": "FredTalk",
+  "likes": 190,
+  "title": "新手小白必装 5 个 Github 项目 #抖音精选App知",
+  "path": "texts/7680356437347929350.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7679632837120675113",
+  "author": "FredTalk",
+  "likes": 623,
+  "title": "0基础用Codex？先给它立专属规则！ #抖音精选App知识",
+  "path": "texts/7679632837120675113.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7679299484349746438",
+  "author": "FredTalk",
+  "likes": 1532,
+  "title": "不要再熬夜加班了，Workbuddy十分钟完成备课 #抖音精",
+  "path": "texts/7679299484349746438.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7678915118574390528",
+  "author": "FredTalk",
+  "likes": 998,
+  "title": "0基础小白Workbuddy+Obsidian知识库全教程 ",
+  "path": "texts/7678915118574390528.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7678489704194428210",
+  "author": "FredTalk",
+  "likes": 983,
+  "title": "新手必看！四步设置让Codex能力飙升90% #抖音精选Ap",
+  "path": "texts/7678489704194428210.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7677972687209205034",
+  "author": "FredTalk",
+  "likes": 912,
+  "title": "Codex新手必看！网页分享不踩坑指南 #抖音精选App知识",
+  "path": "texts/7677972687209205034.txt",
+  "src": "调研",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7676493874646289700",
+  "author": "FredTalk",
+  "likes": 1924,
+  "title": "DeepSeek 多模态上线一分钟配置",
+  "path": "texts/7676493874646289700.txt",
+  "src": "调研",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7676128659668749595",
+  "author": "FredTalk",
+  "likes": 7073,
+  "title": "爷爷都能看懂的 Git/GitHub 小白教程",
+  "path": "texts/7676128659668749595.txt",
+  "src": "调研",
+  "rel": 5.7,
+  "star": true
+ },
+ {
+  "id": "7675756753656565026",
+  "author": "FredTalk",
+  "likes": 1519,
+  "title": "Codex搜不到新内容？这样做就对了 #抖音精选App知识充",
+  "path": "texts/7675756753656565026.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7674791301153344787",
+  "author": "FredTalk",
+  "likes": 3131,
+  "title": "0基础小白必看！自动化浏览器ego(lite)超实用 #抖音",
+  "path": "texts/7674791301153344787.txt",
+  "src": "调研",
+  "rel": 2.5,
+  "star": false
+ },
+ {
+  "id": "7674293977125834036",
+  "author": "FredTalk",
+  "likes": 426,
+  "title": "三分钟吃透 DeepSeek Harness",
+  "path": "texts/7674293977125834036.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7673340341482753316",
+  "author": "FredTalk",
+  "likes": 1682,
+  "title": "DeepSeek V4Pro 发布",
+  "path": "texts/7673340341482753316.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7672726268227505443",
+  "author": "FredTalk",
+  "likes": 112,
+  "title": "0基础小白，一句话做高质量图片 #抖音前沿科技首发计划#AI",
+  "path": "texts/7672726268227505443.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7672245069650349312",
+  "author": "FredTalk",
+  "likes": 907,
+  "title": "小白也能学，用千问办公0基础秒会全球数据运营全流程 #千问办",
+  "path": "texts/7672245069650349312.txt",
+  "src": "调研",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7672068247675538697",
+  "author": "FredTalk",
+  "likes": 9546,
+  "title": "0基础Workbuddy做出高质量UI设计 #ai新星计划 ",
+  "path": "texts/7672068247675538697.txt",
+  "src": "调研",
+  "rel": 7.6,
+  "star": true
+ },
+ {
+  "id": "7669973325866700067",
+  "author": "FredTalk",
+  "likes": 1324,
+  "title": "WorkBuddy积分不够，快速配置第三方模型 #Workb",
+  "path": "texts/7669973325866700067.txt",
+  "src": "调研",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7669409321662319891",
+  "author": "FredTalk",
+  "likes": 84,
+  "title": "与 AI 无直接关系",
+  "path": "texts/7669409321662319891.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7669293902377127219",
+  "author": "FredTalk",
+  "likes": 714,
+  "title": "WorkBuddy新手小白，这六个 SKill 就够了 #W",
+  "path": "texts/7669293902377127219.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7667722125431606543",
+  "author": "FredTalk",
+  "likes": 546,
+  "title": "0 基础学 AI 二手 Mac 比新电脑香",
+  "path": "texts/7667722125431606543.txt",
+  "src": "调研",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7666326868160810291",
+  "author": "FredTalk",
+  "likes": 8598,
+  "title": "Codex+Skill，你的专属跨境电商团队 #ai新星计划",
+  "path": "texts/7666326868160810291.txt",
+  "src": "调研",
+  "rel": 6.9,
+  "star": true
+ },
+ {
+  "id": "7663688519985941795",
+  "author": "FredTalk",
+  "likes": 227,
+  "title": "0基础用Codex，生成属于自己的卡通字幕 #ai新星计划 ",
+  "path": "texts/7663688519985941795.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7663316369194142986",
+  "author": "FredTalk",
+  "likes": 1500,
+  "title": "GPT5.6 深度测评 不同模型强度怎么选",
+  "path": "texts/7663316369194142986.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7662537778630118683",
+  "author": "FredTalk",
+  "likes": 1550,
+  "title": "GPT5.6 测评 不需要 Superpowers",
+  "path": "texts/7662537778630118683.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7660178465697664290",
+  "author": "FredTalk",
+  "likes": 19719,
+  "title": "用Codex+Stitch，轻松做出好看的前端效果 #AI新",
+  "path": "texts/7660178465697664290.txt",
+  "src": "调研",
+  "rel": 15.8,
+  "star": true
+ },
+ {
+  "id": "7659600735016930612",
+  "author": "FredTalk",
+  "likes": 602,
+  "title": "Git 是 AI 新手的后悔药",
+  "path": "texts/7659600735016930612.txt",
+  "src": "调研",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7659039637826030848",
+  "author": "FredTalk",
+  "likes": 1002,
+  "title": "Codex小白友好！4件简单事学起来 如果你刚装好Codex",
+  "path": "texts/7659039637826030848.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7658551792174697780",
+  "author": "FredTalk",
+  "likes": 2625,
+  "title": "Codex 新手入门，4 个好用的提示词 今天分享给到大家\n",
+  "path": "texts/7658551792174697780.txt",
+  "src": "调研",
+  "rel": 2.1,
+  "star": false
+ },
+ {
+  "id": "7658078004379209002",
+  "author": "FredTalk",
+  "likes": 3665,
+  "title": "让 Codex 听懂你的要求：写 AGENTS.md 很多人",
+  "path": "texts/7658078004379209002.txt",
+  "src": "调研",
+  "rel": 2.9,
+  "star": false
+ },
+ {
+  "id": "7678641794670006501",
+  "author": "小九学AI",
+  "likes": 206,
+  "title": "Day10 最近我开学要准备开学的东西，发现了这个独特的功能",
+  "path": "texts/7678641794670006501.txt",
+  "src": "调研",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7677966189318615929",
+  "author": "小九学AI",
+  "likes": 1612,
+  "title": "消失的原因，学习记录者自白",
+  "path": "texts/7677966189318615929.txt",
+  "src": "调研",
+  "rel": 1.6,
+  "star": false
+ },
+ {
+  "id": "7675284117689105905",
+  "author": "小九学AI",
+  "likes": 807,
+  "title": "Day9 就两个步骤输入提示词提示词，说清楚你的需求，  生",
+  "path": "texts/7675284117689105905.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7675244161378343525",
+  "author": "小九学AI",
+  "likes": 6942,
+  "title": "Day9 根据提供的书本章节整理纯文字大纲，禁止表格，遵从原",
+  "path": "texts/7675244161378343525.txt",
+  "src": "调研",
+  "rel": 6.9,
+  "star": true
+ },
+ {
+  "id": "7662989873633268170",
+  "author": "小九学AI",
+  "likes": 8629,
+  "title": "Day8 今天尝试解决一下我之前想要的视频效果，  写好提示",
+  "path": "texts/7662989873633268170.txt",
+  "src": "调研",
+  "rel": 8.6,
+  "star": true
+ },
+ {
+  "id": "7661981613337640329",
+  "author": "小九学AI",
+  "likes": 972,
+  "title": "Day7 我的学习方式",
+  "path": "texts/7661981613337640329.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7661478715667397211",
+  "author": "小九学AI",
+  "likes": 9359,
+  "title": "Day6 真的有点震惊了，不过今天又了解到一个新网站，信息差",
+  "path": "texts/7661478715667397211.txt",
+  "src": "调研",
+  "rel": 9.4,
+  "star": true
+ },
+ {
+  "id": "7661253763743404915",
+  "author": "小九学AI",
+  "likes": 1349,
+  "title": "Day6 别的博主做这个好像有一个昆虫效果，我捆绑了，捆绑的",
+  "path": "texts/7661253763743404915.txt",
+  "src": "调研",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7660903084772690094",
+  "author": "小九学AI",
+  "likes": 1029,
+  "title": "Day6 如果想要实现这种效果，我的提示词还需要往哪个方向进",
+  "path": "texts/7660903084772690094.txt",
+  "src": "调研",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7656845910114585563",
+  "author": "小九学AI",
+  "likes": 694,
+  "title": "Day5 Day5。箱子里段时间看了一下评论区尝试了简单的两",
+  "path": "texts/7656845910114585563.txt",
+  "src": "调研",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7651859671457236186",
+  "author": "小九学AI",
+  "likes": 7434,
+  "title": "怎么创建这个Steve在满足我需求的条件下你们有什么合适的方",
+  "path": "texts/7651859671457236186.txt",
+  "src": "调研",
+  "rel": 7.4,
+  "star": true
+ },
+ {
+  "id": "7651822550373095545",
+  "author": "小九学AI",
+  "likes": 597,
+  "title": "Day4 整理新工具新概念，做第一个 Skill",
+  "path": "texts/7651822550373095545.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7651017315328197577",
+  "author": "小九学AI",
+  "likes": 845,
+  "title": "不要技术焦虑，AI 功能真正用到实处的人很少",
+  "path": "texts/7651017315328197577.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7650303859054724718",
+  "author": "小九学AI",
+  "likes": 789,
+  "title": "Day3 摸 Claude Code，国内软件够不够",
+  "path": "texts/7650303859054724718.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7649904105968732595",
+  "author": "小九学AI",
+  "likes": 125,
+  "title": "Day3 上 大模型、聊天机器人、智能体概念",
+  "path": "texts/7649904105968732595.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7648739928746109427",
+  "author": "小九学AI",
+  "likes": 3438,
+  "title": "Day1 学 agent/skill/workflow 概念",
+  "path": "texts/7648739928746109427.txt",
+  "src": "调研",
+  "rel": 3.4,
+  "star": true
+ },
+ {
+  "id": "7680098373068106634",
+  "author": "向行2028",
+  "likes": 22202,
+  "title": "AI 四层底层逻辑",
+  "path": "texts/7680098373068106634.txt",
+  "src": "调研",
+  "rel": 20.1,
+  "star": true
+ },
+ {
+  "id": "7681203146542164425",
+  "author": "向行2028",
+  "likes": 31737,
+  "title": "什么是 Agent 与怎么选",
+  "path": "texts/7681203146542164425.txt",
+  "src": "调研",
+  "rel": 28.8,
+  "star": true
+ },
+ {
+  "id": "7684925878765710003",
+  "author": "向行2028",
+  "likes": 150,
+  "title": "征集观众想用 AI 解决什么",
+  "path": "texts/7684925878765710003.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7683853799789694251",
+  "author": "向行2028",
+  "likes": 365,
+  "title": "五分钟让你成为AI P图的神，AI图片技巧全攻略来了。\n#P",
+  "path": "texts/7683853799789694251.txt",
+  "src": "调研",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7683450542488495342",
+  "author": "向行2028",
+  "likes": 3500,
+  "title": "Skill 教程",
+  "path": "texts/7683450542488495342.txt",
+  "src": "调研",
+  "rel": 3.2,
+  "star": true
+ },
+ {
+  "id": "7683066032277161842",
+  "author": "向行2028",
+  "likes": 1183,
+  "title": "提示词公式",
+  "path": "texts/7683066032277161842.txt",
+  "src": "调研",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7682746085944835721",
+  "author": "向行2028",
+  "likes": 123,
+  "title": "AI 名词科普，数据低，可与不喝九对照",
+  "path": "texts/7682746085944835721.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7681914806412004643",
+  "author": "向行2028",
+  "likes": 5212,
+  "title": "五分钟带你拆解AI短剧漫剧全流程 分清工具，做剧不翻车! 你",
+  "path": "texts/7681914806412004643.txt",
+  "src": "调研",
+  "rel": 4.7,
+  "star": true
+ },
+ {
+  "id": "7681712478251091802",
+  "author": "向行2028",
+  "likes": 79,
+  "title": "认知感悟",
+  "path": "texts/7681712478251091802.txt",
+  "src": "调研",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7680891016815647922",
+  "author": "向行2028",
+  "likes": 1021,
+  "title": "AIGC 是什么",
+  "path": "texts/7680891016815647922.txt",
+  "src": "调研",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7680564302357160366",
+  "author": "向行2028",
+  "likes": 7040,
+  "title": "主流大模型怎么选",
+  "path": "texts/7680564302357160366.txt",
+  "src": "调研",
+  "rel": 6.4,
+  "star": true
+ },
+ {
+  "id": "7679120602724502986",
+  "author": "向行2028",
+  "likes": 644,
+  "title": "女性与 AI 干货，感悟",
+  "path": "texts/7679120602724502986.txt",
+  "src": "调研",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7663830577270998501",
+  "author": "智能体阿朱",
+  "likes": 62826,
+  "title": "12 个 AI 热词串讲，20 分钟",
+  "path": "texts/7663830577270998501.txt",
+  "src": "调研",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7677789451007649658",
+  "author": "智能体阿朱",
+  "likes": 41217,
+  "title": "15 个 AI 热词一条逻辑线，24 分钟",
+  "path": "texts/7677789451007649658.txt",
+  "src": "调研",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7683470362559330993",
+  "author": "柒柒AI说",
+  "likes": 2688,
+  "title": "3分钟搞定ppt！Workbuddy+美图设计室也太牛了",
+  "path": "texts/7683470362559330993.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7682737562171513061",
+  "author": "AI大白话",
+  "likes": 19786,
+  "title": "实测纳米Work，不用敲代码，小白也能快速拥有专属自媒体工作",
+  "path": "texts/7682737562171513061.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7682308146648603386",
+  "author": "AI大白话",
+  "likes": 21310,
+  "title": "新手不用死磕提示词，老手不用反复试错，这个ai创作技巧提质又",
+  "path": "texts/7682308146648603386.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7682291394811418722",
+  "author": "木子AI指南",
+  "likes": 21363,
+  "title": "AI邪修玩法进阶！巧用AI灰模，精准复刻舞剑动作",
+  "path": "texts/7682291394811418722.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.3,
+  "star": true
+ },
+ {
+  "id": "7679031151340027835",
+  "author": "AI大白话",
+  "likes": 21571,
+  "title": "别死磕 AI 技巧！OiiOii 帮你稳定持续产出内容",
+  "path": "texts/7679031151340027835.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7678759580091813163",
+  "author": "柒柒AI说",
+  "likes": 29850,
+  "title": "告别AI脸崩！爆款AI剧集幕后创作思路拆解",
+  "path": "texts/7678759580091813163.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7678583246276568051",
+  "author": "花花AI次元",
+  "likes": 30370,
+  "title": "别再用老式远控折磨自己啦！现在用大白话就能让AI远程替你干活",
+  "path": "texts/7678583246276568051.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.1,
+  "star": true
+ },
+ {
+  "id": "7678163378887945585",
+  "author": "AI悠话说",
+  "likes": 59599,
+  "title": "OpenAI史诗级更新！ChatGPT三模式合一保姆级教程",
+  "path": "texts/7678163378887945585.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 5.3,
+  "star": true
+ },
+ {
+  "id": "7678263421292252479",
+  "author": "柒柒AI说",
+  "likes": 34562,
+  "title": "无提示词直出电商视频？实测RunningHub满血版wan3",
+  "path": "texts/7678263421292252479.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.6,
+  "star": true
+ },
+ {
+  "id": "7677918918007121755",
+  "author": "花花AI次元",
+  "likes": 35190,
+  "title": "远离华而不实的 AI 视觉稿，一句话生成可编辑网页，简直不要",
+  "path": "texts/7677918918007121755.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.4,
+  "star": true
+ },
+ {
+  "id": "7677544066733932194",
+  "author": "木子AI指南",
+  "likes": 17109,
+  "title": "在千问创作实测Wan3.0，AI短剧真实成片效果",
+  "path": "texts/7677544066733932194.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.8,
+  "star": true
+ },
+ {
+  "id": "7677489516827694501",
+  "author": "AI大白话",
+  "likes": 31726,
+  "title": "做AI视频总是疯狂穿帮翻车？学会镜头拆解搭配局部修改，普通人",
+  "path": "texts/7677489516827694501.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.6,
+  "star": true
+ },
+ {
+  "id": "7677106290233867386",
+  "author": "AI大白话",
+  "likes": 25945,
+  "title": "大学小组作业 PPT 太折磨！交给 AI一键生成，轻松搞定课",
+  "path": "texts/7677106290233867386.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7675314352056310848",
+  "author": "木子AI指南",
+  "likes": 25111,
+  "title": "真正扎根教育场景的垂直大模型来了！",
+  "path": "texts/7675314352056310848.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.7,
+  "star": true
+ },
+ {
+  "id": "7675943049667036273",
+  "author": "AI悠话说",
+  "likes": 24934,
+  "title": "0提示词！挂机批量出片一键转绘出海",
+  "path": "texts/7675943049667036273.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.2,
+  "star": true
+ },
+ {
+  "id": "7675618597318869435",
+  "author": "AI大白话",
+  "likes": 31004,
+  "title": "还在熬大夜做PPT？AI一键生成还支持二次编辑！",
+  "path": "texts/7675618597318869435.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7674919507987447459",
+  "author": "木子AI指南",
+  "likes": 23683,
+  "title": "终于不用抠搜用AI啦！",
+  "path": "texts/7674919507987447459.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.5,
+  "star": true
+ },
+ {
+  "id": "7674839190840923131",
+  "author": "柒柒AI说",
+  "likes": 51888,
+  "title": "奥德修斯用十年回家，我们用一生出发。我用AI做出了我的奥德赛",
+  "path": "texts/7674839190840923131.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.4,
+  "star": true
+ },
+ {
+  "id": "7674132208571605587",
+  "author": "花花AI次元",
+  "likes": 32380,
+  "title": "办公新思路！把 AI 装进聊天工具里，信息收集到方案落地一站",
+  "path": "texts/7674132208571605587.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.2,
+  "star": true
+ },
+ {
+  "id": "7673761158474342513",
+  "author": "AI悠话说",
+  "likes": 28312,
+  "title": "从底层编程能力，到AI办公落地：TraeWork重新定义团队",
+  "path": "texts/7673761158474342513.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.5,
+  "star": true
+ },
+ {
+  "id": "7673726880906188145",
+  "author": "柒柒AI说",
+  "likes": 41495,
+  "title": "我用TraeWork给自己造了一个属于我的工作站～你也来试试",
+  "path": "texts/7673726880906188145.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.9,
+  "star": true
+ },
+ {
+  "id": "7673405449908255729",
+  "author": "AI大白话",
+  "likes": 35542,
+  "title": "一杯咖啡的功夫干完一下午的活！TraeWork把零散群聊、多",
+  "path": "texts/7673405449908255729.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7673417067067964153",
+  "author": "柒柒AI说",
+  "likes": 43026,
+  "title": "你写800字提示词，不如我在DreamoTV 导演拖3下鼠标",
+  "path": "texts/7673417067067964153.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.0,
+  "star": true
+ },
+ {
+  "id": "7673020546050193128",
+  "author": "木子AI指南",
+  "likes": 29099,
+  "title": "自媒体复盘终于可以解放双手了！",
+  "path": "texts/7673020546050193128.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 3.1,
+  "star": true
+ },
+ {
+  "id": "7673053501949930100",
+  "author": "木子AI指南",
+  "likes": 31631,
+  "title": "告别AI成片整条返工！按秒改片到底有多爽？",
+  "path": "texts/7673053501949930100.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 3.4,
+  "star": true
+ },
+ {
+  "id": "7673035481101562745",
+  "author": "AI悠话说",
+  "likes": 30110,
+  "title": "0基础漫剧实操！0.21元/秒玩转Seedance2.5成片",
+  "path": "texts/7673035481101562745.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.7,
+  "star": true
+ },
+ {
+  "id": "7673021291566792697",
+  "author": "柒柒AI说",
+  "likes": 53119,
+  "title": "太夯了，在 runninghub 限时会员折算 0.21 元",
+  "path": "texts/7673021291566792697.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.4,
+  "star": true
+ },
+ {
+  "id": "7671152416730105683",
+  "author": "花花AI次元",
+  "likes": 40776,
+  "title": "从\"抽卡玩具\"到\"生产力工具\"，AI视频真的变了。",
+  "path": "texts/7671152416730105683.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.8,
+  "star": true
+ },
+ {
+  "id": "7670802853308995683",
+  "author": "木子AI指南",
+  "likes": 8750,
+  "title": "AI加持，人人都能做专属IP周边！",
+  "path": "texts/7670802853308995683.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7670810535664157553",
+  "author": "AI悠话说",
+  "likes": 34760,
+  "title": "即梦Seedance2.5上线，细扒这波升级到底强在哪",
+  "path": "texts/7670810535664157553.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 3.1,
+  "star": true
+ },
+ {
+  "id": "7668606536168681851",
+  "author": "柒柒AI说",
+  "likes": 38226,
+  "title": "2亿播放AI短剧《被裁掉的女孩》全拆解：从角色到镜头到持续更",
+  "path": "texts/7668606536168681851.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.8,
+  "star": true
+ },
+ {
+  "id": "7668600671974016683",
+  "author": "花花AI次元",
+  "likes": 30547,
+  "title": "学会这招，AI视频多人对话再也不怕穿帮~",
+  "path": "texts/7668600671974016683.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.1,
+  "star": true
+ },
+ {
+  "id": "7668568629910756072",
+  "author": "木子AI指南",
+  "likes": 25777,
+  "title": "谁看懂了2亿播放短剧背后的关键？",
+  "path": "texts/7668568629910756072.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.8,
+  "star": true
+ },
+ {
+  "id": "7667466654985700196",
+  "author": "花花AI次元",
+  "likes": 17606,
+  "title": "还在熬夜做PPT？ 学会了AI办公新思路，告别低效加班",
+  "path": "texts/7667466654985700196.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7667153285585823851",
+  "author": "花花AI次元",
+  "likes": 11031,
+  "title": "还在愁选题？用 Skill 解锁自媒体创作新玩法",
+  "path": "texts/7667153285585823851.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7666374129246996603",
+  "author": "柒柒AI说",
+  "likes": 24379,
+  "title": "这种多模型组队干活的玩法也挺有趣的，快去试试看～",
+  "path": "texts/7666374129246996603.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7665982121124051876",
+  "author": "花花AI次元",
+  "likes": 22971,
+  "title": "人像、分镜、站位三大难题一次性解决，做短剧不用再反复抽卡啦",
+  "path": "texts/7665982121124051876.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.6,
+  "star": true
+ },
+ {
+  "id": "7665277253554815674",
+  "author": "AI悠话说",
+  "likes": 24957,
+  "title": "一张照片，用AI搞定全套宣传物料～",
+  "path": "texts/7665277253554815674.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.2,
+  "star": true
+ },
+ {
+  "id": "7663797915164677873",
+  "author": "AI悠话说",
+  "likes": 52151,
+  "title": "从IP到门店，豆包带我进入生产级时代",
+  "path": "texts/7663797915164677873.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 4.7,
+  "star": true
+ },
+ {
+  "id": "7663340537814841273",
+  "author": "柒柒AI说",
+  "likes": 22492,
+  "title": "AI 短剧去 AI 味 + 提效攻略，创作者直接码住！ 不用",
+  "path": "texts/7663340537814841273.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7662607115320090091",
+  "author": "花花AI次元",
+  "likes": 20570,
+  "title": "AI改片终于不用重头再来了，从想法到交付，只需动动嘴皮~",
+  "path": "texts/7662607115320090091.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7662327962872083185",
+  "author": "AI悠话说",
+  "likes": 17126,
+  "title": "豆包ai办公，一句话搞定复杂任务～",
+  "path": "texts/7662327962872083185.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7660855027912822054",
+  "author": "花花AI次元",
+  "likes": 16577,
+  "title": "劝退90%普通人的Vibe Coding，其实巨简单！",
+  "path": "texts/7660855027912822054.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7661180839661469819",
+  "author": "AI大白话",
+  "likes": 22006,
+  "title": "AI小白做出了人生第一部电影！",
+  "path": "texts/7661180839661469819.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7660797826175779234",
+  "author": "木子AI指南",
+  "likes": 10193,
+  "title": "不用切换多软件，一套工具完成简历筛选！",
+  "path": "texts/7660797826175779234.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7661133091083540922",
+  "author": "柒柒AI说",
+  "likes": 65758,
+  "title": "2026年过半，你的爱用AI是哪些？",
+  "path": "texts/7661133091083540922.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 3.0,
+  "star": true
+ },
+ {
+  "id": "7660795245566768881",
+  "author": "AI悠话说",
+  "likes": 13049,
+  "title": "10分钟搞定运营爆款拆解，AI可太香了",
+  "path": "texts/7660795245566768881.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7660792796374978932",
+  "author": "木子AI指南",
+  "likes": 21961,
+  "title": "全新人像升级，告别流水线AI脸！",
+  "path": "texts/7660792796374978932.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.4,
+  "star": true
+ },
+ {
+  "id": "7660061806332759153",
+  "author": "AI悠话说",
+  "likes": 24037,
+  "title": "告别AI视频烧钱！Seedance2.5低成本玩法",
+  "path": "texts/7660061806332759153.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.2,
+  "star": true
+ },
+ {
+  "id": "7660034168126641634",
+  "author": "木子AI指南",
+  "likes": 26392,
+  "title": "拆解AI视频成本公式，手把手教你省大钱！",
+  "path": "texts/7660034168126641634.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.8,
+  "star": true
+ },
+ {
+  "id": "7660034032876474043",
+  "author": "柒柒AI说",
+  "likes": 32493,
+  "title": "还在因为算力烧钱不敢创作？试试这个！",
+  "path": "texts/7660034032876474043.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7660001636848624063",
+  "author": "花花AI次元",
+  "likes": 24988,
+  "title": "AI短剧的站位和镜头，终于不用靠抽卡了！",
+  "path": "texts/7660001636848624063.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7657450459485187505",
+  "author": "AI悠话说",
+  "likes": 22237,
+  "title": "宝藏学习阵地！名校课、AI答疑全在抖音精选～",
+  "path": "texts/7657450459485187505.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.0,
+  "star": true
+ },
+ {
+  "id": "7657018133728118117",
+  "author": "柒柒AI说",
+  "likes": 36198,
+  "title": "这才是创作者的好帮手！有了它，找热点、筛选题、写脚本一次搞定",
+  "path": "texts/7657018133728118117.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7657535939547390321",
+  "author": "AI悠话说",
+  "likes": 25468,
+  "title": "我的赛博片场，轻松复刻电影名场面～",
+  "path": "texts/7657535939547390321.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.3,
+  "star": true
+ },
+ {
+  "id": "7657488154303918437",
+  "author": "AI大白话",
+  "likes": 22420,
+  "title": "AI 审合同神器，租房入职条款一键排雷！",
+  "path": "texts/7657488154303918437.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7657148301640462969",
+  "author": "AI大白话",
+  "likes": 12624,
+  "title": "一张图搞定电商详情页，美工效率神器，省时又出片",
+  "path": "texts/7657148301640462969.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.6,
+  "star": true
+ },
+ {
+  "id": "7656785080749538789",
+  "author": "AI大白话",
+  "likes": 21412,
+  "title": "没策划思路？AI帮你 快速搭建可直接落地的方案",
+  "path": "texts/7656785080749538789.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7656698988426487738",
+  "author": "AI大白话",
+  "likes": 17824,
+  "title": "30秒教你零成本写出原创歌曲！",
+  "path": "texts/7656698988426487738.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7656347907247668581",
+  "author": "AI大白话",
+  "likes": 20457,
+  "title": "别再写提示词小作文了，一分钟教你复刻爆款！",
+  "path": "texts/7656347907247668581.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7656050147268590949",
+  "author": "AI大白话",
+  "likes": 18692,
+  "title": "爆火的棒球场现场抓拍视频，一句话搞定！",
+  "path": "texts/7656050147268590949.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7655988602737100465",
+  "author": "AI大白话",
+  "likes": 13784,
+  "title": "保存这几个修图提示词，高质量出图不用愁！",
+  "path": "texts/7655988602737100465.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.7,
+  "star": true
+ },
+ {
+  "id": "7655759525245929841",
+  "author": "AI悠话说",
+  "likes": 57113,
+  "title": "一屏四开，我的AIGC创作效率神器～",
+  "path": "texts/7655759525245929841.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 5.1,
+  "star": true
+ },
+ {
+  "id": "7655310442424910501",
+  "author": "AI大白话",
+  "likes": 7572,
+  "title": "一招反向提问法，解决 AI 答非所问",
+  "path": "texts/7655310442424910501.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7655184566282413243",
+  "author": "柒柒AI说",
+  "likes": 32485,
+  "title": "短剧出海 在短剧出海的风口，如何做出本地化的短剧内容？我在万",
+  "path": "texts/7655184566282413243.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7655213348162280826",
+  "author": "AI大白话",
+  "likes": 6842,
+  "title": "满大街 AI 工具分不清？20秒搞懂",
+  "path": "texts/7655213348162280826.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7654542219483245989",
+  "author": "AI大白话",
+  "likes": 7341,
+  "title": "这些ai工具平替，直接免费用！",
+  "path": "texts/7654542219483245989.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7654484732177050865",
+  "author": "AI大白话",
+  "likes": 8922,
+  "title": "这个设计师Agent，承包你的落地设计！",
+  "path": "texts/7654484732177050865.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7652978461749659749",
+  "author": "AI悠话说",
+  "likes": 10959,
+  "title": "小云雀短剧Agent2.0落地，轻松实现专业可控短剧～",
+  "path": "texts/7652978461749659749.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7652669590673557466",
+  "author": "花花AI次元",
+  "likes": 12919,
+  "title": "美图出大招了！像当初美图秀秀解决普通人不会用ps修图一样，这",
+  "path": "texts/7652669590673557466.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7652620217256405987",
+  "author": "木子AI指南",
+  "likes": 15322,
+  "title": "美图AI团队已就位，以后只管提需求等成品！",
+  "path": "texts/7652620217256405987.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.6,
+  "star": true
+ },
+ {
+  "id": "7652591903896126565",
+  "author": "AI悠话说",
+  "likes": 15458,
+  "title": "在美图影像节，解锁不用学的AI自由～",
+  "path": "texts/7652591903896126565.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7650054432898721657",
+  "author": "AI悠话说",
+  "likes": 18389,
+  "title": "解放双手，真正的AI全自动短剧～",
+  "path": "texts/7650054432898721657.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.6,
+  "star": true
+ },
+ {
+  "id": "7649652910440522851",
+  "author": "木子AI指南",
+  "likes": 21303,
+  "title": "好视频看分镜，自动挡式出片真香！",
+  "path": "texts/7649652910440522851.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.3,
+  "star": true
+ },
+ {
+  "id": "7646979472118528357",
+  "author": "柒柒AI说",
+  "likes": 28835,
+  "title": "1 个人 = 7 人团队？扣子 3.0 让我实现了日更自由",
+  "path": "texts/7646979472118528357.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7646002264813859505",
+  "author": "AI悠话说",
+  "likes": 21087,
+  "title": "实测LuxReal，AI短剧一致性拉满！",
+  "path": "texts/7646002264813859505.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.9,
+  "star": true
+ },
+ {
+  "id": "7646255907848948980",
+  "author": "木子AI指南",
+  "likes": 11555,
+  "title": "这波热度我吃定了！",
+  "path": "texts/7646255907848948980.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7644929197538515557",
+  "author": "AI悠话说",
+  "likes": 19417,
+  "title": "从夯到更夯！国风AI的正确打开方式～",
+  "path": "texts/7644929197538515557.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7645209679061644785",
+  "author": "柒柒AI说",
+  "likes": 21502,
+  "title": "升级后的小云雀，在做精品短剧上简直神了！",
+  "path": "texts/7645209679061644785.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7644846530252011377",
+  "author": "柒柒AI说",
+  "likes": 25712,
+  "title": "AI 把古代名人玩明白了，这才是国风AI的正确打开方式！",
+  "path": "texts/7644846530252011377.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7644890599006408872",
+  "author": "木子AI指南",
+  "likes": 16100,
+  "title": "AI玩转古风名场面，简直太会了！",
+  "path": "texts/7644890599006408872.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.7,
+  "star": true
+ },
+ {
+  "id": "7642670896633210191",
+  "author": "木子AI指南",
+  "likes": 11532,
+  "title": "AI还能这么玩？！",
+  "path": "texts/7642670896633210191.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7640378131723798641",
+  "author": "花花AI次元",
+  "likes": 13060,
+  "title": "沉浸式AI魔法作画，画什么就长什么！",
+  "path": "texts/7640378131723798641.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7640077097419019941",
+  "author": "花花AI次元",
+  "likes": 11468,
+  "title": "免费让你获得三个打工牛马，这个Agent还有谁没发现",
+  "path": "texts/7640077097419019941.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7639642930337033145",
+  "author": "花花AI次元",
+  "likes": 14626,
+  "title": "这5种ai漫剧风格，让你的作品打破同质化!",
+  "path": "texts/7639642930337033145.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7639587254873640881",
+  "author": "AI悠话说",
+  "likes": 32081,
+  "title": "在AI时代，也要守住创作独有的灵魂与初心",
+  "path": "texts/7639587254873640881.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 2.9,
+  "star": true
+ },
+ {
+  "id": "7639309928934882673",
+  "author": "AI悠话说",
+  "likes": 11686,
+  "title": "踩过无数坑，总算摸清AI视频工具的真实水准",
+  "path": "texts/7639309928934882673.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7638965716108592561",
+  "author": "花花AI次元",
+  "likes": 12226,
+  "title": "50s教你学会三种ai特效玩法",
+  "path": "texts/7638965716108592561.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7638560558400635898",
+  "author": "花花AI次元",
+  "likes": 5840,
+  "title": "小白也能学会的AI旅行打卡转场",
+  "path": "texts/7638560558400635898.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7638537094739335857",
+  "author": "花花AI次元",
+  "likes": 3051,
+  "title": "再也不用憋提示词！这招直接抄作业",
+  "path": "texts/7638537094739335857.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7638504954700886385",
+  "author": "AI悠话说",
+  "likes": 11988,
+  "title": "告别抽卡玄学，半小时搞定高质量AI短剧～",
+  "path": "texts/7638504954700886385.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": true
+ },
+ {
+  "id": "7637424639723177851",
+  "author": "花花AI次元",
+  "likes": 3932,
+  "title": "0成本教你做ai广告视频",
+  "path": "texts/7637424639723177851.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7637120843000996539",
+  "author": "花花AI次元",
+  "likes": 4052,
+  "title": "一分钟带你玩转首尾帧",
+  "path": "texts/7637120843000996539.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7636983319037381282",
+  "author": "木子AI指南",
+  "likes": 9842,
+  "title": "告别工具切换，让你一键搭建工作流！",
+  "path": "texts/7636983319037381282.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7636719787397417969",
+  "author": "柒柒AI说",
+  "likes": 32599,
+  "title": "PPT总是不高级？用好AI普通人也能轻松做出高级质感的视觉汇",
+  "path": "texts/7636719787397417969.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7635538331640365489",
+  "author": "花花AI次元",
+  "likes": 3766,
+  "title": "实测新版ai生图模型，算力强到离谱！",
+  "path": "texts/7635538331640365489.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7634520767740702842",
+  "author": "柒柒AI说",
+  "likes": 18438,
+  "title": "假如能回到80年代……",
+  "path": "texts/7634520767740702842.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7634432442669556451",
+  "author": "木子AI指南",
+  "likes": 13115,
+  "title": "普通人也能有专属闪应用啦！",
+  "path": "texts/7634432442669556451.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7634442361972350201",
+  "author": "柒柒AI说",
+  "likes": 8414,
+  "title": "我在RoboNeo培养出了我的专属Agent teams",
+  "path": "texts/7634442361972350201.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7634428209942064570",
+  "author": "AI悠话说",
+  "likes": 9038,
+  "title": "单人即团队，让每个想法都能落地成片 有了Agent Team",
+  "path": "texts/7634428209942064570.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7633802944786299365",
+  "author": "柒柒AI说",
+  "likes": 15670,
+  "title": "想追AI龙虾风口，却被部署难、成本高、不安全劝退？终于有适配",
+  "path": "texts/7633802944786299365.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.7,
+  "star": true
+ },
+ {
+  "id": "7633376554738911141",
+  "author": "柒柒AI说",
+  "likes": 2374,
+  "title": "快来看看我在扣子养的爱虾，普通人也能轻松上手",
+  "path": "texts/7633376554738911141.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7632146333827104761",
+  "author": "AI悠话说",
+  "likes": 2918,
+  "title": "临时要PPT？让我的全能搭子来～",
+  "path": "texts/7632146333827104761.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7631904176248247394",
+  "author": "木子AI指南",
+  "likes": 13412,
+  "title": "懂我的AI创作搭档终于来了！",
+  "path": "texts/7631904176248247394.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.4,
+  "star": true
+ },
+ {
+  "id": "7632168832384108729",
+  "author": "AI悠话说",
+  "likes": 2052,
+  "title": "一键成文，码字也超轻松～",
+  "path": "texts/7632168832384108729.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7631841867449941824",
+  "author": "木子AI指南",
+  "likes": 2625,
+  "title": "做PPT再也不用熬大夜了！",
+  "path": "texts/7631841867449941824.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7631161901330548066",
+  "author": "木子AI指南",
+  "likes": 1917,
+  "title": "写作找豆包，省时省力又高效！",
+  "path": "texts/7631161901330548066.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7630798241530022843",
+  "author": "柒柒AI说",
+  "likes": 1331,
+  "title": "豆包不仅是个工具，更是工作生活中离不开的靠谱伙伴！",
+  "path": "texts/7630798241530022843.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7631399932793052274",
+  "author": "AI悠话说",
+  "likes": 11335,
+  "title": "谁在说AI不能商用？罗永浩直接上大分",
+  "path": "texts/7631399932793052274.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7631141889060462694",
+  "author": "AI悠话说",
+  "likes": 2900,
+  "title": "一键成文拯救熬夜的打工人～",
+  "path": "texts/7631141889060462694.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7631133781542533241",
+  "author": "柒柒AI说",
+  "likes": 1585,
+  "title": "你还在手搓ppt吗？教你三分钟搞定！",
+  "path": "texts/7631133781542533241.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7630797150566219001",
+  "author": "AI悠话说",
+  "likes": 9483,
+  "title": "Seedance2.0生成带货视频，脚本模特全搞定！",
+  "path": "texts/7630797150566219001.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7629976781689410490",
+  "author": "AI悠话说",
+  "likes": 11585,
+  "title": "AI创作终极形态！RHTV一站式搞定全流程",
+  "path": "texts/7629976781689410490.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7629974716865906106",
+  "author": "柒柒AI说",
+  "likes": 10232,
+  "title": "在这个无限画布里，我把自己变成了电影主角",
+  "path": "texts/7629974716865906106.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.5,
+  "star": true
+ },
+ {
+  "id": "7629609339325743331",
+  "author": "木子AI指南",
+  "likes": 12158,
+  "title": "谁懂啊！终于等到有人格，会干活的AI！",
+  "path": "texts/7629609339325743331.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7628552008593036480",
+  "author": "木子AI指南",
+  "likes": 2678,
+  "title": "找不到人陪练面试、练口语？豆包帮你一站式解决！",
+  "path": "texts/7628552008593036480.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7628911209811843264",
+  "author": "木子AI指南",
+  "likes": 5049,
+  "title": "精选几位AI博主，让你轻松跟上AI时代！",
+  "path": "texts/7628911209811843264.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7628534599212270769",
+  "author": "AI悠话说",
+  "likes": 1915,
+  "title": "哑巴英语克星！豆包陪练面试双buff拉满",
+  "path": "texts/7628534599212270769.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7627764650901399717",
+  "author": "柒柒AI说",
+  "likes": 11193,
+  "title": "这也太丝滑了！快来申请内测资格，在这个无限画布里发挥你的无限",
+  "path": "texts/7627764650901399717.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.5,
+  "star": true
+ },
+ {
+  "id": "7626690814996114801",
+  "author": "AI悠话说",
+  "likes": 14843,
+  "title": "用AI还原安慕希整颗蓝莓的新鲜好喝，参赛教程干货拉满～",
+  "path": "texts/7626690814996114801.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7626275041504786106",
+  "author": "柒柒AI说",
+  "likes": 3970,
+  "title": "有了豆包这个得力助手，让我告别熬夜焦虑，高效出稿！",
+  "path": "texts/7626275041504786106.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7624835443393732209",
+  "author": "柒柒AI说",
+  "likes": 21756,
+  "title": "现在的AI大模型已经这么厉害了，快用可灵AI完成你心中的故事",
+  "path": "texts/7624835443393732209.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7624380557460598641",
+  "author": "柒柒AI说",
+  "likes": 40998,
+  "title": "0基础也能手搓哈啤参赛视频啦，快来试试！",
+  "path": "texts/7624380557460598641.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.9,
+  "star": true
+ },
+ {
+  "id": "7623243483000065713",
+  "author": "AI悠话说",
+  "likes": 2385,
+  "title": "豆包一键成文，直接解锁省力人生～",
+  "path": "texts/7623243483000065713.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7621848550783245297",
+  "author": "AI悠话说",
+  "likes": 1544,
+  "title": "豆包帮写超省心，一键拿捏高效创作！",
+  "path": "texts/7621848550783245297.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7621544558007370617",
+  "author": "AI悠话说",
+  "likes": 11468,
+  "title": "Seko+精准指令，普通人也能秒变导演！",
+  "path": "texts/7621544558007370617.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7619274756952742001",
+  "author": "柒柒AI说",
+  "likes": 10190,
+  "title": "2026年了，这些宝藏博主带你稳入AI局！",
+  "path": "texts/7619274756952742001.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.5,
+  "star": true
+ },
+ {
+  "id": "7619258397677955697",
+  "author": "AI悠话说",
+  "likes": 13578,
+  "title": "阿里悟空AI上岗，让我直接开启躺赢模式！",
+  "path": "texts/7619258397677955697.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7618910485999577009",
+  "author": "木子AI指南",
+  "likes": 7442,
+  "title": "电商人有自己的“龙虾”，用美图设计室，电商图A+详情页丝滑产",
+  "path": "texts/7618910485999577009.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7618581319170285435",
+  "author": "柒柒AI说",
+  "likes": 8321,
+  "title": "做跨境电商还在苦苦手搓套图？试试这个美图设计室！",
+  "path": "texts/7618581319170285435.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7618130398183151729",
+  "author": "木子AI指南",
+  "likes": 4597,
+  "title": "豆包PPT，高效生成，双端同步更便捷",
+  "path": "texts/7618130398183151729.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7616635549009694693",
+  "author": "AI悠话说",
+  "likes": 6567,
+  "title": "临时要PPT？教你用豆包 5 分钟交出满分汇报稿",
+  "path": "texts/7616635549009694693.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7616269952992082917",
+  "author": "AI悠话说",
+  "likes": 8482,
+  "title": "夸克同学？我的随身超级AI助理",
+  "path": "texts/7616269952992082917.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7612559930276744049",
+  "author": "柒柒AI说",
+  "likes": 1359,
+  "title": "想要能拿得出手的PPT？用豆包就够了，提效就这么简单",
+  "path": "texts/7612559930276744049.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7612548278575580346",
+  "author": "AI悠话说",
+  "likes": 3888,
+  "title": "AI广告大片，小白也能轻松完成！",
+  "path": "texts/7612548278575580346.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7612545930080619961",
+  "author": "木子AI指南",
+  "likes": 5564,
+  "title": "Seedance2.0，让我们都能成为自己的导演",
+  "path": "texts/7612545930080619961.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7610388557170087866",
+  "author": "AI悠话说",
+  "likes": 3655,
+  "title": "我的AI管家，一键搞定吃喝玩乐",
+  "path": "texts/7610388557170087866.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7608432900195432827",
+  "author": "AI悠话说",
+  "likes": 2497,
+  "title": "三招祛除AI油腻感，让照片更有高级感！",
+  "path": "texts/7608432900195432827.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7606565573358616699",
+  "author": "柒柒AI说",
+  "likes": 3935,
+  "title": "这种指哪打哪，对创意结果可以掌控的感觉，才是AI设计的未来",
+  "path": "texts/7606565573358616699.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7605896998194316453",
+  "author": "柒柒AI说",
+  "likes": 4242,
+  "title": "不用设计师，不用请模特，用美图设计室1分钟就能做出精致美观的",
+  "path": "texts/7605896998194316453.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7605862098342149989",
+  "author": "AI悠话说",
+  "likes": 3750,
+  "title": "一句话生成！低成本电商设计",
+  "path": "texts/7605862098342149989.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7605860887656940153",
+  "author": "木子AI指南",
+  "likes": 2139,
+  "title": "真正厉害的人，早就用上了AI思维框架了",
+  "path": "texts/7605860887656940153.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7605492507393147785",
+  "author": "木子AI指南",
+  "likes": 2985,
+  "title": "从实验室算法到全民AI，这波进化真的太炸了！",
+  "path": "texts/7605492507393147785.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7605490612629337737",
+  "author": "木子AI指南",
+  "likes": 1097,
+  "title": "解锁灵光，普通人的创作神器！",
+  "path": "texts/7605490612629337737.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7605181228165294586",
+  "author": "柒柒AI说",
+  "likes": 6286,
+  "title": "一站搞定视频创作，让营销更简单",
+  "path": "texts/7605181228165294586.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7605156271495402482",
+  "author": "木子AI指南",
+  "likes": 1447,
+  "title": "拯救废片计划，AI修图真香！",
+  "path": "texts/7605156271495402482.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7605148734302164974",
+  "author": "木子AI指南",
+  "likes": 2104,
+  "title": "今年用AI写述职报告，轻松又出彩！",
+  "path": "texts/7605148734302164974.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7604777922121349962",
+  "author": "木子AI指南",
+  "likes": 1269,
+  "title": "还不会写AI提示词？教你用反向思维来解决！",
+  "path": "texts/7604777922121349962.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7604777293898900809",
+  "author": "木子AI指南",
+  "likes": 1485,
+  "title": "我的AI数学人来拜年啦！",
+  "path": "texts/7604777293898900809.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7604705289083257594",
+  "author": "AI悠话说",
+  "likes": 4760,
+  "title": "设计不求人，全链路AI设计工具Lovart",
+  "path": "texts/7604705289083257594.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7604490293895213049",
+  "author": "木子AI指南",
+  "likes": 1005,
+  "title": "超好用的AI工具，你用过哪些呢？",
+  "path": "texts/7604490293895213049.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7604489978199002041",
+  "author": "木子AI指南",
+  "likes": 1313,
+  "title": "AI的另一个名字，叫“爱”",
+  "path": "texts/7604489978199002041.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7603688889723090377",
+  "author": "木子AI指南",
+  "likes": 1187,
+  "title": "谁懂啊，AI把我变成了女团C位！",
+  "path": "texts/7603688889723090377.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7603644150324071562",
+  "author": "木子AI指南",
+  "likes": 1368,
+  "title": "让AI带我转遍好莱坞片场",
+  "path": "texts/7603644150324071562.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7601780268014817211",
+  "author": "AI悠话说",
+  "likes": 1316,
+  "title": "AI又进化了，你也想拥有自己的AI数字人吗？",
+  "path": "texts/7601780268014817211.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7601779331136603493",
+  "author": "AI悠话说",
+  "likes": 1529,
+  "title": "想除去AI味？记住这个黄金提示词公式",
+  "path": "texts/7601779331136603493.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7601463282255981178",
+  "author": "AI悠话说",
+  "likes": 2060,
+  "title": "剪映邪修大法，一秒出图！",
+  "path": "texts/7601463282255981178.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7600707739991675899",
+  "author": "AI悠话说",
+  "likes": 1893,
+  "title": "超轻松！AI让你的视频变得不简单",
+  "path": "texts/7600707739991675899.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7600685042465919089",
+  "author": "AI悠话说",
+  "likes": 1364,
+  "title": "还能这么用？全能型豆包！",
+  "path": "texts/7600685042465919089.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7600282076026223353",
+  "author": "AI悠话说",
+  "likes": 1753,
+  "title": "一个视频带你看懂AI的一万种用法",
+  "path": "texts/7600282076026223353.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7600255111219366129",
+  "author": "AI悠话说",
+  "likes": 1306,
+  "title": "AI邪修做海报，小白也能轻松出图",
+  "path": "texts/7600255111219366129.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7599912451744481201",
+  "author": "AI悠话说",
+  "likes": 2808,
+  "title": "记住这50个润色指令，让你秒变AI高手！",
+  "path": "texts/7599912451744481201.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7599882673079405307",
+  "author": "AI悠话说",
+  "likes": 1526,
+  "title": "2026开年AI工具大盘点！你用过哪一个？",
+  "path": "texts/7599882673079405307.txt",
+  "src": "2026-09-10_核心AI对标逐字稿",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "6a770d0b000000002403c7a9",
+  "author": "大李书房一盏灯",
+  "likes": 317,
+  "title": "我是怎么学AI的？",
+  "path": "texts/6a770d0b000000002403c7a9.txt",
+  "src": "已参考",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7646396085993326070",
+  "author": "拉斐尔2077",
+  "likes": 16127,
+  "title": "AI时代诞生的新职业大厂和OPC都在抢这类人",
+  "path": "texts/7646396085993326070.txt",
+  "src": "已参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7674339465447361838",
+  "author": "Xuan酱",
+  "likes": 21101,
+  "title": "从0到1上手DeepSeek Harness，最全资源玩法",
+  "path": "texts/7674339465447361838.txt",
+  "src": "已参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7671275418908999419",
+  "author": "生姜｜AI实战",
+  "likes": 0,
+  "title": "WorkBuddy做自媒体的神第1集",
+  "path": "texts/7671275418908999419.txt",
+  "src": "已参考",
+  "rel": 0.0,
+  "star": false
+ },
+ {
+  "id": "7639847224901807547",
+  "author": "西门聪明蛋XD",
+  "likes": 2286,
+  "title": "Everybody都给我去做AI自媒体！",
+  "path": "texts/7639847224901807547.txt",
+  "src": "已参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "6a99e60a000000002a02f0af",
+  "author": "一起 Vibe",
+  "likes": 710,
+  "title": "见证历史！3分钟搞懂 GPT-6 Astra",
+  "path": "texts/6a99e60a000000002a02f0af.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "6abbde50000000001b03248d",
+  "author": "王大仙本仙",
+  "likes": 0,
+  "title": "AI 时代给每个文科生的氮泵",
+  "path": "texts/6abbde50000000001b03248d.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "6a6611ae000000000301e16b",
+  "author": "大李书房一盏灯",
+  "likes": 4612,
+  "title": "什么是 Skill？",
+  "path": "texts/6a6611ae000000000301e16b.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "15012485103528581393",
+  "author": "润宇创业笔记",
+  "likes": 0,
+  "title": "AI是怎么帮我们选题的",
+  "path": "texts/15012485103528581393.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7678355537553962161",
+  "author": "清华姜学长",
+  "likes": 1435,
+  "title": "我分享的Prompt中最值得保留的8条元提示词",
+  "path": "texts/7678355537553962161.txt",
+  "src": "未参考",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7662697063055065670",
+  "author": "绝对小梦",
+  "likes": 579,
+  "title": "你可以3天从0学会AI这门技术（搞到详细教程了！",
+  "path": "texts/7662697063055065670.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7603721991577674219",
+  "author": "绝对小梦",
+  "likes": 5384,
+  "title": "搞钱AI工具大合集",
+  "path": "texts/7603721991577674219.txt",
+  "src": "未参考",
+  "rel": 3.1,
+  "star": true
+ },
+ {
+  "id": "7641578087158806406",
+  "author": "西门美月XD",
+  "likes": 466,
+  "title": "OPC 一个月我发现的问题和萌生的新想法",
+  "path": "texts/7641578087158806406.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7600687544951814116",
+  "author": "绝对小梦",
+  "likes": 628,
+  "title": "爸妈信偏方？别跟他们“掰头”，让阿福给你当嘴替！亲测管用！！",
+  "path": "texts/7600687544951814116.txt",
+  "src": "未参考",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7636348854786658662",
+  "author": "绝对小梦",
+  "likes": 5606,
+  "title": "五一假期从0起号成功全流程（实时记录，纯个人经验分享！ @梦",
+  "path": "texts/7636348854786658662.txt",
+  "src": "未参考",
+  "rel": 3.2,
+  "star": true
+ },
+ {
+  "id": "7642274466488494419",
+  "author": "绝对小梦",
+  "likes": 344,
+  "title": "别让你的情绪变成别人谋利的工具！夺回情绪主权！",
+  "path": "texts/7642274466488494419.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7654912180941793974",
+  "author": "绝对小梦",
+  "likes": 2381,
+  "title": "用我这个方法，让你发现商机像呼吸一样简单",
+  "path": "texts/7654912180941793974.txt",
+  "src": "未参考",
+  "rel": 1.4,
+  "star": false
+ },
+ {
+  "id": "7655005916802468452",
+  "author": "绝对小梦",
+  "likes": 3762,
+  "title": "照着网上的方法做，为什么你还是赚不到钱",
+  "path": "texts/7655005916802468452.txt",
+  "src": "未参考",
+  "rel": 2.2,
+  "star": false
+ },
+ {
+  "id": "7691390692584672538",
+  "author": "柱子哥TzFilm",
+  "likes": 3503,
+  "title": "商单不断！我是如何利用Ai帮我完成逐字稿的？",
+  "path": "texts/7691390692584672538.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7679003505689220459",
+  "author": "绝对小梦",
+  "likes": 11310,
+  "title": "我要用豆包agent做个从0到1做自媒体的系列教程！手把手！",
+  "path": "texts/7679003505689220459.txt",
+  "src": "未参考",
+  "rel": 6.5,
+  "star": true
+ },
+ {
+  "id": "7674130888955297619",
+  "author": "绝对小梦",
+  "likes": 1173,
+  "title": "如果我是2026届应届生，我绝对不先写简历",
+  "path": "texts/7674130888955297619.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7597368542882763446",
+  "author": "绝对小梦",
+  "likes": 4183,
+  "title": "职场如何快速弯道超车",
+  "path": "texts/7597368542882763446.txt",
+  "src": "未参考",
+  "rel": 2.4,
+  "star": false
+ },
+ {
+  "id": "7679747967968889507",
+  "author": "艾斯AI💫",
+  "likes": 10211,
+  "title": "现在用AI制作产品视频真的太简单",
+  "path": "texts/7679747967968889507.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": true
+ },
+ {
+  "id": "7634118999382571163",
+  "author": "绝对小梦",
+  "likes": 7413,
+  "title": "想做电商的一定要搞一个电子美工，成交率咔咔上涨",
+  "path": "texts/7634118999382571163.txt",
+  "src": "未参考",
+  "rel": 4.3,
+  "star": true
+ },
+ {
+  "id": "7666009034956663494",
+  "author": "绝对小梦",
+  "likes": 2303,
+  "title": "3个重点让你的自媒体可以变现！",
+  "path": "texts/7666009034956663494.txt",
+  "src": "未参考",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7676809703891995944",
+  "author": "棒哥-AI漫剧",
+  "likes": 3143,
+  "title": "image2生场景噪点多，应该怎么解决？分享4个方法",
+  "path": "texts/7676809703891995944.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7678651890058507369",
+  "author": "绝对小梦",
+  "likes": 2617,
+  "title": "女生想往上走，一定要建立自己的信息库（千问办公实操版）",
+  "path": "texts/7678651890058507369.txt",
+  "src": "未参考",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7688617760657509651",
+  "author": "柱子哥TzFilm",
+  "likes": 10645,
+  "title": "什么是PersonalAgent的终极形态？千问给出了方向",
+  "path": "texts/7688617760657509651.txt",
+  "src": "未参考",
+  "rel": 0.8,
+  "star": true
+ },
+ {
+  "id": "7671071662582932331",
+  "author": "绝对小梦",
+  "likes": 1835,
+  "title": "我会用AI辅助做出爆款图文了（全教程版）",
+  "path": "texts/7671071662582932331.txt",
+  "src": "未参考",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7689682231204196517",
+  "author": "硕忙不盲",
+  "likes": 79814,
+  "title": "当代年轻人生存手册：从保命到省钱，这份人生指南，每一条都算透",
+  "path": "texts/7689682231204196517.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7654548403519488100",
+  "author": "绝对小梦",
+  "likes": 2006,
+  "title": "告别毕业无效内耗！ AI 增效，自媒体➕求职两不误！",
+  "path": "texts/7654548403519488100.txt",
+  "src": "未参考",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7683460207493516578",
+  "author": "千雪AI",
+  "likes": 10500,
+  "title": "workbuddy必装的三大神级skill，附保姆级教程！",
+  "path": "texts/7683460207493516578.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7652041715440749759",
+  "author": "绝对小梦",
+  "likes": 791,
+  "title": "改变命运的方式，是顺势而为",
+  "path": "texts/7652041715440749759.txt",
+  "src": "未参考",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7680429308824794085",
+  "author": "AI立大业",
+  "likes": 824,
+  "title": "人工智能应用服务商背后的三大价值",
+  "path": "texts/7680429308824794085.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7660439860620135716",
+  "author": "大象放映室",
+  "likes": 13965,
+  "title": "学长独家！image2.0脏点最强修复攻略",
+  "path": "texts/7660439860620135716.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7651212698722996644",
+  "author": "绝对小梦",
+  "likes": 4650,
+  "title": "26岁，老娘靠自己全款买车了，我会永远记住这一刻",
+  "path": "texts/7651212698722996644.txt",
+  "src": "未参考",
+  "rel": 2.7,
+  "star": false
+ },
+ {
+  "id": "7670928821038267876",
+  "author": "西门美月XD",
+  "likes": 4038,
+  "title": "我的粉丝也开始靠 AI 爆金币了 第 1 位@Token 神",
+  "path": "texts/7670928821038267876.txt",
+  "src": "未参考",
+  "rel": 5.9,
+  "star": true
+ },
+ {
+  "id": "7601151101841000310",
+  "author": "绝对小梦",
+  "likes": 10866,
+  "title": "如何用1688搞定一个人的全球生意",
+  "path": "texts/7601151101841000310.txt",
+  "src": "未参考",
+  "rel": 6.2,
+  "star": true
+ },
+ {
+  "id": "7614068564718493350",
+  "author": "绝对小梦",
+  "likes": 1704,
+  "title": "逆天！3分钟做出高质PPT！2026一定要成为会用AI的人！",
+  "path": "texts/7614068564718493350.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7693006463622466825",
+  "author": "AI打工我享受",
+  "likes": 23830,
+  "title": "10倍速学任何知识！我用WorkBuddy 5天啃下5个领域",
+  "path": "texts/7693006463622466825.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7634814760618004115",
+  "author": "绝对小梦",
+  "likes": 10274,
+  "title": "五一期间我将死磕电商带货",
+  "path": "texts/7634814760618004115.txt",
+  "src": "未参考",
+  "rel": 5.9,
+  "star": true
+ },
+ {
+  "id": "7648525374343722323",
+  "author": "绝对小梦",
+  "likes": 593,
+  "title": "很多人不是没能力，是消费观出了问题",
+  "path": "texts/7648525374343722323.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7683494303112449306",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "通用Agent会吃掉垂直Agent吗？真正的壁垒在哪",
+  "path": "texts/7683494303112449306.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7690958652961770794",
+  "author": "柱子哥TzFilm",
+  "likes": 18008,
+  "title": "Opus5.5+Ae！为了这套新工作流，我买了台五万多的电脑",
+  "path": "texts/7690958652961770794.txt",
+  "src": "未参考",
+  "rel": 1.3,
+  "star": true
+ },
+ {
+  "id": "7674888265190644863",
+  "author": "绝对小梦",
+  "likes": 542,
+  "title": "想做口播自媒体，建议先用14天搭建表达系统",
+  "path": "texts/7674888265190644863.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7604052648468350314",
+  "author": "绝对小梦",
+  "likes": 971,
+  "title": "手机已经可以远程操控电脑为我们完成琐事了！",
+  "path": "texts/7604052648468350314.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7671498438558942838",
+  "author": "绝对小梦",
+  "likes": 13282,
+  "title": "别再卷内容创意，试试效果创意！简单又高质！",
+  "path": "texts/7671498438558942838.txt",
+  "src": "未参考",
+  "rel": 7.6,
+  "star": true
+ },
+ {
+  "id": "7691202552829938994",
+  "author": "作者未记录",
+  "likes": 0,
+  "title": "普通学生如何靠Ai搞钱？一篇搞定！",
+  "path": "texts/7691202552829938994.txt",
+  "src": "未参考",
+  "rel": 0.0,
+  "star": false
+ },
+ {
+  "id": "7626360642202786038",
+  "author": "绝对小梦",
+  "likes": 1758,
+  "title": "如何成为一个很会赚钱的女生",
+  "path": "texts/7626360642202786038.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7595141143625792106",
+  "author": "绝对小梦",
+  "likes": 2033,
+  "title": "什么都不会，但也能一个人坐着把钱都赚了",
+  "path": "texts/7595141143625792106.txt",
+  "src": "未参考",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7575422879871078015",
+  "author": "绝对小梦",
+  "likes": 68909,
+  "title": "中国的「灵光」刷新全球AI应用速度！4天下载量破百万",
+  "path": "texts/7575422879871078015.txt",
+  "src": "未参考",
+  "rel": 39.5,
+  "star": true
+ },
+ {
+  "id": "7664904232620819199",
+  "author": "绝对小梦",
+  "likes": 792,
+  "title": "你真的可以做任何副业",
+  "path": "texts/7664904232620819199.txt",
+  "src": "未参考",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7675685405018336954",
+  "author": "西门美月XD",
+  "likes": 1541,
+  "title": "认识了更多厉害的人，看到了更广阔的世界(๑•.•๑) 也许收",
+  "path": "texts/7675685405018336954.txt",
+  "src": "未参考",
+  "rel": 2.2,
+  "star": false
+ },
+ {
+  "id": "7688729206481521955",
+  "author": "10倍生产力",
+  "likes": 42737,
+  "title": "【326期】高性价比人生指南开源：33个主题、601条建议",
+  "path": "texts/7688729206481521955.txt",
+  "src": "未参考",
+  "rel": 1.5,
+  "star": true
+ },
+ {
+  "id": "7678297729537202106",
+  "author": "西门美月XD",
+  "likes": 439,
+  "title": "又又又租了房，这次进化成数字游民杭漂了",
+  "path": "texts/7678297729537202106.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7645205803879814123",
+  "author": "绝对小梦",
+  "likes": 9059,
+  "title": "给大家试过了，普通女生也能做一个女性成长账号（附实操",
+  "path": "texts/7645205803879814123.txt",
+  "src": "未参考",
+  "rel": 5.2,
+  "star": true
+ },
+ {
+  "id": "7663452659051196529",
+  "author": "大李书房一盏灯",
+  "likes": 6638,
+  "title": "【教程】新手上路第一站：建立个人知识库 AI时代对普通人来说",
+  "path": "texts/7663452659051196529.txt",
+  "src": "未参考",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7667140247315523839",
+  "author": "绝对小梦",
+  "likes": 1802,
+  "title": "我用15分钟给自己搭建了一个升级版联网工作台",
+  "path": "texts/7667140247315523839.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7684501966944275766",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "模型是怎么训练出来的？预训练、微调、后训练一次讲清",
+  "path": "texts/7684501966944275766.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7644563081117107883",
+  "author": "绝对小梦",
+  "likes": 1244,
+  "title": "普通人赚钱最快的方式是直接卖货（附实操",
+  "path": "texts/7644563081117107883.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7633826037314526931",
+  "author": "绝对小梦",
+  "likes": 36819,
+  "title": "姐的伟大前程，姐自己挣",
+  "path": "texts/7633826037314526931.txt",
+  "src": "未参考",
+  "rel": 21.1,
+  "star": true
+ },
+ {
+  "id": "7623767783792300730",
+  "author": "清华姜学长",
+  "likes": 9212,
+  "title": "skill实战：从0到1写一个你自己的skill",
+  "path": "texts/7623767783792300730.txt",
+  "src": "未参考",
+  "rel": 7.3,
+  "star": true
+ },
+ {
+  "id": "7687170712032857359",
+  "author": "10倍生产力",
+  "likes": 14819,
+  "title": "【321期】书籍转技能怎么用？两步转成可反复调用的SKILL",
+  "path": "texts/7687170712032857359.txt",
+  "src": "未参考",
+  "rel": 0.5,
+  "star": true
+ },
+ {
+  "id": "7674014350855703814",
+  "author": "恐龙哥 AI小王子",
+  "likes": 12366,
+  "title": "WorkBuddy做自媒体的降维打击方法！",
+  "path": "texts/7674014350855703814.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7682506140332182820",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "为什么顶级AI，现在全在抢做3D",
+  "path": "texts/7682506140332182820.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7597038279842525887",
+  "author": "绝对小梦",
+  "likes": 55852,
+  "title": "2025依旧搞到100万了（超详细攻略版）",
+  "path": "texts/7597038279842525887.txt",
+  "src": "未参考",
+  "rel": 32.0,
+  "star": true
+ },
+ {
+  "id": "7646833372970754234",
+  "author": "西门美月XD",
+  "likes": 1136,
+  "title": "假以时日我就会成为一位年入百万的肌肉猛女",
+  "path": "texts/7646833372970754234.txt",
+  "src": "未参考",
+  "rel": 1.7,
+  "star": false
+ },
+ {
+  "id": "7592806231094466806",
+  "author": "绝对小梦",
+  "likes": 3472,
+  "title": "第一个用豆包做新年计划的真是天才",
+  "path": "texts/7592806231094466806.txt",
+  "src": "未参考",
+  "rel": 2.0,
+  "star": false
+ },
+ {
+  "id": "7652699741423159430",
+  "author": "绝对小梦",
+  "likes": 7888,
+  "title": "如何用端午3天假吃上AI饭",
+  "path": "texts/7652699741423159430.txt",
+  "src": "未参考",
+  "rel": 4.5,
+  "star": true
+ },
+ {
+  "id": "7623671702586098163",
+  "author": "绝对小梦",
+  "likes": 1761,
+  "title": "新项目✅用对工具就是干什么成什么！",
+  "path": "texts/7623671702586098163.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7660829044569824659",
+  "author": "绝对小梦",
+  "likes": 1002,
+  "title": "我用AI做了一套让我多赚钱的谈薪系统！",
+  "path": "texts/7660829044569824659.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7672366434357379761",
+  "author": "发疯姥子",
+  "likes": 66550,
+  "title": "工具好不好用取决于使用者的品味",
+  "path": "texts/7672366434357379761.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7644171970933706035",
+  "author": "洪树",
+  "likes": 5024,
+  "title": "AI的正确打开方式",
+  "path": "texts/7644171970933706035.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7673390894321536296",
+  "author": "拉斐尔2077",
+  "likes": 32544,
+  "title": "AI 视频创作的全能六边形视频 Agent",
+  "path": "texts/7673390894321536296.txt",
+  "src": "未参考",
+  "rel": 2.0,
+  "star": true
+ },
+ {
+  "id": "7641898350543642794",
+  "author": "绝对小梦",
+  "likes": 2697,
+  "title": "去赚有钱人的钱！去设计看起来很贵的产品去卖！",
+  "path": "texts/7641898350543642794.txt",
+  "src": "未参考",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7669417435111377081",
+  "author": "Summer在折腾",
+  "likes": 24829,
+  "title": "Workbuddy 保姆级使用教程，新手入门教学！",
+  "path": "texts/7669417435111377081.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7632176968826484186",
+  "author": "绝对小梦",
+  "likes": 1205,
+  "title": "我就这样榨干AI给我打工",
+  "path": "texts/7632176968826484186.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7626667101319534249",
+  "author": "绝对小梦",
+  "likes": 1676,
+  "title": "普通人做电商要当“学人精”‼️（新店已开",
+  "path": "texts/7626667101319534249.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7648778898376854818",
+  "author": "柱子哥TzFilm",
+  "likes": 17546,
+  "title": "AI圈接下来10年的铁饭碗全面拆解FDE前沿部署工程师",
+  "path": "texts/7648778898376854818.txt",
+  "src": "未参考",
+  "rel": 1.2,
+  "star": true
+ },
+ {
+  "id": "7670902814196927780",
+  "author": "北清科技",
+  "likes": 28988,
+  "title": "喂饭级教程，大家期待的知识库教程来啦！",
+  "path": "texts/7670902814196927780.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7676028527439389348",
+  "author": "绝对小梦",
+  "likes": 2682,
+  "title": "打工人一定要学会在职场上包装自己！豆包agent搞起来",
+  "path": "texts/7676028527439389348.txt",
+  "src": "未参考",
+  "rel": 1.5,
+  "star": false
+ },
+ {
+  "id": "7657919538743177201",
+  "author": "西门美月XD",
+  "likes": 39709,
+  "title": "裸辞第3个月，收入超过了之前工资啊啊啊",
+  "path": "texts/7657919538743177201.txt",
+  "src": "未参考",
+  "rel": 57.8,
+  "star": true
+ },
+ {
+  "id": "7603309574410199972",
+  "author": "绝对小梦",
+  "likes": 12535,
+  "title": "不知道，我赚钱能力很曼妙（随手做的工具又火了",
+  "path": "texts/7603309574410199972.txt",
+  "src": "未参考",
+  "rel": 7.2,
+  "star": true
+ },
+ {
+  "id": "7661991789172035574",
+  "author": "绝对小梦",
+  "likes": 1247,
+  "title": "我要All in AI了（AI是门必学技术，3条提收的渠道",
+  "path": "texts/7661991789172035574.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7657879805279778175",
+  "author": "绝对小梦",
+  "likes": 34686,
+  "title": "2026上半年我靠什么赚到了钱",
+  "path": "texts/7657879805279778175.txt",
+  "src": "未参考",
+  "rel": 19.9,
+  "star": true
+ },
+ {
+  "id": "7656709421108425210",
+  "author": "西门美月XD",
+  "likes": 281,
+  "title": "现在我的情绪只有平静和烦躁，直到…",
+  "path": "texts/7656709421108425210.txt",
+  "src": "未参考",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7672386062639837028",
+  "author": "西门美月XD",
+  "likes": 687,
+  "title": "有人问我公司名叫什么🤔竟然和AI大佬有渊源",
+  "path": "texts/7672386062639837028.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7680609673023655206",
+  "author": "图南- FDE Hub",
+  "likes": 359,
+  "title": "工信部发文提及FDE",
+  "path": "texts/7680609673023655206.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7598803488051656518",
+  "author": "绝对小梦",
+  "likes": 1258,
+  "title": "职场开挂神器！用豆包高效做PPT，告别无效加班",
+  "path": "texts/7598803488051656518.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7674840369342713114",
+  "author": "田同学Tino",
+  "likes": 49187,
+  "title": "我做了一套拼贴风MG动画的工作流！直接开放给所有人",
+  "path": "texts/7674840369342713114.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7641593256363973611",
+  "author": "绝对小梦",
+  "likes": 16075,
+  "title": "详情页长图的设计门槛，被我打下来了！",
+  "path": "texts/7641593256363973611.txt",
+  "src": "未参考",
+  "rel": 9.2,
+  "star": true
+ },
+ {
+  "id": "7690145268734227301",
+  "author": "生姜｜AI实战",
+  "likes": 4755,
+  "title": "人生说明书，竟然真的有人写出来了",
+  "path": "texts/7690145268734227301.txt",
+  "src": "未参考",
+  "rel": 2.0,
+  "star": false
+ },
+ {
+  "id": "7684125740589124890",
+  "author": "碳硅卢卡斯",
+  "likes": 12807,
+  "title": "用WorkBuddy，3分钟搭建个人知识库",
+  "path": "texts/7684125740589124890.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7650407158081941669",
+  "author": "西门美月XD",
+  "likes": 125,
+  "title": "最想变成男生的一集",
+  "path": "texts/7650407158081941669.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7641179827932992630",
+  "author": "绝对小梦",
+  "likes": 1521,
+  "title": "不要拍Vlog，去拍视频日记（保姆级教程",
+  "path": "texts/7641179827932992630.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7664615673066294537",
+  "author": "作者未记录",
+  "likes": 6147,
+  "title": "如何去除Image2图片的噪点问题？",
+  "path": "texts/7664615673066294537.txt",
+  "src": "未参考",
+  "rel": 2.0,
+  "star": false
+ },
+ {
+  "id": "7670540322988987067",
+  "author": "李一帆",
+  "likes": 5950,
+  "title": "AI画面噪点问题终极解决方案",
+  "path": "texts/7670540322988987067.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7606378228974121318",
+  "author": "绝对小梦",
+  "likes": 90,
+  "title": "活动到除夕夜！快去给亲朋好友安排这个阿福，领16.8元红包！",
+  "path": "texts/7606378228974121318.txt",
+  "src": "未参考",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7683087936857853218",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "多Agent、MCP、A2A——最该补的一堂课",
+  "path": "texts/7683087936857853218.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7688002890435306921",
+  "author": "拉斐尔2077",
+  "likes": 58,
+  "title": "适合普通人的蒸馏书籍skill来啦",
+  "path": "texts/7688002890435306921.txt",
+  "src": "未参考",
+  "rel": 0.0,
+  "star": false
+ },
+ {
+  "id": "7684775409262595355",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "DeepSeek杀疯了，它是怎么走到今天的？",
+  "path": "texts/7684775409262595355.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7673441987912426751",
+  "author": "绝对小梦",
+  "likes": 5992,
+  "title": "自媒体永远不会饱和！如何找到属于自己的赛道！",
+  "path": "texts/7673441987912426751.txt",
+  "src": "未参考",
+  "rel": 3.4,
+  "star": true
+ },
+ {
+  "id": "7684032138622061876",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "大模型到底分几种？一次讲清楚",
+  "path": "texts/7684032138622061876.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7670099298546270187",
+  "author": "绝对小梦",
+  "likes": 991,
+  "title": "你的能力很值钱，你的爱好也很值钱！",
+  "path": "texts/7670099298546270187.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7677937788814390692",
+  "author": "绝对小梦",
+  "likes": 1585,
+  "title": "我决定做个家居号！让AI帮我布置！",
+  "path": "texts/7677937788814390692.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7620765138119252634",
+  "author": "绝对小梦",
+  "likes": 1595,
+  "title": "新风口|“人味儿”电商从0到1全攻略",
+  "path": "texts/7620765138119252634.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7669697257930880186",
+  "author": "西门美月XD",
+  "likes": 35336,
+  "title": "AI 风口，无法想象上升的空间有多大",
+  "path": "texts/7669697257930880186.txt",
+  "src": "未参考",
+  "rel": 51.4,
+  "star": true
+ },
+ {
+  "id": "7661110191648574698",
+  "author": "西门聪明蛋XD",
+  "likes": 23998,
+  "title": "小白成功转行 AI 方向，真实经历分享",
+  "path": "texts/7661110191648574698.txt",
+  "src": "未参考",
+  "rel": 1.8,
+  "star": true
+ },
+ {
+  "id": "7685327372089920819",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "模型蒸馏是什么？大厂砸上亿训练的顶级AI",
+  "path": "texts/7685327372089920819.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7632155727569679818",
+  "author": "绝对小梦",
+  "likes": 336,
+  "title": "如何无痛获得2年工作经验找到好工作",
+  "path": "texts/7632155727569679818.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7598030560796624211",
+  "author": "绝对小梦",
+  "likes": 1677,
+  "title": "如何消除视频的“AI味”！一招搞定！",
+  "path": "texts/7598030560796624211.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7676034655879028927",
+  "author": "绝对小梦",
+  "likes": 1891,
+  "title": "如何让AI做的自媒体更有灵气和活人感！",
+  "path": "texts/7676034655879028927.txt",
+  "src": "未参考",
+  "rel": 1.1,
+  "star": false
+ },
+ {
+  "id": "7594410271659309638",
+  "author": "绝对小梦",
+  "likes": 1152,
+  "title": "你要尽早用无人兜底的态度过一生",
+  "path": "texts/7594410271659309638.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7671986884592010673",
+  "author": "大李书房一盏灯",
+  "likes": 12518,
+  "title": "最值得被蒸馏的书Top 10排名 每一本都是精华，每一本蒸馏",
+  "path": "texts/7671986884592010673.txt",
+  "src": "未参考",
+  "rel": 2.7,
+  "star": true
+ },
+ {
+  "id": "7628516826154847094",
+  "author": "绝对小梦",
+  "likes": 2092,
+  "title": "真的建议大家去了解一下AI漫剧（好多比赛好多奖金",
+  "path": "texts/7628516826154847094.txt",
+  "src": "未参考",
+  "rel": 1.2,
+  "star": false
+ },
+ {
+  "id": "7640019387399582611",
+  "author": "绝对小梦",
+  "likes": 4162,
+  "title": "借钱的不可能三角被打破了？",
+  "path": "texts/7640019387399582611.txt",
+  "src": "未参考",
+  "rel": 2.4,
+  "star": false
+ },
+ {
+  "id": "7688801135104199978",
+  "author": "雪踏乌云",
+  "likes": 16941,
+  "title": "月入2k到一年200万，我的AI副业完整复盘",
+  "path": "texts/7688801135104199978.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7675673281639697910",
+  "author": "绝对小梦",
+  "likes": 1049,
+  "title": "张沫凡说一条口播视频能做4种小生意",
+  "path": "texts/7675673281639697910.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7665703149353853169",
+  "author": "大李书房一盏灯",
+  "likes": 9526,
+  "title": "用AI做个人知识库一定要放本地！",
+  "path": "texts/7665703149353853169.txt",
+  "src": "未参考",
+  "rel": 2.1,
+  "star": false
+ },
+ {
+  "id": "7626364820836666664",
+  "author": "起哥的AI实战",
+  "likes": 2565,
+  "title": "5分钟从0到1写一个自己的skill",
+  "path": "texts/7626364820836666664.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7682342845214182707",
+  "author": "Manta_Ai",
+  "likes": 0,
+  "title": "Agent和Harness到底是个啥？一次讲明白",
+  "path": "texts/7682342845214182707.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7645635297724748196",
+  "author": "绝对小梦",
+  "likes": 1361,
+  "title": "如何把包卖给外国人（第一步做出外贸图",
+  "path": "texts/7645635297724748196.txt",
+  "src": "未参考",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7673808703578143979",
+  "author": "绝对小梦",
+  "likes": 641,
+  "title": "普通人如何入局AI，看这期视频播客就够了",
+  "path": "texts/7673808703578143979.txt",
+  "src": "未参考",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7598527156750736490",
+  "author": "绝对小梦",
+  "likes": 1527,
+  "title": "建议普通女生都做个这种很能接广的万粉账号 抠图是美图设计室",
+  "path": "texts/7598527156750736490.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7605939562199731274",
+  "author": "绝对小梦",
+  "likes": 3290,
+  "title": "对自己最负责的事儿就是牢记如何榨干医保！看病超便宜！",
+  "path": "texts/7605939562199731274.txt",
+  "src": "未参考",
+  "rel": 1.9,
+  "star": false
+ },
+ {
+  "id": "7648250407198704121",
+  "author": "绝对小梦",
+  "likes": 1390,
+  "title": "2026如何让贵人心甘情愿托举你",
+  "path": "texts/7648250407198704121.txt",
+  "src": "未参考",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7607003336356931947",
+  "author": "绝对小梦",
+  "likes": 843,
+  "title": "过年就要教会爸妈用豆包",
+  "path": "texts/7607003336356931947.txt",
+  "src": "未参考",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7681299459598293450",
+  "author": "涛哥的Agent日记",
+  "likes": 4419,
+  "title": "新手用agent必踩的12个隐藏坑",
+  "path": "texts/7681299459598293450.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7678534122021107626",
+  "author": "绝对小梦",
+  "likes": 440,
+  "title": "用扣子搭了4个AI助手，帮我分担自媒体工作",
+  "path": "texts/7678534122021107626.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7604056832100843626",
+  "author": "绝对小梦",
+  "likes": 392,
+  "title": "求求大家新年给自己命运齿轮转动起来的机会吧！",
+  "path": "texts/7604056832100843626.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7679765088132339690",
+  "author": "绝对小梦",
+  "likes": 508,
+  "title": "我卖了十几种东西后，才明白选品真不难",
+  "path": "texts/7679765088132339690.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7660463125556379007",
+  "author": "绝对小梦",
+  "likes": 797,
+  "title": "打工思维无法致富！如何用飞书多维表格事业开挂！",
+  "path": "texts/7660463125556379007.txt",
+  "src": "未参考",
+  "rel": 0.5,
+  "star": false
+ },
+ {
+  "id": "7661853435470200915",
+  "author": "西门美月XD",
+  "likes": 366664,
+  "title": "真一个个都是人才来的！",
+  "path": "texts/7661853435470200915.txt",
+  "src": "未参考",
+  "rel": 533.7,
+  "star": true
+ },
+ {
+  "id": "7677547596348941284",
+  "author": "绝对小梦",
+  "likes": 493,
+  "title": "打工才是做自媒体的黄金时间（实操分享！",
+  "path": "texts/7677547596348941284.txt",
+  "src": "未参考",
+  "rel": 0.3,
+  "star": false
+ },
+ {
+  "id": "7611754753093361587",
+  "author": "绝对小梦",
+  "likes": 722,
+  "title": "2026普通人最好的出路就是做表达型自媒体",
+  "path": "texts/7611754753093361587.txt",
+  "src": "未参考",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7670857376685581766",
+  "author": "绝对小梦",
+  "likes": 1271,
+  "title": "又差点有新工作了，需求量竟然还很大！学搞钱类技能真有用",
+  "path": "texts/7670857376685581766.txt",
+  "src": "未参考",
+  "rel": 0.7,
+  "star": false
+ },
+ {
+  "id": "7646293281558828017",
+  "author": "西门美月XD",
+  "likes": 121,
+  "title": "被小号超越是大号必然的宿命！",
+  "path": "texts/7646293281558828017.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7643757226146055659",
+  "author": "绝对小梦",
+  "likes": 3743,
+  "title": "普通女生如何靠一人公司和趁手设备月入六位数",
+  "path": "texts/7643757226146055659.txt",
+  "src": "未参考",
+  "rel": 2.1,
+  "star": false
+ },
+ {
+  "id": "7672670858213025764",
+  "author": "绝对小梦",
+  "likes": 679,
+  "title": "AI形象能接广告赚大钱你敢信！普通人如何制作AI漫剧之写剧本",
+  "path": "texts/7672670858213025764.txt",
+  "src": "未参考",
+  "rel": 0.4,
+  "star": false
+ },
+ {
+  "id": "7673427029794065683",
+  "author": "L-earn",
+  "likes": 2065,
+  "title": "同一件事重复 3 次，就值得写成 Skill",
+  "path": "texts/7673427029794065683.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7670754372650324922",
+  "author": "范te析AI",
+  "likes": 10182,
+  "title": "WorkBuddy＋Obsidian，小白90秒搭AI知识库",
+  "path": "texts/7670754372650324922.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7676780615510292644",
+  "author": "绝对小梦",
+  "likes": 248,
+  "title": "我可能找到了更适合AI小白上手的Agent！",
+  "path": "texts/7676780615510292644.txt",
+  "src": "未参考",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7651839789382001579",
+  "author": "绝对小梦",
+  "likes": 1826,
+  "title": "如何吸引品牌方找你投广（甚至几十个粉就可以接广",
+  "path": "texts/7651839789382001579.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7662088245240578149",
+  "author": "西门美月XD",
+  "likes": 582,
+  "title": "老天爷我真的太谢谢你了！我一定会加倍努力的！ 哎我也不知道为",
+  "path": "texts/7662088245240578149.txt",
+  "src": "未参考",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7612243435239661754",
+  "author": "西门美月XD",
+  "likes": 115460,
+  "title": "天啊这个世界真的是越来越有趣了！",
+  "path": "texts/7612243435239661754.txt",
+  "src": "未参考",
+  "rel": 168.1,
+  "star": true
+ },
+ {
+  "id": "7660770457411074987",
+  "author": "绝对小梦",
+  "likes": 2513,
+  "title": "不会外语？用这个AI扫清语言障碍搞事业！（超详细攻略）",
+  "path": "texts/7660770457411074987.txt",
+  "src": "未参考",
+  "rel": 1.4,
+  "star": false
+ },
+ {
+  "id": "7672334985923248294",
+  "author": "绝对小梦",
+  "likes": 141,
+  "title": "该学搞钱类技能了！如何用AI搞定电商设计！",
+  "path": "texts/7672334985923248294.txt",
+  "src": "未参考",
+  "rel": 0.1,
+  "star": false
+ },
+ {
+  "id": "7672513187220049190",
+  "author": "别管了 1006",
+  "likes": 0,
+  "title": "WorkBuddy 实战｜单人自媒体降维打法",
+  "path": "texts/7672513187220049190.txt",
+  "src": "未参考",
+  "rel": 0,
+  "star": false
+ },
+ {
+  "id": "7623694442809150747",
+  "author": "达叔的财智日记",
+  "likes": 41787,
+  "title": "周岭《认知觉醒》精读",
+  "path": "texts/7623694442809150747.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7683722287379533099",
+  "author": "大铁锤",
+  "likes": 8534,
+  "title": "用workbuddy建立个人知识库，教程来了！",
+  "path": "texts/7683722287379533099.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7660158681829243782",
+  "author": "西门美月XD",
+  "likes": 433,
+  "title": "我一开始带货就出了好几单",
+  "path": "texts/7660158681829243782.txt",
+  "src": "未参考",
+  "rel": 0.6,
+  "star": false
+ },
+ {
+  "id": "7667501583542447359",
+  "author": "绝对小梦",
+  "likes": 2182,
+  "title": "1分钟学会搭建AI带货工作台！刷到什么学什么吧！",
+  "path": "texts/7667501583542447359.txt",
+  "src": "未参考",
+  "rel": 1.3,
+  "star": false
+ },
+ {
+  "id": "7680201346315026025",
+  "author": "西门美月XD",
+  "likes": 560,
+  "title": "干啥事都别怕别问别墨迹，先干了再说",
+  "path": "texts/7680201346315026025.txt",
+  "src": "未参考",
+  "rel": 0.8,
+  "star": false
+ },
+ {
+  "id": "7650003161944239973",
+  "author": "绝对小梦",
+  "likes": 5545,
+  "title": "电商人如何用AI做表格（手把手教你",
+  "path": "texts/7650003161944239973.txt",
+  "src": "未参考",
+  "rel": 3.2,
+  "star": true
+ },
+ {
+  "id": "7580675418556359670",
+  "author": "绝对小梦",
+  "likes": 24444,
+  "title": "我发在抖音的每一个视频都在给我赚钱",
+  "path": "texts/7580675418556359670.txt",
+  "src": "未参考",
+  "rel": 14.0,
+  "star": true
+ },
+ {
+  "id": "7677433598610489315",
+  "author": "艾斯AI💫",
+  "likes": 26140,
+  "title": "各行各业都可以用AI来制作自己行业的视频",
+  "path": "texts/7677433598610489315.txt",
+  "src": "未参考",
+  "rel": 2.3,
+  "star": true
+ },
+ {
+  "id": "7579579754149059142",
+  "author": "绝对小梦",
+  "likes": 1587,
+  "title": "有点追不上时代了，现在用AI一句话就能做小游戏",
+  "path": "texts/7579579754149059142.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7618519902555672934",
+  "author": "绝对小梦",
+  "likes": 3922,
+  "title": "学会画大饼之后，所有工作都想录用我",
+  "path": "texts/7618519902555672934.txt",
+  "src": "未参考",
+  "rel": 2.3,
+  "star": false
+ },
+ {
+  "id": "7619610765163834867",
+  "author": "绝对小梦",
+  "likes": 19985,
+  "title": "普通人如何赚到自己的第一个100万（有东西是真教你",
+  "path": "texts/7619610765163834867.txt",
+  "src": "未参考",
+  "rel": 11.5,
+  "star": true
+ },
+ {
+  "id": "7621940499193406601",
+  "author": "绝对小梦",
+  "likes": 373,
+  "title": "我就这样榨干AI给我打工",
+  "path": "texts/7621940499193406601.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7681457772931632418",
+  "author": "赛文乔伊",
+  "likes": 7276,
+  "title": "GPT-6来了，AGI还远吗",
+  "path": "texts/7681457772931632418.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7686387946036029158",
+  "author": "狗爷聊AI",
+  "likes": 21469,
+  "title": "WorkBuddy老人都能看懂的教程来了",
+  "path": "texts/7686387946036029158.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ },
+ {
+  "id": "7659327571989516998",
+  "author": "西门美月XD",
+  "likes": 42411,
+  "title": "哇，这个时代会 AI 天上就会掉馅饼！",
+  "path": "texts/7659327571989516998.txt",
+  "src": "未参考",
+  "rel": 61.7,
+  "star": true
+ },
+ {
+  "id": "7653053358466539499",
+  "author": "绝对小梦",
+  "likes": 1490,
+  "title": "分享个AI冷知识！其实学AI特别耽误赚钱",
+  "path": "texts/7653053358466539499.txt",
+  "src": "未参考",
+  "rel": 0.9,
+  "star": false
+ },
+ {
+  "id": "7584655774870834451",
+  "author": "绝对小梦",
+  "likes": 52111,
+  "title": "这一刻我感受到了科技发展的意义",
+  "path": "texts/7584655774870834451.txt",
+  "src": "未参考",
+  "rel": 29.9,
+  "star": true
+ },
+ {
+  "id": "7662696385217212351",
+  "author": "绝对小梦",
+  "likes": 1728,
+  "title": "2026电商搞钱最危险的3个坑！99%的新手中招 2026电",
+  "path": "texts/7662696385217212351.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": false
+ },
+ {
+  "id": "7651157161779465798",
+  "author": "绝对小梦",
+  "likes": 54447,
+  "title": "我竟然能靠自己拥有这么好的东西",
+  "path": "texts/7651157161779465798.txt",
+  "src": "未参考",
+  "rel": 31.2,
+  "star": true
+ },
+ {
+  "id": "7623338513313189467",
+  "author": "绝对小梦",
+  "likes": 293,
+  "title": "看完精选这3个女博主，我真提神醒脑！",
+  "path": "texts/7623338513313189467.txt",
+  "src": "未参考",
+  "rel": 0.2,
+  "star": false
+ },
+ {
+  "id": "7668549595643251892",
+  "author": "艾斯AI💫",
+  "likes": 11297,
+  "title": "现在做AI视频真的太便捷了，只要你有想法，太简单了！",
+  "path": "texts/7668549595643251892.txt",
+  "src": "未参考",
+  "rel": 1.0,
+  "star": true
+ }
+]

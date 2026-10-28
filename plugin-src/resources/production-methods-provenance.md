@@ -31,7 +31,7 @@
 - 当前业务入口可发现，role=business-method，执行权仍属于共同契约允许的executor。直接讨论可以文字交付；固定task才领取/提交，真实写入需显式库绑定和版本/CAS。
 - `sourceStatus` 区分 current、public-snapshot、historical、draft、disabled；`selected` 仅说明本轮选取；`bundleStatus=complete-source-bundled` 说明字节齐备；`runtimeStatus=contract-unverified` 说明真实业务与宿主契约尚待逐项验收。
 - jc-chendian、jc-broll-judge依据原库明确决定停用；jc-video-broll仍草稿；备份手绘PPT不作当前方法启用；飞书计划/周报、群日报、微信CLI是独立外部业务，只读档案且不路由。dbskill不接入。
-- jc-zhuanxie、jc-review-page、jc-cover-design、jc-kepu-video 只有引用，未取得完整包；registry列为unavailable，不能声称已安装或等价支持。旧私人库/报告数据不混入Skill正文，真实任务数据留绑定内容库。
+- 2026-10-28 用户提供 jc-skills-4个.zip 后，jc-zhuanxie、jc-review-page、jc-cover-design、jc-kepu-video 四个完整方法共620份原件及根安装说明已按621份逐字节登记并随源封存；ZIP SHA256和逐文件证据见method-sources.json。四项已加入registry，runtimeStatus仍为contract-unverified，不声称已安装或宿主等价支持。原脚本不执行；封面案例/人像只作来源，真实用户任务数据仍留绑定库。jc-qiepian-chupian/scripts/transcribe_chars.mjs外部分支仍未取得。
 
 ## 验证边界
 

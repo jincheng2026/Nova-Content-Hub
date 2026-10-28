@@ -1,0 +1,1198 @@
+{
+  "time": "2026-10-28T03:45:53.090Z",
+  "scope": "Read-only source scan and pure renderer data transform; no vault binding/open/projection/mutation",
+  "sources": [
+    {
+      "name": "A",
+      "root": "/Users/mac/Downloads/第二大脑交接包_2026-10-16/第二大脑",
+      "indexedDocuments": 6410,
+      "topics": [
+        {
+          "tNumber": "T041",
+          "cards": [
+            {
+              "relativePath": "04_选题库/X/待做/T041_涨粉两万后两个月只涨六千的复盘.md",
+              "sha256Before": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c",
+              "sha256After": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c"
+            }
+          ],
+          "videoCount": 4,
+          "materialCount": 7,
+          "videos": [
+            {
+              "key": "/Users/hejincheng/Downloads/下载 (47).mp4",
+              "title": "水球泡老师连麦视频（45 分 54 秒，女生问为什么做不好短视频）",
+              "links": [
+                {
+                  "title": "原视频",
+                  "target": "/Users/hejincheng/Downloads/下载 (47).mp4",
+                  "documentId": null
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "07_如何做自媒体/2026-10-07_取悦自己与怎么做账号/视频逐字稿.md",
+                  "documentId": null
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538",
+              "title": "柱子哥TzFilm商单不断！我是如何利用Ai帮我完成逐字稿的？（抖音，2026-10-01，作者 22.1 万粉，赞 3,503，藏 1,872，10-07 取数）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/ZCRXYi_idS4/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/笔记信息.md",
+                  "documentId": "doc-6c1f155a1df0fe4eda0553fb767de493"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-b0ba66025d6b87d202bd03ff125a1a4b"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611",
+              "title": "光郡WorkBuddy终极教程（抖音，2026-07-06，4 分 32 秒，赞 146,997，藏 133,309）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/U2D601VgDsM/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611/笔记信息.md",
+                  "documentId": "doc-6cfc0931895be191ab3b4368d7229304"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611",
+              "title": "珍妮丁丁说AI全网最适合小白的WorkBuddy入门指南（抖音，2026-07-07，12 分 36 秒，赞 201,160，藏 180,402）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/ixnu8BSVRqk/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611/笔记信息.md",
+                  "documentId": "doc-02a28023485b338bd5e0d5102814463c"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "T042",
+              "target": "04_选题库/X/待做/T042_两周全网涨粉两万的AI教程做法.md",
+              "documentId": "doc-b83a57a3817075e00f2b144c7e075080"
+            },
+            {
+              "title": "http://127.0.0.1:8977/p/6iqyx64746",
+              "target": "http://127.0.0.1:8977/p/6iqyx64746",
+              "documentId": null
+            },
+            {
+              "title": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/",
+              "documentId": null
+            },
+            {
+              "title": "锦成口述_2026-10-07.md",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/锦成口述_2026-10-07.md",
+              "documentId": "doc-5e9e7c21ed870a790ef75919c0f20652"
+            },
+            {
+              "title": "结构.md",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/结构.md",
+              "documentId": "doc-1a0fea49ac7a224f72738bb757f7dc06"
+            },
+            {
+              "title": "视频档案",
+              "target": "../../../../内容数据统计/视频项目/2026-08-06-WorkBuddy小白终极教程/内容.md",
+              "documentId": null
+            },
+            {
+              "title": "视频档案",
+              "target": "../../../../内容数据统计/视频项目/2026-08-04-2分钟调好WorkBuddy/内容.md",
+              "documentId": null
+            }
+          ]
+        },
+        {
+          "tNumber": "T046",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/已做/T046_✅用AI做DanKoe的Human3.0人生模型.md",
+              "sha256Before": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1",
+              "sha256After": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1"
+            }
+          ],
+          "videoCount": 3,
+          "materialCount": 4,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_油管大神Dan Koe：用AI做一个自己的人生模型_7689110172623874378",
+              "title": "油管大神Dan Koe：用AI做一个自己的人生模型",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/video/7689110172623874378",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_油管大神Dan Koe：用AI做一个自己的人生模型_7689110172623874378/笔记信息.md",
+                  "documentId": "doc-a190ac9bc9075fe2b321414905ac49cf"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_如何利用人生3.0系统成为前1%的顶尖人类_7693565817543573158",
+              "title": "如何利用人生3.0系统成为前1%的顶尖人类",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/video/7693565817543573158",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_如何利用人生3.0系统成为前1%的顶尖人类_7693565817543573158/笔记信息.md",
+                  "documentId": "doc-c0730e6a146170d6bd1360d917265d7d"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_如何在6—12个月内领先99%的人_7684470685128822026",
+              "title": "如何在6—12个月内领先99%的人",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/note/7684470685128822026",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_如何在6—12个月内领先99%的人_7684470685128822026/笔记信息.md",
+                  "documentId": "doc-9308dde6ce4cffa15d818bb9df365ee3"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/",
+              "documentId": null
+            },
+            {
+              "title": "参考拆解.md",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/参考拆解.md",
+              "documentId": "doc-8d0b6a951892d328d9f1050ea4601a5a"
+            },
+            {
+              "title": "做一条内容的元问题",
+              "target": "03_内容规律/做一条内容的元问题.md",
+              "documentId": "doc-f22d81ed384d99b13ffa7ddebdaecf38"
+            },
+            {
+              "title": "锦成口述_过来人建议_2026-10-13.md",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/锦成口述_过来人建议_2026-10-13.md",
+              "documentId": "doc-aaedd385eb1d4ad9224e8a41f8525f92"
+            }
+          ]
+        },
+        {
+          "tNumber": "T020",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md",
+              "sha256Before": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069",
+              "sha256After": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069"
+            }
+          ],
+          "videoCount": 4,
+          "materialCount": 31,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998",
+              "title": "哇，这个时代会 AI 天上就会掉馅饼！",
+              "links": [
+                {
+                  "title": "哇，这个时代会 AI 天上就会掉馅饼！",
+                  "target": "https://www.douyin.com/video/7659327571989516998",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998/笔记信息.md",
+                  "documentId": "doc-e3062e72ef9075bd49c61a31f51b5d9e"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-b4c2119656dd05385353f616830841ba"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761",
+              "title": "工具好不好用取决于使用者的品味",
+              "links": [
+                {
+                  "title": "工具好不好用取决于使用者的品味",
+                  "target": "https://www.douyin.com/video/7672366434357379761",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761/笔记信息.md",
+                  "documentId": "doc-e1e1a7feedb6588b2c019a5b3e3b8f76"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-6e5cc7f8a61dca780b65ec75f01575f4"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_普通人从年赚几十万到几百万最需要提升的是什么_7689467591816067749",
+              "title": "抖音图文 7689467591816067749",
+              "links": [
+                {
+                  "title": "抖音图文 7689467591816067749",
+                  "target": "https://www.douyin.com/video/7689467591816067749",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_普通人从年赚几十万到几百万最需要提升的是什么_7689467591816067749/笔记信息.md",
+                  "documentId": "doc-6a765b3620acfa68bd76bd6856e2d2b9"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978",
+              "title": "月入2k到一年200万，我的AI副业完整复盘，2026-09-24 发布，4 分 56 秒",
+              "links": [
+                {
+                  "title": "月入2k到一年200万，我的AI副业完整复盘",
+                  "target": "https://www.douyin.com/video/7688801135104199978",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978/笔记信息.md",
+                  "documentId": "doc-ba895a2bb9e0d9b7ddc6e10b5aec3631"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-d3dc20bb383967cb6afb255809cea398"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "2026-09-24 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-24_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": null
+            },
+            {
+              "title": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/",
+              "target": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/",
+              "documentId": null
+            },
+            {
+              "title": "https://www.douyin.com/user/MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP",
+              "target": "https://www.douyin.com/user/MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP",
+              "documentId": null
+            },
+            {
+              "title": "2026-09-21 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-21_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": null
+            },
+            {
+              "title": "从身无分文大学生，靠 AI 自媒体逆袭变现 10w+",
+              "target": "https://cloud.tencent.com/developer/article/2745117",
+              "documentId": null
+            },
+            {
+              "title": "AI 赋能「一人公司」：00 后青年解锁创业新路径",
+              "target": "https://www.itbear.com.cn/html/2026-08/1531983.html",
+              "documentId": null
+            },
+            {
+              "title": "AI 做抖音账号 2026 完整 SOP",
+              "target": "https://www.tixiaolu.com/posts/ai-douyin-account-2026/",
+              "documentId": null
+            },
+            {
+              "title": "骑手与程序员之间：西安 00 后用 AI 撑起一家「一人公司」",
+              "target": "https://finance.sina.com.cn/jjxw/2026-04-03/doc-inhteyic3788928.shtml",
+              "documentId": null
+            },
+            {
+              "title": "5 个月用 AI 做了 120 多个 App",
+              "target": "https://finance.sina.com.cn/stock/t/2026-02-13/doc-inhmrxrm3184957.shtml",
+              "documentId": null
+            },
+            {
+              "title": "月入 9 万，已经有大学生用 Vibe Coding 捞到第一桶金了",
+              "target": "https://www.tmtpost.com/7874185.html",
+              "documentId": null
+            },
+            {
+              "title": "「我不会写代码，只是个 Vibe Coder 啊」",
+              "target": "https://www.36kr.com/p/3944930559245449",
+              "documentId": null
+            },
+            {
+              "title": "00 后月入五万，有人爆赚 60 万",
+              "target": "http://www.nadianshi.com/2026/04/408650",
+              "documentId": null
+            },
+            {
+              "title": "不辞职不组队，他用下班时间靠 AI 赚了 100 万",
+              "target": "https://www.tahou.com/article/206613977473582085",
+              "documentId": null
+            },
+            {
+              "title": "闲鱼 AI 副业半年 981 万单",
+              "target": "https://www.wazhuan.net/49896.html",
+              "documentId": null
+            },
+            {
+              "title": "教别人用 AI，我赚翻了",
+              "target": "https://www.woshipm.com/ai/6467113.html",
+              "documentId": null
+            },
+            {
+              "title": "AI 简历优化：闲鱼引流价 49 元起",
+              "target": "https://www.cpengx.cn/productivity/m-ai-resume-optimize.html",
+              "documentId": null
+            },
+            {
+              "title": "3 个 95 后靠 AI 做企业 PPT 定制",
+              "target": "https://news.softunis.com/71884.html",
+              "documentId": null
+            },
+            {
+              "title": "2026 年 AI 面试工具效果报告",
+              "target": "http://www.mhpn.cn/news/2076552",
+              "documentId": null
+            },
+            {
+              "title": "报告：AI 岗位占比升至 26.23%",
+              "target": "http://cn.chinadaily.com.cn/a/202603/11/WS69b14058a310942cc49a2a17.html",
+              "documentId": null
+            },
+            {
+              "title": "92% 高管愿意任命 Z 世代：AI 正在终结「熬年限」的晋升逻辑",
+              "target": "https://www.digitaling.com/articles/1585457.html",
+              "documentId": null
+            },
+            {
+              "title": "00 后女孩零基础靠印花年入百万",
+              "target": "https://www.xiaoyuzhoufm.com/episode/6a79d16117676351c56fbe95",
+              "documentId": null
+            },
+            {
+              "title": "一人公司闯全球市场",
+              "target": "https://t.cj.sina.com.cn/articles/view/5787187353/158f17899020028qec",
+              "documentId": null
+            },
+            {
+              "title": "斯坦福 460 万人数据：AI 抢走的不是 35 岁的饭碗，是 22 岁的",
+              "target": "https://docs.riyuexinzhu.com/stanford-ai-report-early-career-jobs-impact/",
+              "documentId": null
+            },
+            {
+              "title": "锦成知识库/LLM-Wiki/原始资料/万维钢100讲",
+              "target": "/Users/hejincheng/AIJinCheng/锦成知识库/LLM-Wiki/原始资料/万维钢100讲",
+              "documentId": null
+            },
+            {
+              "title": "https://academic.oup.com/qje/article/140/2/889/7990658",
+              "target": "https://academic.oup.com/qje/article/140/2/889/7990658",
+              "documentId": null
+            },
+            {
+              "title": "https://doi.org/10.1073/pnas.2422633122",
+              "target": "https://doi.org/10.1073/pnas.2422633122",
+              "documentId": null
+            },
+            {
+              "title": "01_对标账号/其他/2026-09-22_陈星越教你做博主_转写与评论样本",
+              "target": "01_对标账号/其他/2026-09-22_陈星越教你做博主_转写与评论样本",
+              "documentId": null
+            },
+            {
+              "title": "T020_逐字稿对照.html",
+              "target": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_逐字稿对照.html",
+              "documentId": "doc-640cd7b7bc1121d0266647dd7819463f"
+            },
+            {
+              "title": "http://127.0.0.1:8768/",
+              "target": "http://127.0.0.1:8768/",
+              "documentId": null
+            },
+            {
+              "title": ".trash",
+              "target": "/Users/hejincheng/AIJinCheng/.trash/2026-09-23_T027_如何用一年半的时间成为AI科技公司合伙人.md",
+              "documentId": null
+            },
+            {
+              "title": "2026-09-28 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-28_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": null
+            }
+          ]
+        },
+        {
+          "tNumber": "T048",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/已做/T048_✅vibe知识大赏这类号的三个弊端.md",
+              "sha256Before": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec",
+              "sha256After": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec"
+            }
+          ],
+          "videoCount": 2,
+          "materialCount": 7,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345",
+              "title": "信息论：惊奇之学",
+              "links": [
+                {
+                  "title": "链接",
+                  "target": "https://www.douyin.com/video/7690337875291950345",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345/笔记信息.md",
+                  "documentId": "doc-c8e8529cac173fbacf5f54aaff10fdeb"
+                },
+                {
+                  "title": "校正版逐字稿 · 画面字幕.md",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345/转写/校正版逐字稿/画面字幕.md",
+                  "documentId": "doc-5eb23efaa8bbfcdf6ce96af67b0ca9aa"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_2026诺奖·中微子_7693526422271690406",
+              "title": "2026诺奖·中微子",
+              "links": [
+                {
+                  "title": "链接",
+                  "target": "https://www.douyin.com/video/7693526422271690406",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_2026诺奖·中微子_7693526422271690406/笔记信息.md",
+                  "documentId": "doc-3c4f70b6fe7b62740b668724ab72103e"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/",
+              "target": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/",
+              "documentId": null
+            },
+            {
+              "title": "做一条内容的元问题",
+              "target": "03_内容规律/做一条内容的元问题.md",
+              "documentId": "doc-f22d81ed384d99b13ffa7ddebdaecf38"
+            },
+            {
+              "title": "提词器版",
+              "target": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/提词器版.txt",
+              "documentId": "doc-f89baac0d139e18db196885d7f301ef1"
+            },
+            {
+              "title": "_话题点赞前50_2026-10-07.md",
+              "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/_话题点赞前50_2026-10-07.md",
+              "documentId": "doc-1eabbe7bbd66c626d081e7ee33880a6c"
+            },
+            {
+              "title": "_小号数据复盘_2026-10-06.md",
+              "target": "04_选题库/vibe知识大赏/_小号数据复盘_2026-10-06.md",
+              "documentId": "doc-8b927a98951f88c5022c6afc0d371a49"
+            },
+            {
+              "title": "主页",
+              "target": "https://www.douyin.com/user/MS4wLjABAAAAiW-d7w9oUL5F4HLIhU-1C0lmYsmDFjo6ynoI4FOaRBw",
+              "documentId": null
+            },
+            {
+              "title": "vibe知识大赏 已做",
+              "target": "04_选题库/vibe知识大赏/已做/",
+              "documentId": null
+            }
+          ]
+        },
+        {
+          "tNumber": "T005",
+          "cards": [
+            {
+              "relativePath": "04_选题库/AI科普/待做/T005_个人知识库放本地还是云端.md",
+              "sha256Before": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034",
+              "sha256After": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034"
+            }
+          ],
+          "videoCount": 2,
+          "materialCount": 0,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_用AI做个人知识库一定要放本地！_7665703149353853169",
+              "title": "用 AI 做个人知识库一定要放本地！",
+              "links": [
+                {
+                  "title": "https://www.douyin.com/video/7665703149353853169",
+                  "target": "https://www.douyin.com/video/7665703149353853169",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_用AI做个人知识库一定要放本地！_7665703149353853169/笔记信息.md",
+                  "documentId": "doc-bcf80b72a2795635ae9b8fadc12c8821"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_【教程】新手上路第一站：建立个人知识库 AI时代对普通人来说_7663452659051196529",
+              "title": "【教程】新手上路第一站：建立个人知识库",
+              "links": [
+                {
+                  "title": "https://www.douyin.com/video/7663452659051196529",
+                  "target": "https://www.douyin.com/video/7663452659051196529",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_【教程】新手上路第一站：建立个人知识库 AI时代对普通人来说_7663452659051196529/笔记信息.md",
+                  "documentId": "doc-55f2aaaedbf95c5bf526b0a03efd87cb"
+                }
+              ]
+            }
+          ],
+          "materials": []
+        }
+      ]
+    },
+    {
+      "name": "B",
+      "root": "/Users/mac/Downloads/锦成工作台-同事版/数据和程序/AIJinCheng/个人IP与内容/第二大脑",
+      "indexedDocuments": 9546,
+      "topics": [
+        {
+          "tNumber": "T041",
+          "cards": [
+            {
+              "relativePath": "04_选题库/X/待做/T041_涨粉两万后两个月只涨六千的复盘.md",
+              "sha256Before": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c",
+              "sha256After": "b9cdd299699dad40597752b77af06cbffc10bb50d1c72466bdf7dc8f795b5b6c"
+            }
+          ],
+          "videoCount": 4,
+          "materialCount": 7,
+          "videos": [
+            {
+              "key": "/Users/hejincheng/Downloads/下载 (47).mp4",
+              "title": "水球泡老师连麦视频（45 分 54 秒，女生问为什么做不好短视频）",
+              "links": [
+                {
+                  "title": "原视频",
+                  "target": "/Users/hejincheng/Downloads/下载 (47).mp4",
+                  "documentId": null
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "07_如何做自媒体/2026-10-07_取悦自己与怎么做账号/视频逐字稿.md",
+                  "documentId": "doc-66268b2ab75c04e033b624507b199348"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538",
+              "title": "柱子哥TzFilm商单不断！我是如何利用Ai帮我完成逐字稿的？（抖音，2026-10-01，作者 22.1 万粉，赞 3,503，藏 1,872，10-07 取数）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/ZCRXYi_idS4/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/笔记信息.md",
+                  "documentId": "doc-6c1f155a1df0fe4eda0553fb767de493"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-b0ba66025d6b87d202bd03ff125a1a4b"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611",
+              "title": "光郡WorkBuddy终极教程（抖音，2026-07-06，4 分 32 秒，赞 146,997，藏 133,309）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/U2D601VgDsM/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611/笔记信息.md",
+                  "documentId": "doc-6cfc0931895be191ab3b4368d7229304"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611",
+              "title": "珍妮丁丁说AI全网最适合小白的WorkBuddy入门指南（抖音，2026-07-07，12 分 36 秒，赞 201,160，藏 180,402）",
+              "links": [
+                {
+                  "title": "抖音链接",
+                  "target": "https://v.douyin.com/ixnu8BSVRqk/",
+                  "documentId": null
+                },
+                {
+                  "title": "本地素材",
+                  "target": "02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611/笔记信息.md",
+                  "documentId": "doc-02a28023485b338bd5e0d5102814463c"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "T042",
+              "target": "04_选题库/X/待做/T042_两周全网涨粉两万的AI教程做法.md",
+              "documentId": "doc-b83a57a3817075e00f2b144c7e075080"
+            },
+            {
+              "title": "http://127.0.0.1:8977/p/6iqyx64746",
+              "target": "http://127.0.0.1:8977/p/6iqyx64746",
+              "documentId": null
+            },
+            {
+              "title": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/",
+              "documentId": null
+            },
+            {
+              "title": "锦成口述_2026-10-07.md",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/锦成口述_2026-10-07.md",
+              "documentId": "doc-5e9e7c21ed870a790ef75919c0f20652"
+            },
+            {
+              "title": "结构.md",
+              "target": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/结构.md",
+              "documentId": "doc-1a0fea49ac7a224f72738bb757f7dc06"
+            },
+            {
+              "title": "视频档案",
+              "target": "../../../../内容数据统计/视频项目/2026-08-06-WorkBuddy小白终极教程/内容.md",
+              "documentId": null
+            },
+            {
+              "title": "视频档案",
+              "target": "../../../../内容数据统计/视频项目/2026-08-04-2分钟调好WorkBuddy/内容.md",
+              "documentId": null
+            }
+          ]
+        },
+        {
+          "tNumber": "T046",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/已做/T046_✅用AI做DanKoe的Human3.0人生模型.md",
+              "sha256Before": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1",
+              "sha256After": "0ef6995afadcc98d326a01a29c70c00dcd76db95e885dfd7052d3eb24229a9f1"
+            }
+          ],
+          "videoCount": 3,
+          "materialCount": 4,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_油管大神Dan Koe：用AI做一个自己的人生模型_7689110172623874378",
+              "title": "油管大神Dan Koe：用AI做一个自己的人生模型",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/video/7689110172623874378",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_油管大神Dan Koe：用AI做一个自己的人生模型_7689110172623874378/笔记信息.md",
+                  "documentId": "doc-a190ac9bc9075fe2b321414905ac49cf"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_如何利用人生3.0系统成为前1%的顶尖人类_7693565817543573158",
+              "title": "如何利用人生3.0系统成为前1%的顶尖人类",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/video/7693565817543573158",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_如何利用人生3.0系统成为前1%的顶尖人类_7693565817543573158/笔记信息.md",
+                  "documentId": "doc-c0730e6a146170d6bd1360d917265d7d"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_如何在6—12个月内领先99%的人_7684470685128822026",
+              "title": "如何在6—12个月内领先99%的人",
+              "links": [
+                {
+                  "title": "抖音",
+                  "target": "https://www.douyin.com/note/7684470685128822026",
+                  "documentId": null
+                },
+                {
+                  "title": "素材文件夹",
+                  "target": "02_内容素材/未参考/抖音/抖音_如何在6—12个月内领先99%的人_7684470685128822026/笔记信息.md",
+                  "documentId": "doc-9308dde6ce4cffa15d818bb9df365ee3"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/",
+              "documentId": null
+            },
+            {
+              "title": "参考拆解.md",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/参考拆解.md",
+              "documentId": "doc-8d0b6a951892d328d9f1050ea4601a5a"
+            },
+            {
+              "title": "做一条内容的元问题",
+              "target": "03_内容规律/做一条内容的元问题.md",
+              "documentId": "doc-f22d81ed384d99b13ffa7ddebdaecf38"
+            },
+            {
+              "title": "锦成口述_过来人建议_2026-10-13.md",
+              "target": "05_内容草稿/T046_用AI做DanKoe的Human3.0人生模型/锦成口述_过来人建议_2026-10-13.md",
+              "documentId": "doc-aaedd385eb1d4ad9224e8a41f8525f92"
+            }
+          ]
+        },
+        {
+          "tNumber": "T020",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/待做/T020_AI是我们00后最值得抓住的杠杆.md",
+              "sha256Before": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069",
+              "sha256After": "02cd70ad8b3ab4d03cf0c63b23e646b1112082a4b499a53c58cc92164dea0069"
+            }
+          ],
+          "videoCount": 4,
+          "materialCount": 31,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998",
+              "title": "哇，这个时代会 AI 天上就会掉馅饼！",
+              "links": [
+                {
+                  "title": "哇，这个时代会 AI 天上就会掉馅饼！",
+                  "target": "https://www.douyin.com/video/7659327571989516998",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998/笔记信息.md",
+                  "documentId": "doc-e3062e72ef9075bd49c61a31f51b5d9e"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_哇，这个时代会 AI 天上就会掉馅饼！_7659327571989516998/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-b4c2119656dd05385353f616830841ba"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761",
+              "title": "工具好不好用取决于使用者的品味",
+              "links": [
+                {
+                  "title": "工具好不好用取决于使用者的品味",
+                  "target": "https://www.douyin.com/video/7672366434357379761",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761/笔记信息.md",
+                  "documentId": "doc-e1e1a7feedb6588b2c019a5b3e3b8f76"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_工具好不好用取决于使用者的品味_7672366434357379761/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-6e5cc7f8a61dca780b65ec75f01575f4"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_普通人从年赚几十万到几百万最需要提升的是什么_7689467591816067749",
+              "title": "抖音图文 7689467591816067749",
+              "links": [
+                {
+                  "title": "抖音图文 7689467591816067749",
+                  "target": "https://www.douyin.com/video/7689467591816067749",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_普通人从年赚几十万到几百万最需要提升的是什么_7689467591816067749/笔记信息.md",
+                  "documentId": "doc-6a765b3620acfa68bd76bd6856e2d2b9"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978",
+              "title": "月入2k到一年200万，我的AI副业完整复盘，2026-09-24 发布，4 分 56 秒",
+              "links": [
+                {
+                  "title": "月入2k到一年200万，我的AI副业完整复盘",
+                  "target": "https://www.douyin.com/video/7688801135104199978",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978/笔记信息.md",
+                  "documentId": "doc-ba895a2bb9e0d9b7ddc6e10b5aec3631"
+                },
+                {
+                  "title": "校正版逐字稿",
+                  "target": "02_内容素材/未参考/抖音/抖音_月入2k到一年200万，我的AI副业完整复盘_7688801135104199978/转写/校正版逐字稿/001-视频.md",
+                  "documentId": "doc-d3dc20bb383967cb6afb255809cea398"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "2026-09-24 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-24_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": "doc-d544c39e3ca5a6c865cbe6bc4671c83c"
+            },
+            {
+              "title": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/",
+              "target": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/",
+              "documentId": null
+            },
+            {
+              "title": "https://www.douyin.com/user/MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP",
+              "target": "https://www.douyin.com/user/MS4wLjABAAAAErsGb9V6EJPIlmHQjESrY0OMK66XI8-m3bf5VHRCLsdEm3sjjG4uw0FVLqtsmApP",
+              "documentId": null
+            },
+            {
+              "title": "2026-09-21 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-21_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": "doc-4ec435d63d21aa881f24c7ce584f5bab"
+            },
+            {
+              "title": "从身无分文大学生，靠 AI 自媒体逆袭变现 10w+",
+              "target": "https://cloud.tencent.com/developer/article/2745117",
+              "documentId": null
+            },
+            {
+              "title": "AI 赋能「一人公司」：00 后青年解锁创业新路径",
+              "target": "https://www.itbear.com.cn/html/2026-08/1531983.html",
+              "documentId": null
+            },
+            {
+              "title": "AI 做抖音账号 2026 完整 SOP",
+              "target": "https://www.tixiaolu.com/posts/ai-douyin-account-2026/",
+              "documentId": null
+            },
+            {
+              "title": "骑手与程序员之间：西安 00 后用 AI 撑起一家「一人公司」",
+              "target": "https://finance.sina.com.cn/jjxw/2026-04-03/doc-inhteyic3788928.shtml",
+              "documentId": null
+            },
+            {
+              "title": "5 个月用 AI 做了 120 多个 App",
+              "target": "https://finance.sina.com.cn/stock/t/2026-02-13/doc-inhmrxrm3184957.shtml",
+              "documentId": null
+            },
+            {
+              "title": "月入 9 万，已经有大学生用 Vibe Coding 捞到第一桶金了",
+              "target": "https://www.tmtpost.com/7874185.html",
+              "documentId": null
+            },
+            {
+              "title": "「我不会写代码，只是个 Vibe Coder 啊」",
+              "target": "https://www.36kr.com/p/3944930559245449",
+              "documentId": null
+            },
+            {
+              "title": "00 后月入五万，有人爆赚 60 万",
+              "target": "http://www.nadianshi.com/2026/04/408650",
+              "documentId": null
+            },
+            {
+              "title": "不辞职不组队，他用下班时间靠 AI 赚了 100 万",
+              "target": "https://www.tahou.com/article/206613977473582085",
+              "documentId": null
+            },
+            {
+              "title": "闲鱼 AI 副业半年 981 万单",
+              "target": "https://www.wazhuan.net/49896.html",
+              "documentId": null
+            },
+            {
+              "title": "教别人用 AI，我赚翻了",
+              "target": "https://www.woshipm.com/ai/6467113.html",
+              "documentId": null
+            },
+            {
+              "title": "AI 简历优化：闲鱼引流价 49 元起",
+              "target": "https://www.cpengx.cn/productivity/m-ai-resume-optimize.html",
+              "documentId": null
+            },
+            {
+              "title": "3 个 95 后靠 AI 做企业 PPT 定制",
+              "target": "https://news.softunis.com/71884.html",
+              "documentId": null
+            },
+            {
+              "title": "2026 年 AI 面试工具效果报告",
+              "target": "http://www.mhpn.cn/news/2076552",
+              "documentId": null
+            },
+            {
+              "title": "报告：AI 岗位占比升至 26.23%",
+              "target": "http://cn.chinadaily.com.cn/a/202603/11/WS69b14058a310942cc49a2a17.html",
+              "documentId": null
+            },
+            {
+              "title": "92% 高管愿意任命 Z 世代：AI 正在终结「熬年限」的晋升逻辑",
+              "target": "https://www.digitaling.com/articles/1585457.html",
+              "documentId": null
+            },
+            {
+              "title": "00 后女孩零基础靠印花年入百万",
+              "target": "https://www.xiaoyuzhoufm.com/episode/6a79d16117676351c56fbe95",
+              "documentId": null
+            },
+            {
+              "title": "一人公司闯全球市场",
+              "target": "https://t.cj.sina.com.cn/articles/view/5787187353/158f17899020028qec",
+              "documentId": null
+            },
+            {
+              "title": "斯坦福 460 万人数据：AI 抢走的不是 35 岁的饭碗，是 22 岁的",
+              "target": "https://docs.riyuexinzhu.com/stanford-ai-report-early-career-jobs-impact/",
+              "documentId": null
+            },
+            {
+              "title": "锦成知识库/LLM-Wiki/原始资料/万维钢100讲",
+              "target": "/Users/hejincheng/AIJinCheng/锦成知识库/LLM-Wiki/原始资料/万维钢100讲",
+              "documentId": null
+            },
+            {
+              "title": "https://academic.oup.com/qje/article/140/2/889/7990658",
+              "target": "https://academic.oup.com/qje/article/140/2/889/7990658",
+              "documentId": null
+            },
+            {
+              "title": "https://doi.org/10.1073/pnas.2422633122",
+              "target": "https://doi.org/10.1073/pnas.2422633122",
+              "documentId": null
+            },
+            {
+              "title": "01_对标账号/其他/2026-09-22_陈星越教你做博主_转写与评论样本",
+              "target": "01_对标账号/其他/2026-09-22_陈星越教你做博主_转写与评论样本",
+              "documentId": null
+            },
+            {
+              "title": "T020_逐字稿对照.html",
+              "target": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_逐字稿对照.html",
+              "documentId": "doc-640cd7b7bc1121d0266647dd7819463f"
+            },
+            {
+              "title": "http://127.0.0.1:8768/",
+              "target": "http://127.0.0.1:8768/",
+              "documentId": null
+            },
+            {
+              "title": ".trash",
+              "target": "/Users/hejincheng/AIJinCheng/.trash/2026-09-23_T027_如何用一年半的时间成为AI科技公司合伙人.md",
+              "documentId": null
+            },
+            {
+              "title": "2026-09-28 与博文沟通",
+              "target": "07_如何做自媒体/2026-09-28_与博文沟通/会议纪要与逐字稿.md",
+              "documentId": "doc-4905e03c45ee199792afacb669fdefb0"
+            }
+          ]
+        },
+        {
+          "tNumber": "T048",
+          "cards": [
+            {
+              "relativePath": "04_选题库/口播观点/已做/T048_✅vibe知识大赏这类号的三个弊端.md",
+              "sha256Before": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec",
+              "sha256After": "4a61936214f9dd2039ffe26d7b0cef84202f82415a938608924e2f4770b745ec"
+            }
+          ],
+          "videoCount": 2,
+          "materialCount": 7,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345",
+              "title": "信息论：惊奇之学",
+              "links": [
+                {
+                  "title": "链接",
+                  "target": "https://www.douyin.com/video/7690337875291950345",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345/笔记信息.md",
+                  "documentId": "doc-c8e8529cac173fbacf5f54aaff10fdeb"
+                },
+                {
+                  "title": "校正版逐字稿 · 画面字幕.md",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_信息论 惊奇之学_7690337875291950345/转写/校正版逐字稿/画面字幕.md",
+                  "documentId": "doc-5eb23efaa8bbfcdf6ce96af67b0ca9aa"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_2026诺奖·中微子_7693526422271690406",
+              "title": "2026诺奖·中微子",
+              "links": [
+                {
+                  "title": "链接",
+                  "target": "https://www.douyin.com/video/7693526422271690406",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/抖音_2026诺奖·中微子_7693526422271690406/笔记信息.md",
+                  "documentId": "doc-3c4f70b6fe7b62740b668724ab72103e"
+                }
+              ]
+            }
+          ],
+          "materials": [
+            {
+              "title": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/",
+              "target": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/",
+              "documentId": null
+            },
+            {
+              "title": "做一条内容的元问题",
+              "target": "03_内容规律/做一条内容的元问题.md",
+              "documentId": "doc-f22d81ed384d99b13ffa7ddebdaecf38"
+            },
+            {
+              "title": "提词器版",
+              "target": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/提词器版.txt",
+              "documentId": "doc-f89baac0d139e18db196885d7f301ef1"
+            },
+            {
+              "title": "_话题点赞前50_2026-10-07.md",
+              "target": "02_内容素材/未参考/抖音/vibecoding 科普视频/_话题点赞前50_2026-10-07.md",
+              "documentId": "doc-1eabbe7bbd66c626d081e7ee33880a6c"
+            },
+            {
+              "title": "_小号数据复盘_2026-10-06.md",
+              "target": "04_选题库/vibe知识大赏/_小号数据复盘_2026-10-06.md",
+              "documentId": "doc-8b927a98951f88c5022c6afc0d371a49"
+            },
+            {
+              "title": "主页",
+              "target": "https://www.douyin.com/user/MS4wLjABAAAAiW-d7w9oUL5F4HLIhU-1C0lmYsmDFjo6ynoI4FOaRBw",
+              "documentId": null
+            },
+            {
+              "title": "vibe知识大赏 已做",
+              "target": "04_选题库/vibe知识大赏/已做/",
+              "documentId": null
+            }
+          ]
+        },
+        {
+          "tNumber": "T005",
+          "cards": [
+            {
+              "relativePath": "04_选题库/AI科普/待做/T005_个人知识库放本地还是云端.md",
+              "sha256Before": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034",
+              "sha256After": "f1870d54ead72b2d1fa3e1da498b4ae7a1efa5dbe3036f8931860b869adad034"
+            }
+          ],
+          "videoCount": 2,
+          "materialCount": 0,
+          "videos": [
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_用AI做个人知识库一定要放本地！_7665703149353853169",
+              "title": "用 AI 做个人知识库一定要放本地！",
+              "links": [
+                {
+                  "title": "https://www.douyin.com/video/7665703149353853169",
+                  "target": "https://www.douyin.com/video/7665703149353853169",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_用AI做个人知识库一定要放本地！_7665703149353853169/笔记信息.md",
+                  "documentId": "doc-bcf80b72a2795635ae9b8fadc12c8821"
+                }
+              ]
+            },
+            {
+              "key": "02_内容素材/未参考/抖音/抖音_【教程】新手上路第一站：建立个人知识库 AI时代对普通人来说_7663452659051196529",
+              "title": "【教程】新手上路第一站：建立个人知识库",
+              "links": [
+                {
+                  "title": "https://www.douyin.com/video/7663452659051196529",
+                  "target": "https://www.douyin.com/video/7663452659051196529",
+                  "documentId": null
+                },
+                {
+                  "title": "笔记信息",
+                  "target": "02_内容素材/未参考/抖音/抖音_【教程】新手上路第一站：建立个人知识库 AI时代对普通人来说_7663452659051196529/笔记信息.md",
+                  "documentId": "doc-55f2aaaedbf95c5bf526b0a03efd87cb"
+                }
+              ]
+            }
+          ],
+          "materials": []
+        }
+      ]
+    }
+  ]
+}

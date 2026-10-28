@@ -11,6 +11,7 @@ const actions = source.slice(source.indexOf('function App() {'), source.indexOf(
     return {nativeAction, localAction, refreshStatus, refreshWorkspace, load, clearEditor, setDraft,
         refresh: () => {changesPending.current = true; automaticRefresh.current();},
         select, navigate, newContent, backgroundAction, readCoverAutomatically, page, detailOpen, acting, active: active.current,
+        registerDetailCloseGuard: guard => {detailCloseGuard.current = guard;},
         error, status, workspace, contents, draft, disk, base, pendingRefresh: changesPending.current};
 }`;
 const compiled = stripTypeScriptTypes(actions);
@@ -310,4 +311,21 @@ test('confirmed entity snapshots advance the current content CAS without losing 
     await f.render().refreshWorkspace({...unchangedLibrary,prompts:[]});
     assert.equal(f.render().base.editToken,'new-progress-token');
     assert.equal(f.render().draft.body,'New body from progress','prompt-only snapshot must not roll current content back');
+});
+
+
+test('without a detail close guard navigation starts in the click stack',async()=>{
+ const f=fixture();await ready(f);const navigation=f.render().navigate('templates');
+ assert.equal(f.render().page,'templates','an absent guard must not delay dispatch into another microtask');await navigation;
+});
+test('a detail close guard waits for acknowledged source saving before opening content',async()=>{
+ const f=fixture();await ready(f);let release;const gate=new Promise(resolve=>{release=resolve;});let saving=false;
+ f.render().registerDetailCloseGuard(async()=>{saving=true;await gate;});const opening=f.render().select(f.item);
+ assert.equal(saving,true);assert.equal(f.calls.includes('readContent'),false);assert.equal(f.render().detailOpen,false);
+ release();await opening;assert.equal(f.calls.filter(method=>method==='readContent').length,1);assert.equal(f.render().detailOpen,true);
+});
+test('a failed detail close guard retains the selected content and refuses navigation',async()=>{
+ const f=fixture();await ready(f);f.render().load(f.item);f.render().registerDetailCloseGuard(async()=>{throw failure('CONFLICT');});
+ const before=f.render().page;await f.render().navigate('templates');assert.equal(f.render().page,before);assert.match(f.render().error,/CONFLICT/);assert.equal(f.render().draft.body,f.item.body);
+ f.render().registerDetailCloseGuard(null);await f.render().navigate('templates');assert.equal(f.render().page,'templates');
 });

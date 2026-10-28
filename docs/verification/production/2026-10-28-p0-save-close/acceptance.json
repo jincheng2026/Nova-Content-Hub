@@ -1,0 +1,136 @@
+{
+  "status": "P0 complete; final-build focused tail passed",
+  "scope": "Hidden built Electron application on darwin-arm64. Independent temporary Vaults only. No installed app, package, user library, or frozen Kit changes.",
+  "rootCauses": [
+    {
+      "kind": "probe false failure",
+      "evidence": "diagnostic-before-valid-fixture/result.json",
+      "observed": {
+        "beforeCloseTag": "TEXTAREA",
+        "domValueEqualsKitValue": true,
+        "reopenAtChannelConnectedReady": false,
+        "markerRestoredAfterKitReady": true,
+        "restoredPending": 1
+      },
+      "conclusion": "Connected MessagePort does not mean Kit restoration completed. The previous reopen assertion read the old base before Kit ready."
+    },
+    {
+      "kind": "product source-save acknowledgement gap",
+      "evidence": "diagnostic-before-valid-fixture/result.json",
+      "observed": {
+        "sourceMarkerImmediatelyAfterClose": false,
+        "sourceSavePostsInRun": 0,
+        "nativeStashWriteAcks": 3
+      },
+      "conclusion": "Control flush drained durable native stash only. It did not invoke source save or inspect Kit failure/conflict/pending. Data was recoverable from stash, while source file was not acknowledged before close."
+    },
+    {
+      "kind": "foreground dispatch regression",
+      "evidence": "tests/guard-red.log",
+      "conclusion": "Unconditional await of an absent optional close guard inserted a microtask before nativeAction took the foreground lock. A second same-tick operation could claim it. Only await when an actual guard exists; real guard wait/rejection remains enforced."
+    }
+  ],
+  "fix": {
+    "files": [
+      "workbench/src/main/creation-frame-html.mts",
+      "workbench/test/creation-desktop.test.mjs",
+      "workbench/scripts/readability-ui-probe.mjs",
+      "workbench/src/renderer/app.tsx",
+      "workbench/test/background-refresh.test.mjs"
+    ],
+    "behavior": "Managed close waits native stash, the shared in-flight original Kit flush Promise, and final native ACK; checks native snapshot records, Kit pending, conflicts, errors and composition. Retry and reload use the same source barrier. Probe waits Kit ready before reading reopened values."
+  },
+  "verification": {
+    "redInitial": {
+      "passed": 0,
+      "failed": 7,
+      "log": "tests/red-initial.log"
+    },
+    "redTail": {
+      "passed": 0,
+      "failed": 2,
+      "log": "tests/red-tail.log"
+    },
+    "creationDesktop": {
+      "passed": 20,
+      "failed": 0,
+      "log": "tests/creation-desktop-green.log"
+    },
+    "typecheck": "Both native and renderer passed; renderer passed again after the conditional guard-await fix. Parent also reported final complete desktop typecheck passed.",
+    "wipBuild": "passed; final two native tail checks were subsequently transpiled into the same WIP dist module for UI; final frozen build remains required",
+    "review": "Astra reviewed final native snapshot/composition gates and shared Promise; no remaining blocker reported. No source reload/managed-close blocker reproduced in the final focused tail.",
+    "backgroundRefresh": {
+      "passed": 18,
+      "failed": 0,
+      "log": "tests/background-refresh-green.log"
+    },
+    "finalGuardRendererTypecheck": "passed",
+    "afterUi2": {
+      "passed": false,
+      "evidence": "after-ui-2/result.json",
+      "stepsPassed": [
+        "immediate close/source ACK/reopen/restore",
+        "explicit save and close",
+        "main navigation",
+        "change content",
+        "source failure keeps mounted frame and input",
+        "renderer reload restores native pending input",
+        "retry acknowledged save",
+        "real same-field conflict retains both versions and explicit resolution writes source"
+      ],
+      "tailFailure": "Runner button unavailable during host original-page reload; waiting only for iframe absence can mistake temporary reload for full closure. Focused final tail now waits full host unmount and enabled buttons.",
+      "tailFailureResolution": "Final-build focused tail passed with enabled-button waits and full .creation-frame-workspace unmount checks. Earlier runner incorrectly treated temporary iframe reload as full close."
+    },
+    "finalBuildTail": {
+      "passed": true,
+      "steps": [
+        "Tail conflict resolution closes the whole host after source ack, not a transient iframe reload",
+        "Tail restored the original author value through normal source save and fully closed the host"
+      ],
+      "evidence": "final-tail/result.json",
+      "source": "The final shared build produced by the parent after all P0, guard and P1 changes; no manual dist replacement used for this final run."
+    }
+  },
+  "fixtureFailures": [
+    {
+      "path": "diagnostic-before",
+      "reason": "Noncanonical /tmp alias rejected by binding safety checks before content opened."
+    },
+    {
+      "path": "diagnostic-before-2",
+      "reason": "A physical clone with old .workbench/vault.json root identity is rejected. Original clone and its stash remain preserved."
+    },
+    {
+      "path": "after-ui",
+      "reason": "After immediate close/source ACK/reopen/restore passed, extended helper read WebFrame before its navigation/connect completed. Fixed runner wait; product unchanged."
+    }
+  ],
+  "rules": {
+    "Surface-03": "Controlled source-save failure retains mounted original page and input; real conflict retains both values until explicit author resolution. Final full-host close and reopen pass.",
+    "Acceptance-01": "20 targeted desktop tests and both typechecks passed.",
+    "Acceptance-03": "WIP hidden Electron only; does not prove installed package, Finder/Dock, Intel Mac, or Windows acceptance.",
+    "Feedback-02": "Controlled 503 source-save failure keeps mounted frame and pending native record; retry and renderer reload restore the same input.",
+    "Feedback-04": "Source ACK is checked separately from native stash and connection-ready status.",
+    "Draft-01": "Failed source input survives renderer reload via native durable stash; this is not a claim of full installed process restart or power-loss acceptance."
+  },
+  "fixtures": {
+    "before": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-p0-clean-ZVeJsu",
+    "after": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-p0-after-bVp8bc",
+    "initialInvalidClone": "/tmp/nova-readability-p0-04Eig5"
+  },
+  "frozenKitSha256": "e034efb7de1c2a0c79748cda1da017846e5c458597da68c5c191fa2c06d44704",
+  "sourceHashes": {
+    "workbench/src/main/creation-frame-html.mts": "39804743c24aac468544e8ff30e7f2492622d9109cd9ce97c110f8b02c7c6c03",
+    "workbench/test/creation-desktop.test.mjs": "9ae522eaf01307a1886976471cc639f48d9d85edc9b0a72e469c3437ef42ed75",
+    "workbench/scripts/readability-ui-probe.mjs": "7d7064da502b720fb70f8ea301e487b072aead88353007b794add2307d849fa2",
+    "workbench/src/renderer/app.tsx": "d3ad6a192a36929b9b07340e2e117d34ef9d543dff1b33417749700152f9254b",
+    "workbench/test/background-refresh.test.mjs": "85ddf2fd81582eff5e77922cb07ee57791ae6f49cc2e88394a9c45027410f952"
+  },
+  "notVerified": [
+    "Installed app/window-close lifecycle",
+    "Packaged release source identity / system metadata",
+    "darwin-x64",
+    "win32-x64",
+    "win32-arm64"
+  ]
+}

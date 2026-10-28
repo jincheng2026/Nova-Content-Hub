@@ -1,0 +1,123 @@
+✔ lists every HTML once, separates original topic cards, and retains unmatched file identities (1.230125ms)
+✔ resume never guesses a latest page when the author has not resolved the current source (0.098959ms)
+✔ reference parsing resolves original relative links, keeps unindexed targets, and deduplicates original URLs (0.481792ms)
+✖ groups one table work with its original URL and transcript while keeping other sources as materials (7.259167ms)
+✖ retains balanced local paths, excludes them from vault lookup, and strips only bare URL prose punctuation (1.038375ms)
+✖ does not merge separate table rows or attach profile URLs and archives to media works (0.182ms)
+✖ aggregates repeated material mentions and nested list references without inventing file existence (0.116166ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 3
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 235.824709
+
+✖ failing tests:
+
+test at workbench/test/jincheng-work-detail-data.test.mjs:43:1
+✖ groups one table work with its original URL and transcript while keeping other sources as materials (7.259167ms)
+  AssertionError [ERR_ASSERTION]: reference groups must be available
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at topicReferenceGroups (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:7:9)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:52:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/jincheng-work-detail-data.test.mjs:63:1
+✖ retains balanced local paths, excludes them from vault lookup, and strips only bare URL prose punctuation (1.038375ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'Users/author/Downloads/下载 (47',
+  +   '07_如何做自媒体/会议(第二次',
+  -   '/Users/author/Downloads/下载 (47).mp4',
+  -   '07_如何做自媒体/会议(第二次).md',
+      '07_如何做自媒体/会议 (第三次).md',
+  +   'https://example.com/a_(b',
+  +   'https://example.com/other，',
+  -   'https://example.com/a_(b)?x=1!',
+  -   'https://example.com/a_(b)',
+  -   'https://example.com/other',
+      'https://example.com/end'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:72:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'Users/author/Downloads/下载 (47', '07_如何做自媒体/会议(第二次', '07_如何做自媒体/会议 (第三次).md', 'https://example.com/a_(b', 'https://example.com/other，', 'https://example.com/end' ],
+    expected: [ '/Users/author/Downloads/下载 (47).mp4', '07_如何做自媒体/会议(第二次).md', '07_如何做自媒体/会议 (第三次).md', 'https://example.com/a_(b)?x=1!', 'https://example.com/a_(b)', 'https://example.com/other', 'https://example.com/end' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/jincheng-work-detail-data.test.mjs:78:1
+✖ does not merge separate table rows or attach profile URLs and archives to media works (0.182ms)
+  AssertionError [ERR_ASSERTION]: reference groups must be available
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at topicReferenceGroups (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:7:9)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:84:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at workbench/test/jincheng-work-detail-data.test.mjs:92:1
+✖ aggregates repeated material mentions and nested list references without inventing file existence (0.116166ms)
+  AssertionError [ERR_ASSERTION]: reference groups must be available
+  + actual - expected
+  
+  + 'undefined'
+  - 'function'
+  
+      at topicReferenceGroups (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:7:9)
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/test/jincheng-work-detail-data.test.mjs:102:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'undefined',
+    expected: 'function',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -52,13 +52,13 @@ test('finite creation IPC rejects caller roots, forged actors and unknown action
 function bridgeHarness(html,initial={version:'0',records:[],storage:{local:{},session:{}}}){
  const backend={value:structuredClone(initial),writes:[],fail:false};
  function frame(){
-  const listeners={},parent={},context=vm.createContext({console,Map,Set,Promise,JSON,Date,Error,Object,Array,String,Number,queueMicrotask,setTimeout,clearTimeout,parent,navigator:{},document:{addEventListener(){}},window:{addEventListener(name,fn){listeners[name]=fn;},removeEventListener(){}}});
-  context.window.window=context.window;
+  const listeners={},parent={},results=new Map(),context=vm.createContext({console,Map,Set,Promise,JSON,Date,Error,Object,Array,String,Number,queueMicrotask,setTimeout,clearTimeout,parent,navigator:{},document:{addEventListener(){}},window:{addEventListener(name,fn){listeners[name]=fn;},removeEventListener(){}}});
+  context.window.window=context.window;context.window.jcKit={ready:true,state:()=>({ready:true,pending:0,conflicts:0}),flush:async()=>{},desktopRefresh:async()=>{}};
   const script=[...html.matchAll(/<script(?![^>]*type="application\/json")[^>]*>([\s\S]*?)<\/script>/g)][0][1];
   vm.runInContext(script,context);
-  const port={start(){},postMessage(message){if(message.kind)return;queueMicrotask(async()=>{try{let value;if(message.action==='stash-read')value=structuredClone(backend.value);else if(message.action==='stash-write'){if(backend.gate)await backend.gate;if(backend.fail)throw new Error('disk failed');if(message.payload.expectedVersion!==backend.value.version)throw new Error('stale revision');backend.value={...structuredClone(message.payload),version:String(Number(backend.value.version)+1)};delete backend.value.expectedVersion;backend.writes.push(structuredClone(backend.value));if(backend.failAfterWrite){backend.failAfterWrite=false;throw new Error('reply lost after durable write');}value={version:backend.value.version};}else if(message.action==='copy')value={copied:true};else throw new Error(message.action);port.onmessage({data:{sessionId:message.sessionId,id:message.id,ok:true,value}});}catch(error){port.onmessage({data:{sessionId:message.sessionId,id:message.id,ok:false,error:error.message}});}});}};
+  const port={start(){},postMessage(message){if(message.kind==='control-result'){results.get(message.id)?.(message);results.delete(message.id);return;}if(message.kind)return;queueMicrotask(async()=>{try{let value;if(message.action==='stash-read')value=structuredClone(backend.value);else if(message.action==='stash-write'){if(backend.gate)await backend.gate;if(backend.fail)throw new Error('disk failed');if(message.payload.expectedVersion!==backend.value.version)throw new Error('stale revision');backend.value={...structuredClone(message.payload),version:String(Number(backend.value.version)+1)};delete backend.value.expectedVersion;backend.writes.push(structuredClone(backend.value));if(backend.failAfterWrite){backend.failAfterWrite=false;throw new Error('reply lost after durable write');}value={version:backend.value.version};}else if(message.action==='copy')value={copied:true};else throw new Error(message.action);port.onmessage({data:{sessionId:message.sessionId,id:message.id,ok:true,value}});}catch(error){port.onmessage({data:{sessionId:message.sessionId,id:message.id,ok:false,error:error.message}});}});}};
   const sessionId=/"sessionId":"([^"]+)"/.exec(script)[1];listeners.message({source:parent,data:{kind:'nova-creation-connect',sessionId},ports:[port]});
-  return {context,desktop:context.window.JC_DESKTOP,store:context.window.JC_DESKTOP.openStore()};
+  return {context,desktop:context.window.JC_DESKTOP,store:context.window.JC_DESKTOP.openStore(),control(action='flush'){return new Promise(resolve=>{const id=randomUUID();results.set(id,resolve);port.onmessage({data:{kind:'control',sessionId,id,action}});});}};
  }
  return {backend,frame};
 }
@@ -69,7 +69,10 @@ test('failed durable batch remains retryable and unrelated edits cannot clear th
  await assert.rejects(store.modify('seg-a|mine',()=>record('seg-a|mine','最后一次正文','mine-1')),/disk failed/);
  const queued=store.modify('seg-a|note',()=>record('seg-a|note','稍后批注','note-1'));
  await new Promise(resolve=>setImmediate(resolve));assert.match((await a.desktop.flush()).error,/disk failed/);assert.equal(h.backend.writes.length,0);
- h.backend.fail=false;await a.desktop.retry();await queued;
+ h.backend.fail=false;
+ // This store-only harness cannot acknowledge a source save. Native recovery
+ // succeeds, while the full retry must retain the pending source work.
+ await assert.rejects(a.desktop.retry(),/输入尚未写回原文件/);await queued;
  assert.equal(h.backend.value.records.find(r=>r.key==='seg-a|mine').after,'最后一次正文');assert.equal(h.backend.value.records.find(r=>r.key==='seg-a|note').after,'稍后批注');
  assert.equal((await a.desktop.flush()).pending,0);
 });
@@ -129,4 +132,42 @@ test('trusted original publication UI renders and saves all three slots through 
  const status=await new Promise((resolve,reject)=>{const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;const child=spawn(electron,[runner,config],{env,stdio:['ignore','pipe','pipe']});let output='';const timer=setTimeout(()=>{child.kill('SIGTERM');reject(new Error('Electron publication render timed out: '+output));},45000);child.stdout.on('data',chunk=>{output+=chunk;});child.stderr.on('data',chunk=>{output+=chunk;});child.once('error',reject);child.once('exit',code=>{clearTimeout(timer);resolve({code,output});});});
  const report=fs.existsSync(result)?JSON.parse(fs.readFileSync(result,'utf8')):null;assert.equal(status.code,0,JSON.stringify(report??status));assert.equal(report.ok,true,JSON.stringify(report));assert.equal(report.rendered.candidates,29);assert.equal(report.atomicHistory,true);assert.equal(report.closedAndReopened,true);assert.equal(report.otherFinalsPreserved,true);
  if(process.env.NOVA_CREATION_RENDER_REPORT)fs.copyFileSync(result,process.env.NOVA_CREATION_RENDER_REPORT);
+});
+
+
+test('close waits for the original source save ack, not only the durable stash',async t=>{
+ const h=bridgeHarness(await adapted(t)),a=h.frame();await a.store;let release,started=false,done=false;
+ const ack=new Promise(resolve=>{release=resolve;});
+ a.context.window.jcKit={ready:true,state:()=>({ready:true,pending:done?0:1,conflicts:0}),flush:async()=>{started=true;await ack;done=true;}};
+ let closed=false;const close=a.control().then(result=>{closed=true;return result;});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(started,true,'close must invoke the original kit save');assert.equal(closed,false,'must not close before source ack');
+ release();assert.equal((await close).ok,true);
+});
+for(const [label,state] of [
+ ['pending',{pending:1}],['conflict',{conflicts:1}],['save refusal',{saveRefused:'原文件只读'}],['store failure',{storeError:'disk failed'}],['composition',{composing:true}]
+])test('close refuses '+label+' and preserves the frame for retry',async t=>{
+ const h=bridgeHarness(await adapted(t)),a=h.frame();await a.store;
+ a.context.window.jcKit={ready:true,state:()=>({ready:true,pending:0,conflicts:0,...state}),flush:async()=>{}};
+ const result=await a.control();assert.equal(result.ok,false);assert.ok(result.error);
+});
+
+test('concurrent original kit flush calls share the source ack promise',async t=>{
+ const html=await adapted(t),start=html.indexOf('  function flush() {'),end=html.indexOf('  function doFlush()',start);assert.ok(start>0&&end>start);
+ let release,calls=0;const ack=new Promise(resolve=>{release=resolve;});
+ const context=vm.createContext({window:{JC_DESKTOP:{}},navigator:{},store:{},flushing:false,flushAgain:false,desktopFlushing:null,paint(){},Promise,setTimeout,storeError:'',errText:e=>e.message,afterFlush(){},doFlush:()=>{calls++;return calls===1?ack:Promise.resolve();}});
+ vm.runInContext(html.slice(start,end),context);
+ const first=context.flush();let completed=false;const close=context.flush().then(()=>{completed=true;});
+ await new Promise(resolve=>setImmediate(resolve));assert.equal(completed,false,'in-flight flush cannot acknowledge early');
+ release();await Promise.all([first,close]);assert.equal(calls,2);
+});
+
+test('close refuses a late durable edit before the kit pending mirror refreshes',async t=>{
+ const h=bridgeHarness(await adapted(t)),a=h.frame(),store=await a.store;
+ a.context.window.jcKit={ready:true,state:()=>({ready:true,pending:0,conflicts:0}),flush:()=>store.modify('seg-a|mine',()=>record('seg-a|mine','保存回执之后的新输入','late'))};
+ const result=await a.control();assert.equal(result.ok,false);assert.equal(h.backend.value.records[0].after,'保存回执之后的新输入');
+});
+test('close refuses composition started while the source save was in flight',async t=>{
+ const h=bridgeHarness(await adapted(t)),a=h.frame();await a.store;let composing=false;
+ a.context.window.jcKit={ready:true,state:()=>({ready:true,pending:0,conflicts:0,composing}),flush:async()=>{composing=true;}};
+ assert.equal((await a.control()).ok,false);
 });

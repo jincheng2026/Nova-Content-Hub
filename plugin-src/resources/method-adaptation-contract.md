@@ -1,13 +1,13 @@
 # 完整方法与运行适配契约
 
-本文件只改变环境接续、保存通道与权限，不以通用摘要替换方法。可发现入口先完整读取 `upstream/current/SKILL.md`，按原分支读 references、schema、模板和必要资源。逐文件 SHA256、字节数、来源副本与状态见 [method-sources.json](method-sources.json)，路由见 [business-skills.json](business-skills.json)。原件逐字节保留，旧路径和命令是待映射的历史上下文，不是当前授权。原件脚本只读审核，本次没有执行原脚本、安装或启动服务。
+本文件只改变环境接续、保存通道与权限，不以通用摘要替换方法。可发现入口先完整读取 `upstream/current/METHOD.md`（原 SKILL.md 字节只改文件名，避免嵌套激活），按原分支读 references、schema、模板和必要资源。逐文件 SHA256、字节数、来源副本与状态见 [method-sources.json](method-sources.json)，路由见 [business-skills.json](business-skills.json)。原件逐字节保留，旧路径和命令是待映射的历史上下文，不是当前授权。原件脚本只读审核，本次没有执行原脚本、安装或启动服务。
 
 ## 进入模式与优先级
 
 - **直接对话**：用户提供文字/原件要讨论、选题、拆解或候选，在当前聊天按完整方法做；不自动 claim、不 submit、不写库。`xindao-xuanti` 的五个入口/manifest/reference 文件与正式来源 ZIP 一致，直接文字菜单和用户选择继续有效，不因没有 handoff 拒绝对话。
 - **固定工作台任务**：读取固定请求和 context，核对显式库、内容、来源、业务方法及 attempt，执行 doctor/context/claim；阶段停等、恢复、取消、失败、重试、checkpoint、submit 和回执按 [共同契约](production-contract.md)。接任务不意味着一次写完全部环节。
 - 用户本轮明确指令与已确认事实优先。选择完整方法后，其叙事确认、重点段确认、访谈逐关确认、人工独立分析等工序继续有效；通用 executor 的“直接给稿”或“整套提交”说明不能静默抹掉它们。用户显式改方法或改工序时记录本轮覆盖范围，不伪造已发生的确认。
-- `jc-jiaocheng-video` 仅由用户显式选择；普通写稿、content-creation、打开已有教程都不自动套用。原文 `disable-model-invocation: true` 的业务含义保留。其他默认/显式触发由 registry 与原文共同判断。
+- `jc-jiaocheng-video` 与 `jc-kepu-video` 仅由用户显式选择；普通写稿、content-creation、打开已有教程都不自动套用。原文 `disable-model-invocation: true` 的业务含义保留。其他默认/显式触发由 registry 与原文共同判断。
 
 ## 环境、权限与数据映射
 
@@ -29,7 +29,7 @@
 
 | 方法 | 原规则与当前对象/动作 | 保存、助手读回与验收 |
 | --- | --- | --- |
-| jc-benchmark-intake | 用户已选材料、稳定身份、三层去重、媒体/转写/字幕检查；失败留 staging | 受控素材候选保留原件、校正版/SRT与检查报告；回读来源ID、hash和失败项；未通过不宣称正式入库。jc-zhuanxie只引用，未取得完整包。 |
+| jc-benchmark-intake | 用户已选材料、稳定身份、三层去重、媒体/转写/字幕检查；失败留 staging | 受控素材候选保留原件、校正版/SRT与检查报告；回读来源ID、hash和失败项；未通过不宣称正式入库。jc-zhuanxie 完整包已取得，按其当前适配执行；不是默认额外识别授权。 |
 | jc-pattern-extractor | 逐素材摘录再跨样本候选；保留原件列出的全部字段与来源映射 | 汇总/标题/开头/正文候选及状态保存在显式知识对象；回读已确认项未覆盖、每条证据可追溯。 |
 | jc-topic-generator | 原批量素材驱动选题方法，定位/素材门槛的适用性显式判断；只新增 | 候选批次保留已读清单、已有题去重、T号与总览一致；最终发布标题留后续包装。 |
 | xindao-xuanti | 资料接收、最多四层递进卡、推荐理由、本人选择与六字段交接 | 直接模式只发文字；task模式提交研究类候选，选定后才由工作台建内容；零采集工具、零采集费用，不改已有正文。 |
@@ -39,7 +39,11 @@
 | jc-content-writer | 素材包确认、本人访谈一次一问3–5题、初稿停等、手改唯一基准 | 素材包/本人回答/初稿/最终稿同T保存；旧三位文件名映射当前T目录；实际采用素材的状态移动由受控事务另验收，发布收口不代替发布事实。 |
 | jc-gongzuotai-write | 原创作页完整schema、稳定ID/order/refs、baseline/mine/note、建议与回复、录完稿/包装 | Node jc-doc adapter承载受控原位更新；保全原HTML JSON块外字节与未知字段、CAS、重新打开。原Python服务和安装器只读，没有原服务已安装声明。 |
 | nova-workbench-writing-method | 兼容既有方法ID，现已取得当前创作页全包，指向同一完整原方法 | 不再以“只得历史文本”冒充现状；兼容ID不建第二份正文，验收同jc-gongzuotai-write。 |
-| jc-cover-copy | 当前定稿、已定标题、禁词与真实台账；三角度文字候选 | 人确认后设计交接；保留指定字、换行、强调与禁误导，包装无权改逐字稿；jc-cover-design原包未取得。 |
+| jc-zhuanxie | 原始识别、分段复核、校正版、manifest/validation与字级时间分支 | 受控 ASR 的 originalText/correctedText/segments/corrections、媒体hash与完整可读验收证据；原脚本不执行，provider/预算/媒体取冻结请求。外部 jc-qiepian-chupian/scripts/transcribe_chars.mjs 未随包，独立字级切片分支仍待接入。 |
+| jc-review-page | 原稿原样、唯一最小建议片段、九类依据、must/optional/keep/wait和本人手改 | 已有页回同一 jc-doc suggest/read，作者稿和CAS仍是唯一真源；无原页先交可读候选，旧 localStorage 网页和 Python 构建器不运行，不冒称已编辑落文件。 |
+| jc-cover-design | 完整案例、风格、视觉命题、指定中文、人物和审美门 | writing 方法只交设计/提示词候选及人工确认；实际图另用现有 nova-content-cover-execution 的固定 cover 请求和回执。generationExecutor 仅后续交接说明，不自动路由；包中人像/案例是来源证据，不成为本人或默认VI。 |
+| jc-kepu-video | 显式方法、叙事/框架双确认、先摆真实参考、逐段本人口述、四查和改稿日志 | 当前用户真实定位/样本与同T受控 checkpoint；原页CAS、稳定ID和历史保全，原 compare_server/注册脚本不运行。普通概念解释不自动成为科普视频制作。 |
+| jc-cover-copy | 当前定稿、已定标题、禁词与真实台账；三角度文字候选 | 人确认后设计交接；保留指定字、换行、强调与禁误导，包装无权改逐字稿；jc-cover-design 完整包已取得，设计候选与实际 cover 固定请求分别交接。 |
 | jc-media-research | 原路由、真实搜索/选样、原文深读、账号/作品/写稿隔离、完整数据合同 | 当前受控采集替provider；L4/L3/快卡与材料对账完整保留，findings先冻结再给本人建议，原文/统计/图表同源；本轮未授权的采集/费用停止。 |
 | jc-comment-visualize | 授权评论与回复、逐条证据、标签、分母、图表选择与静态阅读合同 | 研究对象与本人应用建议隔离；引用/统计来自同一冻结材料。完整report模板/CSS/JS/校验源保留，报告可读性和真实数据需实际验收。 |
 | jc-media-review | 当前发布快照、本人反馈、同题/同类对照，事实/观察/原因假设分开 | 最多三个下一条动作候选先给本人；正式复盘与原视频档案关联；不手改程序区，采纳不自动改skill。 |

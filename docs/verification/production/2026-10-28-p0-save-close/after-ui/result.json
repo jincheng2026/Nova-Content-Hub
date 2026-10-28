@@ -1,0 +1,806 @@
+{
+  "at": "2026-10-28T03:49:01.101Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [
+    "Prompt library retained; knowledge tab absent",
+    "Real account Markdown headings, quote and table rendered",
+    "Real template images rendered",
+    "Content cards/list preserve exact item order; X navigation absent",
+    "Simplified T041 detail; exactly one original page; edit close flush/reopen and restore author value"
+  ],
+  "views": {
+    "prompts": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "account-markdown": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "cover-stacks": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-cards": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-list": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "detail-T041": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "detail-original-page": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [],
+  "machine": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-p0-after-bVp8bc/machine-1793159341102",
+  "boundaries": [
+    {
+      "at": 1793159449148,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159450014,
+        "value": {
+          "version": "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d",
+          "records": [],
+          "storage": {
+            "local": {},
+            "session": {}
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159450305,
+      "action": "stash-write",
+      "payload": {
+        "expectedVersion": "2e1cfa82b035c26cbbbdae632cea070514eb8b773f616aaeaf668e2f0be8f10d",
+        "records": [],
+        "storage": {
+          "local": {
+            "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+          },
+          "session": {
+            "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+          }
+        }
+      },
+      "ack": {
+        "at": 1793159451166,
+        "value": {
+          "version": "db898abb078689fb1ef174b01ca1eac68153c623a4423f70341c80c8cfdc34f6"
+        }
+      }
+    },
+    {
+      "at": 1793159451621,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159452499,
+        "value": {
+          "version": "db898abb078689fb1ef174b01ca1eac68153c623a4423f70341c80c8cfdc34f6",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159453671,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159454761,
+        "value": {
+          "version": "db898abb078689fb1ef174b01ca1eac68153c623a4423f70341c80c8cfdc34f6",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159455023,
+      "action": "stash-write",
+      "payload": {
+        "expectedVersion": "db898abb078689fb1ef174b01ca1eac68153c623a4423f70341c80c8cfdc34f6",
+        "records": [
+          {
+            "key": "seg-wxwspfwi|mine",
+            "change_id": "pkeu5kiegd",
+            "item_id": "seg-wxwspfwi",
+            "field": "mine",
+            "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+            "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+            "item_fp": "257cc892346f",
+            "title": "接下来",
+            "group": null,
+            "created": 1793159452537,
+            "updated": 1793159452537,
+            "conflict": null
+          }
+        ],
+        "storage": {
+          "local": {
+            "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+          },
+          "session": {
+            "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+          }
+        }
+      },
+      "ack": {
+        "at": 1793159456057,
+        "value": {
+          "version": "6ee1bc0ab2ee128707995ea82057b5e80a7739ab699f4d49541e3ed20a75ba88"
+        }
+      }
+    },
+    {
+      "at": 1793159456321,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159457232,
+        "value": {
+          "version": "6ee1bc0ab2ee128707995ea82057b5e80a7739ab699f4d49541e3ed20a75ba88",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "pkeu5kiegd",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159452537,
+              "updated": 1793159452537,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159457233,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159458346,
+        "value": {
+          "version": "6ee1bc0ab2ee128707995ea82057b5e80a7739ab699f4d49541e3ed20a75ba88",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "pkeu5kiegd",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159452537,
+              "updated": 1793159452537,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159458347,
+      "action": "request",
+      "payload": {
+        "method": "POST",
+        "url": "/save",
+        "body": {
+          "page_id": "6iqyx64746",
+          "token": "khAGFyZ8xC0Tn_9yAzFOQwOm",
+          "changes": [
+            {
+              "change_id": "pkeu5kiegd",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "item_fp": "257cc892346f"
+            }
+          ]
+        }
+      },
+      "ack": {
+        "at": 1793159461103,
+        "value": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "revision": "44b74a25ded442ce80809459971e3b8e1bbdb51196caceb2da14e3bd050144b5",
+            "mutationId": "d16a862b-8032-446a-a972-0809bae14c9e",
+            "receiptHash": "a6d1844d2587b43df42ed80474e159d22a56952533438af9451a2ddbde5003fb",
+            "changedFields": [
+              "seg-wxwspfwi:mine"
+            ],
+            "results": [
+              {
+                "change_id": "pkeu5kiegd",
+                "status": "ok",
+                "reason": "written"
+              }
+            ],
+            "base_fingerprint": "22aefbab3119eb6fe22158a72f0420f661d79d17af0b69f5f76123b36d28fba8",
+            "fingerprint": "44b74a25ded442ce80809459971e3b8e1bbdb51196caceb2da14e3bd050144b5",
+            "path": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html"
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159461669,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159462976,
+        "value": {
+          "version": "6ee1bc0ab2ee128707995ea82057b5e80a7739ab699f4d49541e3ed20a75ba88",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "pkeu5kiegd",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159452537,
+              "updated": 1793159452537,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159463288,
+      "action": "stash-write",
+      "payload": {
+        "expectedVersion": "6ee1bc0ab2ee128707995ea82057b5e80a7739ab699f4d49541e3ed20a75ba88",
+        "records": [],
+        "storage": {
+          "local": {
+            "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+          },
+          "session": {
+            "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+            "jc-saved-6iqyx64746": "1793159461131"
+          }
+        }
+      },
+      "ack": {
+        "at": 1793159464240,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43"
+        }
+      }
+    },
+    {
+      "at": 1793159464511,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159465393,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159465557,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159466312,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159466435,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159467163,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159468462,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159469267,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159470022,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159470831,
+        "value": {
+          "version": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159470833,
+      "action": "stash-write",
+      "payload": {
+        "expectedVersion": "839dd30e0ae3e23cca7f381c8c8d407071f86d3ab0e287acc31b452cdca04a43",
+        "records": [
+          {
+            "key": "seg-wxwspfwi|mine",
+            "change_id": "eg6c6e8j6q",
+            "item_id": "seg-wxwspfwi",
+            "field": "mine",
+            "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+            "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+            "item_fp": "257cc892346f",
+            "title": "接下来",
+            "group": null,
+            "created": 1793159469294,
+            "updated": 1793159469294,
+            "conflict": null
+          }
+        ],
+        "storage": {
+          "local": {
+            "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+          },
+          "session": {
+            "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+            "jc-saved-6iqyx64746": "1793159461131"
+          }
+        }
+      },
+      "ack": {
+        "at": 1793159471703,
+        "value": {
+          "version": "45ddf01741b8a2d17f5907ae67a2d8ecf0f8a041cc2c41a95aead9a1bad7957a"
+        }
+      }
+    },
+    {
+      "at": 1793159471706,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159472530,
+        "value": {
+          "version": "45ddf01741b8a2d17f5907ae67a2d8ecf0f8a041cc2c41a95aead9a1bad7957a",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "eg6c6e8j6q",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159469294,
+              "updated": 1793159469294,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159472530,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159473345,
+        "value": {
+          "version": "45ddf01741b8a2d17f5907ae67a2d8ecf0f8a041cc2c41a95aead9a1bad7957a",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "eg6c6e8j6q",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159469294,
+              "updated": 1793159469294,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159473345,
+      "action": "request",
+      "payload": {
+        "method": "POST",
+        "url": "/save",
+        "body": {
+          "page_id": "6iqyx64746",
+          "token": "khAGFyZ8xC0Tn_9yAzFOQwOm",
+          "changes": [
+            {
+              "change_id": "eg6c6e8j6q",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "item_fp": "257cc892346f"
+            }
+          ]
+        }
+      },
+      "ack": {
+        "at": 1793159474666,
+        "value": {
+          "ok": true,
+          "status": 200,
+          "data": {
+            "revision": "22aefbab3119eb6fe22158a72f0420f661d79d17af0b69f5f76123b36d28fba8",
+            "mutationId": "63966b15-d8be-49f1-83f7-f02463b5a7b1",
+            "receiptHash": "7ff4fdb413f2087a149059c2b7add98028eab1e2a96105e08e05b5621de392af",
+            "changedFields": [
+              "seg-wxwspfwi:mine"
+            ],
+            "results": [
+              {
+                "change_id": "eg6c6e8j6q",
+                "status": "ok",
+                "reason": "written"
+              }
+            ],
+            "base_fingerprint": "44b74a25ded442ce80809459971e3b8e1bbdb51196caceb2da14e3bd050144b5",
+            "fingerprint": "22aefbab3119eb6fe22158a72f0420f661d79d17af0b69f5f76123b36d28fba8",
+            "path": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html"
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159474670,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159475454,
+        "value": {
+          "version": "45ddf01741b8a2d17f5907ae67a2d8ecf0f8a041cc2c41a95aead9a1bad7957a",
+          "records": [
+            {
+              "key": "seg-wxwspfwi|mine",
+              "change_id": "eg6c6e8j6q",
+              "item_id": "seg-wxwspfwi",
+              "field": "mine",
+              "before": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+              "after": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？",
+              "item_fp": "257cc892346f",
+              "title": "接下来",
+              "group": null,
+              "created": 1793159469294,
+              "updated": 1793159469294,
+              "conflict": null
+            }
+          ],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159461131"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159475455,
+      "action": "stash-write",
+      "payload": {
+        "expectedVersion": "45ddf01741b8a2d17f5907ae67a2d8ecf0f8a041cc2c41a95aead9a1bad7957a",
+        "records": [],
+        "storage": {
+          "local": {
+            "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+          },
+          "session": {
+            "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+            "jc-saved-6iqyx64746": "1793159474667"
+          }
+        }
+      },
+      "ack": {
+        "at": 1793159476250,
+        "value": {
+          "version": "779297b8b283e391a01fc4752c8b2da531513ab1719ed4a6bb962ab0a0b03401"
+        }
+      }
+    },
+    {
+      "at": 1793159476251,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159477116,
+        "value": {
+          "version": "779297b8b283e391a01fc4752c8b2da531513ab1719ed4a6bb962ab0a0b03401",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159474667"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159477124,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159477873,
+        "value": {
+          "version": "779297b8b283e391a01fc4752c8b2da531513ab1719ed4a6bb962ab0a0b03401",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159474667"
+            }
+          }
+        }
+      }
+    },
+    {
+      "at": 1793159477875,
+      "action": "stash-read",
+      "payload": null,
+      "ack": {
+        "at": 1793159478685,
+        "value": {
+          "version": "779297b8b283e391a01fc4752c8b2da531513ab1719ed4a6bb962ab0a0b03401",
+          "records": [],
+          "storage": {
+            "local": {
+              "jc-cp-6iqyx64746": "{\"view\":\"compare\",\"font\":17,\"onlyPending\":false,\"onlyMine\":false,\"catsBy\":{},\"refsHidden\":{},\"narrOpenBy\":{},\"seg\":\"seg-k2yzz892\"}"
+            },
+            "session": {
+              "jc-cp-seg-6iqyx64746": "seg-k2yzz892",
+              "jc-saved-6iqyx64746": "1793159474667"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "fieldReadyBeforeInput": true,
+  "beforeClose": {
+    "domValue": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+    "kitValue": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。",
+    "state": {
+      "composing": false,
+      "conflicts": 0,
+      "known": "22aefbab3119eb6fe22158a72f0420f661d79d17af0b69f5f76123b36d28fba8",
+      "metaProblem": "",
+      "offerServed": false,
+      "online": null,
+      "pending": 0,
+      "ready": true,
+      "saveRefused": "",
+      "selfOk": null,
+      "stash": [],
+      "storeError": "",
+      "storeKind": "idb",
+      "storeNote": "",
+      "unregistered": 0
+    },
+    "tag": "TEXTAREA"
+  },
+  "sourceAfterClose": {
+    "path": "05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html",
+    "hasMarker": true
+  },
+  "reopenBeforeReady": {
+    "ready": false,
+    "state": {
+      "composing": false,
+      "conflicts": 0,
+      "known": "44b74a25ded442ce80809459971e3b8e1bbdb51196caceb2da14e3bd050144b5",
+      "metaProblem": "",
+      "offerServed": false,
+      "online": null,
+      "pending": 0,
+      "ready": false,
+      "saveRefused": "",
+      "selfOk": null,
+      "stash": [],
+      "storeError": "",
+      "storeKind": "idb",
+      "storeNote": "",
+      "unregistered": 0
+    },
+    "value": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。"
+  },
+  "reopenedReady": {
+    "ready": true,
+    "state": {
+      "composing": false,
+      "conflicts": 0,
+      "known": "44b74a25ded442ce80809459971e3b8e1bbdb51196caceb2da14e3bd050144b5",
+      "metaProblem": "",
+      "offerServed": false,
+      "online": null,
+      "pending": 0,
+      "ready": true,
+      "saveRefused": "",
+      "selfOk": null,
+      "stash": [],
+      "storeError": "",
+      "storeKind": "idb",
+      "storeNote": "",
+      "unregistered": 0
+    },
+    "value": "## 接下来\n\n所以痛定思痛，我把这篇复盘发出来。\n\n接下来的行动和视频，我会以取悦自己为第一标准。发之前先问自己一句：这条我自己愿不愿意回看？我也会继续 building in public，把我自己做内容的 Skill 工作台分享给大家。\n\n这篇文章，就是我先语音口喷了一遍，再让 AI 帮我清理出来的。\n\n如果你也在做自媒体，回头看看你最近发的三条：你自己愿意看完吗？\n副本UI关闭保存验证。"
+  },
+  "passed": false,
+  "failure": {
+    "message": "TypeError: Cannot read properties of undefined (reading 'executeJavaScript')",
+    "stack": "TypeError: Cannot read properties of undefined (reading 'executeJavaScript')\n    at openAuthor (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/readability-ui-probe.mjs:45:229)\n    at async ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/readability-ui-probe.mjs:48:2)\n    at async startDesktop (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs:633:5)"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\nT041\nX\n草稿\n已保存\nT041 涨粉两万后两个月只涨六千的复盘\n\n涨粉两万后两个月只涨六千的复盘：秀肌肉加反思，两周涨两万的方法，加做自媒体先取悦自己、把「自己想、自己说」从 AI 手里拿回来（X 长文；10-07 看完水球泡老师 45 分钟视频后口述；两周全网涨两万、之后两个月全网涨六千；10-07 第一版已放进创作页 http://127.0.0.1:8977/p/6iqyx64746，锦成在页面上改）\n\n接着写\n选题卡原文件\n打开稿件文件夹\n选题卡里的其他信息\n\n原创作页 · 05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html\n\n网页\n1\nT041_创作页.html\n创作页\n接着写的当前入口\n330 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/T041_创作页.html\n\n可在这里编辑，改动会保全回原文件。\n\n正在打开\n定位原件\nT041_创作页.html\n\n正在编辑 · 改动会保全回这份原文件\n\n关闭创作页\n正在连接保存通道…\n重新读取原页\n参考视频\n4\n柱子哥TzFilm商单不断！我是如何利用Ai帮我完成逐字稿的？（抖音，2026-10-01，作者 22.1 万粉，赞 3,503，藏 1,872，10-07 取数）\n抖音链接\n\nhttps://v.douyin.com/ZCRXYi_idS4/\n\n复制原视频链接\n本地素材\n\n02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/笔记信息.md\n\n阅读逐字稿\n定位原件\n校正版逐字稿\n\n02_内容素材/未参考/抖音/抖音_商单不断！我是如何利用Ai帮我完成逐字稿的？_7691390692584672538/转写/校正版逐字稿/001-视频.md\n\n阅读逐字稿\n定位原件\n光郡WorkBuddy终极教程（抖音，2026-07-06，4 分 32 秒，赞 146,997，藏 133,309）\n抖音链接\n\nhttps://v.douyin.com/U2D601VgDsM/\n\n复制原视频链接\n本地素材\n\n02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611/笔记信息.md\n\n阅读资料\n定位原件\n珍妮丁丁说AI全网最适合小白的WorkBuddy入门指南（抖音，2026-07-07，12 分 36 秒，赞 201,160，藏 180,402）\n抖音链接\n\nhttps://v.douyin.com/ixnu8BSVRqk/\n\n复制原视频链接\n本地素材\n\n02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611/笔记信息.md\n\n阅读资料\n定位原件\n水球泡老师连麦视频（45 分 54 秒，女生问为什么做不好短视频）\n原视频\n\n/Users/hejincheng/Downloads/下载 (47).mp4\n\n原卡中的位置尚未索引，可复制位置或从选题卡核对。\n\n复制位置\n校正版逐字稿\n\n07_如何做自媒体/2026-10-07_取悦自己与怎么做账号/视频逐字稿.md\n\n阅读逐字稿\n定位原件\n参考资料\n7\nT042\n\n04_选题库/X/待做/T042_两周全网涨粉两万的AI教程做法.md\n\n阅读资料\n定位原件\nhttp://127.0.0.1:8977/p/6iqyx64746\n\nhttp://127.0.0.1:8977/p/6iqyx64746\n\n复制链接\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/\n\n原卡中的位置尚未索引，可复制位置或从选题卡核对。\n\n复制位置\n锦成口述_2026-10-07.md\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/锦成口述_2026-10-07.md\n\n阅读资料\n定位原件\n结构.md\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/结构.md\n\n阅读资料\n定位原件\n视频档案\n\n../../../../内容数据统计/视频项目/2026-08-06-WorkBuddy小白终极教程/内容.md\n\n原卡中的位置尚未索引，可复制位置或从选题卡核对。\n\n复制位置\n视频档案\n\n../../../../内容数据统计/视频项目/2026-08-04-2分钟调好WorkBuddy/内容.md\n\n原卡中的位置尚未索引，可复制位置或从选题卡核对。\n\n复制位置\n其他文件与历史\n5\n工作稿_v1_复盘版_2026-10-07.md\n文件\n13 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/版本/工作稿_v1_复盘版_2026-10-07.md\n\n阅读\n定位原件\n结构_v1_复盘版_2026-10-07.md\n文件\n8 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/版本/结构_v1_复盘版_2026-10-07.md\n\n阅读\n定位原件\n结构_v2_秀肌肉加反思_2026-10-07.md\n文件\n6 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/版本/结构_v2_秀肌肉加反思_2026-10-07.md\n\n阅读\n定位原件\n改稿日志.md\n文件\n5 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/改稿日志.md\n\n阅读\n定位原件\n工作稿.md\n工作稿\n18 KB\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/工作稿.md\n\n阅读\n定位原件\n更换接着写的入口\n制作封面\n发布与档案\n更多操作"
+}

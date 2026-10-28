@@ -12,6 +12,13 @@
 .jincheng-detail-surface { border: 1px solid var(--line,rgba(0,0,0,.08)); border-radius: 18px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.05); overflow: hidden; }
 .jincheng-detail-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,.05); min-width: 0; }
 .jincheng-detail-row:last-child { border-bottom: 0; }
+.jincheng-detail-reference { padding: 15px 20px; border-bottom: 1px solid rgba(0,0,0,.05); min-width: 0; }
+.jincheng-detail-reference:last-child { border-bottom: 0; }
+.jincheng-detail-reference h4 { margin: 0 0 10px; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.jincheng-detail-reference-link { display: flex; flex: 1 1 100%; flex-wrap: wrap; align-items: center; gap: 10px 20px; min-width: 0; }
+.jincheng-detail-reference-link + .jincheng-detail-reference-link { margin-top: 12px; }
+.jincheng-detail-reference-link > .actions { margin: 0; flex-wrap: wrap; flex-shrink: 0; }
+.jincheng-detail-reference-link .jincheng-detail-file > strong { font-size: 13px; font-weight: 400; }
 .jincheng-detail-file { min-width: 0; flex: 1 1 280px; }
 .jincheng-detail-file > strong { font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
 .jincheng-detail-row > .actions { margin: 0; flex-shrink: 0; }
@@ -33,6 +40,6 @@
 .jincheng-detail-auxiliary { min-width: 0; }
 .jincheng-detail-auxiliary > .jincheng-methods, .jincheng-detail-auxiliary > .jincheng-work-context { margin-top: 0; }
 .jincheng-detail-auxiliary [hidden] { display: none; }
-@media (max-width: 720px) { .jincheng-detail-header { padding: 20px; } .jincheng-detail-header h2 { font-size: 23px; } .jincheng-detail-row { padding: 14px 16px; } .jincheng-detail-frame-heading { flex-wrap: wrap; } }
+@media (max-width: 720px) { .jincheng-detail-header { padding: 20px; } .jincheng-detail-header h2 { font-size: 23px; } .jincheng-detail-row, .jincheng-detail-reference { padding: 14px 16px; } .jincheng-detail-frame-heading { flex-wrap: wrap; } }
 .jincheng-detail-empty { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; padding: 16px 20px; border: 1px solid var(--line,rgba(0,0,0,.08)); border-radius: 18px; background: #fff; }
 .jincheng-detail-empty p { margin: 0; flex: 1 1 360px; color: var(--muted,#6e6e73); }

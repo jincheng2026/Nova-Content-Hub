@@ -1,0 +1,28 @@
+(node:13282) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ automatic BUSY preserves old workspace and draft, then clears after a complete refresh (9.698333ms)
+✔ background success retains foreground BUSY, conflicts and unrelated errors (8.120917ms)
+✔ background status/workspace failure cannot clear BUSY or erase prior status and data (4.46625ms)
+✔ a later non-BUSY failure replaces background BUSY and survives success (1.689875ms)
+✔ success in another library epoch cannot clear an earlier library BUSY (8.975208ms)
+✔ focus refresh keeps controls usable and queues one foreground open until reads finish (2.953292ms)
+✔ navigation and new draft survive a paused focus refresh (131.603875ms)
+✔ queued foreground write and coalesced change refresh stay mutually exclusive (3.150708ms)
+✔ paused editor read preserves a draft typed while its result was in flight (2.889709ms)
+✔ paused list read from an old library epoch cannot repopulate a cleared editor (2.132ms)
+✔ cover automatic reads share the background promise and finish before the foreground write (3.436083ms)
+✔ automatic cover reads cannot cross the selected content or library epoch (0.797875ms)
+✔ local/global/local dispatches keep enqueue order, and a library switch invalidates queued old-epoch work (2.586667ms)
+✔ local writes and cover background reads share one dispatch order without global busy (3.261541ms)
+✔ confirmed entity snapshots advance the current content CAS without losing unsaved text (4.842208ms)
+✔ without a detail close guard navigation starts in the click stack (4.178292ms)
+✔ a detail close guard waits for acknowledged source saving before opening content (1.708334ms)
+✔ a failed detail close guard retains the selected content and refuses navigation (0.71875ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 373.7285

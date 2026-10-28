@@ -1,0 +1,29 @@
+✔ the explicit new creation entry opens the existing writing dialog without launching a task (6.09625ms)
+✔ existing stage menus stay closed until the author chooses a method (0.462583ms)
+(node:13981) ExperimentalWarning: stripTypeScriptTypes is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ resume waits for the body commit, then focuses only its own visible editor and scrolls it into view (11.473167ms)
+✔ resume works again on the same body tab and respects reduced motion (2.467542ms)
+✔ changing content or unmounting cancels a queued focus before the next paint (5.504625ms)
+✔ failed close protection does not switch tools or move focus (1.652875ms)
+✔ lists every HTML once, separates original topic cards, and retains unmatched file identities (1.213666ms)
+✔ resume never guesses a latest page when the author has not resolved the current source (0.090709ms)
+✔ reference parsing resolves original relative links, keeps unindexed targets, and deduplicates original URLs (0.719666ms)
+✔ groups one table work with its original URL and transcript while keeping other sources as materials (1.876958ms)
+✔ retains balanced local paths, excludes them from vault lookup, and strips only bare URL prose punctuation (2.368709ms)
+✔ does not merge separate table rows or attach profile URLs and archives to media works (0.724583ms)
+✔ aggregates repeated material mentions and nested list references without inventing file existence (0.41975ms)
+✔ preserves reference order and work titles when table originals and list source labels are mixed (0.291166ms)
+✔ offers every indexed corrected transcript under the exact work root and never another work (0.15925ms)
+✔ removes full-width prose closers from bare URLs while preserving authored Markdown destinations (0.183625ms)
+✔ renders true work groups separately from other source links with accurate copy actions (6.033583ms)
+✔ read and locate use indexed IDs while copy retains the exact URL or unindexed location (1.584125ms)
+✔ reference actions respect busy state without starting work during render (1.027792ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 589.855958

@@ -1,0 +1,301 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>__TITLE__</title><style>
+:root{--bg:#f7f6f3;--ink:#222;--muted:#7a7872;--card:#fff;--line:#e8e5df;--accent:#b8864f;--accentbg:#fbf1e3;
+--pend:#8a5a00;--pendbg:#fff2c7;--acc:#1b6e3a;--accbg:#e3f3e8;--rej:#8a8a8a;--edit:#1f5fbf;--editbg:#e8f0fc;--del:#b3261e;--delbg:#fbe9e7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1b1d;--ink:#eee;--muted:#a5a39e;--card:#262628;--line:#3a3a3c;--accent:#e0b07a;--accentbg:#3a3024;
+--pend:#ffd68a;--pendbg:#43381a;--acc:#8fd6a6;--accbg:#1f3326;--rej:#8d8d8d;--edit:#8ab4f8;--editbg:#1f2a3a;--del:#ff8a80;--delbg:#3a2220}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.9 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+button{font:inherit;cursor:pointer}
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:1300px;margin:0 auto;padding:12px 16px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.top h1{font-size:18px;margin:0 8px 0 0}
+.tb{font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:4px 11px}
+.tb:disabled{opacity:.4;cursor:not-allowed}
+.tb.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.top label{font-size:13px;color:var(--muted);display:inline-flex;gap:5px;align-items:center;cursor:pointer}
+.progress{font-size:13px;color:var(--muted)}
+.hint{max-width:1300px;margin:0 auto;padding:10px 16px 0;font-size:13px;color:var(--muted);line-height:1.8}
+.hint b{font-weight:500;color:var(--ink)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:20px;max-width:1300px;margin:0 auto;padding:12px 16px 60px}
+section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:14px}
+.line{position:relative;display:flex;gap:8px;align-items:flex-start;border-radius:8px;padding:2px 6px;border-left:3px solid transparent}
+.line:hover{background:var(--accentbg)}
+.line.edited{border-left-color:var(--edit)}
+.line.flash{animation:flash 1.4s}
+@keyframes flash{0%,60%{background:var(--accentbg)}100%{background:transparent}}
+.txt{flex:1;margin:2px 0;outline:none;min-width:0;min-height:1.9em;white-space:pre-wrap}
+.txt:focus{box-shadow:0 0 0 2px var(--editbg);border-radius:4px}
+.add-note{opacity:0;flex:none;margin-top:6px;font-size:12px;border:1px solid var(--accent);color:var(--accent);background:var(--card);border-radius:14px;padding:0 10px;line-height:1.8}
+.line:hover .add-note,.add-note:focus{opacity:1}
+.chg{cursor:pointer;border-radius:3px;transition:box-shadow .15s}
+.chg.pending{background:var(--pendbg);color:var(--pend);text-decoration:underline dashed;text-underline-offset:4px}
+.chg.accepted{background:var(--accbg);color:var(--acc)}
+.chg.rejected{text-decoration:underline dotted var(--line);text-underline-offset:4px}
+.chg.pill{font-size:12px;padding:0 6px;border-radius:10px;margin:0 2px;vertical-align:1px;text-decoration:none}
+.chg.pill.accepted{background:var(--delbg);color:var(--del)}
+.chg.hl{box-shadow:0 0 0 2px var(--accent)}
+.chg.live{cursor:text;outline:none}
+.chg.live:focus{box-shadow:0 0 0 2px var(--edit)}
+body.clean .chg{background:none!important;color:inherit!important;text-decoration:none!important;box-shadow:none!important}
+body.clean .chg.pill,body.clean .add-note{display:none}
+body.clean .line.blank{display:none}
+body.clean .line.edited{border-left-color:transparent}
+aside{position:sticky;top:64px;align-self:start;max-height:calc(100vh - 80px);display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tabs{display:flex;border-bottom:1px solid var(--line)}
+.tabs button{flex:1;border:0;background:none;color:var(--muted);padding:11px 6px;font-size:14px;border-bottom:2px solid transparent}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--accent);font-weight:500}
+.filters{display:flex;gap:6px;flex-wrap:wrap;padding:10px 12px 0}
+.filters button{font-size:12px;border:1px solid var(--line);background:var(--bg);color:var(--muted);border-radius:14px;padding:1px 10px}
+.filters button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.list{overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:12px}
+.empty{color:var(--muted);font-size:14px;line-height:1.8;padding:6px 2px}
+.card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--bg);font-size:14px;line-height:1.7}
+.card.active{border-color:var(--accent);box-shadow:0 0 0 2px var(--accentbg)}
+.card.accepted{border-left:4px solid var(--acc)}
+.card.rejected{border-left:4px solid var(--rej);opacity:.75}
+.card.pending{border-left:4px solid #e0a800}
+.card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.card .num{font-weight:500;cursor:pointer}
+.badge{font-size:12px;border-radius:10px;padding:0 8px}
+.badge.pending{background:var(--pendbg);color:var(--pend)}
+.badge.accepted{background:var(--accbg);color:var(--acc)}
+.badge.rejected{background:var(--line);color:var(--rej)}
+.reason{color:var(--muted);font-size:13px;margin-bottom:6px}
+.lbl{font-size:12px;color:var(--muted);margin-top:4px;display:flex;justify-content:space-between;align-items:center}
+.lbl button{border:0;background:none;color:var(--accent);font-size:12px;padding:0}
+.old{background:var(--delbg);color:var(--del);border-radius:6px;padding:4px 8px;white-space:pre-wrap}
+.old.none{background:none;color:var(--muted);padding:0}
+.card textarea{width:100%;min-height:52px;resize:vertical;font:inherit;font-size:14px;line-height:1.7;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--card);color:var(--ink)}
+.card textarea::placeholder{color:var(--del)}
+.actions{display:flex;gap:8px;margin-top:8px}
+.actions button{font-size:13px;border-radius:8px;padding:3px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.actions .yes{background:var(--acc);border-color:var(--acc);color:#fff}
+.missing{font-size:12px;color:var(--del);margin-top:6px}
+.verdict{display:inline-block;font-size:12px;border-radius:10px;padding:0 8px;margin-bottom:6px}
+.verdict.must{background:var(--accbg);color:var(--acc)}
+.verdict.optional{background:var(--pendbg);color:var(--pend)}
+.verdict.keep{background:var(--line);color:var(--muted)}
+.verdict.wait{background:var(--editbg);color:var(--edit)}
+.reason{display:flex;flex-direction:column;gap:6px;color:var(--ink)}
+.ev{display:flex;gap:6px;align-items:flex-start;line-height:1.65}
+.src{flex:none;font-size:11px;line-height:1;padding:4px 6px;border-radius:4px;margin-top:3px;white-space:nowrap}
+.src.voice{background:#e6edfb;color:#2a55c9}.src.frame{background:#efe9fb;color:#6b46c1}.src.caption{background:#fbf0dc;color:#9a5b00}.src.meet{background:#e6ecef;color:#3f5561}.src.you{background:#f9e6f0;color:#a3326b}.src.rule{background:#e3f3e9;color:#1e7a45}.src.plat{background:#e3f3e9;color:#1e7a45}.src.op{background:#f1ede6;color:#7a5a2e}.src.ai{background:#eeeeee;color:#5a5a5a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .src{filter:brightness(.8) saturate(1.2)}}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:6px}.legend span{display:inline-flex;gap:5px;align-items:center}
+.alert{font-size:13px;color:var(--del);background:var(--delbg);border-radius:6px;padding:3px 8px;margin-bottom:6px}
+.card.look{box-shadow:0 0 0 2px var(--delbg)}
+.save-ok{color:var(--acc)}
+.save-bad{color:#fff;background:var(--del);border-radius:6px;padding:2px 8px}
+.note .quote{font-size:13px;color:var(--muted);border-left:3px solid var(--accent);padding-left:8px;margin-bottom:6px;cursor:pointer;max-height:4.8em;overflow:hidden}
+.note .row{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
+.note .row button{border:0;background:none;color:var(--muted);font-size:12px}
+.sel-btn{position:absolute;z-index:30;display:none;font-size:13px;background:var(--accent);color:#fff;border:0;border-radius:14px;padding:3px 12px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);width:min(720px,92vw);padding:16px}
+dialog textarea{width:100%;height:50vh;font:13px/1.7 ui-monospace,Menlo,monospace;border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);color:var(--ink)}
+dialog .row{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+@media (max-width:960px){.layout{grid-template-columns:1fr}aside{position:static;max-height:none}.add-note{opacity:1}}
+</style></head><body>
+<div class="top"><div class="top-in">
+<h1>__TITLE__</h1>
+<button class="tb" id="undo" title="Cmd+Z">撤销</button>
+<button class="tb" id="redo" title="Cmd+Shift+Z">重做</button>
+<button class="tb" id="acceptAll">全部采纳</button>
+<button class="tb" id="restoreAll">全部恢复原稿</button>
+<label><input type="checkbox" id="clean">只看当前稿子</label>
+<button class="tb primary" id="copyScript">复制提词稿</button>
+<button class="tb" id="export">导出结果（发给 Claude）</button>
+<span class="progress" id="progress"></span><span class="progress" id="saved"></span>
+</div></div>
+<div class="hint">__HINT__</div>
+<div class="layout">
+<main id="doc"></main>
+<aside>
+<div class="tabs" role="tablist"><button role="tab" id="tabS" aria-selected="true">修改建议</button><button role="tab" id="tabN" aria-selected="false">批注</button></div>
+<div class="filters" id="filters"></div>
+<div class="list" id="list"></div>
+</aside>
+</div>
+<button class="sel-btn" id="selBtn">批注这段</button>
+<dialog id="dlg"><div style="font-size:14px;margin-bottom:8px">把下面这段复制发给 Claude。</div><textarea id="out" readonly></textarea>
+<div class="row"><button class="tb" id="copy">复制</button><button class="tb" id="close">关闭</button></div></dialog>
+<script>
+const DATA=__DATA__;
+const KEY='__KEY__';
+const CH=Object.fromEntries(DATA.changes.map(c=>[c.id,c]));
+const clone=o=>JSON.parse(JSON.stringify(o));
+function fresh(){return{lines:clone(DATA.lines),changes:Object.fromEntries(DATA.changes.map(c=>[c.id,{state:c.init||'pending',text:c.new}])),notes:[]};}
+let state=fresh();
+try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.lines&&s.changes&&s.notes){
+  const f=fresh();Object.keys(f.lines).forEach(l=>{if(!s.lines[l])s.lines[l]=f.lines[l];});
+  DATA.changes.forEach(c=>{if(!s.changes[c.id]){s.changes[c.id]=f.changes[c.id];s.lines[c.line]=clone(f.lines[c.line]);}});state=s;}}catch(e){}
+let undoStack=[],redoStack=[],lastType=0,tab='s',filter='all',activeCid=null;
+const $=id=>document.getElementById(id);
+const doc=$('doc'),list=$('list');
+
+/* ---------- 正文 ---------- */
+const lineEls={};
+DATA.sections.forEach(sec=>{const s=document.createElement('section');
+  sec.forEach(lid=>{const w=document.createElement('div');w.className='line';w.dataset.id=lid;
+    const p=document.createElement('p');p.className='txt';p.contentEditable='true';p.spellcheck=false;
+    const b=document.createElement('button');b.className='add-note';b.textContent='批注';b.title='给这一句加批注';
+    b.onclick=()=>addNote(lid,lineText(lid));
+    p.addEventListener('beforeinput',()=>typingSnapshot());
+    p.addEventListener('input',()=>{syncLive(p);state.lines[lid]=parse(p);markLine(lid);refreshMissing();save();});
+    p.addEventListener('keydown',e=>{if(e.key==='Enter')e.preventDefault();});
+    p.addEventListener('click',e=>{const sp=e.target.closest('.chg');if(sp)focusCard(sp.dataset.cid);});
+    w.append(p,b);s.append(w);lineEls[lid]=w;});
+  doc.append(s);});
+
+function chgSpan(cid){const c=CH[cid],st=state.changes[cid];const sp=document.createElement('span');
+  sp.dataset.cid=cid;sp.contentEditable='false';sp.className='chg '+st.state;const lid=c.line;
+  if(st.state==='accepted'){if(st.text)sp.textContent=st.text;else{sp.textContent='已删';sp.classList.add('pill');}}
+  else if(c.old)sp.textContent=c.old;
+  else if(st.state==='pending'){sp.textContent='＋';sp.classList.add('pill');}
+  const isPill=sp.classList.contains('pill');
+  if(!isPill){sp.contentEditable='true';sp.spellcheck=false;sp.classList.add('live');
+    sp.title=`第 ${c.n} 处建议：可以直接在这里改字，改了就算采纳`;
+    sp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey)e.preventDefault();});
+  }else sp.title=`第 ${c.n} 处建议，点一下看右边的卡片`;
+  sp.onmouseenter=()=>hl(cid,true);sp.onmouseleave=()=>hl(cid,false);
+  return sp;}
+function syncLive(p){let hit=null;p.querySelectorAll('.chg.live').forEach(sp=>{const cid=sp.dataset.cid,st=state.changes[cid];const shown=st.state==='accepted'?st.text:CH[cid].old;const now=sp.innerText;if(now!==shown){st.text=now;if(st.state!=='accepted'){st.state='accepted';sp.classList.remove('pending','rejected');sp.classList.add('accepted');}hit=cid;}});if(hit){activeCid=hit;renderList();}}
+function renderLine(lid){const p=lineEls[lid].querySelector('.txt');
+  p.replaceChildren(...state.lines[lid].map(s=>s.c?chgSpan(s.c):document.createTextNode(s.t)));markLine(lid);}
+function parse(p){const out=[];const walk=n=>{n.childNodes.forEach(k=>{
+  if(k.nodeType===3){if(out.length&&out[out.length-1].t!==undefined)out[out.length-1].t+=k.textContent;else out.push({t:k.textContent});}
+  else if(k.nodeType===1){if(k.dataset&&k.dataset.cid)out.push({c:k.dataset.cid});else if(k.tagName!=='BR')walk(k);}});};
+  walk(p);return out.filter(s=>s.c||s.t);}
+const norm=segs=>JSON.stringify(segs.filter(s=>s.c||s.t));
+function markLine(lid){const w=lineEls[lid];w.classList.toggle('edited',norm(state.lines[lid])!==norm(DATA.lines[lid]));
+  w.classList.toggle('blank',!lineText(lid).trim());}
+function segText(s){if(!s.c)return s.t;const st=state.changes[s.c];return st.state==='accepted'?st.text:CH[s.c].old;}
+function lineText(lid){return state.lines[lid].map(segText).join('');}
+function origLineText(lid){return DATA.lines[lid].map(s=>s.c?CH[s.c].old:s.t).join('');}
+function renderDoc(){Object.keys(lineEls).forEach(renderLine);}
+function hl(cid,on){doc.querySelectorAll(`.chg[data-cid="${cid}"]`).forEach(x=>x.classList.toggle('hl',on));}
+function refreshMissing(){const present=new Set(Object.values(state.lines).flat().filter(s=>s.c).map(s=>s.c));
+  list.querySelectorAll('.card[data-cid]').forEach(el=>el.querySelector('.missing').hidden=present.has(el.dataset.cid));}
+
+/* ---------- 撤销 ---------- */
+const snap=()=>JSON.stringify(state);
+function push(){undoStack.push(snap());if(undoStack.length>300)undoStack.shift();redoStack=[];updUndo();}
+function typingSnapshot(){const now=Date.now();if(now-lastType>1200)push();lastType=now;}
+function restore(s){state=JSON.parse(s);renderAll();}
+function undo(){if(!undoStack.length)return;redoStack.push(snap());restore(undoStack.pop());lastType=0;}
+function redo(){if(!redoStack.length)return;undoStack.push(snap());restore(redoStack.pop());lastType=0;}
+function updUndo(){$('undo').disabled=!undoStack.length;$('redo').disabled=!redoStack.length;}
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}
+  else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='y'){e.preventDefault();redo();}});
+$('undo').onclick=undo;$('redo').onclick=redo;
+
+/* ---------- 右栏 ---------- */
+const LABEL={pending:'待处理',accepted:'已采纳',rejected:'未采纳'};
+const VERDICT={must:'最新结论：已定要改',optional:'最新结论：待你定',keep:'最新结论：不用改，保留原稿',wait:'最新结论：等录屏再定'};
+const SRC={voice:'口播',frame:'画面',caption:'发布文字',meet:'会议',you:'你定的',rule:'已确认判断',plat:'平台规则',op:'运营稿',ai:'AI 判断'};
+function lookMsg(c){const s=state.changes[c.id].state;
+  if(c.verdict==='must'&&s==='rejected')return '你点了不采纳，但我们之前定了这里要改。';
+  if(c.verdict==='keep'&&s==='accepted')return '你点了采纳，但最新结论是这里不用改、保留原稿。';
+  if(c.verdict==='optional'&&s==='pending')return '这条还没定，等你决定采纳或不采纳。';
+  return '';}
+const needsLook=c=>!!lookMsg(c);
+function setState(cid,s){push();state.changes[cid].state=s;renderLine(CH[cid].line);renderList();save();}
+function renderFilters(){const f=$('filters');f.innerHTML='';if(tab!=='s'){f.hidden=true;return;}f.hidden=false;
+  const match=(c,k)=>k==='all'||(k==='look'?needsLook(c):state.changes[c.id].state===k);
+  const cnt=k=>DATA.changes.filter(c=>match(c,k)).length;
+  [['look','需要你看'],['all','全部'],['pending','待处理'],['accepted','已采纳'],['rejected','未采纳']].forEach(([k,t])=>{const b=document.createElement('button');
+    b.textContent=`${t} ${cnt(k)}`;b.setAttribute('aria-pressed',filter===k);b.onclick=()=>{filter=k;renderList();};f.append(b);});}
+function renderList(){renderFilters();list.innerHTML='';updProgress();
+  if(tab==='n')return renderNotes();
+  const cs=DATA.changes.filter(c=>filter==='all'||(filter==='look'?needsLook(c):state.changes[c.id].state===filter));
+  if(!cs.length){list.innerHTML=filter==='look'?'<div class="empty">没有需要你看的了：每条都和最新结论一致，待你定的也都定了。</div>':'<div class="empty">这一类里没有建议。</div>';return;}
+  cs.forEach(c=>{const st=state.changes[c.id];const d=document.createElement('div');d.className=`card ${st.state}${activeCid===c.id?' active':''}${needsLook(c)?' look':''}`;d.dataset.cid=c.id;
+    d.innerHTML=`<div class="head"><span class="num" title="跳到正文">第 ${c.n} 处${c.old?'':'（新加）'}</span><span class="badge ${st.state}">${LABEL[st.state]}</span></div>
+      <div class="verdict ${c.verdict}">${VERDICT[c.verdict]}</div><div class="alert" hidden></div><div class="reason"></div><div class="lbl">原文</div><div class="old"></div>
+      <div class="lbl"><span>建议改成</span><button class="reset" hidden>恢复我最初的建议</button></div><textarea placeholder="（留空表示把原文删掉）"></textarea>
+      <div class="actions"></div><div class="missing" hidden>这处在正文里被你删掉了，点顶上的「撤销」可以找回。</div>`;
+    const rsn=d.querySelector('.reason');c.reason.forEach(([k,t])=>{const r=document.createElement('div');r.className='ev';const b=document.createElement('span');b.className='src '+k;b.textContent=SRC[k];const x=document.createElement('span');x.textContent=t;r.append(b,x);rsn.append(r);});
+    const al=d.querySelector('.alert');const lm=lookMsg(c);if(lm){al.textContent=lm;al.hidden=false;}
+    const old=d.querySelector('.old');if(c.old)old.textContent=c.old;else{old.textContent='（原稿这里没有，是新加的）';old.classList.add('none');}
+    const ta=d.querySelector('textarea');ta.value=st.text;
+    const rs=d.querySelector('.reset');rs.hidden=st.text===c.new;
+    ta.addEventListener('focus',()=>{lastType=0;});
+    ta.addEventListener('input',()=>{typingSnapshot();st.text=ta.value;rs.hidden=st.text===c.new;if(st.state==='accepted')renderLine(c.line);save();});
+    rs.onclick=()=>{push();st.text=c.new;renderLine(c.line);renderList();save();};
+    const a=d.querySelector('.actions');
+    const btn=(t,cls,fn)=>{const b=document.createElement('button');b.textContent=t;if(cls)b.className=cls;b.onclick=fn;a.append(b);};
+    if(st.state==='pending'){btn('采纳','yes',()=>setState(c.id,'accepted'));btn('不采纳','',()=>setState(c.id,'rejected'));}
+    else btn(st.state==='accepted'?'撤回，恢复原文':'撤回，重新考虑','',()=>setState(c.id,'pending'));
+    d.onmouseenter=()=>hl(c.id,true);d.onmouseleave=()=>hl(c.id,false);
+    d.querySelector('.num').onclick=()=>jumpTo(c.line);
+    list.append(d);});
+  refreshMissing();}
+function jumpTo(lid){const w=lineEls[lid];w.scrollIntoView({behavior:'smooth',block:'center'});w.classList.remove('flash');void w.offsetWidth;w.classList.add('flash');}
+function focusCard(cid){if(tab!=='s'){tab='s';setTabs();}
+  if(filter!=='all'&&!(filter==='look'?needsLook(CH[cid]):state.changes[cid].state===filter))filter='all';activeCid=cid;renderList();
+  const el=list.querySelector(`.card[data-cid="${cid}"]`);el&&el.scrollIntoView({behavior:'smooth',block:'nearest'});}
+function updProgress(){const done=DATA.changes.filter(c=>state.changes[c.id].state!=='pending').length;
+  const look=DATA.changes.filter(needsLook).length;
+  $('progress').textContent=`已处理 ${done} / ${DATA.changes.length} 条建议 · 还有 ${look} 条需要你看`;}
+function setTabs(){$('tabS').setAttribute('aria-selected',tab==='s');$('tabN').setAttribute('aria-selected',tab==='n');
+  $('tabN').textContent=state.notes.length?`批注 ${state.notes.length}`:'批注';}
+$('tabS').onclick=()=>{tab='s';setTabs();renderList();};
+$('tabN').onclick=()=>{tab='n';setTabs();renderList();};
+
+/* ---------- 批注 ---------- */
+const order=Object.fromEntries(Object.keys(lineEls).map((k,i)=>[k,i]));
+function renderNotes(){setTabs();
+  if(!state.notes.length){list.innerHTML='<div class="empty">还没有批注。鼠标移到左边任意一句，点「批注」；或者选中一段文字，点「批注这段」。</div>';return;}
+  [...state.notes].sort((a,b)=>order[a.line]-order[b.line]).forEach(n=>{const d=document.createElement('div');d.className='card note';
+    d.innerHTML='<div class="quote" title="跳到正文"></div><textarea placeholder="写下你的意见…"></textarea><div class="row"><span></span><button>删除</button></div>';
+    d.querySelector('.quote').textContent=n.quote;d.querySelector('.row span').textContent=n.time||'';
+    const ta=d.querySelector('textarea');ta.value=n.text;
+    ta.addEventListener('focus',()=>{lastType=0;});
+    ta.addEventListener('input',()=>{typingSnapshot();n.text=ta.value;save();});
+    d.querySelector('.quote').onclick=()=>jumpTo(n.line);
+    d.querySelector('button').onclick=()=>{push();state.notes=state.notes.filter(x=>x.id!==n.id);renderList();save();};
+    list.append(d);});}
+function addNote(line,quote){push();const t=new Date();const n={id:'n'+Date.now(),line,quote,text:'',time:`${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}`};
+  state.notes.push(n);tab='n';setTabs();renderList();save();
+  const tas=list.querySelectorAll('textarea');const i=[...state.notes].sort((a,b)=>order[a.line]-order[b.line]).indexOf(n);tas[i]&&(tas[i].scrollIntoView({block:'nearest'}),tas[i].focus());}
+const selBtn=$('selBtn');let pending=null;
+document.addEventListener('mouseup',e=>{if(e.target===selBtn)return;setTimeout(()=>{const s=getSelection();const txt=s.toString().trim();
+  const node=s.anchorNode&&(s.anchorNode.nodeType===1?s.anchorNode:s.anchorNode.parentElement);const w=node&&node.closest&&node.closest('.line');
+  if(!txt||!w){selBtn.style.display='none';return;}
+  const r=s.getRangeAt(0).getBoundingClientRect();pending={line:w.dataset.id,quote:txt};
+  selBtn.style.left=(r.left+scrollX)+'px';selBtn.style.top=(r.bottom+scrollY+6)+'px';selBtn.style.display='block';},0);});
+selBtn.addEventListener('mousedown',e=>e.preventDefault());
+selBtn.onclick=()=>{if(pending)addNote(pending.line,pending.quote);selBtn.style.display='none';getSelection().removeAllRanges();};
+
+/* ---------- 顶部 ---------- */
+$('acceptAll').onclick=()=>{push();DATA.changes.forEach(c=>{if(state.changes[c.id].state==='pending')state.changes[c.id].state='accepted';});renderAll();};
+$('restoreAll').onclick=()=>{push();const notes=state.notes;state=fresh();state.notes=notes;renderAll();};
+$('clean').onchange=e=>document.body.classList.toggle('clean',e.target.checked);
+$('export').onclick=()=>{const o=[];const by=k=>DATA.changes.filter(c=>state.changes[c.id].state===k);
+  const show=s=>s?`「${s}」`:'（空）';
+  o.push('# __TITLE__ 结果','');
+  const acc=by('accepted');o.push(`## 采纳的建议（${acc.length} 条）`);
+  acc.forEach(c=>{const st=state.changes[c.id];o.push(`- 第 ${c.n} 处（${VERDICT[c.verdict].replace('最新结论：','')}）：${show(c.old)} 改成 ${show(st.text)}${st.text!==c.new?`（我改了措辞，原建议是 ${show(c.new)}）`:''}`);});
+  const rej=by('rejected');o.push('',`## 不采纳的建议（${rej.length} 条）`);rej.forEach(c=>o.push(`- 第 ${c.n} 处（${VERDICT[c.verdict].replace('最新结论：','')}）：保留原文 ${show(c.old)}，不改成 ${show(c.new)}`));
+  const pen=by('pending');o.push('',`## 还没处理的建议（${pen.length} 条，按原文算）`);pen.forEach(c=>o.push(`- 第 ${c.n} 处（${VERDICT[c.verdict].replace('最新结论：','')}）：${show(c.old)} → ${show(state.changes[c.id].text)}`));
+  const ed=Object.keys(lineEls).filter(l=>lineEls[l].classList.contains('edited'));
+  o.push('',`## 我直接在正文里改的句子（${ed.length} 句）`);ed.forEach(l=>{o.push(`- 原稿：${origLineText(l)||'（空）'}`,`  现在：${lineText(l)||'（空）'}`);});
+  const ns=[...state.notes].sort((a,b)=>order[a.line]-order[b.line]);o.push('',`## 批注（${ns.length} 条）`);ns.forEach(n=>o.push(`- 针对「${n.quote}」：${n.text||'（空）'}`));
+  o.push('','## 当前稿子全文');DATA.sections.forEach(sec=>{sec.forEach(l=>{const t=lineText(l);if(t.trim())o.push(t);});o.push('');});
+  $('out').value=o.join('\n');document.querySelector('#dlg div').textContent='把下面这段复制发给 Claude。';$('dlg').showModal();$('out').select();};
+$('copy').onclick=async()=>{const t=$('out');try{await navigator.clipboard.writeText(t.value);}catch(e){t.select();document.execCommand('copy');}$('copy').textContent='已复制';setTimeout(()=>$('copy').textContent='复制',1500);};
+$('close').onclick=()=>$('dlg').close();
+function scriptText(){return DATA.sections.map(sec=>sec.map(l=>lineText(l).trim()).filter(Boolean).join('\n')).filter(Boolean).join('\n\n');}
+$('copyScript').onclick=async()=>{const t=scriptText();const b=$('copyScript');const n=t.replace(/\s/g,'').length;
+  try{await navigator.clipboard.writeText(t);b.textContent=`已复制 ${n} 字`;setTimeout(()=>b.textContent='复制提词稿',2000);}
+  catch(e){$('out').value=t;$('dlg').showModal();$('out').select();document.querySelector('#dlg div').textContent='自动复制没成功，按 Cmd+C 复制下面的提词稿。';}};
+
+let saveOk=true;
+function save(){const el=$('saved');try{localStorage.setItem(KEY,JSON.stringify(state));
+  if(localStorage.getItem(KEY)===null)throw 0;saveOk=true;const t=new Date();
+  el.className='progress save-ok';el.textContent=`已自动保存 ${t.getHours()}:${String(t.getMinutes()).padStart(2,'0')}:${String(t.getSeconds()).padStart(2,'0')}`;}
+  catch(e){saveOk=false;el.className='save-bad';el.textContent='这个窗口存不上！请用 Chrome 打开这个文件，否则关掉就没了';}}
+window.addEventListener('beforeunload',e=>{if(!saveOk){e.preventDefault();e.returnValue='';}});
+function renderAll(){renderDoc();setTabs();renderList();updUndo();save();}
+renderAll();
+</script></body></html>

@@ -282,7 +282,10 @@ function App() {
     }, []);
 
     async function guard(action: (saved?: boolean) => Promise<void>) {
-        try { await detailCloseGuard.current?.(); } catch (error) { setError(errorInfo(error).message); return; }
+        const closeDetail = detailCloseGuard.current;
+        if (closeDetail) {
+            try { await closeDetail(); } catch (error) { setError(errorInfo(error).message); return; }
+        }
         if (hasManagedDrafts()) { setFailure({message: '还有未保存的填写内容，请回到暂时收起的编辑窗口，保存或明确关闭后再继续。', managedDraftGuard: true}); return; }
         if (dirty) setLeaving(() => action); else await action();
     }

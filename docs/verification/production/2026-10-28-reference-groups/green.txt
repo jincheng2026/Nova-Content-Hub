@@ -1,0 +1,23 @@
+✔ the explicit new creation entry opens the existing writing dialog without launching a task (4.944209ms)
+✔ existing stage menus stay closed until the author chooses a method (0.377708ms)
+✔ lists every HTML once, separates original topic cards, and retains unmatched file identities (1.072792ms)
+✔ resume never guesses a latest page when the author has not resolved the current source (0.082833ms)
+✔ reference parsing resolves original relative links, keeps unindexed targets, and deduplicates original URLs (0.646792ms)
+✔ groups one table work with its original URL and transcript while keeping other sources as materials (1.003708ms)
+✔ retains balanced local paths, excludes them from vault lookup, and strips only bare URL prose punctuation (0.810917ms)
+✔ does not merge separate table rows or attach profile URLs and archives to media works (0.30725ms)
+✔ aggregates repeated material mentions and nested list references without inventing file existence (0.283875ms)
+✔ preserves reference order and work titles when table originals and list source labels are mixed (0.228ms)
+✔ offers every indexed corrected transcript under the exact work root and never another work (0.14975ms)
+✔ removes full-width prose closers from bare URLs while preserving authored Markdown destinations (0.137375ms)
+✔ renders true work groups separately from other source links with accurate copy actions (5.136916ms)
+✔ read and locate use indexed IDs while copy retains the exact URL or unindexed location (1.428083ms)
+✔ reference actions respect busy state without starting work during render (0.982333ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 217.014291

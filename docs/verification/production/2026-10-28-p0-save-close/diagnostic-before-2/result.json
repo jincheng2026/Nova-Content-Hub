@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-28T03:42:52.515Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [],
+  "machine": "/private/tmp/nova-readability-p0-04Eig5/machine-1793158972522",
+  "boundaries": [],
+  "passed": false,
+  "failure": {
+    "message": "Error: Timeout document.getElementById('library-summary')?.textContent==='第二大脑'&&!!document.querySelector('main[data-loaded=\"true\"][data-busy=\"false\"]')",
+    "stack": "Error: Timeout document.getElementById('library-summary')?.textContent==='第二大脑'&&!!document.querySelector('main[data-loaded=\"true\"][data-busy=\"false\"]')"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n尚未打开内容库\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n本机保存\n刷新\n让内容创作，从这里开始\n\n新建知识库，或直接打开已有第二大脑与内容库。\n\n新建知识库\n打开知识库\n\n文件操作未完成，请查询状态后继续；原文件和任务现场会保留。（CONFLICT）"
+}

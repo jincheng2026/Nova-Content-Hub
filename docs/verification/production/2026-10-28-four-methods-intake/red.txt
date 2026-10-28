@@ -1,0 +1,122 @@
+✖ jc-zhuanxie routes only as a non-executable complete original method with immutable ZIP evidence (0.737083ms)
+✖ jc-review-page routes only as a non-executable complete original method with immutable ZIP evidence (0.104209ms)
+✖ jc-cover-design routes only as a non-executable complete original method with immutable ZIP evidence (0.065792ms)
+✖ jc-kepu-video routes only as a non-executable complete original method with immutable ZIP evidence (0.057542ms)
+✖ new method registration preserves ordinary writing/transcription defaults and isolates actual cover generation (0.108291ms)
+✖ four-method source manifests and installed references pass the existing validators (0.137458ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 137.560208
+
+✖ failing tests:
+
+test at plugin-src/tests/four-methods-intake.test.mjs:20:50
+✖ jc-zhuanxie routes only as a non-executable complete original method with immutable ZIP evidence (0.737083ms)
+  AssertionError [ERR_ASSERTION]: jc-zhuanxie method route missing
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:22:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/four-methods-intake.test.mjs:20:50
+✖ jc-review-page routes only as a non-executable complete original method with immutable ZIP evidence (0.104209ms)
+  AssertionError [ERR_ASSERTION]: jc-review-page method route missing
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:22:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/four-methods-intake.test.mjs:20:50
+✖ jc-cover-design routes only as a non-executable complete original method with immutable ZIP evidence (0.065792ms)
+  AssertionError [ERR_ASSERTION]: jc-cover-design method route missing
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:22:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/four-methods-intake.test.mjs:20:50
+✖ jc-kepu-video routes only as a non-executable complete original method with immutable ZIP evidence (0.057542ms)
+  AssertionError [ERR_ASSERTION]: jc-kepu-video method route missing
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:22:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/four-methods-intake.test.mjs:43:1
+✖ new method registration preserves ordinary writing/transcription defaults and isolates actual cover generation (0.108291ms)
+  AssertionError [ERR_ASSERTION]: explicit science method missing
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:44:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at plugin-src/tests/four-methods-intake.test.mjs:54:1
+✖ four-method source manifests and installed references pass the existing validators (0.137458ms)
+  AssertionError [ERR_ASSERTION]: intake not registered
+      at TestContext.<anonymous> (file:///Users/mac/code/dashboard/Nova-Content-Hub/plugin-src/tests/four-methods-intake.test.mjs:55:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }

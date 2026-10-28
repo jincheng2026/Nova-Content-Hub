@@ -1,0 +1,26 @@
+interface:
+  display_name: "JC Cover Design"
+  short_description: "生成并验收 3:4 中文视频封面"
+  default_prompt: "使用 $jc-cover-design 从完整成熟案例中选择构图锚点，保留空间关系并改写当前内容，一体化生成多个 3:4 中文封面，再验收审美、身份和中文。"
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+    - "vscode"
+  activation:
+    mode: "manual"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow-metadata-only"
+  degradation:
+    openai: "metadata-adapter"
+    claude: "neutral-source-plus-adapter"
+    generic: "neutral-source"
+    vscode: "agent-skills-source-with-vscode-notes"
