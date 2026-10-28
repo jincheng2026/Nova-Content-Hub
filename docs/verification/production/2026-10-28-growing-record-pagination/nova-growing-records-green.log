@@ -1,0 +1,35 @@
+✔ accounts: every item is reachable once, including the final page (138.830167ms)
+✔ accounts: empty and single results retain size controls and 20→50→100→20 resets the page (189.748416ms)
+✔ accounts: query filters all source rows before paging and resets page one (15.386666ms)
+✔ accounts: refresh removing the final page clamps results without mutating remaining data (13.39575ms)
+✔ reports: every item is reachable once, including the final page (24.920416ms)
+✔ reports: empty and single results retain size controls and 20→50→100→20 resets the page (18.721916ms)
+✔ reports: query filters all source rows before paging and resets page one (5.722791ms)
+✔ reports: refresh removing the final page clamps results without mutating remaining data (7.547042ms)
+✔ tasks: every item is reachable once, including the final page (13.32775ms)
+✔ tasks: empty and single results retain size controls and 20→50→100→20 resets the page (18.749542ms)
+✔ tasks: query filters all source rows before paging and resets page one (12.194792ms)
+✔ tasks: refresh removing the final page clamps results without mutating remaining data (10.223666ms)
+✔ account platform and report type/date combine before paging and each change returns to page one (17.529333ms)
+✔ paged account and report actions retain their record IDs and complete author details (18.8945ms)
+✔ paged tasks open and cancel their own fixed request, and research cancel retains entered text (11.874167ms)
+✔ account edit screenshots page without renumbering, deleting or saving unrelated author images (4.661958ms)
+✔ account detail screenshots and linked reports page independently and preserve the final report ID (11.712958ms)
+✔ report detail pages reach the final original page ID (5.996708ms)
+✔ creation reference edits retain the full draft while paging, deleting the final reference and saving (19.712916ms)
+✔ packaging full reading pages preserve all searchable selection options (9.510291ms)
+✔ creation history filters before paging and keeps the server truncation notice (7.642542ms)
+✔ task result and cost pagination retains the evidence draft when a cost editor is unmounted (6.8965ms)
+✔ creation returned tasks and accepted artifacts each keep the final candidate reachable (16.441375ms)
+✔ processed review history pages independently while active annotations stay beside the complete author body (8.557167ms)
+✔ actual workspace connects existing-record management to original ids, snapshot tokens and lifecycle IPC (1.96075ms)
+✔ actual report view shows body hit snippets and partial retry while withholding false no-match text (1.616625ms)
+✔ knowledge, feedback and cost records expose bounded pages through their final item (2.564416ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1253.279041

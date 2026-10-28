@@ -8,7 +8,7 @@ import {createRequire} from 'node:module';
 const require=createRequire(new URL('../package.json',import.meta.url));
 const React=require('react');
 const {rolldown}=await import(require.resolve('rolldown'));
-const real=['production-workspace.tsx','pagination-bar.tsx','use-paged-items.ts','paged-items.tsx','production-review.mjs','production-report-status.ts','platform-catalog.ts','radar-policy.mjs','production-research.mjs','production-reference.mjs'];
+const real=['production-workspace.tsx','pagination-bar.tsx','use-paged-items.ts','paged-items.tsx','production-review.mjs','production-report-status.ts','platform-catalog.ts','radar-policy.mjs','production-research.mjs','production-reference.mjs','production-archive-category.mjs'];
 const bundle=await rolldown({input:new URL('../src/renderer/production-workspace.tsx',import.meta.url).pathname,external:id=>!real.some(name=>id.endsWith('/'+name))});
 const generated=await bundle.generate({format:'cjs'});await bundle.close();
 const code=generated.output.find(item=>item.type==='chunk').code;
@@ -195,4 +195,19 @@ test('actual workspace connects existing-record management to original ids, snap
 
 test('actual report view shows body hit snippets and partial retry while withholding false no-match text',async()=>{
  const f=fixture('reports',1);let tree=await f.ready();let resumed=0;f.setSearch({result:{hits:[{reportId:'r001',fields:['body'],snippets:[{field:'body',text:'第二页正文独有词',pageId:'page001'}]}],status:'partial',pendingPages:0,unreadablePages:1,cursor:'opaque',issues:[{reportId:'r001',pageId:'page001',message:'原件暂不可读'}],snapshotKey:'partial'},working:false,error:'',continueSearch(){resumed++;},restart(){}});tree=change(f,'搜索标题、账号或正文','正文独有词');const rendered=all(tree,()=>true).flatMap(n=>children(n).filter(c=>typeof c==='string')).join(' ');assert.ok(rendered.includes('当前结果仅为已核验部分'));assert.ok(rendered.includes('第二页正文独有词'));assert.ok(rendered.includes('原件暂不可读'));assert.ok(!rendered.includes('没有匹配报告'));button(tree,'重试不可读页面').props.onClick();assert.equal(resumed,1);assert.equal(cards(tree).length,1);
+});
+
+test('knowledge, feedback and cost records expose bounded pages through their final item',async()=>{
+ const f=fixture('knowledge',0),at='2026-10-01T00:00:00.000Z';
+ for(let i=1;i<=41;i++){
+  f.snapshot.knowledge.push({id:'knowledge'+pad(i),status:'rejected',text:'知识 '+pad(i),source:'原始依据',createdAt:at});
+  f.snapshot.feedback.push({id:'feedback'+pad(i),text:'反馈 '+pad(i),createdAt:at});
+  f.snapshot.costs.push({id:'cost'+pad(i),service:'服务 '+pad(i),status:'unknown',amount:null,currency:'REQ',usage:null,createdAt:at});
+ }
+ let tree=await f.ready();
+ for(const label of ['知识候选分页','反馈记录分页','服务成本分页']){
+  const current=labelledPager(tree,label);assert.ok(current,`${label} must paginate growing records`);assert.equal(current.props.total,41);assert.equal(current.props.pageSize,20);current.props.onPageChange(3);tree=f.render();
+ }
+ const rendered=all(tree,()=>true).flatMap(n=>children(n).filter(c=>typeof c==='string')).join(' ');
+ assert.ok(rendered.includes('知识 001'));assert.ok(!rendered.includes('知识 041'));for(const prefix of ['反馈','服务']){assert.ok(rendered.includes(prefix+' 041'));assert.ok(!rendered.includes(prefix+' 001'));}
 });
