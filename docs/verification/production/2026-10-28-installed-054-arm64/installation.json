@@ -31,7 +31,10 @@
   "observedContentCount": 48,
   "cardsViewVerified": true,
   "firstVisibleContentNumber": "T051",
-  "guiPausedOnUnsavedDraft": true,
+  "guiPausedOnUnsavedDraft": false,
   "hostPreflightCount": 8,
-  "firstOpenInvestigation": "first-open-followup.json"
+  "firstOpenInvestigation": "first-open-followup.json",
+  "normalReopenVerified": true,
+  "followupObservedContentCount": 49,
+  "followupFirstVisibleContentNumber": "T052"
 }

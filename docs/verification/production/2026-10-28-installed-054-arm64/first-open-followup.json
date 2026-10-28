@@ -4,7 +4,7 @@
   "initialReselectObservedBusy": true,
   "initialReselectLaterLoadedWithoutRestart": true,
   "causeProven": false,
-  "normalReopenVerified": false,
+  "normalReopenVerified": true,
   "requiresNewPackage": "No indefinite wait reproduced in native clone; actual Electron original-task prefill and normal reopen remain gates",
   "observations": [
     "Explicitly selected original second-brain directory through native dialog. machine-binding retained the same library ID and changed needsReselect=false.",
@@ -21,5 +21,18 @@
     "reinitializeMs": 5,
     "reopenedListMs": 717,
     "realElectronNormalReopenVerified": false
+  },
+  "normalReopenFollowup": {
+    "at": "2026-10-28T11:20:35.284315+00:00",
+    "nativeMenuQuitVerified": true,
+    "noInstalledProcessesAfterQuit": true,
+    "reopenedUsingCUA": true,
+    "originalLibraryLoadedWithoutReselection": true,
+    "contentListVisible": true,
+    "observedContentCount": 49,
+    "firstVisibleContentNumber": "T052",
+    "startupDurationMeasured": false,
+    "observationToolTimedOutOnce": true,
+    "limits": "AX subsequently showed the restored original content page. A slow or stale CUA observation is not proof of an application hang or its cause. Real full workflow and actual host prefill are still unverified."
   }
 }
