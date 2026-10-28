@@ -74,3 +74,10 @@ test('starting a new query aborts the old generation even if its reader finishes
  f.setReader(()=>{if(first){first=false;return new Promise(resolve=>{release=resolve;});}return{data:f.assets.get(r.pages[0].assetHash),detectedType:'text/html'};});
  const old=f.search('旧查询');await Promise.resolve();const rejected=assert.rejects(()=>old,error=>error.code==='STALE_SEARCH');assert.equal((await f.search('真实正文')).hits.length,1);release({data:f.assets.get(r.pages[0].assetHash),detectedType:'text/html'});await rejected;
 });
+test('manual retries rotate failed pages so a recovered page beyond the first twenty is reachable',async()=>{
+ const f=fixture();for(let i=0;i<21;i++)f.add('r'+i,'<article>正文命中 '+i+'</article>');let recovered=false;
+ f.setReader(request=>{f.reads.push(request);if(!recovered||request.reportId!=='r20')throw Error('原件仍不可读');return{data:f.assets.get(request.assetHash),detectedType:'text/html'};});
+ let result=await f.search('正文命中');result=await f.search('正文命中',{cursor:result.cursor});assert.equal(result.unreadablePages,21);assert.equal(result.pendingPages,0);recovered=true;
+ for(let attempt=0;attempt<2&&!result.hits.length;attempt++){const before=f.reads.length;result=await f.search('正文命中',{cursor:result.cursor});assert.ok(f.reads.length-before<=20);}
+ assert.deepEqual(result.hits.map(hit=>hit.reportId),['r20']);assert.equal(result.unreadablePages,20);assert.equal(result.status,'partial');assert.equal(result.issues.length,20);
+});
