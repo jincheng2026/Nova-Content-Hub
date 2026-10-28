@@ -65,6 +65,13 @@ export function useManagedCloseGuard(guard: () => Promise<void>) {
   const scope = useContext(ManagedCloseScope), latest = useRef(guard); latest.current = guard;
   useEffect(() => { if (!scope) return; const callback = () => latest.current(); scope.add(callback); return () => { scope.delete(callback); }; }, [scope]);
 }
+/** Inline workspaces use the same flush contract as management dialogs. */
+export function ManagedCloseBoundary({register, children}: {register(guard: (() => Promise<void>) | null): void; children(flush: () => Promise<void>): ReactNode}) {
+  const guards = useRef(new Set<() => Promise<void>>()), registerRef = useRef(register); registerRef.current = register;
+  const flush = async () => { for (const guard of guards.current) await guard(); };
+  useEffect(() => { registerRef.current(flush); return () => registerRef.current(null); }, []);
+  return <ManagedCloseScope.Provider value={guards.current}>{children(flush)}</ManagedCloseScope.Provider>;
+}
 async function reloadManagedWorkspace(props: WorkspaceManagementProps, apply: (library: WorkspaceLibrarySnapshot) => void) {
   if (props.busy) return;
   await props.run(async () => { const library = await invoke('readWorkspaceLibrary'); apply(library); await props.refresh(library); }, {refreshWorkspaceOnSuccess: false});

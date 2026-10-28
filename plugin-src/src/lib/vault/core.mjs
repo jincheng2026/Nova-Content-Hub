@@ -1159,7 +1159,9 @@ export function resolveCurrentSource(snapshot,docs,pinned=null) {
     const line=overviewIndex>=0?overviewLines[overviewIndex]:'';
     const overviewSection=overviewIndex<0?'':overviewLines.slice(0,overviewIndex).reverse().find(l=>/^#{1,6}\s/.test(l))?.replace(/^#{1,6}\s+/,'')??'';
     const state=sourceEvidence(snapshot,docs,line);
-    const bodyDocs=docs.filter(d=>d.section==='drafts'&&!/(?:^|\/)(?:参考|素材|助手任务|任务归档|发布存档|历史|版本)(?:\/|_)/.test(d.relativePath)&&(
+    // Filename hints apply only to manuscript documents, never production artifacts
+    // or reference/prompt subtrees. Explicit author receipts remain authoritative.
+    const bodyDocs=docs.filter(d=>d.section==='drafts'&&['markdown','text','html'].includes(d.format)&&!/(?:^|\/)(?:参考(?:素材)?|素材|提示词|助手任务|任务归档|发布存档|历史|版本)(?:\/|_)/.test(d.relativePath)&&(
         /(?:^|[\/_])(?:定稿|最终稿|录制定稿|逐字稿|工作稿|正文|提词|创作页)/.test(d.relativePath)||d.format==='html'&&!!d.editAdapter));
     for(const d of bodyDocs)state.add(d,{origin:'document',label:d.title});
     if(pinned)state.add(pinned,{origin:'working-draft-receipt',label:'已确认工作稿'});

@@ -48,3 +48,15 @@ test('Markdown tables retain every authored cell and stop before subsequent bloc
   const html=render(table+following);assert.match(html,/额外证据不能丢<\/td>/);assert.match(html,pattern);
  }
 });
+
+test('account card summary removes layout syntax while retaining authored text and source targets',()=>{
+ const source='# 账号名字\n\n> 核心 **真实经验**\n\n- 第一条\n- 第二条\n\n| 方向 | 说明 |\n| --- | --- |\n| AI | 清楚具体 |\n\n![原图](./source.png)';
+ assert.equal(module.exports.markdownSummary(source,'账号名字'),'核心 真实经验 第一条 第二条 方向 说明 AI 清楚具体 原图（图片：./source.png）');
+ assert.equal(module.exports.markdownSummary('普通备注，使用 C#。'),'普通备注，使用 C#。');
+ assert.equal(module.exports.markdownSummary(''),'');
+});
+test('account card summary remains plain React text with markup and code preserved safely',()=>{
+ const summary=module.exports.markdownSummary('## 原始说明\n\n<script>alert(1)</script>\n\n```md\n# 原代码 | >\n```');
+ assert.equal(summary,'原始说明 <script>alert(1)</script> # 原代码 | >');
+ const html=renderToStaticMarkup(React.createElement('p',null,summary));assert.doesNotMatch(html,/<script/);assert.match(html,/&lt;script&gt;/);
+});

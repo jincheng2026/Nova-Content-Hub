@@ -1,4 +1,4 @@
-import {useEffect,useMemo,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
 import Button from '@douyinfe/semi-ui-19/lib/es/button';
 import Input from '@douyinfe/semi-ui-19/lib/es/input';
 import Banner from '@douyinfe/semi-ui-19/lib/es/banner';
@@ -17,7 +17,33 @@ import './jincheng-workbench.css';
 import './jincheng-content-cards.css';
 export function JinchengContentDirectory({mode,contents,busy=false,embedded=false,library,openContent,createContent}:{mode:'topics'|'doing'|'published';contents:Content[];busy?:boolean;embedded?:boolean;library?:WorkspaceLibrarySnapshot|null;openContent(id:string):void;createContent?():void}){
  const [vault,setVault]=useState<VaultSnapshot|null>(null),[workRows,setWorkRows]=useState<VaultWorkDirectoryRow[]>([]),[production,setProduction]=useState<ProductionSnapshot|null>(null),[overviewText,setOverviewText]=useState(''),[loaded,setLoaded]=useState(false),[notice,setNotice]=useState(''),[query,setQuery]=useState(''),[type,setType]=useState('all'),[page,setPage]=useState(1),[pageSize,setPageSize]=useState(20),[version,setVersion]=useState(0),[view,setView]=useState<'cards'|'list'>('cards');
- useEffect(()=>{let live=true;setLoaded(false);setNotice('');void Promise.allSettled([invoke('readVault'),invoke('readProduction'),invoke('readVaultWorkDirectory')]).then(async results=>{if(!live)return;const v=results[0].status==='fulfilled'?results[0].value:null,p=results[1].status==='fulfilled'?results[1].value:null;setVault(v);setProduction(p);setWorkRows(results[2].status==='fulfilled'?results[2].value:[]);setOverviewText('');if(results.some(result=>result.status==='rejected'))setNotice('部分来源暂时未读到，下面仅显示已核对的内容；可刷新重试。');const source=v?.documents.find(doc=>doc.section==='topics'&&/(?:00_)?选题总览\.md$/.test(doc.relativePath));if(source){try{const document=await invoke('readVaultDocument',{id:source.id});if(live)setOverviewText(document.text);}catch{if(live)setNotice('原选题总览暂时不可读，拍摄顺序和暂缓安排待核验。');}}if(live)setLoaded(true);});const refresh=()=>setVersion(n=>n+1);window.addEventListener('nova-workspace-refresh',refresh);window.addEventListener('nova-vault-source-changed',refresh);return()=>{live=false;window.removeEventListener('nova-workspace-refresh',refresh);window.removeEventListener('nova-vault-source-changed',refresh);};},[contents,version]);
+ // Parent background reads replace the array even when no content changed.
+ // Only committed content revisions invalidate facts; notifications coalesce into
+ // one follow-up rather than cancelling the batch that is already in flight.
+ const contentRevision=JSON.stringify(contents.map(content=>[content.id,content.editToken,content.deletedAt]));
+ const refreshDirectory=useRef<(()=>void)|null>(null);
+ useEffect(()=>{
+  let live=true,running=false,requested=false;
+  const refresh=()=>{
+   if(running){requested=true;return;}
+   running=true;setNotice('');
+   void Promise.allSettled([invoke('readVault'),invoke('readProduction'),invoke('readVaultWorkDirectory')]).then(async results=>{
+    if(!live)return;
+    const v=results[0].status==='fulfilled'?results[0].value:null,p=results[1].status==='fulfilled'?results[1].value:null;
+    setVault(v);setProduction(p);setWorkRows(results[2].status==='fulfilled'?results[2].value:[]);setOverviewText('');
+    if(results.some(result=>result.status==='rejected'))setNotice('部分来源暂时未读到，下面仅显示已核对的内容；可刷新重试。');
+    const source=v?.documents.find(doc=>doc.section==='topics'&&/(?:00_)?选题总览\.md$/.test(doc.relativePath));
+    if(source){try{const document=await invoke('readVaultDocument',{id:source.id});if(live)setOverviewText(document.text);}catch{if(live)setNotice('原选题总览暂时不可读，拍摄顺序和暂缓安排待核验。');}}
+   }).catch(()=>{if(live)setNotice('目录来源暂时不可读，可刷新重试。');}).finally(()=>{
+    running=false;if(!live)return;setLoaded(true);
+    if(requested){requested=false;refresh();}
+   });
+  };
+  refreshDirectory.current=refresh;
+  window.addEventListener('nova-workspace-refresh',refresh);window.addEventListener('nova-vault-source-changed',refresh);
+  return()=>{live=false;refreshDirectory.current=null;window.removeEventListener('nova-workspace-refresh',refresh);window.removeEventListener('nova-vault-source-changed',refresh);};
+ },[]);
+ useEffect(()=>{refreshDirectory.current?.();},[contentRevision,version]);
  useEffect(()=>setPage(1),[mode,query,type]);
  const overview=useMemo(()=>parseTopicOverview(overviewText),[overviewText]);
  const rows=contents.filter(content=>!content.deletedAt).map(content=>{

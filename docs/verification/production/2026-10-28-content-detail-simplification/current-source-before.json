@@ -1,0 +1,754 @@
+{
+  "temporaryVault": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-e49dxlu9/第二大脑",
+  "elapsedMs": 8505,
+  "results": [
+    {
+      "id": "T019",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/01_夏冬一Ai_逐字稿.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/教程/逐字稿_定稿.md",
+          "role": "final-script",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/01_夏冬一Ai_逐字稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/02_AI珈一_逐字稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/抖音教程对标/03_小田AI_逐字稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/04_喵知道_为什么被称为邪恶银渐层.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/04_喵知道_为什么被称为邪恶银渐层.md",
+          "role": "supporting",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/04_喵知道_为什么被称为邪恶银渐层.srt",
+          "role": "supporting",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/04_喵知道_为什么被称为邪恶银渐层.txt",
+          "role": "supporting",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/04_喵知道_为什么被称为邪恶银渐层.volc.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/06_狗叫什么_为什么银渐层这么让人喜爱.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/06_狗叫什么_为什么银渐层这么让人喜爱.md",
+          "role": "supporting",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/06_狗叫什么_为什么银渐层这么让人喜爱.srt",
+          "role": "supporting",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/06_狗叫什么_为什么银渐层这么让人喜爱.txt",
+          "role": "supporting",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/06_狗叫什么_为什么银渐层这么让人喜爱.volc.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容_校正版.md",
+          "role": "supporting",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容.md",
+          "role": "supporting",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容.srt",
+          "role": "supporting",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容.txt",
+          "role": "supporting",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/09_少爷_部位形容.volc.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_Tr3tterfly_小猫发布会.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_Tr3tterfly_小猫发布会.srt",
+          "role": "supporting",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_Tr3tterfly_小猫发布会.txt",
+          "role": "supporting",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_Tr3tterfly_小猫发布会.volc.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_阿晶姐呀_我的新猫发布会.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_阿晶姐呀_我的新猫发布会.srt",
+          "role": "supporting",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_阿晶姐呀_我的新猫发布会.txt",
+          "role": "supporting",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/参考素材/逐字稿/视频号_阿晶姐呀_我的新猫发布会.volc.json",
+          "role": "supporting",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T025",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/工具/出图_定稿.py",
+      "candidates": [
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/工具/出图_定稿.py",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_连贯预览_Seedance480p.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头1首帧.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_1.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_2.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_3.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_4.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_5.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_6.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_7.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_8.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头2_9.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头4_暗房间.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/提示词/定稿_镜头5底片.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_关键帧2_定稿.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头1首帧.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头2_2真脸.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头2_5真脸.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头2_9真脸.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头3手办N.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头4真脸.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头5开始.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/u_定稿_镜头5结尾.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_连贯预览_Seedance480p.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_连贯预览_Seedance480p.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头1首帧.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头1首帧.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_1.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_1.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_2.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_2.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_3.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_3.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_4.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_4.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_5.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_5.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_6.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_6.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_7.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_7.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_8.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_8.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_9.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头2_9.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头5底片.json",
+          "role": "final-script",
+          "format": "json",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T025_AI电子衣橱/开头重做/短片制作/结果/定稿_镜头5底片.log",
+          "role": "final-script",
+          "format": "other",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T021",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/FredTalk_新模型JEV速度快1000倍成本还巨低.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/FredTalk_新模型JEV速度快1000倍成本还巨低.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/Manta_Ai_今年最特别的大模型JEV到底是什么.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/口罩哥研报60秒_jev.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/已做/T021_Jev模型热点/参考素材/逐字稿/晓辉博士_最近硅谷热议的Jev模型及其影响.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T048",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/提词器版.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_第三版_改稿标记_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第二版_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿工作稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_给博文看_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T020",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_创作页.html",
+          "role": "creation-page",
+          "format": "html",
+          "origins": [
+            "draft-overview",
+            "topic-card",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_逐字稿对照.html",
+          "role": "legacy-compare",
+          "format": "html",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    }
+  ]
+}

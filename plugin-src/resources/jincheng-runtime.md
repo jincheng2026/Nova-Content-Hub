@@ -31,6 +31,17 @@ JSON 顶层只有 `{claimToken,workerId,input?}`。库、T 内容、当前来源
 
 产物保存不等于生产任务提交。阶段文件回执的artifactId/hash/path放入普通production结果的data并保留可读text，继续用共同契约submit与status/receipt核对；阶段版本确认与task结果验收分别保留。作者mine/note/decision/approved/recorded/最终选择只能通过可信桌面作者入口维护。
 
+### 完整原创作 HTML 交付
+
+知识库内容的 writing/tutorial 任务使用本节交付；读取冻结 workflow 后按此分支完成，同一任务继续使用原助手聊天及领取身份。
+
+1. 先读 `jincheng-workflow read` 和 context 的 `vault.content.creationDocuments`。已有页用 `jincheng-creation read` 取得完整 `document` 和 `buildData`；尚无 HTML 时从绑定资料准备首稿。素材包、访谈和必要确认沿用当前业务方法；教程检查点仅在显式选中教程时使用。
+2. 首稿形成后读取 `jc-gongzuotai-write/upstream/current/schema/creation-page.md`。按原结构准备 `data`：同一 T 的 `content_id`、实际 type/stage/title、narrative、分段 segments，以及实际需要的 suggestions/items。每段保留稳定 id、段名、作用、完整 mine、baseline 和 refs；引用保留 source_type、who、time、text、url，教程画面与步骤用原 schema 的扩展字段。数据中的事实和作者决定均须有来源，未知项按原 schema 留空。
+3. 尚无 HTML 时执行 `jincheng-creation build`，input 为 `{data,mutationId}`。由工作台冻结模板生成 `05_内容草稿/<当前内容目录>/创作页.html`，包含原对照、通读、录制、标题封面简介、批注与建议等模块；不自行拼写 HTML，也不执行旧 Python 服务。build 回执的 `stageArtifact` 就是完整稿 HTML 证据，普通阶段 Markdown 仅作伴随说明。
+4. 已有 HTML 时先回读当前作者 mine/note/decision 与未知字段。局部改稿使用 `suggest`，批注答复使用 `reply`；确需更新结构或锁定资料时导出 `buildData`，沿用所有旧 id、作者字段和条目，以准确 `expectedRevision` 执行 `regenerate`。生成器保护作者正文和全部可改字段，缺失旧条目时拒绝覆盖。
+5. build/regenerate 后再次 `jincheng-creation read`，核对页面身份、当前版本、完整分段、原参考、建议、画面步骤和包装条目。首次 build 需要核对 `stageArtifact.path/hash` 对应本次生成页；重生成核对返回 revision。只有回读一致才说明页面已生成或更新。
+6. 用允许的普通 production artifact 保存可独立读懂的交付说明，在其 data 中保留真实 `pageId/revision`；首次 build 同时附返回的 `stageArtifact`，regenerate 记录本次 revision，不复用旧 HTML hash。再 `production submit`、回读 status/receipt。说明用户可回当前内容打开原创作页继续编辑；页面保存、任务验收、正文确认和发布仍分别核对。冻结为 `content-creation` 的旧任务继续原候选采用协议，不改写旧回执，也不将其摘要称为完整原页。
+
 ## 研究、评论和素材
 
 `workflow=jincheng-research` 读取冻结 `researchRuntime` 后，使用相同handoff/claim：

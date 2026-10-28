@@ -1,0 +1,60 @@
+{
+  "at": "2026-10-28T03:14:47.478Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [
+    "Prompt library retained; knowledge tab absent",
+    "Real account Markdown headings, quote and table rendered",
+    "Real template images rendered",
+    "Content cards/list preserve exact item order; X navigation absent"
+  ],
+  "views": {
+    "prompts": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "account-markdown": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "cover-stacks": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-cards": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-list": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "detail-T041": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "detail-original-page": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [],
+  "machine": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-e49dxlu9/machine-1793157287502",
+  "passed": false,
+  "failure": {
+    "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n  '## 怎么拿\\n' +\n    '\\n' +\n    '这一套 Skill，我都放到 GitHub 上了：https://github.com/jincheng2026/jcskill\\n' +\n    '\\n' +\n    '把 README 里那句安装的话复制给你的 AI，它会自己装好，然后带你走一遍新手引导。想直接从一条参考视频开始，README 里也有一句现成的，复制过去、把链接贴在最后就行。\\n' +\n    '\\n' +\n+   '我接下来也会继续 building in public，把我自己内容创作的 Skill 和工作台分享给大家。'\n-   '我接下来也会继续 building in public，把我自己内容创作的 Skill 和工作台分享给大家。\\n' +\n-   '副本UI关闭保存验证。'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n  '## 怎么拿\\n' +\n    '\\n' +\n    '这一套 Skill，我都放到 GitHub 上了：https://github.com/jincheng2026/jcskill\\n' +\n    '\\n' +\n    '把 README 里那句安装的话复制给你的 AI，它会自己装好，然后带你走一遍新手引导。想直接从一条参考视频开始，README 里也有一句现成的，复制过去、把链接贴在最后就行。\\n' +\n    '\\n' +\n+   '我接下来也会继续 building in public，把我自己内容创作的 Skill 和工作台分享给大家。'\n-   '我接下来也会继续 building in public，把我自己内容创作的 Skill 和工作台分享给大家。\\n' +\n-   '副本UI关闭保存验证。'\n\n    at ready (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/scripts/readability-ui-probe.mjs:40:8)\n    at async startDesktop (file:///Users/mac/code/dashboard/Nova-Content-Hub/workbench/dist-desktop/auth-disabled/workbench/dist/main/desktop.mjs:633:5)"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容详情\n本机保存\n刷新\n← 返回内容列表\nT042\nX\n草稿\n已保存\nT042 两周全网涨粉两万的AI教程做法\n\n两周全网涨粉两万的 AI 教程做法：8 月那两条爆款当时做对了什么，加现在用 AI 怎么把它做成一套流程，能照着做（X 长文；10-07 从 T041 拆出来，先于 T041 发；10-07 第一版已放进创作页 http://127.0.0.1:8977/p/gu8q6xrzpw，锦成在页面上改）\n\n接着写\n选题卡原文件\n打开稿件文件夹\n选题卡里的其他信息\n\n原创作页 · 05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html\n\n网页\n1\nT042_创作页.html\n创作页\n接着写的当前入口\n318 KB\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html\n\n可在这里编辑，改动会保全回原文件。\n\n正在打开\n定位原件\nT042_创作页.html\n\n正在编辑 · 改动会保全回这份原文件\n\n关闭创作页\n已连接知识库保存通道\n重新读取原页\n参考视频\n15\nT041\n\n04_选题库/X/待做/T041_涨粉两万后两个月只涨六千的复盘.md\n\n阅读参考／逐字稿\n定位原件\n创作页\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/T042_创作页.html\n\n阅读参考／逐字稿\n定位原件\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/\n\n原卡中的本机位置尚未索引，可从选题卡或稿件文件夹核对。\n\n结构.md\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/结构.md\n\n阅读参考／逐字稿\n定位原件\nT041 草稿文件夹\n\n05_内容草稿/T041_涨粉两万后两个月只涨六千的复盘/截图/\n\n原卡中的本机位置尚未索引，可从选题卡或稿件文件夹核对。\n\n抖音链接\n\nhttps://v.douyin.com/U2D601VgDsM/\n\n复制原视频链接\n本地素材\n\n02_内容素材/已参考/抖音/抖音_WorkBuddy终极教程_7659255820748455611/笔记信息.md\n\n阅读参考／逐字稿\n定位原件\n抖音链接\n\nhttps://v.douyin.com/ixnu8BSVRqk/\n\n复制原视频链接\n本地素材\n\n02_内容素材/已参考/抖音/抖音_全网最适合小白的WorkBuddy入门指南_7659453388643470611/笔记信息.md\n\n阅读参考／逐字稿\n定位原件\n视频档案\n\n内容数据统计/视频项目/2026-08-06-WorkBuddy小白终极教程/内容.md\n\n原卡中的本机位置尚未索引，可从选题卡或稿件文件夹核对。\n\n视频档案\n\n内容数据统计/视频项目/2026-08-04-2分钟调好WorkBuddy/内容.md\n\n原卡中的本机位置尚未索引，可从选题卡或稿件文件夹核对。\n\n首轮5条总复盘.md\n\n06_发布复盘/其他/首轮5条总复盘.md\n\n阅读参考／逐字稿\n定位原件\n飞书文档\n\nhttps://oiwu7t09wwq.feishu.cn/wiki/QvF3wRxehio5BRkr2HGclCtfnYc\n\n复制原视频链接\nhttp://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填\n\nhttp://127.0.0.1:8977/p/gu8q6xrzpw），锦成在页面上改；仓库链接已填\n\n复制原视频链接\nhttps://github.com/jincheng2026/jcskill）\n\nhttps://github.com/jincheng2026/jcskill）\n\n复制原视频链接\n其他文件与历史\n4\n结构_v1_2026-10-07.md\n文件\n4 KB\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/版本/结构_v1_2026-10-07.md\n\n阅读\n定位原件\n改稿日志.md\n文件\n2 KB\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/改稿日志.md\n\n阅读\n定位原件\n工作稿.md\n工作稿\n10 KB\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/工作稿.md\n\n阅读\n定位原件\n锦成口述_2026-10-07.md\n文件\n3 KB\n\n05_内容草稿/T042_两周全网涨粉两万的AI教程做法/锦成口述_2026-10-07.md\n\n阅读\n定位原件\n更换接着写的入口\n制作封面\n发布与档案\n更多操作"
+}

@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-28T02:46:00.556Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [
+    "Prompt library retained; knowledge tab absent",
+    "Real account Markdown headings, quote and table rendered",
+    "Real template images rendered",
+    "Content cards/list preserve exact item order; X navigation absent",
+    "Content narrow viewport has no document overflow"
+  ],
+  "views": {
+    "prompts": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "account-markdown": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "cover-stacks": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-cards": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-list": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    },
+    "content-narrow": {
+      "width": 960,
+      "height": 868,
+      "scrollWidth": 960
+    }
+  },
+  "errors": [],
+  "passed": true
+}

@@ -1,0 +1,21 @@
+{
+  "at": "2026-10-28T02:24:05.591Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [
+    "Uncaught Error: Missing or disabled nav-content"
+  ],
+  "passed": false,
+  "failure": {
+    "message": "Error: Script failed to execute, this normally means an error was thrown. Check the renderer console for the error.",
+    "stack": "Error: Script failed to execute, this normally means an error was thrown. Check the renderer console for the error.\n    at node:electron/js2c/sandbox_bundle:2:98605\n    at IpcRendererInternal.<anonymous> (node:electron/js2c/sandbox_bundle:2:93432)\n    at IpcRendererInternal.emit (node:electron/js2c/sandbox_bundle:2:35958)\n    at Object.onMessage (node:electron/js2c/sandbox_bundle:2:92646)"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 总览\n\n总览\n正在处理本机资料，请稍候…\n刷新\n正在打开你的内容库…\n\n正在读取本机内容、模板与发布安排，请稍候。"
+}

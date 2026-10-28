@@ -1,10 +1,25 @@
-import {createElement, Fragment} from 'react';
+import {createElement, Fragment, isValidElement} from 'react';
 import type {ReactNode} from 'react';
 import './document-markdown.css';
 
 /** Reading only: source strings are never normalized or passed back to the editor. */
 export function DocumentMarkdown({text, className = '', title}: {text: string; className?: string; title?:string}) {
     return <div className={`document-markdown ${className}`.trim()}>{blocks(text.split(/\r\n?|\n/), 0, title)}</div>;
+}
+
+/** A deterministic excerpt of the same reading tree, never a generated conclusion. */
+export function markdownSummary(text:string,title?:string):string {
+    const separate=new Set(['h1','h2','h3','h4','h5','h6','p','li','th','td','pre','br']);
+    const plainText=(node:ReactNode):string=>{
+        if(typeof node==='string'||typeof node==='number')return String(node);
+        if(Array.isArray(node))return node.map(plainText).join('');
+        if(isValidElement<{children?:ReactNode}>(node)){
+            const value=plainText(node.props.children);
+            return typeof node.type==='string'&&separate.has(node.type)?value+' ':value;
+        }
+        return '';
+    };
+    return plainText(blocks(text.split(/\r\n?|\n/),0,title)).replace(/\s+/g,' ').trim();
 }
 
 function safeLink(value: string): string | null {

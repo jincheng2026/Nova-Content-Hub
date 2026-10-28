@@ -1,5 +1,5 @@
 import fs from 'node:fs';
-import {verifiedBoundReader} from './bound-reader.mts';
+import {verifiedBoundReader,verifyBoundRoot} from './bound-reader.mts';
 import {createVaultWorkingDraft} from '../../../plugin-src/src/lib/vault/working-draft.mjs';
 import {selectCurrentWork} from '../../../plugin-src/src/lib/vault/topics.mjs';
 import {readWorkFlow} from '../../../plugin-src/src/lib/vault/workflow.mjs';
@@ -21,7 +21,9 @@ export function executeVault(op:keyof VaultWorkerOperations,args:unknown,mode:'r
  if (!isRecord(args))fail('INVALID_INPUT','资料请求无效。');
  if (!(fields?exact(args,fields):exact(args,['binding'])||exact(args,['binding','id'])) || !libraryBinding(args.binding)||!path.isAbsolute(args.binding.root)||args.binding.root.includes('\0'))fail('INVALID_INPUT','资料操作拒绝额外、路径或无效字段。');
  const binding=args.binding as LibraryBinding;
- // Verify the exact current runtime binding before resolving any source Vault.
+ // A root label is metadata, not a request to project every business source.
+ if(op==='vaultLocation'&&args.id===undefined){verifyBoundRoot(binding);return vaultRootForRuntime(binding.root)??binding.root;}
+ // Business reads retain their existing recovery and lock checks.
  verifiedBoundReader(binding);
  if(op==='vaultResolve'){requireWrite(mode);if(!uuid(args.mutationId))fail('INVALID_INPUT','资料恢复标识无效。');return resolveVaultMutation(binding.root,args.mutationId) as VaultResolution;}
  if(op==='vaultRead')return readVaultSnapshot(binding.root);

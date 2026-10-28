@@ -1,0 +1,146 @@
+{
+  "temporaryVault": "/private/var/folders/vl/nhqtk_8s6vl5j679xhv_z3n80000gn/T/nova-readability-e49dxlu9/第二大脑",
+  "elapsedMs": 4852,
+  "results": [
+    {
+      "id": "T019",
+      "resolution": "resolved",
+      "chosen": "05_内容草稿/已做/T019_邪恶银渐层发布会/教程/逐字稿_定稿.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/已做/T019_邪恶银渐层发布会/教程/逐字稿_定稿.md",
+          "role": "final-script",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T025",
+      "resolution": "resolved",
+      "chosen": "04_选题库/AI教程/已做/T025_✅AI电子衣橱.md",
+      "candidates": [
+        {
+          "path": "04_选题库/AI教程/已做/T025_✅AI电子衣橱.md",
+          "role": "topic-card",
+          "format": "markdown",
+          "origins": [
+            "topic-or-supporting-document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T021",
+      "resolution": "resolved",
+      "chosen": "04_选题库/AI科普/已做/T021_✅Jev模型热点.md",
+      "candidates": [
+        {
+          "path": "04_选题库/AI科普/已做/T021_✅Jev模型热点.md",
+          "role": "topic-card",
+          "format": "markdown",
+          "origins": [
+            "topic-or-supporting-document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T048",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/提词器版.txt",
+          "role": "final-script",
+          "format": "text",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第四版_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_第三版_改稿标记_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_锦成第二版_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿工作稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T048_vibe知识大赏这类号的三个弊端/逐字稿_给博文看_2026-10-14.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "T020",
+      "resolution": "conflict",
+      "chosen": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md",
+      "candidates": [
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/逐字稿工作稿.md",
+          "role": "working-draft",
+          "format": "markdown",
+          "origins": [
+            "draft-overview",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_创作页.html",
+          "role": "creation-page",
+          "format": "html",
+          "origins": [
+            "draft-overview",
+            "topic-card",
+            "document"
+          ]
+        },
+        {
+          "path": "05_内容草稿/T020_AI是00后最值得抓住的杠杆/T020_逐字稿对照.html",
+          "role": "legacy-compare",
+          "format": "html",
+          "origins": [
+            "document"
+          ]
+        }
+      ]
+    }
+  ]
+}

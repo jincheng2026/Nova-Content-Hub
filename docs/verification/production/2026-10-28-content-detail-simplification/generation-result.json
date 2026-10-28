@@ -1,0 +1,38 @@
+{
+  "ok": true,
+  "rendered": {
+    "candidates": 29,
+    "finals": [
+      "合成候选0-0",
+      "合成候选1-0",
+      "合成候选2-0"
+    ],
+    "references": 3,
+    "slots": 3,
+    "view": "publish",
+    "visible": true
+  },
+  "views": [
+    "对照",
+    "通读",
+    "录制",
+    "标题封面简介"
+  ],
+  "restored": {
+    "finals": [
+      "作者最终手改标题",
+      "合成候选1-0",
+      "合成候选2-0"
+    ],
+    "mine": "合成原句只出现一次。",
+    "reopened": "",
+    "selected": "选用"
+  },
+  "selectionSaved": true,
+  "authorFinalSaved": true,
+  "rejectedAndReopened": true,
+  "atomicHistory": true,
+  "closedAndReopened": true,
+  "otherFinalsPreserved": true,
+  "recordingAndSuggestionsPreserved": true
+}

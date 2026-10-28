@@ -105,13 +105,30 @@ export function exportCreationData(doc){
  return {content_id:doc.raw.content_id,...pick(info.locked,LOCKED.info),service_origin:doc.raw.service_origin,info:{locked:extras(info.locked,LOCKED.info),fields:extras(info.fields,FIELDS.info)},segments:doc.items.filter(it=>kindOf(it)==='segment').sort((a,b)=>a.locked.order-b.locked.order).map(it=>({id:it.id,...pick(it.locked,['title','role','refs','baseline']),...pick(it.fields,FIELDS.segment),locked:extras(it.locked,LOCKED.segment),fields:extras(it.fields,FIELDS.segment)})),suggestions:doc.items.filter(it=>kindOf(it)==='suggestion').map(it=>({id:it.id,...pick(it.locked,LOCKED.suggestion),proposed:it.fields.proposed,locked:extras(it.locked,LOCKED.suggestion),fields:extras(it.fields,FIELDS.suggestion)})),items:doc.items.filter(it=>!['info','segment','suggestion'].includes(kindOf(it))).map(it=>({id:it.id,kind:kindOf(it),locked:extras(it.locked,[]),fields:clone(it.fields)}))};
 }
 const RESOURCE=new URL('../../../resources/jincheng-creation/',import.meta.url);
+// Same single-file and replacement-region checks as the original build_page.py.
+// Source URLs in jc-doc are data; only the shell and stylesheet are resources.
+export function validateCreationTemplate(parts){
+ for(const name of ['DOC','STYLE','KIT','APP'])if(parts.shell.split('{{'+name+'}}').length!==2)protocolError('TEMPLATE_PLACEHOLDER',name);
+ const external=[/\b(?:src|href|action|poster|data|srcset)\s*=\s*["']?\s*(?:https?:)?\/\//i,/url\(\s*["']?\s*(?:https?:)?\/\//i,/@import\b/i,/<link\b[^>]*\bstylesheet\b/i,/<script\b[^>]*\bsrc\s*=/i];
+ for(const name of ['shell','style'])if(external.some(pattern=>pattern.test(parts[name])))protocolError('TEMPLATE_EXTERNAL_RESOURCE',name);
+}
+export function validateRenderedCreationHtml(html,raw){
+ const parsed=parseCreationHtml(Buffer.from(html),{sourceId:'trusted-build',documentId:raw.page_id});
+ if(JSON.stringify(parsed.raw)!==JSON.stringify(raw))protocolError('TEMPLATE_DOCUMENT_MISMATCH');
+ for(const name of ['style','kit','app']){
+  const start='<!--jc-'+name+':start-->',end='<!--jc-'+name+':end-->',a=html.indexOf(start),b=html.indexOf(end);
+  if(html.split(start).length!==2||html.split(end).length!==2||a>b)protocolError('TEMPLATE_REGION',name);
+  const tag=name==='style'?'style':'script',inner=html.slice(a+start.length,b),match=new RegExp('^\\s*<'+tag+'\\b[^>]*>([\\s\\S]*)</'+tag+'\\s*>\\s*$','i').exec(inner);
+  if(!match||new RegExp('</'+tag,'i').test(match[1]))protocolError('TEMPLATE_REGION',name);
+ }
+}
 export function loadTrustedCreationTemplate(){
  const base=fileURLToPath(RESOURCE),manifest=JSON.parse(fs.readFileSync(base+'provenance.json','utf8')),parts={};
  for(const [name,relative] of Object.entries({shell:'template/shell.html',style:'template/style.css',app:'template/app.js',kit:'kit/kit.js'})){
   const bytes=fs.readFileSync(base+relative);if(sha256(bytes)!==manifest.files[relative]?.sha256)protocolError('TRUSTED_TEMPLATE_HASH',relative);
   const text=new TextDecoder('utf-8',{fatal:true}).decode(bytes);if(name!=='shell'&&!text.trimEnd().endsWith('/* jc-'+name+':eof */'))protocolError('TRUSTED_TEMPLATE_TRUNCATED',name);parts[name]=text;
  }
- return {parts,version:manifest.version};
+ validateCreationTemplate(parts);return {parts,version:manifest.version};
 }
 const escapeHTML=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#x27;'}[ch]));
 export function renderCreationHtml(raw,options={}){
@@ -123,7 +140,7 @@ export function renderCreationHtml(raw,options={}){
  const title=escapeHTML(raw.content_id+' '+(info?.locked.title??'')),json=JSON.stringify(raw,null,2).replaceAll('<','\\u003c').replaceAll('>','\\u003e');
  // One pass over the frozen shell: user text containing {{APP}} is inert data.
  const html=parts.shell.replace(/\{\{(TITLE|DOC|STYLE|KIT|APP)\}\}/g,(_,name)=>name==='TITLE'?title:name==='DOC'?json:parts[name.toLowerCase()].replace(name==='STYLE'?/<\/style/gi:/<\/script/gi,name==='STYLE'?'<\\/style':'<\\/script'));
- const bytes=Buffer.from(html);parseCreationHtml(bytes,{sourceId:'trusted-build',documentId:raw.page_id});return bytes;
+ validateRenderedCreationHtml(html,raw);return Buffer.from(html);
 }
 function assertBuildBinding(input,b){if(input.work?.vaultId!==b.vaultId||input.data?.content_id!==input.work?.workId)protocolError('WORK_BINDING_CONFLICT');if(input.templateVersion!==loadTrustedCreationTemplate().version)protocolError('TEMPLATE_VERSION_MISMATCH');}
 export async function buildCreationPage(root,input){

@@ -1,0 +1,19 @@
+{
+  "at": "2026-10-28T02:38:21.919Z",
+  "scope": "Built Electron integration, isolated copy; not installed package",
+  "steps": [],
+  "views": {
+    "failure": {
+      "width": 1440,
+      "height": 948,
+      "scrollWidth": 1440
+    }
+  },
+  "errors": [],
+  "passed": false,
+  "failure": {
+    "message": "Error: Timeout document.querySelector('.jincheng-content-directory [data-content-id]')&&!document.body.innerText.includes('正在读取原选题、安排与创作文件…')",
+    "stack": "Error: Timeout document.querySelector('.jincheng-content-directory [data-content-id]')&&!document.body.innerText.includes('正在读取原选题、安排与创作文件…')"
+  },
+  "body": "自媒体工作台\n内容创作工作空间\n工作空间\n今天\n总览\n日程\n助手任务\n内容\n内容项目\n封面\n市场调研\n对标账号\n调研报告\n爆款雷达\n资料与定位\n提示词\n内容库\n设置\n第二大脑\n\n资料保存在你的本机\n\n工作空间 / 内容项目\n\n内容项目\n本机保存\n刷新\n\nCONTENT · 内容管理\n\n内容项目\n\n在同一处管理选题、创作进度与已发布内容。\n\n＋ 新建内容\n选题\n在做\n已发布\n全部与合集\n\n全部选题都在这里：接下来要做按确认的拍摄顺序排，暂缓默认收起，已经写过的放在下方。\n\n内容类型\n全部类型\n卡片\n列表\n刷新\n准备一条新内容\n\n正在读取待选的选题菜单…\n\n正在读取原选题、安排与创作文件…"
+}

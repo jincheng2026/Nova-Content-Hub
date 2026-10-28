@@ -9,6 +9,8 @@ description: 执行自媒体工作台的参考转写、视频拆解、内容共�
 2. 完整读冻结请求、当前正文、参考、叙事、批注、建议决定及已采纳知识；只追溯与当前问题相关的历史任务和反馈。用户已确认的观点、口气和制作条件直接沿用。
 3. 根据本轮请求选择下面的方法；已显式选择的完整业务方法优先保留其人的确认与阶段步骤，不以通用“直接给稿/整套提交”覆盖叙事或重点段确认。本人本轮明确改变工序时记录覆盖范围。教程方法仅在本人显式选择 jc-jiaocheng-video 时启用，不由一般写稿或 content-creation 自动套用。
 
+冻结 `parameters.workflow=jincheng-stage` 的知识库内容任务，先读 [锦成业务阶段运行接点](../../plugin-src/resources/jincheng-runtime.md)，按当前 stage 使用原页 schema 和受控 `jincheng-creation` 接口。writing/tutorial 首稿的交付是完整原创作 HTML；已有页读回后按原条目给建议或精确版本再生成。下表的通用整篇 bundle 仅适用于冻结 `workflow=content-creation` 的任务；保留旧任务自己的请求和回执协议。
+
 ## 按阶段读取方法
 
 先读取 [业务方法 registry](../../plugin-src/resources/business-skills.json) 与 [业务执行边界](../../plugin-src/resources/business-skills-contract.md)。冻结 `request.parameters.businessSkill`（兼容 `businessMethod`）有值时，按 registry 的 `id` 找到对应业务 Skill 并完整读取其 SKILL.md、methodBody 指定的 upstream/current/METHOD.md 与原文当前阶段 references/schema/模板；先读 method-adaptation-contract.md 做旧路径/服务/权限映射；核对其 executor 为本 Skill。未登记或执行入口不匹配时说明不可用，不用近似名称替换。无显式方法时按当前 workflow/阶段选择，原有阶段方法继续作为兜底。方法只提供候选与允许检查点，不能改变固定请求的权限。
